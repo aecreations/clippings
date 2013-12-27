@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<RDF:RDF xmlns:NS1="http://clippings.mozdev.org/ns/rdf#"
+         xmlns:NC="http://home.netscape.com/NC-rdf#"
+         xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <RDF:Seq RDF:about="rdf:#$qiTtM3">
+    <RDF:li RDF:resource="rdf:#$riTtM3"/>
+    <RDF:li RDF:resource="rdf:#$siTtM3"/>
+  </RDF:Seq>
+  <NS1:folder RDF:about="rdf:#$qiTtM3"
+                   NS1:name="Blogging"
+                   NS1:hassubfolders="true" />
+  <NS1:clipping RDF:about="rdf:#$riTtM3"
+                   NS1:name="Excerpt from April 28th entry"
+                   NS1:text="“blah blah blah”" />
+  <RDF:Seq RDF:about="http://clippings.mozdev.org/rdf/user-clippings-v2">
+    <RDF:li RDF:resource="rdf:#$oiTtM3"/>
+    <RDF:li RDF:resource="rdf:#$piTtM3"/>
+    <RDF:li RDF:resource="rdf:#$qiTtM3"/>
+    <RDF:li RDF:resource="rdf:#$uiTtM3"/>
+    <RDF:li RDF:resource="rdf:#$viTtM3"/>
+  </RDF:Seq>
+  <NS1:clipping RDF:about="rdf:#$uiTtM3"
+                   NS1:name="Email signature">
+    <NS1:text>Alex
+
+---
+Alex's Code Studio: http://aecreations.blogspot.com/</NS1:text>
+  </NS1:clipping>
+  <NS1:clipping RDF:about="rdf:#$tiTtM3"
+                   NS1:name="Hyperlink text"
+                   NS1:text="" />
+  <NS1:clipping RDF:about="rdf:#$oiTtM3"
+                   NS1:name="Greetings"
+                   NS1:text="Hello world!" />
+  <NS1:clipping RDF:about="rdf:#$piTtM3"
+                   NS1:name="Let me know if that works for you. If you have a...">
+    <NS1:text>Let me know if that works for you. If you have any questions or concerns, you know where to find me.
+
+Regards,
+
+
+Alex</NS1:text>
+  </NS1:clipping>
+  <RDF:Seq RDF:about="rdf:#$siTtM3">
+    <RDF:li RDF:resource="rdf:#$tiTtM3"/>
+  </RDF:Seq>
+  <NS1:folder RDF:about="rdf:#$siTtM3"
+                   NS1:name="HTML sources"
+                   NS1:hassubfolders="false" />
+  <NS1:clipping RDF:about="rdf:#$viTtM3"
+                   NS1:name="Parting shot"
+                   NS1:text="Goodbye, cruel world!" />
+</RDF:RDF>

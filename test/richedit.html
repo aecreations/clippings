@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+  <title>Rich Text Editing</title>
+
+  <style type="text/css">
+
+    iframe {
+      width: 640px;
+      height: 256px;
+    }
+
+  </style>
+
+  <script type="application/javascript">
+
+    function init() {
+      document.getElementById("blank-richeditor").contentDocument.designMode = "on";
+      document.getElementById("richeditor").contentDocument.designMode = "on";
+    }
+
+  </script>
+</head>
+
+<body onload="init()">
+  <p>Blank rich edit box.  Click into it and start typing!</p>
+  <iframe id="blank-richeditor" src="blank.html"></iframe>
+
+  <p>Rich edit box with text.</p>
+  <iframe id="richeditor" src="doc1.html"></iframe>
+
+  <p>Inline frame.</p>
+  <iframe id="read-only" src="doc2.html"></iframe>
+
+</body>
+</html>

@@ -1,0 +1,24 @@
+BUGS TO FIX IN CLIPPINGS 3.0.1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Fix up the graphic used in the Paste Clipping dialog
+
+[DEFERRED] 18198 [clipman] Error when undoing edit when a clipping's 
+parent folder is deleted from other host app
+
+[DONE] 	Call window.removeEventListener() in overlay's unload event 
+handler to eliminate memory leaks 
+
+[DONE] Clippings Manager window position not being remembered on Linux
+
+[DONE] 18879 Shortcut key awkwardness on Mac OS X: updated shortcut key 
+help; removed digits 0-9 as shortcut key choices since digits don't work 
+as shortcut keys on that environment
+
+[DONE] 18579 [clipman] Error when creating new clipping if datasource 
+empty and common clippings enabled
+
+[DONE] 14518 Clippings data appended to exported RDF file (workaround fix)
+
+

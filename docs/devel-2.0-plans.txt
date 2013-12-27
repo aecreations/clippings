@@ -1,0 +1,175 @@
+
+TO-DO LIST FOR DEVELOPMENT RELEASE 1.99.3
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ - UI adjustments:
+   - Hostapp context submenu:
+      - [FIXED] Newly-created folder doesn't appear unless a new window is
+        opened or Firefox is restarted
+      - [DEFERRED] Check that error handling and auto-recovery still works
+        (Can't test until import is fixed)
+      - [FIXED] Regression: New/New From Selection doesn't do anything
+      - [DONE] subfolders should appear as submenus
+      - [WONTDO] If subfolder is empty, there should be a placeholder submenu
+        (There's a bug where the placeholder item remains if a new item is
+	created in the subfolder)
+
+ - Clippings Manager:
+   - [DONE] Data source conversion (1.x -> 2.0) on first run (bug 13690)
+   - [FIXED] Folder deletion - eliminate the junk entries that are left 
+     behind in the datasource file, causing the file to grow larger and 
+     larger.
+   - [FIXED] Copying or moving a folder should also copy or move its 
+     contents
+   - [FIXED] Move To menu doesn't update itself when new folder created
+   - [DONE] Disable "Text" field in Clippings Manager if current selection
+     is a folder
+   - [DONE] Copy To and Move To
+   - [DONE] If folder is selected, New Clipping command should create new 
+     clipping at same position as selection, shifting down everything below it,
+     instead of making the new clipping a child item of the selected folder.
+   - [DONE] Make sure that Paste New/New From Clipboard still works
+
+
+Clippings Manager changes to be considered for 1.99.4
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ - [DONE] "hassubfolders" triple not being updated when detaching/reattaching
+   folders
+
+ - [DONE] Import from Clippings 2.0 data source
+ - [DONE] Check that error handling and auto-recovery still works (need to
+   do this after the preceding item is addressed)
+
+ - Clippings Manager:
+   - [DONE] Do something about the Move Up and Move Down commands
+     (bug 13775) - eliminated
+      - [DONE] Modify function changePosition() to be able to handle clippings
+        within folders
+   - [DEFERRED] Multi-select special behaviour (bug 13773)
+   - [DONE] Get drag 'n drop working again (bug 13755)
+
+   - [DONE] "Paste New" should move to "Options" menu and renamed "New From 
+     Clipboard"
+   - [WONTFIX] Change name of "Options" button to "Tools"?
+   - [DONE] "Move To" toolbar button
+
+   - [DONE] When undoing deletion or moving of a folder, restore it to its
+     original position in its parent folder
+
+   - [DONE] Status bar item count isn't accurate
+
+   - Undo/redo (bug 13754):
+     - [DONE] Folder deletion
+     - [DONE] Folder creation
+     - [DONE] Move To command
+     - [DONE] Copy To command
+
+
+Clippings Manager changes to be considered for 1.99.5
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ - [FIXED] New folder created as a subfolder of the folder selected in the
+   New CLipping dialog, regardless of which folder was selected in New Folder
+   dialog.
+
+ - [DONE] Prevent importing of data source file!
+   This can cause an "Unresponsive script" error or Firefox might hang.
+
+ - [FIXED] "Unresponsive script" error sometimes when closing Clippings Manager
+   Deleted items reappear again when reopening.  Can happen when repeatedly
+   deleting and undoing deleting of very large numbers (over 100) of items.
+   This causes detached entries to be left behind after closing Clippings
+   Manager.
+
+ - [FIXED] Drag 'n drop broken.  Wrong items are being moved!
+
+ - [WORKSFORME]  No limit to undo deletion!
+
+ - [FIXED] "New" instead of "New From Selection" in selected rich edit box
+   (bug 13778) - this has regressed since 1.2
+
+ - [DONE] Redo the New Folder icon
+
+ - [FIXED] Entries sometimes renamed after move or copy (bug 14086)
+
+ - [DONE] New clipping or folder should be created at current selection
+   position, or at the end of the root folder list if no selection.
+
+ - [FIXED] No elipsis after "New From Clipboard" command in status bar icon - 
+   another regression since 1.2
+
+ - [DONE] Export as Clippings 1.x
+ - [DONE] Export as HTML
+ - [DONE] Export dialog box
+ - [DONE] Data in exported HTML file should be encoded as UTF-8
+
+ - [DONE] Change New Entry dialog title to "New Clipping"
+ - [DONE] In New Entry dialog box, be able to choose which folder to file the
+   new clipping in
+ - [DONE] Create a new folder while in New Entry dialog box, and make the
+   new folder the selected folder to create the new clipping in.
+
+ - [DONE] Clippings Manager - splitter between tree list and edit boxes
+
+ - [DEFERRED] Do regexp replacement to fix ampersand problem in HTML/XML
+   entities - this needs to be tested with things like non-breaking spaces,
+   other special characters and international characters
+   NOTE: Related Mozilla RDF parser bug 231548 - fixed in Gecko trunk.
+   ** Workaround available - encode special char's using hexadecimal.
+
+ - [DONE] Folder and clipping icons (bug 13756)
+
+ - [WONTFIX] Extra click needed on Move button to close the popup menu
+   after mousing over Move To or Copy To submenus.  (This is "normal" - see,
+   for example, the File toolbar button in Thunderbird)
+
+
+Clippings 1.99.6
+~~~~~~~~~~~~~~~~
+
+ - [DONE] integration with Thunderbird (no SeaMonkey at this time)
+
+ - [DONE] Re-evaluate plans to support Firefox 1.0.x
+   ** Tentative decision: No support for Firefox 1.0.x.
+
+ - [PARTIALLY FIXED] Cannot export as HTML in Firefox 1.0.x
+   - HTML export may not always be in Unicode due to limitations with Firefox
+     1.0.x (nsIConverterOutputStream interface not available); fallback on
+     ISO-8859-1 if UTF-8 encoding isn't possible.
+
+ - [DEFERRED] Clippings menu doesn't appear again after creating a new 
+   clipping using the New or New From Selection commands on that menu. 
+   (Firefox 1.0.x)
+
+ - [DEFERRED] Bug fix: New clipping or folder sometimes not being created at 
+   position of selection. (Clippings Manager)
+   - Clippings/folders now appended as before - too many problems with 
+     <rdf:Seq> renumbering suppression in nsIClippingsService.remove()
+
+ - [FIXED] Clippings count is off by one after deleting folder
+
+ - [FIXED] Bug fix: Clippings browser context submenu not being rebuilt when
+   Clippings data with folders is imported.  The imported folders are missing
+   and only show up when a new window is opened.
+   An import listener for the hostapp is needed, like what Clippings Manager
+   has to listen to clipping or folder creation.
+
+
+Clippings 2.0 RC 1 (1.99.7 ?)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- [FIXED] Bug fix - folders not appearing in Clippings menu after they are 
+  created
+
+- [FIXED] Clippings context submenu appears out of nowhere when creating
+  new folder via New Clippings dialog (Thunderbird only; Firefox ok)
+  (bug 14300)
+
+- Code review and retest - automatic recovery from data corruption -
+  appears to have stopped working
+
+- [DEFERRED] nsIClippingsService.flushDataSrc() - refactor code - serialize 
+  RDF/XML instead of using ds.Flush() or ds.FlushTo()... would this finally fix
+  the data corruption problem that so many users are reporting? 
+  ** Don't do this now - high risk of breaking Clippings!

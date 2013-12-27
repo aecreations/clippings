@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<RDF:RDF xmlns:NS1="http://clippings.mozdev.org/ns/rdf#"
+         xmlns:NC="http://home.netscape.com/NC-rdf#"
+         xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <RDF:Seq RDF:about="http://clippings.mozdev.org/rdf/user-clippings-v2">
+    <RDF:li RDF:resource="rdf:#$Q2xKt"/>
+    <RDF:li RDF:resource="rdf:#$R2xKt"/>
+    <RDF:li RDF:resource="rdf:#$V2xKt"/>
+  </RDF:Seq>
+  <NS1:clipping RDF:about="rdf:#$V2xKt"
+                   NS1:name="Packaged Clipping 2"
+                   NS1:text="This is the 2nd clipping in the root folder of the packaged data source.  The shortcut key of this clipping is &quot;E&quot;."
+                   NS1:key="E" />
+  <NS1:clipping RDF:about="rdf:#$Q2xKt"
+                   NS1:name="Packaged Clipping 1"
+                   NS1:text="This clipping is from the data source that is packaged with the XPI archive.  This clipping has no shortcut key." />
+  <RDF:Seq RDF:about="rdf:#$T2xKt">
+  </RDF:Seq>
+  <NS1:folder RDF:about="rdf:#$T2xKt"
+                   NS1:name="Packaged Folder AA (empty)"
+                   NS1:hassubfolders="false" />
+  <NS1:clipping RDF:about="rdf:#$S2xKt"
+                   NS1:name="Packaged Clipping A1"
+                   NS1:text="This is another clipping is from the data source that is packaged with the XPI archive.  This clipping has a shortcut key; it is &quot;K&quot;."
+                   NS1:key="K" />
+  <RDF:Seq RDF:about="rdf:#$R2xKt">
+    <RDF:li RDF:resource="rdf:#$S2xKt"/>
+    <RDF:li RDF:resource="rdf:#$T2xKt"/>
+    <RDF:li RDF:resource="rdf:#$U2xKt"/>
+  </RDF:Seq>
+  <NS1:folder RDF:about="rdf:#$R2xKt"
+                   NS1:name="Packaged Folder A"
+                   NS1:hassubfolders="true" />
+  <NS1:clipping RDF:about="rdf:#$U2xKt"
+                   NS1:name="Packaged Clipping A2"
+                   NS1:text="Another clipping, for testing purposes." />
+</RDF:RDF>

@@ -1,0 +1,51 @@
+STATUS OF CLIPPINGS 1.0
+***********************
+
+- [DEFERRED] Get rid of selection hack/kludge when adding the contents 
+  of an HTML rich edit box as a new entry, via "New" command (bug 12408)
+- [DONE] Improve repositioning previously deleted entry back into original
+  position when undoing its deletion.  Make this repositioning 
+  happen instantly.  Currently, the previously deleted entry reappears 
+  at the bottom of the Clippings Manager list, then gets moved back.
+- [DONE] Tidy up entry name in Clippings Manager when pasting as new
+  if the entry name contains newlines or garbage chars at start of string
+  (add a new string function - String.trim() - like Java's String.trim())
+- [WONTFIX] Need to decide on status of "Undo Undo" - should it be 
+  exposed as a UI in Clippings Manager, with full multi-level redo capability?
+- [DONE] Remove debugging crap
+- [DONE] Toolbar icons in Clippings Manager that change colour when hovered
+- [DONE] Localization
+
+
+TO-DO FOR CLIPPINGS 1.1
+***********************
+
+- [DONE] Clippings Manager display not updated when it is open while adding
+  new entries via Clippings submenu commands (New / New From Selection).
+  This is most obvious during first-time use; the "No entries..." 
+  message and the "0 item(s)" message on status bar appear remain when 
+  new entries are added (bug 12547)
+- [DONE] Uncaught exception after last entry deleted (bug 11723)
+- [DEFERRED] Unsightly "jolt" when list item deleted (bug 11905)
+
+
+OTHER IDEAS FOR POST-1.0
+************************
+
+- Multi-select in Clippings Manager
+- Button or shortcut key to delete all entries
+- Be able to add images to Clippings
+- Printing?
+- Password protection
+- Export Clippings data
+- Folders and subfolders (like browser bookmarks)
+- Alternative Clippings UI - browser sidebar
+- Web-based Clippings: share Clippings with other Web users
+- Embed placeholders into entry text; when inserting entry, prompt
+  for text to substitute into placeholders
+
+- Rich Text:
+   - When inserting rich edit box entries, insert with tags or insert
+     as plain text
+   - And when pasting rich text entries, paste with tags or paste as
+     plain text only
