@@ -1,0 +1,286 @@
+/* ***** BEGIN LICENSE BLOCK *****
+ * Version: MPL 1.1
+ *
+ * The contents of this file are subject to the Mozilla Public License Version
+ * 1.1 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+ * for the specific language governing rights and limitations under the
+ * License.
+ *
+ * The Original Code is Clippings.
+ *
+ * The Initial Developer of the Original Code is 
+ * Alex Eng <ateng@users.sourceforge.net>.
+ * Portions created by the Initial Developer are Copyright (C) 2005-2013
+ * the Initial Developer. All Rights Reserved.
+ *
+ * Contributor(s):
+ *
+ * ***** END LICENSE BLOCK ***** */
+
+@import url("chrome://global/skin/global.css");
+
+
+window {
+  min-width:  48em;
+  min-height: 26em;
+}
+
+hbox#content {
+  border-top: 1px solid threedhighlight;
+}
+
+
+#clippings-list {
+  margin-right: 0px;
+}
+
+treechildren::-moz-tree-image {
+  padding-right: 3px;
+}
+
+treechildren::-moz-tree-image(leaf) {
+  list-style-image: url("chrome://clippings/skin/images/clippings-icon.png");
+}
+
+/* Next two items deal with the special "null" placeholders for empty folders */
+treechildren::-moz-tree-image(dummy) {
+  list-style-image: none;
+}
+
+treechildren::-moz-tree-cell-text(dummy) {
+  color: graytext;
+}
+
+treechildren::-moz-tree-image(container, open) {
+  list-style-image: url("chrome://clippings/skin/images/folder-open.png");
+}
+
+treechildren::-moz-tree-image(container, closed) {
+  list-style-image: url("chrome://clippings/skin/images/folder.png");
+}
+
+
+#no-clippings-message {
+  text-align:  center;
+  line-height: 150%;
+}
+
+
+menu > hbox.menu-iconic-left, menuitem > hbox.menu-iconic-left {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+menu.clippings-folder, menuitem.clippings-folder {
+  list-style-image: url("chrome://clippings/skin/images/folder.png");
+}
+
+menu.clippings-folder[open="true"], menuitem.clippings-folder[open="true"] {
+  list-style-image: url("chrome://clippings/skin/images/folder-open.png");
+}
+
+menuitem.clippings-root {
+  list-style-image: url("chrome://clippings/skin/images/clippings-root.png");  
+}
+
+menuitem.clippings-root > hbox.menu-iconic-left {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+spacer.toolbar-separator {
+  width: 40px;
+}
+
+toolbarbutton {
+  list-style-image: url("chrome://clippings/skin/images/Toolbar.png");
+  -moz-box-orient: vertical;
+  min-width: 52px;
+}
+
+/* Workaround to unwanted margin on right of toolbarbutton image on Firefox
+ * default theme. */
+toolbarbutton .toolbarbutton-icon {
+  -moz-margin-end: 0px;
+}
+
+#new-clipping {
+  -moz-image-region: rect(0px, 16px, 16px, 0px);
+  min-width: 74px;
+}
+
+#new-clipping:hover {
+  -moz-image-region: rect(16px, 16px, 32px, 0px);
+}
+
+#new-clipping:active {
+  -moz-image-region: rect(32px, 16px, 48px, 0px);
+}
+
+#delete-clipping {
+  -moz-image-region: rect(0px, 32px, 16px, 16px);
+}
+
+#delete-clipping:hover {
+  -moz-image-region: rect(16px, 32px, 32px, 16px);
+}
+
+#delete-clipping:active {
+  -moz-image-region: rect(32px, 32px, 48px, 16px);
+}
+
+#undo {
+  -moz-image-region: rect(0px, 48px, 16px, 32px);
+}
+
+#undo:hover {
+  -moz-image-region: rect(16px, 48px, 32px, 32px);
+}
+
+#undo:active {
+  -moz-image-region: rect(32px, 48px, 48px, 32px);
+}
+
+#paste-clipping-as-new {
+  -moz-image-region: rect(0px, 64px, 16px, 48px);
+}
+
+#paste-clipping-as-new:hover {
+  -moz-image-region: rect(16px, 64px, 32px, 48px);
+}
+
+#paste-clipping-as-new:active {
+  -moz-image-region: rect(32px, 64px, 48px, 48px);
+}
+
+#clippings-options {
+  -moz-image-region: rect(0px, 88px, 16px, 64px);
+}
+
+#clippings-options:hover {
+  -moz-image-region: rect(16px, 88px, 32px, 64px);
+}
+
+#clippings-options:active {
+  -moz-image-region: rect(32px, 88px, 48px, 64px);
+}
+
+#clippings-options .toolbarbutton-menu-dropmarker {
+  display: none;
+}
+
+#new-folder {
+  -moz-image-region: rect(0px, 104px, 16px, 88px);
+  min-width: 70px;
+}
+
+#new-folder:hover {
+  -moz-image-region: rect(16px, 104px, 32px, 88px);
+}
+
+#new-folder:active {
+  -moz-image-region: rect(32px, 104px, 48px, 88px);
+}
+
+#toolbar-move {
+  -moz-image-region: rect(0px, 128px, 16px, 104px);
+}
+
+#toolbar-move:hover {
+  -moz-image-region: rect(16px, 128px, 32px, 104px);
+}
+
+#toolbar-move:active {
+  -moz-image-region: rect(32px, 128px, 48px, 104px);
+}
+
+#toolbar-move .toolbarbutton-menu-dropmarker {
+  display: none;
+}
+
+/* Workaround to bug 22005 caused by Console^2 extension */
+#clipping-name > .textbox-input-box > .textbox-search-icons {
+  display: none;
+}
+
+#find {
+  -moz-image-region: rect(0px, 194px, 16px, 176px);
+}
+
+#find:hover {
+  -moz-image-region: rect(16px, 194px, 32px, 176px);
+}
+
+#find:active {
+  -moz-image-region: rect(32px, 194px, 48px, 176px);
+}
+
+#find-next {
+  -moz-image-region: rect(0px, 160px, 16px, 144px);
+}
+
+#find-next:hover {
+  -moz-image-region: rect(16px, 160px, 32px, 144px);
+}
+
+#find-next:active {
+  -moz-image-region: rect(32px, 160px, 48px, 144px);
+}
+
+#find-prev {
+  -moz-image-region: rect(0px, 176px, 16px, 160px);
+}
+
+#find-prev:hover {
+  -moz-image-region: rect(16px, 176px, 32px, 160px);
+}
+
+#find-prev:active {
+  -moz-image-region: rect(32px, 176px, 48px, 160px);
+}
+
+#find-filter-menu {
+  min-width: 28px;
+  margin-left: 0px;
+}
+
+#find-filter-menu.find-filter-clippings {
+  -moz-image-region: rect(0px, 208px, 16px, 192px);
+}
+
+#find-filter-menu.find-filter-clippings:hover {
+  -moz-image-region: rect(16px, 208px, 32px, 192px);
+}
+
+#find-filter-menu.find-filter-clippings:active {
+  -moz-image-region: rect(32px, 208px, 48px, 192px);
+}
+
+#find-filter-menu.find-filter-clippings-and-fldrs {
+  -moz-image-region: rect(0px, 224px, 16px, 208px);
+}
+
+#find-filter-menu.find-filter-clippings-and-fldrs:hover {
+  -moz-image-region: rect(16px, 224px, 32px, 208px);
+}
+
+#find-filter-menu.find-filter-clippings-and-fldrs:active {
+  -moz-image-region: rect(32px, 224px, 48px, 208px);
+}
+
+/* Find bar textbox */
+#find-clipping {
+  margin-left: 0px;
+}
+
+#ae-clippings-clipboard-alert, #import-empty-alert {
+  padding: 6px;
+}
+
+
+

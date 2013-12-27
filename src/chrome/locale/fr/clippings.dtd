@@ -1,0 +1,187 @@
+<!ENTITY clippings.appName "Clippings">
+<!ENTITY clippings.menuLabel "Clippings">
+<!ENTITY new.menuLabel "Nouveau">
+<!ENTITY new.accesskey "N">
+<!ENTITY newFromSelect.menuLabel "Nouveau à partir de la sélection">
+<!ENTITY newFromSelect.accesskey "N">
+<!ENTITY newFromClipboard.menuLabel "Nouveau à partir du presse-papiers">
+<!ENTITY newFromClipboard.accesskey "N">
+<!ENTITY openClippingsMgr.menuLabel "Organiser les clippings">
+<!ENTITY openClippingsMgr.accesskey "O">
+<!ENTITY showPasteOpts.label "Afficher les options de citation lors du collage">
+<!ENTITY showPasteOpts.accesskey "f">
+<!ENTITY statusbar.tooltip "Déposer la sélection ici pour créer un nouvel élément Clipping ou clic-droit pour les options">
+<!ENTITY resetAutoIncrVars.label "Annuler l'auto-incrémentation des substituts">
+<!ENTITY empty.label "(Vide)">
+<!ENTITY prefGeneral.label "Général">
+<!ENTITY prefDataSource.label "Base de données">
+<!ENTITY prefClippingsMgr.label "Gestionnaire Clippings">
+<!ENTITY pasteOptions.caption "Options de collage">
+<!ENTITY useClipboard.label "Coller le clipping en utilisant le presse-papiers">
+<!ENTITY useClipboard.accesskey "C">
+<!ENTITY htmlPasteOptions.label "Lors du collage d'un clipping au format HTML dans une boîte d'édition HTML :">
+<!ENTITY htmlPasteOptions.accesskey "f">
+<!ENTITY askMe.label "Me demander ce qu'il faut faire">
+<!ENTITY autoLineBreak.label "Revenir automatiquement à la ligne à moins que des balises &lt;p&gt; et &lt;brd&gt; existent">
+<!ENTITY autoLineBreak.accesskey "R">
+<!ENTITY htmlPaste.description "Un clipping au format HTML sera toujours collé en texte brut dans le cas d'une boîte affichant du texte sans formatage ou si le clipping contient des balises interdites telles que &lt;script&gt;, &lt;applet&gt;, &lt;object&gt;, &lt;iframe&gt;, etc.">
+<!ENTITY checkSpelling.label "Vérifier l'orthographe">
+<!ENTITY checkSpelling.accesskey "V">
+<!ENTITY tabModalPrompt.label "Ne pas bloquer la fenêtre du navigateur lors de la demande d'un texte de substitution">
+<!ENTITY tabModalPrompt.accesskey "N">
+<!ENTITY beepOnErrors.label "Bip lors d'une erreur">
+<!ENTITY beepOnErrors.accesskey "e">
+<!ENTITY dataSourceSettings.title "Paramètres de la base de données">
+<!ENTITY dataSrcLocation.caption "Emplacement de la base de données">
+<!ENTITY otherLocation.label "Autre emplacement :">
+<!ENTITY otherLocation.accesskey "A">
+<!ENTITY fileBrowse.label "Parcourir…">
+<!ENTITY fileBrowse.accesskey "P">
+<!ENTITY backupFiles.caption "Sauvegarder les fichiers">
+<!ENTITY maxFiles.label "Nombre maximum de fichiers à conserver :">
+<!ENTITY maxFiles.accesskey "m">
+<!ENTITY showStatusBar.label "Afficher la barre des tâches">
+<!ENTITY showStatusBar.accesskey "b">
+<!ENTITY clippingsMgrKeys.caption "Raccourcis-clavier du gestionnaire Clippings">
+<!ENTITY key.del "SUPPR">
+<!ENTITY key.esc "ÉCHAP">
+<!ENTITY key.ctrlF "CTRL+F">
+<!ENTITY key.ctrlW "CTRL+W">
+<!ENTITY key.ctrlZ "CTRL+Z">
+<!ENTITY key.f1 "F1">
+<!ENTITY key.f2 "F2">
+<!ENTITY key.macDelete "⌦">
+<!ENTITY key.macEsc "esc">
+<!ENTITY key.cmdF "⌘F">
+<!ENTITY key.cmdW "⌘W">
+<!ENTITY key.cmdZ "⌘Z">
+<!ENTITY deleteClippngOrFldr "Supprimer le clipping ou le dossier sélectionné">
+<!ENTITY clearFindBar "Effacer la barre de recherche">
+<!ENTITY toggleFindBar "Afficher/masquer la barre de recherche">
+<!ENTITY closeClipMgr "Fermer le gestionnaire de Clippings">
+<!ENTITY undoEdit "Annuler les modifications">
+<!ENTITY showClipMgrIntro "Afficher l'intro du gestionnaire Clippings">
+<!ENTITY undoUndo "Annuler l'annulation">
+<!ENTITY clippingsManager.title "Gestionnaire Clippings">
+<!ENTITY insertClipping.label "Insérer le clipping">
+<!ENTITY insertClipping.accesskey "I">
+<!ENTITY move.label "Déplacer">
+<!ENTITY move.accesskey "D">
+<!ENTITY moveUp.label "Monter">
+<!ENTITY moveUp.accesskey "M">
+<!ENTITY moveDown.label "Descendre">
+<!ENTITY moveDown.accesskey "e">
+<!ENTITY moveTo.label "Déplacer vers">
+<!ENTITY moveTo.accesskey "p">
+<!ENTITY copyTo.label "Copier vers">
+<!ENTITY copyTo.accesskey "C">
+<!ENTITY moveHere.label "Déplacer ici">
+<!ENTITY copyHere.label "Copier ici">
+<!ENTITY clippingsRoot.label "Clippings">
+<!ENTITY newClipping.label "Nouveau clipping">
+<!ENTITY newClipping.accesskey "N">
+<!ENTITY newFolder.label "Nouveau dossier">
+<!ENTITY newFolder.accesskey "v">
+<!ENTITY deleteClipping.label "Supprimer">
+<!ENTITY deleteClipping.accesskey "S">
+<!ENTITY undo.label "Annuler">
+<!ENTITY undo.accesskey "A">
+<!ENTITY pasteNew.label "Coller le nouveau">
+<!ENTITY pasteNew.accesskey "l">
+<!ENTITY description.label "Nom descriptif :">
+<!ENTITY description.accesskey "c">
+<!ENTITY text.label "Texte :">
+<!ENTITY text.accesskey "T">
+<!ENTITY import.label "Importer…">
+<!ENTITY import.accesskey "I">
+<!ENTITY export.label "Exporter…">
+<!ENTITY export.accesskey "E">
+<!ENTITY tools.label "Outils">
+<!ENTITY tools.accesskey "O">
+<!ENTITY find.label "Rechercher">
+<!ENTITY find.accesskey "R">
+<!ENTITY backup.label "Sauvegarder…">
+<!ENTITY backup.accesskey "S">
+<!ENTITY restore.label "Rétablir">
+<!ENTITY restore.accesskey "t">
+<!ENTITY chooseFile.label "Choisir un fichier…">
+<!ENTITY chooseFile.accesskey "C">
+<!ENTITY noClippings.label "Aucun élément à afficher.">
+<!ENTITY reload.label "Actualiser">
+<!ENTITY reload.accesskey "R">
+<!ENTITY shortcutkey.label "Raccourci clavier :">
+<!ENTITY shortcutkey.accesskey "o">
+<!ENTITY migrate.label "Clippings communs…">
+<!ENTITY migrate.accesskey "m">
+<!ENTITY dataFileOptions.label "Configuration de la base de données…">
+<!ENTITY dataFileOptions.accesskey "g">
+<!ENTITY shortcutKeyList.label "Liste des raccourcis-clavier">
+<!ENTITY findBar.label "Rechercher :">
+<!ENTITY findPrev.label "Précédent">
+<!ENTITY findPrev.accesskey "P">
+<!ENTITY findNext.label "Suivant">
+<!ENTITY findNext.accesskey "S">
+<!ENTITY matchCase.label "Sensible à la casse">
+<!ENTITY matchCase.accesskey "a">
+<!ENTITY findClippings.label "Clippings">
+<!ENTITY findClippingsAndFldrs.label "Clippings et dossiers">
+<!ENTITY closeCmd.key "W">
+<!ENTITY forceSaveCmd.key "S">
+<!ENTITY reload.key "R">
+<!ENTITY toggleFindBar.key "R">
+<!ENTITY export.title "Exporter les clippings">
+<!ENTITY exportButton.label "Exporter">
+<!ENTITY exportButton.accesskey "E">
+<!ENTITY exportFormatList.label "Choisir un format pour exporter les clippings :">
+<!ENTITY exportFormatList.accesskey "h">
+<!ENTITY description.caption "Description">
+<!ENTITY fmtClippings.listitem "Fichier Clippings">
+<!ENTITY fmtClippings1x.listitem "Clippings série 1.x">
+<!ENTITY fmtHtmlDocument.listitem "Document HTML">
+<!ENTITY newClippingsEntry.title "Nouveau clipping">
+<!ENTITY newFolder.title "Nouveau dossier">
+<!ENTITY createIn.label "Créer dans :">
+<!ENTITY createIn.accesskey "a">
+<!ENTITY fileHere.label "Fichier ici">
+<!ENTITY chooseAsParent.label "choisir celui-ci comme parent">
+<!ENTITY folderName.label "Nom :">
+<!ENTITY folderName.accesskey "N">
+<!ENTITY createAsSubf.label "Créer comme sous-dossier de :">
+<!ENTITY createAsSubf.accesskey "C">
+<!ENTITY createAsUnquoted.label "Créer comme texte non cité">
+<!ENTITY createAsUnquoted.accesskey "s">
+<!ENTITY removeExtraLineBreaks.label "Supprimer les retours à la ligne superflus">
+<!ENTITY removeExtraLineBreaks.accesskey "R">
+<!ENTITY tabGeneral.label "Générales">
+<!ENTITY tabShortcutKey.label "Raccourci clavier">
+<!ENTITY none.label "(Aucun)">
+<!ENTITY pasteClippingAs.label "Coller le clipping comme">
+<!ENTITY pasteAsNormal.label "Texte normal">
+<!ENTITY pasteAsNormal.accesskey "n">
+<!ENTITY pasteAsQuoted.label "Citation">
+<!ENTITY pasteAsQuoted.accesskey "l">
+<!ENTITY rewrapLines.label "Adapter la longueur des lignes (recommandé)">
+<!ENTITY rewrapLines.accesskey "g">
+<!ENTITY htmlClipping "Le clipping sélectionné semble contenir des balises HTML.">
+<!ENTITY pasteAsFormatted.label "Coller comme texte formaté">
+<!ENTITY pasteAsFormatted.accesskey "f">
+<!ENTITY pasteAsPlain.label "Coller comme texte brut en conservant les balises HTML">
+<!ENTITY pasteAsPlain.accesskey "b">
+<!ENTITY pasteClipping.label "Coller le clipping">
+<!ENTITY clippingKey.title "Coller le clipping">
+<!ENTITY clippingKey.description "Appuyer sur le raccourci clavier du clipping que vous souhaitez coller.">
+<!ENTITY clippingKeyHelp.description "F1 = liste des raccourcis">
+<!ENTITY shortcutHelp.title "Touches de raccourcis Clippings">
+<!ENTITY shortcutCol.label "Raccourcis-clavier">
+<!ENTITY clippingCol.label "Nom du clipping">
+<!ENTITY save.label "Enregistrer">
+<!ENTITY save.accesskey "E">
+<!ENTITY print.label "Imprimer">
+<!ENTITY print.accesskey "I">
+<!ENTITY close.accesskey "F">
+<!ENTITY pasteClipping.title "Coller le clipping">
+<!ENTITY okButton.label "OK">
+<!ENTITY cancelButton.label "Annuler">
+<!ENTITY closeButton.label "Fermer">
+<!ENTITY closeButton.accesskey "F">
+<!ENTITY errorNoClipboardContent.desc "Le presse-papiers est vide ou ne contient aucune donnée textuelle.">

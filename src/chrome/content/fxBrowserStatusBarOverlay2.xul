@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://clippings/skin/hostapp.css" type="text/css"?> 
+
+<!DOCTYPE overlay SYSTEM "chrome://clippings/locale/clippings.dtd">
+
+<!-- ***** BEGIN LICENSE BLOCK *****
+   - Version: MPL 1.1
+   -
+   - The contents of this file are subject to the Mozilla Public License Version
+   - 1.1 (the "License"); you may not use this file except in compliance with
+   - the License. You may obtain a copy of the License at
+   - http://www.mozilla.org/MPL/
+   -
+   - Software distributed under the License is distributed on an "AS IS" basis,
+   - WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+   - for the specific language governing rights and limitations under the
+   - License.
+   -
+   - The Original Code is Clippings.
+   -
+   - The Initial Developer of the Original Code is
+   - Alex Eng <ateng@users.sourceforge.net>.
+   - Portions created by the Initial Developer are Copyright (C) 2005-2012
+   - the Initial Developer. All Rights Reserved.
+   -
+   - Contributor(s):
+   -
+   - ***** END LICENSE BLOCK ***** -->
+
+<overlay id="clippings-fx-browser-addon-bar-overlay"
+ xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <popupset id="mainPopupSet">
+    <!-- Context menu for Clippings toolbar button -->
+    <menupopup id="ae-clippings-popup"
+     onpopupshowing="window.extensions.aecreations.clippings.initToolbarBtnCxtMenu(event)">
+      <menuitem default="true" label="&openClippingsMgr.menuLabel;" 
+       accesskey="&openClippingsMgr.accesskey;" 
+       command="ae_clippings_manager" />
+      <menuitem id="ae-clippings-new-from-clipbd" 
+       label="&newFromClipboard.menuLabel;" 
+       accesskey="&newFromClipboard.accesskey;" 
+       command="ae_new_clipping_from_clpbd" />
+
+      <menu id="reset-auto-increment-vars" label="&resetAutoIncrVars.label;">
+        <menupopup id="reset-auto-increment-vars-menu-popup"></menupopup>
+      </menu>
+    </menupopup>
+  </popupset>
+
+  <toolbarpalette id="BrowserToolbarPalette">
+    <toolbarbutton id="ae-clippings-icon"
+     class="toolbarbutton-1 chromeclass-toolbar-additional" 
+     label="&clippings.appName;" tooltiptext="&statusbar.tooltip;"
+     context="ae-clippings-popup"
+     oncommand="window.extensions.aecreations.clippings.openClippingsManager()"
+     ondragenter="return false;  // Necessary to allow the drop operation"
+     ondragover="return false;   // on this element."
+     ondrop="window.extensions.aecreations.clippings.statusBarDrop(event)"/>
+  </toolbarpalette>
+
+</overlay>
+

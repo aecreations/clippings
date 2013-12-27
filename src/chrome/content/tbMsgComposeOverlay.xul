@@ -1,0 +1,165 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://clippings/skin/hostapp.css" type="text/css"?> 
+
+<!DOCTYPE overlay SYSTEM "chrome://clippings/locale/clippings.dtd">
+
+<!-- ***** BEGIN LICENSE BLOCK *****
+   - Version: MPL 1.1
+   -
+   - The contents of this file are subject to the Mozilla Public License Version
+   - 1.1 (the "License"); you may not use this file except in compliance with
+   - the License. You may obtain a copy of the License at
+   - http://www.mozilla.org/MPL/
+   -
+   - Software distributed under the License is distributed on an "AS IS" basis,
+   - WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+   - for the specific language governing rights and limitations under the
+   - License.
+   -
+   - The Original Code is Clippings.
+   -
+   - The Initial Developer of the Original Code is
+   - Alex Eng <ateng@users.sourceforge.net>.
+   - Portions created by the Initial Developer are Copyright (C) 2005-2012
+   - the Initial Developer. All Rights Reserved.
+   -
+   - Contributor(s):
+   -
+   - ***** END LICENSE BLOCK ***** -->
+
+<overlay id="clippings-tb-msg-compose-overlay"
+ xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+
+  <script type="application/javascript" src="chrome://clippings/content/tbMsgComposeOverlay.js"/>
+
+  <stringbundleset id="stringbundleset">
+    <stringbundle id="ae-clippings-strings" 
+     src="chrome://clippings/locale/clippings.properties"/>
+  </stringbundleset>
+
+  <commandset id="composeCommands">
+    <command id="ae_clippings_manager" 
+     oncommand="window.extensions.aecreations.clippings.openClippingsManager()"/>
+    <command id="ae_new_clipping_from_clpbd" 
+     oncommand="window.extensions.aecreations.clippings.newFromClipboard()"/>
+    <command id="ae_new_clipping_from_selection"
+     oncommand="window.extensions.aecreations.clippings.newFromSelection()"/>
+    <command id="ae_clippings_show_paste_options" 
+     oncommand="window.extensions.aecreations.clippings.toggleShowPasteOptions()"/>
+    <command id="ae_clippings_keyboard_insert" label="&insertClipping.label;"
+     oncommand="window.extensions.aecreations.clippings.keyboardInsertClipping(event)"/>
+  </commandset>
+
+  <keyset id="tasksKeys">
+    <key id="key_ae_clippings" key="v"
+     modifiers="alt control"
+     command="ae_clippings_keyboard_insert" />
+
+    <!-- For Mac OS X -->
+    <key id="key_ae_clippings_mac" key="v"
+     modifiers="alt meta" command="ae_clippings_keyboard_insert" />
+  </keyset>
+
+  <menupopup id="msgComposeContext">
+    <menu id="ae-clippings-menu-1" label="&clippings.menuLabel;"
+     datasources="rdf:null"
+     ref="http://clippings.mozdev.org/rdf/user-clippings-v2">
+
+      <menupopup id="ae-clippings-popup-1">
+        <menuitem id="ae-clippings-add" label="&new.menuLabel;" accesskey="&new.accesskey;" command="ae_new_clipping_from_selection"/>
+        <menuitem label="&openClippingsMgr.menuLabel;" accesskey="&openClippingsMgr.accesskey;" command="ae_clippings_manager"/>
+        <menuseparator/>
+      </menupopup>
+
+      <template id="ae-clippings-template">
+        <rule rdf:type="http://clippings.mozdev.org/ns/rdf#clipping">
+	  <menupopup>
+	    <menuitem class="menuitem-iconic ae-clippings-clipping" uri="rdf:*"
+	     label="rdf:http://clippings.mozdev.org/ns/rdf#name"
+	     clipName="rdf:http://clippings.mozdev.org/ns/rdf#name"
+	     clipText="rdf:http://clippings.mozdev.org/ns/rdf#text"
+	     oncommand="window.extensions.aecreations.clippings.insertClippingText(this.id,this.getAttribute('clipName'),this.getAttribute('clipText'))"/>
+	  </menupopup>
+	</rule>
+	<rule rdf:type="http://clippings.mozdev.org/ns/rdf#null">
+	  <menupopup>
+	    <menuitem label="&empty.label;" disabled="true"/>
+	  </menupopup>
+	</rule>
+	<rule iscontainer="true">
+	  <menupopup>
+  	    <menu class="menu-iconic ae-clippings-folder-menu" uri="rdf:*"
+	     label="rdf:http://clippings.mozdev.org/ns/rdf#name">
+	      <menupopup />
+	    </menu>
+	  </menupopup>
+	</rule>
+      </template>
+
+    </menu>
+  </menupopup>
+
+  <popupset>
+    <!-- Clippings submenu in the subject line context menu -->
+    <menupopup id="ae-clippings-subjectline-cxtmenu-popup">
+      <menu id="ae-clippings-menu-2"  label="&clippings.menuLabel;"
+       datasources="rdf:null"
+       ref="http://clippings.mozdev.org/rdf/user-clippings-v2"
+       template="ae-clippings-template">
+
+        <menupopup id="ae-clippings-popup-2">
+          <menuitem id="ae-clippings-add" label="&new.menuLabel;" accesskey="&new.accesskey;" command="ae_new_clipping_from_selection"/>
+          <menuitem label="&openClippingsMgr.menuLabel;" accesskey="&openClippingsMgr.accesskey;" command="ae_clippings_manager"/>
+          <menuseparator/>
+        </menupopup>
+      </menu>
+    </menupopup>
+
+    <!-- Dialog panel for alert when attempting to create new clipping from
+         clipboard, and clipboard doesn't contain any text. -->
+    <panel id="ae-clippings-clipboard-alert" orient="vertical">
+      <hbox align="center">
+	<image class="alert-icon" />
+        <description>&errorNoClipboardContent.desc;</description>
+      </hbox>
+      <hbox>
+	<spacer flex="1"/>
+        <button label="&okButton.label;" oncommand="this.parentNode.parentNode.hidePopup()"/>
+	<spacer flex="1"/>
+      </hbox>
+    </panel>
+
+    <!-- Thunderbird status bar menu -->
+    <menupopup id="ae-clippings-popup" 
+     onpopupshowing="window.extensions.aecreations.clippings.initToolbarBtnCxtMenu(event)">
+      <menuitem label="&openClippingsMgr.menuLabel;" 
+       accesskey="&openClippingsMgr.accesskey;"  default="true" 
+       command="ae_clippings_manager"/>
+      <menuitem id="ae-clippings-new-from-clipbd"
+       label="&newFromClipboard.menuLabel;" 
+       accesskey="&newFromClipboard.accesskey;" 
+       command="ae_new_clipping_from_clpbd" />
+      <menu id="reset-auto-increment-vars" label="&resetAutoIncrVars.label;">
+        <menupopup id="reset-auto-increment-vars-menu-popup"></menupopup>
+      </menu>
+      <menuseparator/>
+      <menuitem id="ae-clippings-show-paste-opts"
+       type="checkbox" checked="false" label="&showPasteOpts.label;"
+       accesskey="&showPasteOpts.accesskey;"
+       command="ae_clippings_show_paste_options" />
+    </menupopup>
+  </popupset>
+
+  <statusbar id="status-bar">
+    <statusbarpanel id="ae-clippings-icon" class="statusbarpanel-menu-iconic" 
+     tooltiptext="&statusbar.tooltip;"
+     context="ae-clippings-popup"
+     ondblclick="window.extensions.aecreations.clippings.openClippingsManager()"
+     ondragenter="return false;  // Necessary to allow the drop operation"
+     ondragover="return false;   // on this element."
+     ondrop="window.extensions.aecreations.clippings.statusBarDrop(event)"/>
+  </statusbar>
+
+</overlay>
+

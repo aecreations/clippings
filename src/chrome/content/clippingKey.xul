@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+
+<!DOCTYPE window SYSTEM "chrome://clippings/locale/clippings.dtd">
+
+<!-- ***** BEGIN LICENSE BLOCK *****
+   - Version: MPL 1.1
+   -
+   - The contents of this file are subject to the Mozilla Public License Version
+   - 1.1 (the "License"); you may not use this file except in compliance with
+   - the License. You may obtain a copy of the License at
+   - http://www.mozilla.org/MPL/
+   -
+   - Software distributed under the License is distributed on an "AS IS" basis,
+   - WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+   - for the specific language governing rights and limitations under the
+   - License.
+   -
+   - The Original Code is Clippings.
+   -
+   - The Initial Developer of the Original Code is
+   - Alex Eng <ateng@users.sourceforge.net>.
+   - Portions created by the Initial Developer are Copyright (C) 2005-2013
+   - the Initial Developer. All Rights Reserved.
+   -
+   - Contributor(s):
+   -
+   - ***** END LICENSE BLOCK ***** -->
+
+<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+ id="ae-clippings-shortcut-key" 
+ title="&clippingKey.title;" 
+ orient="vertical"
+ style="min-width:30em;min-height:9em;padding:9px"
+ onkeydown="window_keypress(event)"
+ onload="initWindow()" onunload="unloadWindow()">
+
+  <script type="application/javascript">
+  <![CDATA[
+
+    var gDialogArgs;
+
+    function initWindow() {
+      gDialogArgs = window.arguments[0];
+    }
+
+    function window_keypress(event) {
+       gDialogArgs.key = event.keyCode;
+       window.close();
+    }
+
+    function unloadWindow() {
+
+    }
+
+  ]]>
+  </script>
+
+  <hbox>
+    <image src="chrome://clippings/skin/images/keyboard-paste.png"/>
+    <description style="font-weight:normal;padding-top:8px;padding-left:4px">&clippingKey.description;</description>
+  </hbox>
+
+  <separator flex="1"/>
+  <hbox>
+    <description>&clippingKeyHelp.description;</description>
+    <spacer flex="1"/>
+    <button label="&cancelButton.label;" default="true" oncommand="window.close()"/>
+</hbox>
+</window>
+

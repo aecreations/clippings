@@ -1,0 +1,210 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://clippings/skin/new.css" type="text/css"?>
+
+<!DOCTYPE window SYSTEM "chrome://clippings/locale/clippings.dtd">
+
+<!-- ***** BEGIN LICENSE BLOCK *****
+   - Version: MPL 1.1
+   -
+   - The contents of this file are subject to the Mozilla Public License Version
+   - 1.1 (the "License"); you may not use this file except in compliance with
+   - the License. You may obtain a copy of the License at
+   - http://www.mozilla.org/MPL/
+   -
+   - Software distributed under the License is distributed on an "AS IS" basis,
+   - WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+   - for the specific language governing rights and limitations under the
+   - License.
+   -
+   - The Original Code is Clippings.
+   -
+   - The Initial Developer of the Original Code is
+   - Alex Eng <ateng@users.sourceforge.net>.
+   - Portions created by the Initial Developer are Copyright (C) 2005-2011
+   - the Initial Developer. All Rights Reserved.
+   -
+   - Contributor(s):
+   -
+   - ***** END LICENSE BLOCK ***** -->
+
+<dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+ id="ae-clippings-new" 
+ title="&newClippingsEntry.title;"
+ orient="vertical"
+ persist="screenX screenY"
+ buttons="accept,cancel"
+ onload="initDlg()" onfocus="checkForChangedFolders()"
+ ondialogaccept="return doOK()" ondialogcancel="return doCancel()">
+
+  <script type="application/javascript" src="chrome://clippings/content/new.js"/>
+
+  <stringbundle id="ae-clippings-strings" 
+   src="chrome://clippings/locale/clippings.properties"/>
+
+  <tabbox>
+    <tabs id="dlg-tabs">
+      <tab label="&tabGeneral.label;"/>
+      <tab label="&tabShortcutKey.label;"/>
+    </tabs>
+
+    <tabpanels id="dlg-tabpanels">
+      <tabpanel id="tab-general" orient="vertical">
+
+  <label value="&description.label;" accesskey="&description.accesskey;" control="clipping-name"/>
+  <textbox id="clipping-name" size="50" maxlength="64" />
+  <separator class="thin"/>
+  <label value="&text.label;" accesskey="&text.accesskey;" control="clipping-text"/>
+  <textbox id="clipping-text" multiline="true" rows="7" flex="1" />
+
+   <grid id="tb-create-options-grid">
+     <columns>
+       <column/>
+       <column flex="1"/>
+     </columns>
+
+     <rows>
+       <row align="center">
+        <checkbox id="create-as-unquoted" label="&createAsUnquoted.label;" accesskey="&createAsUnquoted.accesskey;" checked="false" />
+        <box flex="1"/>
+       </row>
+       <row align="center">
+        <checkbox id="remove-extra-linebreaks" label="&removeExtraLineBreaks.label;" accesskey="&removeExtraLineBreaks.accesskey;" checked="false"/>
+        <box flex="1"/>
+       </row>
+     </rows>
+   </grid>
+
+  <separator class="thin"/>
+
+  <label value="&createIn.label;" accesskey="&createIn.accesskey;"
+   control="folder-menu-button" />
+
+  <grid>
+    <columns>
+      <column flex="1"/>
+      <column/>
+    </columns>
+
+    <rows>
+      <row align="center">
+
+        <menulist id="folder-menu-button" class="clippings-root"
+         xmlns:clp="http://clippings.mozdev.org/ns/rdf#"
+         datasources="rdf:null"
+         ref="http://clippings.mozdev.org/rdf/user-clippings-v2"
+         label="&clippingsRoot.label;" crop="end" flex="1">
+
+          <menupopup id="folder-menu-popup"
+	   onpopupshowing="initMenuSeparator(this)">
+            <menuitem id="clippings-root"
+	     class="menuitem-iconic clippings-root"
+	     label="&clippingsRoot.label;"
+  	     oncommand="selectFolder(gClippingsSvc.kRootFolderURI)"/>
+          </menupopup>
+
+	  <template id="create-in-template">
+            <rule iscontainer="true" clp:hassubfolders="true">
+              <menupopup>
+	        <menu class="menu-iconic ae-clippings-folder" uri="rdf:*"
+	         label="rdf:http://clippings.mozdev.org/ns/rdf#name">
+	          <menupopup>
+  	            <menuitem 
+		     label="&fileHere.label;"
+		     oncommand="selectFolder(this.parentNode.parentNode.id)"/>
+	            <menuseparator/>
+  	          </menupopup>
+	        </menu>
+	      </menupopup>
+            </rule>
+            <rule iscontainer="true" clp:hassubfolders="false">
+              <menupopup>
+	        <menuitem class="menuitem-iconic ae-clippings-folder"
+		 uri="rdf:*" 
+		 label="rdf:http://clippings.mozdev.org/ns/rdf#name"
+ 	         oncommand="selectFolder(this.id)"/>
+  	      </menupopup>
+            </rule>
+          </template>
+        </menulist>
+
+	<button id="new-folder" tooltiptext="&newFolder.label;"
+	 oncommand="createFolder()"/>
+
+      </row>
+    </rows>
+  </grid>
+
+      </tabpanel>
+      <tabpanel id="tab-shortcut-key" orient="vertical">
+
+      <grid>
+        <columns>
+	  <column/>
+	  <column/>
+	</columns>
+
+	<rows>
+	  <row align="center">
+            <label value="&shortcutkey.label;" accesskey="&shortcutkey.accesskey;" control="clipping-key"/>
+
+	    <menulist id="clipping-key"
+	     oncommand="updateShortcutKeyAvailability()">
+	      <menupopup id="clipping-key-popup">
+                <menuitem label="&none.label;"/>
+	        <menuitem label="A"/>
+	        <menuitem label="B"/>
+	        <menuitem label="C"/>
+	        <menuitem label="D"/>
+	        <menuitem label="E"/>
+	        <menuitem label="F"/>
+	        <menuitem label="G"/>
+	        <menuitem label="H"/>
+	        <menuitem label="I"/>
+	        <menuitem label="J"/>
+	        <menuitem label="K"/>
+	        <menuitem label="L"/>
+	        <menuitem label="M"/>
+	        <menuitem label="N"/>
+	        <menuitem label="O"/>
+	        <menuitem label="P"/>
+	        <menuitem label="Q"/>
+	        <menuitem label="R"/>
+	        <menuitem label="S"/>
+	        <menuitem label="T"/>
+	        <menuitem label="U"/>
+	        <menuitem label="V"/>
+	        <menuitem label="W"/>
+	        <menuitem label="X"/>
+	        <menuitem label="Y"/>
+	        <menuitem label="Z"/>
+	        <menuitem label="1"/>
+	        <menuitem label="2"/>
+	        <menuitem label="3"/>
+	        <menuitem label="4"/>      
+	        <menuitem label="5"/>
+	        <menuitem label="6"/>      
+	        <menuitem label="7"/>      
+	        <menuitem label="8"/>
+	        <menuitem label="9"/>
+      	        <menuitem label="0"/>
+   	      </menupopup>
+	    </menulist>
+	  </row>
+	</rows>
+      </grid>
+
+	<separator class="thin"/>
+	<description id="key-conflict-notification">&#160;</description>
+
+	<separator class="groove"/>
+
+	<description id="shortcut-key-hint" />
+	
+      </tabpanel>
+    </tabpanels>
+  </tabbox>
+
+  <separator class="thin"/>
+
+</dialog>
+

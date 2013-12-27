@@ -1,0 +1,73 @@
+<!ENTITY clippings.appName "Clippings">
+<!ENTITY clippings.menuLabel "Clippings">
+<!ENTITY new.menuLabel "Novi">
+<!ENTITY new.accesskey "N">
+<!ENTITY newFromSelect.menuLabel "Novi iz odabranog">
+<!ENTITY newFromSelect.accesskey "N">
+<!ENTITY newFromClipboard.menuLabel "Novi iz međuspremnika">
+<!ENTITY newFromClipboard.accesskey "N">
+<!ENTITY openClippingsMgr.menuLabel "Organizirajte Clippings">
+<!ENTITY openClippingsMgr.accesskey "O">
+<!ENTITY showPasteOpts.accesskey "S">
+<!ENTITY statusbar.tooltip "Ovdje povucite odabrano da biste napravili novu Clippings stavku ili desni klik za opcije">
+<!ENTITY empty.label "(Empty)">
+<!ENTITY clippingsManager.title "Clippings Upravitelj">
+<!ENTITY insertClipping.accesskey "I">
+<!ENTITY move.label "Pomakni">
+<!ENTITY move.accesskey "P">
+<!ENTITY moveUp.label "Pomakni gore">
+<!ENTITY moveUp.accesskey "g">
+<!ENTITY moveDown.label "Pomakni dolje">
+<!ENTITY moveDown.accesskey "d">
+<!ENTITY moveTo.label "Pomakni u">
+<!ENTITY moveTo.accesskey "i">
+<!ENTITY copyTo.label "Kopiraj u">
+<!ENTITY copyTo.accesskey "K">
+<!ENTITY moveHere.label "Pomakni ovdje">
+<!ENTITY copyHere.label "Kopiraj ovdje">
+<!ENTITY clippingsRoot.label "Clippings">
+<!ENTITY newClipping.label "Novi isječak">
+<!ENTITY newClipping.accesskey "N">
+<!ENTITY newFolder.label "Nova mapa">
+<!ENTITY newFolder.accesskey "m">
+<!ENTITY deleteClipping.label "Obriši">
+<!ENTITY deleteClipping.accesskey "b">
+<!ENTITY undo.label "Poništi">
+<!ENTITY undo.accesskey "š">
+<!ENTITY pasteNew.label "Zalijepi novi">
+<!ENTITY pasteNew.accesskey "Z">
+<!ENTITY description.label "Opis:">
+<!ENTITY description.accesskey "s">
+<!ENTITY text.label "Tekst:">
+<!ENTITY text.accesskey "T">
+<!ENTITY import.label "Uvezi...">
+<!ENTITY import.accesskey "U">
+<!ENTITY export.label "Izvezi...">
+<!ENTITY export.accesskey "I">
+<!ENTITY noClippings.label "Nema unosa za prikaz.">
+<!ENTITY reload.accesskey "R">
+<!ENTITY shortcutkey.accesskey "K">
+<!ENTITY export.title "Clippings Izvoz">
+<!ENTITY exportButton.label "Izvezi">
+<!ENTITY exportButton.accesskey "I">
+<!ENTITY exportFormatList.label "Odaberite oblik za Clippings izvoz u:">
+<!ENTITY exportFormatList.accesskey "S">
+<!ENTITY description.caption "Opis">
+<!ENTITY fmtClippings.listitem "Clippings datoteka">
+<!ENTITY fmtClippings1x.listitem "Clippings 1.x serija">
+<!ENTITY fmtHtmlDocument.listitem "HTML dokument">
+<!ENTITY newClippingsEntry.title "Novi isječak">
+<!ENTITY newFolder.title "Nova mapa">
+<!ENTITY createIn.label "Napravi u:">
+<!ENTITY createIn.accesskey "u">
+<!ENTITY fileHere.label "Spremi ovdje">
+<!ENTITY chooseAsParent.label "odaberite ovo za izvor">
+<!ENTITY folderName.label "Ime:">
+<!ENTITY folderName.accesskey "I">
+<!ENTITY createAsSubf.label "Napravi kao podmapu od:">
+<!ENTITY createAsSubf.accesskey "N">
+<!ENTITY createAsUnquoted.accesskey "u">
+<!ENTITY removeExtraLineBreaks.accesskey "R">
+<!ENTITY pasteAsNormal.accesskey "N">
+<!ENTITY pasteAsQuoted.accesskey "Q">
+<!ENTITY rewrapLines.accesskey "w">

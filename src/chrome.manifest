@@ -1,0 +1,39 @@
+# Firefox
+overlay	chrome://browser/content/browser.xul	chrome://clippings/content/fxBrowserOverlay.xul
+overlay chrome://browser/content/browser.xul	chrome://clippings/content/fxBrowserStatusBarOverlay2.xul
+
+skin	clippings	classic/1.0	chrome/skin/
+
+# Platform-specific styling
+skin	clippings-laf	classic	chrome/skin/all/
+skin	clippings-laf	classic	chrome/skin/mac/	os=Darwin
+
+style	chrome://global/content/customizeToolbar.xul	chrome://clippings/skin/hostapp.css
+
+# Thunderbird
+overlay	chrome://messenger/content/messenger.xul	chrome://clippings/content/tbMessengerOverlay.xul
+overlay	chrome://messenger/content/messengercompose/messengercompose.xul	chrome://clippings/content/tbMsgComposeOverlay.xul
+overlay	chrome://messenger/content/messageWindow.xul	chrome://clippings/content/tbMessengerOverlay.xul
+
+resource	clippings	./
+content	clippings	chrome/content/
+
+skin	clippings	classic/1.0	chrome/skin/
+
+locale	clippings	en-US	chrome/locale/en-US/
+
+interfaces	components/nsIClippingsService.xpt
+interfaces	components/nsIClippingsExtension.xpt
+interfaces	components/nsIDictionary.xpt
+
+# nsIClippingsService
+component	{8ebf6eef-c354-4211-89d0-603b45b76393}	components/nsClippingsService.js
+contract	clippings@mozdev.org/clippings;1	{8ebf6eef-c354-4211-89d0-603b45b76393}
+
+# nsIClippingsExtension
+component	{f74c71c7-7da2-4029-9786-1fa1dd99f842}	components/nsClippingsExtension.js
+contract	clippings@mozdev.org/clippings-extension;1	{f74c71c7-7da2-4029-9786-1fa1dd99f842}
+
+# nsIDictionary
+component	{1dd0cb45-aea3-4a52-8b29-01429a542863}	components/nsDictionary.js
+contract	clippings@mozdev.org/dictionary;1	{1dd0cb45-aea3-4a52-8b29-01429a542863}

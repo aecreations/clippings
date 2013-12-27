@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+  <head>
+    <title>String method trim()</title>
+
+    <style type="text/css">
+    <!--
+
+      h1 {
+        margin-top: 0px;
+	margin-bottom: 0px;
+	background-color: #ffffff;
+      }
+
+      #lang {
+        font-size: small;
+	font-weight: bold;
+	font-style: normal;
+      }
+
+      pre, code, #example {
+        font-family: monospace;
+	letter-spacing: -0.6pt;       
+      }
+
+      code {
+        font-size: medium;
+      }
+      pre, #example {
+        border: 1px solid #b0a8d0;
+        font-size: small;
+	padding: 4px;
+	background-color: #f0ecff;
+	white-space: pre;
+      }
+
+      #textarea {
+        display: block;
+	margin-top:    16px;
+	margin-bottom: 32px;
+      }
+
+    -->
+    </style>
+
+    <script language="javascript" src="strfmt.js"></script>
+    <script language="javascript" src="strtrm.js"></script>
+    <script language="javascript">
+    <!--
+
+      function run()
+      {
+        var code = document.getElementById("example").childNodes[0].data;
+	try {
+          eval(code);
+	} catch (e) { alert(e) }
+	document.getElementById("textarea").value += "\n--- Test Complete ---";
+      }
+
+      function reset() 
+      {
+        document.getElementById("textarea").value = "";
+      }
+
+    // -->
+    </script>
+  </head>
+
+  <body>
+  
+  <div id="lang">JavaScript</div>
+  <hr>
+  <h1>String method trim()</h1>
+  <hr>
+
+  <p>Strips leading and trailing whitespace from the string, and returns it.</p>
+  <h2>Synopsis</h2>
+  
+  <pre> 
+    <b>str.trim()</b>;
+  </pre>
+
+  <h3>Returns</h3>
+  <p>A new string, with the whitespace characters at the beginning and end of
+  the string omitted.</p>
+
+  <hr>
+  <h2>Description</h2>
+
+  <p>The <code>trim</code> method works exactly like the <code>trim</code>
+  method of the <code>java.lang.String</code> class in Java.  For more information, see <a href="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/String.html#trim()">http://java.sun.com/j2se/1.5.0/docs/api/java/lang/String.html#trim()</a>.</p>
+
+  <hr>
+  <h2>Sample</h2>
+
+  <div id="example">
+  var s0 = "";
+  var s1 = "Hello World!";
+  var s2 = "\n\n\n\rHello World!";
+  var s3 = "Hello World!\n\r\n";
+  var s4 = " Hello World! ";
+  var s5 = "\r \r \rHello World!  \r \t\n";
+  var s6 = "\b\t\v\n\r ";
+  var s7 = "\tHello \t World!\t".trim();
+
+  s0 = s0.trim();
+  s1 = s1.trim();
+  s2 = s2.trim();
+  s3 = s3.trim();
+  s4 = s4.trim();
+  s5 = s5.trim();
+  s6 = s6.trim();
+
+  String.format = String.ae_fmt;
+  var str = String.format("s0=%S\ns1=%S\ns2=%S\ns3=%S\ns4=%S\ns5=%S\ns6=%S\ns7=%S\n",s0,s1,s2,s3,s4,s5,s6,s7);
+  document.getElementById("textarea").value = str;
+  </div>
+
+  <p>Click the button below to run the test.</p>  
+
+    <button onclick="run()">Run Test</button>
+    <button onclick="reset()">Reset</button>
+
+    <textarea id="textarea" rows="10" cols="60">
+
+    </textarea>
+
+  <hr>
+  Alex Eng, 
+  <script language="JavaScript">
+  <!--
+  
+    document.open();
+    document.write(new Date(document.lastModified).toUTCString());
+    document.close();
+
+  // -->
+  </script>
+
+  </body>
+</html>

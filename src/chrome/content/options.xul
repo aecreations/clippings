@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://clippings-laf/skin/options.css" type="text/css"?>
+
+<!DOCTYPE prefwindow SYSTEM "chrome://clippings/locale/clippings.dtd">
+
+<!-- ***** BEGIN LICENSE BLOCK *****
+   - Version: MPL 1.1
+   -
+   - The contents of this file are subject to the Mozilla Public License Version
+   - 1.1 (the "License"); you may not use this file except in compliance with
+   - the License. You may obtain a copy of the License at
+   - http://www.mozilla.org/MPL/
+   -
+   - Software distributed under the License is distributed on an "AS IS" basis,
+   - WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+   - for the specific language governing rights and limitations under the
+   - License.
+   -
+   - The Original Code is Clippings.
+   -
+   - The Initial Developer of the Original Code is
+   - Alex Eng <ateng@users.sourceforge.net>.
+   - Portions created by the Initial Developer are Copyright (C) 2005-2013
+   - the Initial Developer. All Rights Reserved.
+   -
+   - Contributor(s):
+   -
+   - ***** END LICENSE BLOCK ***** -->
+
+<prefwindow id="ae-clippings-preferences"
+ xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+ onunload="unloadDlg()" ondialogaccept="applyPrefChanges()">
+
+  <prefpane id="pane-general" label="&prefGeneral.label;"
+   image="chrome://clippings/skin/images/pref-general.png"
+   src="chrome://clippings/content/options/general.xul"/>
+
+  <prefpane id="pane-datasource" label="&prefDataSource.label;"
+   image="chrome://clippings/skin/images/pref-datasource.png"
+   src="chrome://clippings/content/options/datasource.xul"/>
+
+  <prefpane id="pane-clippings-mgr" label="&prefClippingsMgr.label;"
+   image="chrome://clippings/skin/images/pref-clippings-mgr.png"
+   src="chrome://clippings/content/options/clippingsMgr.xul"/>
+
+  <!-- Must put all other non-<prefpane> elements after the last <prefpane>,
+       due to Mozilla bug 296418 -->
+  <script type="application/javascript" src="chrome://clippings/content/options.js"/>
+
+  <stringbundle id="ae-clippings-strings" 
+   src="chrome://clippings/locale/clippings.properties"/>
+
+</prefwindow>

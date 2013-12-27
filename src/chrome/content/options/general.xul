@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE overlay SYSTEM "chrome://clippings/locale/clippings.dtd">
+
+<!-- ***** BEGIN LICENSE BLOCK *****
+   - Version: MPL 1.1
+   -
+   - The contents of this file are subject to the Mozilla Public License Version
+   - 1.1 (the "License"); you may not use this file except in compliance with
+   - the License. You may obtain a copy of the License at
+   - http://www.mozilla.org/MPL/
+   -
+   - Software distributed under the License is distributed on an "AS IS" basis,
+   - WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+   - for the specific language governing rights and limitations under the
+   - License.
+   -
+   - The Original Code is Clippings.
+   -
+   - The Initial Developer of the Original Code is
+   - Alex Eng <ateng@users.sourceforge.net>.
+   - Portions created by the Initial Developer are Copyright (C) 2005-2013
+   - the Initial Developer. All Rights Reserved.
+   -
+   - Contributor(s):
+   -
+   - ***** END LICENSE BLOCK ***** -->
+
+<overlay id="ae-clippings-prefpane-general" 
+ xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <prefpane id="pane-general" onpaneload="initPrefPaneGeneral()">
+
+    <preferences>
+      <preference id="use-clipboard-pref" type="bool" inverted="true"
+       name="extensions.aecreations.clippings.use_clipboard"/>
+      <preference id="html-paste-pref" type="int"
+       name="extensions.aecreations.clippings.html_paste"/>
+      <preference id="html-auto-line-break-pref" type="bool"
+       name="extensions.aecreations.clippings.html_auto_line_break"/>
+      <preference id="tab-modal-placeholder-prmt-pref" type="bool"
+       name="extensions.aecreations.clippings.tab_modal_placeholder_prompt"/>
+      <preference id="check-spelling-pref" type="bool"
+       name="extensions.aecreations.clippings.check_spelling"/>
+      <preference id="enable-shortcut-key-pref" type="bool"
+       name="extensions.aecreations.clippings.enable_keyboard_paste"/>
+      <preference id="beep-on-errors-pref" type="bool"
+       name="extensions.aecreations.clippings.beep_on_error"/>
+    </preferences>
+
+    <groupbox>
+      <caption label="&pasteOptions.caption;"/>
+
+      <checkbox id="use-clipboard" preference="use-clipboard-pref"
+       label="&useClipboard.label;" accesskey="&useClipboard.accesskey;"
+       oncommand="togglePasteOptionsCheckedState()"/>
+
+      <vbox id="paste-html-vbox" class="indent">
+        <label id="paste-html-formatted-clipping" value="&htmlPasteOptions.label;" accesskey="&htmlPasteOptions.accesskey;" control="html-paste-options"/>
+        <menulist id="html-paste-options" preference="html-paste-pref"> 
+          <menupopup>
+            <menuitem label="&askMe.label;" value="0"/>
+  	    <menuitem label="&pasteAsFormatted.label;" value="1"/>
+	    <menuitem label="&pasteAsPlain.label;" value="2"/>
+          </menupopup>
+        </menulist>
+
+        <checkbox id="html-auto-line-break" preference="html-auto-line-break-pref"
+         label="&autoLineBreak.label;" accesskey="&autoLineBreak.accesskey;"/>
+
+        <description style="word-wrap:break-word;width:32em">&htmlPaste.description;</description>
+
+      </vbox>
+      <separator class="thin"/>
+      <checkbox id="enable-shortcut-key" preference="enable-shortcut-key-pref"
+       oncommand="showChangedPrefMsg()"/>
+
+      <!-- Firefox only -->
+      <checkbox id="tab-modal-prmt" preference="tab-modal-placeholder-prmt-pref"
+       label="&tabModalPrompt.label;" accesskey="&tabModalPrompt.accesskey;"/>
+
+    </groupbox>
+    <separator class="thin"/>
+    <hbox flex="1">
+      <checkbox id="check-spelling" flex="1" preference="check-spelling-pref"
+       label="&checkSpelling.label;" accesskey="&checkSpelling.accesskey;"/>
+      <checkbox id="beep-on-errors" flex="1" preference="beep-on-errors-pref"
+       label="&beepOnErrors.label;" accesskey="&beepOnErrors.accesskey;"/>
+    </hbox>
+  </prefpane>
+
+  <!-- Must put all other non-<prefpane> elements after the <prefpane>,
+       due to Mozilla bug 296418 -->
+  <script type="application/javascript" src="chrome://clippings/content/options/general.js"/>
+
+</overlay>

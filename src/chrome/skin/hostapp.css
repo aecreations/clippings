@@ -1,0 +1,80 @@
+/* ***** BEGIN LICENSE BLOCK *****
+ * Version: MPL 1.1
+ *
+ * The contents of this file are subject to the Mozilla Public License Version
+ * 1.1 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+ * for the specific language governing rights and limitations under the
+ * License.
+ *
+ * The Original Code is the Clippings extension for Mozilla Firefox.
+ *
+ * The Initial Developer of the Original Code is 
+ * Alex Eng <ateng@users.sourceforge.net>.
+ * Portions created by the Initial Developer are Copyright (C) 2005-2011
+ * the Initial Developer. All Rights Reserved.
+ *
+ * Contributor(s):
+ *
+ * ***** END LICENSE BLOCK ***** */
+
+
+/* 
+ * Integration with host application
+ */
+
+
+menuitem.ae-clippings-clipping {
+  list-style-image: url("chrome://clippings/skin/images/clippings-icon.png");
+}
+
+menuitem.ae-clippings-clipping > hbox.menu-iconic-left {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+menu.ae-clippings-folder-menu {
+  list-style-image: url("chrome://clippings/skin/images/folder.png");
+}
+
+menu.ae-clippings-folder-menu > hbox.menu-iconic-left {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+menu.ae-clippings-folder-menu[open="true"] {
+  list-style-image: url("chrome://clippings/skin/images/folder-open.png");
+}
+
+#ae-clippings-icon, #ae-clippings-popup-1, #ae-clippings-popup-2 {
+  list-style-image: url("chrome://clippings/skin/images/clippings.png");
+}
+
+#ae-clippings-icon:-moz-drag-over {
+  list-style-image: url("chrome://clippings/skin/images/clippings-hilite.png");
+}
+
+#ae-clippings-toolbarbutton:hover {
+  -moz-image-region: rect(0px, 60px, 24px, 30px);
+}
+
+toolbar[iconsize="small"] #ae-clippings-toolbarbutton {
+  list-style-image:  url("chrome://clippings/skin/images/hostappToolbar.png");
+  -moz-image-region: rect(24px, 22px, 40px, 0px);
+}
+
+toolbar[iconsize="small"] #ae-clippings-toolbarbutton:hover {
+  -moz-image-region: rect(24px, 44px, 40px, 22px);
+}
+
+#ae-clippings-toolbarbutton .toolbarbutton-menu-dropmarker {
+  display: none;
+}
+
+#ae-clippings-clipboard-alert {
+  padding: 4px;
+}

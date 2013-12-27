@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+
+<!DOCTYPE dialog SYSTEM "chrome://clippings/locale/clippings.dtd">
+
+<!-- ***** BEGIN LICENSE BLOCK *****
+   - Version: MPL 1.1
+   -
+   - The contents of this file are subject to the Mozilla Public License Version
+   - 1.1 (the "License"); you may not use this file except in compliance with
+   - the License. You may obtain a copy of the License at
+   - http://www.mozilla.org/MPL/
+   -
+   - Software distributed under the License is distributed on an "AS IS" basis,
+   - WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+   - for the specific language governing rights and limitations under the
+   - License.
+   -
+   - The Original Code is Clippings.
+   -
+   - The Initial Developer of the Original Code is
+   - Alex Eng <ateng@users.sourceforge.net>.
+   - Portions created by the Initial Developer are Copyright (C) 2013
+   - the Initial Developer. All Rights Reserved.
+   -
+   - Contributor(s):
+   -
+   - ***** END LICENSE BLOCK ***** -->
+
+<dialog id="ae-clippings-placeholder-prompt" 
+ title="&pasteClipping.title;"
+ orient="vertical"
+ xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+ buttons="accept,cancel"
+ onload="initDlg()" ondialogaccept="return doOK()"
+ ondialogcancel="return doCancel()">
+
+  <script type="application/javascript">
+  <![CDATA[
+
+    var gDlgArgs, gStrBundle;
+
+    
+    function $(aID) {
+      return document.getElementById(aID);
+    }
+
+    function initDlg() {
+      gDlgArgs = window.arguments[0].wrappedJSObject;
+      gStrBundle = $("ae-clippings-strings");
+      var promptText = $("prompt-text");
+      var strKey;
+
+      if (gDlgArgs.autoIncrementMode) {
+        strKey = "autoIncrPromptText";
+        $("placeholder-value").value = gDlgArgs.defaultValue;
+      }
+      else {
+        strKey = "substPromptText";
+      }
+      promptText.value = gStrBundle.getFormattedString(strKey, [gDlgArgs.varName]);
+    }
+
+
+    function doOK() {
+      gDlgArgs.userInput = $("placeholder-value").value;
+      return true;
+    }
+
+    function doCancel() {
+      gDlgArgs.userCancel = true;
+      return true;
+    }
+
+  ]]>
+  </script>
+
+  <stringbundle id="ae-clippings-strings" 
+   src="chrome://clippings/locale/clippings.properties"/>
+
+  <hbox>
+    <separator class="thin"/>
+    <vbox>
+      <image class="question-icon" style="margin-left:6px;margin-right:6px"/>
+      <spacer flex="1"/>
+    </vbox>
+    <vbox flex="1">
+      <separator class="thin"/>
+      <description id="prompt-text"></description>
+      <separator />
+      <textbox id="placeholder-value" size="64"/>
+      <separator class="thin"/>
+    </vbox>
+  </hbox>
+</dialog>

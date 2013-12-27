@@ -1,0 +1,108 @@
+<!ENTITY clippings.appName "Clippings">
+<!ENTITY clippings.menuLabel "Výstrižky">
+<!ENTITY new.menuLabel "Nový">
+<!ENTITY new.accesskey "N">
+<!ENTITY newFromSelect.menuLabel "Nový z výberu">
+<!ENTITY newFromSelect.accesskey "N">
+<!ENTITY newFromClipboard.menuLabel "Nový zo schránky">
+<!ENTITY newFromClipboard.accesskey "N">
+<!ENTITY openClippingsMgr.menuLabel "Organizátor výstrižkov">
+<!ENTITY openClippingsMgr.accesskey "O">
+<!ENTITY showPasteOpts.label "Zobraziť pri prilepovaní možnosti">
+<!ENTITY showPasteOpts.accesskey "S">
+<!ENTITY statusbar.tooltip "Novú položku Clippings vytvorte presunutím výberu sem alebo cez možnosti kliknutím pravým tlačidlom myši.">
+<!ENTITY empty.label "(prázdne)">
+<!ENTITY pasteOptions.caption "Možnosti prilepenia">
+<!ENTITY useClipboard.label "Vložiť výstrižok pomocou funkcií schránky Kopírovať a Prilepiť">
+<!ENTITY useClipboard.accesskey "m">
+<!ENTITY htmlPasteOptions.label "Pri vkladaní výstrižku vo formáte HTML do formátovacieho textového poľa:">
+<!ENTITY htmlPasteOptions.accesskey "v">
+<!ENTITY askMe.label "Opýtať sa, čo urobiť">
+<!ENTITY autoLineBreak.label "Automaticky zalamovať riadky, pokiaľ neexistujú značky &lt;p&gt; alebo &lt;br&gt;">
+<!ENTITY autoLineBreak.accesskey "u">
+<!ENTITY clippingsManager.title "Správca výstrižkov">
+<!ENTITY insertClipping.label "Vložiť výstrižok">
+<!ENTITY insertClipping.accesskey "l">
+<!ENTITY move.label "Presunúť">
+<!ENTITY move.accesskey "P">
+<!ENTITY moveUp.label "Nahor">
+<!ENTITY moveUp.accesskey "h">
+<!ENTITY moveDown.label "Nadol">
+<!ENTITY moveDown.accesskey "d">
+<!ENTITY moveTo.label "Presunúť do">
+<!ENTITY moveTo.accesskey "r">
+<!ENTITY copyTo.label "Kopírovať do">
+<!ENTITY copyTo.accesskey "K">
+<!ENTITY moveHere.label "Presunúť sem">
+<!ENTITY copyHere.label "Kopírovať sem">
+<!ENTITY clippingsRoot.label "Clippings">
+<!ENTITY newClipping.label "Nový výstrižok">
+<!ENTITY newClipping.accesskey "N">
+<!ENTITY newFolder.label "Nový priečinok">
+<!ENTITY newFolder.accesskey "e">
+<!ENTITY deleteClipping.label "Odstrániť">
+<!ENTITY deleteClipping.accesskey "O">
+<!ENTITY undo.label "Späť">
+<!ENTITY undo.accesskey "S">
+<!ENTITY pasteNew.label "Prilepiť nový">
+<!ENTITY pasteNew.accesskey "P">
+<!ENTITY description.label "Popis:">
+<!ENTITY description.accesskey "i">
+<!ENTITY text.label "Text:">
+<!ENTITY text.accesskey "T">
+<!ENTITY import.label "Import...">
+<!ENTITY import.accesskey "I">
+<!ENTITY export.label "Export...">
+<!ENTITY export.accesskey "E">
+<!ENTITY noClippings.label "Žiadne položky na zobrazenie.">
+<!ENTITY reload.label "Znova načítať">
+<!ENTITY reload.accesskey "Z">
+<!ENTITY shortcutkey.label "Klávesová skratka:">
+<!ENTITY shortcutkey.accesskey "K">
+<!ENTITY migrate.label "Spoločné výstrižky...">
+<!ENTITY migrate.accesskey "S">
+<!ENTITY closeCmd.key "W">
+<!ENTITY forceSaveCmd.key "S">
+<!ENTITY reload.key "n">
+<!ENTITY export.title "Export výstrižkov">
+<!ENTITY exportButton.label "Export">
+<!ENTITY exportButton.accesskey "E">
+<!ENTITY exportFormatList.label "Vyberte formát exportu výstrižkov:">
+<!ENTITY exportFormatList.accesskey "f">
+<!ENTITY description.caption "Popis">
+<!ENTITY fmtClippings.listitem "Súbor výstrižkov">
+<!ENTITY fmtClippings1x.listitem "Clippings série 1.x">
+<!ENTITY fmtHtmlDocument.listitem "Dokument HTML">
+<!ENTITY newClippingsEntry.title "Nový výstrižok">
+<!ENTITY newFolder.title "Nový priečinok">
+<!ENTITY createIn.label "Vytvoriť v:">
+<!ENTITY createIn.accesskey "i">
+<!ENTITY fileHere.label "Súbor tu">
+<!ENTITY chooseAsParent.label "Vybrať tento ako nadradený">
+<!ENTITY folderName.label "Názov:">
+<!ENTITY folderName.accesskey "N">
+<!ENTITY createAsSubf.label "Vytvoriť ako podpriečinok v:">
+<!ENTITY createAsSubf.accesskey "d">
+<!ENTITY createAsUnquoted.label "Vytvoriť ako necitovaný text">
+<!ENTITY createAsUnquoted.accesskey "o">
+<!ENTITY removeExtraLineBreaks.label "Odstrániť zlomy ďalších riadkov">
+<!ENTITY removeExtraLineBreaks.accesskey "R">
+<!ENTITY tabGeneral.label "Všeobecné">
+<!ENTITY tabShortcutKey.label "Klávesová skratka">
+<!ENTITY none.label "(žiadna)">
+<!ENTITY pasteClippingAs.label "Prilepiť ako">
+<!ENTITY pasteAsNormal.label "Obyčajný text">
+<!ENTITY pasteAsNormal.accesskey "N">
+<!ENTITY pasteAsQuoted.label "Citovaný text">
+<!ENTITY pasteAsQuoted.accesskey "C">
+<!ENTITY rewrapLines.label "Nové riadkovanie (odporúča sa)">
+<!ENTITY rewrapLines.accesskey "v">
+<!ENTITY htmlClipping "Označený výstrižok obsahuje značky HTML.">
+<!ENTITY pasteAsFormatted.label "Prilepiť ako formátovaný text">
+<!ENTITY pasteAsFormatted.accesskey "f">
+<!ENTITY pasteAsPlain.label "Prilepiť ako čistý text so zachovaním značiek HTML">
+<!ENTITY pasteAsPlain.accesskey "H">
+<!ENTITY pasteClipping.label "Prilepiť výstrižok">
+<!ENTITY clippingKey.title "Prilepiť výstrižok">
+<!ENTITY clippingKey.description "Stlačením klávesovej skratky prilepíte požadovaný výstrižok.">
+<!ENTITY errorNoClipboardContent.desc "Schránka je prázdna alebo neobsahuje textové údaje.">

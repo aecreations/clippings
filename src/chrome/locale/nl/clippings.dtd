@@ -1,0 +1,187 @@
+<!ENTITY clippings.appName "Clippings">
+<!ENTITY clippings.menuLabel "Clippings">
+<!ENTITY new.menuLabel "Nieuw">
+<!ENTITY new.accesskey "N">
+<!ENTITY newFromSelect.menuLabel "Nieuw van selectie">
+<!ENTITY newFromSelect.accesskey "S">
+<!ENTITY newFromClipboard.menuLabel "Nieuw van klembord">
+<!ENTITY newFromClipboard.accesskey "K">
+<!ENTITY openClippingsMgr.menuLabel "Clippings organiseren">
+<!ENTITY openClippingsMgr.accesskey "O">
+<!ENTITY showPasteOpts.label "Opties weergeven bij plakken">
+<!ENTITY showPasteOpts.accesskey "W">
+<!ENTITY statusbar.tooltip "Sleep de selectie hierheen om een nieuw Clippings onderdeel te maken, of klik met de rechtermuisknop voor opties">
+<!ENTITY resetAutoIncrVars.label "Plaatshouders automatisch vergroten resetten">
+<!ENTITY empty.label "(leeg)">
+<!ENTITY prefGeneral.label "Algemeen">
+<!ENTITY prefDataSource.label "Gegevensbron">
+<!ENTITY prefClippingsMgr.label "Clippingsbeheerder">
+<!ENTITY pasteOptions.caption "Plakopties">
+<!ENTITY useClipboard.label "Clipping plakken via Klembord">
+<!ENTITY useClipboard.accesskey "a">
+<!ENTITY htmlPasteOptions.label "Bij plakken van clipping in HTML-opmaak naar een rijk tekstveld:">
+<!ENTITY htmlPasteOptions.accesskey "o">
+<!ENTITY askMe.label "Mij vragen">
+<!ENTITY autoLineBreak.label "Regels automatisch afbreken tenzij er &lt;p&gt; of &lt;br&gt; tags in zitten">
+<!ENTITY autoLineBreak.accesskey "b">
+<!ENTITY htmlPaste.description "Een in HTML opgemaakte clipping wordt altijd als platte tekst in een tekstveld geplakt, of als de clipping beperkte tags zoals &lt;script&gt;, &lt;applet&gt;, &lt;object&gt;, &lt;iframe&gt; enz. bevat.">
+<!ENTITY checkSpelling.label "Spelling controleren">
+<!ENTITY checkSpelling.accesskey "C">
+<!ENTITY tabModalPrompt.label "Browservenster niet blokkeren als wordt gevraagd om plaatshoudertekst">
+<!ENTITY tabModalPrompt.accesskey "B">
+<!ENTITY beepOnErrors.label "Piepen bij fouten">
+<!ENTITY beepOnErrors.accesskey "P">
+<!ENTITY dataSourceSettings.title "Gegevensbroninstellingen">
+<!ENTITY dataSrcLocation.caption "Gegevensbronlokatie">
+<!ENTITY otherLocation.label "Andere lokatie:">
+<!ENTITY otherLocation.accesskey "A">
+<!ENTITY fileBrowse.label "Bladeren…">
+<!ENTITY fileBrowse.accesskey "B">
+<!ENTITY backupFiles.caption "Back-upbestanden">
+<!ENTITY maxFiles.label "Maximaal aantal te bewaren bestanden:">
+<!ENTITY maxFiles.accesskey "M">
+<!ENTITY showStatusBar.label "Statusbalk weergeven">
+<!ENTITY showStatusBar.accesskey "S">
+<!ENTITY clippingsMgrKeys.caption "Clippingsbeheerder-sneltoetsen">
+<!ENTITY key.del "DEL">
+<!ENTITY key.esc "ESC">
+<!ENTITY key.ctrlF "CTRL+F">
+<!ENTITY key.ctrlW "CTRL+W">
+<!ENTITY key.ctrlZ "CTRL+Z">
+<!ENTITY key.f1 "F1">
+<!ENTITY key.f2 "F2">
+<!ENTITY key.macDelete "⌦">
+<!ENTITY key.macEsc "esc">
+<!ENTITY key.cmdF "⌘F">
+<!ENTITY key.cmdW "⌘W">
+<!ENTITY key.cmdZ "⌘Z">
+<!ENTITY deleteClippngOrFldr "Geselecteerde clipping of map verwijderen">
+<!ENTITY clearFindBar "Zoekbalk leegmaken">
+<!ENTITY toggleFindBar "Zoekbalk weergeven/verbergen">
+<!ENTITY closeClipMgr "Clippingsbeheerder sluiten">
+<!ENTITY undoEdit "Bewerking ongedaan maken">
+<!ENTITY showClipMgrIntro "Intro clippingsbeheerder weergeven">
+<!ENTITY undoUndo "Opnieuw uitvoeren">
+<!ENTITY clippingsManager.title "Clippingsbeheerder">
+<!ENTITY insertClipping.label "Clipping invoegen">
+<!ENTITY insertClipping.accesskey "I">
+<!ENTITY move.label "Verplaatsen">
+<!ENTITY move.accesskey "V">
+<!ENTITY moveUp.label "Omhoog">
+<!ENTITY moveUp.accesskey "O">
+<!ENTITY moveDown.label "Omlaag">
+<!ENTITY moveDown.accesskey "l">
+<!ENTITY moveTo.label "Verplaatsen naar">
+<!ENTITY moveTo.accesskey "V">
+<!ENTITY copyTo.label "Kopiëren naar">
+<!ENTITY copyTo.accesskey "K">
+<!ENTITY moveHere.label "Hierheen verplaatsen">
+<!ENTITY copyHere.label "Hierheen kopiëren">
+<!ENTITY clippingsRoot.label "Clippings">
+<!ENTITY newClipping.label "Nieuwe clipping">
+<!ENTITY newClipping.accesskey "N">
+<!ENTITY newFolder.label "Nieuwe map">
+<!ENTITY newFolder.accesskey "M">
+<!ENTITY deleteClipping.label "Verwijderen">
+<!ENTITY deleteClipping.accesskey "w">
+<!ENTITY undo.label "Ongedaan maken">
+<!ENTITY undo.accesskey "O">
+<!ENTITY pasteNew.label "Nieuw plakken">
+<!ENTITY pasteNew.accesskey "P">
+<!ENTITY description.label "Beschrijving:">
+<!ENTITY description.accesskey "c">
+<!ENTITY text.label "Tekst:">
+<!ENTITY text.accesskey "T">
+<!ENTITY import.label "Importeren…">
+<!ENTITY import.accesskey "I">
+<!ENTITY export.label "Exporteren…">
+<!ENTITY export.accesskey "E">
+<!ENTITY tools.label "Extra">
+<!ENTITY tools.accesskey "x">
+<!ENTITY find.label "Zoeken">
+<!ENTITY find.accesskey "Z">
+<!ENTITY backup.label "Back-up…">
+<!ENTITY backup.accesskey "B">
+<!ENTITY restore.label "Herstellen">
+<!ENTITY restore.accesskey "s">
+<!ENTITY chooseFile.label "Bestand kiezen…">
+<!ENTITY chooseFile.accesskey "k">
+<!ENTITY noClippings.label "Er zijn geen ingaves weer te geven.">
+<!ENTITY reload.label "Opnieuw laden">
+<!ENTITY reload.accesskey "L">
+<!ENTITY shortcutkey.label "Sneltoets:">
+<!ENTITY shortcutkey.accesskey "t">
+<!ENTITY migrate.label "Algemene clippings…">
+<!ENTITY migrate.accesskey "C">
+<!ENTITY dataFileOptions.label "Gegevensbroninstellingen…">
+<!ENTITY dataFileOptions.accesskey "G">
+<!ENTITY shortcutKeyList.label "Sneltoetsenlijst">
+<!ENTITY findBar.label "Zoeken:">
+<!ENTITY findPrev.label "Vorige">
+<!ENTITY findPrev.accesskey "V">
+<!ENTITY findNext.label "Volgende">
+<!ENTITY findNext.accesskey "e">
+<!ENTITY matchCase.label "Hoofdlettergevoelig">
+<!ENTITY matchCase.accesskey "f">
+<!ENTITY findClippings.label "Clippings">
+<!ENTITY findClippingsAndFldrs.label "Clippings en mappen">
+<!ENTITY closeCmd.key "W">
+<!ENTITY forceSaveCmd.key "S">
+<!ENTITY reload.key "L">
+<!ENTITY toggleFindBar.key "Z">
+<!ENTITY export.title "Clippings exporteren">
+<!ENTITY exportButton.label "Exporteren">
+<!ENTITY exportButton.accesskey "E">
+<!ENTITY exportFormatList.label "Selecteer een opmaak om clippings naar te exporteren:">
+<!ENTITY exportFormatList.accesskey "S">
+<!ENTITY description.caption "Beschrijving">
+<!ENTITY fmtClippings.listitem "Clippingsbestand">
+<!ENTITY fmtClippings1x.listitem "Clippings 1.x serie">
+<!ENTITY fmtHtmlDocument.listitem "HTML-document">
+<!ENTITY newClippingsEntry.title "Nieuwe clipping">
+<!ENTITY newFolder.title "Nieuwe map">
+<!ENTITY createIn.label "Aanmaken in:">
+<!ENTITY createIn.accesskey "i">
+<!ENTITY fileHere.label "Bestand hier">
+<!ENTITY chooseAsParent.label "kies dit als hogergelegen niveau">
+<!ENTITY folderName.label "Naam">
+<!ENTITY folderName.accesskey "N">
+<!ENTITY createAsSubf.label "Aanmaken als submap van:">
+<!ENTITY createAsSubf.accesskey "A">
+<!ENTITY createAsUnquoted.label "Als tekst zonder aanhalingstekens aanmaken">
+<!ENTITY createAsUnquoted.accesskey "o">
+<!ENTITY removeExtraLineBreaks.label "Extra regelafbrekingen verwijderen">
+<!ENTITY removeExtraLineBreaks.accesskey "V">
+<!ENTITY tabGeneral.label "Algemeen">
+<!ENTITY tabShortcutKey.label "Sneltoets">
+<!ENTITY none.label "(geen)">
+<!ENTITY pasteClippingAs.label "Clipping plakken als">
+<!ENTITY pasteAsNormal.label "Normale tekst">
+<!ENTITY pasteAsNormal.accesskey "N">
+<!ENTITY pasteAsQuoted.label "Aangehaalde tekst">
+<!ENTITY pasteAsQuoted.accesskey "Q">
+<!ENTITY rewrapLines.label "Regels opnieuw afbreken (aanbevolen)">
+<!ENTITY rewrapLines.accesskey "A">
+<!ENTITY htmlClipping "De geselecteerde clipping lijkt HTML-tags te bevatten.">
+<!ENTITY pasteAsFormatted.label "Als opgemaakte tekst plakken">
+<!ENTITY pasteAsFormatted.accesskey "o">
+<!ENTITY pasteAsPlain.label "Als platte tekst plakken met behoud van HTML-tags">
+<!ENTITY pasteAsPlain.accesskey "P">
+<!ENTITY pasteClipping.label "Clipping plakken">
+<!ENTITY clippingKey.title "Clipping plakken">
+<!ENTITY clippingKey.description "Druk de sneltoets van de clipping die u wilt plakken.">
+<!ENTITY clippingKeyHelp.description "F1 = sneltoetsenlijst">
+<!ENTITY shortcutHelp.title "Clippings-sneltoetsenlijst">
+<!ENTITY shortcutCol.label "Sneltoets">
+<!ENTITY clippingCol.label "Clipping-naam">
+<!ENTITY save.label "Opslaan">
+<!ENTITY save.accesskey "O">
+<!ENTITY print.label "Afdrukken">
+<!ENTITY print.accesskey "A">
+<!ENTITY close.accesskey "S">
+<!ENTITY pasteClipping.title "Clipping plakken">
+<!ENTITY okButton.label "OK">
+<!ENTITY cancelButton.label "Annuleren">
+<!ENTITY closeButton.label "Sluiten">
+<!ENTITY closeButton.accesskey "S">
+<!ENTITY errorNoClipboardContent.desc "Klembord is leeg of bevat geen tekstgegevens.">

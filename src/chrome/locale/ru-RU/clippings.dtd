@@ -1,0 +1,108 @@
+<!ENTITY clippings.appName "Вырезки">
+<!ENTITY clippings.menuLabel "Вырезки">
+<!ENTITY new.menuLabel "Новая">
+<!ENTITY new.accesskey "Н">
+<!ENTITY newFromSelect.menuLabel "Новая из выделенного текста">
+<!ENTITY newFromSelect.accesskey "Н">
+<!ENTITY newFromClipboard.menuLabel "Новая из буфера обмена">
+<!ENTITY newFromClipboard.accesskey "Н">
+<!ENTITY openClippingsMgr.menuLabel "Управление вырезками">
+<!ENTITY openClippingsMgr.accesskey "п">
+<!ENTITY showPasteOpts.label "При вставке показывать режимы цитирования">
+<!ENTITY showPasteOpts.accesskey "р">
+<!ENTITY statusbar.tooltip "Перетащите сюда выделенный текст или щёлкните правой кнопкой для настройки">
+<!ENTITY empty.label "(Пусто)">
+<!ENTITY pasteOptions.caption "Режимы вставки">
+<!ENTITY useClipboard.label "Вставлять вырезку используя буфер обмена">
+<!ENTITY useClipboard.accesskey "б">
+<!ENTITY htmlPasteOptions.label "При вставке HTML-форматированной вырезки в поле редактирования простого текста:">
+<!ENTITY htmlPasteOptions.accesskey "ф">
+<!ENTITY askMe.label "Спросить меня, что делать">
+<!ENTITY autoLineBreak.label "автоматически разделять на строки при наличии тегов &lt;p&gt; или &lt;p&gt;">
+<!ENTITY autoLineBreak.accesskey "с">
+<!ENTITY clippingsManager.title "Менеджер вырезок">
+<!ENTITY insertClipping.label "Вставить вырезку">
+<!ENTITY insertClipping.accesskey "к">
+<!ENTITY move.label "Переместить">
+<!ENTITY move.accesskey "П">
+<!ENTITY moveUp.label "Выше">
+<!ENTITY moveUp.accesskey "В">
+<!ENTITY moveDown.label "Ниже">
+<!ENTITY moveDown.accesskey "ж">
+<!ENTITY moveTo.label "Переместить в">
+<!ENTITY moveTo.accesskey "П">
+<!ENTITY copyTo.label "Копировать в">
+<!ENTITY copyTo.accesskey "К">
+<!ENTITY moveHere.label "Переместить сюда">
+<!ENTITY copyHere.label "Копировать сюда">
+<!ENTITY clippingsRoot.label "Вырезки">
+<!ENTITY newClipping.label "Новая">
+<!ENTITY newClipping.accesskey "Н">
+<!ENTITY newFolder.label "Новая папка">
+<!ENTITY newFolder.accesskey "в">
+<!ENTITY deleteClipping.label "Удалить">
+<!ENTITY deleteClipping.accesskey "д">
+<!ENTITY undo.label "Отменить">
+<!ENTITY undo.accesskey "т">
+<!ENTITY pasteNew.label "Вставить новую">
+<!ENTITY pasteNew.accesskey "В">
+<!ENTITY description.label "Описание:">
+<!ENTITY description.accesskey "п">
+<!ENTITY text.label "Текст:">
+<!ENTITY text.accesskey "Т">
+<!ENTITY import.label "Импорт…">
+<!ENTITY import.accesskey "И">
+<!ENTITY export.label "Экспорт…">
+<!ENTITY export.accesskey "Э">
+<!ENTITY noClippings.label "Нет записей для отображения.">
+<!ENTITY reload.label "Загрузить заново">
+<!ENTITY reload.accesskey "г">
+<!ENTITY shortcutkey.label "Быстрая клавиша">
+<!ENTITY shortcutkey.accesskey "Б">
+<!ENTITY migrate.label "Общие вырезки…">
+<!ENTITY migrate.accesskey "щ">
+<!ENTITY closeCmd.key "W">
+<!ENTITY forceSaveCmd.key "S">
+<!ENTITY reload.key "R">
+<!ENTITY export.title "Экспорт вырезок">
+<!ENTITY exportButton.label "Экспорт">
+<!ENTITY exportButton.accesskey "к">
+<!ENTITY exportFormatList.label "Выберите формат для экспортирования вырезок:">
+<!ENTITY exportFormatList.accesskey "В">
+<!ENTITY description.caption "Описание">
+<!ENTITY fmtClippings.listitem "Файл вырезок">
+<!ENTITY fmtClippings1x.listitem "Файл вырезок 1.x">
+<!ENTITY fmtHtmlDocument.listitem "HTML документ">
+<!ENTITY newClippingsEntry.title "Новая запись вырезок">
+<!ENTITY newFolder.title "Новая папка">
+<!ENTITY createIn.label "Создать в:">
+<!ENTITY createIn.accesskey "С">
+<!ENTITY fileHere.label "Файл сюда">
+<!ENTITY chooseAsParent.label "выберите для родительского">
+<!ENTITY folderName.label "Имя:">
+<!ENTITY folderName.accesskey "м">
+<!ENTITY createAsSubf.label "Создать вложенную папку:">
+<!ENTITY createAsSubf.accesskey "С">
+<!ENTITY createAsUnquoted.label "Создать как не цитату">
+<!ENTITY createAsUnquoted.accesskey "С">
+<!ENTITY removeExtraLineBreaks.label "Убрать пустые строки">
+<!ENTITY removeExtraLineBreaks.accesskey "б">
+<!ENTITY tabGeneral.label "Общие">
+<!ENTITY tabShortcutKey.label "Быстрые клавиши">
+<!ENTITY none.label "(Нет)">
+<!ENTITY pasteClippingAs.label "Вставить вырезку как">
+<!ENTITY pasteAsNormal.label "обычный текст">
+<!ENTITY pasteAsNormal.accesskey "б">
+<!ENTITY pasteAsQuoted.label "текст цитаты">
+<!ENTITY pasteAsQuoted.accesskey "ц">
+<!ENTITY rewrapLines.label "строки с переносами (рекомендуется)">
+<!ENTITY rewrapLines.accesskey "с">
+<!ENTITY htmlClipping "Выбранная вырезка содержит HTML-теги.">
+<!ENTITY pasteAsFormatted.label "Вставить как форматированный текст">
+<!ENTITY pasteAsFormatted.accesskey "ф">
+<!ENTITY pasteAsPlain.label "Вставить как простой текст, сохранив HTML-теги">
+<!ENTITY pasteAsPlain.accesskey "б">
+<!ENTITY pasteClipping.label "Вставить вырезку">
+<!ENTITY clippingKey.title "вставить вырезку">
+<!ENTITY clippingKey.description "Нажмите быструю клавишу вырезки, которую вы хотите вставить">
+<!ENTITY errorNoClipboardContent.desc "Буфер обмена пуст или содержит не текстовые данные.">

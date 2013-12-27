@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd" [
+  <!ENTITY % keyDTD SYSTEM "chrome://clippings/locale/clippings.dtd"> %keyDTD;
+]>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <style type="text/css">
+    
+    body {
+      margin: 0;
+      font: message-box;
+      color: -moz-dialogtext;
+    }
+
+    body[platform="Darwin"] {
+      font: -moz-info;
+    }
+
+    table {
+      table-layout: fixed;
+    }
+
+    td {
+      padding: 0;
+    }
+
+  </style>
+
+  <script type="application/javascript">
+
+    function init() { 
+      var os = window.top.getOS();
+      var hideID;
+
+      document.getElementsByTagName("body").item(0).setAttribute("platform", os);
+      if (os == "Darwin") {
+        hideID = "all";
+      }
+      else {
+        hideID = "mac";    
+      }
+      document.getElementById(hideID).style.display = "none";
+    }
+
+  </script>
+</head>
+
+<body onload="init()">
+
+  <table id="all">
+    <tr>
+      <td style="width:6em">&key.del;</td>
+      <td>&deleteClippngOrFldr;</td>
+    </tr>
+    <tr>
+      <td>&key.esc;</td>
+      <td>&clearFindBar;</td>
+    </tr>
+    <tr>
+      <td>&key.ctrlF;</td>
+      <td>&toggleFindBar;</td>
+    </tr>
+    <tr>
+      <td>&key.ctrlW;</td>
+      <td>&closeClipMgr;</td>
+    </tr>
+    <tr>
+      <td>&key.ctrlZ;</td>
+      <td>&undoEdit;</td>
+    </tr>
+    <tr>
+      <td>&key.f1;</td>
+      <td>&showClipMgrIntro;</td>
+    </tr>
+    <tr>
+      <td>&key.f2;</td>
+      <td>&undoUndo;</td>
+    </tr>
+  </table>
+
+  <table id="mac">
+    <tr>
+      <td style="width:4em">&key.macDelete;</td>
+      <td>&deleteClippngOrFldr;</td>
+    </tr>
+    <tr>
+      <td>&key.macEsc;</td>
+      <td>&clearFindBar;</td>
+    </tr>
+    <tr>
+      <td>&key.cmdF;</td>
+      <td>&toggleFindBar;</td>
+    </tr>
+    <tr>
+      <td>&key.cmdW;</td>
+      <td>&closeClipMgr;</td>
+    </tr>
+    <tr>
+      <td>&key.cmdZ;</td>
+      <td>&undoEdit;</td>
+    </tr>
+    <tr>
+      <td>&key.f1;</td>
+      <td>&showClipMgrIntro;</td>
+    </tr>
+    <tr>
+      <td>&key.f2;</td>
+      <td>&undoUndo;</td>
+    </tr>
+  </table>
+
+</body>
+</html>

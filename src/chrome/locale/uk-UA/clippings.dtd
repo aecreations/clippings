@@ -1,0 +1,187 @@
+<!ENTITY clippings.appName "Clippings">
+<!ENTITY clippings.menuLabel "Вирізки">
+<!ENTITY new.menuLabel "Нова">
+<!ENTITY new.accesskey "Н">
+<!ENTITY newFromSelect.menuLabel "Нова з виділеного тексту">
+<!ENTITY newFromSelect.accesskey "в">
+<!ENTITY newFromClipboard.menuLabel "Нова з буфера обміну">
+<!ENTITY newFromClipboard.accesskey "б">
+<!ENTITY openClippingsMgr.menuLabel "Керування вирізками">
+<!ENTITY openClippingsMgr.accesskey "К">
+<!ENTITY showPasteOpts.label "Показувати під час вставки режими цитування">
+<!ENTITY showPasteOpts.accesskey "о">
+<!ENTITY statusbar.tooltip "Перетягніть сюди виділений текст, щоб створити нову вирізку, або клацніть правою кнопкою для налаштування">
+<!ENTITY resetAutoIncrVars.label "Скинути автоматичні вказівники місця заповнення">
+<!ENTITY empty.label "(Порожньо)">
+<!ENTITY prefGeneral.label "Основне">
+<!ENTITY prefDataSource.label "Джерело">
+<!ENTITY prefClippingsMgr.label "Керівник вирізок">
+<!ENTITY pasteOptions.caption "Налаштування вставки">
+<!ENTITY useClipboard.label "Вставляти вирізку через буфер обміну">
+<!ENTITY useClipboard.accesskey "ч">
+<!ENTITY htmlPasteOptions.label "При вставці HTML-форматованої вирізки у поле редагування тексту:">
+<!ENTITY htmlPasteOptions.accesskey "р">
+<!ENTITY askMe.label "Спитати мене, як вчинити">
+<!ENTITY autoLineBreak.label "Автоматично розділити на рядки за наявності тегів &lt;p&gt; чи &lt;br&gt;">
+<!ENTITY autoLineBreak.accesskey "я">
+<!ENTITY htmlPaste.description "Вирізка у форматі HTML завжди буде вставлятися як звичайний текст у поле звичайного тексту чи якщо вирізка містить заборонені теги, такі як &lt;script&gt;, &lt;applet&gt;, &lt;object&gt;, &lt;iframe&gt; та інш.">
+<!ENTITY checkSpelling.label "Перевіряти правопис">
+<!ENTITY checkSpelling.accesskey "П">
+<!ENTITY tabModalPrompt.label "Не блокувати вікно оглядача під час запитування про текст вказівника місця заповнення">
+<!ENTITY tabModalPrompt.accesskey "б">
+<!ENTITY beepOnErrors.label "Пікати при помилках">
+<!ENTITY beepOnErrors.accesskey "і">
+<!ENTITY dataSourceSettings.title "Налаштування джерела даних">
+<!ENTITY dataSrcLocation.caption "Розташування джерела даних">
+<!ENTITY otherLocation.label "Інше розташування:">
+<!ENTITY otherLocation.accesskey "ш">
+<!ENTITY fileBrowse.label "Огляд…">
+<!ENTITY fileBrowse.accesskey "г">
+<!ENTITY backupFiles.caption "Резервні файли">
+<!ENTITY maxFiles.label "Максимальна кількість файлів:">
+<!ENTITY maxFiles.accesskey "с">
+<!ENTITY showStatusBar.label "Показувати рядок стану">
+<!ENTITY showStatusBar.accesskey "з">
+<!ENTITY clippingsMgrKeys.caption "Клавіатурні скорочення керівника вирізок">
+<!ENTITY key.del "DEL">
+<!ENTITY key.esc "ESC">
+<!ENTITY key.ctrlF "CTRL+F">
+<!ENTITY key.ctrlW "CTRL+W">
+<!ENTITY key.ctrlZ "CTRL+Z">
+<!ENTITY key.f1 "F1">
+<!ENTITY key.f2 "F2">
+<!ENTITY key.macDelete "⌦">
+<!ENTITY key.macEsc "esc">
+<!ENTITY key.cmdF "⌘F">
+<!ENTITY key.cmdW "⌘W">
+<!ENTITY key.cmdZ "⌘Z">
+<!ENTITY deleteClippngOrFldr "Стерти вибрану вирізку чи теку">
+<!ENTITY clearFindBar "Очистити поле пошуку">
+<!ENTITY toggleFindBar "Показати/сховати поле пошуку">
+<!ENTITY closeClipMgr "Закрити керівник вирізок">
+<!ENTITY undoEdit "Скасувати редагування">
+<!ENTITY showClipMgrIntro "Показувати вступну частину керівника вирізок">
+<!ENTITY undoUndo "Скасувати скасування">
+<!ENTITY clippingsManager.title "Менеджер вирізок">
+<!ENTITY insertClipping.label "Вставити вирізку">
+<!ENTITY insertClipping.accesskey "I">
+<!ENTITY move.label "Перемістити">
+<!ENTITY move.accesskey "П">
+<!ENTITY moveUp.label "Вище">
+<!ENTITY moveUp.accesskey "В">
+<!ENTITY moveDown.label "Нижче">
+<!ENTITY moveDown.accesskey "ж">
+<!ENTITY moveTo.label "Перемістити до">
+<!ENTITY moveTo.accesskey "П">
+<!ENTITY copyTo.label "Копіювати до">
+<!ENTITY copyTo.accesskey "К">
+<!ENTITY moveHere.label "Перемістити сюди">
+<!ENTITY copyHere.label "Копіювати сюди">
+<!ENTITY clippingsRoot.label "Вирізки">
+<!ENTITY newClipping.label "Нова">
+<!ENTITY newClipping.accesskey "Н">
+<!ENTITY newFolder.label "Нова тека">
+<!ENTITY newFolder.accesskey "в">
+<!ENTITY deleteClipping.label "Стерти">
+<!ENTITY deleteClipping.accesskey "С">
+<!ENTITY undo.label "Скасувати">
+<!ENTITY undo.accesskey "к">
+<!ENTITY pasteNew.label "Вставити нову">
+<!ENTITY pasteNew.accesskey "В">
+<!ENTITY description.label "Опис:">
+<!ENTITY description.accesskey "п">
+<!ENTITY text.label "Текст:">
+<!ENTITY text.accesskey "Т">
+<!ENTITY import.label "Імпорт...">
+<!ENTITY import.accesskey "І">
+<!ENTITY export.label "Експорт...">
+<!ENTITY export.accesskey "Е">
+<!ENTITY tools.label "Інструменти">
+<!ENTITY tools.accesskey "у">
+<!ENTITY find.label "Пошук">
+<!ENTITY find.accesskey "ш">
+<!ENTITY backup.label "Резервна копія…">
+<!ENTITY backup.accesskey "н">
+<!ENTITY restore.label "Відновити">
+<!ENTITY restore.accesskey "т">
+<!ENTITY chooseFile.label "Вибрати файл…">
+<!ENTITY chooseFile.accesskey "ф">
+<!ENTITY noClippings.label "Немає записів. Натисніть Нова для створення нової вирізки або Вставити нову, щоб створити нову вирізку із вмісту буфера обміну.">
+<!ENTITY reload.label "Оновити">
+<!ENTITY reload.accesskey "О">
+<!ENTITY shortcutkey.label "Гаряча клавіша:">
+<!ENTITY shortcutkey.accesskey "Г">
+<!ENTITY migrate.label "Спільні вирізки...">
+<!ENTITY migrate.accesskey "і">
+<!ENTITY dataFileOptions.label "Налаштування джерела даних…">
+<!ENTITY dataFileOptions.accesskey "д">
+<!ENTITY shortcutKeyList.label "Список клавіатурних скорочень">
+<!ENTITY findBar.label "Пошук:">
+<!ENTITY findPrev.label "Попереднє">
+<!ENTITY findPrev.accesskey "є">
+<!ENTITY findNext.label "Наступне">
+<!ENTITY findNext.accesskey "т">
+<!ENTITY matchCase.label "Враховувати регістр">
+<!ENTITY matchCase.accesskey "х">
+<!ENTITY findClippings.label "Вирізки">
+<!ENTITY findClippingsAndFldrs.label "Вирізки та теки">
+<!ENTITY closeCmd.key "W">
+<!ENTITY forceSaveCmd.key "S">
+<!ENTITY reload.key "R">
+<!ENTITY toggleFindBar.key "В">
+<!ENTITY export.title "Експорт вирізок">
+<!ENTITY exportButton.label "Експорт">
+<!ENTITY exportButton.accesskey "к">
+<!ENTITY exportFormatList.label "Оберіть формат для експорту вирізок:">
+<!ENTITY exportFormatList.accesskey "б">
+<!ENTITY description.caption "Опис">
+<!ENTITY fmtClippings.listitem "Файл вирізок">
+<!ENTITY fmtClippings1x.listitem "Файл вирізок 1.x">
+<!ENTITY fmtHtmlDocument.listitem "HTML-документ">
+<!ENTITY newClippingsEntry.title "Новий запис вирізок">
+<!ENTITY newFolder.title "Нова тека">
+<!ENTITY createIn.label "Створити в:">
+<!ENTITY createIn.accesskey "С">
+<!ENTITY fileHere.label "Файл сюди">
+<!ENTITY chooseAsParent.label "оберіть для батьківського">
+<!ENTITY folderName.label "Ім'я:">
+<!ENTITY folderName.accesskey "м">
+<!ENTITY createAsSubf.label "Створити вкладену теку:">
+<!ENTITY createAsSubf.accesskey "т">
+<!ENTITY createAsUnquoted.label "Створити не як цитату">
+<!ENTITY createAsUnquoted.accesskey "ц">
+<!ENTITY removeExtraLineBreaks.label "Прибрати порожні рядки">
+<!ENTITY removeExtraLineBreaks.accesskey "ж">
+<!ENTITY tabGeneral.label "Загальне">
+<!ENTITY tabShortcutKey.label "Гаряча клавіша">
+<!ENTITY none.label "(Відсутні)">
+<!ENTITY pasteClippingAs.label "Вставити вирізку як">
+<!ENTITY pasteAsNormal.label "Звичайний текст">
+<!ENTITY pasteAsNormal.accesskey "в">
+<!ENTITY pasteAsQuoted.label "Цитований текст">
+<!ENTITY pasteAsQuoted.accesskey "Ц">
+<!ENTITY rewrapLines.label "Рядки з переносами (рекомендовано)">
+<!ENTITY rewrapLines.accesskey "е">
+<!ENTITY htmlClipping "Обрана вирізка, здається, містить теги HTML">
+<!ENTITY pasteAsFormatted.label "Вставити як форматований текст">
+<!ENTITY pasteAsFormatted.accesskey "ф">
+<!ENTITY pasteAsPlain.label "Вставити як звичайний текст зі збереженням HTML-тегів">
+<!ENTITY pasteAsPlain.accesskey "я">
+<!ENTITY pasteClipping.label "Вставити вирізку">
+<!ENTITY clippingKey.title "Вставити вирізку">
+<!ENTITY clippingKey.description "Натисніть гарячу клавішу вирізки, яку ви хочете вставити.">
+<!ENTITY clippingKeyHelp.description "F1 = список клавіатурних скорочень">
+<!ENTITY shortcutHelp.title "Клавіатурні скорочення Clippings">
+<!ENTITY shortcutCol.label "Клавіатурне скорочення">
+<!ENTITY clippingCol.label "Назва вирізки">
+<!ENTITY save.label "Зберегти">
+<!ENTITY save.accesskey "б">
+<!ENTITY print.label "Друкувати">
+<!ENTITY print.accesskey "р">
+<!ENTITY close.accesskey "а">
+<!ENTITY pasteClipping.title "Вставити вирізку">
+<!ENTITY okButton.label "Гаразд">
+<!ENTITY cancelButton.label "Скасувати">
+<!ENTITY closeButton.label "Закрити">
+<!ENTITY closeButton.accesskey "З">
+<!ENTITY errorNoClipboardContent.desc "Буфер обміну порожній або містить не текстові дані.">

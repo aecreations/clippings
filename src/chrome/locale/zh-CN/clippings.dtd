@@ -1,0 +1,199 @@
+<!-- General -->
+<!ENTITY clippings.appName "Clippings">
+<!-- Overlay -->
+<!ENTITY clippings.menuLabel "Clippings">
+<!ENTITY new.menuLabel "新建">
+<!ENTITY new.accesskey "N">
+<!ENTITY newFromSelect.menuLabel "从所选内容新建">
+<!ENTITY newFromSelect.accesskey "N">
+<!ENTITY newFromClipboard.menuLabel "从剪贴板新建">
+<!ENTITY newFromClipboard.accesskey "N">
+<!ENTITY openClippingsMgr.menuLabel "管理 Clippings">
+<!ENTITY openClippingsMgr.accesskey "O">
+<!ENTITY showPasteOpts.label "粘贴时显示引用选项">
+<!ENTITY showPasteOpts.accesskey "S">
+<!ENTITY statusbar.tooltip "你可以将所选内容拖拽到这里新建 Clippings，或者右键单击查看选项">
+<!ENTITY resetAutoIncrVars.label "重置自增占位符">
+<!ENTITY empty.label "(空)">
+<!-- Extension preferences dialog -->
+<!ENTITY prefGeneral.label "常规">
+<!ENTITY prefDataSource.label "数据源">
+<!ENTITY prefClippingsMgr.label "Clippings 管理器">
+<!ENTITY pasteOptions.caption "粘贴选项">
+<!ENTITY useClipboard.label "请不要在粘贴 clipping 时覆盖剪切板">
+<!ENTITY useClipboard.accesskey "P">
+<!ENTITY htmlPasteOptions.label "粘贴 HTML 格式的 clipping 到富文本编辑框时：">
+<!ENTITY htmlPasteOptions.accesskey "f">
+<!ENTITY askMe.label "询问我">
+<!ENTITY autoLineBreak.label "自动换行, 除非存在 &lt;p&gt; 或 &lt;br&gt; 标签">
+<!ENTITY autoLineBreak.accesskey "b">
+<!ENTITY htmlPaste.description "如果要粘贴到纯文本框，或者 clipping 中包含 &lt;script&gt;、&lt;applet&gt;、&lt;object&gt;、&lt;iframe&gt; 等受限的标签，那么HTML 格式的 clipping 总是会被作为纯文本粘贴。">
+<!ENTITY checkSpelling.label "检查拼写">
+<!ENTITY checkSpelling.accesskey "C">
+<!ENTITY tabModalPrompt.label "询问占位符文本时不要阻挡浏览器窗口">
+<!ENTITY tabModalPrompt.accesskey "D">
+<!ENTITY beepOnErrors.label "错误时蜂鸣提示">
+<!ENTITY beepOnErrors.accesskey "e">
+<!ENTITY dataSourceSettings.title "数据源设置">
+<!ENTITY dataSrcLocation.caption "数据源位置">
+<!ENTITY otherLocation.label "其他位置：">
+<!ENTITY otherLocation.accesskey "O">
+<!ENTITY fileBrowse.label "浏览...">
+<!ENTITY fileBrowse.accesskey "B">
+<!ENTITY backupFiles.caption "备份文件">
+<!ENTITY maxFiles.label "保存的最大文件数：">
+<!ENTITY maxFiles.accesskey "M">
+<!ENTITY showStatusBar.label "显示状态栏">
+<!ENTITY showStatusBar.accesskey "S">
+<!ENTITY clippingsMgrKeys.caption "Clippings 管理器快捷键">
+<!-- Clippings Manager shortcut key legend -->
+<!ENTITY key.del "DEL">
+<!ENTITY key.esc "ESC">
+<!ENTITY key.ctrlF "CTRL+F">
+<!ENTITY key.ctrlW "CTRL+W">
+<!ENTITY key.ctrlZ "CTRL+Z">
+<!ENTITY key.f1 "F1">
+<!ENTITY key.f2 "F2">
+<!ENTITY key.macDelete "&amp;#x2326;">
+<!ENTITY key.macEsc "esc">
+<!ENTITY key.cmdF "&amp;#x2318;F">
+<!ENTITY key.cmdW "&amp;#x2318;W">
+<!ENTITY key.cmdZ "&amp;#x2318;Z">
+<!ENTITY deleteClippngOrFldr "删除选中的 clipping 或文件夹">
+<!ENTITY clearFindBar "清空查找栏">
+<!ENTITY toggleFindBar "显示/隐藏查找栏">
+<!ENTITY closeClipMgr "关闭 Clippings 管理器">
+<!ENTITY undoEdit "撤销编辑">
+<!ENTITY showClipMgrIntro "显示 Clippings 管理器简介">
+<!ENTITY undoUndo "取消撤销">
+<!-- Clippings Manager -->
+<!ENTITY clippingsManager.title "Clippings 管理器">
+<!ENTITY insertClipping.label "插入 Clipping">
+<!ENTITY insertClipping.accesskey "I">
+<!ENTITY move.label "移动">
+<!ENTITY move.accesskey "M">
+<!ENTITY moveUp.label "上移">
+<!ENTITY moveUp.accesskey "U">
+<!ENTITY moveDown.label "下移">
+<!ENTITY moveDown.accesskey "D">
+<!ENTITY moveTo.label "移动到">
+<!ENTITY moveTo.accesskey "M">
+<!ENTITY copyTo.label "复制到">
+<!ENTITY copyTo.accesskey "C">
+<!ENTITY moveHere.label "移动至此">
+<!ENTITY copyHere.label "复制至此">
+<!ENTITY clippingsRoot.label "Clippings">
+<!ENTITY newClipping.label "新建 Clipping">
+<!ENTITY newClipping.accesskey "N">
+<!ENTITY newFolder.label "新建文件夹">
+<!ENTITY newFolder.accesskey "F">
+<!ENTITY deleteClipping.label "删除">
+<!ENTITY deleteClipping.accesskey "D">
+<!ENTITY undo.label "撤销">
+<!ENTITY undo.accesskey "U">
+<!ENTITY pasteNew.label "粘贴">
+<!ENTITY pasteNew.accesskey "P">
+<!ENTITY description.label "描述：">
+<!ENTITY description.accesskey "c">
+<!ENTITY text.label "文本：">
+<!ENTITY text.accesskey "T">
+<!ENTITY import.label "导入...">
+<!ENTITY import.accesskey "I">
+<!ENTITY export.label "导出...">
+<!ENTITY export.accesskey "E">
+<!ENTITY tools.label "工具">
+<!ENTITY tools.accesskey "o">
+<!ENTITY find.label "查找">
+<!ENTITY find.accesskey "i">
+<!ENTITY backup.label "备份...">
+<!ENTITY backup.accesskey "B">
+<!ENTITY restore.label "恢复">
+<!ENTITY restore.accesskey "s">
+<!ENTITY chooseFile.label "选择文件...">
+<!ENTITY chooseFile.accesskey "C">
+<!ENTITY noClippings.label "没有可显示的项目。">
+<!ENTITY reload.label "重新载入">
+<!ENTITY reload.accesskey "R">
+<!ENTITY shortcutkey.label "快捷键：">
+<!ENTITY shortcutkey.accesskey "C">
+<!ENTITY migrate.label "共用 Clippings...">
+<!ENTITY migrate.accesskey "C">
+<!ENTITY dataFileOptions.label "数据源设置...">
+<!ENTITY dataFileOptions.accesskey "D">
+<!ENTITY shortcutKeyList.label "快捷键列表">
+<!ENTITY findBar.label "查找：">
+<!ENTITY findPrev.label "上一个">
+<!ENTITY findPrev.accesskey "P">
+<!ENTITY findNext.label "下一个">
+<!ENTITY findNext.accesskey "e">
+<!ENTITY matchCase.label "区分大小写">
+<!ENTITY matchCase.accesskey "a">
+<!ENTITY findClippings.label "Clippings">
+<!ENTITY findClippingsAndFldrs.label "Clippings 和文件夹">
+<!ENTITY closeCmd.key "W">
+<!ENTITY forceSaveCmd.key "S">
+<!ENTITY reload.key "R">
+<!ENTITY toggleFindBar.key "F">
+<!-- Export dialog -->
+<!ENTITY export.title "导出 Clippings">
+<!ENTITY exportButton.label "导出">
+<!ENTITY exportButton.accesskey "E">
+<!ENTITY exportFormatList.label "选择导出 Clippings 的格式：">
+<!ENTITY exportFormatList.accesskey "S">
+<!ENTITY description.caption "描述">
+<!ENTITY fmtClippings.listitem "Clippings 文件">
+<!ENTITY fmtClippings1x.listitem "Clippings 1.x 系列文件">
+<!ENTITY fmtHtmlDocument.listitem "HTML 文档">
+<!-- New Clipping dialog -->
+<!ENTITY newClippingsEntry.title "新建 Clipping">
+<!ENTITY newFolder.title "新建文件夹">
+<!ENTITY createIn.label "创建到：">
+<!ENTITY createIn.accesskey "i">
+<!ENTITY fileHere.label "文件保存位置">
+<!ENTITY chooseAsParent.label "选择此文件夹作为上层文件夹">
+<!ENTITY folderName.label "名称：">
+<!ENTITY folderName.accesskey "N">
+<!ENTITY createAsSubf.label "作为以下文件夹的子文件夹：">
+<!ENTITY createAsSubf.accesskey "C">
+<!ENTITY createAsUnquoted.label "创建为非引用文本">
+<!ENTITY createAsUnquoted.accesskey "u">
+<!ENTITY removeExtraLineBreaks.label "去除多余的换行">
+<!ENTITY removeExtraLineBreaks.accesskey "R">
+<!ENTITY tabGeneral.label "常规">
+<!ENTITY tabShortcutKey.label "快捷键">
+<!ENTITY none.label "(无)">
+<!-- Quote Options dialog (Thunderbird only) -->
+<!ENTITY pasteClippingAs.label "粘贴 Clipping 为">
+<!ENTITY pasteAsNormal.label "非引用文本">
+<!ENTITY pasteAsNormal.accesskey "N">
+<!ENTITY pasteAsQuoted.label "引用文本">
+<!ENTITY pasteAsQuoted.accesskey "Q">
+<!ENTITY rewrapLines.label "重新换行(推荐)">
+<!ENTITY rewrapLines.accesskey "w">
+<!-- HTML paste dialog -->
+<!ENTITY htmlClipping "所选 clipping 似乎包含 HTML标签。">
+<!ENTITY pasteAsFormatted.label "作为格式化文本粘贴">
+<!ENTITY pasteAsFormatted.accesskey "f">
+<!ENTITY pasteAsPlain.label "作为纯文本粘贴，保留 HTML标签">
+<!ENTITY pasteAsPlain.accesskey "P">
+<!ENTITY pasteClipping.label "粘贴 Clipping">
+<!-- Shortcut key prompt -->
+<!ENTITY clippingKey.title "粘贴 Clipping">
+<!ENTITY clippingKey.description "按下你想要粘贴的 clipping 的快捷键。">
+<!ENTITY clippingKeyHelp.description "F1 打开快捷键列表">
+<!ENTITY shortcutHelp.title "Clippings 快捷键">
+<!ENTITY shortcutCol.label "快捷键">
+<!ENTITY clippingCol.label "快捷键名称">
+<!ENTITY save.label "保存">
+<!ENTITY save.accesskey "S">
+<!ENTITY print.label "打印">
+<!ENTITY print.accesskey "P">
+<!ENTITY close.accesskey "C">
+<!-- Placeholder prompt -->
+<!ENTITY pasteClipping.title "粘贴 Clipping">
+<!-- Misc -->
+<!ENTITY okButton.label "确定">
+<!ENTITY cancelButton.label "取消">
+<!ENTITY closeButton.label "关闭">
+<!ENTITY closeButton.accesskey "C">
+<!ENTITY errorNoClipboardContent.desc "剪贴板为空或者不包含文本数据。">

@@ -1,0 +1,134 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://clippings/skin/hostapp.css" type="text/css"?> 
+
+<!DOCTYPE overlay SYSTEM "chrome://clippings/locale/clippings.dtd">
+
+<!-- ***** BEGIN LICENSE BLOCK *****
+   - Version: MPL 1.1
+   -
+   - The contents of this file are subject to the Mozilla Public License Version
+   - 1.1 (the "License"); you may not use this file except in compliance with
+   - the License. You may obtain a copy of the License at
+   - http://www.mozilla.org/MPL/
+   -
+   - Software distributed under the License is distributed on an "AS IS" basis,
+   - WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+   - for the specific language governing rights and limitations under the
+   - License.
+   -
+   - The Original Code is Clippings.
+   -
+   - The Initial Developer of the Original Code is
+   - Alex Eng <ateng@users.sourceforge.net>.
+   - Portions created by the Initial Developer are Copyright (C) 2005-2012
+   - the Initial Developer. All Rights Reserved.
+   -
+   - Contributor(s):
+   -
+   - ***** END LICENSE BLOCK ***** -->
+
+<overlay id="clippings-fx-browser-overlay"
+ xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+
+  <script type="application/javascript" src="chrome://clippings/content/fxBrowser.js"/>
+
+  <stringbundleset id="stringbundleset">
+    <stringbundle id="ae-clippings-strings" 
+     src="chrome://clippings/locale/clippings.properties"/>
+  </stringbundleset>
+
+  <commandset id="mainCommandSet">
+    <command id="ae_clippings_manager" 
+     oncommand="window.extensions.aecreations.clippings.openClippingsManager()"/>
+    <command id="ae_new_clipping_from_clpbd" 
+     oncommand="window.extensions.aecreations.clippings.newFromClipboard()"/>
+    <command id="ae_new_clipping_from_selection"
+     oncommand="window.extensions.aecreations.clippings.newFromSelection()"/>
+    <command id="ae_new_clipping_from_textbox" disabled="false"
+     oncommand="window.extensions.aecreations.clippings.newFromTextbox()"/>
+    <command id="ae_clippings_keyboard_insert" label="&insertClipping.label;"
+     oncommand="window.extensions.aecreations.clippings.keyboardInsertClipping(event)"/>
+  </commandset>
+
+  <keyset id="mainKeyset">
+    <!-- This doesn't work on Firefox 10 on Mac OS X (bug 24713) -->
+    <key id="key_ae_clippings" key="v"
+     modifiers="alt control"
+     command="ae_clippings_keyboard_insert" />
+
+    <!-- For Mac OS X -->
+    <key id="key_ae_clippings_mac" key="v"
+     modifiers="alt meta" command="ae_clippings_keyboard_insert" />
+  </keyset>
+
+  <popupset id="mainPopupSet">
+    <!-- Dialog panel for alert when attempting to create new clipping from
+         clipboard, and clipboard doesn't contain any text. -->
+    <panel id="ae-clippings-clipboard-alert">
+      <hbox align="center">
+	<image class="alert-icon" />
+        <description>&errorNoClipboardContent.desc;</description>
+      </hbox>
+      <hbox>
+	<spacer flex="1"/>
+        <button label="&okButton.label;" oncommand="this.parentNode.parentNode.hidePopup()"/>
+	<spacer flex="1"/>
+      </hbox>
+    </panel>
+  </popupset>
+
+  <popup id="contentAreaContextMenu">
+    <!-- Textbox and rich edit box -->
+    <menu id="ae-clippings-menu-1" label="&clippings.menuLabel;"
+     datasources="rdf:null"
+     ref="http://clippings.mozdev.org/rdf/user-clippings-v2"
+     insertafter="context-selectAll" hidden="true">
+
+      <menupopup id="ae-clippings-popup-1">
+        <menuitem id="ae-clippings-add" label="&new.menuLabel;" 
+	 accesskey="&new.accesskey;" command="ae_new_clipping_from_textbox"/>
+        <menuitem label="&openClippingsMgr.menuLabel;" 
+	 accesskey="&openClippingsMgr.accesskey;" 
+	 command="ae_clippings_manager"/>
+        <menuseparator/>
+      </menupopup>
+
+      <template id="ae-clippings-template">
+        <rule rdf:type="http://clippings.mozdev.org/ns/rdf#clipping">
+	  <menupopup>
+	    <menuitem class="menuitem-iconic ae-clippings-clipping" uri="rdf:*"
+	     label="rdf:http://clippings.mozdev.org/ns/rdf#name"
+	     clipName="rdf:http://clippings.mozdev.org/ns/rdf#name"
+	     clipText="rdf:http://clippings.mozdev.org/ns/rdf#text"
+	     oncommand="window.extensions.aecreations.clippings.insertClippingText(this.id,this.getAttribute('clipName'),this.getAttribute('clipText'))"/>
+	  </menupopup>
+	</rule>
+	<rule rdf:type="http://clippings.mozdev.org/ns/rdf#null">
+	  <menupopup>
+	    <menuitem label="&empty.label;" disabled="true" />
+	  </menupopup>
+	</rule>
+	<rule iscontainer="true">
+	  <menupopup>
+  	    <menu class="menu-iconic ae-clippings-folder-menu" uri="rdf:*"
+	     label="rdf:http://clippings.mozdev.org/ns/rdf#name">
+	      <menupopup />
+	    </menu>
+	  </menupopup>
+	</rule>
+      </template>
+    </menu>
+
+    <!-- Selected text in browser content area -->
+    <menu id="ae-clippings-menu-2" label="&clippings.menuLabel;"
+     insertafter="context-selectAll" hidden="true">
+      <menupopup>
+        <menuitem id="ae-clippings-new-from-select" label="&newFromSelect.menuLabel;" accesskey="&newFromSelect.accesskey;" command="ae_new_clipping_from_selection"/>
+        <menuitem label="&openClippingsMgr.menuLabel;" accesskey="&openClippingsMgr.accesskey;" command="ae_clippings_manager"/>
+      </menupopup>
+    </menu>
+  </popup>
+
+</overlay>
+

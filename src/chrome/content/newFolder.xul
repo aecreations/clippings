@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://clippings/skin/new.css" type="text/css"?>
+
+<!DOCTYPE window SYSTEM "chrome://clippings/locale/clippings.dtd">
+
+<!-- ***** BEGIN LICENSE BLOCK *****
+   - Version: MPL 1.1
+   -
+   - The contents of this file are subject to the Mozilla Public License Version
+   - 1.1 (the "License"); you may not use this file except in compliance with
+   - the License. You may obtain a copy of the License at
+   - http://www.mozilla.org/MPL/
+   -
+   - Software distributed under the License is distributed on an "AS IS" basis,
+   - WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+   - for the specific language governing rights and limitations under the
+   - License.
+   -
+   - The Original Code is Clippings.
+   -
+   - The Initial Developer of the Original Code is
+   - Alex Eng <ateng@users.sourceforge.net>.
+   - Portions created by the Initial Developer are Copyright (C) 2005-2008
+   - the Initial Developer. All Rights Reserved.
+   -
+   - Contributor(s):
+   -
+   - ***** END LICENSE BLOCK ***** -->
+
+<dialog id="ae-clippings-new-folder" 
+ xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+ title="&newFolder.title;"
+ orient="vertical"
+ buttons="accept,cancel"
+ onload="initDlg()" ondialogaccept="doOK()" ondialogcancel="doCancel()">
+
+  <script type="application/javascript" src="chrome://clippings/content/new.js"/>
+
+  <stringbundle id="ae-clippings-strings" 
+   src="chrome://clippings/locale/clippings.properties"/>
+
+  <label value="&folderName.label;" accesskey="&folderName.accesskey;"
+   control="folder-name"/>
+  <textbox id="folder-name" size="32" />
+
+  <separator class="thin"/>
+
+  <label value="&createAsSubf.label;" accesskey="&createAsSubf.accesskey;"
+   control="folder-menu-button"/>
+  <menulist id="folder-menu-button" class="clippings-root"
+   xmlns:clp="http://clippings.mozdev.org/ns/rdf#"
+   datasources="rdf:null"
+   ref="http://clippings.mozdev.org/rdf/user-clippings-v2"
+   label="&clippingsRoot.label;" width="128" crop="end" flex="1">
+
+    <menupopup id="folder-menu-popup" onpopupshowing="initMenuSeparator(this)">
+      <menuitem id="clippings-root"
+       class="menuitem-iconic clippings-root"
+       label="&clippingsRoot.label;"
+       oncommand="selectFolder(gClippingsSvc.kRootFolderURI)"/>
+    </menupopup>
+
+    <template id="create-in-template">
+      <rule iscontainer="true" clp:hassubfolders="true">
+        <menupopup>
+	  <menu class="menu-iconic ae-clippings-folder" uri="rdf:*"
+	   label="rdf:http://clippings.mozdev.org/ns/rdf#name">
+	    <menupopup>
+  	      <menuitem label="&chooseAsParent.label;"
+	       oncommand="selectFolder(this.parentNode.parentNode.id)"/>
+	      <menuseparator/>
+  	    </menupopup>
+	  </menu>
+	</menupopup>
+      </rule>
+      <rule iscontainer="true" clp:hassubfolders="false">
+        <menupopup>
+	  <menuitem class="menuitem-iconic ae-clippings-folder" uri="rdf:*"
+	   label="rdf:http://clippings.mozdev.org/ns/rdf#name"
+ 	   oncommand="selectFolder(this.id)"/>
+  	</menupopup>
+      </rule>
+    </template>
+  </menulist>
+
+  <separator class="thin"/>
+
+</dialog>

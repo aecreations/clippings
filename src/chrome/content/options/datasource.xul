@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE overlay SYSTEM "chrome://clippings/locale/clippings.dtd">
+
+<!-- ***** BEGIN LICENSE BLOCK *****
+   - Version: MPL 1.1
+   -
+   - The contents of this file are subject to the Mozilla Public License Version
+   - 1.1 (the "License"); you may not use this file except in compliance with
+   - the License. You may obtain a copy of the License at
+   - http://www.mozilla.org/MPL/
+   -
+   - Software distributed under the License is distributed on an "AS IS" basis,
+   - WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+   - for the specific language governing rights and limitations under the
+   - License.
+   -
+   - The Original Code is Clippings.
+   -
+   - The Initial Developer of the Original Code is
+   - Alex Eng <ateng@users.sourceforge.net>.
+   - Portions created by the Initial Developer are Copyright (C) 2011-2013
+   - the Initial Developer. All Rights Reserved.
+   -
+   - Contributor(s):
+   -
+   - ***** END LICENSE BLOCK ***** -->
+
+<overlay id="ae-clippings-prefpane-datasource" 
+ xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <prefpane id="pane-datasource" onpaneload="initPrefPaneDataSource()">
+    <preferences>
+      <preference id="max-backup-files-pref" type="int"
+       name="extensions.aecreations.clippings.backup.maxfiles"/>
+    </preferences>
+
+    <groupbox>
+      <caption label="&dataSrcLocation.caption;"/>
+      <hbox>
+        <radiogroup id="datasrc-location-opt">
+          <radio id="hostapp-profile-folder"
+  	         oncommand="changeDataSrcLocationOptions()"/>
+          <radio label="&otherLocation.label;" accesskey="&otherLocation.accesskey;"
+ 	         oncommand="changeDataSrcLocationOptions()"/>
+        </radiogroup>
+        <spacer flex="1"/>
+      </hbox>
+      <vbox style="-moz-margin-start:23px">
+        <textbox id="custom-datasrc-path" size="50" readonly="true"/>
+        <hbox>
+          <button id="custom-datasrc-brws"
+	   label="&fileBrowse.label;" accesskey="&fileBrowse.accesskey;"
+	   oncommand="browseDataSrcPath()"/>
+  	  <spacer flex="1"/>
+        </hbox>
+      </vbox>
+    </groupbox>
+    <groupbox orient="horizontal">
+      <caption label="&backupFiles.caption;"/>
+      <grid flex="1">
+        <columns>
+          <column/>
+          <column/>
+          <column flex="1"/>
+          <column/>
+       </columns>
+
+        <rows>
+          <row align="center">   
+            <label value="&maxFiles.label;" accesskey="&maxFiles.accesskey;"
+  	     control="max-backup-files"/>
+            <menulist id="max-backup-files" editable="true" 
+             preference="max-backup-files-pref">
+              <menupopup>
+                <menuitem label="0" value="0"/>
+      	        <menuitem label="5" value="5"/>
+                <menuitem label="10" value="10"/>
+                <menuitem label="20" value="20"/>
+                <menuitem label="50" value="50"/>
+                <menuitem label="100" value="100"/>
+              </menupopup>
+            </menulist>
+          </row>
+        </rows>
+      </grid>
+    </groupbox>
+  </prefpane>
+
+  <script type="application/javascript" src="chrome://clippings/content/options/datasource.js"/>
+
+</overlay>
