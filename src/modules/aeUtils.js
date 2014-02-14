@@ -29,7 +29,7 @@ Components.utils.import("resource://clippings/modules/aeMozApplication.js");
 const EXPORTED_SYMBOLS = ["aeUtils"];
 
 // Debugging flag - set to false to suppress extraneous JS console messages
-const DEBUG = false;
+const DEBUG = true;
 
 // Host app GUIDs
 const HOSTAPP_FX_GUID = "{ec8030f7-c20a-464f-9b0e-13a3a9e97384}";
