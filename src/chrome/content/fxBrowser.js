@@ -16,7 +16,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2005-2013
+ * Portions created by the Initial Developer are Copyright (C) 2005-2014
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -86,7 +86,7 @@ window.extensions.aecreations.clippings = {
 
 
   //
-  // Drag 'n drop event handlers for Clippings status bar icon
+  // Drag 'n drop event handlers for Clippings toolbar icon
   //
 
   statusBarDrop: function (aEvent)
@@ -682,7 +682,7 @@ window.extensions.aecreations.clippings = {
     var popup = document.getElementById("ae-clippings-popup-1");
     this.initClippingsPopup(popup, menu);
 
-    this.aeUtils.log(this.aeString.format("window.extensions.aecreations.clippings.initClippings():\nInitializing Clippings integration with host app window\nHost app: %s (version %s)\nDatasource location: %s", Application.name, Application.version, dataSrcPathURL));
+    this.aeUtils.log(this.aeString.format("window.extensions.aecreations.clippings.initClippings():\nInitializing Clippings integration with host app window\nHost app: %s (version %s); Australis UI: %b\nDatasource location: %s", Application.name, Application.version, this.isAustralisUI(), dataSrcPathURL));
 
     // Add null clipping to root folder if there are no items
     if (this.aeUtils.getPref("clippings.datasource.process_root", true) == true) {
@@ -780,23 +780,28 @@ window.extensions.aecreations.clippings = {
 
   _firstRunInit: function ()
   {
-    // Add the Clippings icon to the Add-on Bar.
-    var addonBar = document.getElementById("addon-bar");
-    var clippingsBtn = document.getElementById("ae-clippings-icon");
+    if (this.isAustralisUI()) {
+      CustomizableUI.addWidgetToArea("ae-clippings-icon", "nav-bar-customization-target");
+    }
+    else {
+      // Add the Clippings icon to the Add-on Bar.
+      var addonBar = document.getElementById("addon-bar");
+      var clippingsBtn = document.getElementById("ae-clippings-icon");
     
-    if (addonBar && !clippingsBtn) {
-      // The following Add-on Bar item would exist if the user has installed
-      // the Status-4-Evar extension.
-      var grippyElt = document.getElementById("status4evar-window-gripper");
+      if (addonBar && !clippingsBtn) {
+        // The following Add-on Bar item would exist if the user has installed
+        // the Status-4-Evar extension.
+        var grippyElt = document.getElementById("status4evar-window-gripper");
 
-      addonBar.insertItem("ae-clippings-icon", grippyElt);
-      addonBar.setAttribute("currentset", addonBar.currentSet);
-      document.persist("addon-bar", "currentset");
+        addonBar.insertItem("ae-clippings-icon", grippyElt);
+        addonBar.setAttribute("currentset", addonBar.currentSet);
+        document.persist("addon-bar", "currentset");
 
-      // Make the Add-on Bar appear if it was hidden.
-      var isAddonBarCollapsed = addonBar.getAttribute("collapsed");
-      if (isAddonBarCollapsed) {
-        addonBar.setAttribute("collapsed", "false");
+        // Make the Add-on Bar appear if it was hidden.
+        var isAddonBarCollapsed = addonBar.getAttribute("collapsed");
+        if (isAddonBarCollapsed) {
+          addonBar.setAttribute("collapsed", "false");
+        }
       }
     }
 
@@ -845,6 +850,12 @@ window.extensions.aecreations.clippings = {
 	this.alert(this.strBundle.getString("alertSaveFailed") + "\n" + e);
       }
     }
+  },
+
+
+  isAustralisUI: function ()
+  {
+    return document.getElementById("PanelUI-menu-button") != null;
   },
 
 
