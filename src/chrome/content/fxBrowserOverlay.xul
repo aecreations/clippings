@@ -20,7 +20,7 @@
    -
    - The Initial Developer of the Original Code is
    - Alex Eng <ateng@users.sourceforge.net>.
-   - Portions created by the Initial Developer are Copyright (C) 2005-2012
+   - Portions created by the Initial Developer are Copyright (C) 2005-2014
    - the Initial Developer. All Rights Reserved.
    -
    - Contributor(s):
@@ -76,6 +76,22 @@
 	<spacer flex="1"/>
       </hbox>
     </panel>
+
+    <!-- Context menu for Clippings toolbar button -->
+    <menupopup id="ae-clippings-popup"
+     onpopupshowing="window.extensions.aecreations.clippings.initToolbarBtnCxtMenu(event)">
+      <menuitem default="true" label="&openClippingsMgr.menuLabel;" 
+       accesskey="&openClippingsMgr.accesskey;" 
+       command="ae_clippings_manager" />
+      <menuitem id="ae-clippings-new-from-clipbd" 
+       label="&newFromClipboard.menuLabel;" 
+       accesskey="&newFromClipboard.accesskey;" 
+       command="ae_new_clipping_from_clpbd" />
+
+      <menu id="reset-auto-increment-vars" label="&resetAutoIncrVars.label;">
+        <menupopup id="reset-auto-increment-vars-menu-popup"></menupopup>
+      </menu>
+    </menupopup>
   </popupset>
 
   <popup id="contentAreaContextMenu">
@@ -130,5 +146,15 @@
     </menu>
   </popup>
 
+  <toolbarpalette id="BrowserToolbarPalette">
+    <toolbarbutton id="ae-clippings-icon"
+     class="toolbarbutton-1 chromeclass-toolbar-additional" 
+     label="&clippings.appName;" tooltiptext="&statusbar.tooltip;"
+     context="ae-clippings-popup"
+     oncommand="window.extensions.aecreations.clippings.openClippingsManager()"
+     ondragenter="return false;  // Necessary to allow the drop operation"
+     ondragover="return false;   // on this element."
+     ondrop="window.extensions.aecreations.clippings.statusBarDrop(event)"/>
+  </toolbarpalette>
 </overlay>
 
