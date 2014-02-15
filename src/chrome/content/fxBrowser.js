@@ -739,12 +739,20 @@ window.extensions.aecreations.clippings = {
     }
     catch (e) {}
 
-    // Initialize "New From Clipboard" command on status bar icon menu.
-    var ellipsis = this.showDialog ? this.strBundle.getString("ellipsis") : "";
-    var newFromClpbdCmd = document.getElementById("ae_new_clipping_from_clpbd");
-    newFromClpbdCmd.setAttribute("label",
-				 this.strBundle.getString("newFromClipbd")
-				 + ellipsis);
+    // Remove Clippings toolbar button's context menu if Clippings is
+    // integrated with the Australis UI.
+    if (this.isAustralisUI()) {
+      let clippingsBtn = document.getElementById("ae-clippings-icon");
+      clippingsBtn.removeAttribute("context");
+    }
+    else {
+      // Initialize "New From Clipboard" command.
+      let ellipsis = this.showDialog ? this.strBundle.getString("ellipsis") : "";
+      let newFromClpbdCmd = document.getElementById("ae_new_clipping_from_clpbd");
+      newFromClpbdCmd.setAttribute("label",
+                                   this.strBundle.getString("newFromClipbd")
+                                   + ellipsis);
+    }
 
     // Disable Clippings Manager window persistence via JavaScript if running
     // on Mac OS X, unless user has explicitly set it.
@@ -781,7 +789,7 @@ window.extensions.aecreations.clippings = {
   _firstRunInit: function ()
   {
     if (this.isAustralisUI()) {
-      CustomizableUI.addWidgetToArea("ae-clippings-icon", "nav-bar-customization-target");
+      CustomizableUI.addWidgetToArea("ae-clippings-icon", "nav-bar");
     }
     else {
       // Add the Clippings icon to the Add-on Bar.
