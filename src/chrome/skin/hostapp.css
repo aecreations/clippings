@@ -15,7 +15,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2005-2011
+ * Portions created by the Initial Developer are Copyright (C) 2005-2014
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -50,7 +50,11 @@ menu.ae-clippings-folder-menu[open="true"] {
   list-style-image: url("chrome://clippings/skin/images/folder-open.png");
 }
 
-#ae-clippings-icon, #ae-clippings-popup-1, #ae-clippings-popup-2 {
+#ae-clippings-clipboard-alert {
+  padding: 4px;
+}
+
+#ae-clippings-icon {
   list-style-image: url("chrome://clippings/skin/images/clippings.png");
 }
 
@@ -58,23 +62,25 @@ menu.ae-clippings-folder-menu[open="true"] {
   list-style-image: url("chrome://clippings/skin/images/clippings-hilite.png");
 }
 
-#ae-clippings-toolbarbutton:hover {
-  -moz-image-region: rect(0px, 60px, 24px, 30px);
+toolbarpaletteitem[place="palette"] > #ae-clippings-icon {
+  list-style-image: url("chrome://clippings/skin/images/clippings.png");
 }
 
-toolbar[iconsize="small"] #ae-clippings-toolbarbutton {
-  list-style-image:  url("chrome://clippings/skin/images/hostappToolbar.png");
-  -moz-image-region: rect(24px, 22px, 40px, 0px);
+
+/* Firefox Australis integration */
+#ae-clippings-icon[cui-areatype="toolbar"] {
+  list-style-image: url("chrome://clippings/skin/images/clippings16.png");
 }
 
-toolbar[iconsize="small"] #ae-clippings-toolbarbutton:hover {
-  -moz-image-region: rect(24px, 44px, 40px, 22px);
+#ae-clippings-icon[cui-areatype="toolbar"]:-moz-drag-over {
+  list-style-image: url("chrome://clippings/skin/images/clippings-hilite16.png");
 }
 
-#ae-clippings-toolbarbutton .toolbarbutton-menu-dropmarker {
-  display: none;
+#ae-clippings-icon[cui-areatype="menu-panel"],
+toolbarpaletteitem[place="palette"][removable="true"] > #ae-clippings-icon {
+  list-style-image: url("chrome://clippings/skin/images/clippings32.png");
 }
 
-#ae-clippings-clipboard-alert {
-  padding: 4px;
+#ae-clippings-icon[cui-areatype="menu-panel"]:-moz-drag-over {
+  list-style-image: url("chrome://clippings/skin/images/clippings-hilite32.png");
 }
