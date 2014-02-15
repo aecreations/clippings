@@ -1,6 +1,5 @@
 # Firefox
 overlay	chrome://browser/content/browser.xul	chrome://clippings/content/fxBrowserOverlay.xul
-overlay chrome://browser/content/browser.xul	chrome://clippings/content/fxBrowserStatusBarOverlay2.xul
 
 skin	clippings	classic/1.0	chrome/skin/
 
