@@ -48,9 +48,6 @@ var aeClippings3 = {
   E_CLIPPINGSSVC_NOT_INITIALIZED: "nsIClippingsService not initialized"
 };
 
-aeClippings3.aeUtils = aeUtils;
-aeClippings3.aePackagedClippings = aePackagedClippings;
-
 
 
 /*
@@ -110,21 +107,20 @@ aeClippings3._initDataSource = function ()
 aeClippings3._importPackagedClippings = function ()
 {
   AddonManager.getAddonByID(aeConstants.EXTENSION_ID, function (aAddon) {
-    let that = aeClippings3;
     let extInstallDirURI = aAddon.getResourceURI();
-    let extInstallDir = that.aeUtils.getFileFromURL(extInstallDirURI.spec);
-    let packagedDSFile = that.aePackagedClippings.getPackagedDataSrcFile(extInstallDir);
-    if (packagedDSFile) {
-      that.aeUtils.log("It appears that a packaged clipping datasource file exists.");
-      that._importPackagedClippingsHelper(packagedDSFile);
+    aePackagedClippings.init(extInstallDirURI.spec);
+
+    if (aePackagedClippings.exists()) {
+      aeUtils.log("Packaged clipping datasource file detected.");
+      aeClippings3._importPackagedClippingsHelper();
     }
   });
 };
 
-aeClippings3._importPackagedClippingsHelper = function (aPackagedDSFile)
+aeClippings3._importPackagedClippingsHelper = function ()
 {
   try {
-    aePackagedClippings.import(this._clippingsSvc, aPackagedDSFile);
+    aePackagedClippings.import(this._clippingsSvc);
   }
   catch (e if e == aePackagedClippings.E_FLUSH_FAILED) {
     aeUtils.alertEx(this._strBundle.getString("appName"),

@@ -41,23 +41,43 @@ var aePackagedClippings = {
   // Exceptions
   E_CLIPPINGSSVC_NOT_INITIALIZED: "nsIClippingsService not initialized",
   E_IMPORT_FAILED: "Import of packaged datasource failed",
-  E_FLUSH_FAILED:  "Flush after import of packaged datasource failed"
+  E_FLUSH_FAILED:  "Flush after import of packaged datasource failed",
+
+  _extInstallDir: null
 };
 
 
 /*
- * Returns the packaged data source file object (instance of nsIFile),
- * if it exists.
+ * Module initializer - must be invoked before any other methods
  */
-aePackagedClippings.getPackagedDataSrcFile = function (aClippingsInstallDir)
+aePackagedClippings.init = function (aExtensionInstallDirURIStr)
 {
-  var rv;
-  let pdsDir = aClippingsInstallDir.clone();
-  pdsDir.append(aePackagedClippings.PACKAGED_DS_DIRNAME);
+  var io = Components.classes["@mozilla.org/network/io-service;1"]
+                     .getService(Components.interfaces.nsIIOService);
+  var fh = io.getProtocolHandler("file")
+             .QueryInterface(Components.interfaces.nsIFileProtocolHandler);
+  this._extInstallDir = fh.getFileFromURLSpec(aExtensionInstallDirURIStr);
+};
+
+
+/*
+ * Returns true if there is a packaged datasource file, false otherwise.
+ */
+aePackagedClippings.exists = function ()
+{
+  return (this._getPackagedDataSrcFile() !== null);
+};
+
+
+aePackagedClippings._getPackagedDataSrcFile = function ()
+{
+  var rv = null;
+  let pdsDir = this._extInstallDir.clone();
+  pdsDir.append(this.PACKAGED_DS_DIRNAME);
 
   if (pdsDir.exists() && pdsDir.isDirectory()) {
     let pdsFile = pdsDir.clone();
-    pdsFile.append(aePackagedClippings.PACKAGED_DS_FILENAME);
+    pdsFile.append(this.PACKAGED_DS_FILENAME);
     if (pdsFile.exists() && pdsFile.isFile()) {
       rv = pdsFile;
     }
@@ -70,14 +90,15 @@ aePackagedClippings.getPackagedDataSrcFile = function (aClippingsInstallDir)
 /*
  * Import the packaged clippings data into the Clippings data source
  */
-aePackagedClippings.import = function (aClippingsSvc, aPackagedDSFile)
+aePackagedClippings.import = function (aClippingsSvc)
 {
   if (! aClippingsSvc) {
     throw this.E_CLIPPINGSSVC_NOT_INITIALIZED;
   }
 
+  var pkgDataSrcFile = this._getPackagedDataSrcFile();
   var fph = Components.classes["@mozilla.org/network/protocol;1?name=file"].createInstance(Components.interfaces.nsIFileProtocolHandler); 
-  var pkgDataSrcURL = fph.getURLSpecFromFile(aPackagedDSFile);
+  var pkgDataSrcURL = fph.getURLSpecFromFile(pkgDataSrcFile);
   var numImported = -1;
   var importShortcutKeys = true;
 
