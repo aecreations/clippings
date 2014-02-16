@@ -194,19 +194,6 @@ aeUtils.getFilePathFromURL = function (aFileURL)
 };
 
 
-// Returns the nsIFile object of the file with the given URL.
-aeUtils.getFileFromURL = function (aFileURL)
-{
-  var rv;
-  var io = Components.classes["@mozilla.org/network/io-service;1"]
-                     .getService(Components.interfaces.nsIIOService);
-  var fh = io.getProtocolHandler("file")
-             .QueryInterface(Components.interfaces.nsIFileProtocolHandler);
-  rv = fh.getFileFromURLSpec(aFileURL);
-  return rv;
-};
-
-
 // Throws an exception if profile directory retrieval failed.
 aeUtils.getUserProfileDir = function ()
 {
