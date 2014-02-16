@@ -51,6 +51,9 @@ var aePackagedClippings = {
  */
 aePackagedClippings.exists = function () 
 {
+  // !!!
+  // Helper method _getPkgClippingFile() fails on Firefox 29a and newer
+  // - issue #7, <https://github.com/aecreations/clippings/issues/7>
   var file = this._getPkgClippingFile();
   var filePath = file && file.path;
 
