@@ -16,7 +16,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2005-2013
+ * Portions created by the Initial Developer are Copyright (C) 2005-2014
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -190,6 +190,19 @@ aeUtils.getFilePathFromURL = function (aFileURL)
   var file = fh.getFileFromURLSpec(aFileURL);
   var rv = file.path;
 
+  return rv;
+};
+
+
+// Returns the nsIFile object of the file with the given URL.
+aeUtils.getFileFromURL = function (aFileURL)
+{
+  var rv;
+  var io = Components.classes["@mozilla.org/network/io-service;1"]
+                     .getService(Components.interfaces.nsIIOService);
+  var fh = io.getProtocolHandler("file")
+             .QueryInterface(Components.interfaces.nsIFileProtocolHandler);
+  rv = fh.getFileFromURLSpec(aFileURL);
   return rv;
 };
 
