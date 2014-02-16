@@ -88,9 +88,14 @@ Release to Web:
 DEFERRED TO FUTURE RELEASES
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- XPCOM interfaces - where wstring is used, use AUTF8String instead
-- nsIClippingsService refactoring: combine the methods 
-  flushDataSrc() and flushDataSrcEx()
+- XPCOM interfaces - where wstring is used, use AUTF8String instead (see
+  <https://developer.mozilla.org/en-US/docs/Developer_Guide/Interface_
+  development_guide/IDL_interface_rules?redirectlocale=en-US&redirectslug=
+  IDL_interface_rules> for an explanation)
+
+- nsIClippingsService refactoring: combine the methods flushDataSrc() and
+  flushDataSrcEx()
+  
 - Rename all XPCOM interfaces - prefix them with "aeI"
 
 - chrome://clippings/content/clippings.js:791 - `setInterval' called in
