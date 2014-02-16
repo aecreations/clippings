@@ -16,7 +16,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2007
+ * Portions created by the Initial Developer are Copyright (C) 2007-2014
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -46,35 +46,21 @@ var aePackagedClippings = {
 
 
 /*
- * Check for existence of packaged data source file
- * This file, if it exists, would reside in $EXTENSION_DIR/defaults/
+ * Returns the packaged data source file object (instance of nsIFile),
+ * if it exists.
  */
-aePackagedClippings.exists = function () 
+aePackagedClippings.getPackagedDataSrcFile = function (aClippingsInstallDir)
 {
-  // !!!
-  // Helper method _getPkgClippingFile() fails on Firefox 29a and newer
-  // - issue #7, <https://github.com/aecreations/clippings/issues/7>
-  var file = this._getPkgClippingFile();
-  var filePath = file && file.path;
-
-  return filePath != null;
-};
-
-
-aePackagedClippings._getPkgClippingFile = function ()
-{
-  var rv = null;
-  var clippingsExt = Components.classes['clippings@mozdev.org/clippings-extension;1'].createInstance(Components.interfaces.nsIClippingsExtension);
-  var extDir = clippingsExt.installDir;
-  var pdsDir = extDir.clone();
-  pdsDir.append(this.PACKAGED_DS_DIRNAME);
+  var rv;
+  let pdsDir = aClippingsInstallDir.clone();
+  pdsDir.append(aePackagedClippings.PACKAGED_DS_DIRNAME);
 
   if (pdsDir.exists() && pdsDir.isDirectory()) {
-    var pdsFile = pdsDir.clone();
-    pdsFile.append(this.PACKAGED_DS_FILENAME);
+    let pdsFile = pdsDir.clone();
+    pdsFile.append(aePackagedClippings.PACKAGED_DS_FILENAME);
     if (pdsFile.exists() && pdsFile.isFile()) {
       rv = pdsFile;
-    }    
+    }
   }
 
   return rv;
@@ -84,15 +70,14 @@ aePackagedClippings._getPkgClippingFile = function ()
 /*
  * Import the packaged clippings data into the Clippings data source
  */
-aePackagedClippings.import = function (aClippingsSvc)
+aePackagedClippings.import = function (aClippingsSvc, aPackagedDSFile)
 {
   if (! aClippingsSvc) {
     throw this.E_CLIPPINGSSVC_NOT_INITIALIZED;
   }
 
-  var pkgFile = this._getPkgClippingFile();
   var fph = Components.classes["@mozilla.org/network/protocol;1?name=file"].createInstance(Components.interfaces.nsIFileProtocolHandler); 
-  var pkgDataSrcURL = fph.getURLSpecFromFile(pkgFile);
+  var pkgDataSrcURL = fph.getURLSpecFromFile(aPackagedDSFile);
   var numImported = -1;
   var importShortcutKeys = true;
 

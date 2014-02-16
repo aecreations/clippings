@@ -16,13 +16,14 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2007-2013
+ * Portions created by the Initial Developer are Copyright (C) 2007-2014
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
  *
  * ***** END LICENSE BLOCK ***** */
 
+Components.utils.import("resource://gre/modules/AddonManager.jsm");
 Components.utils.import("resource://clippings/modules/aeMozApplication.js");
 Components.utils.import("resource://clippings/modules/aeConstants.js");
 Components.utils.import("resource://clippings/modules/aeUtils.js");
@@ -30,7 +31,7 @@ Components.utils.import("resource://clippings/modules/aeString.js");
 Components.utils.import("resource://clippings/modules/aePackagedClippings.js");
 
 //
-// Clippings version 3.x-4.0 initialization library
+// Clippings initialization library for version 3.0 and later
 //
 const EXPORTED_SYMBOLS = ["aeClippings3"];
 
@@ -46,6 +47,10 @@ var aeClippings3 = {
   E_INIT_MISSING_ARG:  "nsIClippingsService argument to aeClippings3 initializer is missing or undefined",
   E_CLIPPINGSSVC_NOT_INITIALIZED: "nsIClippingsService not initialized"
 };
+
+aeClippings3.aeUtils = aeUtils;
+aeClippings3.aePackagedClippings = aePackagedClippings;
+
 
 
 /*
@@ -104,23 +109,33 @@ aeClippings3._initDataSource = function ()
  */
 aeClippings3._importPackagedClippings = function ()
 {
-  if (aePackagedClippings.exists()) {
-    aeUtils.log("It appears that a packaged clipping datasource file exists");
+  AddonManager.getAddonByID(aeConstants.EXTENSION_ID, function (aAddon) {
+    let that = aeClippings3;
+    let extInstallDirURI = aAddon.getResourceURI();
+    let extInstallDir = that.aeUtils.getFileFromURL(extInstallDirURI.spec);
+    let packagedDSFile = that.aePackagedClippings.getPackagedDataSrcFile(extInstallDir);
+    if (packagedDSFile) {
+      that.aeUtils.log("It appears that a packaged clipping datasource file exists.");
+      that._importPackagedClippingsHelper(packagedDSFile);
+    }
+  });
+};
 
-    try {
-      aePackagedClippings.import(this._clippingsSvc);
-    }
-    catch (e if e == aePackagedClippings.E_FLUSH_FAILED) {
-      aeUtils.alertEx(this._strBundle.getString("appName"),
-		      this._strBundle.getString("errorFlushAfterPDSImport"));
-    }
-    catch (e) {
-      aeUtils.alertEx(this._strBundle.getString("appName"),
-	              this._strBundle.getString("errorDSImportFailure"));
-      var consoleSvc = Cc["@mozilla.org/consoleservice;1"].getService(Ci.nsIConsoleService);
-      var msg = aeString.format("Packaged Clipping import error: %s", e);
-      consoleSvc.logStringMessage(msg);
-    }
+aeClippings3._importPackagedClippingsHelper = function (aPackagedDSFile)
+{
+  try {
+    aePackagedClippings.import(this._clippingsSvc, aPackagedDSFile);
+  }
+  catch (e if e == aePackagedClippings.E_FLUSH_FAILED) {
+    aeUtils.alertEx(this._strBundle.getString("appName"),
+                    this._strBundle.getString("errorFlushAfterPDSImport"));
+  }
+  catch (e) {
+    aeUtils.alertEx(this._strBundle.getString("appName"),
+                    this._strBundle.getString("errorDSImportFailure"));
+    var consoleSvc = Cc["@mozilla.org/consoleservice;1"].getService(Ci.nsIConsoleService);
+    var msg = aeString.format("Packaged Clipping import error: %s", e);
+    consoleSvc.logStringMessage(msg);
   }
 };
 
