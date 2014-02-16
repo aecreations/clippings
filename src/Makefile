@@ -6,8 +6,7 @@ CHROME = ./chrome
 COMPONENTS = ./components
 COMP_FILES = $(COMPONENTS)/nsIClippingsService.xpt                            \
 $(COMPONENTS)/nsClippingsService.js                                           \
-$(COMPONENTS)/nsIDictionary.xpt $(COMPONENTS)/nsDictionary.js                 \
-$(COMPONENTS)/nsIClippingsExtension.xpt $(COMPONENTS)/nsClippingsExtension.js
+$(COMPONENTS)/nsIDictionary.xpt $(COMPONENTS)/nsDictionary.js
 MODULES = ./modules
 MODULE_FILES = $(MODULES)/aeClippings3.js $(MODULES)/aeClippingSubst.js       \
 $(MODULES)/aeConstants.js $(MODULES)/aeUtils.js $(MODULES)/aeString.js        \
