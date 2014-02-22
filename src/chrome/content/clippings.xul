@@ -549,11 +549,11 @@
            type="menu" orient="horizontal">
 	    <menupopup onpopupshowing="gFindBar.updateFilterMenu()">
 	      <menuitem id="find-filter-clippings"
-	       type="radio" name="find-filter"
+	       type="radio" name="find-filter" autocheck="false"
 	       label="&findClippings.label;"
                oncommand="gFindBar.setFilter(gFindBar.FILTER_CLIPPINGS)"/>
 	      <menuitem id="find-filter-clippings-and-fldrs"
-	       type="radio" name="find-filter" 
+	       type="radio" name="find-filter" autocheck="false" 
                label="&findClippingsAndFldrs.label;"
                oncommand="gFindBar.setFilter(gFindBar.FILTER_CLIPPINGS_AND_FLDRS)"/>
 	    </menupopup>
