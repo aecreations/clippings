@@ -151,7 +151,6 @@
 <!ENTITY exportFormatList.accesskey "S">
 <!ENTITY description.caption "Description">
 <!ENTITY fmtClippings.listitem "Clippings File">
-<!ENTITY fmtClippings1x.listitem "Clippings 1.x Series">
 <!ENTITY fmtHtmlDocument.listitem "HTML Document">
 
 <!-- New Clipping dialog -->
