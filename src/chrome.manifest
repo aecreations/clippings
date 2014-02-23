@@ -29,10 +29,6 @@ interfaces	components/nsIDictionary.xpt
 component	{8ebf6eef-c354-4211-89d0-603b45b76393}	components/nsClippingsService.js
 contract	clippings@mozdev.org/clippings;1	{8ebf6eef-c354-4211-89d0-603b45b76393}
 
-# nsIClippingsExtension
-component	{f74c71c7-7da2-4029-9786-1fa1dd99f842}	components/nsClippingsExtension.js
-contract	clippings@mozdev.org/clippings-extension;1	{f74c71c7-7da2-4029-9786-1fa1dd99f842}
-
 # nsIDictionary
 component	{1dd0cb45-aea3-4a52-8b29-01429a542863}	components/nsDictionary.js
 contract	clippings@mozdev.org/dictionary;1	{1dd0cb45-aea3-4a52-8b29-01429a542863}
