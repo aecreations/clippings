@@ -15,7 +15,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2005-2008
+ * Portions created by the Initial Developer are Copyright (C) 2005-2014
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -65,10 +65,6 @@ function exportFormatList_click(event)
     break;
 
   case 1:
-    desc = gStrBundle.getString("clippings1xFmtDesc");
-    break;
-
-  case 2:
     desc = gStrBundle.getString("htmlFmtDesc");
     break;
 
@@ -97,13 +93,6 @@ function doExport()
     break;
 
   case 1:
-    fp.defaultString = gStrBundle.getString("clipdat.rdf");
-    fp.defaultExtension = "rdf";
-    fp.appendFilter(gStrBundle.getString("clippings1xFilterDesc"), "*.rdf");
-    fileType = gClippingsSvc.FILETYPE_CLIPPINGS_1X;
-    break;
-
-  case 2:
     fp.defaultString = gStrBundle.getString("clippings.html");
     fp.defaultExtension = "html";
     fp.appendFilter(gStrBundle.getString("htmlFilterDesc"), "*.html");
