@@ -739,11 +739,13 @@ window.extensions.aecreations.clippings = {
     }
     catch (e) {}
 
-    // Remove Clippings toolbar button's context menu if Clippings is
-    // integrated with the Australis UI.
     if (this.isAustralisUI()) {
       let clippingsBtn = document.getElementById("ae-clippings-icon");
+      // TEMPORARY - Don't remove context menu on Clippings button - otherwise
+      // it will be impossible to reset auto-incrementing placeholders.
+      /**
       clippingsBtn.removeAttribute("context");
+      **/
     }
     else {
       // Initialize "New From Clipboard" command.
