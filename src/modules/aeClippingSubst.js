@@ -16,7 +16,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2007-2013
+ * Portions created by the Initial Developer are Copyright (C) 2007-2014
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -192,8 +192,12 @@ aeClippingSubst.processClippingText = function (aClippingInfo, aWnd)
   rv = rv.replace(/\$\[FOLDER\]/gm, aClippingInfo.parentFolderName);
   rv = rv.replace(/\$\[HOSTAPP\]/gm, Application.name + " " + Application.version);
   rv = rv.replace(/\$\[UA\]/gm, this._userAgentStr);
-  rv = rv.replace(/\$\[(\w+)\]/gm, fnReplace);
-  rv = rv.replace(/\#\[(\w+)\]/gm, fnAutoIncrement);
+
+  // Match placeholder names containing alphanumeric characters, and the
+  // following Unicode blocks: Latin-1 Supplement, Latin Extended-A, Latin
+  // Extended-B, Cyrillic, Hebrew.
+  rv = rv.replace(/\$\[([a-zA-Z0-9_\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)\]/gm, fnReplace);
+  rv = rv.replace(/\#\[([a-zA-Z0-9_\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)\]/gm, fnAutoIncrement);
 
   return rv;
 };
