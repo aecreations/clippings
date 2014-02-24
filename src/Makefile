@@ -2,6 +2,7 @@
 
 EXT_VER=`./getver.pl`
 DIST_FILE=clippings-$(EXT_VER).xpi
+DIST_DEST=/cygdrive/e/
 CHROME = ./chrome
 COMPONENTS = ./components
 COMP_FILES = $(COMPONENTS)/nsIClippingsService.xpt                            \
@@ -27,12 +28,15 @@ $(CHROME)/clippings.jar:
 $(COMP_FILES):
 	@cd $(COMPONENTS); make
 
+put:
+	cp -v $(DIST_FILE) $(DIST_DEST)
+
 clean:
-	rm -f ./$(DIST_FILE) $(CHROME)/clippings.jar
+	rm -fv ./$(DIST_FILE) $(CHROME)/clippings.jar
 	[ -f chrome.manifest.devel ] && rm -v chrome.manifest && mv -v chrome.manifest.devel chrome.manifest
 
 clean-all:
-	rm -f ./$(DIST_FILE) $(CHROME)/clippings.jar
+	rm -fv ./$(DIST_FILE) $(CHROME)/clippings.jar
 	@cd $(COMPONENTS); make clean
 	[ -f chrome.manifest.devel ] && rm -v chrome.manifest && mv -v chrome.manifest.devel chrome.manifest
 
