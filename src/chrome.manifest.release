@@ -43,7 +43,6 @@ locale	clippings	sv-SE	jar:chrome/clippings.jar!/locale/sv-SE/
 
 # XPCOM type libraries
 interfaces	components/nsIClippingsService.xpt
-interfaces	components/nsIClippingsExtension.xpt
 interfaces	components/nsIDictionary.xpt
 
 # nsIClippingsService
