@@ -21,8 +21,9 @@ skin	clippings	classic/1.0	chrome/skin/
 
 locale	clippings	en-US	chrome/locale/en-US/
 
+
+# XPCOM type libraries
 interfaces	components/nsIClippingsService.xpt
-interfaces	components/nsIClippingsExtension.xpt
 interfaces	components/nsIDictionary.xpt
 
 # nsIClippingsService
