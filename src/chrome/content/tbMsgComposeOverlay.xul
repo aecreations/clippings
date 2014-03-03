@@ -20,7 +20,7 @@
    -
    - The Initial Developer of the Original Code is
    - Alex Eng <ateng@users.sourceforge.net>.
-   - Portions created by the Initial Developer are Copyright (C) 2005-2012
+   - Portions created by the Initial Developer are Copyright (C) 2005-2014
    - the Initial Developer. All Rights Reserved.
    -
    - Contributor(s):
@@ -101,21 +101,6 @@
   </menupopup>
 
   <popupset>
-    <!-- Clippings submenu in the subject line context menu -->
-    <menupopup id="ae-clippings-subjectline-cxtmenu-popup">
-      <menu id="ae-clippings-menu-2"  label="&clippings.menuLabel;"
-       datasources="rdf:null"
-       ref="http://clippings.mozdev.org/rdf/user-clippings-v2"
-       template="ae-clippings-template">
-
-        <menupopup id="ae-clippings-popup-2">
-          <menuitem id="ae-clippings-add" label="&new.menuLabel;" accesskey="&new.accesskey;" command="ae_new_clipping_from_selection"/>
-          <menuitem label="&openClippingsMgr.menuLabel;" accesskey="&openClippingsMgr.accesskey;" command="ae_clippings_manager"/>
-          <menuseparator/>
-        </menupopup>
-      </menu>
-    </menupopup>
-
     <!-- Dialog panel for alert when attempting to create new clipping from
          clipboard, and clipboard doesn't contain any text. -->
     <panel id="ae-clippings-clipboard-alert" orient="vertical">
