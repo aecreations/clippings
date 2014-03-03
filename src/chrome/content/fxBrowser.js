@@ -47,7 +47,8 @@ window.extensions.aecreations.clippings = {
   _isErrMenuItemVisible:  false,
   _ds:                    null,
   _triggerNode:           null,
-
+  _mutationObserver:      null,
+  
   dataSrcInitialized:     false,
   isClippingsInitialized: false,
   showDialog:             true,
@@ -73,7 +74,8 @@ window.extensions.aecreations.clippings = {
       that.unload();
       window.removeEventListener("load", that, false);
       window.removeEventListener("unload", that, false);
-
+      that._mutationObserver.disconnect();
+      
       var hostAppCxtMenu = document.getElementById("contentAreaContextMenu");
       hostAppCxtMenu.removeEventListener("popupshowing", 
 					 that._initContextMenuItem,
@@ -739,11 +741,38 @@ window.extensions.aecreations.clippings = {
     }
     catch (e) {}
 
-    let clippingsBtn = document.getElementById("ae-clippings-icon");
-    if (!this.isAustralisUI() && clippingsBtn) {
-      // Remove the context menu on the Clippings toolbar button if on Firefox
-      // Australis UI - don't override default toolbar button context menu.
-      clippingsBtn.setAttribute("context", "ae-clippings-popup");
+    // Set the context menu to appear on the Clippings toolbar button, which
+    // could potentially be added to the Add-on Bar.  Not applicable in the
+    // Australis UI, which eliminiated the Add-on Bar. =(
+    if (! this.isAustralisUI()) {
+      let clippingsBtn = document.getElementById("ae-clippings-icon");
+
+      if (clippingsBtn) {
+        clippingsBtn.setAttribute("context", "ae-clippings-popup");
+      }
+
+      // Also make sure that the context menu on the Clippings toolbar button
+      // is set when it is added to any browser toolbar via the host app's
+      // customization UI.  Again, this is NOT applicable if on Australis.
+      this._mutationObserver = new MutationObserver(function (aMutationRecs, aMutationObs) {
+          aMutationRecs.forEach(function (aMutation) {
+              if (aMutation.type == "childList") {
+                for (let i = 0; i < aMutation.addedNodes.length; i++) {
+                  let addedNode = aMutation.addedNodes[i];
+                  if (addedNode.nodeName == "toolbarbutton" 
+                      && addedNode.id == "ae-clippings-icon") {
+                    addedNode.setAttribute("context", "ae-clippings-popup");
+                  }
+                }
+              }
+            });
+        });
+      let mutationObsConfig = { 
+        childList: true, 
+        subtree: true 
+      };
+      let mutnObsTarget = document.getElementById("browser-panel");
+      this._mutationObserver.observe(mutnObsTarget, mutationObsConfig);
 
       // Initialize "New From Clipboard" command.
       let ellipsis = this.showDialog ? this.strBundle.getString("ellipsis") : "";
