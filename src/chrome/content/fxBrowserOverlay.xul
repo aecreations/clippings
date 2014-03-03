@@ -153,7 +153,6 @@
     <toolbarbutton id="ae-clippings-icon"
      class="toolbarbutton-1 chromeclass-toolbar-additional" 
      label="&clippings.appName;" tooltiptext="&statusbar.tooltip;"
-     context="ae-clippings-popup"
      oncommand="window.extensions.aecreations.clippings.openClippingsManager()"
      ondragenter="return false;  // Necessary to allow the drop operation"
      ondragover="return false;   // on this element."
