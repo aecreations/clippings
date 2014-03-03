@@ -739,13 +739,12 @@ window.extensions.aecreations.clippings = {
     }
     catch (e) {}
 
-    if (this.isAustralisUI()) {
-      // Remove context menu on Clippings toolbar button if on Firefox
+    let clippingsBtn = document.getElementById("ae-clippings-icon");
+    if (!this.isAustralisUI() && clippingsBtn) {
+      // Remove the context menu on the Clippings toolbar button if on Firefox
       // Australis UI - don't override default toolbar button context menu.
-      let clippingsBtn = document.getElementById("ae-clippings-icon");
-      clippingsBtn.removeAttribute("context");
-    }
-    else {
+      clippingsBtn.setAttribute("context", "ae-clippings-popup");
+
       // Initialize "New From Clipboard" command.
       let ellipsis = this.showDialog ? this.strBundle.getString("ellipsis") : "";
       let newFromClpbdCmd = document.getElementById("ae_new_clipping_from_clpbd");
