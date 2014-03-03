@@ -16,7 +16,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2005-2013
+ * Portions created by the Initial Developer are Copyright (C) 2005-2014
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -47,7 +47,6 @@ window.extensions.aecreations.clippings = {
   isClippingsInitialized: false,
   showDialog:             true,
   showPasteOpts:          false,
-  subjectLineCxtMenu:     false,
   clippingsSvc:           null,
   strBundle:              null,
   _clippingsListener:     null,
@@ -77,20 +76,6 @@ window.extensions.aecreations.clippings = {
       hostAppCxtMenu.removeEventListener("popupshowing", 
 					 that._initContextMenuItem,
 					 false);
-
-      // Clippings submenu on subject line context menu doesn't work
-      /**
-      var subjectLineTextbox = document.getElementById("msgSubject");
-      var subjectLineHbox = document.getAnonymousElementByAttribute(subjectLineTextbox, "class", "textbox-input-box");
-      if (subjectLineHbox) {
-	var subjectLineCxtMenuPopup = document.getAnonymousElementByAttribute(subjectLineHbox, "anonid", "input-box-contextmenu");
-	if (subjectLineCxtMenuPopup) {
-	  subjectLineCxtMenuPopup.removeEventListener("popupshowing",
-						      that._initContextMenuItem,
-						      false);
-	}
-      }
-      **/
     }
   },
 
@@ -679,12 +664,6 @@ window.extensions.aecreations.clippings = {
     var popup1 = document.getElementById("ae-clippings-popup-1");
     this.initClippingsPopup(popup1, menu1);
 
-    // Message subject line context menu
-    var menu2 = document.getElementById("ae-clippings-menu-2");
-    var popup2 = document.getElementById("ae-clippings-popup-2");
-    this.initClippingsPopup(popup2, menu2);
-
-
     this.aeUtils.log(this.aeString.format("gClippings.initClippings(): Initializing Clippings integration with host app window: %s", window.location.href));
 
     // Add null clipping to root folder if there are no items
@@ -733,14 +712,6 @@ window.extensions.aecreations.clippings = {
 				 this.strBundle.getString("newFromClipbd")
 				 + ellipsis);
 
-    if (this.subjectLineCxtMenu) {
-      var subjectLineTextbox = document.getElementById("msgSubject");
-      /**
-	 subjectLineTextbox.addEventListener("click", this._checkSubjectLineCxtMenu, false);
-      this._initSubjectLineCxtMenu(subjectLineTextbox);
-      **/
-    }
-
     // Disable Clippings Manager window persistence via JavaScript if running
     // on Mac OS X, unless user has explicitly set it.
     if (this.aeUtils.getOS() == "Darwin") {
@@ -761,53 +732,11 @@ window.extensions.aecreations.clippings = {
   },
 
 
-  _checkSubjectLineCxtMenu: function (aEvent)
-  {
-    // This method is called within an event listener, so 'this' won't refer to
-    // the Clippings overlay object
-    let that = window.extensions.aecreations.clippings;
-    var subjectLineClippingsMenu = document.getElementById("ae-clippings-menu-2");
-
-    if (! subjectLineClippingsMenu) {
-      // subjectLineClippingsMenu would be null if the Clippings submenu has
-      // disappeared from the subject line textbox context menu
-      var subjectLineTextbox = document.getElementById("msgSubject");
-      that._initSubjectLineCxtMenu.apply(that, [subjectLineTextbox]);
-    }
-  },
-
-
-  _initSubjectLineCxtMenu: function (aTextbox) 
-  {
-    this.aeUtils.log(">> gClippings._initSubjectLineCxtMenu()");
-    
-    // document.getAnonymousElementByAttribute() will only look one level below
-    // the element argument, i.e. the 1st parameter
-    var subjectLineHbox = document.getAnonymousElementByAttribute(aTextbox, "class", "textbox-input-box");
-    if (subjectLineHbox) {
-      var subjectLineCxtMenuPopup = document.getAnonymousElementByAttribute(subjectLineHbox, "anonid", "input-box-contextmenu");
-      if (subjectLineCxtMenuPopup) {
-	this.aeUtils.log("gClippings._initSubjectLineCxtMenu(): subjectLineCxtMenuPopup = " + subjectLineCxtMenuPopup + "; node name = " + (subjectLineCxtMenuPopup ? subjectLineCxtMenuPopup.nodeName : "(n/a)"));
-
-	// Add the Clippings menu to subjectLineCxtMenuPopup
-	var clippingsMenu2 = document.getElementById("ae-clippings-menu-2");
-	this.aeUtils.log("gClippings._initSubjectLineCxtMenu(): clippingsMenu2 = " + clippingsMenu2);
-	subjectLineCxtMenuPopup.appendChild(clippingsMenu2);
-	subjectLineCxtMenuPopup.addEventListener("popupshowing",
-						 this._initContextMenuItem,
-						 false);
-      }
-    }
-    this.aeUtils.log("<< gClippings._initSubjectLineCxtMenu()");
-  },
-
-
   // To be invoked only by the `popupshowing' event handler on the host app
   // context menu.
   _initContextMenuItem: function (aEvent) {
     let that = window.extensions.aecreations.clippings;
-    if (aEvent.target.id == "msgComposeContext"
-	|| aEvent.target.getAttribute("anonid") == "input-box-contextmenu") {
+    if (aEvent.target.id == "msgComposeContext") {
       that.initContextMenuItem.apply(that, arguments);
     }
   },
@@ -821,9 +750,6 @@ window.extensions.aecreations.clippings = {
 
     if (aEvent.target.id == "msgComposeContext") {
       clippingsMenu = document.getElementById("ae-clippings-menu-1");
-    }
-    else if (aEvent.target.getAttribute("anonid") == "input-box-contextmenu") {
-      clippingsMenu = document.getElementById("ae-clippings-menu-2");
     }
 
     this._initCxtMenuItem(clippingsMenu);
@@ -844,10 +770,6 @@ window.extensions.aecreations.clippings = {
 
     if (aMenupopup.id == "ae-clippings-menu-1") {
       selection = this.getSelectedText();
-    }
-    else if (aMenupopup.id == "ae-clippings-menu-2") {
-      var subjectLineTextbox = document.getElementById("msgSubject");
-      selection = subjectLineTextbox.value.substring(subjectLineTextbox.selectionStart, subjectLineTextbox.selectionEnd);
     }
   
     addEntryCmd.setAttribute("disabled", selection == "");
