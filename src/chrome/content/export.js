@@ -107,7 +107,7 @@ function doExport()
 
   do {
     // TO DO: nsIFilePicker.show() is being deprecated as of Firefox/
-    // Thunderbird 17; replaced with new method showAsync()
+    // Thunderbird 17; replaced with new method open()
     try {
       dlgResult = fp.show();
     }
