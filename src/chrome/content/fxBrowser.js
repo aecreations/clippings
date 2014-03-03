@@ -740,12 +740,10 @@ window.extensions.aecreations.clippings = {
     catch (e) {}
 
     if (this.isAustralisUI()) {
+      // Remove context menu on Clippings toolbar button if on Firefox
+      // Australis UI - don't override default toolbar button context menu.
       let clippingsBtn = document.getElementById("ae-clippings-icon");
-      // TEMPORARY - Don't remove context menu on Clippings button - otherwise
-      // it will be impossible to reset auto-incrementing placeholders.
-      /**
       clippingsBtn.removeAttribute("context");
-      **/
     }
     else {
       // Initialize "New From Clipboard" command.
@@ -917,7 +915,6 @@ window.extensions.aecreations.clippings = {
     clippingsMenu1.builder.refresh();
     clippingsMenu1.builder.rebuild();
 
-    var menu = null;
     var strBundle = document.getElementById("ae-clippings-strings");
     var ellipsis = this.showDialog ? this.strBundle.getString("ellipsis") : "";
     var clippingsMenu2 = document.getElementById("ae-clippings-menu-2");
@@ -961,7 +958,6 @@ window.extensions.aecreations.clippings = {
 	  if (gContextMenu.isTextSelected) {
 	    clippingsMenu1.hidden = false;
 	    clippingsMenu2.hidden = true;
-	    menu = clippingsMenu1;
 	      
 	    addEntryCmd.setAttribute("disabled", "false");
 	    addEntryCmd.setAttribute("label", this.strBundle.getString("newFromSelect") + ellipsis);
@@ -975,7 +971,6 @@ window.extensions.aecreations.clippings = {
 
 	    clippingsMenu1.hidden = false;
 	    clippingsMenu2.hidden = true;
-	    menu = clippingsMenu1;
 	    addEntryCmd.setAttribute("label", this.strBundle.getString("new") + ellipsis);
 	  }
 	}
@@ -983,9 +978,10 @@ window.extensions.aecreations.clippings = {
 	  addEntryCmd.setAttribute("disabled", "true");
 	}
       }
+
+      this._initAutoIncrementPlaceholderMenu(1);
       clippingsMenu1.hidden = false;
       clippingsMenu2.hidden = true;
-      menu = clippingsMenu1;
     }
 
     // Selected text in browser content area
@@ -999,6 +995,7 @@ window.extensions.aecreations.clippings = {
 	doc = document.popupNode.ownerDocument;
       }
 
+      this._initAutoIncrementPlaceholderMenu(2);
       clippingsMenu1.hidden = true;
       clippingsMenu2.hidden = false;
 
@@ -1008,6 +1005,7 @@ window.extensions.aecreations.clippings = {
 			       + ellipsis);
     }
   },
+
 
   hideContextMenuItem: function (aEvent)
   {
@@ -1022,14 +1020,11 @@ window.extensions.aecreations.clippings = {
   },
 
 
-  initToolbarBtnCxtMenu: function (aEvent)
+  _initAutoIncrementPlaceholderMenu: function (aWhich)
   {
-    if (aEvent.target.id != "ae-clippings-popup") {
-      return;
-    }
-
-    var resetAutoIncrVarsMenu = document.getElementById("reset-auto-increment-vars");
-    var autoIncrVarsMenuPopup = document.getElementById("reset-auto-increment-vars-menu-popup");
+    var resetAutoIncrVarsMenu = document.getElementById("reset-auto-increment-vars-" + aWhich);
+    var resetAutoIncrVarsMenuseparator = document.getElementById("reset-auto-increment-vars-separator-" + aWhich);
+    var autoIncrVarsMenuPopup = document.getElementById("reset-auto-increment-vars-menu-popup-" + aWhich);
 
     // Refresh the menu of auto-increment placeholders.
     while (autoIncrVarsMenuPopup.firstChild) {
@@ -1039,9 +1034,11 @@ window.extensions.aecreations.clippings = {
     var autoIncrementVars = this.aeClippingSubst.getAutoIncrementVarNames();
     var numAutoIncrVars = autoIncrementVars.length;
     if (numAutoIncrVars == 0) {
+      resetAutoIncrVarsMenuseparator.style.display = "none";
       resetAutoIncrVarsMenu.style.display = "none";
     }
     else {
+      resetAutoIncrVarsMenuseparator.style.display = "-moz-box";
       resetAutoIncrVarsMenu.style.display = "-moz-box";
       for (let i = 0; i < numAutoIncrVars; i++) {
         var menuItem = document.createElement("menuitem");

@@ -77,9 +77,8 @@
       </hbox>
     </panel>
 
-    <!-- Context menu for Clippings toolbar button -->
-    <menupopup id="ae-clippings-popup"
-     onpopupshowing="window.extensions.aecreations.clippings.initToolbarBtnCxtMenu(event)">
+    <!-- Context menu for Clippings toolbar button (except for Australis UI) -->
+    <menupopup id="ae-clippings-popup">
       <menuitem default="true" label="&openClippingsMgr.menuLabel;" 
        accesskey="&openClippingsMgr.accesskey;" 
        command="ae_clippings_manager" />
@@ -87,10 +86,6 @@
        label="&newFromClipboard.menuLabel;" 
        accesskey="&newFromClipboard.accesskey;" 
        command="ae_new_clipping_from_clpbd" />
-
-      <menu id="reset-auto-increment-vars" label="&resetAutoIncrVars.label;">
-        <menupopup id="reset-auto-increment-vars-menu-popup"></menupopup>
-      </menu>
     </menupopup>
   </popupset>
 
@@ -107,6 +102,10 @@
         <menuitem label="&openClippingsMgr.menuLabel;" 
 	 accesskey="&openClippingsMgr.accesskey;" 
 	 command="ae_clippings_manager"/>
+	<menuseparator id="reset-auto-increment-vars-separator-1"/>
+        <menu id="reset-auto-increment-vars-1" label="&resetAutoIncrVars.label;">
+          <menupopup id="reset-auto-increment-vars-menu-popup-1"></menupopup>
+        </menu>
         <menuseparator/>
       </menupopup>
 
@@ -142,6 +141,10 @@
       <menupopup>
         <menuitem id="ae-clippings-new-from-select" label="&newFromSelect.menuLabel;" accesskey="&newFromSelect.accesskey;" command="ae_new_clipping_from_selection"/>
         <menuitem label="&openClippingsMgr.menuLabel;" accesskey="&openClippingsMgr.accesskey;" command="ae_clippings_manager"/>
+	<menuseparator id="reset-auto-increment-vars-separator-2"/>
+        <menu id="reset-auto-increment-vars-2" label="&resetAutoIncrVars.label;">
+          <menupopup id="reset-auto-increment-vars-menu-popup-2"></menupopup>
+        </menu>
       </menupopup>
     </menu>
   </popup>

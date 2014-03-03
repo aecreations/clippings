@@ -69,6 +69,10 @@
       <menupopup id="ae-clippings-popup-1">
         <menuitem id="ae-clippings-add" label="&new.menuLabel;" accesskey="&new.accesskey;" command="ae_new_clipping_from_selection"/>
         <menuitem label="&openClippingsMgr.menuLabel;" accesskey="&openClippingsMgr.accesskey;" command="ae_clippings_manager"/>
+	<menuseparator id="reset-auto-increment-vars-separator"/>
+        <menu id="reset-auto-increment-vars" label="&resetAutoIncrVars.label;">
+          <menupopup id="reset-auto-increment-vars-menu-popup"></menupopup>
+        </menu>
         <menuseparator/>
       </menupopup>
 
@@ -125,9 +129,6 @@
        label="&newFromClipboard.menuLabel;" 
        accesskey="&newFromClipboard.accesskey;" 
        command="ae_new_clipping_from_clpbd" />
-      <menu id="reset-auto-increment-vars" label="&resetAutoIncrVars.label;">
-        <menupopup id="reset-auto-increment-vars-menu-popup"></menupopup>
-      </menu>
       <menuseparator/>
       <menuitem id="ae-clippings-show-paste-opts"
        type="checkbox" checked="false" label="&showPasteOpts.label;"
