@@ -767,12 +767,9 @@ window.extensions.aecreations.clippings = {
               }
             });
         });
-      let mutationObsConfig = { 
-        childList: true, 
-        subtree: true 
-      };
+ 
       let mutnObsTarget = document.getElementById("browser-panel");
-      this._mutationObserver.observe(mutnObsTarget, mutationObsConfig);
+      this._mutationObserver.observe(mutnObsTarget, {childList:true, subtree:true});
 
       // Initialize "New From Clipboard" command.
       let ellipsis = this.showDialog ? this.strBundle.getString("ellipsis") : "";
