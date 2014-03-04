@@ -777,7 +777,7 @@ function init()
 
   // Window geometry (size and position) persistence
   if (isJSWindowGeometryPersistenceEnabled()) {
-    gMoveTimerID = window.setInterval(windowMove, 1000);
+    gMoveTimerID = window.setInterval(function () { windowMove(); }, 1000);
     window.onresize = windowResize;
   }
 
