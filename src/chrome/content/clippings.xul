@@ -547,13 +547,13 @@
           <label value="&findBar.label;" control="find-clipping"/>
 	  <toolbarbutton id="find-filter-menu" class="find-filter-clippings"
            type="menu" orient="horizontal">
-	    <menupopup onpopupshowing="gFindBar.updateFilterMenu()">
+	    <menupopup>
 	      <menuitem id="find-filter-clippings"
-	       type="radio" name="find-filter" autocheck="false"
+	       type="radio" name="find-filter" checked="true"
 	       label="&findClippings.label;"
                oncommand="gFindBar.setFilter(gFindBar.FILTER_CLIPPINGS)"/>
 	      <menuitem id="find-filter-clippings-and-fldrs"
-	       type="radio" name="find-filter" autocheck="false" 
+	       type="radio" name="find-filter"
                label="&findClippingsAndFldrs.label;"
                oncommand="gFindBar.setFilter(gFindBar.FILTER_CLIPPINGS_AND_FLDRS)"/>
 	    </menupopup>
