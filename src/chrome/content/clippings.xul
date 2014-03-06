@@ -319,6 +319,18 @@
       <menuitem label="&deleteClipping.label;" accesskey="&deleteClipping.accesskey;" command="cmd_delete"/>
     </menupopup>
 
+    <!-- Find Bar filter menu -->
+    <menupopup id="find-filter-menupopup" position="after_start">
+      <menuitem id="find-filter-clippings"
+       type="radio" name="find-filter" checked="true"
+       label="&findClippings.label;"
+       oncommand="gFindBar.setFilter(gFindBar.FILTER_CLIPPINGS)"/>
+      <menuitem id="find-filter-clippings-and-fldrs"
+       type="radio" name="find-filter"
+       label="&findClippingsAndFldrs.label;"
+       oncommand="gFindBar.setFilter(gFindBar.FILTER_CLIPPINGS_AND_FLDRS)"/>
+    </menupopup>
+
     <!-- Dialog panel for alert when attempting to create new clipping from
          clipboard, and clipboard doesn't contain any text. -->
     <panel id="ae-clippings-clipboard-alert">
@@ -545,19 +557,14 @@
       <rows>
         <row align="center">
           <label value="&findBar.label;" control="find-clipping"/>
+
 	  <toolbarbutton id="find-filter-menu" class="find-filter-clippings"
-           type="menu" orient="horizontal">
-	    <menupopup>
-	      <menuitem id="find-filter-clippings"
-	       type="radio" name="find-filter" checked="true"
-	       label="&findClippings.label;"
-               oncommand="gFindBar.setFilter(gFindBar.FILTER_CLIPPINGS)"/>
-	      <menuitem id="find-filter-clippings-and-fldrs"
-	       type="radio" name="find-filter"
-               label="&findClippingsAndFldrs.label;"
-               oncommand="gFindBar.setFilter(gFindBar.FILTER_CLIPPINGS_AND_FLDRS)"/>
-	    </menupopup>
-	  </toolbarbutton>
+           type="menu" orient="horizontal" popup="find-filter-menupopup"/>
+
+          <!-- Alternate Find Bar filter button for use on Mac OS X -->
+          <button id="find-filter-menu-btn" class="find-filter-clippings"
+           type="menu" popup="find-filter-menupopup" hidden="true"/>
+
           <textbox id="find-clipping" type="search"
            oncommand="gFindBar.updateSearch(this.value)"/>
           <toolbarbutton id="find-next" orient="horizontal"

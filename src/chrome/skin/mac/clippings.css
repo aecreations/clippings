@@ -244,34 +244,24 @@ toolbarbutton .toolbarbutton-icon {
   -moz-image-region: rect(32px, 176px, 48px, 160px);
 }
 
-#find-filter-menu {
-  min-width: 28px;
+/* Mac-specific Find Bar filter button */
+#find-filter-menu-btn {
+  min-width: 10px;
+  min-height: 22px;
+  width: 36px;
   margin-left: 0px;
+  margin-right: 3px;
+  list-style-image: url("chrome://clippings/skin/images/Toolbar.png");
 }
 
-#find-filter-menu.find-filter-clippings {
+#find-filter-menu-btn.find-filter-clippings image {
   -moz-image-region: rect(0px, 208px, 16px, 192px);
 }
 
-#find-filter-menu.find-filter-clippings:hover {
-  -moz-image-region: rect(16px, 208px, 32px, 192px);
-}
-
-#find-filter-menu.find-filter-clippings:active {
-  -moz-image-region: rect(32px, 208px, 48px, 192px);
-}
-
-#find-filter-menu.find-filter-clippings-and-fldrs {
+#find-filter-menu-btn.find-filter-clippings-and-fldrs image {
   -moz-image-region: rect(0px, 224px, 16px, 208px);
 }
 
-#find-filter-menu.find-filter-clippings-and-fldrs:hover {
-  -moz-image-region: rect(16px, 224px, 32px, 208px);
-}
-
-#find-filter-menu.find-filter-clippings-and-fldrs:active {
-  -moz-image-region: rect(32px, 224px, 48px, 208px);
-}
 
 /* Find bar textbox */
 #find-clipping {

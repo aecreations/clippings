@@ -446,12 +446,19 @@ var gFindBar = {
   _updateSrchResults: false,
   _isSrchActivated: false,
   _srchFilter: null,
+  _altFindBarFilterBtn: false,
 
   init: function ()
   {
     this._findBarElt = $("find-bar");
     this._findStatusElt = $("find-status");
     this._srchFilter = this.FILTER_CLIPPINGS;
+
+    if (aeUtils.getOS() == "Darwin") {
+      this._altFindBarFilterBtn = true;
+      $("find-filter-menu").setAttribute("hidden", "true");
+      $("find-filter-menu-btn").removeAttribute("hidden");
+    }
   },
 
   show: function ()
@@ -487,14 +494,17 @@ var gFindBar = {
   {
     this._srchFilter = aFilter;
 
+    var findFilterBtnId = "find-filter-menu";
+    findFilterBtnId += (this._altFindBarFilterBtn ? "-btn" : "");
+
     // Update the filter button image.
     if (this._srchFilter == this.FILTER_CLIPPINGS) {
-      $("find-filter-menu").className = "find-filter-clippings";
+      $(findFilterBtnId).className = "find-filter-clippings";
     }
     else if (this._srchFilter == this.FILTER_CLIPPINGS_AND_FLDRS) {
-      $("find-filter-menu").className = "find-filter-clippings-and-fldrs";
+      $(findFilterBtnId).className = "find-filter-clippings-and-fldrs";
     }
-    
+
     this.setSearchResultsUpdateFlag();
   },
 
