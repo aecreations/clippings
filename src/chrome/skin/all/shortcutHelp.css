@@ -34,6 +34,10 @@ toolbar {
   border-bottom: none;
 }
 
+.toolbar-separator {
+  width: 8px;
+}
+
 toolbarbutton:not(#close) {
   list-style-image: url("chrome://clippings/skin/images/Toolbar.png");
 }
@@ -46,20 +50,12 @@ toolbarbutton:not(#close) {
   -moz-image-region: rect(16px, 240px, 32px, 224px);
 }
 
-#save:active {
-  -moz-image-region: rect(32px, 240px, 48px, 224px);
-}
-
 #print {
   -moz-image-region: rect(0px, 256px, 16px, 240px);
 }
 
 #print:hover {
   -moz-image-region: rect(16px, 256px, 32px, 240px);
-}
-
-#print:active {
-  -moz-image-region: rect(32px, 256px, 48px, 240px);
 }
 
 #close {
