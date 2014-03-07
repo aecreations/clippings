@@ -222,6 +222,8 @@ toolbarbutton .toolbarbutton-icon {
 
 #find-next {
   -moz-image-region: rect(0px, 160px, 16px, 144px);
+  -moz-appearance: toolbarbutton;
+  margin-right: 0;
 }
 
 #find-next:hover {
@@ -234,6 +236,8 @@ toolbarbutton .toolbarbutton-icon {
 
 #find-prev {
   -moz-image-region: rect(0px, 176px, 16px, 160px);
+  -moz-appearance: toolbarbutton;
+  margin-left: 0;
 }
 
 #find-prev:hover {
