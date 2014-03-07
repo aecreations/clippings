@@ -15,7 +15,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2005-2013
+ * Portions created by the Initial Developer are Copyright (C) 2005-2014
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -248,7 +248,7 @@ toolbarbutton .toolbarbutton-icon {
 #find-filter-menu-btn {
   min-width: 10px;
   min-height: 22px;
-  width: 36px;
+  width: 40px;
   margin-left: 0px;
   margin-right: 3px;
   list-style-image: url("chrome://clippings/skin/images/Toolbar.png");
