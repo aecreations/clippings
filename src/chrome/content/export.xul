@@ -34,7 +34,7 @@
  buttons="accept, cancel"
  buttonlabelaccept="&exportButton.label;"
  buttonaccesskeyaccept="&exportButton.accesskey;"
- onload="initDlg()" ondialogaccept="doExport()"
+ onload="initDlg()" ondialogaccept="doExport();return false;"
  ondialogcancel="doCancel()">
 
   <script type="application/x-javascript" src="chrome://clippings/content/export.js"/>
