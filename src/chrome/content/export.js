@@ -102,34 +102,17 @@ function doExport()
     break;
   }
 
-  var rv = false;
-  var dlgResult;
-
-  do {
-    // TO DO: nsIFilePicker.show() is being deprecated as of Firefox/
-    // Thunderbird 17; replaced with new method open()
-    try {
-      dlgResult = fp.show();
-    }
-    catch (e) {
-      alert("Failed to display file save dialog: " + e);
-    }
-
-    if (dlgResult == fp.returnReplace) {
-      if (fileType == gClippingsSvc.FILETYPE_RDF_XML
-	  || fileType == gClippingsSvc.FILETYPE_CLIPPINGS_1X) {
-	// Workaround to bug 14158: don't allow export to a file with the same
-	// name as an existing datasource file in the same folder.
-	doAlert(gStrBundle.getString('errorOverwriteExisting'));
-	continue;
+  let fpShownCallback = {
+    done: function (aResult) {
+      if (aResult == fp.returnCancel) {
+        return;
       }
-      else {
+
+      if (aResult == fp.returnReplace) {
 	var oldFile = fp.file.QueryInterface(Components.interfaces.nsIFile);
 	oldFile.remove(false);
       }
-    }
 
-    if (dlgResult != fp.returnCancel) {
       var url = fp.fileURL.QueryInterface(Components.interfaces.nsIURI).spec;
       var path = fp.file.QueryInterface(Components.interfaces.nsIFile).path;
       var fnExport;
@@ -153,22 +136,6 @@ function doExport()
 	data = data.replace(/&lt;br&gt;/g, "<br>");
 
 	var charset = "UTF-8";
-
-	// Need to handle Firefox 1.0.x where nsIConverterOutputStream isn't
-	// available, and strings sometimes cannot be converted to Unicode as a
-	// result.
-	if (! ("nsIConverterOutputStream" in Components.interfaces)) {
-	  var conv = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"].createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
-	  conv.charset = charset;
-    
-	  try {
-	    conv.ConvertToUnicode(data);
-	  }
-	  catch (e) {
-	    charset = "ISO-8859-1";
-	  }
-	}
-      
 	var doctype = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">";
 	var meta = "<META http-equiv=\"Content-Type\" content=\"text/html; charset=" + charset + "\">";
 	var header = "<html><head>" + meta + "<title>" + gStrBundle.getString("appName") + "</title></head>";
@@ -185,37 +152,29 @@ function doExport()
       }
       catch (e if e.result == Components.results.NS_ERROR_NOT_INITIALIZED) {
 	doAlert(gStrBundle.getString("alertExportFailedNoDS"));
-	return false;
       }
       catch (e if e.result == Components.results.NS_ERROR_OUT_OF_MEMORY) {
 	doAlert(gStrBundle.getString("errorOutOfMemory"));
-	return false;
       }
       catch (e if e.result == Components.results.NS_ERROR_FILE_ACCESS_DENIED) {
 	doAlert(gStrBundle.getString("errorAccessDenied"));
-	return false;
       }
       catch (e if e.result == Components.results.NS_ERROR_FILE_READ_ONLY) {
 	doAlert(gStrBundle.getString("errorFileReadOnly"));
-	return false;
       }
       catch (e if e.result == Components.results.NS_ERROR_FILE_DISK_FULL) {
 	doAlert(gStrBundle.getString("errorDiskFull"));
-	return false
       }
       catch (e) {
 	doAlert(gStrBundle.getString("alertExportFailed"));
-	return false;
       }
 
       doAlert(gStrBundle.getFormattedString("exportSuccess", [path]));
-      rv = true;
+      window.close();
     }
-    break;
+  };
 
-  } while (true);
-
-  return rv;
+  fp.open(fpShownCallback);
 }
 
 
