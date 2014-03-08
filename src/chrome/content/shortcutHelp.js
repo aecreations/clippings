@@ -16,7 +16,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2012
+ * Portions created by the Initial Developer are Copyright (C) 2012-2014
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -260,27 +260,25 @@ function outputShortcutList(aOutputMode)
   }
   else if (aOutputMode == OUTPUT_FILE) {
     // Save shortcut key list to an HTML document.
-    var fp = Cc["@mozilla.org/filepicker;1"].createInstance(Ci.nsIFilePicker);
+    let fp = Cc["@mozilla.org/filepicker;1"].createInstance(Ci.nsIFilePicker);
     fp.init(window, gStrBundle.getString("saveToHTML"), fp.modeSave);
 
     fp.defaultString = aeConstants.SHORTCUT_HELP_FILENAME;
     fp.defaultExtension = "html";
     fp.appendFilter(gStrBundle.getString("htmlFilterDesc"), "*.html");
 
-    var dlgResult;
+    let fpShownCallback = {
+      done: function (aResult) {
 
-    do {
-      try {
-	dlgResult = fp.show();
-      }
-      catch (e) { alert(e) }
-      
-      if (dlgResult == fp.returnReplace) {
-	var oldFile = fp.file.QueryInterface(Ci.nsIFile);
-	oldFile.remove(false);
-      }
+        if (aResult == fp.returnCancel) {
+          return;
+        }
 
-      if (dlgResult != fp.returnCancel) {
+        if (aResult == fp.returnReplace) {
+          var oldFile = fp.file.QueryInterface(Ci.nsIFile);
+          oldFile.remove(false);
+        }
+
 	var url = fp.fileURL.QueryInterface(Ci.nsIURI).spec;
 
 	try {
@@ -288,54 +286,47 @@ function outputShortcutList(aOutputMode)
 	}
         catch (e if e.result == Components.results.NS_ERROR_OUT_OF_MEMORY) {
           aeUtils.alertEx(title, gStrBundle.getString("errorOutOfMemory"));
-          return;
         }
         catch (e if e.result == Components.results.NS_ERROR_FILE_ACCESS_DENIED) {
           let msg = aeString.format("%s: %s",
                                     gStrBundle.getString("errorAccessDenied"),
                                     aeConstants.SHORTCUT_HELP_PRINT_FILENAME);
           aeUtils.alertEx(title, msg);
-          return;
         }
         catch (e if e.result == Components.results.NS_ERROR_FILE_IS_LOCKED) {
           let msg = aeString.format("%s: %s",
                                     gStrBundle.getString("errorFileLocked"),
                                     aeConstants.SHORTCUT_HELP_PRINT_FILENAME);
           aeUtils.alertEx(title, msg);
-          return;
         }
         catch (e if e.result == Components.results.NS_ERROR_FILE_TOO_BIG) {
           let msg = aeString.format("%s: %s",
                                     gStrBundle.getString("errorFileTooBig"),
                                     aeConstants.SHORTCUT_HELP_PRINT_FILENAME);
           aeUtils.alertEx(title, msg);
-          return;
         }
         catch (e if e.result == Components.results.NS_ERROR_FILE_READ_ONLY) {
           let msg = aeString.format("%s: %s",
                                     gStrBundle.getString("errorFileReadOnly"),
                                     aeConstants.SHORTCUT_HELP_PRINT_FILENAME);
           aeUtils.alertEx(title, msg);
-          return;
         }
         catch (e if e.result == Components.results.NS_ERROR_FILE_DISK_FULL) {
           let msg = aeString.format("%s: %s",
                                     gStrBundle.getString("errorDiskFull"),
                                     aeConstants.SHORTCUT_HELP_PRINT_FILENAME);
           aeUtils.alertEx(title, msg);
-          return;
         }
         catch (e) {
           aeUtils.alertEx(title, gStrBundle.getString("errorSaveFailed"));
-          return;
         }
+
+        // Clear contents of the hidden HTML document so that it doesn't get 
+        // appended repeatedly when invoking either print or save again.
+        body.innerHTML = "";
       }
-      break;
+    };
 
-    } while (true);
+    fp.open(fpShownCallback);
   }
-
-  // Clear contents of the hidden HTML document so that it doesn't get appended
-  // repeatedly when invoking either print or save again.
-  body.innerHTML = "";
 }
