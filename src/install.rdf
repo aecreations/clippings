@@ -7,10 +7,11 @@
     <em:name>Clippings</em:name>
     <em:id>{91aa5abe-9de4-4347-b7b5-322c38dd9271}</em:id>
     <em:type>2</em:type>
-    <em:version>4.1pre</em:version>
+    <em:version>4.1</em:version>
     <em:description>Save frequently-entered text for pasting later.</em:description>
     <em:creator>AE Creations</em:creator>
     <em:contributor>Babelzilla Translators</em:contributor>
+    <em:iconURL>chrome://clippings/skin/images/icon.png</em:iconURL>
     <em:homepageURL>http://aecreations.sourceforge.net/clippings/</em:homepageURL>
     <em:optionsURL>chrome://clippings/content/options.xul</em:optionsURL>
 
