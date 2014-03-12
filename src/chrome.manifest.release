@@ -1,8 +1,6 @@
 # Firefox
 overlay	chrome://browser/content/browser.xul	chrome://clippings/content/fxBrowserOverlay.xul
 
-style	chrome://global/content/customizeToolbar.xul	chrome://clippings/skin/hostapp.css
-
 # Thunderbird
 overlay	chrome://messenger/content/messenger.xul	chrome://clippings/content/tbMessengerOverlay.xul
 overlay	chrome://messenger/content/messengercompose/messengercompose.xul	chrome://clippings/content/tbMsgComposeOverlay.xul
