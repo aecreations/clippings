@@ -16,7 +16,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2005-2013
+ * Portions created by the Initial Developer are Copyright (C) 2005-2014
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -127,8 +127,9 @@ window.extensions.aecreations.clippings = {
 
     var result = this.aeCreateClippingFromText(this.clippingsSvc, txt, this.showDialog, window, null, false);
     if (result) {
+      let that = this;
       window.setTimeout(function () { 
-        window.extensions.aecreations.clippings.saveClippings();
+        that.saveClippings();
       }, 1);
     }
   },
@@ -283,7 +284,7 @@ window.extensions.aecreations.clippings = {
     let dsPath = this.aeUtils.getPref("clippings.datasource.location", profilePath);
     
     if (this.aeUtils.PORTABLE_APP_BUILD && dsPath != profilePath) {
-      this.aeUtils.log("window.extensions.aecreations.clippings.initClippings():\nResetting data source location on Portable " + Application.name);
+      this.aeUtils.log("Clippings: initClippings():\nResetting data source location on Portable " + Application.name);
       this.aeUtils.setPref("clippings.datasource.location", profilePath);
     }
 
