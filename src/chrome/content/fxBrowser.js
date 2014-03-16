@@ -52,7 +52,6 @@ window.extensions.aecreations.clippings = {
   dataSrcInitialized:     false,
   isClippingsInitialized: false,
   showDialog:             true,
-  utils:                  null,
   clippingsSvc:           null,
   strBundle:              null,
 
@@ -144,11 +143,12 @@ window.extensions.aecreations.clippings = {
       return;
     }
 
+    let that = this;
     let result = this.aeCreateClippingFromText(this.clippingsSvc, txt, this.showDialog, window, null, false);
 
     if (result) {
       window.setTimeout(function () { 
-        window.extensions.aecreations.clippings.saveClippings(); 
+        that.saveClippings(); 
       }, 1);
     }
   },
@@ -222,7 +222,7 @@ window.extensions.aecreations.clippings = {
 	  }
 	}
 	else {
-	  this.aeUtils.log("In window.extensions.aecreations.clippings.newFromTextbox(): textbox = " + textbox);
+	  this.aeUtils.log("Clippings: newFromTextbox(): textbox = " + textbox);
 	}
       }
     }
@@ -233,8 +233,9 @@ window.extensions.aecreations.clippings = {
     this._triggerNode = null;
 
     if (result) {
+      let that = this;
       window.setTimeout(function () { 
-        window.extensions.aecreations.clippings.saveClippings();
+        that.saveClippings();
       }, 1);
     }
   },
@@ -251,8 +252,9 @@ window.extensions.aecreations.clippings = {
     if (selection) {
       let result = this.aeCreateClippingFromText(this.clippingsSvc, selection, this.showDialog, window, null, false);
       if (result) {
+        let that = this;
 	window.setTimeout(function () { 
-          window.extensions.aecreations.clippings.saveClippings();
+          that.saveClippings();
         }, 1);
       }
     }
@@ -314,7 +316,7 @@ window.extensions.aecreations.clippings = {
       errorCmd.style.fontWeight = "bold";
 
       var func;
-      let that = window.extensions.aecreations.clippings;
+      let that = this;
       if (err == 888) {
 	func = function () { that.openClippingsManager() };
       }
@@ -354,8 +356,9 @@ window.extensions.aecreations.clippings = {
 
     if (useClipboard) {
       this.aeUtils.copyTextToClipboard(clippingText);
+      let that = this;
       window.setTimeout(function () { 
-        window.extensions.aecreations.clippings._pasteClipping();
+        that._pasteClipping(that);
       }, 8);
       return;
     }
@@ -445,7 +448,7 @@ window.extensions.aecreations.clippings = {
   },
 
 
-  _pasteClipping: function ()
+  _pasteClipping: function (aClippings)
   {
     try {
       // Paste clipping.  The following function is defined in
@@ -455,9 +458,9 @@ window.extensions.aecreations.clippings = {
     }
     catch (e) {
       // Exception thrown if command is disabled or not applicable
-      var showFailMsg = this.aeUtils.getPref("clippings.warn_paste_failure", true);
+      var showFailMsg = aClippings.aeUtils.getPref("clippings.warn_paste_failure", true);
       if (showFailMsg) {
-	window.extensions.aecreations.clippings.alert("Clippings paste failure:\n\n" + e);
+	aClippings.alert("Clippings paste failure:\n\n" + e);
       }
     }
   },
@@ -669,7 +672,7 @@ window.extensions.aecreations.clippings = {
     let dsPath = this.aeUtils.getPref("clippings.datasource.location", profilePath);
     
     if (this.aeUtils.PORTABLE_APP_BUILD && dsPath != profilePath) {
-      this.aeUtils.log("window.extensions.aecreations.clippings.initClippings():\nResetting data source location on Portable " + Application.name);
+      this.aeUtils.log("Clippings: initClippings():\nResetting data source location on Portable " + Application.name);
       this.aeUtils.setPref("clippings.datasource.location", profilePath);
     }
 
@@ -684,7 +687,7 @@ window.extensions.aecreations.clippings = {
     var popup = document.getElementById("ae-clippings-popup-1");
     this.initClippingsPopup(popup, menu);
 
-    this.aeUtils.log(this.aeString.format("window.extensions.aecreations.clippings.initClippings():\nInitializing Clippings integration with host app window\nHost app: %s (version %s); Australis UI: %b\nDatasource location: %s", Application.name, Application.version, this.isAustralisUI(), dataSrcPathURL));
+    this.aeUtils.log(this.aeString.format("Clippings: initClippings():\nInitializing Clippings integration with host app window\nHost app: %s (version %s); Australis UI: %b\nDatasource location: %s", Application.name, Application.version, this.isAustralisUI(), dataSrcPathURL));
 
     // Add null clipping to root folder if there are no items
     if (this.aeUtils.getPref("clippings.datasource.process_root", true) == true) {
@@ -701,7 +704,7 @@ window.extensions.aecreations.clippings = {
 					this._hideContextMenuItem,
 					false);
 
-    let (that = window.extensions.aecreations.clippings) {
+    let (that = this) {
       this._clippingsListener = {
         origin:  that.clippingsSvc.ORIGIN_HOSTAPP,
 
@@ -1070,7 +1073,7 @@ window.extensions.aecreations.clippings = {
         menuItem.setAttribute("label", "#[" + autoIncrementVars[i] + "]");
         menuItem.setAttribute("value", autoIncrementVars[i]);
 
-        let that = window.extensions.aecreations.clippings;
+        let that = this;
         menuItem.addEventListener("command", function (evt) { that.aeClippingSubst.resetAutoIncrementVar(evt.target.value); }, false);
         autoIncrVarsMenuPopup.appendChild(menuItem);
       }
