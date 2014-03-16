@@ -139,8 +139,9 @@ window.extensions.aecreations.clippings = {
 
     var result = this.aeCreateClippingFromText(this.clippingsSvc, txt, this.showDialog, window, null, false);
     if (result) {
+      let that = this;
       window.setTimeout(function () { 
-        window.extensions.aecreations.clippings.saveClippings();
+        that.saveClippings();
       }, 1);
     }
   },
@@ -182,8 +183,9 @@ window.extensions.aecreations.clippings = {
     if (selection) {
       var result = this.aeCreateClippingFromText(this.clippingsSvc, selection, this.showDialog, window, null, false);
       if (result) {
+        let that = this;
 	window.setTimeout(function () { 
-          window.extensions.aecreations.clippings.saveClippings();
+          that.saveClippings();
         }, 1);
       }
     }
@@ -253,13 +255,13 @@ window.extensions.aecreations.clippings = {
       errorCmd.style.fontWeight = "bold";
 
       var func;
-      let clippings = window.extensions.aecreations.clippings;
+      let that = this;
       if (err == 888) {
-	func = function () { clippings.openClippingsManager() };
+	func = function () { that.openClippingsManager() };
       }
       else {
 	func = function () {
-	  clippings.utils.alertEx(clippings.strBundle.getString('appName'), err);
+	  that.aeUtils.alertEx(that.strBundle.getString("appName"), err);
 	};
       }
       errorCmd.addEventListener("command", func, false);
@@ -445,13 +447,14 @@ window.extensions.aecreations.clippings = {
       }
     }
 
+    let that = this;
     window.setTimeout(function () { 
-      window.extensions.aecreations.clippings._pasteClipping();
+      that._pasteClipping(that);
     }, 8);
   },
 
 
-  _pasteClipping: function ()
+  _pasteClipping: function (aClippings)
   {
     try {
       // Paste clipping.  The following function is defined in
@@ -461,7 +464,7 @@ window.extensions.aecreations.clippings = {
     }
     catch (e) {
       // Exception thrown if command is disabled or not applicable
-      this.aeUtils.beep();
+      aClippings.aeUtils.beep();
     }
   },
 
@@ -650,7 +653,7 @@ window.extensions.aecreations.clippings = {
     let dsPath = this.aeUtils.getPref("clippings.datasource.location", profilePath);
     
     if (this.aeUtils.PORTABLE_APP_BUILD && dsPath != profilePath) {
-      this.aeUtils.log("window.extensions.aecreations.clippings.initClippings():\nResetting data source location on Portable " + Application.name);
+      this.aeUtils.log("Clippings: initClippings():\nResetting data source location on Portable " + Application.name);
       this.aeUtils.setPref("clippings.datasource.location", profilePath);
     }
 
@@ -677,7 +680,7 @@ window.extensions.aecreations.clippings = {
     hostAppContextMenu.addEventListener("popupshowing", 
 					this._initContextMenuItem, false);
 
-    let (that = window.extensions.aecreations.clippings) {
+    let (that = this) {
       this._clippingsListener = {
         origin:  that.clippingsSvc.ORIGIN_HOSTAPP,
 
@@ -811,7 +814,7 @@ window.extensions.aecreations.clippings = {
         menuItem.setAttribute("label", "#[" + autoIncrementVars[i] + "]");
         menuItem.setAttribute("value", autoIncrementVars[i]);
 
-        let that = window.extensions.aecreations.clippings;
+        let that = this;
         menuItem.addEventListener("command", function (evt) { that.aeClippingSubst.resetAutoIncrementVar(evt.target.value); }, false);
         autoIncrVarsMenuPopup.appendChild(menuItem);
       }
