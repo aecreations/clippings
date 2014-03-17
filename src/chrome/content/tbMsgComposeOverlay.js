@@ -27,22 +27,18 @@
 // Integration with host application
 //
 
-if (! ('extensions' in window)) {
-  window.extensions = {};
+if (! ('aecreations' in window)) {
+  window.aecreations = {};
 }
 
-if (! ('aecreations' in window.extensions)) {
-  window.extensions.aecreations = {};
-}
-
-if (! ('clippings' in window.extensions.aecreations)) {
-  window.extensions.aecreations.clippings = {};
+if (! ('clippings' in window.aecreations)) {
+  window.aecreations.clippings = {};
 }
 else {
   throw new Error("clippings object already defined");
 }
 
-window.extensions.aecreations.clippings = {
+window.aecreations.clippings = {
   dataSrcInitialized:     false,
   isClippingsInitialized: false,
   showDialog:             true,
@@ -62,7 +58,7 @@ window.extensions.aecreations.clippings = {
   {
     // When this method is invoked, 'this' will not refer to the Clippings
     // overlay object.
-    var that = window.extensions.aecreations.clippings;
+    var that = window.aecreations.clippings;
 
     if (aEvent.type == "load") {
       that.initClippings();
@@ -100,7 +96,7 @@ window.extensions.aecreations.clippings = {
     var result = this.aeCreateClippingFromText(this.clippingsSvc, text, this.showDialog, window, null, false);
 
     if (result) {
-      let that = window.extensions.aecreations.clippings;
+      let that = window.aecreations.clippings;
       window.setTimeout(function () { that.saveClippings(); }, 100);
     }
   },
@@ -738,7 +734,7 @@ window.extensions.aecreations.clippings = {
   // To be invoked only by the `popupshowing' event handler on the host app
   // context menu.
   _initContextMenuItem: function (aEvent) {
-    let that = window.extensions.aecreations.clippings;
+    let that = window.aecreations.clippings;
     if (aEvent.target.id == "msgComposeContext") {
       that.initContextMenuItem.apply(that, arguments);
     }
@@ -830,24 +826,24 @@ window.extensions.aecreations.clippings = {
 };
 
 Components.utils.import("resource://clippings/modules/aeConstants.js",
-			window.extensions.aecreations.clippings);
+			window.aecreations.clippings);
 Components.utils.import("resource://clippings/modules/aeString.js",
-                        window.extensions.aecreations.clippings);
+                        window.aecreations.clippings);
 Components.utils.import("resource://clippings/modules/aeUtils.js",
-                        window.extensions.aecreations.clippings);
+                        window.aecreations.clippings);
 Components.utils.import("resource://clippings/modules/aeCreateClippingHelper.js",
-			window.extensions.aecreations.clippings);
+			window.aecreations.clippings);
 Components.utils.import("resource://clippings/modules/aeClippingSubst.js",
-                        window.extensions.aecreations.clippings);
+                        window.aecreations.clippings);
 Components.utils.import("resource://clippings/modules/aeClippings3.js",
-                        window.extensions.aecreations.clippings);
+                        window.aecreations.clippings);
 Components.utils.import("resource://clippings/modules/aePrefMigrator.js",
-			window.extensions.aecreations.clippings);
+			window.aecreations.clippings);
 
 //
 // Event handler initialization
 //
 
-window.addEventListener("load",   window.extensions.aecreations.clippings, false);
-window.addEventListener("unload", window.extensions.aecreations.clippings, false);
+window.addEventListener("load",   window.aecreations.clippings, false);
+window.addEventListener("unload", window.aecreations.clippings, false);
 

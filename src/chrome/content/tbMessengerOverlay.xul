@@ -20,7 +20,7 @@
    -
    - The Initial Developer of the Original Code is
    - Alex Eng <ateng@users.sourceforge.net>.
-   - Portions created by the Initial Developer are Copyright (C) 2005-2011
+   - Portions created by the Initial Developer are Copyright (C) 2005-2014
    - the Initial Developer. All Rights Reserved.
    -
    - Contributor(s):
@@ -40,9 +40,9 @@
 
   <commandset id="mailCommands">
     <command id="ae_clippings_manager" 
-     oncommand="window.extensions.aecreations.clippings.openClippingsManager()"/>
+     oncommand="window.aecreations.clippings.openClippingsManager()"/>
     <command id="ae_new_clipping_from_clpbd" 
-     oncommand="window.extensions.aecreations.clippings.newFromClipboard()"/>
+     oncommand="window.aecreations.clippings.newFromClipboard()"/>
   </commandset>
 
   <popupset id="mainPopupSet">
@@ -64,17 +64,17 @@
   <!-- 
      NOTE:
      Status bar icon popup menu is created dynamically.  See note in
-     tbMessengerOverlay.js in window.extensions.aecreations.clippings
-     .initClippings() for details.
+     tbMessengerOverlay.js in window.aecreations.clippings.initClippings() for
+     details.
   -->
   <statusbar id="status-bar">
     <statusbarpanel id="ae-clippings-icon" class="statusbarpanel-menu-iconic" 
      tooltiptext="&statusbar.tooltip;"
      context="ae-clippings-popup"
-     ondblclick="window.extensions.aecreations.clippings.openClippingsManager()"
+     ondblclick="window.aecreations.clippings.openClippingsManager()"
      ondragenter="return false;  // Necessary to allow the drop operation"
      ondragover="return false;   // on this element."
-     ondrop="window.extensions.aecreations.clippings.statusBarDrop(event)"/>
+     ondrop="window.aecreations.clippings.statusBarDrop(event)"/>
   </statusbar>
 
 </overlay>

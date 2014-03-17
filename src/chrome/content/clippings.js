@@ -1724,9 +1724,8 @@ function insertClipping()
     var name = gClippingsSvc.getName(uri);
     var text = gClippingsSvc.getText(uri);
 
-    if ('extensions' in haWnd && 'aecreations' in haWnd.extensions
-	&& 'clippings' in haWnd.extensions.aecreations) {
-      haWnd.extensions.aecreations.clippings.insertClippingText(uri, name, text);
+    if ("aecreations" in haWnd && "clippings" in haWnd.aecreations) {
+      haWnd.aecreations.clippings.insertClippingText(uri, name, text);
     }
   }
 }

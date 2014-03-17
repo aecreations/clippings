@@ -40,15 +40,15 @@
 
   <commandset id="composeCommands">
     <command id="ae_clippings_manager" 
-     oncommand="window.extensions.aecreations.clippings.openClippingsManager()"/>
+     oncommand="window.aecreations.clippings.openClippingsManager()"/>
     <command id="ae_new_clipping_from_clpbd" 
-     oncommand="window.extensions.aecreations.clippings.newFromClipboard()"/>
+     oncommand="window.aecreations.clippings.newFromClipboard()"/>
     <command id="ae_new_clipping_from_selection"
-     oncommand="window.extensions.aecreations.clippings.newFromSelection()"/>
+     oncommand="window.aecreations.clippings.newFromSelection()"/>
     <command id="ae_clippings_show_paste_options" 
-     oncommand="window.extensions.aecreations.clippings.toggleShowPasteOptions()"/>
+     oncommand="window.aecreations.clippings.toggleShowPasteOptions()"/>
     <command id="ae_clippings_keyboard_insert" label="&insertClipping.label;"
-     oncommand="window.extensions.aecreations.clippings.keyboardInsertClipping(event)"/>
+     oncommand="window.aecreations.clippings.keyboardInsertClipping(event)"/>
   </commandset>
 
   <keyset id="tasksKeys">
@@ -83,7 +83,7 @@
 	     label="rdf:http://clippings.mozdev.org/ns/rdf#name"
 	     clipName="rdf:http://clippings.mozdev.org/ns/rdf#name"
 	     clipText="rdf:http://clippings.mozdev.org/ns/rdf#text"
-	     oncommand="window.extensions.aecreations.clippings.insertClippingText(this.id,this.getAttribute('clipName'),this.getAttribute('clipText'))"/>
+	     oncommand="window.aecreations.clippings.insertClippingText(this.id,this.getAttribute('clipName'),this.getAttribute('clipText'))"/>
 	  </menupopup>
 	</rule>
 	<rule rdf:type="http://clippings.mozdev.org/ns/rdf#null">
@@ -121,7 +121,7 @@
 
     <!-- Thunderbird status bar menu -->
     <menupopup id="ae-clippings-popup" 
-     onpopupshowing="window.extensions.aecreations.clippings.initToolbarBtnCxtMenu(event)">
+     onpopupshowing="window.aecreations.clippings.initToolbarBtnCxtMenu(event)">
       <menuitem label="&openClippingsMgr.menuLabel;" 
        accesskey="&openClippingsMgr.accesskey;"  default="true" 
        command="ae_clippings_manager"/>
@@ -141,10 +141,10 @@
     <statusbarpanel id="ae-clippings-icon" class="statusbarpanel-menu-iconic" 
      tooltiptext="&statusbar.tooltip;"
      context="ae-clippings-popup"
-     ondblclick="window.extensions.aecreations.clippings.openClippingsManager()"
+     ondblclick="window.aecreations.clippings.openClippingsManager()"
      ondragenter="return false;  // Necessary to allow the drop operation"
      ondragover="return false;   // on this element."
-     ondrop="window.extensions.aecreations.clippings.statusBarDrop(event)"/>
+     ondrop="window.aecreations.clippings.statusBarDrop(event)"/>
   </statusbar>
 
 </overlay>

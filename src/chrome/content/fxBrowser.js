@@ -27,22 +27,18 @@
 // Integration with host application
 //
 
-if (! ('extensions' in window)) {
-  window.extensions = {};
+if (! ('aecreations' in window)) {
+  window.aecreations = {};
 }
 
-if (! ('aecreations' in window.extensions)) {
-  window.extensions.aecreations = {};
-}
-
-if (! ('clippings' in window.extensions.aecreations)) {
-  window.extensions.aecreations.clippings = {};
+if (! ('clippings' in window.aecreations)) {
+  window.aecreations.clippings = {};
 }
 else {
   throw new Error("clippings object already defined");
 }
 
-window.extensions.aecreations.clippings = {
+window.aecreations.clippings = {
   _clippingsListener:     null,
   _isErrMenuItemVisible:  false,
   _ds:                    null,
@@ -64,7 +60,7 @@ window.extensions.aecreations.clippings = {
   {
     // When this method is invoked, 'this' will not refer to the Clippings
     // overlay object.
-    let that = window.extensions.aecreations.clippings;
+    let that = window.aecreations.clippings;
 
     if (aEvent.type == "load") {
       that.initClippings();
@@ -106,7 +102,7 @@ window.extensions.aecreations.clippings = {
     var result = this.aeCreateClippingFromText(this.clippingsSvc, text, this.showDialog, window, null, false);
 
     if (result) {
-      let that = window.extensions.aecreations.clippings;
+      let that = window.aecreations.clippings;
       window.setTimeout(function () { that.saveClippings(); }, 100);
     }
   },
@@ -804,12 +800,12 @@ window.extensions.aecreations.clippings = {
   // Next two methods are event handlers for the Clippings popup menu; they are
   // to be invoked by the event handling code only.
   _initContextMenuItem: function (aEvent) {
-    var that = window.extensions.aecreations.clippings;
+    var that = window.aecreations.clippings;
     that.initContextMenuItem.apply(that, arguments);
   },
 
   _hideContextMenuItem: function (aEvent) {
-    var that = window.extensions.aecreations.clippings;
+    var that = window.aecreations.clippings;
     that.hideContextMenuItem.apply(that, arguments);
   },
 
@@ -1089,24 +1085,24 @@ window.extensions.aecreations.clippings = {
 };
 
 Components.utils.import("resource://clippings/modules/aeConstants.js",
-			window.extensions.aecreations.clippings);
+			window.aecreations.clippings);
 Components.utils.import("resource://clippings/modules/aeUtils.js",
-			window.extensions.aecreations.clippings);
+			window.aecreations.clippings);
 Components.utils.import("resource://clippings/modules/aeString.js",
-                        window.extensions.aecreations.clippings);
+                        window.aecreations.clippings);
 Components.utils.import("resource://clippings/modules/aeCreateClippingHelper.js",
-			window.extensions.aecreations.clippings);
+			window.aecreations.clippings);
 Components.utils.import("resource://clippings/modules/aeClippingSubst.js",
-                        window.extensions.aecreations.clippings);
+                        window.aecreations.clippings);
 Components.utils.import("resource://clippings/modules/aeClippings3.js",
-                        window.extensions.aecreations.clippings);
+                        window.aecreations.clippings);
 Components.utils.import("resource://clippings/modules/aePrefMigrator.js",
-			window.extensions.aecreations.clippings);
+			window.aecreations.clippings);
 
 
 //
 // Event handler initialization
 //
 
-window.addEventListener("load",   window.extensions.aecreations.clippings, false);
-window.addEventListener("unload", window.extensions.aecreations.clippings, false);
+window.addEventListener("load",   window.aecreations.clippings, false);
+window.addEventListener("unload", window.aecreations.clippings, false);
