@@ -99,7 +99,7 @@
             <menuitem id="clippings-root"
 	     class="menuitem-iconic clippings-root"
 	     label="&clippingsRoot.label;"
-  	     oncommand="selectFolder(gClippingsSvc.kRootFolderURI)"/>
+  	     oncommand="chooseFolder(gClippingsSvc.kRootFolderURI)"/>
           </menupopup>
 
 	  <template id="create-in-template">
@@ -110,7 +110,7 @@
 	          <menupopup>
   	            <menuitem 
 		     label="&fileHere.label;"
-		     oncommand="selectFolder(this.parentNode.parentNode.id)"/>
+		     oncommand="chooseFolder(this.parentNode.parentNode.id)"/>
 	            <menuseparator/>
   	          </menupopup>
 	        </menu>
@@ -121,7 +121,7 @@
 	        <menuitem class="menuitem-iconic ae-clippings-folder"
 		 uri="rdf:*" 
 		 label="rdf:http://clippings.mozdev.org/ns/rdf#name"
- 	         oncommand="selectFolder(this.id)"/>
+ 	         oncommand="chooseFolder(this.id)"/>
   	      </menupopup>
             </rule>
           </template>
