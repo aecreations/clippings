@@ -86,7 +86,7 @@ function initDlg()
     gFolderName = $("folder-name");
     gFolderName.value = gStrBundle.getString("newFolderName");
     gFolderName.clickSelectsAll = true;
-    selectFolder(dialogArgs.parentFolderURI);
+    chooseFolder(dialogArgs.parentFolderURI);
   }
   // new.xul
   else {
@@ -204,7 +204,7 @@ function isFolderMissing(aFolderURI)
 }
 
 
-function selectFolder(aFolderURI)
+function chooseFolder(aFolderURI)
 {
   gSelectedFolderURI = aFolderURI;
 
@@ -264,6 +264,7 @@ function createFolder()
 
   // After New Folder dialog is dismissed, re-enable New Clipping dlg widgets.
   for (let i = 0; i < dlgEltsLen; i++) {
+    // TO DO: Fix error: "TypeError: dlgElts[i] is undefined" - issue #17
     dlgElts[i].disabled = false;
   }
   okBtn.disabled = false;
@@ -283,7 +284,7 @@ function createFolder()
   }
 
   gFolderMenu.builder.rebuild();
-  selectFolder(dlgArgs.newFolderURI);
+  chooseFolder(dlgArgs.newFolderURI);
   gIsFolderCreated = true;
 }
 
