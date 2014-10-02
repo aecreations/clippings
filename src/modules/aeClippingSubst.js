@@ -82,7 +82,6 @@ aeClippingSubst.processClippingText = function (aClippingInfo, aWnd)
 
   var rv = "";
   var strBundle = this._strBundle;
-  var prmptSvc = Cc["@mozilla.org/embedcomp/prompt-service;1"].getService(Ci.nsIPromptService);
 
   // Remember the value of the same placeholder that was filled in previously
   var knownTags = {};
