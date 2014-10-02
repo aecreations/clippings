@@ -264,8 +264,10 @@ function createFolder()
 
   // After New Folder dialog is dismissed, re-enable New Clipping dlg widgets.
   for (let i = 0; i < dlgEltsLen; i++) {
-    // TO DO: Fix error: "TypeError: dlgElts[i] is undefined" - issue #17
-    dlgElts[i].disabled = false;
+    // Sometimes dlgElts[i] is undefined; not sure why, but check for it anyway
+    if (dlgElts[i]) {
+      dlgElts[i].disabled = false;
+    }
   }
   okBtn.disabled = false;
   cancelBtn.disabled = false;
