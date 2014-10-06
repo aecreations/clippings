@@ -46,9 +46,9 @@
 
   <toolbar>
     <toolbarbutton id="save" label="&save.label;" accesskey="&save.accesskey;"
-     oncommand="doSave()"/>
+     oncommand="save()"/>
     <toolbarbutton id="print" label="&print.label;"
-     accesskey="&print.accesskey;" oncommand="doPrint()"/>
+     accesskey="&print.accesskey;" oncommand="print()"/>
     <toolbarseparator/>
     <toolbarbutton id="close" label="&closeButton.label;"
      accesskey="&closeButton.accesskey;" oncommand="window.close()"/>
