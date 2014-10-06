@@ -35,7 +35,7 @@ const Ci = Components.interfaces;
 const OUTPUT_PRINTER = 0;
 const OUTPUT_FILE = 1;
 
-var gDlgArgs, gStrBundle, gEditor;
+var gDlgArgs, gStrBundle, gEditor, gIsShortcutKeyHelpContentGenerated;
 
 
 function $(aID)
@@ -74,16 +74,18 @@ function initDlg()
   gEditor = $("html-export");
   gEditor.src = "export.html";
   gEditor.makeEditable("html", false);
+
+  gIsShortcutKeyHelpContentGenerated = false;
 }
 
 
-function doPrint() 
+function print() 
 {
   outputShortcutList(OUTPUT_PRINTER);
 }
 
 
-function doSave() 
+function save() 
 {
   outputShortcutList(OUTPUT_FILE);
 }
@@ -91,71 +93,15 @@ function doSave()
 
 function outputShortcutList(aOutputMode)
 {
-  gEditor.focus();
-  var doc = gEditor.contentDocument;
-  var body = doc.getElementsByTagName("body")[0];
-  var hdg = doc.createElement("h1");
-  var txtHdg = doc.createTextNode(gStrBundle.getString("shortcutHelpTitle"));
-  hdg.appendChild(txtHdg);
-  body.appendChild(hdg);
-
-  var pAppInfo = doc.createElement("p");
-  pAppInfo.className = "app-info";
-  pAppInfo.style.fontSize = "small";
-
-  var txtAppInfo = doc.createTextNode(gStrBundle.getFormattedString("clippingsOnHostAppNameAndVer", [Application.name, Application.version]));
-  pAppInfo.appendChild(txtAppInfo);
-  body.appendChild(pAppInfo);
-
-  var pHelp = doc.createElement("p");
-  var helpStr;
-  if (Application.id == aeConstants.HOSTAPP_FX_GUID) {
-    helpStr = gStrBundle.getFormattedString("shortcutInstr", [gStrBundle.getString("pasteIntoFx")]);
+  if (! gIsShortcutKeyHelpContentGenerated) {
+    generateShortcutKeyHelpContent();
+    gIsShortcutKeyHelpContentGenerated = true;
   }
-  else if (Application.id == aeConstants.HOSTAPP_TB_GUID) {
-    helpStr = gStrBundle.getFormattedString("shortcutInstr", [gStrBundle.getString("pasteIntoTb")]);
-  }
-
-  var txtHelp = doc.createTextNode(helpStr);
-  pHelp.appendChild(txtHelp);
-  body.appendChild(pHelp);
-
-  var table = doc.createElement("table");
-  table.setAttribute("border", "2");
-  var thead = doc.createElement("thead");
-  var trHdr = doc.createElement("tr");
-  var thShortcutKey = doc.createElement("th");
-  var txtShortcutKey = doc.createTextNode(gStrBundle.getString("shortcutKeyTitle"));
-  thShortcutKey.appendChild(txtShortcutKey);
-  var thClipping = doc.createElement("th");
-  var txtClipping = doc.createTextNode(gStrBundle.getString("clippingNameTitle"));
-  thClipping.appendChild(txtClipping);
-  trHdr.appendChild(thShortcutKey);
-  trHdr.appendChild(thClipping);
-  thead.appendChild(trHdr);
-  table.appendChild(thead);
-  
-  var tbody = doc.createElement("tbody");
-  var keyMap = gDlgArgs.keyMap;
-
-  for (let key in keyMap) {
-    var tr = doc.createElement("tr");
-    var tdKey = doc.createElement("td");
-    var txtKey = doc.createTextNode(key);
-    tdKey.appendChild(txtKey);
-    var tdClipping = doc.createElement("td");
-    var txtClipping = doc.createTextNode(keyMap[key].name);
-    tdClipping.appendChild(txtClipping);
-    tr.appendChild(tdKey);
-    tr.appendChild(tdClipping);
-    tbody.appendChild(tr);
-  }
-
-  table.appendChild(tbody);
-  body.appendChild(table);
 
   var css = "";
   var data = "";
+  var body = gEditor.contentDocument.getElementsByTagName("body")[0];
+
   if (aOutputMode == OUTPUT_PRINTER) {
     // Show printing instructions in the HTML output generated from Thunderbird
     // since most browsers warn or block JavaScript code that automatically
@@ -320,13 +266,76 @@ function outputShortcutList(aOutputMode)
         catch (e) {
           aeUtils.alertEx(title, gStrBundle.getString("errorSaveFailed"));
         }
-
-        // Clear contents of the hidden HTML document so that it doesn't get 
-        // appended repeatedly when invoking either print or save again.
-        body.innerHTML = "";
       }
     };
 
     fp.open(fpShownCallback);
   }
+}
+
+
+function generateShortcutKeyHelpContent()
+{
+  gEditor.focus();
+  var doc = gEditor.contentDocument;
+  var body = doc.getElementsByTagName("body")[0];
+  var hdg = doc.createElement("h1");
+  var txtHdg = doc.createTextNode(gStrBundle.getString("shortcutHelpTitle"));
+  hdg.appendChild(txtHdg);
+  body.appendChild(hdg);
+
+  var pAppInfo = doc.createElement("p");
+  pAppInfo.className = "app-info";
+  pAppInfo.style.fontSize = "small";
+
+  var txtAppInfo = doc.createTextNode(gStrBundle.getFormattedString("clippingsOnHostAppNameAndVer", [Application.name, Application.version]));
+  pAppInfo.appendChild(txtAppInfo);
+  body.appendChild(pAppInfo);
+
+  var pHelp = doc.createElement("p");
+  var helpStr;
+  if (Application.id == aeConstants.HOSTAPP_FX_GUID) {
+    helpStr = gStrBundle.getFormattedString("shortcutInstr", [gStrBundle.getString("pasteIntoFx")]);
+  }
+  else if (Application.id == aeConstants.HOSTAPP_TB_GUID) {
+    helpStr = gStrBundle.getFormattedString("shortcutInstr", [gStrBundle.getString("pasteIntoTb")]);
+  }
+
+  var txtHelp = doc.createTextNode(helpStr);
+  pHelp.appendChild(txtHelp);
+  body.appendChild(pHelp);
+
+  var table = doc.createElement("table");
+  table.setAttribute("border", "2");
+  var thead = doc.createElement("thead");
+  var trHdr = doc.createElement("tr");
+  var thShortcutKey = doc.createElement("th");
+  var txtShortcutKey = doc.createTextNode(gStrBundle.getString("shortcutKeyTitle"));
+  thShortcutKey.appendChild(txtShortcutKey);
+  var thClipping = doc.createElement("th");
+  var txtClipping = doc.createTextNode(gStrBundle.getString("clippingNameTitle"));
+  thClipping.appendChild(txtClipping);
+  trHdr.appendChild(thShortcutKey);
+  trHdr.appendChild(thClipping);
+  thead.appendChild(trHdr);
+  table.appendChild(thead);
+  
+  var tbody = doc.createElement("tbody");
+  var keyMap = gDlgArgs.keyMap;
+
+  for (let key in keyMap) {
+    var tr = doc.createElement("tr");
+    var tdKey = doc.createElement("td");
+    var txtKey = doc.createTextNode(key);
+    tdKey.appendChild(txtKey);
+    var tdClipping = doc.createElement("td");
+    var txtClipping = doc.createTextNode(keyMap[key].name);
+    tdClipping.appendChild(txtClipping);
+    tr.appendChild(tdKey);
+    tr.appendChild(tdClipping);
+    tbody.appendChild(tr);
+  }
+
+  table.appendChild(tbody);
+  body.appendChild(table);
 }
