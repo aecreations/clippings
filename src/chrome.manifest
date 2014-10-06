@@ -7,7 +7,7 @@ skin	clippings	classic/1.0	chrome/skin/
 skin	clippings-laf	classic	chrome/skin/all/
 skin	clippings-laf	classic	chrome/skin/mac/	os=Darwin
 
-style	chrome://global/content/customizeToolbar.xul	chrome://clippings/skin/hostapp.css
+style	chrome://global/content/customizeToolbar.xul	chrome://clippings/skin/overlay.css
 
 # Thunderbird
 overlay	chrome://messenger/content/messenger.xul	chrome://clippings/content/tbMessengerOverlay.xul

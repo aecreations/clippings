@@ -15,7 +15,7 @@ skin	clippings	classic/1.0	jar:chrome/clippings.jar!/skin/
 skin	clippings-laf	classic	jar:chrome/clippings.jar!/skin/all/
 skin	clippings-laf	classic	jar:chrome/clippings.jar!/skin/mac/	os=Darwin
 
-style	chrome://global/content/customizeToolbar.xul	chrome://clippings/skin/hostapp.css
+style	chrome://global/content/customizeToolbar.xul	chrome://clippings/skin/overlay.css
 
 locale	clippings	en-US	jar:chrome/clippings.jar!/locale/en-US/
 locale	clippings	da	jar:chrome/clippings.jar!/locale/da/
