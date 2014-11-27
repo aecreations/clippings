@@ -41,12 +41,12 @@ locale	clippings	sv-SE	jar:chrome/clippings.jar!/locale/sv-SE/
 
 # XPCOM type libraries
 interfaces	components/nsIClippingsService.xpt
-interfaces	components/nsIDictionary.xpt
+interfaces	components/aeIDictionary.xpt
 
 # nsIClippingsService
 component	{8ebf6eef-c354-4211-89d0-603b45b76393}	components/nsClippingsService.js
 contract	clippings@mozdev.org/clippings;1	{8ebf6eef-c354-4211-89d0-603b45b76393}
 
-# nsIDictionary
-component	{1dd0cb45-aea3-4a52-8b29-01429a542863}	components/nsDictionary.js
+# aeIDictionary
+component	{1dd0cb45-aea3-4a52-8b29-01429a542863}	components/aeDictionary.js
 contract	clippings@mozdev.org/dictionary;1	{1dd0cb45-aea3-4a52-8b29-01429a542863}
