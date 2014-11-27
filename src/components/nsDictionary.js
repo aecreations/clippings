@@ -98,10 +98,6 @@ nsDictionary.prototype= {
 };
 
 
-if (XPCOMUtils.generateNSGetFactory) {
-  const NSGetFactory = XPCOMUtils.generateNSGetFactory([nsDictionary]);
-}
-else {
-  const NSGetModule = XPCOMUtils.generateNSGetModule([nsDictionary]);
-}
+const NSGetFactory = XPCOMUtils.generateNSGetFactory([nsDictionary]);
+
 
