@@ -2363,14 +2363,5 @@ nsClippingsService.prototype._getURLFromFile = function (aFile)
 // Component registration
 //
 
-/**
- * XPCOMUtils.generateNSGetFactory was introduced in Mozilla 2 (Firefox 4).
- * XPCOMUtils.generateNSGetModule is for Mozilla 1.9.2 (Firefox 3.6/Thunderbird 3.1).
- */
-if (XPCOMUtils.generateNSGetFactory) {
-  const NSGetFactory = XPCOMUtils.generateNSGetFactory([nsClippingsService]);
-}
-else {
-  const NSGetModule = XPCOMUtils.generateNSGetModule([nsClippingsService]);
-}
+const NSGetFactory = XPCOMUtils.generateNSGetFactory([nsClippingsService]);
 
