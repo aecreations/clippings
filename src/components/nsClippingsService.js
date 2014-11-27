@@ -891,7 +891,7 @@ nsClippingsService.prototype.setShortcutKey = function (aURI, aKey, aDataSrc)
 
 nsClippingsService.prototype.getShortcutKeyDict = function ()
 {
-  // Returns a nsIDictionary object which maps shortcut keys to the URIs
+  // Returns a aeIDictionary object which maps shortcut keys to the URIs
   // of clippings having that shortcut key assigned.
 
   if (! this._dataSrc) {
@@ -902,7 +902,7 @@ nsClippingsService.prototype.getShortcutKeyDict = function ()
   keyMap = this._createShortcutKeyMap(this._rdfContainer);
 
   var rv = Components.classes["clippings@mozdev.org/dictionary;1"]
-                     .createInstance(Components.interfaces.nsIDictionary);
+                     .createInstance(Components.interfaces.aeIDictionary);
 
   for (let key in keyMap) {
     let valueStr = Components.classes["@mozilla.org/supports-string;1"]
@@ -1584,7 +1584,7 @@ nsClippingsService.prototype.getBackupFileNamesDict = function ()
   }
 
   var rv = Components.classes["clippings@mozdev.org/dictionary;1"]
-                     .createInstance(Components.interfaces.nsIDictionary);
+                     .createInstance(Components.interfaces.aeIDictionary);
 
   for (let i = 0; i < backupFiles.length; i++) {
     let filename = backupFiles[i].leafName;

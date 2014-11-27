@@ -27,7 +27,7 @@
 typedef string uri;
 
 interface nsIRDFDataSource;
-interface nsIDictionary;
+interface aeIDictionary;
 interface nsIRDFContainer;
 interface nsIDOMElement;
 
@@ -161,7 +161,7 @@ interface nsIClippingsService : nsISupports
 
   wstring getShortcutKey(in uri aURI);
 
-  nsIDictionary getShortcutKeyDict();
+  aeIDictionary getShortcutKeyDict();
 
   uri getParent(in uri aURI);
 
@@ -270,10 +270,10 @@ interface nsIClippingsService : nsISupports
 
   /*
    * Method getBackupFileNamesDict(): 
-   * Returns a nsIDictionary object containing mappings of backup file names
+   * Returns a aeIDictionary object containing mappings of backup file names
    * to the corresponding human-readable date/time of the backup file
    */
-  nsIDictionary getBackupFileNamesDict();
+  aeIDictionary getBackupFileNamesDict();
 
   nsIRDFDataSource recoverFromBackup();
   /* throws NS_ERROR_FAILURE - if recovery failed

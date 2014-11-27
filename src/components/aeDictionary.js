@@ -36,10 +36,10 @@
  * ***** END LICENSE BLOCK ***** */
 
 /*
- *  nsDictionary XPCOM component
+ *  aeDictionary XPCOM component
  *  Version: $Revision: 1.3 $
  *
- *  $Id: nsDictionary.js,v 1.3 2012/11/02 05:27:23 ateng Exp $
+ *  $Id: aeDictionary.js,v 1.3 2012/11/02 05:27:23 ateng Exp $
  */
 
 Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
@@ -50,19 +50,19 @@ Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
  */
 const DICTIONARY_CONTRACTID = 'clippings@mozdev.org/dictionary;1';
 const DICTIONARY_CID = Components.ID('{1dd0cb45-aea3-4a52-8b29-01429a542863}');
-const DICTIONARY_IID = Components.interfaces.nsIDictionary;
+const DICTIONARY_IID = Components.interfaces.aeIDictionary;
 
 /*
  * Class definitions
  */
 
-/* The nsDictionary class constructor. */
-function nsDictionary() {
+/* The aeDictionary class constructor. */
+function aeDictionary() {
     this.hash = {};
 }
 
-/* the nsDictionary class def */
-nsDictionary.prototype= {
+/* the aeDictionary class def */
+aeDictionary.prototype= {
     hasKey: function(key) { return this.hash.hasOwnProperty(key) },
 
     getKeys: function(count) {
@@ -98,6 +98,6 @@ nsDictionary.prototype= {
 };
 
 
-const NSGetFactory = XPCOMUtils.generateNSGetFactory([nsDictionary]);
+const NSGetFactory = XPCOMUtils.generateNSGetFactory([aeDictionary]);
 
 

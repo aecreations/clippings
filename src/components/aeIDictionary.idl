@@ -39,7 +39,7 @@
  *  Simple dictionary implementation.
  *  Version: $Revision: 1.1 $
  *
- *  $Id: nsIDictionary.idl,v 1.1 2007/08/05 05:38:46 ateng Exp $
+ *  $Id: aeIDictionary.idl,v 1.1 2007/08/05 05:38:46 ateng Exp $
  */
 
 #include "nsISupports.idl"
@@ -48,7 +48,7 @@
  * A simple mutable table of objects, accessed by key.
  */
 [scriptable, uuid(1dd0cb45-aea3-4a52-8b29-01429a542863)]
-interface nsIDictionary: nsISupports {
+interface aeIDictionary: nsISupports {
     /**
      * Check if a given key is present in the dictionary.
      *
