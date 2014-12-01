@@ -235,7 +235,7 @@ window.aecreations.clippings = {
     this.strBundle = document.getElementById("ae-clippings-strings");
 
     try {
-      this.clippingsSvc = Components.classes["clippings@mozdev.org/clippings;1"].getService(Components.interfaces.nsIClippingsService);
+      this.clippingsSvc = Components.classes["clippings@mozdev.org/clippings;1"].getService(Components.interfaces.aeIClippingsService);
     }
     catch (e) {
       this.alert(e);

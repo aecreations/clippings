@@ -27,9 +27,9 @@
 Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
 
 
-function nsClippingsService() {}
+function aeClippingsService() {}
 
-nsClippingsService.prototype = {
+aeClippingsService.prototype = {
   // Public constants
   FILETYPE_RDF_XML: 0,
   FILETYPE_CLIPPINGS_1X: 1,
@@ -104,30 +104,30 @@ nsClippingsService.prototype = {
   classDescription: "Clippings Datasource API",
   classID:          Components.ID("{8ebf6eef-c354-4211-89d0-603b45b76393}"),
   contractID:       "clippings@mozdev.org/clippings;1",
-  QueryInterface:   XPCOMUtils.generateQI([Components.interfaces.nsIClippingsService])
+  QueryInterface:   XPCOMUtils.generateQI([Components.interfaces.aeIClippingsService])
 
 };
 
 
-nsClippingsService.prototype.addListener = function (aListener)
+aeClippingsService.prototype.addListener = function (aListener)
 {
   this._listeners.push(aListener);
-  this._log("Added listener object to nsIClippingsService");
+  this._log("Added listener object to aeIClippingsService");
 };
 
 
-nsClippingsService.prototype.removeListener = function (aListener)
+aeClippingsService.prototype.removeListener = function (aListener)
 {
   for (let i = 0; i < this._listeners.length; i++) {
     if (this._listeners[i] == aListener) {
       delete this._listeners[i];
-      this._log("Removed listener object " + i + " from nsIClippingsService");
+      this._log("Removed listener object " + i + " from aeIClippingsService");
     }
   }
 };
 
 
-nsClippingsService.prototype.getDataSource = function (aDataSrcURL)
+aeClippingsService.prototype.getDataSource = function (aDataSrcURL)
 {
   if (this._dataSrc) {
     return this._dataSrc;
@@ -155,12 +155,12 @@ nsClippingsService.prototype.getDataSource = function (aDataSrcURL)
     this._count = this._countRec(this._rdfContainer);
   }
 
-  this._log("nsClippingsService.getDataSource(): Initialization complete\nDatasource URL: \"" + aDataSrcURL + "\"\n" + this._count + " item(s) in root folder");
+  this._log("aeClippingsService.getDataSource(): Initialization complete\nDatasource URL: \"" + aDataSrcURL + "\"\n" + this._count + " item(s) in root folder");
   return this._dataSrc;
 };
 
 
-nsClippingsService.prototype.reset = function ()
+aeClippingsService.prototype.reset = function ()
 {
   this.purgeDetachedItems();
 
@@ -171,19 +171,19 @@ nsClippingsService.prototype.reset = function ()
 };
 
 
-nsClippingsService.prototype.setBackupDir = function (aBackupDirURL)
+aeClippingsService.prototype.setBackupDir = function (aBackupDirURL)
 {
   this._backupDirURL = aBackupDirURL;
 };
 
 
-nsClippingsService.prototype.setMaxBackupFiles = function (aNumFiles)
+aeClippingsService.prototype.setMaxBackupFiles = function (aNumFiles)
 {
   this._maxBackupFiles = aNumFiles;
 };
 
 
-nsClippingsService.prototype.createClippingNameFromText = function (aText)
+aeClippingsService.prototype.createClippingNameFromText = function (aText)
 {
   var rv = "";
   var clipName = "";
@@ -204,7 +204,7 @@ nsClippingsService.prototype.createClippingNameFromText = function (aText)
 };
 
 
-nsClippingsService.prototype.newClippingFromText = function (aText, aShowDialog, aChromeWnd, aParentFolder, aDontNotify)
+aeClippingsService.prototype.newClippingFromText = function (aText, aShowDialog, aChromeWnd, aParentFolder, aDontNotify)
 {
   var rv = "";
   var clipName;
@@ -214,7 +214,7 @@ nsClippingsService.prototype.newClippingFromText = function (aText, aShowDialog,
   if (clipText && aText) {
     clipName = this.createClippingNameFromText(clipText);
 
-    this._log("nsClippingsService.newClippingFromText(): clipName: \"" + clipName + "\"; length: " + clipName.length);
+    this._log("aeClippingsService.newClippingFromText(): clipName: \"" + clipName + "\"; length: " + clipName.length);
 
     if (aShowDialog) {
       var args = {
@@ -235,10 +235,10 @@ nsClippingsService.prototype.newClippingFromText = function (aText, aShowDialog,
     }
 
     if (! this.exists(parentFolderURI)) {
-       throw Components.Exception("nsClippingsService.newClippingFromText(): Folder does not exist: " + parentFolderURI);
+       throw Components.Exception("aeClippingsService.newClippingFromText(): Folder does not exist: " + parentFolderURI);
     }
 
-    this._log("nsClippingsService.newClippingFromText(): Parent folder URI: " + parentFolderURI);
+    this._log("aeClippingsService.newClippingFromText(): Parent folder URI: " + parentFolderURI);
     rv = this.createNewClipping(parentFolderURI, clipName, clipText, aDontNotify);
 
     if (args && args.key) {
@@ -249,7 +249,7 @@ nsClippingsService.prototype.newClippingFromText = function (aText, aShowDialog,
 };
 
 
-nsClippingsService.prototype.createNewClipping = function (aParentFolder, aName, aText, aDontNotify, aDataSrc)
+aeClippingsService.prototype.createNewClipping = function (aParentFolder, aName, aText, aDontNotify, aDataSrc)
   // aDataSrc param for internal use only - not exposed in interface (needed
   // for exporting)
 {
@@ -259,7 +259,7 @@ nsClippingsService.prototype.createNewClipping = function (aParentFolder, aName,
 };
 
 
-nsClippingsService.prototype.createNewClippingEx = function (aParentFolder, aURI, aName, aText, aPos, aDontNotify)
+aeClippingsService.prototype.createNewClippingEx = function (aParentFolder, aURI, aName, aText, aPos, aDontNotify)
 {
   var rv;
   var newNode;
@@ -277,7 +277,7 @@ nsClippingsService.prototype.createNewClippingEx = function (aParentFolder, aURI
 };
 
 
-nsClippingsService.prototype._createNewClippingHelper = function (aParentFolderURI, aNode, aName, aText, aPos, aDontNotify, aDataSrc)
+aeClippingsService.prototype._createNewClippingHelper = function (aParentFolderURI, aNode, aName, aText, aPos, aDontNotify, aDataSrc)
 {
   var ds = aDataSrc || this._dataSrc;
   if (! ds) {
@@ -328,7 +328,7 @@ nsClippingsService.prototype._createNewClippingHelper = function (aParentFolderU
     if (! aDontNotify) {
       for (let i = 0; i < this._listeners.length; i++) {
 	if (this._listeners[i]) {
-	  this._log("nsClippingsService._createNewClippingHelper(): Notifying observer " + i);
+	  this._log("aeClippingsService._createNewClippingHelper(): Notifying observer " + i);
 	  this._listeners[i].newClippingCreated(aNode.Value);
 	}
       }
@@ -337,7 +337,7 @@ nsClippingsService.prototype._createNewClippingHelper = function (aParentFolderU
 };
 
 
-nsClippingsService.prototype.createNewFolder = function (aParentFolder, aName, aDontNotify, aDataSrc)
+aeClippingsService.prototype.createNewFolder = function (aParentFolder, aName, aDontNotify, aDataSrc)
   // aDataSrc param for internal use only - not exposed in interface (needed
   // for exporting)
 {
@@ -347,7 +347,7 @@ nsClippingsService.prototype.createNewFolder = function (aParentFolder, aName, a
 };
 
 
-nsClippingsService.prototype.createNewFolderEx = function (aParentFolder, aURI, aName, aPos, aDontNotify, aOrigin)
+aeClippingsService.prototype.createNewFolderEx = function (aParentFolder, aURI, aName, aPos, aDontNotify, aOrigin)
 {
   var rv;
   var newNode;
@@ -365,7 +365,7 @@ nsClippingsService.prototype.createNewFolderEx = function (aParentFolder, aURI, 
 };
 
 
-nsClippingsService.prototype._createNewFolderHelper = function (aParentFolderURI, aNode, aName, aPos, aDontNotify, aOrigin, aDataSrc)
+aeClippingsService.prototype._createNewFolderHelper = function (aParentFolderURI, aNode, aName, aPos, aDontNotify, aOrigin, aDataSrc)
 {
   var ds = aDataSrc || this._dataSrc;
   if (! ds) {
@@ -433,7 +433,7 @@ nsClippingsService.prototype._createNewFolderHelper = function (aParentFolderURI
     if (! aDontNotify) {
       for (let i = 0; i < this._listeners.length; i++) {
 	if (this._listeners[i] && this._listeners[i].origin != aOrigin) {
-	  this._log("nsClippingsService._createNewFolderHelper(): Notifying observer " + i);
+	  this._log("aeClippingsService._createNewFolderHelper(): Notifying observer " + i);
 	  this._listeners[i].newFolderCreated(aNode.Value);
 	}
       }
@@ -443,7 +443,7 @@ nsClippingsService.prototype._createNewFolderHelper = function (aParentFolderURI
 
 
 
-nsClippingsService.prototype._getSeqContainerFromFolder = function (aURI, aDataSrc)
+aeClippingsService.prototype._getSeqContainerFromFolder = function (aURI, aDataSrc)
 {
   var ds = aDataSrc || this._dataSrc;
 
@@ -462,17 +462,17 @@ nsClippingsService.prototype._getSeqContainerFromFolder = function (aURI, aDataS
 };
 
 
-nsClippingsService.prototype.createEmptyClipping = function (aFolderURI)
+aeClippingsService.prototype.createEmptyClipping = function (aFolderURI)
 {
   if (! this.isFolder(aFolderURI)) {
-    throw Components.Exception("nsClippingsService.createEmptyClipping(): URI argument is not a folder resource", Components.results.NS_ERROR_INVALID_ARG);
+    throw Components.Exception("aeClippingsService.createEmptyClipping(): URI argument is not a folder resource", Components.results.NS_ERROR_INVALID_ARG);
   }
 
   this._appendDummyNode(aFolderURI);
 };
 
 
-nsClippingsService.prototype.processRootFolder = function ()
+aeClippingsService.prototype.processRootFolder = function ()
 {
   if (! this._rdfContainer) {
     throw Components.Exception("Data source not initialized",
@@ -486,7 +486,7 @@ nsClippingsService.prototype.processRootFolder = function ()
 };
 
 
-nsClippingsService.prototype.processEmptyFolders = function ()
+aeClippingsService.prototype.processEmptyFolders = function ()
 {
   if (! this._rdfContainer) {
     throw Components.Exception("Data source not initialized",
@@ -496,7 +496,7 @@ nsClippingsService.prototype.processEmptyFolders = function ()
 };
 
 
-nsClippingsService.prototype._processEmptyFolders = function (aFolderCtr)
+aeClippingsService.prototype._processEmptyFolders = function (aFolderCtr)
 {
   var childrenEnum = aFolderCtr.GetElements();
   while (childrenEnum.hasMoreElements()) {
@@ -518,7 +518,7 @@ nsClippingsService.prototype._processEmptyFolders = function (aFolderCtr)
 };
 
 
-nsClippingsService.prototype._appendDummyNode = function (aFolderURI, aDataSrc)
+aeClippingsService.prototype._appendDummyNode = function (aFolderURI, aDataSrc)
 {
   var ds = aDataSrc || this._dataSrc;
 
@@ -539,7 +539,7 @@ nsClippingsService.prototype._appendDummyNode = function (aFolderURI, aDataSrc)
 };
 
 
-nsClippingsService.prototype._removeDummyNode = function (aFolderURI, aDataSrc)
+aeClippingsService.prototype._removeDummyNode = function (aFolderURI, aDataSrc)
 {
   var ds = aDataSrc || this._dataSrc;
 
@@ -568,13 +568,13 @@ nsClippingsService.prototype._removeDummyNode = function (aFolderURI, aDataSrc)
 };
 
 
-nsClippingsService.prototype.setEmptyClippingString = function (aString)
+aeClippingsService.prototype.setEmptyClippingString = function (aString)
 {
   this._emptyClippingStr = aString;
 };
 
 
-nsClippingsService.prototype.getCount = function (aFolderURI)
+aeClippingsService.prototype.getCount = function (aFolderURI)
 {
   if (! this._dataSrc) {
     throw Components.Exception("Data source not initialized",
@@ -582,7 +582,7 @@ nsClippingsService.prototype.getCount = function (aFolderURI)
   }
 
   if (!this.isFolder(aFolderURI) && aFolderURI != this.kRootFolderURI) {
-    throw Components.Exception("nsClippingsService.getCount(): URI argument is not a folder resource", Components.results.NS_ERROR_INVALID_ARG);
+    throw Components.Exception("aeClippingsService.getCount(): URI argument is not a folder resource", Components.results.NS_ERROR_INVALID_ARG);
   }
 
   let ctr = this._getSeqContainerFromFolder(aFolderURI);
@@ -595,7 +595,7 @@ nsClippingsService.prototype.getCount = function (aFolderURI)
 };
 
 
-nsClippingsService.prototype.getCountSubfolders = function (aFolderURI, aDataSrc)
+aeClippingsService.prototype.getCountSubfolders = function (aFolderURI, aDataSrc)
 {
   var ds = aDataSrc || this._dataSrc;
   if (! ds) {
@@ -604,7 +604,7 @@ nsClippingsService.prototype.getCountSubfolders = function (aFolderURI, aDataSrc
   }
 
   if (!this.isFolder(aFolderURI, ds) && aFolderURI != this.kRootFolderURI) {
-    throw Components.Exception("nsClippingsService.getCountSubfolders(): URI argument is not a folder resource", Components.results.NS_ERROR_INVALID_ARG);
+    throw Components.Exception("aeClippingsService.getCountSubfolders(): URI argument is not a folder resource", Components.results.NS_ERROR_INVALID_ARG);
   }
 
   var rv;
@@ -626,7 +626,7 @@ nsClippingsService.prototype.getCountSubfolders = function (aFolderURI, aDataSrc
 };
 
 
-nsClippingsService.prototype.recountAll = function ()
+aeClippingsService.prototype.recountAll = function ()
 {
   if (! this._dataSrc) {
     throw Components.Exception("Data source not initialized",
@@ -640,7 +640,7 @@ nsClippingsService.prototype.recountAll = function ()
 };
 
 
-nsClippingsService.prototype._countRec = function (aFolderCtr)
+aeClippingsService.prototype._countRec = function (aFolderCtr)
 {
   var count = 0;
   var childrenEnum = aFolderCtr.GetElements();
@@ -662,7 +662,7 @@ nsClippingsService.prototype._countRec = function (aFolderCtr)
 };
 
 
-nsClippingsService.prototype.findByName = function (aSearchText, aMatchCase, aSearchFolders, aCount)
+aeClippingsService.prototype.findByName = function (aSearchText, aMatchCase, aSearchFolders, aCount)
 {
   if (! this._dataSrc) {
     throw Components.Exception("Data source not initialized",
@@ -679,7 +679,7 @@ nsClippingsService.prototype.findByName = function (aSearchText, aMatchCase, aSe
 };
 
 
-nsClippingsService.prototype._findRec = function (aRegExp, aFolderCtr, aSearchFolders)
+aeClippingsService.prototype._findRec = function (aRegExp, aFolderCtr, aSearchFolders)
 {
   var srchResults = [];
   var childrenEnum = aFolderCtr.GetElements();
@@ -712,7 +712,7 @@ nsClippingsService.prototype._findRec = function (aRegExp, aFolderCtr, aSearchFo
 };
 
 
-nsClippingsService.prototype.getParent = function (aURI)
+aeClippingsService.prototype.getParent = function (aURI)
 {
   if (! this._dataSrc) {
     throw Components.Exception("Data source not initialized",
@@ -736,7 +736,7 @@ nsClippingsService.prototype.getParent = function (aURI)
 
   if (! predicate) {
     let name = this.getName(aURI);
-    throw Components.Exception("nsClippingsService.getParent(): Failed to get predicate of resource\nURI: \"" + aURI + "\"; name: \"" + name + "\"");
+    throw Components.Exception("aeClippingsService.getParent(): Failed to get predicate of resource\nURI: \"" + aURI + "\"; name: \"" + name + "\"");
   }
 
   subject = this._dataSrc.GetSource(predicate, target, true);
@@ -747,7 +747,7 @@ nsClippingsService.prototype.getParent = function (aURI)
 };
 
 
-nsClippingsService.prototype.isFolder = function (aURI, aDataSrc)
+aeClippingsService.prototype.isFolder = function (aURI, aDataSrc)
   // aDataSrc param for internal use only.  Not exposed in interface.
 {
   var ds = aDataSrc || this._dataSrc;
@@ -767,7 +767,7 @@ nsClippingsService.prototype.isFolder = function (aURI, aDataSrc)
 };
 
 
-nsClippingsService.prototype.isClipping = function (aURI, aDataSrc)
+aeClippingsService.prototype.isClipping = function (aURI, aDataSrc)
   // aDataSrc param for internal use only.  Not exposed in interface.
 {
   var ds = aDataSrc || this._dataSrc;
@@ -787,13 +787,13 @@ nsClippingsService.prototype.isClipping = function (aURI, aDataSrc)
 };
 
 
-nsClippingsService.prototype.isEmptyClipping = function (aURI)
+aeClippingsService.prototype.isEmptyClipping = function (aURI)
 {
   return this._isDummyNode(aURI);
 };
 
 
-nsClippingsService.prototype._isDummyNode = function (aURI, aDataSrc)
+aeClippingsService.prototype._isDummyNode = function (aURI, aDataSrc)
 {
   var ds = aDataSrc || this._dataSrc;
   if (! ds) {
@@ -813,19 +813,19 @@ nsClippingsService.prototype._isDummyNode = function (aURI, aDataSrc)
 
 
 // aDataSrc parameter used internally - not exposed in interface
-nsClippingsService.prototype.getShortcutKey = function (aURI, aDataSrc)
+aeClippingsService.prototype.getShortcutKey = function (aURI, aDataSrc)
 {
   var ds = aDataSrc || this._dataSrc;
   if (! ds) {
-    throw Components.Exception("nsClippingsService.getShortcutKey(): Data source not initialized", Components.results.NS_ERROR_NOT_INITIALIZED);
+    throw Components.Exception("aeClippingsService.getShortcutKey(): Data source not initialized", Components.results.NS_ERROR_NOT_INITIALIZED);
   }
 
   if (!aDataSrc && !this.exists(aURI)) {
-    throw Components.Exception("nsClippingsService.getShortcutKey(): URI argument doesn't exist", Components.results.NS_ERROR_INVALID_ARG);
+    throw Components.Exception("aeClippingsService.getShortcutKey(): URI argument doesn't exist", Components.results.NS_ERROR_INVALID_ARG);
   }
 
   if (! this.isClipping(aURI, ds)) {
-    throw Components.Exception("nsClippingsService.getShortcutKey(): URI argument is not a clipping resource", Components.results.NS_ERROR_INVALID_ARG);
+    throw Components.Exception("aeClippingsService.getShortcutKey(): URI argument is not a clipping resource", Components.results.NS_ERROR_INVALID_ARG);
   }
 
   var rv = "";
@@ -842,19 +842,19 @@ nsClippingsService.prototype.getShortcutKey = function (aURI, aDataSrc)
 
 
 // aDataSrc parameter used internally - not exposed in interface
-nsClippingsService.prototype.setShortcutKey = function (aURI, aKey, aDataSrc)
+aeClippingsService.prototype.setShortcutKey = function (aURI, aKey, aDataSrc)
 {
   var ds = aDataSrc || this._dataSrc;
   if (! ds) {
-    throw Components.Exception("nsClippingsService.setShortcutKey(): Data source not initialized", Components.results.NS_ERROR_NOT_INITIALIZED);
+    throw Components.Exception("aeClippingsService.setShortcutKey(): Data source not initialized", Components.results.NS_ERROR_NOT_INITIALIZED);
   }
 
   if (!aDataSrc && !this.exists(aURI, ds)) {
-    throw Components.Exception("nsClippingsService.setShortcutKey(): URI argument doesn't exist", Components.results.NS_ERROR_INVALID_ARG);
+    throw Components.Exception("aeClippingsService.setShortcutKey(): URI argument doesn't exist", Components.results.NS_ERROR_INVALID_ARG);
   }
 
   if (! this.isClipping(aURI, ds)) {
-    throw Components.Exception("nsClippingsService.setShortcutKey(): URI argument is not a clipping resource",  Components.results.NS_ERROR_INVALID_ARG);
+    throw Components.Exception("aeClippingsService.setShortcutKey(): URI argument is not a clipping resource",  Components.results.NS_ERROR_INVALID_ARG);
   }
 
   var key = this._sanitize(aKey);
@@ -863,7 +863,7 @@ nsClippingsService.prototype.setShortcutKey = function (aURI, aKey, aDataSrc)
   if (! aDataSrc) {
     let keyMap = this._createShortcutKeyMap(this._rdfContainer);
     if (keyMap[key]) {
-      throw Components.Exception("nsClippingsService.setShortcutKey(): Key already defined: `" + key + "'", Components.results.NS_ERROR_FAILURE);
+      throw Components.Exception("aeClippingsService.setShortcutKey(): Key already defined: `" + key + "'", Components.results.NS_ERROR_FAILURE);
     }
   }
 
@@ -889,13 +889,13 @@ nsClippingsService.prototype.setShortcutKey = function (aURI, aKey, aDataSrc)
 };
 
 
-nsClippingsService.prototype.getShortcutKeyDict = function ()
+aeClippingsService.prototype.getShortcutKeyDict = function ()
 {
   // Returns a aeIDictionary object which maps shortcut keys to the URIs
   // of clippings having that shortcut key assigned.
 
   if (! this._dataSrc) {
-    throw Components.Exception("nsClippingsService.getShortcutKeyDict(): Data source not initialized", Components.results.NS_ERROR_NOT_INITIALIZED);
+    throw Components.Exception("aeClippingsService.getShortcutKeyDict(): Data source not initialized", Components.results.NS_ERROR_NOT_INITIALIZED);
   }
   
   var keyMap = {};
@@ -916,7 +916,7 @@ nsClippingsService.prototype.getShortcutKeyDict = function ()
 };
 
 
-nsClippingsService.prototype._createShortcutKeyMap = function (aFolderCtr)
+aeClippingsService.prototype._createShortcutKeyMap = function (aFolderCtr)
 {
   var rv = {};
   var childrenEnum = aFolderCtr.GetElements();
@@ -942,7 +942,7 @@ nsClippingsService.prototype._createShortcutKeyMap = function (aFolderCtr)
 };
 
 
-nsClippingsService.prototype._combineJSMap = function (a, b)
+aeClippingsService.prototype._combineJSMap = function (a, b)
 {
   // Paremeters a and b are JavaScript objects
   var rv = {};
@@ -958,10 +958,10 @@ nsClippingsService.prototype._combineJSMap = function (a, b)
 };
 
 
-nsClippingsService.prototype.copyTo = function (aURI, aDestFolder, aDestItemURI, aDestPos, aRemoveOriginal, aOrigin)
+aeClippingsService.prototype.copyTo = function (aURI, aDestFolder, aDestItemURI, aDestPos, aRemoveOriginal, aOrigin)
 {
   if (! this._dataSrc) {
-    throw Components.Exception("nsClippingsService.copyTo(): Data source not initialized", Components.results.NS_ERROR_NOT_INITIALIZED);
+    throw Components.Exception("aeClippingsService.copyTo(): Data source not initialized", Components.results.NS_ERROR_NOT_INITIALIZED);
   }
 
   // Allow copying items to the same folder to create copies of items.
@@ -970,7 +970,7 @@ nsClippingsService.prototype.copyTo = function (aURI, aDestFolder, aDestItemURI,
     var parentFolderURI = this.getParent(aURI);
   }
   catch (e) {
-    throw Components.Exception("nsClippingsService.copyTo(): Unable to retrieve parent folder URI of item to move or copy!\n" + e);
+    throw Components.Exception("aeClippingsService.copyTo(): Unable to retrieve parent folder URI of item to move or copy!\n" + e);
   }
 
   if (parentFolderURI == aDestFolder && aRemoveOriginal) {
@@ -993,13 +993,13 @@ nsClippingsService.prototype.copyTo = function (aURI, aDestFolder, aDestItemURI,
 	this.setShortcutKey(rv, key);
       } 
       catch (e) {
-	this._log("nsClippingsService.copyTo(): Unable to set shortcut key:\n" + e);
+	this._log("aeClippingsService.copyTo(): Unable to set shortcut key:\n" + e);
       }
     }
   }
   else if (this.isFolder(aURI)) {
     if (aURI == aDestFolder && aRemoveOriginal) {
-      throw Components.Exception("nsClippingsService.copyTo(): Cannot move a folder into itself!");
+      throw Components.Exception("aeClippingsService.copyTo(): Cannot move a folder into itself!");
     }
 
     isFolderMovedOrCopied = true;
@@ -1034,7 +1034,7 @@ nsClippingsService.prototype.copyTo = function (aURI, aDestFolder, aDestItemURI,
 };
 
 
-nsClippingsService.prototype.removeAll = function ()
+aeClippingsService.prototype.removeAll = function ()
 {
   var childrenEnum = this._rdfContainer.GetElements();
 
@@ -1049,13 +1049,13 @@ nsClippingsService.prototype.removeAll = function ()
   this._appendDummyNode(this._SEQNODE_RESOURCE_URI);
   this.recountAll();
 
-  this._log("nsClippingsService.removeAll(): Finished removing all clippings and folders. There are now " + this._count + " items.");
+  this._log("aeClippingsService.removeAll(): Finished removing all clippings and folders. There are now " + this._count + " items.");
 };
 
 
 // aDontUpdateCount and aPurgeFlag params for internal use only - 
 // not exposed in interface.
-nsClippingsService.prototype.remove = function (aURI, aDontUpdateCount, aPurgeFlag)
+aeClippingsService.prototype.remove = function (aURI, aDontUpdateCount, aPurgeFlag)
 {
   var subjectNode = this._rdfSvc.GetResource(aURI);
   var name = this.getName(aURI) || "(no name)";
@@ -1114,7 +1114,7 @@ nsClippingsService.prototype.remove = function (aURI, aDontUpdateCount, aPurgeFl
 };
 
 
-nsClippingsService.prototype._setHasSubfoldersTriple = function (aFolderURI, aBoolFlag, aDataSrc)
+aeClippingsService.prototype._setHasSubfoldersTriple = function (aFolderURI, aBoolFlag, aDataSrc)
 {
   var ds = aDataSrc || this._dataSrc;
 
@@ -1132,10 +1132,10 @@ nsClippingsService.prototype._setHasSubfoldersTriple = function (aFolderURI, aBo
 
 
 // Returns the 1-based index of the item being detached.
-nsClippingsService.prototype.detachFromFolder = function (aFolderURI)
+aeClippingsService.prototype.detachFromFolder = function (aFolderURI)
 {
   if (! this.isFolder(aFolderURI)) {
-    throw Components.Exception("nsClippingsService.detachFromFolder(): URI argument is not a folder resource", Components.results.NS_ERROR_INVALID_ARG);
+    throw Components.Exception("aeClippingsService.detachFromFolder(): URI argument is not a folder resource", Components.results.NS_ERROR_INVALID_ARG);
   }
 
   var rv;
@@ -1164,7 +1164,7 @@ nsClippingsService.prototype.detachFromFolder = function (aFolderURI)
 };
 
 
-nsClippingsService.prototype.reattachToFolder = function (aParentFolder, aURI, aPos)
+aeClippingsService.prototype.reattachToFolder = function (aParentFolder, aURI, aPos)
 {
   // NOTE: aPos is a 1-based (not zero-based) index.
   var prevSubfCount = this.getCountSubfolders(aParentFolder);
@@ -1200,7 +1200,7 @@ nsClippingsService.prototype.reattachToFolder = function (aParentFolder, aURI, a
 };
 
 
-nsClippingsService.prototype.purgeDetachedItems = function ()
+aeClippingsService.prototype.purgeDetachedItems = function ()
 {
   var node, uri;
   var len = this._detachedItems.length;
@@ -1231,7 +1231,7 @@ nsClippingsService.prototype.purgeDetachedItems = function ()
 };
 
 
-nsClippingsService.prototype.isDetached = function (aURI)
+aeClippingsService.prototype.isDetached = function (aURI)
 {
   var rv = false;
   var i = 0;
@@ -1247,7 +1247,7 @@ nsClippingsService.prototype.isDetached = function (aURI)
 };
 
 
-nsClippingsService.prototype.exists = function (aURI)
+aeClippingsService.prototype.exists = function (aURI)
 {
   if (aURI == this.kRootFolderURI) {
     return true;
@@ -1286,7 +1286,7 @@ nsClippingsService.prototype.exists = function (aURI)
 };
 
 
-nsClippingsService.prototype.indexOf = function (aURI)
+aeClippingsService.prototype.indexOf = function (aURI)
 {
   if (! this.exists(aURI)) {
     return -1;
@@ -1311,7 +1311,7 @@ nsClippingsService.prototype.indexOf = function (aURI)
 };
 
 
-nsClippingsService.prototype.ctrIndexOf = function (aURI)
+aeClippingsService.prototype.ctrIndexOf = function (aURI)
 {
   var rv;
   var node = this._rdfSvc.GetResource(aURI);
@@ -1323,7 +1323,7 @@ nsClippingsService.prototype.ctrIndexOf = function (aURI)
 };
 
 
-nsClippingsService.prototype.getName = function (aURI, aDataSrc)
+aeClippingsService.prototype.getName = function (aURI, aDataSrc)
   // aDataSrc param for internal use only.  Not exposed in interface.
 {
   var ds = aDataSrc || this._dataSrc;
@@ -1350,7 +1350,7 @@ nsClippingsService.prototype.getName = function (aURI, aDataSrc)
 };
 
 
-nsClippingsService.prototype.getText = function (aURI, aDataSrc)
+aeClippingsService.prototype.getText = function (aURI, aDataSrc)
   // aDataSrc param for internal use only.  Not exposed in interface.
 {
   var ds = aDataSrc || this._dataSrc;
@@ -1370,7 +1370,7 @@ nsClippingsService.prototype.getText = function (aURI, aDataSrc)
 };
 
 
-nsClippingsService.prototype.setName = function (aURI, aName)
+aeClippingsService.prototype.setName = function (aURI, aName)
 {
   var name = this._sanitize(aName);
   var subjName = this._rdfSvc.GetResource(aURI);
@@ -1381,7 +1381,7 @@ nsClippingsService.prototype.setName = function (aURI, aName)
 };
 
 
-nsClippingsService.prototype.setText = function (aURI, aText)
+aeClippingsService.prototype.setText = function (aURI, aText)
 {
   var text = this._sanitize(aText);
   var subjText = this._rdfSvc.GetResource(aURI);
@@ -1393,7 +1393,7 @@ nsClippingsService.prototype.setText = function (aURI, aText)
 };
 
 
-nsClippingsService.prototype.changePosition = function (aParentFolder, aOldPos, aNewPos)
+aeClippingsService.prototype.changePosition = function (aParentFolder, aOldPos, aNewPos)
 {
   var parentCtr;
   if (aParentFolder == this.kRootFolderURI) {
@@ -1404,18 +1404,18 @@ nsClippingsService.prototype.changePosition = function (aParentFolder, aOldPos, 
   }
 
   var node = parentCtr.RemoveElementAt(aOldPos, true);
-  this._log("nsClippingsService.changePosition(): node=" + node + "; aOldPos=" + aOldPos + "; aNewPos=" + aNewPos);
+  this._log("aeClippingsService.changePosition(): node=" + node + "; aOldPos=" + aOldPos + "; aNewPos=" + aNewPos);
   parentCtr.InsertElementAt(node, aNewPos, true);
 };
 
 
-nsClippingsService.prototype.flushDataSrc = function ()
+aeClippingsService.prototype.flushDataSrc = function ()
 {
   this.flushDataSrcEx(true);
 };
 
 
-nsClippingsService.prototype.flushDataSrcEx = function (aDoBackup)
+aeClippingsService.prototype.flushDataSrcEx = function (aDoBackup)
 {
   if (! this._dataSrc) {
     throw Components.Exception("Data source not initialized",
@@ -1426,7 +1426,7 @@ nsClippingsService.prototype.flushDataSrcEx = function (aDoBackup)
     this._dataSrc.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource).Flush();
   }
   catch (e) {
-    this._log("nsClippingsService.flushDataSrc(): Data source flush failed!\n" + e);
+    this._log("aeClippingsService.flushDataSrc(): Data source flush failed!\n" + e);
     throw e;
   }
   this._log("*** Clippings datasource saved to disk ***");
@@ -1436,7 +1436,7 @@ nsClippingsService.prototype.flushDataSrcEx = function (aDoBackup)
       this._doBackup();
     }
     catch (e) {
-      this._log("nsClippingsService.flushDataSrc(): WARNING: Backup failed:\n" + e);
+      this._log("aeClippingsService.flushDataSrc(): WARNING: Backup failed:\n" + e);
     }
   }
    
@@ -1444,12 +1444,12 @@ nsClippingsService.prototype.flushDataSrcEx = function (aDoBackup)
     this._deleteOldBackupFiles();
   }
   catch (e) {
-    this._log("nsClippingsService.flushDataSrc(): WARNING: Cannot delete old backup file(s):\n" + e);
+    this._log("aeClippingsService.flushDataSrc(): WARNING: Cannot delete old backup file(s):\n" + e);
   }
 };
 
 
-nsClippingsService.prototype.refreshDataSrc = function ()
+aeClippingsService.prototype.refreshDataSrc = function ()
 {
   if (! this._dataSrc) {
     throw Components.Exception("Data source not initialized",
@@ -1460,7 +1460,7 @@ nsClippingsService.prototype.refreshDataSrc = function ()
     this._dataSrc.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource).Refresh(true);
   }
   catch (e) {
-    this._log("nsClippingsService.refreshDataSrc(): Data source refresh failed!\n" + e);
+    this._log("aeClippingsService.refreshDataSrc(): Data source refresh failed!\n" + e);
     throw e;
   }
 
@@ -1470,18 +1470,18 @@ nsClippingsService.prototype.refreshDataSrc = function ()
 
 
 
-nsClippingsService.prototype._doBackup = function ()
+aeClippingsService.prototype._doBackup = function ()
 {
   var dir = this._getFileFromURL(this._backupDirURL);
   try {
     dir = dir.QueryInterface(Components.interfaces.nsIFile);
   }
   catch (e) {
-    throw Components.Exception("nsClippingsService._doBackup(): Failed to get nsIFile object for backup dir:\n" + e);
+    throw Components.Exception("aeClippingsService._doBackup(): Failed to get nsIFile object for backup dir:\n" + e);
   }
 
   if (!dir.exists() || !dir.isDirectory()) {
-    this._log("nsClippingsService._doBackup(): Creating backup directory\n'" 
+    this._log("aeClippingsService._doBackup(): Creating backup directory\n'" 
 	      + this._backupDirURL + "'");
     dir.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);
   }
@@ -1500,7 +1500,7 @@ nsClippingsService.prototype._doBackup = function ()
 };
 
 
-nsClippingsService.prototype._deleteOldBackupFiles = function ()
+aeClippingsService.prototype._deleteOldBackupFiles = function ()
 {
   try {
     var backupFiles = this._getBackupFiles();
@@ -1510,7 +1510,7 @@ nsClippingsService.prototype._deleteOldBackupFiles = function ()
     throw e;
   }
 
-  this._log("nsClippingsService._deleteOldBackupFiles(): Number of backup files: " + backupFiles.length);
+  this._log("aeClippingsService._deleteOldBackupFiles(): Number of backup files: " + backupFiles.length);
 
   while (backupFiles.length > this._maxBackupFiles) {
     var file = backupFiles.shift();  // backupFiles[] ordered oldest -> newest
@@ -1518,10 +1518,10 @@ nsClippingsService.prototype._deleteOldBackupFiles = function ()
       file = file.QueryInterface(Components.interfaces.nsIFile);
     }
     catch (e) {
-      throw Components.Exception("nsClippingsService._deleteOldBackupFiles(): Failed to get nsIFile object for backup file to remove:\n" + e);
+      throw Components.Exception("aeClippingsService._deleteOldBackupFiles(): Failed to get nsIFile object for backup file to remove:\n" + e);
     }
 
-    this._log("nsClippingsService._deleteOldBackupFiles(): Deleting old backup file: " + file.leafName);
+    this._log("aeClippingsService._deleteOldBackupFiles(): Deleting old backup file: " + file.leafName);
     try {
       file.remove(false);
     }
@@ -1532,14 +1532,14 @@ nsClippingsService.prototype._deleteOldBackupFiles = function ()
 };
 
 
-nsClippingsService.prototype._getBackupFiles = function ()
+aeClippingsService.prototype._getBackupFiles = function ()
 {
   var dir = this._getFileFromURL(this._backupDirURL);
   try {
     dir = dir.QueryInterface(Components.interfaces.nsIFile);
   }
   catch (e) {
-    throw Components.Exception("nsClippingsService._getBackupFiles(): Failed to get nsIFile object for backup dir:\n" + e);
+    throw Components.Exception("aeClippingsService._getBackupFiles(): Failed to get nsIFile object for backup dir:\n" + e);
   }
 
   var files = [];
@@ -1558,7 +1558,7 @@ nsClippingsService.prototype._getBackupFiles = function ()
       file = file.QueryInterface(Components.interfaces.nsIFile);
     }
     catch (e) {
-      throw Components.Exception("nsClippingsService._getBackupFiles(): Failed to get nsIFile object for backup file being enumerated:\n" + e, Components.results.NS_ERROR_UNEXPECTED);
+      throw Components.Exception("aeClippingsService._getBackupFiles(): Failed to get nsIFile object for backup file being enumerated:\n" + e, Components.results.NS_ERROR_UNEXPECTED);
     }
     files.push(file);
   }
@@ -1573,7 +1573,7 @@ nsClippingsService.prototype._getBackupFiles = function ()
 };  
 
 
-nsClippingsService.prototype.getBackupFileNamesDict = function ()
+aeClippingsService.prototype.getBackupFileNamesDict = function ()
 {
   try {
     var backupFiles = this._getBackupFiles();
@@ -1600,7 +1600,7 @@ nsClippingsService.prototype.getBackupFileNamesDict = function ()
 };
 
 
-nsClippingsService.prototype._parseBackupFilename = function (aFilename)
+aeClippingsService.prototype._parseBackupFilename = function (aFilename)
 {
   var rv;
   var processedFilename = aFilename.replace(/\.rdf$/, "");
@@ -1618,18 +1618,18 @@ nsClippingsService.prototype._parseBackupFilename = function (aFilename)
 };
 
 
-nsClippingsService.prototype.recoverFromBackup = function ()
+aeClippingsService.prototype.recoverFromBackup = function ()
 {
   try {
     var backupFiles = this._getBackupFiles();
   }
   catch (e) {
     this._log(e);
-    throw Components.Exception("nsClippingsService.recoverFromBackup(): Failed to enumerate backup files:\n" + e, Components.results.NS_ERROR_UNEXPECTED);
+    throw Components.Exception("aeClippingsService.recoverFromBackup(): Failed to enumerate backup files:\n" + e, Components.results.NS_ERROR_UNEXPECTED);
   }
 
   if (!backupFiles || backupFiles.length == 0) {
-    throw Components.Exception("nsClippingsService.recoverFromBackup(): No backup files found!", Components.results.NS_ERROR_FILE_NOT_FOUND);
+    throw Components.Exception("aeClippingsService.recoverFromBackup(): No backup files found!", Components.results.NS_ERROR_FILE_NOT_FOUND);
   }
 
   var extSeqNode = this._rdfSvc.GetResource(this._SEQNODE_RESOURCE_URI);
@@ -1642,17 +1642,17 @@ nsClippingsService.prototype.recoverFromBackup = function ()
       file = file.QueryInterface(Components.interfaces.nsIFile);
     }
     catch (e) {
-      throw Components.Exception("nsClippingsService.recoverFromBackup(): Failed to retrieve nsIFile object", Components.results.NS_ERROR_UNEXPECTED);
+      throw Components.Exception("aeClippingsService.recoverFromBackup(): Failed to retrieve nsIFile object", Components.results.NS_ERROR_UNEXPECTED);
     }
 
     try {
       url = this._getURLFromFile(file);
     }
     catch (e) {
-      throw Components.Exception("nsClippingsService.recoverFromBackup(): Failed to retrieve URL of nsIFile object", Components.results.NS_ERROR_UNEXPECTED);
+      throw Components.Exception("aeClippingsService.recoverFromBackup(): Failed to retrieve URL of nsIFile object", Components.results.NS_ERROR_UNEXPECTED);
     }
 
-    this._log("nsClippingsService.recoverFromBackup(): Trying backup file whose file name is '" + file.leafName + "' and whose URL is:\n'" + url + "'");
+    this._log("aeClippingsService.recoverFromBackup(): Trying backup file whose file name is '" + file.leafName + "' and whose URL is:\n'" + url + "'");
 
     var extRDFContainer = Components.classes["@mozilla.org/rdf/container;1"].createInstance(Components.interfaces.nsIRDFContainer);
 
@@ -1673,22 +1673,22 @@ nsClippingsService.prototype.recoverFromBackup = function ()
   }
 
   if (! found) {
-    throw Components.Exception("nsClippingsService.recoverFromBackup(): Cannot find any valid backup files!", Components.results.NS_ERROR_FILE_NOT_FOUND);
+    throw Components.Exception("aeClippingsService.recoverFromBackup(): Cannot find any valid backup files!", Components.results.NS_ERROR_FILE_NOT_FOUND);
   }
   
-  this._log("nsClippingsService.recoverFromBackup(): Found a candidate backup file whose URL is:\n'" + url + "'\nContains " + extRDFContainer.GetCount() + " entries");
+  this._log("aeClippingsService.recoverFromBackup(): Found a candidate backup file whose URL is:\n'" + url + "'\nContains " + extRDFContainer.GetCount() + " entries");
 
   // Delete corrupted data source file
-  this._log("nsClippingsService.recoverFromBackup(): Deleting corrupted datasource file");
+  this._log("aeClippingsService.recoverFromBackup(): Deleting corrupted datasource file");
 
   try {
     this.killDataSrc();
   }
   catch (e) {
-    throw Components.Exception("nsClippingsService.recoverFromBackup(): Cannot delete damaged data source file", Components.results.NS_ERROR_UNEXPECTED);
+    throw Components.Exception("aeClippingsService.recoverFromBackup(): Cannot delete damaged data source file", Components.results.NS_ERROR_UNEXPECTED);
   }
 
-  this._log("nsClippingsService.recoverFromBackup(): Invoking nsClippingsService.getDataSource() to generate a new, empty RDF datasource file");
+  this._log("aeClippingsService.recoverFromBackup(): Invoking aeClippingsService.getDataSource() to generate a new, empty RDF datasource file");
 
   this._count = -1;  // Reset internal counter.
   var newDataSrc = this.getDataSource(this._dsFileURL, true);
@@ -1697,20 +1697,20 @@ nsClippingsService.prototype.recoverFromBackup = function ()
     newDataSrc = newDataSrc.QueryInterface(Components.interfaces.nsIRDFDataSource);
   }
   catch (e) {
-    throw Components.Exception("nsClippingsService.recoverFromBackup(): Failed to regenerate RDF datasource!\n" + e, Components.results.NS_ERROR_UNEXPECTED);
+    throw Components.Exception("aeClippingsService.recoverFromBackup(): Failed to regenerate RDF datasource!\n" + e, Components.results.NS_ERROR_UNEXPECTED);
   }
 
-  this._log("nsClippingsService.recoverFromBackup(): Invoking nsClippingsService.importFromFile()");
+  this._log("aeClippingsService.recoverFromBackup(): Invoking aeClippingsService.importFromFile()");
 
   var count = this.importFromFile(url, false, true, {});
 
-  this._log("nsClippingsService.recoverFromBackup(): " + count + " entries imported\nnewDataSrc: " + newDataSrc);
+  this._log("aeClippingsService.recoverFromBackup(): " + count + " entries imported\nnewDataSrc: " + newDataSrc);
 
   return newDataSrc;
 };
 
 
-nsClippingsService.prototype.notifyDataSrcLocationChanged = function ()
+aeClippingsService.prototype.notifyDataSrcLocationChanged = function ()
 {
   if (!this._dataSrc || !this._dsFileURL) {
     throw Components.Exception("Datasource not initialized",
@@ -1719,16 +1719,16 @@ nsClippingsService.prototype.notifyDataSrcLocationChanged = function ()
 
   for (let i = 0; i < this._listeners.length; i++) {
     if (this._listeners[i]) {
-      this._log("nsClippingsService.notifyDataSrcLocationChange(): Notifying observer " + i + "\nOrigin: " + this._listeners[i].origin + " (1 = Clippings Manager; 2 = host app window; 3 = New Clipping dialog)");
+      this._log("aeClippingsService.notifyDataSrcLocationChange(): Notifying observer " + i + "\nOrigin: " + this._listeners[i].origin + " (1 = Clippings Manager; 2 = host app window; 3 = New Clipping dialog)");
       this._listeners[i].dataSrcLocationChanged(this._dsFileURL);
     }
   }
 };
 
 
-nsClippingsService.prototype.killDataSrc = function ()
+aeClippingsService.prototype.killDataSrc = function ()
 {
-  this._log("nsClippingsService.killDataSrc(): URL of data source:\n"
+  this._log("aeClippingsService.killDataSrc(): URL of data source:\n"
 	    + "'" + this._dsFileURL + "'");
   if (! this._dsFileURL) {
     throw Components.Exception("dsFileURL not initialized",
@@ -1740,28 +1740,28 @@ nsClippingsService.prototype.killDataSrc = function ()
     oldDSFile = oldDSFile.QueryInterface(Components.interfaces.nsIFile);
   }
   catch (e) {
-    throw Components.Exception("nsClippingsService.killDataSrc(): Failed to get nsIFile object for datasource file!\n" + e, NS_ERROR_UNEXPECTED);
+    throw Components.Exception("aeClippingsService.killDataSrc(): Failed to get nsIFile object for datasource file!\n" + e, NS_ERROR_UNEXPECTED);
   }
 
   if (!oldDSFile.exists() || !oldDSFile.isFile()) {
-    throw Components.Exception("nsClippingsService.killDataSrc(): File doesn't exist!", Components.results.NS_ERROR_FILE_NOT_FOUND);
+    throw Components.Exception("aeClippingsService.killDataSrc(): File doesn't exist!", Components.results.NS_ERROR_FILE_NOT_FOUND);
   }
 
-  this._log("nsClippingsService.killDataSrc(): removing file:\n"
+  this._log("aeClippingsService.killDataSrc(): removing file:\n"
 	    + "'" + this._dsFileURL + "'");
 
   try {
     oldDSFile.remove(false);
   }
   catch (e) {
-    var msg = "nsClippingsService.killDataSrc(): Failed to delete corrupted datasource file!\n" + e;
+    var msg = "aeClippingsService.killDataSrc(): Failed to delete corrupted datasource file!\n" + e;
     this._log(msg);
     throw Components.Exception(msg);
   }
 };
 
 
-nsClippingsService.prototype.exportToFile = function (aFileURL, aFileType)
+aeClippingsService.prototype.exportToFile = function (aFileURL, aFileType)
 {
   // We have to do it this way because we don't want to include unpurged
   // detached folders with the exported file.
@@ -1824,7 +1824,7 @@ nsClippingsService.prototype.exportToFile = function (aFileURL, aFileType)
 };
 
 
-nsClippingsService.prototype.getClippingsAsHTMLNodes = function ()
+aeClippingsService.prototype.getClippingsAsHTMLNodes = function ()
 {
   var rv;
 
@@ -1852,7 +1852,7 @@ nsClippingsService.prototype.getClippingsAsHTMLNodes = function ()
 };
 
 
-nsClippingsService.prototype.writeFile = function (aFileURL, aData)
+aeClippingsService.prototype.writeFile = function (aFileURL, aData)
 {
   var file = this._getFileFromURL(aFileURL);
   var charset = "UTF-8";
@@ -1881,10 +1881,10 @@ nsClippingsService.prototype.writeFile = function (aFileURL, aData)
 	fos.write(fin, fin.length);
       }
       
-      this._log("nsClippingsService.writeFile(): Successfully wrote data to file");
+      this._log("aeClippingsService.writeFile(): Successfully wrote data to file");
     }
     catch (e) {
-      this._log("nsClippingsService.writeFile(): Failed to convert data to Unicode; writing data as is");
+      this._log("aeClippingsService.writeFile(): Failed to convert data to Unicode; writing data as is");
       fos.write(aData, aData.length);
     }
     
@@ -1893,7 +1893,7 @@ nsClippingsService.prototype.writeFile = function (aFileURL, aData)
 };
 
 
-nsClippingsService.prototype._exportHTMLRec = function (aLocalFolderCtr)
+aeClippingsService.prototype._exportHTMLRec = function (aLocalFolderCtr)
 {
   var document = Components.classes["@mozilla.org/xml/xml-document;1"].createInstance(Components.interfaces.nsIDOMDocument);
   var dlElt = document.createElement("dl");
@@ -1947,7 +1947,7 @@ nsClippingsService.prototype._exportHTMLRec = function (aLocalFolderCtr)
 };
 
 
-nsClippingsService.prototype._exportLegacyRDFXML = function (aLocalFolderCtr, aExtDataSrc, aExtRootCtr)
+aeClippingsService.prototype._exportLegacyRDFXML = function (aLocalFolderCtr, aExtDataSrc, aExtRootCtr)
 {
   var count = 0;
   var childrenEnum = aLocalFolderCtr.GetElements();
@@ -1973,7 +1973,7 @@ nsClippingsService.prototype._exportLegacyRDFXML = function (aLocalFolderCtr, aE
 };
 
 
-nsClippingsService.prototype._createLegacyClipping = function (aName, aText, aExtDataSrc, aExtRootCtr)
+aeClippingsService.prototype._createLegacyClipping = function (aName, aText, aExtDataSrc, aExtRootCtr)
 {
   var subjectNode = this._rdfSvc.GetAnonymousResource();
   var predName = this._rdfSvc.GetResource(this._PREDNAME_RESOURCE_URI);
@@ -1988,7 +1988,7 @@ nsClippingsService.prototype._createLegacyClipping = function (aName, aText, aEx
 };
 
 
-nsClippingsService.prototype.importFromFile = function (aFileURL, aDontNotify, aImportShortcutKeys, /*out*/ aImportRootCtr)
+aeClippingsService.prototype.importFromFile = function (aFileURL, aDontNotify, aImportShortcutKeys, /*out*/ aImportRootCtr)
 {
   var rv;
   var extDataSrc;
@@ -2089,7 +2089,7 @@ nsClippingsService.prototype.importFromFile = function (aFileURL, aDontNotify, a
 
 
 // Import data from Clippings 2.x and newer
-nsClippingsService.prototype._importFromFileEx = function (aExtFolderCtr, aExtDataSrc, aLocalFolderCtr, aLocalDataSrc, aImportShortcutKeys)
+aeClippingsService.prototype._importFromFileEx = function (aExtFolderCtr, aExtDataSrc, aLocalFolderCtr, aLocalDataSrc, aImportShortcutKeys)
 {
   var count = 0;
   var localFolderURI = aLocalFolderCtr.Resource.Value;
@@ -2124,14 +2124,14 @@ nsClippingsService.prototype._importFromFileEx = function (aExtFolderCtr, aExtDa
 	}
       }
 
-      this._log("nsClippingsService._importFromFileEx(): Clipping `" + name + "'");
+      this._log("aeClippingsService._importFromFileEx(): Clipping `" + name + "'");
     }
     else if (this.isFolder(extChildURI, aExtDataSrc)) {
       let extSubfolderCtr = this._getSeqContainerFromFolder(extChildURI, aExtDataSrc);
       let localSubfolderURI = this.createNewFolder(localFolderURI, name, true, aLocalDataSrc);
       let localSubfolderCtr = this._getSeqContainerFromFolder(localSubfolderURI, aLocalDataSrc);
 
-      this._log("nsClippingsService._importFromFileEx(): Folder `" + name + "'");
+      this._log("aeClippingsService._importFromFileEx(): Folder `" + name + "'");
 
       count += this._importFromFileEx(extSubfolderCtr, aExtDataSrc, localSubfolderCtr, aLocalDataSrc, aImportShortcutKeys);
     }
@@ -2146,21 +2146,21 @@ nsClippingsService.prototype._importFromFileEx = function (aExtFolderCtr, aExtDa
 };
 
 
-nsClippingsService.prototype._deferredShortcutKeyImport = {};
+aeClippingsService.prototype._deferredShortcutKeyImport = {};
 
 
-nsClippingsService.prototype._notifyImportDone = function (aNumItems)
+aeClippingsService.prototype._notifyImportDone = function (aNumItems)
 {
   for (let i = 0; i < this._listeners.length; i++) {
     if (this._listeners[i]) {
-      this._log("nsClippingsService._notifyImportDone(): Notifying observer " + i);
+      this._log("aeClippingsService._notifyImportDone(): Notifying observer " + i);
       this._listeners[i].importDone(aNumItems);
     }
   }
 };
 
 
-nsClippingsService.prototype.hasConflictingShortcutKeys = function (aImportRootCtr)
+aeClippingsService.prototype.hasConflictingShortcutKeys = function (aImportRootCtr)
 {
   if (aImportRootCtr.Resource.Value == this._OLD_SEQNODE_RESOURCE_URI) {
     throw Components.Exception("Shortcut keys are not supported in Clippings 1.x series");
@@ -2171,7 +2171,7 @@ nsClippingsService.prototype.hasConflictingShortcutKeys = function (aImportRootC
 };
 
 
-nsClippingsService.prototype._hasConflictingShortcutKeys = function (aExtContainer, aShortcutKeyDict)
+aeClippingsService.prototype._hasConflictingShortcutKeys = function (aExtContainer, aShortcutKeyDict)
 {
   var extChildrenEnum = aExtContainer.GetElements();
   var extDataSrc = aExtContainer.DataSource;
@@ -2204,7 +2204,7 @@ nsClippingsService.prototype._hasConflictingShortcutKeys = function (aExtContain
 };
 
 
-nsClippingsService.prototype.importShortcutKeys = function (aImportRootCtr, aImportFlag)
+aeClippingsService.prototype.importShortcutKeys = function (aImportRootCtr, aImportFlag)
 {
   if (aImportRootCtr.Resource.Value == this._OLD_SEQNODE_RESOURCE_URI) {
     throw Components.Exception("Shortcut keys are not supported in Clippings 1.x series");
@@ -2224,17 +2224,17 @@ nsClippingsService.prototype.importShortcutKeys = function (aImportRootCtr, aImp
 	currentlyAssignedURIStr = currentlyAssignedURIStr.QueryInterface(Components.interfaces.nsISupportsString);
 	currentlyAssignedURI = currentlyAssignedURIStr.data;
 
-	this._log("nsClippingsService.importShortcutKeys(): Overwriting shortcut key assignment for key `" + key + "'\n(was assigned to clipping `" + currentlyAssignedURI + "')");
+	this._log("aeClippingsService.importShortcutKeys(): Overwriting shortcut key assignment for key `" + key + "'\n(was assigned to clipping `" + currentlyAssignedURI + "')");
 
 	this.setShortcutKey(currentlyAssignedURI, "");
 
 	var newURI = this._deferredShortcutKeyImport[key];
 	this.setShortcutKey(newURI, key);
 
-	this._log("nsClippingsService.importShortcutKeys(): Key `" + key + "' is now assigned to clipping `" + newURI + "'");
+	this._log("aeClippingsService.importShortcutKeys(): Key `" + key + "' is now assigned to clipping `" + newURI + "'");
       }
       else {
-	this._log("nsClippingsService.importShortcutKeys(): Key `" + key + "' is already assigned to an existing clipping; skipping");
+	this._log("aeClippingsService.importShortcutKeys(): Key `" + key + "' is already assigned to an existing clipping; skipping");
       }
     }
     else {
@@ -2246,7 +2246,7 @@ nsClippingsService.prototype.importShortcutKeys = function (aImportRootCtr, aImp
 };
 
 
-nsClippingsService.prototype.cancelDeferredShortcutKeyImport = function ()
+aeClippingsService.prototype.cancelDeferredShortcutKeyImport = function ()
 {
   this._deferredShortcutKeyImport = {};
 };
@@ -2257,7 +2257,7 @@ nsClippingsService.prototype.cancelDeferredShortcutKeyImport = function ()
 // Private utility functions
 //
 
-nsClippingsService.prototype._log = function (aMessage)
+aeClippingsService.prototype._log = function (aMessage)
 {
   if (this._DEBUG) {
     var consoleSvc = Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService);
@@ -2266,7 +2266,7 @@ nsClippingsService.prototype._log = function (aMessage)
 };
 
 
-nsClippingsService.prototype._strtrm = function (aString)
+aeClippingsService.prototype._strtrm = function (aString)
 {
   const SPACE_CODE = 32;
 
@@ -2293,7 +2293,7 @@ nsClippingsService.prototype._strtrm = function (aString)
 };
 
 
-nsClippingsService.prototype._sanitize = function (aString)
+aeClippingsService.prototype._sanitize = function (aString)
 {
   // Strips control characters from the string: ASCII codes 0-31 and 127 (DEL),
   // excluding 10 (NL) and 13 (CR) to allow line breaks.
@@ -2304,7 +2304,7 @@ nsClippingsService.prototype._sanitize = function (aString)
 };
 
 
-nsClippingsService.prototype._getDateTimeString = function ()
+aeClippingsService.prototype._getDateTimeString = function ()
 {
   var oDate = new Date();
   var month = oDate.getMonth();
@@ -2329,7 +2329,7 @@ nsClippingsService.prototype._getDateTimeString = function ()
 };
 
 
-nsClippingsService.prototype._getFileFromURL = function (aFileURL)
+aeClippingsService.prototype._getFileFromURL = function (aFileURL)
   // Returns the nsIFile object of the file with the given URL.
 {
   var rv;
@@ -2342,7 +2342,7 @@ nsClippingsService.prototype._getFileFromURL = function (aFileURL)
 };
 
 
-nsClippingsService.prototype._getURLFromFile = function (aFile)
+aeClippingsService.prototype._getURLFromFile = function (aFile)
 {
   var rv, file;
   try {
@@ -2363,5 +2363,5 @@ nsClippingsService.prototype._getURLFromFile = function (aFile)
 // Component registration
 //
 
-const NSGetFactory = XPCOMUtils.generateNSGetFactory([nsClippingsService]);
+const NSGetFactory = XPCOMUtils.generateNSGetFactory([aeClippingsService]);
 

@@ -63,7 +63,7 @@ function initPrefPaneDataSource()
   initDlg();
 
   try {
-    gClippingsSvc = Cc["clippings@mozdev.org/clippings;1"].getService(Ci.nsIClippingsService);
+    gClippingsSvc = Cc["clippings@mozdev.org/clippings;1"].getService(Ci.aeIClippingsService);
   }
   catch (e) {
     aeUtils.alertEx(document.title, e);

@@ -39,7 +39,7 @@ var aePackagedClippings = {
   PACKAGED_DS_DIRNAME:  "defaults",
 
   // Exceptions
-  E_CLIPPINGSSVC_NOT_INITIALIZED: "nsIClippingsService not initialized",
+  E_CLIPPINGSSVC_NOT_INITIALIZED: "aeIClippingsService not initialized",
   E_IMPORT_FAILED: "Import of packaged datasource failed",
   E_FLUSH_FAILED:  "Flush after import of packaged datasource failed",
 
@@ -108,7 +108,7 @@ aePackagedClippings.import = function (aClippingsSvc)
     numImported = aClippingsSvc.importFromFile(pkgDataSrcURL, true, importShortcutKeys, {});
   }
   catch (e) {
-    aeUtils.log(aeString.format("aePackagedClippings.import(): Exception thrown by nsIClippingsService.importFromFile():\n\n%s", e));
+    aeUtils.log(aeString.format("aePackagedClippings.import(): Exception thrown by aeIClippingsService.importFromFile():\n\n%s", e));
     throw this.E_IMPORT_FAILED;
   }
 
@@ -119,7 +119,7 @@ aePackagedClippings.import = function (aClippingsSvc)
       aClippingsSvc.flushDataSrc();
     }
     catch (e) {
-      aeUtils.log(aeString.format("aePackagedClippings.import(): Exception thrown by nsIClippingsService.flushDataSrc():\n\n%s", e));
+      aeUtils.log(aeString.format("aePackagedClippings.import(): Exception thrown by aeIClippingsService.flushDataSrc():\n\n%s", e));
       throw this.E_FLUSH_FAILED;
     }
   }

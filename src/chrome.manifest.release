@@ -40,11 +40,11 @@ locale	clippings	sv-SE	jar:chrome/clippings.jar!/locale/sv-SE/
 
 
 # XPCOM type libraries
-interfaces	components/nsIClippingsService.xpt
+interfaces	components/aeIClippingsService.xpt
 interfaces	components/aeIDictionary.xpt
 
-# nsIClippingsService
-component	{8ebf6eef-c354-4211-89d0-603b45b76393}	components/nsClippingsService.js
+# aeIClippingsService
+component	{8ebf6eef-c354-4211-89d0-603b45b76393}	components/aeClippingsService.js
 contract	clippings@mozdev.org/clippings;1	{8ebf6eef-c354-4211-89d0-603b45b76393}
 
 # aeIDictionary

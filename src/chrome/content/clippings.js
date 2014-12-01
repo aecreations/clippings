@@ -655,7 +655,7 @@ function init()
   }
 
   try {
-    gClippingsSvc = Components.classes["clippings@mozdev.org/clippings;1"].getService(Components.interfaces.nsIClippingsService);
+    gClippingsSvc = Components.classes["clippings@mozdev.org/clippings;1"].getService(Components.interfaces.aeIClippingsService);
   }
   catch (e) {
     doAlert(e);
@@ -1581,7 +1581,7 @@ function commit()
 	aeUtils.beep();
       }
       var tryAgain = numAttempts < maxAttempts ? "(will try again)" : "";
-      aeUtils.log(aeString.format("function commit(): Save attempt #%s failed %s\nException thrown by nsIClippingsService.flushDataSrcEx():\n\n%s", numAttempts, tryAgain, e));
+      aeUtils.log(aeString.format("function commit(): Save attempt #%s failed %s\nException thrown by aeIClippingsService.flushDataSrcEx():\n\n%s", numAttempts, tryAgain, e));
 	
     }
     finally {

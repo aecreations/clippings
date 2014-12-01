@@ -64,7 +64,7 @@ function $(aID)
 function initDlg() 
 {
   try {
-    gClippingsSvc = Components.classes["clippings@mozdev.org/clippings;1"].getService(Components.interfaces.nsIClippingsService);
+    gClippingsSvc = Components.classes["clippings@mozdev.org/clippings;1"].getService(Components.interfaces.aeIClippingsService);
   }
   catch (e) {
     alert(e);

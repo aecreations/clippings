@@ -604,7 +604,7 @@ window.aecreations.clippings = {
     this.aeClippingSubst.init(this.strBundle, navigator.userAgent);
 
     try {
-      this.clippingsSvc = Components.classes["clippings@mozdev.org/clippings;1"].getService(Components.interfaces.nsIClippingsService);
+      this.clippingsSvc = Components.classes["clippings@mozdev.org/clippings;1"].getService(Components.interfaces.aeIClippingsService);
     }
     catch (e) {
       this.alert(e);

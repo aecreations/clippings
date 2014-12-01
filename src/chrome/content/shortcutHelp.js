@@ -135,8 +135,8 @@ function outputShortcutList(aOutputMode)
   var footer = "</html>";
   data = doctype + "\n" + header + "\n" + data + "\n" + footer;
 
-  // Leverage method nsIClippingsService.writeFile()
-  var clippingsSvc = Cc["clippings@mozdev.org/clippings;1"].getService(Ci.nsIClippingsService);
+  // Leverage method aeIClippingsService.writeFile()
+  var clippingsSvc = Cc["clippings@mozdev.org/clippings;1"].getService(Ci.aeIClippingsService);
 
   if (aOutputMode == OUTPUT_PRINTER) {
     // Write the HTML data to a temp file.

@@ -37,13 +37,13 @@ const Ci = Components.interfaces;
 /**
  * Creates a new clipping containing text in the provided text parameter.
  *
- * @param aClippingsSvc  Reference to a nsIClippingsService instance
+ * @param aClippingsSvc  Reference to a aeIClippingsService instance
  * @param aText          The text to create the new clipping from
  * @param aShowDialog    Boolean flag to display or omit the New Clipping dialog
  * @param aChromeWnd     Host app window object
  * @param aParentFolder  Create clipping as a child of this folder
  * @param aDontNotify    Boolean flag to notify observers attached to the given
- *                       nsIClippingsService instance
+ *                       aeIClippingsService instance
  *
  * @return  String containing the URI of the new clipping; OR,
  *          String containing the URI of the new folder created by user, but

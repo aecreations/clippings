@@ -44,8 +44,8 @@ var Application = aeGetMozApplicationObj();
 var aeClippings3 = {
   _clippingsSvc:  null,
   _strBundle:     null,
-  E_INIT_MISSING_ARG:  "nsIClippingsService argument to aeClippings3 initializer is missing or undefined",
-  E_CLIPPINGSSVC_NOT_INITIALIZED: "nsIClippingsService not initialized"
+  E_INIT_MISSING_ARG:  "aeIClippingsService argument to aeClippings3 initializer is missing or undefined",
+  E_CLIPPINGSSVC_NOT_INITIALIZED: "aeIClippingsService not initialized"
 };
 
 

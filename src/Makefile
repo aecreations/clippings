@@ -5,8 +5,8 @@ DIST_FILE=clippings-$(EXT_VER).xpi
 DIST_DEST=/cygdrive/e/
 CHROME = ./chrome
 COMPONENTS = ./components
-COMP_FILES = $(COMPONENTS)/nsIClippingsService.xpt                            \
-$(COMPONENTS)/nsClippingsService.js                                           \
+COMP_FILES = $(COMPONENTS)/aeIClippingsService.xpt                            \
+$(COMPONENTS)/aeClippingsService.js                                           \
 $(COMPONENTS)/nsIDictionary.xpt $(COMPONENTS)/aeDictionary.js
 MODULES = ./modules
 MODULE_FILES = $(MODULES)/aeClippings3.js $(MODULES)/aeClippingSubst.js       \

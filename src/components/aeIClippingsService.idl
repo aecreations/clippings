@@ -11,7 +11,7 @@
  * for the specific language governing rights and limitations under the
  * License.
  *
- * The Original Code is the Clippings extension for Mozilla Firefox.
+ * The Original Code is Clippings.
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
@@ -33,7 +33,7 @@ interface nsIDOMElement;
 
 
 [scriptable, uuid(24cea707-946d-11da-a72b-0800200c9a66)]
-interface nsIClippingsListener : nsISupports
+interface aeIClippingsListener : nsISupports
 {
   attribute short origin;
 
@@ -45,7 +45,7 @@ interface nsIClippingsListener : nsISupports
 
 
 [scriptable, uuid(44cc2b80-ac35-4428-9dd1-13c1cf2dfc87)]
-interface nsIClippingsService : nsISupports 
+interface aeIClippingsService : nsISupports 
 {
   /*
    * aFileType constants for method exportToFile().
@@ -288,7 +288,7 @@ interface nsIClippingsService : nsISupports
    */
   void notifyDataSrcLocationChanged();
 
-  void addListener(in nsIClippingsListener aListener);
+  void addListener(in aeIClippingsListener aListener);
 
-  void removeListener(in nsIClippingsListener aListener);
+  void removeListener(in aeIClippingsListener aListener);
 };
