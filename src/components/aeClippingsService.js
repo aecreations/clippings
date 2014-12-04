@@ -16,7 +16,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2005-2013
+ * Portions created by the Initial Developer are Copyright (C) 2005-2014
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -1483,7 +1483,8 @@ aeClippingsService.prototype._doBackup = function ()
   if (!dir.exists() || !dir.isDirectory()) {
     this._log("aeClippingsService._doBackup(): Creating backup directory\n'" 
 	      + this._backupDirURL + "'");
-    dir.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);
+    dir.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 
+               parseInt("0755", 8));
   }
 
   var dateTime = this._getDateTimeString();
@@ -1857,7 +1858,8 @@ aeClippingsService.prototype.writeFile = function (aFileURL, aData)
   var file = this._getFileFromURL(aFileURL);
   var charset = "UTF-8";
   var fos = Components.classes["@mozilla.org/network/file-output-stream;1"].createInstance(Components.interfaces.nsIFileOutputStream);
-  fos.init(file, 0x02 | 0x08 | 0x20, 0755, 0);  // Write, create, truncate.
+  // Write, create, truncate.
+  fos.init(file, 0x02 | 0x08 | 0x20, parseInt("0755", 8), 0);
 
   // Mozilla 1.8 (Firefox 1.5) or greater
   if ("nsIConverterOutputStream" in Components.interfaces) {
