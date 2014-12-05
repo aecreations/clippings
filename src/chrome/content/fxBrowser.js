@@ -69,8 +69,10 @@ window.aecreations.clippings = {
       that.unload();
       window.removeEventListener("load", that, false);
       window.removeEventListener("unload", that, false);
-      that._mutationObserver.disconnect();
-      
+      if (that._mutationObserver) {  // For pre-Australis Firefox only.
+        that._mutationObserver.disconnect();
+      }
+
       var hostAppCxtMenu = document.getElementById("contentAreaContextMenu");
       hostAppCxtMenu.removeEventListener("popupshowing", 
 					 that._initContextMenuItem,
