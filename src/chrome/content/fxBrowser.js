@@ -562,7 +562,7 @@ window.aecreations.clippings = {
   {
     var title = this.strBundle.getString('appName');
     try {
-      this.clippingsSvc.flushDataSrc();
+      this.clippingsSvc.flushDataSrc(true);
     }
     catch (e if e.result == Components.results.NS_ERROR_NOT_INITIALIZED) {
       this.aeUtils.alertEx(title, this.strBundle.getString("errorSaveFailedDSNotInitialized"));
@@ -877,7 +877,7 @@ window.aecreations.clippings = {
       this.aeUtils.log("Your Clippings 1.x data was imported successfully.");
 
       try {
-	this.clippingsSvc.flushDataSrc();
+	this.clippingsSvc.flushDataSrc(true);
 	this.aeUtils.log("Flushed imported data to disk.");
       }
       catch (e) {
@@ -916,6 +916,8 @@ window.aecreations.clippings = {
 
     var clippingsMenu1 = document.getElementById("ae-clippings-menu-1");
     var popup = document.getElementById("ae-clippings-popup-1");
+
+    this.aeUtils.log("Clippings submenu object: " + (clippingsMenu1 || "??"));
 
     // Reattach the Clippings datasource to the Clippings menu if it is lost.
     // This is known to occur on Firefox 3 if the Menu Editor extension is

@@ -537,7 +537,7 @@ window.aecreations.clippings = {
   {
     var title = this.strBundle.getString('appName');
     try {
-      this.clippingsSvc.flushDataSrc();
+      this.clippingsSvc.flushDataSrc(true);
     }
     catch (e if e.result == Components.results.NS_ERROR_NOT_INITIALIZED) {
       this.aeUtils.alertEx(title, this.strBundle.getString("errorSaveFailedDSNotInitialized"));

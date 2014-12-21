@@ -941,7 +941,7 @@ function unload()
   do {
     retrySave = false;
     try {
-      gClippingsSvc.flushDataSrcEx(doBackup);
+      gClippingsSvc.flushDataSrc(doBackup);
     }
     catch (e if e.result == Components.results.NS_ERROR_NOT_INITIALIZED) {
       doAlert(gStrBundle.getString("errorSaveFailedDSNotInitialized"));
@@ -1573,7 +1573,7 @@ function commit()
 
     try {
       gSaveInProgress = true;
-      gClippingsSvc.flushDataSrcEx(false);
+      gClippingsSvc.flushDataSrc(false);
       gIsClippingsDirty = false;
     }
     catch (e) {	
@@ -1581,7 +1581,7 @@ function commit()
 	aeUtils.beep();
       }
       var tryAgain = numAttempts < maxAttempts ? "(will try again)" : "";
-      aeUtils.log(aeString.format("function commit(): Save attempt #%s failed %s\nException thrown by aeIClippingsService.flushDataSrcEx():\n\n%s", numAttempts, tryAgain, e));
+      aeUtils.log(aeString.format("function commit(): Save attempt #%s failed %s\nException thrown by aeIClippingsService.flushDataSrc():\n\n%s", numAttempts, tryAgain, e));
 	
     }
     finally {
@@ -1614,7 +1614,7 @@ function saveClippings(aSuppressStatusMsgs, aForceSave, aDoBackup)
   var msg = gStrBundle.getString("saveCompleted");
   try {
     gSaveInProgress = true;
-    gClippingsSvc.flushDataSrcEx(aDoBackup);
+    gClippingsSvc.flushDataSrc(aDoBackup);
     gIsClippingsDirty = false;
 
     if (aSuppressStatusMsgs) {
@@ -2248,7 +2248,7 @@ function doImport()
 				   gStrBundle.getString("importBegin"),
 				   gStrBundle.getString("importDone"));
   try {
-    gClippingsSvc.flushDataSrc();
+    gClippingsSvc.flushDataSrc(true);
   }
   catch (e) {
     // Don't do anything for now - try again when closing Clippings Manager.
@@ -2416,7 +2416,7 @@ function restoreBackup(aBackupFileURL)
   
   // Must flush changes, or else the original clippings data will persist.
   try {
-    gClippingsSvc.flushDataSrcEx(false);
+    gClippingsSvc.flushDataSrc(false);
   }
   catch (e) {}
 
@@ -2458,7 +2458,7 @@ function restoreBackup(aBackupFileURL)
   gClippingsSvc.processEmptyFolders();
 
   try {
-    gClippingsSvc.flushDataSrcEx(true);
+    gClippingsSvc.flushDataSrc(true);
   }
   catch (e) {}
 
