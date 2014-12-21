@@ -91,30 +91,48 @@ aeClippingSubst.processClippingText = function (aClippingInfo, aWnd)
   // For use if tab-modal prompts are enabled.
   let prmptSvc = Cc["@mozilla.org/prompter;1"].getService(Ci.nsIPromptFactory).getPrompt(aWnd, Ci.nsIPrompt);
 
-  var fnReplace = function (str, p1, offset, s) {
-    if (p1 in knownTags) {
-      return knownTags[p1];
+  var fnReplace = function (aMatch, aP1, aOffset, aString) {
+    let varName = "";
+    let hasDefaultVal = false;
+
+    // Get the optional default value of placeholder.
+    if (aP1.indexOf("{") != -1 && aP1.indexOf("}") != -1) {
+      hasDefaultVal = true;
+      varName = aP1.substring(0, aP1.indexOf("{"));
+    }
+    else {
+      varName = aP1;
+    }
+
+    if (varName in knownTags) {
+      return knownTags[varName];
+    }
+
+    // Pre-populate input with default value, if any.
+    let defaultVal = "";
+    if (hasDefaultVal) {
+      defaultVal = aP1.substring(aP1.indexOf("{") + 1, aP1.indexOf("}"));
     }
 
     var rv = "";
     
     if (tabModalPrompt && Application.id == aeConstants.HOSTAPP_FX_GUID) {
       that._initTabModalPromptDlg(prmptSvc);
-      let prmptText = that._strBundle.getFormattedString("substPromptText", [p1]);
-      let input = { value: "" };
+      let prmptText = that._strBundle.getFormattedString("substPromptText", [varName]);
+      let input = { value: defaultVal };
       let returnedOK = prmptSvc.prompt(that._strBundle.getString("substPromptTitle"), prmptText, input, null, {});
 
       let userInput = input.value;
       if (!returnedOK || userInput == "") { 
         return "";
       }
-      knownTags[p1] = userInput;
+      knownTags[varName] = userInput;
       rv = userInput;
     }
     else {
       var dlgArgs = {
-        varName:       p1,
-        userInput:     "",
+        varName:       varName,
+        userInput:     defaultVal,
         autoIncrementMode: false,
         userCancel:    null
       };
@@ -125,16 +143,18 @@ aeClippingSubst.processClippingText = function (aClippingInfo, aWnd)
         return "";
       }
 
-      knownTags[p1] = dlgArgs.userInput;
+      knownTags[varName] = dlgArgs.userInput;
       rv = dlgArgs.userInput;
     }
 
     return rv;
   };
 
-  var fnAutoIncrement = function (str, p1) {
-    if (p1 in that._autoIncrementVars) {
-      return ++that._autoIncrementVars[p1];
+  var fnAutoIncrement = function (aMatch, aP1) {
+    let varName = aP1;
+
+    if (varName in that._autoIncrementVars) {
+      return ++that._autoIncrementVars[varName];
     }
 
     var defaultValue = 0;
@@ -142,7 +162,7 @@ aeClippingSubst.processClippingText = function (aClippingInfo, aWnd)
     
     if (tabModalPrompt && Application.id == aeConstants.HOSTAPP_FX_GUID) {
       that._initTabModalPromptDlg(prmptSvc);
-      let prmptText = that._strBundle.getFormattedString("autoIncrPromptText", [p1]);
+      let prmptText = that._strBundle.getFormattedString("autoIncrPromptText", [varName]);
       let input = {};
       let userInput = "";
 
@@ -155,12 +175,12 @@ aeClippingSubst.processClippingText = function (aClippingInfo, aWnd)
         }
       } while (isNaN(userInput));
 
-      that._autoIncrementVars[p1] = userInput;
+      that._autoIncrementVars[varName] = userInput;
       rv = userInput;
     }
     else {
       var dlgArgs = {
-        varName:       p1,
+        varName:       varName,
         userInput:     "",
         defaultValue:  defaultValue,
         autoIncrementMode: true,
@@ -175,7 +195,7 @@ aeClippingSubst.processClippingText = function (aClippingInfo, aWnd)
         }
       } while (isNaN(dlgArgs.userInput));
 
-      that._autoIncrementVars[p1] = dlgArgs.userInput;
+      that._autoIncrementVars[varName] = dlgArgs.userInput;
       rv = dlgArgs.userInput;
     }
 
@@ -195,7 +215,8 @@ aeClippingSubst.processClippingText = function (aClippingInfo, aWnd)
   // Match placeholder names containing alphanumeric characters, and the
   // following Unicode blocks: Latin-1 Supplement, Latin Extended-A, Latin
   // Extended-B, Cyrillic, Hebrew.
-  rv = rv.replace(/\$\[([a-zA-Z0-9_\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)\]/gm, fnReplace);
+  // For normal placeholders, allow {|} chars for optional default values.
+  rv = rv.replace(/\$\[([a-zA-Z0-9_\{\}\|\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)\]/gm, fnReplace);
   rv = rv.replace(/\#\[([a-zA-Z0-9_\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)\]/gm, fnAutoIncrement);
 
   return rv;
