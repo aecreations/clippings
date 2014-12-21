@@ -481,7 +481,7 @@ aeClippingsService.prototype.processRootFolder = function ()
 
   if (this.getCount(this.kRootFolderURI) == 0) {
     this._appendDummyNode(this.kRootFolderURI);
-    this.flushDataSrc();
+    this.flushDataSrc(true);
   }
 };
 
@@ -1409,19 +1409,13 @@ aeClippingsService.prototype.changePosition = function (aParentFolder, aOldPos, 
 };
 
 
-aeClippingsService.prototype.flushDataSrc = function ()
-{
-  this.flushDataSrcEx(true);
-};
-
-
-aeClippingsService.prototype.flushDataSrcEx = function (aDoBackup)
+aeClippingsService.prototype.flushDataSrc = function (aDoBackup)
 {
   if (! this._dataSrc) {
     throw Components.Exception("Data source not initialized",
 			       Components.results.NS_ERROR_NOT_INITIALIZED);
   }
-  
+
   try {
     this._dataSrc.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource).Flush();
   }
