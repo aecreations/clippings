@@ -15,7 +15,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2005-2013
+ * Portions created by the Initial Developer are Copyright (C) 2005-2014
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -25,6 +25,7 @@
 #include "nsISupports.idl"
 
 typedef string uri;
+typedef wstring aestring;
 
 interface nsIRDFDataSource;
 interface aeIDictionary;
@@ -70,7 +71,7 @@ interface aeIClippingsService : nsISupports
   const short MAX_NAME_LENGTH = 64;
 
   readonly attribute uri     kRootFolderURI;
-  readonly attribute wstring dataSourceURL;
+  readonly attribute aestring dataSourceURL;
   readonly attribute size_t  numItems;  
 
 
@@ -98,23 +99,23 @@ interface aeIClippingsService : nsISupports
    */
 
   uri createNewClipping(in uri aParentFolder,
-			in wstring aName,
-			in wstring aText,
+			in aestring aName,
+			in aestring aText,
 			in boolean aDontNotify);
 
   uri createNewClippingEx(in uri aParentFolder,
 			  in uri aURI,
-			  in wstring aName,
-			  in wstring aText,
+			  in aestring aName,
+			  in aestring aText,
 			  in size_t aPos,
 			  in boolean aDontNotify);
 
-  uri createNewFolder(in uri aParentFolder, in wstring aName,
+  uri createNewFolder(in uri aParentFolder, in aestring aName,
 		      in boolean aDontNotify);
 
   uri createNewFolderEx(in uri aParentFolder,
 			in uri aURI,
-			in wstring aName,
+			in aestring aName,
 			in size_t aPos,
 			in boolean aDontNotify,
 			in short aOrigin);
@@ -139,7 +140,7 @@ interface aeIClippingsService : nsISupports
 
   boolean exists(in uri aURI);
 
-  void findByName(in wstring aSearchText, in boolean aMatchCase,
+  void findByName(in aestring aSearchText, in boolean aMatchCase,
                   in boolean aSearchFolders, out size_t aCount,
 		  [retval, array, size_is(aCount)] out uri aRetVal);
 
@@ -155,11 +156,11 @@ interface aeIClippingsService : nsISupports
   long indexOf(in uri aURI);    /* Returns -1 if URI not found. */
   long ctrIndexOf(in uri aURI);
 
-  wstring getName(in uri aURI);
+  aestring getName(in uri aURI);
 
-  wstring getText(in uri aURI);
+  aestring getText(in uri aURI);
 
-  wstring getShortcutKey(in uri aURI);
+  aestring getShortcutKey(in uri aURI);
 
   aeIDictionary getShortcutKeyDict();
 
@@ -191,26 +192,24 @@ interface aeIClippingsService : nsISupports
    */
   size_t recountAll();
 
-  void setName(in uri aURI, in wstring aName);
+  void setName(in uri aURI, in aestring aName);
 
-  void setText(in uri aURI, in wstring aText);
+  void setText(in uri aURI, in aestring aText);
 
-  void setShortcutKey(in uri aURI, in wstring aKey);
+  void setShortcutKey(in uri aURI, in aestring aKey);
   /* throws NS_ERROR_FAILURE if shortcut key already defined */
 
   /*
    * Creates a clipping name based on the first aMaxLength characters from
    * aText.
    */
-  wstring createClippingNameFromText(in wstring aText);
+  aestring createClippingNameFromText(in aestring aText);
 
   void changePosition(in uri aParentFolder, in size_t aOldPos,
 		      in size_t aNewPos);
 
-  void flushDataSrc(); 
+  void flushDataSrc(in boolean aDoBackup); 
   /* throws NS_ERROR_FAILURE - if datasource flush failed */
-
-  void flushDataSrcEx(in boolean aDoBackup);
 
   void refreshDataSrc();
 
@@ -258,11 +257,11 @@ interface aeIClippingsService : nsISupports
 
   void createEmptyClipping(in uri aFolderURI);
 
-  void setEmptyClippingString(in wstring aString);
+  void setEmptyClippingString(in aestring aString);
 
   nsIDOMElement getClippingsAsHTMLNodes();
 
-  void writeFile(in uri aFileURL, in wstring aData);
+  void writeFile(in uri aFileURL, in aestring aData);
 
   void setBackupDir(in uri aBackupDirURL);
 
