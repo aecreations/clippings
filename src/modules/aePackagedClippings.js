@@ -116,7 +116,7 @@ aePackagedClippings.import = function (aClippingsSvc)
     aeUtils.log(aeString.format("Successfully imported the packaged data into the Clippings data source\n%d item(s) imported", numImported));
     
     try {
-      aClippingsSvc.flushDataSrc();
+      aClippingsSvc.flushDataSrc(true);
     }
     catch (e) {
       aeUtils.log(aeString.format("aePackagedClippings.import(): Exception thrown by aeIClippingsService.flushDataSrc():\n\n%s", e));
