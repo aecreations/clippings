@@ -194,7 +194,7 @@ window.aecreations.clippings = {
 
   openClippingsManager: function () 
   {
-    var wnd = window.open("chrome://clippings/content/clippings.xul",
+    var wnd = window.open("chrome://clippings/content/clippingsMgr.xul",
 			  "ae_clippings_wndobj", "chrome,resizable");
     wnd.focus();
   },
