@@ -98,7 +98,7 @@ spacer.toolbar-separator {
 }
 
 toolbarbutton {
-  list-style-image: url("chrome://clippings/skin/images/Toolbar.png");
+  list-style-image: url("chrome://clippings/skin/images/clippingsMgrToolbar.png");
   -moz-box-orient: vertical;
   min-width: 52px;
 }
