@@ -30,10 +30,9 @@ window {
   min-height: 26em;
 }
 
-hbox#content {
-  border-top: 1px solid threedhighlight;
+splitter {
+  border: none;
 }
-
 
 #clippings-list {
   margin-right: 0px;
