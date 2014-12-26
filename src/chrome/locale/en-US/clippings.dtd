@@ -104,6 +104,7 @@
 <!ENTITY description.accesskey "c">
 <!ENTITY text.label "Text:">
 <!ENTITY text.accesskey "T">
+<!ENTITY clippingText.placeholder "Enter clipping text">
 <!ENTITY import.label "Import...">
 <!ENTITY import.accesskey "I">
 <!ENTITY export.label "Export..."> 
@@ -123,8 +124,6 @@
 <!ENTITY reload.accesskey "R">
 <!ENTITY shortcutkey.label "Shortcut Key:">
 <!ENTITY shortcutkey.accesskey "K">
-<!ENTITY migrate.label "Common Clippings...">
-<!ENTITY migrate.accesskey "C">
 <!ENTITY dataFileOptions.label "Data Source Settings...">
 <!ENTITY dataFileOptions.accesskey "D">
 <!ENTITY shortcutKeyList.label "Shortcut key list">
