@@ -173,6 +173,20 @@
 
       gQuickEdit.stop();
 
+      // Don't allow unnamed clippings/folders - that just looks silly.
+      if (aEvent.target.value == "") {
+        let defaultName = "";
+        let uri = gClippingsList.getURIAtIndex(gCurrentListItemIndex);
+
+        if (gClippingsSvc.isClipping(uri)) {
+          defaultName = gStrBundle.getString("untitledClipping");
+        }
+        else if (gClippingsSvc.isFolder(uri)) {
+          defaultName = gStrBundle.getString("untitledFolder");
+        }
+        aEvent.target.value = defaultName;
+      }
+
       updateName(aEvent.target.value);
       commit();
       //aeUtils.log("clippingsMgr.xul:<textbox id='clipping-name'> END blur");
@@ -466,16 +480,13 @@
     <splitter id="splitter"/>
     <deck id="entry-properties" selectedIndex="1" flex="1">
       <vbox flex="1">
-        <label id="clipping-name-label" value="&description.label;" 
-	 accesskey="&description.accesskey;" control="clipping-name"/>
         <textbox id="clipping-name" maxlength="64"
 	 oninput="if(!gQuickEdit.isStarted()){gQuickEdit.start();updateEditStatus()}"
 	 onblur="clippingName_blur(event)" 
 	 onfocus="clippingName_focus(event)" />
         <separator class="thin"/>
-        <label id="clipping-text-label" value="&text.label;" 
-	 accesskey="&text.accesskey;" control="clipping-text"/>
         <textbox id="clipping-text" multiline="true" flex="1"
+         placeholder="&clippingText.placeholder;"
 	 oninput="if(!gQuickEdit.isStarted()){gQuickEdit.start();updateEditStatus()}"
 	 onblur="clippingText_blur(event)"
 	 onfocus="clippingText_focus(event)" />
