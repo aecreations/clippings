@@ -1887,9 +1887,7 @@ function updateDisplay(aSuppressUpdateSelection)
   }
 
   var clippingName = $("clipping-name");
-  var clippingNameLabel = $("clipping-name-label");
   var clippingText = $("clipping-text");
-  var clippingTextLabel = $("clipping-text-label");
   var clippingKey = $("clipping-key");
   var clippingKeyLabel = $("clipping-key-label");
   var shortcutKeyMiniHelp = $("shortcut-key-minihelp");
@@ -1908,36 +1906,30 @@ function updateDisplay(aSuppressUpdateSelection)
   }
 
   if (gClippingsSvc.isFolder(uri)) {
-    clippingNameLabel.disabled = false;
     clippingName.disabled = false;
-    clippingTextLabel.disabled = true;
-    clippingText.disabled = true;
-    shortcutKeyMiniHelp.disabled = true;
+    clippingText.style.visibility = "hidden";
+    shortcutKeyMiniHelp.style.visibility = "hidden";
       
     clippingKey.selectedIndex = 0;
-    clippingKeyLabel.disabled = true;
-    clippingKey.disabled = true;
+    clippingKeyLabel.style.visibility = "hidden";
+    clippingKey.style.visibility = "hidden";
   }
   // Special handling of the dummy item in an empty folder
   else if (gClippingsSvc.isEmptyClipping(uri)) {
-    clippingNameLabel.disabled = true;
     clippingName.disabled = true;
-    clippingTextLabel.disabled = true;
-    clippingText.disabled = true;
-    shortcutKeyMiniHelp.disabled = true;
+    clippingText.style.visibility = "hidden";
+    shortcutKeyMiniHelp.style.visibility = "hidden";
 
     clippingKey.selectedIndex = 0;
-    clippingKeyLabel.disabled = true;
-    clippingKey.disabled = true;    
+    clippingKeyLabel.style.visibility = "hidden";
+    clippingKey.style.visibility = "hidden";
   }
   else {
-    clippingNameLabel.disabled = false;
     clippingName.disabled = false;
-    clippingTextLabel.disabled = false;
-    clippingText.disabled = false;
-    clippingKeyLabel.disabled = false;
-    clippingKey.disabled = false;
-    shortcutKeyMiniHelp.disabled = false;
+    clippingText.style.visibility = "visible";
+    clippingKeyLabel.style.visibility = "visible";
+    clippingKey.style.visibility = "visible";
+    shortcutKeyMiniHelp.style.visibility = "visible";
   }
 
   clippingName.value = gClippingsSvc.getName(uri);
