@@ -934,57 +934,55 @@ window.aecreations.clippings = {
     var addEntryCmd = document.getElementById("ae_new_clipping_from_textbox");
     var cxtMenu = aEvent.target;
 
-    // gContextMenu.onTextInput is also true inside a rich edit box!
+    this.aeUtils.log(this.aeString.format("clippings.initContextMenuItem(): Properties of browser context menu (instance of nsContextMenu object):\n\tonTextInput   : %b\n\tonEditableArea: %b\n\tisDesignMode  : %b\n\ttextSelected  : %b\n\tisTextSelected: %b", gContextMenu.onTextInput, gContextMenu.onEditableArea, gContextMenu.isDesignMode, gContextMenu.textSelected, gContextMenu.isTextSelected));
+
     if (gContextMenu.onTextInput) {
-      var textbox;
-
       this._triggerNode = cxtMenu.triggerNode;
-      textbox = this._triggerNode;
 
-      // Do our own checking to ensure that the node is an HTML text field.
-      if (textbox instanceof HTMLInputElement || textbox instanceof HTMLTextAreaElement) {
-	if (textbox.selectionStart == textbox.selectionEnd) {
-	  // No text selected.  Enable "New..." cmd if text field non-empty
-	  addEntryCmd.setAttribute("label",
-				   this.strBundle.getString("new") + ellipsis);
-	  addEntryCmd.setAttribute("disabled", textbox.value == "");
-	}
-	else {
+      if (gContextMenu.isDesignMode) {  // Rich text editor
+        if (gContextMenu.isTextSelected) {
+          this.aeUtils.log("clippings.initContextMenuItem(): Selected text inside a rich edit box");
+          clippingsMenu1.hidden = false;
+          clippingsMenu2.hidden = true;
+	  
+          addEntryCmd.setAttribute("disabled", "false");
+          addEntryCmd.setAttribute("label", this.strBundle.getString("newFromSelect") + ellipsis);
+        }
+        else {
+          this.aeUtils.log("clippings.initContextMenuItem(): Inside a rich text edit box; no selected text");
+          // TO DO: This will break in e10s
+          var doc = this._triggerNode.ownerDocument;
+
+          // Check for empty document
+          var range = doc.createRange();
+          range.setStart(doc.body.firstChild, 0);
+          range.setEnd(doc.body.lastChild, 0);
+          addEntryCmd.setAttribute("disabled", range == "");
+
+          clippingsMenu1.hidden = false;
+          clippingsMenu2.hidden = true;
+          addEntryCmd.setAttribute("label", this.strBundle.getString("new") + ellipsis);
+        }
+      }
+      else {  // Normal HTML textbox or textarea
+	if (gContextMenu.isTextSelected) {
 	  // "New From Selection..." command.
 	  addEntryCmd.setAttribute("label",
 				   this.strBundle.getString("newFromSelect") 
 				   + ellipsis);
 	  addEntryCmd.setAttribute("disabled", "false");
 	}
-      }
-      else {
-        var doc = this._triggerNode.ownerDocument;
-
-	if (doc) {
-	  if (gContextMenu.isTextSelected) {
-	    clippingsMenu1.hidden = false;
-	    clippingsMenu2.hidden = true;
-	      
-	    addEntryCmd.setAttribute("disabled", "false");
-	    addEntryCmd.setAttribute("label", this.strBundle.getString("newFromSelect") + ellipsis);
-	  }
-	  else {
-	    // Check for empty document
-	    var range = doc.createRange();
-	    range.setStart(doc.body.firstChild, 0);
-	    range.setEnd(doc.body.lastChild, 0);
-	    addEntryCmd.setAttribute("disabled", range == "");
-
-	    clippingsMenu1.hidden = false;
-	    clippingsMenu2.hidden = true;
-	    addEntryCmd.setAttribute("label", this.strBundle.getString("new") + ellipsis);
-	  }
-	}
 	else {
-	  addEntryCmd.setAttribute("disabled", "true");
+	  // Enable "New..." command
+	  addEntryCmd.setAttribute("label",
+				   this.strBundle.getString("new") + ellipsis);
+
+          // TO DO: This will break in e10s
+          let textbox = this._triggerNode;
+	  addEntryCmd.setAttribute("disabled", textbox.value == "");
 	}
       }
-
+      
       this._initAutoIncrementPlaceholderMenu(1);
       clippingsMenu1.hidden = false;
       clippingsMenu2.hidden = true;
@@ -992,8 +990,6 @@ window.aecreations.clippings = {
 
     // Selected text in browser content area
     else if (gContextMenu.isTextSelected) {
-      let doc = cxtMenu.triggerNode.ownerDocument;
-
       this._initAutoIncrementPlaceholderMenu(2);
       clippingsMenu1.hidden = true;
       clippingsMenu2.hidden = false;
