@@ -164,6 +164,8 @@ window.aecreations.clippings = {
 
     // gContextMenu.onTextInput is also true inside a rich edit box!
     if (gContextMenu.onTextInput) {
+      let isDesignMode = gContextMenu.isDesignMode;
+
       // Must explicitly close the browser content area context menu -
       // otherwise it will reappear while the New Clipping dialog is open if
       // the Clippings submenu needs to be rebuilt.
@@ -172,9 +174,25 @@ window.aecreations.clippings = {
       // Get the node where the context menu is invoked from.
       let textbox = this._triggerNode;
 
-      if (textbox instanceof HTMLInputElement || textbox instanceof HTMLTextAreaElement) {
+      if (isDesignMode) {  // Rich text editor
+        // TO DO: This will break in e10s
+	let doc = this._triggerNode.ownerDocument;
 
+	// Rich edit field
+        cxtMenu.hidePopup();
+        let plainText = doc.defaultView.getSelection();
+
+        // New (from entire contents)
+        if (plainText == "") {
+          goDoCommand("cmd_selectAll");
+          plainText = doc.defaultView.getSelection();
+        }
+        result = this.aeCreateClippingFromText(this.clippingsSvc, plainText, this.showDialog, window, null, false);
+      }
+      else {  // Normal HTML textbox or text area
 	var text;
+
+        // TO DO: This will break in e10s
 	if (textbox.selectionStart == textbox.selectionEnd) {
 	  text = textbox.value;
 	}
@@ -183,29 +201,6 @@ window.aecreations.clippings = {
 					 textbox.selectionEnd);
 	}
 	result = this.aeCreateClippingFromText(this.clippingsSvc, text, this.showDialog, window, null, false);
-      }
-      else {
-	let doc = this._triggerNode.ownerDocument;
-
-	// Rich edit field
-	if (Application.version.split(".")[0] >= 2 && doc) {
-	  cxtMenu.hidePopup();
-	  var plainText = doc.defaultView.getSelection();
-
-	  // New (from entire contents)
-	  if (plainText == "") {
-	    goDoCommand('cmd_selectAll');
-	    plainText = doc.defaultView.getSelection();
-	    var isTextSelected = true;
-	  }
-	  result = this.aeCreateClippingFromText(this.clippingsSvc, plainText, this.showDialog, window, null, false);
-	  if (isTextSelected) {
-	    // TO DO: Deselect text, leaving the cursor where it was.
-	  }
-	}
-	else {
-	  this.aeUtils.log("Clippings: newFromTextbox(): textbox = " + textbox);
-	}
       }
     }
 
