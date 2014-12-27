@@ -170,15 +170,7 @@ window.aecreations.clippings = {
       cxtMenu.hidePopup();
 
       // Get the node where the context menu is invoked from.
-      var textbox;
-
-      if ("triggerNode" in cxtMenu) {
-	// Firefox 4 and higher
-	textbox = this._triggerNode;
-      }
-      else {
-	textbox = document.popupNode;
-      }
+      let textbox = this._triggerNode;
 
       if (textbox instanceof HTMLInputElement || textbox instanceof HTMLTextAreaElement) {
 
@@ -193,15 +185,7 @@ window.aecreations.clippings = {
 	result = this.aeCreateClippingFromText(this.clippingsSvc, text, this.showDialog, window, null, false);
       }
       else {
-	var doc;
-
-	if (this._triggerNode) {
-	  // Firefox 4
-	  doc = this._triggerNode.ownerDocument;
-	}
-	else {
-	  doc = document.popupNode.ownerDocument;
-	}
+	let doc = this._triggerNode.ownerDocument;
 
 	// Rich edit field
 	if (Application.version.split(".")[0] >= 2 && doc) {
@@ -901,16 +885,16 @@ window.aecreations.clippings = {
     // (id='ae-clippings-popop-2').
 
     if (! this.dataSrcInitialized) {
-      throw "gClippings.initContextMenuItem(): Data source not initialized!";
+      throw "clippings.initContextMenuItem(): Data source not initialized!";
     }
 
     if (aEvent.target.id != "contentAreaContextMenu") {
-      this.aeUtils.log("gClippings.initContextMenuItem(): event.target.id is not 'contentAreaContextMenu'; returning");
+      this.aeUtils.log("clippings.initContextMenuItem(): event.target.id is not 'contentAreaContextMenu'; returning");
       return;
     }
 
     if (! gContextMenu) {
-      this.aeUtils.log("gClippings.initContextMenuItem(): method invoked by unknown caller; gContextMenu object is null; returning");
+      this.aeUtils.log("clippings.initContextMenuItem(): method invoked by unknown caller; gContextMenu object is null; returning");
       return;
     }
 
@@ -935,11 +919,11 @@ window.aecreations.clippings = {
     }
 
     if (! dataSrcFound) {
-      this.aeUtils.log("gClippings.initContextMenuItem(): Clippings datasource is missing from the Clippings menu's datasources\nInvoking gClippings.initClippingsPopup() to reattach it.");
+      this.aeUtils.log("clippings.initContextMenuItem(): Clippings datasource is missing from the Clippings menu's datasources\nInvoking clippings.initClippingsPopup() to reattach it.");
       this.initClippingsPopup(popup, clippingsMenu1);
     }
 
-    this.aeUtils.log("gClippings.initContextMenuItem(): Refreshing/rebuilding menu");
+    this.aeUtils.log("clippings.initContextMenuItem(): Refreshing/rebuilding menu");
     clippingsMenu1.builder.refresh();
     clippingsMenu1.builder.rebuild();
 
@@ -954,13 +938,8 @@ window.aecreations.clippings = {
     if (gContextMenu.onTextInput) {
       var textbox;
 
-      if ("triggerNode" in cxtMenu) {
-	this._triggerNode = cxtMenu.triggerNode;
-	textbox = this._triggerNode;
-      }
-      else {
-	textbox = document.popupNode;
-      }
+      this._triggerNode = cxtMenu.triggerNode;
+      textbox = this._triggerNode;
 
       // Do our own checking to ensure that the node is an HTML text field.
       if (textbox instanceof HTMLInputElement || textbox instanceof HTMLTextAreaElement) {
@@ -979,10 +958,9 @@ window.aecreations.clippings = {
 	}
       }
       else {
-	var doc = document.popupNode.ownerDocument;
+        var doc = this._triggerNode.ownerDocument;
 
-	// Rich edit box.
-	if (Application.version.split(".")[0] >= 2 && doc) {
+	if (doc) {
 	  if (gContextMenu.isTextSelected) {
 	    clippingsMenu1.hidden = false;
 	    clippingsMenu2.hidden = true;
@@ -1014,14 +992,7 @@ window.aecreations.clippings = {
 
     // Selected text in browser content area
     else if (gContextMenu.isTextSelected) {
-      var doc;
-
-      if ("triggerNode" in cxtMenu) {
-	doc = cxtMenu.triggerNode.ownerDocument;
-      }
-      else {
-	doc = document.popupNode.ownerDocument;
-      }
+      let doc = cxtMenu.triggerNode.ownerDocument;
 
       this._initAutoIncrementPlaceholderMenu(2);
       clippingsMenu1.hidden = true;
