@@ -26,7 +26,7 @@
 
 
 #ae-clippings-new {
-  width: 32em;
+  width: 34em;
 }
 
 .ae-clippings-folder {
@@ -71,6 +71,18 @@ menu[open="true"] {
   display: none;  /* Only visible if running in Thunderbird */
 }
 
-#key-conflict-notification {
-  height: 4em;
+#toggle-options {
+  min-width: 10px;
+  min-height: 12px;
+  margin-right: 0;
 }
+
+.expand-options {
+  list-style-image: url("chrome://global/skin/icons/expand.png");
+}
+
+.collapse-options {
+  list-style-image: url("chrome://global/skin/icons/collapse.png");
+}
+
+
