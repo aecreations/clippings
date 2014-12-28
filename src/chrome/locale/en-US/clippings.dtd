@@ -153,6 +153,10 @@
 <!ENTITY fmtHtmlDocument.listitem "HTML Document">
 
 <!-- New Clipping dialog -->
+<!ENTITY clippingName.label "Name:">
+<!ENTITY clippingName.accesskey "N">
+<!ENTITY saveSourceURL.label "Save the URL of the source page">
+<!ENTITY saveSourceURL.accesskey "S">
 <!ENTITY newClippingsEntry.title "New Clipping">
 <!ENTITY newFolder.title "New Folder">
 <!ENTITY createIn.label "Create in:">
@@ -167,8 +171,6 @@
 <!ENTITY createAsUnquoted.accesskey "u">
 <!ENTITY removeExtraLineBreaks.label "Remove extra line breaks">
 <!ENTITY removeExtraLineBreaks.accesskey "R">
-<!ENTITY tabGeneral.label "General">
-<!ENTITY tabShortcutKey.label "Shortcut Key">
 <!ENTITY none.label "(None)">
 
 <!-- Quote Options dialog (Thunderbird only) -->
