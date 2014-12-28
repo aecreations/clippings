@@ -20,7 +20,7 @@
    -
    - The Initial Developer of the Original Code is
    - Alex Eng <ateng@users.sourceforge.net>.
-   - Portions created by the Initial Developer are Copyright (C) 2005-2008
+   - Portions created by the Initial Developer are Copyright (C) 2005-2014
    - the Initial Developer. All Rights Reserved.
    -
    - Contributor(s):
@@ -41,7 +41,7 @@
 
   <label value="&folderName.label;" accesskey="&folderName.accesskey;"
    control="folder-name"/>
-  <textbox id="folder-name" size="32" />
+  <textbox id="folder-name" size="32" onblur="validateFolderName(event)"/>
 
   <separator class="thin"/>
 
