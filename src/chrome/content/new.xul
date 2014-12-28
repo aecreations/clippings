@@ -20,7 +20,7 @@
    -
    - The Initial Developer of the Original Code is
    - Alex Eng <ateng@users.sourceforge.net>.
-   - Portions created by the Initial Developer are Copyright (C) 2005-2011
+   - Portions created by the Initial Developer are Copyright (C) 2005-2014
    - the Initial Developer. All Rights Reserved.
    -
    - Contributor(s):
@@ -41,38 +41,13 @@
   <stringbundle id="ae-clippings-strings" 
    src="chrome://clippings/locale/clippings.properties"/>
 
-  <tabbox>
-    <tabs id="dlg-tabs">
-      <tab label="&tabGeneral.label;"/>
-      <tab label="&tabShortcutKey.label;"/>
-    </tabs>
-
-    <tabpanels id="dlg-tabpanels">
-      <tabpanel id="tab-general" orient="vertical">
-
-  <label value="&description.label;" accesskey="&description.accesskey;" control="clipping-name"/>
-  <textbox id="clipping-name" size="50" maxlength="64" />
+  <label value="&clippingName.label;" accesskey="&clippingName.accesskey;" control="clipping-name"/>
+  <textbox id="clipping-name" size="50" maxlength="64"
+   onblur="validateClippingName(event)"/>
   <separator class="thin"/>
   <label value="&text.label;" accesskey="&text.accesskey;" control="clipping-text"/>
-  <textbox id="clipping-text" multiline="true" rows="7" flex="1" />
-
-   <grid id="tb-create-options-grid">
-     <columns>
-       <column/>
-       <column flex="1"/>
-     </columns>
-
-     <rows>
-       <row align="center">
-        <checkbox id="create-as-unquoted" label="&createAsUnquoted.label;" accesskey="&createAsUnquoted.accesskey;" checked="false" />
-        <box flex="1"/>
-       </row>
-       <row align="center">
-        <checkbox id="remove-extra-linebreaks" label="&removeExtraLineBreaks.label;" accesskey="&removeExtraLineBreaks.accesskey;" checked="false"/>
-        <box flex="1"/>
-       </row>
-     </rows>
-   </grid>
+  <textbox id="clipping-text" multiline="true" rows="8" flex="1" 
+   placeholder="&clippingText.placeholder;"/>
 
   <separator class="thin"/>
 
@@ -134,77 +109,113 @@
     </rows>
   </grid>
 
-      </tabpanel>
-      <tabpanel id="tab-shortcut-key" orient="vertical">
-
-      <grid>
-        <columns>
-	  <column/>
-	  <column/>
-	</columns>
-
-	<rows>
-	  <row align="center">
-            <label value="&shortcutkey.label;" accesskey="&shortcutkey.accesskey;" control="clipping-key"/>
-
-	    <menulist id="clipping-key"
-	     oncommand="updateShortcutKeyAvailability()">
-	      <menupopup id="clipping-key-popup">
-                <menuitem label="&none.label;"/>
-	        <menuitem label="A"/>
-	        <menuitem label="B"/>
-	        <menuitem label="C"/>
-	        <menuitem label="D"/>
-	        <menuitem label="E"/>
-	        <menuitem label="F"/>
-	        <menuitem label="G"/>
-	        <menuitem label="H"/>
-	        <menuitem label="I"/>
-	        <menuitem label="J"/>
-	        <menuitem label="K"/>
-	        <menuitem label="L"/>
-	        <menuitem label="M"/>
-	        <menuitem label="N"/>
-	        <menuitem label="O"/>
-	        <menuitem label="P"/>
-	        <menuitem label="Q"/>
-	        <menuitem label="R"/>
-	        <menuitem label="S"/>
-	        <menuitem label="T"/>
-	        <menuitem label="U"/>
-	        <menuitem label="V"/>
-	        <menuitem label="W"/>
-	        <menuitem label="X"/>
-	        <menuitem label="Y"/>
-	        <menuitem label="Z"/>
-	        <menuitem label="1"/>
-	        <menuitem label="2"/>
-	        <menuitem label="3"/>
-	        <menuitem label="4"/>      
-	        <menuitem label="5"/>
-	        <menuitem label="6"/>      
-	        <menuitem label="7"/>      
-	        <menuitem label="8"/>
-	        <menuitem label="9"/>
-      	        <menuitem label="0"/>
-   	      </menupopup>
-	    </menulist>
-	  </row>
-	</rows>
-      </grid>
-
-	<separator class="thin"/>
-	<description id="key-conflict-notification">&#160;</description>
-
-	<separator class="groove"/>
-
-	<description id="shortcut-key-hint" />
-	
-      </tabpanel>
-    </tabpanels>
-  </tabbox>
-
   <separator class="thin"/>
 
-</dialog>
+  <grid>
+    <columns>
+      <column/>
+      <column flex="1"/>
+    </columns>
+    <rows>
+      <row align="center">
+        <button id="toggle-options" class="expand-options" 
+         onclick="toggleOptions()"/>
+        <label value="Options"/>
+      </row>
+    </rows>
+  </grid>
 
+  <vbox id="clipping-options" class="indent" hidden="true">
+    <separator class="thin"/>
+
+    <!-- Firefox only -->
+    <checkbox id="save-source-url" label="&saveSourceURL.label;"
+     accesskey="&saveSourceURL.accesskey;"/>
+
+    <!-- Thunderbird only -->
+    <grid id="tb-create-options-grid">
+      <columns>
+        <column/>
+        <column flex="1"/>
+      </columns>
+      <rows>
+        <row align="center">
+          <checkbox id="create-as-unquoted" label="&createAsUnquoted.label;"
+           accesskey="&createAsUnquoted.accesskey;" checked="false" />
+          <box flex="1"/>
+        </row>
+        <row align="center">
+          <checkbox id="remove-extra-linebreaks" checked="false"
+           label="&removeExtraLineBreaks.label;" 
+           accesskey="&removeExtraLineBreaks.accesskey;"/>
+          <box flex="1"/>
+        </row>
+      </rows>
+    </grid>
+
+    <separator class="thin"/>
+    <grid>
+      <columns>
+        <column/>
+        <column/>
+        <column/>
+      </columns>
+
+      <rows>
+        <row align="center">
+          <label value="&shortcutkey.label;"
+           accesskey="&shortcutkey.accesskey;" control="clipping-key"/>
+          <menulist id="clipping-key"
+           oncommand="updateShortcutKeyAvailability()">
+            <menupopup id="clipping-key-popup">
+              <menuitem label="&none.label;"/>
+              <menuitem label="A"/>
+              <menuitem label="B"/>
+              <menuitem label="C"/>
+              <menuitem label="D"/>
+              <menuitem label="E"/>
+              <menuitem label="F"/>
+              <menuitem label="G"/>
+              <menuitem label="H"/>
+	      <menuitem label="I"/>
+	      <menuitem label="J"/>
+	      <menuitem label="K"/>
+	      <menuitem label="L"/>
+	      <menuitem label="M"/>
+	      <menuitem label="N"/>
+	      <menuitem label="O"/>
+	      <menuitem label="P"/>
+	      <menuitem label="Q"/>
+	      <menuitem label="R"/>
+	      <menuitem label="S"/>
+	      <menuitem label="T"/>
+	      <menuitem label="U"/>
+	      <menuitem label="V"/>
+	      <menuitem label="W"/>
+	      <menuitem label="X"/>
+	      <menuitem label="Y"/>
+	      <menuitem label="Z"/>
+	      <menuitem label="1"/>
+	      <menuitem label="2"/>
+	      <menuitem label="3"/>
+	      <menuitem label="4"/>      
+	      <menuitem label="5"/>
+	      <menuitem label="6"/>      
+	      <menuitem label="7"/>      
+	      <menuitem label="8"/>
+	      <menuitem label="9"/>
+      	      <menuitem label="0"/>
+   	    </menupopup>
+	  </menulist>
+
+          <description id="key-conflict-notification">&#160;</description>
+        </row>
+      </rows>
+    </grid>
+
+    <separator class="thin"/>
+    <description id="shortcut-key-hint"/>
+
+  </vbox>
+
+</dialog>
