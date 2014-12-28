@@ -122,7 +122,8 @@ function initDlg()
     var hintTxtNode = document.createTextNode(hint);
     $("shortcut-key-hint").appendChild(hintTxtNode);
 
-    // Creation checkbox options - Thunderbird only
+
+    // Thunderbird-specific options
     if (Application.id == aeConstants.HOSTAPP_TB_GUID) {
       $("tb-create-options-grid").style.display = "-moz-grid";
       // If there are no message quotation symbols in dialogArgs.text, then
@@ -130,6 +131,9 @@ function initDlg()
       if (dialogArgs.text.search(/^>/gm) == -1) {
 	gCreateAsUnquoted.disabled = true;
       }
+
+      // This checkbox option isn't applicable to Thunderbird, so hide it.
+      $("save-source-url").hidden = true;
     }
     
     gClippingName.value = dialogArgs.name;
@@ -305,10 +309,46 @@ function updateShortcutKeyAvailability()
   var keyDict = gClippingsSvc.getShortcutKeyDict();
 
   if (keyDict.hasKey(selectedKey)) {
-    msgTxtNode.data = gStrBundle.getString("errorShortcutKeyDefined");
+    msgTxtNode.data = gStrBundle.getString("shortcutKeyUsed");
   }
   else {
-    msgTxtNode.data = gStrBundle.getString("shortcutKeyAvailable");
+    msgTxtNode.data = "";
+  }
+}
+
+
+// new.xul only
+function toggleOptions()
+{
+  let clippingOptions = $("clipping-options");
+
+  if (clippingOptions.hidden) {
+    clippingOptions.hidden = false;
+    $("toggle-options").className = "collapse-options";
+    window.resizeBy(0, 118);
+  }
+  else {
+    clippingOptions.hidden = true;
+    $("toggle-options").className = "expand-options";
+    window.resizeBy(0, -118);
+  }
+}
+
+
+function validateClippingName(aEvent)
+{
+  let clippingName = aEvent.target;
+  if (clippingName.value == "") {
+    clippingName.value = gStrBundle.getString("untitledClipping");
+  }
+}
+
+
+function validateFolderName(aEvent)
+{
+  let folderName = aEvent.target;
+  if (folderName.value == "") {
+    folderName.value = gStrBundle.getString("untitledFolder");
   }
 }
 
@@ -355,8 +395,6 @@ function doOK()
       if (keyDict.hasKey(selectedKey)) {
 	aeUtils.alertEx(gStrBundle.getString("appName"),
 	   	       gStrBundle.getString("errorShortcutKeyDetail"));
-	$("dlg-tabs").selectedIndex = 1;
-	$("dlg-tabpanels").selectedIndex = 1;
 	gClippingKey.focus();
 	return false;
       }
