@@ -52,6 +52,7 @@ aeClippingsService.prototype = {
   _PREDNAME_RESOURCE_URI: "http://clippings.mozdev.org/ns/rdf#name",
   _PREDTEXT_RESOURCE_URI: "http://clippings.mozdev.org/ns/rdf#text",
   _PREDKEY_RESOURCE_URI:  "http://clippings.mozdev.org/ns/rdf#key",
+  _PREDSRCURL_RESOURCE_URI: "http://clippings.mozdev.org/ns/rdf#srcurl",
   _PREDHASSUBFOLDERS_RESOURCE_URI: "http://clippings.mozdev.org/ns/rdf#hassubfolders",
   _PREDTYPE_RESOURCE_URI: "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
   _RDFTYPE_FOLDER_RESOURCE_URI: "http://clippings.mozdev.org/ns/rdf#folder",
@@ -204,62 +205,17 @@ aeClippingsService.prototype.createClippingNameFromText = function (aText)
 };
 
 
-aeClippingsService.prototype.newClippingFromText = function (aText, aShowDialog, aChromeWnd, aParentFolder, aDontNotify)
-{
-  var rv = "";
-  var clipName;
-  var parentFolderURI = aParentFolder || this.kRootFolderURI;
-  var clipText = new String(aText);
-
-  if (clipText && aText) {
-    clipName = this.createClippingNameFromText(clipText);
-
-    this._log("aeClippingsService.newClippingFromText(): clipName: \"" + clipName + "\"; length: " + clipName.length);
-
-    if (aShowDialog) {
-      var args = {
-	name: clipName,
-	text: clipText,
-	key:  null,
-	destFolder: null,
-	userCancel: null
-      };
-      aChromeWnd.openDialog("chrome://clippings/content/new.xul", "newclp_dlg",
-			    "centerscreen,modal", args);
-      if (args.userCancel) {
-	return args.destFolder || "";
-      }
-      clipName = args.name;
-      clipText = args.text;
-      parentFolderURI = args.destFolder;
-    }
-
-    if (! this.exists(parentFolderURI)) {
-       throw Components.Exception("aeClippingsService.newClippingFromText(): Folder does not exist: " + parentFolderURI);
-    }
-
-    this._log("aeClippingsService.newClippingFromText(): Parent folder URI: " + parentFolderURI);
-    rv = this.createNewClipping(parentFolderURI, clipName, clipText, aDontNotify);
-
-    if (args && args.key) {
-      this.setShortcutKey(rv, args.key);
-    }
-  } 
-  return rv;
-};
-
-
-aeClippingsService.prototype.createNewClipping = function (aParentFolder, aName, aText, aDontNotify, aDataSrc)
+aeClippingsService.prototype.createNewClipping = function (aParentFolder, aName, aText, aSourceURL, aDontNotify, aDataSrc)
   // aDataSrc param for internal use only - not exposed in interface (needed
   // for exporting)
 {
   var newNode = this._rdfSvc.GetAnonymousResource();
-  this._createNewClippingHelper(aParentFolder, newNode, aName, aText, null, aDontNotify, aDataSrc);
+  this._createNewClippingHelper(aParentFolder, newNode, aName, aText, aSourceURL, null, aDontNotify, aDataSrc);
   return newNode.Value;  // URI of new RDF node
 };
 
 
-aeClippingsService.prototype.createNewClippingEx = function (aParentFolder, aURI, aName, aText, aPos, aDontNotify)
+aeClippingsService.prototype.createNewClippingEx = function (aParentFolder, aURI, aName, aText, aSourceURL, aPos, aDontNotify)
 {
   var rv;
   var newNode;
@@ -272,12 +228,12 @@ aeClippingsService.prototype.createNewClippingEx = function (aParentFolder, aURI
     rv = newNode.Value;
   }
 
-  this._createNewClippingHelper(aParentFolder, newNode, aName, aText, aPos, aDontNotify);
+  this._createNewClippingHelper(aParentFolder, newNode, aName, aText, aSourceURL, aPos, aDontNotify);
   return rv;
 };
 
 
-aeClippingsService.prototype._createNewClippingHelper = function (aParentFolderURI, aNode, aName, aText, aPos, aDontNotify, aDataSrc)
+aeClippingsService.prototype._createNewClippingHelper = function (aParentFolderURI, aNode, aName, aText, aSourceURL, aPos, aDontNotify, aDataSrc)
 {
   var ds = aDataSrc || this._dataSrc;
   if (! ds) {
@@ -287,15 +243,20 @@ aeClippingsService.prototype._createNewClippingHelper = function (aParentFolderU
 
   var name = this._sanitize(aName);
   var text = this._sanitize(aText);
+  var srcURL = this._sanitize(aSourceURL || "");
+
   var predName = this._rdfSvc.GetResource(this._PREDNAME_RESOURCE_URI);
   var predText = this._rdfSvc.GetResource(this._PREDTEXT_RESOURCE_URI);
+  var predSrcURL = this._rdfSvc.GetResource(this._PREDSRCURL_RESOURCE_URI);
   var predType = this._rdfSvc.GetResource(this._PREDTYPE_RESOURCE_URI);
   var targName = this._rdfSvc.GetLiteral(name);
   var targText = this._rdfSvc.GetLiteral(text);
+  var targSrcURL = this._rdfSvc.GetLiteral(srcURL);
   var targType = this._rdfSvc.GetResource(this._RDFTYPE_CLIPPING_RESOURCE_URI);
 
   ds.Assert(aNode, predName, targName, true);
   ds.Assert(aNode, predText, targText, true);
+  ds.Assert(aNode, predSrcURL, targSrcURL, true);
   ds.Assert(aNode, predType, targType, true);
 
   var parentFolderCtr = this._getSeqContainerFromFolder(aParentFolderURI, ds);
@@ -983,7 +944,8 @@ aeClippingsService.prototype.copyTo = function (aURI, aDestFolder, aDestItemURI,
 
   if (this.isClipping(aURI)) {
     var text = this.getText(aURI);
-    rv = this.createNewClippingEx(aDestFolder, aDestItemURI, name, text, aDestPos, true);
+    var srcURL = this.getSourceURL(aURI);
+    rv = this.createNewClippingEx(aDestFolder, aDestItemURI, name, text, srcURL, aDestPos, true);
 
     // A clipping that is moved should preserve its shortcut key, if defined.
     var key;
@@ -1332,6 +1294,10 @@ aeClippingsService.prototype.getName = function (aURI, aDataSrc)
 			       Components.results.NS_ERROR_NOT_INITIALIZED);
   }
 
+  if (!aDataSrc && !this.exists(aURI)) {
+    throw Components.Exception("aeClippingsService.getName(): URI argument doesn't exist", Components.results.NS_ERROR_INVALID_ARG);
+  }
+
   var rv;
 
   // Root folder
@@ -1359,6 +1325,14 @@ aeClippingsService.prototype.getText = function (aURI, aDataSrc)
 			       Components.results.NS_ERROR_NOT_INITIALIZED);
   }
 
+  if (!aDataSrc && !this.exists(aURI)) {
+    throw Components.Exception("aeClippingsService.getText(): URI argument doesn't exist", Components.results.NS_ERROR_INVALID_ARG);
+  }
+
+  if (! this.isClipping(aURI, ds)) {
+    throw Components.Exception("aeClippingsService.getText(): URI argument is not a clipping resource", Components.results.NS_ERROR_INVALID_ARG);
+  }
+
   var rv;
   var subjText = this._rdfSvc.GetResource(aURI);
   var predText = this._rdfSvc.GetResource(this._PREDTEXT_RESOURCE_URI);
@@ -1370,8 +1344,46 @@ aeClippingsService.prototype.getText = function (aURI, aDataSrc)
 };
 
 
+aeClippingsService.prototype.getSourceURL = function (aURI, aDataSrc)
+  // aDataSrc param for internal use only.  Not exposed in interface.
+{
+  var ds = aDataSrc || this._dataSrc;
+  if (! ds) {
+    throw Components.Exception("Data source not initialized",
+			       Components.results.NS_ERROR_NOT_INITIALIZED);
+  }
+
+  if (!aDataSrc && !this.exists(aURI)) {
+    throw Components.Exception("aeClippingsService.getSourceURL(): URI argument doesn't exist", Components.results.NS_ERROR_INVALID_ARG);
+  }
+
+  if (! this.isClipping(aURI, ds)) {
+    throw Components.Exception("aeClippingsService.getSourceURL(): URI argument is not a clipping resource", Components.results.NS_ERROR_INVALID_ARG);
+  }
+
+  var rv = "";
+
+  // If the clipping -> srcurl triple doesn't exist, simply treat it as if the
+  // source URL did exist, and its value is an empty string.
+  if (this.hasSourceURL(aURI, ds)) {
+    var subjSrcURL = this._rdfSvc.GetResource(aURI);
+    var predSrcURL = this._rdfSvc.GetResource(this._PREDSRCURL_RESOURCE_URI);
+    var targSrcURL = ds.GetTarget(subjSrcURL, predSrcURL, true);
+    if (targSrcURL instanceof Components.interfaces.nsIRDFLiteral) {
+      rv = targSrcURL.Value;
+    }
+  }
+
+  return rv;
+};
+
+
 aeClippingsService.prototype.setName = function (aURI, aName)
 {
+  if (! this.exists(aURI)) {
+    throw Components.Exception("aeClippingsService.setName(): URI argument doesn't exist", Components.results.NS_ERROR_INVALID_ARG);
+  }
+
   var name = this._sanitize(aName);
   var subjName = this._rdfSvc.GetResource(aURI);
   var predName = this._rdfSvc.GetResource(this._PREDNAME_RESOURCE_URI);
@@ -1383,6 +1395,14 @@ aeClippingsService.prototype.setName = function (aURI, aName)
 
 aeClippingsService.prototype.setText = function (aURI, aText)
 {
+  if (! this.exists(aURI)) {
+    throw Components.Exception("aeClippingsService.setText(): URI argument doesn't exist", Components.results.NS_ERROR_INVALID_ARG);
+  }
+
+  if (! this.isClipping(aURI)) {
+    throw Components.Exception("aeClippingsService.setText(): URI argument is not a clipping resource", Components.results.NS_ERROR_INVALID_ARG);
+  }
+
   var text = this._sanitize(aText);
   var subjText = this._rdfSvc.GetResource(aURI);
   var predText = this._rdfSvc.GetResource(this._PREDTEXT_RESOURCE_URI);
@@ -1390,6 +1410,60 @@ aeClippingsService.prototype.setText = function (aURI, aText)
   targOldText = this._dataSrc.GetTarget(subjText, predText, true);
   var targNewText = this._rdfSvc.GetLiteral(text);
   this._dataSrc.Change(subjText, predText, targOldText, targNewText); 
+};
+
+
+aeClippingsService.prototype.setSourceURL = function (aURI, aSourceURL)
+{
+  if (! this.exists(aURI)) {
+    throw Components.Exception("aeClippingsService.setSourceURL(): URI argument doesn't exist", Components.results.NS_ERROR_INVALID_ARG);
+  }
+
+  if (! this.isClipping(aURI)) {
+    throw Components.Exception("aeClippingsService.setSourceURL(): URI argument is not a clipping resource", Components.results.NS_ERROR_INVALID_ARG);
+  }
+
+  var srcURL = this._sanitize(aSourceURL);
+  var subjSrcURL = this._rdfSvc.GetResource(aURI);
+  var predSrcURL = this._rdfSvc.GetResource(this._PREDSRCURL_RESOURCE_URI);
+
+  if (this.hasSourceURL(aURI)) {
+    var targOldSrcURL = this._dataSrc.GetTarget(subjSrcURL, predSrcURL, true);
+    var targNewSrcURL = this._rdfSvc.GetLiteral(srcURL);
+    this._dataSrc.Change(subjSrcURL, predSrcURL, targOldSrcURL, targNewSrcURL);
+  }
+  else {
+    // The clipping -> srcurl triple doesn't exist; this would occur with older
+    // datasources created prior to version 5.0.  If that is the case, then
+    // automatically add the triple.
+    var targSrcURL = this._rdfSvc.GetLiteral(srcURL);
+    this._dataSrc.Assert(subjSrcURL, predSrcURL, targSrcURL, true);
+  }
+};
+
+
+aeClippingsService.prototype.hasSourceURL = function (aURI, aDataSrc)
+  // aDataSrc param for internal use only.  Not exposed in interface.
+{
+  var ds = aDataSrc || this._dataSrc;
+  if (! ds) {
+    throw Components.Exception("Data source not initialized",
+			       Components.results.NS_ERROR_NOT_INITIALIZED);
+  }
+
+  if (!aDataSrc && !this.exists(aURI)) {
+    throw Components.Exception("aeClippingsService.hasSourceURL(): URI argument doesn't exist", Components.results.NS_ERROR_INVALID_ARG);
+  }
+
+  if (! this.isClipping(aURI, ds)) {
+    throw Components.Exception("aeClippingsService.getText(): URI argument is not a clipping resource", Components.results.NS_ERROR_INVALID_ARG);
+  }
+
+  var subjSrcURL = this._rdfSvc.GetResource(aURI);
+  var predSrcURL = this._rdfSvc.GetResource(this._PREDSRCURL_RESOURCE_URI);
+  var rv = ds.hasArcOut(subjSrcURL, predSrcURL);
+
+  return rv;
 };
 
 
@@ -2064,7 +2138,7 @@ aeClippingsService.prototype.importFromFile = function (aFileURL, aDontNotify, a
 
       newNode = this._rdfSvc.GetAnonymousResource();
       try {
-	this._createNewClippingHelper(this.kRootFolderURI, newNode, name, text, null, true);
+	this._createNewClippingHelper(this.kRootFolderURI, newNode, name, text, "", null, true);
       }
       catch (e) {
 	throw Components.Exception("Data source not initialized", Components.results.NS_ERROR_NOT_INITIALIZED);
@@ -2099,7 +2173,9 @@ aeClippingsService.prototype._importFromFileEx = function (aExtFolderCtr, aExtDa
 
     if (this.isClipping(extChildURI, aExtDataSrc)) {
       let text = this.getText(extChildURI, aExtDataSrc);
-      let uri = this.createNewClipping(localFolderURI, name, text, true, aLocalDataSrc);
+      let srcURL = "";  // TO DO: Get source URL from the external clipping.
+
+      let uri = this.createNewClipping(localFolderURI, name, text, srcURL, true, aLocalDataSrc);
 
       let key;
       if (key = this.getShortcutKey(extChildURI, aExtDataSrc)) {
