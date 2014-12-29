@@ -24,5 +24,6 @@ pref("extensions.aecreations.clippings.enable_keyboard_paste", true);
 pref("extensions.aecreations.clippings.beep_on_error", true);
 pref("extensions.aecreations.clippings.tab_modal_placeholder_prompt", false);
 pref("extensions.aecreations.clippings.migrated_prefs", false);
+pref("extensions.aecreations.clippings.save_source_url", true);
 pref("extensions.{91aa5abe-9de4-4347-b7b5-322c38dd9271}.description", "chrome://clippings/locale/clippings.properties");
 
