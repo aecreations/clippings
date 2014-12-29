@@ -16,7 +16,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2011
+ * Portions created by the Initial Developer are Copyright (C) 2011-2014
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -37,8 +37,10 @@ const Ci = Components.interfaces;
 /**
  * Creates a new clipping containing text in the provided text parameter.
  *
- * @param aClippingsSvc  Reference to a aeIClippingsService instance
+ * @param aClippingsSvc  Reference to an aeIClippingsService instance
  * @param aText          The text to create the new clipping from
+ * @param aSourceURL     The source URL of the web page from which the clipping
+ *                       text originated from
  * @param aShowDialog    Boolean flag to display or omit the New Clipping dialog
  * @param aChromeWnd     Host app window object
  * @param aParentFolder  Create clipping as a child of this folder
@@ -51,30 +53,34 @@ const Ci = Components.interfaces;
  *          An empty string if the user cancelled out of New Clipping dialog  
  *          without creating a new folder.
  */
-function aeCreateClippingFromText(aClippingsSvc, aText, aShowDialog, aChromeWnd, aParentFolder, aDontNotify)
+function aeCreateClippingFromText(aClippingsSvc, aText, aSourceURL, aShowDialog, aChromeWnd, aParentFolder, aDontNotify)
 {
   var rv = "";
   var clipName;
   var parentFolderURI = aParentFolder || aClippingsSvc.kRootFolderURI;
   var clipText = new String(aText);
+  var srcURL = aSourceURL || "";
 
   if (clipText && aText) {
     clipName = aClippingsSvc.createClippingNameFromText(clipText);
 
-    _log("createClippingFromText(): clipName: \"" + clipName + "\"; length: " + clipName.length);
+    _log("aeCreateClippingFromText(): clipName: \"" + clipName + "\"; length: " + clipName.length);
+
+    var saveSrcURL = aeUtils.getPref("clippings.save_source_url", true);
 
     if (aShowDialog) {
       var args = {
 	name: clipName,
 	text: clipText,
 	key:  null,
+        saveSrcURL: saveSrcURL,
 	destFolder: null,
 	userCancel: null
       };
 
       args.wrappedJSObject = args;
       if (aeUtils.getOS() == "Darwin") {
-        var ww = Cc["@mozilla.org/embedcomp/window-watcher;1"].getService(Ci.nsIWindowWatcher);
+        let ww = Cc["@mozilla.org/embedcomp/window-watcher;1"].getService(Ci.nsIWindowWatcher);
         ww.openWindow(null, "chrome://clippings/content/new.xul", "newclp_dlg",
                       "centerscreen,modal,dialog=yes,resizable=no", args);
       }
@@ -88,20 +94,26 @@ function aeCreateClippingFromText(aClippingsSvc, aText, aShowDialog, aChromeWnd,
       }
       clipName = args.name;
       clipText = args.text;
+      saveSrcURL = args.saveSrcURL;
       parentFolderURI = args.destFolder;
     }
 
     if (! aClippingsSvc.exists(parentFolderURI)) {
       throw ("createClippingFromText(): Folder does not exist: " + parentFolderURI);
     }
+    _log("aeCreateClippingFromText(): Parent folder URI: " + parentFolderURI);
 
-    _log("createClippingFromText(): Parent folder URI: " + parentFolderURI);
-    rv = aClippingsSvc.createNewClipping(parentFolderURI, clipName, clipText, aDontNotify);
+    if (! saveSrcURL) {
+      srcURL = "";
+    }
+
+    rv = aClippingsSvc.createNewClipping(parentFolderURI, clipName, clipText, 
+                                         srcURL, aDontNotify);
 
     if (args && args.key) {
       aClippingsSvc.setShortcutKey(rv, args.key);
     }
-  } 
+  }
   return rv; 
 }
 
