@@ -93,7 +93,7 @@ window.aecreations.clippings = {
     }
 
     var text = aEvent.dataTransfer.getData("text/plain");
-    var result = this.aeCreateClippingFromText(this.clippingsSvc, text, this.showDialog, window, null, false);
+    var result = this.aeCreateClippingFromText(this.clippingsSvc, text, null, this.showDialog, window, null, false);
 
     if (result) {
       let that = window.aecreations.clippings;
@@ -133,7 +133,7 @@ window.aecreations.clippings = {
       return;
     }
 
-    var result = this.aeCreateClippingFromText(this.clippingsSvc, txt, this.showDialog, window, null, false);
+    var result = this.aeCreateClippingFromText(this.clippingsSvc, txt, null, this.showDialog, window, null, false);
     if (result) {
       let that = this;
       window.setTimeout(function () { 
@@ -177,7 +177,7 @@ window.aecreations.clippings = {
 
     var selection = this.getSelectedText();
     if (selection) {
-      var result = this.aeCreateClippingFromText(this.clippingsSvc, selection, this.showDialog, window, null, false);
+      var result = this.aeCreateClippingFromText(this.clippingsSvc, selection, null, this.showDialog, window, null, false);
       if (result) {
         let that = this;
 	window.setTimeout(function () { 

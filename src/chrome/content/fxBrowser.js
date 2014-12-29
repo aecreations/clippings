@@ -101,7 +101,8 @@ window.aecreations.clippings = {
     }
 
     var text = aEvent.dataTransfer.getData("text/plain");
-    var result = this.aeCreateClippingFromText(this.clippingsSvc, text, this.showDialog, window, null, false);
+    var srcURL = this._getCurrentBrowserURL();
+    var result = this.aeCreateClippingFromText(this.clippingsSvc, text, srcURL, this.showDialog, window, null, false);
 
     if (result) {
       let that = window.aecreations.clippings;
@@ -142,7 +143,7 @@ window.aecreations.clippings = {
     }
 
     let that = this;
-    let result = this.aeCreateClippingFromText(this.clippingsSvc, txt, this.showDialog, window, null, false);
+    let result = this.aeCreateClippingFromText(this.clippingsSvc, txt, null, this.showDialog, window, null, false);
 
     if (result) {
       window.setTimeout(function () { 
@@ -160,6 +161,7 @@ window.aecreations.clippings = {
     }
 
     var cxtMenu = document.getElementById("contentAreaContextMenu");
+    var srcURL = this._getCurrentBrowserURL();
     var result;
 
     // gContextMenu.onTextInput is also true inside a rich edit box!
@@ -187,7 +189,7 @@ window.aecreations.clippings = {
           goDoCommand("cmd_selectAll");
           plainText = doc.defaultView.getSelection();
         }
-        result = this.aeCreateClippingFromText(this.clippingsSvc, plainText, this.showDialog, window, null, false);
+        result = this.aeCreateClippingFromText(this.clippingsSvc, plainText, srcURL, this.showDialog, window, null, false);
       }
       else {  // Normal HTML textbox or text area
 	var text;
@@ -200,7 +202,11 @@ window.aecreations.clippings = {
 	  text = textbox.value.substring(textbox.selectionStart, 
 					 textbox.selectionEnd);
 	}
-	result = this.aeCreateClippingFromText(this.clippingsSvc, text, this.showDialog, window, null, false);
+	result = this.aeCreateClippingFromText(this.clippingsSvc, text, srcURL, this.showDialog, window, null, false);
+      }
+
+      if (result && this.clippingsSvc.isClipping(result)) {
+        this.aeUtils.log(this.aeString.format("clippings.newFromTextbox(): New clipping created\nName: %s\nSource URL (if saved): %s", this.clippingsSvc.getName(result), srcURL));
       }
     }
 
@@ -225,10 +231,16 @@ window.aecreations.clippings = {
 			      document.getElementById("ae-clippings-menu-1"));
     }
     let focusedWnd = document.commandDispatcher.focusedWindow;
+    let srcURL = this._getCurrentBrowserURL();
     let selection = focusedWnd.getSelection();
+
     if (selection) {
-      let result = this.aeCreateClippingFromText(this.clippingsSvc, selection, this.showDialog, window, null, false);
+      let result = this.aeCreateClippingFromText(this.clippingsSvc, selection, srcURL, this.showDialog, window, null, false);
       if (result) {
+        if (this.clippingsSvc.isClipping(result)) {
+          this.aeUtils.log(this.aeString.format("clippings.newFromSelection(): New clipping created from selected text\nName: %s\nSource URL (if saved): %s", this.clippingsSvc.getName(result), srcURL));
+        }
+
         let that = this;
 	window.setTimeout(function () { 
           that.saveClippings();
@@ -238,6 +250,15 @@ window.aecreations.clippings = {
     else {
       this.alert(this.strBundle.getString("errorNoSelection"));
     }
+  },
+
+
+  _getCurrentBrowserURL: function ()
+  {
+    var tabbrowser = document.getElementById("content");
+    var rv = tabbrowser.currentURI.spec;
+
+    return rv;
   },
 
 
