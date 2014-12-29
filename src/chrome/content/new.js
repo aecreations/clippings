@@ -16,7 +16,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2005-2013
+ * Portions created by the Initial Developer are Copyright (C) 2005-2014
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -32,7 +32,7 @@ Components.utils.import("resource://clippings/modules/aeString.js");
 Components.utils.import("resource://clippings/modules/aeUtils.js");
 
 
-var dialogArgs = window.arguments[0].wrappedJSObject;
+var gDlgArgs = window.arguments[0].wrappedJSObject;
 var gFolderMenu, gStrBundle;
 var gClippingsSvc;
 var gSelectedFolderURI;
@@ -86,7 +86,7 @@ function initDlg()
     gFolderName = $("folder-name");
     gFolderName.value = gStrBundle.getString("newFolderName");
     gFolderName.clickSelectsAll = true;
-    chooseFolder(dialogArgs.parentFolderURI);
+    chooseFolder(gDlgArgs.parentFolderURI);
   }
   // new.xul
   else {
@@ -122,13 +122,14 @@ function initDlg()
     var hintTxtNode = document.createTextNode(hint);
     $("shortcut-key-hint").appendChild(hintTxtNode);
 
+    $("save-source-url").checked = gDlgArgs.saveSrcURL;
 
     // Thunderbird-specific options
     if (Application.id == aeConstants.HOSTAPP_TB_GUID) {
       $("tb-create-options-grid").style.display = "-moz-grid";
-      // If there are no message quotation symbols in dialogArgs.text, then
+      // If there are no message quotation symbols in gDlgArgs.text, then
       // disable the "Create as unquoted text" checkbox.
-      if (dialogArgs.text.search(/^>/gm) == -1) {
+      if (gDlgArgs.text.search(/^>/gm) == -1) {
 	gCreateAsUnquoted.disabled = true;
       }
 
@@ -136,8 +137,8 @@ function initDlg()
       $("save-source-url").hidden = true;
     }
     
-    gClippingName.value = dialogArgs.name;
-    gClippingText.value = dialogArgs.text;
+    gClippingName.value = gDlgArgs.name;
+    gClippingText.value = gDlgArgs.text;
     gClippingName.clickSelectsAll = true;
     gClippingText.clickSelectsAll = true;
 
@@ -366,7 +367,7 @@ function doOK()
   if (window.location.href == "chrome://clippings/content/newFolder.xul") {
     var name = gFolderName.value;
     var uri = gClippingsSvc.createNewFolderEx(gSelectedFolderURI, null, name, null, false, gClippingsSvc.ORIGIN_NEW_CLIPPING_DLG);
-    dialogArgs.newFolderURI = uri;
+    gDlgArgs.newFolderURI = uri;
   }
   // new.xul
   else {
@@ -381,9 +382,10 @@ function doOK()
       clipText = clipText.replace(/([^\n])( )?\n([^\n])/gm, "$1 $3");
     }
 
-    dialogArgs.name = gClippingName.value;
-    dialogArgs.text = clipText;
-    dialogArgs.destFolder = gSelectedFolderURI;
+    gDlgArgs.name = gClippingName.value;
+    gDlgArgs.text = clipText;
+    gDlgArgs.saveSrcURL = $("save-source-url").checked;
+    gDlgArgs.destFolder = gSelectedFolderURI;
 
     // Shortcut key
     if (gClippingKey.selectedIndex > 0) {
@@ -399,11 +401,11 @@ function doOK()
 	return false;
       }
 
-      dialogArgs.key = selectedKey;
+      gDlgArgs.key = selectedKey;
     }
   }
 
-  dialogArgs.userCancel = false;
+  gDlgArgs.userCancel = false;
   return true;
 }
 
@@ -412,9 +414,9 @@ function doCancel()
 {
   if (window.location.href == "chrome://clippings/content/new.xul"
       && gIsFolderCreated) {
-    dialogArgs.destFolder = gSelectedFolderURI;
+    gDlgArgs.destFolder = gSelectedFolderURI;
   }
 
-  dialogArgs.userCancel = true;
+  gDlgArgs.userCancel = true;
   return true;
 }
