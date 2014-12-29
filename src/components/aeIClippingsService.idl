@@ -101,12 +101,14 @@ interface aeIClippingsService : nsISupports
   uri createNewClipping(in uri aParentFolder,
 			in aestring aName,
 			in aestring aText,
+			in aestring aSourceURL,
 			in boolean aDontNotify);
 
   uri createNewClippingEx(in uri aParentFolder,
 			  in uri aURI,
 			  in aestring aName,
 			  in aestring aText,
+			  in aestring aSourceURL,
 			  in size_t aPos,
 			  in boolean aDontNotify);
 
@@ -160,6 +162,8 @@ interface aeIClippingsService : nsISupports
 
   aestring getText(in uri aURI);
 
+  aestring getSourceURL(in uri aURI);
+
   aestring getShortcutKey(in uri aURI);
 
   aeIDictionary getShortcutKeyDict();
@@ -192,15 +196,19 @@ interface aeIClippingsService : nsISupports
    */
   size_t recountAll();
 
+  boolean hasSourceURL(in uri aURI);
+
   void setName(in uri aURI, in aestring aName);
 
   void setText(in uri aURI, in aestring aText);
+
+  void setSourceURL(in uri aURI, in aestring aSourceURL);
 
   void setShortcutKey(in uri aURI, in aestring aKey);
   /* throws NS_ERROR_FAILURE if shortcut key already defined */
 
   /*
-   * Creates a clipping name based on the first aMaxLength characters from
+   * Creates a clipping name based on the first MAX_NAME_LENGTH characters from
    * aText.
    */
   aestring createClippingNameFromText(in aestring aText);
