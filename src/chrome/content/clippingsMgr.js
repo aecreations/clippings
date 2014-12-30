@@ -1937,15 +1937,18 @@ function updateDisplay(aSuppressUpdateSelection)
     shortcutKeyMiniHelp.style.visibility = "visible";
   }
 
-  if (gClippingsSvc.hasSourceURL(uri)) {
-    aeUtils.log(aeString.format("Source URL of selected clipping: %S", gClippingsSvc.getSourceURL(uri)));
-  }
-  else {
-    aeUtils.log("The selected clipping doesn't have a source URL.");
-  }
-
   clippingName.value = gClippingsSvc.getName(uri);
-  clippingText.value = gClippingsSvc.getText(uri);
+
+  if (gClippingsSvc.isClipping(uri)) {
+    clippingText.value = gClippingsSvc.getText(uri);
+
+    if (gClippingsSvc.hasSourceURL(uri)) {
+      aeUtils.log(aeString.format("Source URL of selected clipping: %S", gClippingsSvc.getSourceURL(uri)));
+    }
+    else {
+      aeUtils.log("The selected clipping doesn't have a source URL.");
+    }
+  }
 
   var key;
   if (gClippingsSvc.isClipping(uri) && (key = gClippingsSvc.getShortcutKey(uri))) {
@@ -2012,7 +2015,7 @@ function updateText(aText)
     return;
   }
   var uri = gClippingsList.getURIAtIndex(gCurrentListItemIndex);
-  if (gClippingsSvc.isFolder(uri)) {
+  if (gClippingsSvc.isFolder(uri) || gClippingsSvc.isEmptyClipping(uri)) {
     // Folders don't have a `text' predicate, so just ignore
     return;
   }
