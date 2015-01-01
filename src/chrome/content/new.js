@@ -373,6 +373,9 @@ function doOK()
   else {
     var clipText = gClippingText.value;
 
+    // Firefox only
+    aeUtils.setPref("clippings.save_source_url", $("save-source-url").checked);
+
     // Thunderbird only
     if (gCreateAsUnquoted.checked) {
       clipText = clipText.replace(/^>>* ?(>>* ?)*/gm, "");
