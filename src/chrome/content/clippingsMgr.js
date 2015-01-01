@@ -2498,10 +2498,12 @@ function initClippingsListPopup()
     clippingsListCxt.childNodes[i].setAttribute("disabled", isEmptyClipping);
   }
 
+  $("clipping-labels").hidden = !gClippingsSvc.isClipping(uri);
+  $("clipping-labels-separator").hidden = !gClippingsSvc.isClipping(uri);
+
   var insertClipping = $("insert-clipping");
   var haWnd = aeUtils.getRecentHostAppWindow();
   var enableInsertClippingCmd = !haWnd || !gClippingsSvc.isClipping(uri);
-
   insertClipping.setAttribute("disabled", enableInsertClippingCmd);
 
   return true;

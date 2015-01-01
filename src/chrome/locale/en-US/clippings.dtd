@@ -142,6 +142,17 @@
 <!ENTITY reload.key "R">
 <!ENTITY toggleFindBar.key "F">
 
+<!ENTITY clippingLabel.label "Label">
+<!ENTITY clippingLabel.accesskey "L">
+<!ENTITY labelNone.tooltip "None">
+<!ENTITY labelRed.tooltip "Red">
+<!ENTITY labelOrange.tooltip "Orange">
+<!ENTITY labelYellow.tooltip "Yellow">
+<!ENTITY labelGreen.tooltip "Green">
+<!ENTITY labelBlue.tooltip "Blue">
+<!ENTITY labelPurple.tooltip "Purple">
+<!ENTITY labelGray.tooltip "Gray">
+
 <!-- Export dialog -->
 <!ENTITY export.title "Export Clippings">
 <!ENTITY exportButton.label "Export">

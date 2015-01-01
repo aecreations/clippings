@@ -20,7 +20,7 @@
    -
    - The Initial Developer of the Original Code is
    - Alex Eng <ateng@users.sourceforge.net>.
-   - Portions created by the Initial Developer are Copyright (C) 2005-2014
+   - Portions created by the Initial Developer are Copyright (C) 2005-2015
    - the Initial Developer. All Rights Reserved.
    -
    - Contributor(s):
@@ -328,8 +328,33 @@
 
       </menu>
 
-      <menuseparator/>
+      <!-- Shown only for clippings -->
+      <menuseparator id="clipping-labels-separator"/>
+      <menu id="clipping-labels" label="&clippingLabel.label;"
+       accesskey="&clippingLabel.accesskey;">
+        <menupopup>
+          <menugroup id="clipping-labels-menu">
+            <menuitem id="clipping-label-none" class="menuitem-iconic"
+             tooltiptext="&labelNone.tooltip;"/>
+            <menuitem id="clipping-label-red" class="menuitem-iconic"
+             tooltiptext="&labelRed.tooltip;"/>
+            <menuitem id="clipping-label-orange" class="menuitem-iconic"
+             tooltiptext="&labelOrange.tooltip;"/>
+            <menuitem id="clipping-label-yellow" class="menuitem-iconic"
+             tooltiptext="&labelYellow.tooltip;"/>
+            <menuitem id="clipping-label-green" class="menuitem-iconic"
+             tooltiptext="&labelGreen.tooltip;"/>
+            <menuitem id="clipping-label-blue" class="menuitem-iconic"
+             tooltiptext="&labelBlue.tooltip;"/>
+            <menuitem id="clipping-label-purple" class="menuitem-iconic"
+             tooltiptext="&labelPurple.tooltip;"/>
+            <menuitem id="clipping-label-grey" class="menuitem-iconic"
+             tooltiptext="&labelGray.tooltip;"/>
+          </menugroup>
+        </menupopup>
+      </menu>
 
+      <menuseparator/>
       <menuitem label="&deleteClipping.label;" accesskey="&deleteClipping.accesskey;" command="cmd_delete"/>
     </menupopup>
 

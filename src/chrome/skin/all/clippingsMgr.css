@@ -15,7 +15,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2005-2014
+ * Portions created by the Initial Developer are Copyright (C) 2005-2015
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -232,4 +232,42 @@ toolbarbutton .toolbarbutton-icon {
 
 #ae-clippings-clipboard-alert, #import-empty-alert {
   padding: 6px;
+}
+
+/* Color-coded clippings */
+#clipping-labels-menu menuitem {
+  list-style-image: url("chrome://clippings/skin/images/clipping-labels.png");
+  max-width: 24px;
+}
+
+#clipping-label-none {
+  -moz-image-region: rect(0px, 24px, 24px, 0px);
+}
+
+#clipping-label-red {
+  -moz-image-region: rect(0px, 48px, 24px, 24px);
+}
+
+#clipping-label-orange {
+  -moz-image-region: rect(0px, 72px, 24px, 48px);
+}
+
+#clipping-label-yellow {
+  -moz-image-region: rect(0px, 96px, 24px, 72px);
+}
+
+#clipping-label-green {
+  -moz-image-region: rect(0px, 120px, 24px, 96px);
+}
+
+#clipping-label-blue {
+  -moz-image-region: rect(0px, 144px, 24px, 120px);
+}
+
+#clipping-label-purple {
+  -moz-image-region: rect(0px, 168px, 24px, 144px);
+}
+
+#clipping-label-grey {
+  -moz-image-region: rect(0px, 192px, 24px, 168px);
 }
