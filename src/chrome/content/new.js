@@ -119,9 +119,7 @@ function initDlg()
       }
     }
 
-    var hintTxtNode = document.createTextNode(hint);
-    $("shortcut-key-hint").appendChild(hintTxtNode);
-
+    $("shortcut-key-hint").setAttribute("tooltiptext", hint);
     $("save-source-url").checked = gDlgArgs.saveSrcURL;
 
     // Thunderbird-specific options
@@ -302,7 +300,7 @@ function updateShortcutKeyAvailability()
   var msgTxtNode = $("key-conflict-notification").firstChild;
 
   if (gClippingKey.selectedIndex == 0) {
-    msgTxtNode.data = "";
+    msgTxtNode.data = gStrBundle.getString("shortcutKeyNoneAssigned");
     return;
   }
 
@@ -313,7 +311,7 @@ function updateShortcutKeyAvailability()
     msgTxtNode.data = gStrBundle.getString("shortcutKeyUsed");
   }
   else {
-    msgTxtNode.data = "";
+    msgTxtNode.data = gStrBundle.getString("shortcutKeyNoneAssigned");
   }
 }
 
@@ -326,12 +324,12 @@ function toggleOptions()
   if (clippingOptions.hidden) {
     clippingOptions.hidden = false;
     $("toggle-options").className = "collapse-options";
-    window.resizeBy(0, 118);
+    window.resizeBy(0, 82);
   }
   else {
     clippingOptions.hidden = true;
     $("toggle-options").className = "expand-options";
-    window.resizeBy(0, -118);
+    window.resizeBy(0, -82);
   }
 }
 
