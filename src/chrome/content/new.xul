@@ -20,7 +20,7 @@
    -
    - The Initial Developer of the Original Code is
    - Alex Eng <ateng@users.sourceforge.net>.
-   - Portions created by the Initial Developer are Copyright (C) 2005-2014
+   - Portions created by the Initial Developer are Copyright (C) 2005-2015
    - the Initial Developer. All Rights Reserved.
    -
    - Contributor(s):
@@ -114,6 +114,7 @@
   <grid>
     <columns>
       <column/>
+      <column/>
       <column flex="1"/>
     </columns>
     <rows>
@@ -121,45 +122,77 @@
         <button id="toggle-options" class="expand-options" 
          onclick="toggleOptions()"/>
         <label value="Options"/>
+	<separator class="groove"/>
       </row>
     </rows>
   </grid>
 
-  <vbox id="clipping-options" class="indent" hidden="true">
-    <separator class="thin"/>
+  <vbox id="clipping-options" class="indent" hidden="true" flex="1">
 
-    <!-- Firefox only -->
-    <checkbox id="save-source-url" label="&saveSourceURL.label;"
-     accesskey="&saveSourceURL.accesskey;"/>
+    <hbox flex="1">
+      <vbox flex="1">
+        <!-- Firefox only -->
+        <checkbox id="save-source-url" label="&saveSourceURL.label;"
+         accesskey="&saveSourceURL.accesskey;"/>
 
-    <!-- Thunderbird only -->
-    <grid id="tb-create-options-grid">
-      <columns>
-        <column/>
-        <column flex="1"/>
-      </columns>
-      <rows>
-        <row align="center">
-          <checkbox id="create-as-unquoted" label="&createAsUnquoted.label;"
-           accesskey="&createAsUnquoted.accesskey;" checked="false" />
-          <box flex="1"/>
-        </row>
-        <row align="center">
-          <checkbox id="remove-extra-linebreaks" checked="false"
-           label="&removeExtraLineBreaks.label;" 
-           accesskey="&removeExtraLineBreaks.accesskey;"/>
-          <box flex="1"/>
-        </row>
-      </rows>
-    </grid>
+        <!-- Thunderbird only -->
+        <grid id="tb-create-options-grid">
+          <columns>
+            <column/>
+            <column flex="1"/>
+          </columns>
+          <rows>
+            <row align="center">
+              <checkbox id="create-as-unquoted" checked="false"
+               label="&createAsUnquoted.label;"
+               accesskey="&createAsUnquoted.accesskey;" />
+              <box flex="1"/>
+            </row>
+            <row align="center">
+              <checkbox id="remove-extra-linebreaks" checked="false"
+               label="&removeExtraLineBreaks.label;" 
+               accesskey="&removeExtraLineBreaks.accesskey;"/>
+              <box flex="1"/>
+            </row>
+            <row><separator class="thin"/></row>
+          </rows>
+        </grid>
+      </vbox>
 
-    <separator class="thin"/>
+      <vbox>
+        <button id="clipping-labels" type="menu"
+         label="&clippingLabel.label;" accesskey="&clippingLabel.accesskey;">
+          <menupopup id="clipping-labels-menupopup">
+            <menugroup id="clippings-labels-menugroup-row-1">
+              <menuitem id="clipping-label-none" class="menuitem-iconic"
+               tooltiptext="&labelNone.tooltip;"/>
+              <menuitem id="clipping-label-red" class="menuitem-iconic"
+               tooltiptext="&labelRed.tooltip;"/>
+              <menuitem id="clipping-label-orange" class="menuitem-iconic"
+               tooltiptext="&labelOrange.tooltip;"/>
+              <menuitem id="clipping-label-yellow" class="menuitem-iconic"
+               tooltiptext="&labelYellow.tooltip;"/>
+            </menugroup>
+            <menugroup id="clippings-labels-menugroup-row-2">
+              <menuitem id="clipping-label-green" class="menuitem-iconic"
+               tooltiptext="&labelGreen.tooltip;"/>
+              <menuitem id="clipping-label-blue" class="menuitem-iconic"
+               tooltiptext="&labelBlue.tooltip;"/>
+              <menuitem id="clipping-label-purple" class="menuitem-iconic"
+               tooltiptext="&labelPurple.tooltip;"/>
+              <menuitem id="clipping-label-grey" class="menuitem-iconic"
+               tooltiptext="&labelGray.tooltip;"/>
+            </menugroup>
+          </menupopup>
+        </button>
+      </vbox>
+    </hbox>
+
     <grid>
       <columns>
         <column/>
         <column flex="1"/>
       </columns>
-
       <rows>
         <row align="center">
           <label value="&shortcutkey.label;"
@@ -209,7 +242,11 @@
    	      </menupopup>
             </menulist>
 
-            <label id="shortcut-key-hint" value="(?)"/>
+            <vbox flex="1">
+              <box flex="1"/>
+              <label id="shortcut-key-hint" value="(?)"/>
+	      <box flex="1"/>
+            </vbox>
           </hbox>
         </row>
         <row>
