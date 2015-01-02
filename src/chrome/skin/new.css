@@ -86,3 +86,51 @@ menu[open="true"] {
 }
 
 
+/* Color-coded clippings */
+#clipping-labels-menupopup menuitem {
+  list-style-image: url("chrome://clippings/skin/images/clipping-labels.png");
+  max-width: 24px;
+}
+
+#clippings-labels-menugroup-row-1,
+#clippings-labels-menugroup-row-2 {
+  background-color: menu;
+}
+
+#clippings-labels-menugroup .menuitem-iconic {
+  -moz-box-flex: 1;
+  -moz-box-pack: center;
+  -moz-box-align: center;
+}
+
+#clipping-label-none {
+  -moz-image-region: rect(0px, 24px, 24px, 0px);
+}
+
+#clipping-label-red {
+  -moz-image-region: rect(0px, 48px, 24px, 24px);
+}
+
+#clipping-label-orange {
+  -moz-image-region: rect(0px, 72px, 24px, 48px);
+}
+
+#clipping-label-yellow {
+  -moz-image-region: rect(0px, 96px, 24px, 72px);
+}
+
+#clipping-label-green {
+  -moz-image-region: rect(0px, 120px, 24px, 96px);
+}
+
+#clipping-label-blue {
+  -moz-image-region: rect(0px, 144px, 24px, 120px);
+}
+
+#clipping-label-purple {
+  -moz-image-region: rect(0px, 168px, 24px, 144px);
+}
+
+#clipping-label-grey {
+  -moz-image-region: rect(0px, 192px, 24px, 168px);
+}
