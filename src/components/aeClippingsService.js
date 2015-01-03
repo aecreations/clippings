@@ -16,14 +16,13 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2005-2014
+ * Portions created by the Initial Developer are Copyright (C) 2005-2015
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
  *
  * ***** END LICENSE BLOCK ***** */
 
-// Supported in Firefox 3 and higher, and Thunderbird 3 and higher
 Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
 
 
@@ -42,6 +41,15 @@ aeClippingsService.prototype = {
   IMPORT_REPLACE_CURRENT:  1,
   IMPORT_KEEP_CURRENT:     2,
 
+  LABEL_NONE:   0,
+  LABEL_RED:    1,
+  LABEL_ORANGE: 2,
+  LABEL_YELLOW: 3,
+  LABEL_GREEN:  4,
+  LABEL_BLUE:   5,
+  LABEL_PURPLE: 6,
+  LABEL_GREY:   7,
+
   MAX_NAME_LENGTH:        64,
 
   // Private constants (not declared in interface definition)
@@ -53,6 +61,7 @@ aeClippingsService.prototype = {
   _PREDTEXT_RESOURCE_URI: "http://clippings.mozdev.org/ns/rdf#text",
   _PREDKEY_RESOURCE_URI:  "http://clippings.mozdev.org/ns/rdf#key",
   _PREDSRCURL_RESOURCE_URI: "http://clippings.mozdev.org/ns/rdf#srcurl",
+  _PREDLABEL_RESOURCE_URI: "http://clippings.mozdev.org/ns/rdf#label",
   _PREDHASSUBFOLDERS_RESOURCE_URI: "http://clippings.mozdev.org/ns/rdf#hassubfolders",
   _PREDTYPE_RESOURCE_URI: "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
   _RDFTYPE_FOLDER_RESOURCE_URI: "http://clippings.mozdev.org/ns/rdf#folder",
@@ -205,17 +214,17 @@ aeClippingsService.prototype.createClippingNameFromText = function (aText)
 };
 
 
-aeClippingsService.prototype.createNewClipping = function (aParentFolder, aName, aText, aSourceURL, aDontNotify, aDataSrc)
+aeClippingsService.prototype.createNewClipping = function (aParentFolder, aName, aText, aSourceURL, aLabel, aDontNotify, aDataSrc)
   // aDataSrc param for internal use only - not exposed in interface (needed
   // for exporting)
 {
   var newNode = this._rdfSvc.GetAnonymousResource();
-  this._createNewClippingHelper(aParentFolder, newNode, aName, aText, aSourceURL, null, aDontNotify, aDataSrc);
+  this._createNewClippingHelper(aParentFolder, newNode, aName, aText, aSourceURL, aLabel, null, aDontNotify, aDataSrc);
   return newNode.Value;  // URI of new RDF node
 };
 
 
-aeClippingsService.prototype.createNewClippingEx = function (aParentFolder, aURI, aName, aText, aSourceURL, aPos, aDontNotify)
+aeClippingsService.prototype.createNewClippingEx = function (aParentFolder, aURI, aName, aText, aSourceURL, aLabel, aPos, aDontNotify)
 {
   var rv;
   var newNode;
@@ -228,12 +237,12 @@ aeClippingsService.prototype.createNewClippingEx = function (aParentFolder, aURI
     rv = newNode.Value;
   }
 
-  this._createNewClippingHelper(aParentFolder, newNode, aName, aText, aSourceURL, aPos, aDontNotify);
+  this._createNewClippingHelper(aParentFolder, newNode, aName, aText, aSourceURL, aLabel, aPos, aDontNotify);
   return rv;
 };
 
 
-aeClippingsService.prototype._createNewClippingHelper = function (aParentFolderURI, aNode, aName, aText, aSourceURL, aPos, aDontNotify, aDataSrc)
+aeClippingsService.prototype._createNewClippingHelper = function (aParentFolderURI, aNode, aName, aText, aSourceURL, aLabel, aPos, aDontNotify, aDataSrc)
 {
   var ds = aDataSrc || this._dataSrc;
   if (! ds) {
@@ -248,15 +257,18 @@ aeClippingsService.prototype._createNewClippingHelper = function (aParentFolderU
   var predName = this._rdfSvc.GetResource(this._PREDNAME_RESOURCE_URI);
   var predText = this._rdfSvc.GetResource(this._PREDTEXT_RESOURCE_URI);
   var predSrcURL = this._rdfSvc.GetResource(this._PREDSRCURL_RESOURCE_URI);
+  var predLabel = this._rdfSvc.GetResource(this._PREDLABEL_RESOURCE_URI);
   var predType = this._rdfSvc.GetResource(this._PREDTYPE_RESOURCE_URI);
   var targName = this._rdfSvc.GetLiteral(name);
   var targText = this._rdfSvc.GetLiteral(text);
   var targSrcURL = this._rdfSvc.GetLiteral(srcURL);
+  var targLabel = this._rdfSvc.GetLiteral(aLabel);
   var targType = this._rdfSvc.GetResource(this._RDFTYPE_CLIPPING_RESOURCE_URI);
 
   ds.Assert(aNode, predName, targName, true);
   ds.Assert(aNode, predText, targText, true);
   ds.Assert(aNode, predSrcURL, targSrcURL, true);
+  ds.Assert(aNode, predLabel, targLabel, true);
   ds.Assert(aNode, predType, targType, true);
 
   var parentFolderCtr = this._getSeqContainerFromFolder(aParentFolderURI, ds);
@@ -1378,6 +1390,41 @@ aeClippingsService.prototype.getSourceURL = function (aURI, aDataSrc)
 };
 
 
+aeClippingsService.prototype.getLabel = function (aURI, aDataSrc)
+  // aDataSrc param for internal use only.  Not exposed in interface.
+{
+  var ds = aDataSrc || this._dataSrc;
+  if (! ds) {
+    throw Components.Exception("Data source not initialized",
+			       Components.results.NS_ERROR_NOT_INITIALIZED);
+  }
+
+  if (!aDataSrc && !this.exists(aURI)) {
+    throw Components.Exception("aeClippingsService.getLabel(): URI argument doesn't exist", Components.results.NS_ERROR_INVALID_ARG);
+  }
+
+  if (! this.isClipping(aURI, ds)) {
+    throw Components.Exception("aeClippingsService.Label(): URI argument is not a clipping resource", Components.results.NS_ERROR_INVALID_ARG);
+  }
+
+  var rv;
+
+  if (this.hasLabel(aURI, ds)) {
+    var subjLabel = this._rdfSvc.GetResource(aURI);
+    var predLabel = this._rdfSvc.GetResource(this._PREDLABEL_RESOURCE_URI);
+    var targLabel = ds.GetTarget(subjLabel, predLabel, true);
+    if (targLabel instanceof Components.interfaces.nsIRDFLiteral) {
+      rv = targLabel.Value;
+    }
+  }
+  else {
+    rv = this.LABEL_NONE;
+  }
+
+  return rv;
+};
+
+
 aeClippingsService.prototype.setName = function (aURI, aName)
 {
   if (! this.exists(aURI)) {
@@ -1442,6 +1489,31 @@ aeClippingsService.prototype.setSourceURL = function (aURI, aSourceURL)
 };
 
 
+aeClippingsService.prototype.setLabel = function (aURL, aLabel)
+{
+  if (! this.exists(aURI)) {
+    throw Components.Exception("aeClippingsService.setSourceURL(): URI argument doesn't exist", Components.results.NS_ERROR_INVALID_ARG);
+  }
+
+  if (! this.isClipping(aURI)) {
+    throw Components.Exception("aeClippingsService.setSourceURL(): URI argument is not a clipping resource", Components.results.NS_ERROR_INVALID_ARG);
+  }
+
+  var subjLabel = this._rdfSvc.GetResource(aURI);
+  var predLabel = this._rdfSvc.GetResource(this._PREDLABEL_RESOURCE_URI);
+
+  if (this.hasLabel(aURI)) {
+    var targOldLabel = this._dataSrc.GetTarget(subjLabel, predLabel, true);
+    var targNewLabel = this._rdfSvc.GetLiteral(aLabel);
+    this._dataSrc.Change(subjLabel, predLabel, targOldLabel, targNewLabel);
+  }
+  else {
+    var targLabel = this._rdfSvc.GetLiteral(aLabel);
+    this._dataSrc.Assert(subjLabel, predLabel, targLabel, true);
+  }
+};
+
+
 aeClippingsService.prototype.hasSourceURL = function (aURI, aDataSrc)
   // aDataSrc param for internal use only.  Not exposed in interface.
 {
@@ -1462,6 +1534,31 @@ aeClippingsService.prototype.hasSourceURL = function (aURI, aDataSrc)
   var subjSrcURL = this._rdfSvc.GetResource(aURI);
   var predSrcURL = this._rdfSvc.GetResource(this._PREDSRCURL_RESOURCE_URI);
   var rv = ds.hasArcOut(subjSrcURL, predSrcURL);
+
+  return rv;
+};
+
+
+aeClippingsService.prototype.hasLabel = function (aURI, aDataSrc)
+  // aDataSrc param for internal use only.  Not exposed in interface.
+{
+  var ds = aDataSrc || this._dataSrc;
+  if (! ds) {
+    throw Components.Exception("Data source not initialized",
+			       Components.results.NS_ERROR_NOT_INITIALIZED);
+  }
+
+  if (!aDataSrc && !this.exists(aURI)) {
+    throw Components.Exception("aeClippingsService.hasLabel(): URI argument doesn't exist", Components.results.NS_ERROR_INVALID_ARG);
+  }
+
+  if (! this.isClipping(aURI, ds)) {
+    throw Components.Exception("aeClippingsService.hasLabel(): URI argument is not a clipping resource", Components.results.NS_ERROR_INVALID_ARG);
+  }
+
+  var subjLabel = this._rdfSvc.GetResource(aURI);
+  var predLabel = this._rdfSvc.GetResource(this._PREDLABEL_RESOURCE_URI);
+  var rv = ds.hasArcOut(subjLabel, predLabel);
 
   return rv;
 };
@@ -2138,7 +2235,7 @@ aeClippingsService.prototype.importFromFile = function (aFileURL, aDontNotify, a
 
       newNode = this._rdfSvc.GetAnonymousResource();
       try {
-	this._createNewClippingHelper(this.kRootFolderURI, newNode, name, text, "", null, true);
+	this._createNewClippingHelper(this.kRootFolderURI, newNode, name, text, "", this.LABEL_NONE, null, true);
       }
       catch (e) {
 	throw Components.Exception("Data source not initialized", Components.results.NS_ERROR_NOT_INITIALIZED);
@@ -2173,9 +2270,12 @@ aeClippingsService.prototype._importFromFileEx = function (aExtFolderCtr, aExtDa
 
     if (this.isClipping(extChildURI, aExtDataSrc)) {
       let text = this.getText(extChildURI, aExtDataSrc);
-      let srcURL = "";  // TO DO: Get source URL from the external clipping.
 
-      let uri = this.createNewClipping(localFolderURI, name, text, srcURL, true, aLocalDataSrc);
+      // TO DO: Get source URL and label from the external clipping.
+      let srcURL = "";
+      let label = this.LABEL_NONE;
+
+      let uri = this.createNewClipping(localFolderURI, name, text, srcURL, label, true, aLocalDataSrc);
 
       let key;
       if (key = this.getShortcutKey(extChildURI, aExtDataSrc)) {
