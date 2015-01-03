@@ -107,30 +107,62 @@ menu[open="true"] {
   -moz-image-region: rect(0px, 24px, 24px, 0px);
 }
 
+#clipping-label-none[selected="true"] {
+  -moz-image-region: rect(24px, 24px, 48px, 0px);
+}
+
 #clipping-label-red {
   -moz-image-region: rect(0px, 48px, 24px, 24px);
+}
+
+#clipping-label-red[selected="true"] {
+  -moz-image-region: rect(24px, 48px, 48px, 24px);
 }
 
 #clipping-label-orange {
   -moz-image-region: rect(0px, 72px, 24px, 48px);
 }
 
+#clipping-label-orange[selected="true"] {
+  -moz-image-region: rect(24px, 72px, 48px, 48px);
+}
+
 #clipping-label-yellow {
   -moz-image-region: rect(0px, 96px, 24px, 72px);
+}
+
+#clipping-label-yellow[selected="true"] {
+  -moz-image-region: rect(24px, 96px, 48px, 72px);
 }
 
 #clipping-label-green {
   -moz-image-region: rect(0px, 120px, 24px, 96px);
 }
 
+#clipping-label-green[selected="true"] {
+  -moz-image-region: rect(24px, 120px, 48px, 96px);
+}
+
 #clipping-label-blue {
   -moz-image-region: rect(0px, 144px, 24px, 120px);
+}
+
+#clipping-label-blue[selected="true"] {
+  -moz-image-region: rect(24px, 144px, 48px, 120px);
 }
 
 #clipping-label-purple {
   -moz-image-region: rect(0px, 168px, 24px, 144px);
 }
 
+#clipping-label-purple[selected="true"] {
+  -moz-image-region: rect(24px, 168px, 48px, 144px);
+}
+
 #clipping-label-grey {
   -moz-image-region: rect(0px, 192px, 24px, 168px);
+}
+
+#clipping-label-grey[selected="true"] {
+  -moz-image-region: rect(24px, 192px, 48px, 168px);
 }
