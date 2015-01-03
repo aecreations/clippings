@@ -30,6 +30,7 @@
 Components.utils.import("resource://clippings/modules/aeConstants.js");
 Components.utils.import("resource://clippings/modules/aeString.js");
 Components.utils.import("resource://clippings/modules/aeUtils.js");
+Components.utils.import("resource://clippings/modules/aeClippingLabelPicker.js");
 
 
 var gDlgArgs = window.arguments[0].wrappedJSObject;
@@ -42,9 +43,18 @@ var gIsFolderMenuSeparatorInitialized = false;
 var gClippingName, gClippingText, gCreateAsUnquoted, gRemoveExtraLineBreaks;
 var gClippingKey;
 var gIsFolderCreated;
+var gClippingLabelPicker;
 
 // Used in newFolder.xul only
 var gFolderName;
+
+// Listener object passed to the aeClippingLabelPicker object
+var gClippingLabelPickerListener = {
+  selectionChanged: function (aNewLabel)
+  {
+    aeUtils.log("The selected label was changed to: " + aNewLabel);
+  }
+};
 
 
 //
@@ -150,6 +160,11 @@ function initDlg()
 
     gIsFolderCreated = false;
     gSelectedFolderURI = gClippingsSvc.kRootFolderURI;
+
+    gClippingLabelPicker = aeClippingLabelPicker.createInstance($("clipping-labels-menupopup"));
+    gClippingLabelPicker.addListener(gClippingLabelPickerListener);
+
+    aeUtils.log("Selected clipping label: " + gClippingLabelPicker.selectedIndex + "\nSelected element: " + gClippingLabelPicker.selectedItem);
   }
 }
 
@@ -406,6 +421,8 @@ function doOK()
 
       gDlgArgs.key = selectedKey;
     }
+
+    gClippingLabelPicker.removeListener(gClippingLabelPickerListener);
   }
 
   gDlgArgs.userCancel = false;
@@ -415,9 +432,11 @@ function doOK()
 
 function doCancel() 
 {
-  if (window.location.href == "chrome://clippings/content/new.xul"
-      && gIsFolderCreated) {
-    gDlgArgs.destFolder = gSelectedFolderURI;
+  if (window.location.href == "chrome://clippings/content/new.xul") {
+    if (gIsFolderCreated) {
+      gDlgArgs.destFolder = gSelectedFolderURI;
+    }
+    gClippingLabelPicker.removeListener(gClippingLabelPickerListener);
   }
 
   gDlgArgs.userCancel = true;
