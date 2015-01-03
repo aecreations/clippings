@@ -16,7 +16,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2011-2014
+ * Portions created by the Initial Developer are Copyright (C) 2011-2015
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -66,13 +66,15 @@ function aeCreateClippingFromText(aClippingsSvc, aText, aSourceURL, aShowDialog,
 
     _log("aeCreateClippingFromText(): clipName: \"" + clipName + "\"; length: " + clipName.length);
 
+    var label = aClippingsSvc.LABEL_NONE;
     var saveSrcURL = aeUtils.getPref("clippings.save_source_url", true);
 
     if (aShowDialog) {
       var args = {
-	name: clipName,
-	text: clipText,
-	key:  null,
+	name:  clipName,
+	text:  clipText,
+        label: label,
+	key:   null,
         saveSrcURL: saveSrcURL,
 	destFolder: null,
 	userCancel: null
@@ -108,7 +110,7 @@ function aeCreateClippingFromText(aClippingsSvc, aText, aSourceURL, aShowDialog,
     }
 
     rv = aClippingsSvc.createNewClipping(parentFolderURI, clipName, clipText, 
-                                         srcURL, aDontNotify);
+                                         srcURL, label, aDontNotify);
 
     if (args && args.key) {
       aClippingsSvc.setShortcutKey(rv, args.key);
