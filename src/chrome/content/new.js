@@ -378,7 +378,6 @@ function doOK()
     if (gCreateAsUnquoted.checked) {
       clipText = clipText.replace(/^>>* ?(>>* ?)*/gm, "");
     }
-
     if (gRemoveExtraLineBreaks.checked) {
       clipText = clipText.replace(/([^\n])( )?\n([^\n])/gm, "$1 $3");
     }
@@ -387,6 +386,9 @@ function doOK()
     gDlgArgs.text = clipText;
     gDlgArgs.saveSrcURL = $("save-source-url").checked;
     gDlgArgs.destFolder = gSelectedFolderURI;
+
+    // Label
+    gDlgArgs.label = 0;  // TO DO: Get the selected label
 
     // Shortcut key
     if (gClippingKey.selectedIndex > 0) {

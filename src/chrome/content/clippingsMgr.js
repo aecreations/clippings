@@ -16,7 +16,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2005-2014
+ * Portions created by the Initial Developer are Copyright (C) 2005-2015
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -185,7 +185,7 @@ var treeBuilderObserver = {
 	var name = gClippingsSvc.createClippingNameFromText(dndExtText);
 	var text = dndExtText;
         var srcURL = "";
-	var newNodeURI = gClippingsSvc.createNewClippingEx(destParentURI, null, name, text, srcURL, newPos, true);
+	var newNodeURI = gClippingsSvc.createNewClippingEx(destParentURI, null, name, text, srcURL, gClippingsSvc.LABEL_NONE, newPos, true);
 
 	// Always select the newly-created clipping.
 	gClippingsList.selectedURI = newNodeURI;
@@ -198,7 +198,7 @@ var treeBuilderObserver = {
 
 	gUndoStack.push({action: ACTION_CREATENEW, uri: newNodeURI,
 	      parentFolderURI: destParentURI, name: name, text: text,
-              srcURL: srcURL,
+              srcURL: srcURL, label: gClippingsSvc.LABEL_NONE
 	});
 	aeUtils.log(aeString.format("New entry added to undo stack\nName = %S", gClippingsSvc.getName(newNodeURI)));
 
@@ -875,6 +875,7 @@ function detectExternallyCreatedEntry(aNewClippingURI)
     name:   gClippingsSvc.getName(aNewClippingURI),
     text:   gClippingsSvc.getText(aNewClippingURI),
     srcURL: gClippingsSvc.getSourceURL(aNewClippingURI),
+    label:  gClippingsSvc.getLabel(aNewClippingURI),
     key:    gClippingsSvc.getShortcutKey(aNewClippingURI),
     parentFolderURI: gClippingsSvc.getParent(aNewClippingURI)
   };
@@ -1243,7 +1244,7 @@ function newClipping()
 
 function newClippingHelper(aParentFolder, aName, aText, aURI, aPos, aDestUndoStack)
 {
-  var newNodeURI = gClippingsSvc.createNewClippingEx(aParentFolder, aURI, aName, aText, "", aPos, true);
+  var newNodeURI = gClippingsSvc.createNewClippingEx(aParentFolder, aURI, aName, aText, "", gClippingsSvc.LABEL_NONE, aPos, true);
 
   if (! newNodeURI) {
     doAlert(gStrBundle.getString('errorCannotCreate'));
@@ -1263,7 +1264,12 @@ function newClippingHelper(aParentFolder, aName, aText, aURI, aPos, aDestUndoSta
   clippingName.select();
   clippingName.focus();
 
-  var state = {action: ACTION_CREATENEW, uri: newNodeURI, name: aName, text: aText, srcURL: "", parentFolderURI: aParentFolder, pos: aPos};
+  var state = {
+    action: ACTION_CREATENEW, uri: newNodeURI, 
+    name: aName, text: aText, srcURL: "", label: gClippingsSvc.LABEL_NONE, 
+    parentFolderURI: aParentFolder, pos: aPos
+  };
+
   if (aDestUndoStack == UNDO_STACK) {
     gUndoStack.push(state);
     aeUtils.log(aeString.format("New entry %S added to undo stack", aName));
@@ -1332,7 +1338,7 @@ function pasteClippingAsNew()
 	           parentFolderURI: parentFolderURI,
 		   name: gClippingsSvc.getName(newNodeURI),
                    text: gClippingsSvc.getText(newNodeURI),
-                   srcURL: ""});
+                   srcURL: "", label: gClippingsSvc.LABEL_NONE});
   aeUtils.log(aeString.format("New entry added to undo stack\nName = %S", 
 			       gClippingsSvc.getName(newNodeURI)));
 
@@ -1942,12 +1948,21 @@ function updateDisplay(aSuppressUpdateSelection)
   if (gClippingsSvc.isClipping(uri)) {
     clippingText.value = gClippingsSvc.getText(uri);
 
+    var debugStr = "The selected clipping";
     if (gClippingsSvc.hasSourceURL(uri)) {
-      aeUtils.log(aeString.format("Source URL of selected clipping: %S", gClippingsSvc.getSourceURL(uri)));
+      debugStr += aeString.format("'s source URL is: %S", gClippingsSvc.getSourceURL(uri));
     }
     else {
-      aeUtils.log("The selected clipping doesn't have a source URL.");
+      debugStr += " doesn't have a source URL.";
     }
+
+    if (gClippingsSvc.hasLabel(uri)) {
+      debugStr += aeString.format("\nLabel: %d", gClippingsSvc.getLabel(uri));
+    }
+    else {
+      debugStr += "\nNo label.";
+    }
+    aeUtils.log(debugStr);
   }
 
   var key;
@@ -2550,7 +2565,7 @@ function undo()
   if (undo.action == ACTION_DELETECLIPPING) {
     gClippingsSvc.createNewClippingEx(undo.parentFolderURI, undo.uri,
 				      undo.name, undo.text, undo.srcURL,
-                                      undo.pos, true);
+                                      undo.label, undo.pos, true);
 
     if (undo.key) {
       try {
@@ -2580,6 +2595,7 @@ function undo()
       name:   undo.name, 
       text:   undo.text,
       srcURL: undo.srcURL,
+      label:  undo.label,
       key:    undo.key || "",
       pos:    undo.pos
     };
@@ -2618,7 +2634,7 @@ function undo()
 
     gRedoStack.push({action: ACTION_CREATENEW, uri: undo.uri, 
                      name: undo.name, text: undo.text, srcURL: undo.srcURL,
-                     pos: pos, key: key,
+                     label: undo.label, pos: pos, key: key,
                      parentFolderURI: undo.parentFolderURI});
   }
   else if (undo.action == ACTION_CREATENEWFOLDER) {
@@ -2743,8 +2759,11 @@ function reverseLastUndo()
     newClippingHelper(redo.parentFolderURI, redo.name, redo.text, redo.uri, pos, UNDO_STACK);
     gClippingsList.selectedURI = redo.uri;
 
-    if (redo.srcURL) {
+    if ("srcURL" in redo) {
       gClippingsSvc.setSourceURL(redo.uri, redo.srcURL);
+    }
+    if ("label" in redo) {
+      gClippingsSvc.setLabel(redo.uri, redo.label);
     }
 
     aeUtils.log("Shortcut key of clipping whose creation is being redone (empty if none was defined): `" + redo.key + "'");
