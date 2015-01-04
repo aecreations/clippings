@@ -97,6 +97,7 @@ function aeCreateClippingFromText(aClippingsSvc, aText, aSourceURL, aShowDialog,
       clipName = args.name;
       clipText = args.text;
       saveSrcURL = args.saveSrcURL;
+      label = args.label;
       parentFolderURI = args.destFolder;
     }
 
