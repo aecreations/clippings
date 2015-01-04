@@ -161,6 +161,7 @@
 
       <vbox>
         <button id="clipping-labels" type="menu"
+         image="chrome://clippings/skin/images/clipping.png"
          label="&clippingLabel.label;" accesskey="&clippingLabel.accesskey;">
           <menupopup id="clipping-labels-menupopup">
             <menugroup id="clippings-labels-menugroup-row-1">
