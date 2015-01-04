@@ -171,7 +171,7 @@
               <button id="clipping-labels" type="menu"
                image="chrome://clippings/skin/images/clipping.png">
                 <menupopup id="clipping-labels-menupopup">
-                  <menugroup id="clippings-labels-menugroup-row-1">
+                  <menugroup id="clipping-labels-menugroup-row-1">
                     <menuitem id="clipping-label-none" class="menuitem-iconic"
                      tooltiptext="&labelNone.tooltip;"
                      oncommand="gClippingLabelPicker.selectedItem = this"/>
@@ -185,7 +185,7 @@
                      tooltiptext="&labelYellow.tooltip;"
                      oncommand="gClippingLabelPicker.selectedItem = this"/>
                   </menugroup>
-                  <menugroup id="clippings-labels-menugroup-row-2">
+                  <menugroup id="clipping-labels-menugroup-row-2">
                     <menuitem id="clipping-label-green" class="menuitem-iconic"
                      tooltiptext="&labelGreen.tooltip;"
                      oncommand="gClippingLabelPicker.selectedItem = this"/>
