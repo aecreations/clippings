@@ -183,6 +183,10 @@
 <!ENTITY removeExtraLineBreaks.label "Remove extra line breaks">
 <!ENTITY removeExtraLineBreaks.accesskey "R">
 <!ENTITY none.label "(None)">
+<!ENTITY newClippingOptions.label "Options">
+<!ENTITY newClippingOptions.accesskey "O">
+<!ENTITY clippingLabelPicker.label "Label:">
+<!ENTITY clippingLabelPicker.accesskey "L">
 
 <!-- Quote Options dialog (Thunderbird only) -->
 <!ENTITY pasteClippingAs.label "Paste Clipping As">
