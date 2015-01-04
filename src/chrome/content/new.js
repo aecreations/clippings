@@ -52,7 +52,7 @@ var gFolderName;
 var gClippingLabelPickerListener = {
   selectionChanged: function (aNewLabel)
   {
-    aeUtils.log("The selected label was changed to: " + aNewLabel);
+    $("clipping-labels").image = "chrome://clippings/skin/images/" + gClippingLabelPicker.getIconFileStr(aNewLabel);
   }
 };
 
@@ -163,8 +163,6 @@ function initDlg()
 
     gClippingLabelPicker = aeClippingLabelPicker.createInstance($("clipping-labels-menupopup"));
     gClippingLabelPicker.addListener(gClippingLabelPickerListener);
-
-    aeUtils.log("Selected clipping label: " + gClippingLabelPicker.selectedIndex + "\nSelected element: " + gClippingLabelPicker.selectedItem);
   }
 }
 
@@ -403,7 +401,7 @@ function doOK()
     gDlgArgs.destFolder = gSelectedFolderURI;
 
     // Label
-    gDlgArgs.label = 0;  // TO DO: Get the selected label
+    gDlgArgs.label = gClippingLabelPicker.selectedIndex;
 
     // Shortcut key
     if (gClippingKey.selectedIndex > 0) {
