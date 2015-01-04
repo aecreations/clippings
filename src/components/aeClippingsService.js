@@ -298,6 +298,8 @@ aeClippingsService.prototype._createNewClippingHelper = function (aParentFolderU
     // empty before this new clipping was added to it.
     this._removeDummyNode(aParentFolderURI, ds);
 
+    this._log("aeClippingsService._createNewClippingHelper(): Created a new clipping!\nName: " + name + "\nText: " + text + "\nSource URL: " + srcURL + "\nLabel: " + aLabel);
+
     // Notify all observers
     if (! aDontNotify) {
       for (let i = 0; i < this._listeners.length; i++) {
