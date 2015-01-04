@@ -95,12 +95,13 @@ menu[open="true"] {
   max-width: 24px;
 }
 
-#clippings-labels-menugroup-row-1,
-#clippings-labels-menugroup-row-2 {
+#clipping-labels-menugroup-row-1,
+#clipping-labels-menugroup-row-2 {
   background-color: menu;
 }
 
-#clippings-labels-menugroup .menuitem-iconic {
+#clipping-labels-menugroup-row-1 .menuitem-iconic,
+#clipping-labels-menugroup-row-2 .menuitem-iconic {
   -moz-box-flex: 1;
   -moz-box-pack: center;
   -moz-box-align: center;
