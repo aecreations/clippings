@@ -60,9 +60,12 @@ menu[open="true"] {
   padding-right: 1px;
 }
 
-#new-folder {
+#new-folder, #clipping-labels {
   min-width: 10px;
   min-height: 16px;
+}
+
+#new-folder {
   list-style-image: url("chrome://clippings/skin/images/clippingsMgrToolbar.png");
   -moz-image-region: rect(0px, 104px, 16px, 88px);
 }
