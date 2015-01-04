@@ -53,7 +53,7 @@ aeClippingsService.prototype = {
   MAX_NAME_LENGTH:        64,
 
   // Private constants (not declared in interface definition)
-  _DEBUG:  false,
+  _DEBUG:  true,
   _TEST_CORRUPTION: false,
   _SEQNODE_RESOURCE_URI:  "http://clippings.mozdev.org/rdf/user-clippings-v2",
   _OLD_SEQNODE_RESOURCE_URI: "http://clippings.mozdev.org/rdf/user-clippings",
@@ -119,19 +119,20 @@ aeClippingsService.prototype = {
 };
 
 
-aeClippingsService.prototype.addListener = function (aListener)
+aeClippingsService.prototype.addListener = function (aNewListener)
 {
-  this._listeners.push(aListener);
-  this._log("Added listener object to aeIClippingsService");
+  this._listeners.push(aNewListener);
+  this._log("Added listener object to aeIClippingsService.  There are now " + this._listeners.length + " listeners.");
 };
 
 
-aeClippingsService.prototype.removeListener = function (aListener)
+aeClippingsService.prototype.removeListener = function (aTargetListener)
 {
   for (let i = 0; i < this._listeners.length; i++) {
-    if (this._listeners[i] == aListener) {
+    if (this._listeners[i] == aTargetListener) {
       delete this._listeners[i];
       this._log("Removed listener object " + i + " from aeIClippingsService");
+      break;
     }
   }
 };
@@ -1138,11 +1139,11 @@ aeClippingsService.prototype.detachFromFolder = function (aFolderURI)
 };
 
 
-aeClippingsService.prototype.reattachToFolder = function (aParentFolder, aURI, aPos)
+aeClippingsService.prototype.reattachToFolder = function (aParentFolderURI, aURI, aPos)
 {
   // NOTE: aPos is a 1-based (not zero-based) index.
-  var prevSubfCount = this.getCountSubfolders(aParentFolder);
-  var parentCtr = this._getSeqContainerFromFolder(aParentFolder);
+  var prevSubfCount = this.getCountSubfolders(aParentFolderURI);
+  var parentCtr = this._getSeqContainerFromFolder(aParentFolderURI);
   var node = this._rdfSvc.GetResource(aURI);
   node = node.QueryInterface(Components.interfaces.nsIRDFResource);
 
@@ -1158,17 +1159,18 @@ aeClippingsService.prototype.reattachToFolder = function (aParentFolder, aURI, a
     parentCtr.AppendElement(node);
   }
 
-  this._removeDummyNode(aParentFolder);
+  this._removeDummyNode(aParentFolderURI);
   
   if (this.isFolder(aURI) && prevSubfCount == 0) {
-    this._setHasSubfoldersTriple(aParentFolder, true);
+    this._setHasSubfoldersTriple(aParentFolderURI, true);
   }
 
-  for (let i = 0; i < this._detachedItems.length; i++) {
-    if (this._detachedItems[i] == aURI) {
-      delete this._detachedItems[i];
-    }
-  }
+  // Remove the detached clipping or folder from the detached item list
+  var currDetachedItems = this._detachedItems;
+
+  this._detachedItems = currDetachedItems.filter(function (aDetachedItemURI) {
+    return (aDetachedItemURI != aURI);
+  });
 
   this._count = this._countRec(this._rdfContainer);
 };
@@ -1213,6 +1215,7 @@ aeClippingsService.prototype.isDetached = function (aURI)
   while (!rv && i < this._detachedItems.length) {
     if (this._detachedItems[i] && this._detachedItems[i] == aURI) {
       rv = true;
+      break;
     }
     i++;
   }
@@ -1564,14 +1567,14 @@ aeClippingsService.prototype.hasLabel = function (aURI, aDataSrc)
 };
 
 
-aeClippingsService.prototype.changePosition = function (aParentFolder, aOldPos, aNewPos)
+aeClippingsService.prototype.changePosition = function (aParentFolderURI, aOldPos, aNewPos)
 {
   var parentCtr;
-  if (aParentFolder == this.kRootFolderURI) {
+  if (aParentFolderURI == this.kRootFolderURI) {
     parentCtr = this._rdfContainer;
   }
   else {
-    parentCtr = this._getSeqContainerFromFolder(aParentFolder);
+    parentCtr = this._getSeqContainerFromFolder(aParentFolderURI);
   }
 
   var node = parentCtr.RemoveElementAt(aOldPos, true);
