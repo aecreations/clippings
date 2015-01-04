@@ -59,6 +59,16 @@ function ClippingLabelPicker(aMenupopup)
   this._labelMap.set("clipping-label-purple", this._clippingsSvc.LABEL_PURPLE);
   this._labelMap.set("clipping-label-grey",   this._clippingsSvc.LABEL_GREY);
 
+  this._iconFileStr = [];
+  this._iconFileStr[this._clippingsSvc.LABEL_NONE] = "clipping.png";
+  this._iconFileStr[this._clippingsSvc.LABEL_RED] =  "clipping-red.png";
+  this._iconFileStr[this._clippingsSvc.LABEL_ORANGE] = "clipping-orange.png";
+  this._iconFileStr[this._clippingsSvc.LABEL_YELLOW] = "clipping-yellow.png";
+  this._iconFileStr[this._clippingsSvc.LABEL_GREEN]  = "clipping-green.png";
+  this._iconFileStr[this._clippingsSvc.LABEL_BLUE]   = "clipping-blue.png";
+  this._iconFileStr[this._clippingsSvc.LABEL_PURPLE] = "clipping-purple.png";
+  this._iconFileStr[this._clippingsSvc.LABEL_GREY]   = "clipping-grey.png";
+
   _log("aeClippingLabelPicker: initialized new instance\n_listeners = " + (this._listeners || "??") + "(typeof _listeners = " + (typeof(this._listeners)) + ")"  + "\n_doc = " + (this._doc || "??") + "\n_menupopup = " + (this._menupopup || "??"));
 
   this._doc.getElementById("clipping-label-none").setAttribute("selected", "true");
@@ -75,9 +85,10 @@ ClippingLabelPicker.prototype = {
 
   set selectedItem(aSelectedMenuitem)
   {
-    this._selectedItem.removeAttribute("selected");
-    aSelectedMenuitem.setAttribute("selected", "true");
+    var oldSelectedItem = this._selectedItem;
+    oldSelectedItem.removeAttribute("selected");
 
+    aSelectedMenuitem.setAttribute("selected", "true");
     this._selectedItem = aSelectedMenuitem;
 
     var newLabel = this._labelMap.get(aSelectedMenuitem.id);
@@ -97,19 +108,19 @@ ClippingLabelPicker.prototype = {
 
   set selectedIndex(aLabel)
   {
-    var oldLabel = this._selectedIndex;
-    var newKey, newSelectedMenuitem;
+    var oldSelectedMenuitem = this._selectedItem;
+    oldSelectedMenuitem.removeAttribute("selected");
+
+    var newSelectedMenuitemID;
 
     for (let [key, value] of this._labelMap) {
-      if (value == oldLabel) {
-	var oldSelectedMenuitem = this._doc.getElementById(key);
-	oldSelectedMenuitem.removeAttribute("selected");
-	newKey = key;
+      if (value == aLabel) {
+	newSelectedMenuitemID = key;
 	break;
       }
     }
 
-    newSelectedMenuitem = this._doc.getElementById(newKey);
+    var newSelectedMenuitem = this._doc.getElementById(newSelectedMenuitemID);
     newSelectedMenuitem.setAttribute("selected", "true");
 
     this._selectedIndex = aLabel;
@@ -122,19 +133,25 @@ ClippingLabelPicker.prototype = {
 };
 
 
-ClippingLabelPicker.prototype.addListener = function (aListener)
+ClippingLabelPicker.prototype.getIconFileStr = function (aLabel)
 {
-  this._listeners.push(aListener);
+  return this._iconFileStr[aLabel];
+};
+
+
+ClippingLabelPicker.prototype.addListener = function (aNewListener)
+{
+  this._listeners.push(aNewListener);
   _log("aeClippingLabelPicker: Added listener object; there are now " + this._listeners.length + " listeners.");
 };
 
 
-ClippingLabelPicker.prototype.removeListener = function (aListener)
+ClippingLabelPicker.prototype.removeListener = function (aTargetListener)
 {
   var currentListeners = this._listeners;
 
-  this._listeners = currentListeners.filter(function (aListenerObj) {
-    return (aListenerObj != aListener);
+  this._listeners = currentListeners.filter(function (aListener) {
+    return (aListener != aTargetListener);
   });
 
   _log("aeClippingLabelPicker: Removed listener object; there are now " + this._listeners.length + " listeners.");
