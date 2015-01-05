@@ -961,7 +961,8 @@ aeClippingsService.prototype.copyTo = function (aURI, aDestFolder, aDestItemURI,
   if (this.isClipping(aURI)) {
     var text = this.getText(aURI);
     var srcURL = this.getSourceURL(aURI);
-    rv = this.createNewClippingEx(aDestFolder, aDestItemURI, name, text, srcURL, aDestPos, true);
+    var label = this.getLabel(aURI);
+    rv = this.createNewClippingEx(aDestFolder, aDestItemURI, name, text, srcURL, label, aDestPos, true);
 
     // A clipping that is moved should preserve its shortcut key, if defined.
     var key;
@@ -1495,7 +1496,7 @@ aeClippingsService.prototype.setSourceURL = function (aURI, aSourceURL)
 };
 
 
-aeClippingsService.prototype.setLabel = function (aURL, aLabel)
+aeClippingsService.prototype.setLabel = function (aURI, aLabel)
 {
   if (! this.exists(aURI)) {
     throw Components.Exception("aeClippingsService.setSourceURL(): URI argument doesn't exist", Components.results.NS_ERROR_INVALID_ARG);
