@@ -15,7 +15,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2005-2014
+ * Portions created by the Initial Developer are Copyright (C) 2005-2015
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -29,8 +29,38 @@
 
 
 menuitem.ae-clippings-clipping {
-  list-style-image: url("chrome://clippings/skin/images/clippings-icon.png");
+  list-style-image: url("chrome://clippings/skin/images/clipping.png");
 }
+
+/* Clipping labels */
+menuitem.ae-clippings-clipping[clipLabel="red"] {
+  list-style-image: url("chrome://clippings/skin/images/clipping-red.png");
+}
+
+menuitem.ae-clippings-clipping[clipLabel="orange"] {
+  list-style-image: url("chrome://clippings/skin/images/clipping-orange.png");
+}
+
+menuitem.ae-clippings-clipping[clipLabel="yellow"] {
+  list-style-image: url("chrome://clippings/skin/images/clipping-yellow.png");
+}
+
+menuitem.ae-clippings-clipping[clipLabel="green"] {
+  list-style-image: url("chrome://clippings/skin/images/clipping-green.png");
+}
+
+menuitem.ae-clippings-clipping[clipLabel="blue"] {
+  list-style-image: url("chrome://clippings/skin/images/clipping-blue.png");
+}
+
+menuitem.ae-clippings-clipping[clipLabel="purple"] {
+  list-style-image: url("chrome://clippings/skin/images/clipping-purple.png");
+}
+
+menuitem.ae-clippings-clipping[clipLabel="grey"] {
+  list-style-image: url("chrome://clippings/skin/images/clipping-grey.png");
+}
+
 
 menuitem.ae-clippings-clipping > hbox.menu-iconic-left {
   margin-top: 0px;
