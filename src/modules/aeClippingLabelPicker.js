@@ -25,7 +25,7 @@
 
 const EXPORTED_SYMBOLS = ["aeClippingLabelPicker"];
 
-const DEBUG = true;
+const DEBUG = false;
 
 const Cc = Components.classes;
 const Ci = Components.interfaces;
@@ -45,7 +45,7 @@ function ClippingLabelPicker(aMenupopup)
 
   this._clippingsSvc = Cc["clippings@mozdev.org/clippings;1"].getService(Ci.aeIClippingsService);
 
-  this._selectedIndex = this._clippingsSvc.LABEL_NONE;
+  this._selectedLabel = this._clippingsSvc.LABEL_NONE;
   this._selectedItem = this._doc.getElementById("clipping-label-none");
   this._listeners = [];
 
@@ -58,16 +58,6 @@ function ClippingLabelPicker(aMenupopup)
   this._labelMap.set("clipping-label-blue",   this._clippingsSvc.LABEL_BLUE);
   this._labelMap.set("clipping-label-purple", this._clippingsSvc.LABEL_PURPLE);
   this._labelMap.set("clipping-label-grey",   this._clippingsSvc.LABEL_GREY);
-
-  this._iconFileStr = [];
-  this._iconFileStr[this._clippingsSvc.LABEL_NONE] = "clipping.png";
-  this._iconFileStr[this._clippingsSvc.LABEL_RED] =  "clipping-red.png";
-  this._iconFileStr[this._clippingsSvc.LABEL_ORANGE] = "clipping-orange.png";
-  this._iconFileStr[this._clippingsSvc.LABEL_YELLOW] = "clipping-yellow.png";
-  this._iconFileStr[this._clippingsSvc.LABEL_GREEN]  = "clipping-green.png";
-  this._iconFileStr[this._clippingsSvc.LABEL_BLUE]   = "clipping-blue.png";
-  this._iconFileStr[this._clippingsSvc.LABEL_PURPLE] = "clipping-purple.png";
-  this._iconFileStr[this._clippingsSvc.LABEL_GREY]   = "clipping-grey.png";
 
   _log("aeClippingLabelPicker: initialized new instance\n_listeners = " + (this._listeners || "??") + "(typeof _listeners = " + (typeof(this._listeners)) + ")"  + "\n_doc = " + (this._doc || "??") + "\n_menupopup = " + (this._menupopup || "??"));
 
@@ -92,7 +82,7 @@ ClippingLabelPicker.prototype = {
     this._selectedItem = aSelectedMenuitem;
 
     var newLabel = this._labelMap.get(aSelectedMenuitem.id);
-    this._selectedIndex = newLabel;
+    this._selectedLabel = newLabel;
 
     this._listeners.forEach(function (aListener) {
       aListener.selectionChanged(newLabel);
@@ -100,13 +90,13 @@ ClippingLabelPicker.prototype = {
   },
 
   
-  get selectedIndex()
+  get selectedLabel()
   {
-    return this._selectedIndex;
+    return this._selectedLabel;
   },
 
 
-  set selectedIndex(aLabel)
+  set selectedLabel(aLabel)
   {
     var oldSelectedMenuitem = this._selectedItem;
     oldSelectedMenuitem.removeAttribute("selected");
@@ -123,7 +113,7 @@ ClippingLabelPicker.prototype = {
     var newSelectedMenuitem = this._doc.getElementById(newSelectedMenuitemID);
     newSelectedMenuitem.setAttribute("selected", "true");
 
-    this._selectedIndex = aLabel;
+    this._selectedLabel = aLabel;
     this._selectedItem = newSelectedMenuitem;
 
     this._listeners.forEach(function (aListener) {
@@ -135,7 +125,16 @@ ClippingLabelPicker.prototype = {
 
 ClippingLabelPicker.prototype.getIconFileStr = function (aLabel)
 {
-  return this._iconFileStr[aLabel];
+  var rv;
+
+  if (aLabel) {
+    rv = "clipping-" + aLabel + ".png";
+  }
+  else {
+    rv = "clipping.png";
+  }
+
+  return rv;
 };
 
 
