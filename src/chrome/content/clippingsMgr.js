@@ -25,8 +25,9 @@
 
 Components.utils.import("resource://clippings/modules/aeConstants.js");
 Components.utils.import("resource://clippings/modules/aeUtils.js");
-Components.utils.import("resource://clippings/modules/aeCreateClippingHelper.js");
 Components.utils.import("resource://clippings/modules/aeString.js");
+Components.utils.import("resource://clippings/modules/aeCreateClippingHelper.js");
+Components.utils.import("resource://clippings/modules/aeClippingLabelPicker.js");
 
 
 const WINDOWSTATE_MAXIMIZE  = 1;
@@ -46,6 +47,7 @@ var gIsClippingsDirty = false;
 var gJustMigrated = false;
 var gJustImported = false;
 var gMoveTimerID;
+var gClippingLabelPicker;
 
 
 // Clippings XPCOM service
@@ -672,6 +674,8 @@ function init()
 
   gStatusBar = $("app-status");
   setStatusBarVisibility();
+
+  gClippingLabelPicker = aeClippingLabelPicker.createInstance($("clipping-labels-menupopup"));
 
   // Clippings backup
   var backupDirURL = aeUtils.getDataSourcePathURL() + aeConstants.BACKUP_DIR_NAME;
@@ -1983,6 +1987,20 @@ function updateDisplay(aSuppressUpdateSelection)
   if (! aSuppressUpdateSelection) {
     gClippingsList.ensureIndexIsVisible(gClippingsList.selectedIndex);
   }
+}
+
+
+function updateLabelMenu()
+{
+  var uri = gClippingsList.selectedURI;
+
+  if (!uri || !gClippingsSvc.isClipping(uri)) {
+    aeUtils.log("Unable to update the label picker!");
+    return;
+  }
+
+  var label = gClippingsSvc.getLabel(uri);
+  gClippingLabelPicker.selectedIndex = label;
 }
 
 
