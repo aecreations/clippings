@@ -43,10 +43,40 @@ treechildren::-moz-tree-image {
 }
 
 treechildren::-moz-tree-image(leaf) {
-  list-style-image: url("chrome://clippings/skin/images/clippings-icon.png");
+  list-style-image: url("chrome://clippings/skin/images/clipping.png");
 }
 
-/* Next two items deal with the special "null" placeholders for empty folders */
+/* Clipping labels */
+treechildren::-moz-tree-image(leaf, red) {
+  list-style-image: url("chrome://clippings/skin/images/clipping-red.png");
+}
+
+treechildren::-moz-tree-image(leaf, orange) {
+  list-style-image: url("chrome://clippings/skin/images/clipping-orange.png");
+}
+
+treechildren::-moz-tree-image(leaf, yellow) {
+  list-style-image: url("chrome://clippings/skin/images/clipping-yellow.png");
+}
+
+treechildren::-moz-tree-image(leaf, green) {
+  list-style-image: url("chrome://clippings/skin/images/clipping-green.png");
+}
+
+treechildren::-moz-tree-image(leaf, blue) {
+  list-style-image: url("chrome://clippings/skin/images/clipping-blue.png");
+}
+
+treechildren::-moz-tree-image(leaf, purple) {
+  list-style-image: url("chrome://clippings/skin/images/clipping-purple.png");
+}
+
+treechildren::-moz-tree-image(leaf, grey) {
+  list-style-image: url("chrome://clippings/skin/images/clipping-grey.png");
+}
+
+
+/* Next two rules deal with the special "null" placeholders for empty folders */
 treechildren::-moz-tree-image(dummy) {
   list-style-image: none;
 }
@@ -235,39 +265,83 @@ toolbarbutton .toolbarbutton-icon {
 }
 
 /* Color-coded clippings */
-#clipping-labels-menu menuitem {
+#clipping-labels-menupopup menuitem {
   list-style-image: url("chrome://clippings/skin/images/clipping-labels.png");
   max-width: 24px;
+}
+
+#clipping-labels-menugroup-row-1,
+#clipping-labels-menugroup-row-2 {
+  background-color: menu;
+}
+
+#clipping-labels-menugroup-row-1 .menuitem-iconic,
+#clipping-labels-menugroup-row-2 .menuitem-iconic {
+  -moz-box-flex: 1;
+  -moz-box-pack: center;
+  -moz-box-align: center;
 }
 
 #clipping-label-none {
   -moz-image-region: rect(0px, 24px, 24px, 0px);
 }
 
+#clipping-label-none[selected="true"] {
+  -moz-image-region: rect(24px, 24px, 48px, 0px);
+}
+
 #clipping-label-red {
   -moz-image-region: rect(0px, 48px, 24px, 24px);
+}
+
+#clipping-label-red[selected="true"] {
+  -moz-image-region: rect(24px, 48px, 48px, 24px);
 }
 
 #clipping-label-orange {
   -moz-image-region: rect(0px, 72px, 24px, 48px);
 }
 
+#clipping-label-orange[selected="true"] {
+  -moz-image-region: rect(24px, 72px, 48px, 48px);
+}
+
 #clipping-label-yellow {
   -moz-image-region: rect(0px, 96px, 24px, 72px);
+}
+
+#clipping-label-yellow[selected="true"] {
+  -moz-image-region: rect(24px, 96px, 48px, 72px);
 }
 
 #clipping-label-green {
   -moz-image-region: rect(0px, 120px, 24px, 96px);
 }
 
+#clipping-label-green[selected="true"] {
+  -moz-image-region: rect(24px, 120px, 48px, 96px);
+}
+
 #clipping-label-blue {
   -moz-image-region: rect(0px, 144px, 24px, 120px);
+}
+
+#clipping-label-blue[selected="true"] {
+  -moz-image-region: rect(24px, 144px, 48px, 120px);
 }
 
 #clipping-label-purple {
   -moz-image-region: rect(0px, 168px, 24px, 144px);
 }
 
+#clipping-label-purple[selected="true"] {
+  -moz-image-region: rect(24px, 168px, 48px, 144px);
+}
+
 #clipping-label-grey {
   -moz-image-region: rect(0px, 192px, 24px, 168px);
+}
+
+#clipping-label-grey[selected="true"] {
+  -moz-image-region: rect(24px, 192px, 48px, 168px);
 }
