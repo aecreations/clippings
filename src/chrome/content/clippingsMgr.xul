@@ -326,7 +326,7 @@
 
       </menu>
 
-      <!-- Shown only for clippings -->
+      <!-- Clipping labels -->
       <menuseparator id="clipping-labels-separator"/>
       <menu id="clipping-labels" label="&clippingLabel.label;"
        accesskey="&clippingLabel.accesskey;">
@@ -334,23 +334,31 @@
          onpopupshowing="updateLabelMenu()">
           <menugroup id="clipping-labels-menugroup-row-1">
             <menuitem id="clipping-label-none" class="menuitem-iconic"
-             tooltiptext="&labelNone.tooltip;"/>
+             tooltiptext="&labelNone.tooltip;"
+             oncommand="updateLabel(this.id)"/>
             <menuitem id="clipping-label-red" class="menuitem-iconic"
-             tooltiptext="&labelRed.tooltip;"/>
+             tooltiptext="&labelRed.tooltip;"
+             oncommand="updateLabel(this.id)"/>
             <menuitem id="clipping-label-orange" class="menuitem-iconic"
-             tooltiptext="&labelOrange.tooltip;"/>
+             tooltiptext="&labelOrange.tooltip;"
+             oncommand="updateLabel(this.id)"/>
             <menuitem id="clipping-label-yellow" class="menuitem-iconic"
-             tooltiptext="&labelYellow.tooltip;"/>
+             tooltiptext="&labelYellow.tooltip;"
+             oncommand="updateLabel(this.id)"/>
           </menugroup>
           <menugroup id="clipping-labels-menugroup-row-2">
             <menuitem id="clipping-label-green" class="menuitem-iconic"
-             tooltiptext="&labelGreen.tooltip;"/>
+             tooltiptext="&labelGreen.tooltip;"
+             oncommand="updateLabel(this.id)"/>
             <menuitem id="clipping-label-blue" class="menuitem-iconic"
-             tooltiptext="&labelBlue.tooltip;"/>
+             tooltiptext="&labelBlue.tooltip;"
+             oncommand="updateLabel(this.id)"/>
             <menuitem id="clipping-label-purple" class="menuitem-iconic"
-             tooltiptext="&labelPurple.tooltip;"/>
+             tooltiptext="&labelPurple.tooltip;"
+             oncommand="updateLabel(this.id)"/>
             <menuitem id="clipping-label-grey" class="menuitem-iconic"
-             tooltiptext="&labelGray.tooltip;"/>
+             tooltiptext="&labelGray.tooltip;"
+             oncommand="updateLabel(this.id)"/>
           </menugroup>
         </menupopup>
       </menu>
