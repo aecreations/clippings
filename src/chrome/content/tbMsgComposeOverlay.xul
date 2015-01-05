@@ -20,7 +20,7 @@
    -
    - The Initial Developer of the Original Code is
    - Alex Eng <ateng@users.sourceforge.net>.
-   - Portions created by the Initial Developer are Copyright (C) 2005-2014
+   - Portions created by the Initial Developer are Copyright (C) 2005-2015
    - the Initial Developer. All Rights Reserved.
    -
    - Contributor(s):
@@ -83,6 +83,7 @@
 	     label="rdf:http://clippings.mozdev.org/ns/rdf#name"
 	     clipName="rdf:http://clippings.mozdev.org/ns/rdf#name"
 	     clipText="rdf:http://clippings.mozdev.org/ns/rdf#text"
+             clipLabel="rdf:http://clippings.mozdev.org/ns/rdf#label"
 	     oncommand="window.aecreations.clippings.insertClippingText(this.id,this.getAttribute('clipName'),this.getAttribute('clipText'))"/>
 	  </menupopup>
 	</rule>
