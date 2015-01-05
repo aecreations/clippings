@@ -41,14 +41,15 @@ aeClippingsService.prototype = {
   IMPORT_REPLACE_CURRENT:  1,
   IMPORT_KEEP_CURRENT:     2,
 
-  LABEL_NONE:   0,
-  LABEL_RED:    1,
-  LABEL_ORANGE: 2,
-  LABEL_YELLOW: 3,
-  LABEL_GREEN:  4,
-  LABEL_BLUE:   5,
-  LABEL_PURPLE: 6,
-  LABEL_GREY:   7,
+  // Simulate constants for label strings by implementing as read-only getters.
+  get LABEL_NONE()   { return "" },
+  get LABEL_RED()    { return "red" },
+  get LABEL_ORANGE() { return "orange" },
+  get LABEL_YELLOW() { return "yellow" },
+  get LABEL_GREEN()  { return "green" },
+  get LABEL_BLUE()   { return "blue" },
+  get LABEL_PURPLE() { return "purple" },
+  get LABEL_GREY()   { return "grey" },
 
   MAX_NAME_LENGTH:        64,
 
@@ -129,7 +130,7 @@ aeClippingsService.prototype.addListener = function (aNewListener)
 aeClippingsService.prototype.removeListener = function (aTargetListener)
 {
   for (let i = 0; i < this._listeners.length; i++) {
-    if (this._listeners[i] == aTargetListener) {
+    if (this._listeners[i] && this._listeners[i] == aTargetListener) {
       delete this._listeners[i];
       this._log("Removed listener object " + i + " from aeIClippingsService");
       break;
