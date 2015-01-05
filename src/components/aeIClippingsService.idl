@@ -69,16 +69,17 @@ interface aeIClippingsService : nsISupports
   const short IMPORT_KEEP_CURRENT = 2;
 
   /*
-   * aLabel constants.
+   * aLabel constants (can't use string constants in IDL; fake them by using
+   * read-only attributes).
    */
-  const short LABEL_NONE   = 0;
-  const short LABEL_RED    = 1;
-  const short LABEL_ORANGE = 2;
-  const short LABEL_YELLOW = 3;
-  const short LABEL_GREEN  = 4;
-  const short LABEL_BLUE   = 5;
-  const short LABEL_PURPLE = 6;
-  const short LABEL_GREY   = 7;
+  readonly attribute aestring LABEL_NONE;
+  readonly attribute aestring LABEL_RED;
+  readonly attribute aestring LABEL_ORANGE;
+  readonly attribute aestring LABEL_YELLOW;
+  readonly attribute aestring LABEL_GREEN;
+  readonly attribute aestring LABEL_BLUE;
+  readonly attribute aestring LABEL_PURPLE;
+  readonly attribute aestring LABEL_GREY;
 
   const short MAX_NAME_LENGTH = 64;
 
@@ -114,7 +115,7 @@ interface aeIClippingsService : nsISupports
 			in aestring aName,
 			in aestring aText,
 			in aestring aSourceURL,
-                        in short aLabel,
+                        in aestring aLabel,
 			in boolean aDontNotify);
 
   uri createNewClippingEx(in uri aParentFolder,
@@ -122,7 +123,7 @@ interface aeIClippingsService : nsISupports
 			  in aestring aName,
 			  in aestring aText,
 			  in aestring aSourceURL,
-			  in short aLabel,
+			  in aestring aLabel,
 			  in size_t aPos,
 			  in boolean aDontNotify);
 
@@ -178,7 +179,7 @@ interface aeIClippingsService : nsISupports
 
   aestring getSourceURL(in uri aURI);
 
-  short getLabel(in uri aURI);
+  aestring getLabel(in uri aURI);
 
   aestring getShortcutKey(in uri aURI);
 
@@ -222,7 +223,7 @@ interface aeIClippingsService : nsISupports
 
   void setSourceURL(in uri aURI, in aestring aSourceURL);
 
-  void setLabel(in uri aURI, in short aLabel);
+  void setLabel(in uri aURI, in aestring aLabel);
 
   void setShortcutKey(in uri aURI, in aestring aKey);
   /* throws NS_ERROR_FAILURE if shortcut key already defined */
