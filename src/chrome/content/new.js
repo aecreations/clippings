@@ -401,7 +401,7 @@ function doOK()
     gDlgArgs.destFolder = gSelectedFolderURI;
 
     // Label
-    gDlgArgs.label = gClippingLabelPicker.selectedIndex;
+    gDlgArgs.label = gClippingLabelPicker.selectedLabel;
 
     // Shortcut key
     if (gClippingKey.selectedIndex > 0) {
