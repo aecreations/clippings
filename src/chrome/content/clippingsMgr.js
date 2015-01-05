@@ -2000,7 +2000,34 @@ function updateLabelMenu()
   }
 
   var label = gClippingsSvc.getLabel(uri);
-  gClippingLabelPicker.selectedIndex = label;
+  gClippingLabelPicker.selectedLabel = label;
+}
+
+
+function updateLabel(aLabelID)
+{
+  if (gCurrentListItemIndex == -1) {
+    return;
+  }
+
+  var uri = gClippingsList.getURIAtIndex(gCurrentListItemIndex);
+
+  if (!uri || !gClippingsSvc.isClipping(uri)) {
+    aeUtils.log("updateLabel(): Can't update a label on a non-clipping!");
+    return;
+  }
+
+  var label = aLabelID.substring(aLabelID.lastIndexOf("-") + 1);
+  if (label == "none") {
+    label = gClippingsSvc.LABEL_NONE;
+  }
+
+  gClippingsSvc.setLabel(uri, label);
+
+  // TO DO: Add to undo stack.
+
+  gIsClippingsDirty = true;
+  commit();
 }
 
 
