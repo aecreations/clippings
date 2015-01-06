@@ -75,13 +75,21 @@ ClippingLabelPicker.prototype = {
 
   set selectedItem(aSelectedMenuitem)
   {
-    var oldSelectedItem = this._selectedItem;
+    let oldSelectedItem = this._selectedItem;
     oldSelectedItem.removeAttribute("selected");
 
     aSelectedMenuitem.setAttribute("selected", "true");
     this._selectedItem = aSelectedMenuitem;
 
-    var newLabel = this._labelMap.get(aSelectedMenuitem.classList[1]);
+    let labelClass = "";
+    try {
+      labelClass = aSelectedMenuitem.classList[1];
+    }
+    catch (e) {
+      throw "Exception in setter selectedItem(): Cannot get class name of selected label menu item";
+    }
+
+    let newLabel = this._labelMap.get(labelClass);
     this._selectedLabel = newLabel;
 
     this._listeners.forEach(function (aListener) {
