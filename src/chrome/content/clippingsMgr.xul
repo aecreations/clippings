@@ -333,32 +333,32 @@
         <menupopup id="clipping-labels-menupopup"
          onpopupshowing="updateLabelMenu()">
           <menugroup id="clipping-labels-menugroup-row-1">
-            <menuitem id="clipping-label-none" class="menuitem-iconic"
+            <menuitem class="menuitem-iconic clipping-label-none"
              tooltiptext="&labelNone.tooltip;"
-             oncommand="updateLabel(this.id)"/>
-            <menuitem id="clipping-label-red" class="menuitem-iconic"
+             oncommand="updateLabel(this.classList[1])"/>
+            <menuitem class="menuitem-iconic clipping-label-red"
              tooltiptext="&labelRed.tooltip;"
-             oncommand="updateLabel(this.id)"/>
-            <menuitem id="clipping-label-orange" class="menuitem-iconic"
+             oncommand="updateLabel(this.classList[1])"/>
+            <menuitem class="menuitem-iconic clipping-label-orange"
              tooltiptext="&labelOrange.tooltip;"
-             oncommand="updateLabel(this.id)"/>
-            <menuitem id="clipping-label-yellow" class="menuitem-iconic"
+             oncommand="updateLabel(this.classList[1])"/>
+            <menuitem class="menuitem-iconic clipping-label-yellow"
              tooltiptext="&labelYellow.tooltip;"
-             oncommand="updateLabel(this.id)"/>
+             oncommand="updateLabel(this.classList[1])"/>
           </menugroup>
           <menugroup id="clipping-labels-menugroup-row-2">
-            <menuitem id="clipping-label-green" class="menuitem-iconic"
+            <menuitem class="menuitem-iconic clipping-label-green"
              tooltiptext="&labelGreen.tooltip;"
-             oncommand="updateLabel(this.id)"/>
-            <menuitem id="clipping-label-blue" class="menuitem-iconic"
+             oncommand="updateLabel(this.classList[1])"/>
+            <menuitem class="menuitem-iconic clipping-label-blue"
              tooltiptext="&labelBlue.tooltip;"
-             oncommand="updateLabel(this.id)"/>
-            <menuitem id="clipping-label-purple" class="menuitem-iconic"
+             oncommand="updateLabel(this.classList[1])"/>
+            <menuitem class="menuitem-iconic clipping-label-purple"
              tooltiptext="&labelPurple.tooltip;"
-             oncommand="updateLabel(this.id)"/>
-            <menuitem id="clipping-label-grey" class="menuitem-iconic"
+             oncommand="updateLabel(this.classList[1])"/>
+            <menuitem class="menuitem-iconic clipping-label-grey"
              tooltiptext="&labelGray.tooltip;"
-             oncommand="updateLabel(this.id)"/>
+             oncommand="updateLabel(this.classList[1])"/>
           </menugroup>
         </menupopup>
       </menu>

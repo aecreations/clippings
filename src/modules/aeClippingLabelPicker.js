@@ -46,7 +46,7 @@ function ClippingLabelPicker(aMenupopup)
   this._clippingsSvc = Cc["clippings@mozdev.org/clippings;1"].getService(Ci.aeIClippingsService);
 
   this._selectedLabel = this._clippingsSvc.LABEL_NONE;
-  this._selectedItem = this._doc.getElementById("clipping-label-none");
+  this._selectedItem = this._doc.getElementsByClassName("clipping-label-none")[0];
   this._listeners = [];
 
   this._labelMap = new Map();
@@ -61,7 +61,7 @@ function ClippingLabelPicker(aMenupopup)
 
   _log("aeClippingLabelPicker: initialized new instance\n_listeners = " + (this._listeners || "??") + "(typeof _listeners = " + (typeof(this._listeners)) + ")"  + "\n_doc = " + (this._doc || "??") + "\n_menupopup = " + (this._menupopup || "??"));
 
-  this._doc.getElementById("clipping-label-none").setAttribute("selected", "true");
+  this._doc.getElementsByClassName("clipping-label-none")[0].setAttribute("selected", "true");
 }
 
 
@@ -81,7 +81,7 @@ ClippingLabelPicker.prototype = {
     aSelectedMenuitem.setAttribute("selected", "true");
     this._selectedItem = aSelectedMenuitem;
 
-    var newLabel = this._labelMap.get(aSelectedMenuitem.id);
+    var newLabel = this._labelMap.get(aSelectedMenuitem.classList[1]);
     this._selectedLabel = newLabel;
 
     this._listeners.forEach(function (aListener) {
@@ -101,16 +101,16 @@ ClippingLabelPicker.prototype = {
     var oldSelectedMenuitem = this._selectedItem;
     oldSelectedMenuitem.removeAttribute("selected");
 
-    var newSelectedMenuitemID;
+    var newSelectedMenuitemClass;
 
     for (let [key, value] of this._labelMap) {
       if (value == aLabel) {
-	newSelectedMenuitemID = key;
+	newSelectedMenuitemClass = key;
 	break;
       }
     }
 
-    var newSelectedMenuitem = this._doc.getElementById(newSelectedMenuitemID);
+    var newSelectedMenuitem = this._doc.getElementsByClassName(newSelectedMenuitemClass)[0];
     newSelectedMenuitem.setAttribute("selected", "true");
 
     this._selectedLabel = aLabel;
