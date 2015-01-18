@@ -167,11 +167,11 @@
             <row align="center">
               <label value="&clippingLabelPicker.label;"
                accesskey="&clippingLabelPicker.accesskey;"
-               control="clipping-labels"/>
-              <button id="clipping-labels" type="menu"
+               control="clipping-label"/>
+              <button id="clipping-label" type="menu"
                image="chrome://clippings/skin/images/clipping.png">
-                <menupopup id="clipping-labels-menupopup">
-                  <menugroup id="clipping-labels-menugroup-row-1">
+                <menupopup id="clipping-label-menupopup">
+                  <menugroup id="clipping-label-menugroup-row-1">
                     <menuitem class="menuitem-iconic clipping-label-none"
                      tooltiptext="&labelNone.tooltip;"
                      oncommand="gClippingLabelPicker.selectedItem = this"/>
@@ -185,7 +185,7 @@
                      tooltiptext="&labelYellow.tooltip;"
                      oncommand="gClippingLabelPicker.selectedItem = this"/>
                   </menugroup>
-                  <menugroup id="clipping-labels-menugroup-row-2">
+                  <menugroup id="clipping-label-menugroup-row-2">
                     <menuitem class="menuitem-iconic clipping-label-green"
                      tooltiptext="&labelGreen.tooltip;"
                      oncommand="gClippingLabelPicker.selectedItem = this"/>
