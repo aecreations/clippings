@@ -47,11 +47,19 @@ var gIsClippingsDirty = false;
 var gJustMigrated = false;
 var gJustImported = false;
 var gMoveTimerID;
-var gClippingLabelPicker;
+var gClippingLabelPicker, gClippingLabelPickerCxtMenu;
 
 
 // Clippings XPCOM service
 var gClippingsSvc;
+
+// Listener for the label picker in the main content area
+var gClippingLabelPickerListener = {
+  selectionChanged: function (aNewLabel)
+  {
+    $("clipping-label-btn").image = "chrome://clippings/skin/images/" + gClippingLabelPicker.getIconFileStr(aNewLabel);
+  }
+};
 
 // Undo
 var gUndoStack = {
@@ -675,7 +683,10 @@ function init()
   gStatusBar = $("app-status");
   setStatusBarVisibility();
 
-  gClippingLabelPicker = aeClippingLabelPicker.createInstance($("clipping-labels-menupopup"));
+  // Clipping label picker widgets
+  gClippingLabelPicker = aeClippingLabelPicker.createInstance($("clipping-label-menupopup"));
+  gClippingLabelPicker.addListener(gClippingLabelPickerListener);
+  gClippingLabelPickerCxtMenu = aeClippingLabelPicker.createInstance($("clipping-label-cxt-menupopup"));
 
   // Clippings backup
   var backupDirURL = aeUtils.getDataSourcePathURL() + aeConstants.BACKUP_DIR_NAME;
@@ -940,6 +951,8 @@ function unload()
 {
   gClippingsList.tree.builder.removeObserver(treeBuilderObserver);
   treeBuilderObserver = null;
+
+  gClippingLabelPicker.removeListener(gClippingLabelPickerListener);
 
   gClippingsSvc.purgeDetachedItems();
 
@@ -1906,6 +1919,8 @@ function updateDisplay(aSuppressUpdateSelection)
   var clippingKey = $("clipping-key");
   var clippingKeyLabel = $("clipping-key-label");
   var shortcutKeyMiniHelp = $("shortcut-key-minihelp");
+  var labelPickerBtn = $("clipping-label-btn");
+  var labelPickerLabel = $("clipping-label");
 
   var uri = gClippingsList.selectedURI;
 
@@ -1928,6 +1943,9 @@ function updateDisplay(aSuppressUpdateSelection)
     clippingKey.selectedIndex = 0;
     clippingKeyLabel.style.visibility = "hidden";
     clippingKey.style.visibility = "hidden";
+
+    labelPickerLabel.style.visibility = "hidden";
+    labelPickerBtn.style.visibility = "hidden";
   }
   // Special handling of the dummy item in an empty folder
   else if (gClippingsSvc.isEmptyClipping(uri)) {
@@ -1938,6 +1956,9 @@ function updateDisplay(aSuppressUpdateSelection)
     clippingKey.selectedIndex = 0;
     clippingKeyLabel.style.visibility = "hidden";
     clippingKey.style.visibility = "hidden";
+
+    labelPickerLabel.style.visibility = "hidden";
+    labelPickerBtn.style.visibility = "hidden";
   }
   else {
     clippingName.disabled = false;
@@ -1945,6 +1966,8 @@ function updateDisplay(aSuppressUpdateSelection)
     clippingKeyLabel.style.visibility = "visible";
     clippingKey.style.visibility = "visible";
     shortcutKeyMiniHelp.style.visibility = "visible";
+    labelPickerLabel.style.visibility = "visible";
+    labelPickerBtn.style.visibility = "visible";
   }
 
   clippingName.value = gClippingsSvc.getName(uri);
@@ -1961,7 +1984,10 @@ function updateDisplay(aSuppressUpdateSelection)
     }
 
     if (gClippingsSvc.hasLabel(uri)) {
-      debugStr += aeString.format("\nLabel: %d", gClippingsSvc.getLabel(uri));
+      let label = gClippingsSvc.getLabel(uri);
+      debugStr += aeString.format("\nLabel: %s", label);
+      updateLabelMenu();
+      labelPickerBtn.image = aeString.format("chrome://clippings/skin/images/%s", gClippingLabelPicker.getIconFileStr(label));
     }
     else {
       debugStr += "\nNo label.";
@@ -1995,12 +2021,13 @@ function updateLabelMenu()
   var uri = gClippingsList.selectedURI;
 
   if (!uri || !gClippingsSvc.isClipping(uri)) {
-    aeUtils.log("Unable to update the label picker!");
+    aeUtils.log("Unable to update the label picker because a selected clipping could not be located");
     return;
   }
 
   var label = gClippingsSvc.getLabel(uri);
-  gClippingLabelPicker.selectedLabel = label;
+  gClippingLabelPicker.selectedLabel = label;  
+  gClippingLabelPickerCxtMenu.selectedLabel = label;
 }
 
 
@@ -2023,7 +2050,8 @@ function updateLabel(aLabelID)
   }
 
   gClippingsSvc.setLabel(uri, label);
-
+  gClippingLabelPicker.selectedLabel = label;
+  
   // TO DO: Add to undo stack.
 
   gIsClippingsDirty = true;
@@ -2558,8 +2586,8 @@ function initClippingsListPopup()
     clippingsListCxt.childNodes[i].setAttribute("disabled", isEmptyClipping);
   }
 
-  $("clipping-labels").hidden = !gClippingsSvc.isClipping(uri);
-  $("clipping-labels-separator").hidden = !gClippingsSvc.isClipping(uri);
+  $("clipping-label-cxt").hidden = !gClippingsSvc.isClipping(uri);
+  $("clipping-label-cxt-separator").hidden = !gClippingsSvc.isClipping(uri);
 
   var insertClipping = $("insert-clipping");
   var haWnd = aeUtils.getRecentHostAppWindow();
