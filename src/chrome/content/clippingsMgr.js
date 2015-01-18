@@ -57,9 +57,10 @@ var gClippingsSvc;
 var gClippingLabelPickerListener = {
   selectionChanged: function (aNewLabel)
   {
-    $("clipping-label-btn").image = "chrome://clippings/skin/images/" + gClippingLabelPicker.getIconFileStr(aNewLabel);
+    $("clipping-label-btn").image = aeString.format("chrome://clippings/skin/images/%s", gClippingLabelPicker.getIconFileStr(aNewLabel));
   }
 };
+
 
 // Undo
 var gUndoStack = {
