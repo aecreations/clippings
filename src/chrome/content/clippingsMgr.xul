@@ -325,7 +325,7 @@
       </menu>
 
       <menuitem id="go-to-url" label="&goToURL.label;"
-       accesskey="&goToURL.accesskey;" oncommand="goToURL()"/>
+       accesskey="&goToURL.accesskey;" oncommand="goToSourceURL()"/>
 
       <!-- Clipping label picker: for treelist context menu -->
       <menuseparator id="clipping-label-cxt-separator"/>
