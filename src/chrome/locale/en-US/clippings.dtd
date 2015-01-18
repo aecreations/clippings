@@ -79,16 +79,14 @@
 <!ENTITY insertClipping.accesskey "I">
 <!ENTITY move.label "Move">
 <!ENTITY move.accesskey "M">
-<!ENTITY moveUp.label "Move Up">
-<!ENTITY moveUp.accesskey "U">
-<!ENTITY moveDown.label "Move Down">
-<!ENTITY moveDown.accesskey "D">
 <!ENTITY moveTo.label "Move To">
 <!ENTITY moveTo.accesskey "M">
 <!ENTITY copyTo.label "Copy To">
 <!ENTITY copyTo.accesskey "C">
 <!ENTITY moveHere.label "Move Here">
 <!ENTITY copyHere.label "Copy Here">
+<!ENTITY goToURL.label "Open Source URL">
+<!ENTITY goToURL.accesskey "O">
 <!ENTITY clippingsRoot.label "Clippings">
 <!ENTITY newClipping.label "New Clipping">
 <!ENTITY newClipping.accesskey "N">
