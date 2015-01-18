@@ -220,6 +220,7 @@
     <command id="cmd_export" oncommand="doExport()"/>
     <command id="cmd_new_from_clipboard" oncommand="pasteClippingAsNew()"/>
     <command id="cmd_reload" oncommand="reload()"/>
+    <command id="cmd_goToSourceURL" oncommand="goToSourceURL()"/>
     <command id="cmd_find" oncommand="toggleFindBar()"/>
     <command id="cmd_datasrc_opts" oncommand="dataSrcOptions()"/>
     <command id="cmd_clipmgr_opts" oncommand="clippingsMgrOptions()"/>
@@ -324,8 +325,8 @@
 
       </menu>
 
-      <menuitem id="go-to-url" label="&goToURL.label;"
-       accesskey="&goToURL.accesskey;" oncommand="goToSourceURL()"/>
+      <menuitem id="go-to-url-cxt" label="&goToURL.label;"
+       accesskey="&goToURL.accesskey;" command="cmd_goToSourceURL"/>
 
       <!-- Clipping label picker: for treelist context menu -->
       <menuseparator id="clipping-label-cxt-separator"/>
@@ -526,6 +527,25 @@
 	 onblur="clippingText_blur(event)"
 	 onfocus="clippingText_focus(event)" />
 
+        <!-- Source URL  -->
+	<grid id="source-url-grid">
+	  <columns>
+	    <column/>
+	    <column flex="1"/>
+	    <column/>
+	  </columns>
+	  <rows>
+	    <row align="center">
+	      <label value="&sourceURL.label;" control="clipping-src-url"/>
+	      <textbox id="clipping-src-url" flex="1" readonly="true"
+               placeholder="&none.label;"/>
+              <button id="go-to-url-btn" label="Go!" 
+               command="cmd_goToSourceURL"/>
+	    </row>
+	  </rows>
+        </grid>
+
+	<!-- Shortcut key and label -->
 	<grid>
           <columns>
 	    <column/>
