@@ -2642,9 +2642,9 @@ function initClippingsListPopup()
   insertClipping.setAttribute("disabled", enableInsertClippingCmd);
 
   $("go-to-url-cxt").hidden = !(Application.id == aeConstants.HOSTAPP_FX_GUID
-                                && gClippingsSvc.isClipping(aURI) 
-                                && gClippingsSvc.hasSourceURL(aURI) 
-                                && gClippingsSvc.getSourceURL(aURI) != "");
+                                && gClippingsSvc.isClipping(uri) 
+                                && gClippingsSvc.hasSourceURL(uri) 
+                                && gClippingsSvc.getSourceURL(uri) != "");
   return true;
 }
 
