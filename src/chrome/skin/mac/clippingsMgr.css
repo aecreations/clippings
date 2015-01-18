@@ -308,18 +308,27 @@ toolbarbutton .toolbarbutton-icon {
 
 
 /* Color-coded clippings */
-#clipping-labels-menupopup menuitem {
+#clipping-label-menupopup menuitem,
+#clipping-label-cxt-menupopup menuitem {
   list-style-image: url("chrome://clippings/skin/images/clipping-labels.png");
   max-width: 24px;
 }
 
-#clipping-labels-menugroup-row-1,
-#clipping-labels-menugroup-row-2 {
+#clipping-label-btn {
+  min-width: 24px;
+}
+
+#clipping-label-menugroup-row-1,
+#clipping-label-menugroup-row-2,
+#clipping-label-cxt-menugroup-row-1,
+#clipping-label-cxt-menugroup-row-2 {
   background-color: menu;
 }
 
-#clipping-labels-menugroup-row-1 .menuitem-iconic,
-#clipping-labels-menugroup-row-2 .menuitem-iconic {
+#clipping-label-menugroup-row-1 .menuitem-iconic,
+#clipping-label-menugroup-row-2 .menuitem-iconic,
+#clipping-label-cxt-menugroup-row-1 .menuitem-iconic,
+#clipping-label-cxt-menugroup-row-2 .menuitem-iconic {
   -moz-box-flex: 1;
   -moz-box-pack: center;
   -moz-box-align: center;
