@@ -1893,7 +1893,7 @@ function deleteClippingHelper(aURI, aDestUndoStack)
 }
 
 
-function goToURL()
+function goToSourceURL()
 {
   var uri = gClippingsList.selectedURI;
 
