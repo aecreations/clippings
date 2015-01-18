@@ -61,7 +61,7 @@ function ClippingLabelPicker(aMenupopup)
 
   _log("aeClippingLabelPicker: initialized new instance\n_listeners = " + (this._listeners || "??") + "(typeof _listeners = " + (typeof(this._listeners)) + ")"  + "\n_doc = " + (this._doc || "??") + "\n_menupopup = " + (this._menupopup || "??"));
 
-  this._doc.getElementsByClassName("clipping-label-none")[0].setAttribute("selected", "true");
+  this._menupopup.getElementsByClassName("clipping-label-none")[0].setAttribute("selected", "true");
 }
 
 
@@ -118,7 +118,7 @@ ClippingLabelPicker.prototype = {
       }
     }
 
-    var newSelectedMenuitem = this._doc.getElementsByClassName(newSelectedMenuitemClass)[0];
+    var newSelectedMenuitem = this._menupopup.getElementsByClassName(newSelectedMenuitemClass)[0];
     newSelectedMenuitem.setAttribute("selected", "true");
 
     this._selectedLabel = aLabel;
