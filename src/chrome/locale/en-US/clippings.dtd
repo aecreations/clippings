@@ -125,6 +125,7 @@
 <!ENTITY dataFileOptions.label "Data Source Settings...">
 <!ENTITY dataFileOptions.accesskey "D">
 <!ENTITY shortcutKeyList.label "Shortcut key list">
+<!ENTITY sourceURL.label "Source URL:">
 <!ENTITY findBar.label "Find:">
 <!ENTITY findPrev.label "Previous">
 <!ENTITY findPrev.accesskey "P">
