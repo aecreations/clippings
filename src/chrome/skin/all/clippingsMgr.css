@@ -99,6 +99,14 @@ treechildren::-moz-tree-image(container, closed) {
   line-height: 150%;
 }
 
+#clipping-src-url {
+  -moz-appearance: none;
+  border: 0;
+}
+
+#go-to-url-btn {
+  min-width: 32px;
+}
 
 menu > hbox.menu-iconic-left, menuitem > hbox.menu-iconic-left {
   margin-top: 0px;
