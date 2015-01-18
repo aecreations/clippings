@@ -1959,6 +1959,8 @@ function updateDisplay(aSuppressUpdateSelection)
   var shortcutKeyMiniHelp = $("shortcut-key-minihelp");
   var labelPickerBtn = $("clipping-label-btn");
   var labelPickerLabel = $("clipping-label");
+  var srcURLGrid = $("source-url-grid");
+  var srcURLTextbox = $("clipping-src-url");
 
   var uri = gClippingsList.selectedURI;
 
@@ -1977,6 +1979,7 @@ function updateDisplay(aSuppressUpdateSelection)
     clippingName.disabled = false;
     clippingText.style.visibility = "hidden";
     shortcutKeyMiniHelp.style.visibility = "hidden";
+    srcURLGrid.style.visibility = "hidden";
       
     clippingKey.selectedIndex = 0;
     clippingKeyLabel.style.visibility = "hidden";
@@ -1990,6 +1993,7 @@ function updateDisplay(aSuppressUpdateSelection)
     clippingName.disabled = true;
     clippingText.style.visibility = "hidden";
     shortcutKeyMiniHelp.style.visibility = "hidden";
+    srcURLGrid.style.visibility = "hidden";
 
     clippingKey.selectedIndex = 0;
     clippingKeyLabel.style.visibility = "hidden";
@@ -2001,6 +2005,7 @@ function updateDisplay(aSuppressUpdateSelection)
   else {
     clippingName.disabled = false;
     clippingText.style.visibility = "visible";
+    srcURLGrid.style.visibility = "visible";
     clippingKeyLabel.style.visibility = "visible";
     clippingKey.style.visibility = "visible";
     shortcutKeyMiniHelp.style.visibility = "visible";
@@ -2015,7 +2020,11 @@ function updateDisplay(aSuppressUpdateSelection)
 
     var debugStr = "The selected clipping";
     if (gClippingsSvc.hasSourceURL(uri)) {
-      debugStr += aeString.format("'s source URL is: %S", gClippingsSvc.getSourceURL(uri));
+      let srcURL = gClippingsSvc.getSourceURL(uri);
+      debugStr += aeString.format("'s source URL is: %S", srcURL);
+
+      srcURLTextbox.value = srcURL;
+      $("go-to-url-btn").disabled = srcURL == "";
     }
     else {
       debugStr += " doesn't have a source URL.";
@@ -2632,10 +2641,10 @@ function initClippingsListPopup()
   var enableInsertClippingCmd = !haWnd || !gClippingsSvc.isClipping(uri);
   insertClipping.setAttribute("disabled", enableInsertClippingCmd);
 
-  $("go-to-url").hidden = !(Application.id == aeConstants.HOSTAPP_FX_GUID
-                            && gClippingsSvc.isClipping(uri) 
-                            && gClippingsSvc.hasSourceURL(uri) 
-                            && gClippingsSvc.getSourceURL(uri) != "");
+  $("go-to-url-cxt").hidden = !(Application.id == aeConstants.HOSTAPP_FX_GUID
+                                && gClippingsSvc.isClipping(aURI) 
+                                && gClippingsSvc.hasSourceURL(aURI) 
+                                && gClippingsSvc.getSourceURL(aURI) != "");
   return true;
 }
 
