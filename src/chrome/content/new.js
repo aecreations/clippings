@@ -52,7 +52,7 @@ var gFolderName;
 var gClippingLabelPickerListener = {
   selectionChanged: function (aNewLabel)
   {
-    $("clipping-labels").image = "chrome://clippings/skin/images/" + gClippingLabelPicker.getIconFileStr(aNewLabel);
+    $("clipping-label").image = aeString.format("chrome://clippings/skin/images/%s", gClippingLabelPicker.getIconFileStr(aNewLabel));
   }
 };
 
@@ -161,7 +161,7 @@ function initDlg()
     gIsFolderCreated = false;
     gSelectedFolderURI = gClippingsSvc.kRootFolderURI;
 
-    gClippingLabelPicker = aeClippingLabelPicker.createInstance($("clipping-labels-menupopup"));
+    gClippingLabelPicker = aeClippingLabelPicker.createInstance($("clipping-label-menupopup"));
     gClippingLabelPicker.addListener(gClippingLabelPickerListener);
   }
 }
