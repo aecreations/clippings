@@ -1893,6 +1893,44 @@ function deleteClippingHelper(aURI, aDestUndoStack)
 }
 
 
+function goToURL()
+{
+  var uri = gClippingsList.selectedURI;
+
+  if (! uri) {
+    aeUtils.log("goToURL(): Nothing selected (how did we even get here?)");
+    return;
+  }
+
+  if (! gClippingsSvc.isClipping(uri)) {
+    aeUtils.log("goToURL(): Attempting to fetch URL of a non-clipping!");
+    return;
+  }
+
+  if (gClippingsSvc.hasSourceURL(uri)) {
+    let srcURL = gClippingsSvc.getSourceURL(uri);
+
+    if (! srcURL) {
+      return;
+    }
+
+    if (Application.id == aeConstants.HOSTAPP_FX_GUID) {
+      let wnd = aeUtils.getRecentHostAppWindow();
+      
+      if (wnd) {
+        let newBrwsTab = wnd.gBrowser.loadOneTab(srcURL);
+        wnd.gBrowser.selectedTab = newBrwsTab;
+      }
+      else {
+        wnd = window.open(srcURL);
+      }
+
+      wnd.focus();
+    }
+  }
+}
+
+
 function updateCurrentEntryStatus()
 {
   if (gClippingsList.getRowCount() == 0) {
@@ -2218,7 +2256,7 @@ function moveEntry(aURI, aParentFolderURI, aOldPos, aNewPos, aDestUndoStack)
   aeUtils.log(aeString.format("In function moveEntry(): aOldPos=%d; aNewPos=%d", aOldPos, aNewPos));
 
   gClippingsSvc.changePosition(aParentFolderURI, aOldPos, aNewPos);
-  gIsClippingsDirty = true;
+  Gisclippingsdirty = true;
   removeFolderMenuSeparator();  // Rebuild folder menu separator
   commit();
 }
@@ -2594,6 +2632,10 @@ function initClippingsListPopup()
   var enableInsertClippingCmd = !haWnd || !gClippingsSvc.isClipping(uri);
   insertClipping.setAttribute("disabled", enableInsertClippingCmd);
 
+  $("go-to-url").hidden = !(Application.id == aeConstants.HOSTAPP_FX_GUID
+                            && gClippingsSvc.isClipping(uri) 
+                            && gClippingsSvc.hasSourceURL(uri) 
+                            && gClippingsSvc.getSourceURL(uri) != "");
   return true;
 }
 
