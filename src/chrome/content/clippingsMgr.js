@@ -637,6 +637,132 @@ var gFindBar = {
 
 
 //
+// Source URL bar
+//
+
+var gSrcURLBar = {
+ _srcURLBarElt: null,
+ _srcURLTextbox: null,
+ _editBtns: null,
+ _prevSrcURLValue: "",
+
+
+ init: function ()
+ {
+   this._srcURLBarElt = $("source-url-bar");
+   this._srcURLTextbox = $("clipping-src-url");
+   this._editBtns = $("clipping-src-url-edit-btns");
+ },
+
+ show: function () 
+ {
+   this._srcURLBarElt.collapsed = false;
+ },
+
+ hide: function ()
+ {
+   this._srcURLBarElt.collapsed = true;
+ },
+
+ isVisible: function ()
+ {
+   return !this._srcURLBarElt.collapsed;
+ },
+
+ keypress: function (aEvent)
+ {
+   if (this.isEditing()) {
+     if (aEvent.key == "Enter") {
+       this.acceptEdit();
+     }
+     else if (aEvent.key == "Esc" || aEvent.key == "Escape") {
+       this.cancelEdit();
+     }
+     aEvent.stopPropagation();
+   }
+ },
+
+ edit: function ()
+ {
+   if (gCurrentListItemIndex == -1) {
+     aeUtils.beep();
+     aeUtils.log("Can't edit source URL because there is no clipping selected!");
+     return;
+   }
+
+   this._srcURLTextbox.removeAttribute("readonly");
+   this._editBtns.removeAttribute("hidden");
+   this._prevSrcURLValue = this._srcURLTextbox.value;
+
+   if (this._srcURLTextbox.value == "") {
+     this._srcURLTextbox.value = "http://";
+     this._srcURLTextbox.select();
+   }
+ },
+
+ isEditing: function ()
+ {
+   return !this._srcURLTextbox.hasAttribute("readonly");
+ },
+
+ acceptEdit: function ()
+ {
+   // Minimal validation of source URL (but allow an empty value)
+   let srcURL = this._srcURLTextbox.value;
+   if (srcURL.search(/^http/) == -1 && srcURL != "") {
+     aeUtils.beep();
+     this._srcURLTextbox.select();
+     return;
+   }
+
+   let uri = gClippingsList.getURIAtIndex(gCurrentListItemIndex);
+   gClippingsSvc.setSourceURL(uri, srcURL);
+
+   this._prevSrcURLValue = "";
+   this._srcURLTextbox.setAttribute("readonly", "true");
+   this._editBtns.setAttribute("hidden", "true");
+ },
+
+ cancelEdit: function ()
+ {
+   this._srcURLTextbox.value = this._prevSrcURLValue;
+   this._srcURLTextbox.setAttribute("readonly", "true");
+   this._editBtns.setAttribute("hidden", "true");
+   this._prevSrcURLValue = "";
+ },
+};
+
+
+//
+// Options bar (shortcut key and label)
+//
+
+var gOptionsBar = {
+ _optionsBarElt: null,
+
+ init: function ()
+ {
+   this._optionsBarElt = $("options-bar");
+ },
+
+ show: function () 
+ {
+   this._optionsBarElt.collapsed = false;
+ },
+
+ hide: function ()
+ {
+   this._optionsBarElt.collapsed = true;
+ },
+
+ isVisible: function ()
+ {
+   return !this._optionsBarElt.collapsed;
+ }
+};
+
+
+//
 // Common dialogs
 //
 
@@ -679,6 +805,7 @@ function init()
   var treeElt = $("clippings-list");
   gClippingsList = new RDFTreeWrapper(treeElt);
   gClippingsList.tree.builder.addObserver(treeBuilderObserver);
+  gSrcURLBar.init();
   gFindBar.init();
 
   gStatusBar = $("app-status");
@@ -1960,7 +2087,7 @@ function updateDisplay(aSuppressUpdateSelection)
   var shortcutKeyMiniHelp = $("shortcut-key-minihelp");
   var labelPickerBtn = $("clipping-label-btn");
   var labelPickerLabel = $("clipping-label");
-  var srcURLGrid = $("source-url-grid");
+  var srcURLBar = $("source-url-bar");
   var srcURLTextbox = $("clipping-src-url");
 
   var uri = gClippingsList.selectedURI;
@@ -1980,7 +2107,7 @@ function updateDisplay(aSuppressUpdateSelection)
     clippingName.disabled = false;
     clippingText.style.visibility = "hidden";
     shortcutKeyMiniHelp.style.visibility = "hidden";
-    srcURLGrid.style.visibility = "hidden";
+    srcURLBar.style.visibility = "hidden";
       
     clippingKey.selectedIndex = 0;
     clippingKeyLabel.style.visibility = "hidden";
@@ -1994,7 +2121,7 @@ function updateDisplay(aSuppressUpdateSelection)
     clippingName.disabled = true;
     clippingText.style.visibility = "hidden";
     shortcutKeyMiniHelp.style.visibility = "hidden";
-    srcURLGrid.style.visibility = "hidden";
+    srcURLBar.style.visibility = "hidden";
 
     clippingKey.selectedIndex = 0;
     clippingKeyLabel.style.visibility = "hidden";
@@ -2006,7 +2133,7 @@ function updateDisplay(aSuppressUpdateSelection)
   else {
     clippingName.disabled = false;
     clippingText.style.visibility = "visible";
-    srcURLGrid.style.visibility = "visible";
+    srcURLBar.style.visibility = "visible";
     clippingKeyLabel.style.visibility = "visible";
     clippingKey.style.visibility = "visible";
     shortcutKeyMiniHelp.style.visibility = "visible";
