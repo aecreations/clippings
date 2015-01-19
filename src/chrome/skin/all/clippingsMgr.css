@@ -104,6 +104,18 @@ treechildren::-moz-tree-image(container, closed) {
   border: 0;
 }
 
+#clipping-src-url[readonly]:hover {
+  background-color: #cccccc;
+}
+
+#clipping-src-url:not([readonly]) {
+  -moz-appearance: textfield;
+}
+
+#clipping-src-url-edit-btns button {
+  min-width: 24px;
+}
+
 #go-to-url-btn {
   min-width: 32px;
 }
