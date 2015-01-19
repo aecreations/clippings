@@ -528,17 +528,26 @@
 	 onfocus="clippingText_focus(event)" />
 
         <!-- Source URL  -->
-	<grid id="source-url-grid">
+	<grid id="source-url-bar">
 	  <columns>
 	    <column/>
 	    <column flex="1"/>
+	    <column/>
 	    <column/>
 	  </columns>
 	  <rows>
 	    <row align="center">
 	      <label value="&sourceURL.label;" control="clipping-src-url"/>
 	      <textbox id="clipping-src-url" flex="1" readonly="true"
-               placeholder="&none.label;"/>
+               placeholder="&none.label;"
+               onkeypress="gSrcURLBar.keypress(event)"
+               onclick="gSrcURLBar.edit()"/>
+              <hbox id="clipping-src-url-edit-btns" hidden="true">
+                <button id="src-url-edit-ok" label="ok"
+                 oncommand="gSrcURLBar.acceptEdit()"/>
+		<button id="src-url-edit-cancel" label="x"
+                 oncommand="gSrcURLBar.cancelEdit()"/>
+              </hbox>
               <button id="go-to-url-btn" label="Go!" 
                command="cmd_goToSourceURL"/>
 	    </row>
@@ -546,7 +555,7 @@
         </grid>
 
 	<!-- Shortcut key and label -->
-	<grid>
+	<grid id="options-bar">
           <columns>
 	    <column/>
             <column/>
