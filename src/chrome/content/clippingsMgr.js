@@ -643,6 +643,7 @@ var gFindBar = {
 var gSrcURLBar = {
  _srcURLBarElt: null,
  _srcURLTextbox: null,
+ _srcURLDeck: null,
  _editBtns: null,
  _prevSrcURLValue: "",
 
@@ -651,6 +652,7 @@ var gSrcURLBar = {
  {
    this._srcURLBarElt = $("source-url-bar");
    this._srcURLTextbox = $("clipping-src-url");
+   this._srcURLDeck = $("source-url-deck");
    this._editBtns = $("clipping-src-url-edit-btns");
  },
 
@@ -690,8 +692,12 @@ var gSrcURLBar = {
      return;
    }
 
-   this._srcURLTextbox.removeAttribute("readonly");
-   this._editBtns.removeAttribute("hidden");
+   this._srcURLDeck.selectedIndex = 1;
+
+   let clippingURI = gClippingsList.getURIAtIndex(gCurrentListItemIndex);
+   let url = gClippingsSvc.getSourceURL(clippingURI);
+   this._srcURLTextbox.value = url;
+
    this._prevSrcURLValue = this._srcURLTextbox.value;
 
    if (this._srcURLTextbox.value == "") {
@@ -715,20 +721,26 @@ var gSrcURLBar = {
      return;
    }
 
-   let uri = gClippingsList.getURIAtIndex(gCurrentListItemIndex);
-   gClippingsSvc.setSourceURL(uri, srcURL);
+   let clippingURI = gClippingsList.getURIAtIndex(gCurrentListItemIndex);
+   gClippingsSvc.setSourceURL(clippingURI, srcURL);
+   $("clipping-src-url-link").value = srcURL;
+
+   try {
+     gClippingsSvc.flushDataSrc(true);
+   }
+   catch (e) {
+     gStatusBar.label = gStrBundle.getString("errorSaveFailed");
+   }
 
    this._prevSrcURLValue = "";
-   this._srcURLTextbox.setAttribute("readonly", "true");
-   this._editBtns.setAttribute("hidden", "true");
+   this._srcURLDeck.selectedIndex = 0;
  },
 
  cancelEdit: function ()
  {
    this._srcURLTextbox.value = this._prevSrcURLValue;
-   this._srcURLTextbox.setAttribute("readonly", "true");
-   this._editBtns.setAttribute("hidden", "true");
    this._prevSrcURLValue = "";
+   this._srcURLDeck.selectedIndex = 0;
  },
 };
 
@@ -2088,7 +2100,7 @@ function updateDisplay(aSuppressUpdateSelection)
   var labelPickerBtn = $("clipping-label-btn");
   var labelPickerLabel = $("clipping-label");
   var srcURLBar = $("source-url-bar");
-  var srcURLTextbox = $("clipping-src-url");
+  var srcURLLink = $("clipping-src-url-link");
 
   var uri = gClippingsList.selectedURI;
 
@@ -2151,8 +2163,14 @@ function updateDisplay(aSuppressUpdateSelection)
       let srcURL = gClippingsSvc.getSourceURL(uri);
       debugStr += aeString.format("'s source URL is: %S", srcURL);
 
-      srcURLTextbox.value = srcURL;
-      $("go-to-url-btn").disabled = srcURL == "";
+      if (srcURL == "") {
+        srcURLLink.removeAttribute("class");
+        srcURLLink.value = gStrBundle.getString("none");
+      }
+      else {
+        srcURLLink.setAttribute("class", "text-link");
+        srcURLLink.value = srcURL;
+      }
     }
     else {
       debugStr += " doesn't have a source URL.";

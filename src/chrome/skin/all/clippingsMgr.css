@@ -99,25 +99,16 @@ treechildren::-moz-tree-image(container, closed) {
   line-height: 150%;
 }
 
-#clipping-src-url {
-  -moz-appearance: none;
-  border: 0;
-}
-
-#clipping-src-url[readonly]:hover {
-  background-color: #cccccc;
-}
-
-#clipping-src-url:not([readonly]) {
-  -moz-appearance: textfield;
+#clipping-src-url-link {
+  width: 100%;
 }
 
 #clipping-src-url-edit-btns button {
   min-width: 24px;
 }
 
-#go-to-url-btn {
-  min-width: 32px;
+#edit-url-btn {
+  min-width: 36px;
 }
 
 menu > hbox.menu-iconic-left, menuitem > hbox.menu-iconic-left {

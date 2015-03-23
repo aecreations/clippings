@@ -538,18 +538,33 @@
 	  <rows>
 	    <row align="center">
 	      <label value="&sourceURL.label;" control="clipping-src-url"/>
-	      <textbox id="clipping-src-url" flex="1" readonly="true"
-               placeholder="&none.label;"
-               onkeypress="gSrcURLBar.keypress(event)"
-               onclick="gSrcURLBar.edit()"/>
-              <hbox id="clipping-src-url-edit-btns" hidden="true">
-                <button id="src-url-edit-ok" label="ok"
-                 oncommand="gSrcURLBar.acceptEdit()"/>
-		<button id="src-url-edit-cancel" label="x"
-                 oncommand="gSrcURLBar.cancelEdit()"/>
-              </hbox>
-              <button id="go-to-url-btn" label="Go!" 
-               command="cmd_goToSourceURL"/>
+              <deck id="source-url-deck" flex="1">
+                <grid flex="1">
+                  <columns>
+                    <column flex="1"/>
+                    <column/>
+                  </columns>
+                  <rows>
+                    <row align="center">
+                      <label id="clipping-src-url-link" class="text-link"
+                       onclick="goToSourceURL()"/>
+                      <button id="edit-url-btn" label="Edit" 
+                       oncommand="gSrcURLBar.edit()"/>
+                    </row>
+                  </rows>
+                </grid>
+		<hbox flex="1">
+  	          <textbox id="clipping-src-url" flex="1"
+                   placeholder="&none.label;"
+                   onkeypress="gSrcURLBar.keypress(event)"/>
+                  <hbox id="clipping-src-url-edit-btns">
+                    <button id="src-url-edit-ok" label="ok"
+                     oncommand="gSrcURLBar.acceptEdit()"/>
+		    <button id="src-url-edit-cancel" label="x"
+                     oncommand="gSrcURLBar.cancelEdit()"/>
+                  </hbox>
+                </hbox>
+              </deck>
 	    </row>
 	  </rows>
         </grid>
