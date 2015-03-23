@@ -547,7 +547,8 @@
                   <rows>
                     <row align="center">
                       <label id="clipping-src-url-link" class="text-link"
-                       crop="end" onclick="goToSourceURL()"/>
+                       crop="end" onclick="goToSourceURL()" 
+                       ondblclick="gSrcURLBar.edit()"/>
                       <button id="edit-url-btn" label="Edit" 
                        oncommand="gSrcURLBar.edit()"/>
                     </row>
