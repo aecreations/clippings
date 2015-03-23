@@ -701,7 +701,7 @@ var gSrcURLBar = {
    this._prevSrcURLValue = this._srcURLTextbox.value;
 
    if (this._srcURLTextbox.value == "") {
-     this._srcURLTextbox.value = "http://";
+     this._srcURLTextbox.value = "";
      this._srcURLTextbox.select();
    }
  },
@@ -723,7 +723,10 @@ var gSrcURLBar = {
 
    let clippingURI = gClippingsList.getURIAtIndex(gCurrentListItemIndex);
    gClippingsSvc.setSourceURL(clippingURI, srcURL);
-   $("clipping-src-url-link").value = srcURL;
+   var urlText = document.createTextNode(srcURL);
+
+   let srcURLLink = $("clipping-src-url-link");
+   srcURLLink.value = srcURL;
 
    try {
      gClippingsSvc.flushDataSrc(true);
@@ -2163,6 +2166,7 @@ function updateDisplay(aSuppressUpdateSelection)
       let srcURL = gClippingsSvc.getSourceURL(uri);
       debugStr += aeString.format("'s source URL is: %S", srcURL);
 
+      let urlText = document.createTextNode("");
       if (srcURL == "") {
         srcURLLink.removeAttribute("class");
         srcURLLink.value = gStrBundle.getString("none");
@@ -2171,6 +2175,7 @@ function updateDisplay(aSuppressUpdateSelection)
         srcURLLink.setAttribute("class", "text-link");
         srcURLLink.value = srcURL;
       }
+      srcURLLink.appendChild(urlText);
     }
     else {
       debugStr += " doesn't have a source URL.";
