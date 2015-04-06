@@ -82,6 +82,7 @@ aeClippingSubst.processClippingText = function (aClippingInfo, aWnd)
 
   var rv = "";
   var strBundle = this._strBundle;
+  var userAgentStr = this._userAgentStr;
 
   // Remember the value of the same placeholder that was filled in previously
   var knownTags = {};
@@ -95,7 +96,6 @@ aeClippingSubst.processClippingText = function (aClippingInfo, aWnd)
     let varName = "";
     let hasDefaultVal = false;
 
-    // Get the optional default value of placeholder.
     if (aP1.indexOf("{") != -1 && aP1.indexOf("}") != -1) {
       hasDefaultVal = true;
       varName = aP1.substring(0, aP1.indexOf("{"));
@@ -112,6 +112,37 @@ aeClippingSubst.processClippingText = function (aClippingInfo, aWnd)
     let defaultVal = "";
     if (hasDefaultVal) {
       defaultVal = aP1.substring(aP1.indexOf("{") + 1, aP1.indexOf("}"));
+
+      let date = new Date();
+
+      switch (defaultVal) {
+      case "_DATE_":
+        defaultVal = date.toLocaleDateString();
+        break;
+
+      case "_TIME_":
+        defaultVal = date.toLocaleTimeString();
+        break;
+
+      case "_NAME_":
+        defaultVal = aClippingInfo.name;
+        break;
+
+      case "_FOLDER_":
+        defaultVal = aClippingInfo.parentFolderName;
+        break;
+
+      case "_HOSTAPP_":
+        defaultVal = Application.name;
+        break;
+
+      case "_UA_":
+        defaultVal = userAgentStr;
+        break;
+        
+      default:
+        break;
+      }
     }
 
     var rv = "";
@@ -202,7 +233,7 @@ aeClippingSubst.processClippingText = function (aClippingInfo, aWnd)
     return rv;
   };
 
-  var date = new Date();
+  let date = new Date();
 
   rv = aClippingInfo.text.replace(/\$\[DATE\]/gm, date.toLocaleDateString());
   rv = rv.replace(/\$\[TIME\]/gm, date.toLocaleTimeString());
@@ -210,7 +241,7 @@ aeClippingSubst.processClippingText = function (aClippingInfo, aWnd)
   rv = rv.replace(/\$\[_RDF_CLIPPING_URI\]/gm, aClippingInfo.uri);
   rv = rv.replace(/\$\[FOLDER\]/gm, aClippingInfo.parentFolderName);
   rv = rv.replace(/\$\[HOSTAPP\]/gm, Application.name + " " + Application.version);
-  rv = rv.replace(/\$\[UA\]/gm, this._userAgentStr);
+  rv = rv.replace(/\$\[UA\]/gm, userAgentStr);
 
   // Match placeholder names containing alphanumeric characters, and the
   // following Unicode blocks: Latin-1 Supplement, Latin Extended-A, Latin
