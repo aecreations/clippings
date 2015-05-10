@@ -117,6 +117,7 @@ const ACTION_MOVETOFOLDER = 8;
 const ACTION_COPYTOFOLDER = 9;
 const ACTION_DELETEEMPTYFOLDER = 10;
 const ACTION_SETSHORTCUTKEY = 11;
+const ACTION_SETLABEL = 12;
 
 // Flags for aDestUndoStack parameter of functions for reversible actions
 const UNDO_STACK = 1;
@@ -2242,15 +2243,35 @@ function updateLabel(aLabelID)
     return;
   }
 
+  updateLabelHelper(uri, aLabelID, UNDO_STACK);
+}
+
+
+function updateLabelHelper(aClippingURI, aLabelID, aDestUndoStack)
+{
   var label = aLabelID.substring(aLabelID.lastIndexOf("-") + 1);
   if (label == "none") {
     label = gClippingsSvc.LABEL_NONE;
   }
 
-  gClippingsSvc.setLabel(uri, label);
+  var oldLabel = gClippingsSvc.getLabel(aClippingURI);
+  gClippingsSvc.setLabel(aClippingURI, label);
   gClippingLabelPicker.selectedLabel = label;
   
-  // TO DO: Add to undo stack.
+  var state = { 
+    action: ACTION_SETLABEL, 
+    uri:    aClippingURI, 
+    label:  oldLabel
+  };
+
+  if (aDestUndoStack == UNDO_STACK) {
+    gUndoStack.push(state);
+    aeUtils.log(aeString.format("In function updateLabelHelper(): Clipping label %s added to undo stack", label));
+  }
+  else if (aDestUndoStack == REDO_STACK) {
+    gRedoStack.push(state);
+    aeUtils.log(aeString.format("In function updateLabelHelper(): Clipping label %s added to redo stack", label));
+  }
 
   gIsClippingsDirty = true;
   commit();
@@ -2976,6 +2997,11 @@ function undo()
     var oldKey = clippingKey.menupopup.childNodes[undo.keyIdx].label;
     gShortcutKey.update(REDO_STACK);
   }
+  else if (undo.action == ACTION_SETLABEL) {
+    updateLabelHelper(undo.uri, undo.label, REDO_STACK);
+    gClippingsList.selectedURI = undo.uri;
+    updateDisplay();
+  }
 
   if (gFindBar.isActivated()) {
     gFindBar.setSearchResultsUpdateFlag();
@@ -3094,6 +3120,11 @@ function reverseLastUndo()
     clippingKey.selectedIndex = redo.keyIdx;
     var oldKey = clippingKey.menupopup.childNodes[redo.keyIdx].label;
     gShortcutKey.update(UNDO_STACK);
+  }
+  else if (redo.action == ACTION_SETLABEL) {
+    updateLabelHelper(redo.uri, redo.label, UNDO_STACK);
+    gClippingsList.selectedURI = redo.uri;
+    updateDisplay();
   }
   
   gStatusBar.label = gStrBundle.getString("redoStatus");
