@@ -2277,10 +2277,8 @@ aeClippingsService.prototype._importFromFileEx = function (aExtFolderCtr, aExtDa
 
     if (this.isClipping(extChildURI, aExtDataSrc)) {
       let text = this.getText(extChildURI, aExtDataSrc);
-
-      // TO DO: Get source URL and label from the external clipping.
-      let srcURL = "";
-      let label = this.LABEL_NONE;
+      let srcURL = this.getSourceURL(extChildURI, aExtDataSrc);
+      let label = this.getLabel(extChildURI, aExtDataSrc);
 
       let uri = this.createNewClipping(localFolderURI, name, text, srcURL, label, true, aLocalDataSrc);
 
