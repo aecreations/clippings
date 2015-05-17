@@ -20,7 +20,7 @@
    -
    - The Initial Developer of the Original Code is
    - Alex Eng <ateng@users.sourceforge.net>.
-   - Portions created by the Initial Developer are Copyright (C) 2013-2014
+   - Portions created by the Initial Developer are Copyright (C) 2013-2015
    - the Initial Developer. All Rights Reserved.
    -
    - Contributor(s):
@@ -32,49 +32,10 @@
  orient="vertical"
  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
  buttons="accept,cancel"
- onload="initDlg()" ondialogaccept="return doOK()"
- ondialogcancel="return doCancel()">
+ onload="initDlg()" ondialogaccept="return accept()"
+ ondialogcancel="return cancel()">
 
-  <script type="application/javascript">
-  <![CDATA[
-
-    var gDlgArgs, gStrBundle;
-
-    
-    function $(aID) {
-      return document.getElementById(aID);
-    }
-
-    function initDlg() {
-      gDlgArgs = window.arguments[0].wrappedJSObject;
-      gStrBundle = $("ae-clippings-strings");
-      var promptText = $("prompt-text");
-      var strKey;
-
-      if (gDlgArgs.autoIncrementMode) {
-        strKey = "autoIncrPromptText";
-        $("placeholder-value").value = gDlgArgs.defaultValue;
-      }
-      else {
-        strKey = "substPromptText";
-        $("placeholder-value").value = gDlgArgs.userInput;
-      }
-      promptText.value = gStrBundle.getFormattedString(strKey, [gDlgArgs.varName]);
-    }
-
-
-    function doOK() {
-      gDlgArgs.userInput = $("placeholder-value").value;
-      return true;
-    }
-
-    function doCancel() {
-      gDlgArgs.userCancel = true;
-      return true;
-    }
-
-  ]]>
-  </script>
+  <script type="application/javascript" src="chrome://clippings/content/placeholder.js"/>
 
   <stringbundle id="ae-clippings-strings" 
    src="chrome://clippings/locale/clippings.properties"/>
@@ -89,7 +50,16 @@
       <separator class="thin"/>
       <description id="prompt-text"></description>
       <separator />
-      <textbox id="placeholder-value" size="64"/>
+      <deck id="prompt-deck">
+        <vbox id="text-prompt">
+          <textbox id="placeholder-value" size="64"/>
+	</vbox>
+	<vbox id="select-prompt">
+          <menulist id="select-placeholder-value-menu">
+            <menupopup/>
+          </menulist>
+	</vbox>
+      </deck>
       <separator class="thin"/>
     </vbox>
   </hbox>

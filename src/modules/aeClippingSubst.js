@@ -16,7 +16,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2007-2014
+ * Portions created by the Initial Developer are Copyright (C) 2007-2015
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -89,15 +89,22 @@ aeClippingSubst.processClippingText = function (aClippingInfo, aWnd)
   let that = aeClippingSubst;
   let tabModalPrompt = aeUtils.getPref("clippings.tab_modal_placeholder_prompt", true);
 
-  // For use if tab-modal prompts are enabled.
+  // For use if tab-modal prompts are enabled.  The normal placeholder dialog
+  // will always be used if the placeholder has selectable values.
   let prmptSvc = Cc["@mozilla.org/prompter;1"].getService(Ci.nsIPromptFactory).getPrompt(aWnd, Ci.nsIPrompt);
 
   var fnReplace = function (aMatch, aP1, aOffset, aString) {
     let varName = "";
     let hasDefaultVal = false;
+    let hasMultipleVals = false;
 
     if (aP1.indexOf("{") != -1 && aP1.indexOf("}") != -1) {
-      hasDefaultVal = true;
+      if (aP1.indexOf("|") != -1) {
+        hasMultipleVals = true;
+      }
+      else {
+        hasDefaultVal = true;
+      }
       varName = aP1.substring(0, aP1.indexOf("{"));
     }
     else {
@@ -145,9 +152,14 @@ aeClippingSubst.processClippingText = function (aClippingInfo, aWnd)
       }
     }
 
+    if (hasMultipleVals) {
+      defaultVal = aP1.substring(aP1.indexOf("{") + 1, aP1.indexOf("}"));
+    }
+
     var rv = "";
     
-    if (tabModalPrompt && Application.id == aeConstants.HOSTAPP_FX_GUID) {
+    if (tabModalPrompt && Application.id == aeConstants.HOSTAPP_FX_GUID
+        && !hasMultipleVals) {
       that._initTabModalPromptDlg(prmptSvc);
       let prmptText = that._strBundle.getFormattedString("substPromptText", [varName]);
       let input = { value: defaultVal };
@@ -163,8 +175,10 @@ aeClippingSubst.processClippingText = function (aClippingInfo, aWnd)
     else {
       var dlgArgs = {
         varName:       varName,
-        userInput:     defaultVal,
+        userInput:     "",
+        defaultValue:  defaultVal,
         autoIncrementMode: false,
+        selectMode:    hasMultipleVals,
         userCancel:    null
       };
       dlgArgs.wrappedJSObject = dlgArgs;
@@ -215,6 +229,7 @@ aeClippingSubst.processClippingText = function (aClippingInfo, aWnd)
         userInput:     "",
         defaultValue:  defaultValue,
         autoIncrementMode: true,
+        selectMode:    false,
         userCancel:    null
       };
       dlgArgs.wrappedJSObject = dlgArgs;
