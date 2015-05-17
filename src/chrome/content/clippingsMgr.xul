@@ -560,9 +560,11 @@
                    onkeypress="gSrcURLBar.keypress(event)"/>
                   <hbox id="clipping-src-url-edit-btns">
                     <button id="src-url-edit-ok" label="ok"
-                     oncommand="gSrcURLBar.acceptEdit()"/>
-		    <button id="src-url-edit-cancel" label="x"
-                     oncommand="gSrcURLBar.cancelEdit()"/>
+                     oncommand="gSrcURLBar.acceptEdit()"
+                     style="margin-left:2px;margin-right:1px"/>
+		    <button id="src-url-edit-cancel" label="cancel"
+                     oncommand="gSrcURLBar.cancelEdit()"
+                     style="margin-left:1px"/>
                   </hbox>
                 </hbox>
               </deck>
