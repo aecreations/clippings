@@ -1950,6 +1950,7 @@ function deleteClippingHelper(aURI, aDestUndoStack)
       uri:    aURI, 
       name:   gClippingsSvc.getName(aURI),
       text:   gClippingsSvc.getText(aURI),
+      label:  gClippingsSvc.getLabel(aURI),
       srcURL: gClippingsSvc.getSourceURL(aURI),
       key:    gClippingsSvc.getShortcutKey(aURI),
       pos:    pos,
