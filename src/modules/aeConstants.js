@@ -16,7 +16,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2005-2014
+ * Portions created by the Initial Developer are Copyright (C) 2005-2015
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -43,10 +43,6 @@ var aeConstants = {
   HTMLPASTE_ASK_THE_USER: 0,
   HTMLPASTE_AS_HTML:      1,
   HTMLPASTE_AS_IS:        2,
-
-  // Key codes
-  KEY_ESCAPE: 27,
-  KEY_F1:     112,
 
   // Shortcut help HTML document
   SHORTCUT_HELP_FILENAME: "clipkeys.html",
