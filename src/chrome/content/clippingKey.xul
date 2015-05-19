@@ -20,7 +20,7 @@
    -
    - The Initial Developer of the Original Code is
    - Alex Eng <ateng@users.sourceforge.net>.
-   - Portions created by the Initial Developer are Copyright (C) 2005-2013
+   - Portions created by the Initial Developer are Copyright (C) 2005-2015
    - the Initial Developer. All Rights Reserved.
    -
    - Contributor(s):
@@ -33,7 +33,7 @@
  orient="vertical"
  style="min-width:30em;min-height:9em;padding:9px"
  onkeydown="window_keypress(event)"
- onload="initWindow()" onunload="unloadWindow()">
+ onload="initWindow()" onunload="unload()">
 
   <script type="application/javascript">
   <![CDATA[
@@ -45,11 +45,11 @@
     }
 
     function window_keypress(event) {
-       gDialogArgs.key = event.keyCode;
-       window.close();
+      gDialogArgs.key = event.key;
+      window.close();
     }
 
-    function unloadWindow() {
+    function unload() {
 
     }
 
@@ -62,10 +62,13 @@
   </hbox>
 
   <separator flex="1"/>
-  <hbox>
+  <vbox>
     <description>&clippingKeyHelp.description;</description>
+  </vbox>
+
+  <hbox>
     <spacer flex="1"/>
-    <button label="&cancelButton.label;" default="true" oncommand="window.close()"/>
+    <button label="&cancelButton.label;" oncommand="window.close()"/>
 </hbox>
 </window>
 
