@@ -16,7 +16,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2005-2014
+ * Portions created by the Initial Developer are Copyright (C) 2005-2015
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -477,58 +477,59 @@ window.aecreations.clippings = {
 
     var keyDict = this.clippingsSvc.getShortcutKeyDict();
 
-    if (dlgArgs.key && dlgArgs.key != this.aeConstants.KEY_F1) {
-      var key = String.fromCharCode(dlgArgs.key);
+    if (dlgArgs.key) {
+      if (dlgArgs.key == "F1") {
+        var keys;
+        var keyCount = {};
+        keys = keyDict.getKeys(keyCount);
+        keys = keys.sort();
+        keyCount = keyCount.value;
 
-      if (! keyDict.hasKey(key)) {
-	this.aeUtils.beep();
-	return;
+        var keyMap = {};
+
+        for (let i = 0; i < keyCount; i++) {
+          try {
+            var valueStr = keyDict.getValue(keys[i]);
+          }
+          catch (e) {}
+          valueStr = valueStr.QueryInterface(Components.interfaces.nsISupportsString);
+          let clippingURI = valueStr.data;
+          let clippingName = this.clippingsSvc.getName(clippingURI);
+
+          keyMap[keys[i]] = {
+	    name: clippingName,
+	    uri:  clippingURI
+          };
+        }
+
+        var dlgArgs = {
+          printToExtBrowser: true,
+          keyMap:   keyMap,
+	  keyCount: keyCount
+        };
+
+        var helpWnd = window.openDialog("chrome://clippings/content/shortcutHelp.xul", "clipkey_help", "centerscreen,resizable", dlgArgs);
+        helpWnd.focus();
       }
+      else {
+        var key = dlgArgs.key.toUpperCase();
+ 
+        if (! keyDict.hasKey(key)) {
+          this.aeUtils.beep();
+          return;
+        }
 
-      try {
-	var valueStr = keyDict.getValue(key);
+        try {
+          var valueStr = keyDict.getValue(key);
+        }
+        catch (e) {}
+
+        valueStr = valueStr.QueryInterface(Components.interfaces.nsISupportsString);
+        var clippingURI = valueStr.data;
+        this.insertClippingText(clippingURI,
+                                this.clippingsSvc.getName(clippingURI),
+                                this.clippingsSvc.getText(clippingURI));
       }
-      catch (e) {}
-
-      valueStr = valueStr.QueryInterface(Components.interfaces.nsISupportsString);
-      var clippingURI = valueStr.data;
-      this.insertClippingText(clippingURI,
-			      this.clippingsSvc.getName(clippingURI),
-			      this.clippingsSvc.getText(clippingURI));
-    }
-
-    if (dlgArgs.key && dlgArgs.key == this.aeConstants.KEY_F1) {
-      var keys;
-      var keyCount = {};
-      keys = keyDict.getKeys(keyCount);
-      keys = keys.sort();
-      keyCount = keyCount.value;
-
-      var keyMap = {};
-
-      for (let i = 0; i < keyCount; i++) {
-	try {
-	  var valueStr = keyDict.getValue(keys[i]);
-	}
-	catch (e) {}
-	valueStr = valueStr.QueryInterface(Components.interfaces.nsISupportsString);
-	let clippingURI = valueStr.data;
-	let clippingName = this.clippingsSvc.getName(clippingURI);
-
-	keyMap[keys[i]] = {
-	  name: clippingName,
-	  uri:  clippingURI
-	};
-      }
-
-      var dlgArgs = {
-        printToExtBrowser: true,
-        keyMap:   keyMap,
-	keyCount: keyCount
-      };
-
-      var helpWnd = window.openDialog("chrome://clippings/content/shortcutHelp.xul", "clipkey_help", "centerscreen,resizable", dlgArgs);
-      helpWnd.focus();
     }
   },
 
