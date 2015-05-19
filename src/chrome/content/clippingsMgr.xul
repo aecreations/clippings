@@ -78,10 +78,8 @@
     function window_keyup(aEvent)
     {
       if (aEvent.target.tagName == "tree") {
-	if (aEvent.keyCode == aEvent.DOM_VK_UP 
-	    || aEvent.keyCode == aEvent.DOM_VK_DOWN) {
+	if (aEvent.key == "ArrowUp" || aEvent.key == "ArrowDown") {
 	  //aeUtils.log(aeString.format('clippingsMgr.xul:<window id="clippings-window"> START keyup\nTAB key originating from <listbox id=%S>', aEvent.target.id));
-
 	  updateDisplay();
 
   	  //aeUtils.log(aeString.format('clippingsMgr.xul:<window id="clippings-window"> END keyup\nTAB key originating <listbox id=%S>', aEvent.target.id));
@@ -102,14 +100,13 @@
 
       // Display Options menu upon ALT+O keypress since the accesskey attribute
       // seems to be ignored on the menubutton element.
-      if (aEvent.altKey && (aEvent.charCode == 79 || aEvent.charCode == 111)) {
+      if (aEvent.altKey && aEvent.key.toUpperCase() == "O") {
         btn = document.getElementById("clippings-options");
 	popup = document.getElementById("clippings-options-popup");
 	popup.showPopup(btn, -1, -1, "popup", "bottomleft", "topleft");
       }
       // Move menu (ALT+M)
-      else if (aEvent.altKey && (aEvent.charCode == 77 || aEvent.charCode == 109))
-      {
+      else if (aEvent.altKey && aEvent.key.toUpperCase() == "M") {
         btn = document.getElementById("toolbar-move");
 	popup = document.getElementById("toolbar-move-popup");
 	popup.showPopup(btn, -1, -1, "popup", "bottomleft", "topleft");
