@@ -471,14 +471,24 @@ window.aecreations.clippings = {
     clippingsMenu1.builder.refresh();
     clippingsMenu1.builder.rebuild();
 
-    var dlgArgs = { key: null };
-    var dlg = window.openDialog("chrome://clippings/content/clippingKey.xul",
-				"clipkey_dlg", "modal,centerscreen", dlgArgs);
+    var dlgArgs = {
+      SHORTCUT_KEY_HELP: 0,
+      ACTION_SHORTCUT_KEY: 1,
+      ACTION_SEARCH_CLIPPING: 2,
+      action: null,
+      switchModes: null,
+      clippingURI: null,
+      userCancel: null
+    };
 
-    var keyDict = this.clippingsSvc.getShortcutKeyDict();
+    // TEMPORARY
+    // TO DO: Remember the last mode (shortcut key or search clipping by name).
+    dlgArgs.action = dlgArgs.ACTION_SHORTCUT_KEY;
+    // END TEMPORARY
 
-    if (dlgArgs.key) {
-      if (dlgArgs.key == "F1") {
+    do {
+      if (dlgArgs.action == dlgArgs.SHORTCUT_KEY_HELP) {
+        var keyDict = this.clippingsSvc.getShortcutKeyDict();
         var keys;
         var keyCount = {};
         keys = keyDict.getKeys(keyCount);
@@ -502,35 +512,35 @@ window.aecreations.clippings = {
           };
         }
 
-        var dlgArgs = {
-          printToExtBrowser: true,
+        let dlgArgs = {
+          printToExtBrowser: false,
           keyMap:   keyMap,
 	  keyCount: keyCount
         };
 
-        var helpWnd = window.openDialog("chrome://clippings/content/shortcutHelp.xul", "clipkey_help", "centerscreen,resizable", dlgArgs);
-        helpWnd.focus();
+        let dlg = window.openDialog("chrome://clippings/content/shortcutHelp.xul", "clipkey_help", "centerscreen,resizable", dlgArgs);
+        this.aeUtils.log("Clippings: end of shortcut help action");
+        return;
       }
-      else {
-        var key = dlgArgs.key.toUpperCase();
- 
-        if (! keyDict.hasKey(key)) {
-          this.aeUtils.beep();
-          return;
-        }
-
-        try {
-          var valueStr = keyDict.getValue(key);
-        }
-        catch (e) {}
-
-        valueStr = valueStr.QueryInterface(Components.interfaces.nsISupportsString);
-        var clippingURI = valueStr.data;
-        this.insertClippingText(clippingURI,
-                                this.clippingsSvc.getName(clippingURI),
-                                this.clippingsSvc.getText(clippingURI));
+      else if (dlgArgs.action == dlgArgs.ACTION_SHORTCUT_KEY) {
+        let dlg = window.openDialog("chrome://clippings/content/clippingKey.xul",
+                                    "clipkey_dlg", "modal,centerscreen", dlgArgs);
+        this.aeUtils.log("Clippings: end of shortcut key action");
       }
+      else if (dlgArgs.action == dlgArgs.ACTION_SEARCH_CLIPPING) {
+        let dlg = window.openDialog("chrome://clippings/content/searchClipping.xul",
+                                    "clipsrch_dlg", "modal,centerscreen", dlgArgs);
+        this.aeUtils.log("Clippings: end of search clipping action");
+      }
+    } while (!dlgArgs.clippingURI && !dlgArgs.userCancel && dlgArgs.switchModes);
+
+    if (dlgArgs.userCancel) {
+      return;
     }
+
+    this.insertClippingText(dlgArgs.clippingURI,
+                            this.clippingsSvc.getName(dlgArgs.clippingURI),
+                            this.clippingsSvc.getText(dlgArgs.clippingURI));
   },
 
 

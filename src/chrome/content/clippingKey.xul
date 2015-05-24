@@ -32,29 +32,10 @@
  title="&clippingKey.title;" 
  orient="vertical"
  style="min-width:30em;min-height:9em;padding:9px"
- onkeydown="window_keypress(event)"
- onload="initWindow()" onunload="unload()">
+ onkeydown="processKeyPress(event)"
+ onload="initWnd()" onunload="unload()">
 
-  <script type="application/javascript">
-  <![CDATA[
-
-    var gDialogArgs;
-
-    function initWindow() {
-      gDialogArgs = window.arguments[0];
-    }
-
-    function window_keypress(event) {
-      gDialogArgs.key = event.key;
-      window.close();
-    }
-
-    function unload() {
-
-    }
-
-  ]]>
-  </script>
+  <script type="application/javascript" src="chrome://clippings/content/clippingKey.js"/>
 
   <hbox>
     <image src="chrome://clippings/skin/images/keyboard-paste.png"/>
@@ -64,6 +45,7 @@
   <separator flex="1"/>
   <vbox>
     <description>&clippingKeyHelp.description;</description>
+    <description>TAB = search clipping by name</description>
   </vbox>
 
   <hbox>
