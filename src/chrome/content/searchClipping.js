@@ -147,6 +147,8 @@ function selectClipping()
 {
   var clippingURI = $("search-results-listbox").value;
 
+  $("search-results-popup").hidePopup();
+
   gDlgArgs.clippingURI = clippingURI;
   gDlgArgs.userCancel = false;
 
