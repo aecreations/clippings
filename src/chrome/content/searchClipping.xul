@@ -42,6 +42,7 @@
   <panel id="search-results-popup" noautofocus="true">
     <richlistbox id="search-results-listbox" flex="1" seltype="single"
      onkeypress="selectClippingByKeyboard(event)"
+     onmouseover="selectSearchResult(event)"
      onmouseup="selectClippingByMouse(event)"/>
   </panel>
 
@@ -61,7 +62,7 @@
       <separator class="thin"/>
       <label id="search-status" value=" "/>
       <separator class="thin"/>
-      <description>F3 = shortcut key mode</description>
+      <description>TAB = shortcut key mode</description>
     </vbox>
   </hbox>
 </dialog>
