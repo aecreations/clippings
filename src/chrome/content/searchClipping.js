@@ -108,6 +108,7 @@ function updateSearchResults(aSearchText)
 
       listitem.appendChild(nameElt);
       listitem.appendChild(textElt);
+
       srchResultsListbox.appendChild(listitem);
     }
 
@@ -116,8 +117,19 @@ function updateSearchResults(aSearchText)
 }
 
 
+function selectSearchResult(aEvent)
+{
+  if (aEvent.target.nodeName == "richlistitem") {
+    $("search-results-listbox").focus();
+    $("search-results-listbox").selectedItem = aEvent.target;
+  }
+}
+
+
 function handleSearchKeys(aEvent, aSearchText)
 {
+  let listbox = $("search-results-listbox");
+
   if (aEvent.key == "ArrowDown" || aEvent.key == "Down") {
     // Just beep at the user if there's no search results to display.
     if (aSearchText == "") {
@@ -133,12 +145,15 @@ function handleSearchKeys(aEvent, aSearchText)
       return;
     }
     
-    $("search-results-listbox").focus();
-    $("search-results-listbox").selectedIndex = 0;
+    listbox.focus();
+    listbox.selectedIndex = 0;
   }
-  else if (aEvent.key == "F3") {   // DOESN'T WORK!
-    gDlgArgs.switchModes = true;
+  else if (aEvent.key == "Tab") {
+    aEvent.preventDefault();
+
     gDlgArgs.action = gDlgArgs.ACTION_SHORTCUT_KEY;
+    gDlgArgs.switchModes = true;
+    window.close();
   }
 }
 
@@ -158,16 +173,29 @@ function selectClipping()
 
 function selectClippingByKeyboard(aEvent)
 {
+  // Press Enter to select a search result.
   if (aEvent.key == "Enter") {
     aeUtils.log("Search clipping (keyboard selection)");
     selectClipping();
+  }
+  // Press 'Up' arrow key: move focus back to search box, but keep popup open.
+  else if (aEvent.key == "ArrowUp" || aEvent.key == "Up") {
+    if ($("search-results-listbox").selectedIndex == 0) {
+      $("clipping-search").focus();
+    }
+  }
+  // Press Backspace: user probably wants to correct their input.  Move focus
+  // back to the search box.
+  // NOTE: Pressing Esc does the same thing, but also closes the popup.
+  else if (aEvent.key == "Backspace") {
+    $("clipping-search").focus();
   }
 }
 
 
 function selectClippingByMouse(aEvent)
 {
-  if (aEvent.target.nodeName == "richlistitem") {
+  if (aEvent.target.nodeName == "richlistitem" || aEvent.target.nodeName == "label") {
     aeUtils.log("Search clipping (mouse selection)");
     selectClipping();
   }
