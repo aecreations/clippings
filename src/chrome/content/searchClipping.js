@@ -165,6 +165,7 @@ function selectClipping()
   $("search-results-popup").hidePopup();
 
   gDlgArgs.clippingURI = clippingURI;
+  gDlgArgs.switchModes = false;
   gDlgArgs.userCancel = false;
 
   window.close();
@@ -205,5 +206,6 @@ function selectClippingByMouse(aEvent)
 function cancel()
 {
   gDlgArgs.userCancel = true;
+  gDlgArgs.switchModes = false;
   return true;
 }
