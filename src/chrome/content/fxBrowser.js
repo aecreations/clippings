@@ -536,7 +536,7 @@ window.aecreations.clippings = {
                                     "clipsrch_dlg", "modal,centerscreen", dlgArgs);
         this.aeUtils.log("Clippings: end of search clipping action");
       }
-    } while (!dlgArgs.clippingURI && !dlgArgs.userCancel && dlgArgs.switchModes);
+    } while (dlgArgs.switchModes);
 
     if (dlgArgs.userCancel) {
       return;
