@@ -485,10 +485,8 @@ window.aecreations.clippings = {
       userCancel: null
     };
 
-    // TEMPORARY
-    // TO DO: Remember the last mode (shortcut key or search clipping by name).
-    dlgArgs.action = dlgArgs.ACTION_SHORTCUT_KEY;
-    // END TEMPORARY
+    // Remember the last mode (shortcut key or search clipping by name).
+    dlgArgs.action = this.aeUtils.getPref("clippings.paste_shortcut_mode", dlgArgs.ACTION_SHORTCUT_KEY);
 
     do {
       if (dlgArgs.action == dlgArgs.SHORTCUT_KEY_HELP) {
@@ -523,20 +521,18 @@ window.aecreations.clippings = {
         };
 
         let dlg = window.openDialog("chrome://clippings/content/shortcutHelp.xul", "clipkey_help", "centerscreen,resizable", dlgArgs);
-        this.aeUtils.log("Clippings: end of shortcut help action");
+
         return;
       }
       else if (dlgArgs.action == dlgArgs.ACTION_SHORTCUT_KEY) {
         let dlg = window.openDialog("chrome://clippings/content/clippingKey.xul",
                                     "clipkey_dlg", "modal,centerscreen", dlgArgs);
-        this.aeUtils.log("Clippings: end of shortcut key action");
       }
       else if (dlgArgs.action == dlgArgs.ACTION_SEARCH_CLIPPING) {
         let dlg = window.openDialog("chrome://clippings/content/searchClipping.xul",
                                     "clipsrch_dlg", "modal,centerscreen", dlgArgs);
-        this.aeUtils.log("Clippings: end of search clipping action");
       }
-    } while (dlgArgs.switchModes);
+    } while (dlgArgs.switchModes && !dlgArgs.userCancel);
 
     if (dlgArgs.userCancel) {
       return;
