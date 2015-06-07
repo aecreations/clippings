@@ -45,7 +45,7 @@
   <separator flex="1"/>
   <vbox>
     <description>&clippingKeyHelp.description;</description>
-    <description>TAB = search clipping by name</description>
+    <description>&clippingKeySearch.description;</description>
   </vbox>
 
   <hbox>

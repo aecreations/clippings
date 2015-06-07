@@ -54,7 +54,7 @@
     </vbox>
     <vbox flex="1">
       <separator class="thin"/>
-      <description>Search for clipping by name:</description>
+      <description>&clippingSearch.description;</description>
       <separator />
       <textbox id="clipping-search" type="search" size="64"
        onkeypress="handleSearchKeys(event, this.value)"
@@ -62,7 +62,7 @@
       <separator class="thin"/>
       <label id="search-status" value=" "/>
       <separator class="thin"/>
-      <description>TAB = shortcut key mode</description>
+      <description>&clippingKeyShortcut.description;</description>
     </vbox>
   </hbox>
 </dialog>

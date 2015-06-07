@@ -141,6 +141,17 @@
 <!ENTITY reload.key "R">
 <!ENTITY toggleFindBar.key "F">
 
+<!ENTITY placeholderToolbar.label "Insert Placeholder:">
+<!ENTITY placeholderPresets.label "Presets">
+<!ENTITY placeholderCustom.label "Custom">
+<!ENTITY placeholderAutoincrement.label "Numeric">
+<!ENTITY placeholderDate.label "Date">
+<!ENTITY placeholderTime.label "Time">
+<!ENTITY placeholderAppName.label "Application Name">
+<!ENTITY placeholderUserAgent.label "User Agent">
+<!ENTITY placeholderClippingName.label "Clipping Name">
+<!ENTITY placeholderFolderName.label "Parent Folder Name">
+
 <!ENTITY clippingLabel.label "Label">
 <!ENTITY clippingLabel.accesskey "L">
 <!ENTITY labelNone.tooltip "None">
@@ -207,7 +218,10 @@
 <!-- Shortcut key prompt -->
 <!ENTITY clippingKey.title "Paste Clipping">
 <!ENTITY clippingKey.description "Press the shortcut key of the clipping you want to paste.">
+<!ENTITY clippingSearch.description "Search for clipping by name:">
 <!ENTITY clippingKeyHelp.description "F1 = shortcut key list">
+<!ENTITY clippingKeyShortcut.description "TAB = shortcut key mode">
+<!ENTITY clippingKeySearch.description "TAB = search clipping by name">
 <!ENTITY shortcutHelp.title "Clippings Shortcut Keys">
 <!ENTITY shortcutCol.label "Shortcut Key"> 
 <!ENTITY clippingCol.label "Clipping Name">
