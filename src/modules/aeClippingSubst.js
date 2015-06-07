@@ -183,7 +183,7 @@ aeClippingSubst.processClippingText = function (aClippingInfo, aWnd)
       };
       dlgArgs.wrappedJSObject = dlgArgs;
 
-      that._openDialog(aWnd, "chrome://clippings/content/placeholder.xul", "ae_placeholder_prmpt", "modal,centerscreen", dlgArgs);
+      that._openDialog(aWnd, "chrome://clippings/content/placeholderPrompt.xul", "ae_placeholder_prmpt", "modal,centerscreen", dlgArgs);
       if (dlgArgs.userCancel || dlgArgs.userInput == "") {
         return "";
       }
@@ -235,7 +235,7 @@ aeClippingSubst.processClippingText = function (aClippingInfo, aWnd)
       dlgArgs.wrappedJSObject = dlgArgs;
 
       do {
-        that._openDialog(aWnd, "chrome://clippings/content/placeholder.xul", "ae_placeholder_prmpt", "modal,centerscreen", dlgArgs);
+        that._openDialog(aWnd, "chrome://clippings/content/placeholderPrompt.xul", "ae_placeholder_prmpt", "modal,centerscreen", dlgArgs);
         if (dlgArgs.userCancel || dlgArgs.userInput == "") {
           return "";
         }

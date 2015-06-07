@@ -35,7 +35,7 @@
  onload="initDlg()" ondialogaccept="return accept()"
  ondialogcancel="return cancel()">
 
-  <script type="application/javascript" src="chrome://clippings/content/placeholder.js"/>
+  <script type="application/javascript" src="chrome://clippings/content/placeholderPrompt.js"/>
 
   <stringbundle id="ae-clippings-strings" 
    src="chrome://clippings/locale/clippings.properties"/>
