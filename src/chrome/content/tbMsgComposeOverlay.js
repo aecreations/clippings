@@ -481,10 +481,8 @@ window.aecreations.clippings = {
       userCancel: null
     };
 
-    // TEMPORARY
-    // TO DO: Remember the last mode (shortcut key or search clipping by name).
-    dlgArgs.action = dlgArgs.ACTION_SHORTCUT_KEY;
-    // END TEMPORARY
+    // Remember the last mode (shortcut key or search clipping by name).
+    dlgArgs.action = this.aeUtils.getPref("clippings.paste_shortcut_mode", dlgArgs.ACTION_SHORTCUT_KEY);
 
     do {
       if (dlgArgs.action == dlgArgs.SHORTCUT_KEY_HELP) {
@@ -532,7 +530,7 @@ window.aecreations.clippings = {
                                     "clipsrch_dlg", "modal,centerscreen", dlgArgs);
         this.aeUtils.log("Clippings: end of search clipping action");
       }
-    } while (!dlgArgs.clippingURI && !dlgArgs.userCancel && dlgArgs.switchModes);
+    } while (dlgArgs.switchModes && !dlgArgs.userCancel);
 
     if (dlgArgs.userCancel) {
       return;
