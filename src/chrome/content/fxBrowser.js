@@ -365,28 +365,7 @@ window.aecreations.clippings = {
     var textbox = document.commandDispatcher.focusedElement;
     
     if (textbox instanceof HTMLInputElement || textbox instanceof HTMLTextAreaElement) {
-      var text, pre, post, pos;
-      text = textbox.value;
-
-      if (textbox.selectionStart == textbox.selectionEnd) {
-	var point = textbox.selectionStart;
-	pre = text.substring(0, point);
-	post = text.substring(point, text.length);
-	pos = point + clippingText.length;
-      }
-      else {
-	var p1 = textbox.selectionStart;
-	var p2 = textbox.selectionEnd;
-	pre = text.substring(0, p1);
-	post = text.substring(p2, text.length);
-	pos = p1 + clippingText.length;
-      }
-
-      // "Paste" the clipping, then adjust cursor position so that it is placed
-      // after the last character in the "pasted" clipping text
-      textbox.value = pre + clippingText + post;
-      textbox.selectionStart = pos;
-      textbox.selectionEnd = pos;
+      this.aeInsertTextIntoTextbox(textbox, clippingText);
     }
     else {
       var doc = document.commandDispatcher.focusedWindow.document;
@@ -1090,6 +1069,7 @@ Components.utils.import("resource://clippings/modules/aeClippings3.js",
                         window.aecreations.clippings);
 Components.utils.import("resource://clippings/modules/aePrefMigrator.js",
 			window.aecreations.clippings);
+Components.utils.import("resource://clippings/modules/aeInsertTextIntoTextbox.js", window.aecreations.clippings);
 
 
 //
