@@ -469,7 +469,7 @@
           <menuitem id="import" label="&import.label;" accesskey="&import.accesskey;" command="cmd_import"/>
           <menuitem id="export" label="&export.label;" accesskey="&export.accesskey;" command="cmd_export"/>
 	  <menuseparator/>
-	  <menuitem id="clipmgr-options" label="Options..." accesskey="O" command="cmd_clipmgr_opts"/>
+	  <menuitem id="clipmgr-options" label="&options.label;" accesskey="&options.accesskey;" command="cmd_clipmgr_opts"/>
         </menupopup>
       </toolbarbutton>
     </toolbar>
