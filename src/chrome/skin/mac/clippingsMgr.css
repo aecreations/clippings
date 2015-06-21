@@ -292,7 +292,7 @@ toolbarbutton .toolbarbutton-icon {
 
 /* Mac-specific Find Bar filter button */
 #find-filter-menu-btn {
-  min-width: 10px;
+  min-width: 10px !important;
   min-height: 22px;
   width: 42px;
   margin-left: 0px;
