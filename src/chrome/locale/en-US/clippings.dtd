@@ -137,6 +137,8 @@
 <!ENTITY findClippingsAndFldrs.label "Clippings and Folders">
 <!ENTITY options.label "Options...">
 <!ENTITY options.accesskey "O">
+<!ENTITY placeholderBar.label "Placeholder Bar">
+<!ENTITY placeholderBar.accesskey "P">
 
 <!ENTITY closeCmd.key "W">
 <!ENTITY forceSaveCmd.key "S">
