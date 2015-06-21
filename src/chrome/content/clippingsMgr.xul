@@ -524,6 +524,36 @@
 	 onblur="clippingText_blur(event)"
 	 onfocus="clippingText_focus(event)" />
 
+        <!-- Insert Placeholder bar -->
+        <toolbox>
+          <toolbar id="insert-placeholder-bar">
+	    <vbox>
+	      <spacer flex="1"/>
+              <label value="&placeholderToolbar.label;"/>
+	      <spacer flex="1"/>
+            </vbox>
+  	    <toolbarbutton id="placeholder-presets" type="menu"
+             label="&placeholderPresets.label;">
+              <menupopup>
+                <menuitem label="&placeholderDate.label;" 
+                 oncommand="insertPresetPlaceholder('DATE')"/>
+		<menuitem label="&placeholderTime.label;"
+                 oncommand="insertPresetPlaceholder('TIME')"/>
+		<menuitem label="&placeholderAppName.label;"
+                 oncommand="insertPresetPlaceholder('HOSTAPP')"/>
+		<menuitem label="&placeholderUserAgent.label;"
+                 oncommand="insertPresetPlaceholder('UA')"/>
+		<menuitem label="&placeholderClippingName.label;"
+                 oncommand="insertPresetPlaceholder('NAME')"/>
+		<menuitem label="&placeholderFolderName.label;"
+                 oncommand="insertPresetPlaceholder('FOLDER')"/>
+              </menupopup>
+            </toolbarbutton>
+            <toolbarbutton id="placeholder-custom" label="&placeholderCustom.label;" oncommand="insertCustomPlaceholder()"/>
+	    <toolbarbutton id="placeholder-autoincrement" label="&placeholderAutoincrement.label;" oncommand="insertAutoIncrementPlaceholder()"/>
+          </toolbar>
+        </toolbox>
+
         <!-- Source URL  -->
 	<grid id="source-url-bar">
 	  <columns>

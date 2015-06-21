@@ -27,6 +27,7 @@ Components.utils.import("resource://clippings/modules/aeConstants.js");
 Components.utils.import("resource://clippings/modules/aeUtils.js");
 Components.utils.import("resource://clippings/modules/aeString.js");
 Components.utils.import("resource://clippings/modules/aeCreateClippingHelper.js");
+Components.utils.import("resource://clippings/modules/aeInsertTextIntoTextbox.js");
 Components.utils.import("resource://clippings/modules/aeClippingLabelPicker.js");
 
 
@@ -2035,6 +2036,123 @@ function deleteClippingHelper(aURI, aDestUndoStack)
   }
 
   commit();
+}
+
+
+function isClippingTextAreaFocused()
+{
+  var focusedElt = document.commandDispatcher.focusedElement;
+
+  // <textbox multiline="true"> is actually an <html:textarea> element.
+  // Full XBL hierarchy: <textbox> -> <xul:hbox> -> <html:textarea>
+  return (focusedElt.nodeName == "html:textarea" && focusedElt.parentElement.parentElement.id == "clipping-text");
+}
+
+
+function insertCustomPlaceholder()
+{
+  if (! isClippingTextAreaFocused()) {
+    aeUtils.beep();
+    return;
+  }
+
+  var dlgArgs = {
+    CUSTOM: 0,
+    AUTO_INCREMENT: 1,
+    placeholder: ""
+  };
+
+  dlgArgs.placeholderType = dlgArgs.CUSTOM;
+  dlgArgs.userCancel = null;
+
+  window.openDialog("chrome://clippings/content/insertPlaceholder.xul", "clippings_ins_plchldr", "modal,centerscreen", dlgArgs);
+
+  if (dlgArgs.userCancel) {
+    return;
+  }
+
+  insertIntoClippingText(dlgArgs.placeholder);
+}
+
+
+function insertAutoIncrementPlaceholder()
+{
+  if (! isClippingTextAreaFocused()) {
+    aeUtils.beep();
+    return;
+  }
+
+  var dlgArgs = {
+    CUSTOM: 0,
+    AUTO_INCREMENT: 1,
+    placeholder: ""
+  };
+
+  dlgArgs.placeholderType = dlgArgs.AUTO_INCREMENT;
+  dlgArgs.userCancel = null;
+
+  window.openDialog("chrome://clippings/content/insertPlaceholder.xul", "clippings_ins_plchldr", "modal,centerscreen", dlgArgs);
+
+  if (dlgArgs.userCancel) {
+    return;
+  }
+
+  insertIntoClippingText(dlgArgs.placeholder);
+}
+
+
+function insertPresetPlaceholder(aPresetName)
+{
+  var placeholder = "";
+
+  switch (aPresetName) {
+  case "NAME":
+    placeholder = "$[NAME]";
+    break;
+
+  case "FOLDER":
+    placeholder = "$[FOLDER";
+    break;
+    
+  case "DATE":
+    placeholder = "$[DATE]";
+    break;
+
+  case "TIME":
+    placeholder = "$[TIME]";
+    break;
+
+  case "HOSTAPP":
+    placeholder = "$[HOSTAPP]";
+    break;
+
+  case "UA":
+    placeholder = "$[UA]";
+    break;
+
+  default:
+    break;
+  }
+
+  insertIntoClippingText(placeholder);
+}
+
+
+function insertIntoClippingText(aInsertedText)
+{
+  var focusedElt = document.commandDispatcher.focusedElement;
+
+  // <textbox multiline="true"> is actually an <html:textarea> element.
+  // Full XBL hierarchy: <textbox> -> <xul:hbox> -> <html:textarea>
+  if (focusedElt.nodeName == "html:textarea" && focusedElt.parentElement.parentElement.id == "clipping-text") {
+    let textbox = focusedElt;
+
+    aeInsertTextIntoTextbox(textbox, aInsertedText);
+  }
+  else {
+    aeUtils.beep();
+    aeUtils.log("The clipping content textarea is not focused!");
+  }
 }
 
 

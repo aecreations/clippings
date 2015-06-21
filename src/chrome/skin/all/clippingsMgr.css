@@ -137,16 +137,24 @@ spacer.toolbar-separator {
   width: 40px;
 }
 
-toolbarbutton {
+toolbarbutton:not(#placeholder-presets) {
   list-style-image: url("chrome://clippings/skin/images/clippingsMgrToolbar.png");
   -moz-box-orient: vertical;
   min-width: 52px;
+}
+
+#insert-placeholder-bar > toolbarbutton {
+  -moz-box-orient: horizontal;
 }
 
 /* Workaround to unwanted margin on right of toolbarbutton image on Firefox
  * default theme. */
 toolbarbutton .toolbarbutton-icon {
   -moz-margin-end: 0px;
+}
+
+#insert-placeholder-bar > toolbarbutton .toolbarbutton-icon {
+  -moz-margin-end: 4px;
 }
 
 #new-clipping {
@@ -273,6 +281,23 @@ toolbarbutton .toolbarbutton-icon {
 
 #ae-clippings-clipboard-alert, #import-empty-alert {
   padding: 6px;
+}
+
+/* Insert Placeholder toolbar */
+#placeholder-custom {
+  -moz-image-region: rect(0px, 272px, 16px, 256px);
+}
+
+#placeholder-custom:hover {
+  -moz-image-region: rect(16px, 272px, 32px, 256px);
+}
+
+#placeholder-autoincrement {
+  -moz-image-region: rect(0px, 288px, 16px, 272px);
+}
+
+#placeholder-autoincrement:hover {
+  -moz-image-region: rect(16px, 288px, 32px, 272px);
 }
 
 /* Color-coded clippings */
