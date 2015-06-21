@@ -2049,6 +2049,25 @@ function isClippingTextAreaFocused()
 }
 
 
+function updateToolsMenu()
+{
+  var toolbox = $("clipping-content-editor-toolbox");
+  $("toggle-placeholder-bar").checked = !toolbox.hasAttribute("hidden");
+}
+
+
+function togglePlaceholderBar()
+{
+  var toolbox = $("clipping-content-editor-toolbox");
+  if (toolbox.hasAttribute("hidden")) {
+    toolbox.removeAttribute("hidden");
+  }
+  else {
+    toolbox.setAttribute("hidden", "true");
+  }
+}
+
+
 function insertCustomPlaceholder()
 {
   if (! isClippingTextAreaFocused()) {
