@@ -221,6 +221,7 @@
     <command id="cmd_find" oncommand="toggleFindBar()"/>
     <command id="cmd_datasrc_opts" oncommand="dataSrcOptions()"/>
     <command id="cmd_clipmgr_opts" oncommand="clippingsMgrOptions()"/>
+    <command id="cmd_togglePlaceholderBar" oncommand="togglePlaceholderBar()"/>
   </commandset>
 
   <keyset>
@@ -450,7 +451,8 @@
       <toolbarbutton id="find" label="&find.label;" accesskey="&find.accesskey;" command="cmd_find" />
       <spacer class="toolbar-separator" />
       <toolbarbutton id="clippings-options" label="&tools.label;" accesskey="&tools.accesskey;" type="menu">
-        <menupopup id="clippings-options-popup">
+        <menupopup id="clippings-options-popup" 
+         onpopupshowing="updateToolsMenu()">
 	  <menuitem id="new-from-clipboard" label="&newFromClipboard.menuLabel;" accesskey="&newFromClipboard.accesskey;" command="cmd_new_from_clipboard"/>
 	  <menuseparator/>
 	  <menuitem id="reload_menuitem" label="&reload.label;" accesskey="&reload.accesskey;" key="key_force_reload" command="cmd_reload" />
@@ -469,6 +471,8 @@
           <menuitem id="import" label="&import.label;" accesskey="&import.accesskey;" command="cmd_import"/>
           <menuitem id="export" label="&export.label;" accesskey="&export.accesskey;" command="cmd_export"/>
 	  <menuseparator/>
+          <menuitem id="toggle-placeholder-bar" type="checkbox"
+           label="&placeholderBar.label;" accesskey="&placeholderBar.accesskey;" command="cmd_togglePlaceholderBar"/>
 	  <menuitem id="clipmgr-options" label="&options.label;" accesskey="&options.accesskey;" command="cmd_clipmgr_opts"/>
         </menupopup>
       </toolbarbutton>
@@ -525,7 +529,7 @@
 	 onfocus="clippingText_focus(event)" />
 
         <!-- Insert Placeholder bar -->
-        <toolbox>
+        <toolbox id="clipping-content-editor-toolbox" hidden="true">
           <toolbar id="insert-placeholder-bar">
 	    <vbox>
 	      <spacer flex="1"/>
