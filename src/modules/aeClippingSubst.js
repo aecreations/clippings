@@ -93,32 +93,28 @@ aeClippingSubst.processClippingText = function (aClippingInfo, aWnd)
   // will always be used if the placeholder has selectable values.
   let prmptSvc = Cc["@mozilla.org/prompter;1"].getService(Ci.nsIPromptFactory).getPrompt(aWnd, Ci.nsIPrompt);
 
-  var fnReplace = function (aMatch, aP1, aOffset, aString) {
-    let varName = "";
-    let hasDefaultVal = false;
-    let hasMultipleVals = false;
-
-    if (aP1.indexOf("{") != -1 && aP1.indexOf("}") != -1) {
-      if (aP1.indexOf("|") != -1) {
-        hasMultipleVals = true;
-      }
-      else {
-        hasDefaultVal = true;
-      }
-      varName = aP1.substring(0, aP1.indexOf("{"));
-    }
-    else {
-      varName = aP1;
-    }
+  var fnReplace = function (aMatch, aP1, aP2, aOffset, aString) {
+    let varName = aP1;
 
     if (varName in knownTags) {
       return knownTags[varName];
     }
 
+    let hasDefaultVal = false;
+    let hasMultipleVals = false;
+
+    if (aP2) {
+      hasDefaultVal = true;
+
+      if (aP2.indexOf("|") != -1) {
+        hasMultipleVals = true;
+      }
+    }
+
     // Pre-populate input with default value, if any.
     let defaultVal = "";
     if (hasDefaultVal) {
-      defaultVal = aP1.substring(aP1.indexOf("{") + 1, aP1.indexOf("}"));
+      defaultVal = aP2.substring(aP2.indexOf("{") + 1, aP2.indexOf("}"));
 
       let date = new Date();
 
@@ -150,10 +146,6 @@ aeClippingSubst.processClippingText = function (aClippingInfo, aWnd)
       default:
         break;
       }
-    }
-
-    if (hasMultipleVals) {
-      defaultVal = aP1.substring(aP1.indexOf("{") + 1, aP1.indexOf("}"));
     }
 
     var rv = "";
@@ -258,11 +250,13 @@ aeClippingSubst.processClippingText = function (aClippingInfo, aWnd)
   rv = rv.replace(/\$\[HOSTAPP\]/gm, Application.name + " " + Application.version);
   rv = rv.replace(/\$\[UA\]/gm, userAgentStr);
 
-  // Match placeholder names containing alphanumeric characters, and the
-  // following Unicode blocks: Latin-1 Supplement, Latin Extended-A, Latin
+  // Match placeholder names containing alphanumeric char's, underscores, and
+  // the following Unicode blocks: Latin-1 Supplement, Latin Extended-A, Latin
   // Extended-B, Cyrillic, Hebrew.
-  // For normal placeholders, allow {|} chars for optional default values.
-  rv = rv.replace(/\$\[([a-zA-Z0-9_\{\}\|\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)\]/gm, fnReplace);
+  // For normal placeholders, allow {|} chars for optional default values, and
+  // within the { and }, allow the same characters as placeholder names, but
+  // including the space character.
+  rv = rv.replace(/\$\[([\w\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)(\{([\w \u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF\|])+\})?\]/gm, fnReplace);
   rv = rv.replace(/\#\[([a-zA-Z0-9_\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)\]/gm, fnAutoIncrement);
 
   return rv;
