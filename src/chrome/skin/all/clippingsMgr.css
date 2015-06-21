@@ -254,7 +254,7 @@ toolbarbutton .toolbarbutton-icon {
 }
 
 #find-filter-menu {
-  min-width: 28px;
+  min-width: 28px !important;
   margin-left: 0px;
 }
 
