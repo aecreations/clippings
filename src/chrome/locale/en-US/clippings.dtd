@@ -135,6 +135,8 @@
 <!ENTITY matchCase.accesskey "a">
 <!ENTITY findClippings.label "Clippings">
 <!ENTITY findClippingsAndFldrs.label "Clippings and Folders">
+<!ENTITY options.label "Options...">
+<!ENTITY options.accesskey "O">
 
 <!ENTITY closeCmd.key "W">
 <!ENTITY forceSaveCmd.key "S">
