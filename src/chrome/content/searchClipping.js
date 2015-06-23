@@ -28,6 +28,8 @@ Components.utils.import("resource://clippings/modules/aeUtils.js");
 const Cc = Components.classes;
 const Ci = Components.interfaces;
 
+// Truncate clipping name in the search result popup at this number of char's.
+const MAX_NAME_LEN = 48;
 
 var gDlgArgs, gStrBundle;
 var gClippingsSvc;
@@ -90,7 +92,7 @@ function updateSearchResults(aSearchText)
       
       // Truncate name and text
       var originalLen = name.length;
-      name = name.substr(0, 48);
+      name = name.substr(0, MAX_NAME_LEN);
       name += (originalLen > name.length ? " ..." : "");
 
       var listitem = document.createElement("richlistitem");
@@ -127,7 +129,10 @@ function selectSearchResult(aEvent)
 function handleSearchKeys(aEvent, aSearchText)
 {
   let listbox = $("search-results-listbox");
+  let srchResultsPopup = $("search-results-popup");
 
+  // Press 'Down' arrow key: open search box; beep at user if there are no
+  // search results.
   if (aEvent.key == "ArrowDown" || aEvent.key == "Down") {
     // Just beep at the user if there's no search results to display.
     if (aSearchText == "") {
@@ -143,16 +148,32 @@ function handleSearchKeys(aEvent, aSearchText)
       return;
     }
     
+    if (srchResultsPopup.state == "closed") {
+      updateSearchResults($("clipping-search").value);
+    }
+
     listbox.focus();
     listbox.selectedIndex = 0;
   }
+  // Press Tab key: switch to shortcut key mode; if search box is open, then
+  // move the focus to it.
   else if (aEvent.key == "Tab") {
-    aEvent.preventDefault();
-
-    gDlgArgs.action = gDlgArgs.ACTION_SHORTCUT_KEY;
-    gDlgArgs.switchModes = true;
-    window.close();
+    if (srchResultsPopup.state == "closed") {
+      switchToShortcutKeyMode();
+    }
+    else {
+      listbox.focus();
+      listbox.selectedIndex = 0;
+    }
   }
+}
+
+
+function switchToShortcutKeyMode()
+{
+  gDlgArgs.action = gDlgArgs.ACTION_SHORTCUT_KEY;
+  gDlgArgs.switchModes = true;
+  window.close();
 }
 
 
@@ -191,6 +212,10 @@ function selectClippingByKeyboard(aEvent)
   // NOTE: Pressing Esc does the same thing, but also closes the popup.
   else if (aEvent.key == "Backspace") {
     $("clipping-search").focus();
+  }
+  // Press Tab (while focus is in the search box): switch to shortcut key mode.
+  else if (aEvent.key == "Tab") {
+    switchToShortcutKeyMode();
   }
 }
 
