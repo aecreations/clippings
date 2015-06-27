@@ -100,13 +100,16 @@ treechildren::-moz-tree-image(container, closed) {
   line-height: 150%;
 }
 
-#clipping-src-url {
-  -moz-appearance: none;
-  border: 0;
+#clipping-src-url-link {
+  width: 100%;
 }
 
-#go-to-url-btn {
-  min-width: 32px;
+#clipping-src-url-edit-btns button {
+  min-width: 24px;
+}
+
+#edit-url-btn {
+  min-width: 36px;
 }
 
 menu > hbox.menu-iconic-left, menuitem > hbox.menu-iconic-left {
@@ -139,6 +142,10 @@ toolbarbutton:not(#placeholder-presets) {
   list-style-image: url("chrome://clippings/skin/images/clippingsMgrToolbar.png");
   -moz-box-orient: vertical;
   min-width: 52px;
+}
+
+#insert-placeholder-bar > toolbarbutton {
+  -moz-box-orient: horizontal;
 }
 
 /* Workaround to unwanted margin on right of toolbarbutton image on Firefox
@@ -347,11 +354,12 @@ toolbarbutton .toolbarbutton-icon {
 #clipping-label-menupopup menuitem,
 #clipping-label-cxt-menupopup menuitem {
   list-style-image: url("chrome://clippings/skin/images/clipping-labels.png");
-  max-width: 24px;
+  min-width: 20px !important;
 }
 
 #clipping-label-btn {
-  min-width: 24px;
+  min-width: 12px !important;
+  width: 42px;
 }
 
 #clipping-label-menugroup-row-1,
