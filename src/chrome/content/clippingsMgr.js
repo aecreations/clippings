@@ -2317,7 +2317,10 @@ function updateDisplay(aSuppressUpdateSelection)
       srcURLLink.appendChild(urlText);
     }
     else {
+      srcURLLink.removeAttribute("class");
+      srcURLLink.value = gStrBundle.getString("none");
       debugStr += " doesn't have a source URL.";
+      
     }
 
     if (gClippingsSvc.hasLabel(uri)) {
