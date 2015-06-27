@@ -2130,7 +2130,7 @@ function insertPresetPlaceholder(aPresetName)
     break;
 
   case "FOLDER":
-    placeholder = "$[FOLDER";
+    placeholder = "$[FOLDER]";
     break;
     
   case "DATE":
