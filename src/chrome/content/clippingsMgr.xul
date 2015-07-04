@@ -159,9 +159,11 @@
     function clippingText_focus(aEvent)
     {
       //aeUtils.log("clippingsMgr.xul:<textbox id='clipping-text'> focused!");
+
       var textbox = aEvent.target;
       gQuickEdit.init(textbox, updateText);
       updateItemCount();
+      setPlaceholderBarDisabledState(false);
     }
 
     function clippingName_blur(aEvent)
@@ -197,6 +199,8 @@
 
       updateText(aEvent.target.value);
       commit();
+
+      setPlaceholderBarDisabledState(true);
 
       //aeUtils.log("clippingsMgr.xul:<textbox id='clipping-text'> END blur");
     }
@@ -536,7 +540,7 @@
               <label value="&placeholderToolbar.label;"/>
 	      <spacer flex="1"/>
             </vbox>
-  	    <toolbarbutton id="placeholder-presets" type="menu"
+  	    <toolbarbutton id="placeholder-presets" type="menu" disabled="true"
              label="&placeholderPresets.label;">
               <menupopup>
                 <menuitem label="&placeholderDate.label;" 
@@ -553,8 +557,12 @@
                  oncommand="insertPresetPlaceholder('FOLDER')"/>
               </menupopup>
             </toolbarbutton>
-            <toolbarbutton id="placeholder-custom" label="&placeholderCustom.label;" oncommand="insertCustomPlaceholder()"/>
-	    <toolbarbutton id="placeholder-autoincrement" label="&placeholderAutoincrement.label;" oncommand="insertAutoIncrementPlaceholder()"/>
+            <toolbarbutton id="placeholder-custom" disabled="true"
+             label="&placeholderCustom.label;"
+             oncommand="insertCustomPlaceholder()"/>
+	    <toolbarbutton id="placeholder-autoincrement" disabled="true"
+             label="&placeholderAutoincrement.label;"
+             oncommand="insertAutoIncrementPlaceholder()"/>
           </toolbar>
         </toolbox>
 
