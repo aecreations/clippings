@@ -686,37 +686,38 @@ window.aecreations.clippings = {
 					this._hideContextMenuItem,
 					false);
 
-    let (that = this) {
-      this._clippingsListener = {
-        origin:  that.clippingsSvc.ORIGIN_HOSTAPP,
+    let that = this;
 
-        newFolderCreated: function (aFolderURI) {
-	  this._rebuildMenu();
-	},
+    this._clippingsListener = {
+      origin:  that.clippingsSvc.ORIGIN_HOSTAPP,
 
-        newClippingCreated: function (aClippingURI) {},
+      newFolderCreated: function (aFolderURI) {
+        this._rebuildMenu();
+      },
 
-        importDone: function (aNumItems) {
-	  this._rebuildMenu();
-	},
+      newClippingCreated: function (aClippingURI) {},
 
-        dataSrcLocationChanged: function (aDataSrcURL) {
-	  var menu = document.getElementById("ae-clippings-menu-1");
-	  var popup = document.getElementById("ae-clippings-popup-1");
+      importDone: function (aNumItems) {
+        this._rebuildMenu();
+      },
 
-	  // Reinitialize Clippings menu so that it points to the correct
-	  // datasource.
-	  menu.database.RemoveDataSource(that._ds);
-	  that.initClippingsPopup(popup, menu);
-	},
+      dataSrcLocationChanged: function (aDataSrcURL) {
+        var menu = document.getElementById("ae-clippings-menu-1");
+        var popup = document.getElementById("ae-clippings-popup-1");
 
-        _rebuildMenu: function () {
-	  that.aeUtils.log("clippingsListener (browser window): Rebuilding Clippings submenu");
-	  var menu = document.getElementById("ae-clippings-menu-1");
-	  menu.builder.rebuild();
-	}
-      };
-    }
+        // Reinitialize Clippings menu so that it points to the correct
+        // datasource.
+        menu.database.RemoveDataSource(that._ds);
+        that.initClippingsPopup(popup, menu);
+      },
+
+      _rebuildMenu: function () {
+        that.aeUtils.log("clippingsListener (browser window): Rebuilding Clippings submenu");
+        var menu = document.getElementById("ae-clippings-menu-1");
+        menu.builder.rebuild();
+      }
+    };
+
     this.clippingsSvc.addListener(this._clippingsListener);
 
     // Set behaviour of "New Clipping" commands - prompt vs. silent operation
