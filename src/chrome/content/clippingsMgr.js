@@ -443,6 +443,21 @@ var gShortcutKey = {
 
 
 //
+// Clipping name and text textboxes
+//
+
+var gClippingText = {
+  focus: function (aEvent)
+  {
+  },
+
+  blur: function (aEvent)
+  {
+  }
+};
+
+
+//
 // Find bar - clipping search
 //
 
@@ -2039,6 +2054,14 @@ function deleteClippingHelper(aURI, aDestUndoStack)
 }
 
 
+function setPlaceholderBarDisabledState(aIsDisabled)
+{
+  $("placeholder-presets").disabled = aIsDisabled;
+  $("placeholder-custom").disabled = aIsDisabled;
+  $("placeholder-autoincrement").disabled = aIsDisabled;
+}
+
+
 function isClippingTextAreaFocused()
 {
   var focusedElt = document.commandDispatcher.focusedElement;
@@ -2122,6 +2145,11 @@ function insertAutoIncrementPlaceholder()
 
 function insertPresetPlaceholder(aPresetName)
 {
+  if (! isClippingTextAreaFocused()) {
+    aeUtils.beep();
+    return;
+  }
+
   var placeholder = "";
 
   switch (aPresetName) {
