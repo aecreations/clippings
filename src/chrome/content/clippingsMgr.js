@@ -2842,7 +2842,7 @@ function backupClippings()
       }
  
       try {
-        gClippingsSvc.exportToFile(fp.fileURL.spec, gClippingsSvc.FILETYPE_RDF_XML);
+        gClippingsSvc.exportToFile(fp.fileURL.spec, gClippingsSvc.FILETYPE_RDF_XML, true);
       }
       catch (e if e.result == Components.results.NS_ERROR_NOT_INITIALIZED) {
 	doAlert(gStrBundle.getString("alertExportFailedNoDS"));
