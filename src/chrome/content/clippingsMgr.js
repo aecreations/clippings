@@ -443,21 +443,6 @@ var gShortcutKey = {
 
 
 //
-// Clipping name and text textboxes
-//
-
-var gClippingText = {
-  focus: function (aEvent)
-  {
-  },
-
-  blur: function (aEvent)
-  {
-  }
-};
-
-
-//
 // Find bar - clipping search
 //
 
@@ -654,6 +639,42 @@ var gFindBar = {
 
 
 //
+// Placeholder bar
+//
+
+var gPlaceholderBar = {
+  _placeholderBarElt: null,
+
+  init: function ()
+  {
+    this._placeholderBarElt = $("clipping-content-editor-toolbox");
+  },
+
+  show: function ()
+  {
+    this._placeholderBarElt.hidden = false;
+  },
+
+  hide: function ()
+  {
+    this._placeholderBarElt.hidden = true;
+  },
+
+  isVisible: function ()
+  {
+    return !this._placeholderBarElt.hidden;
+  },
+
+  setDisabledState: function (aDisabled)
+  {
+    $("placeholder-presets").disabled = aDisabled;
+    $("placeholder-custom").disabled = aDisabled;
+    $("placeholder-autoincrement").disabled = aDisabled;
+  }
+};
+
+
+//
 // Source URL bar
 //
 
@@ -839,6 +860,7 @@ function init()
   gClippingsList.tree.builder.addObserver(treeBuilderObserver);
   gSrcURLBar.init();
   gFindBar.init();
+  gPlaceholderBar.init();
 
   gStatusBar = $("app-status");
   setStatusBarVisibility();
@@ -2054,14 +2076,6 @@ function deleteClippingHelper(aURI, aDestUndoStack)
 }
 
 
-function setPlaceholderBarDisabledState(aIsDisabled)
-{
-  $("placeholder-presets").disabled = aIsDisabled;
-  $("placeholder-custom").disabled = aIsDisabled;
-  $("placeholder-autoincrement").disabled = aIsDisabled;
-}
-
-
 function isClippingTextAreaFocused()
 {
   var focusedElt = document.commandDispatcher.focusedElement;
@@ -2081,12 +2095,11 @@ function updateToolsMenu()
 
 function togglePlaceholderBar()
 {
-  var toolbox = $("clipping-content-editor-toolbox");
-  if (toolbox.hasAttribute("hidden")) {
-    toolbox.removeAttribute("hidden");
+  if (gPlaceholderBar.isVisible()) {
+    gPlaceholderBar.hide();
   }
   else {
-    toolbox.setAttribute("hidden", "true");
+    gPlaceholderBar.show();
   }
 }
 
