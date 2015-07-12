@@ -39,11 +39,14 @@
   <stringbundle id="ae-clippings-strings" 
    src="chrome://clippings/locale/clippings.properties"/>
 
-  <panel id="search-results-popup" noautofocus="true">
+  <panel id="search-results-popup" noautofocus="true" orient="vertical">
     <richlistbox id="search-results-listbox" flex="1" seltype="single"
      onkeypress="selectClippingByKeyboard(event)"
      onmouseover="selectSearchResult(event)"
      onmouseup="selectClippingByMouse(event)"/>
+    <hbox>
+      <spacer flex="1"/><label id="num-matches" value=""/><spacer flex="1"/>
+    </hbox>
   </panel>
 
   <hbox>
@@ -56,11 +59,11 @@
       <separator class="thin"/>
       <description>&clippingSearch.description;</description>
       <separator />
-      <textbox id="clipping-search" type="search" size="64"
+      <textbox id="clipping-search" type="search"
        onkeypress="handleSearchKeys(event, this.value)"
        oncommand="updateSearchResults(this.value)"/>
       <separator class="thin"/>
-      <label id="search-status" value=" "/>
+      <label id="search-status" value=""/>
       <separator class="thin"/>
       <description>&clippingKeyShortcut.description;</description>
     </vbox>
