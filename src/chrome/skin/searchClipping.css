@@ -42,3 +42,7 @@
 .clipping-text {
   color: #666666;
 }
+
+#clipping-search {
+  width: 36em;
+}
