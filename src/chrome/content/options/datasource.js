@@ -106,25 +106,22 @@ function initPrefPaneDataSource()
 
 function changeDataSrcLocationOptions()
 {
+  var newDataSrcPath;
+
   if (gDataSrcLocationOpt.selectedIndex == 0) {
     gCustomDataSrcBrws.disabled = true;
     gCustomDataSrcPath.disabled = true;
+    newDataSrcPath = aeUtils.getUserProfileDir().path;
   }
   else if (gDataSrcLocationOpt.selectedIndex == 1) {
     gCustomDataSrcBrws.disabled = false;
     gCustomDataSrcPath.disabled = false;
+    newDataSrcPath = gCustomDataSrcPath.value;
   }
   
   // The action to remove all source URLs from clippings would only apply
   // to the old datasource, not the new one (until after applying the
   // change to the datasource location)
-  var newDataSrcPath;
-  if (gDataSrcLocationOpt.selectedIndex == 0) {
-    newDataSrcPath = aeUtils.getUserProfileDir().path;
-  }
-  else {
-    newDataSrcPath = gCustomDataSrcPath.value;
-  }
   $("remove-all-src-urls").disabled = (newDataSrcPath != gPrevDataSrcPath);
 }
 
