@@ -72,6 +72,7 @@ function updateSearchResults(aSearchText)
 
   if (aSearchText == "") {
     $("search-status").value = "";
+    $("num-matches").value = "";
     return;
   }
 
@@ -82,7 +83,8 @@ function updateSearchResults(aSearchText)
     $("search-status").value = gStrBundle.getString("findBarNotFound");
   }
   else {
-    $("search-status").value = gStrBundle.getFormattedString("findBarMatches", [numMatches.value]);;
+    $("search-status").value = gStrBundle.getFormattedString("findBarMatches", [numMatches.value]);
+    $("num-matches").value = gStrBundle.getFormattedString("findBarMatches", [numMatches.value]);
 
     // Populate the popup.
     var max = numMatches.value;
