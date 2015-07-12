@@ -15,7 +15,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2005-2014
+ * Portions created by the Initial Developer are Copyright (C) 2005-2015
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -28,23 +28,33 @@ var gExportFormatList;
 var gClippingsSvc;
 
 
-function initDlg() 
+//
+// DOM utility function
+//
+
+function $(aID) {
+  return document.getElementById(aID);
+}
+
+
+
+function init() 
 {
   try {
     gClippingsSvc = Components.classes["clippings@mozdev.org/clippings;1"].getService(Components.interfaces.aeIClippingsService);
   }
   catch (e) {
-    doAlert(e);
+    alertEx(e);
   }
 
-  gStrBundle = document.getElementById("clippings-strings");
-  gExportFormatList = document.getElementById("export-format-list");
+  gStrBundle = $("clippings-strings");
+  gExportFormatList = $("export-format-list");
   gExportFormatList.selectedIndex = 0;
   gExportFormatList.focus();
   gExportFormatList.click();
 
   // Hidden HTML editor - HTML export hack!
-  var editor = document.getElementById("html-export");
+  var editor = $("html-export");
   editor.src = "export.html";
   editor.makeEditable("html", false);
 }
@@ -52,20 +62,32 @@ function initDlg()
 
 function exportFormatList_click(event)
 {
-  var formatDesc = document.getElementById("format-description");
+  var formatDesc = $("format-description");
   if (formatDesc.firstChild) {
     formatDesc.removeChild(formatDesc.firstChild);
   }
 
+  var includeSrcURLs = $("include-src-urls");
   var desc;
 
   switch (gExportFormatList.selectedIndex) {
   case 0:
     desc = gStrBundle.getString("clippingsFmtDesc");
+    includeSrcURLs.disabled = false;
+    if (exportFormatList_click.inclSrcURLsChecked) {
+      includeSrcURLs.checked = true;
+      exportFormatList_click.inclSrcURLsChecked = null;
+    }
     break;
 
   case 1:
     desc = gStrBundle.getString("htmlFmtDesc");
+    includeSrcURLs.disabled = true;
+
+    if (includeSrcURLs.checked) {
+      exportFormatList_click.inclSrcURLsChecked = true;
+    }
+    includeSrcURLs.checked = false;
     break;
 
   default:
@@ -76,8 +98,10 @@ function exportFormatList_click(event)
   formatDesc.appendChild(textNode);
 }
 
+exportFormatList_click.inclSrcURLsChecked = null;
 
-function doExport()
+
+function exportClippings()
 {
   var fileType;
   var fp = Components.classes["@mozilla.org/filepicker;1"]
@@ -102,6 +126,8 @@ function doExport()
     break;
   }
 
+  let includeSrcURLs = $("include-src-urls");
+
   let fpShownCallback = {
     done: function (aResult) {
       if (aResult == fp.returnCancel) {
@@ -121,13 +147,13 @@ function doExport()
 	  || fileType == gClippingsSvc.FILETYPE_CLIPPINGS_1X) {
 
 	fnExport = function () { 
-	  gClippingsSvc.exportToFile(url, fileType);
+	  gClippingsSvc.exportToFile(url, fileType, includeSrcURLs.checked);
 	};
       }
       // HTML export.
       else {
 	var bodyElt = gClippingsSvc.getClippingsAsHTMLNodes();
-	var editor = document.getElementById("html-export");
+	var editor = $("html-export");
 	editor.focus();
 	var htmlEditor = editor.getHTMLEditor(editor.contentWindow);
 	var bodyEltEx = editor.contentDocument.importNode(bodyElt, true);
@@ -151,25 +177,25 @@ function doExport()
 	fnExport();
       }
       catch (e if e.result == Components.results.NS_ERROR_NOT_INITIALIZED) {
-	doAlert(gStrBundle.getString("alertExportFailedNoDS"));
+	alertEx(gStrBundle.getString("alertExportFailedNoDS"));
       }
       catch (e if e.result == Components.results.NS_ERROR_OUT_OF_MEMORY) {
-	doAlert(gStrBundle.getString("errorOutOfMemory"));
+	alertEx(gStrBundle.getString("errorOutOfMemory"));
       }
       catch (e if e.result == Components.results.NS_ERROR_FILE_ACCESS_DENIED) {
-	doAlert(gStrBundle.getString("errorAccessDenied"));
+	alertEx(gStrBundle.getString("errorAccessDenied"));
       }
       catch (e if e.result == Components.results.NS_ERROR_FILE_READ_ONLY) {
-	doAlert(gStrBundle.getString("errorFileReadOnly"));
+	alertEx(gStrBundle.getString("errorFileReadOnly"));
       }
       catch (e if e.result == Components.results.NS_ERROR_FILE_DISK_FULL) {
-	doAlert(gStrBundle.getString("errorDiskFull"));
+	alertEx(gStrBundle.getString("errorDiskFull"));
       }
       catch (e) {
-	doAlert(gStrBundle.getString("alertExportFailed"));
+	alertEx(gStrBundle.getString("alertExportFailed"));
       }
 
-      doAlert(gStrBundle.getFormattedString("exportSuccess", [path]));
+      alertEx(gStrBundle.getFormattedString("exportSuccess", [path]));
       window.close();
     }
   };
@@ -178,7 +204,7 @@ function doExport()
 }
 
 
-function doAlert(aMessage) 
+function alertEx(aMessage) 
 {
   var title = gStrBundle.getString("appName");
   var prmpt = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
@@ -186,6 +212,6 @@ function doAlert(aMessage)
 }
 
 
-function doCancel() {
+function cancel() {
   return true;
 }
