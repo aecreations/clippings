@@ -85,7 +85,7 @@
 <!ENTITY copyTo.accesskey "C">
 <!ENTITY moveHere.label "Move Here">
 <!ENTITY copyHere.label "Copy Here">
-<!ENTITY goToURL.label "Open Source URL">
+<!ENTITY goToURL.label "Open Source Address (URL)">
 <!ENTITY goToURL.accesskey "O">
 <!ENTITY clippingsRoot.label "Clippings">
 <!ENTITY newClipping.label "New Clipping">
@@ -120,12 +120,12 @@
 <!ENTITY noClippings.label "There are no entries to display.">
 <!ENTITY reload.label "Reload">
 <!ENTITY reload.accesskey "R">
-<!ENTITY shortcutkey.label "Shortcut Key:">
+<!ENTITY shortcutkey.label "Shortcut key:">
 <!ENTITY shortcutkey.accesskey "K">
 <!ENTITY dataFileOptions.label "Data Source Settings...">
 <!ENTITY dataFileOptions.accesskey "D">
 <!ENTITY shortcutKeyList.label "Shortcut key list">
-<!ENTITY sourceURL.label "Source URL:">
+<!ENTITY sourceURL.label "Source address:">
 <!ENTITY findBar.label "Find:">
 <!ENTITY findPrev.label "Previous">
 <!ENTITY findPrev.accesskey "P">
@@ -186,11 +186,13 @@
 <!ENTITY description.caption "Description">
 <!ENTITY fmtClippings.listitem "Clippings File">
 <!ENTITY fmtHtmlDocument.listitem "HTML Document">
+<!ENTITY includeSrcURLs.label "Include source addresses of clippings">
+<!ENTITY includeSrcURLs.accesskey "I">
 
 <!-- New Clipping dialog -->
 <!ENTITY clippingName.label "Name:">
 <!ENTITY clippingName.accesskey "N">
-<!ENTITY saveSourceURL.label "Save the URL of the source page">
+<!ENTITY saveSourceURL.label "Save the address of the source page">
 <!ENTITY saveSourceURL.accesskey "S">
 <!ENTITY newClippingsEntry.title "New Clipping">
 <!ENTITY newFolder.title "New Folder">
