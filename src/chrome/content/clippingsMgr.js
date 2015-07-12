@@ -2310,6 +2310,11 @@ function updateDisplay(aSuppressUpdateSelection)
 
     labelPickerLabel.style.visibility = "hidden";
     labelPickerBtn.style.visibility = "hidden";
+
+    if (gPlaceholderBar.isVisible()) {
+      gPlaceholderBar.hide();
+      updateDisplay.placeholderBarVisible = true;
+    }
   }
   // Special handling of the dummy item in an empty folder
   else if (gClippingsSvc.isEmptyClipping(uri)) {
@@ -2324,6 +2329,11 @@ function updateDisplay(aSuppressUpdateSelection)
 
     labelPickerLabel.style.visibility = "hidden";
     labelPickerBtn.style.visibility = "hidden";
+
+    if (gPlaceholderBar.isVisible()) {
+      gPlaceholderBar.hide();
+      updateDisplay.placeholderBarVisible = true;
+    }
   }
   else {
     clippingName.disabled = false;
@@ -2334,6 +2344,11 @@ function updateDisplay(aSuppressUpdateSelection)
     shortcutKeyMiniHelp.style.visibility = "visible";
     labelPickerLabel.style.visibility = "visible";
     labelPickerBtn.style.visibility = "visible";
+
+    if (updateDisplay.placeholderBarVisible) {
+      gPlaceholderBar.show();
+      updateDisplay.placeholderBarVisible = null;
+    }
   }
 
   clippingName.value = gClippingsSvc.getName(uri);
@@ -2395,6 +2410,8 @@ function updateDisplay(aSuppressUpdateSelection)
     gClippingsList.ensureIndexIsVisible(gClippingsList.selectedIndex);
   }
 }
+
+updateDisplay.placeholderBarVisible = null;
 
 
 function updateLabelMenu()
