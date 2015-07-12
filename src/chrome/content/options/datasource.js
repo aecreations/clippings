@@ -16,7 +16,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2011-2013
+ * Portions created by the Initial Developer are Copyright (C) 2011-2015
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -29,7 +29,7 @@ Components.utils.import("resource://clippings/modules/aeUtils.js");
 
 var gStrBundle;
 var gDataSrcLocationOpt, gCustomDataSrcPath, gCustomDataSrcBrws;
-var gPrevSelectedDataSrcOpt;
+var gPrevSelectedDataSrcOpt, gPrevDataSrcPath;
 var gClippingsSvc;
 
 
@@ -100,6 +100,7 @@ function initPrefPaneDataSource()
   }
   
   gPrevSelectedDataSrcOpt = gDataSrcLocationOpt.selectedIndex;
+  gPrevDataSrcPath = dataSrcPath;
 }
 
 
@@ -113,6 +114,18 @@ function changeDataSrcLocationOptions()
     gCustomDataSrcBrws.disabled = false;
     gCustomDataSrcPath.disabled = false;
   }
+  
+  // The action to remove all source URLs from clippings would only apply
+  // to the old datasource, not the new one (until after applying the
+  // change to the datasource location)
+  var newDataSrcPath;
+  if (gDataSrcLocationOpt.selectedIndex == 0) {
+    newDataSrcPath = aeUtils.getUserProfileDir().path;
+  }
+  else {
+    newDataSrcPath = gCustomDataSrcPath.value;
+  }
+  $("remove-all-src-urls").disabled = (newDataSrcPath != gPrevDataSrcPath);
 }
 
 
@@ -133,11 +146,30 @@ function browseDataSrcPath()
     done: function (aResult) {
       if (aResult == filePicker.returnOK) {
         gCustomDataSrcPath.value = filePicker.file.path;
+        $("remove-all-src-urls").disabled = true;
       }
     }
   };
 
   filePicker.open(fpShownCallback);
+}
+
+
+function removeAllSourceURLs()
+{
+  var confirmRemove = aeUtils.confirmYesNo(document.title, gStrBundle.getString("removeAllSrcURLsWarning"), true);
+
+  if (confirmRemove) {
+    // Do a backup of the datasource first
+    gClippingsSvc.flushDataSrc(true);
+
+    gClippingsSvc.removeAllSourceURLs();
+    gClippingsSvc.flushDataSrc(false);
+
+    aeUtils.alertEx(document.title, gStrBundle.getString("removeAllSrcURLsFinish"));
+
+    $("remove-all-src-urls").disabled = true;
+  }
 }
 
 

@@ -463,6 +463,38 @@ aeClippingsService.prototype.processRootFolder = function ()
 };
 
 
+aeClippingsService.prototype.removeAllSourceURLs = function ()
+{
+  if (! this._rdfContainer) {
+    throw Components.Exception("Data source not initialized",
+			       Components.results.NS_ERROR_NOT_INITIALIZED);
+  }
+  this._removeAllSrcURLs(this._rdfContainer);
+};
+
+
+aeClippingsService.prototype._removeAllSrcURLs = function (aFolderCtr)
+{
+  var childrenEnum = aFolderCtr.GetElements();
+
+  while (childrenEnum.hasMoreElements()) {
+    var child = childrenEnum.getNext();
+    child = child.QueryInterface(Components.interfaces.nsIRDFResource);
+    var childURI = child.Value;
+
+    if (this.isClipping(childURI) && this.hasSourceURL(childURI)) {
+      var predSrcURL = this._rdfSvc.GetResource(this._PREDSRCURL_RESOURCE_URI);
+      var targSrcURL = this._dataSrc.GetTarget(child, predSrcURL, true);
+      this._dataSrc.Unassert(child, predSrcURL, targSrcURL);
+    }
+    else if (this.isFolder(childURI)) {
+      var folderCtr = this._getSeqContainerFromFolder(childURI);
+      this._removeAllSrcURLs(folderCtr);
+    }
+  }
+};
+
+
 aeClippingsService.prototype.processEmptyFolders = function ()
 {
   if (! this._rdfContainer) {

@@ -279,6 +279,8 @@ interface aeIClippingsService : nsISupports
    */
   void processEmptyFolders();
 
+  void removeAllSourceURLs();
+
   /*
    * Method processRootFolder():
    * Appends the 'empty' clipping to the root folder if the root folder doesn't
