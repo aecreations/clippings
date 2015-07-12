@@ -163,7 +163,7 @@
       var textbox = aEvent.target;
       gQuickEdit.init(textbox, updateText);
       updateItemCount();
-      setPlaceholderBarDisabledState(false);
+      gPlaceholderBar.setDisabledState(false);
     }
 
     function clippingName_blur(aEvent)
@@ -200,7 +200,7 @@
       updateText(aEvent.target.value);
       commit();
 
-      setPlaceholderBarDisabledState(true);
+      gPlaceholderBar.setDisabledState(true);
 
       //aeUtils.log("clippingsMgr.xul:<textbox id='clipping-text'> END blur");
     }
