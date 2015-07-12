@@ -1934,7 +1934,7 @@ aeClippingsService.prototype.killDataSrc = function ()
 };
 
 
-aeClippingsService.prototype.exportToFile = function (aFileURL, aFileType)
+aeClippingsService.prototype.exportToFile = function (aFileURL, aFileType, aIncludeSrcURLs)
 {
   // We have to do it this way because we don't want to include unpurged
   // detached folders with the exported file.
@@ -1980,7 +1980,7 @@ aeClippingsService.prototype.exportToFile = function (aFileURL, aFileType)
   }
   else {
     // A prime example of software reuse.
-    count = this._importFromFileEx(this._rdfContainer, this._dataSrc, extRootCtr, extDS, true);
+    count = this._importFromFileEx(this._rdfContainer, this._dataSrc, extRootCtr, extDS, true, aIncludeSrcURLs);
     format = "Clippings 2";
   }
 
@@ -2208,7 +2208,7 @@ aeClippingsService.prototype.importFromFile = function (aFileURL, aDontNotify, a
 	    + (isNewDataSrc ? "Clippings 2" : "Clippings 1.x series"));
 
   if (isNewDataSrc) {
-    rv = this._importFromFileEx(extRDFContainer, extDataSrc, this._rdfContainer, null, aImportShortcutKeys);
+    rv = this._importFromFileEx(extRDFContainer, extDataSrc, this._rdfContainer, null, aImportShortcutKeys, true);
 
     if (! aDontNotify) {
       this._notifyImportDone(rv);
@@ -2263,7 +2263,7 @@ aeClippingsService.prototype.importFromFile = function (aFileURL, aDontNotify, a
 
 
 // Import data from Clippings 2.x and newer
-aeClippingsService.prototype._importFromFileEx = function (aExtFolderCtr, aExtDataSrc, aLocalFolderCtr, aLocalDataSrc, aImportShortcutKeys)
+aeClippingsService.prototype._importFromFileEx = function (aExtFolderCtr, aExtDataSrc, aLocalFolderCtr, aLocalDataSrc, aImportShortcutKeys, aImportSrcURLs)
 {
   var count = 0;
   var localFolderURI = aLocalFolderCtr.Resource.Value;
@@ -2277,8 +2277,12 @@ aeClippingsService.prototype._importFromFileEx = function (aExtFolderCtr, aExtDa
 
     if (this.isClipping(extChildURI, aExtDataSrc)) {
       let text = this.getText(extChildURI, aExtDataSrc);
-      let srcURL = this.getSourceURL(extChildURI, aExtDataSrc);
       let label = this.getLabel(extChildURI, aExtDataSrc);
+
+      let srcURL = "";
+      if (aImportSrcURLs) {
+        srcURL = this.getSourceURL(extChildURI, aExtDataSrc);
+      }
 
       let uri = this.createNewClipping(localFolderURI, name, text, srcURL, label, true, aLocalDataSrc);
 

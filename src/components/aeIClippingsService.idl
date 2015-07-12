@@ -242,7 +242,9 @@ interface aeIClippingsService : nsISupports
 
   void refreshDataSrc();
 
-  void exportToFile(in uri aFileURL, in short aFileType); 
+  void exportToFile(in uri aFileURL, 
+		    in short aFileType, 
+		    in boolean aIncludeSrcURLs);
   /* throws NS_ERROR_INVALID_ARG - if aFileType is invalid */
 
   /*
