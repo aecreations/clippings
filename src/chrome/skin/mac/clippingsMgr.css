@@ -354,7 +354,7 @@ toolbarbutton .toolbarbutton-icon {
 #clipping-label-menupopup menuitem,
 #clipping-label-cxt-menupopup menuitem {
   list-style-image: url("chrome://clippings/skin/images/clipping-labels.png");
-  min-width: 20px !important;
+  max-width: 16px !important;
 }
 
 #clipping-label-btn {
@@ -376,6 +376,10 @@ toolbarbutton .toolbarbutton-icon {
   -moz-box-flex: 1;
   -moz-box-pack: center;
   -moz-box-align: center;
+  padding-left: 12px;
+  padding-right: 0px;
+  padding-top: 6px;
+  padding-bottom: 6px;
 }
 
 .clipping-label-none {
