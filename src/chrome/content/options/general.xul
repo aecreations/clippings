@@ -19,7 +19,7 @@
    -
    - The Initial Developer of the Original Code is
    - Alex Eng <ateng@users.sourceforge.net>.
-   - Portions created by the Initial Developer are Copyright (C) 2005-2013
+   - Portions created by the Initial Developer are Copyright (C) 2005-2015
    - the Initial Developer. All Rights Reserved.
    -
    - Contributor(s):
@@ -40,6 +40,8 @@
        name="extensions.aecreations.clippings.html_auto_line_break"/>
       <preference id="tab-modal-placeholder-prmt-pref" type="bool"
        name="extensions.aecreations.clippings.tab_modal_placeholder_prompt"/>
+      <preference id="always-save-src-url-pref" type="bool"
+       name="extensions.aecreations.clippings.always_save_source_url"/>
       <preference id="check-spelling-pref" type="bool"
        name="extensions.aecreations.clippings.check_spelling"/>
       <preference id="enable-shortcut-key-pref" type="bool"
@@ -78,9 +80,12 @@
       <!-- Firefox only -->
       <checkbox id="tab-modal-prmt" preference="tab-modal-placeholder-prmt-pref"
        label="&tabModalPrompt.label;" accesskey="&tabModalPrompt.accesskey;"/>
-
     </groupbox>
     <separator class="thin"/>
+
+    <!-- Firefox only -->
+    <checkbox id="always-save-src-url" preference="always-save-src-url-pref"
+     label="&alwaysSaveSrcUrl.label;" accesskey="&alwaysSaveSrcUrl.accesskey;"/>
     <hbox flex="1">
       <checkbox id="check-spelling" flex="1" preference="check-spelling-pref"
        label="&checkSpelling.label;" accesskey="&checkSpelling.accesskey;"/>

@@ -16,7 +16,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2005-2013
+ * Portions created by the Initial Developer are Copyright (C) 2005-2015
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -54,6 +54,7 @@ function initPrefPaneGeneral()
   if (Application.id == aeConstants.HOSTAPP_TB_GUID) {    
     $("paste-html-formatted-clipping").value = gStrBundle.getString("htmlPasteOptionsTB");
     $("tab-modal-prmt").hidden = true;
+    $("always-save-src-url").hidden = true;
   }
 
   var shortcutKeyStr = gStrBundle.getFormattedString("shortcutKey", [shortcutKeyPrefix]);

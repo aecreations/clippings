@@ -130,7 +130,14 @@ function initDlg()
     }
 
     $("shortcut-key-hint").setAttribute("tooltiptext", hint);
-    $("save-source-url").checked = gDlgArgs.saveSrcURL;
+
+    let saveSrcURLElt = $("save-source-url");
+    saveSrcURLElt.checked = gDlgArgs.saveSrcURL;
+
+    if (! gDlgArgs.srcURL) {
+      saveSrcURLElt.disabled = true;
+      saveSrcURLElt.checked = false;
+    }
 
     // Thunderbird-specific options
     if (Application.id == aeConstants.HOSTAPP_TB_GUID) {
@@ -383,9 +390,6 @@ function doOK()
   // new.xul
   else {
     var clipText = gClippingText.value;
-
-    // Firefox only
-    aeUtils.setPref("clippings.save_source_url", $("save-source-url").checked);
 
     // Thunderbird only
     if (gCreateAsUnquoted.checked) {
