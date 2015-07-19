@@ -190,13 +190,13 @@
 <!ENTITY description.caption "Description">
 <!ENTITY fmtClippings.listitem "Clippings File">
 <!ENTITY fmtHtmlDocument.listitem "HTML Document">
-<!ENTITY includeSrcURLs.label "Include source addresses of clippings">
+<!ENTITY includeSrcURLs.label "Include source web page addresses of clippings">
 <!ENTITY includeSrcURLs.accesskey "I">
 
 <!-- New Clipping dialog -->
 <!ENTITY clippingName.label "Name:">
 <!ENTITY clippingName.accesskey "N">
-<!ENTITY saveSourceURL.label "Save the address of the source page">
+<!ENTITY saveSourceURL.label "Save the address of the source web page">
 <!ENTITY saveSourceURL.accesskey "S">
 <!ENTITY newClippingsEntry.title "New Clipping">
 <!ENTITY newFolder.title "New Folder">
