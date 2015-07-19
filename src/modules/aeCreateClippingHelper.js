@@ -64,10 +64,10 @@ function aeCreateClippingFromText(aClippingsSvc, aText, aSourceURL, aShowDialog,
   if (clipText && aText) {
     clipName = aClippingsSvc.createClippingNameFromText(clipText);
 
-    _log("aeCreateClippingFromText(): clipName: \"" + clipName + "\"; length: " + clipName.length);
+    _log("aeCreateClippingFromText(): clipName: \"" + clipName + "\"; length: " + clipName.length + "; source URL: " + (srcURL || "(nil)"));
 
     var label = aClippingsSvc.LABEL_NONE;
-    var saveSrcURL = aeUtils.getPref("clippings.save_source_url", true);
+    var saveSrcURL = (srcURL ? aeUtils.getPref("clippings.always_save_source_url") : false);
 
     if (aShowDialog) {
       var args = {
@@ -75,6 +75,7 @@ function aeCreateClippingFromText(aClippingsSvc, aText, aSourceURL, aShowDialog,
 	text:  clipText,
         label: label,
 	key:   null,
+        srcURL: srcURL,
         saveSrcURL: saveSrcURL,
 	destFolder: null,
 	userCancel: null
