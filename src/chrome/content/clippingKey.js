@@ -24,6 +24,7 @@
  * ***** END LICENSE BLOCK ***** */
 
 Components.utils.import("resource://clippings/modules/aeUtils.js");
+Components.utils.import("resource://clippings/modules/aeString.js");
 
 const Cc = Components.classes;
 const Ci = Components.interfaces;
@@ -65,7 +66,8 @@ function processKeyPress(aEvent)
   else {
     var key = aEvent.key.toUpperCase();
 
-    aeUtils.log("Clippings: Key code: " + key);
+    // !! Using deprecated DOM method event.keyCode
+    aeUtils.log(aeString.format("Clippings: Key pressed: %S; key code: %d", key, aEvent.keyCode));
 
     var keyDict = gClippingsSvc.getShortcutKeyDict();
     var keys;
