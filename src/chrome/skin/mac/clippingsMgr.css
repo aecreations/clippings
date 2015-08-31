@@ -351,17 +351,18 @@ toolbarbutton .toolbarbutton-icon {
 }
 
 /* Color-coded clippings */
+/***
 #clipping-label-menupopup menuitem,
 #clipping-label-cxt-menupopup menuitem {
   list-style-image: url("chrome://clippings/skin/images/clipping-labels.png");
   max-width: 16px !important;
 }
-
+***/
 #clipping-label-btn {
   min-width: 12px !important;
   width: 42px;
 }
-
+/***
 #clipping-label-menugroup-row-1,
 #clipping-label-menugroup-row-2,
 #clipping-label-cxt-menugroup-row-1,
@@ -446,3 +447,4 @@ toolbarbutton .toolbarbutton-icon {
   -moz-image-region: rect(24px, 192px, 48px, 168px);
 }
 
+***/
