@@ -1,0 +1,116 @@
+/* ***** BEGIN LICENSE BLOCK *****
+ * Version: MPL 1.1
+ *
+ * The contents of this file are subject to the Mozilla Public License Version
+ * 1.1 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+ * for the specific language governing rights and limitations under the
+ * License.
+ *
+ * The Original Code is Clippings.
+ *
+ * The Initial Developer of the Original Code is 
+ * Alex Eng <ateng@users.sourceforge.net>.
+ * Portions created by the Initial Developer are Copyright (C) 2015
+ * the Initial Developer. All Rights Reserved.
+ *
+ * Contributor(s):
+ *
+ * ***** END LICENSE BLOCK ***** */
+
+
+/*
+ * Clipping label popup submenu
+ * The *-cxt-* styles are used by Clippings Manager, where the label palette
+ * appears in two places.
+ */
+#clipping-label-menupopup menuitem,
+#clipping-label-cxt-menupopup menuitem {
+  list-style-image: url("chrome://clippings/skin/images/clipping-labels.png");
+  max-width: 24px;
+}
+
+/* Some hacking to force the popup submenu to look like a palette widget. */
+#clipping-label-menugroup-row-1,
+#clipping-label-menugroup-row-2,
+#clipping-label-cxt-menugroup-row-1,
+#clipping-label-cxt-menugroup-row-2 {
+  background-color: menu;
+}
+
+#clipping-label-menugroup-row-1 .menuitem-iconic,
+#clipping-label-menugroup-row-2 .menuitem-iconic,
+#clipping-label-cxt-menugroup-row-1 .menuitem-iconic,
+#clipping-label-cxt-menugroup-row-2 .menuitem-iconic {
+  -moz-box-flex: 1;
+  -moz-box-pack: center;
+  -moz-box-align: center;
+}
+
+.clipping-label-none {
+  -moz-image-region: rect(0px, 24px, 24px, 0px);
+}
+
+.clipping-label-none[selected="true"] {
+  -moz-image-region: rect(24px, 24px, 48px, 0px);
+}
+
+.clipping-label-red {
+  -moz-image-region: rect(0px, 48px, 24px, 24px);
+}
+
+.clipping-label-red[selected="true"] {
+  -moz-image-region: rect(24px, 48px, 48px, 24px);
+}
+
+.clipping-label-orange {
+  -moz-image-region: rect(0px, 72px, 24px, 48px);
+}
+
+.clipping-label-orange[selected="true"] {
+  -moz-image-region: rect(24px, 72px, 48px, 48px);
+}
+
+.clipping-label-yellow {
+  -moz-image-region: rect(0px, 96px, 24px, 72px);
+}
+
+.clipping-label-yellow[selected="true"] {
+  -moz-image-region: rect(24px, 96px, 48px, 72px);
+}
+
+.clipping-label-green {
+  -moz-image-region: rect(0px, 120px, 24px, 96px);
+}
+
+.clipping-label-green[selected="true"] {
+  -moz-image-region: rect(24px, 120px, 48px, 96px);
+}
+
+.clipping-label-blue {
+  -moz-image-region: rect(0px, 144px, 24px, 120px);
+}
+
+.clipping-label-blue[selected="true"] {
+  -moz-image-region: rect(24px, 144px, 48px, 120px);
+}
+
+.clipping-label-purple {
+  -moz-image-region: rect(0px, 168px, 24px, 144px);
+}
+
+.clipping-label-purple[selected="true"] {
+  -moz-image-region: rect(24px, 168px, 48px, 144px);
+}
+
+.clipping-label-grey {
+  -moz-image-region: rect(0px, 192px, 24px, 168px);
+}
+
+.clipping-label-grey[selected="true"] {
+  -moz-image-region: rect(24px, 192px, 48px, 168px);
+}
