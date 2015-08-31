@@ -160,58 +160,14 @@
           </rows>
         </grid>
       </vbox>
-
-      <vbox>
-        <grid>
-          <columns><column/></columns>
-          <rows>
-            <row align="center">
-              <label value="&clippingLabelPicker.label;"
-               accesskey="&clippingLabelPicker.accesskey;"
-               control="clipping-label"/>
-              <button id="clipping-label" type="menu"
-               image="chrome://clippings/skin/images/clipping.png">
-                <menupopup id="clipping-label-menupopup">
-                  <menugroup id="clipping-label-menugroup-row-1">
-                    <menuitem class="menuitem-iconic clipping-label-none"
-                     tooltiptext="&labelNone.tooltip;"
-                     oncommand="gClippingLabelPicker.selectedItem = this"/>
-                    <menuitem class="menuitem-iconic clipping-label-red"
-                     tooltiptext="&labelRed.tooltip;"
-                     oncommand="gClippingLabelPicker.selectedItem = this"/>
-                    <menuitem class="menuitem-iconic clipping-label-orange"
-                     tooltiptext="&labelOrange.tooltip;"
-                     oncommand="gClippingLabelPicker.selectedItem = this"/>
-                    <menuitem class="menuitem-iconic clipping-label-yellow"
-                     tooltiptext="&labelYellow.tooltip;"
-                     oncommand="gClippingLabelPicker.selectedItem = this"/>
-                  </menugroup>
-                  <menugroup id="clipping-label-menugroup-row-2">
-                    <menuitem class="menuitem-iconic clipping-label-green"
-                     tooltiptext="&labelGreen.tooltip;"
-                     oncommand="gClippingLabelPicker.selectedItem = this"/>
-                    <menuitem class="menuitem-iconic clipping-label-blue"
-                     tooltiptext="&labelBlue.tooltip;"
-                     oncommand="gClippingLabelPicker.selectedItem = this"/>
-                    <menuitem class="menuitem-iconic clipping-label-purple"
-                     tooltiptext="&labelPurple.tooltip;"
-                     oncommand="gClippingLabelPicker.selectedItem = this"/>
-                    <menuitem class="menuitem-iconic clipping-label-grey"
-                     tooltiptext="&labelGray.tooltip;"
-                     oncommand="gClippingLabelPicker.selectedItem = this"/>
-                  </menugroup>
-                </menupopup>
-              </button>
-            </row>
-          </rows>
-        </grid>
-      </vbox>
     </hbox>
 
     <grid>
       <columns>
         <column/>
+        <column/>
         <column flex="1"/>
+        <column/>
       </columns>
       <rows>
         <row align="center">
@@ -261,13 +217,52 @@
                 <menuitem label="0"/>
    	      </menupopup>
             </menulist>
-
-            <vbox flex="1">
+            <spacer flex="1"/>
+            <vbox>
               <box flex="1"/>
               <label id="shortcut-key-hint" value="(?)"/>
 	      <box flex="1"/>
             </vbox>
           </hbox>
+          <spacer flex="1"/>
+
+          <label value="&clippingLabelPicker.label;"
+           accesskey="&clippingLabelPicker.accesskey;"
+           control="clipping-label"/>
+
+          <button id="clipping-label" type="menu"
+           image="chrome://clippings/skin/images/clipping.png">
+            <menupopup id="clipping-label-menupopup">
+              <menugroup id="clipping-label-menugroup-row-1">
+                <menuitem class="menuitem-iconic clipping-label-none"
+                 tooltiptext="&labelNone.tooltip;"
+                 oncommand="gClippingLabelPicker.selectedItem = this"/>
+                <menuitem class="menuitem-iconic clipping-label-red"
+                 tooltiptext="&labelRed.tooltip;"
+                 oncommand="gClippingLabelPicker.selectedItem = this"/>
+                <menuitem class="menuitem-iconic clipping-label-orange"
+                 tooltiptext="&labelOrange.tooltip;"
+                 oncommand="gClippingLabelPicker.selectedItem = this"/>
+                <menuitem class="menuitem-iconic clipping-label-yellow"
+                 tooltiptext="&labelYellow.tooltip;"
+                 oncommand="gClippingLabelPicker.selectedItem = this"/>
+              </menugroup>
+              <menugroup id="clipping-label-menugroup-row-2">
+                <menuitem class="menuitem-iconic clipping-label-green"
+                 tooltiptext="&labelGreen.tooltip;"
+                 oncommand="gClippingLabelPicker.selectedItem = this"/>
+                <menuitem class="menuitem-iconic clipping-label-blue"
+                 tooltiptext="&labelBlue.tooltip;"
+                 oncommand="gClippingLabelPicker.selectedItem = this"/>
+                <menuitem class="menuitem-iconic clipping-label-purple"
+                 tooltiptext="&labelPurple.tooltip;"
+                 oncommand="gClippingLabelPicker.selectedItem = this"/>
+                <menuitem class="menuitem-iconic clipping-label-grey"
+                 tooltiptext="&labelGray.tooltip;"
+                 oncommand="gClippingLabelPicker.selectedItem = this"/>
+              </menugroup>
+            </menupopup>
+          </button>
         </row>
         <row>
           <spacer/>
