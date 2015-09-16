@@ -344,12 +344,12 @@ function toggleOptions()
   if (clippingOptions.hidden) {
     clippingOptions.hidden = false;
     $("toggle-options").className = "collapse-options";
-    window.resizeBy(0, 76);
+    window.sizeToContent();
   }
   else {
     clippingOptions.hidden = true;
     $("toggle-options").className = "expand-options";
-    window.resizeBy(0, -76);
+    window.sizeToContent();
   }
 }
 

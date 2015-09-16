@@ -78,6 +78,7 @@ menu[open="true"] {
   min-width: 10px;
   min-height: 12px;
   margin-right: 0;
+  margin-left: 3px;
 }
 
 .expand-options {
