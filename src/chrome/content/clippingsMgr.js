@@ -2387,6 +2387,7 @@ function updateDisplay(aSuppressUpdateSelection)
     }
     else {
       debugStr += "\nNo label.";
+      labelPickerBtn.image = "chrome://clippings/skin/images/clipping.png";
     }
     aeUtils.log(debugStr);
   }
