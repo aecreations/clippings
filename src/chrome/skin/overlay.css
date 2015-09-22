@@ -99,18 +99,18 @@ toolbarpaletteitem[place="palette"] > #ae-clippings-icon {
 
 /* Firefox Australis integration */
 #ae-clippings-icon[cui-areatype="toolbar"] {
-  list-style-image: url("chrome://clippings/skin/images/clippings16.png");
+  list-style-image: url("chrome://clippings-laf/skin/images/clippings16.png");
 }
 
 #ae-clippings-icon[cui-areatype="toolbar"]:-moz-drag-over {
-  list-style-image: url("chrome://clippings/skin/images/clippings-hilite16.png");
+  list-style-image: url("chrome://clippings-laf/skin/images/clippings-hilite16.png");
 }
 
 #ae-clippings-icon[cui-areatype="menu-panel"],
 toolbarpaletteitem[place="palette"][removable="true"] > #ae-clippings-icon {
-  list-style-image: url("chrome://clippings/skin/images/clippings32.png");
+  list-style-image: url("chrome://clippings-laf/skin/images/clippings32.png");
 }
 
 #ae-clippings-icon[cui-areatype="menu-panel"]:-moz-drag-over {
-  list-style-image: url("chrome://clippings/skin/images/clippings-hilite32.png");
+  list-style-image: url("chrome://clippings-laf/skin/images/clippings-hilite32.png");
 }
