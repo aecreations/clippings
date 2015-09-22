@@ -14,6 +14,7 @@ skin	clippings	classic/1.0	jar:chrome/clippings.jar!/skin/
 # Platform-specific styling
 skin	clippings-laf	classic	jar:chrome/clippings.jar!/skin/all/
 skin	clippings-laf	classic	jar:chrome/clippings.jar!/skin/mac/	os=Darwin
+skin	clippings-laf	classic	jar:chrome/clippings.jar!/skin/win/	os=WINNT
 
 style	chrome://global/content/customizeToolbar.xul	chrome://clippings/skin/overlay.css
 
