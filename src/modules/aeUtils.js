@@ -16,7 +16,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2005-2014
+ * Portions created by the Initial Developer are Copyright (C) 2005-2015
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -284,9 +284,12 @@ aeUtils.beep = function ()
 
 aeUtils.debugBeep = function ()
 {
+  return;
+  /***
   if (DEBUG) {
     this._beep();
   }
+  ***/
 };
 
 
