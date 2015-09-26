@@ -14,6 +14,7 @@
 <!ENTITY showPasteOpts.label "Show Quote Options When Pasting">
 <!ENTITY showPasteOpts.accesskey "S">
 <!ENTITY statusbar.tooltip "Drag selection here to create new clipping, or right-click for options">
+<!ENTITY toolbarbutton.tooltip "Drag selection here to create new clipping">
 <!ENTITY resetAutoIncrVars.label "Reset Auto-increment Placeholders">
 <!ENTITY empty.label "(Empty)">
 
