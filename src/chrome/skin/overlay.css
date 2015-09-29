@@ -84,16 +84,14 @@ menu.ae-clippings-folder-menu[open="true"] {
   padding: 4px;
 }
 
+
+/* Thunderbird integration */
 #ae-clippings-icon {
-  list-style-image: url("chrome://clippings/skin/images/clippings.png");
+  list-style-image: url("chrome://clippings-laf/skin/images/clippings16.png");
 }
 
 #ae-clippings-icon:-moz-drag-over {
-  list-style-image: url("chrome://clippings/skin/images/clippings-hilite.png");
-}
-
-toolbarpaletteitem[place="palette"] > #ae-clippings-icon {
-  list-style-image: url("chrome://clippings/skin/images/clippings.png");
+  list-style-image: url("chrome://clippings-laf/skin/images/clippings-hilite16.png");
 }
 
 
