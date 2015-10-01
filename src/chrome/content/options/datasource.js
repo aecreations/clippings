@@ -101,6 +101,11 @@ function initPrefPaneDataSource()
   
   gPrevSelectedDataSrcOpt = gDataSrcLocationOpt.selectedIndex;
   gPrevDataSrcPath = dataSrcPath;
+
+  // On Thunderbird, hide the button to strip out source URLs in all clippings.
+  if (Application.id == aeConstants.HOSTAPP_TB_GUID) {
+    $("remove-all-src-urls-panel").hidden = true;
+  }
 }
 
 

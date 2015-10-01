@@ -87,7 +87,7 @@
     </groupbox>
 
     <separator />
-    <hbox>
+    <hbox id="remove-all-src-urls-panel">
       <button id="remove-all-src-urls" label="&removeAllSrcURLs.label;"
        accesskey="&removeAllSrcURLs.accesskey;"
        oncommand="removeAllSourceURLs()"/>

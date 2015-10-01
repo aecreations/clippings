@@ -696,12 +696,12 @@ var gSrcURLBar = {
 
  show: function () 
  {
-   this._srcURLBarElt.collapsed = false;
+   this._srcURLBarElt.style.display = "-moz-grid";
  },
 
  hide: function ()
  {
-   this._srcURLBarElt.collapsed = true;
+   this._srcURLBarElt.style.display = "none";
  },
 
  isVisible: function ()
@@ -861,6 +861,10 @@ function init()
   gSrcURLBar.init();
   gFindBar.init();
   gPlaceholderBar.init();
+
+  if (Application.id == aeConstants.HOSTAPP_TB_GUID) {
+    gSrcURLBar.hide();
+  }
 
   gStatusBar = $("app-status");
   setStatusBarVisibility();
@@ -2413,6 +2417,7 @@ function updateDisplay(aSuppressUpdateSelection)
 }
 
 updateDisplay.placeholderBarVisible = null;
+updateDisplay.sourceURLBarVisible = null;
 
 
 function updateLabelMenu()
