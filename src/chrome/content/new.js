@@ -343,13 +343,8 @@ function toggleOptions()
 
   if (clippingOptions.hidden) {
     clippingOptions.hidden = false;
-    $("toggle-options").className = "collapse-options";
     window.sizeToContent();
-  }
-  else {
-    clippingOptions.hidden = true;
-    $("toggle-options").className = "expand-options";
-    window.sizeToContent();
+    $("toggle-options").disabled = true;
   }
 }
 
