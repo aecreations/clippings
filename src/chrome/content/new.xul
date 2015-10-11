@@ -121,7 +121,7 @@
     <rows>
       <row align="center">
         <button id="toggle-options" class="expand-options" 
-         onclick="toggleOptions()"/>
+         oncommand="toggleOptions()"/>
         <label value="&newClippingOptions.label;"
          accesskey="&newClippingOptions.accesskey;" control="toggle-options"/>
 	<separator class="groove"/>
