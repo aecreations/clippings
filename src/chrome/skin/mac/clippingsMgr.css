@@ -44,36 +44,36 @@ treechildren::-moz-tree-image {
 }
 
 treechildren::-moz-tree-image(leaf) {
-  list-style-image: url("chrome://clippings/skin/images/clipping.png");
+  list-style-image: url("chrome://clippings/skin/images/clipping.svg");
 }
 
 /* Clipping labels */
 treechildren::-moz-tree-image(leaf, red) {
-  list-style-image: url("chrome://clippings/skin/images/clipping-red.png");
+  list-style-image: url("chrome://clippings/skin/images/clipping-red.svg");
 }
 
 treechildren::-moz-tree-image(leaf, orange) {
-  list-style-image: url("chrome://clippings/skin/images/clipping-orange.png");
+  list-style-image: url("chrome://clippings/skin/images/clipping-orange.svg");
 }
 
 treechildren::-moz-tree-image(leaf, yellow) {
-  list-style-image: url("chrome://clippings/skin/images/clipping-yellow.png");
+  list-style-image: url("chrome://clippings/skin/images/clipping-yellow.svg");
 }
 
 treechildren::-moz-tree-image(leaf, green) {
-  list-style-image: url("chrome://clippings/skin/images/clipping-green.png");
+  list-style-image: url("chrome://clippings/skin/images/clipping-green.svg");
 }
 
 treechildren::-moz-tree-image(leaf, blue) {
-  list-style-image: url("chrome://clippings/skin/images/clipping-blue.png");
+  list-style-image: url("chrome://clippings/skin/images/clipping-blue.svg");
 }
 
 treechildren::-moz-tree-image(leaf, purple) {
-  list-style-image: url("chrome://clippings/skin/images/clipping-purple.png");
+  list-style-image: url("chrome://clippings/skin/images/clipping-purple.svg");
 }
 
 treechildren::-moz-tree-image(leaf, grey) {
-  list-style-image: url("chrome://clippings/skin/images/clipping-grey.png");
+  list-style-image: url("chrome://clippings/skin/images/clipping-grey.svg");
 }
 
 
@@ -87,11 +87,11 @@ treechildren::-moz-tree-cell-text(dummy) {
 }
 
 treechildren::-moz-tree-image(container, open) {
-  list-style-image: url("chrome://clippings/skin/images/folder-open.png");
+  list-style-image: url("chrome://clippings/skin/images/folder-open.svg");
 }
 
 treechildren::-moz-tree-image(container, closed) {
-  list-style-image: url("chrome://clippings/skin/images/folder.png");
+  list-style-image: url("chrome://clippings/skin/images/folder.svg");
 }
 
 
@@ -118,15 +118,15 @@ menu > hbox.menu-iconic-left, menuitem > hbox.menu-iconic-left {
 }
 
 menu.clippings-folder, menuitem.clippings-folder {
-  list-style-image: url("chrome://clippings/skin/images/folder.png");
+  list-style-image: url("chrome://clippings/skin/images/folder.svg");
 }
 
 menu.clippings-folder[open="true"], menuitem.clippings-folder[open="true"] {
-  list-style-image: url("chrome://clippings/skin/images/folder-open.png");
+  list-style-image: url("chrome://clippings/skin/images/folder-open.svg");
 }
 
 menuitem.clippings-root {
-  list-style-image: url("chrome://clippings/skin/images/clippings-root.png");  
+  list-style-image: url("chrome://clippings/skin/images/clippings-root.svg");  
 }
 
 menuitem.clippings-root > hbox.menu-iconic-left {
@@ -258,15 +258,19 @@ toolbarbutton .toolbarbutton-icon {
 }
 
 #find {
-  -moz-image-region: rect(0px, 194px, 16px, 176px);
+  -moz-image-region: rect(0px, 192px, 16px, 176px);
 }
 
 #find:hover {
-  -moz-image-region: rect(16px, 194px, 32px, 176px);
+  -moz-image-region: rect(16px, 192px, 32px, 176px);
 }
 
 #find:active {
-  -moz-image-region: rect(32px, 194px, 48px, 176px);
+  -moz-image-region: rect(32px, 192px, 48px, 176px);
+}
+
+#find[checked="true"] {
+  -moz-image-region: rect(48px, 192px, 64px, 176px);
 }
 
 #find-next {
@@ -338,6 +342,10 @@ toolbarbutton .toolbarbutton-icon {
   -moz-image-region: rect(32px, 272px, 48px, 256px);
 }
 
+#placeholder-custom[disabled="true"] {
+  -moz-image-region: rect(48px, 272px, 64px, 256px);
+}
+
 #placeholder-autoincrement {
   -moz-image-region: rect(0px, 288px, 16px, 272px);
 }
@@ -350,101 +358,11 @@ toolbarbutton .toolbarbutton-icon {
   -moz-image-region: rect(32px, 288px, 48px, 272px);
 }
 
-/* Color-coded clippings */
-/***
-#clipping-label-menupopup menuitem,
-#clipping-label-cxt-menupopup menuitem {
-  list-style-image: url("chrome://clippings/skin/images/clipping-labels.png");
-  max-width: 16px !important;
+#placeholder-autoincrement[disabled="true"] {
+  -moz-image-region: rect(48px, 288px, 64px, 272px);
 }
-***/
+
 #clipping-label-btn {
   min-width: 12px !important;
   width: 42px;
 }
-/***
-#clipping-label-menugroup-row-1,
-#clipping-label-menugroup-row-2,
-#clipping-label-cxt-menugroup-row-1,
-#clipping-label-cxt-menugroup-row-2 {
-  background-color: menu;
-}
-
-#clipping-label-menugroup-row-1 .menuitem-iconic,
-#clipping-label-menugroup-row-2 .menuitem-iconic,
-#clipping-label-cxt-menugroup-row-1 .menuitem-iconic,
-#clipping-label-cxt-menugroup-row-2 .menuitem-iconic {
-  -moz-box-flex: 1;
-  -moz-box-pack: center;
-  -moz-box-align: center;
-  padding-left: 12px;
-  padding-right: 0px;
-  padding-top: 6px;
-  padding-bottom: 6px;
-}
-
-.clipping-label-none {
-  -moz-image-region: rect(0px, 24px, 24px, 0px);
-}
-
-.clipping-label-none[selected="true"] {
-  -moz-image-region: rect(24px, 24px, 48px, 0px);
-}
-
-.clipping-label-red {
-  -moz-image-region: rect(0px, 48px, 24px, 24px);
-}
-
-.clipping-label-red[selected="true"] {
-  -moz-image-region: rect(24px, 48px, 48px, 24px);
-}
-
-.clipping-label-orange {
-  -moz-image-region: rect(0px, 72px, 24px, 48px);
-}
-
-.clipping-label-orange[selected="true"] {
-  -moz-image-region: rect(24px, 72px, 48px, 48px);
-}
-
-.clipping-label-yellow {
-  -moz-image-region: rect(0px, 96px, 24px, 72px);
-}
-
-.clipping-label-yellow[selected="true"] {
-  -moz-image-region: rect(24px, 96px, 48px, 72px);
-}
-
-.clipping-label-green {
-  -moz-image-region: rect(0px, 120px, 24px, 96px);
-}
-
-.clipping-label-green[selected="true"] {
-  -moz-image-region: rect(24px, 120px, 48px, 96px);
-}
-
-.clipping-label-blue {
-  -moz-image-region: rect(0px, 144px, 24px, 120px);
-}
-
-.clipping-label-blue[selected="true"] {
-  -moz-image-region: rect(24px, 144px, 48px, 120px);
-}
-
-.clipping-label-purple {
-  -moz-image-region: rect(0px, 168px, 24px, 144px);
-}
-
-.clipping-label-purple[selected="true"] {
-  -moz-image-region: rect(24px, 168px, 48px, 144px);
-}
-
-.clipping-label-grey {
-  -moz-image-region: rect(0px, 192px, 24px, 168px);
-}
-
-.clipping-label-grey[selected="true"] {
-  -moz-image-region: rect(24px, 192px, 48px, 168px);
-}
-
-***/

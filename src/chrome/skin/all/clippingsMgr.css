@@ -43,36 +43,36 @@ treechildren::-moz-tree-image {
 }
 
 treechildren::-moz-tree-image(leaf) {
-  list-style-image: url("chrome://clippings/skin/images/clipping.png");
+  list-style-image: url("chrome://clippings/skin/images/clipping.svg");
 }
 
 /* Clipping labels */
 treechildren::-moz-tree-image(leaf, red) {
-  list-style-image: url("chrome://clippings/skin/images/clipping-red.png");
+  list-style-image: url("chrome://clippings/skin/images/clipping-red.svg");
 }
 
 treechildren::-moz-tree-image(leaf, orange) {
-  list-style-image: url("chrome://clippings/skin/images/clipping-orange.png");
+  list-style-image: url("chrome://clippings/skin/images/clipping-orange.svg");
 }
 
 treechildren::-moz-tree-image(leaf, yellow) {
-  list-style-image: url("chrome://clippings/skin/images/clipping-yellow.png");
+  list-style-image: url("chrome://clippings/skin/images/clipping-yellow.svg");
 }
 
 treechildren::-moz-tree-image(leaf, green) {
-  list-style-image: url("chrome://clippings/skin/images/clipping-green.png");
+  list-style-image: url("chrome://clippings/skin/images/clipping-green.svg");
 }
 
 treechildren::-moz-tree-image(leaf, blue) {
-  list-style-image: url("chrome://clippings/skin/images/clipping-blue.png");
+  list-style-image: url("chrome://clippings/skin/images/clipping-blue.svg");
 }
 
 treechildren::-moz-tree-image(leaf, purple) {
-  list-style-image: url("chrome://clippings/skin/images/clipping-purple.png");
+  list-style-image: url("chrome://clippings/skin/images/clipping-purple.svg");
 }
 
 treechildren::-moz-tree-image(leaf, grey) {
-  list-style-image: url("chrome://clippings/skin/images/clipping-grey.png");
+  list-style-image: url("chrome://clippings/skin/images/clipping-grey.svg");
 }
 
 
@@ -86,11 +86,11 @@ treechildren::-moz-tree-cell-text(dummy) {
 }
 
 treechildren::-moz-tree-image(container, open) {
-  list-style-image: url("chrome://clippings/skin/images/folder-open.png");
+  list-style-image: url("chrome://clippings/skin/images/folder-open.svg");
 }
 
 treechildren::-moz-tree-image(container, closed) {
-  list-style-image: url("chrome://clippings/skin/images/folder.png");
+  list-style-image: url("chrome://clippings/skin/images/folder.svg");
 }
 
 
@@ -117,15 +117,15 @@ menu > hbox.menu-iconic-left, menuitem > hbox.menu-iconic-left {
 }
 
 menu.clippings-folder, menuitem.clippings-folder {
-  list-style-image: url("chrome://clippings/skin/images/folder.png");
+  list-style-image: url("chrome://clippings/skin/images/folder.svg");
 }
 
 menu.clippings-folder[open="true"], menuitem.clippings-folder[open="true"] {
-  list-style-image: url("chrome://clippings/skin/images/folder-open.png");
+  list-style-image: url("chrome://clippings/skin/images/folder-open.svg");
 }
 
 menuitem.clippings-root {
-  list-style-image: url("chrome://clippings/skin/images/clippings-root.png");  
+  list-style-image: url("chrome://clippings/skin/images/clippings-root.svg");  
 }
 
 menuitem.clippings-root > hbox.menu-iconic-left {
@@ -230,11 +230,11 @@ toolbarbutton .toolbarbutton-icon {
 }
 
 #find {
-  -moz-image-region: rect(0px, 194px, 16px, 176px);
+  -moz-image-region: rect(0px, 192px, 16px, 176px);
 }
 
 #find:hover {
-  -moz-image-region: rect(16px, 194px, 32px, 176px);
+  -moz-image-region: rect(16px, 192px, 32px, 176px);
 }
 
 #find-next {
@@ -292,12 +292,20 @@ toolbarbutton .toolbarbutton-icon {
   -moz-image-region: rect(16px, 272px, 32px, 256px);
 }
 
+#placeholder-custom[disabled="true"] {
+  -moz-image-region: rect(48px, 272px, 64px, 256px);
+}
+
 #placeholder-autoincrement {
   -moz-image-region: rect(0px, 288px, 16px, 272px);
 }
 
 #placeholder-autoincrement:hover {
   -moz-image-region: rect(16px, 288px, 32px, 272px);
+}
+
+#placeholder-autoincrement[disabled="true"] {
+  -moz-image-region: rect(48px, 288px, 64px, 272px);
 }
 
 #clipping-label-btn {

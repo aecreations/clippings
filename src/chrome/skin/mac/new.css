@@ -30,7 +30,7 @@
 }
 
 .ae-clippings-folder {
-  list-style-image: url("chrome://clippings/skin/images/folder.png");
+  list-style-image: url("chrome://clippings/skin/images/folder.svg");
 }
 
 menu > .menu-iconic-left, menuitem > .menu-iconic-left {
@@ -40,11 +40,11 @@ menu > .menu-iconic-left, menuitem > .menu-iconic-left {
 }
 
 menu[open="true"] {
-  list-style-image: url("chrome://clippings/skin/images/folder-open.png");
+  list-style-image: url("chrome://clippings/skin/images/folder-open.svg");
 }
 
 .clippings-root {
-  list-style-image: url("chrome://clippings/skin/images/clippings-root.png");
+  list-style-image: url("chrome://clippings/skin/images/clippings-root.svg");
 }
 
 .clippings-root > .menu-iconic-left {
@@ -53,7 +53,7 @@ menu[open="true"] {
 }
 
 #folder-menu-button {
-  list-style-image: url("chrome://clippings/skin/images/clippings-root.png");
+  list-style-image: url("chrome://clippings/skin/images/clippings-root.svg");
 }
 
 #folder-menu-button .menulist-icon {
