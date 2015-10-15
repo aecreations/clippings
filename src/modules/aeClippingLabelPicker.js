@@ -136,10 +136,10 @@ ClippingLabelPicker.prototype.getIconFileStr = function (aLabel)
   var rv;
 
   if (aLabel) {
-    rv = "clipping-" + aLabel + ".png";
+    rv = "label-" + aLabel + ".svg";
   }
   else {
-    rv = "clipping.png";
+    rv = "label-none.svg";
   }
 
   return rv;

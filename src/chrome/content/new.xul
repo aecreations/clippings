@@ -231,7 +231,7 @@
            control="clipping-label"/>
 
           <button id="clipping-label" type="menu"
-           image="chrome://clippings/skin/images/clipping.png">
+           image="chrome://clippings/skin/images/label-none.svg">
             <menupopup id="clipping-label-menupopup">
               <menugroup id="clipping-label-menugroup-row-1">
                 <menuitem class="menuitem-iconic clipping-label-none"
