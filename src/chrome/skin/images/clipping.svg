@@ -8,6 +8,7 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="16"
@@ -21,6 +22,17 @@
    inkscape:export-ydpi="30">
   <defs
      id="defs4">
+    <linearGradient
+       id="linearGradient4465">
+      <stop
+         style="stop-color:#f5f5ff;stop-opacity:1;"
+         offset="0"
+         id="stop4467" />
+      <stop
+         style="stop-color:#e5e5f3;stop-opacity:1;"
+         offset="1"
+         id="stop4469" />
+    </linearGradient>
     <linearGradient
        id="linearGradient3771">
       <stop
@@ -77,6 +89,15 @@
          offset="1"
          id="stop5333" />
     </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4465"
+       id="linearGradient4471"
+       x1="8.34375"
+       y1="1039.375"
+       x2="17.34375"
+       y2="1050.375"
+       gradientUnits="userSpaceOnUse" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -86,7 +107,7 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:zoom="22.627417"
-     inkscape:cx="8.5206186"
+     inkscape:cx="5.7120721"
      inkscape:cy="6.6256878"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -139,14 +160,14 @@
        transform="translate(0,308.26771)" />
     <path
        id="path3849"
-       style="fill:#f8f8f8;fill-opacity:1;stroke:#484848;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       style="fill:url(#linearGradient4471);fill-opacity:1;stroke:#7062bf;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        d="m 14.84375,1036.875 0,3 3.5,0 m -12.5000001,-3 4e-7,13.9999 c 2.4086139,-1.9999 2.5075762,-1.9999 4.5136367,-1.9999 2.006061,0 2.815676,1.2799 5.015152,2.5 1.380546,0.6539 2.799148,0.4999 3.510606,0.4999 l -0.03939,-11.9999 -4,-3 z"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccccccccc"
        inkscape:export-xdpi="60"
        inkscape:export-ydpi="60" />
     <path
-       style="fill:none;stroke:#808080;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="fill:none;stroke:#9884e4;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 8.34375,1041.875 8,0"
        id="path4431"
        inkscape:connector-curvature="0" />
@@ -154,9 +175,9 @@
        inkscape:connector-curvature="0"
        id="path4433"
        d="m 8.34375,1043.875 8,0"
-       style="fill:none;stroke:#808080;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#9884e4;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
     <path
-       style="fill:none;stroke:#808080;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="fill:none;stroke:#9884e4;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 8.34375,1045.875 8,0"
        id="path4435"
        inkscape:connector-curvature="0" />
@@ -164,9 +185,9 @@
        inkscape:connector-curvature="0"
        id="path4437"
        d="m 8.34375,1039.875 4,0"
-       style="fill:none;stroke:#808080;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#9884e4;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
     <path
-       style="fill:none;stroke:#808080;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="fill:none;stroke:#9884e4;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 13.34375,1047.875 3,0"
        id="path4439"
        inkscape:connector-curvature="0" />
