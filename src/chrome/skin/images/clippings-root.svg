@@ -91,7 +91,7 @@
        xlink:href="#linearGradient5757"
        id="linearGradient5763"
        x1="18.5"
-       y1="183.36218"
+       y1="181.86218"
        x2="18.5"
        y2="193.36218"
        gradientUnits="userSpaceOnUse" />
@@ -104,7 +104,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="22.627417"
-     inkscape:cx="6.5345167"
+     inkscape:cx="9.2249878"
      inkscape:cy="8.1106638"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -153,13 +153,13 @@
      id="layer1"
      transform="translate(-10,-182.36218)">
     <path
-       style="fill:url(#linearGradient5763);fill-opacity:1;stroke:#655891;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       d="m 18.000001,193.86215 7.500001,0 -2e-6,-8.01819 -0.5,-0.48179 -0.504311,-0.49999 -4.995689,0 -1.499999,-2 -5.769231,0 -1.153846,1.83333 -0.576924,0.91666 0,8.24998 z"
+       style="fill:url(#linearGradient5763);fill-opacity:1;stroke:#8270bc;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 25.5,194.86218 0,-9.01822 -0.5,-0.48179 -0.504311,-0.49999 -4.995689,0 -1.499999,-2 -5.769231,0 -1.153846,1.83333 -0.576924,0.91666 0,9.25001 z"
        id="path4439"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cccccccccccc" />
+       sodipodi:nodetypes="ccccccccccc" />
     <path
-       style="fill:none;stroke:#655891;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="fill:none;stroke:#8270bc;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 19.5,184.36218 -1.5,1.5 -7.5,0"
        id="path5520"
        inkscape:connector-curvature="0"

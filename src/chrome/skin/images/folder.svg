@@ -34,10 +34,11 @@
        xlink:href="#linearGradient4563"
        id="linearGradient4569"
        x1="18"
-       y1="187.86218"
+       y1="186.55449"
        x2="18"
-       y2="194.86218"
-       gradientUnits="userSpaceOnUse" />
+       y2="194.59294"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1,0,0,1.1818204,0,-34.611722)" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -47,7 +48,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="22.627417"
-     inkscape:cx="7.6519458"
+     inkscape:cx="8.225459"
      inkscape:cy="5.9627626"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -96,14 +97,14 @@
      id="layer1"
      transform="translate(-10,-182.36218)">
     <path
-       style="fill:url(#linearGradient4569);fill-opacity:1;stroke:#655891;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       d="m 18.000001,195.86215 7.500001,0 -2e-6,-8.01819 -0.5,-0.48179 -0.504311,-0.49999 -4.995689,0 -1.499999,-2 -5.769231,0 -1.153846,1.83333 -0.576924,0.91666 0,8.24998 z"
+       style="fill:url(#linearGradient4569);fill-opacity:1;stroke:#8270bc;stroke-width:0.99999994000000003;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 18.000001,196.86216 7.500001,0 -2e-6,-9.47606 -0.5,-0.56939 -0.5,-0.95453 -5,0 -1.499999,-2.00001 -5.769231,0 -1.23077,1.50001 -0.5,0.5 0,10.99998 z"
        id="path4439"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccccccccccc" />
     <path
-       style="fill:none;stroke:#7363a9;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 19.5,186.36218 -1.5,1.5 -7.5,0"
+       style="fill:none;stroke:#8270bc;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 19.5,185.36218 -1.5,1.5 -7.5,0"
        id="path5520"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccc" />
