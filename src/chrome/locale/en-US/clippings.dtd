@@ -50,7 +50,7 @@
 <!ENTITY backupFiles.caption "Backup Files">
 <!ENTITY maxFiles.label "Maximum number of files to keep:">
 <!ENTITY maxFiles.accesskey "M">
-<!ENTITY removeAllSrcURLs.label "Remove All Source Addresses (URLs)">
+<!ENTITY removeAllSrcURLs.label "Remove Source Web Page Addresses (URLs)">
 <!ENTITY removeAllSrcURLs.accesskey "R">
 
 <!ENTITY showStatusBar.label "Show the status bar">
