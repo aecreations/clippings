@@ -680,7 +680,7 @@
                accesskey="&clippingLabelPicker.accesskey;"
                control="clipping-label-btn"/>
               <button id="clipping-label-btn" type="menu"
-               image="chrome://clippings/skin/images/clipping.png">
+               image="chrome://clippings/skin/images/label-none.svg">
                 <menupopup id="clipping-label-menupopup"
                  onpopupshowing="updateLabelMenu()">
                   <menugroup id="clipping-label-menugroup-row-1">
