@@ -416,7 +416,7 @@ var gShortcutKey = {
     var keyDict = gClippingsSvc.getShortcutKeyDict();
 
     if (keyDict.hasKey(key)) {
-      doAlert(gStrBundle.getString("errorShortcutKeyDefined"));
+      doAlert(gStrBundle.getString("errorShortcutKeyDetail"));
       clippingKey.selectedIndex = this._oldIndex;
       return;
     }
@@ -2391,7 +2391,7 @@ function updateDisplay(aSuppressUpdateSelection)
     }
     else {
       debugStr += "\nNo label.";
-      labelPickerBtn.image = "chrome://clippings/skin/images/clipping.png";
+      labelPickerBtn.image = "chrome://clippings/skin/images/label-none.svg";
     }
     aeUtils.log(debugStr);
   }
