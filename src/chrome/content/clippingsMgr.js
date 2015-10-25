@@ -3399,7 +3399,8 @@ function showShortcutKeyMinihelp()
 
   var dlgArgs = {
     keyMap:   keyMap,
-    keyCount: keyCount
+    keyCount: keyCount,
+    showInsertClippingCmd: false
   };
   dlgArgs.printToExtBrowser = Application.id == aeConstants.HOSTAPP_TB_GUID;
 

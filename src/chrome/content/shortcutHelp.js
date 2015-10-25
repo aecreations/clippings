@@ -16,7 +16,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2012-2014
+ * Portions created by the Initial Developer are Copyright (C) 2012-2015
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -44,7 +44,7 @@ function $(aID)
 }
 
 
-function initDlg() 
+function init() 
 {
   gDlgArgs = window.arguments[0];
   var keyMap = gDlgArgs.keyMap;
@@ -76,6 +76,46 @@ function initDlg()
   gEditor.makeEditable("html", false);
 
   gIsShortcutKeyHelpContentGenerated = false;
+
+  if (gDlgArgs.showInsertClippingCmd) {
+    $("insert-clipping").hidden = false;
+  }
+}
+
+
+function selectClipping()
+{
+  var insertClippingBtn = $("insert-clipping");
+  if (insertClippingBtn.hidden) {
+    return;
+  }
+  if (insertClippingBtn.disabled) {
+    insertClippingBtn.disabled = false;
+  }
+}
+
+
+function insertClipping()
+{
+  if (! gDlgArgs.showInsertClippingCmd) {
+    return;
+  }
+
+  var shortcutListTreeView = $("shortcut-map-grid").view;
+  var selectedIndex = shortcutListTreeView.selection.currentIndex;
+  var selectedItem = shortcutListTreeView.getItemAtIndex(selectedIndex);
+  var selectedURI = selectedItem.firstChild.childNodes[1].getAttribute("value");
+
+  var clippingsSvc = Cc["clippings@mozdev.org/clippings;1"].getService(Ci.aeIClippingsService);
+  var name = clippingsSvc.getName(selectedURI);
+  var text = clippingsSvc.getText(selectedURI);
+
+  aeUtils.log(aeString.format("URI of selected clipping: %s, name: %s", selectedURI, name, text));
+
+  var hostAppWnd = aeUtils.getRecentHostAppWindow();
+  hostAppWnd.aecreations.clippings.insertClippingText(selectedURI, name, text);
+
+  window.close();
 }
 
 

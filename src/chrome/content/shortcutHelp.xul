@@ -20,7 +20,7 @@
    -
    - The Initial Developer of the Original Code is
    - Alex Eng <ateng@users.sourceforge.net>.
-   - Portions created by the Initial Developer are Copyright (C) 2007-2014
+   - Portions created by the Initial Developer are Copyright (C) 2007-2015
    - the Initial Developer. All Rights Reserved.
    -
    - Contributor(s):
@@ -31,7 +31,7 @@
  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
  title="&shortcutHelp.title;"
  orient="vertical"
- onload="initDlg()">
+ onload="init()">
 
   <script type="application/javascript" src="chrome://clippings/content/shortcutHelp.js"/>
 
@@ -45,6 +45,9 @@
   </keyset>
 
   <toolbar>
+    <toolbarbutton id="insert-clipping" hidden="true" disabled="true"
+     label="&insertClipping.label;" accesskey="&insertClipping.accesskey;" 
+     oncommand="insertClipping()"/>
     <toolbarbutton id="save" label="&save.label;" accesskey="&save.accesskey;"
      oncommand="save()"/>
     <toolbarbutton id="print" label="&print.label;"
@@ -55,7 +58,7 @@
   </toolbar>
 
   <tree id="shortcut-map-grid" flex="1" rows="10" hidecolumnpicker="true"
-   seltype="single">
+   seltype="single" onselect="selectClipping()" ondblclick="insertClipping()">
     <treecols>
       <treecol label="&shortcutCol.label;" />
       <treecol label="&clippingCol.label;" flex="1"/>

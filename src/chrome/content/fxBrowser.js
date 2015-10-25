@@ -496,7 +496,8 @@ window.aecreations.clippings = {
         let dlgArgs = {
           printToExtBrowser: false,
           keyMap:   keyMap,
-	  keyCount: keyCount
+	  keyCount: keyCount,
+          showInsertClippingCmd: true
         };
 
         let dlg = window.openDialog("chrome://clippings/content/shortcutHelp.xul", "clipkey_help", "centerscreen,resizable", dlgArgs);
