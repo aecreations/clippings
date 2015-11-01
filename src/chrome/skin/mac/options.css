@@ -15,7 +15,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2013
+ * Portions created by the Initial Developer are Copyright (C) 2013-2015
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -36,7 +36,7 @@ prefwindow > .paneDeckContainer {
 }
 
 prefwindow[animated="true"] #pane-general {
-  height: 25em;
+  height: 28em;
 }
 
 prefwindow[animated="true"] #pane-datasource {
@@ -44,7 +44,7 @@ prefwindow[animated="true"] #pane-datasource {
 }
 
 prefwindow[animated="true"] #pane-clippings-mgr {
-  height: 12em;
+  height: 10em;
 }
 
 prefpane description {
