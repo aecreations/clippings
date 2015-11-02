@@ -257,6 +257,10 @@ toolbarbutton .toolbarbutton-icon {
   display: none;
 }
 
+#clipping-text {
+  margin-bottom: 1px;
+}
+
 #find {
   -moz-image-region: rect(0px, 192px, 16px, 176px);
 }
@@ -365,4 +369,18 @@ toolbarbutton .toolbarbutton-icon {
 #clipping-label-btn {
   min-width: 12px !important;
   width: 42px;
+  margin-top: 1px;
+  margin-bottom: 1px;
+  margin-left: 0px;
+  margin-right: 3px;
+}
+
+#clipping-label-btn image {
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+#clipping-label-btn label {
+  display: none;
+  margin: 0;
 }
