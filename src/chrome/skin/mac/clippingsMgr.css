@@ -146,6 +146,7 @@ toolbarbutton:not(#placeholder-presets) {
 
 #insert-placeholder-bar > toolbarbutton {
   -moz-box-orient: horizontal;
+  -moz-appearance: toolbarbutton;
 }
 
 /* Workaround to unwanted margin on right of toolbarbutton image on Firefox
@@ -336,6 +337,7 @@ toolbarbutton .toolbarbutton-icon {
 /* Insert Placeholder toolbar */
 #placeholder-custom {
   -moz-image-region: rect(0px, 272px, 16px, 256px);
+  margin-right: 0;
 }
 
 #placeholder-custom:hover {
@@ -352,6 +354,7 @@ toolbarbutton .toolbarbutton-icon {
 
 #placeholder-autoincrement {
   -moz-image-region: rect(0px, 288px, 16px, 272px);
+  margin-left: 0;
 }
 
 #placeholder-autoincrement:hover {
