@@ -35,88 +35,14 @@
  onload="init()" ondialogaccept="return accept()"
  ondialogcancel="return cancel()">
 
-  <script type="application/javascript">
-  <![CDATA[
-
-    Components.utils.import("resource://clippings/modules/aeUtils.js");
-
-    var gDlgArgs = window.arguments[0];
-    var gStrBundle;
-
-
-    function init()
-    {
-      gStrBundle = document.getElementById("ae-clippings-strings");
-      var placeholderDeck = document.getElementById("placeholder-deck");
-      placeholderDeck.selectedIndex = gDlgArgs.placeholderType;
-    }
-
-
-    function validatePlaceholderName(aName)
-    {
-      if (aName.match(/[^a-zA-Z0-9_\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]/)) {
-        return false;
-      }
-      return true;
-    }
-
-
-    function accept()
-    {
-      var placeholderNameElt = document.getElementById("placeholder-name");
-      var placeholderName = placeholderNameElt.value;
-
-      if (! placeholderName) {
-        aeUtils.beep();
-        placeholderNameElt.focus();
-        return false;
-      }
-
-      if (! validatePlaceholderName(placeholderName)) {
-        aeUtils.alertEx(gStrBundle.getString("appName"), gStrBundle.getString("illegalPlaceholderName"));
-        placeholderNameElt.focus();
-        placeholderNameElt.select();
-        return false;
-      }
-
-      var placeholderValue = document.getElementById("placeholder-default-value").value
-
-      var placeholderDeck = document.getElementById("placeholder-deck");
- 
-      if (placeholderDeck.selectedIndex == gDlgArgs.CUSTOM) {
-        var placeholder = "$[" + placeholderName;
-
-        if (placeholderValue) {
-          placeholder = placeholder + "{" + placeholderValue + "}]";
-        }
-        else {
-          placeholder = placeholder + "]";
-        }
-        gDlgArgs.placeholder = placeholder;
-      }
-      else if (placeholderDeck.selectedIndex == gDlgArgs.AUTO_INCREMENT) {
-        gDlgArgs.placeholder = "#[" + placeholderName + "]";
-      }
-
-      gDlgArgs.userCancel = false;
-      return true;
-    }
-
-
-    function cancel()
-    {
-      gDlgArgs.userCancel = true;
-      return true;
-    }
-
-  ]]>
-  </script>
+  <script type="application/javascript" src="chrome://clippings/content/insertPlaceholder.js"/>
 
   <stringbundle id="ae-clippings-strings" 
    src="chrome://clippings/locale/clippings.properties"/>
 
   <vbox style="width:28em">
-    <label value="&placeholderName.label;" accesskey="&placeholderName.accesskey;" control="placeholder-name"/>
+    <label id="placeholder-name-label" accesskey="&placeholderName.accesskey;"
+     control="placeholder-name"/>
     <textbox id="placeholder-name" size="48"/>
     <separator class="thin"/>
 
