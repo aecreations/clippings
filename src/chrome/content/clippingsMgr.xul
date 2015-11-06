@@ -227,6 +227,7 @@
     <command id="cmd_datasrc_opts" oncommand="dataSrcOptions()"/>
     <command id="cmd_clipmgr_opts" oncommand="clippingsMgrOptions()"/>
     <command id="cmd_togglePlaceholderBar" oncommand="togglePlaceholderBar()"/>
+    <command id="cmd_toggleDetails" oncommand="toggleClippingDetails()"/>
   </commandset>
 
   <keyset>
@@ -476,8 +477,18 @@
           <menuitem id="import" label="&import.label;" accesskey="&import.accesskey;" command="cmd_import"/>
           <menuitem id="export" label="&export.label;" accesskey="&export.accesskey;" command="cmd_export"/>
 	  <menuseparator/>
-          <menuitem id="toggle-placeholder-bar" type="checkbox"
-           label="&placeholderBar.label;" accesskey="&placeholderBar.accesskey;" command="cmd_togglePlaceholderBar"/>
+	  <menu id="show-hide" label="&showHide.label;"
+           accesskey="&showHide.accesskey;">
+	    <menupopup>
+              <menuitem id="toggle-placeholder-bar" type="checkbox"
+               label="&placeholderBar.label;" 
+               accesskey="&placeholderBar.accesskey;"
+               command="cmd_togglePlaceholderBar"/>
+              <menuitem id="toggle-options-pane" type="checkbox"
+               label="&detailsPane.label;" accesskey="&detailsPane.accesskey;"
+               command="cmd_toggleDetails"/>
+            </menupopup>
+          </menu>
 	  <menuitem id="clipmgr-options" label="&options.label;" accesskey="&options.accesskey;" command="cmd_clipmgr_opts"/>
         </menupopup>
       </toolbarbutton>

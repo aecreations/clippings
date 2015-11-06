@@ -142,8 +142,12 @@
 <!ENTITY findClippingsAndFldrs.label "Clippings and Folders">
 <!ENTITY options.label "Options...">
 <!ENTITY options.accesskey "O">
+<!ENTITY showHide.label "Show/Hide">
+<!ENTITY showHide.accesskey "w">
 <!ENTITY placeholderBar.label "Placeholder Toolbar">
 <!ENTITY placeholderBar.accesskey "P">
+<!ENTITY detailsPane.label "Details Pane">
+<!ENTITY detailsPane.accesskey "D">
 
 <!ENTITY closeCmd.key "W">
 <!ENTITY forceSaveCmd.key "S">

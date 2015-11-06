@@ -49,6 +49,7 @@ var gJustMigrated = false;
 var gJustImported = false;
 var gMoveTimerID;
 var gClippingLabelPicker, gClippingLabelPickerCxtMenu;
+var gClippingDetailsPaneVisible;
 
 
 // Clippings XPCOM service
@@ -859,15 +860,24 @@ function init()
   gClippingsList = new RDFTreeWrapper(treeElt);
   gClippingsList.tree.builder.addObserver(treeBuilderObserver);
   gSrcURLBar.init();
+  gOptionsBar.init();
   gFindBar.init();
   gPlaceholderBar.init();
 
-  if (Application.id == aeConstants.HOSTAPP_TB_GUID) {
-    gSrcURLBar.hide();
-  }
-
   gStatusBar = $("app-status");
   setStatusBarVisibility();
+
+  gClippingDetailsPaneVisible = aeUtils.getPref("clippings.clipmgr.details_pane", false);
+  if (gClippingDetailsPaneVisible) {
+    // Source URL bar should not be available if on Thunderbird.
+    if (Application.id != aeConstants.HOSTAPP_TB_GUID) {
+      gSrcURLBar.show();
+    }
+  }
+  else {
+    gOptionsBar.hide();
+    gSrcURLBar.hide();
+  }
 
   // Clipping label picker widgets
   gClippingLabelPicker = aeClippingLabelPicker.createInstance($("clipping-label-menupopup"));
@@ -2093,7 +2103,9 @@ function isClippingTextAreaFocused()
 function updateToolsMenu()
 {
   var toolbox = $("clipping-content-editor-toolbox");
-  $("toggle-placeholder-bar").checked = !toolbox.hasAttribute("hidden");
+  $("toggle-placeholder-bar").setAttribute("checked", !toolbox.hasAttribute("hidden"));
+
+  $("toggle-options-pane").setAttribute("checked", gClippingDetailsPaneVisible);
 }
 
 
@@ -2105,6 +2117,27 @@ function togglePlaceholderBar()
   else {
     gPlaceholderBar.show();
   }
+}
+
+
+function toggleClippingDetails()
+{
+  gClippingDetailsPaneVisible = !gClippingDetailsPaneVisible;
+
+  if (gClippingDetailsPaneVisible) {
+    gOptionsBar.show();
+ 
+    // Source URL bar should not be available if on Thunderbird.
+    if (Application.id != aeConstants.HOSTAPP_TB_GUID) {
+      gSrcURLBar.show();
+    }
+  }
+  else {
+    gOptionsBar.hide();
+    gSrcURLBar.hide();
+  }
+
+  aeUtils.setPref("clippings.clipmgr.details_pane", gClippingDetailsPaneVisible);
 }
 
 
