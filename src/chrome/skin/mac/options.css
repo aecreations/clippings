@@ -40,7 +40,7 @@ prefwindow[animated="true"] #pane-general {
 }
 
 prefwindow[animated="true"] #pane-datasource {
-  height: 14em;
+  height: 16em;
 }
 
 prefwindow[animated="true"] #pane-clippings-mgr {

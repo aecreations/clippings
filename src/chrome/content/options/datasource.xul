@@ -86,13 +86,20 @@
       </grid>
     </groupbox>
 
-    <separator />
-    <hbox id="remove-all-src-urls-panel">
-      <button id="remove-all-src-urls" label="&removeAllSrcURLs.label;"
-       accesskey="&removeAllSrcURLs.accesskey;"
-       oncommand="removeAllSourceURLs()"/>
-      <spacer flex="1"/>
-    </hbox>
+    <groupbox>
+      <caption label="Source Web Page Addresses"/>
+
+      <hbox id="remove-all-src-urls-panel">
+        <description flex="1" style="margin-right:1em;margin-top:0.5em;margin-bottom:0.5em;word-wrap:break-word;width:26em">&removeAllSrcURLs.description;</description>
+        <vbox>
+          <spacer flex="1"/>
+          <button id="remove-all-src-urls" label="&removeAllSrcURLs.label;"
+           accesskey="&removeAllSrcURLs.accesskey;"
+           oncommand="removeAllSourceURLs()"/>
+          <spacer flex="1"/>
+        </vbox>
+      </hbox>
+    </groupbox>
   </prefpane>
 
   <script type="application/javascript" src="chrome://clippings/content/options/datasource.js"/>
