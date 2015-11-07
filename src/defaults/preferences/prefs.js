@@ -15,6 +15,7 @@ pref("extensions.aecreations.clippings.clipmgr.is_maximized", false);
 pref("extensions.aecreations.clippings.clipmgr.show_tree_lines", false);
 pref("extensions.aecreations.clippings.clipmgr.select_text_on_click", false);
 pref("extensions.aecreations.clippings.clipmgr.status_bar", true);
+pref("extensions.aecreations.clippings.clipmgr.placeholder_toolbar", false);
 pref("extensions.aecreations.clippings.clipmgr.details_pane", false);
 pref("extensions.aecreations.clippings.warn_paste_failure", true);
 pref("extensions.aecreations.clippings.use_clipboard", false);

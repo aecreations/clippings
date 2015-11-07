@@ -640,7 +640,7 @@ var gFindBar = {
 
 
 //
-// Placeholder bar
+// Placeholder toolbar
 //
 
 var gPlaceholderBar = {
@@ -862,10 +862,15 @@ function init()
   gSrcURLBar.init();
   gOptionsBar.init();
   gFindBar.init();
-  gPlaceholderBar.init();
 
   gStatusBar = $("app-status");
   setStatusBarVisibility();
+
+  gPlaceholderBar.init();
+  var isPlaceholderBarVisible = aeUtils.getPref("clippings.clipmgr.placeholder_toolbar", false);
+  if (isPlaceholderBarVisible) {
+    gPlaceholderBar.show();
+  }
 
   gClippingDetailsPaneVisible = aeUtils.getPref("clippings.clipmgr.details_pane", false);
   if (gClippingDetailsPaneVisible) {
@@ -2117,6 +2122,8 @@ function togglePlaceholderBar()
   else {
     gPlaceholderBar.show();
   }
+
+  aeUtils.setPref("clippings.clipmgr.placeholder_toolbar", gPlaceholderBar.isVisible());
 }
 
 
