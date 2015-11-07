@@ -546,7 +546,7 @@
 
         <!-- Insert Placeholder bar -->
         <toolbox id="clipping-content-editor-toolbox" hidden="true">
-          <toolbar id="insert-placeholder-bar">
+          <toolbar id="placeholder-toolbar">
 	    <vbox>
 	      <spacer flex="1"/>
               <label value="&placeholderToolbar.label;"/>

@@ -144,7 +144,7 @@ toolbarbutton:not(#placeholder-presets) {
   min-width: 52px;
 }
 
-#insert-placeholder-bar > toolbarbutton {
+#placeholder-toolbar > toolbarbutton {
   -moz-box-orient: horizontal;
   -moz-appearance: toolbarbutton;
 }
@@ -155,7 +155,7 @@ toolbarbutton .toolbarbutton-icon {
   -moz-margin-end: 0px;
 }
 
-#insert-placeholder-bar > toolbarbutton .toolbarbutton-icon {
+#placeholder-toolbar > toolbarbutton .toolbarbutton-icon {
   -moz-margin-end: 4px;
 }
 
