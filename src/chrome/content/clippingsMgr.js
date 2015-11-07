@@ -743,6 +743,7 @@ var gSrcURLBar = {
      this._srcURLTextbox.value = "";
      this._srcURLTextbox.select();
    }
+   this._srcURLTextbox.focus();
  },
 
  isEditing: function ()
