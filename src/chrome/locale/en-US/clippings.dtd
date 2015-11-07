@@ -179,7 +179,7 @@
 
 <!-- Insert Placeholder dialog -->
 <!ENTITY insertPlaceholder.title "Insert Placeholder">
-<!ENTITY placeholderName.accesskey "n">
+<!ENTITY placeholderName.accesskey "N">
 <!ENTITY defaultValue.label "Default value:">
 <!ENTITY defaultValue.accesskey "D">
 <!ENTITY defaultValue.placeholder "Optional">
