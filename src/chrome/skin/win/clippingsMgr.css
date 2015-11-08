@@ -103,10 +103,6 @@ treechildren::-moz-tree-image(container, closed) {
   width: 100%;
 }
 
-#clipping-src-url-edit-btns button {
-  min-width: 24px;
-}
-
 #edit-url-btn {
   min-width: 36px;
 }
@@ -143,18 +139,10 @@ toolbarbutton:not(#placeholder-presets) {
   min-width: 52px;
 }
 
-#placeholder-toolbar > toolbarbutton {
-  -moz-box-orient: horizontal;
-}
-
 /* Workaround to unwanted margin on right of toolbarbutton image on Firefox
  * default theme. */
 toolbarbutton .toolbarbutton-icon {
   -moz-margin-end: 0px;
-}
-
-#placeholder-toolbar > toolbarbutton .toolbarbutton-icon {
-  -moz-margin-end: 4px;
 }
 
 #new-clipping {
@@ -283,7 +271,39 @@ toolbarbutton .toolbarbutton-icon {
   padding: 6px;
 }
 
+#clipping-src-url-edit-btns toolbarbutton {
+  min-width: 24px;
+}
+
+#clipping-src-url-edit-btns toolbarbutton image {
+  padding-top: 3px;
+}
+
+#src-url-edit-ok {
+  -moz-image-region: rect(0px, 304px, 16px, 288px);
+}
+
+#src-url-edit-ok:hover {
+  -moz-image-region: rect(16px, 304px, 32px, 288px);
+}
+
+#src-url-edit-cancel {
+  -moz-image-region: rect(0px, 320px, 16px, 304px);
+}
+
+#src-url-edit-cancel:hover {
+  -moz-image-region: rect(16px, 320px, 32px, 304px);
+}
+
 /* Insert Placeholder toolbar */
+#placeholder-toolbar > toolbarbutton {
+  -moz-box-orient: horizontal;
+}
+
+#placeholder-toolbar > toolbarbutton .toolbarbutton-icon {
+  -moz-margin-end: 4px;
+}
+
 #placeholder-custom {
   -moz-image-region: rect(0px, 272px, 16px, 256px);
 }

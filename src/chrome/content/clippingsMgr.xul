@@ -600,7 +600,9 @@
                       <label id="clipping-src-url-link" class="text-link"
                        crop="end" onclick="goToSourceURL()" 
                        ondblclick="gSrcURLBar.edit()"/>
-                      <button id="edit-url-btn" label="Edit" 
+                      <button id="edit-url-btn"
+                       label="&editSrcURL.label;" 
+                       accesskey="&editSrcURL.accesskey;"
                        oncommand="gSrcURLBar.edit()"/>
                     </row>
                   </rows>
@@ -610,12 +612,12 @@
                    placeholder="&none.label;"
                    onkeypress="gSrcURLBar.keypress(event)"/>
                   <hbox id="clipping-src-url-edit-btns">
-                    <button id="src-url-edit-ok" label="ok"
-                     oncommand="gSrcURLBar.acceptEdit()"
-                     style="margin-left:2px;margin-right:1px"/>
-		    <button id="src-url-edit-cancel" label="cancel"
-                     oncommand="gSrcURLBar.cancelEdit()"
-                     style="margin-left:1px"/>
+                    <toolbarbutton id="src-url-edit-ok"
+                     tooltiptext="&okButton.label;"
+                     oncommand="gSrcURLBar.acceptEdit()"/>
+		    <toolbarbutton id="src-url-edit-cancel"
+                     tooltiptext="&cancelButton.label;"
+                     oncommand="gSrcURLBar.cancelEdit()"/>
                   </hbox>
                 </hbox>
               </deck>

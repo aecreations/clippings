@@ -165,6 +165,8 @@
 <!ENTITY placeholderUserAgent.label "User Agent">
 <!ENTITY placeholderClippingName.label "Clipping Name">
 <!ENTITY placeholderFolderName.label "Parent Folder Name">
+<!ENTITY editSrcURL.label "Edit">
+<!ENTITY editSrcURL.accesskey "t">
 
 <!ENTITY clippingLabel.label "Label">
 <!ENTITY clippingLabel.accesskey "L">

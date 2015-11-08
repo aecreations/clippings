@@ -104,10 +104,6 @@ treechildren::-moz-tree-image(container, closed) {
   width: 100%;
 }
 
-#clipping-src-url-edit-btns button {
-  min-width: 24px;
-}
-
 #edit-url-btn {
   min-width: 36px;
 }
@@ -332,6 +328,36 @@ toolbarbutton .toolbarbutton-icon {
 
 #ae-clippings-clipboard-alert, #import-empty-alert {
   padding: 6px;
+}
+
+#clipping-src-url-edit-btns toolbarbutton {
+  min-width: 18px;
+  padding-left: 1px;
+  padding-right: 1px;
+}
+
+#clipping-src-url-edit-btns toolbarbutton image {
+  padding-top: 2px;
+}
+
+#src-url-edit-ok {
+  -moz-image-region: rect(0px, 304px, 16px, 288px);
+  -moz-appearance: toolbarbutton;
+  margin-right: 1px;
+}
+
+#src-url-edit-ok:hover {
+  -moz-image-region: rect(16px, 304px, 32px, 288px);
+}
+
+#src-url-edit-cancel {
+  -moz-image-region: rect(0px, 320px, 16px, 304px);
+  -moz-appearance: toolbarbutton;
+  margin-left: 0;
+}
+
+#src-url-edit-cancel:hover {
+  -moz-image-region: rect(16px, 320px, 32px, 304px);
 }
 
 /* Insert Placeholder toolbar */
