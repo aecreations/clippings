@@ -664,25 +664,26 @@ window.aecreations.clippings = {
     hostAppContextMenu.addEventListener("popupshowing", 
 					this._initContextMenuItem, false);
 
-    let (that = this) {
-      this._clippingsListener = {
-        origin:  that.clippingsSvc.ORIGIN_HOSTAPP,
+    let that = this;
 
-        dataSrcLocationChanged: function (aDataSrcURL) {
-	  var menu = document.getElementById("ae-clippings-menu-1");
-	  var popup = document.getElementById("ae-clippings-popup-1");
+    this._clippingsListener = {
+      origin:  that.clippingsSvc.ORIGIN_HOSTAPP,
 
-	  // Reinitialize Clippings menu so that it points to the correct
-	  // datasource.
-	  menu.database.RemoveDataSource(that._ds);
-	  that.initClippingsPopup(popup, menu);
-	},
+      dataSrcLocationChanged: function (aDataSrcURL) {
+        var menu = document.getElementById("ae-clippings-menu-1");
+        var popup = document.getElementById("ae-clippings-popup-1");
 
-        newFolderCreated:    function (aFolderURI) {},
-        newClippingCreated:  function (aClippingURI) {},
-        importDone:          function (aNumItems) {}
-      };
-    }
+        // Reinitialize Clippings menu so that it points to the correct
+        // datasource.
+        menu.database.RemoveDataSource(that._ds);
+        that.initClippingsPopup(popup, menu);
+      },
+
+      newFolderCreated:    function (aFolderURI) {},
+      newClippingCreated:  function (aClippingURI) {},
+      importDone:          function (aNumItems) {}
+    };
+
     this.clippingsSvc.addListener(this._clippingsListener);
 
     // Set behaviour of "New Clipping" commands - prompt vs. silent operation
