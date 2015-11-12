@@ -34,10 +34,6 @@ locale	clippings	sv-SE	jar:chrome/clippings.jar!/locale/sv-SE/
 #locale	clippings	sk-SK	jar:chrome/clippings.jar!/locale/sk-SK/
 #locale	clippings	ru-RU	jar:chrome/clippings.jar!/locale/ru-RU/
 #locale	clippings	pt-BR	jar:chrome/clippings.jar!/locale/pt-BR/
-#locale	clippings	hr-HR	jar:chrome/clippings.jar!/locale/hr-HR/
-#locale	clippings	hu-HU	jar:chrome/clippings.jar!/locale/hu-HU/
-#locale	clippings	zh-TW	jar:chrome/clippings.jar!/locale/zh-TW/
-#locale	clippings	es-ES	jar:chrome/clippings.jar!/locale/es-ES/
 
 
 # XPCOM type libraries
