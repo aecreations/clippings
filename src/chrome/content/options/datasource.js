@@ -23,6 +23,7 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+Components.utils.import("resource://gre/modules/Services.jsm");
 Components.utils.import("resource://clippings/modules/aeConstants.js");
 Components.utils.import("resource://clippings/modules/aeUtils.js");
 
@@ -40,12 +41,12 @@ var gClippingsSvc;
 function getHostAppName()
 {
   var rv;
-  var thisHostAppID = Application.id;
+  var hostAppID = aeUtils.getHostAppID();
 
-  if (thisHostAppID == aeConstants.HOSTAPP_FX_GUID) {
+  if (hostAppID == aeConstants.HOSTAPP_FX_GUID) {
     rv = gStrBundle.getString("fx");
   }
-  else if (thisHostAppID == aeConstants.HOSTAPP_TB_GUID) {
+  else if (hostAppID == aeConstants.HOSTAPP_TB_GUID) {
     rv = gStrBundle.getString("tb");
   }
 
@@ -67,6 +68,24 @@ function initPrefPaneDataSource()
   }
   catch (e) {
     aeUtils.alertEx(document.title, e);
+  }
+
+  // Workaround to height rendering issue on the <description> element of the
+  // pref dialog.
+  var browserPrefs = Services.prefs.getBranch("browser.preferences");
+  var fadeInEffect;
+  if (browserPrefs.prefHasUserValue("animateFadeIn")) {
+    fadeInEffect = browserPrefs.getBoolPref("animateFadeIn");
+  }
+  else {
+    fadeInEffect = false;
+  }
+
+  if (! fadeInEffect.value) {
+    window.sizeToContent();
+    var hbox = $("remove-all-src-urls-panel");
+    hbox.height = hbox.boxObject.height;
+    window.sizeToContent();
   }
 
   gDataSrcLocationOpt = $("datasrc-location-opt");
@@ -103,7 +122,7 @@ function initPrefPaneDataSource()
   gPrevDataSrcPath = dataSrcPath;
 
   // On Thunderbird, hide the button to strip out source URLs in all clippings.
-  if (Application.id == aeConstants.HOSTAPP_TB_GUID) {
+  if (aeUtils.getHostAppID() == aeConstants.HOSTAPP_TB_GUID) {
     $("remove-all-src-urls-panel").hidden = true;
   }
 }
