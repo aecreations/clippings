@@ -29,7 +29,7 @@ $(CHROME)/clippings.jar:
 $(COMP_FILES):
 	@cd $(COMPONENTS); make
 
-put:
+copy:
 	cp -v $(DIST_FILE) $(DIST_DEST)
 
 clean:
