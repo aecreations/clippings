@@ -72,8 +72,8 @@ function initPrefPaneDataSource()
 
   // Workaround to height rendering issue on the <description> element of the
   // pref dialog.
-  var browserPrefs = Services.prefs;
-  var fadeInEffect = browserPrefs.getBoolPref("browser.preferences.animateFadeIn");
+  var prefs = Services.prefs;
+  var fadeInEffect = prefs.getBoolPref("browser.preferences.animateFadeIn");
 
   if (! fadeInEffect.value) {
     window.sizeToContent();
