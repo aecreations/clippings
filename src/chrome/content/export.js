@@ -23,6 +23,7 @@
  * ***** END LICENSE BLOCK ***** */
 
 Components.utils.import("resource://clippings/modules/aeConstants.js");
+Components.utils.import("resource://clippings/modules/aeUtils.js");
 
 var gStrBundle;
 var gExportFormatList;
@@ -60,7 +61,7 @@ function init()
   editor.makeEditable("html", false);
 
   // On Thunderbird, hide the checkbox for including source URLs in RDF export.
-  if (Application.id == aeConstants.HOSTAPP_TB_GUID) {
+  if (aeUtils.getHostAppID() == aeConstants.HOSTAPP_TB_GUID) {
     $("include-src-urls").hidden = true;
   }
 }

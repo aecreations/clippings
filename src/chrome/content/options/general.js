@@ -23,6 +23,7 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+Components.utils.import("resource://gre/modules/Services.jsm");
 Components.utils.import("resource://clippings/modules/aeConstants.js");
 Components.utils.import("resource://clippings/modules/aeUtils.js");
 
@@ -35,7 +36,8 @@ function initPrefPaneGeneral()
   // pref dialog.  Do not do this on platforms where pref dialogs dynamically
   // adjust their heights when switching between pref panes (e.g. Mac OS X), as
   // it will interfere with the dialog height.
-  var fadeInEffect = Application.prefs.get("browser.preferences.animateFadeIn");
+  var prefs = Services.prefs;
+  var fadeInEffect = prefs.getBoolPref("browser.preferences.animateFadeIn");
   if (! fadeInEffect.value) {
     window.sizeToContent();
     var vbox = $("paste-html-vbox");
@@ -51,7 +53,7 @@ function initPrefPaneGeneral()
     shortcutKeyPrefix = gStrBundle.getString("shortcutKeyPrefix");
   }
 
-  if (Application.id == aeConstants.HOSTAPP_TB_GUID) {    
+  if (aeUtils.getHostAppID() == aeConstants.HOSTAPP_TB_GUID) {    
     $("paste-html-formatted-clipping").value = gStrBundle.getString("htmlPasteOptionsTB");
     $("tab-modal-prmt").hidden = true;
     $("always-save-src-url").hidden = true;
@@ -88,10 +90,12 @@ function togglePasteOptionsCheckedState()
 function showChangedPrefMsg() 
 {
   var strKey;
-  if (Application.id == aeConstants.HOSTAPP_FX_GUID) {
+  var hostAppID = aeUtils.getHostAppID();
+
+  if (hostAppID == aeConstants.HOSTAPP_FX_GUID) {
     strKey = "prefChangeMsgFx";
   }
-  else if (Application.id == aeConstants.HOSTAPP_TB_GUID) {
+  else if (hostAppID == aeConstants.HOSTAPP_TB_GUID) {
     strKey = "prefChangeMsgTb";
   }
 

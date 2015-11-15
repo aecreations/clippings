@@ -16,7 +16,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2007-2014
+ * Portions created by the Initial Developer are Copyright (C) 2007-2015
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -24,7 +24,6 @@
  * ***** END LICENSE BLOCK ***** */
 
 Components.utils.import("resource://gre/modules/AddonManager.jsm");
-Components.utils.import("resource://clippings/modules/aeMozApplication.js");
 Components.utils.import("resource://clippings/modules/aeConstants.js");
 Components.utils.import("resource://clippings/modules/aeUtils.js");
 Components.utils.import("resource://clippings/modules/aeString.js");
@@ -38,8 +37,6 @@ const EXPORTED_SYMBOLS = ["aeClippings3"];
 const Cc = Components.classes;
 const Ci = Components.interfaces;
 
-
-var Application = aeGetMozApplicationObj();
 
 var aeClippings3 = {
   _clippingsSvc:  null,
@@ -164,14 +161,15 @@ aeClippings3._processEmptyFolders = function ()
 aeClippings3.migrateCommonDataSrcPref = function ()
 {
   var profileDirPath;
-  var isCommonDS = Application.prefs.getValue("clippings.datasource.common", false);
+  var prefs = Cc["@mozilla.org/preferences-service;1"].getService(Ci.nsIPrefBranch);
+  var isCommonDS = prefs.getBoolPref("clippings.datasource.common");
+
   if (isCommonDS) {
     // Upgrading from Clippings 3.x - migrate the deprecated pref
     // "clippings.datasource.common"
     profileDirPath = aeUtils.getHomeDir().path;
 
     // Remove the deprecated user pref.
-    var prefs = Cc["@mozilla.org/preferences-service;1"].getService(Ci.nsIPrefBranch);
     try {
       prefs.clearUserPref("clippings.datasource.common");
     }

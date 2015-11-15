@@ -23,7 +23,7 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-Components.utils.import("resource://clippings/modules/aeMozApplication.js");
+Components.utils.import("resource://gre/modules/Services.jsm");
 
 
 const EXPORTED_SYMBOLS = ["aeUtils"];
@@ -40,8 +40,9 @@ const WNDTYPE_TB_MSGCOMPOSE = "msgcompose";
 
 const PREFNAME_PREFIX = "extensions.aecreations.";
 
+const Cc = Components.classes;
+const Ci = Components.interfaces;
 
-var Application = aeGetMozApplicationObj();
 
 var aeUtils = {
   // TO DO: Consider moving this to aeConstants module.  Note that the
@@ -222,13 +223,35 @@ aeUtils.getHomeDir = function ()
 };
 
 
+aeUtils.getHostAppID = function ()
+{
+  var xulAppInfo = Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULAppInfo);
+
+  return xulAppInfo.ID;
+};
+
+
+aeUtils.getHostAppName = function ()
+{
+  var xulAppInfo = Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULAppInfo);
+
+  return xulAppInfo.name;
+};
+
+
+aeUtils.getHostAppVersion = function ()
+{
+  var xulAppInfo = Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULAppInfo);
+
+  return xulAppInfo.version;
+};
+
+
 aeUtils.getOS = function ()
 {
-  var rv;
-  var xulRuntime = Components.classes["@mozilla.org/xre/app-info;1"].createInstance(Components.interfaces.nsIXULRuntime);
-  rv = xulRuntime.OS;
+  var xulRuntime = Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULRuntime);
 
-  return rv;
+  return xulRuntime.OS;
 };
 
 
@@ -236,7 +259,7 @@ aeUtils.getRecentHostAppWindow = function ()
 {
   var rv;
   var wndType;
-  var hostAppID = Application.id;
+  var hostAppID = this.getHostAppID();
   
   if (hostAppID == HOSTAPP_FX_GUID) {
     wndType = WNDTYPE_FX_BROWSER;
@@ -255,21 +278,53 @@ aeUtils.getRecentHostAppWindow = function ()
 
 aeUtils.getPref = function (aPrefKey, aDefaultValue)
 {
-  // aPrefKey is the pref name, but without the "extensions.aecreations."
-  // prefix.
-  return Application.prefs.getValue(PREFNAME_PREFIX + aPrefKey, aDefaultValue);
+  let prefName = PREFNAME_PREFIX + aPrefKey;
+  let prefs = Services.prefs;
+  let prefType = prefs.getPrefType(prefName);
+  let rv = undefined;
+
+  if (prefType == prefs.PREF_STRING) {
+    rv = prefs.getCharPref(prefName);
+  }
+  else if (prefType == prefs.PREF_INT) {
+    rv = prefs.getIntPref(prefName);
+  }
+  else if (prefType == prefs.PREF_BOOL) {
+    rv = prefs.getBoolPref(prefName);
+  }
+  else {
+    // Pref doesn't exist if prefType == prefs.PREF_INVALID.
+    rv = aDefaultValue;
+  }
+
+  return rv;
 };
 
 
 aeUtils.setPref = function (aPrefKey, aPrefValue)
 {
-  Application.prefs.setValue(PREFNAME_PREFIX + aPrefKey, aPrefValue);
+  let prefName = PREFNAME_PREFIX + aPrefKey;
+  let prefs = Services.prefs;
+  let prefType = prefs.getPrefType(prefName);
+
+  if (prefType == prefs.PREF_INT) {
+    prefs.setIntPref(prefName, aPrefValue);
+  }
+  else if (prefType == prefs.PREF_BOOL) {
+    prefs.setBoolPref(prefName, aPrefValue);
+  }
+  else if (prefType == prefs.PREF_STRING) {
+    prefs.setCharPref(prefName, aPrefValue);
+  }
 };
 
 
 aeUtils.hasPref = function (aPrefKey)
 {
-  return Application.prefs.has(PREFNAME_PREFIX + aPrefKey);
+  let prefName = PREFNAME_PREFIX + aPrefKey;
+  let prefs = Services.prefs;
+
+  return (prefs.getPrefType(prefName) != prefs.PREF_INVALID);
 };
 
 

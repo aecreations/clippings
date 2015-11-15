@@ -328,16 +328,16 @@ function generateShortcutKeyHelpContent()
   pAppInfo.className = "app-info";
   pAppInfo.style.fontSize = "small";
 
-  var txtAppInfo = doc.createTextNode(gStrBundle.getFormattedString("clippingsOnHostAppNameAndVer", [Application.name, Application.version]));
+  var txtAppInfo = doc.createTextNode(gStrBundle.getFormattedString("clippingsOnHostAppNameAndVer", [aeUtils.getHostAppName(), aeUtils.getHostAppVersion()]));
   pAppInfo.appendChild(txtAppInfo);
   body.appendChild(pAppInfo);
 
   var pHelp = doc.createElement("p");
   var helpStr;
-  if (Application.id == aeConstants.HOSTAPP_FX_GUID) {
+  if (aeUtils.getHostAppID() == aeConstants.HOSTAPP_FX_GUID) {
     helpStr = gStrBundle.getFormattedString("shortcutInstr", [gStrBundle.getString("pasteIntoFx")]);
   }
-  else if (Application.id == aeConstants.HOSTAPP_TB_GUID) {
+  else if (aeUtils.getHostAppID() == aeConstants.HOSTAPP_TB_GUID) {
     helpStr = gStrBundle.getFormattedString("shortcutInstr", [gStrBundle.getString("pasteIntoTb")]);
   }
 

@@ -25,7 +25,6 @@
 
 Components.utils.import("resource://clippings/modules/aeConstants.js");
 Components.utils.import("resource://clippings/modules/aeUtils.js");
-Components.utils.import("resource://clippings/modules/aeMozApplication.js");
 
 
 const EXPORTED_SYMBOLS = ["aeClippingSubst"];
@@ -33,8 +32,6 @@ const EXPORTED_SYMBOLS = ["aeClippingSubst"];
 const Cc = Components.classes;
 const Ci = Components.interfaces;
 
-// FUEL (Firefox) or STEEL (Thunderbird) APIs
-var Application = aeGetMozApplicationObj();
 
 
 /*
@@ -136,7 +133,7 @@ aeClippingSubst.processClippingText = function (aClippingInfo, aWnd)
         break;
 
       case "_HOSTAPP_":
-        defaultVal = Application.name;
+        defaultVal = aeUtils.getHostAppName();
         break;
 
       case "_UA_":
@@ -150,7 +147,7 @@ aeClippingSubst.processClippingText = function (aClippingInfo, aWnd)
 
     var rv = "";
     
-    if (tabModalPrompt && Application.id == aeConstants.HOSTAPP_FX_GUID
+    if (tabModalPrompt && aeUtils.getHostAppID() == aeConstants.HOSTAPP_FX_GUID
         && !hasMultipleVals) {
       that._initTabModalPromptDlg(prmptSvc);
       let prmptText = that._strBundle.getFormattedString("substPromptText", [varName]);
@@ -197,7 +194,7 @@ aeClippingSubst.processClippingText = function (aClippingInfo, aWnd)
     var defaultValue = 0;
     var rv = "";
     
-    if (tabModalPrompt && Application.id == aeConstants.HOSTAPP_FX_GUID) {
+    if (tabModalPrompt && aeUtils.getHostAppID() == aeConstants.HOSTAPP_FX_GUID) {
       that._initTabModalPromptDlg(prmptSvc);
       let prmptText = that._strBundle.getFormattedString("autoIncrPromptText", [varName]);
       let input = {};
@@ -247,7 +244,7 @@ aeClippingSubst.processClippingText = function (aClippingInfo, aWnd)
   rv = rv.replace(/\$\[NAME\]/gm, aClippingInfo.name);
   rv = rv.replace(/\$\[_RDF_CLIPPING_URI\]/gm, aClippingInfo.uri);
   rv = rv.replace(/\$\[FOLDER\]/gm, aClippingInfo.parentFolderName);
-  rv = rv.replace(/\$\[HOSTAPP\]/gm, Application.name + " " + Application.version);
+  rv = rv.replace(/\$\[HOSTAPP\]/gm, aeUtils.getHostAppName() + " " + aeUtils.getHostAppVersion());
   rv = rv.replace(/\$\[UA\]/gm, userAgentStr);
 
   // Match placeholder names containing alphanumeric char's, underscores, and

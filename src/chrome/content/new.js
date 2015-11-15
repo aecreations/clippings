@@ -140,7 +140,7 @@ function initDlg()
     }
 
     // Thunderbird-specific options
-    if (Application.id == aeConstants.HOSTAPP_TB_GUID) {
+    if (aeUtils.getHostAppID() == aeConstants.HOSTAPP_TB_GUID) {
       $("tb-create-options-grid").style.display = "-moz-grid";
       // If there are no message quotation symbols in gDlgArgs.text, then
       // disable the "Create as unquoted text" checkbox.

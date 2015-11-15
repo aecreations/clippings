@@ -637,7 +637,7 @@ window.aecreations.clippings = {
     let dsPath = this.aeUtils.getPref("clippings.datasource.location", profilePath);
     
     if (this.aeUtils.PORTABLE_APP_BUILD && dsPath != profilePath) {
-      this.aeUtils.log("Clippings: initClippings():\nResetting data source location on Portable " + Application.name);
+      this.aeUtils.log("Clippings: initClippings():\nResetting data source location on Portable " + this.aeUtils.getHostAppName());
       this.aeUtils.setPref("clippings.datasource.location", profilePath);
     }
 

@@ -12,8 +12,8 @@ MODULES = ./modules
 MODULE_FILES = $(MODULES)/aeClippings3.js $(MODULES)/aeClippingSubst.js       \
 $(MODULES)/aeConstants.js $(MODULES)/aeUtils.js $(MODULES)/aeString.js        \
 $(MODULES)/aeCreateClippingHelper.js $(MODULES)/aePackagedClippings.js        \
-$(MODULES)/aeMozApplication.js $(MODULES)/aePrefMigrator.js                   \
-$(MODULES)/aeClippingLabelPicker.js $(MODULES)/aeInsertTextIntoTextbox.js
+$(MODULES)/aePrefMigrator.js $(MODULES)/aeClippingLabelPicker.js              \
+$(MODULES)/aeInsertTextIntoTextbox.js
 DEFAULTS_PREFS = ./defaults/preferences
 EXCLUDE = \*.html \*~ \*.psp \*.bak
 

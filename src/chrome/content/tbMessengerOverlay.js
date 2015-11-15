@@ -16,7 +16,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2005-2014
+ * Portions created by the Initial Developer are Copyright (C) 2005-2015
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -280,7 +280,7 @@ window.aecreations.clippings = {
     let dsPath = this.aeUtils.getPref("clippings.datasource.location", profilePath);
     
     if (this.aeUtils.PORTABLE_APP_BUILD && dsPath != profilePath) {
-      this.aeUtils.log("Clippings: initClippings():\nResetting data source location on Portable " + Application.name);
+      this.aeUtils.log("Clippings: initClippings():\nResetting data source location on Portable " + this.aeUtils.getHostAppName());
       this.aeUtils.setPref("clippings.datasource.location", profilePath);
     }
 
@@ -325,7 +325,7 @@ window.aecreations.clippings = {
 
     this.dataSrcInitialized = true;
 
-    this.aeUtils.log(this.aeString.format("gClippings.initClippings(): Clippings data source successfully loaded.\nHost app: %s (version %s)\nInitializing Clippings integration with host app window:\n%s", Application.name, Application.version, window.location.href));
+    this.aeUtils.log(this.aeString.format("gClippings.initClippings(): Clippings data source successfully loaded.\nHost app: %s (version %s)\nInitializing Clippings integration with host app window:\n%s", this.aeUtils.getHostAppName(), this.aeUtils.getHostAppVersion(), window.location.href));
 
     // Add null clipping to root folder if there are no items
     if (this.aeUtils.getPref("clippings.datasource.process_root", true) == true) {

@@ -655,7 +655,7 @@ window.aecreations.clippings = {
     let dsPath = this.aeUtils.getPref("clippings.datasource.location", profilePath);
     
     if (this.aeUtils.PORTABLE_APP_BUILD && dsPath != profilePath) {
-      this.aeUtils.log("Clippings: initClippings():\nResetting data source location on Portable " + Application.name);
+      this.aeUtils.log("Clippings: initClippings():\nResetting data source location on Portable " + this.aeUtils.getHostAppName());
       this.aeUtils.setPref("clippings.datasource.location", profilePath);
     }
 
@@ -670,7 +670,7 @@ window.aecreations.clippings = {
     var popup = document.getElementById("ae-clippings-popup-1");
     this.initClippingsPopup(popup, menu);
 
-    this.aeUtils.log(this.aeString.format("Clippings: initClippings():\nInitializing Clippings integration with host app window\nHost app: %s (version %s); Australis UI: %b\nDatasource location: %s", Application.name, Application.version, this.isAustralisUI(), dataSrcPathURL));
+    this.aeUtils.log(this.aeString.format("Clippings: initClippings():\nInitializing Clippings integration with host app window.\nHost app: %s (version %s); Australis UI: %b\nDatasource location: %s", this.aeUtils.getHostAppName(), this.aeUtils.getHostAppVersion(), this.isAustralisUI(), dataSrcPathURL));
 
     // Add null clipping to root folder if there are no items
     if (this.aeUtils.getPref("clippings.datasource.process_root", true) == true) {

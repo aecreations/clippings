@@ -876,8 +876,9 @@ function init()
   gClippingDetailsPaneVisible = aeUtils.getPref("clippings.clipmgr.details_pane", false);
   if (gClippingDetailsPaneVisible) {
     // Source URL bar should not be available if on Thunderbird.
-    if (Application.id != aeConstants.HOSTAPP_TB_GUID) {
-      gSrcURLBar.show();
+    if (aeUtils.getHostAppID() == aeConstants.HOSTAPP_TB_GUID) {
+      aeUtils.log("Clippings: Thunderbird detected, hiding source URL bar");
+      gSrcURLBar.hide();
     }
   }
   else {
@@ -2136,7 +2137,7 @@ function toggleClippingDetails()
     gOptionsBar.show();
  
     // Source URL bar should not be available if on Thunderbird.
-    if (Application.id != aeConstants.HOSTAPP_TB_GUID) {
+    if (aeUtils.getHostAppID() != aeConstants.HOSTAPP_TB_GUID) {
       gSrcURLBar.show();
     }
   }
@@ -2282,7 +2283,7 @@ function goToSourceURL()
       return;
     }
 
-    if (Application.id == aeConstants.HOSTAPP_FX_GUID) {
+    if (aeUtils.getHostAppID() == aeConstants.HOSTAPP_FX_GUID) {
       let wnd = aeUtils.getRecentHostAppWindow();
       
       if (wnd) {
@@ -3059,7 +3060,7 @@ function initClippingsListPopup()
   var enableInsertClippingCmd = !haWnd || !gClippingsSvc.isClipping(uri);
   insertClipping.setAttribute("disabled", enableInsertClippingCmd);
 
-  $("go-to-url-cxt").hidden = !(Application.id == aeConstants.HOSTAPP_FX_GUID
+  $("go-to-url-cxt").hidden = !(aeUtils.getHostAppID() == aeConstants.HOSTAPP_FX_GUID
                                 && gClippingsSvc.isClipping(uri) 
                                 && gClippingsSvc.hasSourceURL(uri) 
                                 && gClippingsSvc.getSourceURL(uri) != "");
@@ -3443,7 +3444,7 @@ function showShortcutKeyMinihelp()
     keyCount: keyCount,
     showInsertClippingCmd: false
   };
-  dlgArgs.printToExtBrowser = Application.id == aeConstants.HOSTAPP_TB_GUID;
+  dlgArgs.printToExtBrowser = aeUtils.getHostAppID() == aeConstants.HOSTAPP_TB_GUID;
 
   // Position the help window so that it is relative to the Clippings Manager
   // window.
