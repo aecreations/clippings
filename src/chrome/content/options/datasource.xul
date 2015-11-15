@@ -86,7 +86,7 @@
       </grid>
     </groupbox>
 
-    <groupbox>
+    <groupbox id="src-urls-groupbox">
       <caption label="Source Web Page Addresses"/>
 
       <hbox id="remove-all-src-urls-panel">
