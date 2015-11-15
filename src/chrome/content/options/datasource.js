@@ -71,11 +71,12 @@ function initPrefPaneDataSource()
   }
 
   // Workaround to height rendering issue on the <description> element of the
-  // pref dialog.
+  // pref dialog.  Don't do this on Thunderbird, where the <description>
+  // element will be hidden.
   var prefs = Services.prefs;
   var fadeInEffect = prefs.getBoolPref("browser.preferences.animateFadeIn");
 
-  if (! fadeInEffect.value) {
+  if (!fadeInEffect.value && aeUtils.getHostAppID() != aeConstants.HOSTAPP_TB_GUID) {
     window.sizeToContent();
     var hbox = $("remove-all-src-urls-panel");
     hbox.height = hbox.boxObject.height;
@@ -117,7 +118,7 @@ function initPrefPaneDataSource()
 
   // On Thunderbird, hide the button to strip out source URLs in all clippings.
   if (aeUtils.getHostAppID() == aeConstants.HOSTAPP_TB_GUID) {
-    $("remove-all-src-urls-panel").hidden = true;
+    $("src-urls-groupbox").hidden = true;
   }
 }
 
