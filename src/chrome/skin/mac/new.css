@@ -54,6 +54,8 @@ menu[open="true"] {
 
 #folder-menu-button {
   list-style-image: url("chrome://clippings/skin/images/clippings-root.svg");
+  padding-top: 3px;
+  padding-bottom: 1px;
 }
 
 #folder-menu-button .menulist-icon {
@@ -68,6 +70,16 @@ menu[open="true"] {
 #new-folder {
   list-style-image: url("chrome://clippings/skin/images/clippingsMgrToolbar.png");
   -moz-image-region: rect(0px, 104px, 16px, 88px);
+}
+
+#new-folder image {
+  padding-top: 2px;
+  padding-bottom: 1px;
+}
+
+#clipping-label image {
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
 
 #tb-create-options-grid {
