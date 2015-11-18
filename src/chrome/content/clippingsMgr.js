@@ -666,6 +666,12 @@ var gPlaceholderBar = {
     return !this._placeholderBarElt.hidden;
   },
 
+  isActivated: function ()
+  {
+    let rv = aeUtils.getPref("clippings.clipmgr.placeholder_toolbar", false);
+    return rv;
+  },
+
   setDisabledState: function (aDisabled)
   {
     $("placeholder-presets").disabled = aDisabled;
@@ -2109,10 +2115,21 @@ function isClippingTextAreaFocused()
 
 function updateToolsMenu()
 {
-  var toolbox = $("clipping-content-editor-toolbox");
-  $("toggle-placeholder-bar").setAttribute("checked", !toolbox.hasAttribute("hidden"));
+  let cmdShowHidePlaceholderBar = $("cmd_togglePlaceholderBar");
+  let cmdShowHideDetailsPane = $("cmd_toggleDetailsPane");
+  let uri = gClippingsList.selectedURI;
 
-  $("toggle-options-pane").setAttribute("checked", gClippingDetailsPaneVisible);
+  if (!uri || gClippingsSvc.isFolder(uri) || gClippingsSvc.isEmptyClipping(uri)) {
+    cmdShowHidePlaceholderBar.setAttribute("disabled", "true");
+    cmdShowHideDetailsPane.setAttribute("disabled", "true");
+  }
+  else {
+    cmdShowHidePlaceholderBar.removeAttribute("disabled");
+    cmdShowHideDetailsPane.removeAttribute("disabled");
+  }
+
+  cmdShowHidePlaceholderBar.setAttribute("checked", gPlaceholderBar.isActivated());
+  cmdShowHideDetailsPane.setAttribute("checked", gClippingDetailsPaneVisible);
 }
 
 
