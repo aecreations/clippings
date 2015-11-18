@@ -227,7 +227,7 @@
     <command id="cmd_datasrc_opts" oncommand="dataSrcOptions()"/>
     <command id="cmd_clipmgr_opts" oncommand="clippingsMgrOptions()"/>
     <command id="cmd_togglePlaceholderBar" oncommand="togglePlaceholderBar()"/>
-    <command id="cmd_toggleDetails" oncommand="toggleClippingDetails()"/>
+    <command id="cmd_toggleDetailsPane" oncommand="toggleClippingDetails()"/>
   </commandset>
 
   <keyset>
@@ -479,7 +479,7 @@
                command="cmd_togglePlaceholderBar"/>
               <menuitem id="toggle-options-pane" type="checkbox"
                label="&detailsPane.label;" accesskey="&detailsPane.accesskey;"
-               command="cmd_toggleDetails"/>
+               command="cmd_toggleDetailsPane"/>
             </menupopup>
           </menu>
 	  <menuitem id="clipmgr-options" label="&options.label;" accesskey="&options.accesskey;" command="cmd_clipmgr_opts"/>
