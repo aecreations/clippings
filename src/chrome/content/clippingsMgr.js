@@ -754,22 +754,27 @@ var gSrcURLBar = {
 
  isEditing: function ()
  {
-   return !this._srcURLTextbox.hasAttribute("readonly");
+   return (this._srcURLDeck.selectedIndex == 1);
+ },
+
+ isBadURLEntered: function ()
+ {
+   // Minimal validation of source URL (but allow an empty value)
+   let srcURL = this._srcURLTextbox.value;
+   return (srcURL.search(/^http/) == -1 && srcURL != "");
  },
 
  acceptEdit: function ()
  {
-   // Minimal validation of source URL (but allow an empty value)
-   let srcURL = this._srcURLTextbox.value;
-   if (srcURL.search(/^http/) == -1 && srcURL != "") {
+   if (this.isBadURLEntered()) {
      aeUtils.beep();
      this._srcURLTextbox.select();
      return;
    }
 
+   let srcURL = this._srcURLTextbox.value;
    let clippingURI = gClippingsList.getURIAtIndex(gCurrentListItemIndex);
    gClippingsSvc.setSourceURL(clippingURI, srcURL);
-   var urlText = document.createTextNode(srcURL);
 
    let srcURLLink = $("clipping-src-url-link");
    srcURLLink.value = srcURL;
@@ -2328,6 +2333,20 @@ function updateCurrentEntryStatus()
   var deck = $("entry-properties");
   if (deck.selectedIndex != 0) {
     deck.selectedIndex = 0;
+  }
+
+  // Auto-apply edits to source URL if it was being edited when the user
+  // selected another item in the tree list.
+  if (gSrcURLBar.isEditing()) {
+    aeUtils.log("Clippings Manager: The source URL is being edited; auto-applying changes if URL is valid.");
+
+    // But discard the edit if the source URL isn't valid.
+    if (gSrcURLBar.isBadURLEntered()) {
+      gSrcURLBar.cancelEdit();
+    }
+    else {
+      gSrcURLBar.acceptEdit();
+    }
   }
 }
 
