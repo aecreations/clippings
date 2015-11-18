@@ -325,8 +325,14 @@ toolbarbutton .toolbarbutton-icon {
   margin-left: 0px;
 }
 
+/* Popup panels for alerts */
 #ae-clippings-clipboard-alert, #import-empty-alert {
   padding: 6px;
+}
+
+/* Source URL */
+#clipping-src-url {
+  margin-right: 1px;
 }
 
 #clipping-src-url-edit-btns toolbarbutton {
