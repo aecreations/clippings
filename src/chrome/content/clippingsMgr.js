@@ -3055,11 +3055,6 @@ function initClippingsListPopup()
   $("clipping-label-cxt").hidden = !gClippingsSvc.isClipping(uri);
   $("clipping-label-cxt-separator").hidden = !gClippingsSvc.isClipping(uri);
 
-  var insertClipping = $("insert-clipping");
-  var haWnd = aeUtils.getRecentHostAppWindow();
-  var enableInsertClippingCmd = !haWnd || !gClippingsSvc.isClipping(uri);
-  insertClipping.setAttribute("disabled", enableInsertClippingCmd);
-
   $("go-to-url-cxt").hidden = !(aeUtils.getHostAppID() == aeConstants.HOSTAPP_FX_GUID
                                 && gClippingsSvc.isClipping(uri) 
                                 && gClippingsSvc.hasSourceURL(uri) 

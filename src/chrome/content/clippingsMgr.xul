@@ -249,13 +249,6 @@
   <popupset>
     <menupopup id="clippings-list-context" 
      onpopupshowing="return initClippingsListPopup()">
-      <!-- 
-      Hide the Insert Clipping command, which might confuse user into thinking 
-      that clipping can be pasted into any external application.
-      -->
-      <menuitem id="insert-clipping" default="true" hidden="true"
-       label="&insertClipping.label;" accesskey="&insertClipping.accesskey;"
-       oncommand="insertClipping()"/>
       <menuseparator hidden="true"/>
       <menu id="move-to-1"
             label="&moveTo.label;" accesskey="&moveTo.accesskey;"
