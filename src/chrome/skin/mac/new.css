@@ -96,6 +96,11 @@ menu[open="true"] {
   height: 20px;
 }
 
+#toggle-options image {
+  padding-top: 5px;
+  padding-bottom: 4px;
+}
+
 /* Mac-specific */
 .expand-options {
   list-style-image: url("chrome://browser/skin/panel-expander-closed.png");
