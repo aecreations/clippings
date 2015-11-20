@@ -220,7 +220,7 @@
             <spacer flex="1"/>
             <vbox>
               <box flex="1"/>
-              <label id="shortcut-key-hint" value="(?)"/>
+              <image id="shortcut-key-hint" src="chrome://clippings/skin/images/help-tooltip.png"/>
 	      <box flex="1"/>
             </vbox>
           </hbox>
