@@ -81,6 +81,13 @@ menu[open="true"] {
   margin-left: 3px;
 }
 
+#toggle-options image {
+  padding-top: 2px;
+  padding-bottom: 0px;
+  padding-left: 1px;
+  padding-right: 0px;
+}
+
 .expand-options {
   list-style-image: url("chrome://global/skin/icons/expand.png");
 }
