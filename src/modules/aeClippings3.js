@@ -162,7 +162,10 @@ aeClippings3.migrateCommonDataSrcPref = function ()
 {
   var profileDirPath;
   var prefs = Cc["@mozilla.org/preferences-service;1"].getService(Ci.nsIPrefBranch);
-  var isCommonDS = prefs.getBoolPref("clippings.datasource.common");
+  var isCommonDS = false;
+  if (prefs.getPrefType("clippings.datasource.common") == prefs.PREF_BOOL) {
+    isCommonDS = prefs.getBoolPref("clippings.datasource.common");
+  }
 
   if (isCommonDS) {
     // Upgrading from Clippings 3.x - migrate the deprecated pref

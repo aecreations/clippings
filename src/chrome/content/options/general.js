@@ -37,7 +37,11 @@ function initPrefPaneGeneral()
   // adjust their heights when switching between pref panes (e.g. Mac OS X), as
   // it will interfere with the dialog height.
   var prefs = Services.prefs;
-  var fadeInEffect = prefs.getBoolPref("browser.preferences.animateFadeIn");
+  var fadeInEffect = false;
+  if (prefs.getPrefType("browser.preferences.animateFadeIn") == prefs.PREF_BOOL) {
+    fadeInEffect = prefs.getBoolPref("browser.preferences.animateFadeIn");
+  }
+
   if (! fadeInEffect.value) {
     window.sizeToContent();
     var vbox = $("paste-html-vbox");

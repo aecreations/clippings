@@ -74,7 +74,10 @@ function initPrefPaneDataSource()
   // pref dialog.  Don't do this on Thunderbird, where the <description>
   // element will be hidden.
   var prefs = Services.prefs;
-  var fadeInEffect = prefs.getBoolPref("browser.preferences.animateFadeIn");
+  var fadeInEffect = false;
+  if (prefs.getPrefType("browser.preferences.animateFadeIn") == prefs.PREF_BOOL) {
+    fadeInEffect = prefs.getBoolPref("browser.preferences.animateFadeIn");
+  }
 
   if (!fadeInEffect.value && aeUtils.getHostAppID() != aeConstants.HOSTAPP_TB_GUID) {
     window.sizeToContent();
