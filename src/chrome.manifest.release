@@ -29,11 +29,11 @@ locale	clippings	uk-UA	jar:chrome/clippings.jar!/locale/uk-UA/
 locale	clippings	sv-SE	jar:chrome/clippings.jar!/locale/sv-SE/
 
 # The following locales have been disabled because translations are incomplete
-#locale	clippings	pl	jar:chrome/clippings.jar!/locale/pl/
-#locale	clippings	ja-JP	jar:chrome/clippings.jar!/locale/ja-JP/
-#locale	clippings	sk-SK	jar:chrome/clippings.jar!/locale/sk-SK/
-#locale	clippings	ru-RU	jar:chrome/clippings.jar!/locale/ru-RU/
-#locale	clippings	pt-BR	jar:chrome/clippings.jar!/locale/pt-BR/
+locale	clippings	pl	jar:chrome/clippings.jar!/locale/pl/
+locale	clippings	ja-JP	jar:chrome/clippings.jar!/locale/ja-JP/
+locale	clippings	sk-SK	jar:chrome/clippings.jar!/locale/sk-SK/
+locale	clippings	ru-RU	jar:chrome/clippings.jar!/locale/ru-RU/
+locale	clippings	pt-BR	jar:chrome/clippings.jar!/locale/pt-BR/
 
 
 # XPCOM type libraries
