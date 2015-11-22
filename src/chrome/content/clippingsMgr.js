@@ -1475,13 +1475,23 @@ function newClipping()
 
 function newClippingHelper(aParentFolder, aName, aText, aURI, aPos, aDestUndoStack)
 {
-  var newNodeURI = gClippingsSvc.createNewClippingEx(aParentFolder, aURI, aName, aText, "", gClippingsSvc.LABEL_NONE, aPos, true);
+  newClippingHelperEx(aParentFolder, aName, aText, aURI, aPos, "", "", gClippingsSvc.LABEL_NONE, aDestUndoStack);
+}
+
+
+function newClippingHelperEx(aParentFolder, aName, aText, aURI, aPos, aShortcutKey, aSrcURL, aLabel, aDestUndoStack)
+{
+  var newNodeURI = gClippingsSvc.createNewClippingEx(aParentFolder, aURI, aName, aText, aSrcURL, aLabel, aPos, true);
 
   if (! newNodeURI) {
     doAlert(gStrBundle.getString('errorCannotCreate'));
     return;
   }
   
+  if (aShortcutKey) {
+    gClippingsSvc.setShortcutKey(newNodeURI, aShortcutKey);
+  }
+
   gClippingsList.selectedURI = newNodeURI;
   gClippingsList.ensureURIIsVisible(newNodeURI);
   gClippingsList.tree.click();
@@ -1496,8 +1506,8 @@ function newClippingHelper(aParentFolder, aName, aText, aURI, aPos, aDestUndoSta
   clippingName.focus();
 
   var state = {
-    action: ACTION_CREATENEW, uri: newNodeURI, 
-    name: aName, text: aText, srcURL: "", label: gClippingsSvc.LABEL_NONE, 
+    action: ACTION_CREATENEW, uri: newNodeURI, name: aName, text: aText,
+    srcURL: aSrcURL, label: aLabel, key: aShortcutKey,
     parentFolderURI: aParentFolder, pos: aPos
   };
 
@@ -2720,7 +2730,7 @@ function moveEntry(aURI, aParentFolderURI, aOldPos, aNewPos, aDestUndoStack)
   aeUtils.log(aeString.format("In function moveEntry(): aOldPos=%d; aNewPos=%d", aOldPos, aNewPos));
 
   gClippingsSvc.changePosition(aParentFolderURI, aOldPos, aNewPos);
-  Gisclippingsdirty = true;
+  gIsClippingsDirty = true;
   removeFolderMenuSeparator();  // Rebuild folder menu separator
   commit();
 }
@@ -3289,12 +3299,16 @@ function undo()
 
 function reverseLastUndo()
 {
+  aeUtils.log("At start of function reverseLastUndo()");
+
   updateCurrentClippingData();
 
   if (gRedoStack.length == 0) {
     aeUtils.beep();
     return;
   }
+
+  aeUtils.log("Removing from undo queue");
 
   var redo = gRedoStack.pop();
   var srcFolder;  // Used for redoing move or copy
@@ -3334,25 +3348,22 @@ function reverseLastUndo()
     aeUtils.log(aeString.format("Entry text edit redone!\nEntry name: %S; entry URI: %S; oldText: %S", redo.name, redo.uri, redo.text));
   }
   else if (redo.action == ACTION_CREATENEW) {
+    try {
     pos = null;  //redo.pos;
-    newClippingHelper(redo.parentFolderURI, redo.name, redo.text, redo.uri, pos, UNDO_STACK);
+    let shortcutKey = ("key" in redo ? redo.key : "");
+    let srcURL = ("srcURL" in redo ? redo.srcURL : "");
+    let label = ("label" in redo ? redo.label : "");
+
+    aeUtils.log(aeString.format("Redoing clipping creation: Name = %S", redo.name));
+
+    newClippingHelperEx(redo.parentFolderURI, redo.name, redo.text, redo.uri, pos, shortcutKey, srcURL, label, UNDO_STACK);
     gClippingsList.selectedURI = redo.uri;
 
-    if ("srcURL" in redo) {
-      gClippingsSvc.setSourceURL(redo.uri, redo.srcURL);
-    }
-    if ("label" in redo) {
-      gClippingsSvc.setLabel(redo.uri, redo.label);
-    }
+    gIsClippingsDirty = true;
+    commit();
+    updateDisplay();
 
-    aeUtils.log("Shortcut key of clipping whose creation is being redone (empty if none was defined): `" + redo.key + "'");
-
-    if (redo.key) {
-      gClippingsSvc.setShortcutKey(redo.uri, redo.key);
-      gIsClippingsDirty = true;
-      commit();
-      updateDisplay();
-    }
+    } catch (e) { aeUtils.log(e) }
 
     aeUtils.log(aeString.format("Redoing new clipping creation!\nEntry name: %S; entry URI: %S", redo.name, redo.uri));
   }
