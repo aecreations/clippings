@@ -518,9 +518,11 @@ window.aecreations.clippings = {
       return;
     }
 
-    this.insertClippingText(dlgArgs.clippingURI,
-                            this.clippingsSvc.getName(dlgArgs.clippingURI),
-                            this.clippingsSvc.getText(dlgArgs.clippingURI));
+    if (dlgArgs.clippingURI) {
+      this.insertClippingText(dlgArgs.clippingURI,
+                              this.clippingsSvc.getName(dlgArgs.clippingURI),
+                              this.clippingsSvc.getText(dlgArgs.clippingURI));
+    }
   },
 
 

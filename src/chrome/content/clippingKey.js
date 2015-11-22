@@ -66,8 +66,7 @@ function processKeyPress(aEvent)
   else {
     var key = aEvent.key.toUpperCase();
 
-    // !! Using deprecated DOM method event.keyCode
-    aeUtils.log(aeString.format("Clippings: Key pressed: %S; key code: %d", key, aEvent.keyCode));
+    aeUtils.log(aeString.format("Clippings: Key pressed: %S", key));
 
     var keyDict = gClippingsSvc.getShortcutKeyDict();
     var keys;
@@ -96,6 +95,18 @@ function processKeyPress(aEvent)
 }
 
 
-function unload() {
+function cancel()
+{
+  // Remember the paste shortcut mode for next time, even if user cancelled.
+  aeUtils.setPref("clippings.paste_shortcut_mode", gDlgArgs.ACTION_SHORTCUT_KEY);
+
+  gDlgArgs.userCancel = true;
+  gDlgArgs.switchModes = false;
+  window.close();
+}
+
+
+function unload()
+{
 
 }

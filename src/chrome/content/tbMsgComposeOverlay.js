@@ -502,12 +502,10 @@ window.aecreations.clippings = {
       else if (dlgArgs.action == dlgArgs.ACTION_SHORTCUT_KEY) {
         let dlg = window.openDialog("chrome://clippings/content/clippingKey.xul",
                                     "clipkey_dlg", "modal,centerscreen", dlgArgs);
-        this.aeUtils.log("Clippings: end of shortcut key action");
       }
       else if (dlgArgs.action == dlgArgs.ACTION_SEARCH_CLIPPING) {
         let dlg = window.openDialog("chrome://clippings/content/searchClipping.xul",
                                     "clipsrch_dlg", "modal,centerscreen", dlgArgs);
-        this.aeUtils.log("Clippings: end of search clipping action");
       }
     } while (dlgArgs.switchModes && !dlgArgs.userCancel);
 
@@ -515,9 +513,11 @@ window.aecreations.clippings = {
       return;
     }
 
-    this.insertClippingText(dlgArgs.clippingURI,
-                            this.clippingsSvc.getName(dlgArgs.clippingURI),
-                            this.clippingsSvc.getText(dlgArgs.clippingURI));
+    if (dlgArgs.clippingURI) {
+      this.insertClippingText(dlgArgs.clippingURI,
+                              this.clippingsSvc.getName(dlgArgs.clippingURI),
+                              this.clippingsSvc.getText(dlgArgs.clippingURI));
+    }
   },
 
 

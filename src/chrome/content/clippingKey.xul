@@ -50,7 +50,7 @@
 
   <hbox>
     <spacer flex="1"/>
-    <button label="&cancelButton.label;" oncommand="window.close()"/>
+    <button label="&cancelButton.label;" oncommand="cancel()"/>
 </hbox>
 </window>
 
