@@ -67,6 +67,8 @@ function ClippingLabelPicker(aMenupopup)
 
 ClippingLabelPicker.prototype = {
 
+  IMG_FILENAME_EXT: ".svg",
+
   get selectedItem()
   {
     return this._selectedItem;
@@ -136,10 +138,10 @@ ClippingLabelPicker.prototype.getIconFileStr = function (aLabel)
   var rv;
 
   if (aLabel) {
-    rv = "label-" + aLabel + ".svg";
+    rv = "label-" + aLabel + this.IMG_FILENAME_EXT;
   }
   else {
-    rv = "label-none.svg";
+    rv = "label-none" + this.IMG_FILENAME_EXT;
   }
 
   return rv;
