@@ -672,7 +672,7 @@ window.aecreations.clippings = {
     var popup = document.getElementById("ae-clippings-popup-1");
     this.initClippingsPopup(popup, menu);
 
-    this.aeUtils.log(this.aeString.format("Clippings: initClippings():\nInitializing Clippings integration with host app window.\nHost app: %s (version %s); Australis UI: %b\nDatasource location: %s", this.aeUtils.getHostAppName(), this.aeUtils.getHostAppVersion(), this.isAustralisUI(), dataSrcPathURL));
+    this.aeUtils.log(this.aeString.format("Clippings: initClippings():\nInitializing Clippings integration with host app window.\nHost app: %s (version %s); OS: %s; Australis UI: %b.\nDatasource location: %s", this.aeUtils.getHostAppName(), this.aeUtils.getHostAppVersion(), this.aeUtils.getOS(), this.isAustralisUI(), dataSrcPathURL));
 
     // Add null clipping to root folder if there are no items
     if (this.aeUtils.getPref("clippings.datasource.process_root", true) == true) {
