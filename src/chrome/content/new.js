@@ -49,10 +49,17 @@ var gClippingLabelPicker;
 var gFolderName;
 
 // Listener object passed to the aeClippingLabelPicker object
-var gClippingLabelPickerListener = {
+let gClippingLabelPickerListener = {
+   _btnID: null,
+
+  init: function (aButtonID)
+  {
+    this._btnID = aButtonID;
+  },
+
   selectionChanged: function (aNewLabel)
   {
-    $("clipping-label").image = aeString.format("chrome://clippings/skin/images/%s", gClippingLabelPicker.getIconFileStr(aNewLabel));
+    $(this._btnID).image = aeString.format("chrome://clippings/skin/images/%s", gClippingLabelPicker.getIconFileStr(aNewLabel));
   }
 };
 
@@ -71,7 +78,7 @@ function $(aID)
 // Dialog box functions for both new.xul and newFolder.xul
 //
     
-function initDlg() 
+function init()
 {
   try {
     gClippingsSvc = Components.classes["clippings@mozdev.org/clippings;1"].getService(Components.interfaces.aeIClippingsService);
@@ -108,7 +115,9 @@ function initDlg()
     var app = gStrBundle.getString("pasteIntoBothHostApps");
     var hint = gStrBundle.getFormattedString("shortcutKeyHint", [app]);
 
-    if (aeUtils.getOS() == "Darwin") {
+    let os = aeUtils.getOS();
+
+    if (os == "Darwin") {
       // On Mac OS X, OS_TARGET is "Darwin"
       // Shortcut key hint text is different due to Mac OS X-specific issue
       // with shortcut key prefix; see bug 18879
@@ -168,7 +177,17 @@ function initDlg()
     gIsFolderCreated = false;
     gSelectedFolderURI = gClippingsSvc.kRootFolderURI;
 
-    gClippingLabelPicker = aeClippingLabelPicker.createInstance($("clipping-label-menupopup"));
+    // Special label picker widget for Linux (due to issue #50)
+    if (os != "WINNT" && os != "Darwin") {
+      $("clipping-label-deck").selectedIndex = 1;
+      gClippingLabelPickerListener.init("clipping-label-2");
+      gClippingLabelPicker = aeClippingLabelPicker.createInstance($("clipping-label-menupopup-2"));
+    }
+    else {
+      $("clipping-label-deck").selectedIndex = 0;
+      gClippingLabelPickerListener.init("clipping-label");
+      gClippingLabelPicker = aeClippingLabelPicker.createInstance($("clipping-label-menupopup"));
+    }
     gClippingLabelPicker.addListener(gClippingLabelPickerListener);
   }
 }
@@ -367,7 +386,7 @@ function validateFolderName(aEvent)
 }
 
 
-function doOK() 
+function accept() 
 {
   if (! gSelectedFolderURI) {
     gSelectedFolderURI = gClippingsSvc.kRootFolderURI;
@@ -427,7 +446,7 @@ function doOK()
 }
 
 
-function doCancel() 
+function cancel() 
 {
   if (window.location.href == "chrome://clippings/content/new.xul") {
     if (gIsFolderCreated) {
