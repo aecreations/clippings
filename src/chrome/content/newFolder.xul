@@ -20,7 +20,7 @@
    -
    - The Initial Developer of the Original Code is
    - Alex Eng <ateng@users.sourceforge.net>.
-   - Portions created by the Initial Developer are Copyright (C) 2005-2014
+   - Portions created by the Initial Developer are Copyright (C) 2005-2015
    - the Initial Developer. All Rights Reserved.
    -
    - Contributor(s):
@@ -32,7 +32,7 @@
  title="&newFolder.title;"
  orient="vertical"
  buttons="accept,cancel"
- onload="initDlg()" ondialogaccept="doOK()" ondialogcancel="doCancel()">
+ onload="init()" ondialogaccept="accept()" ondialogcancel="cancel()">
 
   <script type="application/javascript" src="chrome://clippings/content/new.js"/>
 
