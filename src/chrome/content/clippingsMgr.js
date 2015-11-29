@@ -56,10 +56,17 @@ var gClippingDetailsPaneVisible;
 var gClippingsSvc;
 
 // Listener for the label picker in the main content area
-var gClippingLabelPickerListener = {
+let gClippingLabelPickerListener = {
+  _btnID: null,
+
+  init: function (aButtonID)
+  {
+    this._btnID = aButtonID;
+  },
+
   selectionChanged: function (aNewLabel)
   {
-    $("clipping-label-btn").image = aeString.format("chrome://clippings/skin/images/%s", gClippingLabelPicker.getIconFileStr(aNewLabel));
+    $(this._btnID).image = aeString.format("chrome://clippings/skin/images/%s", gClippingLabelPicker.getIconFileStr(aNewLabel));
   }
 };
 
@@ -898,9 +905,29 @@ function init()
   }
 
   // Clipping label picker widgets
-  gClippingLabelPicker = aeClippingLabelPicker.createInstance($("clipping-label-menupopup"));
+  let os = aeUtils.getOS();
+  let btnMenuPopupID = "";
+  let cxtMenuPopupID = "";
+
+  if (os != "WINNT" && os != "Darwin") { 
+    // Use the alternative label picker menu
+    gClippingLabelPickerListener.init("clipping-label-btn-2");
+    btnMenuPopupID = "clipping-label-menupopup-2";
+    cxtMenuPopupID = "clipping-label-cxt-menupopup-2";
+    $("clipping-label-deck").selectedIndex = 1;
+    $("clipping-label-cxt").style.display = "none";
+  }
+  else {
+    gClippingLabelPickerListener.init("clipping-label-btn");
+    btnMenuPopupID = "clipping-label-menupopup";
+    cxtMenuPopupID = "clipping-label-cxt-menupopup";
+    $("clipping-label-deck").selectedIndex = 0;
+    $("clipping-label-cxt-2").style.display = "none";
+  }
+
+  gClippingLabelPicker = aeClippingLabelPicker.createInstance($(btnMenuPopupID));
   gClippingLabelPicker.addListener(gClippingLabelPickerListener);
-  gClippingLabelPickerCxtMenu = aeClippingLabelPicker.createInstance($("clipping-label-cxt-menupopup"));
+  gClippingLabelPickerCxtMenu = aeClippingLabelPicker.createInstance($(cxtMenuPopupID));
 
   // Clippings backup
   var backupDirURL = aeUtils.getDataSourcePathURL() + aeConstants.BACKUP_DIR_NAME;

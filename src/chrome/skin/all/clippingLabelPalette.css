@@ -27,11 +27,27 @@
  * Clipping label popup submenu
  * The *-cxt-* styles are used by Clippings Manager, where the label palette
  * appears in two places.
+ * The *-2 styles are used by the alternative label picker menu, used in Linux
+ * due to issue #50.
  */
 #clipping-label-menupopup menuitem,
-#clipping-label-cxt-menupopup menuitem {
+#clipping-label-cxt-menupopup menuitem,
+#clipping-label-menupopup-2 menuitem,
+#clipping-label-cxt-menupopup-2 menuitem {
   list-style-image: url("chrome://clippings/skin/images/clipping-labels.png");
+}
+
+#clipping-label-menupopup menuitem,
+#clipping-label-cxt-menupopup menuitem {
   max-width: 24px;
+}
+
+#clipping-label-menupopup-2 .menuitem-iconic > 
+  .menu-iconic-left > .menu-iconic-icon,
+#clipping-label-cxt-menupopup-2 .menuitem-iconic >
+  .menu-iconic-left > .menu-iconic-icon {
+  width: auto;
+  height: auto;
 }
 
 /* Some hacking to force the popup submenu to look like a palette widget. */

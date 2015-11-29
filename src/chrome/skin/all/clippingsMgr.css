@@ -328,7 +328,7 @@ toolbarbutton .toolbarbutton-icon {
   -moz-image-region: rect(48px, 288px, 64px, 272px);
 }
 
-#clipping-label-btn {
+#clipping-label-btn, #clipping-label-btn-2 {
   min-width: 24px;
 }
 

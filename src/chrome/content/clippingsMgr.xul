@@ -362,6 +362,37 @@
         </menupopup>
       </menu>
 
+      <!-- Linux-only clipping label picker menu (fix for issue #50) -->
+      <menu id="clipping-label-cxt-2" label="&clippingLabel.label;"
+       accesskey="&clippingLabel.accesskey;">
+        <menupopup id="clipping-label-cxt-menupopup-2"
+         onpopupshowing="updateLabelMenu()">
+          <menuitem class="menuitem-iconic clipping-label-none"
+           label="&labelNone.tooltip;"
+           oncommand="updateLabel(this.classList[1])"/>
+          <menuitem class="menuitem-iconic clipping-label-red"
+           label="&labelRed.tooltip;"
+           oncommand="updateLabel(this.classList[1])"/>
+          <menuitem class="menuitem-iconic clipping-label-orange"
+           label="&labelOrange.tooltip;"
+           oncommand="updateLabel(this.classList[1])"/>
+          <menuitem class="menuitem-iconic clipping-label-yellow"
+           label="&labelYellow.tooltip;"
+           oncommand="updateLabel(this.classList[1])"/>
+          <menuitem class="menuitem-iconic clipping-label-green"
+           label="&labelGreen.tooltip;"
+           oncommand="updateLabel(this.classList[1])"/>
+          <menuitem class="menuitem-iconic clipping-label-blue"
+           label="&labelBlue.tooltip;"
+           oncommand="updateLabel(this.classList[1])"/>
+          <menuitem class="menuitem-iconic clipping-label-purple"
+           label="&labelPurple.tooltip;"
+           oncommand="updateLabel(this.classList[1])"/>
+          <menuitem class="menuitem-iconic clipping-label-grey"
+           label="&labelGray.tooltip;"
+           oncommand="updateLabel(this.classList[1])"/>
+        </menupopup>
+      </menu>
       <menuseparator/>
       <menuitem label="&deleteClipping.label;" accesskey="&deleteClipping.accesskey;" command="cmd_delete"/>
     </menupopup>
@@ -681,44 +712,79 @@
                onclick="showShortcutKeyMinihelp()"/>
               <spacer flex="1"/>
 
-              <!-- Clipping label picker -->
               <label id="clipping-label" value="&clippingLabelPicker.label;"
                accesskey="&clippingLabelPicker.accesskey;"
                control="clipping-label-btn"/>
-              <button id="clipping-label-btn" type="menu"
-               image="chrome://clippings/skin/images/label-none.svg">
-                <menupopup id="clipping-label-menupopup"
-                 onpopupshowing="updateLabelMenu()">
-                  <menugroup id="clipping-label-menugroup-row-1">
+
+              <deck id="clipping-label-deck">
+                <!-- Clipping label picker -->
+                <button id="clipping-label-btn" type="menu"
+                 image="chrome://clippings/skin/images/label-none.svg">
+                  <menupopup id="clipping-label-menupopup"
+                   onpopupshowing="updateLabelMenu()">
+                    <menugroup id="clipping-label-menugroup-row-1">
+                      <menuitem class="menuitem-iconic clipping-label-none"
+                       tooltiptext="&labelNone.tooltip;"
+                       oncommand="updateLabel(this.classList[1])"/>
+                      <menuitem class="menuitem-iconic clipping-label-red"
+                       tooltiptext="&labelRed.tooltip;"
+                       oncommand="updateLabel(this.classList[1])"/>
+                      <menuitem class="menuitem-iconic clipping-label-orange"
+                       tooltiptext="&labelOrange.tooltip;"
+                       oncommand="updateLabel(this.classList[1])"/>
+                      <menuitem class="menuitem-iconic clipping-label-yellow"
+                       tooltiptext="&labelYellow.tooltip;"
+                       oncommand="updateLabel(this.classList[1])"/>
+                    </menugroup>
+                    <menugroup id="clipping-label-menugroup-row-2">
+                      <menuitem class="menuitem-iconic clipping-label-green"
+                       tooltiptext="&labelGreen.tooltip;"
+                       oncommand="updateLabel(this.classList[1])"/>
+                      <menuitem class="menuitem-iconic clipping-label-blue"
+                       tooltiptext="&labelBlue.tooltip;"
+                       oncommand="updateLabel(this.classList[1])"/>
+                      <menuitem class="menuitem-iconic clipping-label-purple"
+                       tooltiptext="&labelPurple.tooltip;"
+                       oncommand="updateLabel(this.classList[1])"/>
+                      <menuitem class="menuitem-iconic clipping-label-grey"
+                       tooltiptext="&labelGray.tooltip;"
+                       oncommand="updateLabel(this.classList[1])"/>
+                    </menugroup>
+                  </menupopup>
+                </button>
+
+		<!-- Special clipping label picker widget for Linux -->
+                <button id="clipping-label-btn-2" type="menu"
+                 image="chrome://clippings/skin/images/label-none.svg">
+                  <menupopup id="clipping-label-menupopup-2"
+                   onpopupshowing="updateLabelMenu()">
                     <menuitem class="menuitem-iconic clipping-label-none"
-                     tooltiptext="&labelNone.tooltip;"
+                     label="&labelNone.tooltip;"
                      oncommand="updateLabel(this.classList[1])"/>
                     <menuitem class="menuitem-iconic clipping-label-red"
-                     tooltiptext="&labelRed.tooltip;"
+                     label="&labelRed.tooltip;"
                      oncommand="updateLabel(this.classList[1])"/>
                     <menuitem class="menuitem-iconic clipping-label-orange"
-                     tooltiptext="&labelOrange.tooltip;"
+                     label="&labelOrange.tooltip;"
                      oncommand="updateLabel(this.classList[1])"/>
                     <menuitem class="menuitem-iconic clipping-label-yellow"
-                     tooltiptext="&labelYellow.tooltip;"
+                     label="&labelYellow.tooltip;"
                      oncommand="updateLabel(this.classList[1])"/>
-                  </menugroup>
-                  <menugroup id="clipping-label-menugroup-row-2">
                     <menuitem class="menuitem-iconic clipping-label-green"
-                     tooltiptext="&labelGreen.tooltip;"
+                     label="&labelGreen.tooltip;"
                      oncommand="updateLabel(this.classList[1])"/>
                     <menuitem class="menuitem-iconic clipping-label-blue"
-                     tooltiptext="&labelBlue.tooltip;"
+                     label="&labelBlue.tooltip;"
                      oncommand="updateLabel(this.classList[1])"/>
                     <menuitem class="menuitem-iconic clipping-label-purple"
-                     tooltiptext="&labelPurple.tooltip;"
+                     label="&labelPurple.tooltip;"
                      oncommand="updateLabel(this.classList[1])"/>
                     <menuitem class="menuitem-iconic clipping-label-grey"
-                     tooltiptext="&labelGray.tooltip;"
+                     label="&labelGray.tooltip;"
                      oncommand="updateLabel(this.classList[1])"/>
-                  </menugroup>
-                </menupopup>
-              </button>
+                  </menupopup>
+                </button>
+              </deck>
             </row>
           </rows>
         </grid>

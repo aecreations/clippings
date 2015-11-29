@@ -46,7 +46,8 @@ function ClippingLabelPicker(aMenupopup)
   this._clippingsSvc = Cc["clippings@mozdev.org/clippings;1"].getService(Ci.aeIClippingsService);
 
   this._selectedLabel = this._clippingsSvc.LABEL_NONE;
-  this._selectedItem = this._doc.getElementsByClassName("clipping-label-none")[0];
+  this._selectedItem = this._menupopup.getElementsByClassName("clipping-label-none")[0];
+
   this._listeners = [];
 
   this._labelMap = new Map();

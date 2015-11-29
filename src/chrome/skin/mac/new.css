@@ -62,7 +62,7 @@ menu[open="true"] {
   padding-right: 1px;
 }
 
-#new-folder, #clipping-label {
+#new-folder, #clipping-label, #clipping-label-2 {
   min-width: 10px;
   min-height: 16px;
 }
