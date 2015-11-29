@@ -32,7 +32,8 @@
  title="&newFolder.title;"
  orient="vertical"
  buttons="accept,cancel"
- onload="init()" ondialogaccept="accept()" ondialogcancel="cancel()">
+ onload="init()" ondialogaccept="return accept()"
+ ondialogcancel="return cancel()">
 
   <script type="application/javascript" src="chrome://clippings/content/new.js"/>
 
