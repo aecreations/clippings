@@ -2337,7 +2337,13 @@ aeClippingsService.prototype._importFromFileEx = function (aExtFolderCtr, aExtDa
 	}
       }
 
-      this._log("aeClippingsService._importFromFileEx(): Clipping `" + name + "'");
+      let clippingDebugMsg = "aeClippingsService._importFromFileEx(): Clipping `" + name + "'";
+
+      if (srcURL) {
+        clippingDebugMsg += "; source URL: " + srcURL;
+      }
+      this._log(clippingDebugMsg);
+      
     }
     else if (this.isFolder(extChildURI, aExtDataSrc)) {
       let extSubfolderCtr = this._getSeqContainerFromFolder(extChildURI, aExtDataSrc);
@@ -2346,7 +2352,7 @@ aeClippingsService.prototype._importFromFileEx = function (aExtFolderCtr, aExtDa
 
       this._log("aeClippingsService._importFromFileEx(): Folder `" + name + "'");
 
-      count += this._importFromFileEx(extSubfolderCtr, aExtDataSrc, localSubfolderCtr, aLocalDataSrc, aImportShortcutKeys);
+      count += this._importFromFileEx(extSubfolderCtr, aExtDataSrc, localSubfolderCtr, aLocalDataSrc, aImportShortcutKeys, aImportSrcURLs);
     }
     else {
       // Neither a clipping nor folder - ignore.  Possibly a new item type that
