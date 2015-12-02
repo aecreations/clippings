@@ -68,7 +68,7 @@ function ClippingLabelPicker(aMenupopup)
 
 ClippingLabelPicker.prototype = {
 
-  IMG_FILENAME_EXT: ".svg",
+  IMG_FILENAME_EXT: ".png",
 
   get selectedItem()
   {

@@ -2506,7 +2506,7 @@ function updateDisplay(aSuppressUpdateSelection)
     }
     else {
       debugStr += "\nNo label.";
-      labelPickerBtn.image = "chrome://clippings/skin/images/label-none.svg";
+      labelPickerBtn.image = "chrome://clippings/skin/images/label-none.png";
     }
     aeUtils.log(debugStr);
   }

@@ -233,7 +233,7 @@
 	  <deck id="clipping-label-deck">
             <!-- Clipping label picker -->
             <button id="clipping-label" type="menu"
-             image="chrome://clippings/skin/images/label-none.svg">
+             image="chrome://clippings/skin/images/label-none.png">
               <menupopup id="clipping-label-menupopup">
                 <menugroup id="clipping-label-menugroup-row-1">
                   <menuitem class="menuitem-iconic clipping-label-none"
@@ -267,7 +267,7 @@
             </button>
 	    <!-- Special clipping label picker widget for Linux -->
             <button id="clipping-label-2" type="menu"
-             image="chrome://clippings/skin/images/label-none.svg">
+             image="chrome://clippings/skin/images/label-none.png">
               <menupopup id="clipping-label-menupopup-2">
                 <menuitem class="menuitem-iconic clipping-label-none"
                  label="&labelNone.tooltip;"
