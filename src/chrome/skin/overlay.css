@@ -29,36 +29,36 @@
 
 
 menuitem.ae-clippings-clipping {
-  list-style-image: url("chrome://clippings/skin/images/clipping.svg");
+  list-style-image: url("chrome://clippings/skin/images/clipping.png");
 }
 
 /* Clipping labels */
 menuitem.ae-clippings-clipping[clipLabel="red"] {
-  list-style-image: url("chrome://clippings/skin/images/clipping-red.svg");
+  list-style-image: url("chrome://clippings/skin/images/clipping-red.png");
 }
 
 menuitem.ae-clippings-clipping[clipLabel="orange"] {
-  list-style-image: url("chrome://clippings/skin/images/clipping-orange.svg");
+  list-style-image: url("chrome://clippings/skin/images/clipping-orange.png");
 }
 
 menuitem.ae-clippings-clipping[clipLabel="yellow"] {
-  list-style-image: url("chrome://clippings/skin/images/clipping-yellow.svg");
+  list-style-image: url("chrome://clippings/skin/images/clipping-yellow.png");
 }
 
 menuitem.ae-clippings-clipping[clipLabel="green"] {
-  list-style-image: url("chrome://clippings/skin/images/clipping-green.svg");
+  list-style-image: url("chrome://clippings/skin/images/clipping-green.png");
 }
 
 menuitem.ae-clippings-clipping[clipLabel="blue"] {
-  list-style-image: url("chrome://clippings/skin/images/clipping-blue.svg");
+  list-style-image: url("chrome://clippings/skin/images/clipping-blue.png");
 }
 
 menuitem.ae-clippings-clipping[clipLabel="purple"] {
-  list-style-image: url("chrome://clippings/skin/images/clipping-purple.svg");
+  list-style-image: url("chrome://clippings/skin/images/clipping-purple.png");
 }
 
 menuitem.ae-clippings-clipping[clipLabel="grey"] {
-  list-style-image: url("chrome://clippings/skin/images/clipping-grey.svg");
+  list-style-image: url("chrome://clippings/skin/images/clipping-grey.png");
 }
 
 
@@ -68,7 +68,7 @@ menuitem.ae-clippings-clipping > hbox.menu-iconic-left {
 }
 
 menu.ae-clippings-folder-menu {
-  list-style-image: url("chrome://clippings/skin/images/folder.svg");
+  list-style-image: url("chrome://clippings/skin/images/folder.png");
 }
 
 menu.ae-clippings-folder-menu > hbox.menu-iconic-left {
@@ -77,7 +77,7 @@ menu.ae-clippings-folder-menu > hbox.menu-iconic-left {
 }
 
 menu.ae-clippings-folder-menu[open="true"] {
-  list-style-image: url("chrome://clippings/skin/images/folder-open.svg");
+  list-style-image: url("chrome://clippings/skin/images/folder-open.png");
 }
 
 #ae-clippings-clipboard-alert {
