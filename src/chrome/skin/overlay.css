@@ -100,7 +100,12 @@ menu.ae-clippings-folder-menu[open="true"] {
   list-style-image: url("chrome://clippings-laf/skin/images/clippings16.png");
 }
 
-#ae-clippings-icon[cui-areatype="toolbar"]:-moz-drag-over {
+toolbar[brighttext="true"] #ae-clippings-icon[cui-areatype="toolbar"] {
+  list-style-image: url("chrome://clippings-laf/skin/images/clippings-bright16.png");
+}
+
+#ae-clippings-icon[cui-areatype="toolbar"]:-moz-drag-over,
+toolbar[brighttext="true"] #ae-clippings-icon[cui-areatype="toolbar"]:-moz-drag-over {
   list-style-image: url("chrome://clippings-laf/skin/images/clippings-hilite16.png");
 }
 
