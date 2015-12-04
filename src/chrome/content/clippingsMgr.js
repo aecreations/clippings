@@ -50,6 +50,7 @@ var gJustImported = false;
 var gMoveTimerID;
 var gClippingLabelPicker, gClippingLabelPickerCxtMenu;
 var gClippingDetailsPaneVisible;
+var gAltClippingLabelPicker;
 
 
 // Clippings XPCOM service
@@ -916,6 +917,7 @@ function init()
     cxtMenuPopupID = "clipping-label-cxt-menupopup-2";
     $("clipping-label-deck").selectedIndex = 1;
     $("clipping-label-cxt").style.display = "none";
+    gAltClippingLabelPicker = true;
   }
   else {
     gClippingLabelPickerListener.init("clipping-label-btn");
@@ -923,6 +925,7 @@ function init()
     cxtMenuPopupID = "clipping-label-cxt-menupopup";
     $("clipping-label-deck").selectedIndex = 0;
     $("clipping-label-cxt-2").style.display = "none";
+    gAltClippingLabelPicker = false;
   }
 
   gClippingLabelPicker = aeClippingLabelPicker.createInstance($(btnMenuPopupID));
@@ -2399,10 +2402,17 @@ function updateDisplay(aSuppressUpdateSelection)
   var clippingKey = $("clipping-key");
   var clippingKeyLabel = $("clipping-key-label");
   var shortcutKeyMiniHelp = $("shortcut-key-minihelp");
-  var labelPickerBtn = $("clipping-label-btn");
   var labelPickerLabel = $("clipping-label");
   var srcURLBar = $("source-url-bar");
   var srcURLLink = $("clipping-src-url-link");
+  var labelPickerBtn;
+
+  if (gAltClippingLabelPicker) {
+    labelPickerBtn = $("clipping-label-btn-2");
+  }
+  else {
+    labelPickerBtn = $("clipping-label-btn");
+  }
 
   var uri = gClippingsList.selectedURI;
 
@@ -3125,7 +3135,15 @@ function initClippingsListPopup()
     clippingsListCxt.childNodes[i].setAttribute("disabled", isEmptyClipping);
   }
 
-  $("clipping-label-cxt").hidden = !gClippingsSvc.isClipping(uri);
+  var clippingLabelCxtMenu;
+  if (gAltClippingLabelPicker) {
+    clippingLabelCxtMenu = $("clipping-label-cxt-2");
+  }
+  else {
+    clippingLabelCxtMenu = $("clipping-label-cxt");
+  }
+
+  clippingLabelCxtMenu.hidden = !gClippingsSvc.isClipping(uri);
   $("clipping-label-cxt-separator").hidden = !gClippingsSvc.isClipping(uri);
 
   $("go-to-url-cxt").hidden = !(aeUtils.getHostAppID() == aeConstants.HOSTAPP_FX_GUID
