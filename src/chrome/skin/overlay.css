@@ -96,24 +96,56 @@ menu.ae-clippings-folder-menu[open="true"] {
 
 
 /* Firefox Australis integration */
-#ae-clippings-icon[cui-areatype="toolbar"] {
-  list-style-image: url("chrome://clippings-laf/skin/images/clippings16.png");
+@media all {
+
+  #ae-clippings-icon[cui-areatype="toolbar"] {
+    list-style-image: url("chrome://clippings-laf/skin/images/clippings16.png");
+  }
+
+  toolbar[brighttext="true"] #ae-clippings-icon[cui-areatype="toolbar"] {
+    list-style-image: url("chrome://clippings-laf/skin/images/clippings-bright16.png");
+  }
+
+  #ae-clippings-icon[cui-areatype="toolbar"]:-moz-drag-over,
+  toolbar[brighttext="true"] #ae-clippings-icon[cui-areatype="toolbar"]:-moz-drag-over {
+    list-style-image: url("chrome://clippings-laf/skin/images/clippings-hilite16.png");
+  }
+
+  #ae-clippings-icon[cui-areatype="menu-panel"],
+  toolbarpaletteitem[place="palette"][removable="true"] > #ae-clippings-icon {
+    list-style-image: url("chrome://clippings-laf/skin/images/clippings32.png");
+  }
+
+  #ae-clippings-icon[cui-areatype="menu-panel"]:-moz-drag-over {
+    list-style-image: url("chrome://clippings-laf/skin/images/clippings-hilite32.png");
+  }
 }
 
-toolbar[brighttext="true"] #ae-clippings-icon[cui-areatype="toolbar"] {
-  list-style-image: url("chrome://clippings-laf/skin/images/clippings-bright16.png");
-}
+/* 
+ * Windows 10: Use dark grey overlay toolbar button icons, just like on all
+ * other platforms.
+ */
+@media (-moz-os-version: windows-win10) {
 
-#ae-clippings-icon[cui-areatype="toolbar"]:-moz-drag-over,
-toolbar[brighttext="true"] #ae-clippings-icon[cui-areatype="toolbar"]:-moz-drag-over {
-  list-style-image: url("chrome://clippings-laf/skin/images/clippings-hilite16.png");
-}
+  #ae-clippings-icon[cui-areatype="toolbar"] {
+    list-style-image: url("chrome://clippings/skin/all/images/clippings16.png");
+  }
 
-#ae-clippings-icon[cui-areatype="menu-panel"],
-toolbarpaletteitem[place="palette"][removable="true"] > #ae-clippings-icon {
-  list-style-image: url("chrome://clippings-laf/skin/images/clippings32.png");
-}
+  toolbar[brighttext="true"] #ae-clippings-icon[cui-areatype="toolbar"] {
+    list-style-image: url("chrome://clippings/skin/all/images/clippings-bright16.png");
+  }
 
-#ae-clippings-icon[cui-areatype="menu-panel"]:-moz-drag-over {
-  list-style-image: url("chrome://clippings-laf/skin/images/clippings-hilite32.png");
+  #ae-clippings-icon[cui-areatype="toolbar"]:-moz-drag-over,
+  toolbar[brighttext="true"] #ae-clippings-icon[cui-areatype="toolbar"]:-moz-drag-over {
+    list-style-image: url("chrome://clippings/skin/all/images/clippings-hilite16.png");
+  }
+
+  #ae-clippings-icon[cui-areatype="menu-panel"],
+  toolbarpaletteitem[place="palette"][removable="true"] > #ae-clippings-icon {
+    list-style-image: url("chrome://clippings/skin/all/images/clippings32.png");
+  }
+
+  #ae-clippings-icon[cui-areatype="menu-panel"]:-moz-drag-over {
+    list-style-image: url("chrome://clippings/skin/all/images/clippings-hilite32.png");
+  }
 }
