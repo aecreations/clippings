@@ -122,13 +122,12 @@ menu.ae-clippings-folder-menu[open="true"] {
 }
 
 /* 
- * Windows 10: Use dark grey overlay toolbar button icons, just like on all
- * other platforms.
+ * Windows 10: Use darker grey overlay toolbar button icons.
  */
 @media (-moz-os-version: windows-win10) {
 
   #ae-clippings-icon[cui-areatype="toolbar"] {
-    list-style-image: url("chrome://clippings/skin/all/images/clippings16.png");
+    list-style-image: url("chrome://clippings/skin/win/images/clippings16-win10.png");
   }
 
   toolbar[brighttext="true"] #ae-clippings-icon[cui-areatype="toolbar"] {
