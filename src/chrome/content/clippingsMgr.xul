@@ -368,28 +368,29 @@
         <menupopup id="clipping-label-cxt-menupopup-2"
          onpopupshowing="updateLabelMenu()">
           <menuitem class="menuitem-iconic clipping-label-none"
-           label="&labelNone.tooltip;"
+           label="&labelNone.tooltip;" type="radio" name="labelcolor-cxt"
+           checked="true"
            oncommand="updateLabel(this.classList[1])"/>
           <menuitem class="menuitem-iconic clipping-label-red"
-           label="&labelRed.tooltip;"
+           label="&labelRed.tooltip;" type="radio" name="labelcolor-cxt"
            oncommand="updateLabel(this.classList[1])"/>
           <menuitem class="menuitem-iconic clipping-label-orange"
-           label="&labelOrange.tooltip;"
+           label="&labelOrange.tooltip;" type="radio" name="labelcolor-cxt"
            oncommand="updateLabel(this.classList[1])"/>
           <menuitem class="menuitem-iconic clipping-label-yellow"
-           label="&labelYellow.tooltip;"
+           label="&labelYellow.tooltip;" type="radio" name="labelcolor-cxt"
            oncommand="updateLabel(this.classList[1])"/>
           <menuitem class="menuitem-iconic clipping-label-green"
-           label="&labelGreen.tooltip;"
+           label="&labelGreen.tooltip;" type="radio" name="labelcolor-cxt"
            oncommand="updateLabel(this.classList[1])"/>
           <menuitem class="menuitem-iconic clipping-label-blue"
-           label="&labelBlue.tooltip;"
+           label="&labelBlue.tooltip;" type="radio" name="labelcolor-cxt"
            oncommand="updateLabel(this.classList[1])"/>
           <menuitem class="menuitem-iconic clipping-label-purple"
-           label="&labelPurple.tooltip;"
+           label="&labelPurple.tooltip;" type="radio" name="labelcolor-cxt"
            oncommand="updateLabel(this.classList[1])"/>
           <menuitem class="menuitem-iconic clipping-label-grey"
-           label="&labelGray.tooltip;"
+           label="&labelGray.tooltip;" type="radio" name="labelcolor-cxt"
            oncommand="updateLabel(this.classList[1])"/>
         </menupopup>
       </menu>
@@ -759,28 +760,29 @@
                   <menupopup id="clipping-label-menupopup-2"
                    onpopupshowing="updateLabelMenu()">
                     <menuitem class="menuitem-iconic clipping-label-none"
-                     label="&labelNone.tooltip;"
+                     label="&labelNone.tooltip;" type="radio" name="labelcolor"
+                     checked="true"
                      oncommand="updateLabel(this.classList[1])"/>
                     <menuitem class="menuitem-iconic clipping-label-red"
-                     label="&labelRed.tooltip;"
+                     label="&labelRed.tooltip;" type="radio" name="labelcolor"
                      oncommand="updateLabel(this.classList[1])"/>
                     <menuitem class="menuitem-iconic clipping-label-orange"
-                     label="&labelOrange.tooltip;"
+                     label="&labelOrange.tooltip;" type="radio" name="labelcolor"
                      oncommand="updateLabel(this.classList[1])"/>
                     <menuitem class="menuitem-iconic clipping-label-yellow"
-                     label="&labelYellow.tooltip;"
+                     label="&labelYellow.tooltip;" type="radio" name="labelcolor"
                      oncommand="updateLabel(this.classList[1])"/>
                     <menuitem class="menuitem-iconic clipping-label-green"
-                     label="&labelGreen.tooltip;"
+                     label="&labelGreen.tooltip;" type="radio" name="labelcolor"
                      oncommand="updateLabel(this.classList[1])"/>
                     <menuitem class="menuitem-iconic clipping-label-blue"
-                     label="&labelBlue.tooltip;"
+                     label="&labelBlue.tooltip;" type="radio" name="labelcolor"
                      oncommand="updateLabel(this.classList[1])"/>
                     <menuitem class="menuitem-iconic clipping-label-purple"
-                     label="&labelPurple.tooltip;"
+                     label="&labelPurple.tooltip;" type="radio" name="labelcolor"
                      oncommand="updateLabel(this.classList[1])"/>
                     <menuitem class="menuitem-iconic clipping-label-grey"
-                     label="&labelGray.tooltip;"
+                     label="&labelGray.tooltip;" type="radio" name="labelcolor"
                      oncommand="updateLabel(this.classList[1])"/>
                   </menupopup>
                 </button>

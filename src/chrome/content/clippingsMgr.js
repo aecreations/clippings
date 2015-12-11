@@ -2547,16 +2547,22 @@ updateDisplay.sourceURLBarVisible = null;
 
 function updateLabelMenu()
 {
-  var uri = gClippingsList.selectedURI;
+  let uri = gClippingsList.selectedURI;
 
   if (!uri || !gClippingsSvc.isClipping(uri)) {
     aeUtils.log("Unable to update the label picker because a selected clipping could not be located");
     return;
   }
 
-  var label = gClippingsSvc.getLabel(uri);
+  let label = gClippingsSvc.getLabel(uri);
   gClippingLabelPicker.selectedLabel = label;  
   gClippingLabelPickerCxtMenu.selectedLabel = label;
+
+  if (gAltClippingLabelPicker) {
+    let labelClass = "clipping-label-" + (label ? label : "none");
+    $("clipping-label-menupopup-2").getElementsByClassName(labelClass)[0].setAttribute("checked", "true");
+    $("clipping-label-cxt-menupopup-2").getElementsByClassName(labelClass)[0].setAttribute("checked", "true");
+  }
 }
 
 
