@@ -368,6 +368,14 @@ function toggleOptions()
 }
 
 
+// new.xul only - when alternative label picker menu is used.
+function setSelectedLabel(aLabelClassName)
+{
+  let label = aLabelClassName.substring(aLabelClassName.lastIndexOf("-")+1, aLabelClassName.length);
+  gClippingLabelPicker.selectedLabel = label;
+}
+
+
 function validateClippingName(aEvent)
 {
   let clippingName = aEvent.target;

@@ -269,31 +269,31 @@
             <button id="clipping-label-2" type="menu"
              image="chrome://clippings/skin/images/label-none.png">
               <menupopup id="clipping-label-menupopup-2">
-                <menuitem class="menuitem-iconic clipping-label-none"
+                <menuitem class="clipping-label-none"
                  label="&labelNone.tooltip;" type="radio" name="labelcolor"
                  checked="true"
-                 oncommand="gClippingLabelPicker.selectedItem = this"/>
-                <menuitem class="menuitem-iconic clipping-label-red"
+                 oncommand="setSelectedLabel(this.className)"/>
+                <menuitem class="clipping-label-red"
                  label="&labelRed.tooltip;" type="radio" name="labelcolor"
-                 oncommand="gClippingLabelPicker.selectedItem = this"/>
-                <menuitem class="menuitem-iconic clipping-label-orange"
+                 oncommand="setSelectedLabel(this.className)"/>
+                <menuitem class="clipping-label-orange"
                  label="&labelOrange.tooltip;" type="radio" name="labelcolor"
-                 oncommand="gClippingLabelPicker.selectedItem = this"/>
-                <menuitem class="menuitem-iconic clipping-label-yellow"
+                 oncommand="setSelectedLabel(this.className)"/>
+                <menuitem class="clipping-label-yellow"
                  label="&labelYellow.tooltip;" type="radio" name="labelcolor"
-                 oncommand="gClippingLabelPicker.selectedItem = this"/>
-                <menuitem class="menuitem-iconic clipping-label-green"
+                 oncommand="setSelectedLabel(this.className)"/>
+                <menuitem class="clipping-label-green"
                  label="&labelGreen.tooltip;" type="radio" name="labelcolor"
-                 oncommand="gClippingLabelPicker.selectedItem = this"/>
-                <menuitem class="menuitem-iconic clipping-label-blue"
+                 oncommand="setSelectedLabel(this.className)"/>
+                <menuitem class="clipping-label-blue"
                  label="&labelBlue.tooltip;" type="radio" name="labelcolor"
-                 oncommand="gClippingLabelPicker.selectedItem = this"/>
-                <menuitem class="menuitem-iconic clipping-label-purple"
+                 oncommand="setSelectedLabel(this.className)"/>
+                <menuitem class="clipping-label-purple"
                  label="&labelPurple.tooltip;" type="radio" name="labelcolor"
-                 oncommand="gClippingLabelPicker.selectedItem = this"/>
-                <menuitem class="menuitem-iconic clipping-label-grey"
+                 oncommand="setSelectedLabel(this.className)"/>
+                <menuitem class="clipping-label-grey"
                  label="&labelGray.tooltip;" type="radio" name="labelcolor"
-                 oncommand="gClippingLabelPicker.selectedItem = this"/>
+                 oncommand="setSelectedLabel(this.className)"/>
               </menupopup>
             </button>
           </deck>
