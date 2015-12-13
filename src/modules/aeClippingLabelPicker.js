@@ -70,6 +70,8 @@ ClippingLabelPicker.prototype = {
 
   IMG_FILENAME_EXT: ".png",
 
+  // Do not use the 'selectedItem' property on the alternative label picker
+  // menu (which uses <menuitem type="radio">) - use 'selectedLabel' instead.
   get selectedItem()
   {
     return this._selectedItem;
