@@ -1,0 +1,238 @@
+<!ENTITY clippings.appName "Clippings">
+<!ENTITY clippings.menuLabel "Clippings">
+<!ENTITY new.menuLabel "Uusi">
+<!ENTITY new.accesskey "U">
+<!ENTITY newFromSelect.menuLabel "Uusi valinnasta">
+<!ENTITY newFromSelect.accesskey "v">
+<!ENTITY newFromClipboard.menuLabel "Uusi leiketaulusta">
+<!ENTITY newFromClipboard.accesskey "l">
+<!ENTITY openClippingsMgr.menuLabel "Leikkeiden hallinta">
+<!ENTITY openClippingsMgr.accesskey "h">
+<!ENTITY showPasteOpts.label "Näytä liittämisvaihtoehdot">
+<!ENTITY showPasteOpts.accesskey "N">
+<!ENTITY statusbar.tooltip "Vedä valinta tähän luodaksesi uuden leikkeen tai käytä hiiren kakkosnapin vaihtoehtoja">
+<!ENTITY toolbarbutton.tooltip "Vedä valinta tähän luodaksesi uuden leikkeen">
+<!ENTITY resetAutoIncrVars.label "Nollaa paikanvaraajan automaattinen numerointi">
+<!ENTITY empty.label "(tyhjä)">
+<!ENTITY prefGeneral.label "Yleistä">
+<!ENTITY prefDataSource.label "Tietolähde">
+<!ENTITY prefClippingsMgr.label "Leikkeiden hallinta">
+<!ENTITY pasteOptions.caption "Liittämisen asetukset">
+<!ENTITY useClipboard.label "Älä kirjoita leikettä liittäessä leiketaulun sisällön päälle">
+<!ENTITY useClipboard.accesskey "L">
+<!ENTITY htmlPasteOptions.label "Liitettäessä HTML-leikettä muotoillun tekstin syöttölaatikkoon:">
+<!ENTITY htmlPasteOptions.accesskey "m">
+<!ENTITY askMe.label "Kysy miten toimitaan">
+<!ENTITY autoLineBreak.label "Jaa automaattisesti riveihin, jollei  <p> tai <br> -koodauksia ole">
+<!ENTITY autoLineBreak.accesskey "r">
+<!ENTITY htmlPaste.description "HTML-leike liitetään aina pelkkänä tekstinä pelkän tekstin syöttölaatikkoon tai jos leikkeessä on erityistageja, kuten esim. <script>, <applet>, <object>, <iframe>, jne">
+<!ENTITY checkSpelling.label "Tarkista oikeinkirjoitus">
+<!ENTITY checkSpelling.accesskey "T">
+<!ENTITY tabModalPrompt.label "Älä lukitse selainikkunaa, kun paikanvaraajan tekstikorvausta pyydetään">
+<!ENTITY tabModalPrompt.accesskey "Ä">
+<!ENTITY beepOnErrors.label "Äänimerkki virheiden sattuessa">
+<!ENTITY beepOnErrors.accesskey "v">
+<!ENTITY alwaysSaveSrcUrl.label "Tallenna aina lähdeverkkosivun osoite">
+<!ENTITY alwaysSaveSrcUrl.accesskey "a">
+<!ENTITY dataSourceSettings.title "Tietolähdeasetukset">
+<!ENTITY dataSrcLocation.caption "Tietolähteen sijainti">
+<!ENTITY otherLocation.label "Muu sijainti:">
+<!ENTITY otherLocation.accesskey "M">
+<!ENTITY fileBrowse.label "Selaa…">
+<!ENTITY fileBrowse.accesskey "S">
+<!ENTITY backupFiles.caption "Varmistustiedostot">
+<!ENTITY maxFiles.label "Säilytettävien tiedostojen enimmäismäärä:">
+<!ENTITY maxFiles.accesskey "e">
+<!ENTITY removeAllSrcURLs.label "Poista kaikki">
+<!ENTITY removeAllSrcURLs.accesskey "P">
+<!ENTITY removeAllSrcURLs.description "Poista kaikki tallennetut lähdeverkkosivuosoitteet leikkeistäsi.">
+<!ENTITY showStatusBar.label "Näytä tilapalkki">
+<!ENTITY showStatusBar.accesskey "N">
+<!ENTITY clippingsMgrKeys.caption "Leikkeiden hallinnan pikanäppäimet">
+<!ENTITY key.del "DEL">
+<!ENTITY key.esc "ESC">
+<!ENTITY key.ctrlF "CTRL+F">
+<!ENTITY key.ctrlW "CTRL+W">
+<!ENTITY key.ctrlZ "CTRL+Z">
+<!ENTITY key.f1 "F1">
+<!ENTITY key.f2 "F2">
+<!ENTITY key.macDelete "⌦">
+<!ENTITY key.macEsc "esc">
+<!ENTITY key.cmdF "⌘F">
+<!ENTITY key.cmdW "⌘W">
+<!ENTITY key.cmdZ "⌘Z">
+<!ENTITY deleteClippngOrFldr "Poista valittu leike tai kansio">
+<!ENTITY clearFindBar "Tyhjennä hakupalkki">
+<!ENTITY toggleFindBar "Näytä/piilota hakupalkki">
+<!ENTITY closeClipMgr "Sulje leikkeiden hallinta">
+<!ENTITY undoEdit "Peruuta muokkaus">
+<!ENTITY showClipMgrIntro "Näytä leikkeiden hallinnan esittely">
+<!ENTITY undoUndo "Peruuta peruutus">
+<!ENTITY clippingsManager.title "Leikkeiden hallinta">
+<!ENTITY insertClipping.label "Liitä leike">
+<!ENTITY insertClipping.accesskey "L">
+<!ENTITY move.label "Siirrä">
+<!ENTITY move.accesskey "S">
+<!ENTITY moveTo.label "Siirrä kohteeseen">
+<!ENTITY moveTo.accesskey "S">
+<!ENTITY copyTo.label "Kopioi kohteeseen">
+<!ENTITY copyTo.accesskey "K">
+<!ENTITY moveHere.label "Siirrä tänne">
+<!ENTITY copyHere.label "Kopioi tänne">
+<!ENTITY goToURL.label "Mene lähdeverkkosivulle">
+<!ENTITY goToURL.accesskey "M">
+<!ENTITY clippingsRoot.label "Leikkeet">
+<!ENTITY newClipping.label "Uusi leike">
+<!ENTITY newClipping.accesskey "U">
+<!ENTITY newFolder.label "Uusi kansio">
+<!ENTITY newFolder.accesskey "k">
+<!ENTITY deleteClipping.label "Poista">
+<!ENTITY deleteClipping.accesskey "P">
+<!ENTITY undo.label "Peruuta">
+<!ENTITY undo.accesskey "u">
+<!ENTITY pasteNew.label "Liitä uusi">
+<!ENTITY pasteNew.accesskey "L">
+<!ENTITY description.label "Kuvaus:">
+<!ENTITY description.accesskey "K">
+<!ENTITY text.label "Teksti:">
+<!ENTITY text.accesskey "T">
+<!ENTITY clippingText.placeholder "Syötä leikkeen teksti">
+<!ENTITY import.label "Tuo…">
+<!ENTITY import.accesskey "T">
+<!ENTITY export.label "Vie…">
+<!ENTITY export.accesskey "V">
+<!ENTITY tools.label "Työkalut">
+<!ENTITY tools.accesskey "T">
+<!ENTITY find.label "Haku">
+<!ENTITY find.accesskey "H">
+<!ENTITY backup.label "Varmistus">
+<!ENTITY backup.accesskey "V">
+<!ENTITY restore.label "Palauta">
+<!ENTITY restore.accesskey "P">
+<!ENTITY chooseFile.label "Valitse tiedosto…">
+<!ENTITY chooseFile.accesskey "V">
+<!ENTITY noClippings.label "Ei ole näytettäviä leikkeitä.">
+<!ENTITY reload.label "Lataa uudelleen">
+<!ENTITY reload.accesskey "u">
+<!ENTITY shortcutkey.label "Pikanäppäin:">
+<!ENTITY shortcutkey.accesskey "P">
+<!ENTITY dataFileOptions.label "Tietolähdeasetukset…">
+<!ENTITY dataFileOptions.accesskey "T">
+<!ENTITY shortcutKeyList.label "Pikanäppäinluettelo">
+<!ENTITY sourceURL.label "Lähdeosoite:">
+<!ENTITY findBar.label "Etsi:">
+<!ENTITY findPrev.label "Edellinen">
+<!ENTITY findPrev.accesskey "E">
+<!ENTITY findNext.label "Seuraava">
+<!ENTITY findNext.accesskey "S">
+<!ENTITY matchCase.label "Yhtäpitävä iso ja pieni kirjain">
+<!ENTITY matchCase.accesskey "Y">
+<!ENTITY findClippings.label "Leikkeet">
+<!ENTITY findClippingsAndFldrs.label "Leikkeet ja kansiot">
+<!ENTITY options.label "Asetukset…">
+<!ENTITY options.accesskey "A">
+<!ENTITY showHide.label "Näytä/Piilota">
+<!ENTITY showHide.accesskey "t">
+<!ENTITY placeholderBar.label "Paikanvaraajatyökalupalkki">
+<!ENTITY placeholderBar.accesskey "P">
+<!ENTITY detailsPane.label "Tarkemmat tiedot -ruutu">
+<!ENTITY detailsPane.accesskey "T">
+<!ENTITY closeCmd.key "Q">
+<!ENTITY forceSaveCmd.key "S">
+<!ENTITY reload.key "R">
+<!ENTITY toggleFindBar.key "F">
+<!ENTITY placeholderToolbar.label "Liitä paikanvaraaja:">
+<!ENTITY placeholderPresets.label "Ennalta asetetut arvot">
+<!ENTITY placeholderCustom.label "Räätälöity">
+<!ENTITY placeholderAutoincrement.label "Numeerinen">
+<!ENTITY placeholderDate.label "Päiväys">
+<!ENTITY placeholderTime.label "Aika">
+<!ENTITY placeholderAppName.label "Sovelluksen nimi">
+<!ENTITY placeholderUserAgent.label "Käyttäjäagentti">
+<!ENTITY placeholderClippingName.label "Leikkeen nimi">
+<!ENTITY placeholderFolderName.label "Emohakemiston nimi">
+<!ENTITY editSrcURL.label "Muokkaa">
+<!ENTITY editSrcURL.accesskey "M">
+<!ENTITY clippingLabel.label "Otsake">
+<!ENTITY clippingLabel.accesskey "O">
+<!ENTITY labelNone.tooltip "ei mitään">
+<!ENTITY labelRed.tooltip "Punainen">
+<!ENTITY labelOrange.tooltip "Oranssi">
+<!ENTITY labelYellow.tooltip "Keltainen">
+<!ENTITY labelGreen.tooltip "Vihreä">
+<!ENTITY labelBlue.tooltip "Sininen">
+<!ENTITY labelPurple.tooltip "Purppura">
+<!ENTITY labelGray.tooltip "Harmaa">
+<!ENTITY insertPlaceholder.title "Syötä paikanvaraaja">
+<!ENTITY placeholderName.accesskey "N">
+<!ENTITY defaultValue.label "Oletusarvo:">
+<!ENTITY defaultValue.accesskey "O">
+<!ENTITY defaultValue.placeholder "Valinnainen">
+<!ENTITY defaultValue.description "Erota useammat arvot |-merkillä.  Esim.: punainen|vihreä|sininen">
+<!ENTITY autoIncrement.description "Kun leike liitetään, pyydetään aloitusnumeroa. Sen arvo kasvaa automaattisesti yhdellä joka kerta kun sama leike liitetään, niin kauan kunnes arvo nollataan Clippings-kontekstivalikosta.">
+<!ENTITY export.title "Vie leikkeet">
+<!ENTITY exportButton.label "Vie">
+<!ENTITY exportButton.accesskey "V">
+<!ENTITY exportFormatList.label "Valitse muoto, mihin leikkeet viedään:">
+<!ENTITY exportFormatList.accesskey "m">
+<!ENTITY description.caption "Kuvaus">
+<!ENTITY fmtClippings.listitem "Leiketiedosto">
+<!ENTITY fmtHtmlDocument.listitem "HTML-asiakirja">
+<!ENTITY includeSrcURLs.label "Sisällytä leikkeiden lähdeverkkosivuosoitteet">
+<!ENTITY includeSrcURLs.accesskey "S">
+<!ENTITY clippingName.label "Nimi:">
+<!ENTITY clippingName.accesskey "N">
+<!ENTITY saveSourceURL.label "Talleta lähdeverkkosivun osoite">
+<!ENTITY saveSourceURL.accesskey "T">
+<!ENTITY newClippingsEntry.title "Uusi leike">
+<!ENTITY newFolder.title "Uusi kansio">
+<!ENTITY createIn.label "Luo kansioon:">
+<!ENTITY createIn.accesskey "k">
+<!ENTITY fileHere.label "Tiedosto tänne">
+<!ENTITY chooseAsParent.label "Valitse tämä emoksi">
+<!ENTITY folderName.label "Nimi:">
+<!ENTITY folderName.accesskey "N">
+<!ENTITY createAsSubf.label "Luo alikansioksi seuraavalle:">
+<!ENTITY createAsSubf.accesskey "a">
+<!ENTITY createAsUnquoted.label "Luo lainattuna tekstinä">
+<!ENTITY createAsUnquoted.accesskey "l">
+<!ENTITY removeExtraLineBreaks.label "Poista ylimääräiset rivinvaihdot">
+<!ENTITY removeExtraLineBreaks.accesskey "P">
+<!ENTITY none.label "(Ei mitään)">
+<!ENTITY newClippingOptions.label "Asetukset">
+<!ENTITY newClippingOptions.accesskey "A">
+<!ENTITY clippingLabelPicker.label "Otsake:">
+<!ENTITY clippingLabelPicker.accesskey "k">
+<!ENTITY pasteClippingAs.label "Liitä leike">
+<!ENTITY pasteAsNormal.label "Normaalina tekstinä">
+<!ENTITY pasteAsNormal.accesskey "N">
+<!ENTITY pasteAsQuoted.label "Lainattuna tekstinä">
+<!ENTITY pasteAsQuoted.accesskey "L">
+<!ENTITY rewrapLines.label "Uudelleenrivitä (suositellaan)">
+<!ENTITY rewrapLines.accesskey "U">
+<!ENTITY htmlClipping "Valittu leike vaikuttaa sisältävän HTML-koodausta.">
+<!ENTITY pasteAsFormatted.label "Liitä muotoiltuna tekstinä">
+<!ENTITY pasteAsFormatted.accesskey "m">
+<!ENTITY pasteAsPlain.label "Liitä muotoilemattomana tekstinä, säilytä HTML-koodit">
+<!ENTITY pasteAsPlain.accesskey "t">
+<!ENTITY pasteClipping.label "Liitä leike">
+<!ENTITY clippingKey.title "Liitä leike">
+<!ENTITY clippingKey.description "Paina sen leikkeen pikanäppäintä, jonka haluat liittää.">
+<!ENTITY clippingSearch.description "Etsi leikettä nimellä:">
+<!ENTITY clippingKeyHelp.description "F1 = pikanäppäinluettelo">
+<!ENTITY clippingKeyShortcut.description "SARKAIN = pikanäppäintila">
+<!ENTITY clippingKeySearch.description "SARKAIN = hae leikettä nimellä">
+<!ENTITY shortcutHelp.title "Leikkeiden pikanäppäimet">
+<!ENTITY shortcutCol.label "Pikanäppäin">
+<!ENTITY clippingCol.label "Leikkeen nimi">
+<!ENTITY save.label "Tallenna">
+<!ENTITY save.accesskey "T">
+<!ENTITY print.label "Tulosta">
+<!ENTITY print.accesskey "T">
+<!ENTITY close.accesskey "S">
+<!ENTITY pasteClipping.title "Liitä leike">
+<!ENTITY okButton.label "OK">
+<!ENTITY cancelButton.label "Peruuta">
+<!ENTITY closeButton.label "Sulje">
+<!ENTITY closeButton.accesskey "S">
+<!ENTITY errorNoClipboardContent.desc "Leiketaulu on tyhjä tai ei sisällä tekstimuotoista tietoa.">
