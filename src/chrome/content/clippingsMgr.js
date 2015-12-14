@@ -911,7 +911,7 @@ function init()
   let cxtMenuPopupID = "";
 
   if (os != "WINNT" && os != "Darwin") { 
-    // Use the alternative label picker menu
+    // Use the alternative color label picker menu
     gClippingLabelPickerListener.init("clipping-label-btn-2");
     btnMenuPopupID = "clipping-label-menupopup-2";
     cxtMenuPopupID = "clipping-label-cxt-menupopup-2";
@@ -2555,14 +2555,36 @@ function updateLabelMenu()
   }
 
   let label = gClippingsSvc.getLabel(uri);
+
+  aeUtils.log(aeString.format("updateLabelMenu(): Label of selected clipping: %s", label));
+
   gClippingLabelPicker.selectedLabel = label;  
   gClippingLabelPickerCxtMenu.selectedLabel = label;
 
   if (gAltClippingLabelPicker) {
-    let labelClass = "clipping-label-" + (label ? label : "none");
-    $("clipping-label-menupopup-2").getElementsByClassName(labelClass)[0].setAttribute("checked", "true");
-    $("clipping-label-cxt-menupopup-2").getElementsByClassName(labelClass)[0].setAttribute("checked", "true");
+    updateAltLabelMenu(label);
   }
+}
+
+
+function updateAltLabelMenu(aLabel)
+{
+  let labelClass = "clipping-label-" + (aLabel ? aLabel : "none");
+
+  aeUtils.log(aeString.format("updateAltLabelMenu(): Updating radio menuitem selection for alternative color label picker; label class: %S", labelClass));
+
+  let menuitems = $("clipping-label-menupopup-2").childNodes;
+  for (let i = 0; i < menuitems.length; i++) {
+    menuitems[i].removeAttribute("checked");
+  }
+
+  let menuitemsCxt = $("clipping-label-cxt-menupopup-2").childNodes;
+  for (let i = 0; i < menuitemsCxt.length; i++) {
+    menuitemsCxt[i].removeAttribute("checked");
+  }
+
+  $("clipping-label-menupopup-2").getElementsByClassName(labelClass)[0].setAttribute("checked", "true");
+  $("clipping-label-cxt-menupopup-2").getElementsByClassName(labelClass)[0].setAttribute("checked", "true");
 }
 
 
@@ -2592,7 +2614,12 @@ function updateLabelHelper(aClippingURI, aLabelID, aDestUndoStack)
 
   var oldLabel = gClippingsSvc.getLabel(aClippingURI);
   gClippingsSvc.setLabel(aClippingURI, label);
+
   gClippingLabelPicker.selectedLabel = label;
+  gClippingLabelPickerCxtMenu.selectedLabel = label;
+  if (gAltClippingLabelPicker) {
+    updateAltLabelMenu(label);
+  }
   
   var state = { 
     action: ACTION_SETLABEL, 
