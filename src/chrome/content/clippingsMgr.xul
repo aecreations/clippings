@@ -365,8 +365,7 @@
       <!-- Linux-only clipping label picker menu (fix for issue #50) -->
       <menu id="clipping-label-cxt-2" label="&clippingLabel.label;"
        accesskey="&clippingLabel.accesskey;">
-        <menupopup id="clipping-label-cxt-menupopup-2"
-         onpopupshowing="updateLabelMenu()">
+        <menupopup id="clipping-label-cxt-menupopup-2">
           <menuitem class="clipping-label-none"
            label="&labelNone.tooltip;" type="radio" name="labelcolor-cxt"
            checked="true"
@@ -757,8 +756,7 @@
 		<!-- Special clipping label picker widget for Linux -->
                 <button id="clipping-label-btn-2" type="menu"
                  image="chrome://clippings/skin/images/label-none.png">
-                  <menupopup id="clipping-label-menupopup-2"
-                   onpopupshowing="updateLabelMenu()">
+                  <menupopup id="clipping-label-menupopup-2">
                     <menuitem class="clipping-label-none"
                      label="&labelNone.tooltip;" type="radio" name="labelcolor"
                      checked="true"
