@@ -13,6 +13,7 @@
 <!ENTITY showPasteOpts.label "Mostra le opzioni per incollare">
 <!ENTITY showPasteOpts.accesskey "S">
 <!ENTITY statusbar.tooltip "Trascinare qui la selezione per creare un nuovo appunto di Clippings, oppure fare clic col tasto destro del mouse per le opzioni">
+<!ENTITY toolbarbutton.tooltip "Trascinare qui la selezione per creare un nuovo appunto di Clippings">
 <!ENTITY resetAutoIncrVars.label "Azzera il valore della variabile">
 <!ENTITY empty.label "(vuoto)">
 <!-- Extension preferences dialog -->
@@ -34,6 +35,8 @@
 <!ENTITY tabModalPrompt.accesskey "P">
 <!ENTITY beepOnErrors.label "Emetti un suono quando si verificano errori">
 <!ENTITY beepOnErrors.accesskey "E">
+<!ENTITY alwaysSaveSrcUrl.label "Salva sempre gli indirizzi di origine delle pagine web">
+<!ENTITY alwaysSaveSrcUrl.accesskey "v">
 <!ENTITY dataSourceSettings.title "Impostazioni della sorgente di dati">
 <!ENTITY dataSrcLocation.caption "Percorso della sorgente di dati">
 <!ENTITY otherLocation.label "Utilizza la seguente cartella:">
@@ -43,6 +46,9 @@
 <!ENTITY backupFiles.caption "Backup">
 <!ENTITY maxFiles.label "Numero massimo di backup da conservare:">
 <!ENTITY maxFiles.accesskey "N">
+<!ENTITY removeAllSrcURLs.label "Elimina">
+<!ENTITY removeAllSrcURLs.accesskey "E">
+<!ENTITY removeAllSrcURLs.description "Facendo clic su Elimina verranno eliminati tutti gli indirizzi di origine delle pagine web negli appunti di Clippings">
 <!ENTITY showStatusBar.label "Mostra la barra di stato">
 <!ENTITY showStatusBar.accesskey "M">
 <!ENTITY clippingsMgrKeys.caption "Scorciatoie da tastiera">
@@ -64,7 +70,7 @@
 <!ENTITY toggleFindBar "Mostra/nascondi la barra di ricerca">
 <!ENTITY closeClipMgr "Chiudi il gestore di Clippings">
 <!ENTITY undoEdit "Annulla azione">
-<!ENTITY showClipMgrIntro "Mostra i contenuti guida">
+<!ENTITY showClipMgrIntro "Mostra i contenuti della guida">
 <!ENTITY undoUndo "Ripeti l'ultima azione annullata">
 <!-- Clippings Manager -->
 <!ENTITY clippingsManager.title "Gestore di Clippings">
@@ -72,16 +78,14 @@
 <!ENTITY insertClipping.accesskey "I">
 <!ENTITY move.label "Sposta/Copia">
 <!ENTITY move.accesskey "C">
-<!ENTITY moveUp.label "Sposta su">
-<!ENTITY moveUp.accesskey "u">
-<!ENTITY moveDown.label "Sposta giù">
-<!ENTITY moveDown.accesskey "g">
 <!ENTITY moveTo.label "Sposta in">
 <!ENTITY moveTo.accesskey "i">
 <!ENTITY copyTo.label "Copia in">
 <!ENTITY copyTo.accesskey "o">
 <!ENTITY moveHere.label "Sposta qui">
 <!ENTITY copyHere.label "Copia qui">
+<!ENTITY goToURL.label "Vai all'indirizzo di origine della pagina web">
+<!ENTITY goToURL.accesskey "V">
 <!ENTITY clippingsRoot.label "Clippings">
 <!ENTITY newClipping.label "Nuovo appunto">
 <!ENTITY newClipping.accesskey "N">
@@ -97,6 +101,7 @@
 <!ENTITY description.accesskey "T">
 <!ENTITY text.label "Testo:">
 <!ENTITY text.accesskey "s">
+<!ENTITY clippingText.placeholder "Inserire il testo dell'appunto">
 <!ENTITY import.label "Importa…">
 <!ENTITY import.accesskey "I">
 <!ENTITY export.label "Esporta…">
@@ -116,11 +121,10 @@
 <!ENTITY reload.accesskey "R">
 <!ENTITY shortcutkey.label "Scorciatoia da tastiera:">
 <!ENTITY shortcutkey.accesskey "d">
-<!ENTITY migrate.label "Dati in comune…">
-<!ENTITY migrate.accesskey "D">
 <!ENTITY dataFileOptions.label "Impostazioni della sorgente di dati…">
 <!ENTITY dataFileOptions.accesskey "z">
 <!ENTITY shortcutKeyList.label "Lista delle scorciatoie da tastiera assegnate">
+<!ENTITY sourceURL.label "Indirizzo di origine della pagina web:">
 <!ENTITY findBar.label "Trova:">
 <!ENTITY findPrev.label "Precedente">
 <!ENTITY findPrev.accesskey "P">
@@ -130,10 +134,48 @@
 <!ENTITY matchCase.accesskey "l">
 <!ENTITY findClippings.label "Appunti">
 <!ENTITY findClippingsAndFldrs.label "Appunti e cartelle">
+<!ENTITY options.label "Opzioni…">
+<!ENTITY options.accesskey "O">
+<!ENTITY showHide.label "Mostra/nascondi">
+<!ENTITY showHide.accesskey "M">
+<!ENTITY placeholderBar.label "Barra delle variabili">
+<!ENTITY placeholderBar.accesskey "B">
+<!ENTITY detailsPane.label "Dettagli">
+<!ENTITY detailsPane.accesskey "D">
 <!ENTITY closeCmd.key "W">
 <!ENTITY forceSaveCmd.key "S">
 <!ENTITY reload.key "R">
 <!ENTITY toggleFindBar.key "F">
+<!ENTITY placeholderToolbar.label "Variabili impostabili:">
+<!ENTITY placeholderPresets.label "predefinite">
+<!ENTITY placeholderCustom.label "personalizzata…">
+<!ENTITY placeholderAutoincrement.label "contatore…">
+<!ENTITY placeholderDate.label "Data">
+<!ENTITY placeholderTime.label "Ora">
+<!ENTITY placeholderAppName.label "Nome del programma">
+<!ENTITY placeholderUserAgent.label "User agent">
+<!ENTITY placeholderClippingName.label "Nome dell'appunto">
+<!ENTITY placeholderFolderName.label "Nome della cartella superiore">
+<!ENTITY editSrcURL.label "Modifica">
+<!ENTITY editSrcURL.accesskey "M">
+<!ENTITY clippingLabel.label "Etichetta">
+<!ENTITY clippingLabel.accesskey "t">
+<!ENTITY labelNone.tooltip "(nessuna)">
+<!ENTITY labelRed.tooltip "Rosso">
+<!ENTITY labelOrange.tooltip "Arancione">
+<!ENTITY labelYellow.tooltip "Giallo">
+<!ENTITY labelGreen.tooltip "Verde">
+<!ENTITY labelBlue.tooltip "Blu">
+<!ENTITY labelPurple.tooltip "Viola">
+<!ENTITY labelGray.tooltip "Grigio">
+<!-- Insert Placeholder dialog -->
+<!ENTITY insertPlaceholder.title "Nuova variabile">
+<!ENTITY placeholderName.accesskey "N">
+<!ENTITY defaultValue.label "Valore predefinito:">
+<!ENTITY defaultValue.accesskey "V">
+<!ENTITY defaultValue.placeholder "(opzionale)">
+<!ENTITY defaultValue.description "Separare più valori con il carattere | (es: rosso|verde|blu)">
+<!ENTITY autoIncrement.description "Incollando un appunto verrà richiesto un valore numerico iniziale. Tale valore aumenterà automaticamente di un'unità ogni volta che lo stesso appunto sarà incollato, finché non verrà azzerato tramite il menu contestuale di Clippings">
 <!-- Export dialog -->
 <!ENTITY export.title "Esportazione di Clippings">
 <!ENTITY exportButton.label "Esporta">
@@ -142,9 +184,14 @@
 <!ENTITY exportFormatList.accesskey "f">
 <!ENTITY description.caption "Descrizione">
 <!ENTITY fmtClippings.listitem "File di Clippings">
-<!ENTITY fmtClippings1x.listitem "Clippings serie 1.x">
 <!ENTITY fmtHtmlDocument.listitem "Documento HTML">
+<!ENTITY includeSrcURLs.label "Includi gli indirizzi di origine delle pagine web negli appunti di Clippings">
+<!ENTITY includeSrcURLs.accesskey "I">
 <!-- New Clipping dialog -->
+<!ENTITY clippingName.label "Nome:">
+<!ENTITY clippingName.accesskey "N">
+<!ENTITY saveSourceURL.label "Salva l'indirizzo di origine della pagina web">
+<!ENTITY saveSourceURL.accesskey "a">
 <!ENTITY newClippingsEntry.title "Nuovo appunto">
 <!ENTITY newFolder.title "Nuova cartella">
 <!ENTITY createIn.label "Crea in:">
@@ -159,9 +206,11 @@
 <!ENTITY createAsUnquoted.accesskey "o">
 <!ENTITY removeExtraLineBreaks.label "Elimina righe di interruzione">
 <!ENTITY removeExtraLineBreaks.accesskey "E">
-<!ENTITY tabGeneral.label "Generali">
-<!ENTITY tabShortcutKey.label "Scorciatoia da tastiera">
 <!ENTITY none.label "(nessuna)">
+<!ENTITY newClippingOptions.label "Opzioni">
+<!ENTITY newClippingOptions.accesskey "O">
+<!ENTITY clippingLabelPicker.label "Etichetta:">
+<!ENTITY clippingLabelPicker.accesskey "h">
 <!-- Quote Options dialog (Thunderbird only) -->
 <!ENTITY pasteClippingAs.label "Incollare gli appunti come:">
 <!ENTITY pasteAsNormal.label "testo normale">
@@ -180,7 +229,10 @@
 <!-- Shortcut key prompt -->
 <!ENTITY clippingKey.title "Incolla appunto">
 <!ENTITY clippingKey.description "Premere la scorciatoia da tastiera relativa all&apos;appunto da incollare">
+<!ENTITY clippingSearch.description "Digitare il nome dell'appunto da cercare:">
 <!ENTITY clippingKeyHelp.description "Premere F1 per visualizzare la lista delle scorciatoie da tastiera assegnate agli appunti di Clippings">
+<!ENTITY clippingKeyShortcut.description "Premere TAB per utilizzare le scorciatoie da tastiera">
+<!ENTITY clippingKeySearch.description "Premere TAB per cercare gli appunti per nome">
 <!ENTITY shortcutHelp.title "Scorciatoie da tastiera assegnate agli appunti di Clippings">
 <!ENTITY shortcutCol.label "Scorciatoia">
 <!ENTITY clippingCol.label "Nome appunto">
