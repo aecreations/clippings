@@ -28,8 +28,10 @@ Components.utils.import("resource://gre/modules/Services.jsm");
 
 const EXPORTED_SYMBOLS = ["aeUtils"];
 
-// Debugging flag - set to false to suppress extraneous JS console messages
-const DEBUG = true;
+// Debugging flags - set to false to suppress extraneous JS console messages
+// and diagnostic audio beeps.
+const DEBUG = false;
+const NOISY_DEBUG = false;
 
 // Host app GUIDs
 const HOSTAPP_FX_GUID = "{ec8030f7-c20a-464f-9b0e-13a3a9e97384}";
@@ -339,12 +341,9 @@ aeUtils.beep = function ()
 
 aeUtils.debugBeep = function ()
 {
-  return;
-  /***
-  if (DEBUG) {
+  if (DEBUG && NOISY_DEBUG) {
     this._beep();
   }
-  ***/
 };
 
 

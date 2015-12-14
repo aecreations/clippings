@@ -54,7 +54,7 @@ aeClippingsService.prototype = {
   MAX_NAME_LENGTH:        64,
 
   // Private constants (not declared in interface definition)
-  _DEBUG:  true,
+  _DEBUG:  false,
   _TEST_CORRUPTION: false,
   _SEQNODE_RESOURCE_URI:  "http://clippings.mozdev.org/rdf/user-clippings-v2",
   _OLD_SEQNODE_RESOURCE_URI: "http://clippings.mozdev.org/rdf/user-clippings",
