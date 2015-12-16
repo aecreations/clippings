@@ -29,7 +29,7 @@ const Cc = Components.classes;
 const Ci = Components.interfaces;
 
 // Truncate clipping name in the search result popup at this number of char's.
-const MAX_NAME_LEN = 48;
+const MAX_NAME_LEN = 64;
 
 var gDlgArgs, gStrBundle;
 var gClippingsSvc;

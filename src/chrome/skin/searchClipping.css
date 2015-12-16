@@ -25,10 +25,14 @@
 @import url("chrome://global/skin/global.css");
 
 
+/* 
+ * Set the same font on both the search textbox and the search results popup
+ * so that the widths of both are the same.
+ */
 #search-results-popup {
-  min-width: 24em;
-  max-width: 36em;
+  width: 36em;
   max-height: 16em;
+  font: message-box;
 }
 
 #search-results-listbox scrollbox {
@@ -45,4 +49,5 @@
 
 #clipping-search {
   width: 36em;
+  font: message-box;
 }
