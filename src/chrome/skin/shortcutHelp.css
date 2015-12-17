@@ -46,10 +46,6 @@ toolbarbutton:not(#close) {
   -moz-image-region: rect(16px, 208px, 32px, 192px);
 }
 
-#insert-clipping:active {
-  -moz-image-region: rect(32px, 208px, 48px, 192px);
-}
-
 #insert-clipping[disabled="true"] {
   -moz-image-region: rect(48px, 208px, 64px, 192px);
 }
@@ -63,10 +59,6 @@ toolbarbutton:not(#close) {
   -moz-image-region: rect(16px, 240px, 32px, 224px);
 }
 
-#save:active {
-  -moz-image-region: rect(32px, 240px, 48px, 224px);
-}
-
 #print {
   -moz-image-region: rect(0px, 256px, 16px, 240px);
   margin-left: 0;
@@ -74,10 +66,6 @@ toolbarbutton:not(#close) {
 
 #print:hover {
   -moz-image-region: rect(16px, 256px, 32px, 240px);
-}
-
-#print:active {
-  -moz-image-region: rect(32px, 256px, 48px, 240px);
 }
 
 #close {
