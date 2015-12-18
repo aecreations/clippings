@@ -2,99 +2,262 @@
 <RDF:RDF xmlns:NS1="http://clippings.mozdev.org/ns/rdf#"
          xmlns:NC="http://home.netscape.com/NC-rdf#"
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-  <NS1:clipping RDF:about="rdf:#$dqdVb3"
-                   NS1:name="Welcome to Clippings 5.0"
+  <NS1:clipping RDF:about="rdf:#$f7Ahw"
+                   NS1:name="Placeholder with selectable options"
+                   NS1:text="Select your gender: $[gender{male|female}]"
                    NS1:srcurl=""
                    NS1:label=""
-                   NS1:key="W">
-    <NS1:text>Hello!
-
-This sample datasource contains a few items that demonstrate many of the great new features found in Clippings 5.0—such as color labels, default values in placeholders, and source web page addresses embedded into clippings.  You are going to like it. ☺
-
-Your feedback on this new release of Clippings is welcome.  You can leave a review on the Clippings page on the Mozilla Add-ons website, or post to the AE Creations Help and Support forums.
-
-For the latest news and updates on Clippings and other cool, useful software from AE Creations, including up-and-coming projects for early adopters craving the latest and greatest, visit the blog at &lt;http://aecreations.blogspot.com&gt;.  Also check out &lt;http://aecreations.sourceforge.net&gt; for the latest stable releases of other Firefox and Thunderbird extensions by AE Creations. ♦</NS1:text>
+                   NS1:key="Y" />
+  <NS1:clipping RDF:about="rdf:#$R6Ahw"
+                   NS1:name="&lt;FRAME&gt;"
+                   NS1:srcurl=""
+                   NS1:label="">
+    <NS1:text>This clipping contains another &lt;b&gt;&lt;i&gt;restricted&lt;/b&gt;&lt;/i&gt; element.
+&lt;FRAME SRC="doc1.html"&gt;&lt;/FRAME&gt;</NS1:text>
   </NS1:clipping>
-  <RDF:Seq RDF:about="rdf:#$JqdVb3">
+  <NS1:clipping RDF:about="rdf:#$y7Ahw"
+                   NS1:name="AE Creations signature"
+                   NS1:srcurl=""
+                   NS1:label=""
+                   NS1:key="S">
+    <NS1:text>Alex
+
+---
+AE Creations website
+http://aecreations.sourceforge.net/
+
+the AE Creations blog
+http://aecreations.blogspot.com/</NS1:text>
+  </NS1:clipping>
+  <NS1:clipping RDF:about="rdf:#$l7Ahw"
+                   NS1:name="Placeholder with default value containing special chars"
+                   NS1:text="There are $[placeholders{pl_ace-holder.z}] with $[placeholder{foo.bar_baz - qux|François Le Château}] values."
+                   NS1:srcurl=""
+                   NS1:label="" />
+  <NS1:clipping RDF:about="rdf:#$y6Ahw"
+                   NS1:name="HTML entities only"
+                   NS1:srcurl=""
+                   NS1:label="">
+    <NS1:text>&amp;laquo; Hello World! &amp;raquo;
+&amp;#171; Hello World! &amp;#187;
+&amp;#xAB; Hello World! &amp;#xBB;</NS1:text>
+  </NS1:clipping>
+  <NS1:clipping RDF:about="rdf:#$D7Ahw"
+                   NS1:name="No label was selected"
+                   NS1:text="Goodbye, cruel world!"
+                   NS1:srcurl=""
+                   NS1:label="" />
+  <NS1:clipping RDF:about="rdf:#$K6Ahw"
+                   NS1:name="Horizontal rule"
+                   NS1:text="&lt;hr&gt;"
+                   NS1:srcurl=""
+                   NS1:label=""
+                   NS1:key="R" />
+  <RDF:Seq RDF:about="rdf:#$27Ahw">
+    <RDF:li RDF:resource="rdf:#$37Ahw"/>
+    <RDF:li RDF:resource="rdf:#$47Ahw"/>
+    <RDF:li RDF:resource="rdf:#$57Ahw"/>
+    <RDF:li RDF:resource="rdf:#$97Ahw"/>
+    <RDF:li RDF:resource="rdf:#$a7Ahw"/>
+    <RDF:li RDF:resource="rdf:#$b7Ahw"/>
+    <RDF:li RDF:resource="rdf:#$c7Ahw"/>
+    <RDF:li RDF:resource="rdf:#$d7Ahw"/>
+    <RDF:li RDF:resource="rdf:#$e7Ahw"/>
+    <RDF:li RDF:resource="rdf:#$f7Ahw"/>
+    <RDF:li RDF:resource="rdf:#$g7Ahw"/>
+    <RDF:li RDF:resource="rdf:#$h7Ahw"/>
+    <RDF:li RDF:resource="rdf:#$l7Ahw"/>
   </RDF:Seq>
-  <NS1:folder RDF:about="rdf:#$JqdVb3"
-                   NS1:name="Blogging"
-                   NS1:hassubfolders="false" />
-  <NS1:clipping RDF:about="rdf:#$YqdVb3"
-                   NS1:name="Placeholder with single default value"
-                   NS1:text="The quick brown fox $[verb{jumps}] over the $[adjective] dog."
+  <NS1:folder RDF:about="rdf:#$27Ahw"
+                   NS1:name="Samples"
+                   NS1:hassubfolders="true" />
+  <RDF:Seq RDF:about="rdf:#$m7Ahw">
+    <RDF:li RDF:resource="rdf:#$n7Ahw"/>
+    <RDF:li RDF:resource="rdf:#$x7Ahw"/>
+    <RDF:li RDF:resource="rdf:#$y7Ahw"/>
+    <RDF:li RDF:resource="rdf:#$z7Ahw"/>
+  </RDF:Seq>
+  <NS1:folder RDF:about="rdf:#$m7Ahw"
+                   NS1:name="AE Creations"
+                   NS1:hassubfolders="true" />
+  <NS1:clipping RDF:about="rdf:#$u7Ahw"
+                   NS1:name="Forum post - Clippings release announcement"
+                   NS1:srcurl="https://groups.google.com/forum/#!forum/aecreations-help"
+                   NS1:label="">
+    <NS1:text>This is the $[beta_number_ordinal] beta release leading up to Clippings $[upcoming_version{5.0}], intended for early adopter users who crave the latest and greatest.  Users not comfortable trying out pre-release software and tolerating its many bugs should stick with Clippings $[current_version{4.1.2}] for now.
+
+If you already have a previous release of Clippings installed, you must uninstall it first before installing this release. Because this is a beta release, no automatic upgrades to this release will be available to current Clippings users.
+
+What's New in Beta $[beta_release_number]:
+
+- (TO DO: List new features here)
+
+See the blog post on the AE Creations Blog for download links, and how to get help or report a bug.</NS1:text>
+  </NS1:clipping>
+  <NS1:clipping RDF:about="rdf:#$k7Ahw"
+                   NS1:name="Contains many placeholders, one of them having an invalid name"
+                   NS1:text="Hello world!  Today's date is: $[DATE]. There is a #[number] placeholder $[foobar{male|female}] in this clipping!   $[invalidPlaceholderNameßë{asdfßë 8848 sad $^&amp;*E }] placeholder with multi default values, containing spaces: $[asdf{foo bar|baz blah blorf|quux}] and the last placeholder is repeated again... $[asdf]"
                    NS1:srcurl=""
-                   NS1:label=""
-                   NS1:key="D" />
-  <NS1:clipping RDF:about="rdf:#$VqdVb3"
-                   NS1:name="Auto-increment placeholder example"
-                   NS1:text="This is clipping number #[number]!"
+                   NS1:label="" />
+  <RDF:Seq RDF:about="http://clippings.mozdev.org/rdf/user-clippings-v2">
+    <RDF:li RDF:resource="rdf:#$u6Ahw"/>
+    <RDF:li RDF:resource="rdf:#$v6Ahw"/>
+    <RDF:li RDF:resource="rdf:#$Z6Ahw"/>
+    <RDF:li RDF:resource="rdf:#$.6Ahw"/>
+    <RDF:li RDF:resource="rdf:#$+6Ahw"/>
+    <RDF:li RDF:resource="rdf:#$07Ahw"/>
+    <RDF:li RDF:resource="rdf:#$m7Ahw"/>
+    <RDF:li RDF:resource="rdf:#$A7Ahw"/>
+    <RDF:li RDF:resource="rdf:#$B7Ahw"/>
+    <RDF:li RDF:resource="rdf:#$C7Ahw"/>
+    <RDF:li RDF:resource="rdf:#$G7Ahw"/>
+  </RDF:Seq>
+  <NS1:clipping RDF:about="rdf:#$P6Ahw"
+                   NS1:name="An XUL doctype declaration"
                    NS1:srcurl=""
-                   NS1:label=""
-                   NS1:key="N" />
-  <NS1:clipping RDF:about="rdf:#$PqdVb3"
+                   NS1:label="">
+    <NS1:text>&lt;!DOCTYPE overlay SYSTEM "chrome://clippings/locale/clippings.dtd"&gt;
+
+&lt;span style="font-weight:bold;text-decoration:blink;color:red"&gt;Hello, world!&lt;/span&gt;</NS1:text>
+  </NS1:clipping>
+  <NS1:clipping RDF:about="rdf:#$47Ahw"
                    NS1:name="User-defined placeholders"
                    NS1:text="Hello, $[NameOfVictim], how are you doing?  My name is $[your_name], I'm glad that you're interested in $[scam_investment], so I hope you'll be able to make it to the presentation $[whenever].  I'll be easy to spot, I'll be the guy wearing $[clothing].  See you soon!"
                    NS1:srcurl=""
                    NS1:label="" />
-  <RDF:Seq RDF:about="rdf:#$LqdVb3">
-    <RDF:li RDF:resource="rdf:#$MqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$NqdVb3"/>
-  </RDF:Seq>
-  <NS1:folder RDF:about="rdf:#$LqdVb3"
-                   NS1:name="Placeholders"
-                   NS1:hassubfolders="true" />
-  <NS1:clipping RDF:about="rdf:#$crdVb3"
-                   NS1:name="Clippings release announcement - on blog {Q}"
-                   NS1:srcurl="http://aecreations.blogspot.ca/"
-                   NS1:label="">
-    <NS1:text>A new release of Clippings is now available from &lt;a href="https://addons.mozilla.org/en-US/firefox/addon/clippings/"&gt;Mozilla Add-ons&lt;/a&gt; and the &lt;a href="http://aecreations.sourceforge.net/clippings/index.php"&gt;AE Creations website&lt;/a&gt;.
+  <NS1:clipping RDF:about="rdf:#$p7Ahw"
+                   NS1:name="&quot;@&quot; image HTML snippet for spam-proofing email address"
+                   NS1:text="&lt;img src=&quot;http://clippings.mozdev.org/img/at.png&quot; style=&quot;border: 0px none ; margin: 0px; padding: 0px; width: 13px; height: 13px; vertical-align: text-bottom;&quot; alt=&quot;@&quot;&gt;"
+                   NS1:srcurl=""
+                   NS1:label="" />
+  <NS1:clipping RDF:about="rdf:#$77Ahw"
+                   NS1:name="(HTML) Mix of built-in and user-defined placeholders"
+                   NS1:srcurl=""
+                   NS1:label=""
+                   NS1:key="Z">
+    <NS1:text>Hello, &lt;strong&gt;$[name]&lt;/strong&gt;, the name of this clipping is &lt;q&gt;$[NAME],&lt;/q&gt; the date is $[DATE] and the $[time] is $[TIME].  
 
-If you already have Clippings installed, it will be upgraded for you if automatic extension updates are enabled. Otherwise, open Extension Manager (Tools &amp;rarr; Add-ons), then right-click on the entry for Clippings in the list of installed extensions and choose Find Updates.
-
-&lt;strong&gt;What's New&lt;/strong&gt;
-&lt;ul&gt;&lt;li&gt;Paste the new feature list here...&lt;/li&gt;
-&lt;/ul&gt;
-&lt;strong&gt;Help and Support&lt;/strong&gt;
-
-Questions and comments about Clippings should be directed to the &lt;a href="https://groups.google.com/forum/#!forum/aecreations-help"&gt;AE Creations Help and Support forums&lt;/a&gt;, hosted on Google Groups.</NS1:text>
+&lt;b&gt;&lt;i&gt;Have a nice day, $[name]!&lt;/i&gt;&lt;/b&gt;</NS1:text>
   </NS1:clipping>
-  <RDF:Seq RDF:about="http://clippings.mozdev.org/rdf/user-clippings-v2">
-    <RDF:li RDF:resource="rdf:#$dqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$eqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$IqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$JqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$KqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$LqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$5rdVb3"/>
-    <RDF:li RDF:resource="rdf:#$jrdVb3"/>
-    <RDF:li RDF:resource="rdf:#$krdVb3"/>
-    <RDF:li RDF:resource="rdf:#$lrdVb3"/>
-    <RDF:li RDF:resource="rdf:#$prdVb3"/>
+  <RDF:Seq RDF:about="rdf:#$s7Ahw">
+    <RDF:li RDF:resource="rdf:#$t7Ahw"/>
+    <RDF:li RDF:resource="rdf:#$u7Ahw"/>
   </RDF:Seq>
-  <NS1:clipping RDF:about="rdf:#$1rdVb3"
+  <NS1:folder RDF:about="rdf:#$s7Ahw"
+                   NS1:name="Release announcements"
+                   NS1:hassubfolders="false" />
+  <NS1:clipping RDF:about="rdf:#$x7Ahw"
+                   NS1:name="Release announcement"
+                   NS1:srcurl=""
+                   NS1:label="">
+    <NS1:text>A new release of $[extension_name] is now available from Mozilla Add-ons and the AE Creations website.
+
+If you already have an older version of $[extension_name] installed, it will be upgraded for you if automatic extension updates are enabled. Otherwise, open Extension Manager (Tools → Add-ons), then right-click on the entry for $[extension_name] in the list of installed extensions and choose Find Update.
+
+New in this release:
+
+* &lt;&lt;list of features and bug fixes introduced in this release&gt;&gt;
+
+Send you questions and comments to the forum.</NS1:text>
+  </NS1:clipping>
+  <NS1:clipping RDF:about="rdf:#$b7Ahw"
+                   NS1:name="Multiple auto-increment placeholders in a single clipping"
+                   NS1:text="This is clipping number #[number]!  And another one here: #[counter]"
+                   NS1:srcurl=""
+                   NS1:label=""
+                   NS1:key="M" />
+  <NS1:clipping RDF:about="rdf:#$D6Ahw"
+                   NS1:name="HTML snippet 3"
+                   NS1:text="So, &lt;B&gt;Goodbye, cruel world!&lt;/B&gt;"
+                   NS1:srcurl=""
+                   NS1:label="" />
+  <RDF:Seq RDF:about="rdf:#$.6Ahw">
+  </RDF:Seq>
+  <NS1:folder RDF:about="rdf:#$.6Ahw"
+                   NS1:name="Blogging"
+                   NS1:hassubfolders="false" />
+  <NS1:clipping RDF:about="rdf:#$v7Ahw"
+                   NS1:name="Tagline"
+                   NS1:text="Save frequently-entered text for pasting later."
+                   NS1:srcurl=""
+                   NS1:label="" />
+  <RDF:Seq RDF:about="rdf:#$r7Ahw">
+  </RDF:Seq>
+  <NS1:folder RDF:about="rdf:#$r7Ahw"
+                   NS1:name="Empty Subfolder"
+                   NS1:hassubfolders="false" />
+  <NS1:clipping RDF:about="rdf:#$G7Ahw"
+                   NS1:name="Test signature (for issue #35)"
+                   NS1:srcurl="https://github.com/aecreations/clippings/issues/35"
+                   NS1:label="">
+    <NS1:text>&lt;b&gt;Alex&lt;/b&gt;&lt;br&gt;
+AE Creations website&lt;br&gt;
+&lt;a href="http://aecreations.sourceforge.net/"&gt;&lt;font style="color:#a349a4 !important"&gt;http://aecreations.sourceforge.net&lt;/font&gt;&lt;/a&gt;&lt;br&gt;
+&lt;br&gt;
+the AE Creations blog&lt;br&gt;
+&lt;a href="http://aecreations.blogspot.com/"&gt;&lt;font style="color:#a349a4 !important"&gt;http://aecreations.blogspot.com&lt;/font&gt;&lt;/a&gt;</NS1:text>
+  </NS1:clipping>
+  <NS1:clipping RDF:about="rdf:#$B6Ahw"
+                   NS1:name="HTML with attributes in tags 2"
+                   NS1:text="&lt;p&gt;So, &lt;span style=&quot;font-weight:bold;color:red&quot;&gt;Goodbye, cruel world!&lt;/span&gt;&lt;/p&gt;"
+                   NS1:srcurl=""
+                   NS1:label="" />
+  <RDF:Seq RDF:about="rdf:#$v6Ahw">
+    <RDF:li RDF:resource="rdf:#$w6Ahw"/>
+    <RDF:li RDF:resource="rdf:#$x6Ahw"/>
+    <RDF:li RDF:resource="rdf:#$y6Ahw"/>
+    <RDF:li RDF:resource="rdf:#$z6Ahw"/>
+    <RDF:li RDF:resource="rdf:#$A6Ahw"/>
+    <RDF:li RDF:resource="rdf:#$B6Ahw"/>
+    <RDF:li RDF:resource="rdf:#$C6Ahw"/>
+    <RDF:li RDF:resource="rdf:#$D6Ahw"/>
+    <RDF:li RDF:resource="rdf:#$E6Ahw"/>
+    <RDF:li RDF:resource="rdf:#$F6Ahw"/>
+    <RDF:li RDF:resource="rdf:#$G6Ahw"/>
+    <RDF:li RDF:resource="rdf:#$H6Ahw"/>
+    <RDF:li RDF:resource="rdf:#$I6Ahw"/>
+    <RDF:li RDF:resource="rdf:#$J6Ahw"/>
+    <RDF:li RDF:resource="rdf:#$K6Ahw"/>
+    <RDF:li RDF:resource="rdf:#$L6Ahw"/>
+    <RDF:li RDF:resource="rdf:#$M6Ahw"/>
+    <RDF:li RDF:resource="rdf:#$N6Ahw"/>
+    <RDF:li RDF:resource="rdf:#$O6Ahw"/>
+    <RDF:li RDF:resource="rdf:#$P6Ahw"/>
+    <RDF:li RDF:resource="rdf:#$Q6Ahw"/>
+    <RDF:li RDF:resource="rdf:#$R6Ahw"/>
+    <RDF:li RDF:resource="rdf:#$S6Ahw"/>
+    <RDF:li RDF:resource="rdf:#$T6Ahw"/>
+    <RDF:li RDF:resource="rdf:#$U6Ahw"/>
+    <RDF:li RDF:resource="rdf:#$V6Ahw"/>
+    <RDF:li RDF:resource="rdf:#$W6Ahw"/>
+    <RDF:li RDF:resource="rdf:#$X6Ahw"/>
+    <RDF:li RDF:resource="rdf:#$Y6Ahw"/>
+  </RDF:Seq>
+  <NS1:folder RDF:about="rdf:#$v6Ahw"
+                   NS1:name="HTML and HTML-like"
+                   NS1:hassubfolders="false" />
+  <NS1:clipping RDF:about="rdf:#$i7Ahw"
                    NS1:name="Placeholder with default value typo"
                    NS1:text="The quick brown fox $[verb{jumps}] over the $[adjective{lazy] dog."
                    NS1:srcurl=""
                    NS1:label="" />
-  <NS1:clipping RDF:about="rdf:#$irdVb3"
-                   NS1:name="AE Creations blog URL"
-                   NS1:text="http://aecreations.blogspot.com/"
-                   NS1:srcurl=""
-                   NS1:label=""
-                   NS1:key="B" />
-  <NS1:clipping RDF:about="rdf:#$pqdVb3"
-                   NS1:name="Deprecated HTML 1"
-                   NS1:text="So, &lt;FONT FACE=&quot;Comic Sans MS&quot; COLOR=RED&gt;Goodbye, cruel world!&lt;/FONT&gt;"
-                   NS1:srcurl=""
-                   NS1:label="" />
-  <NS1:clipping RDF:about="rdf:#$krdVb3"
+  <NS1:clipping RDF:about="rdf:#$B7Ahw"
                    NS1:name="User agent string"
                    NS1:text="$[UA]"
                    NS1:srcurl=""
                    NS1:label=""
                    NS1:key="U" />
-  <NS1:clipping RDF:about="rdf:#$gqdVb3"
+  <NS1:clipping RDF:about="rdf:#$17Ahw"
+                   NS1:name="Introduction"
+                   NS1:srcurl=""
+                   NS1:label="">
+    <NS1:text>You can now define placeholders inside a clipping that you will be prompted to fill in when you paste the clipping. Placeholders are essentially variables that appear in the clipping text as a name enclosed in square brackets and preceded with a dollar sign. Valid variable names can contain letters (lowercase or uppercase), digits (0-9) and underscores.
+
+When you paste a clipping with placeholders, you will be prompted to fill in the value for each placeholder in the clipping. If you want the placeholders in the clipping pasted exactly as they are, with no prompting and substitution, the clipping name should be prefixed with [NOSUBST].
+
+There are six predefined placeholders you can use in your clippings; these predefined placeholders will be automatically substituted with their expected values when you paste the clipping.</NS1:text>
+  </NS1:clipping>
+  <NS1:clipping RDF:about="rdf:#$x6Ahw"
                    NS1:name="HTML snippet (tag names in CAPITAL LETTERS)"
                    NS1:srcurl=""
                    NS1:label="">
@@ -104,95 +267,166 @@ Questions and comments about Clippings should be directed to the &lt;a href="htt
 &amp;#171; Hello World! &amp;#187;
 &amp;#xAB; Hello World! &amp;#xBB;</NS1:text>
   </NS1:clipping>
-  <NS1:clipping RDF:about="rdf:#$nrdVb3"
-                   NS1:name="Hey! This clipping has a RED label!"
-                   NS1:text="Hello, cruel world!"
-                   NS1:srcurl=""
-                   NS1:label="red" />
-  <NS1:clipping RDF:about="rdf:#$IqdVb3"
-                   NS1:name="One-liner"
-                   NS1:text="FOO BAR BAZ "
-                   NS1:srcurl=""
-                   NS1:label=""
-                   NS1:key="1" />
-  <NS1:clipping RDF:about="rdf:#$FqdVb3"
-                   NS1:name="Heading test 1"
-                   NS1:text="&lt;h2&gt;Sample 2nd-level heading&lt;/h2&gt;"
-                   NS1:srcurl=""
-                   NS1:label="" />
-  <NS1:clipping RDF:about="rdf:#$oqdVb3"
+  <RDF:Seq RDF:about="rdf:#$o7Ahw">
+    <RDF:li RDF:resource="rdf:#$p7Ahw"/>
+    <RDF:li RDF:resource="rdf:#$q7Ahw"/>
+    <RDF:li RDF:resource="rdf:#$r7Ahw"/>
+  </RDF:Seq>
+  <NS1:folder RDF:about="rdf:#$o7Ahw"
+                   NS1:name="HTML"
+                   NS1:hassubfolders="true" />
+  <NS1:clipping RDF:about="rdf:#$F6Ahw"
                    NS1:name="HTML snippet 5 - all content inside a &lt;p&gt; element"
                    NS1:text="&lt;P&gt;The &lt;em&gt;quick&lt;/em&gt; &lt;span style=&quot;font-weight:bold;color:brown&quot;&gt;brown&lt;/span&gt; fox  &lt;sup style=&quot;font-weight:bold&quot;&gt;jumps&lt;/sup&gt; over the &lt;span style=&quot;text-decoration:underline&quot;&gt;lazy&lt;/span&gt; dog.&lt;/p&gt;"
                    NS1:srcurl=""
                    NS1:label="" />
-  <RDF:Seq RDF:about="rdf:#$7rdVb3">
-    <RDF:li RDF:resource="rdf:#$8rdVb3"/>
-    <RDF:li RDF:resource="rdf:#$9rdVb3"/>
-    <RDF:li RDF:resource="rdf:#$ardVb3"/>
-  </RDF:Seq>
-  <NS1:folder RDF:about="rdf:#$7rdVb3"
-                   NS1:name="HTML"
-                   NS1:hassubfolders="true" />
-  <NS1:clipping RDF:about="rdf:#$3rdVb3"
-                   NS1:name="Contains many placeholders, one of them having an invalid name"
-                   NS1:text="Hello world!  Today's date is: $[DATE]. There is a #[number] placeholder $[foobar{male|female}] in this clipping!   $[invalidPlaceholderNameßë{asdfßë 8848 sad $^&amp;*E }] placeholder with multi default values, containing spaces: $[asdf{foo bar|baz blah blorf|quux}] and the last placeholder is repeated again... $[asdf]"
-                   NS1:srcurl=""
-                   NS1:label="" />
-  <NS1:clipping RDF:about="rdf:#$ZqdVb3"
-                   NS1:name="Placeholder with default built-in values"
-                   NS1:text="The name of the clipping is $[clippingName{_NAME_}], the host application is $[hostapp{_HOSTAPP_}], the user agent is $[userAgent{_UA_}], the date is $[dateString{_DATE_}], and the name of the containing folder of this clipping is $[folderName{_FOLDER_}].  Have a nice day, $[name{Alex}]!"
-                   NS1:srcurl=""
-                   NS1:label="yellow" />
-  <NS1:clipping RDF:about="rdf:#$nqdVb3"
-                   NS1:name="HTML snippet 4 - mixed case tag names"
-                   NS1:text="So, goodbye cruel &lt;STRONG&gt;&lt;em&gt;world!&lt;/em&gt;&lt;/STRONG&gt;"
-                   NS1:srcurl=""
-                   NS1:label="" />
-  <NS1:clipping RDF:about="rdf:#$CqdVb3"
-                   NS1:name="HTML comment"
+  <NS1:clipping RDF:about="rdf:#$S6Ahw"
+                   NS1:name="An HTML clipping containing an embedded Java applet"
                    NS1:srcurl=""
                    NS1:label="">
     <NS1:text>&lt;P&gt;The &lt;em&gt;quick&lt;/em&gt; &lt;span style="font-weight:bold;color:brown"&gt;brown&lt;/span&gt; fox  &lt;sup style="font-weight:bold"&gt;jumps&lt;/sup&gt; over the &lt;span style="text-decoration:underline"&gt;lazy&lt;/span&gt; dog.&lt;/p&gt;
 
-&lt;!-- This is a comment --&gt;
-
-&lt;div style="color:#888888"&gt;&lt;em&gt;Pssst!&lt;/em&gt;  There is an HTML comment in this clipping.&lt;/div&gt;</NS1:text>
+&lt;object classid="java:hack.class" codetype="application/java" width=200 height=128&gt;</NS1:text>
   </NS1:clipping>
-  <NS1:clipping RDF:about="rdf:#$rqdVb3"
-                   NS1:name="HTML elements with attribute name but no value"
+  <RDF:Seq RDF:about="rdf:#$07Ahw">
+    <RDF:li RDF:resource="rdf:#$17Ahw"/>
+    <RDF:li RDF:resource="rdf:#$27Ahw"/>
+  </RDF:Seq>
+  <NS1:folder RDF:about="rdf:#$07Ahw"
+                   NS1:name="Placeholders"
+                   NS1:hassubfolders="true" />
+  <NS1:clipping RDF:about="rdf:#$q7Ahw"
+                   NS1:name="&quot;.&quot; (dot) image for spam-proofing"
+                   NS1:text="&lt;img src=&quot;http://clippings.mozdev.org/img/dot.png&quot; style=&quot;border: 0px none ; margin: 0px; padding: 0px; width: 4px; height: 11px; vertical-align: text-bottom;&quot; alt=&quot;.&quot;&gt;"
+                   NS1:srcurl=""
+                   NS1:label="" />
+  <NS1:clipping RDF:about="rdf:#$H6Ahw"
+                   NS1:name="Deprecated HTML 2 (single quotes delimiting attr values)"
+                   NS1:text="So, &lt;FONT FACE='Comic Sans MS' COLOR=RED&gt;Goodbye, cruel world!&lt;/FONT&gt;"
+                   NS1:srcurl=""
+                   NS1:label="" />
+  <RDF:Seq RDF:about="rdf:#$h7Ahw">
+    <RDF:li RDF:resource="rdf:#$i7Ahw"/>
+    <RDF:li RDF:resource="rdf:#$j7Ahw"/>
+    <RDF:li RDF:resource="rdf:#$k7Ahw"/>
+  </RDF:Seq>
+  <NS1:folder RDF:about="rdf:#$h7Ahw"
+                   NS1:name="Invalid placeholders"
+                   NS1:hassubfolders="false" />
+  <NS1:clipping RDF:about="rdf:#$U6Ahw"
+                   NS1:name="ASP/ASP.net snippet - single-line"
                    NS1:srcurl=""
                    NS1:label="">
-    <NS1:text>HTML elements with attribute name but no value
+    <NS1:text>There is an &lt;strong&gt;ASP&lt;/strong&gt; snippet in &lt;em&gt;this&lt;/em&gt; clipping!
 
-&lt;TEXTAREA MULTI ROWS=4 COLS=32&gt;Hello World!&lt;/TEXTAREA&gt;
-
-&lt;select&gt;
-  &lt;option&gt;Foo&lt;/option&gt;
-  &lt;option&gt;Bar&lt;/option&gt;
-  &lt;option&gt;Baz&lt;/option&gt;
-  &lt;option selected&gt;Quux&lt;/option&gt;
-  &lt;option&gt;Blah&lt;/option&gt;
-  &lt;option&gt;Blorf&lt;/option&gt;
-&lt;/select&gt;</NS1:text>
+&lt;% Response.Write "Hello World!" %&gt;</NS1:text>
   </NS1:clipping>
-  <NS1:clipping RDF:about="rdf:#$frdVb3"
+  <NS1:clipping RDF:about="rdf:#$W6Ahw"
+                   NS1:name="Heading test 1"
+                   NS1:text="&lt;h2&gt;Sample 2nd-level heading&lt;/h2&gt;"
+                   NS1:srcurl=""
+                   NS1:label="" />
+  <NS1:clipping RDF:about="rdf:#$e7Ahw"
+                   NS1:name="Placeholder with default built-in values"
+                   NS1:text="The name of the clipping is $[clippingName{_NAME_}], the host application is $[hostapp{_HOSTAPP_}], the user agent is $[userAgent{_UA_}], the date is $[dateString{_DATE_}], and the name of the containing folder of this clipping is $[folderName{_FOLDER_}].  Have a nice day, $[name{Alex}]!"
+                   NS1:srcurl=""
+                   NS1:label="yellow" />
+  <NS1:clipping RDF:about="rdf:#$z7Ahw"
+                   NS1:name="AE Creations blog URL"
+                   NS1:text="http://aecreations.blogspot.com/"
+                   NS1:srcurl=""
+                   NS1:label=""
+                   NS1:key="B" />
+  <NS1:clipping RDF:about="rdf:#$w7Ahw"
                    NS1:name="Description of Clippings"
                    NS1:text="Saves and manages frequently-entered text for later pasting into web page forms in Firefox or email and newsgroup messages in Thunderbird. Pasting a clipping is accomplished with just two mouse clicks, eliminating the hassle of retyping or repetitive copying and pasting."
                    NS1:srcurl=""
                    NS1:label="" />
-  <RDF:Seq RDF:about="rdf:#$brdVb3">
-    <RDF:li RDF:resource="rdf:#$crdVb3"/>
-    <RDF:li RDF:resource="rdf:#$drdVb3"/>
-  </RDF:Seq>
-  <NS1:folder RDF:about="rdf:#$brdVb3"
-                   NS1:name="Release announcements"
-                   NS1:hassubfolders="false" />
-  <NS1:clipping RDF:about="rdf:#$+qdVb3"
+  <NS1:clipping RDF:about="rdf:#$67Ahw"
+                   NS1:name="Mix of built-in and user-defined placeholders"
+                   NS1:text="Hello, $[name], the name of this clipping is &quot;$[NAME],&quot; the date is $[DATE] and the $[time] is $[TIME].  Have a nice day, $[name]!"
+                   NS1:srcurl=""
+                   NS1:label=""
+                   NS1:key="4" />
+  <NS1:clipping RDF:about="rdf:#$37Ahw"
+                   NS1:name="A normal placeholder resembling an auto-incrementing placeholder"
+                   NS1:text="Please refer to case #$[caseNumber] for the latest information."
+                   NS1:srcurl=""
+                   NS1:label="" />
+  <NS1:clipping RDF:about="rdf:#$Q6Ahw"
+                   NS1:name="&lt;IFRAME&gt;"
+                   NS1:srcurl=""
+                   NS1:label="">
+    <NS1:text>This &lt;strong&gt;clipping&lt;/strong&gt; contains a &lt;em&gt;restricted&lt;/em&gt; element.
+&lt;iframe src="foo.html"&gt;&lt;/iframe&gt;</NS1:text>
+  </NS1:clipping>
+  <NS1:clipping RDF:about="rdf:#$L6Ahw"
+                   NS1:name="Full HTML"
+                   NS1:srcurl=""
+                   NS1:label="">
+    <NS1:text>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"&gt;
+&lt;HTML&gt;
+  &lt;HEAD&gt;
+    &lt;title&gt;Full HTML Test&lt;/title&gt;
+    &lt;script language=JavaScript src="evil.js"&gt;
+  &lt;/head&gt;
+  &lt;body onload="alert('Hello World!')"&gt;
+    &lt;h1&gt;Full HTML Content&lt;/h1&gt;&lt;hr&gt;
+    &lt;p&gt;The &lt;em&gt;quick&lt;/EM&gt; &lt;span style="font-weight:bold;color:brown"&gt;brown&lt;/span&gt; fox  &lt;SUP&gt;jumps&lt;/SUP&gt; over the &lt;u&gt;lazy&lt;/u&gt; &lt;STRONG&gt;&lt;em&gt;dog&lt;/strong&gt;&lt;/EM&gt;.&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</NS1:text>
+  </NS1:clipping>
+  <NS1:clipping RDF:about="rdf:#$c7Ahw"
+                   NS1:name="Placeholder with non-ASCII characters"
+                   NS1:text="The placeholder contains non-ASCII characters.  Have a $[fäbulöus] day!"
+                   NS1:srcurl=""
+                   NS1:label="" />
+  <NS1:clipping RDF:about="rdf:#$J6Ahw"
+                   NS1:name="Hyperlinks"
+                   NS1:text="Hyperlinks to &lt;a href=&quot;http://aecreations.mozdev.org/&quot;&gt;Mozdev&lt;/a&gt; and &lt;a href=&quot;http://flickr.com/photos/aecreations&quot;&gt;Flickr&lt;/a&gt; pages."
+                   NS1:srcurl=""
+                   NS1:label="" />
+  <NS1:clipping RDF:about="rdf:#$97Ahw"
+                   NS1:name="[NOSUBST] Example"
+                   NS1:text="The [NOSUBST] keyword at the beginning of the clipping $[NAME] prevents the prompting of $[placeholder] values and automatic substitution of built-in placeholders at the $[TIME] this $[clipping] is pasted into $[HOSTAPP]."
+                   NS1:srcurl=""
+                   NS1:label="" />
+  <NS1:clipping RDF:about="rdf:#$O6Ahw"
+                   NS1:name="PHP snippet"
+                   NS1:srcurl=""
+                   NS1:label="">
+    <NS1:text>There is a &lt;strong&gt;PHP&lt;/strong&gt; snippet in &lt;em&gt;this&lt;/em&gt; clipping!
+
+&lt;?php echo "Hello World!"; ?&gt;</NS1:text>
+  </NS1:clipping>
+  <NS1:clipping RDF:about="rdf:#$g7Ahw"
                    NS1:name="Multi default values with spaces"
                    NS1:text="Hello world! $[placeholder{foo bar baz|blah blorf|qux}]"
                    NS1:srcurl=""
                    NS1:label="" />
-  <NS1:clipping RDF:about="rdf:#$GqdVb3"
+  <NS1:clipping RDF:about="rdf:#$+6Ahw"
+                   NS1:name="Let me know if that works for you. If you have a..."
+                   NS1:srcurl=""
+                   NS1:label="">
+    <NS1:text>Let me know if that works for you. If you have any questions or concerns, you know where to find me.
+
+Regards,
+
+
+Alex</NS1:text>
+  </NS1:clipping>
+  <NS1:clipping RDF:about="rdf:#$w6Ahw"
+                   NS1:name="HTML snippet"
+                   NS1:srcurl=""
+                   NS1:label=""
+                   NS1:key="H">
+    <NS1:text>The &lt;i&gt;quick&lt;/i&gt; &lt;span style="color:brown;font-weight:bold"&gt;brown&lt;/span&gt; fox &lt;span style="font-size:xx-large"&gt;jumps&lt;/span&gt; over the &lt;u&gt;lazy&lt;/u&gt; &lt;strong&gt;&lt;em&gt;dog&lt;/em&gt;&lt;/strong&gt;.
+
+&amp;laquo; Hello World! &amp;raquo;
+&amp;#171; Hello World! &amp;#187;
+&amp;#xAB; Hello World! &amp;#xBB;</NS1:text>
+  </NS1:clipping>
+  <NS1:clipping RDF:about="rdf:#$X6Ahw"
                    NS1:name="Heading test 2"
                    NS1:srcurl=""
                    NS1:label="">
@@ -200,22 +434,39 @@ Questions and comments about Clippings should be directed to the &lt;a href="htt
 
 &lt;P&gt;The &lt;em&gt;quick&lt;/em&gt; &lt;span style="font-weight:bold;color:brown"&gt;brown&lt;/span&gt; fox  &lt;sup style="font-weight:bold"&gt;jumps&lt;/sup&gt; over the &lt;span style="text-decoration:underline"&gt;lazy&lt;/span&gt; dog.&lt;/p&gt;</NS1:text>
   </NS1:clipping>
-  <NS1:clipping RDF:about="rdf:#$2rdVb3"
-                   NS1:name="Default value with typo"
-                   NS1:text="The quick brown fox $[verb{jumps}] over the $[adjective{lazy] dog."
-                   NS1:srcurl=""
-                   NS1:label="" />
-  <NS1:clipping RDF:about="rdf:#$iqdVb3"
+  <NS1:clipping RDF:about="rdf:#$z6Ahw"
                    NS1:name="HTML with attributes in tags 1"
                    NS1:text="&lt;p style=&quot;font-weight:bold;color:red&quot;&gt;Goodbye, cruel world!&lt;/p&gt;"
                    NS1:srcurl=""
                    NS1:label="" />
-  <RDF:Seq RDF:about="rdf:#$ardVb3">
-  </RDF:Seq>
-  <NS1:folder RDF:about="rdf:#$ardVb3"
-                   NS1:name="Empty Subfolder"
-                   NS1:hassubfolders="false" />
-  <NS1:clipping RDF:about="rdf:#$vqdVb3"
+  <NS1:clipping RDF:about="rdf:#$d7Ahw"
+                   NS1:name="Placeholder with single default value"
+                   NS1:text="The quick brown fox $[verb{jumps}] over the $[adjective] dog."
+                   NS1:srcurl=""
+                   NS1:label=""
+                   NS1:key="D" />
+  <NS1:clipping RDF:about="rdf:#$C6Ahw"
+                   NS1:name="HTML snippet 2"
+                   NS1:text="So, &lt;b&gt;Goodbye, cruel world!&lt;/b&gt;"
+                   NS1:srcurl=""
+                   NS1:label="" />
+  <NS1:clipping RDF:about="rdf:#$V6Ahw"
+                   NS1:name="ASP/ASP.net snippet - multiple lines"
+                   NS1:srcurl=""
+                   NS1:label="">
+    <NS1:text>There is a multi-line &lt;strong&gt;ASP&lt;/strong&gt; snippet in &lt;em&gt;this&lt;/em&gt; clipping!
+
+
+&lt;%
+
+              Set oConn = Server.CreateObject("ADODB.Connection")
+              oConn.Open "DRIVER={Microsoft Access Driver (*.mdb)}; DBQ=" &amp;
+Server.MapPath("DB.mdb")
+              Set rsUsers = Server.CreateObject("ADODB.Recordset")
+              rsUsers.Open "SELECT * FROM Users", oConn
+      %&gt;</NS1:text>
+  </NS1:clipping>
+  <NS1:clipping RDF:about="rdf:#$M6Ahw"
                    NS1:name="Full XHTML"
                    NS1:srcurl=""
                    NS1:label="">
@@ -239,304 +490,28 @@ Questions and comments about Clippings should be directed to the &lt;a href="htt
 &lt;/body&gt;
 &lt;/html&gt;</NS1:text>
   </NS1:clipping>
-  <NS1:clipping RDF:about="rdf:#$TqdVb3"
-                   NS1:name="Clipping with a mix of placeholders"
-                   NS1:text="This is clipping ##[clippingNumber] with a mix of placeholders.  You are using $[HOSTAPP].  Your gender is: $[gender{male|female}], and your name is $[name].  Today's date is: $[today{_DATE_}]."
+  <NS1:clipping RDF:about="rdf:#$j7Ahw"
+                   NS1:name="Default value with typo"
+                   NS1:text="The quick brown fox $[verb{jumps}] over the $[adjective{lazy] dog."
                    NS1:srcurl=""
                    NS1:label="" />
-  <NS1:clipping RDF:about="rdf:#$RqdVb3"
-                   NS1:name="Mix of built-in and user-defined placeholders"
-                   NS1:text="Hello, $[name], the name of this clipping is &quot;$[NAME],&quot; the date is $[DATE] and the $[time] is $[TIME].  Have a nice day, $[name]!"
+  <NS1:clipping RDF:about="rdf:#$E6Ahw"
+                   NS1:name="HTML snippet 4 - mixed case tag names"
+                   NS1:text="So, goodbye cruel &lt;STRONG&gt;&lt;em&gt;world!&lt;/em&gt;&lt;/STRONG&gt;"
+                   NS1:srcurl=""
+                   NS1:label="" />
+  <NS1:clipping RDF:about="rdf:#$Z6Ahw"
+                   NS1:name="One-liner"
+                   NS1:text="FOO BAR BAZ "
                    NS1:srcurl=""
                    NS1:label=""
-                   NS1:key="4" />
-  <NS1:clipping RDF:about="rdf:#$.qdVb3"
-                   NS1:name="Placeholder with selectable options"
-                   NS1:text="Select your gender: $[gender{male|female}]"
-                   NS1:srcurl=""
-                   NS1:label=""
-                   NS1:key="Y" />
-  <NS1:clipping RDF:about="rdf:#$yqdVb3"
-                   NS1:name="An XUL doctype declaration"
-                   NS1:srcurl=""
-                   NS1:label="">
-    <NS1:text>&lt;!DOCTYPE overlay SYSTEM "chrome://clippings/locale/clippings.dtd"&gt;
-
-&lt;span style="font-weight:bold;text-decoration:blink;color:red"&gt;Hello, world!&lt;/span&gt;</NS1:text>
-  </NS1:clipping>
-  <RDF:Seq RDF:about="rdf:#$0rdVb3">
-    <RDF:li RDF:resource="rdf:#$1rdVb3"/>
-    <RDF:li RDF:resource="rdf:#$2rdVb3"/>
-    <RDF:li RDF:resource="rdf:#$3rdVb3"/>
-  </RDF:Seq>
-  <NS1:folder RDF:about="rdf:#$0rdVb3"
-                   NS1:name="Invalid placeholders"
-                   NS1:hassubfolders="false" />
-  <NS1:clipping RDF:about="rdf:#$qqdVb3"
-                   NS1:name="Deprecated HTML 2 (single quotes delimiting attr values)"
-                   NS1:text="So, &lt;FONT FACE='Comic Sans MS' COLOR=RED&gt;Goodbye, cruel world!&lt;/FONT&gt;"
-                   NS1:srcurl=""
-                   NS1:label="" />
-  <RDF:Seq RDF:about="rdf:#$NqdVb3">
-    <RDF:li RDF:resource="rdf:#$OqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$PqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$QqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$UqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$VqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$WqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$XqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$YqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$ZqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$.qdVb3"/>
-    <RDF:li RDF:resource="rdf:#$+qdVb3"/>
-    <RDF:li RDF:resource="rdf:#$0rdVb3"/>
-    <RDF:li RDF:resource="rdf:#$4rdVb3"/>
-  </RDF:Seq>
-  <NS1:folder RDF:about="rdf:#$NqdVb3"
-                   NS1:name="Samples"
-                   NS1:hassubfolders="true" />
-  <NS1:clipping RDF:about="rdf:#$8rdVb3"
-                   NS1:name="&quot;@&quot; image HTML snippet for spam-proofing email address"
-                   NS1:text="&lt;img src=&quot;http://clippings.mozdev.org/img/at.png&quot; style=&quot;border: 0px none ; margin: 0px; padding: 0px; width: 13px; height: 13px; vertical-align: text-bottom;&quot; alt=&quot;@&quot;&gt;"
-                   NS1:srcurl=""
-                   NS1:label="" />
-  <NS1:clipping RDF:about="rdf:#$tqdVb3"
-                   NS1:name="Horizontal rule"
-                   NS1:text="&lt;hr&gt;"
-                   NS1:srcurl=""
-                   NS1:label=""
-                   NS1:key="R" />
-  <NS1:clipping RDF:about="rdf:#$OqdVb3"
-                   NS1:name="A normal placeholder resembling an auto-incrementing placeholder"
-                   NS1:text="Please refer to case #$[caseNumber] for the latest information."
-                   NS1:srcurl=""
-                   NS1:label="" />
-  <NS1:clipping RDF:about="rdf:#$prdVb3"
-                   NS1:name="Test signature (for issue #35)"
-                   NS1:srcurl=""
-                   NS1:label="">
-    <NS1:text>&lt;b&gt;Alex&lt;/b&gt;&lt;br&gt;
-AE Creations website&lt;br&gt;
-&lt;a href="http://aecreations.sourceforge.net/"&gt;&lt;font style="color:#a349a4 !important"&gt;http://aecreations.sourceforge.net&lt;/font&gt;&lt;/a&gt;&lt;br&gt;
-&lt;br&gt;
-the AE Creations blog&lt;br&gt;
-&lt;a href="http://aecreations.blogspot.com/"&gt;&lt;font style="color:#a349a4 !important"&gt;http://aecreations.blogspot.com&lt;/font&gt;&lt;/a&gt;</NS1:text>
-  </NS1:clipping>
-  <NS1:clipping RDF:about="rdf:#$hqdVb3"
-                   NS1:name="HTML entities only"
-                   NS1:srcurl=""
-                   NS1:label="">
-    <NS1:text>&amp;laquo; Hello World! &amp;raquo;
-&amp;#171; Hello World! &amp;#187;
-&amp;#xAB; Hello World! &amp;#xBB;</NS1:text>
-  </NS1:clipping>
-  <NS1:clipping RDF:about="rdf:#$AqdVb3"
-                   NS1:name="&lt;FRAME&gt;"
-                   NS1:srcurl=""
-                   NS1:label="">
-    <NS1:text>This clipping contains another &lt;b&gt;&lt;i&gt;restricted&lt;/b&gt;&lt;/i&gt; element.
-&lt;FRAME SRC="doc1.html"&gt;&lt;/FRAME&gt;</NS1:text>
-  </NS1:clipping>
-  <RDF:Seq RDF:about="rdf:#$lrdVb3">
-    <RDF:li RDF:resource="rdf:#$mrdVb3"/>
-    <RDF:li RDF:resource="rdf:#$nrdVb3"/>
-    <RDF:li RDF:resource="rdf:#$ordVb3"/>
-  </RDF:Seq>
-  <NS1:folder RDF:about="rdf:#$lrdVb3"
-                   NS1:name="Clippings with labels"
-                   NS1:hassubfolders="false" />
-  <NS1:clipping RDF:about="rdf:#$ordVb3"
+                   NS1:key="1" />
+  <NS1:clipping RDF:about="rdf:#$F7Ahw"
                    NS1:name="Flattering review of Clippings (with label and source URL)"
                    NS1:text="I use this for inventory management/entry and customer service for my business. The ability to assign blocks of text to each letter/number on the keyboard has saved 1000s of hours of typing. I would donate money to this company for sure."
                    NS1:srcurl="http://aecreations.sourceforge.net/clippings/index.php"
                    NS1:label="blue" />
-  <NS1:clipping RDF:about="rdf:#$drdVb3"
-                   NS1:name="Forum post - Clippings release announcement"
-                   NS1:srcurl="https://groups.google.com/forum/#!forum/aecreations-help"
-                   NS1:label="">
-    <NS1:text>This is the $[beta_number_ordinal] beta release leading up to Clippings $[upcoming_version{5.0}], intended for early adopter users who crave the latest and greatest.  Users not comfortable trying out pre-release software and tolerating its many bugs should stick with Clippings $[current_version{4.1.2}] for now.
-
-If you already have a previous release of Clippings installed, you must uninstall it first before installing this release. Because this is a beta release, no automatic upgrades to this release will be available to current Clippings users.
-
-What's New in Beta $[beta_release_number]:
-
-- (TO DO: List new features here)
-
-See the blog post on the AE Creations Blog for download links, and how to get help or report a bug.</NS1:text>
-  </NS1:clipping>
-  <NS1:clipping RDF:about="rdf:#$EqdVb3"
-                   NS1:name="ASP/ASP.net snippet - multiple lines"
-                   NS1:srcurl=""
-                   NS1:label="">
-    <NS1:text>There is a multi-line &lt;strong&gt;ASP&lt;/strong&gt; snippet in &lt;em&gt;this&lt;/em&gt; clipping!
-
-
-&lt;%
-
-              Set oConn = Server.CreateObject("ADODB.Connection")
-              oConn.Open "DRIVER={Microsoft Access Driver (*.mdb)}; DBQ=" &amp;
-Server.MapPath("DB.mdb")
-              Set rsUsers = Server.CreateObject("ADODB.Recordset")
-              rsUsers.Open "SELECT * FROM Users", oConn
-      %&gt;</NS1:text>
-  </NS1:clipping>
-  <NS1:clipping RDF:about="rdf:#$UqdVb3"
-                   NS1:name="[NOSUBST] Example"
-                   NS1:text="The [NOSUBST] keyword at the beginning of the clipping $[NAME] prevents the prompting of $[placeholder] values and automatic substitution of built-in placeholders at the $[TIME] this $[clipping] is pasted into $[HOSTAPP]."
-                   NS1:srcurl=""
-                   NS1:label="" />
-  <NS1:clipping RDF:about="rdf:#$mqdVb3"
-                   NS1:name="HTML snippet 3"
-                   NS1:text="So, &lt;B&gt;Goodbye, cruel world!&lt;/B&gt;"
-                   NS1:srcurl=""
-                   NS1:label="" />
-  <NS1:clipping RDF:about="rdf:#$zqdVb3"
-                   NS1:name="&lt;IFRAME&gt;"
-                   NS1:srcurl=""
-                   NS1:label="">
-    <NS1:text>This &lt;strong&gt;clipping&lt;/strong&gt; contains a &lt;em&gt;restricted&lt;/em&gt; element.
-&lt;iframe src="foo.html"&gt;&lt;/iframe&gt;</NS1:text>
-  </NS1:clipping>
-  <NS1:clipping RDF:about="rdf:#$WqdVb3"
-                   NS1:name="Multiple auto-increment placeholders in a single clipping"
-                   NS1:text="This is clipping number #[number]!  And another one here: #[counter]"
-                   NS1:srcurl=""
-                   NS1:label=""
-                   NS1:key="M" />
-  <NS1:clipping RDF:about="rdf:#$xqdVb3"
-                   NS1:name="PHP snippet"
-                   NS1:srcurl=""
-                   NS1:label="">
-    <NS1:text>There is a &lt;strong&gt;PHP&lt;/strong&gt; snippet in &lt;em&gt;this&lt;/em&gt; clipping!
-
-&lt;?php echo "Hello World!"; ?&gt;</NS1:text>
-  </NS1:clipping>
-  <NS1:clipping RDF:about="rdf:#$DqdVb3"
-                   NS1:name="ASP/ASP.net snippet - single-line"
-                   NS1:srcurl=""
-                   NS1:label="">
-    <NS1:text>There is an &lt;strong&gt;ASP&lt;/strong&gt; snippet in &lt;em&gt;this&lt;/em&gt; clipping!
-
-&lt;% Response.Write "Hello World!" %&gt;</NS1:text>
-  </NS1:clipping>
-  <NS1:clipping RDF:about="rdf:#$MqdVb3"
-                   NS1:name="Introduction"
-                   NS1:srcurl=""
-                   NS1:label="">
-    <NS1:text>You can now define placeholders inside a clipping that you will be prompted to fill in when you paste the clipping. Placeholders are essentially variables that appear in the clipping text as a name enclosed in square brackets and preceded with a dollar sign. Valid variable names can contain letters (lowercase or uppercase), digits (0-9) and underscores.
-
-When you paste a clipping with placeholders, you will be prompted to fill in the value for each placeholder in the clipping. If you want the placeholders in the clipping pasted exactly as they are, with no prompting and substitution, the clipping name should be prefixed with [NOSUBST].
-
-There are six predefined placeholders you can use in your clippings; these predefined placeholders will be automatically substituted with their expected values when you paste the clipping.</NS1:text>
-  </NS1:clipping>
-  <NS1:clipping RDF:about="rdf:#$kqdVb3"
-                   NS1:name="HTML with attributes in tags 2"
-                   NS1:text="&lt;p&gt;So, &lt;span style=&quot;font-weight:bold;color:red&quot;&gt;Goodbye, cruel world!&lt;/span&gt;&lt;/p&gt;"
-                   NS1:srcurl=""
-                   NS1:label="" />
-  <NS1:clipping RDF:about="rdf:#$jqdVb3"
-                   NS1:name="HTML with attributes in tags 1a"
-                   NS1:text="&lt;P STYLE=&quot;font-weight:bold;color:red&quot;&gt;Goodbye, cruel world!&lt;/P&gt;"
-                   NS1:srcurl=""
-                   NS1:label="" />
-  <NS1:clipping RDF:about="rdf:#$sqdVb3"
-                   NS1:name="Hyperlinks"
-                   NS1:text="Hyperlinks to &lt;a href=&quot;http://aecreations.mozdev.org/&quot;&gt;Mozdev&lt;/a&gt; and &lt;a href=&quot;http://flickr.com/photos/aecreations&quot;&gt;Flickr&lt;/a&gt; pages."
-                   NS1:srcurl=""
-                   NS1:label="" />
-  <NS1:clipping RDF:about="rdf:#$hrdVb3"
-                   NS1:name="AE Creations signature"
-                   NS1:srcurl=""
-                   NS1:label=""
-                   NS1:key="S">
-    <NS1:text>Alex
-
----
-AE Creations website
-http://aecreations.sourceforge.net/
-
-the AE Creations blog
-http://aecreations.blogspot.com/</NS1:text>
-  </NS1:clipping>
-  <NS1:clipping RDF:about="rdf:#$uqdVb3"
-                   NS1:name="Full HTML"
-                   NS1:srcurl=""
-                   NS1:label="">
-    <NS1:text>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"&gt;
-&lt;HTML&gt;
-  &lt;HEAD&gt;
-    &lt;title&gt;Full HTML Test&lt;/title&gt;
-    &lt;script language=JavaScript src="evil.js"&gt;
-  &lt;/head&gt;
-  &lt;body onload="alert('Hello World!')"&gt;
-    &lt;h1&gt;Full HTML Content&lt;/h1&gt;&lt;hr&gt;
-    &lt;p&gt;The &lt;em&gt;quick&lt;/EM&gt; &lt;span style="font-weight:bold;color:brown"&gt;brown&lt;/span&gt; fox  &lt;SUP&gt;jumps&lt;/SUP&gt; over the &lt;u&gt;lazy&lt;/u&gt; &lt;STRONG&gt;&lt;em&gt;dog&lt;/strong&gt;&lt;/EM&gt;.&lt;/p&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</NS1:text>
-  </NS1:clipping>
-  <NS1:clipping RDF:about="rdf:#$KqdVb3"
-                   NS1:name="Let me know if that works for you. If you have a..."
-                   NS1:srcurl=""
-                   NS1:label="">
-    <NS1:text>Let me know if that works for you. If you have any questions or concerns, you know where to find me.
-
-Regards,
-
-
-Alex</NS1:text>
-  </NS1:clipping>
-  <NS1:clipping RDF:about="rdf:#$4rdVb3"
-                   NS1:name="Placeholder with default value containing special chars"
-                   NS1:text="There are $[placeholders{pl_ace-holder.z}] with $[placeholder{foo.bar_baz - qux|François Le Château}] values."
-                   NS1:srcurl=""
-                   NS1:label="" />
-  <NS1:clipping RDF:about="rdf:#$jrdVb3"
-                   NS1:name="Clipping with Asian characters"
-                   NS1:srcurl=""
-                   NS1:label=""
-                   NS1:key="8">
-    <NS1:text>你好嗎？ How are you?
-我很好, 你呢？  I am fine, and you?</NS1:text>
-  </NS1:clipping>
-  <RDF:Seq RDF:about="rdf:#$5rdVb3">
-    <RDF:li RDF:resource="rdf:#$6rdVb3"/>
-    <RDF:li RDF:resource="rdf:#$grdVb3"/>
-    <RDF:li RDF:resource="rdf:#$hrdVb3"/>
-    <RDF:li RDF:resource="rdf:#$irdVb3"/>
-  </RDF:Seq>
-  <NS1:folder RDF:about="rdf:#$5rdVb3"
-                   NS1:name="AE Creations"
-                   NS1:hassubfolders="true" />
-  <NS1:clipping RDF:about="rdf:#$wqdVb3"
-                   NS1:name="Text resembling HTML tag names"
-                   NS1:text="There is &lt;em&gt;embedded text&lt;/em&gt; in the body of this clipping that &lt;u&gt;resemble&lt;/u&gt; the names of &lt;code&gt;HTML&lt;/code&gt; tags &lt;strong style=&quot;color:red&quot;&gt;restricted&lt;/strong&gt; by Clippings' &lt;q&gt;paste as rich text&lt;/q&gt; function.  The &lt;span style=&quot;font-weight:bold;text-decoration:blink&quot;&gt;object&lt;/span&gt; of this test is to see how they are treated. &lt;p&gt;&amp;raquo; See &lt;a href=&quot;https://www.mozdev.org/bugs/show_bug.cgi?id=20297&quot;&gt;bug 20297&lt;/a&gt; for more information."
-                   NS1:srcurl=""
-                   NS1:label="" />
-  <NS1:clipping RDF:about="rdf:#$grdVb3"
-                   NS1:name="Release announcement"
-                   NS1:srcurl=""
-                   NS1:label="">
-    <NS1:text>A new release of $[extension_name] is now available from Mozilla Add-ons and the AE Creations website.
-
-If you already have an older version of $[extension_name] installed, it will be upgraded for you if automatic extension updates are enabled. Otherwise, open Extension Manager (Tools → Add-ons), then right-click on the entry for $[extension_name] in the list of installed extensions and choose Find Update.
-
-New in this release:
-
-* &lt;&lt;list of features and bug fixes introduced in this release&gt;&gt;
-
-Send you questions and comments to the forum.</NS1:text>
-  </NS1:clipping>
-  <NS1:clipping RDF:about="rdf:#$lqdVb3"
-                   NS1:name="HTML snippet 2"
-                   NS1:text="So, &lt;b&gt;Goodbye, cruel world!&lt;/b&gt;"
-                   NS1:srcurl=""
-                   NS1:label="" />
-  <NS1:clipping RDF:about="rdf:#$XqdVb3"
-                   NS1:name="Placeholder with non-ASCII characters"
-                   NS1:text="The placeholder contains non-ASCII characters.  Have a $[fäbulöus] day!"
-                   NS1:srcurl=""
-                   NS1:label="" />
-  <NS1:clipping RDF:about="rdf:#$HqdVb3"
+  <NS1:clipping RDF:about="rdf:#$Y6Ahw"
                    NS1:name="End of test"
                    NS1:srcurl=""
                    NS1:label="">
@@ -544,98 +519,123 @@ Send you questions and comments to the forum.</NS1:text>
 --- End of Test ---
 &lt;/CENTER&gt;</NS1:text>
   </NS1:clipping>
-  <NS1:clipping RDF:about="rdf:#$SqdVb3"
-                   NS1:name="(HTML) Mix of built-in and user-defined placeholders"
-                   NS1:srcurl=""
-                   NS1:label=""
-                   NS1:key="Z">
-    <NS1:text>Hello, &lt;strong&gt;$[name]&lt;/strong&gt;, the name of this clipping is &lt;q&gt;$[NAME],&lt;/q&gt; the date is $[DATE] and the $[time] is $[TIME].  
-
-&lt;b&gt;&lt;i&gt;Have a nice day, $[name]!&lt;/i&gt;&lt;/b&gt;</NS1:text>
-  </NS1:clipping>
-  <NS1:clipping RDF:about="rdf:#$9rdVb3"
-                   NS1:name="&quot;.&quot; (dot) image for spam-proofing"
-                   NS1:text="&lt;img src=&quot;http://clippings.mozdev.org/img/dot.png&quot; style=&quot;border: 0px none ; margin: 0px; padding: 0px; width: 4px; height: 11px; vertical-align: text-bottom;&quot; alt=&quot;.&quot;&gt;"
+  <NS1:clipping RDF:about="rdf:#$87Ahw"
+                   NS1:name="Clipping with a mix of placeholders"
+                   NS1:text="This is clipping ##[clippingNumber] with a mix of placeholders.  You are using $[HOSTAPP].  Your gender is: $[gender{male|female}], and your name is $[name].  Today's date is: $[today{_DATE_}]."
                    NS1:srcurl=""
                    NS1:label="" />
-  <NS1:clipping RDF:about="rdf:#$BqdVb3"
-                   NS1:name="An HTML clipping containing an embedded Java applet"
+  <NS1:clipping RDF:about="rdf:#$A6Ahw"
+                   NS1:name="HTML with attributes in tags 1a"
+                   NS1:text="&lt;P STYLE=&quot;font-weight:bold;color:red&quot;&gt;Goodbye, cruel world!&lt;/P&gt;"
+                   NS1:srcurl=""
+                   NS1:label="" />
+  <NS1:clipping RDF:about="rdf:#$N6Ahw"
+                   NS1:name="Text resembling HTML tag names"
+                   NS1:text="There is &lt;em&gt;embedded text&lt;/em&gt; in the body of this clipping that &lt;u&gt;resemble&lt;/u&gt; the names of &lt;code&gt;HTML&lt;/code&gt; tags &lt;strong style=&quot;color:red&quot;&gt;restricted&lt;/strong&gt; by Clippings' &lt;q&gt;paste as rich text&lt;/q&gt; function.  The &lt;span style=&quot;font-weight:bold;text-decoration:blink&quot;&gt;object&lt;/span&gt; of this test is to see how they are treated. &lt;p&gt;&amp;raquo; See &lt;a href=&quot;https://www.mozdev.org/bugs/show_bug.cgi?id=20297&quot;&gt;bug 20297&lt;/a&gt; for more information."
+                   NS1:srcurl=""
+                   NS1:label="" />
+  <NS1:clipping RDF:about="rdf:#$t7Ahw"
+                   NS1:name="Clippings release announcement - on blog {Q}"
+                   NS1:srcurl="http://aecreations.blogspot.ca/"
+                   NS1:label="">
+    <NS1:text>A new release of Clippings is now available from &lt;a href="https://addons.mozilla.org/en-US/firefox/addon/clippings/"&gt;Mozilla Add-ons&lt;/a&gt; and the &lt;a href="http://aecreations.sourceforge.net/clippings/index.php"&gt;AE Creations website&lt;/a&gt;.
+
+If you already have Clippings installed, it will be upgraded for you if automatic extension updates are enabled. Otherwise, open Extension Manager (Tools &amp;rarr; Add-ons), then right-click on the entry for Clippings in the list of installed extensions and choose Find Updates.
+
+&lt;strong&gt;What's New&lt;/strong&gt;
+&lt;ul&gt;&lt;li&gt;Paste the new feature list here...&lt;/li&gt;
+&lt;/ul&gt;
+&lt;strong&gt;Help and Support&lt;/strong&gt;
+
+Questions and comments about Clippings should be directed to the &lt;a href="https://groups.google.com/forum/#!forum/aecreations-help"&gt;AE Creations Help and Support forums&lt;/a&gt;, hosted on Google Groups.</NS1:text>
+  </NS1:clipping>
+  <NS1:clipping RDF:about="rdf:#$u6Ahw"
+                   NS1:name="Welcome to Clippings 5.0"
+                   NS1:srcurl="http://aecreations.sourceforge.net/clippings/whatsnew.php"
+                   NS1:label=""
+                   NS1:key="W">
+    <NS1:text>Hello!
+
+This sample datasource contains a few items that demonstrate many of the great new features found in Clippings 5.0—such as color labels, default values in placeholders, and source web page addresses embedded into clippings.  You are going to like it. ☺
+
+Your feedback on this new release of Clippings is welcome.  You can leave a review on the Clippings page on the Mozilla Add-ons website, or post to the AE Creations Help and Support forums.
+
+For the latest news and updates on Clippings and other cool, useful software from AE Creations, including up-and-coming projects for early adopters craving the latest and greatest, visit the blog at &lt;http://aecreations.blogspot.com&gt;.  Also check out &lt;http://aecreations.sourceforge.net&gt; for the latest stable releases of other Firefox and Thunderbird extensions by AE Creations. ♦</NS1:text>
+  </NS1:clipping>
+  <RDF:Seq RDF:about="rdf:#$C7Ahw">
+    <RDF:li RDF:resource="rdf:#$D7Ahw"/>
+    <RDF:li RDF:resource="rdf:#$E7Ahw"/>
+    <RDF:li RDF:resource="rdf:#$F7Ahw"/>
+  </RDF:Seq>
+  <NS1:folder RDF:about="rdf:#$C7Ahw"
+                   NS1:name="Clippings with labels"
+                   NS1:hassubfolders="false" />
+  <NS1:clipping RDF:about="rdf:#$E7Ahw"
+                   NS1:name="Hey! This clipping has a RED label!"
+                   NS1:text="Hello, cruel world!"
+                   NS1:srcurl=""
+                   NS1:label="red" />
+  <NS1:clipping RDF:about="rdf:#$G6Ahw"
+                   NS1:name="Deprecated HTML 1"
+                   NS1:text="So, &lt;FONT FACE=&quot;Comic Sans MS&quot; COLOR=RED&gt;Goodbye, cruel world!&lt;/FONT&gt;"
+                   NS1:srcurl=""
+                   NS1:label="" />
+  <NS1:clipping RDF:about="rdf:#$a7Ahw"
+                   NS1:name="Auto-increment placeholder example"
+                   NS1:text="This is clipping number #[number]!"
+                   NS1:srcurl=""
+                   NS1:label=""
+                   NS1:key="N" />
+  <NS1:clipping RDF:about="rdf:#$A7Ahw"
+                   NS1:name="Clipping with Asian characters"
+                   NS1:srcurl=""
+                   NS1:label=""
+                   NS1:key="8">
+    <NS1:text>你好嗎？ How are you?
+我很好, 你呢？  I am fine, and you?</NS1:text>
+  </NS1:clipping>
+  <NS1:clipping RDF:about="rdf:#$T6Ahw"
+                   NS1:name="HTML comment"
                    NS1:srcurl=""
                    NS1:label="">
     <NS1:text>&lt;P&gt;The &lt;em&gt;quick&lt;/em&gt; &lt;span style="font-weight:bold;color:brown"&gt;brown&lt;/span&gt; fox  &lt;sup style="font-weight:bold"&gt;jumps&lt;/sup&gt; over the &lt;span style="text-decoration:underline"&gt;lazy&lt;/span&gt; dog.&lt;/p&gt;
 
-&lt;object classid="java:hack.class" codetype="application/java" width=200 height=128&gt;</NS1:text>
+&lt;!-- This is a comment --&gt;
+
+&lt;div style="color:#888888"&gt;&lt;em&gt;Pssst!&lt;/em&gt;  There is an HTML comment in this clipping.&lt;/div&gt;</NS1:text>
   </NS1:clipping>
-  <RDF:Seq RDF:about="rdf:#$eqdVb3">
-    <RDF:li RDF:resource="rdf:#$fqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$gqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$hqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$iqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$jqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$kqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$lqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$mqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$nqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$oqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$pqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$qqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$rqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$sqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$tqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$uqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$vqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$wqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$xqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$yqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$zqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$AqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$BqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$CqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$DqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$EqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$FqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$GqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$HqdVb3"/>
+  <RDF:Seq RDF:about="rdf:#$n7Ahw">
+    <RDF:li RDF:resource="rdf:#$o7Ahw"/>
+    <RDF:li RDF:resource="rdf:#$s7Ahw"/>
+    <RDF:li RDF:resource="rdf:#$v7Ahw"/>
+    <RDF:li RDF:resource="rdf:#$w7Ahw"/>
   </RDF:Seq>
-  <NS1:folder RDF:about="rdf:#$eqdVb3"
-                   NS1:name="HTML and HTML-like"
-                   NS1:hassubfolders="false" />
-  <RDF:Seq RDF:about="rdf:#$6rdVb3">
-    <RDF:li RDF:resource="rdf:#$7rdVb3"/>
-    <RDF:li RDF:resource="rdf:#$brdVb3"/>
-    <RDF:li RDF:resource="rdf:#$erdVb3"/>
-    <RDF:li RDF:resource="rdf:#$frdVb3"/>
-  </RDF:Seq>
-  <NS1:folder RDF:about="rdf:#$6rdVb3"
+  <NS1:folder RDF:about="rdf:#$n7Ahw"
                    NS1:name="Clippings Project"
                    NS1:hassubfolders="true" />
-  <NS1:clipping RDF:about="rdf:#$erdVb3"
-                   NS1:name="Tagline"
-                   NS1:text="Save frequently-entered text for pasting later."
-                   NS1:srcurl=""
-                   NS1:label="" />
-  <RDF:Seq RDF:about="rdf:#$QqdVb3">
-    <RDF:li RDF:resource="rdf:#$RqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$SqdVb3"/>
-    <RDF:li RDF:resource="rdf:#$TqdVb3"/>
+  <RDF:Seq RDF:about="rdf:#$57Ahw">
+    <RDF:li RDF:resource="rdf:#$67Ahw"/>
+    <RDF:li RDF:resource="rdf:#$77Ahw"/>
+    <RDF:li RDF:resource="rdf:#$87Ahw"/>
   </RDF:Seq>
-  <NS1:folder RDF:about="rdf:#$QqdVb3"
+  <NS1:folder RDF:about="rdf:#$57Ahw"
                    NS1:name="Mixed Samples"
                    NS1:hassubfolders="false" />
-  <NS1:clipping RDF:about="rdf:#$fqdVb3"
-                   NS1:name="HTML snippet"
+  <NS1:clipping RDF:about="rdf:#$I6Ahw"
+                   NS1:name="HTML elements with attribute name but no value"
                    NS1:srcurl=""
-                   NS1:label=""
-                   NS1:key="H">
-    <NS1:text>The &lt;i&gt;quick&lt;/i&gt; &lt;span style="color:brown;font-weight:bold"&gt;brown&lt;/span&gt; fox &lt;span style="font-size:xx-large"&gt;jumps&lt;/span&gt; over the &lt;u&gt;lazy&lt;/u&gt; &lt;strong&gt;&lt;em&gt;dog&lt;/em&gt;&lt;/strong&gt;.
+                   NS1:label="">
+    <NS1:text>HTML elements with attribute name but no value
 
-&amp;laquo; Hello World! &amp;raquo;
-&amp;#171; Hello World! &amp;#187;
-&amp;#xAB; Hello World! &amp;#xBB;</NS1:text>
+&lt;TEXTAREA MULTI ROWS=4 COLS=32&gt;Hello World!&lt;/TEXTAREA&gt;
+
+&lt;select&gt;
+  &lt;option&gt;Foo&lt;/option&gt;
+  &lt;option&gt;Bar&lt;/option&gt;
+  &lt;option&gt;Baz&lt;/option&gt;
+  &lt;option selected&gt;Quux&lt;/option&gt;
+  &lt;option&gt;Blah&lt;/option&gt;
+  &lt;option&gt;Blorf&lt;/option&gt;
+&lt;/select&gt;</NS1:text>
   </NS1:clipping>
-  <NS1:clipping RDF:about="rdf:#$mrdVb3"
-                   NS1:name="No label was selected"
-                   NS1:text="Goodbye, cruel world!"
-                   NS1:srcurl=""
-                   NS1:label="" />
 </RDF:RDF>
