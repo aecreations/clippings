@@ -162,7 +162,9 @@ function initClippingsListDrag(aEvent)
   dndStartURI = uri;
   dndStartPos = pos;
 
-  aEvent.dataTransfer.setData("text/plain", gClippingsSvc.getText(uri));
+  if (gClippingsSvc.isClipping(uri)) {
+    aEvent.dataTransfer.setData("text/plain", gClippingsSvc.getText(uri));
+  }
 }
 
 function dropIntoClippingsList(aEvent)
