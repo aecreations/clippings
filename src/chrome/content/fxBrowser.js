@@ -178,7 +178,13 @@ window.aecreations.clippings = {
 
       if (isDesignMode) {  // Rich text editor
         // TO DO: This will break in e10s
-	let doc = this._triggerNode.ownerDocument;
+	let triggerNode = this._triggerNode;
+
+        let doc = triggerNode ? triggerNode.ownerDocument : null;
+        if (! doc) {
+          alert("Clippings is not compatible with multi-process tabs.  To create a clipping, drag the selected text from the rich text editor to the Clippings toolbar button, or use Clippings inside a non-e10s browser window.");
+          return;
+        }
 
 	// Rich edit field
         cxtMenu.hidePopup();
@@ -193,6 +199,11 @@ window.aecreations.clippings = {
       }
       else {  // Normal HTML textbox or text area
 	var text;
+
+        if (! textbox) {
+          alert("Clipping is not compatible with multi-process tabs.  To create a clipping, drag the selected text from the web page textbox to the Clippings toolbar button, or use Clippings inside a non-e10s browser window.");
+          return;
+        }
 
         // TO DO: This will break in e10s
 	if (textbox.selectionStart == textbox.selectionEnd) {
@@ -233,6 +244,13 @@ window.aecreations.clippings = {
     let focusedWnd = document.commandDispatcher.focusedWindow;
     let srcURL = this._getCurrentBrowserURL();
     let selection = focusedWnd.getSelection();
+
+    // TEMPORARY - e10s workaround
+    if (selection.toString() == "") {
+      this.alert("Unable to retrieve the text from the web page selection, because multi-process tabs is enabled.\n\nTo create a clipping, drag the selected text from the web page to the Clippings toolbar button, or use Clippings inside a non-e10s browser window.");
+      return;
+    }
+    // END TEMPORARY
 
     if (selection) {
       let result = this.aeCreateClippingFromText(this.clippingsSvc, selection, srcURL, this.showDialog, window, null, false);
@@ -363,6 +381,17 @@ window.aecreations.clippings = {
 
     // This will be null if inside a rich edit box
     var textbox = document.commandDispatcher.focusedElement;
+
+    if (textbox) {
+      this.aeUtils.log(this.aeString.format("clippings.insertClippingText(): textbox: %s, nodeName: %s", textbox, textbox.nodeName));
+    }
+
+    // This would happen if on e10s
+    if (textbox && textbox.nodeName == "browser") {
+      alert("Clippings is not compatible with multi-process tabs.  To paste a clipping from the browser context menu, enable pasting using the clipboard from extension preferences.");
+
+      return;
+    }
     
     if (textbox instanceof HTMLInputElement || textbox instanceof HTMLTextAreaElement) {
       this.aeInsertTextIntoTextbox(textbox, clippingText);
@@ -954,6 +983,7 @@ window.aecreations.clippings = {
         }
         else {
           this.aeUtils.log("clippings.initContextMenuItem(): Inside a rich text edit box; no selected text");
+          /***
           // TO DO: This will break in e10s
           var doc = this._triggerNode.ownerDocument;
 
@@ -962,7 +992,7 @@ window.aecreations.clippings = {
           range.setStart(doc.body.firstChild, 0);
           range.setEnd(doc.body.lastChild, 0);
           addEntryCmd.setAttribute("disabled", range == "");
-
+          ***/
           clippingsMenu1.hidden = false;
           clippingsMenu2.hidden = true;
           addEntryCmd.setAttribute("label", this.strBundle.getString("new") + ellipsis);
@@ -980,10 +1010,12 @@ window.aecreations.clippings = {
 	  // Enable "New..." command
 	  addEntryCmd.setAttribute("label",
 				   this.strBundle.getString("new") + ellipsis);
-
+          /***
           // TO DO: This will break in e10s
           let textbox = this._triggerNode;
 	  addEntryCmd.setAttribute("disabled", textbox.value == "");
+          ***/
+	  addEntryCmd.setAttribute("disabled", "false");
 	}
       }
       
