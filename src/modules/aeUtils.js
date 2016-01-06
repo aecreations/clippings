@@ -30,7 +30,7 @@ const EXPORTED_SYMBOLS = ["aeUtils"];
 
 // Debugging flags - set to false to suppress extraneous JS console messages
 // and diagnostic audio beeps.
-const DEBUG = false;
+const DEBUG = true;
 const NOISY_DEBUG = false;
 
 // Host app GUIDs
