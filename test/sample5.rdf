@@ -81,7 +81,7 @@ http://aecreations.blogspot.com/</NS1:text>
                    NS1:name="AE Creations"
                    NS1:hassubfolders="true" />
   <NS1:clipping RDF:about="rdf:#$u7Ahw"
-                   NS1:name="Forum post - Clippings release announcement"
+                   NS1:name="Forum post - Clippings beta release announcement"
                    NS1:srcurl="https://groups.google.com/forum/#!forum/aecreations-help"
                    NS1:label="">
     <NS1:text>This is the $[beta_number_ordinal] beta release leading up to Clippings $[upcoming_version{5.0}], intended for early adopter users who crave the latest and greatest.  Users not comfortable trying out pre-release software and tolerating its many bugs should stick with Clippings $[current_version{4.1.2}] for now.
