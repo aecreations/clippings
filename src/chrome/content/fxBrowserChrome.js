@@ -177,14 +177,15 @@ window.aecreations.clippings = {
       let textbox = this._triggerNode;
 
       if (isDesignMode) {  // Rich text editor
-        // TO DO: This will break in e10s
+        // This works for now on e10s, but uses an unsafe CPOW!
 	let triggerNode = this._triggerNode;
-
-        let doc = triggerNode ? triggerNode.ownerDocument : null;
+        let doc = triggerNode.ownerDocument;
+        /***
         if (! doc) {
           alert("Clippings is not compatible with multi-process tabs.  To create a clipping, drag the selected text from the rich text editor to the Clippings toolbar button, or use Clippings inside a non-e10s browser window.");
           return;
         }
+        ***/
 
 	// Rich edit field
         cxtMenu.hidePopup();
@@ -200,12 +201,15 @@ window.aecreations.clippings = {
       else {  // Normal HTML textbox or text area
 	var text;
 
+        // If using CPOWs, then we'll never hit this condition.
+        /***
         if (! textbox) {
           alert("Clipping is not compatible with multi-process tabs.  To create a clipping, drag the selected text from the web page textbox to the Clippings toolbar button, or use Clippings inside a non-e10s browser window.");
           return;
         }
+        ***/
 
-        // TO DO: This will break in e10s
+        // This will work for now in e10s - but uses an unsafe CPOW!
 	if (textbox.selectionStart == textbox.selectionEnd) {
 	  text = textbox.value;
 	}
@@ -241,16 +245,25 @@ window.aecreations.clippings = {
       this.initClippingsPopup(document.getElementById("ae-clippings-popup-1"),
 			      document.getElementById("ae-clippings-menu-1"));
     }
+
+    /***
+    // TO DO: This will break in e10s
     let focusedWnd = document.commandDispatcher.focusedWindow;
+    ***/
+    let focusedWnd = gContextMenu.target.ownerDocument.defaultView;
+
+    this.aeUtils.log(this.aeString.format("newFromSelection(): focused window: %s", (focusedWnd ? focusedWnd : "(null)")));
+    
     let srcURL = this._getCurrentBrowserURL();
     let selection = focusedWnd.getSelection();
-
+    /***
     // TEMPORARY - e10s workaround
     if (selection.toString() == "") {
       this.alert("Unable to retrieve the text from the web page selection, because multi-process tabs is enabled.\n\nTo create a clipping, drag the selected text from the web page to the Clippings toolbar button, or use Clippings inside a non-e10s browser window.");
       return;
     }
     // END TEMPORARY
+    ***/
 
     if (selection) {
       let result = this.aeCreateClippingFromText(this.clippingsSvc, selection, srcURL, this.showDialog, window, null, false);
@@ -367,7 +380,11 @@ window.aecreations.clippings = {
     var parentFolderURI = this.clippingsSvc.getParent(aURI);
     var folderName = this.clippingsSvc.getName(parentFolderURI);
     var clippingInfo = this.aeClippingSubst.getClippingInfo(aURI, aName, aText, folderName);
-    var clippingText = this.aeClippingSubst.processClippingText(clippingInfo, gBrowser.contentWindow);
+
+    // TO DO: Need to do this to make it work with e10s - but breaks the
+    // tab-modal dialog prompt.
+    var clippingText = this.aeClippingSubst.processClippingText(clippingInfo, window);// gBrowser.contentWindow);
+
     var useClipboard = this.aeUtils.getPref("clippings.use_clipboard", false);
 
     if (useClipboard) {
@@ -379,7 +396,7 @@ window.aecreations.clippings = {
       return;
     }
 
-    // This will be null if inside a rich edit box
+    // This will be null if inside a rich edit box.
     var textbox = document.commandDispatcher.focusedElement;
 
     if (textbox) {
@@ -388,7 +405,14 @@ window.aecreations.clippings = {
 
     // This would happen if on e10s
     if (textbox && textbox.nodeName == "browser") {
-      alert("Clippings is not compatible with multi-process tabs.  To paste a clipping from the browser context menu, enable pasting using the clipboard from extension preferences.");
+      // Send a message to the frame script to insert the clipping text.
+      let msgArgs = {
+        clippingText: clippingText
+      };
+
+      this.aeUtils.log("insertClippingText(): Sending message to frame script: " + this.aeConstants.MSG_REQ_INSERT_CLIPPING);
+      let browserMM = gBrowser.selectedBrowser.messageManager;
+      browserMM.sendAsyncMessage(this.aeConstants.MSG_REQ_INSERT_CLIPPING, msgArgs);
 
       return;
     }
@@ -474,11 +498,32 @@ window.aecreations.clippings = {
 
   keyboardInsertClipping: function (aEvent)
   {
-    if (! this._isContentAreaTextBoxFocused()) {
-      this.aeUtils.beep();
-      return;
-    } 
+    this.aeUtils.log("keyboardInsertClipping(): Sending message to frame script: " + this.aeConstants.MSG_REQ_IS_READY_FOR_SHORTCUT_MODE);
+    let browserMM = gBrowser.selectedBrowser.messageManager;
+    browserMM.sendAsyncMessage(this.aeConstants.MSG_REQ_IS_READY_FOR_SHORTCUT_MODE, {}); 
+  },
 
+
+  handleResponseIsReadyForShortcutMode: function (aMessage)
+  {
+    let that = window.aecreations.clippings;
+
+    that.aeUtils.log("handleResponseIsReadyForShortcutMode(): Handling message: " + that.aeConstants.MSG_RESP_IS_READY_FOR_SHORTCUT_MODE);
+
+    let respArgs = aMessage.data;
+
+    if (respArgs.isTextboxFocused) {
+      that.aeUtils.log("handleResponseIsReadyForShortcutMode(): Detected that a textbox or rich text editor in the web page has the focus!");
+      that._keyboardInsertClipping.apply(that, arguments);
+    }
+    else {
+      that.aeUtils.beep();
+    }
+  },
+
+
+  _keyboardInsertClipping: function ()
+  {
     var clippingsMenu1 = document.getElementById("ae-clippings-menu-1");
     clippingsMenu1.builder.refresh();
     clippingsMenu1.builder.rebuild();
@@ -558,6 +603,8 @@ window.aecreations.clippings = {
   _isContentAreaTextBoxFocused: function ()
   {
     var rv = false;
+
+    // TO DO: This will break in e10s
     var focusedElt = document.commandDispatcher.focusedElement;
 
     if (focusedElt instanceof HTMLInputElement || focusedElt instanceof HTMLTextAreaElement) {
@@ -566,6 +613,7 @@ window.aecreations.clippings = {
     }
     else {
       // Rich edit box - an <iframe> with designMode == "on"
+      // TO DO: This will break in e10s
       var doc = document.commandDispatcher.focusedWindow.document;
       rv = doc.designMode == "on";
     }
@@ -813,6 +861,16 @@ window.aecreations.clippings = {
       document.getElementById("mainKeyset").removeChild(keyElt);
     }
 
+    // Initialize support for multi-process tabs.
+    // TO DO: Should I check if frame script has already been loaded by another
+    // browser window??
+    this.aeUtils.log("Initializing support for multi-process browser tabs.");
+    let globalMM = Components.classes["@mozilla.org/globalmessagemanager;1"].getService(Components.interfaces.nsIMessageListenerManager);
+    globalMM.loadFrameScript("chrome://clippings/content/fxBrowserFrame.js", true);
+
+    let windowMM = window.messageManager;
+    windowMM.addMessageListener(this.aeConstants.MSG_RESP_IS_READY_FOR_SHORTCUT_MODE, this.handleResponseIsReadyForShortcutMode);
+
     this.isClippingsInitialized = true;
   },
 
@@ -967,10 +1025,15 @@ window.aecreations.clippings = {
     var addEntryCmd = document.getElementById("ae_new_clipping_from_textbox");
     var cxtMenu = aEvent.target;
 
-    this.aeUtils.log(this.aeString.format("clippings.initContextMenuItem(): Properties of browser context menu (instance of nsContextMenu object):\n\tonTextInput   : %b\n\tonEditableArea: %b\n\tisDesignMode  : %b\n\ttextSelected  : %b\n\tisTextSelected: %b", gContextMenu.onTextInput, gContextMenu.onEditableArea, gContextMenu.isDesignMode, gContextMenu.textSelected, gContextMenu.isTextSelected));
+    this.aeUtils.log(this.aeString.format("clippings.initContextMenuItem(): Properties of browser context menu (instance of nsContextMenu object): onTextInput: %b, onEditableArea: %b,isDesignMode: %b, textSelected: %b, isTextSelected: %b", gContextMenu.onTextInput, gContextMenu.onEditableArea, gContextMenu.isDesignMode, gContextMenu.textSelected, gContextMenu.isTextSelected));
 
     if (gContextMenu.onTextInput) {
+      // This won't work on e10s!
+      /***
       this._triggerNode = cxtMenu.triggerNode;
+      ***/
+      // This will work on e10s, but will cause "unsafe CPOW usage" warnings!
+      this._triggerNode = gContextMenu.target;
 
       if (gContextMenu.isDesignMode) {  // Rich text editor
         if (gContextMenu.isTextSelected) {
@@ -986,13 +1049,16 @@ window.aecreations.clippings = {
           /***
           // TO DO: This will break in e10s
           var doc = this._triggerNode.ownerDocument;
+          ***/
 
+          // Works for now on e10s - but uses an unsafe CPOW!
+          var doc = gContextMenu.target.ownerDocument;
           // Check for empty document
           var range = doc.createRange();
           range.setStart(doc.body.firstChild, 0);
           range.setEnd(doc.body.lastChild, 0);
           addEntryCmd.setAttribute("disabled", range == "");
-          ***/
+
           clippingsMenu1.hidden = false;
           clippingsMenu2.hidden = true;
           addEntryCmd.setAttribute("label", this.strBundle.getString("new") + ellipsis);
@@ -1010,12 +1076,13 @@ window.aecreations.clippings = {
 	  // Enable "New..." command
 	  addEntryCmd.setAttribute("label",
 				   this.strBundle.getString("new") + ellipsis);
-          /***
-          // TO DO: This will break in e10s
+
+          // Works for now on e10s, but uses an unsafe CPOW!
           let textbox = this._triggerNode;
 	  addEntryCmd.setAttribute("disabled", textbox.value == "");
-          ***/
+          /***
 	  addEntryCmd.setAttribute("disabled", "false");
+          ***/
 	}
       }
       

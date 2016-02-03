@@ -16,7 +16,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2005-2015
+ * Portions created by the Initial Developer are Copyright (C) 2005-2016
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -46,5 +46,10 @@ var aeConstants = {
 
   // Shortcut help HTML document
   SHORTCUT_HELP_FILENAME: "clipkeys.html",
-  SHORTCUT_HELP_PRINT_FILENAME: "clipKeysPrn.html"
+  SHORTCUT_HELP_PRINT_FILENAME: "clipKeysPrn.html",
+
+  // Message IDs for messages passed between chrome and frame script
+  MSG_REQ_IS_READY_FOR_SHORTCUT_MODE: "clippings@aecreations.github.io:req_isReadyForShortcutMode",
+  MSG_RESP_IS_READY_FOR_SHORTCUT_MODE: "clippings@aecreations.github.io:resp_isReadyForShortcutMode",
+  MSG_REQ_INSERT_CLIPPING: "clippings@aecreations.github.io:req_insertClipping"
 };
