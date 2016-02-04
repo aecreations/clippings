@@ -43,7 +43,6 @@ window.aecreations.clippings = {
   _isErrMenuItemVisible:  false,
   _ds:                    null,
   _triggerNode:           null,
-  _mutationObserver:      null,
   
   dataSrcInitialized:     false,
   isClippingsInitialized: false,
@@ -69,9 +68,6 @@ window.aecreations.clippings = {
       that.unload();
       window.removeEventListener("load", that, false);
       window.removeEventListener("unload", that, false);
-      if (that._mutationObserver) {  // For pre-Australis Firefox only.
-        that._mutationObserver.disconnect();
-      }
 
       var hostAppCxtMenu = document.getElementById("contentAreaContextMenu");
       hostAppCxtMenu.removeEventListener("popupshowing", 
@@ -806,44 +802,6 @@ window.aecreations.clippings = {
       this.showDialog = !(this.aeUtils.getPref("clippings.entries.add_silently", false));
     }
     catch (e) {}
-
-    // Set the context menu to appear on the Clippings toolbar button, which
-    // could potentially be added to the Add-on Bar.  Not applicable in the
-    // Australis UI, which eliminiated the Add-on Bar. =(
-    if (! this.isAustralisUI()) {
-      let clippingsBtn = document.getElementById("ae-clippings-icon");
-
-      if (clippingsBtn) {
-        clippingsBtn.setAttribute("context", "ae-clippings-popup");
-      }
-
-      // Also make sure that the context menu on the Clippings toolbar button
-      // is set when it is added to any browser toolbar via the host app's
-      // customization UI.  Again, this is NOT applicable if on Australis.
-      this._mutationObserver = new MutationObserver(function (aMutationRecs, aMutationObs) {
-          aMutationRecs.forEach(function (aMutation) {
-              if (aMutation.type == "childList") {
-                for (let i = 0; i < aMutation.addedNodes.length; i++) {
-                  let addedNode = aMutation.addedNodes[i];
-                  if (addedNode.nodeName == "toolbarbutton" 
-                      && addedNode.id == "ae-clippings-icon") {
-                    addedNode.setAttribute("context", "ae-clippings-popup");
-                  }
-                }
-              }
-            });
-        });
- 
-      let mutnObsTarget = document.getElementById("browser-panel");
-      this._mutationObserver.observe(mutnObsTarget, {childList:true, subtree:true});
-
-      // Initialize "New From Clipboard" command.
-      let ellipsis = this.showDialog ? this.strBundle.getString("ellipsis") : "";
-      let newFromClpbdCmd = document.getElementById("ae_new_clipping_from_clpbd");
-      newFromClpbdCmd.setAttribute("label",
-                                   this.strBundle.getString("newFromClipbd")
-                                   + ellipsis);
-    }
 
     // Disable Clippings Manager window persistence via JavaScript if running
     // on Mac OS X, unless user has explicitly set it.

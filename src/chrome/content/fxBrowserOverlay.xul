@@ -76,17 +76,6 @@
 	<spacer flex="1"/>
       </hbox>
     </panel>
-
-    <!-- Context menu for Clippings toolbar button (except for Australis UI) -->
-    <menupopup id="ae-clippings-popup">
-      <menuitem default="true" label="&openClippingsMgr.menuLabel;" 
-       accesskey="&openClippingsMgr.accesskey;" 
-       command="ae_clippings_manager" />
-      <menuitem id="ae-clippings-new-from-clipbd" 
-       label="&newFromClipboard.menuLabel;" 
-       accesskey="&newFromClipboard.accesskey;" 
-       command="ae_new_clipping_from_clpbd" />
-    </menupopup>
   </popupset>
 
   <popup id="contentAreaContextMenu">
