@@ -165,6 +165,10 @@ function initClippingsListDrag(aEvent)
   if (gClippingsSvc.isClipping(uri)) {
     aEvent.dataTransfer.setData("text/plain", gClippingsSvc.getText(uri));
   }
+  else if (gClippingsSvc.isFolder(uri)) {
+    // Need to do this, or else drag and drop within the tree list won't work.
+    aEvent.dataTransfer.setData("text/plain", "");
+  }
 }
 
 function dropIntoClippingsList(aEvent)
@@ -312,6 +316,8 @@ var treeBuilderObserver = {
     dndExtText = null;
   },
   
+  canDropBeforeAfter: function (idx, orient) { return false; },
+  canDropOn: function (idx, orient) { return true; },
   onSelectionChanged: function () {},
   onToggleOpenState: function (idx) {}
 };
