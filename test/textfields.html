@@ -3,6 +3,18 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <script type="application/javascript">
+    function validateForm() {
+      var frm = document.getElementById("test-form");
+      if (frm.checkValidity()) {
+        alert("Form is ok!");
+      }
+      else {
+        alert("Form validation failed!");
+      }
+    }
+  </script>
+
   <title>Text Boxes</title>
 </head>
 
@@ -12,7 +24,17 @@
   <input type="text" value="Hello World!">
 
   <p>A multi-line text area.</p>
-  <textarea rows="16" cols="72">Goodbye, cruel world!</textarea>
+  <textarea rows="12" cols="72">Goodbye, cruel world!</textarea>
+
+  <p>An input form where text <em>must</em> be entered</p>
+
+  <form id="test-form" name="test-form">
+    <input type="text" id="mandatory-textbox" name="required-text-input"
+     required="true" style="width:24em"/>
+    <br/><br/>
+    <textarea id="mandatory-textarea" required="true" rows="4" cols="48"></textarea>
+    <button name="btn" onclick="validateForm()">Validate!</button>
+  </form>
 
 </body>
 </html>
