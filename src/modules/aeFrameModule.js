@@ -125,6 +125,8 @@ function insertTextIntoRichTextEditor(aRichTextEditor, aClippingText)
       if (showHTMLPasteOpts == aeConstants.HTMLPASTE_ASK_THE_USER) {
         let dlgArgs = { userCancel: null, pasteAsRichText: null };
         let chromeWnd = aRichTextEditor.ownerDocument.defaultView;
+
+        // TO DO: Localized UI string from .properties file
         pasteAsRichText = chromeWnd.confirm("The selected clipping appears to contain HTML tags.  Paste as formatted text?\n\n- To paste as formatted text, click OK.\n- To paste as plain text, preserving HTML tags, click Cancel.");
       }
       else {
