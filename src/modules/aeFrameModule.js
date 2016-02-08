@@ -23,6 +23,7 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+Components.utils.import("resource://gre/modules/Services.jsm");
 Components.utils.import("resource://clippings/modules/aeUtils.js");
 Components.utils.import("resource://clippings/modules/aeConstants.js");
 Components.utils.import("resource://clippings/modules/aeInsertTextIntoTextbox.js");
@@ -123,11 +124,10 @@ function insertTextIntoRichTextEditor(aRichTextEditor, aClippingText)
     if (! hasRestrictedHTMLTags) {
       let showHTMLPasteOpts = aeUtils.getPref("clippings.html_paste", 0);
       if (showHTMLPasteOpts == aeConstants.HTMLPASTE_ASK_THE_USER) {
-        let dlgArgs = { userCancel: null, pasteAsRichText: null };
+        // Get the localized UI string
+        let strBundle = Services.strings.createBundle("chrome://clippings/locale/clippings.properties");
         let chromeWnd = aRichTextEditor.ownerDocument.defaultView;
-
-        // TO DO: Localized UI string from .properties file
-        pasteAsRichText = chromeWnd.confirm("The selected clipping appears to contain HTML tags.  Paste as formatted text?\n\n- To paste as formatted text, click OK.\n- To paste as plain text, preserving HTML tags, click Cancel.");
+        pasteAsRichText = chromeWnd.confirm(strBundle.GetStringFromName("pasteAsHTMLPrompt"));
       }
       else {
         pasteAsRichText = showHTMLPasteOpts == aeConstants.HTMLPASTE_AS_HTML;
