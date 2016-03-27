@@ -50,6 +50,7 @@
 <!ENTITY backupFiles.caption "Backup Files">
 <!ENTITY maxFiles.label "Maximum number of files to keep:">
 <!ENTITY maxFiles.accesskey "M">
+<!ENTITY srcURLs.caption "Source Web Page Addresses">
 <!ENTITY removeAllSrcURLs.label "Remove All">
 <!ENTITY removeAllSrcURLs.accesskey "R">
 <!ENTITY removeAllSrcURLs.description "Remove all saved source web page addresses (URLs) from your clippings.">

@@ -19,7 +19,7 @@
    -
    - The Initial Developer of the Original Code is
    - Alex Eng <ateng@users.sourceforge.net>.
-   - Portions created by the Initial Developer are Copyright (C) 2011-2015
+   - Portions created by the Initial Developer are Copyright (C) 2011-2016
    - the Initial Developer. All Rights Reserved.
    -
    - Contributor(s):
@@ -87,7 +87,7 @@
     </groupbox>
 
     <groupbox id="src-urls-groupbox">
-      <caption label="Source Web Page Addresses"/>
+      <caption label="&srcURLs.caption;"/>
 
       <hbox id="remove-all-src-urls-panel">
         <description flex="1" style="margin-right:1em;margin-top:0.5em;margin-bottom:0.5em;word-wrap:break-word;width:26em">&removeAllSrcURLs.description;</description>
