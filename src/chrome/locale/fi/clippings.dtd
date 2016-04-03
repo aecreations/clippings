@@ -23,9 +23,9 @@
 <!ENTITY htmlPasteOptions.label "Liitettäessä HTML-leikettä muotoillun tekstin syöttölaatikkoon:">
 <!ENTITY htmlPasteOptions.accesskey "m">
 <!ENTITY askMe.label "Kysy miten toimitaan">
-<!ENTITY autoLineBreak.label "Jaa automaattisesti riveihin, jollei  <p> tai <br> -koodauksia ole">
+<!ENTITY autoLineBreak.label "Jaa automaattisesti riveihin, jollei &lt;p&gt; tai &lt;br&gt; -koodauksia ole">
 <!ENTITY autoLineBreak.accesskey "r">
-<!ENTITY htmlPaste.description "HTML-leike liitetään aina pelkkänä tekstinä pelkän tekstin syöttölaatikkoon tai jos leikkeessä on erityistageja, kuten esim. <script>, <applet>, <object>, <iframe>, jne">
+<!ENTITY htmlPaste.description "HTML-leike liitetään aina pelkkänä tekstinä pelkän tekstin syöttölaatikkoon tai jos leikkeessä on erityistageja, kuten esim. &lt;script&gt;, &lt;applet&gt;, &lt;object&gt;, &lt;iframe&gt;, jne">
 <!ENTITY checkSpelling.label "Tarkista oikeinkirjoitus">
 <!ENTITY checkSpelling.accesskey "T">
 <!ENTITY tabModalPrompt.label "Älä lukitse selainikkunaa, kun paikanvaraajan tekstikorvausta pyydetään">

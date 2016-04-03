@@ -16,7 +16,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2005-2015
+ * Portions created by the Initial Developer are Copyright (C) 2005-2016
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -165,7 +165,12 @@ function initClippingsListDrag(aEvent)
   if (gClippingsSvc.isClipping(uri)) {
     aEvent.dataTransfer.setData("text/plain", gClippingsSvc.getText(uri));
   }
+  else if (gClippingsSvc.isFolder(uri)) {
+    // Need to do this, or else drag and drop within the tree list won't work.
+    aEvent.dataTransfer.setData("text/plain", "");
+  }
 }
+
 
 function dropIntoClippingsList(aEvent)
 {
