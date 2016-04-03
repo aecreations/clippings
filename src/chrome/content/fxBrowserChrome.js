@@ -43,6 +43,7 @@ window.aecreations.clippings = {
   _isErrMenuItemVisible:  false,
   _ds:                    null,
   _triggerNode:           null,
+  _popupNode:             null,
   
   dataSrcInitialized:     false,
   isClippingsInitialized: false,
@@ -225,6 +226,7 @@ window.aecreations.clippings = {
     // initContextMenuItem().  Reset triggerNode cache for next context menu
     // command invocation
     this._triggerNode = null;
+    this._popupNode = null;
 
     if (result) {
       let that = this;
@@ -242,23 +244,14 @@ window.aecreations.clippings = {
 			      document.getElementById("ae-clippings-menu-1"));
     }
 
-    /***
-    // TO DO: This will break in e10s
-    let focusedWnd = document.commandDispatcher.focusedWindow;
-    ***/
-    let focusedWnd = gContextMenu.target.ownerDocument.defaultView;
-
-    this.aeUtils.log(this.aeString.format("newFromSelection(): focused window: %s", (focusedWnd ? focusedWnd : "(null)")));
-    
     let srcURL = this._getCurrentBrowserURL();
+
+    // This will work for now in e10s - but uses an unsafe CPOW!
+    let focusedWnd = gContextMenuContentData.event.target.ownerDocument.defaultView;
     let selection = focusedWnd.getSelection();
     /***
-    // TEMPORARY - e10s workaround
-    if (selection.toString() == "") {
-      this.alert("Unable to retrieve the text from the web page selection, because multi-process tabs is enabled.\n\nTo create a clipping, drag the selected text from the web page to the Clippings toolbar button, or use Clippings inside a non-e10s browser window.");
-      return;
-    }
-    // END TEMPORARY
+    // This won't preserve line breaks in the selected text.
+    let selection = gContextMenuContentData.selectionInfo.text;
     ***/
 
     if (selection) {
@@ -985,16 +978,33 @@ window.aecreations.clippings = {
 
     this.aeUtils.log(this.aeString.format("clippings.initContextMenuItem(): Properties of browser context menu (instance of nsContextMenu object): onTextInput: %b, onEditableArea: %b,isDesignMode: %b, textSelected: %b, isTextSelected: %b", gContextMenu.onTextInput, gContextMenu.onEditableArea, gContextMenu.isDesignMode, gContextMenu.textSelected, gContextMenu.isTextSelected));
 
+    // TEMPORARY
+    // What are the properties of gContextMenuContentData?
+    let propStr = "";
+    for (let p in gContextMenuContentData) {
+      propStr += p + ", ";
+    }
+    this.aeUtils.log("Properties of gContextMenuContentData: " + propStr);
+    this.aeUtils.log(this.aeString.format("gContextMenuContentData.event: %s, popupNode: %s, editFlags: %s", gContextMenuContentData.event, gContextMenuContentData.popupNode, gContextMenuContentData.editFlags));
+
+    // What are the properties of gContextMenuContentData.selectionInfo?
+    let selInfoObj = gContextMenuContentData.selectionInfo;
+    propStr = "";
+    for (let p in selInfoObj) {
+      propStr += p + ", ";
+    }
+    this.aeUtils.log("Properties of gContextMenuContentData.selectionInfo: " + propStr);
+    this.aeUtils.log(this.aeString.format("gContextMenuContentData.selectionInfo.text: %s", gContextMenuContentData.selectionInfo.text));
+    // END TEMPORARY
+
     if (gContextMenu.onTextInput) {
-      // This won't work on e10s!
-      /***
-      this._triggerNode = cxtMenu.triggerNode;
-      ***/
-      // This will work on e10s, but will cause "unsafe CPOW usage" warnings!
+      // TO DO: Avoid relying on gContextMenu.target, as use of its properties
+      // will cause "unsafe CPOW usage" warnings.
       this._triggerNode = gContextMenu.target;
+      this._popupNode = gContextMenuContentData.popupNode;
 
       if (gContextMenu.isDesignMode) {  // Rich text editor
-        if (gContextMenu.isTextSelected) {
+        if (gContextMenuContentData.selectionInfo.text) {
           this.aeUtils.log("clippings.initContextMenuItem(): Selected text inside a rich edit box");
           clippingsMenu1.hidden = false;
           clippingsMenu2.hidden = true;
@@ -1011,6 +1021,8 @@ window.aecreations.clippings = {
 
           // Works for now on e10s - but uses an unsafe CPOW!
           var doc = gContextMenu.target.ownerDocument;
+          this.aeUtils.log(this.aeString.format("gContextMenu.target.ownerDocument: %s", doc));
+
           // Check for empty document
           var range = doc.createRange();
           range.setStart(doc.body.firstChild, 0);
@@ -1023,7 +1035,7 @@ window.aecreations.clippings = {
         }
       }
       else {  // Normal HTML textbox or textarea
-	if (gContextMenu.isTextSelected) {
+	if (gContextMenuContentData.selectionInfo.text) {
 	  // "New From Selection..." command.
 	  addEntryCmd.setAttribute("label",
 				   this.strBundle.getString("newFromSelect") 
@@ -1050,7 +1062,7 @@ window.aecreations.clippings = {
     }
 
     // Selected text in browser content area
-    else if (gContextMenu.isTextSelected) {
+    else if (gContextMenuContentData.selectionInfo.text) {
       this._initAutoIncrementPlaceholderMenu(2);
       clippingsMenu1.hidden = true;
       clippingsMenu2.hidden = false;
