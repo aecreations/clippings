@@ -51,5 +51,7 @@ var aeConstants = {
   // Message IDs for messages passed between chrome and frame script
   MSG_REQ_IS_READY_FOR_SHORTCUT_MODE: "clippings@aecreations.github.io:req_isReadyForShortcutMode",
   MSG_RESP_IS_READY_FOR_SHORTCUT_MODE: "clippings@aecreations.github.io:resp_isReadyForShortcutMode",
-  MSG_REQ_INSERT_CLIPPING: "clippings@aecreations.github.io:req_insertClipping"
+  MSG_REQ_INSERT_CLIPPING: "clippings@aecreations.github.io:req_insertClipping",
+  MSG_REQ_NEW_CLIPPING_FROM_TEXTBOX: "clippings@aecreations.github.io:req_newClippingFromTextbox",
+  MSG_RESP_NEW_CLIPPING_FROM_TEXTBOX: "clippings@aecreations.github.io:resp_newClippingFromTextbox"
 };

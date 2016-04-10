@@ -158,79 +158,42 @@ window.aecreations.clippings = {
     }
 
     var cxtMenu = document.getElementById("contentAreaContextMenu");
-    var srcURL = this._getCurrentBrowserURL();
-    var result;
 
-    // gContextMenu.onTextInput is also true inside a rich edit box!
     if (gContextMenu.onTextInput) {
-      let isDesignMode = gContextMenu.isDesignMode;
-
       // Must explicitly close the browser content area context menu -
       // otherwise it will reappear while the New Clipping dialog is open if
       // the Clippings submenu needs to be rebuilt.
       cxtMenu.hidePopup();
+      
+      // Send message to frame script to retrieve the selected web page textbox
+      // text, or all text in the textbox if nothing selected.
+      let msgArgs = {};
+      let browserMM = gBrowser.selectedBrowser.messageManager;
 
-      // Get the node where the context menu is invoked from.
-      let textbox = this._triggerNode;
+      this.aeUtils.log("newFromTextbox(): Sending message to frame script: " + this.aeConstants.MSG_REQ_NEW_CLIPPING_FROM_TEXTBOX);
+      browserMM.sendAsyncMessage(this.aeConstants.MSG_REQ_NEW_CLIPPING_FROM_TEXTBOX, msgArgs);
 
-      if (isDesignMode) {  // Rich text editor
-        // This works for now on e10s, but uses an unsafe CPOW!
-	let triggerNode = this._triggerNode;
-        let doc = triggerNode.ownerDocument;
-        /***
-        if (! doc) {
-          alert("Clippings is not compatible with multi-process tabs.  To create a clipping, drag the selected text from the rich text editor to the Clippings toolbar button, or use Clippings inside a non-e10s browser window.");
-          return;
-        }
-        ***/
-
-	// Rich edit field
-        cxtMenu.hidePopup();
-        let plainText = doc.defaultView.getSelection();
-
-        // New (from entire contents)
-        if (plainText == "") {
-          goDoCommand("cmd_selectAll");
-          plainText = doc.defaultView.getSelection();
-        }
-        result = this.aeCreateClippingFromText(this.clippingsSvc, plainText, srcURL, this.showDialog, window, null, false);
-      }
-      else {  // Normal HTML textbox or text area
-	var text;
-
-        // If using CPOWs, then we'll never hit this condition.
-        /***
-        if (! textbox) {
-          alert("Clipping is not compatible with multi-process tabs.  To create a clipping, drag the selected text from the web page textbox to the Clippings toolbar button, or use Clippings inside a non-e10s browser window.");
-          return;
-        }
-        ***/
-
-        // This will work for now in e10s - but uses an unsafe CPOW!
-	if (textbox.selectionStart == textbox.selectionEnd) {
-	  text = textbox.value;
-	}
-	else {
-	  text = textbox.value.substring(textbox.selectionStart, 
-					 textbox.selectionEnd);
-	}
-	result = this.aeCreateClippingFromText(this.clippingsSvc, text, srcURL, this.showDialog, window, null, false);
-      }
-
-      if (result && this.clippingsSvc.isClipping(result)) {
-        this.aeUtils.log(this.aeString.format("clippings.newFromTextbox(): New clipping created\nName: %s\nSource URL (if saved): %s", this.clippingsSvc.getName(result), srcURL));
-      }
+      // The triggerNode cache was initialized in initContextMenuItem().
+      // Reset triggerNode cache for next context menu command invocation.
+      this._triggerNode = null;
+      this._popupNode = null;
     }
+  },
 
-    // Firefox 4 and higher: the triggerNode cache was initialized in
-    // initContextMenuItem().  Reset triggerNode cache for next context menu
-    // command invocation
-    this._triggerNode = null;
-    this._popupNode = null;
+
+  handleResponseNewClippingFromTextbox: function (aMessage)
+  {
+    let that = window.aecreations.clippings;
+    let respArgs = aMessage.data;
+
+    that.aeUtils.log("handleResponseNewClippingFromTextbox(): Handling message: " + that.aeConstants.MSG_RESP_NEW_CLIPPING_FROM_TEXTBOX);
+
+    let srcURL = that._getCurrentBrowserURL();
+
+    let result = that.aeCreateClippingFromText(that.clippingsSvc, respArgs.text, srcURL, that.showDialog, window, null, false);
 
     if (result) {
-      let that = this;
-      window.setTimeout(function () { 
+      window.setTimeout(function() {
         that.saveClippings();
       }, 1);
     }
@@ -255,7 +218,7 @@ window.aecreations.clippings = {
     ***/
 
     if (selection) {
-      let result = this.aeCreateClippingFromText(this.clippingsSvc, selection, srcURL, this.showDialog, window, null, false);
+      let result = this.aeCreateClippingFromText(this.clippingsSvc, selection.toString(), srcURL, this.showDialog, window, null, false);
       if (result) {
         if (this.clippingsSvc.isClipping(result)) {
           this.aeUtils.log(this.aeString.format("clippings.newFromSelection(): New clipping created from selected text\nName: %s\nSource URL (if saved): %s", this.clippingsSvc.getName(result), srcURL));
@@ -821,6 +784,7 @@ window.aecreations.clippings = {
 
     let windowMM = window.messageManager;
     windowMM.addMessageListener(this.aeConstants.MSG_RESP_IS_READY_FOR_SHORTCUT_MODE, this.handleResponseIsReadyForShortcutMode);
+    windowMM.addMessageListener(this.aeConstants.MSG_RESP_NEW_CLIPPING_FROM_TEXTBOX, this.handleResponseNewClippingFromTextbox);
 
     this.isClippingsInitialized = true;
   },
@@ -1014,10 +978,6 @@ window.aecreations.clippings = {
         }
         else {
           this.aeUtils.log("clippings.initContextMenuItem(): Inside a rich text edit box; no selected text");
-          /***
-          // TO DO: This will break in e10s
-          var doc = this._triggerNode.ownerDocument;
-          ***/
 
           // Works for now on e10s - but uses an unsafe CPOW!
           var doc = gContextMenu.target.ownerDocument;

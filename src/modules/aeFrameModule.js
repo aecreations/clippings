@@ -43,6 +43,7 @@ function addFrame(aFrameGlobal)
 
   msgListenerMap[aeConstants.MSG_REQ_INSERT_CLIPPING] = handleRequestInsertClipping;
   msgListenerMap[aeConstants.MSG_REQ_IS_READY_FOR_SHORTCUT_MODE] = handleRequestIsReadyForShortcutMode;
+  msgListenerMap[aeConstants.MSG_REQ_NEW_CLIPPING_FROM_TEXTBOX] = handleRequestNewClippingFromTextbox;
 
   for (let msgID in msgListenerMap) {
     aFrameGlobal.addMessageListener(msgID, msgListenerMap[msgID]);
@@ -73,6 +74,50 @@ function handleRequestInsertClipping(aMessage)
   else if (isElementOfType(activeElt, "HTMLIFrameElement")) {
     insertTextIntoRichTextEditor(activeElt, clippingText);
   }
+}
+
+
+function handleRequestNewClippingFromTextbox(aMessage)
+{
+  aeUtils.log("aeFrameModule.js::handleRequestNewClippingFromTextbox(): Handling message: " + aeConstants.MSG_REQ_NEW_CLIPPING_FROM_TEXTBOX);
+
+  let frameGlobal = aMessage.target;
+  let activeElt = frameGlobal.content.document.activeElement;
+  let respArgs = {};
+
+  if (isElementOfType(activeElt, "HTMLInputElement")
+      || isElementOfType(activeElt, "HTMLTextAreaElement")) {
+    // <input type="text"> or <textarea>
+    let text = "";
+
+    if (activeElt.selectionStart == activeElt.selectionEnd) {
+      text = activeElt.value;
+    }
+    else {
+      text = activeElt.value.substring(activeElt.selectionStart, 
+                                       activeElt.selectionEnd);
+    }
+
+    respArgs.text = text;
+  }
+  else if (isElementOfType(activeElt, "HTMLIFrameElement")) {
+    // Rich text editor - an <iframe> with designMode == "on"
+    let doc = activeElt.contentDocument;
+    let selection = doc.defaultView.getSelection();
+
+    // New (from entire contents)
+    if (selection == "") {
+      doc.execCommand("selectAll");
+      selection = doc.defaultView.getSelection();
+    }
+
+    respArgs.text = selection.toString();
+
+    aeUtils.log("aeFrameModule.js::handleRequestNewClippingFromTextbox(): selected text: " + respArgs.text);
+  }
+  
+  aeUtils.log("aeFrameModule.js::handleRequestNewClippingFromTextbox() Sending message to chrome script: " + aeConstants.MSG_RESP_NEW_CLIPPING_FROM_TEXTBOX);
+  frameGlobal.sendAsyncMessage(aeConstants.MSG_RESP_NEW_CLIPPING_FROM_TEXTBOX, respArgs);
 }
 
 
