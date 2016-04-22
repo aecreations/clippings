@@ -44,6 +44,7 @@ function addFrame(aFrameGlobal)
   msgListenerMap[aeConstants.MSG_REQ_INSERT_CLIPPING] = handleRequestInsertClipping;
   msgListenerMap[aeConstants.MSG_REQ_IS_READY_FOR_SHORTCUT_MODE] = handleRequestIsReadyForShortcutMode;
   msgListenerMap[aeConstants.MSG_REQ_NEW_CLIPPING_FROM_TEXTBOX] = handleRequestNewClippingFromTextbox;
+  msgListenerMap[aeConstants.MSG_REQ_NEW_CLIPPING_FROM_SELECTION] = handleRequestNewClippingFromSelection;
 
   for (let msgID in msgListenerMap) {
     aFrameGlobal.addMessageListener(msgID, msgListenerMap[msgID]);
@@ -118,6 +119,30 @@ function handleRequestNewClippingFromTextbox(aMessage)
   
   aeUtils.log("aeFrameModule.js::handleRequestNewClippingFromTextbox() Sending message to chrome script: " + aeConstants.MSG_RESP_NEW_CLIPPING_FROM_TEXTBOX);
   frameGlobal.sendAsyncMessage(aeConstants.MSG_RESP_NEW_CLIPPING_FROM_TEXTBOX, respArgs);
+}
+
+
+function handleRequestNewClippingFromSelection(aMessage)
+{
+  aeUtils.log("aeFrameModule.js::handleRequestNewClippingFromSelection(): Handling message: " + aeConstants.MSG_REQ_NEW_CLIPPING_FROM_SELECTION);
+
+  let frameGlobal = aMessage.target;
+  let activeElt = frameGlobal.content.document.activeElement;
+  let respArgs = {};
+
+  let selection = "";
+
+  if (isElementOfType(activeElt, "HTMLIFrameElement")) {
+    selection = activeElt.contentDocument.getSelection();
+  }
+  else {
+    selection = activeElt.ownerDocument.getSelection();
+  }
+  
+  respArgs.selectedText = selection.toString();
+
+  aeUtils.log("aeFrameModule.js::handleRequestNewClippingFromSelection(): Sending message to chrome script: " + aeConstants.MSG_RESP_NEW_CLIPPING_FROM_SELECTION);
+  frameGlobal.sendAsyncMessage(aeConstants.MSG_RESP_NEW_CLIPPING_FROM_SELECTION, respArgs);
 }
 
 

@@ -207,31 +207,37 @@ window.aecreations.clippings = {
 			      document.getElementById("ae-clippings-menu-1"));
     }
 
-    let srcURL = this._getCurrentBrowserURL();
+    // Send message to frame script to retrieve the selected web page text.
+    let msgArgs = {};
+    let browserMM = gBrowser.selectedBrowser.messageManager;
 
-    // This will work for now in e10s - but uses an unsafe CPOW!
-    let focusedWnd = gContextMenuContentData.event.target.ownerDocument.defaultView;
-    let selection = focusedWnd.getSelection();
-    /***
-    // This won't preserve line breaks in the selected text.
-    let selection = gContextMenuContentData.selectionInfo.text;
-    ***/
+    this.aeUtils.log("newFromSelection(): Sending message to frame script: " + this.aeConstants.MSG_REQ_NEW_CLIPPING_FROM_SELECTION);
+    browserMM.sendAsyncMessage(this.aeConstants.MSG_REQ_NEW_CLIPPING_FROM_SELECTION, msgArgs);
+  },
 
-    if (selection) {
-      let result = this.aeCreateClippingFromText(this.clippingsSvc, selection.toString(), srcURL, this.showDialog, window, null, false);
+
+  handleResponseNewFromSelection: function (aMessage)
+  {
+    let that = window.aecreations.clippings;
+    let respArgs = aMessage.data;
+
+    that.aeUtils.log("handleResponseNewFromSelection(): Handling message: " + that.aeConstants.MSG_RESP_NEW_CLIPPING_FROM_SELECTION);
+
+    let selectedText = respArgs.selectedText;
+    let srcURL = that._getCurrentBrowserURL();
+    
+    if (selectedText) {
+      let result = that.aeCreateClippingFromText(that.clippingsSvc, selectedText, srcURL, that.showDialog, window, null, false);
       if (result) {
-        if (this.clippingsSvc.isClipping(result)) {
-          this.aeUtils.log(this.aeString.format("clippings.newFromSelection(): New clipping created from selected text\nName: %s\nSource URL (if saved): %s", this.clippingsSvc.getName(result), srcURL));
+        if (that.clippingsSvc.isClipping(result)) {
+          that.aeUtils.log(that.aeString.format("New clipping created from selected text\nName: %s\nSource URL (if saved): %s", that.clippingsSvc.getName(result), srcURL));
         }
 
-        let that = this;
-	window.setTimeout(function () { 
-          that.saveClippings();
-        }, 1);
+	window.setTimeout(function () { that.saveClippings(); }, 1);
       }
     }
     else {
-      this.alert(this.strBundle.getString("errorNoSelection"));
+      that.alert(that.strBundle.getString("errorNoSelection"));
     }
   },
 
@@ -785,6 +791,7 @@ window.aecreations.clippings = {
     let windowMM = window.messageManager;
     windowMM.addMessageListener(this.aeConstants.MSG_RESP_IS_READY_FOR_SHORTCUT_MODE, this.handleResponseIsReadyForShortcutMode);
     windowMM.addMessageListener(this.aeConstants.MSG_RESP_NEW_CLIPPING_FROM_TEXTBOX, this.handleResponseNewClippingFromTextbox);
+    windowMM.addMessageListener(this.aeConstants.MSG_RESP_NEW_CLIPPING_FROM_SELECTION, this.handleResponseNewFromSelection);
 
     this.isClippingsInitialized = true;
   },
