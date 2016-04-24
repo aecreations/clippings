@@ -488,28 +488,6 @@ window.aecreations.clippings = {
   },
 
 
-  _isContentAreaTextBoxFocused: function ()
-  {
-    var rv = false;
-
-    // TO DO: This will break in e10s
-    var focusedElt = document.commandDispatcher.focusedElement;
-
-    if (focusedElt instanceof HTMLInputElement || focusedElt instanceof HTMLTextAreaElement) {
-      // <input type="text"> or <textarea>
-      rv = true;
-    }
-    else {
-      // Rich edit box - an <iframe> with designMode == "on"
-      // TO DO: This will break in e10s
-      var doc = document.commandDispatcher.focusedWindow.document;
-      rv = doc.designMode == "on";
-    }
-
-    return rv;
-  },
-
-
   saveClippings: function () 
   {
     var title = this.strBundle.getString('appName');
