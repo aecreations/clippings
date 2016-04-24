@@ -62,7 +62,7 @@ function handleRequestInsertClipping(aMessage)
 
   let frameGlobal = aMessage.target;
 
-  // frameGlobal.content - Top-level object; corresponds to the 'window' object
+  // frameGlobal.content - the DOM window object
   // aMessage.data - JSON data, if any, that was passed with the message
 
   let clippingText = aMessage.data.clippingText;
