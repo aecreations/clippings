@@ -43,7 +43,6 @@ window.aecreations.clippings = {
   _isErrMenuItemVisible:  false,
   _ds:                    null,
   _triggerNode:           null,
-  _popupNode:             null,
   
   dataSrcInitialized:     false,
   isClippingsInitialized: false,
@@ -176,7 +175,6 @@ window.aecreations.clippings = {
       // The triggerNode cache was initialized in initContextMenuItem().
       // Reset triggerNode cache for next context menu command invocation.
       this._triggerNode = null;
-      this._popupNode = null;
     }
   },
 
@@ -864,7 +862,7 @@ window.aecreations.clippings = {
       propStr += p + ", ";
     }
     this.aeUtils.log("Properties of gContextMenuContentData: " + propStr);
-    this.aeUtils.log(this.aeString.format("gContextMenuContentData.event: %s, popupNode: %s, editFlags: %s", gContextMenuContentData.event, gContextMenuContentData.popupNode, gContextMenuContentData.editFlags));
+    this.aeUtils.log(this.aeString.format("gContextMenuContentData.event: %s, popupNode: %s, browser: %s, editFlags: %s", gContextMenuContentData.event, gContextMenuContentData.popupNode, gContextMenuContentData.browser, gContextMenuContentData.editFlags));
 
     // What are the properties of gContextMenuContentData.selectionInfo?
     let selInfoObj = gContextMenuContentData.selectionInfo;
@@ -880,7 +878,6 @@ window.aecreations.clippings = {
       // TO DO: Avoid relying on gContextMenu.target, as use of its properties
       // will cause "unsafe CPOW usage" warnings.
       this._triggerNode = gContextMenu.target;
-      this._popupNode = gContextMenuContentData.popupNode;
 
       if (gContextMenu.isDesignMode) {  // Rich text editor
         if (gContextMenuContentData.selectionInfo.text) {
@@ -925,9 +922,6 @@ window.aecreations.clippings = {
           // Works for now on e10s, but uses an unsafe CPOW!
           let textbox = this._triggerNode;
 	  addEntryCmd.setAttribute("disabled", textbox.value == "");
-          /***
-	  addEntryCmd.setAttribute("disabled", "false");
-          ***/
 	}
       }
       
@@ -935,7 +929,6 @@ window.aecreations.clippings = {
       clippingsMenu1.hidden = false;
       clippingsMenu2.hidden = true;
     }
-
     // Selected text in browser content area
     else if (gContextMenuContentData.selectionInfo.text) {
       this._initAutoIncrementPlaceholderMenu(2);
