@@ -339,100 +339,30 @@ window.aecreations.clippings = {
     var folderName = this.clippingsSvc.getName(parentFolderURI);
     var clippingInfo = this.aeClippingSubst.getClippingInfo(aURI, aName, aText, folderName);
 
-    // TO DO: Need to do this to make it work with e10s - but breaks the
-    // tab-modal dialog prompt.
-    var clippingText = this.aeClippingSubst.processClippingText(clippingInfo, window);// gBrowser.contentWindow);
+    // The 'contentWindow' property of the browser would be null if on e10s.
+    // If so, then use the ChromeWindow object instead, but placeholder prompts
+    // will always appear in modal dialogs, even if tab-modal prompts were
+    // enabled.
+    var wnd = gBrowser.contentWindow ? gBrowser.contentWindow : window;
+    var overrideTabModalPromptSetting = gBrowser.contentWindow == null;
+
+    var clippingText = this.aeClippingSubst.processClippingText(clippingInfo, wnd, overrideTabModalPromptSetting);
 
     var useClipboard = this.aeUtils.getPref("clippings.use_clipboard", false);
 
     if (useClipboard) {
       this.aeUtils.copyTextToClipboard(clippingText);
       let that = this;
-      window.setTimeout(function () { 
-        that._pasteClipping(that);
-      }, 8);
+      window.setTimeout(function () { that._pasteClipping(that); }, 8);
       return;
     }
 
-    // This will be null if inside a rich edit box.
-    var textbox = document.commandDispatcher.focusedElement;
+    // Send a message to the frame script to insert the clipping text.
+    let msgArgs = { clippingText: clippingText };
 
-    if (textbox) {
-      this.aeUtils.log(this.aeString.format("clippings.insertClippingText(): textbox: %s, nodeName: %s", textbox, textbox.nodeName));
-    }
-
-    // This would happen if on e10s
-    if (textbox && textbox.nodeName == "browser") {
-      // Send a message to the frame script to insert the clipping text.
-      let msgArgs = {
-        clippingText: clippingText
-      };
-
-      this.aeUtils.log("insertClippingText(): Sending message to frame script: " + this.aeConstants.MSG_REQ_INSERT_CLIPPING);
-      let browserMM = gBrowser.selectedBrowser.messageManager;
-      browserMM.sendAsyncMessage(this.aeConstants.MSG_REQ_INSERT_CLIPPING, msgArgs);
-
-      return;
-    }
-    
-    if (textbox instanceof HTMLInputElement || textbox instanceof HTMLTextAreaElement) {
-      this.aeInsertTextIntoTextbox(textbox, clippingText);
-    }
-    else {
-      var doc = document.commandDispatcher.focusedWindow.document;
-      var hasHTMLTags = clippingText.search(/<[a-z1-6]+( [a-z]+(\="?.*"?)?)*>/i) != -1;
-      var hasRestrictedHTMLTags = clippingText.search(/<\?|<%|<!DOCTYPE|(<\b(html|head|body|meta|script|applet|embed|object|i?frame|frameset)\b)/i) != -1;
-
-      if (hasHTMLTags) {
-	var pasteAsRichText;
-
-	if (! hasRestrictedHTMLTags) {
-	  var showHTMLPasteOpts = this.aeUtils.getPref("clippings.html_paste", 0);
-	  if (showHTMLPasteOpts == this.aeConstants.HTMLPASTE_ASK_THE_USER) {
-	    var dlgArgs = { userCancel: null, pasteAsRichText: null };
-	    window.openDialog("chrome://clippings/content/htmlClipping.xul", "htmlClipping_dlg", "chrome,modal,centerscreen", dlgArgs);
-
-	    if (dlgArgs.userCancel) {
-	      return;
-	    }
-	    pasteAsRichText = dlgArgs.pasteAsRichText;
-	  }
-	  else {
-	    pasteAsRichText = showHTMLPasteOpts == this.aeConstants.HTMLPASTE_AS_HTML;
-	  }
-	}
-
-	if (!pasteAsRichText || hasRestrictedHTMLTags) {
-	  clippingText = clippingText.replace(/&/g, "&amp;");
-	  clippingText = clippingText.replace(/</g, "&lt;");
-	  clippingText = clippingText.replace(/>/g, "&gt;");
-	}
-      }
-      else {
-	// Could be plain text but with angle brackets, e.g. for denoting URLs
-	// or email addresses, e.g. <joel_user@acme.com>, <http://www.acme.com>
-	var hasOpenAngleBrackets = clippingText.search(/</) != -1;
-	var hasCloseAngleBrackets = clippingText.search(/>/) != -1;
-
-	if (hasOpenAngleBrackets) {
-	  clippingText = clippingText.replace(/</g, "&lt;");
-	}
-	if (hasCloseAngleBrackets) {
-	  clippingText = clippingText.replace(/>/g, "&gt;");	  
-	}
-      }
-
-      var autoLineBreak = this.aeUtils.getPref("clippings.html_auto_line_break", true);
-      var hasLineBreakTags = clippingText.search(/<br|<p/i) != -1;
-      if (autoLineBreak && !hasLineBreakTags) {
-	clippingText = clippingText.replace(/\n/g, "<br>");
-      }
-
-      try {
-	doc.execCommand("insertHTML", false, clippingText);
-      }
-      catch (e) {}
-    }
+    this.aeUtils.log("insertClippingText(): Sending message to frame script: " + this.aeConstants.MSG_REQ_INSERT_CLIPPING);
+    let browserMM = gBrowser.selectedBrowser.messageManager;
+    browserMM.sendAsyncMessage(this.aeConstants.MSG_REQ_INSERT_CLIPPING, msgArgs);
   },
 
 

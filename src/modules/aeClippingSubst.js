@@ -16,7 +16,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2007-2015
+ * Portions created by the Initial Developer are Copyright (C) 2007-2016
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -71,7 +71,7 @@ aeClippingSubst.getClippingInfo = function (aURI, aName, aText, aParentFolderNam
 };
 
 
-aeClippingSubst.processClippingText = function (aClippingInfo, aWnd)
+aeClippingSubst.processClippingText = function (aClippingInfo, aWnd, aAlwaysUsePromptDlg)
 {
   if ((/^\[NOSUBST\]/.test(aClippingInfo.name))) {
     return aClippingInfo.text;
@@ -84,12 +84,20 @@ aeClippingSubst.processClippingText = function (aClippingInfo, aWnd)
   // Remember the value of the same placeholder that was filled in previously
   var knownTags = {};
   let that = aeClippingSubst;
-  let tabModalPrompt = aeUtils.getPref("clippings.tab_modal_placeholder_prompt", true);
+  let useTabModalPrompt = aeUtils.getPref("clippings.tab_modal_placeholder_prompt", true);
 
-  // For use if tab-modal prompts are enabled.  The normal placeholder dialog
-  // will always be used if the placeholder has selectable values.
-  let prmptSvc = Cc["@mozilla.org/prompter;1"].getService(Ci.nsIPromptFactory).getPrompt(aWnd, Ci.nsIPrompt);
+  // Tab-modal prompts don't work on multi-process Firefox.
+  if (aAlwaysUsePromptDlg) {
+    useTabModalPrompt = false;
+  }
 
+  let prmptSvc = null;
+  if (useTabModalPrompt) {
+    // For use if tab-modal prompts are enabled.  The normal placeholder dialog
+    // will always be used if the placeholder has selectable values.
+    prmptSvc = Cc["@mozilla.org/prompter;1"].getService(Ci.nsIPromptFactory).getPrompt(aWnd, Ci.nsIPrompt);
+  }
+  
   var fnReplace = function (aMatch, aP1, aP2, aOffset, aString) {
     let varName = aP1;
 
@@ -147,7 +155,7 @@ aeClippingSubst.processClippingText = function (aClippingInfo, aWnd)
 
     var rv = "";
     
-    if (tabModalPrompt && aeUtils.getHostAppID() == aeConstants.HOSTAPP_FX_GUID
+    if (useTabModalPrompt && aeUtils.getHostAppID() == aeConstants.HOSTAPP_FX_GUID
         && !hasMultipleVals) {
       that._initTabModalPromptDlg(prmptSvc);
       let prmptText = that._strBundle.getFormattedString("substPromptText", [varName]);
@@ -194,7 +202,7 @@ aeClippingSubst.processClippingText = function (aClippingInfo, aWnd)
     var defaultValue = 0;
     var rv = "";
     
-    if (tabModalPrompt && aeUtils.getHostAppID() == aeConstants.HOSTAPP_FX_GUID) {
+    if (useTabModalPrompt && aeUtils.getHostAppID() == aeConstants.HOSTAPP_FX_GUID) {
       that._initTabModalPromptDlg(prmptSvc);
       let prmptText = that._strBundle.getFormattedString("autoIncrPromptText", [varName]);
       let input = {};
