@@ -73,7 +73,7 @@ function handleRequestInsertClipping(aMessage)
     aeInsertTextIntoTextbox(activeElt, clippingText);
   }
   else if (isElementOfType(activeElt, "HTMLIFrameElement")) {
-    insertTextIntoRichTextEditor(activeElt, clippingText);
+    insertTextIntoRichTextEditor(frameGlobal, activeElt, clippingText);
   }
 }
 
@@ -181,7 +181,7 @@ function isElementOfType(aElement, aTypeStr)
 }
 
 
-function insertTextIntoRichTextEditor(aRichTextEditor, aClippingText)
+function insertTextIntoRichTextEditor(aFrameGlobal, aRichTextEditor, aClippingText)
 {
   let doc = aRichTextEditor.contentDocument;
   let hasHTMLTags = aClippingText.search(/<[a-z1-6]+( [a-z]+(\="?.*"?)?)*>/i) != -1;
@@ -192,12 +192,16 @@ function insertTextIntoRichTextEditor(aRichTextEditor, aClippingText)
     let pasteAsRichText;
 
     if (! hasRestrictedHTMLTags) {
-      let showHTMLPasteOpts = aeUtils.getPref("clippings.html_paste", 0);
+      let showHTMLPasteOpts = aeUtils.getPref("clippings.html_paste", aeConstants.HTMLPASTE_ASK_THE_USER);
+      
       if (showHTMLPasteOpts == aeConstants.HTMLPASTE_ASK_THE_USER) {
-        // Get the localized UI string
-        let strBundle = Services.strings.createBundle("chrome://clippings/locale/clippings.properties");
-        let chromeWnd = aRichTextEditor.ownerDocument.defaultView;
-        pasteAsRichText = chromeWnd.confirm(strBundle.GetStringFromName("pasteAsHTMLPrompt"));
+        let results = aFrameGlobal.sendSyncMessage(aeConstants.MSG_REQ_HTML_PASTE_OPTION);
+        pasteAsRichText = results[0];
+
+        if (pasteAsRichText == null) {
+          aeUtils.log("aeFrameModule.js::insertTextIntoRichTextEditor(): User cancel");
+          return;
+        }
       }
       else {
         pasteAsRichText = showHTMLPasteOpts == aeConstants.HTMLPASTE_AS_HTML;

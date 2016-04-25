@@ -382,6 +382,26 @@ window.aecreations.clippings = {
   },
 
 
+  handleRequestHTMLPasteOption: function (aMessage)
+  {
+    let that = window.aecreations.clippings;
+
+    that.aeUtils.log("handleRequestHTMLPasteOption(): Handling synchronous message: " + that.aeConstants.MSG_REQ_HTML_PASTE_OPTION);
+
+    let dlgArgs = { userCancel: null, pasteAsRichText: null };
+    window.openDialog("chrome://clippings/content/htmlClipping.xul", "htmlClipping_dlg", "chrome,modal,centerscreen", dlgArgs);
+
+    let rv = null;
+    
+    if (! dlgArgs.userCancel) {
+      rv = dlgArgs.pasteAsRichText;
+    }
+    
+    that.aeUtils.log("handleRequestHTMLPasteOption(): Returning from synchronous message handler");
+    return rv;
+  },
+
+  
   keyboardInsertClipping: function (aEvent)
   {
     this.aeUtils.log("keyboardInsertClipping(): Sending message to frame script: " + this.aeConstants.MSG_REQ_IS_READY_FOR_SHORTCUT_MODE);
@@ -698,7 +718,8 @@ window.aecreations.clippings = {
     windowMM.addMessageListener(this.aeConstants.MSG_RESP_IS_READY_FOR_SHORTCUT_MODE, this.handleResponseIsReadyForShortcutMode);
     windowMM.addMessageListener(this.aeConstants.MSG_RESP_NEW_CLIPPING_FROM_TEXTBOX, this.handleResponseNewClippingFromTextbox);
     windowMM.addMessageListener(this.aeConstants.MSG_RESP_NEW_CLIPPING_FROM_SELECTION, this.handleResponseNewFromSelection);
-
+    windowMM.addMessageListener(this.aeConstants.MSG_REQ_HTML_PASTE_OPTION, this.handleRequestHTMLPasteOption);
+    
     this.isClippingsInitialized = true;
   },
 

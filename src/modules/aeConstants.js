@@ -55,5 +55,6 @@ var aeConstants = {
   MSG_REQ_NEW_CLIPPING_FROM_TEXTBOX: "clippings@aecreations.github.io:req_newClippingFromTextbox",
   MSG_RESP_NEW_CLIPPING_FROM_TEXTBOX: "clippings@aecreations.github.io:resp_newClippingFromTextbox",
   MSG_REQ_NEW_CLIPPING_FROM_SELECTION: "clippings@aecreations.github.io:req_newClippingFromSelection",
-  MSG_RESP_NEW_CLIPPING_FROM_SELECTION: "clippings@aecreations.github.io:resp_newClippingFromSelection"
+  MSG_RESP_NEW_CLIPPING_FROM_SELECTION: "clippings@aecreations.github.io:resp_newClippingFromSelection",
+  MSG_REQ_HTML_PASTE_OPTION: "clippings@aecreations.github.io:req_htmlPasteOption"
 };
