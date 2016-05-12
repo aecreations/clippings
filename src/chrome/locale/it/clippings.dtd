@@ -1,5 +1,6 @@
 <!-- General -->
 <!ENTITY clippings.appName "Clippings">
+
 <!-- Overlay -->
 <!ENTITY clippings.menuLabel "Clippings">
 <!ENTITY new.menuLabel "Nuovo">
@@ -16,10 +17,12 @@
 <!ENTITY toolbarbutton.tooltip "Trascinare qui la selezione per creare un nuovo appunto di Clippings">
 <!ENTITY resetAutoIncrVars.label "Azzera il valore della variabile">
 <!ENTITY empty.label "(vuoto)">
+
 <!-- Extension preferences dialog -->
 <!ENTITY prefGeneral.label "Generali">
 <!ENTITY prefDataSource.label "Sorgente di dati">
 <!ENTITY prefClippingsMgr.label "Gestore di Clippings">
+
 <!ENTITY pasteOptions.caption "Opzioni per incollare">
 <!ENTITY useClipboard.label "Non sostituire il contenuto degli appunti con l'appunto da incollare">
 <!ENTITY useClipboard.accesskey "N">
@@ -37,6 +40,7 @@
 <!ENTITY beepOnErrors.accesskey "E">
 <!ENTITY alwaysSaveSrcUrl.label "Salva sempre gli indirizzi di origine delle pagine web">
 <!ENTITY alwaysSaveSrcUrl.accesskey "v">
+
 <!ENTITY dataSourceSettings.title "Impostazioni della sorgente di dati">
 <!ENTITY dataSrcLocation.caption "Percorso della sorgente di dati">
 <!ENTITY otherLocation.label "Utilizza la seguente cartella:">
@@ -46,12 +50,15 @@
 <!ENTITY backupFiles.caption "Backup">
 <!ENTITY maxFiles.label "Numero massimo di backup da conservare:">
 <!ENTITY maxFiles.accesskey "N">
+<!ENTITY srcWebPgAddrs.caption "Eliminazione indirizzi delle pagine web">
 <!ENTITY removeAllSrcURLs.label "Elimina">
 <!ENTITY removeAllSrcURLs.accesskey "E">
 <!ENTITY removeAllSrcURLs.description "Facendo clic su Elimina verranno eliminati tutti gli indirizzi di origine delle pagine web negli appunti di Clippings">
+
 <!ENTITY showStatusBar.label "Mostra la barra di stato">
 <!ENTITY showStatusBar.accesskey "M">
 <!ENTITY clippingsMgrKeys.caption "Scorciatoie da tastiera">
+
 <!-- Clippings Manager shortcut key legend -->
 <!ENTITY key.del "Canc">
 <!ENTITY key.esc "Esc">
@@ -72,6 +79,7 @@
 <!ENTITY undoEdit "Annulla azione">
 <!ENTITY showClipMgrIntro "Mostra i contenuti della guida">
 <!ENTITY undoUndo "Ripeti l'ultima azione annullata">
+
 <!-- Clippings Manager -->
 <!ENTITY clippingsManager.title "Gestore di Clippings">
 <!ENTITY insertClipping.label "Inserisci appunto">
@@ -104,7 +112,7 @@
 <!ENTITY clippingText.placeholder "Inserire il testo dell'appunto">
 <!ENTITY import.label "Importa…">
 <!ENTITY import.accesskey "I">
-<!ENTITY export.label "Esporta…">
+<!ENTITY export.label "Esporta…"> 
 <!ENTITY export.accesskey "E">
 <!ENTITY tools.label "Strumenti">
 <!ENTITY tools.accesskey "u">
@@ -142,10 +150,12 @@
 <!ENTITY placeholderBar.accesskey "B">
 <!ENTITY detailsPane.label "Dettagli">
 <!ENTITY detailsPane.accesskey "D">
+
 <!ENTITY closeCmd.key "W">
 <!ENTITY forceSaveCmd.key "S">
 <!ENTITY reload.key "R">
 <!ENTITY toggleFindBar.key "F">
+
 <!ENTITY placeholderToolbar.label "Variabili impostabili:">
 <!ENTITY placeholderPresets.label "predefinite">
 <!ENTITY placeholderCustom.label "personalizzata…">
@@ -158,6 +168,7 @@
 <!ENTITY placeholderFolderName.label "Nome della cartella superiore">
 <!ENTITY editSrcURL.label "Modifica">
 <!ENTITY editSrcURL.accesskey "M">
+
 <!ENTITY clippingLabel.label "Etichetta">
 <!ENTITY clippingLabel.accesskey "t">
 <!ENTITY labelNone.tooltip "(nessuna)">
@@ -168,6 +179,7 @@
 <!ENTITY labelBlue.tooltip "Blu">
 <!ENTITY labelPurple.tooltip "Viola">
 <!ENTITY labelGray.tooltip "Grigio">
+
 <!-- Insert Placeholder dialog -->
 <!ENTITY insertPlaceholder.title "Nuova variabile">
 <!ENTITY placeholderName.accesskey "N">
@@ -176,6 +188,7 @@
 <!ENTITY defaultValue.placeholder "(opzionale)">
 <!ENTITY defaultValue.description "Separare più valori con il carattere | (es: rosso|verde|blu)">
 <!ENTITY autoIncrement.description "Incollando un appunto verrà richiesto un valore numerico iniziale. Tale valore aumenterà automaticamente di un'unità ogni volta che lo stesso appunto sarà incollato, finché non verrà azzerato tramite il menu contestuale di Clippings">
+
 <!-- Export dialog -->
 <!ENTITY export.title "Esportazione di Clippings">
 <!ENTITY exportButton.label "Esporta">
@@ -187,6 +200,7 @@
 <!ENTITY fmtHtmlDocument.listitem "Documento HTML">
 <!ENTITY includeSrcURLs.label "Includi gli indirizzi di origine delle pagine web negli appunti di Clippings">
 <!ENTITY includeSrcURLs.accesskey "I">
+
 <!-- New Clipping dialog -->
 <!ENTITY clippingName.label "Nome:">
 <!ENTITY clippingName.accesskey "N">
@@ -211,6 +225,7 @@
 <!ENTITY newClippingOptions.accesskey "O">
 <!ENTITY clippingLabelPicker.label "Etichetta:">
 <!ENTITY clippingLabelPicker.accesskey "h">
+
 <!-- Quote Options dialog (Thunderbird only) -->
 <!ENTITY pasteClippingAs.label "Incollare gli appunti come:">
 <!ENTITY pasteAsNormal.label "testo normale">
@@ -219,6 +234,7 @@
 <!ENTITY pasteAsQuoted.accesskey "c">
 <!ENTITY rewrapLines.label "manda a capo (raccomandato)">
 <!ENTITY rewrapLines.accesskey "M">
+
 <!-- HTML paste dialog -->
 <!ENTITY htmlClipping "L'appunto da incollare sembra contenere tag HTML. Selezionare l'azione da eseguire">
 <!ENTITY pasteAsFormatted.label "Incolla come testo formattato (HTML)">
@@ -226,6 +242,7 @@
 <!ENTITY pasteAsPlain.label "Incolla come testo semplice mantenendo i tag HTML">
 <!ENTITY pasteAsPlain.accesskey "s">
 <!ENTITY pasteClipping.label "Incolla appunto">
+
 <!-- Shortcut key prompt -->
 <!ENTITY clippingKey.title "Incolla appunto">
 <!ENTITY clippingKey.description "Premere la scorciatoia da tastiera relativa all&apos;appunto da incollare">
@@ -234,18 +251,21 @@
 <!ENTITY clippingKeyShortcut.description "Premere TAB per utilizzare le scorciatoie da tastiera">
 <!ENTITY clippingKeySearch.description "Premere TAB per cercare gli appunti per nome">
 <!ENTITY shortcutHelp.title "Scorciatoie da tastiera assegnate agli appunti di Clippings">
-<!ENTITY shortcutCol.label "Scorciatoia">
+<!ENTITY shortcutCol.label "Scorciatoia"> 
 <!ENTITY clippingCol.label "Nome appunto">
 <!ENTITY save.label "Esporta…">
 <!ENTITY save.accesskey "E">
 <!ENTITY print.label "Stampa…">
 <!ENTITY print.accesskey "S">
 <!ENTITY close.accesskey "C">
+
 <!-- Placeholder prompt -->
 <!ENTITY pasteClipping.title "Incolla appunto">
+
 <!-- Misc -->
 <!ENTITY okButton.label "OK">
 <!ENTITY cancelButton.label "Annulla">
 <!ENTITY closeButton.label "Chiudi">
 <!ENTITY closeButton.accesskey "C">
 <!ENTITY errorNoClipboardContent.desc "Gli appunti sono vuoti oppure non contengono alcun testo">
+

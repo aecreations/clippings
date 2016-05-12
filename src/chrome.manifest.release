@@ -19,6 +19,7 @@ skin	clippings-laf	classic	jar:chrome/clippings.jar!/skin/win/	os=WINNT
 style	chrome://global/content/customizeToolbar.xul	chrome://clippings/skin/overlay.css
 
 locale	clippings	en-US	jar:chrome/clippings.jar!/locale/en-US/
+#locale	clippings	nl	jar:chrome/clippings.jar!/locale/nl/
 locale	clippings	fi	jar:chrome/clippings.jar!/locale/fi/
 locale	clippings	fr	jar:chrome/clippings.jar!/locale/fr/
 locale	clippings	it	jar:chrome/clippings.jar!/locale/it/
@@ -32,7 +33,6 @@ locale	clipping	sl	jar:chrome/clippings.jar!/locale/sl/
 #locale	clippings	sk-SK	jar:chrome/clippings.jar!/locale/sk-SK/
 #locale	clippings	ru-RU	jar:chrome/clippings.jar!/locale/ru-RU/
 #locale	clippings	pt-BR	jar:chrome/clippings.jar!/locale/pt-BR/
-#locale	clippings	nl	jar:chrome/clippings.jar!/locale/nl/
 #locale	clippings	zh-CN	jar:chrome/clippings.jar!/locale/zh-CN/
 #locale	clippings	uk-UA	jar:chrome/clippings.jar!/locale/uk-UA/
 #locale	clippings	sv-SE	jar:chrome/clippings.jar!/locale/sv-SE/

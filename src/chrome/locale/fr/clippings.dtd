@@ -1,6 +1,7 @@
-<!---->
+<!-- General -->
 <!ENTITY clippings.appName "Clippings">
-<!---->
+
+<!-- Overlay -->
 <!ENTITY clippings.menuLabel "Clippings">
 <!ENTITY new.menuLabel "Nouveau">
 <!ENTITY new.accesskey "N">
@@ -16,10 +17,12 @@
 <!ENTITY toolbarbutton.tooltip "Déplacer la sélection ici por créer un nouveau clipping">
 <!ENTITY resetAutoIncrVars.label "Annuler l'auto-incrémentation des substituts">
 <!ENTITY empty.label "(Vide)">
-<!---->
+
+<!-- Extension preferences dialog -->
 <!ENTITY prefGeneral.label "Général">
 <!ENTITY prefDataSource.label "Base de données">
 <!ENTITY prefClippingsMgr.label "Gestionnaire Clippings">
+
 <!ENTITY pasteOptions.caption "Options de collage">
 <!ENTITY useClipboard.label "Coller le clipping en utilisant le presse-papiers">
 <!ENTITY useClipboard.accesskey "C">
@@ -37,6 +40,7 @@
 <!ENTITY beepOnErrors.accesskey "e">
 <!ENTITY alwaysSaveSrcUrl.label "Toujours enregistrer l'adresse de la page Web source">
 <!ENTITY alwaysSaveSrcUrl.accesskey "T">
+
 <!ENTITY dataSourceSettings.title "Paramètres de la base de données">
 <!ENTITY dataSrcLocation.caption "Emplacement de la base de données">
 <!ENTITY otherLocation.label "Autre emplacement :">
@@ -46,13 +50,16 @@
 <!ENTITY backupFiles.caption "Sauvegarder les fichiers">
 <!ENTITY maxFiles.label "Nombre maximum de fichiers à conserver :">
 <!ENTITY maxFiles.accesskey "m">
+<!ENTITY srcWebPgAddrs.caption "Adresses des pages Web sources">
 <!ENTITY removeAllSrcURLs.label "Tout supprimer">
 <!ENTITY removeAllSrcURLs.accesskey "s">
 <!ENTITY removeAllSrcURLs.description "Retirer de vos clippings toutes les adresses de pages sources enregistrées.">
+
 <!ENTITY showStatusBar.label "Afficher la barre des tâches">
 <!ENTITY showStatusBar.accesskey "b">
 <!ENTITY clippingsMgrKeys.caption "Raccourcis-clavier du gestionnaire Clippings">
-<!---->
+
+<!-- Clippings Manager shortcut key legend -->
 <!ENTITY key.del "SUPPR">
 <!ENTITY key.esc "ÉCHAP">
 <!ENTITY key.ctrlF "CTRL+F">
@@ -72,7 +79,8 @@
 <!ENTITY undoEdit "Annuler les modifications">
 <!ENTITY showClipMgrIntro "Afficher l'intro du gestionnaire Clippings">
 <!ENTITY undoUndo "Annuler l'annulation">
-<!---->
+
+<!-- Clippings Manager -->
 <!ENTITY clippingsManager.title "Gestionnaire Clippings">
 <!ENTITY insertClipping.label "Insérer le clipping">
 <!ENTITY insertClipping.accesskey "I">
@@ -104,7 +112,7 @@
 <!ENTITY clippingText.placeholder "Saisir le texte du clipping">
 <!ENTITY import.label "Importer…">
 <!ENTITY import.accesskey "I">
-<!ENTITY export.label "Exporter…">
+<!ENTITY export.label "Exporter…"> 
 <!ENTITY export.accesskey "E">
 <!ENTITY tools.label "Outils">
 <!ENTITY tools.accesskey "O">
@@ -142,10 +150,12 @@
 <!ENTITY placeholderBar.accesskey "B">
 <!ENTITY detailsPane.label "Panneau informations">
 <!ENTITY detailsPane.accesskey "d">
+
 <!ENTITY closeCmd.key "W">
 <!ENTITY forceSaveCmd.key "S">
 <!ENTITY reload.key "R">
 <!ENTITY toggleFindBar.key "R">
+
 <!ENTITY placeholderToolbar.label "Insérer un substitut :">
 <!ENTITY placeholderPresets.label "Réglages">
 <!ENTITY placeholderCustom.label "Personnalisé">
@@ -158,6 +168,7 @@
 <!ENTITY placeholderFolderName.label "Nom du dossier parent">
 <!ENTITY editSrcURL.label "Modifier">
 <!ENTITY editSrcURL.accesskey "M">
+
 <!ENTITY clippingLabel.label "Couleur">
 <!ENTITY clippingLabel.accesskey "I">
 <!ENTITY labelNone.tooltip "Aucun">
@@ -168,7 +179,8 @@
 <!ENTITY labelBlue.tooltip "Bleu">
 <!ENTITY labelPurple.tooltip "Violet">
 <!ENTITY labelGray.tooltip "Gris">
-<!---->
+
+<!-- Insert Placeholder dialog -->
 <!ENTITY insertPlaceholder.title "Insérer un substitut">
 <!ENTITY placeholderName.accesskey "I">
 <!ENTITY defaultValue.label "Valeur par défaut :">
@@ -176,7 +188,8 @@
 <!ENTITY defaultValue.placeholder "Facultatif">
 <!ENTITY defaultValue.description "Sépare plusieurs valeurs avec un &quot;|&quot;. Exemple : rouge|vert\bleu">
 <!ENTITY autoIncrement.description "Lorsque le clipping est collé, on vous demandera la valeur numérique de départ. Cette valeur sera automatiquement incrémenté de un chaque fois que le même clipping est collé, jusqu'à ce que cela soit remis à zéro dans le menu contextuel.">
-<!---->
+
+<!-- Export dialog -->
 <!ENTITY export.title "Exporter les clippings">
 <!ENTITY exportButton.label "Exporter">
 <!ENTITY exportButton.accesskey "E">
@@ -187,7 +200,8 @@
 <!ENTITY fmtHtmlDocument.listitem "Document HTML">
 <!ENTITY includeSrcURLs.label "Inclure les adresses des pages sources des clippings.">
 <!ENTITY includeSrcURLs.accesskey "I">
-<!---->
+
+<!-- New Clipping dialog -->
 <!ENTITY clippingName.label "Nom :">
 <!ENTITY clippingName.accesskey "N">
 <!ENTITY saveSourceURL.label "Enregistrer l'adresse de la page Web source">
@@ -211,7 +225,8 @@
 <!ENTITY newClippingOptions.accesskey "O">
 <!ENTITY clippingLabelPicker.label "Couleur :">
 <!ENTITY clippingLabelPicker.accesskey "C">
-<!---->
+
+<!-- Quote Options dialog (Thunderbird only) -->
 <!ENTITY pasteClippingAs.label "Coller le clipping comme">
 <!ENTITY pasteAsNormal.label "Texte normal">
 <!ENTITY pasteAsNormal.accesskey "n">
@@ -219,14 +234,16 @@
 <!ENTITY pasteAsQuoted.accesskey "l">
 <!ENTITY rewrapLines.label "Adapter la longueur des lignes (recommandé)">
 <!ENTITY rewrapLines.accesskey "g">
-<!---->
+
+<!-- HTML paste dialog -->
 <!ENTITY htmlClipping "Le clipping sélectionné semble contenir des balises HTML.">
 <!ENTITY pasteAsFormatted.label "Coller comme texte formaté">
 <!ENTITY pasteAsFormatted.accesskey "f">
 <!ENTITY pasteAsPlain.label "Coller comme texte brut en conservant les balises HTML">
 <!ENTITY pasteAsPlain.accesskey "b">
 <!ENTITY pasteClipping.label "Coller le clipping">
-<!---->
+
+<!-- Shortcut key prompt -->
 <!ENTITY clippingKey.title "Coller le clipping">
 <!ENTITY clippingKey.description "Appuyer sur le raccourci clavier du clipping que vous souhaitez coller.">
 <!ENTITY clippingSearch.description "Rechercher par nom :">
@@ -234,18 +251,21 @@
 <!ENTITY clippingKeyShortcut.description "TAB = mode raccourcis claviers">
 <!ENTITY clippingKeySearch.description "TAB = recherche par nom">
 <!ENTITY shortcutHelp.title "Touches de raccourcis Clippings">
-<!ENTITY shortcutCol.label "Raccourcis-clavier">
+<!ENTITY shortcutCol.label "Raccourcis-clavier"> 
 <!ENTITY clippingCol.label "Nom du clipping">
 <!ENTITY save.label "Enregistrer">
 <!ENTITY save.accesskey "E">
 <!ENTITY print.label "Imprimer">
 <!ENTITY print.accesskey "I">
 <!ENTITY close.accesskey "F">
-<!---->
+
+<!-- Placeholder prompt -->
 <!ENTITY pasteClipping.title "Coller le clipping">
-<!---->
+
+<!-- Misc -->
 <!ENTITY okButton.label "OK">
 <!ENTITY cancelButton.label "Annuler">
 <!ENTITY closeButton.label "Fermer">
 <!ENTITY closeButton.accesskey "F">
 <!ENTITY errorNoClipboardContent.desc "Le presse-papiers est vide ou ne contient aucune donnée textuelle.">
+
