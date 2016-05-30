@@ -16,7 +16,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2005-2015
+ * Portions created by the Initial Developer are Copyright (C) 2005-2016
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -63,6 +63,12 @@ function initPrefPaneGeneral()
     $("always-save-src-url").hidden = true;
   }
 
+  var hostAppWnd = this.aeUtils.getRecentHostAppWindow();
+  if (aeUtils.getHostAppID() == aeConstants.HOSTAPP_FX_GUID
+      && aeUtils.isElectrolysisEnabled()) {
+    $("tab-modal-prmt").hidden = true;
+  }
+  
   var shortcutKeyStr = gStrBundle.getFormattedString("shortcutMode", [shortcutKeyPrefix]);
   $("enable-shortcut-key").label = shortcutKeyStr;
   $("enable-shortcut-key").accessKey = gStrBundle.getString("shortcutModeAccessKey");
