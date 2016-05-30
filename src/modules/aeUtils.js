@@ -16,7 +16,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2005-2015
+ * Portions created by the Initial Developer are Copyright (C) 2005-2016
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -278,6 +278,15 @@ aeUtils.getRecentHostAppWindow = function ()
 };
 
 
+aeUtils.isElectrolysisEnabled = function ()
+{
+  let prefs = Services.prefs;
+  let rv = prefs.getBoolPref("browser.tabs.remote.autostart");
+
+  return rv;
+}
+
+  
 aeUtils.getPref = function (aPrefKey, aDefaultValue)
 {
   let prefName = PREFNAME_PREFIX + aPrefKey;
