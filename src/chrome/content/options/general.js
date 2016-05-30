@@ -63,7 +63,6 @@ function initPrefPaneGeneral()
     $("always-save-src-url").hidden = true;
   }
 
-  var hostAppWnd = this.aeUtils.getRecentHostAppWindow();
   if (aeUtils.getHostAppID() == aeConstants.HOSTAPP_FX_GUID
       && aeUtils.isElectrolysisEnabled()) {
     $("tab-modal-prmt").hidden = true;
