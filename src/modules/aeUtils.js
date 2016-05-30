@@ -204,7 +204,7 @@ aeUtils.getUserProfileDir = function ()
                           .getService(Components.interfaces.nsIProperties);
   var profileDir = dirProp.get("ProfD", Components.interfaces.nsIFile);
   if (! profileDir) {
-    throw "Failed to retrieve current profile directory";
+    throw new Error("Failed to retrieve current profile directory");
   }
 
   return profileDir;
@@ -218,7 +218,7 @@ aeUtils.getHomeDir = function ()
                           .getService(Components.interfaces.nsIProperties);
   var homeDir = dirProp.get("Home", Components.interfaces.nsIFile);
   if (! homeDir) {
-    throw "Failed to retrieve user's home directory";
+    throw new Error("Failed to retrieve user's home directory");
   }
 
   return homeDir;
@@ -280,6 +280,10 @@ aeUtils.getRecentHostAppWindow = function ()
 
 aeUtils.isElectrolysisEnabled = function ()
 {
+  if (this.getHostAppID() != HOSTAPP_FX_GUID) {
+    throw new Error("aeUtils.isElectrolysisEnabled(): Attempt to invoke this method on a host application that is not Firefox!");
+  }
+
   let prefs = Services.prefs;
   let rv = prefs.getBoolPref("browser.tabs.remote.autostart");
 
