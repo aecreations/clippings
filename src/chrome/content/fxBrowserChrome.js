@@ -708,8 +708,6 @@ window.aecreations.clippings = {
     }
 
     // Initialize support for multi-process tabs.
-    // TO DO: Should I check if frame script has already been loaded by another
-    // browser window??
     this.aeUtils.log("Initializing support for multi-process browser tabs.");
     let globalMM = Components.classes["@mozilla.org/globalmessagemanager;1"].getService(Components.interfaces.nsIMessageListenerManager);
     globalMM.loadFrameScript("chrome://clippings/content/fxBrowserFrame.js", true);
