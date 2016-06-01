@@ -79,23 +79,6 @@ function initPrefPaneGeneral()
 }
 
 
-function togglePasteOptionsCheckedState() 
-{
-  var useClipboard = $("use-clipboard");
-  var htmlPasteOptions = $("html-paste-options");
-  var autoLineBreak = $("html-auto-line-break");
-
-  $("paste-html-formatted-clipping").disabled = !useClipboard.checked;
-  htmlPasteOptions.disabled = !useClipboard.checked;
-  autoLineBreak.disabled = !useClipboard.checked;
-
-  if (! useClipboard.checked) {
-    htmlPasteOptions.selectedIndex = 2;
-    autoLineBreak.checked = false;
-  }
-}
-
-
 function showChangedPrefMsg() 
 {
   var strKey;

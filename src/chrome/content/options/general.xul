@@ -19,7 +19,7 @@
    -
    - The Initial Developer of the Original Code is
    - Alex Eng <ateng@users.sourceforge.net>.
-   - Portions created by the Initial Developer are Copyright (C) 2005-2015
+   - Portions created by the Initial Developer are Copyright (C) 2005-2016
    - the Initial Developer. All Rights Reserved.
    -
    - Contributor(s):
@@ -53,11 +53,7 @@
     <groupbox>
       <caption label="&pasteOptions.caption;"/>
 
-      <checkbox id="use-clipboard" preference="use-clipboard-pref"
-       label="&useClipboard.label;" accesskey="&useClipboard.accesskey;"
-       oncommand="togglePasteOptionsCheckedState()"/>
-
-      <vbox id="paste-html-vbox" class="indent">
+      <vbox id="paste-html-vbox">
         <label id="paste-html-formatted-clipping" value="&htmlPasteOptions.label;" accesskey="&htmlPasteOptions.accesskey;" control="html-paste-options"/>
         <menulist id="html-paste-options" preference="html-paste-pref"> 
           <menupopup>
@@ -67,13 +63,17 @@
           </menupopup>
         </menulist>
 
-        <checkbox id="html-auto-line-break" preference="html-auto-line-break-pref"
+        <checkbox id="html-auto-line-break" class="indent"
+         preference="html-auto-line-break-pref"
          label="&autoLineBreak.label;" accesskey="&autoLineBreak.accesskey;"/>
 
-        <description style="word-wrap:break-word;width:32em">&htmlPaste.description;</description>
+        <description style="word-wrap:break-word;width:32em" class="indent">&htmlPaste.description;</description>
 
       </vbox>
       <separator class="thin"/>
+      <checkbox id="use-clipboard" preference="use-clipboard-pref"
+       label="&useClipboard.label;" accesskey="&useClipboard.accesskey;"/>
+
       <checkbox id="enable-shortcut-key" preference="enable-shortcut-key-pref"
        oncommand="showChangedPrefMsg()"/>
 
