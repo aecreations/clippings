@@ -17,7 +17,6 @@ pref("extensions.aecreations.clippings.clipmgr.select_text_on_click", false);
 pref("extensions.aecreations.clippings.clipmgr.status_bar", true);
 pref("extensions.aecreations.clippings.clipmgr.placeholder_toolbar", false);
 pref("extensions.aecreations.clippings.clipmgr.details_pane", false);
-pref("extensions.aecreations.clippings.warn_paste_failure", true);
 pref("extensions.aecreations.clippings.use_clipboard", false);
 pref("extensions.aecreations.clippings.html_paste", 0);
 pref("extensions.aecreations.clippings.html_auto_line_break", true);
