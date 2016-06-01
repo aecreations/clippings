@@ -32,6 +32,7 @@
 <!ENTITY autoLineBreak.label "Automatically break lines unless &lt;p&gt; or &lt;br&gt; tags exist">
 <!ENTITY autoLineBreak.accesskey "b">
 <!ENTITY htmlPaste.description "An HTML-formatted clipping will always be pasted as plain text if pasting into a plain textbox, or if the clipping contains restricted tags such as &lt;script&gt;, &lt;applet&gt;, &lt;object&gt;, &lt;iframe&gt;, etc.">
+<!ENTITY generalOptions.caption "General Options">
 <!ENTITY checkSpelling.label "Check spelling">
 <!ENTITY checkSpelling.accesskey "C">
 <!ENTITY tabModalPrompt.label "Don't block browser window when prompting for placeholder text">

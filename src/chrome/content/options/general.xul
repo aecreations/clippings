@@ -83,15 +83,21 @@
     </groupbox>
     <separator class="thin"/>
 
-    <!-- Firefox only -->
-    <checkbox id="always-save-src-url" preference="always-save-src-url-pref"
-     label="&alwaysSaveSrcUrl.label;" accesskey="&alwaysSaveSrcUrl.accesskey;"/>
-    <hbox flex="1">
-      <checkbox id="check-spelling" flex="1" preference="check-spelling-pref"
-       label="&checkSpelling.label;" accesskey="&checkSpelling.accesskey;"/>
-      <checkbox id="beep-on-errors" flex="1" preference="beep-on-errors-pref"
-       label="&beepOnErrors.label;" accesskey="&beepOnErrors.accesskey;"/>
-    </hbox>
+    <groupbox>
+      <caption label="&generalOptions.caption;"/>
+
+      <!-- Firefox only -->
+      <checkbox id="always-save-src-url"
+       preference="always-save-src-url-pref"
+       label="&alwaysSaveSrcUrl.label;" accesskey="&alwaysSaveSrcUrl.accesskey;"/>
+      <hbox flex="1">
+        <checkbox id="check-spelling" flex="1"
+         preference="check-spelling-pref"
+         label="&checkSpelling.label;" accesskey="&checkSpelling.accesskey;"/>
+        <checkbox id="beep-on-errors" flex="1" preference="beep-on-errors-pref"
+         label="&beepOnErrors.label;" accesskey="&beepOnErrors.accesskey;"/>
+      </hbox>
+    </groupbox>
   </prefpane>
 
   <!-- Must put all other non-<prefpane> elements after the <prefpane>,
