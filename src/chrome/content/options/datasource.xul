@@ -46,7 +46,7 @@
         </radiogroup>
         <spacer flex="1"/>
       </hbox>
-      <vbox style="-moz-margin-start:23px">
+      <vbox class="indent">
         <textbox id="custom-datasrc-path" size="50" readonly="true"/>
         <hbox>
           <button id="custom-datasrc-brws"
