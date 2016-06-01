@@ -346,13 +346,10 @@ window.aecreations.clippings = {
 
     var clippingText = this.aeClippingSubst.processClippingText(clippingInfo, wnd, overrideTabModalPromptSetting);
 
-    var useClipboard = this.aeUtils.getPref("clippings.use_clipboard", false);
+    var overwriteClipboard = this.aeUtils.getPref("clippings.use_clipboard", false);
 
-    if (useClipboard) {
+    if (overwriteClipboard) {
       this.aeUtils.copyTextToClipboard(clippingText);
-      let that = this;
-      window.setTimeout(function () { that._pasteClipping(that); }, 8);
-      return;
     }
 
     // Send a message to the frame script to insert the clipping text.
@@ -361,24 +358,6 @@ window.aecreations.clippings = {
     this.aeUtils.log("insertClippingText(): Sending message to frame script: " + this.aeConstants.MSG_REQ_INSERT_CLIPPING);
     let browserMM = gBrowser.selectedBrowser.messageManager;
     browserMM.sendAsyncMessage(this.aeConstants.MSG_REQ_INSERT_CLIPPING, msgArgs);
-  },
-
-
-  _pasteClipping: function (aClippings)
-  {
-    try {
-      // Paste clipping.  The following function is defined in
-      // "chrome://global/content/globalOverlay.js"
-      goDoCommand('cmd_paste');
-      // SIDE EFFECT: The clipping text will remain on the system clipboard.
-    }
-    catch (e) {
-      // Exception thrown if command is disabled or not applicable
-      var showFailMsg = aClippings.aeUtils.getPref("clippings.warn_paste_failure", true);
-      if (showFailMsg) {
-	aClippings.alert("Clippings paste failure:\n\n" + e);
-      }
-    }
   },
 
 

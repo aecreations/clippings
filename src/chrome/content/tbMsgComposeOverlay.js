@@ -16,7 +16,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2005-2015
+ * Portions created by the Initial Developer are Copyright (C) 2005-2016
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -290,141 +290,114 @@ window.aecreations.clippings = {
 
     var parentFolderURI = this.clippingsSvc.getParent(aURI);
     var folderName = this.clippingsSvc.getName(parentFolderURI);
-    var clippingInfo = this.aeClippingSubst.getClippingInfo(aURI, aName, aText, folderName);
-    var clippingText = this.aeClippingSubst.processClippingText(clippingInfo, window);
+    var clippingInfo = this.aeClippingSubst.getClippingInfo(aURI, aName, aText,
+                                                            folderName);
+    var clippingText = this.aeClippingSubst.processClippingText(clippingInfo,
+                                                                window);
     var pasteAsQuotation = false;
-    var useClipboard = this.aeUtils.getPref("clippings.use_clipboard", 
+    var overwriteClipboard = this.aeUtils.getPref("clippings.use_clipboard", 
 						  false);
-    if (! useClipboard) {
-      // Paste clipping into subject line
-      var focusedElt = document.commandDispatcher.focusedElement;
-      if (focusedElt instanceof HTMLInputElement) {
-	let textbox = focusedElt;
-        this.aeInsertTextIntoTextbox(textbox, clippingText);
-      }
-
-      // If "Show Options When Pasting" is enabled, ask the user if the
-      // clipping should be pasted as normal or quoted text.
-      if (this.showPasteOpts) {
-	var dlgArgs = { userCancel: null };
-	window.openDialog("chrome://clippings/content/pasteOptions.xul", "ae_clippings_pasteopt_dlg", "chrome,centerscreen,modal", dlgArgs);
-
-	if (dlgArgs.userCancel) {
-	  return;
-	}
-
-	pasteAsQuotation = dlgArgs.pasteOption == 1;
-      }
-
-      var contentFrame = document.getElementById("content-frame");
-      var editor = contentFrame.getEditor(contentFrame.contentWindow);
-
-      // Composing email in rich text (HTML)
-      if (gMsgCompose.composeHTML) {
-	var htmlEditor = editor.QueryInterface(Components.interfaces.nsIHTMLEditor);
-	var hasHTMLTags = clippingText.search(/<[a-z1-6]+( [a-z]+(\="?.*"?)?)*>/i) != -1;
-	var hasRestrictedHTMLTags = clippingText.search(/<\?|<%|<!DOCTYPE|(<\b(html|head|body|meta|script|applet|embed|object|i?frame|frameset)\b)/i) != -1;
-
-	if (hasHTMLTags) {
-	  var pasteAsRichText;
-	  if (! hasRestrictedHTMLTags) {
-	    var showHTMLPasteOpts = this.aeUtils.getPref("clippings.html_paste", 0);
-	    if (showHTMLPasteOpts == this.aeConstants.HTMLPASTE_ASK_THE_USER) {
-	      var dlgArgs = { userCancel: null, pasteAsRichText: null };
-	      window.openDialog("chrome://clippings/content/htmlClipping.xul", "htmlClipping_dlg", "chrome,modal,centerscreen", dlgArgs);
-	      
-	      if (dlgArgs.userCancel) {
-		return;
-	      }
-	      pasteAsRichText = dlgArgs.pasteAsRichText;
-	    }
-	    else {
-	      pasteAsRichText = showHTMLPasteOpts == this.aeConstants.HTMLPASTE_AS_HTML;
-	    }
-	  }
-	  var plainTextClipping = clippingText;
-	  
-	  if (!pasteAsRichText || hasRestrictedHTMLTags) {
-	    clippingText = clippingText.replace(/&/g, "&amp;");
-	    clippingText = clippingText.replace(/</g, "&lt;");
-	    clippingText = clippingText.replace(/>/g, "&gt;");
-	  }
-	}
-	else {
-	  // Could be plain text but with angle brackets, e.g. for denoting URLs
-	  // or email addresses, e.g. <joel_user@acme.com>, <http://www.acme.com>
-	  var hasOpenAngleBrackets = clippingText.search(/</) != -1;
-	  var hasCloseAngleBrackets = clippingText.search(/>/) != -1;
-
-	  if (hasOpenAngleBrackets) {
-	    clippingText = clippingText.replace(/</g, "&lt;");
-	  }
-	  if (hasCloseAngleBrackets) {
-	    clippingText = clippingText.replace(/>/g, "&gt;");	  
-	  }
-	}
-
-	var autoLineBreak = this.aeUtils.getPref("clippings.html_auto_line_break", true);
-	var hasLineBreakTags = clippingText.search(/<br|<p/i) != -1;
-	if (autoLineBreak && !hasLineBreakTags) {
-	  clippingText = clippingText.replace(/\n/g, "<br>");
-	}
-      }
-      else {
-	// Composing email without formatting
-	var plainTextEditor = editor.QueryInterface(Components.interfaces.nsIPlaintextEditor);
-      }
-
-      if (pasteAsQuotation) {
-	var mailEditor = editor.QueryInterface(Components.interfaces.nsIEditorMailSupport);
-	if (gMsgCompose.composeHTML) {
-	  mailEditor.insertAsCitedQuotation(clippingText, "", true);
-	}
-	else {
-	  mailEditor.insertAsQuotation(clippingText);
-	  mailEditor.rewrap(true);
-	}
-	return;
-      }
-      
-      if (gMsgCompose.composeHTML) {
-	htmlEditor.insertHTML(clippingText);
-      }
-      else {
-	plainTextEditor.insertText(clippingText);
-      }
-      
-      return;
+    if (overwriteClipboard) {
+      this.aeUtils.copyTextToClipboard(clippingText);
+    }
+    
+    // Paste clipping into subject line
+    var focusedElt = document.commandDispatcher.focusedElement;
+    if (focusedElt instanceof HTMLInputElement) {
+      let textbox = focusedElt;
+      this.aeInsertTextIntoTextbox(textbox, clippingText);
     }
 
-    this.aeUtils.copyTextToClipboard(clippingText);
-
+    // If "Show Options When Pasting" is enabled, ask the user if the
+    // clipping should be pasted as normal or quoted text.
     if (this.showPasteOpts) {
       var dlgArgs = { userCancel: null };
       window.openDialog("chrome://clippings/content/pasteOptions.xul", "ae_clippings_pasteopt_dlg", "chrome,centerscreen,modal", dlgArgs);
 
       if (dlgArgs.userCancel) {
-	return;
+        return;
       }
 
-      if (dlgArgs.pasteOption == 1) {
-	goDoCommand("cmd_pasteQuote");
-
-	// gMsgCompose defined in <chrome://messenger/content/messengercompose/
-	// MsgComposeCommands.js>.  It is an instance of nsIMsgCompose,
-	// progid "@mozilla.org/messengercompose/compose;1"
-	// Line rewrapping not necessary if composing in HTML format
-	if (! gMsgCompose.composeHTML) {
-	  goDoCommand("cmd_rewrap");
-	}
-	return;
-      }
+      pasteAsQuotation = dlgArgs.pasteOption == 1;
     }
 
-    let that = this;
-    window.setTimeout(function () { 
-      that._pasteClipping(that);
-    }, 8);
+    var contentFrame = document.getElementById("content-frame");
+    var editor = contentFrame.getEditor(contentFrame.contentWindow);
+
+    // Composing email in rich text (HTML)
+    if (gMsgCompose.composeHTML) {
+      var htmlEditor = editor.QueryInterface(Components.interfaces.nsIHTMLEditor);
+      var hasHTMLTags = clippingText.search(/<[a-z1-6]+( [a-z]+(\="?.*"?)?)*>/i) != -1;
+      var hasRestrictedHTMLTags = clippingText.search(/<\?|<%|<!DOCTYPE|(<\b(html|head|body|meta|script|applet|embed|object|i?frame|frameset)\b)/i) != -1;
+
+      if (hasHTMLTags) {
+        var pasteAsRichText;
+        if (! hasRestrictedHTMLTags) {
+          var showHTMLPasteOpts = this.aeUtils.getPref("clippings.html_paste", 0);
+          if (showHTMLPasteOpts == this.aeConstants.HTMLPASTE_ASK_THE_USER) {
+            var dlgArgs = { userCancel: null, pasteAsRichText: null };
+            window.openDialog("chrome://clippings/content/htmlClipping.xul", "htmlClipping_dlg", "chrome,modal,centerscreen", dlgArgs);
+	      
+            if (dlgArgs.userCancel) {
+              return;
+            }
+            pasteAsRichText = dlgArgs.pasteAsRichText;
+          }
+          else {
+            pasteAsRichText = showHTMLPasteOpts == this.aeConstants.HTMLPASTE_AS_HTML;
+          }
+        }
+        var plainTextClipping = clippingText;
+	  
+        if (!pasteAsRichText || hasRestrictedHTMLTags) {
+          clippingText = clippingText.replace(/&/g, "&amp;");
+          clippingText = clippingText.replace(/</g, "&lt;");
+          clippingText = clippingText.replace(/>/g, "&gt;");
+        }
+      }
+      else {
+        // Could be plain text but with angle brackets, e.g. for denoting URLs
+        // or email addresses, e.g. <joel_user@acme.com>, <http://www.acme.com>
+        var hasOpenAngleBrackets = clippingText.search(/</) != -1;
+        var hasCloseAngleBrackets = clippingText.search(/>/) != -1;
+
+        if (hasOpenAngleBrackets) {
+          clippingText = clippingText.replace(/</g, "&lt;");
+        }
+        if (hasCloseAngleBrackets) {
+          clippingText = clippingText.replace(/>/g, "&gt;");	  
+        }
+      }
+
+      var autoLineBreak = this.aeUtils.getPref("clippings.html_auto_line_break", true);
+      var hasLineBreakTags = clippingText.search(/<br|<p/i) != -1;
+      if (autoLineBreak && !hasLineBreakTags) {
+        clippingText = clippingText.replace(/\n/g, "<br>");
+      }
+    }
+    else {
+      // Composing email without formatting
+      var plainTextEditor = editor.QueryInterface(Components.interfaces.nsIPlaintextEditor);
+    }
+
+    if (pasteAsQuotation) {
+      var mailEditor = editor.QueryInterface(Components.interfaces.nsIEditorMailSupport);
+      if (gMsgCompose.composeHTML) {
+        mailEditor.insertAsCitedQuotation(clippingText, "", true);
+      }
+      else {
+        mailEditor.insertAsQuotation(clippingText);
+        mailEditor.rewrap(true);
+      }
+      return;
+    }
+      
+    if (gMsgCompose.composeHTML) {
+      htmlEditor.insertHTML(clippingText);
+    }
+    else {
+      plainTextEditor.insertText(clippingText);
+    }
   },
 
 
