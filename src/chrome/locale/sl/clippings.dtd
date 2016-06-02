@@ -50,6 +50,7 @@
 <!ENTITY backupFiles.caption "Var. kopije">
 <!ENTITY maxFiles.label "Največje št. ohranjenih datotek :">
 <!ENTITY maxFiles.accesskey "N">
+<!ENTITY srcWebPgAddrs.caption "Naslovi izvornih spletnih strani">
 <!ENTITY removeAllSrcURLs.label "Odstrani vse">
 <!ENTITY removeAllSrcURLs.accesskey "O">
 <!ENTITY removeAllSrcURLs.description "Odstrani vse shranjene naslove izvornih spletnih strani (URL-je) iz izrezkov.">
