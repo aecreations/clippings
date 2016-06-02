@@ -50,7 +50,7 @@
 <!ENTITY backupFiles.caption "Varmistustiedostot">
 <!ENTITY maxFiles.label "Säilytettävien tiedostojen enimmäismäärä:">
 <!ENTITY maxFiles.accesskey "e">
-<!ENTITY srcWebPgAddrs.caption "Lähdeverkkosivuosoitteet">
+<!ENTITY srcURLs.caption "Lähdeverkkosivuosoitteet">
 <!ENTITY removeAllSrcURLs.label "Poista kaikki">
 <!ENTITY removeAllSrcURLs.accesskey "P">
 <!ENTITY removeAllSrcURLs.description "Poista kaikki tallennetut lähdeverkkosivuosoitteet leikkeistäsi.">

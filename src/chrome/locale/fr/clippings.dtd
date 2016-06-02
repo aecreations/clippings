@@ -50,7 +50,7 @@
 <!ENTITY backupFiles.caption "Sauvegarder les fichiers">
 <!ENTITY maxFiles.label "Nombre maximum de fichiers à conserver :">
 <!ENTITY maxFiles.accesskey "m">
-<!ENTITY srcWebPgAddrs.caption "Adresses des pages Web sources">
+<!ENTITY srcURLs.caption "Adresses des pages Web sources">
 <!ENTITY removeAllSrcURLs.label "Tout supprimer">
 <!ENTITY removeAllSrcURLs.accesskey "s">
 <!ENTITY removeAllSrcURLs.description "Retirer de vos clippings toutes les adresses de pages sources enregistrées.">

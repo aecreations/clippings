@@ -50,7 +50,7 @@
 <!ENTITY backupFiles.caption "Back-upbestanden">
 <!ENTITY maxFiles.label "Maximaal aantal te bewaren bestanden:">
 <!ENTITY maxFiles.accesskey "M">
-<!ENTITY srcWebPgAddrs.caption "Bronpagina-adressen">
+<!ENTITY srcURLs.caption "Bronpagina-adressen">
 <!ENTITY removeAllSrcURLs.label "Alles verwijderen">
 <!ENTITY removeAllSrcURLs.accesskey "V">
 <!ENTITY removeAllSrcURLs.description "Alle opgeslagen bronpagina-adressen (URL’s) van uw clippings verwijderen.">

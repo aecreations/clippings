@@ -50,7 +50,7 @@
 <!ENTITY backupFiles.caption "Backup">
 <!ENTITY maxFiles.label "Numero massimo di backup da conservare:">
 <!ENTITY maxFiles.accesskey "N">
-<!ENTITY srcWebPgAddrs.caption "Eliminazione indirizzi delle pagine web">
+<!ENTITY srcURLs.caption "Eliminazione indirizzi delle pagine web">
 <!ENTITY removeAllSrcURLs.label "Elimina">
 <!ENTITY removeAllSrcURLs.accesskey "E">
 <!ENTITY removeAllSrcURLs.description "Facendo clic su Elimina verranno eliminati tutti gli indirizzi di origine delle pagine web negli appunti di Clippings">
