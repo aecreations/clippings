@@ -15,7 +15,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2005-2015
+ * Portions created by the Initial Developer are Copyright (C) 2005-2016
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -30,7 +30,7 @@
 }
 
 .ae-clippings-folder {
-  list-style-image: url("chrome://clippings/skin/images/folder.png");
+  list-style-image: url("chrome://clippings/skin/images/folder.svg");
 }
 
 menu > .menu-iconic-left, menuitem > .menu-iconic-left {
@@ -40,11 +40,11 @@ menu > .menu-iconic-left, menuitem > .menu-iconic-left {
 }
 
 menu[open="true"] {
-  list-style-image: url("chrome://clippings/skin/images/folder-open.png");
+  list-style-image: url("chrome://clippings/skin/images/folder-open.svg");
 }
 
 .clippings-root {
-  list-style-image: url("chrome://clippings/skin/images/clippings-root.png");
+  list-style-image: url("chrome://clippings/skin/images/clippings-root.svg");
 }
 
 .clippings-root > .menu-iconic-left {
@@ -53,7 +53,7 @@ menu[open="true"] {
 }
 
 #folder-menu-button {
-  list-style-image: url("chrome://clippings/skin/images/clippings-root.png");
+  list-style-image: url("chrome://clippings/skin/images/clippings-root.svg");
   padding-top: 3px;
   padding-bottom: 1px;
 }
@@ -68,7 +68,7 @@ menu[open="true"] {
 }
 
 #new-folder {
-  list-style-image: url("chrome://clippings/skin/images/clippingsMgrToolbar.png");
+  list-style-image: url("chrome://clippings/skin/images/clippingsMgrToolbar.svg");
   -moz-image-region: rect(0px, 104px, 16px, 88px);
 }
 

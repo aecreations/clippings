@@ -16,7 +16,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2005-2015
+ * Portions created by the Initial Developer are Copyright (C) 2005-2016
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -199,7 +199,7 @@ function checkForChangedFolders()
     aeUtils.log("Folder does not exist.  Defaulting to root folder.");
     gSelectedFolderURI = gClippingsSvc.kRootFolderURI;
     gFolderMenu.label = gStrBundle.getString("clippingsRoot");
-    gFolderMenu.style.listStyleImage  = "url('chrome://clippings/skin/images/clippings-root.png')";
+    gFolderMenu.style.listStyleImage  = "url('chrome://clippings/skin/images/clippings-root.svg')";
   }  
 }
 
@@ -252,11 +252,11 @@ function chooseFolder(aFolderURI)
 
   if (aFolderURI == gClippingsSvc.kRootFolderURI) {
     gFolderMenu.setAttribute("label", gStrBundle.getString("clippingsRoot"));
-    gFolderMenu.style.listStyleImage = "url('chrome://clippings/skin/images/clippings-root.png')";
+    gFolderMenu.style.listStyleImage = "url('chrome://clippings/skin/images/clippings-root.svg')";
   }
   else {
     gFolderMenu.setAttribute("label", gClippingsSvc.getName(aFolderURI));
-    gFolderMenu.style.listStyleImage = "url('chrome://clippings/skin/images/folder.png')";
+    gFolderMenu.style.listStyleImage = "url('chrome://clippings/skin/images/folder.svg')";
   }
 }
 

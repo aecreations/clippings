@@ -15,7 +15,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2014-2015
+ * Portions created by the Initial Developer are Copyright (C) 2014-2016
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -35,7 +35,7 @@ toolbar {
 }
 
 toolbarbutton:not(#close) {
-  list-style-image: url("chrome://clippings/skin/images/clippingsMgrToolbar.png");
+  list-style-image: url("chrome://clippings/skin/images/clippingsMgrToolbar.svg");
 }
 
 #insert-clipping {

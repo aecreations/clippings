@@ -30,7 +30,7 @@
  */
 #clipping-label-menupopup menuitem,
 #clipping-label-cxt-menupopup menuitem {
-  list-style-image: url("chrome://clippings/skin/images/clipping-labels.png");
+  list-style-image: url("chrome://clippings/skin/images/clipping-labels.svg");
   max-width: 16px !important;
 }
 

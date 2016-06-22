@@ -15,7 +15,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2005-2015
+ * Portions created by the Initial Developer are Copyright (C) 2005-2016
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -44,36 +44,36 @@ treechildren::-moz-tree-image {
 }
 
 treechildren::-moz-tree-image(leaf) {
-  list-style-image: url("chrome://clippings/skin/images/clipping.png");
+  list-style-image: url("chrome://clippings/skin/images/clipping.svg");
 }
 
 /* Clipping labels */
 treechildren::-moz-tree-image(leaf, red) {
-  list-style-image: url("chrome://clippings/skin/images/clipping-red.png");
+  list-style-image: url("chrome://clippings/skin/images/clipping-red.svg");
 }
 
 treechildren::-moz-tree-image(leaf, orange) {
-  list-style-image: url("chrome://clippings/skin/images/clipping-orange.png");
+  list-style-image: url("chrome://clippings/skin/images/clipping-orange.svg");
 }
 
 treechildren::-moz-tree-image(leaf, yellow) {
-  list-style-image: url("chrome://clippings/skin/images/clipping-yellow.png");
+  list-style-image: url("chrome://clippings/skin/images/clipping-yellow.svg");
 }
 
 treechildren::-moz-tree-image(leaf, green) {
-  list-style-image: url("chrome://clippings/skin/images/clipping-green.png");
+  list-style-image: url("chrome://clippings/skin/images/clipping-green.svg");
 }
 
 treechildren::-moz-tree-image(leaf, blue) {
-  list-style-image: url("chrome://clippings/skin/images/clipping-blue.png");
+  list-style-image: url("chrome://clippings/skin/images/clipping-blue.svg");
 }
 
 treechildren::-moz-tree-image(leaf, purple) {
-  list-style-image: url("chrome://clippings/skin/images/clipping-purple.png");
+  list-style-image: url("chrome://clippings/skin/images/clipping-purple.svg");
 }
 
 treechildren::-moz-tree-image(leaf, grey) {
-  list-style-image: url("chrome://clippings/skin/images/clipping-grey.png");
+  list-style-image: url("chrome://clippings/skin/images/clipping-grey.svg");
 }
 
 
@@ -87,11 +87,11 @@ treechildren::-moz-tree-cell-text(dummy) {
 }
 
 treechildren::-moz-tree-image(container, open) {
-  list-style-image: url("chrome://clippings/skin/images/folder-open.png");
+  list-style-image: url("chrome://clippings/skin/images/folder-open.svg");
 }
 
 treechildren::-moz-tree-image(container, closed) {
-  list-style-image: url("chrome://clippings/skin/images/folder.png");
+  list-style-image: url("chrome://clippings/skin/images/folder.svg");
 }
 
 
@@ -114,15 +114,15 @@ menu > hbox.menu-iconic-left, menuitem > hbox.menu-iconic-left {
 }
 
 menu.clippings-folder, menuitem.clippings-folder {
-  list-style-image: url("chrome://clippings/skin/images/folder.png");
+  list-style-image: url("chrome://clippings/skin/images/folder.svg");
 }
 
 menu.clippings-folder[open="true"], menuitem.clippings-folder[open="true"] {
-  list-style-image: url("chrome://clippings/skin/images/folder-open.png");
+  list-style-image: url("chrome://clippings/skin/images/folder-open.svg");
 }
 
 menuitem.clippings-root {
-  list-style-image: url("chrome://clippings/skin/images/clippings-root.png");  
+  list-style-image: url("chrome://clippings/skin/images/clippings-root.svg");  
 }
 
 menuitem.clippings-root > hbox.menu-iconic-left {
@@ -135,7 +135,7 @@ spacer.toolbar-separator {
 }
 
 toolbarbutton:not(#placeholder-presets) {
-  list-style-image: url("chrome://clippings/skin/images/clippingsMgrToolbar.png");
+  list-style-image: url("chrome://clippings/skin/images/clippingsMgrToolbar.svg");
   -moz-box-orient: vertical;
   min-width: 52px;
 }
@@ -308,7 +308,7 @@ toolbarbutton .toolbarbutton-icon {
   width: 42px;
   margin-left: 0px;
   margin-right: 3px;
-  list-style-image: url("chrome://clippings/skin/images/clippingsMgrToolbar.png");
+  list-style-image: url("chrome://clippings/skin/images/clippingsMgrToolbar.svg");
 }
 
 #find-filter-menu-btn.find-filter-clippings image {

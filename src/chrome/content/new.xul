@@ -21,7 +21,7 @@
    -
    - The Initial Developer of the Original Code is
    - Alex Eng <ateng@users.sourceforge.net>.
-   - Portions created by the Initial Developer are Copyright (C) 2005-2015
+   - Portions created by the Initial Developer are Copyright (C) 2005-2016
    - the Initial Developer. All Rights Reserved.
    -
    - Contributor(s):
@@ -220,7 +220,7 @@
             <spacer flex="1"/>
             <vbox>
               <box flex="1"/>
-              <image id="shortcut-key-hint" src="chrome://clippings/skin/images/help-tooltip.png"/>
+              <image id="shortcut-key-hint" src="chrome://clippings/skin/images/help-tooltip.svg"/>
 	      <box flex="1"/>
             </vbox>
           </hbox>

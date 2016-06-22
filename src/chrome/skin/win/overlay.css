@@ -1,1 +1,12 @@
 @import url("chrome://clippings/skin/overlay.css");
+
+
+/*** TEMPORARY -- until a proper SVG icon is created ***/
+#ae-clippings-icon[cui-areatype="toolbar"] {
+  list-style-image: url("chrome://clippings/skin/win/images/clippings16.png");
+}
+
+#ae-clippings-icon[cui-areatype="menu-panel"],
+toolbarpaletteitem[place="palette"][removable="true"] > #ae-clippings-icon {
+  list-style-image: url("chrome://clippings/skin/win/images/clippings32.png");
+}
