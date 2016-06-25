@@ -20,7 +20,7 @@
    -
    - The Initial Developer of the Original Code is
    - Alex Eng <ateng@users.sourceforge.net>.
-   - Portions created by the Initial Developer are Copyright (C) 2005-2013
+   - Portions created by the Initial Developer are Copyright (C) 2005-2016
    - the Initial Developer. All Rights Reserved.
    -
    - Contributor(s):
@@ -32,15 +32,15 @@
  onunload="unloadDlg()" ondialogaccept="applyPrefChanges()">
 
   <prefpane id="pane-general" label="&prefGeneral.label;"
-   image="chrome://clippings/skin/images/pref-general.png"
+   image="chrome://clippings/skin/images/pref-general.svg"
    src="chrome://clippings/content/options/general.xul"/>
 
   <prefpane id="pane-datasource" label="&prefDataSource.label;"
-   image="chrome://clippings/skin/images/pref-datasource.png"
+   image="chrome://clippings/skin/images/pref-datasource.svg"
    src="chrome://clippings/content/options/datasource.xul"/>
 
   <prefpane id="pane-clippings-mgr" label="&prefClippingsMgr.label;"
-   image="chrome://clippings/skin/images/pref-clippings-mgr.png"
+   image="chrome://clippings/skin/images/pref-clippings-mgr.svg"
    src="chrome://clippings/content/options/clippingsMgr.xul"/>
 
   <!-- Must put all other non-<prefpane> elements after the last <prefpane>,
