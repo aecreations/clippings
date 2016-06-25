@@ -16,7 +16,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.5 r10040"
-   sodipodi:docname="Clippings32-48_v5.svg"
+   sodipodi:docname="Clippings32-48_v5_mac.svg"
    inkscape:export-filename="/Users/aecreations/Documents/Graphics/Inkscape/Clippings/clippings32.png"
    inkscape:export-xdpi="60"
    inkscape:export-ydpi="60">
@@ -25,11 +25,11 @@
     <linearGradient
        id="linearGradient5375">
       <stop
-         style="stop-color:#b4b4b4;stop-opacity:1;"
+         style="stop-color:#646464;stop-opacity:1;"
          offset="0"
          id="stop5377" />
       <stop
-         style="stop-color:#888888;stop-opacity:1;"
+         style="stop-color:#484848;stop-opacity:1;"
          offset="1"
          id="stop5379" />
     </linearGradient>
@@ -48,11 +48,11 @@
     <linearGradient
        id="linearGradient5329">
       <stop
-         style="stop-color:#787878;stop-opacity:1;"
+         style="stop-color:#404040;stop-opacity:1;"
          offset="0"
          id="stop5331" />
       <stop
-         style="stop-color:#585858;stop-opacity:1;"
+         style="stop-color:#303030;stop-opacity:1;"
          offset="1"
          id="stop5333" />
     </linearGradient>
@@ -62,10 +62,10 @@
        id="linearGradient6082"
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(1.0001708,0,0,0.99347061,-0.00414696,6.8683151)"
-       x1="6.1248078"
-       y1="1006.1039"
-       x2="41.583939"
-       y2="1049.9714" />
+       x1="41.993683"
+       y1="1050.0156"
+       x2="6.2149787"
+       y2="1006.3113" />
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient5375"
@@ -73,10 +73,10 @@
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(1.0001708,0,0,0.99347061,-0.00414696,6.8683151)"
        spreadMethod="pad"
-       x1="6.1248078"
-       y1="1006.1039"
-       x2="23.587225"
-       y2="1040.3162" />
+       x1="34.8699"
+       y1="1050.2672"
+       x2="20.087822"
+       y2="1007.3509" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -85,12 +85,12 @@
      borderopacity="1.0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="11.313708"
-     inkscape:cx="23.328833"
-     inkscape:cy="30.212756"
+     inkscape:zoom="7.9999996"
+     inkscape:cx="23.6875"
+     inkscape:cy="23.292996"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     showgrid="false"
+     showgrid="true"
      inkscape:window-width="1280"
      inkscape:window-height="682"
      inkscape:window-x="0"
@@ -117,7 +117,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -135,7 +135,7 @@
        transform="translate(0,308.26771)" />
     <path
        id="path3849"
-       style="fill:url(#linearGradient6084);fill-opacity:1;stroke:url(#linearGradient6082);stroke-width:2.50000000000000000;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       style="fill:url(#linearGradient6084);fill-opacity:1;stroke:url(#linearGradient6082);stroke-width:2.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        d="m 31.001166,1005.6665 0,9.9344 12.002047,0 m -37.6617525,-10.0986 0,41.8897 c 2.4227583,-6.6935 12.0130745,-9.4238 18.1972605,-5.9607 4.603275,2.4733 3.809172,4.8427 10.181956,8.5729 4.138317,2.0609 7.339877,1.362 9.401264,1.362 l -0.118728,-35.4399 -12.420037,-10.424 z"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccccccccc"

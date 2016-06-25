@@ -16,8 +16,8 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.5 r10040"
-   sodipodi:docname="Clippings16_v5.svg"
-   inkscape:export-filename="/Users/aecreations/Documents/Graphics/Inkscape/Clippings/clippings16.png"
+   sodipodi:docname="Clippings16_v5_mac.svg"
+   inkscape:export-filename="/Users/aecreations/Documents/Graphics/Inkscape/Clippings/clippings16-win10.png"
    inkscape:export-xdpi="30"
    inkscape:export-ydpi="30">
   <defs
@@ -27,9 +27,9 @@
       <stop
          id="stop5420"
          offset="0"
-         style="stop-color:#b4b4b4;stop-opacity:1;" />
+         style="stop-color:#6c6c6c;stop-opacity:1;" />
       <stop
-         style="stop-color:#888888;stop-opacity:1;"
+         style="stop-color:#505050;stop-opacity:1;"
          offset="1"
          id="stop3776" />
     </linearGradient>
@@ -70,11 +70,11 @@
     <linearGradient
        id="linearGradient5329">
       <stop
-         style="stop-color:#787878;stop-opacity:1;"
+         style="stop-color:#404040;stop-opacity:1;"
          offset="0"
          id="stop5331" />
       <stop
-         style="stop-color:#585858;stop-opacity:1;"
+         style="stop-color:#303030;stop-opacity:1;"
          offset="1"
          id="stop5333" />
     </linearGradient>
@@ -82,22 +82,23 @@
        inkscape:collect="always"
        xlink:href="#linearGradient5329"
        id="linearGradient5335"
-       x1="5"
-       y1="1007.3622"
-       x2="42.333809"
-       y2="1052.3622"
+       x1="42.502998"
+       y1="1050.9648"
+       x2="7.8529053"
+       y2="1006.3621"
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(1.0100983,0,0,0.95285571,-0.43220618,48.444296)" />
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient3771"
        id="linearGradient3778"
-       x1="18.716461"
-       y1="1004.6843"
-       x2="27.871941"
-       y2="1042.5593"
+       x1="35.079823"
+       y1="1048.3645"
+       x2="22.702677"
+       y2="1006.6595"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.0099258,0,0,0.95911816,-0.42801806,41.85677)" />
+       gradientTransform="matrix(1.0099258,0,0,0.95911816,-0.42801806,41.85677)"
+       spreadMethod="pad" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -107,8 +108,8 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:zoom="8"
-     inkscape:cx="22.813953"
-     inkscape:cy="28.639097"
+     inkscape:cx="19.651664"
+     inkscape:cy="23.639097"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -138,7 +139,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
