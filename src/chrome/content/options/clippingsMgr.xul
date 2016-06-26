@@ -19,7 +19,7 @@
    -
    - The Initial Developer of the Original Code is
    - Alex Eng <ateng@users.sourceforge.net>.
-   - Portions created by the Initial Developer are Copyright (C) 2005-2013
+   - Portions created by the Initial Developer are Copyright (C) 2005-2016
    - the Initial Developer. All Rights Reserved.
    -
    - Contributor(s):
@@ -41,7 +41,7 @@
     <separator />
 
     <caption class="ae-caption" label="&clippingsMgrKeys.caption;"/>
-    <separator class="groove"/>
+    <separator class="ae-separator"/>
     <vbox class="ae-group-box" flex="1">
       <separator class="thin"/>
       <iframe id="clipmgr-shortcut-key-legend" flex="1" type="chrome" 

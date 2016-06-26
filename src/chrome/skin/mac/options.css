@@ -15,7 +15,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2013-2015
+ * Portions created by the Initial Developer are Copyright (C) 2013-2016
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -53,6 +53,14 @@ prefpane description {
 
 .ae-caption {
   margin-left: 0px;
+}
+
+.ae-separator {
+  height: 0px !important;
+  border-top: 1px solid threedshadow;
+  border-bottom: 1px solid threedhighlight;
+  margin-top: 2px;
+  margin-bottom: 0.5em;
 }
 
 .ae-group-box {

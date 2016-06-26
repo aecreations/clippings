@@ -33,6 +33,14 @@ prefwindow {
   margin-left: 0px;
 }
 
+.ae-separator {
+  height: 0px !important;
+  border-top: 1px solid threedshadow;
+  border-bottom: 1px solid threedhighlight;
+  margin-top: 2px;
+  margin-bottom: 0.5em;
+}
+
 .ae-group-box {
   -moz-box-flex: 1;
   margin-left: 1.5em;
