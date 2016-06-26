@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:osb="http://www.openswatchbook.org/uri/2009/osb"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="32px"
+   height="32px"
+   id="svg2988"
+   version="1.1"
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="pref-general.svg"
+   inkscape:export-filename="/Users/aecreations/Documents/Graphics/Inkscape/Clippings/Prefwindow/pref-general.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs2990">
+    <linearGradient
+       id="linearGradient51984">
+      <stop
+         style="stop-color:#444444;stop-opacity:1;"
+         offset="0"
+         id="stop51986" />
+      <stop
+         style="stop-color:#444444;stop-opacity:0;"
+         offset="1"
+         id="stop51988" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3794">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1;"
+         offset="0"
+         id="stop3796" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:0.50196081;"
+         offset="1"
+         id="stop3798" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient5304">
+      <stop
+         style="stop-color:#dcd8ed;stop-opacity:1;"
+         offset="0"
+         id="stop5306" />
+      <stop
+         style="stop-color:#bbb4dc;stop-opacity:1;"
+         offset="1"
+         id="stop5308" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient5296">
+      <stop
+         style="stop-color:#d7ecff;stop-opacity:1;"
+         offset="0"
+         id="stop5298" />
+      <stop
+         style="stop-color:#7c99b3;stop-opacity:1;"
+         offset="1"
+         id="stop5300" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient5216"
+       osb:paint="solid">
+      <stop
+         style="stop-color:#d8d4ff;stop-opacity:1;"
+         offset="0"
+         id="stop5218" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5296"
+       id="linearGradient5302"
+       x1="4.7439998"
+       y1="14.7308"
+       x2="12.35244"
+       y2="14.7308"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1,0,0,1.2687626,-0.87814867,-4.6679564)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5296"
+       id="linearGradient5310"
+       x1="12.596"
+       y1="20.344149"
+       x2="20.204439"
+       y2="20.344149"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1,0,0,1.2295552,0.22115067,-5.9343234)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5296"
+       id="linearGradient5318"
+       x1="20.882999"
+       y1="11.765058"
+       x2="28.49144"
+       y2="11.765058"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1,0,0,1.5022881,0.02180485,-5.6413778)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5304"
+       id="linearGradient3776"
+       x1="16.044649"
+       y1="7.4233727"
+       x2="16.044649"
+       y2="27.750875"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.0225015,0,0,0.98388869,-0.40567862,-0.30377256)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3794"
+       id="linearGradient3800"
+       x1="3.0509586"
+       y1="5.0979848"
+       x2="3.0687692"
+       y2="27.87031"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.98161656,0,0,0.97827671,0.02720865,0.07951)" />
+    <filter
+       id="filter3223"
+       inkscape:label="Clean edges"
+       inkscape:menu="ABCs"
+       inkscape:menu-tooltip="Removes or decreases glows and jaggeries around objects edges after applying some filters"
+       height="1"
+       width="1"
+       y="0"
+       x="0"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur3225"
+         result="result6"
+         stdDeviation="0.4" />
+      <feComposite
+         id="feComposite3227"
+         in2="result6"
+         operator="in"
+         in="SourceGraphic"
+         result="result7" />
+      <feComposite
+         id="feComposite3229"
+         in2="result7"
+         operator="in"
+         result="result8"
+         in="result7" />
+    </filter>
+    <filter
+       id="filter3231"
+       inkscape:label="Clean edges"
+       inkscape:menu="ABCs"
+       inkscape:menu-tooltip="Removes or decreases glows and jaggeries around objects edges after applying some filters"
+       height="1"
+       width="1"
+       y="0"
+       x="0"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur3233"
+         result="result6"
+         stdDeviation="0.4" />
+      <feComposite
+         id="feComposite3235"
+         in2="result6"
+         operator="in"
+         in="SourceGraphic"
+         result="result7" />
+      <feComposite
+         id="feComposite3237"
+         in2="result7"
+         operator="in"
+         result="result8"
+         in="result7" />
+    </filter>
+    <filter
+       id="filter3239"
+       inkscape:label="Clean edges"
+       inkscape:menu="ABCs"
+       inkscape:menu-tooltip="Removes or decreases glows and jaggeries around objects edges after applying some filters"
+       height="1"
+       width="1"
+       y="0"
+       x="0"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur3241"
+         result="result6"
+         stdDeviation="0.4" />
+      <feComposite
+         id="feComposite3243"
+         in2="result6"
+         operator="in"
+         in="SourceGraphic"
+         result="result7" />
+      <feComposite
+         id="feComposite3245"
+         in2="result7"
+         operator="in"
+         result="result8"
+         in="result7" />
+    </filter>
+    <filter
+       id="filter4039"
+       inkscape:label="Clean edges"
+       inkscape:menu="ABCs"
+       inkscape:menu-tooltip="Removes or decreases glows and jaggeries around objects edges after applying some filters"
+       height="1"
+       width="1"
+       y="0"
+       x="0"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur4041"
+         result="result6"
+         stdDeviation="0.4" />
+      <feComposite
+         id="feComposite4043"
+         in2="result6"
+         operator="in"
+         in="SourceGraphic"
+         result="result7" />
+      <feComposite
+         id="feComposite4045"
+         in2="result7"
+         operator="in"
+         result="result8"
+         in="result7" />
+    </filter>
+    <filter
+       id="filter3023"
+       inkscape:label="Clean edges"
+       inkscape:menu="ABCs"
+       inkscape:menu-tooltip="Removes or decreases glows and jaggeries around objects edges after applying some filters"
+       height="1"
+       width="1"
+       y="0"
+       x="0"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur3025"
+         result="result6"
+         stdDeviation="0.4" />
+      <feComposite
+         id="feComposite3027"
+         in2="result6"
+         operator="in"
+         in="SourceGraphic"
+         result="result7" />
+      <feComposite
+         id="feComposite3029"
+         in2="result7"
+         operator="in"
+         result="result8"
+         in="result7" />
+    </filter>
+    <filter
+       id="filter3031"
+       inkscape:label="Clean edges"
+       inkscape:menu="ABCs"
+       inkscape:menu-tooltip="Removes or decreases glows and jaggeries around objects edges after applying some filters"
+       height="1"
+       width="1"
+       y="0"
+       x="0"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur3033"
+         result="result6"
+         stdDeviation="0.4" />
+      <feComposite
+         id="feComposite3035"
+         in2="result6"
+         operator="in"
+         in="SourceGraphic"
+         result="result7" />
+      <feComposite
+         id="feComposite3037"
+         in2="result7"
+         operator="in"
+         result="result8"
+         in="result7" />
+    </filter>
+    <filter
+       id="filter3039"
+       inkscape:label="Clean edges"
+       inkscape:menu="ABCs"
+       inkscape:menu-tooltip="Removes or decreases glows and jaggeries around objects edges after applying some filters"
+       height="1"
+       width="1"
+       y="0"
+       x="0"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur3041"
+         result="result6"
+         stdDeviation="0.4" />
+      <feComposite
+         id="feComposite3043"
+         in2="result6"
+         operator="in"
+         in="SourceGraphic"
+         result="result7" />
+      <feComposite
+         id="feComposite3045"
+         in2="result7"
+         operator="in"
+         result="result8"
+         in="result7" />
+    </filter>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient51984"
+       id="linearGradient51990"
+       x1="16.5"
+       y1="27.799999"
+       x2="16.5"
+       y2="29.799999"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(0,0.2)" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="11.197802"
+     inkscape:cx="20.032052"
+     inkscape:cy="16.232149"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:grid-bbox="true"
+     inkscape:document-units="px"
+     inkscape:snap-global="true"
+     inkscape:window-width="1280"
+     inkscape:window-height="667"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:snap-nodes="true">
+    <inkscape:grid
+       type="xygrid"
+       id="grid2996"
+       empspacing="2"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata2993">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer">
+    <rect
+       style="fill:url(#linearGradient3776);fill-opacity:1;stroke:#8c7dc3;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect2998"
+       width="31"
+       height="26"
+       x="0.5"
+       y="2.5"
+       inkscape:export-filename="/Users/aecreations/Documents/Graphics/Inkscape/Clippings/Prefwindow/pref-general.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:#6a5ba5;fill-opacity:1;fill-rule:nonzero;stroke:#483c78;stroke-width:0.52700001;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;filter:url(#filter3023)"
+       id="rect5222"
+       width="2.0272796"
+       height="13.368791"
+       x="7.6757603"
+       y="9.8766718"
+       transform="matrix(0.99552229,0,0,1.0394009,-1.0392405,-1.6634975)" />
+    <rect
+       style="fill:url(#linearGradient5302);fill-opacity:1;fill-rule:nonzero;stroke:#303030;stroke-width:0.69999999;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;filter:url(#filter3223)"
+       id="rect5224"
+       width="6.5621424"
+       height="3.4537027"
+       x="4.3889999"
+       y="12.295078" />
+    <rect
+       y="9.7873688"
+       x="15.313143"
+       height="13.368791"
+       width="2.0272796"
+       id="rect5249"
+       style="fill:#6b5ba5;fill-opacity:1;fill-rule:nonzero;stroke:#483c78;stroke-width:0.52700001;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;filter:url(#filter3039)"
+       transform="matrix(0.99626126,0,0,1.0328329,0.18250675,-1.507142)" />
+    <rect
+       y="17.359777"
+       x="13.347"
+       height="3.4403"
+       width="6.5487394"
+       id="rect5251"
+       style="fill:url(#linearGradient5310);fill-opacity:1;fill-rule:nonzero;stroke:#303030;stroke-width:0.69999999;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;filter:url(#filter3231)" />
+    <rect
+       y="9.7873688"
+       x="23.614761"
+       height="13.368791"
+       width="2.0272796"
+       id="rect5265"
+       style="fill:#6a5ba5;fill-opacity:1;fill-rule:nonzero;stroke:#483c78;stroke-width:0.52700001;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;filter:url(#filter3031)"
+       transform="matrix(0.99552229,0,0,1.0394009,0.23174411,-1.6599789)" />
+    <rect
+       y="10.271317"
+       x="21.393"
+       height="3.5236139"
+       width="6.6320539"
+       id="rect5267"
+       style="fill:url(#linearGradient5318);fill-opacity:1;fill-rule:nonzero;stroke:#303030;stroke-width:0.69999999;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;filter:url(#filter3239)" />
+    <path
+       style="fill:none;stroke:url(#linearGradient51990);stroke-width:1.50000000000000000;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 0,29.7 31.939646,0"
+       id="path51982"
+       inkscape:connector-curvature="0" />
+  </g>
+</svg>
