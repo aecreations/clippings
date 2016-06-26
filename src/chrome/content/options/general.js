@@ -71,11 +71,6 @@ function initPrefPaneGeneral()
   var shortcutKeyStr = gStrBundle.getFormattedString("shortcutMode", [shortcutKeyPrefix]);
   $("enable-shortcut-key").label = shortcutKeyStr;
   $("enable-shortcut-key").accessKey = gStrBundle.getString("shortcutModeAccessKey");
-
-  var useClipboard = aeUtils.getPref("clippings.use_clipboard", false);
-  if (! useClipboard) {
-    togglePasteOptionsCheckedState();
-  }
 }
 
 
