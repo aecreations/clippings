@@ -1,9 +1,16 @@
 @import url("chrome://clippings/skin/overlay.css");
 
 
-/*** TEMPORARY -- until a proper SVG icon is created ***/
+/*
+ * Overlay toolbar button icon on Windows 7
+ */
+
 #ae-clippings-icon[cui-areatype="toolbar"] {
   list-style-image: url("chrome://clippings/skin/win/images/clippings16.png");
+}
+
+toolbar[brighttext="true"] #ae-clippings-icon[cui-areatype="toolbar"] {
+  list-style-image: url("chrome://clippings/skin/win/images/clippings-bright16.svg");
 }
 
 #ae-clippings-icon[cui-areatype="menu-panel"],
