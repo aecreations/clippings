@@ -32,6 +32,7 @@
 <!ENTITY autoLineBreak.label "Samodejno prelomi vrstice, razen če obstaja oznaka &lt;p&gt; ali &lt;br&gt;">
 <!ENTITY autoLineBreak.accesskey "s">
 <!ENTITY htmlPaste.description "Izrezek oblikovan v HTML-u bo ob lepljenju v polje za golo besedilo ali če izrezek vsebuje omejene oznake, kot so &lt;script&gt;, &lt;applet&gt;, &lt;object&gt;, &lt;iframe&gt; itd., vedno prilepljen kot golo besedilo.">
+<!ENTITY generalOptions.caption "Splošne možnosti">
 <!ENTITY checkSpelling.label "Preveri črkovanje">
 <!ENTITY checkSpelling.accesskey "P">
 <!ENTITY tabModalPrompt.label "Ne blokiraj okna brskalnika ob pozivu za besedilo ograde">

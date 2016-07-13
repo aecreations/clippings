@@ -32,6 +32,7 @@
 <!ENTITY autoLineBreak.label "Revenir automatiquement à la ligne à moins que des balises &lt;p&gt; et &lt;br&gt; existent">
 <!ENTITY autoLineBreak.accesskey "R">
 <!ENTITY htmlPaste.description "Un clipping au format HTML sera toujours collé en texte brut dans le cas d'une boîte affichant du texte sans formatage ou si le clipping contient des balises interdites telles que &lt;script&gt;, &lt;applet&gt;, &lt;object&gt;, &lt;iframe&gt;, etc.">
+<!ENTITY generalOptions.caption "Paramètres généraux">
 <!ENTITY checkSpelling.label "Vérifier l'orthographe">
 <!ENTITY checkSpelling.accesskey "V">
 <!ENTITY tabModalPrompt.label "Ne pas bloquer la fenêtre du navigateur lors de la demande d'un texte de substitution">

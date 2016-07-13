@@ -32,6 +32,7 @@
 <!ENTITY autoLineBreak.label "Interrompi le linee automaticamente se non sono presenti i tag &lt;p&gt; o &lt;br&gt;">
 <!ENTITY autoLineBreak.accesskey "I">
 <!ENTITY htmlPaste.description "Nota: gli appunti con formattazione HTML verranno sempre incollati come testo semplice se il campo di testo supporta solo testo semplice o se l'appunto contiene tag riservati quali &lt;script&gt;, &lt;applet&gt;, &lt;object&gt;, &lt;iframe&gt;, etc">
+<!ENTITY generalOptions.caption "Varie">
 <!ENTITY checkSpelling.label "Attiva il controllo ortografico">
 <!ENTITY checkSpelling.accesskey "C">
 <!ENTITY tabModalPrompt.label "Permetti l'accesso alla finestra del browser quando è richiesto l'inserimento di un valore">

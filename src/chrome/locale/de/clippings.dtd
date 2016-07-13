@@ -1,4 +1,7 @@
+<!-- General -->
 <!ENTITY clippings.appName "Clippings - Einstellungen">
+
+<!-- Overlay -->
 <!ENTITY clippings.menuLabel "Clippings">
 <!ENTITY new.menuLabel "Neuer Eintrag">
 <!ENTITY new.accesskey "N">
@@ -11,11 +14,15 @@
 <!ENTITY showPasteOpts.label "Zitat-Optionen beim Einfügen anzeigen">
 <!ENTITY showPasteOpts.accesskey "S">
 <!ENTITY statusbar.tooltip "Ausgewählten Text auf das Symbol ziehen, um einen neuen Textbaustein zu erstellen.">
+<!ENTITY toolbarbutton.tooltip "Markierung hierher ziehen, um ein neues Clipping zu erzeugen.">
 <!ENTITY resetAutoIncrVars.label "Automatische Nummerngebung der Platzhalter zurücksetzen">
 <!ENTITY empty.label "(Leer)">
+
+<!-- Extension preferences dialog -->
 <!ENTITY prefGeneral.label "Allgemein">
 <!ENTITY prefDataSource.label "Datenquelle">
 <!ENTITY prefClippingsMgr.label "Textbaustein-Manager">
+
 <!ENTITY pasteOptions.caption "Optionen beim Einfügen von Textbausteinen">
 <!ENTITY useClipboard.label "Textbaustein einfügen unter Verwendung der &quot;Kopieren und Einfügen&quot;-Funktion der Zwischenablage">
 <!ENTITY useClipboard.accesskey "Z">
@@ -25,12 +32,16 @@
 <!ENTITY autoLineBreak.label "Zeilen automatisch umbrechen, außer bei &lt;p&gt; oder &lt;p&gt; Tags">
 <!ENTITY autoLineBreak.accesskey "u">
 <!ENTITY htmlPaste.description "Ein als HTML formatierter Textbaustein immer als reiner Text eingefügen, wenn er in eine reine Textbox eingefügt wird oder der Textbaustein einschränkende Tags wie z. B. &lt;script&gt;, &lt;applet&gt;, &lt;object&gt;, &lt;iframe&gt;, usw. enthält.">
+<!ENTITY generalOptions.caption "Allgemeine Einstellungen">
 <!ENTITY checkSpelling.label "Rechtschreibung prüfen">
 <!ENTITY checkSpelling.accesskey "R">
 <!ENTITY tabModalPrompt.label "Browser-Fenster nicht blockieren beim Öffnen der Eingabeaufforderung für Platzhaltertext">
 <!ENTITY tabModalPrompt.accesskey "B">
 <!ENTITY beepOnErrors.label "Signalton bei Fehlern">
 <!ENTITY beepOnErrors.accesskey "S">
+<!ENTITY alwaysSaveSrcUrl.label "Webseiten Quelladresse immer speichern">
+<!ENTITY alwaysSaveSrcUrl.accesskey "W">
+
 <!ENTITY dataSourceSettings.title "Einstellungen der Datenquelle">
 <!ENTITY dataSrcLocation.caption "Ort der Datenquelle">
 <!ENTITY otherLocation.label "Anderer Speicherort:">
@@ -40,9 +51,16 @@
 <!ENTITY backupFiles.caption "Daten sichern">
 <!ENTITY maxFiles.label "Maximale Anzahl der beizubehaltenden Dateien:">
 <!ENTITY maxFiles.accesskey "M">
+<!ENTITY srcURLs.caption "Quell-Webseitenadressen">
+<!ENTITY removeAllSrcURLs.label "Alles entfernen">
+<!ENTITY removeAllSrcURLs.accesskey "e">
+<!ENTITY removeAllSrcURLs.description "Alle Quell-Webseitenadressen(URLs) entfernen">
+
 <!ENTITY showStatusBar.label "In der Statusleiste anzeigen">
 <!ENTITY showStatusBar.accesskey "S">
 <!ENTITY clippingsMgrKeys.caption "Tastaturkürzel des Textbaustein-Managers">
+
+<!-- Clippings Manager shortcut key legend -->
 <!ENTITY key.del "Entf">
 <!ENTITY key.esc "ESC">
 <!ENTITY key.ctrlF "Strg + F">
@@ -62,21 +80,21 @@
 <!ENTITY undoEdit "Bearbeitung rückgängig machen">
 <!ENTITY showClipMgrIntro "Einführung in den Textbaustein-Manager anzeigen">
 <!ENTITY undoUndo "Rückgängig machen wiederholen">
+
+<!-- Clippings Manager -->
 <!ENTITY clippingsManager.title "Textbaustein-Verwaltung">
 <!ENTITY insertClipping.label "Textbaustein einfügen">
 <!ENTITY insertClipping.accesskey "I">
 <!ENTITY move.label "Verschieben">
 <!ENTITY move.accesskey "V">
-<!ENTITY moveUp.label "Nach oben verschieben">
-<!ENTITY moveUp.accesskey "o">
-<!ENTITY moveDown.label "Nach unten verschieben">
-<!ENTITY moveDown.accesskey "u">
 <!ENTITY moveTo.label "Verschieben nach">
 <!ENTITY moveTo.accesskey "V">
 <!ENTITY copyTo.label "Duplizieren nach">
 <!ENTITY copyTo.accesskey "D">
 <!ENTITY moveHere.label "Hierhin verschieben">
 <!ENTITY copyHere.label "Hierhin duplizieren">
+<!ENTITY goToURL.label "Quelladresse öffnen">
+<!ENTITY goToURL.accesskey "f">
 <!ENTITY clippingsRoot.label "Hauptordner">
 <!ENTITY newClipping.label "Neuer Eintrag">
 <!ENTITY newClipping.accesskey "N">
@@ -92,9 +110,10 @@
 <!ENTITY description.accesskey "N">
 <!ENTITY text.label "Text:">
 <!ENTITY text.accesskey "T">
+<!ENTITY clippingText.placeholder "Clipping Text eingeben">
 <!ENTITY import.label "Importieren…">
 <!ENTITY import.accesskey "I">
-<!ENTITY export.label "Exportieren…">
+<!ENTITY export.label "Exportieren…"> 
 <!ENTITY export.accesskey "E">
 <!ENTITY tools.label "Optionen">
 <!ENTITY tools.accesskey "E">
@@ -111,11 +130,10 @@
 <!ENTITY reload.accesskey "N">
 <!ENTITY shortcutkey.label "Tastaturkürzel:">
 <!ENTITY shortcutkey.accesskey "K">
-<!ENTITY migrate.label "Textbausteine zusammenführen…">
-<!ENTITY migrate.accesskey "T">
 <!ENTITY dataFileOptions.label "Datenquelle festlegen">
 <!ENTITY dataFileOptions.accesskey "D">
 <!ENTITY shortcutKeyList.label "Liste der Tastaturkürzel">
+<!ENTITY sourceURL.label "Quellenadresse:">
 <!ENTITY findBar.label "Suchen:">
 <!ENTITY findPrev.label "Vorheriges">
 <!ENTITY findPrev.accesskey "V">
@@ -125,10 +143,54 @@
 <!ENTITY matchCase.accesskey "G">
 <!ENTITY findClippings.label "Textbausteine">
 <!ENTITY findClippingsAndFldrs.label "Textbausteine und Ordner">
+<!ENTITY options.label "Optionen ...">
+<!ENTITY options.accesskey "O">
+<!ENTITY showHide.label "Anzeigen / Verbergen">
+<!ENTITY showHide.accesskey "z">
+<!ENTITY placeholderBar.label "Platzhalter Werkzeugleiste ">
+<!ENTITY placeholderBar.accesskey "P">
+<!ENTITY detailsPane.label "Detailbereich">
+<!ENTITY detailsPane.accesskey "D">
+
 <!ENTITY closeCmd.key "W">
 <!ENTITY forceSaveCmd.key "S">
 <!ENTITY reload.key "R">
 <!ENTITY toggleFindBar.key "F">
+
+<!ENTITY placeholderToolbar.label "Platzhalter einfügen">
+<!ENTITY placeholderPresets.label "Voreinstellungen">
+<!ENTITY placeholderCustom.label "Benutzerdefiniert">
+<!ENTITY placeholderAutoincrement.label "Numerisch">
+<!ENTITY placeholderDate.label "Datum">
+<!ENTITY placeholderTime.label "Zeit">
+<!ENTITY placeholderAppName.label "Anwendungsbezeichnung">
+<!ENTITY placeholderUserAgent.label "User-Agent">
+<!ENTITY placeholderClippingName.label "Clipping Name">
+<!ENTITY placeholderFolderName.label "Bezeichnung des übergeordneten Ordners">
+<!ENTITY editSrcURL.label "Editieren">
+<!ENTITY editSrcURL.accesskey "t">
+
+<!ENTITY clippingLabel.label "Farbe">
+<!ENTITY clippingLabel.accesskey "F">
+<!ENTITY labelNone.tooltip "Keine">
+<!ENTITY labelRed.tooltip "Rot">
+<!ENTITY labelOrange.tooltip "Orange">
+<!ENTITY labelYellow.tooltip "Gelb">
+<!ENTITY labelGreen.tooltip "Grün">
+<!ENTITY labelBlue.tooltip "Blau">
+<!ENTITY labelPurple.tooltip "Violett">
+<!ENTITY labelGray.tooltip "Grau">
+
+<!-- Insert Placeholder dialog -->
+<!ENTITY insertPlaceholder.title "Platzhalter einfügen">
+<!ENTITY placeholderName.accesskey "P">
+<!ENTITY defaultValue.label "Vorgabewert:">
+<!ENTITY defaultValue.accesskey "D">
+<!ENTITY defaultValue.placeholder "Optional">
+<!ENTITY defaultValue.description "Mehrere Werte mit &quot;|&quot;-Symbol trennen. Beispiel: rot|grün|blau">
+<!ENTITY autoIncrement.description "Nach Einfügen eines Textbausteins, werden Sie aufgefordert den ersten numerischen Wert anzugeben. Der Wert wird automatisch, jedes Mal, um einen Punkt erhöht, wenn der gleiche Baustein eingefügt wird, bis es im Clippings-Kontextmenü zurückgesetzt wird.">
+
+<!-- Export dialog -->
 <!ENTITY export.title "Textbausteine exportieren…">
 <!ENTITY exportButton.label "Exportieren…">
 <!ENTITY exportButton.accesskey "x">
@@ -136,8 +198,15 @@
 <!ENTITY exportFormatList.accesskey "F">
 <!ENTITY description.caption "Beschreibung">
 <!ENTITY fmtClippings.listitem "Clippings-Datei">
-<!ENTITY fmtClippings1x.listitem "Clippings-Datei für Version 1.x">
 <!ENTITY fmtHtmlDocument.listitem "HTML-Datei">
+<!ENTITY includeSrcURLs.label "Webseiten Quelladresse des Textbausteins integrieren">
+<!ENTITY includeSrcURLs.accesskey "i">
+
+<!-- New Clipping dialog -->
+<!ENTITY clippingName.label "Bezeichnung">
+<!ENTITY clippingName.accesskey "B">
+<!ENTITY saveSourceURL.label "Adresse der Quellen-Internetseite speichern">
+<!ENTITY saveSourceURL.accesskey "Q">
 <!ENTITY newClippingsEntry.title "Neuer Eintrag">
 <!ENTITY newFolder.title "Neuer Ordner">
 <!ENTITY createIn.label "Anlegen in:">
@@ -152,9 +221,13 @@
 <!ENTITY createAsUnquoted.accesskey "u">
 <!ENTITY removeExtraLineBreaks.label "Zusätzliche Zeilenumbrüche entfernen">
 <!ENTITY removeExtraLineBreaks.accesskey "ü">
-<!ENTITY tabGeneral.label "Allgemein">
-<!ENTITY tabShortcutKey.label "Tastaturkürzel">
 <!ENTITY none.label "(keines)">
+<!ENTITY newClippingOptions.label "Optionen">
+<!ENTITY newClippingOptions.accesskey "O">
+<!ENTITY clippingLabelPicker.label "Farbe:">
+<!ENTITY clippingLabelPicker.accesskey "F">
+
+<!-- Quote Options dialog (Thunderbird only) -->
 <!ENTITY pasteClippingAs.label "Textbaustein einfügen als">
 <!ENTITY pasteAsNormal.label "normalen Text">
 <!ENTITY pasteAsNormal.accesskey "n">
@@ -162,26 +235,38 @@
 <!ENTITY pasteAsQuoted.accesskey "z">
 <!ENTITY rewrapLines.label "Zeilen neu umbrechen (empfohlen)">
 <!ENTITY rewrapLines.accesskey "u">
+
+<!-- HTML paste dialog -->
 <!ENTITY htmlClipping "Der ausgewählte Textbaustein scheint HTML-Tags zu enthalten">
 <!ENTITY pasteAsFormatted.label "Als formatierten Text einfügen">
 <!ENTITY pasteAsFormatted.accesskey "f">
 <!ENTITY pasteAsPlain.label "Als Reintext einfügen, HTML-Tags behalten">
 <!ENTITY pasteAsPlain.accesskey "R">
 <!ENTITY pasteClipping.label "Textbaustein einfügen">
+
+<!-- Shortcut key prompt -->
 <!ENTITY clippingKey.title "Textbaustein einfügen">
 <!ENTITY clippingKey.description "Verwenden Sie das zugewiesene Tastaturkürzel für den Textbaustein der eingefügt werden soll.">
+<!ENTITY clippingSearch.description "Clipping an hand der Bezeichnung suchen">
 <!ENTITY clippingKeyHelp.description "F1=Liste der Tastaturkürzel">
+<!ENTITY clippingKeyShortcut.description "TAB = Tastaturkürzel-Modus">
+<!ENTITY clippingKeySearch.description "TAB = Clipping an hand der Bezeichnung suchen">
 <!ENTITY shortcutHelp.title "Clippings - Tastaturkürzel">
-<!ENTITY shortcutCol.label "Tastaturkürzel">
+<!ENTITY shortcutCol.label "Tastaturkürzel"> 
 <!ENTITY clippingCol.label "Namen des Textbausteins">
 <!ENTITY save.label "Speichern">
 <!ENTITY save.accesskey "S">
 <!ENTITY print.label "Drucken">
 <!ENTITY print.accesskey "D">
 <!ENTITY close.accesskey "T">
+
+<!-- Placeholder prompt -->
 <!ENTITY pasteClipping.title "Textbaustein einfügen">
+
+<!-- Misc -->
 <!ENTITY okButton.label "OK">
 <!ENTITY cancelButton.label "Abbrechen">
 <!ENTITY closeButton.label "Schließen">
 <!ENTITY closeButton.accesskey "S">
 <!ENTITY errorNoClipboardContent.desc "Die Zwischenablage ist leer oder enthält keine Textdaten.">
+
