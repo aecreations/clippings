@@ -122,29 +122,29 @@ menu.ae-clippings-folder-menu[open="true"] {
 }
 
 /* 
- * Windows 10: Use darker grey overlay toolbar button icons.
+ * Windows 7: Use PNG images with the dark steel blue color.
  */
-@media (-moz-os-version: windows-win10) {
+@media (-moz-os-version: windows-win7) {
 
   #ae-clippings-icon[cui-areatype="toolbar"] {
-    list-style-image: url("chrome://clippings/skin/win/images/clippings16-win10.svg");
+    list-style-image: url("chrome://clippings/skin/win/images/clippings16-win7.png");
   }
 
   toolbar[brighttext="true"] #ae-clippings-icon[cui-areatype="toolbar"] {
-    list-style-image: url("chrome://clippings/skin/all/images/clippings-bright16.svg");
+    list-style-image: url("chrome://clippings/skin/win/images/clippings-bright16.svg");
   }
 
   #ae-clippings-icon[cui-areatype="toolbar"]:-moz-drag-over,
   toolbar[brighttext="true"] #ae-clippings-icon[cui-areatype="toolbar"]:-moz-drag-over {
-    list-style-image: url("chrome://clippings/skin/all/images/clippings-hilite16.svg");
+    list-style-image: url("chrome://clippings/skin/win/images/clippings-hilite16.svg");
   }
 
   #ae-clippings-icon[cui-areatype="menu-panel"],
   toolbarpaletteitem[place="palette"][removable="true"] > #ae-clippings-icon {
-    list-style-image: url("chrome://clippings/skin/all/images/clippings32.png");
+    list-style-image: url("chrome://clippings/skin/win/images/clippings32-win7.png");
   }
 
   #ae-clippings-icon[cui-areatype="menu-panel"]:-moz-drag-over {
-    list-style-image: url("chrome://clippings/skin/all/images/clippings-hilite32.svg");
+    list-style-image: url("chrome://clippings/skin/win/images/clippings-hilite32.svg");
   }
 }

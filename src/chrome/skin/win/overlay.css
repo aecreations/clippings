@@ -1,19 +1,1 @@
 @import url("chrome://clippings/skin/overlay.css");
-
-
-/*
- * Overlay toolbar button icon on Windows 7
- */
-
-#ae-clippings-icon[cui-areatype="toolbar"] {
-  list-style-image: url("chrome://clippings/skin/win/images/clippings16.png");
-}
-
-toolbar[brighttext="true"] #ae-clippings-icon[cui-areatype="toolbar"] {
-  list-style-image: url("chrome://clippings/skin/win/images/clippings-bright16.svg");
-}
-
-#ae-clippings-icon[cui-areatype="menu-panel"],
-toolbarpaletteitem[place="palette"][removable="true"] > #ae-clippings-icon {
-  list-style-image: url("chrome://clippings/skin/win/images/clippings32.png");
-}
