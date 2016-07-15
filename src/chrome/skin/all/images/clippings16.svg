@@ -11,8 +11,8 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="48"
-   height="48"
+   width="16"
+   height="16"
    id="svg2"
    version="1.1"
    inkscape:version="0.48.5 r10040"
@@ -98,6 +98,26 @@
        y2="1042.5593"
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(1.0099258,0,0,0.95911816,-0.42801806,41.85677)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3771"
+       id="linearGradient4255"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.0099258,0,0,0.95911816,-0.42801806,41.85677)"
+       x1="18.716461"
+       y1="1004.6843"
+       x2="27.871941"
+       y2="1042.5593" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5329"
+       id="linearGradient4257"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.0100983,0,0,0.95285571,-0.43220618,48.444296)"
+       x1="5"
+       y1="1007.3622"
+       x2="42.333809"
+       y2="1052.3622" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -106,9 +126,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="8"
-     inkscape:cx="22.813953"
-     inkscape:cy="28.639097"
+     inkscape:zoom="22.627417"
+     inkscape:cx="14.800686"
+     inkscape:cy="6.5680292"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -119,7 +139,7 @@
      inkscape:window-maximized="0"
      objecttolerance="20"
      gridtolerance="10"
-     showborder="false"
+     showborder="true"
      inkscape:snap-global="true">
     <inkscape:grid
        type="xygrid"
@@ -146,7 +166,7 @@
      inkscape:label="Sheet of paper base"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-1004.3622)"
+     transform="translate(0,-1036.3622)"
      style="display:inline">
     <path
        style="fill:none;stroke:#000000;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
@@ -154,25 +174,29 @@
        id="path4057"
        inkscape:connector-curvature="0"
        transform="translate(0,308.26771)" />
-    <path
-       id="path3849"
-       style="fill:url(#linearGradient3778);fill-opacity:1;stroke:url(#linearGradient5335);stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       d="m 30,1006.3622 0,11 13,0 m -38.0335393,-11.1099 0,40.0521 c 3.1515545,-5.3974 13.6492603,-7.6606 18.8437403,-5.2832 5.184555,2.2523 4.538219,3.761 9.974258,6.9637 4.164703,2.4183 7.255636,2.2563 9.337484,2.2563 l -0.119907,-33.9911 -12.543316,-9.9978 z"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ccccccccccc"
-       inkscape:export-xdpi="60"
-       inkscape:export-ydpi="60" />
-    <path
-       style="fill:#ffffff;fill-opacity:1;stroke:none"
-       d="m 31,1009.3622 9,7 -9,0 z"
-       id="path3007"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cccc" />
+    <g
+       id="g4251"
+       transform="matrix(0.33339858,0,0,0.33339456,0.01098588,701.54996)">
+      <path
+         inkscape:export-ydpi="60"
+         inkscape:export-xdpi="60"
+         sodipodi:nodetypes="ccccccccccc"
+         inkscape:connector-curvature="0"
+         d="m 30,1006.3622 0,11 13,0 m -38.0335393,-11.1099 0,40.0521 c 3.1515545,-5.3974 13.6492603,-7.6606 18.8437403,-5.2832 5.184555,2.2523 4.538219,3.761 9.974258,6.9637 4.164703,2.4183 7.255636,2.2563 9.337484,2.2563 l -0.119907,-33.9911 -12.543316,-9.9978 z"
+         style="fill:url(#linearGradient4255);fill-opacity:1;stroke:url(#linearGradient4257);stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         id="path3849" />
+      <path
+         sodipodi:nodetypes="cccc"
+         inkscape:connector-curvature="0"
+         id="path3007"
+         d="m 31,1009.3622 9,7 -9,0 z"
+         style="fill:#ffffff;fill-opacity:1;stroke:none" />
+    </g>
   </g>
   <g
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="Dogear"
      style="display:inline"
-     transform="translate(0,-696.09448)" />
+     transform="translate(0,-728.09448)" />
 </svg>

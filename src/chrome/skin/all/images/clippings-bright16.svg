@@ -10,12 +10,12 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="48"
-   height="48"
+   width="16"
+   height="16"
    id="svg2"
    version="1.1"
    inkscape:version="0.48.5 r10040"
-   sodipodi:docname="Clippings16rev_v5.svg"
+   sodipodi:docname="Clippings16_reverse.svg"
    inkscape:export-filename="/Users/aecreations/Documents/Graphics/Inkscape/Clippings/clippings-bright16.png"
    inkscape:export-xdpi="30"
    inkscape:export-ydpi="30">
@@ -85,9 +85,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="8"
-     inkscape:cx="-0.049276"
-     inkscape:cy="25.496026"
+     inkscape:zoom="32"
+     inkscape:cx="3.9768815"
+     inkscape:cy="5.3183565"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -98,8 +98,8 @@
      inkscape:window-maximized="1"
      objecttolerance="20"
      gridtolerance="10"
-     showborder="false"
-     inkscape:snap-global="true"
+     showborder="true"
+     inkscape:snap-global="false"
      showguides="true"
      inkscape:guide-bbox="true">
     <inkscape:grid
@@ -125,7 +125,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -133,7 +133,7 @@
      inkscape:label="Sheet of paper base"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-1004.3622)"
+     transform="translate(0,-1036.3622)"
      style="display:inline">
     <path
        style="fill:none;stroke:#000000;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
@@ -143,8 +143,8 @@
        transform="translate(0,308.26771)" />
     <path
        id="path3849"
-       style="fill:#ffffff;fill-opacity:1;stroke:#222a33;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       d="m 31.5,1005.3622 0,12.5 11.5,0 m -38.5,-12 0,41.5 c 2.8730373,-6.9309 12.5,-10 19.5,-7 6,3 3.627216,4.2698 10,8 4,2 7.438613,3 9.5,3 l 0,-34.5 -11,-11 z"
+       style="fill:#ffffff;fill-opacity:1;stroke:#222a33;stroke-width:0.99579811;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 10.249745,1036.8301 0,4.0773 3.727637,0 m -12.479483,-3.914 0,13.5363 c 0.9312733,-2.2608 4.0517803,-3.2618 6.3207773,-2.2833 1.9448547,0.9786 1.1757341,1.3928 3.2414237,2.6094 1.29657,0.6524 2.41117,0.9785 3.079353,0.9785 l 0,-11.2532 -3.565567,-3.5877 z"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccccccccc"
        inkscape:export-xdpi="60"
@@ -155,5 +155,5 @@
      id="layer2"
      inkscape:label="Dogear"
      style="display:inline"
-     transform="translate(0,-696.09448)" />
+     transform="translate(0,-728.09448)" />
 </svg>

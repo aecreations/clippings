@@ -11,8 +11,8 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="48"
-   height="48"
+   width="16"
+   height="16"
    id="svg2"
    version="1.1"
    inkscape:version="0.48.5 r10040"
@@ -27,7 +27,7 @@
       <stop
          id="stop5420"
          offset="0"
-         style="stop-color:#6c6c6c;stop-opacity:1;" />
+         style="stop-color:#606060;stop-opacity:1;" />
       <stop
          style="stop-color:#505050;stop-opacity:1;"
          offset="1"
@@ -87,7 +87,7 @@
        x2="42.333809"
        y2="1052.3622"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.0100983,0,0,0.95285571,-0.43220618,48.444296)" />
+       gradientTransform="matrix(0.33676167,0,0,0.31767728,-0.13309837,717.70055)" />
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient3771"
@@ -97,7 +97,7 @@
        x2="27.871941"
        y2="1042.5593"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.0099258,0,0,0.95911816,-0.42801806,41.85677)" />
+       gradientTransform="matrix(0.33670416,0,0,0.31976515,-0.13170209,715.50431)" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -106,9 +106,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="8"
-     inkscape:cx="23.679628"
-     inkscape:cy="23.639097"
+     inkscape:zoom="22.627417"
+     inkscape:cx="1.9376668"
+     inkscape:cy="9.6746309"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -119,7 +119,7 @@
      inkscape:window-maximized="0"
      objecttolerance="20"
      gridtolerance="10"
-     showborder="false"
+     showborder="true"
      inkscape:snap-global="true">
     <inkscape:grid
        type="xygrid"
@@ -138,7 +138,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -146,7 +146,7 @@
      inkscape:label="Sheet of paper base"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-1004.3622)"
+     transform="translate(0,-1036.3622)"
      style="display:inline">
     <path
        style="fill:none;stroke:#000000;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
@@ -156,15 +156,15 @@
        transform="translate(0,308.26771)" />
     <path
        id="path3849"
-       style="fill:url(#linearGradient3778);fill-opacity:1;stroke:url(#linearGradient5335);stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       d="m 30,1006.3622 0,11 13,0 m -38.0335393,-11.1099 0,40.0521 c 3.1515545,-5.3974 13.6492603,-7.6606 18.8437403,-5.2832 5.184555,2.2523 4.538219,3.761 9.974258,6.9637 4.164703,2.4183 7.255636,2.2563 9.337484,2.2563 l -0.119907,-33.9911 -12.543316,-9.9978 z"
+       style="fill:url(#linearGradient3778);fill-opacity:1;stroke:url(#linearGradient5335);stroke-width:1.33357978;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 10.012845,1037.0655 0,3.6674 4.334135,0 m -12.6801901,-3.7039 0,13.3531 c 1.0507124,-1.7995 4.5505945,-2.5541 6.2824075,-1.7614 1.7285048,0.7509 1.5130198,1.2538 3.3253686,2.3216 1.38849,0.8063 2.418991,0.7523 3.11307,0.7523 l -0.03998,-11.3325 -4.181879,-3.3331 z"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccccccccc"
        inkscape:export-xdpi="60"
        inkscape:export-ydpi="60" />
     <path
        style="fill:#ffffff;fill-opacity:1;stroke:none"
-       d="m 31,1009.3622 9,7 -9,0 z"
+       d="m 10.34624,1038.0657 3.000555,2.3338 -3.000555,0 z"
        id="path3007"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccc" />
@@ -174,5 +174,5 @@
      id="layer2"
      inkscape:label="Dogear"
      style="display:inline"
-     transform="translate(0,-696.09448)" />
+     transform="translate(0,-728.09448)" />
 </svg>
