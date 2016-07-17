@@ -853,29 +853,8 @@ window.aecreations.clippings = {
 
     this.aeUtils.log(this.aeString.format("clippings.initContextMenuItem(): Properties of browser context menu (instance of nsContextMenu object): onTextInput: %b, onEditableArea: %b,isDesignMode: %b, textSelected: %b, isTextSelected: %b", gContextMenu.onTextInput, gContextMenu.onEditableArea, gContextMenu.isDesignMode, gContextMenu.textSelected, gContextMenu.isTextSelected));
 
-    // TEMPORARY
-    // What are the properties of gContextMenuContentData?
-    let propStr = "";
-    for (let p in gContextMenuContentData) {
-      propStr += p + ", ";
-    }
-    this.aeUtils.log("Properties of gContextMenuContentData: " + propStr);
-    this.aeUtils.log(this.aeString.format("gContextMenuContentData.event: %s, popupNode: %s, browser: %s, editFlags: %s", gContextMenuContentData.event, gContextMenuContentData.popupNode, gContextMenuContentData.browser, gContextMenuContentData.editFlags));
-
-    // What are the properties of gContextMenuContentData.selectionInfo?
-    let selInfoObj = gContextMenuContentData.selectionInfo;
-    propStr = "";
-    for (let p in selInfoObj) {
-      propStr += p + ", ";
-    }
-    this.aeUtils.log("Properties of gContextMenuContentData.selectionInfo: " + propStr);
-    this.aeUtils.log(this.aeString.format("gContextMenuContentData.selectionInfo.text: %s", gContextMenuContentData.selectionInfo.text));
-    // END TEMPORARY
-
     if (gContextMenu.onTextInput) {
-      // TO DO: Avoid relying on gContextMenu.target, as use of its properties
-      // will cause "unsafe CPOW usage" warnings.
-      this._triggerNode = gContextMenu.target;
+      this._triggerNode = gContextMenuContentData.event.target;
 
       if (gContextMenu.isDesignMode) {  // Rich text editor
         if (gContextMenuContentData.selectionInfo.text) {
@@ -917,7 +896,6 @@ window.aecreations.clippings = {
 	  addEntryCmd.setAttribute("label",
 				   this.strBundle.getString("new") + ellipsis);
 
-          // Works for now on e10s, but uses an unsafe CPOW!
           let textbox = this._triggerNode;
 	  addEntryCmd.setAttribute("disabled", textbox.value == "");
 	}
