@@ -103,10 +103,6 @@ menu[open="true"] {
 
 /* Mac-specific */
 .expand-options {
-  list-style-image: url("chrome://browser/skin/panel-expander-closed.png");
+  list-style-image: url("chrome://clippings/skin/mac/images/expand.png");
 }
 
-/* Mac-specific */
-.collapse-options {
-  list-style-image: url("chrome://browser/skin/panel-expander-open.png");
-}
