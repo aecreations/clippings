@@ -21,13 +21,13 @@ style	chrome://global/content/customizeToolbar.xul	chrome://clippings/skin/overl
 locale	clippings	en-US	jar:chrome/clippings.jar!/locale/en-US/
 locale	clippings	fi	jar:chrome/clippings.jar!/locale/fi/
 locale	clippings	fr	jar:chrome/clippings.jar!/locale/fr/
+locale	clippings	de	jar:chrome/clippings.jar!/locale/de/
 locale	clippings	it	jar:chrome/clippings.jar!/locale/it/
 locale	clipping	sl	jar:chrome/clippings.jar!/locale/sl/
 
 # The following locales have been disabled because translations are incomplete
 #locale	clippings	da	jar:chrome/clippings.jar!/locale/da/
 #locale	clippings	nl	jar:chrome/clippings.jar!/locale/nl/
-#locale	clippings	de	jar:chrome/clippings.jar!/locale/de/
 #locale	clippings	pl	jar:chrome/clippings.jar!/locale/pl/
 #locale	clippings	ja-JP	jar:chrome/clippings.jar!/locale/ja-JP/
 #locale	clippings	sk-SK	jar:chrome/clippings.jar!/locale/sk-SK/
