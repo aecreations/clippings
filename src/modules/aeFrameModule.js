@@ -79,6 +79,14 @@ function handleRequestInsertClipping(aMessage)
     let doc = activeElt.contentDocument;
     insertTextIntoRichTextEditor(frameGlobal, doc, clippingText);
   }
+  // Textbox or rich text editor in a web page inside a frame
+  else if (isElementOfType(activeElt, "HTMLFrameElement")) {
+    let focusedElt = activeElt.querySelector(":focus");
+    aeUtils.log("aeFrameModule.js::handleRequestInsertClipping(): Focused element inside frame: " + (focusedElt ? focusedElt.toString() : "???"));
+
+    let doc = activeElt.contentDocument;
+    insertTextIntoRichTextEditor(frameGlobal, doc, clippingText);
+  }
   // Rich text editor used by Gmail
   else if (isElementOfType(activeElt, "HTMLDivElement")) {
     let doc = activeElt.ownerDocument;
@@ -137,11 +145,14 @@ function handleRequestNewClippingFromSelection(aMessage)
 
   let frameGlobal = aMessage.target;
   let activeElt = frameGlobal.content.document.activeElement;
-  let respArgs = {};
 
+  aeUtils.log("aeFrameModule.js::handleRequestNewClippingFromSelection(): Active element: " + (activeElt ? activeElt.toString() : "???"));
+
+  let respArgs = {};
   let selection = "";
 
-  if (isElementOfType(activeElt, "HTMLIFrameElement")) {
+  if (isElementOfType(activeElt, "HTMLIFrameElement")
+      || isElementOfType(activeElt, "HTMLFrameElement")) {
     selection = activeElt.contentDocument.getSelection();
   }
   else {
