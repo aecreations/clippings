@@ -68,12 +68,21 @@ function handleRequestInsertClipping(aMessage)
   let clippingText = aMessage.data.clippingText;
   let activeElt = frameGlobal.content.document.activeElement;
 
+  aeUtils.log("aeFrameModule.js::handleRequestInsertClipping(): Active element: " + (activeElt ? activeElt.toString() : "???"));
+  
   if (isElementOfType(activeElt, "HTMLInputElement")
       || isElementOfType(activeElt, "HTMLTextAreaElement")) {
     aeInsertTextIntoTextbox(activeElt, clippingText);
   }
+  // Rich text editor
   else if (isElementOfType(activeElt, "HTMLIFrameElement")) {
-    insertTextIntoRichTextEditor(frameGlobal, activeElt, clippingText);
+    let doc = activeElt.contentDocument;
+    insertTextIntoRichTextEditor(frameGlobal, doc, clippingText);
+  }
+  // Rich text editor used by Gmail
+  else if (isElementOfType(activeElt, "HTMLDivElement")) {
+    let doc = activeElt.ownerDocument;
+    insertTextIntoRichTextEditor(frameGlobal, doc, clippingText);
   }
 }
 
@@ -181,9 +190,8 @@ function isElementOfType(aElement, aTypeStr)
 }
 
 
-function insertTextIntoRichTextEditor(aFrameGlobal, aRichTextEditor, aClippingText)
+function insertTextIntoRichTextEditor(aFrameGlobal, aRichTextEditorDocument, aClippingText)
 {
-  let doc = aRichTextEditor.contentDocument;
   let hasHTMLTags = aClippingText.search(/<[a-z1-6]+( [a-z]+(\="?.*"?)?)*>/i) != -1;
   let hasRestrictedHTMLTags = aClippingText.search(/<\?|<%|<!DOCTYPE|(<\b(html|head|body|meta|script|applet|embed|object|i?frame|frameset)\b)/i) != -1;
   let clippingText = aClippingText;
@@ -235,7 +243,7 @@ function insertTextIntoRichTextEditor(aFrameGlobal, aRichTextEditor, aClippingTe
   }
 
   try {
-    doc.execCommand("insertHTML", false, clippingText);
+    aRichTextEditorDocument.execCommand("insertHTML", false, clippingText);
   }
   catch (e) {}
 }
