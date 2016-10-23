@@ -103,6 +103,8 @@ function handleRequestNewClippingFromTextbox(aMessage)
   let activeElt = frameGlobal.content.document.activeElement;
   let respArgs = {};
 
+  aeUtils.log("aeFrameModule.js::handleRequestNewClippingFromTextbox(): Active element: " + (activeElt ? activeElt.toString() : "???"));
+ 
   if (isElementOfType(activeElt, "HTMLInputElement")
       || isElementOfType(activeElt, "HTMLTextAreaElement")) {
     // <input type="text"> or <textarea>
@@ -118,8 +120,8 @@ function handleRequestNewClippingFromTextbox(aMessage)
 
     respArgs.text = text;
   }
+  // Rich text editor - an <iframe> with designMode == "on"
   else if (isElementOfType(activeElt, "HTMLIFrameElement")) {
-    // Rich text editor - an <iframe> with designMode == "on"
     let doc = activeElt.contentDocument;
     let selection = doc.defaultView.getSelection();
 
@@ -130,9 +132,22 @@ function handleRequestNewClippingFromTextbox(aMessage)
     }
 
     respArgs.text = selection.toString();
-
-    aeUtils.log("aeFrameModule.js::handleRequestNewClippingFromTextbox(): selected text: " + respArgs.text);
   }
+  // Rich text editor used by Outlook.com
+  else if (isElementOfType(activeElt, "HTMLDivElement")) {
+    let doc = activeElt.ownerDocument;
+    let selection = doc.defaultView.getSelection();
+
+    // New (from entire contents)
+    if (selection == "") {
+      doc.execCommand("selectAll");
+      selection = doc.defaultView.getSelection();
+    }
+
+    respArgs.text = selection.toString();
+  }
+  
+  aeUtils.log("aeFrameModule.js::handleRequestNewClippingFromTextbox(): selected text: " + respArgs.text);
   
   aeUtils.log("aeFrameModule.js::handleRequestNewClippingFromTextbox() Sending message to chrome script: " + aeConstants.MSG_RESP_NEW_CLIPPING_FROM_TEXTBOX);
   frameGlobal.sendAsyncMessage(aeConstants.MSG_RESP_NEW_CLIPPING_FROM_TEXTBOX, respArgs);
@@ -174,6 +189,8 @@ function handleRequestIsReadyForShortcutMode(aMessage)
   let activeElt = frameGlobal.content.document.activeElement;
   let respArgs = {};
 
+  aeUtils.log("aeFrameModule.js::handleRequestIsReadyForShortcutMode(): Active element: " + (activeElt ? activeElt.toString() : "???"));
+
   if (isElementOfType(activeElt, "HTMLInputElement")
       || isElementOfType(activeElt, "HTMLTextAreaElement")) {
     // <input type="text"> or <textarea>
@@ -184,7 +201,12 @@ function handleRequestIsReadyForShortcutMode(aMessage)
     let doc = activeElt.contentDocument;
     respArgs.isTextboxFocused = doc.designMode == "on";
   }
-
+  // Rich text editor used by Outlook.com
+  else if (isElementOfType(activeElt, "HTMLDivElement")) {
+    let doc = activeElt.ownerDocument;
+    respArgs.isTextboxFocused = true;
+  }
+  
   aeUtils.log("aeFrameModule.js::handleRequestIsReadyForShortcutMode(): Sending message to chrome script: " + aeConstants.MSG_RESP_IS_READY_FOR_SHORTCUT_MODE);
   frameGlobal.sendAsyncMessage(aeConstants.MSG_RESP_IS_READY_FOR_SHORTCUT_MODE, respArgs);
 }
