@@ -84,8 +84,7 @@ function handleRequestInsertClipping(aMessage)
     let focusedElt = activeElt.querySelector(":focus");
     aeUtils.log("aeFrameModule.js::handleRequestInsertClipping(): Focused element inside frame: " + (focusedElt ? focusedElt.toString() : "???"));
 
-    let doc = activeElt.contentDocument;
-    insertTextIntoRichTextEditor(frameGlobal, doc, clippingText);
+    frameGlobal.sendSyncMessage(aeConstants.MSG_REQ_HTML_FRAME, { mode: aeConstants.HTML_FRAME_PASTE });
   }
   // Rich text editor used by Gmail
   else if (isElementOfType(activeElt, "HTMLDivElement")) {
@@ -101,7 +100,7 @@ function handleRequestNewClippingFromTextbox(aMessage)
 
   let frameGlobal = aMessage.target;
   let activeElt = frameGlobal.content.document.activeElement;
-  let respArgs = {};
+  let respArgs = { cancel: false };
 
   aeUtils.log("aeFrameModule.js::handleRequestNewClippingFromTextbox(): Active element: " + (activeElt ? activeElt.toString() : "???"));
  
@@ -145,6 +144,15 @@ function handleRequestNewClippingFromTextbox(aMessage)
     }
 
     respArgs.text = selection.toString();
+  }
+  else if (isElementOfType(activeElt, "HTMLFrameElement")) {
+    let focusedElt = activeElt.querySelector(":focus");
+    aeUtils.log("aeFrameModule.js::handleRequestNewClippingFromTextbox(): Focused element inside frame: " + (focusedElt ? focusedElt.toString() : "???"));
+    
+    frameGlobal.sendSyncMessage(aeConstants.MSG_REQ_HTML_FRAME, { mode: aeConstants.HTML_FRAME_CREATE });
+
+    respArgs.text = "";
+    respArgs.cancel = true;
   }
   
   aeUtils.log("aeFrameModule.js::handleRequestNewClippingFromTextbox(): selected text: " + respArgs.text);

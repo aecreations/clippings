@@ -44,6 +44,10 @@ var aeConstants = {
   HTMLPASTE_AS_HTML:      1,
   HTMLPASTE_AS_IS:        2,
 
+  // HTML frame user alert message
+  HTML_FRAME_CREATE: 1,
+  HTML_FRAME_PASTE:  2,
+
   // Shortcut help HTML document
   SHORTCUT_HELP_FILENAME: "clipkeys.html",
   SHORTCUT_HELP_PRINT_FILENAME: "clipKeysPrn.html",
@@ -56,5 +60,6 @@ var aeConstants = {
   MSG_RESP_NEW_CLIPPING_FROM_TEXTBOX: "clippings@aecreations.github.io:resp_newClippingFromTextbox",
   MSG_REQ_NEW_CLIPPING_FROM_SELECTION: "clippings@aecreations.github.io:req_newClippingFromSelection",
   MSG_RESP_NEW_CLIPPING_FROM_SELECTION: "clippings@aecreations.github.io:resp_newClippingFromSelection",
-  MSG_REQ_HTML_PASTE_OPTION: "clippings@aecreations.github.io:req_htmlPasteOption"
+  MSG_REQ_HTML_PASTE_OPTION: "clippings@aecreations.github.io:req_htmlPasteOption",
+  MSG_REQ_HTML_FRAME: "clippings@aecreations.github.io:req_htmlFrame"
 };
