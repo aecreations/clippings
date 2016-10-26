@@ -35,7 +35,7 @@
        name="extensions.aecreations.clippings.backup.maxfiles"/>
     </preferences>
 
-    <groupbox>
+    <groupbox style="width:33em">
       <caption label="&dataSrcLocation.caption;"/>
       <hbox>
         <radiogroup id="datasrc-location-opt">
@@ -47,7 +47,7 @@
         <spacer flex="1"/>
       </hbox>
       <vbox class="indent">
-        <textbox id="custom-datasrc-path" size="50" readonly="true"/>
+        <textbox id="custom-datasrc-path" readonly="true"/>
         <hbox>
           <button id="custom-datasrc-brws"
 	   label="&fileBrowse.label;" accesskey="&fileBrowse.accesskey;"
