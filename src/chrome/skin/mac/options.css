@@ -72,6 +72,10 @@ prefpane description {
   margin-left: 2.5em;
 }
 
+#paste-html-vbox description {
+  width: 33em !important;
+}
+
 #custom-datasrc-path {
   width: 33.8em;
 }
