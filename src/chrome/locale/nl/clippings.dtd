@@ -32,6 +32,7 @@
 <!ENTITY autoLineBreak.label "Regels automatisch afbreken tenzij er &lt;p&gt; of &lt;br&gt; tags in zitten">
 <!ENTITY autoLineBreak.accesskey "b">
 <!ENTITY htmlPaste.description "Een in HTML opgemaakte clipping wordt altijd als platte tekst in een tekstveld geplakt, of als de clipping beperkte tags zoals &lt;script&gt;, &lt;applet&gt;, &lt;object&gt;, &lt;iframe&gt; enz. bevat.">
+<!ENTITY generalOptions.caption "General Options">
 <!ENTITY checkSpelling.label "Spelling controleren">
 <!ENTITY checkSpelling.accesskey "C">
 <!ENTITY tabModalPrompt.label "Browservenster niet blokkeren als wordt gevraagd om plaatshoudertekst">
