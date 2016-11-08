@@ -36,7 +36,7 @@ prefwindow > .paneDeckContainer {
 }
 
 prefwindow[animated="true"] #pane-general {
-  height: 29em;
+  height: 30em;
 }
 
 prefwindow[animated="true"] #pane-datasource {
@@ -44,7 +44,7 @@ prefwindow[animated="true"] #pane-datasource {
 }
 
 prefwindow[animated="true"] #pane-clippings-mgr {
-  height: 10em;
+  height: 14em;
 }
 
 prefpane description {
@@ -70,6 +70,10 @@ prefpane description {
 
 .indent {
   margin-left: 2.5em;
+}
+
+#paste-html-vbox description {
+  width: 33em !important;
 }
 
 #custom-datasrc-path {

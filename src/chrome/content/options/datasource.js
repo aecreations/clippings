@@ -79,7 +79,7 @@ function initPrefPaneDataSource()
     fadeInEffect = prefs.getBoolPref("browser.preferences.animateFadeIn");
   }
 
-  if (!fadeInEffect.value && aeUtils.getHostAppID() != aeConstants.HOSTAPP_TB_GUID) {
+  if (!fadeInEffect && aeUtils.getHostAppID() != aeConstants.HOSTAPP_TB_GUID) {
     window.sizeToContent();
     var hbox = $("remove-all-src-urls-panel");
     hbox.height = hbox.boxObject.height;

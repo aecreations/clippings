@@ -84,8 +84,7 @@ function handleRequestInsertClipping(aMessage)
     let focusedElt = activeElt.querySelector(":focus");
     aeUtils.log("aeFrameModule.js::handleRequestInsertClipping(): Focused element inside frame: " + (focusedElt ? focusedElt.toString() : "???"));
 
-    let doc = activeElt.contentDocument;
-    insertTextIntoRichTextEditor(frameGlobal, doc, clippingText);
+    frameGlobal.sendSyncMessage(aeConstants.MSG_REQ_HTML_FRAME, { mode: aeConstants.HTML_FRAME_PASTE });
   }
   // Rich text editor used by Gmail
   else if (isElementOfType(activeElt, "HTMLDivElement")) {
@@ -101,8 +100,10 @@ function handleRequestNewClippingFromTextbox(aMessage)
 
   let frameGlobal = aMessage.target;
   let activeElt = frameGlobal.content.document.activeElement;
-  let respArgs = {};
+  let respArgs = { cancel: false };
 
+  aeUtils.log("aeFrameModule.js::handleRequestNewClippingFromTextbox(): Active element: " + (activeElt ? activeElt.toString() : "???"));
+ 
   if (isElementOfType(activeElt, "HTMLInputElement")
       || isElementOfType(activeElt, "HTMLTextAreaElement")) {
     // <input type="text"> or <textarea>
@@ -118,8 +119,8 @@ function handleRequestNewClippingFromTextbox(aMessage)
 
     respArgs.text = text;
   }
+  // Rich text editor - an <iframe> with designMode == "on"
   else if (isElementOfType(activeElt, "HTMLIFrameElement")) {
-    // Rich text editor - an <iframe> with designMode == "on"
     let doc = activeElt.contentDocument;
     let selection = doc.defaultView.getSelection();
 
@@ -130,9 +131,31 @@ function handleRequestNewClippingFromTextbox(aMessage)
     }
 
     respArgs.text = selection.toString();
-
-    aeUtils.log("aeFrameModule.js::handleRequestNewClippingFromTextbox(): selected text: " + respArgs.text);
   }
+  // Rich text editor used by Outlook.com
+  else if (isElementOfType(activeElt, "HTMLDivElement")) {
+    let doc = activeElt.ownerDocument;
+    let selection = doc.defaultView.getSelection();
+
+    // New (from entire contents)
+    if (selection == "") {
+      doc.execCommand("selectAll");
+      selection = doc.defaultView.getSelection();
+    }
+
+    respArgs.text = selection.toString();
+  }
+  else if (isElementOfType(activeElt, "HTMLFrameElement")) {
+    let focusedElt = activeElt.querySelector(":focus");
+    aeUtils.log("aeFrameModule.js::handleRequestNewClippingFromTextbox(): Focused element inside frame: " + (focusedElt ? focusedElt.toString() : "???"));
+    
+    frameGlobal.sendSyncMessage(aeConstants.MSG_REQ_HTML_FRAME, { mode: aeConstants.HTML_FRAME_CREATE });
+
+    respArgs.text = "";
+    respArgs.cancel = true;
+  }
+  
+  aeUtils.log("aeFrameModule.js::handleRequestNewClippingFromTextbox(): selected text: " + respArgs.text);
   
   aeUtils.log("aeFrameModule.js::handleRequestNewClippingFromTextbox() Sending message to chrome script: " + aeConstants.MSG_RESP_NEW_CLIPPING_FROM_TEXTBOX);
   frameGlobal.sendAsyncMessage(aeConstants.MSG_RESP_NEW_CLIPPING_FROM_TEXTBOX, respArgs);
@@ -174,6 +197,8 @@ function handleRequestIsReadyForShortcutMode(aMessage)
   let activeElt = frameGlobal.content.document.activeElement;
   let respArgs = {};
 
+  aeUtils.log("aeFrameModule.js::handleRequestIsReadyForShortcutMode(): Active element: " + (activeElt ? activeElt.toString() : "???"));
+
   if (isElementOfType(activeElt, "HTMLInputElement")
       || isElementOfType(activeElt, "HTMLTextAreaElement")) {
     // <input type="text"> or <textarea>
@@ -184,7 +209,12 @@ function handleRequestIsReadyForShortcutMode(aMessage)
     let doc = activeElt.contentDocument;
     respArgs.isTextboxFocused = doc.designMode == "on";
   }
-
+  // Rich text editor used by Outlook.com
+  else if (isElementOfType(activeElt, "HTMLDivElement")) {
+    let doc = activeElt.ownerDocument;
+    respArgs.isTextboxFocused = true;
+  }
+  
   aeUtils.log("aeFrameModule.js::handleRequestIsReadyForShortcutMode(): Sending message to chrome script: " + aeConstants.MSG_RESP_IS_READY_FOR_SHORTCUT_MODE);
   frameGlobal.sendAsyncMessage(aeConstants.MSG_RESP_IS_READY_FOR_SHORTCUT_MODE, respArgs);
 }

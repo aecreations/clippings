@@ -182,9 +182,12 @@ window.aecreations.clippings = {
   handleResponseNewClippingFromTextbox: function (aMessage)
   {
     let that = window.aecreations.clippings;
-    let respArgs = aMessage.data;
-
     that.aeUtils.log("handleResponseNewClippingFromTextbox(): Handling message: " + that.aeConstants.MSG_RESP_NEW_CLIPPING_FROM_TEXTBOX);
+
+    let respArgs = aMessage.data;
+    if (respArgs.cancel) {
+      return;
+    }
 
     let srcURL = that._getCurrentBrowserURL();
 
@@ -378,6 +381,24 @@ window.aecreations.clippings = {
     
     that.aeUtils.log("handleRequestHTMLPasteOption(): Returning from synchronous message handler");
     return rv;
+  },
+
+
+  handleRequestHTMLFrame: function (aMessage)
+  {
+    let that = window.aecreations.clippings;
+    that.aeUtils.log("handleRequestHTMLFrame(): Handling synchronous message: " + that.aeConstants.MSG_REQ_HTML_FRAME);
+
+    let mode = aMessage.data.mode;
+    
+    if (mode == that.aeConstants.HTML_FRAME_CREATE) {
+      that.aeUtils.alertEx(that.strBundle.getString("appName"), that.strBundle.getString("htmlFrameCreate"));
+    }
+    else if (mode == that.aeConstants.HTML_FRAME_PASTE) {
+      that.aeUtils.alertEx(that.strBundle.getString("appName"), that.strBundle.getString("htmlFramePaste"));
+    }
+
+    that.aeUtils.log("handleRequestHTMLFrame(): Returning from synchronous message handler");
   },
 
   
@@ -696,6 +717,7 @@ window.aecreations.clippings = {
     windowMM.addMessageListener(this.aeConstants.MSG_RESP_NEW_CLIPPING_FROM_TEXTBOX, this.handleResponseNewClippingFromTextbox);
     windowMM.addMessageListener(this.aeConstants.MSG_RESP_NEW_CLIPPING_FROM_SELECTION, this.handleResponseNewFromSelection);
     windowMM.addMessageListener(this.aeConstants.MSG_REQ_HTML_PASTE_OPTION, this.handleRequestHTMLPasteOption);
+    windowMM.addMessageListener(this.aeConstants.MSG_REQ_HTML_FRAME, this.handleRequestHTMLFrame);
     
     this.isClippingsInitialized = true;
   },

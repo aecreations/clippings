@@ -42,7 +42,8 @@
 
     <caption class="ae-caption" label="&clippingsMgrKeys.caption;"/>
     <separator class="ae-separator"/>
-    <vbox class="ae-group-box" flex="1">
+    <vbox id="clipmgr-shortcut-key-legend-vbox" class="ae-group-box" flex="1"
+	  style="width:32em">
       <separator class="thin"/>
       <iframe id="clipmgr-shortcut-key-legend" flex="1" type="chrome" 
        src="chrome://clippings/content/options/clippingsMgrKeys.xhtml" />
