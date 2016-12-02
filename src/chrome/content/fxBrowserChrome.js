@@ -42,8 +42,6 @@ window.aecreations.clippings = {
   _clippingsListener:     null,
   _isErrMenuItemVisible:  false,
   _ds:                    null,
-  _triggerNode:           null,
-  
   dataSrcInitialized:     false,
   isClippingsInitialized: false,
   showDialog:             true,
@@ -171,10 +169,6 @@ window.aecreations.clippings = {
 
       this.aeUtils.log("newFromTextbox(): Sending message to frame script: " + this.aeConstants.MSG_REQ_NEW_CLIPPING_FROM_TEXTBOX);
       browserMM.sendAsyncMessage(this.aeConstants.MSG_REQ_NEW_CLIPPING_FROM_TEXTBOX, msgArgs);
-
-      // The triggerNode cache was initialized in initContextMenuItem().
-      // Reset triggerNode cache for next context menu command invocation.
-      this._triggerNode = null;
     }
   },
 
@@ -189,6 +183,12 @@ window.aecreations.clippings = {
       return;
     }
 
+    if (! respArgs.text) {
+      that.aeUtils.beep();
+      that.aeUtils.log("There is nothing to create a clipping from.");
+      return;
+    }
+    
     let srcURL = that._getCurrentBrowserURL();
 
     let result = that.aeCreateClippingFromText(that.clippingsSvc, respArgs.text, srcURL, that.showDialog, window, null, false);
@@ -876,8 +876,6 @@ window.aecreations.clippings = {
     this.aeUtils.log(this.aeString.format("clippings.initContextMenuItem(): Properties of browser context menu (instance of nsContextMenu object): onTextInput: %b, onEditableArea: %b,isDesignMode: %b, textSelected: %b, isTextSelected: %b", gContextMenu.onTextInput, gContextMenu.onEditableArea, gContextMenu.isDesignMode, gContextMenu.textSelected, gContextMenu.isTextSelected));
 
     if (gContextMenu.onTextInput) {
-      this._triggerNode = gContextMenuContentData.event.target;
-
       if (gContextMenu.isDesignMode) {  // Rich text editor
         if (gContextMenuContentData.selectionInfo.text) {
           this.aeUtils.log("clippings.initContextMenuItem(): Selected text inside a rich edit box");
@@ -889,17 +887,6 @@ window.aecreations.clippings = {
         }
         else {
           this.aeUtils.log("clippings.initContextMenuItem(): Inside a rich text edit box; no selected text");
-
-          // Works for now on e10s - but uses an unsafe CPOW!
-          var doc = gContextMenu.target.ownerDocument;
-          this.aeUtils.log(this.aeString.format("gContextMenu.target.ownerDocument: %s", doc));
-
-          // Check for empty document
-          var range = doc.createRange();
-          range.setStart(doc.body.firstChild, 0);
-          range.setEnd(doc.body.lastChild, 0);
-          addEntryCmd.setAttribute("disabled", range == "");
-
           clippingsMenu1.hidden = false;
           clippingsMenu2.hidden = true;
           addEntryCmd.setAttribute("label", this.strBundle.getString("new") + ellipsis);
@@ -917,9 +904,6 @@ window.aecreations.clippings = {
 	  // Enable "New..." command
 	  addEntryCmd.setAttribute("label",
 				   this.strBundle.getString("new") + ellipsis);
-
-          let textbox = this._triggerNode;
-	  addEntryCmd.setAttribute("disabled", textbox.value == "");
 	}
       }
       
