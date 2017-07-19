@@ -26,7 +26,7 @@
 
 function handleRequestNewClipping(aRequest)
 {
-  let rv = {};
+  let rv = null;
   let activeElt = window.document.activeElement;
 
   console.log("Clippings/wx: content.js::handleRequestNewClipping(): activeElt = " + (activeElt ? activeElt.toString() : "???"));
@@ -43,14 +43,20 @@ function handleRequestNewClipping(aRequest)
       text = activeElt.value.substring(activeElt.selectionStart, 
                                        activeElt.selectionEnd);
     }
-      
-    rv.content = text;
+
+    rv = (text ? { content: text } : null);
   }
   else if (isElementOfType(activeElt, "HTMLBodyElement")) {
     let selection = activeElt.ownerDocument.getSelection();
-    rv.content = selection.toString();
+    let text = selection.toString();
+
+    rv = (text ? { content: text } : null);
   }
-    
+
+  if (rv !== null) {
+    console.log("Content retrieved from " + activeElt.toString() + ": " + rv.content);
+  }
+  
   return rv;
 }
 
@@ -187,7 +193,9 @@ chrome.runtime.onMessage.addListener((aRequest, aSender, aSendResponse) => {
     resp = handleRequestInsertClipping(aRequest);
   }
 
-  aSendResponse(resp);
+  if (resp !== null) {
+    aSendResponse(resp);
+  }
 });
 
 
