@@ -176,7 +176,7 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
           console.log("Clippings/wx: Content script was unable to retrieve content from inside an HTML frame.  Retrieving selection text from context menu info.");
           content = text;
         }
-        console.log("Clippings/wx: Create clipping from selected text:\nName: " + name + "\nText: " + content);
+        console.log("Clippings/wx: Creating clipping from selected text:\nName: " + name + "\nText: " + content);
 
         createClipping(name, content);
       });
