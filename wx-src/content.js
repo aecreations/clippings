@@ -46,6 +46,34 @@ function handleRequestNewClipping(aRequest)
 
     rv = (text ? { content: text } : null);
   }
+  // Rich text editor - an <iframe> with designMode == "on"
+  else if (isElementOfType(activeElt, "HTMLIFrameElement")) {
+    let doc = activeElt.contentDocument;
+    let selection = doc.defaultView.getSelection();
+
+    // New (from entire contents)
+    if (selection == "") {
+      doc.execCommand("selectAll");
+      selection = doc.defaultView.getSelection();
+    }
+
+    let text = selection.toString();
+    rv = (text ? { content: text } : null);
+  }
+  // Rich text editor used by Gmail, Outlook.com, etc.
+  else if (isElementOfType(activeElt, "HTMLDivElement")) {
+    let doc = activeElt.ownerDocument;
+    let selection = doc.defaultView.getSelection();
+
+    // New (from entire contents)
+    if (selection == "") {
+      doc.execCommand("selectAll");
+      selection = doc.defaultView.getSelection();
+    }
+
+    let text = selection.toString();
+    rv = (text ? { content: text } : null);
+  }
   else if (isElementOfType(activeElt, "HTMLBodyElement")) {
     let selection = activeElt.ownerDocument.getSelection();
     let text = selection.toString();
@@ -54,7 +82,7 @@ function handleRequestNewClipping(aRequest)
   }
 
   if (rv !== null) {
-    console.log("Content retrieved from " + activeElt.toString() + ": " + rv.content);
+    console.log(">> Content retrieved from " + activeElt.toString() + ": " + rv.content);
   }
   
   return rv;
