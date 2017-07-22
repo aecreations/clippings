@@ -133,6 +133,7 @@ function createClipping(aName, aContent/*, aShortcutKey, aSrcURL */)
 {
   db.clippings.add({name: aName, content: aContent, shortcutKey: "", parentFolderID: 0})
     .then(aID => {
+      window.alert("Successfully created new clipping \"" + aName + "\".");
       console.log("Successfully created new clipping!\nid = " + aID);
       db.clippings.get(aID)
         .then(aResult => {
