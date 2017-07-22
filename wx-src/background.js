@@ -211,6 +211,9 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
             msgID: "ae-clippings-paste",
             content: aClipping.content
           };
+
+          console.log("Clippings/wx: Extension sending message 'ae-clippings-paste' to content script");
+          
           chrome.tabs.sendMessage(activeTabID, msgParams, null, aResp => {
             console.log("It is " + aResp + " that the clipping was successfully pasted.");
           });
