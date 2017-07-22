@@ -91,7 +91,7 @@ function handleRequestNewClipping(aRequest)
 
 function handleRequestInsertClipping(aRequest)
 {
-  let rv = false;
+  let rv = null;
   let clippingText = aRequest.content;
   let activeElt = window.document.activeElement;
 
@@ -112,7 +112,7 @@ function handleRequestInsertClipping(aRequest)
     rv = insertTextIntoRichTextEditor(doc, clippingText);
   }
   else {
-    rv = false;
+    rv = null;
   }
 
   return rv;
