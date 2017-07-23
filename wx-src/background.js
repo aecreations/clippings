@@ -96,6 +96,16 @@ function init()
     console.error("Clippings/wx: Error opening database: " + e);
   });
 
+  if (! ("browser" in window)) {
+    console.log("Clippings/wx: Browser: Google Chrome");  
+  }
+  else {
+    let getBrowserInfo = browser.runtime.getBrowserInfo();
+    getBrowserInfo.then(aBrwsInfo => {
+      console.log(`Clippings/wx: Browser: ${aBrwsInfo.name} (version ${aBrwsInfo.version})`);
+    });
+  }
+
   chrome.runtime.getPlatformInfo(aInfo => { console.log("Clippings/wx: OS: " + aInfo.os); });
 
   // Clippings context menu items.
@@ -133,14 +143,39 @@ function createClipping(aName, aContent/*, aShortcutKey, aSrcURL */)
 {
   db.clippings.add({name: aName, content: aContent, shortcutKey: "", parentFolderID: 0})
     .then(aID => {
-      window.alert("Successfully created new clipping \"" + aName + "\".");
-      console.log("Successfully created new clipping!\nid = " + aID);
+      if (isGoogleChrome()) {
+        window.alert("Successfully created new clipping \"" + aName + "\".");
+      }
+      console.info("Clippings/wx: Successfully created new clipping!\nid = " + aID);
       db.clippings.get(aID)
         .then(aResult => {
           console.log("Name: " + aResult.name + "\nText: " + aResult.content);
       });
     })
-    .catch(e => { console.log("Error: " + e)});
+    .catch(e => { console.error("Error: " + e)});
+}
+
+
+function isGoogleChrome()
+{
+  return (! ("browser" in window));
+}
+
+
+function alertEx(aMessage)
+{
+  if (isGoogleChrome()) {
+    window.alert(aMessage);
+  }
+  else {
+    console.info("Clippings/wx: " + aMessage);
+  }
+}
+
+
+function onError(aError)
+{
+  console.error("Clippings/wx: Error: " + aError);
 }
 
 
@@ -153,34 +188,58 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
   case "ae-clippings-new":
     let text = aInfo.selectionText;  // Line breaks are NOT preserved!
     if (! text) {
-      window.alert("No text was selected.  Please select text first.");
+      alertEx("No text was selected.  Please select text first.");
       break;
     }
 
-    let name = window.prompt("New clipping name:", "New Clipping");
+    let name = "";
+
+    if (isGoogleChrome()) {
+      name = window.prompt("New clipping name:", "New Clipping");
+    }
+    else {
+      name = text.substring(0, 64);
+      if (text.length > 64) {
+        name += "...";
+      }
+    }
+    
     if (! name) {
       return;
     }
 
     chrome.tabs.query({ active: true, currentWindow: true }, aTabs => {
       if (! aTabs[0]) {
-        window.alert("Please return to the browser window and try again.");
+        alertEx("Please return to the browser window and try again.");
         return;
       }
 
       let activeTabID = aTabs[0].id;
       console.log("Clippings/wx: Extension sending message 'ae-clippings-new' to content script; active tab ID: " + activeTabID);
 
-      chrome.tabs.sendMessage(activeTabID, { msgID: "ae-clippings-new" }, null, aResp => {
-        let content = aResp.content;
-        if (! content) {
-          console.log("Clippings/wx: Content script was unable to retrieve content from inside an HTML frame.  Retrieving selection text from context menu info.");
-          content = text;
-        }
-        console.log("Clippings/wx: Creating clipping from selected text:\nName: " + name + "\nText: " + content);
-
-        createClipping(name, content);
-      });
+      if (isGoogleChrome()) {
+        chrome.tabs.sendMessage(activeTabID, { msgID: "ae-clippings-new", hostApp: "chrome" }, null, aResp => {
+          let content = aResp.content;
+          if (! content) {
+            console.warn("Clippings/wx: Content script was unable to retrieve content from inside an HTML frame.  Retrieving selection text from context menu info.");
+            content = text;
+          }
+          console.log("Clippings/wx: Creating clipping from selected text:\nName: " + name + "\nText: " + content);
+          createClipping(name, content);
+        });
+      }
+      else {
+        browser.tabs.sendMessage(activeTabID, { msgID: "ae-clippings-new" })
+        .then(aResp => {
+          let content = aResp.content;
+          if (! content) {
+            console.warn("Clippings/wx: Content script was unable to retrieve content from inside an HTML frame.  Retrieving selection text from context menu info.");
+            content = text;
+          }
+          console.log("Clippings/wx: Creating clipping from selected text:\nName: " + name + "\nText: " + content);
+          createClipping(name, content);
+        }).catch(onError);
+      }
     });
     
     break;
@@ -194,7 +253,7 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
       let clippingID = Number(aInfo.menuItemId.substr(22));
       db.clippings.where("id").equals(clippingID).first(aClipping => {
         if (! aClipping) {
-          window.alert("Cannot find clipping.\nClipping ID = " + clippingID);
+          alertEx("Cannot find clipping.\nClipping ID = " + clippingID);
           return;
         }
         console.log("Pasting clipping named \"" + aClipping.name + "\"\nid = " + aClipping.id);
@@ -202,14 +261,15 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
         chrome.tabs.query({ active: true, currentWindow: true }, aTabs => {
           if (! aTabs[0]) {
             // This should never happen...
-            window.alert("Unable to paste clipping because there is no active browser tab.");
+            alertEx("Unable to paste clipping because there is no active browser tab.");
             return;
           }
 
           let activeTabID = aTabs[0].id;
           let msgParams = {
             msgID: "ae-clippings-paste",
-            content: aClipping.content
+            content: aClipping.content,
+            hostApp: (isGoogleChrome() ? "chrome" : "firefox")
           };
 
           console.log("Clippings/wx: Extension sending message 'ae-clippings-paste' to content script");

@@ -76,7 +76,10 @@ function handleRequestNewClipping(aRequest)
   }
   else if (isElementOfType(activeElt, "HTMLBodyElement")) {
     let selection = activeElt.ownerDocument.getSelection();
-    let text = selection.toString();
+    let text = "";
+    if (selection) {
+      text = selection.toString();
+    }
 
     rv = (text ? { content: text } : null);
   }
@@ -205,25 +208,52 @@ function insertTextIntoRichTextEditor(aRichTextEditorDocument, aClippingText)
 }
 
 
+function isGoogleChrome()
+{
+  return (! ("browser" in window));
+}
+
+
 //
 // Message listeners
 //
 
-chrome.runtime.onMessage.addListener((aRequest, aSender, aSendResponse) => {
-  console.log("Clippings/wx: Content script received message '" + aRequest.msgID + "' from extension");
+if (isGoogleChrome()) {
+  chrome.runtime.onMessage.addListener((aRequest, aSender, aSendResponse) => {
+    console.log("Clippings/wx: Content script received message '" + aRequest.msgID + "' from extension");
 
-  let resp = null;
+    let resp = null;
   
-  if (aRequest.msgID == "ae-clippings-new") {
-    resp = handleRequestNewClipping(aRequest);
-  }
-  else if (aRequest.msgID == "ae-clippings-paste") {
-    resp = handleRequestInsertClipping(aRequest);
-  }
+    if (aRequest.msgID == "ae-clippings-new") {
+      resp = handleRequestNewClipping(aRequest);
+    }
+    else if (aRequest.msgID == "ae-clippings-paste") {
+      resp = handleRequestInsertClipping(aRequest);
+    }
 
-  if (resp !== null) {
-    aSendResponse(resp);
-  }
-});
+    if (resp !== null) {
+      aSendResponse(resp);
+    }
+  });
+}
+else {
+  // Firefox
+  browser.runtime.onMessage.addListener(aRequest => {
+    console.log("Clippings/wx: Content script received message '" + aRequest.msgID + "' from extension");
+
+    let resp = null;
+  
+    if (aRequest.msgID == "ae-clippings-new") {
+      resp = handleRequestNewClipping(aRequest);
+    }
+    else if (aRequest.msgID == "ae-clippings-paste") {
+      resp = handleRequestInsertClipping(aRequest);
+    }
+    
+    if (resp !== null) {
+      return Promise.resolve(resp);
+    }
+  });
+}
 
 
