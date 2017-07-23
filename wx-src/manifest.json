@@ -2,8 +2,7 @@
     "manifest_version": 2,
     "name": "Clippings/wx",
     "description": "Save frequently-entered text for pasting later.",
-    "version": "5.99.1",
-    "version_name": "6.0pre1+",
+    "version": "6.0pre1",
 
     "background": {
 	"scripts": ["dexie.js", "background.js"]
@@ -16,7 +15,7 @@
 	}
     ],
     
-    "permissions": ["contextMenus", "storage", "unlimitedStorage"],
+    "permissions": ["contextMenus", "storage"],
       
     "icons": {
         "48": "icons/clippings-wx.png"
