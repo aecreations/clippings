@@ -156,6 +156,12 @@ function createClipping(aName, aContent/*, aShortcutKey, aSrcURL */)
 }
 
 
+function getClippingsDB()
+{
+  return db;
+}
+
+
 function isGoogleChrome()
 {
   return (! ("browser" in window));
@@ -186,6 +192,7 @@ function onError(aError)
 chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
   switch (aInfo.menuItemId) {
   case "ae-clippings-new":
+    // TEMPORARY - To be moved into a popup
     let text = aInfo.selectionText;  // Line breaks are NOT preserved!
     if (! text) {
       alertEx("No text was selected.  Please select text first.");
@@ -241,11 +248,26 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
         }).catch(onError);
       }
     });
-    
+    // END TEMPORARY
     break;
 
   case "ae-clippings-manager":
-    console.log("TO DO: Open Clippings Manager");
+    // TO DO: Get this from a pref.
+    let openInNewTab = true;
+
+    if (openInNewTab) {
+      chrome.tabs.create({
+        url: "clippingsMgr.html"
+      });
+    }
+    else {
+      chrome.windows.create({
+        type: "popup",
+        focused: true,
+        left: 64, top: 128,
+        width: 600, height: 400
+      });
+    }
     break;
 
   default:
