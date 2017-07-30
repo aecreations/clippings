@@ -157,7 +157,7 @@ function createClipping(aName, aContent/*, aShortcutKey, aSrcURL */)
 
   createClipping.then(aID => {
     if (isGoogleChrome()) {
-      window.alert("Successfully created new clipping \"%s\".", aName);
+      window.alert("Successfully created new clipping \"" + aName + "\".");
     }
     console.info("Clippings/wx: Successfully created new clipping!\nid = %d", aID);
     
