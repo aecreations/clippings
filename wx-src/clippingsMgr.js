@@ -47,8 +47,8 @@ function init()
     showBanner("Error initializing Clippings Manager: Unable to locate parent browser window.");
   }
   
-  document.addEventListener("unload", aEvent => { onUnload(aEvent) });
-  document.addEventListener("keypress", aEvent => { onKeyPress(aEvent) });
+  document.addEventListener("unload", aEvent => { onUnload(aEvent) }, false);
+  document.addEventListener("keypress", aEvent => { onKeyPress(aEvent) }, false);
   
   chrome.runtime.getPlatformInfo(aInfo => { gOS = aInfo.os; });
 
@@ -56,9 +56,10 @@ function init()
   clippingsListElt.addEventListener("change", aEvent => { updateDisplay(aEvent, gClippingsDB) });
   buildClippingsList(clippingsListElt);
 
-  $("reload").addEventListener("click", aEvent => { reload(true) });
-  $("save-edits").addEventListener("click", aEvent => { saveEdits() });
-  $("delete-clipping").addEventListener("click", aEvent => { deleteClipping() });
+  $("reload").addEventListener("click", aEvent => { reload(true) }, false);
+  $("save-edits").addEventListener("click", aEvent => { saveEdits() }, false);
+  $("delete-clipping").addEventListener("click", aEvent => { deleteClipping() }, false);
+  $("import-clipping-file-upload").addEventListener("change", aEvent => { uploadImportFile(aEvent.target.files); }, false);
 }
 
 
@@ -161,6 +162,12 @@ function saveEdits()
   }
   
   let selectedIdx = selectElt.selectedIndex;
+
+  if (selectedIdx == -1) {
+    console.log("Clippings Manager: No clipping selected");
+    return;
+  }
+  
   let selectedOptionElt = selectElt.options[selectedIdx];
   let clippingID = Number(selectedOptionElt.value);
   let clippingName = $("clipping-name").value;
@@ -188,8 +195,14 @@ function deleteClipping()
     console.log("Clippings Manager: Nothing to delete");
     return;
   }
-  
-  let selectedOptionElt = selectElt.options[selectElt.selectedIndex];
+
+  let selectedIdx = selectElt.selectedIndex;
+  if (selectedIdx == -1) {
+    console.log("Clippings Manager: No clipping selected");
+    return;
+  }
+
+  let selectedOptionElt = selectElt.options[selectedIdx];
   let clippingID = Number(selectedOptionElt.value);
 
   let deleteClipping = gClippingsDB.clippings.delete(clippingID);
@@ -198,6 +211,65 @@ function deleteClipping()
     reload(true);
     gBkgrdPg.rebuildContextMenu();
   }).catch(aError => { console.error(aError) });
+}
+
+
+function uploadImportFile(aFileList)
+{
+  let importFile = aFileList[0];
+  console.log("Clippings Manager: Selected import file: '%s'\nFile size: %d bytes", importFile.name, importFile.size);
+
+  let fileReader = new FileReader();
+  fileReader.addEventListener("load", aEvent => { importClippings(aEvent.target.result); }, false);
+
+  fileReader.readAsText(importFile);
+}
+
+
+function importClippings(aImportJSON)
+{
+  let importData = null;
+
+  try {
+    importData = JSON.parse(aImportJSON);
+  }
+  catch (e) {
+    console.error(e);
+  }
+
+  console.info("Imported JSON data:");
+  console.log(importData);
+
+  if (importData === null) {
+    console.warn("Clippings Manager: Unable to read imported JSON data.");
+    return;
+  }
+
+  let userClippings = importData.userClippingsRoot;
+
+  for (let clipping of userClippings) {
+    if ("content" in clipping) {
+      let createClipping = gClippingsDB.clippings.add({
+        name: clipping.name,
+        content: clipping.content,
+        parentFolderID: 0,
+        shortcutKey: clipping.shortcutKey
+      });
+
+      createClipping.then(aID => {
+        let getClipping = gClippingsDB.clippings.get(aID);
+        getClipping.then(aResult => {
+          console.log("Imported clipping: '%s'", aResult.name);
+        });
+      });
+    }
+    else {
+      console.log("Skipping folder '%s' (currently unsupported)", clipping.name);
+    }
+  }
+
+  reload(true);
+  gBkgrdPg.rebuildContextMenu();
 }
 
 
