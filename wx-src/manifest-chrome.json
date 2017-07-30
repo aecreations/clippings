@@ -4,21 +4,23 @@
     "description": "Save frequently-entered text for pasting later.",
     "version": "5.99.1",
     "version_name": "6.0pre1+",
+    "homepage_url": "http://aecreations.sourceforge.net/clippings/index.php",
+    
+    "icons": {
+        "48": "icons/clippings-wx.png"
+    },
 
+    "permissions": ["contextMenus", "storage", "unlimitedStorage"],
+      
     "background": {
 	"scripts": ["dexie.js", "background.js"]
     },
+
     "content_scripts": [
 	{
 	    "matches": ["<all_urls>"],
 	    "all_frames": true,
 	    "js": ["content.js"]
 	}
-    ],
-    
-    "permissions": ["contextMenus", "storage", "unlimitedStorage"],
-      
-    "icons": {
-        "48": "icons/clippings-wx.png"
-    }
+    ]
 }
