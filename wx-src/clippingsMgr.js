@@ -125,11 +125,11 @@ function updateDisplay(aEvent, aClippingsDB)
       let selectedOptionElt = clippingsListElt.options[clippingsListElt.selectedIndex];
       let selectedClippingID = Number(selectedOptionElt.value);
 
-      aClippingsDB.clippings.get(selectedClippingID)
-        .then(aResult => {
-	  clippingNameElt.value = aResult.name;
-	  clippingTextElt.value = aResult.content;
-	}).catch(e => { console.error(e) });
+      let getClipping = aClippingsDB.clippings.get(selectedClippingID);
+      getClipping.then(aResult => {
+	clippingNameElt.value = aResult.name;
+	clippingTextElt.value = aResult.content;
+      }).catch(e => { console.error(e) });
     }
   });
 }
@@ -166,12 +166,15 @@ function saveEdits()
   let clippingName = $("clipping-name").value;
   let clippingText = $("clipping-text").value;
 
-  gClippingsDB.clippings.update(clippingID, { name: clippingName, content: clippingText })
-  .then(aUpdated => {
+  let updateClipping = gClippingsDB.clippings.update(clippingID, { name: clippingName, content: clippingText });
+
+  updateClipping.then(aUpdated => {
     if (aUpdated) {
       console.log("Clippings Manager: Updated clipping \"%s\" (ID = %d)", clippingName, clippingID);
       reload();
       selectElt.selectedIndex = selectedIdx;
+
+      gBkgrdPg.rebuildContextMenu();
     }
   });
 }
@@ -189,9 +192,11 @@ function deleteClipping()
   let selectedOptionElt = selectElt.options[selectElt.selectedIndex];
   let clippingID = Number(selectedOptionElt.value);
 
-  gClippingsDB.clippings.delete(clippingID).then(() => {
+  let deleteClipping = gClippingsDB.clippings.delete(clippingID);
+  deleteClipping.then(() => {
     console.log("Clippings Manager: Successfully deleted clipping (ID = %d)", clippingID);
     reload(true);
+    gBkgrdPg.rebuildContextMenu();
   }).catch(aError => { console.error(aError) });
 }
 

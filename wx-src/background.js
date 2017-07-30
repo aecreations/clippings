@@ -108,7 +108,12 @@ function init()
 
   chrome.runtime.getPlatformInfo(aInfo => { console.log("Clippings/wx: OS: " + aInfo.os); });
 
-  // Clippings context menu items.
+  buildContextMenu();
+}
+
+
+function buildContextMenu()
+{
   chrome.contextMenus.create({
     id: "ae-clippings-new",
     title: "New...",
@@ -139,20 +144,30 @@ function init()
 }
 
 
+function rebuildContextMenu()
+{
+  chrome.contextMenus.removeAll();  
+  buildContextMenu();
+}
+
+
 function createClipping(aName, aContent/*, aShortcutKey, aSrcURL */)
 {
-  db.clippings.add({name: aName, content: aContent, shortcutKey: "", parentFolderID: 0})
-    .then(aID => {
-      if (isGoogleChrome()) {
-        window.alert("Successfully created new clipping \"" + aName + "\".");
-      }
-      console.info("Clippings/wx: Successfully created new clipping!\nid = " + aID);
-      db.clippings.get(aID)
-        .then(aResult => {
-          console.log("Name: " + aResult.name + "\nText: " + aResult.content);
-      });
-    })
-    .catch(e => { console.error("Error: " + e)});
+  let createClipping = db.clippings.add({name: aName, content: aContent, shortcutKey: "", parentFolderID: 0});
+
+  createClipping.then(aID => {
+    if (isGoogleChrome()) {
+      window.alert("Successfully created new clipping \"%s\".", aName);
+    }
+    console.info("Clippings/wx: Successfully created new clipping!\nid = %d", aID);
+    
+    let getClipping = db.clippings.get(aID);
+    getClipping.then(aResult => {
+      console.log("Name: %s\nText: %s", aResult.name, aResult.content);
+    });
+
+    rebuildContextMenu();
+  }).catch(e => { console.error(e) });
 }
 
 
