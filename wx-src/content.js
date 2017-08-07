@@ -23,13 +23,41 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+//
+// Special handling of web pages inside a <FRAME>
+//
+
+var gIsFocused = false;
+
+function onFocus(aEvent)
+{
+  gIsFocused = true;
+  console.log("Clippings/wx::content.js: Has focus:\n%s", window.location.href);
+}
+
+function onBlur(aEvent)
+{
+  gIsFocused = false;
+  console.log("Clippings/wx::content.js: Lost focus:\n%s", window.location.href);
+}
+
+
+//
+// Message handlers
+//
 
 function handleRequestNewClipping(aRequest)
 {
   let rv = null;
+
+  if (! gIsFocused) {
+    console.warn("Clippings/wx::content.js:handleRequestNewClipping(): This web page does not have the focus; exiting message handler.");
+    return rv;
+  }
+
   let activeElt = window.document.activeElement;
 
-  console.log("Clippings/wx: content.js::handleRequestNewClipping(): activeElt = " + (activeElt ? activeElt.toString() : "???"));
+  console.log("Clippings/wx::content.js::handleRequestNewClipping(): activeElt = " + (activeElt ? activeElt.toString() : "???"));
 
   if (isElementOfType(activeElt, "HTMLInputElement")
       || isElementOfType(activeElt, "HTMLTextAreaElement")) {
@@ -85,7 +113,7 @@ function handleRequestNewClipping(aRequest)
   }
 
   if (rv !== null) {
-    console.log(">> Content retrieved from " + activeElt.toString() + ": " + rv.content);
+    console.info("Content retrieved from " + activeElt.toString() + ":\n" + rv.content);
   }
   
   return rv;
@@ -95,10 +123,16 @@ function handleRequestNewClipping(aRequest)
 function handleRequestInsertClipping(aRequest)
 {
   let rv = null;
+
+  if (! gIsFocused) {
+    console.warn("Clippings/wx::content.js:handleRequestInsertClipping(): This web page does not have the focus; exiting message handler.");
+    return rv;
+  }
+
   let clippingText = aRequest.content;
   let activeElt = window.document.activeElement;
 
-  console.log("Clippings/wx: content.js::handleRequestInsertClipping(): activeElt = " + (activeElt ? activeElt.toString() : "???"));  
+  console.log("Clippings/wx::content.js::handleRequestInsertClipping(): activeElt = " + (activeElt ? activeElt.toString() : "???"));  
 
   if (isElementOfType(activeElt, "HTMLInputElement")
       || isElementOfType(activeElt, "HTMLTextAreaElement")) {
@@ -210,50 +244,69 @@ function insertTextIntoRichTextEditor(aRichTextEditorDocument, aClippingText)
 
 function isGoogleChrome()
 {
-  return (! ("browser" in window));
+  // TO DO: Need a better way to determine which browser we're on
+  return false;
 }
 
 
-//
-// Message listeners
-//
+function init()
+{
+  console.log("Clippings/wx::content.js: Initializing content script for:\n%s", window.location.href);
+  console.log("Document body element: %s (DOM nodeName=%s)", document.body, document.body.nodeName);
 
-if (isGoogleChrome()) {
-  chrome.runtime.onMessage.addListener((aRequest, aSender, aSendResponse) => {
-    console.log("Clippings/wx: Content script received message '" + aRequest.msgID + "' from extension");
+  window.addEventListener("focus", onFocus, false);
+  window.addEventListener("blur", onBlur, false);
+  gIsFocused = true;
 
-    let resp = null;
+  let iframeElts = document.getElementsByTagName("IFRAME");
+  if (iframeElts.length > 0) {
+    for (let iframeElt of iframeElts) {
+      // TO DO: Make it work with Google Groups and Blogger rich text editors,
+      // which uses <iframe> without 'src' attribute.
+      iframeElt.contentWindow.addEventListener("focus", onFocus, false);
+      iframeElt.contentWindow.addEventListener("blur", onBlur, false);
+    }
+  }
+
+  if (isGoogleChrome()) {
+    chrome.runtime.onMessage.addListener((aRequest, aSender, aSendResponse) => {
+      console.log("Clippings/wx::content.js: Received message '" + aRequest.msgID + "' from Chrome extension.\n" + window.location.href);
+
+      let resp = null;
   
-    if (aRequest.msgID == "ae-clippings-new") {
-      resp = handleRequestNewClipping(aRequest);
-    }
-    else if (aRequest.msgID == "ae-clippings-paste") {
-      resp = handleRequestInsertClipping(aRequest);
-    }
+      if (aRequest.msgID == "ae-clippings-new") {
+        resp = handleRequestNewClipping(aRequest);
+      }
+      else if (aRequest.msgID == "ae-clippings-paste") {
+        resp = handleRequestInsertClipping(aRequest);
+      }
 
-    if (resp !== null) {
-      aSendResponse(resp);
-    }
-  });
-}
-else {
-  // Firefox
-  browser.runtime.onMessage.addListener(aRequest => {
-    console.log("Clippings/wx: Content script received message '" + aRequest.msgID + "' from extension");
+      if (resp !== null) {
+        aSendResponse(resp);
+      }
+    });
+  }
+  else {
+    // Firefox
+    browser.runtime.onMessage.addListener(aRequest => {
+      console.log("Clippings/wx::content.js: Received message '%s' from extension.\n%s", aRequest.msgID, window.location.href);
 
-    let resp = null;
+      let resp = null;
   
-    if (aRequest.msgID == "ae-clippings-new") {
-      resp = handleRequestNewClipping(aRequest);
-    }
-    else if (aRequest.msgID == "ae-clippings-paste") {
-      resp = handleRequestInsertClipping(aRequest);
-    }
+      if (aRequest.msgID == "ae-clippings-new") {
+        resp = handleRequestNewClipping(aRequest);
+      }
+      else if (aRequest.msgID == "ae-clippings-paste") {
+        resp = handleRequestInsertClipping(aRequest);
+      }
     
-    if (resp !== null) {
-      return Promise.resolve(resp);
-    }
-  });
+      if (resp !== null) {
+        return Promise.resolve(resp);
+      }
+    });
+  }
 }
+
+init();
 
 
