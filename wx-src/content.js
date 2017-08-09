@@ -23,24 +23,6 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-//
-// Special handling of web pages inside a <FRAME>
-//
-
-var gIsFocused = false;
-
-function onFocus(aEvent)
-{
-  gIsFocused = true;
-  console.log("Clippings/wx::content.js: Has focus:\n%s", window.location.href);
-}
-
-function onBlur(aEvent)
-{
-  gIsFocused = false;
-  console.log("Clippings/wx::content.js: Lost focus:\n%s", window.location.href);
-}
-
 
 //
 // Message handlers
@@ -50,7 +32,7 @@ function handleRequestNewClipping(aRequest)
 {
   let rv = null;
 
-  if (! gIsFocused) {
+  if (! document.hasFocus()) {
     console.warn("Clippings/wx::content.js:handleRequestNewClipping(): This web page does not have the focus; exiting message handler.");
     return rv;
   }
@@ -107,6 +89,7 @@ function handleRequestNewClipping(aRequest)
     let text = "";
     if (selection) {
       text = selection.toString();
+
     }
 
     rv = (text ? { content: text } : null);
@@ -124,7 +107,7 @@ function handleRequestInsertClipping(aRequest)
 {
   let rv = null;
 
-  if (! gIsFocused) {
+  if (! document.hasFocus()) {
     console.warn("Clippings/wx::content.js:handleRequestInsertClipping(): This web page does not have the focus; exiting message handler.");
     return rv;
   }
@@ -253,20 +236,6 @@ function init()
 {
   console.log("Clippings/wx::content.js: Initializing content script for:\n%s", window.location.href);
   console.log("Document body element: %s (DOM nodeName=%s)", document.body, document.body.nodeName);
-
-  window.addEventListener("focus", onFocus, false);
-  window.addEventListener("blur", onBlur, false);
-  gIsFocused = true;
-
-  let iframeElts = document.getElementsByTagName("IFRAME");
-  if (iframeElts.length > 0) {
-    for (let iframeElt of iframeElts) {
-      // TO DO: Make it work with Google Groups and Blogger rich text editors,
-      // which uses <iframe> without 'src' attribute.
-      iframeElt.contentWindow.addEventListener("focus", onFocus, false);
-      iframeElt.contentWindow.addEventListener("blur", onBlur, false);
-    }
-  }
 
   if (isGoogleChrome()) {
     chrome.runtime.onMessage.addListener((aRequest, aSender, aSendResponse) => {
