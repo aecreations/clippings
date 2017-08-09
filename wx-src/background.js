@@ -167,7 +167,7 @@ function createClipping(aName, aContent/*, aShortcutKey, aSrcURL */)
     });
 
     rebuildContextMenu();
-  }).catch(e => { console.error(e) });
+  }, onError);
 }
 
 
@@ -196,7 +196,7 @@ function alertEx(aMessage)
 
 function onError(aError)
 {
-  console.error("Clippings/wx: Error: " + aError);
+  console.error("Clippings/wx: " + aError);
 }
 
 
@@ -237,13 +237,20 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
       }
 
       let activeTabID = aTabs[0].id;
+
+      chrome.tabs.get(activeTabID, aTabInfo => {
+        if (aTabInfo.status == "loading") {
+          console.warn("Clippings/wx: The active tab (ID = %s) is still loading or busy. Sending messages to it may not work.", activeTabID);
+        }
+      });
+      
       console.log("Clippings/wx: Extension sending message 'ae-clippings-new' to content script; active tab ID: " + activeTabID);
 
       if (isGoogleChrome()) {
         chrome.tabs.sendMessage(activeTabID, { msgID: "ae-clippings-new", hostApp: "chrome" }, null, aResp => {
           let content = aResp.content;
           if (! content) {
-            console.warn("Clippings/wx: Content script was unable to retrieve content from inside an HTML frame.  Retrieving selection text from context menu info.");
+            console.warn("Clippings/wx: Content script was unable to retrieve content from the web page.  Retrieving selection text from context menu info.");
             content = text;
           }
           console.log("Clippings/wx: Creating clipping from selected text:\nName: " + name + "\nText: " + content);
@@ -253,14 +260,18 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
       else {
         browser.tabs.sendMessage(activeTabID, { msgID: "ae-clippings-new" })
         .then(aResp => {
+          if (! aResp) {
+            console.error("Clippings/wx: Unable to receive response from content script!");
+            return;
+          }
           let content = aResp.content;
-          if (! content) {
-            console.warn("Clippings/wx: Content script was unable to retrieve content from inside an HTML frame.  Retrieving selection text from context menu info.");
+          if (! aResp.content) {
+            console.warn("Clippings/wx: Content script was unable to retrieve textual content from the web page.  Retrieving selection text from context menu info.");
             content = text;
           }
           console.log("Clippings/wx: Creating clipping from selected text:\nName: " + name + "\nText: " + content);
           createClipping(name, content);
-        }).catch(onError);
+        }, onError);
       }
     });
     // END TEMPORARY
