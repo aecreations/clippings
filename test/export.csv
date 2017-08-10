@@ -1,0 +1,6 @@
+A simple clipping,The quick brown fox jumps over the lazy dog.
+"HTML-formatted clipping","<h1>HTML-formatted clipping</h1><p>The <span style=""font-size:xx-large"">quick</span> <span style=""color:brown"">brown</span> fox <sup>jumps</sup> over the <strong>lazy</strong> dog.</p>"
+"Clipping with line breaks","The quick brown fox
+jumps over the 
+lazy dog."
+"Clipping with predefined placeholder","Today's date is $[DATE]."
