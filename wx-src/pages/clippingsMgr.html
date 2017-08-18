@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<!-- ***** BEGIN LICENSE BLOCK *****
+   - Version: MPL 1.1
+   -
+   - The contents of this file are subject to the Mozilla Public License Version
+   - 1.1 (the "License"); you may not use this file except in compliance with
+   - the License. You may obtain a copy of the License at
+   - http://www.mozilla.org/MPL/
+   -
+   - Software distributed under the License is distributed on an "AS IS" basis,
+   - WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+   - for the specific language governing rights and limitations under the
+   - License.
+   -
+   - The Original Code is Panic Button.
+   -
+   - The Initial Developer of the Original Code is
+   - Alex Eng <ateng@users.sourceforge.net>.
+   - Portions created by the Initial Developer are Copyright (C) 2007-2017
+   - the Initial Developer. All Rights Reserved.
+   -
+   - Contributor(s):
+   -
+   - ***** END LICENSE BLOCK ***** -->
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Clippings Manager</title>
+
+    <script type="application/javascript" src="../lib/jquery.js"></script>
+    <script type="application/javascript" src="../lib/fancytree/jquery.fancytree-all-deps.min.js"></script>
+    <script type="application/javascript" src="clippingsMgr.js"></script>
+
+    <link rel="stylesheet" href="../lib/fancytree/skin/ui.fancytree.min.css">
+    <style type="text/css">
+      body {
+        margin: 0;
+      }
+      
+      #dlg-banner {
+        display: none;
+        padding-top: 8px; padding-bottom: 8px;
+        padding-left: 16px;
+        background-color: lightgoldenrodyellow;
+        border-bottom: 1px solid khaki;
+      }
+
+      #dlg-content {
+        margin: 16px;
+      }
+
+      #import-clippings {
+        display: none;
+      }
+    </style>
+
+  </head>
+
+  <body>
+    <div id="dlg-banner">
+      <span id="dlg-banner-msg"></span>
+    </div>
+
+    <div id="dlg-content">
+
+      <div id="clippings-tree"></div>
+
+    </div> <!-- dlg-content -->
+  </body>
+</html>
