@@ -108,6 +108,26 @@ function init()
 
   chrome.runtime.getPlatformInfo(aInfo => { console.log("Clippings/wx: OS: " + aInfo.os); });
 
+  chrome.browserAction.onClicked.addListener(aTab => {
+    // TO DO: Get this from a pref.
+    let openInNewTab = true;
+
+    if (openInNewTab) {
+      chrome.tabs.create({
+        url: "pages/clippingsMgr.html"
+      });
+    }
+    else {
+      chrome.windows.create({
+        url: "pages/clippingsMgr.html",
+        type: "popup",
+        focused: true,
+        left: 64, top: 128,
+        width: 600, height: 400
+      });
+    }      
+  });
+  
   buildContextMenu();
 }
 
@@ -288,6 +308,7 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
     }
     else {
       chrome.windows.create({
+        url: "clippingsMgr.html",
         type: "popup",
         focused: true,
         left: 64, top: 128,
