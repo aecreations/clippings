@@ -13,7 +13,7 @@
     "permissions": ["contextMenus", "storage", "unlimitedStorage"],
       
     "background": {
-	"scripts": ["dexie.js", "background.js"]
+	"scripts": ["lib/dexie.js", "background.js"]
     },
 
     "content_scripts": [
@@ -22,5 +22,13 @@
 	    "all_frames": true,
 	    "js": ["content.js"]
 	}
-    ]
+    ],
+
+    "browser_action": {
+	"default_icon": {
+	    "48": "img/clippings-wx.png"
+	},
+
+	"default_title": "Organize Clippings"
+    }
 }
