@@ -47,24 +47,7 @@ $(document).ready(() => {
     console.log("Number of clippings at root folder level: " + aResult);
     let numClippingsInRoot = aResult;
     if (numClippingsInRoot > 0) {
-      let treeData = [];
-
-      let getRootClippings = gClippingsDB.clippings.where("parentFolderID").equals(0).each((aItem, aCursor) => {
-        let treeNode = {
-          key: aItem.id,
-          title: aItem.name
-        };
-
-        treeData.push(treeNode);
-      });
-
-      getRootClippings.then(() => {
-        $("#clippings-tree").fancytree({
-          source: treeData,
-          selectMode: 1,
-          icon: true
-        });
-     });
+      buildClippingsTree();
     }
     else {
       $("#clippings-tree").fancytree({
@@ -77,11 +60,63 @@ $(document).ready(() => {
 });
 
 
+function buildClippingsTree()
+{
+  let treeData = [];
+
+  let getRootClippings = gClippingsDB.clippings.where("parentFolderID").equals(0).each((aItem, aCursor) => {
+    let treeNode = {
+      key: aItem.id,
+      title: aItem.name
+    };
+
+    treeData.push(treeNode);
+  });
+
+  getRootClippings.then(() => {
+    $("#clippings-tree").fancytree({
+      source: treeData,
+      selectMode: 1,
+      icon: true,
+
+      init: function (aEvent, aData) {
+        let rootNode = aData.tree.getRootNode();
+        if (rootNode.children.length > 0) {
+          rootNode.children[0].setActive();
+        }
+      },
+
+      activate: function (aEvent, aData) {
+        updateDisplay(aEvent, aData);
+      }
+    });
+  });
+}
+
+
+function updateDisplay(aEvent, aData)
+{
+  gClippingsDB.clippings.count().then(aResult => {
+    let numClippingsInRoot = aResult;
+
+    if (numClippingsInRoot > 0) {
+      let selectedItemID = Number(aData.node.key);
+      let getClipping = gClippingsDB.clippings.get(selectedItemID);
+      
+      getClipping.then(aResult => {
+        $("#clipping-name").val(aResult.name);
+	$("#clipping-text").val(aResult.content);
+      });
+    }
+  });
+}
+
+
 
 function showBanner(aMessage)
 {
-  let bannerElt = $("#dlg-banner");
-  let bannerMsgElt = $("#dlg-banner-msg");
+  let bannerElt = $("#banner");
+  let bannerMsgElt = $("#banner-msg");
 
   bannerMsgElt.children().remove();
   bannerMsgElt.text(aMessage);
