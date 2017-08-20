@@ -40,6 +40,10 @@ var gClippingsListeners = {
 
   remove: function (aTargetListener) {
     this._listeners.filter(aListener => aListener != aTargetListener);
+  },
+
+  get: function () {
+    return this._listeners;
   }
 };
 
@@ -116,6 +120,43 @@ function init()
   // Needed to be able to use the Dexie.Observable add-on.
   gClippingsDB.version(2).stores({});
 
+  gClippingsDB.on("changes", aChanges => {
+    const CREATED = 1, UPDATED = 2, DELETED = 3;
+
+    console.log("Clippings/wx: Database observer: changes object: ");
+    console.log(aChanges);
+
+    let clippingsListeners = gClippingsListeners.get();
+    
+    aChanges.forEach(aChange => {
+      switch (aChange.type) {
+      case CREATED:
+        console.log("Clippings/wx: Database observer detected CREATED event");
+        if (aChange.table == "clippings") {
+          clippingsListeners.forEach(aListener => { aListener.newClippingCreated(aChange.key) });
+        }
+        break;
+        
+      case UPDATED:
+        console.log("Clippings/wx: Database observer detected UPDATED event");
+        if (aChange.table == "clippings") {
+          clippingsListeners.forEach(aListener => { aListener.clippingChanged(aChange.key) });
+        }
+        break;
+        
+      case DELETED:
+        console.log("Clippings/wx: Database observer detected DELETED event");
+        if (aChange.table == "clippings") {
+          clippingsListeners.forEach(aListener => { aListener.clippingDeleted(aChange.key) });
+        }
+        break;
+        
+      default:
+        break;
+      }
+    });
+  });
+
   gClippingsDB.open().catch(e => {
     console.error("Clippings/wx: Error opening database: " + e);
   });
@@ -163,12 +204,30 @@ function init()
       rebuildContextMenu();
     },
 
+    clippingChanged: function (aClippingID) {
+      updateContextMenuForClipping(aClippingID);
+    },
+
+    folderChanged: function (aFolderID) {
+      rebuildContextMenu();
+    },
+
+    clippingDeleted: function (aClippingID) {
+      removeContextMenuForClipping(aClippingID);
+    },
+
+    folderDeleted: function (aFolderID) {
+      // TO DO: Remove the context menu item (submenu) for the deleted folder.
+    },
+
     importDone: function (aNumItems) {
       rebuildContextMenu();
     }
   };
   
   gClippingsListeners.add(gClippingsListener);
+
+  window.addEventListener("unload", onUnload, false);
   
   buildContextMenu();
 }
@@ -195,21 +254,36 @@ function buildContextMenu()
       chrome.contextMenus.create({ type: "separator", contexts: ["editable"]});
 
       gClippingsDB.clippings.where("parentFolderID").equals(0).each((aItem, aCursor) => {
-          chrome.contextMenus.create({
-            id: "ae-clippings-clipping-" + aItem.id,
-            title: aItem.name,
-            contexts: ["editable"]
-          });
+        chrome.contextMenus.create({
+          id: "ae-clippings-clipping-" + aItem.id,
+          title: aItem.name,
+          contexts: ["editable"]
+        });
       });
     }
   });  
 }
 
 
+function updateContextMenuForClipping(aUpdatedClippingID)
+{
+  let id = Number(aUpdatedClippingID);
+  let getClipping = gClippingsDB.clippings.get(id);
+  getClipping.then(aResult => {
+    chrome.contextMenus.update("ae-clippings-clipping-" + aUpdatedClippingID, { title: aResult.name });
+  });
+}
+
+
+function removeContextMenuForClipping(aRemovedClippingID)
+{
+  chrome.contextMenus.remove("ae-clippings-clipping-" + aRemovedClippingID);
+}
+
+
 function rebuildContextMenu()
 {
-  chrome.contextMenus.removeAll();  
-  buildContextMenu();
+  chrome.contextMenus.removeAll(() => { buildContextMenu() });
 }
 
 
@@ -282,6 +356,13 @@ function alertEx(aMessage)
   else {
     console.info("Clippings/wx: " + aMessage);
   }
+}
+
+
+function onUnload(aEvent)
+{
+  gClippingsListeners.remove(gClippingsListener);
+  window.removeEventListener("unload", unload, false);
 }
 
 

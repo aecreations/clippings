@@ -29,6 +29,8 @@ var gOS;
 var gClippingsDB;
 var gClippings;
 
+var gClippingsListener;
+
 
 $(document).ready(() => {
   gClippings = chrome.extension.getBackgroundPage();
@@ -43,6 +45,36 @@ $(document).ready(() => {
 
   chrome.runtime.getPlatformInfo(aInfo => { gOS = aInfo.os; });
 
+  let clippingsListeners = gClippings.getClippingsListeners();
+  
+  gClippingsListener = {
+    origin: clippingsListeners.ORIGIN_CLIPPINGS_MGR,
+
+    newClippingCreated: function (aClippingID) {
+      // TO DO: Check for clipping created outside Clippings Manager.
+      // If so, then select it in the tree list and push to undo stack.
+    },
+
+    newFolderCreated: function (aFolderID) {
+      // TO DO: Check for folder created outside Clippings Manager.
+      // If so, then select it in the tree list and push to undo stack.
+    },
+
+    clippingChanged: function (aClippingID) {},
+
+    folderChanged: function (aFolderID) {},
+
+    clippingDeleted: function (aClippingID) {},
+
+    folderDeleted: function (aFolderID) {},
+    
+    importDone: function (aNumItems) {
+      // TO DO: Rebuild the clippings tree.
+    }
+  };
+
+  clippingsListeners.add(gClippingsListener);
+  
   gClippingsDB.clippings.count().then(aResult => {
     console.log("Number of clippings at root folder level: " + aResult);
     let numClippingsInRoot = aResult;
@@ -122,7 +154,6 @@ function showBanner(aMessage)
   bannerMsgElt.text(aMessage);
   bannerElt.css("display", "block");
 }
-
 
 
 function onError(aError)
