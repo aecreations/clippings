@@ -13,7 +13,11 @@
     "permissions": ["contextMenus", "storage", "unlimitedStorage"],
       
     "background": {
-	"scripts": ["lib/dexie.js", "background.js"]
+	"scripts": [
+	    "lib/dexie/dexie.js",
+	    "lib/dexie/dexie-observable.js",
+	    "background.js"
+	]
     },
 
     "content_scripts": [
