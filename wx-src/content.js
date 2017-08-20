@@ -227,8 +227,12 @@ function insertTextIntoRichTextEditor(aRichTextEditorDocument, aClippingText)
 
 function isGoogleChrome()
 {
-  // TO DO: Need a better way to determine which browser we're on
-  return false;
+  let rv = null;
+  let extManifest = chrome.runtime.getManifest();
+
+  rv = ("version_name" in extManifest);
+  
+  return rv;
 }
 
 
