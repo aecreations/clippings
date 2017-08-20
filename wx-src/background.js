@@ -23,7 +23,28 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-let db = null;
+const MAX_NAME_LENGTH = 64;
+
+var gClippingsDB = null;
+
+var gClippingsListeners = {
+  ORIGIN_CLIPPINGS_MGR: 1,
+  ORIGIN_HOSTAPP: 2,
+  ORIGIN_NEW_CLIPPING_DLG: 3,
+
+  _listeners: [],
+
+  add: function (aNewListener) {
+    this._listeners.push(aNewListener);
+  },
+
+  remove: function (aTargetListener) {
+    this._listeners.filter(aListener => aListener != aTargetListener);
+  }
+};
+
+var gClippingsListener;
+
 
 /***
 chrome.contextMenus.create({
@@ -88,11 +109,14 @@ chrome.contextMenus.create({
 
 function init()
 {
-  db = new Dexie("aeClippings");
-  db.version(1).stores({
+  gClippingsDB = new Dexie("aeClippings");
+  gClippingsDB.version(1).stores({
     clippings: "++id, name, parentFolderID"
   });
-  db.open().catch(e => {
+  // Needed to be able to use the Dexie.Observable add-on.
+  gClippingsDB.version(2).stores({});
+
+  gClippingsDB.open().catch(e => {
     console.error("Clippings/wx: Error opening database: " + e);
   });
 
@@ -127,6 +151,24 @@ function init()
       });
     }      
   });
+
+  gClippingsListener = {
+    origin: gClippingsListeners.ORIGIN_HOSTAPP,
+
+    newClippingCreated: function (aClippingID) {
+      rebuildContextMenu();
+    },
+
+    newFolderCreated: function (aFolderID) {
+      rebuildContextMenu();
+    },
+
+    importDone: function (aNumItems) {
+      rebuildContextMenu();
+    }
+  };
+  
+  gClippingsListeners.add(gClippingsListener);
   
   buildContextMenu();
 }
@@ -146,13 +188,13 @@ function buildContextMenu()
     contexts: ["editable", "selection"]
   });
 
-  db.clippings.count().then(aResult => {
+  gClippingsDB.clippings.count().then(aResult => {
     console.log("Number of clippings at root folder level: " + aResult);
     let numClippingsInRoot = aResult;
     if (numClippingsInRoot > 0) {
       chrome.contextMenus.create({ type: "separator", contexts: ["editable"]});
 
-      db.clippings.where("parentFolderID").equals(0).each((aItem, aCursor) => {
+      gClippingsDB.clippings.where("parentFolderID").equals(0).each((aItem, aCursor) => {
           chrome.contextMenus.create({
             id: "ae-clippings-clipping-" + aItem.id,
             title: aItem.name,
@@ -173,7 +215,7 @@ function rebuildContextMenu()
 
 function createClipping(aName, aContent/*, aShortcutKey, aSrcURL */)
 {
-  let createClipping = db.clippings.add({name: aName, content: aContent, shortcutKey: "", parentFolderID: 0});
+  let createClipping = gClippingsDB.clippings.add({name: aName, content: aContent, shortcutKey: "", parentFolderID: 0});
 
   createClipping.then(aID => {
     if (isGoogleChrome()) {
@@ -181,7 +223,7 @@ function createClipping(aName, aContent/*, aShortcutKey, aSrcURL */)
     }
     console.info("Clippings/wx: Successfully created new clipping!\nid = %d", aID);
     
-    let getClipping = db.clippings.get(aID);
+    let getClipping = gClippingsDB.clippings.get(aID);
     getClipping.then(aResult => {
       console.log("Name: %s\nText: %s", aResult.name, aResult.content);
     });
@@ -191,9 +233,38 @@ function createClipping(aName, aContent/*, aShortcutKey, aSrcURL */)
 }
 
 
+function createClippingNameFromText(aText)
+{
+  let rv = "";
+  let clipName = "";
+
+  aText = aText.trim();
+
+  if (aText.length > MAX_NAME_LENGTH) {
+    // Leave room for the three-character elipsis.
+    clipName = aText.substr(0, MAX_NAME_LENGTH - 3) + "...";
+  } 
+  else {
+    clipName = aText;
+  }
+
+  // Truncate clipping names at newlines if they exist.
+  let newlineIdx = clipName.indexOf("\n");
+  rv = (newlineIdx == -1) ? clipName : clipName.substring(0, newlineIdx);
+
+  return rv;
+}
+
+
 function getClippingsDB()
 {
-  return db;
+  return gClippingsDB;
+}
+
+
+function getClippingsListeners()
+{
+  return gClippingsListeners;
 }
 
 
@@ -234,16 +305,10 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
       break;
     }
 
-    let name = "";
+    let name = createClippingNameFromText(text);
 
     if (isGoogleChrome()) {
-      name = window.prompt("New clipping name:", "New Clipping");
-    }
-    else {
-      name = text.substring(0, 64);
-      if (text.length > 64) {
-        name += "...";
-      }
+      name = window.prompt("New clipping name:", name);
     }
     
     if (! name) {
@@ -320,7 +385,7 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
   default:
     if (aInfo.menuItemId.startsWith("ae-clippings-clipping-")) {
       let clippingID = Number(aInfo.menuItemId.substr(22));
-      db.clippings.where("id").equals(clippingID).first(aClipping => {
+      gClippingsDB.clippings.where("id").equals(clippingID).first(aClipping => {
         if (! aClipping) {
           alertEx("Cannot find clipping.\nClipping ID = " + clippingID);
           return;
