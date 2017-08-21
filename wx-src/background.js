@@ -120,10 +120,14 @@ function init()
   // Needed to be able to use the Dexie.Observable add-on.
   gClippingsDB.version(2).stores({});
 
+  gClippingsDB.version(3).stores({
+    folders: "++id, name, parentFolderID"
+  });
+  
   gClippingsDB.on("changes", aChanges => {
     const CREATED = 1, UPDATED = 2, DELETED = 3;
 
-    console.log("Clippings/wx: Database observer: changes object: ");
+    console.log("Clippings/wx: Database change observer: changes object: ");
     console.log(aChanges);
 
     let clippingsListeners = gClippingsListeners.get();
@@ -135,6 +139,9 @@ function init()
         if (aChange.table == "clippings") {
           clippingsListeners.forEach(aListener => { aListener.newClippingCreated(aChange.key) });
         }
+        else if (aChange.table == "folders") {
+          clippingsListeners.forEach(aListener => { aListener.newFolderCreated(aChange.key) });
+        }
         break;
         
       case UPDATED:
@@ -142,12 +149,18 @@ function init()
         if (aChange.table == "clippings") {
           clippingsListeners.forEach(aListener => { aListener.clippingChanged(aChange.key) });
         }
+        else if (aChange.table == "folders") {
+          clippingsListeners.forEach(aListener => { aListener.folderChanged(aChange.key) });
+        }
         break;
         
       case DELETED:
         console.log("Clippings/wx: Database observer detected DELETED event");
         if (aChange.table == "clippings") {
           clippingsListeners.forEach(aListener => { aListener.clippingDeleted(aChange.key) });
+        }
+        else if (aChange.table == "folders") {
+          clippingsListeners.forEach(aListener => { aListener.folderDeleted(aChange.key) });
         }
         break;
         

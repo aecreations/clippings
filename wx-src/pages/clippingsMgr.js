@@ -25,6 +25,9 @@
 
 const DEBUG = true;
 
+const DEFAULT_CLIPPING_NAME = "New Clipping";
+const DEFAULT_FOLDER_NAME = "New Folder";
+
 var gOS;
 var gClippingsDB;
 var gClippings;
@@ -56,6 +59,33 @@ $(document).ready(() => {
     },
 
     newFolderCreated: function (aFolderID) {
+      let getNewFolder = gClippingsDB.folders.get(Number(aFolderID));
+      getNewFolder.then(aResult => {
+        let tree = getClippingsTree();
+        let selectedNode = tree.activeNode;
+        let newNodeData = {
+          key: aResult.id,
+          title: aResult.name,
+          folder: true
+        };
+
+        let newNode = null;
+    
+        if (selectedNode) {
+          let parentNode = selectedNode.getParent();
+          newNode = parentNode.addNode(newNodeData);
+        }
+        else {
+          // No clippings or folders.
+          newNode = tree.rootNode.addNode(newNodeData);
+        }
+        newNode.setActive();
+
+        $("#clipping-name").val(aResult.name);
+        $("#clipping-text").val("");
+        // TO DO: Hide the clipping content textbox.
+      });
+
       // TO DO: Check for folder created outside Clippings Manager.
       // If so, then select it in the tree list and push to undo stack.
     },
@@ -106,12 +136,29 @@ $(window).on("beforeunload", function () {
 
 function initToolbarButtons()
 {
-  $("#new-clipping").on("click", aEvent => {
+  $("#new-clipping").click(aEvent => {
     window.alert("This option is not available right now.");
+    // TO DO: Create a new clipping in the database.
+    // The 'newClippingCreated' Clippings listener should do the work of
+    // updating the UI (the tree and item properties) to show the newly-created
+    // clipping.
+
   });
 
-  $("#new-folder").on("click", aEvent => {
-    window.alert("This option is not available right now.");
+  $("#new-folder").click(aEvent => {
+    let tree = getClippingsTree();
+    let selectedNode = tree.activeNode;
+    let parentFolderID = 0;
+    
+    if (selectedNode) {
+      let parentNode = selectedNode.getParent();
+      parentFolderID = (parentNode.isRootNode() ? 0 : Number(parentNode.key));
+    }
+    
+    gClippingsDB.folders.add({
+      name: DEFAULT_FOLDER_NAME,
+      parentFolderID: parentFolderID
+    });
   });
 }
 
@@ -119,31 +166,38 @@ function initToolbarButtons()
 function initInstantEditing()
 {
   $("#clipping-name").blur(aEvent => {
-    let tree = $("#clippings-tree").fancytree("getTree");
+    let tree = getClippingsTree();
     let selectedNode = tree.activeNode;
+    let id = Number(selectedNode.key);
 
     if (selectedNode.folder) {
       // TO DO: Handle folders.
     }
     else {
-      let clippingID = Number(selectedNode.key);
       let name = aEvent.target.value;
 
       selectedNode.setTitle(name);
-      gClippingsDB.clippings.update(clippingID, { name: name });
+      gClippingsDB.clippings.update(id, { name: name });
     }
   });
   
   $("#clipping-text").blur(aEvent => {
-    let tree = $("#clippings-tree").fancytree("getTree");
+    let tree = getClippingsTree();
     let selectedNode = tree.activeNode;
+    let id = Number(selectedNode.key);
 
     if (! selectedNode.folder) {
-      let clippingID = Number(selectedNode.key);
       let text = aEvent.target.value;
-      gClippingsDB.clippings.update(clippingID, { content: text });
+      gClippingsDB.clippings.update(id, { content: text });
     }
   });
+}
+
+
+function getClippingsTree()
+{
+  let rv = $("#clippings-tree").fancytree("getTree");
+  return rv;
 }
 
 
@@ -188,12 +242,23 @@ function updateDisplay(aEvent, aData)
 
     if (numClippingsInRoot > 0) {
       let selectedItemID = Number(aData.node.key);
-      let getClipping = gClippingsDB.clippings.get(selectedItemID);
-      
-      getClipping.then(aResult => {
-        $("#clipping-name").val(aResult.name);
-	$("#clipping-text").val(aResult.content);
-      });
+
+      if (aData.node.isFolder()) {
+        let getFolder = gClippingsDB.folders.get(selectedItemID);
+        getFolder.then(aResult => {
+          $("#clipping-name").val(aResult.name);
+          $("#clipping-text").val("");
+          // TO DO: Hide clipping content textbox.
+        });
+      }
+      else {
+        let getClipping = gClippingsDB.clippings.get(selectedItemID);
+        getClipping.then(aResult => {
+          $("#clipping-name").val(aResult.name);
+          // TO DO: Show clipping content textbox.
+          $("#clipping-text").val(aResult.content);
+        });
+      }
     }
   });
 }
