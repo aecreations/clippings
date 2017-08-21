@@ -465,8 +465,10 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
 
   default:
     if (aInfo.menuItemId.startsWith("ae-clippings-clipping-")) {
-      let clippingID = Number(aInfo.menuItemId.substr(22));
-      gClippingsDB.clippings.where("id").equals(clippingID).first(aClipping => {
+      let id = Number(aInfo.menuItemId.substr(22));
+      let getClipping = gClippingsDB.clippings.get(id);
+
+      getClipping.then(aClipping => {
         if (! aClipping) {
           alertEx("Cannot find clipping.\nClipping ID = " + clippingID);
           return;
@@ -483,8 +485,7 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
           let activeTabID = aTabs[0].id;
           let msgParams = {
             msgID: "ae-clippings-paste",
-            content: aClipping.content,
-            hostApp: (isGoogleChrome() ? "chrome" : "firefox")
+            content: aClipping.content
           };
 
           console.log("Clippings/wx: Extension sending message 'ae-clippings-paste' to content script");
