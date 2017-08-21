@@ -21,6 +21,20 @@ body {
     flex-flow: column nowrap;
 }
 
+.toolbar-button {
+    flex: 0 1 auto;
+    align-self: stretch;
+    min-width: 88px;
+}
+
+#new-clipping {
+    order: 1;
+}
+
+#new-folder {
+    order: 2;
+}
+
 #banner {
     display: none;
     padding-top: 8px;
@@ -28,6 +42,15 @@ body {
     padding-left: 16px;
     background-color: lightgoldenrodyellow;
     border-bottom: 1px solid khaki;
+}
+
+#toolbar {
+    padding-left: 2px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+
+    background-color: #eeeeee;
+    border-bottom: 1px solid #cccccc;
 }
 
 #content {
@@ -61,4 +84,21 @@ body {
     display: block;
     width: 100%;
     height: 92%;
+}
+
+#status-bar {
+    width: 100%;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 16px;
+    
+    border-top: 1px solid #cccccc;
+    background-color: #eeeeee;
+
+    font: small-caption;
+}
+
+#status-bar-msg {
+    width: 100%;
+    text-align: center;
 }
