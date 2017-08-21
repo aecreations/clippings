@@ -74,10 +74,16 @@ $(document).ready(() => {
   };
 
   clippingsListeners.add(gClippingsListener);
+
+  initToolbarButtons();
+
+  initInstantEditing();
   
   gClippingsDB.clippings.count().then(aResult => {
-    console.log("Number of clippings at root folder level: " + aResult);
     let numClippingsInRoot = aResult;
+
+    $("#status-bar-msg").text(numClippingsInRoot + " items");
+
     if (numClippingsInRoot > 0) {
       buildClippingsTree();
     }
@@ -97,6 +103,48 @@ $(window).on("beforeunload", function () {
   clippingsListeners.remove(gClippingsListener);
 });
 
+
+function initToolbarButtons()
+{
+  $("#new-clipping").on("click", aEvent => {
+    window.alert("This option is not available right now.");
+  });
+
+  $("#new-folder").on("click", aEvent => {
+    window.alert("This option is not available right now.");
+  });
+}
+
+
+function initInstantEditing()
+{
+  $("#clipping-name").blur(aEvent => {
+    let tree = $("#clippings-tree").fancytree("getTree");
+    let selectedNode = tree.activeNode;
+
+    if (selectedNode.folder) {
+      // TO DO: Handle folders.
+    }
+    else {
+      let clippingID = Number(selectedNode.key);
+      let name = aEvent.target.value;
+
+      selectedNode.setTitle(name);
+      gClippingsDB.clippings.update(clippingID, { name: name });
+    }
+  });
+  
+  $("#clipping-text").blur(aEvent => {
+    let tree = $("#clippings-tree").fancytree("getTree");
+    let selectedNode = tree.activeNode;
+
+    if (! selectedNode.folder) {
+      let clippingID = Number(selectedNode.key);
+      let text = aEvent.target.value;
+      gClippingsDB.clippings.update(clippingID, { content: text });
+    }
+  });
+}
 
 
 function buildClippingsTree()
