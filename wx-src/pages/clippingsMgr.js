@@ -53,50 +53,47 @@ $(document).ready(() => {
   gClippingsListener = {
     origin: clippingsListeners.ORIGIN_CLIPPINGS_MGR,
 
-    newClippingCreated: function (aClippingID) {
+    newClippingCreated: function (aID, aData) {
       // TO DO: Check for clipping created outside Clippings Manager.
       // If so, then select it in the tree list and push to undo stack.
     },
 
-    newFolderCreated: function (aFolderID) {
-      let getNewFolder = gClippingsDB.folders.get(Number(aFolderID));
-      getNewFolder.then(aResult => {
-        let tree = getClippingsTree();
-        let selectedNode = tree.activeNode;
-        let newNodeData = {
-          key: aResult.id,
-          title: aResult.name,
-          folder: true
-        };
+    newFolderCreated: function (aID, aData) {
+      let tree = getClippingsTree();
+      let selectedNode = tree.activeNode;
+      let newNodeData = {
+        key: aID,
+        title: aData.name,
+        folder: true
+      };
 
-        let newNode = null;
+      let newNode = null;
     
-        if (selectedNode) {
-          let parentNode = selectedNode.getParent();
-          newNode = parentNode.addNode(newNodeData);
-        }
-        else {
-          // No clippings or folders.
-          newNode = tree.rootNode.addNode(newNodeData);
-        }
-        newNode.setActive();
+      if (selectedNode) {
+        let parentNode = selectedNode.getParent();
+        newNode = parentNode.addNode(newNodeData);
+      }
+      else {
+        // No clippings or folders.
+        newNode = tree.rootNode.addNode(newNodeData);
+      }
+      newNode.setActive();
 
-        $("#clipping-name").val(aResult.name);
-        $("#clipping-text").val("");
-        // TO DO: Hide the clipping content textbox.
-      });
+      $("#clipping-name").val(aData.name);
+      $("#clipping-text").val("");
+      // TO DO: Hide the clipping content textbox.
 
       // TO DO: Check for folder created outside Clippings Manager.
       // If so, then select it in the tree list and push to undo stack.
     },
 
-    clippingChanged: function (aClippingID) {},
+    clippingChanged: function (aID, aData, aOldData) {},
 
-    folderChanged: function (aFolderID) {},
+    folderChanged: function (aID, aData, aOldData) {},
 
-    clippingDeleted: function (aClippingID) {},
+    clippingDeleted: function (aID, aOldData) {},
 
-    folderDeleted: function (aFolderID) {},
+    folderDeleted: function (aID, aOldData) {},
     
     importDone: function (aNumItems) {
       // TO DO: Rebuild the clippings tree.
@@ -170,13 +167,13 @@ function initInstantEditing()
     let selectedNode = tree.activeNode;
     let id = Number(selectedNode.key);
 
-    if (selectedNode.folder) {
-      // TO DO: Handle folders.
+    let name = aEvent.target.value;
+    selectedNode.setTitle(name);
+
+    if (selectedNode.isFolder()) {
+      gClippingsDB.folders.update(id, { name: name });
     }
     else {
-      let name = aEvent.target.value;
-
-      selectedNode.setTitle(name);
       gClippingsDB.clippings.update(id, { name: name });
     }
   });
