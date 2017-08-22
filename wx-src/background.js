@@ -137,30 +137,30 @@ function init()
       case CREATED:
         console.log("Clippings/wx: Database observer detected CREATED event");
         if (aChange.table == "clippings") {
-          clippingsListeners.forEach(aListener => { aListener.newClippingCreated(aChange.key) });
+          clippingsListeners.forEach(aListener => { aListener.newClippingCreated(aChange.key, aChange.obj) });
         }
         else if (aChange.table == "folders") {
-          clippingsListeners.forEach(aListener => { aListener.newFolderCreated(aChange.key) });
+          clippingsListeners.forEach(aListener => { aListener.newFolderCreated(aChange.key, aChange.obj) });
         }
         break;
         
       case UPDATED:
         console.log("Clippings/wx: Database observer detected UPDATED event");
         if (aChange.table == "clippings") {
-          clippingsListeners.forEach(aListener => { aListener.clippingChanged(aChange.key) });
+          clippingsListeners.forEach(aListener => { aListener.clippingChanged(aChange.key, aChange.obj, aChange.oldObj) });
         }
         else if (aChange.table == "folders") {
-          clippingsListeners.forEach(aListener => { aListener.folderChanged(aChange.key) });
+          clippingsListeners.forEach(aListener => { aListener.folderChanged(aChange.key, aChange.obj, aChange.oldObj) });
         }
         break;
         
       case DELETED:
         console.log("Clippings/wx: Database observer detected DELETED event");
         if (aChange.table == "clippings") {
-          clippingsListeners.forEach(aListener => { aListener.clippingDeleted(aChange.key) });
+          clippingsListeners.forEach(aListener => { aListener.clippingDeleted(aChange.key, aChange.oldObj) });
         }
         else if (aChange.table == "folders") {
-          clippingsListeners.forEach(aListener => { aListener.folderDeleted(aChange.key) });
+          clippingsListeners.forEach(aListener => { aListener.folderDeleted(aChange.key, aChange.oldObj) });
         }
         break;
         
@@ -209,27 +209,27 @@ function init()
   gClippingsListener = {
     origin: gClippingsListeners.ORIGIN_HOSTAPP,
 
-    newClippingCreated: function (aClippingID) {
+    newClippingCreated: function (aID, aData) {
       rebuildContextMenu();
     },
 
-    newFolderCreated: function (aFolderID) {
+    newFolderCreated: function (aID, aData) {
       rebuildContextMenu();
     },
 
-    clippingChanged: function (aClippingID) {
-      updateContextMenuForClipping(aClippingID);
+    clippingChanged: function (aID, aData, aOldData) {
+      updateContextMenuForClipping(aID);
     },
 
-    folderChanged: function (aFolderID) {
+    folderChanged: function (aID, aData, aOldData) {
       rebuildContextMenu();
     },
 
-    clippingDeleted: function (aClippingID) {
-      removeContextMenuForClipping(aClippingID);
+    clippingDeleted: function (aID, aOldData) {
+      removeContextMenuForClipping(aID);
     },
 
-    folderDeleted: function (aFolderID) {
+    folderDeleted: function (aID, aOldData) {
       // TO DO: Remove the context menu item (submenu) for the deleted folder.
     },
 
