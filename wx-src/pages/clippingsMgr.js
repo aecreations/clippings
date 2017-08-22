@@ -53,9 +53,33 @@ $(document).ready(() => {
   gClippingsListener = {
     origin: clippingsListeners.ORIGIN_CLIPPINGS_MGR,
 
+    // TO DO: In all the "created" methods, check if the dummy "No clipping"
+    // message appears; if so, then remove the node for the dummy message
+    // and set icon = true on the Fancytree widget.
+    
     newClippingCreated: function (aID, aData) {
-      // TO DO: Check for clipping created outside Clippings Manager.
-      // If so, then select it in the tree list and push to undo stack.
+      let tree = getClippingsTree();
+      let selectedNode = tree.activeNode;
+      let newNodeData = {
+        key: aID,
+        title: aData.name,
+        folder: false
+      };
+
+      if (selectedNode) {
+        let parentNode = selectedNode.getParent();
+        newNode = parentNode.addNode(newNodeData);
+      }
+      else {
+        // No clippings or folders.
+        newNode = tree.rootNode.addNode(newNodeData);
+      }
+      newNode.setActive();
+
+      $("#clipping-name").val(aData.name);
+      $("#clipping-text").val("");
+
+      // TO DO: Push new clipping to undo stack.
     },
 
     newFolderCreated: function (aID, aData) {
@@ -83,8 +107,7 @@ $(document).ready(() => {
       $("#clipping-text").val("");
       // TO DO: Hide the clipping content textbox.
 
-      // TO DO: Check for folder created outside Clippings Manager.
-      // If so, then select it in the tree list and push to undo stack.
+      // TO DO: Push new folder to undo stack.
     },
 
     clippingChanged: function (aID, aData, aOldData) {},
@@ -134,12 +157,21 @@ $(window).on("beforeunload", function () {
 function initToolbarButtons()
 {
   $("#new-clipping").click(aEvent => {
-    window.alert("This option is not available right now.");
-    // TO DO: Create a new clipping in the database.
-    // The 'newClippingCreated' Clippings listener should do the work of
-    // updating the UI (the tree and item properties) to show the newly-created
-    // clipping.
+    let tree = getClippingsTree();
+    let selectedNode = tree.activeNode;
+    let parentFolderID = 0;
+    
+    if (selectedNode) {
+      let parentNode = selectedNode.getParent();
+      parentFolderID = (parentNode.isRootNode() ? 0 : Number(parentNode.key));
+    }
 
+    gClippingsDB.clippings.add({
+      name: DEFAULT_CLIPPING_NAME,
+      content: "",
+      shortcutKey: "",
+      parentFolderID: parentFolderID
+    });
   });
 
   $("#new-folder").click(aEvent => {
