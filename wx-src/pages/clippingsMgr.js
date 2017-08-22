@@ -78,8 +78,6 @@ $(document).ready(() => {
 
       $("#clipping-name").val(aData.name);
       $("#clipping-text").val("");
-
-      // TO DO: Push new clipping to undo stack.
     },
 
     newFolderCreated: function (aID, aData) {
@@ -106,8 +104,6 @@ $(document).ready(() => {
       $("#clipping-name").val(aData.name);
       $("#clipping-text").val("");
       // TO DO: Hide the clipping content textbox.
-
-      // TO DO: Push new folder to undo stack.
     },
 
     clippingChanged: function (aID, aData, aOldData) {},
@@ -166,11 +162,15 @@ function initToolbarButtons()
       parentFolderID = (parentNode.isRootNode() ? 0 : Number(parentNode.key));
     }
 
-    gClippingsDB.clippings.add({
+    let createNewClipping = gClippingsDB.clippings.add({
       name: DEFAULT_CLIPPING_NAME,
       content: "",
       shortcutKey: "",
       parentFolderID: parentFolderID
+    });
+
+    createNewClipping.then(aNewClippingID => {
+      // TO DO: Add new clipping creation to undo stack.
     });
   });
 
@@ -184,9 +184,13 @@ function initToolbarButtons()
       parentFolderID = (parentNode.isRootNode() ? 0 : Number(parentNode.key));
     }
     
-    gClippingsDB.folders.add({
+    let createNewFolder = gClippingsDB.folders.add({
       name: DEFAULT_FOLDER_NAME,
       parentFolderID: parentFolderID
+    });
+
+    createNewFolder.then(aNewFolderID => {
+      // TO DO: Add new folder creation to undo stack.
     });
   });
 }
