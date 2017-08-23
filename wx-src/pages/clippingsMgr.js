@@ -40,7 +40,7 @@ $(document).ready(() => {
 
   if (gClippings) {
     gClippingsDB = gClippings.getClippingsDB();
-    _log("Clippings/wx: clippingsMgr: Successfully opened Clippings DB");
+    log("Clippings/wx: clippingsMgr: Successfully opened Clippings DB");
   }
   else {
     showBanner("Error initializing Clippings Manager: Unable to locate parent browser window.");
@@ -311,13 +311,27 @@ function showBanner(aMessage)
 
 function onError(aError)
 {
-  showBanner(aError);
+  showBanner(aError.message);
+
+  if (DEBUG) {
+    console.error(aError.message);
+  }
 }
 
 
-function _log(aMessage)
+function log(aMessage)
 {
-  if (DEBUG) {
-    console.log(aMessage);
-  }
+  if (DEBUG) { console.log(aMessage); }
+}
+
+
+function info(aMessage)
+{
+  if (DEBUG) { console.info(aMessage); }
+}
+
+
+function warn(aMessage)
+{
+  if (DEBUG) { console.warn(aMessage); }
 }
