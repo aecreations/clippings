@@ -1,4 +1,4 @@
-/* -*- mode: C++; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
+/* -*- mode: javascript; tab-width: 8; indent-tabs-mode: nil; js-indent-level: 2 -*- */
 /* ***** BEGIN LICENSE BLOCK *****
  * Version: MPL 1.1
  *
@@ -122,23 +122,13 @@ $(document).ready(() => {
   clippingsListeners.add(gClippingsListener);
 
   initToolbarButtons();
-
   initInstantEditing();
-  
+
   gClippingsDB.clippings.count().then(aResult => {
     let numClippingsInRoot = aResult;
-
     $("#status-bar-msg").text(numClippingsInRoot + " items");
 
-    if (numClippingsInRoot > 0) {
-      buildClippingsTree();
-    }
-    else {
-      $("#clippings-tree").fancytree({
-        source: [{title: "No clippings found.", key: 0}],
-        icon: false
-      });
-    }
+    buildClippingsTree();
   }, onError);
   
 });
@@ -263,21 +253,73 @@ function buildClippingsTree()
       });
 
       populateClippings.then(() => {
+        let isNoClippingsMsg = false;
+        
+        if (treeData.length == 0) {
+          treeData = [{ title: "No clippings found." }];
+          isNoClippingsMsg = true;
+        }
+        
         $("#clippings-tree").fancytree({
+          extensions: ["dnd5"],
+          
           source: treeData,
           selectMode: 1,
-          icon: true,
+          icon: (isNoClippingsMsg ? false : true),
 
           init: function (aEvent, aData) {
             let rootNode = aData.tree.getRootNode();
-            if (rootNode.children.length > 0) {
+            if (rootNode.children.length > 0 && !isNoClippingsMsg) {
               rootNode.children[0].setActive();
             }
           },
 
           activate: function (aEvent, aData) {
             updateDisplay(aEvent, aData);
-          }
+          },
+
+          dnd5: {
+            preventRecursiveMoves: true,
+            preventVoidMoves: true,
+            scroll: true,
+
+            dragStart: function (aNode, aData) {
+              return true;
+            },
+
+            dragEnter: function (aNode, aData) {
+              aData.dataTransfer.dropEffect = "move";
+              return true;
+            },
+
+            dragDrop: function (aNode, aData) {
+              if (aData.otherNode) {
+                let parentNode = aNode.getParent();
+                let newParentID = (parentNode.isRootNode() ? 0 : Number(parentNode.key));
+
+                if (aNode.isFolder() || (!aNode.isFolder() && (aData.hitMode == "before" || aData.hitMode == "after"))) {
+                  aData.otherNode.moveTo(aNode, aData.hitMode);
+
+                  let id = Number(aData.otherNode.key);
+                  
+                  if (aData.otherNode.isFolder()) {
+                    // TO DO: Move the folder in the database.
+                  }
+                  else {
+                    // TO DO: Move the clipping in the database.
+                  }
+                }
+              }
+              else {
+                // Drop a non-node
+                let dndData = aData.dataTransfer.getData("text");
+                parentNode.addNode({ title: dndData }, aData.hitMode);
+
+                // TO DO: Create the clipping in the database.
+              }
+              aNode.setExpanded();
+            }
+          }          
         });
       });
     });
