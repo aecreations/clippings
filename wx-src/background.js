@@ -260,12 +260,14 @@ function buildContextMenu()
     contexts: ["editable", "selection"]
   });
 
-  gClippingsDB.clippings.count().then(aResult => {
-    console.log("Number of clippings at root folder level: " + aResult);
-    let numClippingsInRoot = aResult;
-    if (numClippingsInRoot > 0) {
-      chrome.contextMenus.create({ type: "separator", contexts: ["editable"]});
+  chrome.contextMenus.create({ type: "separator", contexts: ["editable"]});
 
+  gClippingsDB.transaction("r", gClippingsDB.folders, gClippingsDB.clippings, () => {
+    let populateFolders = gClippingsDB.folders.where("parentFolderID").equals(0).each((aItem, aCursor) => {
+      buildContextSubmenu(0, aItem);
+    });
+
+    populateFolders.then(() => {
       gClippingsDB.clippings.where("parentFolderID").equals(0).each((aItem, aCursor) => {
         chrome.contextMenus.create({
           id: "ae-clippings-clipping-" + aItem.id,
@@ -273,8 +275,45 @@ function buildContextMenu()
           contexts: ["editable"]
         });
       });
-    }
-  });  
+    });
+  }).catch(aErr => {
+    console.error("Clippings/wx::buildContextMenu(): Database transaction failed! %s", aErr.message);
+  });
+}
+
+
+function buildContextSubmenu(aParentFolderID, aFolderData)
+{
+  let folderID = aFolderData.id;
+  let cxtSubmenuData = {
+    id: "ae-clippings-folder-" + folderID,
+    title: "[" + aFolderData.name + "]",
+    contexts: ["editable"]
+  };
+  if (aParentFolderID != 0) {
+    cxtSubmenuData.parentId = "ae-clippings-folder-" + aParentFolderID;
+  }
+  
+  let cxtSubmenuID = chrome.contextMenus.create(cxtSubmenuData);
+
+  gClippingsDB.transaction("r", gClippingsDB.folders, gClippingsDB.clippings, () => {
+    let populateSubfolders = gClippingsDB.folders.where("parentFolderID").equals(folderID).each((aItem, aCursor) => {
+      buildContextSubmenu(folderID, aItem);
+    });
+
+    populateSubfolders.then(() => {
+      gClippingsDB.clippings.where("parentFolderID").equals(folderID).each((aItem, aCursor) => {
+        chrome.contextMenus.create({
+          id: "ae-clippings-clipping-" + aItem.id,
+          title: aItem.name,
+          parentId: cxtSubmenuID,
+          contexts: ["editable"]
+        });
+      });
+    });
+   }).catch(aErr => {
+    console.error("Clippings/wx::buildContextSubmenu(): Database transaction failed! %s", aErr.message);
+  });
 }
 
 
@@ -302,7 +341,12 @@ function rebuildContextMenu()
 
 function createClipping(aName, aContent/*, aShortcutKey, aSrcURL */)
 {
-  let createClipping = gClippingsDB.clippings.add({name: aName, content: aContent, shortcutKey: "", parentFolderID: 0});
+  let createClipping = gClippingsDB.clippings.add({
+    name: aName,
+    content: aContent,
+    shortcutKey: "",
+    parentFolderID: 0
+  });
 
   createClipping.then(aID => {
     if (isGoogleChrome()) {

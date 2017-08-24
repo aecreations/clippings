@@ -62,8 +62,7 @@ $(document).ready(() => {
       let selectedNode = tree.activeNode;
       let newNodeData = {
         key: aID,
-        title: aData.name,
-        folder: false
+        title: aData.name
       };
 
       if (selectedNode) {
@@ -86,7 +85,8 @@ $(document).ready(() => {
       let newNodeData = {
         key: aID,
         title: aData.name,
-        folder: true
+        folder: true,
+        children: []
       };
 
       let newNode = null;
@@ -238,33 +238,87 @@ function buildClippingsTree()
 {
   let treeData = [];
 
-  let getRootClippings = gClippingsDB.clippings.where("parentFolderID").equals(0).each((aItem, aCursor) => {
-    let treeNode = {
-      key: aItem.id,
-      title: aItem.name
-    };
+  gClippingsDB.transaction("r", gClippingsDB.folders, gClippingsDB.clippings, () => {
+    let populateFolders = gClippingsDB.folders.where("parentFolderID").equals(0).each((aItem, aCursor) => {
+      let folderNode = {
+        key: aItem.id,
+        title: aItem.name,
+        folder: true
+      };
 
-    treeData.push(treeNode);
-  });
+      let childNodes = buildClippingsTreeHelper(0, aItem);
+      folderNode.children = childNodes;
 
-  getRootClippings.then(() => {
-    $("#clippings-tree").fancytree({
-      source: treeData,
-      selectMode: 1,
-      icon: true,
-
-      init: function (aEvent, aData) {
-        let rootNode = aData.tree.getRootNode();
-        if (rootNode.children.length > 0) {
-          rootNode.children[0].setActive();
-        }
-      },
-
-      activate: function (aEvent, aData) {
-        updateDisplay(aEvent, aData);
-      }
+      treeData.push(folderNode);
     });
+
+    populateFolders.then(() => {
+      let populateClippings = gClippingsDB.clippings.where("parentFolderID").equals(0).each((aItem, aCursor) => {
+        let clippingNode = {
+          key: aItem.id,
+          title: aItem.name
+        };
+
+        treeData.push(clippingNode);
+      });
+
+      populateClippings.then(() => {
+        $("#clippings-tree").fancytree({
+          source: treeData,
+          selectMode: 1,
+          icon: true,
+
+          init: function (aEvent, aData) {
+            let rootNode = aData.tree.getRootNode();
+            if (rootNode.children.length > 0) {
+              rootNode.children[0].setActive();
+            }
+          },
+
+          activate: function (aEvent, aData) {
+            updateDisplay(aEvent, aData);
+          }
+        });
+      });
+    });
+  }).catch(aErr => {
+    console.error("Clippings/wx::buildContextMenu(): Database transaction failed! %s", aErr.message);
   });
+}
+
+
+function buildClippingsTreeHelper(aParentFolderID, aFolderData)
+{
+  let rv = [];
+  let folderID = aFolderData.id;
+
+  gClippingsDB.transaction("r", gClippingsDB.folders, gClippingsDB.clippings, () => {
+    let populateFolders = gClippingsDB.folders.where("parentFolderID").equals(folderID).each((aItem, aCursor) => {
+      let folderNode = {
+        key: folderID,
+        title: aFolderData.name,
+        folder: true
+      }
+      let childNodes = buildClippingsTreeHelper(folderID, aItem);
+      folderNode.children = childNodes;
+
+      rv.push(folderNode);
+    });
+
+    populateFolders.then(() => {
+      gClippingsDB.clippings.where("parentFolderID").equals(folderID).each((aItem, aCursor) => {
+        let clippingNode = {
+          key: aItem.id,
+          title: aItem.name
+        };
+        rv.push(clippingNode);
+      });
+    });
+  }).catch(aErr => {
+    console.error("Clippings/wx::clippingsMgr.js::buildClippingsTreeHelper(): Database transaction failed! %s", aErr.message);
+  });
+
+  return rv;
 }
 
 
