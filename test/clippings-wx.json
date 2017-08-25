@@ -64,6 +64,12 @@
 	    ]
 	},
 	{
+	    "name": "Imported clipping with HTML content",
+	    "content": "<p>The <em>quick</em> <strong style=\"color:brown\">brown</strong> fox <sup>jumps</sup> <strong>over</strong> <u>the</u> <span style=\"font-size:xx-large\">lazy</span> <strong><em>dog</em></strong>.</p>",
+	    "shortcutKey": "",
+	    "srcURL": ""
+	},
+	{
 	    "name": "Imported clipping with line breaks",
 	    "content": "Alex\n\n---\nAE Creations website\nhttp://aecreations.sourceforge.net/\n\nthe AE Creations blog\nhttp://aecreations.blogspot.com/",
 	    "shortcutKey": "S",
