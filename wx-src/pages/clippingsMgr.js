@@ -123,14 +123,7 @@ $(document).ready(() => {
 
   initToolbarButtons();
   initInstantEditing();
-
-  gClippingsDB.clippings.count().then(aResult => {
-    let numClippingsInRoot = aResult;
-    $("#status-bar-msg").text(numClippingsInRoot + " items");
-
-    buildClippingsTree();
-  }, onError);
-  
+  buildClippingsTree();
 });
 
 
@@ -191,10 +184,10 @@ function initInstantEditing()
   $("#clipping-name").blur(aEvent => {
     let tree = getClippingsTree();
     let selectedNode = tree.activeNode;
-    let id = Number(selectedNode.key);
-
     let name = aEvent.target.value;
     selectedNode.setTitle(name);
+
+    let id = Number(selectedNode.key);
 
     if (selectedNode.isFolder()) {
       gClippingsDB.folders.update(id, { name: name });
@@ -348,8 +341,8 @@ function buildClippingsTreeHelper(aParentFolderID, aFolderData)
   gClippingsDB.transaction("r", gClippingsDB.folders, gClippingsDB.clippings, () => {
     let populateFolders = gClippingsDB.folders.where("parentFolderID").equals(folderID).each((aItem, aCursor) => {
       let folderNode = {
-        key: folderID,
-        title: aFolderData.name,
+        key: aItem.id,
+        title: aItem.name,
         folder: true
       }
       let childNodes = buildClippingsTreeHelper(folderID, aItem);
@@ -377,30 +370,26 @@ function buildClippingsTreeHelper(aParentFolderID, aFolderData)
 
 function updateDisplay(aEvent, aData)
 {
-  gClippingsDB.clippings.count().then(aResult => {
-    let numClippingsInRoot = aResult;
+  // TO DO: Don't do anything if there are no clippings.
+  
+  let selectedItemID = Number(aData.node.key);
 
-    if (numClippingsInRoot > 0) {
-      let selectedItemID = Number(aData.node.key);
-
-      if (aData.node.isFolder()) {
-        let getFolder = gClippingsDB.folders.get(selectedItemID);
-        getFolder.then(aResult => {
-          $("#clipping-name").val(aResult.name);
-          $("#clipping-text").val("");
-          // TO DO: Hide clipping content textbox.
-        });
-      }
-      else {
-        let getClipping = gClippingsDB.clippings.get(selectedItemID);
-        getClipping.then(aResult => {
-          $("#clipping-name").val(aResult.name);
-          // TO DO: Show clipping content textbox.
-          $("#clipping-text").val(aResult.content);
-        });
-      }
-    }
-  });
+  if (aData.node.isFolder()) {
+    let getFolder = gClippingsDB.folders.get(selectedItemID);
+    getFolder.then(aResult => {
+      $("#clipping-name").val(aResult.name);
+      $("#clipping-text").val("");
+      // TO DO: Hide clipping content textbox.
+    });
+  }
+  else {
+    let getClipping = gClippingsDB.clippings.get(selectedItemID);
+    getClipping.then(aResult => {
+      $("#clipping-name").val(aResult.name);
+      // TO DO: Show clipping content textbox.
+      $("#clipping-text").val(aResult.content);
+    });
+  }
 }
 
 
