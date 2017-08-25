@@ -218,7 +218,7 @@ function init()
     },
 
     clippingChanged: function (aID, aData, aOldData) {
-      updateContextMenuForClipping(aID);
+      rebuildContextMenu();
     },
 
     folderChanged: function (aID, aData, aOldData) {
