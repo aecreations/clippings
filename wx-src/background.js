@@ -1,4 +1,4 @@
-/* -*- mode: C++; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
+/* -*- mode: javascript; tab-width: 8; indent-tabs-mode: nil; js-indent-level: 2 -*- */
 /* ***** BEGIN LICENSE BLOCK *****
  * Version: MPL 1.1
  *
@@ -48,63 +48,6 @@ var gClippingsListeners = {
 };
 
 var gClippingsListener;
-
-
-/***
-chrome.contextMenus.create({
-  id: "clipping-1",
-  title: "New Clipping 1",
-  contexts: ["editable"]
-});
-
-chrome.contextMenus.create({
-  id: "clipping-2",
-  title: "New Clipping 2",
-  contexts: ["editable"]
-});
-
-// Test nested menus
-var parentMnuID = chrome.contextMenus.create({
-  id: "folder-menu-1",
-  title: "Folder A",
-  contexts: ["editable"]
-});
-
-chrome.contextMenus.create({
-  id: "clipping-A1",
-  title: "New Clipping A1",
-  parentId: parentMnuID,
-  contexts: ["editable"]
-});
-
-chrome.contextMenus.create({
-  id: "clipping-A2",
-  title: "New Clipping A2",
-  parentId: parentMnuID,
-  contexts: ["editable"]
-});
-
-var parentSubmnuID = chrome.contextMenus.create({
-  id: "subfolder-AA",
-  title: "Folder AA",
-  parentId: parentMnuID,
-  contexts: ["editable"]
-});
-
-chrome.contextMenus.create({
-  id: "clipping-A3",
-  title: "New Clipping A3",
-  parentId: parentMnuID,
-  contexts: ["editable"]
-});
-
-chrome.contextMenus.create({
-  id: "clipping-AA-1",
-  title: "New Clipping AA1",
-  parentId: parentSubmnuID,
-  contexts: ["editable"]
-});
-***/
 
 
 //
@@ -218,7 +161,12 @@ function init()
     },
 
     clippingChanged: function (aID, aData, aOldData) {
-      rebuildContextMenu();
+      if (aData.parentFolderID == aOldData.parentFolderID) {
+        updateContextMenuForClipping(aID);
+      }
+      else {
+        rebuildContextMenu();
+      }
     },
 
     folderChanged: function (aID, aData, aOldData) {
