@@ -294,20 +294,31 @@ function buildClippingsTree()
 
             dragDrop: function (aNode, aData) {
               if (aData.otherNode) {
+                // Prevent dropping a node into a non-folder node.
+                if (!aNode.isFolder() && aData.hitMode == "over") {
+                  return;
+                }
+
                 let parentNode = aNode.getParent();
-                let newParentID = (parentNode.isRootNode() ? 0 : Number(parentNode.key));
+                let newParentID = 0;
+                
+                if (aNode.isFolder() && aData.hitMode == "over") {
+                  newParentID = Number(aNode.key);
+                }
+                else {
+                  newParentID = (parentNode.isRootNode() ? 0 : Number(parentNode.key));
+                }
 
-                if (aNode.isFolder() || (!aNode.isFolder() && (aData.hitMode == "before" || aData.hitMode == "after"))) {
-                  aData.otherNode.moveTo(aNode, aData.hitMode);
+                aData.otherNode.moveTo(aNode, aData.hitMode);
 
-                  let id = Number(aData.otherNode.key);
-                  
-                  if (aData.otherNode.isFolder()) {
-                    // TO DO: Move the folder in the database.
-                  }
-                  else {
-                    // TO DO: Move the clipping in the database.
-                  }
+                let id = Number(aData.otherNode.key);
+                log("clippingsMgr: ID of moved clipping or folder: " + id + "\nID of new parent folder: " + newParentID);
+
+                if (aData.otherNode.isFolder()) {
+                  gClippingsDB.folders.update(id, { parentFolderID: newParentID });
+                }
+                else {
+                  gClippingsDB.clippings.update(id, { parentFolderID: newParentID });
                 }
               }
               else {
