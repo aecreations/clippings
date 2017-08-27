@@ -21,18 +21,14 @@ body {
     flex-flow: column nowrap;
 }
 
+.spacer {
+    width: 24px;
+}
+
 .toolbar-button {
     flex: 0 1 auto;
     align-self: stretch;
     min-width: 88px;
-}
-
-#new-clipping {
-    order: 1;
-}
-
-#new-folder {
-    order: 2;
 }
 
 #banner {
@@ -51,6 +47,18 @@ body {
 
     background-color: #eeeeee;
     border-bottom: 1px solid #cccccc;
+}
+
+#toolbar > #new-clipping {
+    order: 1;
+}
+
+#toolbar > #new-folder {
+    order: 2;
+}
+
+#toolbar > #delete {
+    order: 3;
 }
 
 #content {
