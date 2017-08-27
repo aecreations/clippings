@@ -182,7 +182,7 @@ function init()
     },
 
     folderDeleted: function (aID, aOldData) {
-      // TO DO: Remove the context menu item (submenu) for the deleted folder.
+      removeContextMenuForFolder(aID);
     },
 
     importDone: function (aNumItems) {
@@ -282,6 +282,12 @@ function updateContextMenuForClipping(aUpdatedClippingID)
 function removeContextMenuForClipping(aRemovedClippingID)
 {
   chrome.contextMenus.remove("ae-clippings-clipping-" + aRemovedClippingID);
+}
+
+
+function removeContextMenuForFolder(aRemovedFolderID)
+{
+  chrome.contextMenus.remove("ae-clippings-folder-" + aRemovedFolderID);
 }
 
 
