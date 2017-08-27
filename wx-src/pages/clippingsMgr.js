@@ -33,8 +33,8 @@ const DEFAULT_UNTITLED_FOLDER_NAME = "(Untitled Folder)";
 var gOS;
 var gClippingsDB;
 var gClippings;
-
 var gClippingsListener;
+var gIsClippingsTreeEmpty;
 
 
 $(document).ready(() => {
@@ -55,11 +55,14 @@ $(document).ready(() => {
   gClippingsListener = {
     origin: clippingsListeners.ORIGIN_CLIPPINGS_MGR,
 
-    // TO DO: In all the "created" methods, check if the dummy "No clipping"
-    // message appears; if so, then remove the node for the dummy message
-    // and set icon = true on the Fancytree widget.
+    // TO DO: Check if the clipping or folder was created outside Clippings
+    // Manager; if so, always created them under the root level.
     
     newClippingCreated: function (aID, aData) {
+      if (gIsClippingsTreeEmpty) {
+        unsetEmptyClippingsState();
+      }
+
       let tree = getClippingsTree();
       let selectedNode = tree.activeNode;
       let newNodeData = {
@@ -82,6 +85,10 @@ $(document).ready(() => {
     },
 
     newFolderCreated: function (aID, aData) {
+      if (gIsClippingsTreeEmpty) {
+        unsetEmptyClippingsState();
+      }
+      
       let tree = getClippingsTree();
       let selectedNode = tree.activeNode;
       let newNodeData = {
@@ -105,7 +112,6 @@ $(document).ready(() => {
 
       $("#clipping-name").val(aData.name);
       $("#clipping-text").val("");
-      // TO DO: Hide the clipping content textbox.
     },
 
     clippingChanged: function (aID, aData, aOldData) {
@@ -150,6 +156,10 @@ $(window).on("beforeunload", function () {
 function initToolbarButtons()
 {
   $("#new-clipping").click(aEvent => {
+    if (gIsClippingsTreeEmpty) {
+      unsetEmptyClippingsState();
+    }
+    
     let tree = getClippingsTree();
     let selectedNode = tree.activeNode;
     let parentFolderID = 0;
@@ -172,6 +182,10 @@ function initToolbarButtons()
   });
 
   $("#new-folder").click(aEvent => {
+    if (gIsClippingsTreeEmpty) {
+      unsetEmptyClippingsState();
+    }
+
     let tree = getClippingsTree();
     let selectedNode = tree.activeNode;
     let parentFolderID = 0;
@@ -203,11 +217,11 @@ function initInstantEditing()
 
     if (selectedNode.isFolder()) {
       name = (name ? name : DEFAULT_UNTITLED_FOLDER_NAME);
-      gClippingsDB.folders.update(id, { name: name });
+      gClippingsDB.folders.update(id, { name });
     }
     else {
       name = (name ? name : DEFAULT_UNTITLED_CLIPPING_NAME);
-      gClippingsDB.clippings.update(id, { name: name });
+      gClippingsDB.clippings.update(id, { name });
     }
   });
   
@@ -260,11 +274,8 @@ function buildClippingsTree()
       });
 
       populateClippings.then(() => {
-        let isNoClippingsMsg = false;
-        
         if (treeData.length == 0) {
-          treeData = [{ title: "No clippings found." }];
-          isNoClippingsMsg = true;
+          treeData = setEmptyClippingsState();
         }
         
         $("#clippings-tree").fancytree({
@@ -272,11 +283,11 @@ function buildClippingsTree()
           
           source: treeData,
           selectMode: 1,
-          icon: (isNoClippingsMsg ? false : true),
+          icon: (gIsClippingsTreeEmpty ? false : true),
 
           init: function (aEvent, aData) {
             let rootNode = aData.tree.getRootNode();
-            if (rootNode.children.length > 0 && !isNoClippingsMsg) {
+            if (rootNode.children.length > 0 && !gIsClippingsTreeEmpty) {
               rootNode.children[0].setActive();
             }
           },
@@ -382,28 +393,50 @@ function buildClippingsTreeHelper(aParentFolderID, aFolderData)
 }
 
 
+function setEmptyClippingsState()
+{
+  var rv;
+  rv = [{ title: "No clippings found.", key: "0" }];
+  gIsClippingsTreeEmpty = true;
+  $("#clipping-name, #clipping-text").hide();
+  
+  return rv;
+}
+
+
+function unsetEmptyClippingsState()
+{
+  let tree = getClippingsTree();
+  let emptyMsgNode = tree.getNodeByKey("0");
+  emptyMsgNode.remove();
+  tree.options.icon = true;
+  gIsClippingsTreeEmpty = false;
+  $("#clipping-name, #clipping-text").show();
+}
+
+
 function updateDisplay(aEvent, aData)
 {
+  if (gIsClippingsTreeEmpty) {
+    return;
+  }
+
   log("Clippings/wx: clippingsMgr: Updating display...");
 
-  // TO DO: Don't do anything if there are no clippings.
-  
   let selectedItemID = parseInt(aData.node.key);
 
   if (aData.node.isFolder()) {
     let getFolder = gClippingsDB.folders.get(selectedItemID);
     getFolder.then(aResult => {
       $("#clipping-name").val(aResult.name);
-      $("#clipping-text").val("");
-      // TO DO: Hide clipping content textbox.
+      $("#clipping-text").val("").hide();
     });
   }
   else {
     let getClipping = gClippingsDB.clippings.get(selectedItemID);
     getClipping.then(aResult => {
       $("#clipping-name").val(aResult.name);
-      // TO DO: Show clipping content textbox.
-      $("#clipping-text").val(aResult.content);
+      $("#clipping-text").val(aResult.content).show();
     });
   }
 }
