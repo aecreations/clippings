@@ -130,12 +130,59 @@ $(document).ready(() => {
       $("#clipping-name").val(aData.name);
     },
 
-    clippingDeleted: function (aID, aOldData) {},
+    clippingDeleted: function (aID, aOldData) {
+      this._removeClippingsTreeNode(aID + "C");
+    },
 
-    folderDeleted: function (aID, aOldData) {},
+    folderDeleted: function (aID, aOldData) {
+      this._removeClippingsTreeNode(aID + "F");
+    },
     
     importDone: function (aNumItems) {
       // TO DO: Rebuild the clippings tree.
+    },
+
+    // Helper method
+    _removeClippingsTreeNode: function (aID) {
+      let tree = getClippingsTree();
+      let targetNode = tree.getNodeByKey(aID);
+      let deletedNodeIdx = targetNode.getIndex();
+      let prevSibNode = targetNode.getPrevSibling();
+      let nextSibNode = targetNode.getNextSibling();
+      let parentNode = targetNode.getParent();
+      
+      targetNode.remove();
+
+      if (tree.count() == 0) {
+        tree.options.icon = false;
+        let emptyMsgNode = setEmptyClippingsState();
+        tree.rootNode.addNode(emptyMsgNode);
+      }
+      else {
+        // Select the node that used to be occupied by the delete node. If the
+        // deleted node was the last node of its parent folder, then select the
+        // last child of the parent.
+        if (nextSibNode) {
+          nextSibNode.setActive();
+        }
+        else if (prevSibNode) {
+          prevSibNode.setActive();
+        }
+        else {
+          if (parentNode.isRootNode()) {
+            let parentNodes = parentNode.getChildren();
+            if (deletedNodeIdx < parentNodes.length) {
+              parentNodes[deletedNodeIdx].setActive();
+            }
+            else {
+              parentNodes[parentNodes.length].setActive();
+            }
+          }
+          else {
+            parentNode.setActive();
+          }
+        }
+      }
     }
   };
 
@@ -203,6 +250,31 @@ function initToolbarButtons()
     createNewFolder.then(aNewFolderID => {
       // TO DO: Add new folder creation to undo stack.
     });
+  });
+
+  $("#delete").click(aEvent => {
+    if (gIsClippingsTreeEmpty) {
+      return;
+    }
+
+    let tree = getClippingsTree();
+    let selectedNode = tree.activeNode;
+    if (! selectedNode) {
+      return;
+    }
+
+    let id = parseInt(selectedNode.key);
+    
+    if (selectedNode.isFolder()) {
+      gClippingsDB.folders.delete(id).then(() => {
+        // TO DO: Add folder deletion to undo stack.
+      });
+    }
+    else {
+      gClippingsDB.clippings.delete(id).then(() => {
+        // TO DO: Add clipping deletion to undo stack.
+      });
+    }
   });
 }
 
