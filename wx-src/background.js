@@ -174,7 +174,12 @@ function init()
     },
 
     folderChanged: function (aID, aData, aOldData) {
-      rebuildContextMenu();
+      if (aData.parentFolderID == aOldData.parentFolderID) {
+        updateContextMenuForFolder(aID);
+      }
+      else {
+        rebuildContextMenu();
+      }
     },
 
     clippingDeleted: function (aID, aOldData) {
@@ -275,6 +280,16 @@ function updateContextMenuForClipping(aUpdatedClippingID)
   let getClipping = gClippingsDB.clippings.get(id);
   getClipping.then(aResult => {
     chrome.contextMenus.update("ae-clippings-clipping-" + aUpdatedClippingID, { title: aResult.name });
+  });
+}
+
+
+function updateContextMenuForFolder(aUpdatedFolderID)
+{
+  let id = Number(aUpdatedFolderID);
+  let getFolder = gClippingsDB.folders.get(id);
+  getFolder.then(aResult => {
+    chrome.contextMenus.update("ae-clippings-folder-" + aUpdatedFolderID, { title: aResult.name });
   });
 }
 
