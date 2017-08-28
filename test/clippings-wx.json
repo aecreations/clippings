@@ -16,7 +16,7 @@
 	},
 	{
 	    "name": "Imported Folder A",
-	    "clippings": [
+	    "children": [
 		{
 		    "name": "Clipping in Folder A1",
 		    "content": "Saves and manages frequently-entered text for later pasting into web page forms in Firefox or email and newsgroup messages in Thunderbird. Pasting a clipping is accomplished with just two mouse clicks, eliminating the hassle of retyping or repetitive copying and pasting.",
@@ -33,10 +33,10 @@
 	},
 	{
 	    "name": "Imported Folder B",
-	    "clippings": [
+	    "children": [
 		{
 		    "name": "Imported Subfolder BB",
-		    "clippings": [
+		    "children": [
 			{
 			    "name": "Clipping in Folder BB",
 			    "content": "Two (2) levels of subfolders!",
@@ -45,7 +45,7 @@
 			},
 			{
 			    "name": "Imported Subfolder BBA - empty",
-			    "clippings": []
+			    "children": []
 			}
 		    ]
 		},
