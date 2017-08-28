@@ -216,14 +216,14 @@ function initToolbarButtons()
       parentFolderID = (parentNode.isRootNode() ? 0 : parseInt(parentNode.key));
     }
 
-    let createNewClipping = gClippingsDB.clippings.add({
+    let createClipping = gClippingsDB.clippings.add({
       name: DEFAULT_NEW_CLIPPING_NAME,
       content: "",
       shortcutKey: "",
       parentFolderID: parentFolderID
     });
 
-    createNewClipping.then(aNewClippingID => {
+    createClipping.then(aNewClippingID => {
       // TO DO: Add new clipping creation to undo stack.
     });
   });
@@ -242,12 +242,12 @@ function initToolbarButtons()
       parentFolderID = (parentNode.isRootNode() ? 0 : parseInt(parentNode.key));
     }
     
-    let createNewFolder = gClippingsDB.folders.add({
+    let createFolder = gClippingsDB.folders.add({
       name: DEFAULT_NEW_FOLDER_NAME,
       parentFolderID: parentFolderID
     });
 
-    createNewFolder.then(aNewFolderID => {
+    createFolder.then(aNewFolderID => {
       // TO DO: Add new folder creation to undo stack.
     });
   });
