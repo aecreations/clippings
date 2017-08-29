@@ -130,27 +130,7 @@ function init()
   chrome.runtime.getPlatformInfo(aInfo => { console.log("Clippings/wx: OS: " + aInfo.os); });
 
   chrome.browserAction.onClicked.addListener(aTab => {
-    let clippingsMgrURL = chrome.runtime.getURL("pages/clippingsMgr.html");
-
-    // TO DO: Get this from a pref.
-    let openInNewTab = true;
-
-    if (openInNewTab) {
-      chrome.tabs.create({ url: clippingsMgrURL }, () => {
-        chrome.history.deleteUrl({ url: clippingsMgrURL });
-      });
-    }
-    else {
-      chrome.windows.create({
-        url: clippingsMgrURL,
-        type: "popup",
-        focused: true,
-        left: 64, top: 128,
-        width: 600, height: 400
-      }, () => {
-        chrome.history.deleteUrl({ url: clippingsMgrURL });
-      });
-    }      
+    openClippingsManager();
   });
 
   gClippingsListener = {
@@ -360,6 +340,32 @@ function createClippingNameFromText(aText)
 }
 
 
+function openClippingsManager()
+{
+  let clippingsMgrURL = chrome.runtime.getURL("pages/clippingsMgr.html");
+
+  // TO DO: Get this from a pref.
+  let openInNewTab = true;
+
+  if (openInNewTab) {
+    chrome.tabs.create({ url: clippingsMgrURL }, () => {
+      chrome.history.deleteUrl({ url: clippingsMgrURL });
+    });
+  }
+  else {
+    chrome.windows.create({
+      url: clippingsMgrURL,
+      type: "popup",
+      focused: true,
+      left: 64, top: 128,
+      width: 600, height: 400
+    }, () => {
+      chrome.history.deleteUrl({ url: clippingsMgrURL });
+    });
+  }      
+}
+
+
 function getClippingsDB()
 {
   return gClippingsDB;
@@ -474,23 +480,7 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
     break;
 
   case "ae-clippings-manager":
-    // TO DO: Get this from a pref.
-    let openInNewTab = true;
-
-    if (openInNewTab) {
-      chrome.tabs.create({
-        url: "clippingsMgr.html"
-      });
-    }
-    else {
-      chrome.windows.create({
-        url: "clippingsMgr.html",
-        type: "popup",
-        focused: true,
-        left: 64, top: 128,
-        width: 600, height: 400
-      });
-    }
+    openClippingsManager();
     break;
 
   default:
