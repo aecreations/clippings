@@ -190,6 +190,7 @@ $(document).ready(() => {
 
   initToolbarButtons();
   initInstantEditing();
+  initImport();
   buildClippingsTree();
 });
 
@@ -512,6 +513,30 @@ function updateDisplay(aEvent, aData)
     });
   }
 }
+
+
+// TEMPORARY
+function initImport()
+{
+  aeImportExport.setDatabase(gClippingsDB);
+  $("#import-clippings-file-upload").on("change", aEvent => { uploadImportFile(aEvent.target.files); });
+  log("Clippings Manager: Initialized temporary import UI.");
+}
+
+
+function uploadImportFile(aFileList)
+{
+  let importFile = aFileList[0];
+  console.log("Clippings Manager: Selected import file: '%s'\nFile size: %d bytes", importFile.name, importFile.size);
+
+  let fileReader = new FileReader();
+  fileReader.addEventListener("load", aEvent => {
+    aeImportExport.importFromJSON(aEvent.target.result);
+  });
+
+  fileReader.readAsText(importFile);
+}
+// END TEMPORARY
 
 
 
