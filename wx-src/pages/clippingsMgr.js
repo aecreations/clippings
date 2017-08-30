@@ -54,7 +54,7 @@ $(document).ready(() => {
   
   gClippingsListener = {
     origin: clippingsListeners.ORIGIN_CLIPPINGS_MGR,
-
+    
     // TO DO: Check if the clipping or folder was created outside Clippings
     // Manager; if so, always created them under the root level.
     
@@ -137,9 +137,9 @@ $(document).ready(() => {
     folderDeleted: function (aID, aOldData) {
       this._removeClippingsTreeNode(aID + "F");
     },
-    
-    importDone: function (aNumItems) {
-      // TO DO: Rebuild the clippings tree.
+
+    afterBatchChanges: function () {
+      window.location.reload();
     },
 
     // Helper method

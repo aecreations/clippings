@@ -25,9 +25,9 @@
 
 const MAX_NAME_LENGTH = 64;
 
-var gClippingsDB = null;
+let gClippingsDB = null;
 
-var gClippingsListeners = {
+let gClippingsListeners = {
   ORIGIN_CLIPPINGS_MGR: 1,
   ORIGIN_HOSTAPP: 2,
   ORIGIN_NEW_CLIPPING_DLG: 3,
@@ -47,7 +47,7 @@ var gClippingsListeners = {
   }
 };
 
-var gClippingsListener;
+let gClippingsListener = null;
 
 
 //
@@ -74,7 +74,13 @@ function init()
     console.log(aChanges);
 
     let clippingsListeners = gClippingsListeners.get();
-    
+
+    if (aChanges.length > 1) {
+      console.log("Detecting multiple database changes. Skipping iteration through the changes array and invoking afterBatchChanges() on all listeners.");
+      clippingsListeners.forEach(aListener => { aListener.afterBatchChanges() });
+      return;
+    }
+
     aChanges.forEach(aChange => {
       switch (aChange.type) {
       case CREATED:
@@ -170,7 +176,7 @@ function init()
       removeContextMenuForFolder(aID);
     },
 
-    importDone: function (aNumItems) {
+    afterBatchChanges: function () {
       rebuildContextMenu();
     }
   };

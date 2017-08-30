@@ -25,8 +25,6 @@
 
 let aeImportExport = {
   DEBUG: true,
-  ORIGIN_IMPORT: 4,
-  
   _db: null
 };
 
@@ -45,14 +43,16 @@ aeImportExport.importFromJSON = function (aImportJSON)
   
   let importData = JSON.parse(aImportJSON);
 
-  this._log("Imported JSON data:");
+  this._log("aeImportExport: Imported JSON data:");
   this._log(importData);
 
   if (importData === null) {
     throw "aeImportExport: Unable to read imported JSON data.";
   }
 
+  this._log("Starting JSON import...");
   this._importFromJSONHelper(0, importData.userClippingsRoot);
+  this._log("Import completed!");
 };
 
 
