@@ -39,7 +39,7 @@ let gClippingsListeners = {
   },
 
   remove: function (aTargetListener) {
-    this._listeners.filter(aListener => aListener != aTargetListener);
+    this._listeners = this._listeners.filter(aListener => aListener != aTargetListener);
   },
 
   get: function () {
@@ -81,6 +81,8 @@ function init()
       return;
     }
 
+    console.log("Invoking listener method on %s listeners.", clippingsListeners.length);
+    
     aChanges.forEach(aChange => {
       switch (aChange.type) {
       case CREATED:
@@ -141,7 +143,7 @@ function init()
 
   gClippingsListener = {
     origin: gClippingsListeners.ORIGIN_HOSTAPP,
-
+    
     newClippingCreated: function (aID, aData) {
       rebuildContextMenu();
     },
@@ -275,7 +277,7 @@ function updateContextMenuForFolder(aUpdatedFolderID)
   let id = Number(aUpdatedFolderID);
   let getFolder = gClippingsDB.folders.get(id);
   getFolder.then(aResult => {
-    chrome.contextMenus.update("ae-clippings-folder-" + aUpdatedFolderID, { title: aResult.name });
+    chrome.contextMenus.update("ae-clippings-folder-" + aUpdatedFolderID, { title: "[" + aResult.name + "]" });
   });
 }
 
@@ -404,7 +406,6 @@ function alertEx(aMessage)
 function onUnload(aEvent)
 {
   gClippingsListeners.remove(gClippingsListener);
-  window.removeEventListener("unload", unload, false);
 }
 
 
