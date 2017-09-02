@@ -392,13 +392,24 @@ function isGoogleChrome()
 }
 
 
-function alertEx(aMessage)
+function alertEx(aMessageID)
 {
+  let message = aeMsgBox.msg[aMessageID];
+  
   if (isGoogleChrome()) {
-    window.alert(aMessage);
+    window.alert(message);
   }
   else {
-    console.info("Clippings/wx: " + aMessage);
+    console.info("Clippings/wx: " + message);
+    let url = "pages/msgbox.html?msgid=" + aMessageID;
+    
+    chrome.windows.create({
+      url: url,
+      type: "popup",
+      width: 520, height: 172,
+      left: window.screen.availWidth - 520 / 2,
+      top:  window.screen.availHeight - 172 / 2
+    });
   }
 }
 
@@ -425,7 +436,7 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
     // TEMPORARY - To be moved into a popup
     let text = aInfo.selectionText;  // Line breaks are NOT preserved!
     if (! text) {
-      alertEx("No text was selected.  Please select text first.");
+      alertEx(aeMsgBox.MSG_NO_TEXT_SELECTED);
       break;
     }
 
@@ -441,7 +452,7 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
 
     chrome.tabs.query({ active: true, currentWindow: true }, aTabs => {
       if (! aTabs[0]) {
-        alertEx("Please return to the browser window and try again.");
+        alertEx(aeMsgBox.MSG_BROWSER_WND_NOT_FOCUSED);
         return;
       }
 
@@ -497,7 +508,7 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
 
       getClipping.then(aClipping => {
         if (! aClipping) {
-          alertEx("Cannot find clipping.\nClipping ID = " + clippingID);
+          alertEx(aeMsgBox.MSG_CLIPPING_NOT_FOUND);
           return;
         }
         console.log("Pasting clipping named \"" + aClipping.name + "\"\nid = " + aClipping.id);
@@ -505,7 +516,7 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
         chrome.tabs.query({ active: true, currentWindow: true }, aTabs => {
           if (! aTabs[0]) {
             // This should never happen...
-            alertEx("Unable to paste clipping because there is no active browser tab.");
+            alertEx(aeMsgBox.MSG_NO_ACTIVE_BROWSER_TAB);
             return;
           }
 
