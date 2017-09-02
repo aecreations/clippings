@@ -27,12 +27,12 @@
 function init()
 {
   let url = new URL(window.location.href);
-  let msgID = url.searchParams.get("msgid") || 0;
+  let msgID = url.searchParams.get("msgid") || aeMsgBox.MSG_UNKNOWN;
   document.querySelector("#msgbox-content > p").textContent = aeMsgBox.msg[msgID];
 
   document.querySelector("#btn-accept").addEventListener("click", aEvent => {
-      browser.windows.remove(browser.windows.WINDOW_ID_CURRENT);
-    });
+    browser.windows.remove(browser.windows.WINDOW_ID_CURRENT);
+  });
 }
 
 init();
