@@ -27,8 +27,8 @@ const DEBUG = true;
 
 const DEFAULT_NEW_CLIPPING_NAME = "New Clipping";
 const DEFAULT_NEW_FOLDER_NAME = "New Folder";
-const DEFAULT_UNTITLED_CLIPPING_NAME = "(Untitled Clipping)";
-const DEFAULT_UNTITLED_FOLDER_NAME = "(Untitled Folder)";
+const DEFAULT_UNTITLED_CLIPPING_NAME = "Untitled Clipping";
+const DEFAULT_UNTITLED_FOLDER_NAME = "Untitled Folder";
 
 var gOS;
 var gClippingsDB;
