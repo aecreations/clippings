@@ -1,0 +1,122 @@
+/* ***** BEGIN LICENSE BLOCK *****
+ * Version: MPL 1.1
+ *
+ * The contents of this file are subject to the Mozilla Public License Version
+ * 1.1 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+ * for the specific language governing rights and limitations under the
+ * License.
+ *
+ * The Original Code is Clippings.
+ *
+ * The Initial Developer of the Original Code is 
+ * Alex Eng <ateng@users.sourceforge.net>.
+ * Portions created by the Initial Developer are Copyright (C) 2017
+ * the Initial Developer. All Rights Reserved.
+ *
+ * Contributor(s):
+ *
+ * ***** END LICENSE BLOCK ***** */
+
+
+body {
+    margin: 16px;
+}
+
+button {
+    min-width: 88px;
+    min-height: 28px;
+    font-size: 13px !important;
+    text-align: center !important;
+}
+
+fieldset {
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+}
+
+fieldset > legend {
+    padding-left: 0px;
+    padding-right: 8px;
+    margin-left: -8px;
+}
+
+.browser-style > input[type="text"] {
+    background-color: white;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
+.browser-style > input[type="text"][disabled],
+.browser-style > input[type="text"][disabled]:hover,
+.browser-style > input[type="text"][readonly],
+.browser-style > input[type="text"][readonly]:hover{
+    border-bottom: 1px dotted;
+}
+
+.browser-style > input[type="text"]:not(disabled):hover {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
+.browser-style > input[type="text"]:active {
+    border: 1px solid #0996f8;
+}
+
+.browser-style > input[type="text"]:active[readonly] {
+    border: 1px solid #0996f8;
+}
+
+.browser-style > input[type="text"]:focus,
+.browser-style > input[type="text"]:focus:hover {
+    border: 1px solid #0996f8;
+}
+
+.browser-style > input[type="text"][readonly]:focus,
+.browser-style > input[type="text"][readonly]:focus:hover {
+    box-shadow: 0 0 0 1px rgba(97, 181, 255, 0.75);
+}
+
+input[type="checkbox"] {
+    vertical-align: -2px;
+}
+
+input[type="checkbox"] + label {
+    line-height: 1.8em;
+}
+
+.browser-style > input[type="checkbox"] + label::before {
+    width: 14px;
+    height: 14px;
+}
+
+input[type="radio"] {
+    vertical-align: -2px;
+}
+
+input[type="radio"] + label {
+    line-height: 1.8em;
+    margin-right: 1.5em;
+}
+
+.browser-style > input[type="radio"] + label::before {
+    width: 14px;
+    height: 14px;
+}
+
+#dlg-buttons {
+    width: 100%;
+    margin-top: 20px;
+    text-align: right;
+}
+
+#btn-accept, #btn-cancel {
+    margin-right: 8px;
+}
