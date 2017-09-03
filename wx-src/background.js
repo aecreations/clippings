@@ -49,6 +49,33 @@ let gClippingsListeners = {
 
 let gClippingsListener = null;
 
+let gNewClipping = {
+  _name: null,
+  _content: null,
+
+  set: function (aNewClipping) {
+    this._name = aNewClipping.name;
+    this._content = aNewClipping.content;
+  },
+
+  get: function () {
+    let rv = this.copy();
+    this.reset();
+
+    return rv;
+  },
+
+  copy: function () {
+    let rv = { name: this._name, content: this._content };
+    return rv;
+  },
+  
+  reset: function () {
+    this._name = null;
+    this._content = null;
+  }
+};
+
 
 //
 // Browser window and Clippings menu initialization
@@ -186,8 +213,45 @@ function init()
   gClippingsListeners.add(gClippingsListener);
 
   window.addEventListener("unload", onUnload, false);
-  
+  initMessageListeners();
+
   buildContextMenu();
+}
+
+
+function initMessageListeners()
+{
+  if (isGoogleChrome()) {
+    chrome.runtime.onMessage.addListener((aRequest, aSender, aSendResponse) => {
+      console.log(`Clippings/wx: Received Chrome message '${aRequest.msgID}'`);
+
+      let resp = null;
+
+      if (aRequest.msgID == "ae-clippings-init-new-clippings-dlg") {
+        resp = gNewClipping.get();
+      }
+
+      if (resp !== null) {
+        aSendResponse(resp);
+      }
+    });
+  }                                  
+  else {
+    // Firefox
+    browser.runtime.onMessage.addListener(aRequest => {
+      console.log("Clippings/wx: Received message '%s'", aRequest.msgID);
+      
+      let resp = null;
+
+      if (aRequest.msgID == "ae-clippings-init-new-clippings-dlg") {
+        resp = gNewClipping.get();
+      }
+
+      if (resp !== null) {
+        return Promise.resolve(resp);
+      }
+    });
+  }
 }
 
 
@@ -350,6 +414,7 @@ function createClippingNameFromText(aText)
 
 function openClippingsManager()
 {
+  // TO DO: Check if Clippings Manager is already open.
   let clippingsMgrURL = chrome.runtime.getURL("pages/clippingsMgr.html");
 
   // TO DO: Get this from a pref.
@@ -364,7 +429,6 @@ function openClippingsManager()
     chrome.windows.create({
       url: clippingsMgrURL,
       type: "popup",
-      focused: true,
       left: 64, top: 128,
       width: 600, height: 400
     }, () => {
@@ -433,19 +497,13 @@ function onError(aError)
 chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
   switch (aInfo.menuItemId) {
   case "ae-clippings-new":
-    // TEMPORARY - To be moved into a popup
-    let text = aInfo.selectionText;  // Line breaks are NOT preserved!
+    let text = aInfo.selectionText;  // N.B.: Line breaks are NOT preserved!
     if (! text) {
       alertEx(aeMsgBox.MSG_NO_TEXT_SELECTED);
       break;
     }
 
     let name = createClippingNameFromText(text);
-
-    if (isGoogleChrome()) {
-      name = window.prompt("New clipping name:", name);
-    }
-    
     if (! name) {
       return;
     }
@@ -460,6 +518,7 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
 
       chrome.tabs.get(activeTabID, aTabInfo => {
         if (aTabInfo.status == "loading") {
+          // TO DO: Show this message in a message box.
           console.warn("Clippings/wx: The active tab (ID = %s) is still loading or busy. Sending messages to it may not work.", activeTabID);
         }
       });
@@ -473,13 +532,15 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
             console.warn("Clippings/wx: Content script was unable to retrieve content from the web page.  Retrieving selection text from context menu info.");
             content = text;
           }
-          console.log("Clippings/wx: Creating clipping from selected text:\nName: " + name + "\nText: " + content);
-          createClipping(name, content);
+
+          gNewClipping.set({ name, content });
+          openNewClippingDlg();
         });
       }
       else {
-        browser.tabs.sendMessage(activeTabID, { msgID: "ae-clippings-new" })
-        .then(aResp => {
+        // Firefox
+        let sendMsg = browser.tabs.sendMessage(activeTabID, { msgID: "ae-clippings-new" });
+        sendMsg.then(aResp => {
           if (! aResp) {
             console.error("Clippings/wx: Unable to receive response from content script!");
             return;
@@ -489,12 +550,13 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
             console.warn("Clippings/wx: Content script was unable to retrieve textual content from the web page.  Retrieving selection text from context menu info.");
             content = text;
           }
-          console.log("Clippings/wx: Creating clipping from selected text:\nName: " + name + "\nText: " + content);
-          createClipping(name, content);
+
+          gNewClipping.set({ name, content });
+          openNewClippingDlg();
         }, onError);
       }
     });
-    // END TEMPORARY
+
     break;
 
   case "ae-clippings-manager":
@@ -537,6 +599,24 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
     break;
   }
 });
+
+
+function openNewClippingDlg()
+{
+  // TO DO: Check if the dialog is already open.
+
+  let url = browser.runtime.getURL("pages/new.html");
+  let createWnd = browser.windows.create({
+    url: url,
+    type: "popup",
+    width: 428, height: 496,
+    left: 96, top: 64
+  });
+
+  createWnd.then(() => {
+    browser.history.deleteUrl({ url });
+  });
+}
 
 
 init();

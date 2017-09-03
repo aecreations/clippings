@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<!-- ***** BEGIN LICENSE BLOCK *****
+   - Version: MPL 1.1
+   -
+   - The contents of this file are subject to the Mozilla Public License Version
+   - 1.1 (the "License"); you may not use this file except in compliance with
+   - the License. You may obtain a copy of the License at
+   - http://www.mozilla.org/MPL/
+   -
+   - Software distributed under the License is distributed on an "AS IS" basis,
+   - WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+   - for the specific language governing rights and limitations under the
+   - License.
+   -
+   - The Original Code is Panic Button.
+   -
+   - The Initial Developer of the Original Code is
+   - Alex Eng <ateng@users.sourceforge.net>.
+   - Portions created by the Initial Developer are Copyright (C) 2017
+   - the Initial Developer. All Rights Reserved.
+   -
+   - Contributor(s):
+   -
+   - ***** END LICENSE BLOCK ***** -->
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>New Clipping</title>
+    
+    <link rel="stylesheet" href="chrome://browser/content/extension.css"/>
+    <link rel="stylesheet" href="../style/dialog.css"/>
+    <!-- TEMPORARY -->
+    <link rel="stylesheet" href="../lib/zebra_dialog/css/flat/zebra_dialog.css"/>
+    <!-- END TEMPORARY -->
+    <style>
+
+      input[type="text"], textarea, select {
+        margin-bottom: 12px !important;
+      }
+      
+      input[type="text"], textarea {
+        width: 32em;
+      }
+      
+      textarea {
+        resize: none;
+      }
+
+    </style>
+  </head>
+
+  <body>
+    <div id="content" class="browser-style">
+      <label for="clipping-name">Name:</label>
+      <br/>
+      <input type="text" id="clipping-name" size="50" />
+      <br/>
+      <label for="clipping-text">Text:</label>
+      <br/>
+      <textarea id="clipping-text" class="browser-style"
+       placeholder="Enter clipping text" rows="8"></textarea>
+      <br/>
+      
+      <label>Create in:</label>
+      <!-- TEMPORARY -->
+      <div id="folder-tree-placeholder" style="width:32em;padding:4px;margin-bottom:12px;background-color:#eeeeee;border:1px solid silver">Clippings</div>
+      <!-- END TEMPORARY -->
+      <div id="folder-tree"></div>
+
+      <label for="clipping-key">Shortcut key:</label><br/>
+      <select id="clipping-key" class="browser-style" size="1">
+	<option>(None)</option>
+<!--
+	<option>A</option>
+	<option>B</option>
+	<option>C</option>
+	<option>D</option>
+	<option>E</option>
+	<option>F</option>
+	<option>G</option>
+	<option>H</option>
+	<option>I</option>
+	<option>J</option>
+	<option>K</option>
+	<option>L</option>
+	<option>M</option>
+	<option>N</option>
+	<option>O</option>
+	<option>P</option>
+	<option>Q</option>
+	<option>R</option>
+	<option>S</option>
+	<option>T</option>
+	<option>U</option>
+	<option>V</option>
+	<option>W</option>
+	<option>X</option>
+	<option>Y</option>
+	<option>Z</option>
+	<option>1</option>
+	<option>2</option>
+	<option>3</option>
+	<option>4</option>
+	<option>5</option>
+	<option>6</option>
+	<option>7</option>
+	<option>8</option>
+	<option>9</option>
+	<option>0</option>
+-->
+      </select>
+      <br/>
+<!--
+      <input type="checkbox" id="save-source-url"/>
+      <label for="save-source-url">Save the address of the source web page</label>
+-->
+    </div>
+
+    <div id="dlg-buttons">
+      <button id="btn-accept" class="browser-style default">OK</button>
+      <button id="btn-cancel" class="browser-style">Cancel</button>
+    </div>
+
+    <script src="../lib/jquery.js"></script>
+    <script src="../lib/fancytree/jquery.fancytree-all-deps.min.js"></script>
+    <script src="../lib/zebra_dialog/zebra_dialog.js"></script>
+    <script src="new.js"></script>
+  </body>
+</html>
