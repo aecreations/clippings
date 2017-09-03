@@ -30,9 +30,8 @@
     
     <link rel="stylesheet" href="chrome://browser/content/extension.css"/>
     <link rel="stylesheet" href="../style/dialog.css"/>
-    <!-- TEMPORARY -->
     <link rel="stylesheet" href="../lib/zebra_dialog/css/flat/zebra_dialog.css"/>
-    <!-- END TEMPORARY -->
+    <link rel="stylesheet" href="../lib/fancytree/skin/ui.fancytree.css"/>
     <style>
 
       input[type="text"], textarea, select {
@@ -47,6 +46,40 @@
         resize: none;
       }
 
+      #folder-tree-btn {
+        width: 32em;
+        padding: 4px;
+        background-color: #fbfbfb;
+        border: 1px solid #b1b1b1;
+
+        background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICA8cGF0aCBkPSJNOCwxMkwzLDcsNCw2bDQsNCw0LTQsMSwxWiIgZmlsbD0iIzZBNkE2QSIgLz4KPC9zdmc+Cg==);
+        background-position: calc(100% - 4px) center;
+        background-repeat: no-repeat;
+      }
+
+      #folder-tree-btn:hover {
+        background-color: #ebebeb;
+      }
+
+      #folder-tree-btn:hover:active {
+        background-color: #d4d4d4;
+      }
+      
+      #folder-tree-popup {
+        position: absolute;
+        visibility: hidden;
+        width: 32em;
+        height: 140px;
+        margin-top: 0;
+        border: 1px solid silver;
+        background-color: white;
+      }
+
+      #folder-tree {
+        height: 100%;
+        overflow: scroll;
+      }
+      
     </style>
   </head>
 
@@ -63,12 +96,15 @@
       <br/>
       
       <label>Create in:</label>
-      <!-- TEMPORARY -->
-      <div id="folder-tree-placeholder" style="width:32em;padding:4px;margin-bottom:12px;background-color:#eeeeee;border:1px solid silver">Clippings</div>
-      <!-- END TEMPORARY -->
-      <div id="folder-tree"></div>
+      <div id="folder-tree-btn">Clippings</div>
 
-      <label for="clipping-key">Shortcut key:</label><br/>
+      <div id="folder-tree-popup">
+	<div id="folder-tree"></div>
+      </div>
+
+      <div style="margin-top:12px"></div>
+      <label for="clipping-key">Shortcut key:</label>
+      <br/>
       <select id="clipping-key" class="browser-style" size="1">
 	<option>(None)</option>
 <!--

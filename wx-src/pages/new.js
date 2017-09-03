@@ -25,6 +25,7 @@
 
 let gClippingsDB = null;
 let gClippings = null;
+let gParentFolderID = 0;
 
 
 $(document).ready(() => {
@@ -67,6 +68,8 @@ $(document).ready(() => {
     }
   });
 
+  initFolderPicker();
+  
   $("#btn-accept").click(aEvent => { accept(aEvent) });
   $("#btn-cancel").click(aEvent => { cancel(aEvent) });
 });
@@ -82,19 +85,102 @@ $(window).keypress(aEvent => {
 });
 
 
+function initFolderPicker()
+{
+  $("#folder-tree-btn").click(aEvent => {
+    let popup = $("#folder-tree-popup");
+
+    if (popup.css("visibility") == "hidden") {
+      popup.css({ visibility: "visible" });
+    }
+    else {
+      popup.css({ visibility: "hidden" });
+    }
+  });
+
+  let treeData = [
+    {
+      title: "Clippings",
+      key: 0,
+      folder: true,
+      expanded: true,
+      children: []
+    }
+  ];
+
+  let populateFolders = gClippingsDB.folders.where("parentFolderID").equals(0).each((aItem, aCursor) => {
+    let folderNode = {
+      key: aItem.id,
+      title: aItem.name,
+      folder: true
+    };
+
+    folderNode.children = buildFolderTree(0, aItem);
+    treeData[0].children.push(folderNode);
+  });
+
+  populateFolders.then(() => {
+    $("#folder-tree").fancytree({
+      source: treeData,
+      selectMode: 1,
+      icon: true,
+
+      init: function (aEvent, aData) {
+        aData.tree.getRootNode().children[0].setActive();
+      },
+
+      click: function (aEvent, aData) {
+        if (aData.targetType == "icon" || aData.targetType == "title") {
+          selectFolder(aData);
+          let popup = $("#folder-tree-popup");
+          popup.css({ visibility: "hidden" });
+        }
+      }
+    });
+  });
+}
+
+
+function buildFolderTree(aParentFolderID, aFolderData)
+{
+  let rv = [];
+  let folderID = aFolderData.id;
+
+  gClippingsDB.folders.where("parentFolderID").equals(folderID).each((aItem, aCursor) => {
+    let folderNode = {
+      key: aItem.id,
+      title: aItem.name,
+      folder: true
+    }
+
+    folderNode.children = buildFolderTree(folderID, aItem);    
+    rv.push(folderNode);
+  });
+
+  return rv;
+}
+
+
+function selectFolder(aData)
+{
+  gParentFolderID = Number(aData.node.key);
+  $("#folder-tree-btn").text(aData.node.title);
+}
+
+
 function accept(aEvent)
 {
   let createClipping = gClippingsDB.clippings.add({
     name: $("#clipping-name").val(),
     content: $("#clipping-text").val(),
     shortcutKey: "",
-    parentFolderID: 0
+    parentFolderID: gParentFolderID
   });
 
   createClipping.then(aID => {
     chrome.windows.remove(chrome.windows.WINDOW_ID_CURRENT);
   }, aErr => {
-    window.alert("Error creating clipping");
+    window.alert("Error creating clipping: " + aErr);
   });
 }
 
