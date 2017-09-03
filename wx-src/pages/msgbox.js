@@ -30,9 +30,22 @@ function init()
   let msgID = url.searchParams.get("msgid") || aeMsgBox.MSG_UNKNOWN;
   document.querySelector("#msgbox-content > p").textContent = aeMsgBox.msg[msgID];
 
-  document.querySelector("#btn-accept").addEventListener("click", aEvent => {
-    browser.windows.remove(browser.windows.WINDOW_ID_CURRENT);
+  window.addEventListener("keypress", aEvent => {
+    if (aEvent.key == "Enter" || aEvent.key == "Escape") {
+      dismiss();
+    }
   });
+  
+  let btnAccept = document.querySelector("#btn-accept");
+  btnAccept.addEventListener("click", aEvent => { dismiss(aEvent) });
+  btnAccept.focus();
 }
+
+
+function dismiss()
+{
+  browser.windows.remove(browser.windows.WINDOW_ID_CURRENT);
+}
+
 
 init();
