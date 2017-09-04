@@ -111,7 +111,7 @@ aeImportExport.importFromRDF = function (aRDFRawData)
     $rdf.parse(aRDFRawData, dataSrc, this.CLIPPINGS_RDF_ROOT_FOLDER, this.RDF_MIME_TYPE);
   }
   catch (e) {
-    this._warn("aeImportExport.importFromRDF(): Failed to parse Clippings RDF data!\n" + e);
+    console.error("aeImportExport.importFromRDF(): Failed to parse Clippings RDF data!\n" + e);
     return;
   }
 
