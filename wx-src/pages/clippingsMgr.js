@@ -531,7 +531,14 @@ function uploadImportFile(aFileList)
 
   let fileReader = new FileReader();
   fileReader.addEventListener("load", aEvent => {
-    aeImportExport.importFromJSON(aEvent.target.result);
+    let rawData = aEvent.target.result;
+
+    if (importFile.name.endsWith(".json")) {
+      aeImportExport.importFromJSON(rawData);
+    }
+    else if (importFile.name.endsWith(".rdf")) {
+      aeImportExport.importFromRDF(rawData);
+    }
   });
 
   fileReader.readAsText(importFile);
