@@ -30,6 +30,8 @@ const DEFAULT_NEW_FOLDER_NAME = "New Folder";
 const DEFAULT_UNTITLED_CLIPPING_NAME = "Untitled Clipping";
 const DEFAULT_UNTITLED_FOLDER_NAME = "Untitled Folder";
 
+const ROOT_FOLDER_ID = 0;
+
 var gOS;
 var gClippingsDB;
 var gClippings;
@@ -70,18 +72,28 @@ $(document).ready(() => {
         title: aData.name
       };
 
+      let newNode = null;
+
       if (selectedNode) {
-        let parentNode = selectedNode.getParent();
-        newNode = parentNode.addNode(newNodeData);
+        if (aData.parentFolderID == ROOT_FOLDER_ID) {
+          newNode = tree.rootNode.addNode(newNodeData);
+        }
+        else {
+          let parentNode = tree.getNodeByKey(aData.parentFolderID + "F");
+          console.log("Adding clipping as child of node: " + aData.parentFolderID);
+          newNode = parentNode.addNode(newNodeData);
+        }
       }
       else {
         // No clippings or folders.
         newNode = tree.rootNode.addNode(newNodeData);
       }
-      newNode.setActive();
-
-      $("#clipping-name").val(aData.name);
-      $("#clipping-text").val("");
+      
+      newNode.makeVisible().then(() => {
+        newNode.setActive();
+        $("#clipping-name").val(aData.name);
+        $("#clipping-text").val("");
+      });
     },
 
     newFolderCreated: function (aID, aData) {
@@ -101,17 +113,24 @@ $(document).ready(() => {
       let newNode = null;
     
       if (selectedNode) {
-        let parentNode = selectedNode.getParent();
-        newNode = parentNode.addNode(newNodeData);
+        if (aData.parentFolderID == ROOT_FOLDER_ID) {
+          newNode = tree.rootNode.addNode(newNodeData);
+        }
+        else {
+          let parentNode = tree.getNodeByKey(aData.parentFolderID + "F");
+          newNode = parentNode.addNode(newNodeData);
+        }
       }
       else {
         // No clippings or folders.
         newNode = tree.rootNode.addNode(newNodeData);
       }
-      newNode.setActive();
 
-      $("#clipping-name").val(aData.name);
-      $("#clipping-text").val("");
+      newNode.makeVisible().then(() => {
+        newNode.setActive();
+        $("#clipping-name").val(aData.name);
+        $("#clipping-text").val("");
+      });
     },
 
     clippingChanged: function (aID, aData, aOldData) {
@@ -210,11 +229,11 @@ function initToolbarButtons()
     
     let tree = getClippingsTree();
     let selectedNode = tree.activeNode;
-    let parentFolderID = 0;
+    let parentFolderID = ROOT_FOLDER_ID;
     
     if (selectedNode) {
       let parentNode = selectedNode.getParent();
-      parentFolderID = (parentNode.isRootNode() ? 0 : parseInt(parentNode.key));
+      parentFolderID = (parentNode.isRootNode() ? ROOT_FOLDER_ID : parseInt(parentNode.key));
     }
 
     let createClipping = gClippingsDB.clippings.add({
@@ -236,11 +255,11 @@ function initToolbarButtons()
 
     let tree = getClippingsTree();
     let selectedNode = tree.activeNode;
-    let parentFolderID = 0;
+    let parentFolderID = ROOT_FOLDER_ID;
     
     if (selectedNode) {
       let parentNode = selectedNode.getParent();
-      parentFolderID = (parentNode.isRootNode() ? 0 : parseInt(parentNode.key));
+      parentFolderID = (parentNode.isRootNode() ? ROOT_FOLDER_ID : parseInt(parentNode.key));
     }
     
     let createFolder = gClippingsDB.folders.add({
@@ -323,21 +342,21 @@ function buildClippingsTree()
   let treeData = [];
 
   gClippingsDB.transaction("r", gClippingsDB.folders, gClippingsDB.clippings, () => {
-    let populateFolders = gClippingsDB.folders.where("parentFolderID").equals(0).each((aItem, aCursor) => {
+    let populateFolders = gClippingsDB.folders.where("parentFolderID").equals(ROOT_FOLDER_ID).each((aItem, aCursor) => {
       let folderNode = {
         key: aItem.id + "F",
         title: aItem.name,
         folder: true
       };
 
-      let childNodes = buildClippingsTreeHelper(0, aItem);
+      let childNodes = buildClippingsTreeHelper(ROOT_FOLDER_ID, aItem);
       folderNode.children = childNodes;
 
       treeData.push(folderNode);
     });
 
     populateFolders.then(() => {
-      let populateClippings = gClippingsDB.clippings.where("parentFolderID").equals(0).each((aItem, aCursor) => {
+      let populateClippings = gClippingsDB.clippings.where("parentFolderID").equals(ROOT_FOLDER_ID).each((aItem, aCursor) => {
         let clippingNode = {
           key: aItem.id + "C",
           title: aItem.name
@@ -391,13 +410,13 @@ function buildClippingsTree()
                 }
 
                 let parentNode = aNode.getParent();
-                let newParentID = 0;
+                let newParentID = ROOT_FOLDER_ID;
                 
                 if (aNode.isFolder() && aData.hitMode == "over") {
                   newParentID = parseInt(aNode.key);
                 }
                 else {
-                  newParentID = (parentNode.isRootNode() ? 0 : parseInt(parentNode.key));
+                  newParentID = (parentNode.isRootNode() ? ROOT_FOLDER_ID : parseInt(parentNode.key));
                 }
 
                 aData.otherNode.moveTo(aNode, aData.hitMode);
@@ -526,6 +545,10 @@ function initImport()
 
 function uploadImportFile(aFileList)
 {
+  if (aFileList.length == 0) {
+    return;
+  }
+  
   let importFile = aFileList[0];
   console.log("Clippings Manager: Selected import file: '%s'\nFile size: %d bytes", importFile.name, importFile.size);
 
