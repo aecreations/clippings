@@ -2,8 +2,8 @@
     "manifest_version": 2,
     "name": "Clippings/wx",
     "description": "Save frequently-entered text for pasting later.",
-    "version": "5.99.2",
-    "version_name": "6.0pre2+",
+    "version": "5.99.3",
+    "version_name": "6.0pre3",
     "homepage_url": "http://aecreations.sourceforge.net/clippings/index.php",
     
     "icons": {
