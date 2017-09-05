@@ -69,6 +69,7 @@ $(document).ready(() => {
   });
 
   initFolderPicker();
+  initShortcutKeyMenu();
   
   $("#btn-accept").click(aEvent => { accept(aEvent) });
   $("#btn-cancel").click(aEvent => { cancel(aEvent) });
@@ -161,6 +162,24 @@ function buildFolderTree(aParentFolderID, aFolderData)
 }
 
 
+function initShortcutKeyMenu()
+{
+  let shortcutKeyMenu = $("#clipping-key")[0];
+
+  let assignedKeysLookup = {};
+  gClippingsDB.clippings.where("shortcutKey").notEqual("").each((aItem, aCursor) => {
+    assignedKeysLookup[aItem.shortcutKey] = 1;
+  }).then(() => {
+    for (let option of shortcutKeyMenu.options) {
+      if (assignedKeysLookup[option.text]) {
+        option.setAttribute("disabled", "true");
+        option.setAttribute("title", `'${option.text}' is already assigned`);
+      }
+    }
+  });
+}
+
+
 function selectFolder(aData)
 {
   gParentFolderID = Number(aData.node.key);
@@ -170,10 +189,17 @@ function selectFolder(aData)
 
 function accept(aEvent)
 {
+  let shortcutKeyMenu = $("#clipping-key")[0];
+  let shortcutKey = "";
+
+  if (shortcutKeyMenu.selectedIndex != 0) {
+    shortcutKey = shortcutKeyMenu.options[shortcutKeyMenu.selectedIndex].text;
+  }
+
   let createClipping = gClippingsDB.clippings.add({
     name: $("#clipping-name").val(),
     content: $("#clipping-text").val(),
-    shortcutKey: "",
+    shortcutKey: shortcutKey,
     parentFolderID: gParentFolderID
   });
 
