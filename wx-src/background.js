@@ -93,6 +93,9 @@ function init()
   gClippingsDB.version(3).stores({
     folders: "++id, name, parentFolderID"
   });
+  gClippingsDB.version(4).stores({
+    clippings: "++id, name, parentFolderID, shortcutKey"
+  });
   
   gClippingsDB.on("changes", aChanges => {
     const CREATED = 1, UPDATED = 2, DELETED = 3;
@@ -364,12 +367,12 @@ function rebuildContextMenu()
 }
 
 
-function createClipping(aName, aContent/*, aShortcutKey, aSrcURL */)
+function createClipping(aName, aContent, aShortcutKey/*, aSrcURL */)
 {
   let createClipping = gClippingsDB.clippings.add({
     name: aName,
     content: aContent,
-    shortcutKey: "",
+    shortcutKey: aShortcutKey || "",
     parentFolderID: 0
   });
 
