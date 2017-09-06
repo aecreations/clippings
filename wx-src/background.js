@@ -612,7 +612,7 @@ function openNewClippingDlg()
   let createWnd = browser.windows.create({
     url: url,
     type: "popup",
-    width: 428, height: 496,
+    width: 428, height: 512,
     left: 96, top: 64
   });
 
