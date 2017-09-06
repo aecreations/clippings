@@ -79,8 +79,8 @@ $(document).ready(() => {
           newNode = tree.rootNode.addNode(newNodeData);
         }
         else {
+          // TO DO: Why is getNodeByKey() sometimes returning null? (issue #89)
           let parentNode = tree.getNodeByKey(aData.parentFolderID + "F");
-          console.log("Adding clipping as child of node: " + aData.parentFolderID);
           newNode = parentNode.addNode(newNodeData);
         }
       }
@@ -209,6 +209,7 @@ $(document).ready(() => {
 
   initToolbarButtons();
   initInstantEditing();
+  initShortcutKeyMenu();
   initImport();
   buildClippingsTree();
 });
@@ -507,6 +508,44 @@ function unsetEmptyClippingsState()
 }
 
 
+function initShortcutKeyMenu()
+{
+  $("#clipping-key").change(aEvent => {
+    let shortcutKeyMenu = aEvent.target;
+    let shortcutKey = "";
+    
+    if (shortcutKeyMenu.selectedIndex != 0) {
+      shortcutKey = shortcutKeyMenu.options[shortcutKeyMenu.selectedIndex].text;
+    }
+
+    // Check if the shortcut key is already assigned.
+    let assignedKeysLookup = {};
+    gClippingsDB.clippings.where("shortcutKey").notEqual("").each((aItem, aCursor) => {
+      assignedKeysLookup[aItem.shortcutKey] = 1;
+    }).then(() => {
+      if (assignedKeysLookup[shortcutKey]) {
+        window.alert("The selected shortcut key has already been assigned to another clipping. Please select a different shortcut key.");
+
+          // TO DO: Select the previously-selected drop-down menu option.
+        return;
+      }
+
+      let selectedNode = getClippingsTree().getActiveNode();
+      if (! selectedNode) {
+        console.warn("Can't set shortcut key if there is no clipping selected.");
+        return;
+      }
+
+      let clippingID = parseInt(selectedNode.key);
+      let updateShortcutKey = gClippingsDB.clippings.update(clippingID, { shortcutKey });
+      updateShortcutKey.then(aNumUpdated => {
+        console.log("Clippings/wx::clippingsMgr.js: Shortcut key set to '%s'", (shortcutKey ? shortcutKey : "(none)"));
+      });
+    });
+  });
+}
+
+
 function updateDisplay(aEvent, aData)
 {
   if (gIsClippingsTreeEmpty) {
@@ -522,6 +561,9 @@ function updateDisplay(aEvent, aData)
     getFolder.then(aResult => {
       $("#clipping-name").val(aResult.name);
       $("#clipping-text").val("").hide();
+
+      let shortcutKeyMenu = $("#clipping-key")[0];
+      shortcutKeyMenu.selectedIndex = 0;
     });
   }
   else {
@@ -529,6 +571,16 @@ function updateDisplay(aEvent, aData)
     getClipping.then(aResult => {
       $("#clipping-name").val(aResult.name);
       $("#clipping-text").val(aResult.content).show();
+
+      let shortcutKeyMenu = $("#clipping-key")[0];
+      shortcutKeyMenu.selectedIndex = 0;
+      
+      for (let i = 0; i < shortcutKeyMenu.options.length; i++) {
+        if (shortcutKeyMenu[i].text == aResult.shortcutKey) {
+          shortcutKeyMenu.selectedIndex = i;
+          break;
+        }
+      }
     });
   }
 }
