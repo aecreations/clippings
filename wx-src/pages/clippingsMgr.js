@@ -537,10 +537,7 @@ function initShortcutKeyMenu()
       }
 
       let clippingID = parseInt(selectedNode.key);
-      let updateShortcutKey = gClippingsDB.clippings.update(clippingID, { shortcutKey });
-      updateShortcutKey.then(aNumUpdated => {
-        console.log("Clippings/wx::clippingsMgr.js: Shortcut key set to '%s'", (shortcutKey ? shortcutKey : "(none)"));
-      });
+      gClippingsDB.clippings.update(clippingID, { shortcutKey });
     });
   });
 }
@@ -562,6 +559,7 @@ function updateDisplay(aEvent, aData)
       $("#clipping-name").val(aResult.name);
       $("#clipping-text").val("").hide();
 
+      $("#options-bar").hide()
       let shortcutKeyMenu = $("#clipping-key")[0];
       shortcutKeyMenu.selectedIndex = 0;
     });
@@ -572,6 +570,7 @@ function updateDisplay(aEvent, aData)
       $("#clipping-name").val(aResult.name);
       $("#clipping-text").val(aResult.content).show();
 
+      $("#options-bar").show()
       let shortcutKeyMenu = $("#clipping-key")[0];
       shortcutKeyMenu.selectedIndex = 0;
       
