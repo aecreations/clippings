@@ -237,6 +237,9 @@ function initMessageListeners()
       if (resp !== null) {
         aSendResponse(resp);
       }
+      else if (aRequest.msgID = "ae-clippings-paste-shortcut-key") {
+        // TO DO: Same logic as for Firefox.
+      }
     });
   }                                  
   else {
@@ -252,6 +255,16 @@ function initMessageListeners()
 
       if (resp !== null) {
         return Promise.resolve(resp);
+      }
+
+      else if (aRequest.msgID = "ae-clippings-paste-shortcut-key") {
+        let shortcutKey = aRequest.shortcutKey;
+        if (! shortcutKey) {
+          return;
+        }
+
+        console.log("Clippings/wx: Key '%s' was pressed.", shortcutKey);
+        pasteClippingByShortcutKey(shortcutKey);
       }
     });
   }
@@ -441,6 +454,96 @@ function openClippingsManager()
 }
 
 
+function openNewClippingDlg()
+{
+  // TO DO: Check if the dialog is already open.
+
+  let url = browser.runtime.getURL("pages/new.html");
+  let createWnd = browser.windows.create({
+    url: url,
+    type: "popup",
+    width: 428, height: 512,
+    left: 96, top: 64
+  });
+
+  createWnd.then(() => {
+    browser.history.deleteUrl({ url });
+  });
+}
+
+
+function openShortcutKeyPromptDlg()
+{
+  // TO DO: Check first if the cursor is in a web page textbox or HTML editor.
+  // If not, then don't do anything.
+
+  // TO DO: Check if the dialog is already open.
+  let url = "pages/clippingKey.html";
+
+  chrome.windows.create({
+    url: url,
+    type: "detached_panel",
+    width: 500, height: 170,
+    left: window.screen.availWidth - 500 / 2,
+    top:  window.screen.availHeight - 200 / 2
+  });
+
+}
+
+
+function pasteClippingByID(aClippingID)
+{
+  let getClipping = gClippingsDB.clippings.get(aClippingID);
+
+  getClipping.then(aClipping => {
+    if (! aClipping) {
+      alertEx(aeMsgBox.MSG_CLIPPING_NOT_FOUND);
+      return;
+    }
+    console.log(`Pasting clipping named "${aClipping.name}"\nid = ${aClipping.id}`);
+    insertText(aClipping.content);
+  });
+}
+
+
+function pasteClippingByShortcutKey(aShortcutKey)
+{
+  let results = gClippingsDB.clippings.where("shortcutKey").equals(aShortcutKey.toUpperCase());
+
+  results.first().then(aClipping => {
+    if (! aClipping) {
+      console.warn("Cannot find clipping with shortcut key '%s'", aShortcutKey);
+      return;
+    }
+
+    console.log(`Pasting clipping named "${aClipping.name}"\nid = ${aClipping.id}`);
+    insertText(aClipping.content);
+  });
+}
+
+
+function insertText(aText)
+{
+  chrome.tabs.query({ active: true, currentWindow: true }, aTabs => {
+    if (! aTabs[0]) {
+      // This should never happen...
+      alertEx(aeMsgBox.MSG_NO_ACTIVE_BROWSER_TAB);
+      return;
+    }
+
+    let activeTabID = aTabs[0].id;
+    let msgParams = {
+      msgID: "ae-clippings-paste",
+      content: aText
+    };
+
+    console.log("Clippings/wx: Extension sending message 'ae-clippings-paste' to content script");
+          
+    chrome.tabs.sendMessage(activeTabID, msgParams, null);
+  });
+}
+
+
 function getClippingsDB()
 {
   return gClippingsDB;
@@ -569,57 +672,21 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
   default:
     if (aInfo.menuItemId.startsWith("ae-clippings-clipping-")) {
       let id = Number(aInfo.menuItemId.substr(22));
-      let getClipping = gClippingsDB.clippings.get(id);
-
-      getClipping.then(aClipping => {
-        if (! aClipping) {
-          alertEx(aeMsgBox.MSG_CLIPPING_NOT_FOUND);
-          return;
-        }
-        console.log("Pasting clipping named \"" + aClipping.name + "\"\nid = " + aClipping.id);
-
-        chrome.tabs.query({ active: true, currentWindow: true }, aTabs => {
-          if (! aTabs[0]) {
-            // This should never happen...
-            alertEx(aeMsgBox.MSG_NO_ACTIVE_BROWSER_TAB);
-            return;
-          }
-
-          let activeTabID = aTabs[0].id;
-          let msgParams = {
-            msgID: "ae-clippings-paste",
-            content: aClipping.content
-          };
-
-          console.log("Clippings/wx: Extension sending message 'ae-clippings-paste' to content script");
-          
-          chrome.tabs.sendMessage(activeTabID, msgParams, null, aResp => {
-            console.log("It is " + aResp + " that the clipping was successfully pasted.");
-          });
-        });        
-      });
+      pasteClippingByID(id);
     }
     break;
   }
 });
 
 
-function openNewClippingDlg()
-{
-  // TO DO: Check if the dialog is already open.
-
-  let url = browser.runtime.getURL("pages/new.html");
-  let createWnd = browser.windows.create({
-    url: url,
-    type: "popup",
-    width: 428, height: 512,
-    left: 96, top: 64
-  });
-
-  createWnd.then(() => {
-    browser.history.deleteUrl({ url });
-  });
-}
+//
+// Command listener for shortcut keys
+//
+chrome.commands.onCommand.addListener(aCmdName => {
+  if (aCmdName == "ae-clippings-paste-clipping") {
+    openShortcutKeyPromptDlg();
+  }
+});
 
 
 init();

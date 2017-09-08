@@ -42,5 +42,14 @@
 	"default_area": "navbar",
 
 	"default_title": "Organize Clippings"
+    },
+
+    "commands" : {
+	"ae-clippings-paste-clipping": {
+	    "suggested_key": {
+		"default": "Ctrl+Shift+Y"
+	    },
+	    "description": "Paste a clipping using its shortcut key"
+	}
     }
 }
