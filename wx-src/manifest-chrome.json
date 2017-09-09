@@ -17,6 +17,7 @@
 	    "lib/dexie/dexie.js",
 	    "lib/dexie/dexie-observable.js",
 	    "modules/aeMsgBox.js",
+	    "modules/aeClippingSubst.js",
 	    "background.js"
 	]
     },

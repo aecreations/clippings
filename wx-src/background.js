@@ -24,6 +24,7 @@
  * ***** END LICENSE BLOCK ***** */
 
 const MAX_NAME_LENGTH = 64;
+const ROOT_FOLDER_NAME = "clippings-root";
 
 let gClippingsDB = null;
 
@@ -156,7 +157,7 @@ function init()
   });
 
   if (! ("browser" in window)) {
-    console.log("Clippings/wx: Browser: Google Chrome");  
+    console.log("Clippings/wx: Browser: Google Chrome");
   }
   else {
     let getBrowserInfo = browser.runtime.getBrowserInfo();
@@ -218,6 +219,8 @@ function init()
   window.addEventListener("unload", onUnload, false);
   initMessageListeners();
 
+  aeClippingSubst.init(navigator.userAgent);
+  
   buildContextMenu();
 }
 
@@ -493,36 +496,77 @@ function openShortcutKeyPromptDlg()
 
 function pasteClippingByID(aClippingID)
 {
-  let getClipping = gClippingsDB.clippings.get(aClippingID);
+  gClippingsDB.transaction("r", gClippingsDB.clippings, gClippingsDB.folders, () => {
+    let getClipping = gClippingsDB.clippings.get(aClippingID);
+    getClipping.then(aClipping => {
+      if (! aClipping) {
+        alertEx(aeMsgBox.MSG_CLIPPING_NOT_FOUND);
+        return;
+      }
+      console.log(`Pasting clipping named "${aClipping.name}"\nid = ${aClipping.id}`);
 
-  getClipping.then(aClipping => {
-    if (! aClipping) {
-      alertEx(aeMsgBox.MSG_CLIPPING_NOT_FOUND);
-      return;
-    }
-    console.log(`Pasting clipping named "${aClipping.name}"\nid = ${aClipping.id}`);
-    insertText(aClipping.content);
+      let parentFldrName = "";
+
+      let getParentFolder = gClippingsDB.folders.get(aClipping.parentFolderID);
+      getParentFolder.then(aFolder => {
+        if (aFolder) {
+          parentFldrName = aFolder.name;
+        }
+        else {
+          parentFldrName = ROOT_FOLDER_NAME;
+        }
+        let clippingInfo = {
+          id: aClipping.id,
+          name: aClipping.name,
+          text: aClipping.content,
+          parentFolderName: parentFldrName
+        };
+
+        pasteClipping(clippingInfo);
+      });
+    });
   });
 }
 
 
 function pasteClippingByShortcutKey(aShortcutKey)
 {
-  let results = gClippingsDB.clippings.where("shortcutKey").equals(aShortcutKey.toUpperCase());
+  gClippingsDB.transaction("r", gClippingsDB.clippings, gClippingsDB.folders, () => {
+    let results = gClippingsDB.clippings.where("shortcutKey").equals(aShortcutKey.toUpperCase());
 
-  results.first().then(aClipping => {
-    if (! aClipping) {
-      console.warn("Cannot find clipping with shortcut key '%s'", aShortcutKey);
-      return;
-    }
+    results.first().then(aClipping => {
+      if (! aClipping) {
+        console.warn("Cannot find clipping with shortcut key '%s'", aShortcutKey);
+        return;
+      }
 
-    console.log(`Pasting clipping named "${aClipping.name}"\nid = ${aClipping.id}`);
-    insertText(aClipping.content);
+      console.log(`Pasting clipping named "${aClipping.name}"\nid = ${aClipping.id}`);
+
+      let parentFldrName = "";
+
+      let getParentFolder = gClippingsDB.folders.get(aClipping.parentFolderID);
+      getParentFolder.then(aFolder => {
+        if (aFolder) {
+          parentFldrName = aFolder.name;
+        }
+        else {
+          parentFldrName = ROOT_FOLDER_NAME;
+        }
+        let clippingInfo = {
+          id: aClipping.id,
+          name: aClipping.name,
+          text: aClipping.content,
+          parentFolderName: parentFldrName
+        };
+
+        pasteClipping(clippingInfo);
+      });
+    });
   });
 }
 
 
-function insertText(aText)
+function pasteClipping(aClippingInfo)
 {
   chrome.tabs.query({ active: true, currentWindow: true }, aTabs => {
     if (! aTabs[0]) {
@@ -532,9 +576,10 @@ function insertText(aText)
     }
 
     let activeTabID = aTabs[0].id;
+    let content = aeClippingSubst.processClippingText(aClippingInfo);
     let msgParams = {
       msgID: "paste-clipping",
-      content: aText
+      content: content
     };
 
     console.log("Clippings/wx: Extension sending message 'paste-clipping' to content script");
