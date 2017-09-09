@@ -230,14 +230,14 @@ function initMessageListeners()
 
       let resp = null;
 
-      if (aRequest.msgID == "ae-clippings-init-new-clippings-dlg") {
+      if (aRequest.msgID == "init-new-clippings-dlg") {
         resp = gNewClipping.get();
       }
 
       if (resp !== null) {
         aSendResponse(resp);
       }
-      else if (aRequest.msgID = "ae-clippings-paste-shortcut-key") {
+      else if (aRequest.msgID = "paste-shortcut-key") {
         // TO DO: Same logic as for Firefox.
       }
     });
@@ -249,7 +249,7 @@ function initMessageListeners()
       
       let resp = null;
 
-      if (aRequest.msgID == "ae-clippings-init-new-clippings-dlg") {
+      if (aRequest.msgID == "init-new-clippings-dlg") {
         resp = gNewClipping.get();
       }
 
@@ -257,7 +257,7 @@ function initMessageListeners()
         return Promise.resolve(resp);
       }
 
-      else if (aRequest.msgID = "ae-clippings-paste-shortcut-key") {
+      else if (aRequest.msgID = "paste-shortcut-key") {
         let shortcutKey = aRequest.shortcutKey;
         if (! shortcutKey) {
           return;
@@ -533,11 +533,11 @@ function insertText(aText)
 
     let activeTabID = aTabs[0].id;
     let msgParams = {
-      msgID: "ae-clippings-paste",
+      msgID: "paste-clipping",
       content: aText
     };
 
-    console.log("Clippings/wx: Extension sending message 'ae-clippings-paste' to content script");
+    console.log("Clippings/wx: Extension sending message 'paste-clipping' to content script");
           
     chrome.tabs.sendMessage(activeTabID, msgParams, null);
   });
@@ -629,10 +629,10 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
         }
       });
       
-      console.log("Clippings/wx: Extension sending message 'ae-clippings-new' to content script; active tab ID: " + activeTabID);
+      console.log("Clippings/wx: Extension sending message 'new' to content script; active tab ID: " + activeTabID);
 
       if (isGoogleChrome()) {
-        chrome.tabs.sendMessage(activeTabID, { msgID: "ae-clippings-new", hostApp: "chrome" }, null, aResp => {
+        chrome.tabs.sendMessage(activeTabID, { msgID: "new-clipping", hostApp: "chrome" }, null, aResp => {
           let content = aResp.content;
           if (! content) {
             console.warn("Clippings/wx: Content script was unable to retrieve content from the web page.  Retrieving selection text from context menu info.");
@@ -645,7 +645,7 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
       }
       else {
         // Firefox
-        let sendMsg = browser.tabs.sendMessage(activeTabID, { msgID: "ae-clippings-new" });
+        let sendMsg = browser.tabs.sendMessage(activeTabID, { msgID: "new-clipping" });
         sendMsg.then(aResp => {
           if (! aResp) {
             console.error("Clippings/wx: Unable to receive response from content script!");

@@ -247,10 +247,10 @@ function init()
 
       let resp = null;
   
-      if (aRequest.msgID == "ae-clippings-new") {
+      if (aRequest.msgID == "new-clipping") {
         resp = handleRequestNewClipping(aRequest);
       }
-      else if (aRequest.msgID == "ae-clippings-paste") {
+      else if (aRequest.msgID == "paste") {
         resp = handleRequestInsertClipping(aRequest);
       }
 
@@ -266,10 +266,10 @@ function init()
 
       let resp = null;
   
-      if (aRequest.msgID == "ae-clippings-new") {
+      if (aRequest.msgID == "new-clipping") {
         resp = handleRequestNewClipping(aRequest);
       }
-      else if (aRequest.msgID == "ae-clippings-paste") {
+      else if (aRequest.msgID == "paste-clipping") {
         resp = handleRequestInsertClipping(aRequest);
       }
     

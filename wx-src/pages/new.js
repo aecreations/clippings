@@ -40,14 +40,14 @@ $(document).ready(() => {
   }
 
   if (gClippings.isGoogleChrome()) {
-    chrome.runtime.sendMessage({ msgID: "ae-clippings-init-new-clippings-dlg" }, aResp => {
+    chrome.runtime.sendMessage({ msgID: "init-new-clippings-dlg" }, aResp => {
       // TO DO: Same logic as for Firefox.
     });
   }
   else {
     // Firefox
     let sendMsg = browser.runtime.sendMessage({
-      msgID: "ae-clippings-init-new-clippings-dlg"
+      msgID: "init-new-clippings-dlg"
     });
 
     sendMsg.then(aResp => {

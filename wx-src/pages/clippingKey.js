@@ -41,7 +41,7 @@ $(window).keypress(aEvent => {
   }
   else {
     let msg = {
-      msgID: "ae-clippings-paste-shortcut-key",
+      msgID: "paste-shortcut-key",
       shortcutKey: aEvent.key
     }
     browser.runtime.sendMessage(msg);
