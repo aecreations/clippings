@@ -96,6 +96,11 @@ body {
     width: 300px;
     overflow: scroll;
     border: 1px solid silver;
+    background-color: #fbfbfb;
+}
+
+#clippings-tree > .ui-fancytree {
+    background-color: #fbfbfb;
 }
 
 #item-properties {
@@ -107,7 +112,7 @@ body {
 #clipping-name {
     display: block;
     width: 100%;
-    height: 32px;
+    height: auto;
     padding: 6px 8px 6px 8px;
     border-left: none;
     border-right: none;
