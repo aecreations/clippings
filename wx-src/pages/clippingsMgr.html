@@ -28,6 +28,7 @@
     <meta charset="utf-8">
     <title>Clippings Manager</title>
 
+    <link rel="stylesheet" href="chrome://browser/content/extension.css"/>
     <link rel="stylesheet" href="../lib/fancytree/skin/ui.fancytree.css"/>
     <link rel="stylesheet" href="clippingsMgr.css"/>
   </head>
@@ -47,9 +48,9 @@
 
       <div id="clippings-tree"></div>
 
-      <div id="item-properties">
+      <div id="item-properties" class="browser-style">
 	<input type="text" id="clipping-name" placeholder="Clipping Name"/>
-	<textarea id="clipping-text" placeholder="Enter clipping text"></textarea>
+	<textarea id="clipping-text" class="browser-style" placeholder="Enter clipping text"></textarea>
 
 	<!-- Shortcut key -->
 	<div id="options-bar">
