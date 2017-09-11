@@ -200,7 +200,9 @@ function accept(aEvent)
     name: $("#clipping-name").val(),
     content: $("#clipping-text").val(),
     shortcutKey: shortcutKey,
-    parentFolderID: gParentFolderID
+    parentFolderID: gParentFolderID,
+    label: "",
+    sourceURL: ""
   });
 
   createClipping.then(aID => {
