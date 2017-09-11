@@ -24,7 +24,7 @@
  * ***** END LICENSE BLOCK ***** */
 
 const DEBUG = true;
-const DEBUG_TREE = true;
+const DEBUG_TREE = false;
 
 const DEFAULT_NEW_CLIPPING_NAME = "New Clipping";
 const DEFAULT_NEW_FOLDER_NAME = "New Folder";
@@ -461,8 +461,8 @@ function buildClippingsTreeHelper(aParentFolderID, aFolderData)
   gClippingsDB.transaction("r", gClippingsDB.folders, gClippingsDB.clippings, () => {
     gClippingsDB.folders.where("parentFolderID").equals(folderID).each((aItem, aCursor) => {
       let folderNode = {
-        key: aItem.id,
-        title: aItem.name,
+        key: aItem.id + "F",
+        title: (DEBUG_TREE ? `${aItem.name} [key=${aItem.id}F]` : aItem.name),
         folder: true
       }
       let childNodes = buildClippingsTreeHelper(folderID, aItem);
@@ -472,8 +472,8 @@ function buildClippingsTreeHelper(aParentFolderID, aFolderData)
     }).then(() => {
       gClippingsDB.clippings.where("parentFolderID").equals(folderID).each((aItem, aCursor) => {
         let clippingNode = {
-          key: aItem.id,
-          title: aItem.name
+          key: aItem.id + "C",
+          title: (DEBUG_TREE ? `${aItem.name} [key=${aItem.id}C]` : aItem.name)
         };
         rv.push(clippingNode);
       });
