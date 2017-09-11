@@ -24,6 +24,7 @@
  * ***** END LICENSE BLOCK ***** */
 
 const DEBUG = true;
+const DEBUG_TREE = true;
 
 const DEFAULT_NEW_CLIPPING_NAME = "New Clipping";
 const DEFAULT_NEW_FOLDER_NAME = "New Folder";
@@ -69,7 +70,7 @@ $(document).ready(() => {
       let selectedNode = tree.activeNode;
       let newNodeData = {
         key: aID + "C",
-        title: aData.name
+        title: (DEBUG_TREE ? `${aData.name} [key=${aID}C]` : aData.name)
       };
 
       let newNode = null;
@@ -105,7 +106,7 @@ $(document).ready(() => {
       let selectedNode = tree.activeNode;
       let newNodeData = {
         key: aID + "F",
-        title: aData.name,
+        title: (DEBUG_TREE ? `${aData.name} [key=${aID}F]` : aData.name),
         folder: true,
         children: []
       };
@@ -162,9 +163,9 @@ $(document).ready(() => {
     },
 
     // Helper method
-    _removeClippingsTreeNode: function (aID) {
+    _removeClippingsTreeNode: function (aIDWithSuffix) {
       let tree = getClippingsTree();
-      let targetNode = tree.getNodeByKey(aID);
+      let targetNode = tree.getNodeByKey(aIDWithSuffix);
       let deletedNodeIdx = targetNode.getIndex();
       let prevSibNode = targetNode.getPrevSibling();
       let nextSibNode = targetNode.getNextSibling();
@@ -350,7 +351,7 @@ function buildClippingsTree()
     gClippingsDB.folders.where("parentFolderID").equals(ROOT_FOLDER_ID).each((aItem, aCursor) => {
       let folderNode = {
         key: aItem.id + "F",
-        title: aItem.name,
+        title: (DEBUG_TREE ? `${aItem.name} [key=${aItem.id}F]` : aItem.name),
         folder: true
       };
 
@@ -362,7 +363,7 @@ function buildClippingsTree()
       return gClippingsDB.clippings.where("parentFolderID").equals(ROOT_FOLDER_ID).each((aItem, aCursor) => {
         let clippingNode = {
           key: aItem.id + "C",
-          title: aItem.name
+          title: (DEBUG_TREE ? `${aItem.name} [key=${aItem.id}C]` : aItem.name)
         };
 
         treeData.push(clippingNode);
