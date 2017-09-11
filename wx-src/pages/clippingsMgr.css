@@ -69,8 +69,8 @@ body {
     padding-top: 2px;
     padding-bottom: 2px;
 
-    background-color: #eeeeee;
-    border-bottom: 1px solid #cccccc;
+    background-color: -moz-dialog;
+    border-bottom: 1px solid threedshadow;
 }
 
 #toolbar > #new-clipping {
@@ -95,7 +95,7 @@ body {
     align-self: stretch;
     width: 300px;
     overflow: scroll;
-    border: 1px solid silver;
+    border: 1px solid threedshadow;
     background-color: #fbfbfb;
 }
 
@@ -113,28 +113,29 @@ body {
     display: block;
     width: 100%;
     height: auto;
+    margin-top: 2px;
     padding: 6px 8px 6px 8px;
     border-left: none;
     border-right: none;
     border-top: none;
-    border-bottom: 1px solid silver;
+    border-bottom: 1px solid threedshadow;
 }
 
 #clipping-text {
     display: block;
     width: 100%;
     height: 90%;
+    margin-top: 2px;
     padding: 6px 8px 6px 8px;
     resize: none;
-    
     border-left: none;
     border-right: none;
     border-top: none;
-    border-bottom: 1px solid silver;
+    border-bottom: 1px solid threedshadow;
 }
 
 #options-bar {
-    padding: 6px 8px 2px 8px;
+    padding: 1px 8px 2px 8px;
 }
 
 #status-bar {
@@ -143,8 +144,8 @@ body {
     padding-bottom: 2px;
     padding-left: 16px;
     
-    border-top: 1px solid #cccccc;
-    background-color: #eeeeee;
+    border-top: 1px solid threedlightshadow;
+    background-color: -moz-dialog;
 
     font: small-caption;
 }
