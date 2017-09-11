@@ -241,7 +241,9 @@ function initToolbarButtons()
       name: DEFAULT_NEW_CLIPPING_NAME,
       content: "",
       shortcutKey: "",
-      parentFolderID: parentFolderID
+      parentFolderID: parentFolderID,
+      label: "",
+      sourceURL: ""
     });
 
     createClipping.then(aNewClippingID => {
@@ -303,6 +305,7 @@ function initToolbarButtons()
 function initInstantEditing()
 {
   $("#clipping-name").blur(aEvent => {
+    log("Clippings/wx::clippingsMgr.js: Blur event fired on clipping name textbox");
     let tree = getClippingsTree();
     let selectedNode = tree.activeNode;
     let name = aEvent.target.value;
@@ -319,6 +322,7 @@ function initInstantEditing()
   });
   
   $("#clipping-text").blur(aEvent => {
+    log("Clippings/wx::clippingsMgr.js: Blur event fired on clipping content text area");
     let tree = getClippingsTree();
     let selectedNode = tree.activeNode;
     let id = parseInt(selectedNode.key);
@@ -343,7 +347,7 @@ function buildClippingsTree()
   let treeData = [];
 
   gClippingsDB.transaction("r", gClippingsDB.folders, gClippingsDB.clippings, () => {
-    let populateFolders = gClippingsDB.folders.where("parentFolderID").equals(ROOT_FOLDER_ID).each((aItem, aCursor) => {
+    gClippingsDB.folders.where("parentFolderID").equals(ROOT_FOLDER_ID).each((aItem, aCursor) => {
       let folderNode = {
         key: aItem.id + "F",
         title: aItem.name,
@@ -354,10 +358,8 @@ function buildClippingsTree()
       folderNode.children = childNodes;
 
       treeData.push(folderNode);
-    });
-
-    populateFolders.then(() => {
-      let populateClippings = gClippingsDB.clippings.where("parentFolderID").equals(ROOT_FOLDER_ID).each((aItem, aCursor) => {
+    }).then(() => {
+      return gClippingsDB.clippings.where("parentFolderID").equals(ROOT_FOLDER_ID).each((aItem, aCursor) => {
         let clippingNode = {
           key: aItem.id + "C",
           title: aItem.name
@@ -365,84 +367,83 @@ function buildClippingsTree()
 
         treeData.push(clippingNode);
       });
-
-      populateClippings.then(() => {
-        if (treeData.length == 0) {
-          treeData = setEmptyClippingsState();
-        }
+    }).then(() => {
+      if (treeData.length == 0) {
+        treeData = setEmptyClippingsState();
+      }
+      
+      $("#clippings-tree").fancytree({
+        extensions: ["dnd5"],
         
-        $("#clippings-tree").fancytree({
-          extensions: ["dnd5"],
-          
-          source: treeData,
-          selectMode: 1,
-          icon: (gIsClippingsTreeEmpty ? false : true),
+        source: treeData,
+        selectMode: 1,
+        icon: (gIsClippingsTreeEmpty ? false : true),
 
-          init: function (aEvent, aData) {
-            let rootNode = aData.tree.getRootNode();
-            if (rootNode.children.length > 0 && !gIsClippingsTreeEmpty) {
-              rootNode.children[0].setActive();
-            }
+        init: function (aEvent, aData) {
+          let rootNode = aData.tree.getRootNode();
+          if (rootNode.children.length > 0 && !gIsClippingsTreeEmpty) {
+            rootNode.children[0].setActive();
+          }
+        },
+
+        activate: function (aEvent, aData) {
+          log("Clippings/wx::clippingsMgr.js: Activate event fired on clippings tree");
+          updateDisplay(aEvent, aData);
+        },
+
+        dnd5: {
+          preventRecursiveMoves: true,
+          preventVoidMoves: true,
+          scroll: true,
+
+          dragStart: function (aNode, aData) {
+            return true;
           },
 
-          activate: function (aEvent, aData) {
-            updateDisplay(aEvent, aData);
+          dragEnter: function (aNode, aData) {
+            aData.dataTransfer.dropEffect = "move";
+            return true;
           },
 
-          dnd5: {
-            preventRecursiveMoves: true,
-            preventVoidMoves: true,
-            scroll: true,
+          dragDrop: function (aNode, aData) {
+            if (aData.otherNode) {
+              // Prevent dropping a node into a non-folder node.
+              if (!aNode.isFolder() && aData.hitMode == "over") {
+                return;
+              }
 
-            dragStart: function (aNode, aData) {
-              return true;
-            },
-
-            dragEnter: function (aNode, aData) {
-              aData.dataTransfer.dropEffect = "move";
-              return true;
-            },
-
-            dragDrop: function (aNode, aData) {
-              if (aData.otherNode) {
-                // Prevent dropping a node into a non-folder node.
-                if (!aNode.isFolder() && aData.hitMode == "over") {
-                  return;
-                }
-
-                let parentNode = aNode.getParent();
-                let newParentID = ROOT_FOLDER_ID;
-                
-                if (aNode.isFolder() && aData.hitMode == "over") {
-                  newParentID = parseInt(aNode.key);
-                }
-                else {
-                  newParentID = (parentNode.isRootNode() ? ROOT_FOLDER_ID : parseInt(parentNode.key));
-                }
-
-                aData.otherNode.moveTo(aNode, aData.hitMode);
-
-                let id = parseInt(aData.otherNode.key);
-                log("clippingsMgr: ID of moved clipping or folder: " + id + "\nID of new parent folder: " + newParentID);
-
-                if (aData.otherNode.isFolder()) {
-                  gClippingsDB.folders.update(id, { parentFolderID: newParentID });
-                }
-                else {
-                  gClippingsDB.clippings.update(id, { parentFolderID: newParentID });
-                }
+              let parentNode = aNode.getParent();
+              let newParentID = ROOT_FOLDER_ID;
+              
+              if (aNode.isFolder() && aData.hitMode == "over") {
+                newParentID = parseInt(aNode.key);
               }
               else {
-                // Drop a non-node
-                let dndData = aData.dataTransfer.getData("text");
-                parentNode.addNode({ title: dndData }, aData.hitMode);
-
-                // TO DO: Create the clipping in the database.
+                newParentID = (parentNode.isRootNode() ? ROOT_FOLDER_ID : parseInt(parentNode.key));
               }
-              aNode.setExpanded();
+
+              aData.otherNode.moveTo(aNode, aData.hitMode);
+
+              let id = parseInt(aData.otherNode.key);
+              log("clippingsMgr: ID of moved clipping or folder: " + id + "\nID of new parent folder: " + newParentID);
+
+              if (aData.otherNode.isFolder()) {
+                gClippingsDB.folders.update(id, { parentFolderID: newParentID });
+              }
+              else {
+                gClippingsDB.clippings.update(id, { parentFolderID: newParentID });
+              }
             }
-          }          
-        });
+            else {
+              // Drop a non-node
+              let dndData = aData.dataTransfer.getData("text");
+              parentNode.addNode({ title: dndData }, aData.hitMode);
+
+              // TO DO: Create the clipping in the database.
+            }
+            aNode.setExpanded();
+          }
+        }          
       });
     });
   }).catch(aErr => {
@@ -457,7 +458,7 @@ function buildClippingsTreeHelper(aParentFolderID, aFolderData)
   let folderID = aFolderData.id;
 
   gClippingsDB.transaction("r", gClippingsDB.folders, gClippingsDB.clippings, () => {
-    let populateFolders = gClippingsDB.folders.where("parentFolderID").equals(folderID).each((aItem, aCursor) => {
+    gClippingsDB.folders.where("parentFolderID").equals(folderID).each((aItem, aCursor) => {
       let folderNode = {
         key: aItem.id,
         title: aItem.name,
@@ -467,9 +468,7 @@ function buildClippingsTreeHelper(aParentFolderID, aFolderData)
       folderNode.children = childNodes;
 
       rv.push(folderNode);
-    });
-
-    populateFolders.then(() => {
+    }).then(() => {
       gClippingsDB.clippings.where("parentFolderID").equals(folderID).each((aItem, aCursor) => {
         let clippingNode = {
           key: aItem.id,
@@ -491,7 +490,7 @@ function setEmptyClippingsState()
   var rv;
   rv = [{ title: "No clippings found.", key: "0" }];
   gIsClippingsTreeEmpty = true;
-  $("#clipping-name, #clipping-text").hide();
+  $("#clipping-name, #clipping-text, #options-bar").hide();
   
   return rv;
 }
@@ -504,7 +503,7 @@ function unsetEmptyClippingsState()
   emptyMsgNode.remove();
   tree.options.icon = true;
   gIsClippingsTreeEmpty = false;
-  $("#clipping-name, #clipping-text").show();
+  $("#clipping-name, #clipping-text, #options-bar").show();
 }
 
 
@@ -546,6 +545,7 @@ function initShortcutKeyMenu()
 function updateDisplay(aEvent, aData)
 {
   if (gIsClippingsTreeEmpty) {
+    $("#options-bar").hide()
     return;
   }
 
