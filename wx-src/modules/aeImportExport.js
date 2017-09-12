@@ -134,19 +134,27 @@ aeImportExport.importFromRDF = function (aRDFRawData)
     return;
   }
 
+  let jsonData = {
+    version: "6.0"
+  };
+  
   let rootFolderNode = $rdf.sym(this.CLIPPINGS_RDF_ROOT_FOLDER);
-  this._importFromRDFHelper(dataSrc, rootFolderNode);
+  jsonData.userClippingsRoot = this._importFromRDFHelper(dataSrc, rootFolderNode);
+
+  this._importFromJSONHelper(this.ROOT_FOLDER_ID, jsonData.userClippingsRoot);
 };
 
 
 aeImportExport._importFromRDFHelper = function (aDataSrc, aRDFFolderNode)
 {
+  let rv = [];
   let folderItems = aDataSrc.statementsMatching(aRDFFolderNode);
   
   for (let i = 0; i < folderItems.length; i++) {
     if (folderItems[i].object.value != this.RDF_SEQ) {
       let itemURI = folderItems[i].object.value;
       let item = aDataSrc.each($rdf.sym(itemURI));
+      let cnvItem = {};
 
       if (item.length == 0) {
         continue;
@@ -157,10 +165,16 @@ aeImportExport._importFromRDFHelper = function (aDataSrc, aRDFFolderNode)
       this._log(`[${i}]: Item type: "${itemType}"`);
 
       if (itemType == this.RDF_SEQ) {
-        let folderName = aDataSrc.any($rdf.sym(itemURI), $rdf.sym(this.CLIPPINGS_RDF_NS + "name"));
+        let folderName = aDataSrc.any($rdf.sym(itemURI), $rdf.sym(this.CLIPPINGS_RDF_NS + "name")).value;
 
         this._info("Folder name: " + folderName);
-        this._importFromRDFHelper(aDataSrc, $rdf.sym(itemURI));
+
+        cnvItem = {
+          name: folderName,
+          children: []
+        };
+        
+        cnvItem.children = this._importFromRDFHelper(aDataSrc, $rdf.sym(itemURI));
       }
       else if (itemType == this.CLIPPINGS_RDF_NS + "clipping") {
         let clippingName = aDataSrc.any($rdf.sym(itemURI), $rdf.sym(this.CLIPPINGS_RDF_NS + "name")).value;
@@ -173,21 +187,36 @@ aeImportExport._importFromRDFHelper = function (aDataSrc, aRDFFolderNode)
           shortcutKey = aDataSrc.any($rdf.sym(itemURI), $rdf.sym(this.CLIPPINGS_RDF_NS + "key")).value;
         }
         catch (e) {}
-
         if (shortcutKey) {
           debugMsg += `\nShortcut key: '${shortcutKey}'`;
         }
 
-        // TO DO: Wrap the next 2 lines in a try...catch block, like above.
-        /***
-        let srcURL = aDataSrc.any($rdf.sym(itemURI), $rdf.sym(this.CLIPPINGS_RDF_NS + "srcurl")).value;
-        let label = aDataSrc.any($rdf.sym(itemURI), $rdf.sym(this.CLIPPINGS_RDF_NS + "label")).value;
-        ***/
+        let sourceURL = "";
+        try {
+          sourceURL = aDataSrc.any($rdf.sym(itemURI), $rdf.sym(this.CLIPPINGS_RDF_NS + "srcurl")).value;
+        }
+        catch (e) {}
+        if (sourceURL) {
+          debugMsg += `\nSource URL: ${sourceURL}`;
+        }
+        
+        let label = "";
+        try {
+          label = aDataSrc.any($rdf.sym(itemURI), $rdf.sym(this.CLIPPINGS_RDF_NS + "label")).value;
+        }
+        catch (e) {}
+        if (label) {
+          debugMsg += `\nLabel: ${label}`;
+        }
+
+        cnvItem = { name: clippingName, content, shortcutKey, sourceURL, label };
 
         this._log(debugMsg);
       }
+      rv.push(cnvItem);
     }
   }
+  return rv;
 };
 
 
