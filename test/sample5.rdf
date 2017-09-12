@@ -507,8 +507,9 @@ Server.MapPath("DB.mdb")
                    NS1:label=""
                    NS1:key="1" />
   <NS1:clipping RDF:about="rdf:#$F7Ahw"
-                   NS1:name="Flattering review of Clippings (with label and source URL)"
+                   NS1:name="Flattering review of Clippings (with shortcut key, source URL and label)"
                    NS1:text="I use this for inventory management/entry and customer service for my business. The ability to assign blocks of text to each letter/number on the keyboard has saved 1000s of hours of typing. I would donate money to this company for sure."
+		   NS1:key="K"
                    NS1:srcurl="http://aecreations.sourceforge.net/clippings/index.php"
                    NS1:label="blue" />
   <NS1:clipping RDF:about="rdf:#$Y6Ahw"
