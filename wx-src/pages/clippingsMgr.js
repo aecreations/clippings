@@ -608,11 +608,16 @@ function uploadImportFile(aFileList)
   fileReader.addEventListener("load", aEvent => {
     let rawData = aEvent.target.result;
 
-    if (importFile.name.endsWith(".json")) {
-      aeImportExport.importFromJSON(rawData);
+    try {
+      if (importFile.name.endsWith(".json")) {
+        aeImportExport.importFromJSON(rawData);
+      }
+      else if (importFile.name.endsWith(".rdf")) {
+        aeImportExport.importFromRDF(rawData);
+      }
     }
-    else if (importFile.name.endsWith(".rdf")) {
-      aeImportExport.importFromRDF(rawData);
+    catch (e) {
+      window.alert(`Cannot read file: "${importFile.name}"\nThe selected file may not be a valid Clippings file.`);
     }
   });
 

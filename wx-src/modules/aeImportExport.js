@@ -26,6 +26,8 @@
 let aeImportExport = {
   DEBUG: true,
 
+  ROOT_FOLDER_ID: 0,
+  
   RDF_MIME_TYPE: "application/rdf+xml",
   RDF_SEQ: "http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq",
   CLIPPINGS_RDF_NS: "http://clippings.mozdev.org/ns/rdf#",
@@ -57,7 +59,13 @@ aeImportExport.importFromJSON = function (aImportRawJSON)
   }
 
   this._log("Starting JSON import...");
-  this._importFromJSONHelper(0, importData.userClippingsRoot);
+  try {
+    this._importFromJSONHelper(this.ROOT_FOLDER_ID, importData.userClippingsRoot);
+  }
+  catch (e) {
+    console.error("Import of JSON data failed!");
+    throw e;
+  }
   this._log("Import completed!");
 };
 
@@ -69,21 +77,39 @@ aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems
 
     for (let item of aImportedItems) {
       if ("children" in item) {
-        let createFolder = this._db.folders.add({
-          name: item.name,
-          parentFolderID: aParentFolderID
-        });
+        let folder = {};
+        try {
+          folder = {
+            name: item.name,
+            parentFolderID: aParentFolderID
+          };
+        }
+        catch (e) {
+          console.error(e);
+          throw e;
+        }
+        
+        let createFolder = this._db.folders.add(folder);
         createFolder.then(aNewFolderID => {
           this._importFromJSONHelper(aNewFolderID, item.children);
         });
       }
       else {
-        importedClippings.push({
-          name: item.name,
-          content: item.content,
-          shortcutKey: "",
-          parentFolderID: aParentFolderID
-        });
+        let clipping = {};
+        try {
+          clipping = {
+            name: item.name,
+            content: item.content,
+            shortcutKey: item.shortcutKey,
+            sourceURL: item.sourceURL,
+            parentFolderID: aParentFolderID
+          };
+        }
+        catch (e) {
+          console.error(e);
+          throw e;
+        }
+        importedClippings.push(clipping);
       }
     }
 
