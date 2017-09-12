@@ -30,13 +30,6 @@ let aeImportExport = {
   RDF_SEQ: "http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq",
   CLIPPINGS_RDF_NS: "http://clippings.mozdev.org/ns/rdf#",
   CLIPPINGS_RDF_ROOT_FOLDER: "http://clippings.mozdev.org/rdf/user-clippings-v2",
-  CLIPPINGS_RDF_TYPE_FOLDER: "http://clippings.mozdev.org/ns/rdf#folder",
-  CLIPPINGS_RDF_TYPE_CLIPPING: "http://clippings.mozdev.org/ns/rdf#clipping",
-  CLIPPINGS_RDF_PREDNAME: "http://clippings.mozdev.org/ns/rdf#name",
-  CLIPPINGS_RDF_PREDTEXT: "http://clippings.mozdev.org/ns/rdf#text",
-  CLIPPINGS_RDF_PREDKEY:  "http://clippings.mozdev.org/ns/rdf#key",
-  CLIPPINGS_RDF_PREDSRCURL: "http://clippings.mozdev.org/ns/rdf#srcurl",
-  CLIPPINGS_RDF_PREDLABEL: "http://clippings.mozdev.org/ns/rdf#label",
   
   _db: null
 };
@@ -138,20 +131,20 @@ aeImportExport._importFromRDFHelper = function (aDataSrc, aRDFFolderNode)
       this._log(`[${i}]: Item type: "${itemType}"`);
 
       if (itemType == this.RDF_SEQ) {
-        let folderName = aDataSrc.any($rdf.sym(itemURI), $rdf.sym(this.CLIPPINGS_RDF_PREDNAME));
+        let folderName = aDataSrc.any($rdf.sym(itemURI), $rdf.sym(this.CLIPPINGS_RDF_NS + "name"));
 
         this._info("Folder name: " + folderName);
         this._importFromRDFHelper(aDataSrc, $rdf.sym(itemURI));
       }
-      else if (itemType == this.CLIPPINGS_RDF_TYPE_CLIPPING) {
-        let clippingName = aDataSrc.any($rdf.sym(itemURI), $rdf.sym(this.CLIPPINGS_RDF_PREDNAME)).value;
-        let content = aDataSrc.any($rdf.sym(itemURI), $rdf.sym(this.CLIPPINGS_RDF_PREDTEXT)).value;
+      else if (itemType == this.CLIPPINGS_RDF_NS + "clipping") {
+        let clippingName = aDataSrc.any($rdf.sym(itemURI), $rdf.sym(this.CLIPPINGS_RDF_NS + "name")).value;
+        let content = aDataSrc.any($rdf.sym(itemURI), $rdf.sym(this.CLIPPINGS_RDF_NS + "text")).value;
 
         let debugMsg = `Clipping name: ${clippingName}\nContent: ${content}`;
 
         let shortcutKey = "";
         try {
-          shortcutKey = aDataSrc.any($rdf.sym(itemURI), $rdf.sym(this.CLIPPINGS_RDF_PREDKEY)).value;
+          shortcutKey = aDataSrc.any($rdf.sym(itemURI), $rdf.sym(this.CLIPPINGS_RDF_NS + "key")).value;
         }
         catch (e) {}
 
@@ -161,8 +154,8 @@ aeImportExport._importFromRDFHelper = function (aDataSrc, aRDFFolderNode)
 
         // TO DO: Wrap the next 2 lines in a try...catch block, like above.
         /***
-        let srcURL = aDataSrc.any($rdf.sym(itemURI), $rdf.sym(this.CLIPPINGS_RDF_PREDSRCURL)).value;
-        let label = aDataSrc.any($rdf.sym(itemURI), $rdf.sym(this.CLIPPINGS_RDF_PREDLABEL)).value;
+        let srcURL = aDataSrc.any($rdf.sym(itemURI), $rdf.sym(this.CLIPPINGS_RDF_NS + "srcurl")).value;
+        let label = aDataSrc.any($rdf.sym(itemURI), $rdf.sym(this.CLIPPINGS_RDF_NS + "label")).value;
         ***/
 
         this._log(debugMsg);
