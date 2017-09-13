@@ -608,12 +608,15 @@ function uploadImportFile(aFileList)
   fileReader.addEventListener("load", aEvent => {
     let rawData = aEvent.target.result;
 
+    // TO DO: Set this from a checkbox option.
+    let replaceShortcutKeys = true;
+    
     try {
       if (importFile.name.endsWith(".json")) {
-        aeImportExport.importFromJSON(rawData);
+        aeImportExport.importFromJSON(rawData, replaceShortcutKeys);
       }
       else if (importFile.name.endsWith(".rdf")) {
-        aeImportExport.importFromRDF(rawData);
+        aeImportExport.importFromRDF(rawData, replaceShortcutKeys);
       }
     }
     catch (e) {

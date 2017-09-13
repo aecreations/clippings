@@ -43,37 +43,41 @@ aeImportExport.setDatabase = function (aDatabase)
 };
 
 
-aeImportExport.importFromJSON = function (aImportRawJSON)
+aeImportExport.importFromJSON = function (aImportRawJSON, aReplaceShortcutKeys)
 {
   if (! this._db) {
     throw "aeImportExport: Database not initialized!";
   }
-  
-  let importData = JSON.parse(aImportRawJSON);
 
-  this._log("aeImportExport: Imported JSON data:");
-  this._log(importData);
+  this._getShortcutKeysToClippingIDs().then(aShortcutKeyLookup => {
+    let importData = JSON.parse(aImportRawJSON);
 
-  if (importData === null) {
-    throw "aeImportExport: Unable to read imported JSON data.";
-  }
+    this._log("aeImportExport: Imported JSON data:");
+    this._log(importData);
 
-  this._log("Starting JSON import...");
-  try {
-    this._importFromJSONHelper(this.ROOT_FOLDER_ID, importData.userClippingsRoot);
-  }
-  catch (e) {
-    console.error("Import of JSON data failed!");
-    throw e;
-  }
-  this._log("Import completed!");
+    if (importData === null) {
+      throw "aeImportExport: Unable to read imported JSON data.";
+    }
+
+    this._log("Starting JSON import...");
+    try {
+      this._importFromJSONHelper(this.ROOT_FOLDER_ID, importData.userClippingsRoot, aReplaceShortcutKeys, aShortcutKeyLookup);
+    }
+    catch (e) {
+      console.error("Import of JSON data failed!");
+      throw e;
+    }
+    this._log("Import completed!");
+
+  }).catch(aErr => { throw aErr });
 };
 
 
-aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems)
+aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems, aReplaceShortcutKeys, aShortcutKeys)
 {
   this._db.transaction("rw", this._db.clippings, this._db.folders, () => {
     let importedClippings = [];
+    let clippingsWithKeyConflicts = [];
 
     for (let item of aImportedItems) {
       if ("children" in item) {
@@ -91,16 +95,31 @@ aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems
         
         let createFolder = this._db.folders.add(folder);
         createFolder.then(aNewFolderID => {
-          this._importFromJSONHelper(aNewFolderID, item.children);
+          this._importFromJSONHelper(aNewFolderID, item.children, aReplaceShortcutKeys, aShortcutKeys);
         });
       }
       else {
         let clipping = {};
+        let shortcutKey = "";
+
+        if (aShortcutKeys[item.shortcutKey]) {
+          if (aReplaceShortcutKeys) {
+            shortcutKey = item.shortcutKey;
+            clippingsWithKeyConflicts.push(aShortcutKeys[item.shortcutKey]);
+          }
+          else {
+            shortcutKey = "";
+          }
+        }
+        else {
+          shortcutKey = item.shortcutKey;
+        }
+        
         try {
           clipping = {
             name: item.name,
             content: item.content,
-            shortcutKey: item.shortcutKey,
+            shortcutKey,
             sourceURL: item.sourceURL,
             parentFolderID: aParentFolderID
           };
@@ -113,15 +132,18 @@ aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems
       }
     }
 
-    let bulkCreateClippings = this._db.clippings.bulkAdd(importedClippings);
-    bulkCreateClippings.then(aLastAddedID => {
-      // ...
+    this._db.clippings.bulkAdd(importedClippings).then(aLastAddedID => {
+      if (aReplaceShortcutKeys) {
+        for (let clippingID of clippingsWithKeyConflicts) {
+          this._db.clippings.update(clippingID, { shortcutKey: "" });
+        }
+      }
     }).catch(aErr => { console.error(aErr) });
   });
 };
 
 
-aeImportExport.importFromRDF = function (aRDFRawData)
+aeImportExport.importFromRDF = function (aRDFRawData, aReplaceShortcutKeys)
 {
   this._log(`aeImportExport.importFromRDF(): Reading raw RDF data (size: ${aRDFRawData.length} bytes)`);
 
@@ -141,7 +163,9 @@ aeImportExport.importFromRDF = function (aRDFRawData)
   let rootFolderNode = $rdf.sym(this.CLIPPINGS_RDF_ROOT_FOLDER);
   jsonData.userClippingsRoot = this._importFromRDFHelper(dataSrc, rootFolderNode);
 
-  this._importFromJSONHelper(this.ROOT_FOLDER_ID, jsonData.userClippingsRoot);
+  this._getShortcutKeysToClippingIDs().then(aShortcutKeyLookup => {
+    this._importFromJSONHelper(this.ROOT_FOLDER_ID, jsonData.userClippingsRoot, aReplaceShortcutKeys, aShortcutKeyLookup);
+  });
 };
 
 
@@ -219,6 +243,17 @@ aeImportExport._importFromRDFHelper = function (aDataSrc, aRDFFolderNode)
   return rv;
 };
 
+
+aeImportExport._getShortcutKeysToClippingIDs = async function ()
+{
+  let rv = {};
+
+  await this._db.clippings.where("shortcutKey").notEqual("").each((aItem, aCursor) => {
+    rv[aItem.shortcutKey] = aItem.id;
+  });
+  
+  return rv;
+};
 
 //
 // Debugging methods
