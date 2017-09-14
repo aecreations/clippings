@@ -383,13 +383,14 @@ function rebuildContextMenu()
 }
 
 
-function createClipping(aName, aContent, aShortcutKey/*, aSrcURL */)
+function createClipping(aName, aContent, aShortcutKey, aSrcURL)
 {
   let createClipping = gClippingsDB.clippings.add({
     name: aName,
     content: aContent,
+    parentFolderID: 0,
     shortcutKey: aShortcutKey || "",
-    parentFolderID: 0
+    sourceURL: aSrcURL || ""
   });
 
   createClipping.then(aID => {
@@ -440,9 +441,14 @@ function openClippingsManager()
   let openInNewTab = true;
 
   if (openInNewTab) {
-    chrome.tabs.create({ url: clippingsMgrURL }, () => {
-      chrome.history.deleteUrl({ url: clippingsMgrURL });
-    });
+    try {
+      chrome.tabs.create({ url: clippingsMgrURL }, () => {
+        chrome.history.deleteUrl({ url: clippingsMgrURL });
+      });
+    }
+    catch (e) {
+      console.error(e);
+    }
   }
   else {
     chrome.windows.create({
@@ -471,6 +477,8 @@ function openNewClippingDlg()
 
   createWnd.then(() => {
     browser.history.deleteUrl({ url });
+  }, aErr => {
+    console.error(aErr);
   });
 }
 
@@ -497,34 +505,37 @@ function openShortcutKeyPromptDlg()
 function pasteClippingByID(aClippingID)
 {
   gClippingsDB.transaction("r", gClippingsDB.clippings, gClippingsDB.folders, () => {
-    let getClipping = gClippingsDB.clippings.get(aClippingID);
-    getClipping.then(aClipping => {
+    let clipping = null;
+    
+    gClippingsDB.clippings.get(aClippingID).then(aClipping => {
       if (! aClipping) {
         alertEx(aeMsgBox.MSG_CLIPPING_NOT_FOUND);
         return;
       }
-      console.log(`Pasting clipping named "${aClipping.name}"\nid = ${aClipping.id}`);
 
+      clipping = aClipping;
+      console.log(`Pasting clipping named "${clipping.name}"\nid = ${clipping.id}`);
+
+      return gClippingsDB.folders.get(aClipping.parentFolderID);
+    }).then(aFolder => {
       let parentFldrName = "";
+      if (aFolder) {
+        parentFldrName = aFolder.name;
+      }
+      else {
+        parentFldrName = ROOT_FOLDER_NAME;
+      }
+      let clippingInfo = {
+        id: clipping.id,
+        name: clipping.name,
+        text: clipping.content,
+        parentFolderName: parentFldrName
+      };
 
-      let getParentFolder = gClippingsDB.folders.get(aClipping.parentFolderID);
-      getParentFolder.then(aFolder => {
-        if (aFolder) {
-          parentFldrName = aFolder.name;
-        }
-        else {
-          parentFldrName = ROOT_FOLDER_NAME;
-        }
-        let clippingInfo = {
-          id: aClipping.id,
-          name: aClipping.name,
-          text: aClipping.content,
-          parentFolderName: parentFldrName
-        };
-
-        pasteClipping(clippingInfo);
-      });
+      pasteClipping(clippingInfo);
     });
+  }).catch(aErr => {
+    console.error("Clippings/wx: pasteClippingByID(): Database transaction failed!\n" + aErr);
   });
 }
 
@@ -533,35 +544,38 @@ function pasteClippingByShortcutKey(aShortcutKey)
 {
   gClippingsDB.transaction("r", gClippingsDB.clippings, gClippingsDB.folders, () => {
     let results = gClippingsDB.clippings.where("shortcutKey").equals(aShortcutKey.toUpperCase());
-
+    let clipping = {};
+    
     results.first().then(aClipping => {
       if (! aClipping) {
         console.warn("Cannot find clipping with shortcut key '%s'", aShortcutKey);
         return;
       }
 
-      console.log(`Pasting clipping named "${aClipping.name}"\nid = ${aClipping.id}`);
+      clipping = aClipping;
+      console.log(`Pasting clipping named "${clipping.name}"\nid = ${clipping.id}`);
 
       let parentFldrName = "";
 
-      let getParentFolder = gClippingsDB.folders.get(aClipping.parentFolderID);
-      getParentFolder.then(aFolder => {
-        if (aFolder) {
-          parentFldrName = aFolder.name;
-        }
-        else {
-          parentFldrName = ROOT_FOLDER_NAME;
-        }
-        let clippingInfo = {
-          id: aClipping.id,
-          name: aClipping.name,
-          text: aClipping.content,
-          parentFolderName: parentFldrName
-        };
+      return gClippingsDB.folders.get(aClipping.parentFolderID);
+    }).then(aFolder => {
+      if (aFolder) {
+        parentFldrName = aFolder.name;
+      }
+      else {
+        parentFldrName = ROOT_FOLDER_NAME;
+      }
+      let clippingInfo = {
+        id: clipping.id,
+        name: clipping.name,
+        text: clipping.content,
+        parentFolderName: parentFldrName
+      };
 
-        pasteClipping(clippingInfo);
-      });
+      pasteClipping(clippingInfo);
     });
+  }).catch(aErr => {
+    console.error("Clippings/wx: pasteClippingByID(): Database transaction failed!\n" + aErr);
   });
 }
 
