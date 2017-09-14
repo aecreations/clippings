@@ -53,10 +53,12 @@ let gClippingsListener = null;
 let gNewClipping = {
   _name: null,
   _content: null,
+  _srcURL: null,
 
   set: function (aNewClipping) {
     this._name = aNewClipping.name;
     this._content = aNewClipping.content;
+    this._srcURL = aNewClipping.url;
   },
 
   get: function () {
@@ -67,13 +69,14 @@ let gNewClipping = {
   },
 
   copy: function () {
-    let rv = { name: this._name, content: this._content };
+    let rv = { name: this._name, content: this._content, url: this._srcURL };
     return rv;
   },
   
   reset: function () {
     this._name = null;
     this._content = null;
+    this._srcURL = null;
   }
 };
 
@@ -471,7 +474,7 @@ function openNewClippingDlg()
   let createWnd = browser.windows.create({
     url: url,
     type: "popup",
-    width: 428, height: 512,
+    width: 428, height: 500,
     left: 96, top: 64
   });
 
@@ -680,7 +683,8 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
       }
 
       let activeTabID = aTabs[0].id;
-
+      let url = aTabs[0].url;
+      
       chrome.tabs.get(activeTabID, aTabInfo => {
         if (aTabInfo.status == "loading") {
           // TO DO: Show this message in a message box.
@@ -688,7 +692,7 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
         }
       });
       
-      console.log("Clippings/wx: Extension sending message 'new' to content script; active tab ID: " + activeTabID);
+      console.log("Clippings/wx: Extension sending message 'new-clipping' to content script; active tab ID: " + activeTabID);
 
       if (isGoogleChrome()) {
         chrome.tabs.sendMessage(activeTabID, { msgID: "new-clipping", hostApp: "chrome" }, null, aResp => {
@@ -698,7 +702,7 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
             content = text;
           }
 
-          gNewClipping.set({ name, content });
+          gNewClipping.set({ name, content, url });
           openNewClippingDlg();
         });
       }
@@ -716,7 +720,7 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
             content = text;
           }
 
-          gNewClipping.set({ name, content });
+          gNewClipping.set({ name, content, url });
           openNewClippingDlg();
         }, onError);
       }

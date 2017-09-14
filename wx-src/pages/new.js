@@ -26,6 +26,7 @@
 let gClippingsDB = null;
 let gClippings = null;
 let gParentFolderID = 0;
+let gSrcURL = "";
 
 
 $(document).ready(() => {
@@ -58,6 +59,7 @@ $(document).ready(() => {
 
       $("#clipping-name").val(aResp.name).select().focus();
       $("#clipping-text").val(aResp.content);
+      gSrcURL = aResp.url || "";
     });
   }
 
@@ -202,7 +204,7 @@ function accept(aEvent)
     shortcutKey: shortcutKey,
     parentFolderID: gParentFolderID,
     label: "",
-    sourceURL: ""
+    sourceURL: ($("#save-source-url")[0].checked ? gSrcURL : "")
   });
 
   createClipping.then(aID => {

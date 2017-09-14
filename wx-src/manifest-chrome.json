@@ -10,7 +10,13 @@
         "48": "img/clippings-wx.png"
     },
 
-    "permissions": ["contextMenus", "storage", "unlimitedStorage", "history"],
+    "permissions": [
+	"contextMenus",
+	"storage",
+	"unlimitedStorage",
+	"history",
+	"tabs"
+    ],
       
     "background": {
 	"scripts": [
