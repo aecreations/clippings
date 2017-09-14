@@ -49,16 +49,16 @@ aeImportExport.importFromJSON = function (aImportRawJSON, aReplaceShortcutKeys)
     throw "aeImportExport: Database not initialized!";
   }
 
+  let importData = JSON.parse(aImportRawJSON);
+
+  this._log("aeImportExport: Imported JSON data:");
+  this._log(importData);
+
+  if (importData === null) {
+    throw "aeImportExport: Unable to read imported JSON data.";
+  }
+
   this._getShortcutKeysToClippingIDs().then(aShortcutKeyLookup => {
-    let importData = JSON.parse(aImportRawJSON);
-
-    this._log("aeImportExport: Imported JSON data:");
-    this._log(importData);
-
-    if (importData === null) {
-      throw "aeImportExport: Unable to read imported JSON data.";
-    }
-
     this._log("Starting JSON import...");
     try {
       this._importFromJSONHelper(this.ROOT_FOLDER_ID, importData.userClippingsRoot, aReplaceShortcutKeys, aShortcutKeyLookup);
@@ -93,8 +93,7 @@ aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems
           throw e;
         }
         
-        let createFolder = this._db.folders.add(folder);
-        createFolder.then(aNewFolderID => {
+        this._db.folders.add(folder).then(aNewFolderID => {
           this._importFromJSONHelper(aNewFolderID, item.children, aReplaceShortcutKeys, aShortcutKeys);
         });
       }
@@ -105,7 +104,7 @@ aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems
         if (aShortcutKeys[item.shortcutKey]) {
           if (aReplaceShortcutKeys) {
             shortcutKey = item.shortcutKey;
-            clippingsWithKeyConflicts.push(aShortcutKeys[item.shortcutKey]);
+            clippingswithkeyconflicts.push(aShortcutKeys[item.shortcutKey]);
           }
           else {
             shortcutKey = "";
@@ -115,19 +114,14 @@ aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems
           shortcutKey = item.shortcutKey;
         }
         
-        try {
-          clipping = {
-            name: item.name,
-            content: item.content,
-            shortcutKey,
-            sourceURL: item.sourceURL,
-            parentFolderID: aParentFolderID
-          };
-        }
-        catch (e) {
-          console.error(e);
-          throw e;
-        }
+        clipping = {
+          name: item.name,
+          content: item.content,
+          shortcutKey,
+          sourceURL: item.sourceURL,
+          parentFolderID: aParentFolderID
+        };
+
         importedClippings.push(clipping);
       }
     }
@@ -138,7 +132,10 @@ aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems
           this._db.clippings.update(clippingID, { shortcutKey: "" });
         }
       }
-    }).catch(aErr => { console.error(aErr) });
+    });
+  }).catch(aErr => {
+    console.error("aeImportExport._importFromJSONHelper(): Transaction failed!\n" + aErr);
+    throw aErr;
   });
 };
 
