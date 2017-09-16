@@ -546,7 +546,7 @@ function initShortcutKeyMenu()
 function updateDisplay(aEvent, aData)
 {
   if (gIsClippingsTreeEmpty) {
-    $("#options-bar").hide()
+    $("#source-url-bar, #options-bar").hide()
     return;
   }
 
@@ -560,7 +560,8 @@ function updateDisplay(aEvent, aData)
       $("#clipping-name").val(aResult.name);
       $("#clipping-text").val("").hide();
 
-      $("#options-bar").hide()
+      $("#source-url-bar, #options-bar").hide()
+      $("#clipping-src-url").text("");
       let shortcutKeyMenu = $("#clipping-key")[0];
       shortcutKeyMenu.selectedIndex = 0;
     });
@@ -570,8 +571,15 @@ function updateDisplay(aEvent, aData)
     getClipping.then(aResult => {
       $("#clipping-name").val(aResult.name);
       $("#clipping-text").val(aResult.content).show();
+      $("#source-url-bar, #options-bar").show()
 
-      $("#options-bar").show()
+      if (aResult.sourceURL) {
+        $("#clipping-src-url").html(`<a href="${aResult.sourceURL}">${aResult.sourceURL}</a>`);
+      }
+      else {
+        $("#clipping-src-url").text("(None)");
+      }
+      
       let shortcutKeyMenu = $("#clipping-key")[0];
       shortcutKeyMenu.selectedIndex = 0;
       
