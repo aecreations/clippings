@@ -6,27 +6,31 @@
 	    "name": "Imported clipping 1",
 	    "content": "This clipping is imported from a JSON file.",
 	    "shortcutKey": "",
-	    "sourceURL": ""
+	    "sourceURL": "",
+	    "label": ""
 	},
 	{
 	    "name": "Imported clipping 2 (2 paragraphs of lorem ipsum)",
 	    "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In blandit est sed ex lacinia, eget ultricies arcu consectetur. Cras vel tortor sit amet sem iaculis eleifend. Proin rutrum, lectus ac eleifend ornare, justo tortor pharetra purus, id tempus nulla elit at ipsum. Nulla eleifend leo justo, at posuere mi venenatis id. Morbi placerat, odio eget consequat placerat, neque nisl posuere ex, a finibus ligula ligula eget sapien. Nulla eget sollicitudin ante. Sed gravida arcu at est posuere efficitur. Duis laoreet rhoncus velit, sed faucibus justo suscipit nec. Duis eu tincidunt neque.\n\nPellentesque neque augue, facilisis consectetur condimentum at, condimentum a lorem. Nam vel feugiat ante. Proin sit amet odio nisi. Praesent sit amet semper nibh. Aenean ac tellus ultricies, ultricies nibh eget, ultrices nulla. Aliquam eget facilisis leo. Sed dictum lacus eu libero vulputate lacinia.",
 	    "shortcutKey": "",
-	    "sourceURL": "http://www.lipsum.com/"
+	    "sourceURL": "http://www.lipsum.com/",
+	    "label": ""
 	},
 	{
 	    "name": "Imported Folder A",
 	    "children": [
 		{
-		    "name": "Clipping in Folder A1",
+		    "name": "Clippings description from AMO (with all clipping properties)",
 		    "content": "Saves and manages frequently-entered text for later pasting into web page forms in Firefox or email and newsgroup messages in Thunderbird. Pasting a clipping is accomplished with just two mouse clicks, eliminating the hassle of retyping or repetitive copying and pasting.",
-		    "shortcutKey": "",
-		    "sourceURL": ""
+		    "shortcutKey": "C",
+		    "label": "blue"
+		    "sourceURL": "https://addons.mozilla.org/en-US/firefox/addon/clippings/"
 		},
 		{
-		    "name": "Clipping in Folder A2",
+		    "name": "Clippings Manager welcome",
 		    "content": "Use Clippings Manager to edit, rename or delete clippings, or organize your clippings collection into folders.\nYou can also import or export your clippings from Clippings Manager.",
 		    "shortcutKey": "",
+		    "label": "",
 		    "sourceURL": ""
 		}
 	    ]
@@ -41,6 +45,7 @@
 			    "name": "Clipping in Folder BB",
 			    "content": "Two (2) levels of subfolders!",
 			    "shortcutKey": "",
+			    "label": "",
 			    "sourceURL": ""
 			},
 			{
@@ -53,12 +58,14 @@
 		    "name": "Clipping in Folder B",
 		    "content": "Nested clipping test",
 		    "shortcutKey": "",
+		    "label": "",
 		    "sourceURL": ""
 		},
 		{
 		    "name": "Clipping in Folder B - empty clipping",
 		    "content": "",
 		    "shortcutKey": "",
+		    "label": "",
 		    "sourceURL": ""
 		}
 	    ]
@@ -67,18 +74,21 @@
 	    "name": "Imported clipping with HTML content",
 	    "content": "<p>The <em>quick</em> <strong style=\"color:brown\">brown</strong> fox <sup>jumps</sup> <strong>over</strong> <u>the</u> <span style=\"font-size:xx-large\">lazy</span> <strong><em>dog</em></strong>.</p>",
 	    "shortcutKey": "",
+	    "label": "",
 	    "sourceURL": ""
 	},
 	{
 	    "name": "Imported clipping with line breaks",
 	    "content": "Alex\n\n---\nAE Creations website\nhttp://aecreations.sourceforge.net/\n\nthe AE Creations blog\nhttp://aecreations.blogspot.com/",
 	    "shortcutKey": "S",
+	    "label": "",
 	    "sourceURL": ""
 	},
 	{
 	    "name": "Imported clipping with Asian characters",
 	    "content": "你好嗎？ How are you?\n我很好, 你呢？  I am fine, and you?",
 	    "shortcutKey": "8",
+	    "label": "red",
 	    "sourceURL": ""
 	}
     ]
