@@ -24,7 +24,7 @@
 
 
 html {
-    height: 95%;
+    height: 100%;
 }
 
 body {
@@ -157,6 +157,7 @@ body {
     padding-top: 2px;
     padding-bottom: 2px;
     padding-left: 16px;
+    margin-top: 4px;
     
     border-top: 1px solid threedlightshadow;
     background-color: -moz-dialog;
