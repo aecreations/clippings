@@ -666,15 +666,6 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
   switch (aInfo.menuItemId) {
   case "ae-clippings-new":
     let text = aInfo.selectionText;  // N.B.: Line breaks are NOT preserved!
-    if (! text) {
-      alertEx(aeMsgBox.MSG_NO_TEXT_SELECTED);
-      break;
-    }
-
-    let name = createClippingNameFromText(text);
-    if (! name) {
-      return;
-    }
 
     chrome.tabs.query({ active: true, currentWindow: true }, aTabs => {
       if (! aTabs[0]) {
@@ -714,11 +705,18 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
             console.error("Clippings/wx: Unable to receive response from content script!");
             return;
           }
-          let content = aResp.content;
-          if (! aResp.content) {
-            console.warn("Clippings/wx: Content script was unable to retrieve textual content from the web page.  Retrieving selection text from context menu info.");
-            content = text;
+
+          let content;
+
+          if (aResp.content) {
+            content = aResp.content;
           }
+          else {
+            alertEx(aeMsgBox.MSG_NO_TEXT_SELECTED);
+            return;
+          }
+
+          let name = createClippingNameFromText(content);
 
           gNewClipping.set({ name, content, url });
           openNewClippingDlg();

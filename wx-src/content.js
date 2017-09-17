@@ -54,7 +54,7 @@ function handleRequestNewClipping(aRequest)
                                        activeElt.selectionEnd);
     }
 
-    rv = (text ? { content: text } : null);
+    rv = { content: text };
   }
   // Rich text editor - an <iframe> with designMode == "on"
   else if (isElementOfType(activeElt, "HTMLIFrameElement")) {
@@ -67,8 +67,8 @@ function handleRequestNewClipping(aRequest)
       selection = doc.defaultView.getSelection();
     }
 
-    let text = selection.toString();
-    rv = (text ? { content: text } : null);
+    let text = selection.toString() || "";
+    rv = { content: text };
   }
   // Rich text editor used by Gmail, Outlook.com, etc.
   else if (isElementOfType(activeElt, "HTMLDivElement")) {
@@ -81,8 +81,8 @@ function handleRequestNewClipping(aRequest)
       selection = doc.defaultView.getSelection();
     }
 
-    let text = selection.toString();
-    rv = (text ? { content: text } : null);
+    let text = selection.toString() || "";
+    rv = { content: text };
   }
   else if (isElementOfType(activeElt, "HTMLBodyElement")) {
     let selection = activeElt.ownerDocument.getSelection();
@@ -92,10 +92,15 @@ function handleRequestNewClipping(aRequest)
 
     }
 
-    rv = (text ? { content: text } : null);
+    rv = { content: text };
   }
 
   if (rv !== null) {
+    // Check if the text is truly empty.
+    if (rv.content.trim() == "") {
+      rv.content = "";
+    }
+
     console.info("Content retrieved from " + activeElt.toString() + ":\n" + rv.content);
   }
   
