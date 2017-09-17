@@ -20,7 +20,8 @@
 	"storage",
 	"history",
 	"tabs",
-	"unlimitedStorage"
+	"unlimitedStorage",
+	"clipboardRead"
     ],
     
     "background": {
