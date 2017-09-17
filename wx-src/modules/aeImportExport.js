@@ -119,6 +119,7 @@ aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems
           content: item.content,
           shortcutKey,
           sourceURL: item.sourceURL,
+          label: ("label" in item ? item.label : ""),
           parentFolderID: aParentFolderID
         };
 
