@@ -43,7 +43,7 @@
 		    "children": [
 			{
 			    "name": "Clipping in Folder BB",
-			    "content": "Two (2) levels of subfolders!",
+			    "content": "Nested clipping test",
 			    "shortcutKey": "",
 			    "label": "",
 			    "sourceURL": ""
@@ -55,14 +55,13 @@
 		    ]
 		},
 		{
-		    "name": "Clipping in Folder B",
-		    "content": "Nested clipping test",
+		    "name": "Clipping without the 'label' property",
+		    "content": "Labels were introduced in version 5.0; therefore, data sources created beforehand didn't have the 'label' property.",
 		    "shortcutKey": "",
-		    "label": "",
-		    "sourceURL": ""
+		    "sourceURL": "http://aecreations.sourceforge.net/clippings/changelog.php"
 		},
 		{
-		    "name": "Clipping in Folder B - empty clipping",
+		    "name": "A clipping without any content",
 		    "content": "",
 		    "shortcutKey": "",
 		    "label": "",
