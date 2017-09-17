@@ -139,7 +139,6 @@ $(document).ready(() => {
       let changedNode = tree.getNodeByKey(aID + "C");
 
       changedNode.setTitle(aData.name);
-      $("#clipping-name").val(aData.name);
     },
 
     folderChanged: function (aID, aData, aOldData) {
@@ -147,7 +146,6 @@ $(document).ready(() => {
       let changedNode = tree.getNodeByKey(aID + "F");
 
       changedNode.setTitle(aData.name);
-      $("#clipping-name").val(aData.name);
     },
 
     clippingDeleted: function (aID, aOldData) {
@@ -572,7 +570,7 @@ function updateDisplay(aEvent, aData)
       $("#clipping-name").val(aResult.name);
       $("#clipping-text").val(aResult.content).show();
       $("#source-url-bar, #options-bar").show();
-
+      
       if (aResult.sourceURL) {
         $("#clipping-src-url").html(`<a href="${aResult.sourceURL}">${aResult.sourceURL}</a>`);
       }
