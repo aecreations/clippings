@@ -210,6 +210,7 @@ $(document).ready(() => {
   initInstantEditing();
   initShortcutKeyMenu();
   initImport();
+  setStatusBarMsg();
   buildClippingsTree();
 });
 
@@ -550,6 +551,8 @@ function updateDisplay(aEvent, aData)
 
   log("Clippings/wx: clippingsMgr: Updating display...");
 
+  setStatusBarMsg();
+  
   let selectedItemID = parseInt(aData.node.key);
 
   if (aData.node.isFolder()) {
@@ -596,6 +599,27 @@ function updateDisplay(aEvent, aData)
       }
     });
   }
+}
+
+
+function setStatusBarMsg(aMessage)
+{
+  if (aMessage) {
+    $("#status-bar-msg").text(aMessage);
+    return;
+  }
+
+  let numItems = 0;
+  
+  gClippingsDB.transaction("r", gClippingsDB.clippings, gClippingsDB.folders, () => {
+    gClippingsDB.clippings.count().then(aNumClippings => {
+      numItems += aNumClippings;
+      return gClippingsDB.folders.count();
+    }).then(aNumFolders => {
+      numItems += aNumFolders;
+      $("#status-bar-msg").text(`${numItems} items`);
+    });
+  });
 }
 
 
