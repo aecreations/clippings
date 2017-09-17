@@ -573,6 +573,13 @@ function updateDisplay(aEvent, aData)
       
       if (aResult.sourceURL) {
         $("#clipping-src-url").html(`<a href="${aResult.sourceURL}">${aResult.sourceURL}</a>`);
+        $("#clipping-src-url > a").click(aEvent => {
+          aEvent.preventDefault();
+          chrome.windows.create({
+            url: aEvent.target.textContent,
+            type: "normal"
+          });
+        });
       }
       else {
         $("#clipping-src-url").text("(None)");
@@ -626,6 +633,7 @@ function uploadImportFile(aFileList)
       }
     }
     catch (e) {
+      console.error(e);
       window.alert(`Cannot read file: "${importFile.name}"\nThe selected file may not be a valid Clippings file.`);
     }
   });
