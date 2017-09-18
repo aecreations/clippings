@@ -638,9 +638,9 @@ function alertEx(aMessageID)
     chrome.windows.create({
       url: url,
       type: "popup",
-      width: 520, height: 172,
+      width: 520, height: 170,
       left: window.screen.availWidth - 520 / 2,
-      top:  window.screen.availHeight - 172 / 2
+      top:  window.screen.availHeight - 170 / 2
     });
   }
 }
@@ -678,8 +678,7 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
       
       chrome.tabs.get(activeTabID, aTabInfo => {
         if (aTabInfo.status == "loading") {
-          // TO DO: Show this message in a message box.
-          console.warn("Clippings/wx: The active tab (ID = %s) is still loading or busy. Sending messages to it may not work.", activeTabID);
+          console.warn("Clippings/wx: The active tab (ID = %s) is still loading or busy. Messages sent to it now may not receive a response.", activeTabID);
         }
       });
       
@@ -703,6 +702,7 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
         sendMsg.then(aResp => {
           if (! aResp) {
             console.error("Clippings/wx: Unable to receive response from content script!");
+            alertEx(aeMsgBox.MSG_RETRY_PAGE_BUSY);
             return;
           }
 
@@ -720,7 +720,9 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
 
           gNewClipping.set({ name, content, url });
           openNewClippingDlg();
-        }, onError);
+        }, aErr => {
+          alertEx(aeMsgBox.MSG_RETRY_PAGE_NOT_LOADED);
+        });
       }
     });
 
