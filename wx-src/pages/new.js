@@ -41,14 +41,14 @@ $(document).ready(() => {
   }
 
   if (gClippings.isGoogleChrome()) {
-    chrome.runtime.sendMessage({ msgID: "init-new-clippings-dlg" }, aResp => {
+    chrome.runtime.sendMessage({ msgID: "init-new-clipping-dlg" }, aResp => {
       // TO DO: Same logic as for Firefox.
     });
   }
   else {
     // Firefox
     let sendMsg = browser.runtime.sendMessage({
-      msgID: "init-new-clippings-dlg"
+      msgID: "init-new-clipping-dlg"
     });
 
     sendMsg.then(aResp => {
@@ -208,7 +208,7 @@ function accept(aEvent)
   });
 
   createClipping.then(aID => {
-    chrome.windows.remove(chrome.windows.WINDOW_ID_CURRENT);
+    closeDlg();
   }, aErr => {
     window.alert("Error creating clipping: " + aErr);
   });
@@ -217,6 +217,13 @@ function accept(aEvent)
 
 function cancel(aEvent)
 {
+  closeDlg();
+}
+
+
+function closeDlg()
+{
+  browser.runtime.sendMessage({ msgID: "close-new-clipping-dlg" });
   chrome.windows.remove(chrome.windows.WINDOW_ID_CURRENT);
 }
 

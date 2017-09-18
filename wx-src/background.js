@@ -80,6 +80,11 @@ let gNewClipping = {
   }
 };
 
+let gWndIDs = {
+  newClipping: null,
+  clippingsMgr: null
+};
+
 
 //
 // Browser window and Clippings menu initialization
@@ -236,12 +241,14 @@ function initMessageListeners()
 
       let resp = null;
 
-      if (aRequest.msgID == "init-new-clippings-dlg") {
+      if (aRequest.msgID == "init-new-clipping-dlg") {
         resp = gNewClipping.get();
+        if (resp !== null) {
+          aSendResponse(resp);
+        }
       }
-
-      if (resp !== null) {
-        aSendResponse(resp);
+      else if (aRequest.msgID == "close-new-clipping-dlg") {
+        gWndIDs.newClipping = null;
       }
       else if (aRequest.msgID = "paste-shortcut-key") {
         // TO DO: Same logic as for Firefox.
@@ -255,14 +262,16 @@ function initMessageListeners()
       
       let resp = null;
 
-      if (aRequest.msgID == "init-new-clippings-dlg") {
+      if (aRequest.msgID == "init-new-clipping-dlg") {
         resp = gNewClipping.get();
-      }
 
-      if (resp !== null) {
-        return Promise.resolve(resp);
+        if (resp !== null) {
+          return Promise.resolve(resp);
+        }
       }
-
+      else if (aRequest.msgID == "close-new-clipping-dlg") {
+        gWndIDs.newClipping = null;
+      }
       else if (aRequest.msgID = "paste-shortcut-key") {
         let shortcutKey = aRequest.shortcutKey;
         if (! shortcutKey) {
@@ -468,21 +477,27 @@ function openClippingsManager()
 
 function openNewClippingDlg()
 {
-  // TO DO: Check if the dialog is already open.
+  if (gWndIDs.newClipping) {
+    browser.windows.get(gWndIDs.newClipping).then(aWndInfo => {
+      browser.windows.update(gWndIDs.newClipping, { focused: true });
+    });
+  }
+  else {
+    let url = browser.runtime.getURL("pages/new.html");
+    let createWnd = browser.windows.create({
+      url,
+      type: "popup",
+      width: 428, height: 500,
+      left: 96, top: 64
+    });
 
-  let url = browser.runtime.getURL("pages/new.html");
-  let createWnd = browser.windows.create({
-    url: url,
-    type: "popup",
-    width: 428, height: 500,
-    left: 96, top: 64
-  });
-
-  createWnd.then(() => {
-    browser.history.deleteUrl({ url });
-  }, aErr => {
-    console.error(aErr);
-  });
+    createWnd.then(aWnd => {
+      gWndIDs.newClipping = aWnd.id;
+      browser.history.deleteUrl({ url });
+    }, aErr => {
+      console.error(aErr);
+    });
+  }
 }
 
 
