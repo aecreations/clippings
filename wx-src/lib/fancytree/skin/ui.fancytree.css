@@ -84,7 +84,7 @@ span.fancytree-drag-helper-img,
   vertical-align: top;
   background-repeat: no-repeat;
   background-position: left;
-  background-image: url("icons.gif");
+  background-image: url("icons.png");
   background-position: 0px 0px;
 }
 span.fancytree-icon,
@@ -131,7 +131,7 @@ span.fancytree-expander {
 }
 .fancytree-connectors .fancytree-exp-n span.fancytree-expander,
 .fancytree-connectors .fancytree-exp-nl span.fancytree-expander {
-  background-image: url("icons.gif");
+  background-image: url("icons.png");
   margin-top: 0;
 }
 .fancytree-connectors .fancytree-exp-n span.fancytree-expander,
