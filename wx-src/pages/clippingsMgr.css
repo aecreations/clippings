@@ -109,9 +109,9 @@ body {
     align-self: stretch;
 }
 
-#clipping-name {
-    display: block;
-    width: 100%;
+#item-properties > #clipping-name {
+    order: 1;
+    flex: 0 1 auto;
     height: auto;
     margin-top: 2px;
     padding: 6px 8px 6px 8px;
@@ -121,10 +121,9 @@ body {
     border-bottom: 1px solid threedshadow;
 }
 
-#clipping-text {
-    display: block;
-    width: 100%;
-    height: 90%;
+#item-properties > #clipping-text {
+    order: 2;
+    flex: 1 1 auto;
     margin-top: 2px;
     padding: 6px 8px 6px 8px;
     resize: none;
@@ -134,21 +133,25 @@ body {
     border-bottom: 1px solid threedshadow;
 }
 
-#source-url-bar {
+#item-properties > #source-url-bar {
+    order: 3;
+    flex: 0 1 auto;
     padding: 4px 8px 10px 8px;
     overflow: hidden;
     white-space: nowrap;
 }
 
-#clipping-src-url {
+#source-url-bar > #clipping-src-url {
     display: inline-block;
 }
 
-#clipping-src-url > a {
+#source-url-bar > #clipping-src-url > a {
     text-overflow: ellipsis;
 }
 
-#options-bar {
+#item-properties > #options-bar {
+    order: 4;
+    flex: 0 1 auto;
     padding: 1px 8px 2px 8px;
 }
 

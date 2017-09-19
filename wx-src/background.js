@@ -450,7 +450,7 @@ function openClippingsManager()
   let clippingsMgrURL = chrome.runtime.getURL("pages/clippingsMgr.html");
 
   // TO DO: Get this from a pref.
-  let openInNewTab = true;
+  let openInNewTab = false;
 
   if (openInNewTab) {
     try {
@@ -466,8 +466,10 @@ function openClippingsManager()
     chrome.windows.create({
       url: clippingsMgrURL,
       type: "popup",
-      left: 64, top: 128,
-      width: 600, height: 400
+      left: 64,
+      top: 128,
+      width: 750,
+      height: 400
     }, () => {
       chrome.history.deleteUrl({ url: clippingsMgrURL });
     });
