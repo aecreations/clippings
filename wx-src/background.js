@@ -454,10 +454,22 @@ function openClippingsManager()
 {
   let clippingsMgrURL = chrome.runtime.getURL("pages/clippingsMgr.html");
 
+  let openClippingsMgrHelper = function () {
+    browser.windows.create({
+      url: clippingsMgrURL,
+      type: "popup",
+      width: 750, height: 400,
+      left: 64, top: 128
+    }).then(aWnd => {
+      gWndIDs.clippingsMgr = aWnd.id;
+      browser.history.deleteUrl({ url: clippingsMgrURL });
+    });
+  };
+  
   // TO DO: Get this from a pref.
   let openInNewTab = false;
 
-  if (openInNewTab) {
+  if (isGoogleChrome() || openInNewTab) {
     try {
       chrome.tabs.create({ url: clippingsMgrURL }, () => {
         chrome.history.deleteUrl({ url: clippingsMgrURL });
@@ -469,20 +481,17 @@ function openClippingsManager()
   }
   else {
     if (gWndIDs.clippingsMgr) {
-      chrome.windows.get(gWndIDs.clippingsMgr, null, aWnd => {
-        chrome.windows.update(gWndIDs.clippingsMgr, { focused: true });
+      browser.windows.get(gWndIDs.clippingsMgr).then(aWnd => {
+        browser.windows.update(gWndIDs.clippingsMgr, { focused: true });
+      }, aErr => {
+        // Handle dangling ref to previously-closed Clippings Manager window
+        // because it was closed before it finished initializing.
+        gWndIDs.clippingsMgr = null;
+        openClippingsMgrHelper();
       });
     }
     else {
-      chrome.windows.create({
-        url: clippingsMgrURL,
-        type: "popup",
-        width: 750, height: 400,
-        left: 64, top: 128
-      }, aWnd => {
-        gWndIDs.clippingsMgr = aWnd.id;
-        chrome.history.deleteUrl({ url: clippingsMgrURL });
-      });
+      openClippingsMgrHelper();
     }
   }      
 }
@@ -490,26 +499,31 @@ function openClippingsManager()
 
 function openNewClippingDlg()
 {
-  if (gWndIDs.newClipping) {
-    browser.windows.get(gWndIDs.newClipping).then(aWnd => {
-      browser.windows.update(gWndIDs.newClipping, { focused: true });
-    });
-  }
-  else {
-    let url = browser.runtime.getURL("pages/new.html");
-    let createWnd = browser.windows.create({
+  let url = browser.runtime.getURL("pages/new.html");
+  let openNewClippingDlgHelper = function () {
+    browser.windows.create({
       url,
       type: "popup",
       width: 428, height: 500,
       left: 96, top: 64
-    });
-
-    createWnd.then(aWnd => {
+    }).then(aWnd => {
       gWndIDs.newClipping = aWnd.id;
       browser.history.deleteUrl({ url });
     }, aErr => {
       console.error(aErr);
     });
+  };
+  
+  if (gWndIDs.newClipping) {
+    browser.windows.get(gWndIDs.newClipping).then(aWnd => {
+      browser.windows.update(gWndIDs.newClipping, { focused: true });
+    }, aErr => {
+      gWndIDs.newClipping = null;
+      openNewClippingDlgHelper();
+    });
+  }
+  else {
+    openNewClippingDlgHelper();
   }
 }
 
