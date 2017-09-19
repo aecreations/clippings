@@ -580,7 +580,8 @@ function updateDisplay(aEvent, aData)
           aEvent.preventDefault();
           chrome.windows.create({
             url: aEvent.target.textContent,
-            type: "normal"
+            type: "normal",
+            state: "normal"
           });
         });
       }
