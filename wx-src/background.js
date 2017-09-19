@@ -250,6 +250,9 @@ function initMessageListeners()
       else if (aRequest.msgID == "close-new-clipping-dlg") {
         gWndIDs.newClipping = null;
       }
+      else if (aRequest.msgID == "close-clippings-mgr-wnd") {
+        gWndIDs.clippingsMgr = null;
+      }
       else if (aRequest.msgID = "paste-shortcut-key") {
         // TO DO: Same logic as for Firefox.
       }
@@ -271,6 +274,9 @@ function initMessageListeners()
       }
       else if (aRequest.msgID == "close-new-clipping-dlg") {
         gWndIDs.newClipping = null;
+      }
+      else if (aRequest.msgID == "close-clippings-mgr-wnd") {
+        gWndIDs.clippingsMgr = null;
       }
       else if (aRequest.msgID = "paste-shortcut-key") {
         let shortcutKey = aRequest.shortcutKey;
@@ -446,7 +452,6 @@ function createClippingNameFromText(aText)
 
 function openClippingsManager()
 {
-  // TO DO: Check if Clippings Manager is already open.
   let clippingsMgrURL = chrome.runtime.getURL("pages/clippingsMgr.html");
 
   // TO DO: Get this from a pref.
@@ -463,16 +468,22 @@ function openClippingsManager()
     }
   }
   else {
-    chrome.windows.create({
-      url: clippingsMgrURL,
-      type: "popup",
-      left: 64,
-      top: 128,
-      width: 750,
-      height: 400
-    }, () => {
-      chrome.history.deleteUrl({ url: clippingsMgrURL });
-    });
+    if (gWndIDs.clippingsMgr) {
+      chrome.windows.get(gWndIDs.clippingsMgr, null, aWnd => {
+        chrome.windows.update(gWndIDs.clippingsMgr, { focused: true });
+      });
+    }
+    else {
+      chrome.windows.create({
+        url: clippingsMgrURL,
+        type: "popup",
+        width: 750, height: 400,
+        left: 64, top: 128
+      }, aWnd => {
+        gWndIDs.clippingsMgr = aWnd.id;
+        chrome.history.deleteUrl({ url: clippingsMgrURL });
+      });
+    }
   }      
 }
 
@@ -480,7 +491,7 @@ function openClippingsManager()
 function openNewClippingDlg()
 {
   if (gWndIDs.newClipping) {
-    browser.windows.get(gWndIDs.newClipping).then(aWndInfo => {
+    browser.windows.get(gWndIDs.newClipping).then(aWnd => {
       browser.windows.update(gWndIDs.newClipping, { focused: true });
     });
   }

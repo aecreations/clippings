@@ -218,6 +218,8 @@ $(document).ready(() => {
 $(window).on("beforeunload", function () {
   let clippingsListeners = gClippings.getClippingsListeners();
   clippingsListeners.remove(gClippingsListener);
+
+  chrome.runtime.sendMessage({ msgID: "close-clippings-mgr-wnd" });
 });
 
 
