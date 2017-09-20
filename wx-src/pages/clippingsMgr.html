@@ -30,6 +30,7 @@
 
     <link rel="stylesheet" href="chrome://browser/content/extension.css"/>
     <link rel="stylesheet" href="../lib/fancytree/skin/ui.fancytree.css"/>
+    <link rel="stylesheet" href="../style/lightbox.css"/>
     <link rel="stylesheet" href="clippingsMgr.css"/>
   </head>
 
@@ -116,6 +117,13 @@
       <span id="status-bar-msg"></span>
     </div>
 
+    <!-- Dialog boxes -->
+    <div id="shortcut-key-conflict-msgbox" class="lightbox">
+      <p>The selected shortcut key has already been assigned to another clipping.  Please select a different shortcut key.</p>
+      <button class="dlg-accept browser-style default">OK</button>
+    </div>
+    <div id="lightbox-bkgrd-ovl" class="lightbox-bkgrd"></div>
+    
     <script src="../lib/jquery.js"></script>
     <script src="../lib/fancytree/jquery.fancytree-all-deps.min.js"></script>
     <script src="../lib/fancytree/jquery.fancytree.dnd5.js"></script>

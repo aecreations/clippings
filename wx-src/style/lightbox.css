@@ -1,0 +1,58 @@
+/* ***** BEGIN LICENSE BLOCK *****
+ * Version: MPL 1.1
+ *
+ * The contents of this file are subject to the Mozilla Public License Version
+ * 1.1 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+ * for the specific language governing rights and limitations under the
+ * License.
+ *
+ * The Original Code is Clippings.
+ *
+ * The Initial Developer of the Original Code is 
+ * Alex Eng <ateng@users.sourceforge.net>.
+ * Portions created by the Initial Developer are Copyright (C) 2017
+ * the Initial Developer. All Rights Reserved.
+ *
+ * Contributor(s):
+ *
+ * ***** END LICENSE BLOCK ***** */
+
+
+.lightbox-bkgrd {
+    display: none;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    z-index: 1001;
+    opacity: 0.5;
+}
+
+.lightbox {
+    display: none;
+    position: absolute;
+
+    /* Default dimensions */
+    top: 25%;
+    left: 25%;
+    width: 50%;
+    height: 50%;
+    
+    padding: 16px;
+    background-color: white;
+    z-index: 1002;
+
+    /* TO DO: Use a box shadow instead. */
+    border: 1px solid black;
+}
+
+.lightbox-show {
+    display: block;
+}

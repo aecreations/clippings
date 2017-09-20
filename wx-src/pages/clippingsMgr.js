@@ -210,6 +210,7 @@ $(document).ready(() => {
   initInstantEditing();
   initShortcutKeyMenu();
   initImport();
+  initDialogs();
   setStatusBarMsg();
   buildClippingsTree();
 });
@@ -334,6 +335,22 @@ function initInstantEditing()
       gClippingsDB.clippings.update(id, { content: text });
     }
   });
+}
+
+
+function initDialogs()
+{
+  $("#shortcut-key-conflict-msgbox > button.dlg-accept").click(aEvent => {
+    $("#shortcut-key-conflict-msgbox").removeClass("lightbox-show");
+    $("#lightbox-bkgrd-ovl").removeClass("lightbox-show");
+  });
+}
+
+
+function openModalDlg(aDlgSelector)
+{
+  $("#lightbox-bkgrd-ovl").addClass("lightbox-show");
+  $(aDlgSelector).addClass("lightbox-show");
 }
 
 
@@ -525,9 +542,7 @@ function initShortcutKeyMenu()
       assignedKeysLookup[aItem.shortcutKey] = 1;
     }).then(() => {
       if (assignedKeysLookup[shortcutKey]) {
-        window.alert("The selected shortcut key has already been assigned to another clipping. Please select a different shortcut key.");
-
-          // TO DO: Select the previously-selected drop-down menu option.
+        openModalDlg("#shortcut-key-conflict-msgbox");
         return;
       }
 
