@@ -104,7 +104,7 @@ aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems
         if (aShortcutKeys[item.shortcutKey]) {
           if (aReplaceShortcutKeys) {
             shortcutKey = item.shortcutKey;
-            clippingswithkeyconflicts.push(aShortcutKeys[item.shortcutKey]);
+            clippingsWithKeyConflicts.push(aShortcutKeys[item.shortcutKey]);
           }
           else {
             shortcutKey = "";
