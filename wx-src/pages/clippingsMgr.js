@@ -302,6 +302,14 @@ function initToolbarButtons()
       });
     }
   });
+
+  $("#tmp-import").click(aEvent => {
+    // Reset the file upload element so that it doesn't automatically select
+    // the last uploaded file by default.
+    $("#import-dlg #import-clippings-file-upload").val("");
+
+    showModalDlg("#import-dlg");
+  });
 }
 
 
@@ -341,16 +349,22 @@ function initInstantEditing()
 function initDialogs()
 {
   $("#shortcut-key-conflict-msgbox > button.dlg-accept").click(aEvent => {
-    $("#shortcut-key-conflict-msgbox").removeClass("lightbox-show");
-    $("#lightbox-bkgrd-ovl").removeClass("lightbox-show");
+    closeModalDlg("#shortcut-key-conflict-msgbox");
   });
 }
 
 
-function openModalDlg(aDlgSelector)
+function showModalDlg(aDlgSelector)
 {
   $("#lightbox-bkgrd-ovl").addClass("lightbox-show");
   $(aDlgSelector).addClass("lightbox-show");
+}
+
+
+function closeModalDlg(aDlgSelector)
+{
+  $(aDlgSelector).removeClass("lightbox-show");
+  $("#lightbox-bkgrd-ovl").removeClass("lightbox-show");
 }
 
 
@@ -542,7 +556,7 @@ function initShortcutKeyMenu()
       assignedKeysLookup[aItem.shortcutKey] = 1;
     }).then(() => {
       if (assignedKeysLookup[shortcutKey]) {
-        openModalDlg("#shortcut-key-conflict-msgbox");
+        showModalDlg("#shortcut-key-conflict-msgbox");
         return;
       }
 
@@ -641,12 +655,33 @@ function setStatusBarMsg(aMessage)
 }
 
 
-// TEMPORARY
 function initImport()
 {
+  let hideImportErrMsg = function () {
+    $("#import-error").text("").hide();
+  };
+  
   aeImportExport.setDatabase(gClippingsDB);
-  $("#import-clippings-file-upload").on("change", aEvent => { uploadImportFile(aEvent.target.files); });
-  log("Clippings Manager: Initialized temporary import UI.");
+
+  $("#import-clippings-file-upload").on("change", aEvent => {
+    hideImportErrMsg();
+    if (aEvent.target.files.length > 0) {
+      $("#import-dlg .dlg-accept").removeAttr("disabled");
+    }
+  });
+  
+  $("#import-dlg button.dlg-cancel").click(aEvent => {
+    hideImportErrMsg();
+    closeModalDlg("#import-dlg");
+  });
+  
+  $("#import-dlg button.dlg-accept").click(aEvent => {
+    hideImportErrMsg();
+    $("#import-progress-bar").show();
+    let inputFileElt = $("#import-clippings-file-upload")[0];
+    uploadImportFile(inputFileElt.files);
+  });
+  
 }
 
 
@@ -663,8 +698,7 @@ function uploadImportFile(aFileList)
   fileReader.addEventListener("load", aEvent => {
     let rawData = aEvent.target.result;
 
-    // TO DO: Set this from a checkbox option.
-    let replaceShortcutKeys = true;
+    let replaceShortcutKeys = $("#import-clippings-replc-shct-keys:checked");
     
     try {
       if (importFile.name.endsWith(".json")) {
@@ -675,15 +709,15 @@ function uploadImportFile(aFileList)
       }
     }
     catch (e) {
+      $("#import-progress-bar").hide();
       console.error(e);
-      window.alert(`Cannot read file: "${importFile.name}"\nThe selected file may not be a valid Clippings file.`);
+      $("#import-error").text("Error reading selected file.  The file may not be a valid Clippings file.").show();
+      //window.alert(`Cannot read file: "${importFile.name}"\nThe selected file may not be a valid Clippings file.`);
     }
   });
 
   fileReader.readAsText(importFile);
 }
-// END TEMPORARY
-
 
 
 function showBanner(aMessage)

@@ -85,6 +85,14 @@ body {
     order: 3;
 }
 
+#toolbar > #spacer-1 {
+    order: 4;
+}
+
+#toolbar > #tmp-import {
+    order: 5;
+}
+
 #content {
     height: 100%;
 }
@@ -171,4 +179,37 @@ body {
 #status-bar-msg {
     width: 100%;
     text-align: center;
+}
+
+
+/*
+ * Dialog boxes
+ */
+
+.lightbox .browser-style input[type="checkbox"] + label::before {
+    width: 14px;
+    height: 14px;
+}
+
+#import-dlg {
+    width: 395px;
+    height: 190px;
+}
+
+
+#import-dlg #import-clippings-file-upload {
+    margin-top: 4px;
+    margin-bottom: 14px;
+}
+
+#import-dlg progress {
+    display: none;
+    width: 355px;
+    margin-top: 16px;
+}
+
+#import-dlg #import-error {
+    display: none;
+    margin-top: 8px;
+    color: red;
 }

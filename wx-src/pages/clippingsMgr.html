@@ -43,6 +43,10 @@
       <button id="new-clipping" class="toolbar-button">+ New Clipping</button>
       <button id="new-folder" class="toolbar-button">+ New Folder</button>
       <button id="delete" class="toolbar-button">Delete</button>
+      <span id="spacer-1" class="spacer"></span>
+      <!-- TEMPORARY -->
+      <button id="tmp-import" class="toolbar-button">Import</button>
+      <!-- END TEMPORARY -->
     </div>
     
     <div id="content" class="hbox">
@@ -106,21 +110,32 @@
       
     </div> <!-- #content -->
 
-    <!-- TEMPORARY -->
-    <div id="import-clippings" style="margin-left:16px;margin-bottom:16px">
-      Import clippings:
-      <input type="file" id="import-clippings-file-upload" accept=".rdf, .json">
-    </div>    
-    <!-- END TEMPORARY -->
-    
     <div id="status-bar" class="hbox">
       <span id="status-bar-msg"></span>
     </div>
 
     <!-- Dialog boxes -->
     <div id="shortcut-key-conflict-msgbox" class="lightbox">
-      <p>The selected shortcut key has already been assigned to another clipping.  Please select a different shortcut key.</p>
-      <button class="dlg-accept browser-style default">OK</button>
+      <p>The selected shortcut key has already been assigned to another clipping.  Please select a different shortcut key.</p><br/>
+      <button class="dlg-accept browser-style default" style="width:72px;text-align:center">OK</button>
+    </div>
+
+    <div id="import-dlg" class="lightbox">
+      <div class="dlg-content browser-style">
+        <label>Select import file:</label>
+	<br/>
+        <input type="file" id="import-clippings-file-upload" accept=".rdf, .json"/>
+	<br/>
+	<input type="checkbox" id="import-clippings-replc-shct-keys" checked="true"/>
+	<label for="import-clippings-replc-shct-keys">Replace shortcut keys</label>
+	<br/>
+	<progress id="import-progress-bar"></progress>
+	<div id="import-error"></div>
+      </div>
+      <div class="dlg-btns">
+	<button class="dlg-accept browser-style default" disabled="true">OK</button>
+	<button class="dlg-cancel browser-style">Cancel</button>
+      </div>
     </div>
     <div id="lightbox-bkgrd-ovl" class="lightbox-bkgrd"></div>
     
