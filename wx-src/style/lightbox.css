@@ -53,6 +53,19 @@
     border: 1px solid black;
 }
 
+.lightbox > .dlg-btns {
+    position: absolute;
+    bottom: 16px;
+    right: 12px;
+}
+
+.lightbox > .dlg-btns > button {
+    min-width: 72px;
+    min-height: 26px;
+    margin-right: 10px;
+    text-align: center;
+}
+
 .lightbox-show {
     display: block;
 }
