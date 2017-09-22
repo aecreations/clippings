@@ -117,5 +117,5 @@ input[type="radio"] + label {
 }
 
 #btn-accept, #btn-cancel {
-    margin-right: 8px;
+    margin-right: 10px;
 }
