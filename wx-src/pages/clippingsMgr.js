@@ -58,9 +58,6 @@ $(document).ready(() => {
   gClippingsListener = {
     origin: clippingsListeners.ORIGIN_CLIPPINGS_MGR,
     
-    // TO DO: Check if the clipping or folder was created outside Clippings
-    // Manager; if so, always created them under the root level.
-    
     newClippingCreated: function (aID, aData) {
       if (gIsClippingsTreeEmpty) {
         unsetEmptyClippingsState();
@@ -80,7 +77,6 @@ $(document).ready(() => {
           newNode = tree.rootNode.addNode(newNodeData);
         }
         else {
-          // TO DO: Why is getNodeByKey() sometimes returning null? (issue #89)
           let parentNode = tree.getNodeByKey(aData.parentFolderID + "F");
           newNode = parentNode.addNode(newNodeData);
         }
@@ -209,7 +205,6 @@ $(document).ready(() => {
   initToolbarButtons();
   initInstantEditing();
   initShortcutKeyMenu();
-  initImport();
   initDialogs();
   setStatusBarMsg();
   buildClippingsTree();
@@ -307,7 +302,7 @@ function initToolbarButtons()
     // Reset the file upload element so that it doesn't automatically select
     // the last uploaded file by default.
     $("#import-dlg #import-clippings-file-upload").val("");
-
+    $("#import-clippings-replc-shct-keys")[0].checked = true;
     showModalDlg("#import-dlg");
   });
 }
@@ -351,6 +346,8 @@ function initDialogs()
   $("#shortcut-key-conflict-msgbox > button.dlg-accept").click(aEvent => {
     closeModalDlg("#shortcut-key-conflict-msgbox");
   });
+
+  initImport();
 }
 
 
@@ -657,7 +654,8 @@ function setStatusBarMsg(aMessage)
 
 function initImport()
 {
-  let hideImportErrMsg = function () {
+  function hideImportErrMsg()
+  {
     $("#import-error").text("").hide();
   };
   
@@ -666,7 +664,7 @@ function initImport()
   $("#import-clippings-file-upload").on("change", aEvent => {
     hideImportErrMsg();
     if (aEvent.target.files.length > 0) {
-      $("#import-dlg .dlg-accept").removeAttr("disabled");
+      $("#import-dlg button.dlg-accept").removeAttr("disabled");
     }
   });
   
@@ -698,7 +696,7 @@ function uploadImportFile(aFileList)
   fileReader.addEventListener("load", aEvent => {
     let rawData = aEvent.target.result;
 
-    let replaceShortcutKeys = $("#import-clippings-replc-shct-keys:checked");
+    let replaceShortcutKeys = ($("#import-clippings-replc-shct-keys:checked").length > 0);
     
     try {
       if (importFile.name.endsWith(".json")) {
@@ -712,7 +710,6 @@ function uploadImportFile(aFileList)
       $("#import-progress-bar").hide();
       console.error(e);
       $("#import-error").text("Error reading selected file.  The file may not be a valid Clippings file.").show();
-      //window.alert(`Cannot read file: "${importFile.name}"\nThe selected file may not be a valid Clippings file.`);
     }
   });
 
