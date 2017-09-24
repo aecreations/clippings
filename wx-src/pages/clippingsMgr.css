@@ -171,6 +171,15 @@ body {
     padding: 1px 8px 2px 8px;
 }
 
+#options-bar > .spacer,
+#options-bar > #tmp-clipping-label {
+    display: inline-block;
+}
+
+#tmp-label {
+    padding: 2px 6px 2px 6px;
+}
+
 #status-bar {
     width: 100%;
     height: var(--statusbar-height);

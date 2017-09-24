@@ -224,6 +224,7 @@ $(document).ready(() => {
   initToolbarButtons();
   initInstantEditing();
   initShortcutKeyMenu();
+  initLabelPicker();
   initDialogs();
   buildClippingsTree();
 });
@@ -594,6 +595,12 @@ function initShortcutKeyMenu()
 }
 
 
+function initLabelPicker()
+{
+  $("tmp-clipping-label").hide();
+}
+
+
 function updateDisplay(aEvent, aData)
 {
   if (gIsClippingsTreeEmpty) {
@@ -650,6 +657,20 @@ function updateDisplay(aEvent, aData)
           shortcutKeyMenu.selectedIndex = i;
           break;
         }
+      }
+
+      if (aResult.label) {
+        let color = "white";
+        if (aResult.label.toLowerCase() == "yellow") {
+          color = "black";
+        }
+        $("#tmp-label").css({ color, backgroundColor: aResult.label });
+        $("#tmp-label").text(aResult.label.toLowerCase());
+        $("#tmp-clipping-label").show();
+      }
+      else {
+        $("#tmp-label").text("");
+        $("#tmp-clipping-label").hide();
       }
     });
   }
