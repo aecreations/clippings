@@ -34,11 +34,12 @@ const DEFAULT_UNTITLED_FOLDER_NAME = "Untitled Folder";
 const ROOT_FOLDER_ID = 0;
 const DELETED_ITEMS_FLDR_ID = -1;
 
-var gOS;
-var gClippingsDB;
-var gClippings;
-var gClippingsListener;
-var gIsClippingsTreeEmpty;
+let gOS;
+let gClippingsDB;
+let gClippings;
+let gClippingsListener;
+let gIsClippingsTreeEmpty;
+let gIsReloading = false;
 
 
 $(document).ready(() => {
@@ -160,6 +161,7 @@ $(document).ready(() => {
     folderDeleted: function (aID, aOldData) {},
 
     afterBatchChanges: function () {
+      gIsReloading = true;
       window.location.reload();
     },
 
@@ -228,8 +230,10 @@ $(document).ready(() => {
 
 
 $(window).on("beforeunload", function () {
-  browser.runtime.sendMessage({ msgID: "close-clippings-mgr-wnd" });
-
+  if (! gIsReloading) {
+    browser.runtime.sendMessage({ msgID: "close-clippings-mgr-wnd" });
+  }
+  
   let clippingsListeners = gClippings.getClippingsListeners();
   clippingsListeners.remove(gClippingsListener);
 
