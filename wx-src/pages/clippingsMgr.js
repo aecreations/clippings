@@ -32,6 +32,7 @@ const DEFAULT_UNTITLED_CLIPPING_NAME = "Untitled Clipping";
 const DEFAULT_UNTITLED_FOLDER_NAME = "Untitled Folder";
 
 const ROOT_FOLDER_ID = 0;
+const DELETED_ITEMS_FLDR_ID = -1;
 
 var gOS;
 var gClippingsDB;
@@ -132,31 +133,41 @@ $(document).ready(() => {
 
     clippingChanged: function (aID, aData, aOldData) {
       let tree = getClippingsTree();
-      let changedNode = tree.getNodeByKey(aID + "C");
 
-      changedNode.setTitle(aData.name);
+      if (this._isFlaggedForDelete(aData)) {
+        this._removeClippingsTreeNode(aID + "C");
+      }
+      else {
+        let changedNode = tree.getNodeByKey(aID + "C");
+        changedNode.setTitle(aData.name);
+      }
     },
 
     folderChanged: function (aID, aData, aOldData) {
       let tree = getClippingsTree();
-      let changedNode = tree.getNodeByKey(aID + "F");
 
-      changedNode.setTitle(aData.name);
+      if (this._isFlaggedForDelete(aData)) {
+        this._removeClippingsTreeNode(aID + "F");
+      }
+      else {
+        let changedNode = tree.getNodeByKey(aID + "F");
+        changedNode.setTitle(aData.name);
+      }
     },
 
-    clippingDeleted: function (aID, aOldData) {
-      this._removeClippingsTreeNode(aID + "C");
-    },
+    clippingDeleted: function (aID, aOldData) {},
 
-    folderDeleted: function (aID, aOldData) {
-      this._removeClippingsTreeNode(aID + "F");
-    },
+    folderDeleted: function (aID, aOldData) {},
 
     afterBatchChanges: function () {
       window.location.reload();
     },
 
-    // Helper method
+
+    //
+    // Helper methods
+    //
+
     _removeClippingsTreeNode: function (aIDWithSuffix) {
       let tree = getClippingsTree();
       let targetNode = tree.getNodeByKey(aIDWithSuffix);
@@ -171,6 +182,7 @@ $(document).ready(() => {
         tree.options.icon = false;
         let emptyMsgNode = setEmptyClippingsState();
         tree.rootNode.addNode(emptyMsgNode);
+        setStatusBarMsg("0 items");
       }
       else {
         // Select the node that used to be occupied by the delete node. If the
@@ -197,6 +209,11 @@ $(document).ready(() => {
           }
         }
       }
+    },
+
+    _isFlaggedForDelete: function (aItem)
+    {
+      return (aItem.parentFolderID == DELETED_ITEMS_FLDR_ID);
     }
   };
 
@@ -206,16 +223,17 @@ $(document).ready(() => {
   initInstantEditing();
   initShortcutKeyMenu();
   initDialogs();
-  setStatusBarMsg();
   buildClippingsTree();
 });
 
 
 $(window).on("beforeunload", function () {
+  browser.runtime.sendMessage({ msgID: "close-clippings-mgr-wnd" });
+
   let clippingsListeners = gClippings.getClippingsListeners();
   clippingsListeners.remove(gClippingsListener);
 
-  chrome.runtime.sendMessage({ msgID: "close-clippings-mgr-wnd" });
+  purgeDeletedItems(DELETED_ITEMS_FLDR_ID);
 });
 
 
@@ -287,13 +305,13 @@ function initToolbarButtons()
     let id = parseInt(selectedNode.key);
     
     if (selectedNode.isFolder()) {
-      gClippingsDB.folders.delete(id).then(() => {
-        // TO DO: Add folder deletion to undo stack.
+      gClippingsDB.folders.update(id, { parentFolderID: DELETED_ITEMS_FLDR_ID }).then(aNumUpd => {
+        // TO DO: Add deleted folder to undo stack.
       });
     }
     else {
-      gClippingsDB.clippings.delete(id).then(() => {
-        // TO DO: Add clipping deletion to undo stack.
+      gClippingsDB.clippings.update(id, { parentFolderID: DELETED_ITEMS_FLDR_ID }).then(aNumUpd => {
+        // TO DO: Add deleted clipping to undo stack.
       });
     }
   });
@@ -473,8 +491,10 @@ function buildClippingsTree()
             }
             aNode.setExpanded();
           }
-        }          
+        }
       });
+
+      setStatusBarMsg(gIsClippingsTreeEmpty ? "0 items" : null);
     });
   }).catch(aErr => {
     console.error("Clippings/wx::buildContextMenu(): %s", aErr.message);
@@ -574,6 +594,7 @@ function updateDisplay(aEvent, aData)
 {
   if (gIsClippingsTreeEmpty) {
     $("#source-url-bar, #options-bar").hide();
+    setStatusBarMsg("0 items");
     return;
   }
 
@@ -638,17 +659,8 @@ function setStatusBarMsg(aMessage)
     return;
   }
 
-  let numItems = 0;
-  
-  gClippingsDB.transaction("r", gClippingsDB.clippings, gClippingsDB.folders, () => {
-    gClippingsDB.clippings.count().then(aNumClippings => {
-      numItems += aNumClippings;
-      return gClippingsDB.folders.count();
-    }).then(aNumFolders => {
-      numItems += aNumFolders;
-      $("#status-bar-msg").text(`${numItems} items`);
-    });
-  });
+  let tree = getClippingsTree();
+  $("#status-bar-msg").text(`${tree.count()} items`);
 }
 
 
@@ -657,7 +669,7 @@ function initImport()
   function hideImportErrMsg()
   {
     $("#import-error").text("").hide();
-  };
+  }
   
   aeImportExport.setDatabase(gClippingsDB);
 
@@ -676,10 +688,10 @@ function initImport()
   $("#import-dlg button.dlg-accept").click(aEvent => {
     hideImportErrMsg();
     $("#import-progress-bar").show();
+
     let inputFileElt = $("#import-clippings-file-upload")[0];
     uploadImportFile(inputFileElt.files);
   });
-  
 }
 
 
@@ -714,6 +726,24 @@ function uploadImportFile(aFileList)
   });
 
   fileReader.readAsText(importFile);
+}
+
+
+function purgeDeletedItems(aFolderID)
+{
+  gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
+    gClippingsDB.folders.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
+      purgeDeletedItems(aItem.id);
+    }).then(() => {
+      if (aFolderID != DELETED_ITEMS_FLDR_ID) {
+        gClippingsDB.folders.delete(aFolderID);
+      }
+
+      gClippingsDB.clippings.where("parentFolderID").equals(aFolderID).delete();
+    });
+  }).catch(aErr => {
+    console.error(aErr);
+  });
 }
 
 
