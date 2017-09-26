@@ -31,13 +31,15 @@
 let aeClippingSubst = {
   _userAgentStr: null,
   _hostAppName: null,
-  _autoIncrementVars: {}
+  _autoIncrementVars: {},
+  _autoIncrementStartVal: 0
 };
 
 
-aeClippingSubst.init = function (aUserAgentStr, aHostAppName)
+aeClippingSubst.init = function (aUserAgentStr, aAutoIncrementStartVal)
 {
   this._userAgentStr = aUserAgentStr;
+  this._autoIncrementStartVal = aAutoIncrementStartVal;
 
   if (! ("browser" in window)) {
     this._hostAppName = "Google Chrome";
@@ -132,11 +134,10 @@ aeClippingSubst.processClippingText = function (aClippingInfo)
       return ++this._autoIncrementVars[varName];
     }
 
-    var defaultValue = 0;
     var rv = "";
     
     // TO DO: Prompt for initial numeric value
-    this._autoIncrementVars[varName] = defaultValue;
+    this._autoIncrementVars[varName] = this._autoIncrementStartVal;
 
     rv = this._autoIncrementVars[varName];
     

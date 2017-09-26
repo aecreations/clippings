@@ -118,6 +118,7 @@ function handleRequestInsertClipping(aRequest)
   }
 
   let clippingText = aRequest.content;
+  let autoLineBrk = aRequest.autoLineBreak;
   let activeElt = window.document.activeElement;
 
   console.log("Clippings/wx::content.js::handleRequestInsertClipping(): activeElt = " + (activeElt ? activeElt.toString() : "???"));  
@@ -134,7 +135,7 @@ function handleRequestInsertClipping(aRequest)
   // Rich text editor used by Gmail and Outlook.com
   else if (isElementOfType(activeElt, "HTMLDivElement")) {
     let doc = activeElt.ownerDocument;
-    rv = insertTextIntoRichTextEditor(doc, clippingText);
+    rv = insertTextIntoRichTextEditor(doc, clippingText, autoLineBrk);
   }
   else {
     rv = null;
@@ -184,7 +185,7 @@ function insertTextIntoTextbox(aTextboxElt, aInsertedText)
 }
 
 
-function insertTextIntoRichTextEditor(aRichTextEditorDocument, aClippingText)
+function insertTextIntoRichTextEditor(aRichTextEditorDocument, aClippingText, aAutoLineBreak)
 {
   console.log("Clippings/wx: insertTextIntoRichTextEditor()");
 
@@ -213,11 +214,8 @@ function insertTextIntoRichTextEditor(aRichTextEditorDocument, aClippingText)
     }
   }
 
-  // TO DO: Get this from user pref.
-  let autoLineBreak = true;
-  
   let hasLineBreakTags = clippingText.search(/<br|<p/i) != -1;
-  if (autoLineBreak && !hasLineBreakTags) {
+  if (aAutoLineBreak && !hasLineBreakTags) {
     clippingText = clippingText.replace(/\n/g, "<br>");
   }
 

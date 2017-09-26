@@ -25,6 +25,8 @@
 
 const MAX_NAME_LENGTH = 64;
 const ROOT_FOLDER_NAME = "clippings-root";
+const HTML_PASTE_AS_FORMATTED = 0;
+const HTML_PASTE_AS_IS = 1;
 
 let gClippingsDB = null;
 
@@ -85,13 +87,73 @@ let gWndIDs = {
   clippingsMgr: null
 };
 
+let gPrefs = null;
+let gIsInitialized = false;
+
+
+//
+// First-run initialization
+//
+
+browser.runtime.onInstalled.addListener(aDetails => {
+  if (aDetails.reason == "install") {
+    console.log("Clippings/wx: It appears that the extension was newly installed.  Welcome to Clippings 6!");
+  }
+  else if (aDetails.reason == "upgrade") {
+    console.log("Clippings/wx: Upgrading from version " + aDetails.previousVersion);
+    if (parseInt(aDetails.previousVersion) < 6) {
+      console.log("Upgrading from legacy XUL version. Setting default preferences.");
+    }
+  }
+});
+
 
 //
 // Browser window and Clippings menu initialization
 //
 
+async function setDefaultPrefs()
+{
+  let aeClippingsPrefs = {
+    htmlPaste: HTML_PASTE_AS_FORMATTED,
+    autoLineBreak: true,
+    autoIncrPlcHldrStartVal: 0,
+    alwaysSaveSrcURL: false,
+    keyboardPaste: true,
+    checkSpelling: true,
+    openClippingsMgrInTab: false
+  };
+
+  gPrefs = aeClippingsPrefs;
+  await browser.storage.local.set(aeClippingsPrefs);
+}
+
+
 function init()
 {
+  if (gIsInitialized) {
+    return;
+  }
+
+  browser.storage.local.get().then(aPrefs => {
+    if (aPrefs.htmlPaste === undefined) {
+      console.log("Clippings/wx: No user preferences were previously set.  Setting default user preferences.");
+      setDefaultPrefs().then(() => {
+        initHelper();
+      });
+    }
+    else {
+      gPrefs = aPrefs;
+      initHelper();
+    }
+  });
+}
+
+
+function initHelper()
+{
+  console.log("Clippings/wx: Initializing browser integration...");
+  
   gClippingsDB = new Dexie("aeClippings");
   gClippingsDB.version(1).stores({
     clippings: "++id, name, parentFolderID"
@@ -227,9 +289,27 @@ function init()
   window.addEventListener("unload", onUnload, false);
   initMessageListeners();
 
-  aeClippingSubst.init(navigator.userAgent);
+  aeClippingSubst.init(navigator.userAgent, gPrefs.autoIncrPlcHldrStartVal);
+
+  browser.storage.onChanged.addListener((aChanges, aAreaName) => {
+    console.log("Clippings/wx: Detected change to local storage");
+    let changedPrefs = Object.keys(aChanges);
+
+    for (let pref of changedPrefs) {
+      gPrefs[pref] = aChanges[pref].newValue;
+    }
+  });
   
   buildContextMenu();
+
+  chrome.commands.onCommand.addListener(aCmdName => {
+    if (aCmdName == "ae-clippings-paste-clipping" && gPrefs.keyboardPaste) {
+      openShortcutKeyPromptDlg();
+    }
+  });
+
+  gIsInitialized = true;
+  console.log("Clippings/wx: Initialization complete.");
 }
 
 
@@ -454,7 +534,8 @@ function openClippingsManager()
 {
   let clippingsMgrURL = chrome.runtime.getURL("pages/clippingsMgr.html");
 
-  let openClippingsMgrHelper = function () {
+  function openClippingsMgrHelper()
+  {
     browser.windows.create({
       url: clippingsMgrURL,
       type: "popup",
@@ -464,10 +545,9 @@ function openClippingsManager()
       gWndIDs.clippingsMgr = aWnd.id;
       browser.history.deleteUrl({ url: clippingsMgrURL });
     });
-  };
+  }
   
-  // TO DO: Get this from a pref.
-  let openInNewTab = false;
+  let openInNewTab = gPrefs.openClippingsMgrInTab;
 
   if (isGoogleChrome() || openInNewTab) {
     try {
@@ -500,7 +580,9 @@ function openClippingsManager()
 function openNewClippingDlg()
 {
   let url = browser.runtime.getURL("pages/new.html");
-  let openNewClippingDlgHelper = function () {
+
+  function openNewClippingDlgHelper()
+  {
     browser.windows.create({
       url,
       type: "popup",
@@ -512,7 +594,7 @@ function openNewClippingDlg()
     }, aErr => {
       console.error(aErr);
     });
-  };
+  }
   
   if (gWndIDs.newClipping) {
     browser.windows.get(gWndIDs.newClipping).then(aWnd => {
@@ -638,7 +720,8 @@ function pasteClipping(aClippingInfo)
     let content = aeClippingSubst.processClippingText(aClippingInfo);
     let msgParams = {
       msgID: "paste-clipping",
-      content: content
+      content,
+      autoLineBreak: gPrefs.autoLineBreak
     };
 
     console.log("Clippings/wx: Extension sending message 'paste-clipping' to content script");
@@ -780,16 +863,6 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
       pasteClippingByID(id);
     }
     break;
-  }
-});
-
-
-//
-// Command listener for shortcut keys
-//
-chrome.commands.onCommand.addListener(aCmdName => {
-  if (aCmdName == "ae-clippings-paste-clipping") {
-    openShortcutKeyPromptDlg();
   }
 });
 
