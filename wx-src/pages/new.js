@@ -226,17 +226,3 @@ function closeDlg()
   browser.runtime.sendMessage({ msgID: "close-new-clipping-dlg" });
   chrome.windows.remove(chrome.windows.WINDOW_ID_CURRENT);
 }
-
-
-function alertEx(aMessage)
-{
-  $.Zebra_Dialog(aMessage, {
-    type: "warning",
-    width: 360,
-    show_close_button: false,
-    center_buttons: true,
-    overlay_close: false,
-    animation_speed_show: 0,
-    animation_speed_hide: 0
-  });
-}
