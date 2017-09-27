@@ -764,7 +764,9 @@ function purgeDeletedItems(aFolderID)
         gClippingsDB.folders.delete(aFolderID);
       }
 
-      gClippingsDB.clippings.where("parentFolderID").equals(aFolderID).delete();
+      gClippingsDB.clippings.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
+        gClippingsDB.clippings.delete(aItem.id);
+      });
     });
   }).catch(aErr => {
     console.error(aErr);
