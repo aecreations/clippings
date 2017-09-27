@@ -2,12 +2,12 @@
     "manifest_version": 2,
     "name": "Clippings/wx",
     "description": "Save frequently-entered text for pasting later.",
-    "version": "6.0a1-pre+",
+    "version": "6.0a1",
     "homepage_url": "http://aecreations.sourceforge.net/clippings/index.php",
     
     "applications": {
 	"gecko": {
-	    "strict_min_version": "54.0"
+	    "strict_min_version": "56.0"
 	}
     },
 
@@ -20,8 +20,7 @@
 	"storage",
 	"history",
 	"tabs",
-	"unlimitedStorage",
-	"clipboardRead"
+	"unlimitedStorage"
     ],
     
     "background": {
