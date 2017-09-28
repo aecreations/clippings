@@ -154,6 +154,11 @@ function handleRequestNewClippingFromTextbox(aMessage)
     respArgs.text = "";
     respArgs.cancel = true;
   }
+
+  // Check if the text is truly empty
+  if (respArgs.text.trim() == "") {
+    respArgs.text = "";
+  }
   
   aeUtils.log("aeFrameModule.js::handleRequestNewClippingFromTextbox(): selected text: " + respArgs.text);
   

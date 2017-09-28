@@ -142,7 +142,7 @@
   <toolbarpalette id="BrowserToolbarPalette">
     <toolbarbutton id="ae-clippings-icon"
      class="toolbarbutton-1 chromeclass-toolbar-additional" 
-     label="&clippings.appName;" tooltiptext="&toolbarbutton.tooltip;"
+     label="&clippings.appName;" tooltiptext="&openClippingsMgr.menuLabel;"
      oncommand="window.aecreations.clippings.openClippingsManager()"
      ondragenter="return false;  // Necessary to allow the drop operation"
      ondragover="return false;   // on this element."
