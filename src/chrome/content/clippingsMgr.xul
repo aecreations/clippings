@@ -519,6 +519,24 @@
     </toolbar>
   </toolbox>
 
+  <hbox id="clippings-wx-notification" hidden="true" style="background-color:#fcfc29">
+    <grid flex="1">
+      <columns>
+	<column/><column flex="1"/><column/>
+      </columns>
+      <rows>
+	<row align="center">
+	  <image src="chrome://clippings/skin/images/clippings-wx.png"
+           style="margin-left:8px;margin-right:4px"/>
+	  <description style="font-weight:bold" onclick="showClippingsMigrationInfo()">&wxComing.desc;</description>
+	  <button id="dismiss-notification" label="&closeButton.label;"
+           oncommand="closeMigrationNotification()"
+           style="-moz-appearance:toolbarbutton;min-width:4em"/>
+	</row>
+      </rows>
+    </grid>
+  </hbox>
+    
   <hbox id="content" flex="1">
     <vbox id="tree-box" width="200" minwidth="100" maxwidth="400" 
      persist="width">

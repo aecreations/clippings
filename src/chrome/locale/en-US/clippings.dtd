@@ -269,4 +269,4 @@
 <!ENTITY closeButton.label "Close">
 <!ENTITY closeButton.accesskey "C">
 <!ENTITY errorNoClipboardContent.desc "Clipboard is empty or does not contain textual data.">
-
+<!ENTITY wxComing.desc "Clippings 6 is coming soon!  Click here to learn how to prepare for the upgrade.">

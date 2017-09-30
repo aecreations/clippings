@@ -1067,6 +1067,11 @@ function init()
     treeElt.setAttribute("treelines", "true");
   }
 
+  // Clippings/wx migration notification - for Firefox only.
+  if (aeUtils.getHostAppID() == aeConstants.HOSTAPP_FX_GUID) {
+    $("clippings-wx-notification").hidden = false;
+  }
+  
   // First-run help
   if (aeUtils.getPref("clippings.clipmgr.first_run", true)) {
     window.setTimeout(function () { showHelp(); }, 1000);
@@ -1399,6 +1404,32 @@ function setStatusBarVisibility()
 {
   var showStatusBar = aeUtils.getPref("clippings.clipmgr.status_bar", true);
   $("status-bar").hidden = !showStatusBar;
+}
+
+
+function showClippingsMigrationInfo()
+{
+  let srcURL = "chrome://clippings/content/clippings6.xhtml";
+  
+  if (aeUtils.getHostAppID() == aeConstants.HOSTAPP_FX_GUID) {
+    let wnd = aeUtils.getRecentHostAppWindow();
+    
+    if (wnd) {
+      let newBrwsTab = wnd.gBrowser.loadOneTab(srcURL);
+      wnd.gBrowser.selectedTab = newBrwsTab;
+    }
+    else {
+        wnd = window.open(srcURL);
+    }
+    
+    wnd.focus();
+  }
+}
+
+
+function closeMigrationNotification()
+{
+  $("clippings-wx-notification").hidden = true;
 }
 
 
