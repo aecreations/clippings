@@ -593,6 +593,19 @@ window.aecreations.clippings = {
       this.aeUtils.setPref("clippings.migrated_prefs", true);
     }
 
+    // Rename backup folder so that it isn't hidden on macOS and Linux.
+    let dataSrcPathURL = this.aeUtils.getDataSourcePathURL();
+    let oldBackupDirURL = dataSrcPathURL + this.aeConstants.OLD_BACKUP_DIR_NAME;
+    let oldBackupDirPath = this.aeUtils.getFilePathFromURL(oldBackupDirURL);
+    let oldBkupDir = Components.classes["@mozilla.org/file/local;1"]
+                               .createInstance(Components.interfaces.nsIFile);
+
+    oldBkupDir.initWithPath(oldBackupDirPath);
+    if (oldBkupDir.exists() && oldBkupDir.isDirectory()) {
+      this.aeUtils.log(`Detected old backup folder '.clipbak' in "${dataSrcPathURL}" - renaming it to '${this.aeConstants.BACKUP_DIR_NAME}'`);
+      oldBkupDir.renameTo(null, this.aeConstants.BACKUP_DIR_NAME);
+    }
+
     // First-run initialization - import from Clippings 1.x if necessary.
     if (this.aeUtils.getPref("clippings.first_run", true) == true) {
       this._firstRunInit();
@@ -623,7 +636,6 @@ window.aecreations.clippings = {
     }
 
     // Set up Clippings backup.
-    var dataSrcPathURL = this.aeUtils.getDataSourcePathURL();
     var backupDirURL = dataSrcPathURL + this.aeConstants.BACKUP_DIR_NAME;
     this.clippingsSvc.setBackupDir(backupDirURL);
     this.clippingsSvc.setMaxBackupFiles(this.aeUtils.getPref("clippings.backup.maxfiles", 10));
