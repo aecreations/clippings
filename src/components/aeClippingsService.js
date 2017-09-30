@@ -1,4 +1,4 @@
-/* -*- mode: C++; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
+/* -*- mode: javascript; tab-width: 8; indent-tabs-mode: nil; js-indent-level: 2 -*- */
 /* ***** BEGIN LICENSE BLOCK *****
  * Version: MPL 1.1
  *
@@ -16,7 +16,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2005-2015
+ * Portions created by the Initial Developer are Copyright (C) 2005-2017
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -54,7 +54,7 @@ aeClippingsService.prototype = {
   MAX_NAME_LENGTH:        64,
 
   // Private constants (not declared in interface definition)
-  _DEBUG:  false,
+  _DEBUG:  true,
   _TEST_CORRUPTION: false,
   _SEQNODE_RESOURCE_URI:  "http://clippings.mozdev.org/rdf/user-clippings-v2",
   _OLD_SEQNODE_RESOURCE_URI: "http://clippings.mozdev.org/rdf/user-clippings",
@@ -186,6 +186,14 @@ aeClippingsService.prototype.reset = function ()
 aeClippingsService.prototype.setBackupDir = function (aBackupDirURL)
 {
   this._backupDirURL = aBackupDirURL;
+};
+
+
+aeClippingsService.prototype.getBackupDir = function ()
+{
+  this._log("Clippings backup location (URL): " + this._backupDirURL);
+  let rv = this._getFileFromURL(this._backupDirURL);
+  return rv;
 };
 
 
