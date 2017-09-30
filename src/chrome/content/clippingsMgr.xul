@@ -21,7 +21,7 @@
    -
    - The Initial Developer of the Original Code is
    - Alex Eng <ateng@users.sourceforge.net>.
-   - Portions created by the Initial Developer are Copyright (C) 2005-2015
+   - Portions created by the Initial Developer are Copyright (C) 2005-2017
    - the Initial Developer. All Rights Reserved.
    -
    - Contributor(s):
@@ -528,7 +528,8 @@
 	<row align="center">
 	  <image src="chrome://clippings/skin/images/clippings-wx.png"
            style="margin-left:8px;margin-right:4px"/>
-	  <description style="font-weight:bold" onclick="showClippingsMigrationInfo()">&wxComing.desc;</description>
+	  <description style="font-weight:bold;cursor:pointer"
+           onclick="showClippingsMigrationInfo()">&wxComing.desc;</description>
 	  <button id="dismiss-notification" label="&closeButton.label;"
            oncommand="closeMigrationNotification()"
            style="-moz-appearance:toolbarbutton;min-width:4em"/>
