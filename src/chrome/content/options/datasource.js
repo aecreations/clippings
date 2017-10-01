@@ -1,4 +1,4 @@
-/* -*- mode: C++; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
+/* -*- mode: javascript; tab-width: 8; indent-tabs-mode: nil; js-indent-level: 2 -*- */
 /* ***** BEGIN LICENSE BLOCK *****
  * Version: MPL 1.1
  *
@@ -16,7 +16,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2011-2015
+ * Portions created by the Initial Developer are Copyright (C) 2011-2017
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -171,6 +171,13 @@ function browseDataSrcPath()
   };
 
   filePicker.open(fpShownCallback);
+}
+
+
+function showBackupFiles()
+{
+  let backupDir = gClippingsSvc.getBackupDir();
+  backupDir.reveal();
 }
 
 

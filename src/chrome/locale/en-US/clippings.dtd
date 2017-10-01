@@ -51,6 +51,8 @@
 <!ENTITY backupFiles.caption "Backup Files">
 <!ENTITY maxFiles.label "Maximum number of files to keep:">
 <!ENTITY maxFiles.accesskey "M">
+<!ENTITY showbkup.label "Show Backup Location">
+<!ENTITY showbkup.accesskey "S">
 <!ENTITY srcURLs.caption "Source Web Page Addresses">
 <!ENTITY removeAllSrcURLs.label "Remove All">
 <!ENTITY removeAllSrcURLs.accesskey "R">
