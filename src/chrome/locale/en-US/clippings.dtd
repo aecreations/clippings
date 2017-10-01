@@ -17,6 +17,8 @@
 <!ENTITY toolbarbutton.tooltip "Drag selection here to create new clipping">
 <!ENTITY resetAutoIncrVars.label "Reset Auto-increment Placeholders">
 <!ENTITY empty.label "(Empty)">
+<!ENTITY wxGetReady.label "Get Ready for Clippings 6...">
+<!ENTITY wxGetReady.accesskey "6">
 
 <!-- Extension preferences dialog -->
 <!ENTITY prefGeneral.label "General">

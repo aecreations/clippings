@@ -562,6 +562,13 @@ window.aecreations.clippings = {
   },
 
 
+  showClippingsMigrationInfo: function ()
+  {
+    let srcURL = "chrome://clippings/content/clippings6.xhtml";
+    gBrowser.selectedTab = gBrowser.loadOneTab(srcURL, { inBackground: false});
+  },
+
+  
   //
   // Browser window and Clippings menu initialization
   //
