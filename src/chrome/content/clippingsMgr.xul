@@ -528,7 +528,7 @@
 	<row align="center">
 	  <image src="chrome://clippings/skin/images/clippings-wx.png"
            style="margin-left:8px;margin-right:4px"/>
-	  <description style="font-weight:bold;cursor:pointer"
+	  <description
            onclick="showClippingsMigrationInfo()">&wxComing.desc;</description>
 	  <button id="dismiss-notification" label="&closeButton.label;"
            oncommand="closeMigrationNotification()"

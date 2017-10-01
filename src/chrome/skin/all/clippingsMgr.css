@@ -15,7 +15,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2005-2016
+ * Portions created by the Initial Developer are Copyright (C) 2005-2017
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -332,3 +332,7 @@ toolbarbutton .toolbarbutton-icon {
   min-width: 24px;
 }
 
+#clippings-wx-notification description {
+  font-weight: bold;
+  cursor: pointer;
+}
