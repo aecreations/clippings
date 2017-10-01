@@ -54,7 +54,8 @@ interface aeIClippingsService : nsISupports
    */
   const short FILETYPE_RDF_XML = 0;
   const short FILETYPE_CLIPPINGS_1X = 1;  /* Clippings 1.x series */
-  const short FILETYPE_HTML = 2;
+  const short FILETYPE_CSV = 2;
+  const short FILETYPE_WX_JSON = 3;
 
   /*
    * aOrigin constants for methods createNewFolderEx() and copyTo(). 

@@ -32,7 +32,8 @@ aeClippingsService.prototype = {
   // Public constants
   FILETYPE_RDF_XML: 0,
   FILETYPE_CLIPPINGS_1X: 1,
-  FILETYPE_HTML: 2,
+  FILETYPE_CSV: 2,
+  FILETYPE_WX_JSON: 3,
 
   ORIGIN_CLIPPINGS_MGR: 1,
   ORIGIN_HOSTAPP: 2,
@@ -1981,7 +1982,8 @@ aeClippingsService.prototype.exportToFile = function (aFileURL, aFileType, aIncl
   var extSeqNode;
   var extDS;
 
-  if (aFileType == this.FILETYPE_RDF_XML) {
+  if (aFileType == this.FILETYPE_RDF_XML || aFileType == this.FILETYPE_CSV
+      || aFileType == this.FILETYPE_WX_JSON) {
     extSeqNode = this._rdfSvc.GetResource(this._SEQNODE_RESOURCE_URI);
   }
   else if (aFileType == this.FILETYPE_CLIPPINGS_1X) {
@@ -1993,47 +1995,130 @@ aeClippingsService.prototype.exportToFile = function (aFileURL, aFileType, aIncl
   }
 
   // Must delete existing file with the same name; otherwise, the `FlushTo'
-  // call below will append instead of overwrite.
+  // call below will append instead of overwrite the RDF/XML file.
   var file = this._getFileFromURL(aFileURL);
   if (file.exists()) {
-    this._log("NOTE: A data source file with the same URL already exists; removing it.");
+    this._log("NOTE: An export file with the same URL already exists; removing it.");
     file.remove(false);
   }
 
-  try {
-    // Exported data source file will be created automatically.
-    extDS = this._rdfSvc.GetDataSourceBlocking(aFileURL);
+  let count, format, extRootCtr, jsonData, csvData;
+
+  if (aFileType == this.FILETYPE_RDF_XML || aFileType == this.FILETYPE_CLIPPINGS_1X) {
+    try {
+      // Exported data source file will be created automatically.
+      extDS = this._rdfSvc.GetDataSourceBlocking(aFileURL);
+    }
+    catch (e) {
+      throw e;
+    }
+
+    extRootCtr = this._rdfContainerUtils.MakeSeq(extDS, extSeqNode);
+    extRootCtr = extRootCtr.QueryInterface(Components.interfaces.nsIRDFContainer);
   }
-  catch (e) {
-    throw e;
+  else {
+    csvData = [];
+    jsonData = {
+      version: "6.0",
+      createdBy: "Clippings 5.5",
+      userClippingsRoot: []
+    };
   }
 
-  this._log("Initialized export data source; URL:\n'" + aFileURL + "'");
+  this._log("Initialized export file - URL: '" + aFileURL + "'");
 
-  var count, format;
-  var extRootCtr = this._rdfContainerUtils.MakeSeq(extDS, extSeqNode);
-  extRootCtr = extRootCtr.QueryInterface(Components.interfaces.nsIRDFContainer);
-  
   if (aFileType == this.FILETYPE_CLIPPINGS_1X) {
     count = this._exportLegacyRDFXML(this._rdfContainer, extDS, extRootCtr);
-    format = "Clippings 1.x series";
+    format = "Clippings 1.x RDF/XML";
+  }
+  else if (aFileType == this.FILETYPE_CSV) {
+    count = this._exportAsCSV(this._rdfContainer, csvData);
+    format = "CSV";
+  }
+  else if (aFileType == this.FILETYPE_WX_JSON) {
+    count = this._exportAsClippingsWxJSON(this._rdfContainer, jsonData.userClippingsRoot, aIncludeSrcURLs);
+    format = "Clippings/wx JSON";
   }
   else {
     // A prime example of software reuse.
     count = this._importFromFileEx(this._rdfContainer, this._dataSrc, extRootCtr, extDS, true, aIncludeSrcURLs);
-    format = "Clippings 2";
+    format = "Clippings RDF/XML";
   }
 
   this._log("Exported " + count + " item(s); format: " + format);
 
-  var rds = extDS.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource);
-  try {
-    rds.FlushTo(aFileURL);
+  if (aFileType == this.FILETYPE_RDF_XML || aFileType == this.FILETYPE_CLIPPINGS_1X) {
+    var rds = extDS.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource);
+    try {
+      rds.FlushTo(aFileURL);
+    }
+    catch (e) {
+      this._log(e);
+      throw e;
+    }
+    return;
   }
-  catch (e) {
-    this._log(e);
-    throw e;
+
+  let fileData = "";
+  
+  if (aFileType == this.FILETYPE_CSV) {
+
   }
+  else if (aFileType == this.FILETYPE_WX_JSON) {
+    fileData = JSON.stringify(jsonData);
+  }
+
+  this.writeFile(aFileURL, fileData);
+};
+
+
+aeClippingsService.prototype._exportAsCSV = function (aFolderCtr, aCSVData)
+{
+  let rv = 0;
+
+  // TO DO: Finish implementation.
+
+  return rv;
+};
+
+
+aeClippingsService.prototype._exportAsClippingsWxJSON = function (aFolderCtr, aJSONFolderData, aIncludeSrcURLs)
+{
+  let rv;
+  let count = 0;
+  let childrenEnum = aFolderCtr.GetElements();
+  
+  while (childrenEnum.hasMoreElements()) {
+    let child = childrenEnum.getNext();
+    child = child.QueryInterface(Components.interfaces.nsIRDFResource);
+    let childURI = child.Value;
+    if (this.isFolder(childURI)) {
+      let subfolderCtr = this._getSeqContainerFromFolder(childURI);
+      let fldrItems = [];
+      count += this._exportAsClippingsWxJSON(subfolderCtr, fldrItems, aIncludeSrcURLs);
+      aJSONFolderData.push({
+        name: this.getName(childURI),
+        children: fldrItems
+      });
+
+      count++;
+    }
+    else if (this.isClipping(childURI)) {
+      let srcURL = (aIncludeSrcURLs ? this.getSourceURL(childURI) : "");
+      aJSONFolderData.push({
+        name:        this.getName(childURI),
+        content:     this.getText(childURI),
+        shortcutKey: this.getShortcutKey(childURI),
+        sourceURL:   srcURL,
+        label:       this.getLabel(childURI)
+      });
+
+      count++;
+    }
+  }
+  rv = count;
+  
+  return rv;
 };
 
 

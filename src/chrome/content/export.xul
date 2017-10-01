@@ -20,7 +20,7 @@
    -
    - The Initial Developer of the Original Code is
    - Alex Eng <ateng@users.sourceforge.net>.
-   - Portions created by the Initial Developer are Copyright (C) 2005-2015
+   - Portions created by the Initial Developer are Copyright (C) 2005-2017
    - the Initial Developer. All Rights Reserved.
    -
    - Contributor(s):
@@ -37,15 +37,17 @@
  onload="init()" ondialogaccept="exportClippings();return false;"
  ondialogcancel="cancel()">
 
-  <script type="application/x-javascript" src="chrome://clippings/content/export.js"/>
+  <script type="application/javascript" src="chrome://clippings/content/export.js"/>
 
   <stringbundle id="clippings-strings" 
    src="chrome://clippings/locale/clippings.properties"/>
 
   <label value="&exportFormatList.label;" accesskey="&exportFormatList.accesskey;" control="export-format-list"/>
 
-  <listbox id="export-format-list" rows="3" onselect="exportFormatList_click(event)">
+  <listbox id="export-format-list" rows="4" onselect="exportFormatList_click(event)">
     <listitem label="&fmtClippings.listitem;"/>
+    <listitem label="&fmtClippingsWx.listitem;"/>
+    <listitem label="&fmtCsv.listitem;"/>
     <listitem label="&fmtHtmlDocument.listitem;"/>
   </listbox>
 

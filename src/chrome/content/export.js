@@ -1,3 +1,4 @@
+/* -*- mode: javascript; tab-width: 8; indent-tabs-mode: nil; js-indent-level: 2 -*- */
 /* ***** BEGIN LICENSE BLOCK *****
  * Version: MPL 1.1
  *
@@ -15,7 +16,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2005-2015
+ * Portions created by the Initial Developer are Copyright (C) 2005-2017
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -88,9 +89,26 @@ function exportFormatList_click(event)
     break;
 
   case 1:
+    desc = gStrBundle.getString("clippingsWxFmtDesc");
+    includeSrcURLs.disabled = false;
+    if (exportFormatList_click.inclSrcURLsChecked) {
+      includeSrcURLs.checked = true;
+      exportFormatList_click.inclSrcURLsChecked = null;
+    }
+    break;
+
+  case 2:
+    desc = gStrBundle.getString("csvFmtDesc");
+    includeSrcURLs.disabled = true;
+    if (includeSrcURLs.checked) {
+      exportFormatList_click.inclSrcURLsChecked = true;
+    }
+    includeSrcURLs.checked = false;
+    break;
+    
+  case 3:
     desc = gStrBundle.getString("htmlFmtDesc");
     includeSrcURLs.disabled = true;
-
     if (includeSrcURLs.checked) {
       exportFormatList_click.inclSrcURLsChecked = true;
     }
@@ -116,14 +134,25 @@ function exportClippings()
   fp.init(window, gStrBundle.getString("dlgTitleExportClippings"), fp.modeSave);
 
   switch (gExportFormatList.selectedIndex) {
-  case 0:      
+  case 0:  // Clippings RDF/XML
     fp.defaultString = gStrBundle.getString("clipdat2.rdf");
     fp.defaultExtension = "rdf";
     fp.appendFilter(gStrBundle.getString("rdfExportFilterDesc"), "*.rdf");
     fileType = gClippingsSvc.FILETYPE_RDF_XML;
     break;
 
-  case 1:
+  case 1:  // Clippings/wx JSON
+    fp.defaultString = gStrBundle.getString("clippings.json");
+    fp.defaultExtension = "json";
+    fp.appendFilter(gStrBundle.getString("wxJSONExportFilterDesc"), "*.json");
+    fileType = gClippingsSvc.FILETYPE_WX_JSON;
+    break;
+
+  case 2:  // CSV
+    alertEx("The selected option is not available right now.");
+    return;
+    
+  case 3:  // HTML
     fp.defaultString = gStrBundle.getString("clippings.html");
     fp.defaultExtension = "html";
     fp.appendFilter(gStrBundle.getString("htmlFilterDesc"), "*.html");
@@ -151,7 +180,9 @@ function exportClippings()
       var fnExport;
 
       if (fileType == gClippingsSvc.FILETYPE_RDF_XML
-	  || fileType == gClippingsSvc.FILETYPE_CLIPPINGS_1X) {
+	  || fileType == gClippingsSvc.FILETYPE_CLIPPINGS_1X
+          || fileType == gClippingsSvc.FILETYPE_WX_JSON
+          || fileType == gClippingsSvc.FILETYPE_CSV) {
 
 	fnExport = function () { 
 	  gClippingsSvc.exportToFile(url, fileType, includeSrcURLs.checked);
