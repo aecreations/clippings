@@ -2062,7 +2062,7 @@ aeClippingsService.prototype.exportToFile = function (aFileURL, aFileType, aIncl
   let fileData = "";
   
   if (aFileType == this.FILETYPE_CSV) {
-
+    fileData = csvData.join("\r\n");
   }
   else if (aFileType == this.FILETYPE_WX_JSON) {
     fileData = JSON.stringify(jsonData);
@@ -2075,9 +2075,28 @@ aeClippingsService.prototype.exportToFile = function (aFileURL, aFileType, aIncl
 aeClippingsService.prototype._exportAsCSV = function (aFolderCtr, aCSVData)
 {
   let rv = 0;
+  let count = 0;
+  let childrenEnum = aFolderCtr.GetElements();
+  
+  while (childrenEnum.hasMoreElements()) {
+    let child = childrenEnum.getNext();
+    child = child.QueryInterface(Components.interfaces.nsIRDFResource);
+    let childURI = child.Value;
 
-  // TO DO: Finish implementation.
-
+    if (this.isFolder(childURI)) {
+      let subfolderCtr = this._getSeqContainerFromFolder(childURI);
+      count += this._exportAsCSV(subfolderCtr, aCSVData);
+    }
+    else if (this.isClipping(childURI)) {
+      let name = this.getName(childURI);
+      let content = this.getText(childURI);
+      content = content.replace(/\"/g, '""');
+      aCSVData.push(`"${name}","${content}"`);
+      count++;
+    }
+  }
+  rv = count;
+  
   return rv;
 };
 

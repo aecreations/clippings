@@ -149,8 +149,11 @@ function exportClippings()
     break;
 
   case 2:  // CSV
-    alertEx("The selected option is not available right now.");
-    return;
+    fp.defaultString = gStrBundle.getString("clippings.csv");
+    fp.defaultExtension = "csv";
+    fp.appendFilter(gStrBundle.getString("csvExportFilterDesc"), "*.csv");
+    fileType = gClippingsSvc.FILETYPE_CSV;
+    break;
     
   case 3:  // HTML
     fp.defaultString = gStrBundle.getString("clippings.html");
