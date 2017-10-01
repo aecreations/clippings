@@ -519,7 +519,7 @@
     </toolbar>
   </toolbox>
 
-  <hbox id="clippings-wx-notification" hidden="true" style="background-color:#fcfc29">
+  <hbox id="clippings-wx-notification" hidden="true">
     <grid flex="1">
       <columns>
 	<column/><column flex="1"/><column/>

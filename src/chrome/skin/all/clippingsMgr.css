@@ -328,6 +328,13 @@ toolbarbutton .toolbarbutton-icon {
   -moz-image-region: rect(48px, 288px, 64px, 272px);
 }
 
+
+#clippings-wx-notification {
+  border-top: 1px solid white;
+  border-bottom: 1px solid #fbe738;
+  background-color: #fcfc29;
+}
+
 #clipping-label-btn, #clipping-label-btn-2 {
   min-width: 24px;
 }

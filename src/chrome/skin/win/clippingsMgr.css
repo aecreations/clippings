@@ -338,6 +338,12 @@ toolbarbutton .toolbarbutton-icon {
   min-width: 24px;
 }
 
+#clippings-wx-notification {
+  border-top: 1px solid white;
+  border-bottom: 1px solid #fbe738;
+  background-color: #fcfc29;
+}
+
 #clippings-wx-notification description {
   font-weight: bold;
   cursor: pointer;
