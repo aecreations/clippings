@@ -1986,6 +1986,12 @@ function reload()
     gIsClippingsDirty = false;
   }
 
+  if (! gClippingsList) {
+    // Handle case where reload() invoked when Clippings Manager was just
+    // opened.
+    return;
+  }
+  
   // currIndex == -1 if nothing was selected
   var currIndex = gClippingsList.selectedIndex;
   currIndex = currIndex == -1 ? 0 : currIndex;
@@ -2595,8 +2601,6 @@ function updateLabelMenu()
   }
 
   let label = gClippingsSvc.getLabel(uri);
-
-  aeUtils.log(aeString.format("updateLabelMenu(): Label of selected clipping: %s", label));
 
   gClippingLabelPicker.selectedLabel = label;  
   gClippingLabelPickerCxtMenu.selectedLabel = label;
