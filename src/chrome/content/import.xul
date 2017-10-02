@@ -50,7 +50,8 @@
        label="&fileBrowse.label;" accesskey="&fileBrowse.accesskey;"
        oncommand="chooseImportFile()"/>
     </hbox>
-    <checkbox id="replace-shortcut-keys" label="&replcShctKey.label;"/>
+    <checkbox id="replace-shortcut-keys" label="&replcShctKey.label;"
+     accesskey="&replcShctKey.accesskey;"/>
   </vbox>
   <separator class="thin"/>
 

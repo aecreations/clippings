@@ -199,6 +199,7 @@
 <!ENTITY importButton.label "Import">
 <!ENTITY selectImpFile.label "Select import file:">
 <!ENTITY replcShctKey.label "Replace shortcut keys">
+<!ENTITY replcShctKey.accesskey "R">
 
 <!-- Export dialog -->
 <!ENTITY export.title "Export Clippings">
