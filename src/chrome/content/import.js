@@ -25,8 +25,9 @@
 
 Components.utils.import("resource://clippings/modules/aeConstants.js");
 Components.utils.import("resource://clippings/modules/aeUtils.js");
+Components.utils.import("resource://gre/modules/osfile.jsm")
 
-let gDlgArgs, gStrBundle, gClippingsSvc, gImportURL, gImportPath;
+let gDlgArgs, gStrBundle, gClippingsSvc, gImportURL, gImportPath, gImportFile;
 
 
 //
@@ -71,6 +72,7 @@ function chooseImportFile()
     return;
   }
 
+  gImportFile = fp.file.QueryInterface(Components.interfaces.nsIFile);
   gImportURL = fp.fileURL.QueryInterface(Components.interfaces.nsIURI).spec;  
   gImportPath = fp.file.QueryInterface(Components.interfaces.nsIFile).path;
 
@@ -87,6 +89,15 @@ function chooseImportFile()
 
 function importClippings()
 {
+  if (!gImportURL || !$("import-file-path").value) {
+    aeUtils.beep();
+    $("import-file-brws").focus();
+    return false;
+  }
+  
+  let progressMeter = $("import-progress");
+  progressMeter.style.visibility = "visible";
+
   function resetProgress() {
     progressMeter.style.visibility = "hidden";
     progressMeter.value = 0;
@@ -94,9 +105,6 @@ function importClippings()
   
   gDlgArgs.numImported = 0;
 
-  let progressMeter = $("import-progress");
-  progressMeter.style.visibility = "visible";
-  
   let importDSRootCtr = {};
   progressMeter.value = 5;
 
@@ -148,6 +156,12 @@ function importClippings()
   progressMeter.value = 100;
   
   gDlgArgs.userCancel = false;
+  return true;
+}
+
+
+function importJSONFile()
+{
   return true;
 }
 
