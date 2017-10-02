@@ -88,8 +88,8 @@ function chooseImportFile()
 function importClippings()
 {
   function resetProgress() {
-    progressMeter.mode = "determined";
     progressMeter.style.visibility = "hidden";
+    progressMeter.value = 0;
   }
   
   gDlgArgs.numImported = 0;
@@ -99,9 +99,10 @@ function importClippings()
   
   let importDSRootCtr = {};
   progressMeter.value = 5;
+
+  // TO DO: JSON import.  Below assumes we are always importing RDF/XML file.
   
   try {
-    progressMeter.mode = "undetermined";
     gDlgArgs.numImported = gClippingsSvc.importFromFile(gImportURL, false, false, importDSRootCtr);
   }
   catch (e if e.result == Components.results.NS_ERROR_NOT_INITIALIZED) {
@@ -122,26 +123,24 @@ function importClippings()
 
   importDSRootCtr = importDSRootCtr.value;
 
-  progressMeter.mode = "determined";
   progressMeter.value = 75;
   
-  // Handle conflicting shortcut keys
-  let conflictingKeys = false;
   let replaceShortcutKeys = $("replace-shortcut-keys").checked;
+  let importFlag;
+    
+  if (replaceShortcutKeys) {
+    importFlag = gClippingsSvc.IMPORT_REPLACE_CURRENT;
+  }
+  else {
+    importFlag = gClippingsSvc.IMPORT_KEEP_CURRENT;
+  }
 
   try {
-    conflictingKeys = gClippingsSvc.hasConflictingShortcutKeys(importDSRootCtr);
+    gClippingsSvc.importShortcutKeys(importDSRootCtr, importFlag);
   }
   catch (e) {}
 
-  if (conflictingKeys && replaceShortcutKeys) {
-    try {
-      gClippingsSvc.importShortcutKeys(importDSRootCtr, gClippingsSvc.IMPORT_REPLACE_CURRENT);
-    }
-    catch (e) {}
-  }
-
-  progressMeter.value = 90;
+  progressMeter.value = 95;
 
   // Append the "empty" clipping to any empty folders that were imported
   gClippingsSvc.processEmptyFolders();
