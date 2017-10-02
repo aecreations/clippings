@@ -2858,18 +2858,76 @@ function doExport()
 
 function doImport()
 {
+  let dlgArgs = {
+    numImported: null,
+    replaceShortcutKeys: true,
+    userCancel: null
+  };
+  
+  let impDlg = window.openDialog("chrome://clippings/content/import.xul", "import_dlg", "dialog,modal,centerscreen", dlgArgs);
+
+  if (dlgArgs.userCancel) {
+    return;
+  }
+
+  // Handle empty RDF files
+  if (dlgArgs.numImported == 0) {
+    let toolsMenu = $("clippings-options");
+    let panel = $("import-empty-alert");
+    $("import-empty-alert-msg").value = gStrBundle.getString("msgNoItems");
+    gStatusBar.label = "";
+    aeUtils.beep();
+    panel.openPopup(toolsMenu, "after_start", 0, 0, false, false);
+    return;
+  }
+
+  var deck = $("entry-properties");
+  if (gClippingsList.getRowCount() > 0) {
+    deck.selectedIndex = 0;
+    gClippingsList.selectedIndex = 0;
+    gClippingsList.tree.click();
+  }
+
+  // Status bar msg is overwritten in listbox.click() call, so redisplay
+  // status of import.
+  gStatusBar.label = aeString.format("%s%s",
+                                     gStrBundle.getString("importBegin"),
+                                     gStrBundle.getString("importDone"));
+  try {
+    gClippingsSvc.flushDataSrc(true);
+  }
+  catch (e) {
+    // Don't do anything for now - try again when closing Clippings Manager.
+  }
+
+  if (gFindBar.isActivated()) {
+    gFindBar.setSearchResultsUpdateFlag();
+  }
+}
+
+
+// DEPRECATED
+function doImportEx()
+{
   var fp = Components.classes["@mozilla.org/filepicker;1"]
                      .createInstance(Components.interfaces.nsIFilePicker);
   fp.init(window, gStrBundle.getString("dlgTitleImportClippings"), fp.modeOpen);
   fp.appendFilter(gStrBundle.getString("rdfImportFilterDesc"), "*.rdf");
+  fp.appendFilter(gStrBundle.getString("wxJSONImportFilterDesc"), "*.json");
 
   var dlgResult = fp.show();
   if (dlgResult != fp.returnOK) {
     return doImport.USER_CANCEL;
   }
 
-  var url = fp.fileURL.QueryInterface(Components.interfaces.nsIURI).spec;
+  var url = fp.fileURL.QueryInterface(Components.interfaces.nsIURI).spec;  
   var path = fp.file.QueryInterface(Components.interfaces.nsIFile).path;
+
+  if (url.endsWith(".json")) {
+    window.alert("The selected option is not available right now.");
+    return;
+  }
+  
   var dsURL = aeUtils.getDataSourcePathURL() + aeConstants.CLIPDAT_FILE_NAME;
 
   // Prevent attempt at importing data source file.

@@ -194,6 +194,12 @@
 <!ENTITY defaultValue.description "Separate multiple values with a ''|'' symbol.  Example: red|green|blue">
 <!ENTITY autoIncrement.description "When the clipping is pasted, you will be prompted for the starting numeric value.  The value will automatically increase by one every time the same clipping is pasted, until it is reset from the Clippings context menu.">
 
+<!-- Import dialog -->
+<!ENTITY import.title "Import Clippings">
+<!ENTITY importButton.label "Import">
+<!ENTITY selectImpFile.label "Select import file:">
+<!ENTITY replcShctKey.label "Replace shortcut keys">
+
 <!-- Export dialog -->
 <!ENTITY export.title "Export Clippings">
 <!ENTITY exportButton.label "Export">
