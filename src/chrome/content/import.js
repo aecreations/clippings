@@ -64,6 +64,7 @@ function chooseImportFile()
   var fp = Components.classes["@mozilla.org/filepicker;1"]
                      .createInstance(Components.interfaces.nsIFilePicker);
   fp.init(window, gStrBundle.getString("dlgTitleImportClippings"), fp.modeOpen);
+  fp.appendFilter(gStrBundle.getString("multiImpFmtFilterDesc"), "*.rdf; *.json");
   fp.appendFilter(gStrBundle.getString("rdfImportFilterDesc"), "*.rdf");
   fp.appendFilter(gStrBundle.getString("wxJSONImportFilterDesc"), "*.json");
 
