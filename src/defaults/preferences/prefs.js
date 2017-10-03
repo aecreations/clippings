@@ -2,6 +2,7 @@ pref("extensions.aecreations.clippings.entries.add_silently", false);
 pref("extensions.aecreations.clippings.backup.maxfiles", 10);
 pref("extensions.aecreations.clippings.first_run", true);
 pref("extensions.aecreations.clippings.v3.first_run", true);
+pref("extensions.aecreations.clippings.show_wx_notice", true);
 pref("extensions.aecreations.clippings.migrate_common_ds_pref", true);
 pref("extensions.aecreations.clippings.export.html.title", "Clippings");
 pref("extensions.aecreations.clippings.datasource.location", "");

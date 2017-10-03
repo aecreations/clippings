@@ -1089,9 +1089,9 @@ function init()
   }
 
   // Clippings/wx migration notification - for Firefox only.
-  if (aeUtils.getHostAppID() == aeConstants.HOSTAPP_FX_GUID) {
+  if (aeUtils.getHostAppID() == aeConstants.HOSTAPP_FX_GUID
+      && aeUtils.getPref("clippings.show_wx_notice", true)) {
     let params = getParamsMap(window.location.search);
-
     if (params["hideWxNotice"] === undefined) {
       $("clippings-wx-notification").hidden = false;
     }
@@ -3160,6 +3160,8 @@ function backupClippings()
         doAlert(gStrBundle.getString("errorBackupFailed"));
         return;
       }
+      
+      aeUtils.setPref("clippings.show_wx_notice", false);
     }
   };
 
