@@ -34,8 +34,8 @@
     <script>
       function openClippingsMgr()
       {
-        var wnd = window.open("chrome://clippings/content/clippingsMgr.xul",
-  		 	      "clippings_wndobj", "chrome,resizable");
+        var url = "chrome://clippings/content/clippingsMgr.xul?hideWxNotice=1";
+        var wnd = window.open(url, "clippings_wndobj", "chrome,resizable");
         wnd.focus();
       }
 
@@ -113,10 +113,6 @@
           border-radius: 4px;
         }
 
-        aside > h3 {
-          font-weight: bold;
-        }
-
         .cta {
           padding: 16px 16px 16px 16px;
           border: 1px solid #fce910;
@@ -177,11 +173,6 @@
 
         p, li {
           font-size: 11pt !important;
-        }
-
-        aside > h3 {
-          font-size: 12pt !important;
-          font-weight: bold;
         }
 
         aside > p {
@@ -245,17 +236,10 @@
         float: right;
       }
       
-      aside > h3 {
-        margin-top: 0;
-        margin-bottom: 0;
-        margin-left: 0;
-        color: #0c0c0d;
-      }
-      
       aside > p {
         margin-left: 0;
-        margin-top: 16px;
-        margin-bottom: 0px;
+        margin-top: 8px;
+        margin-bottom: 8px;
         font-size: 16px;
       }
 
@@ -291,9 +275,8 @@
     the upgrade, you should <strong>save a backup</strong> of your clippings.</p>
 
     <aside id="backup-hint">
-      <h3>Hint</h3>
-      <p>You can backup your clippings as many times as
-      you want, until Clippings is upgraded to version&nbsp;6.</p>
+      <p><strong>Hint:</strong> You can backup your clippings as many times
+      as you want, until Clippings is upgraded to version&nbsp;6.</p>
       <p>You may want to do this to ensure you have the most
       up-to-date backup.</p>
     </aside>
@@ -305,19 +288,16 @@
       <ol>
         <li>Open Clippings Manager.</li>
     
-       <li>Click <span class="cmd">Tools</span> &rarr; <span class="cmd">Export</span>.</li>
-    
-       <li>Ensure "Clippings File" is selected, then click <span class="cmd">Export</span>.</li>
+       <li>Click <span class="cmd">Tools</span> &rarr; <span class="cmd">Backup</span>.</li>
     
        <li>Select a location on your system to export to (such as the Desktop
-       or your Documents folder), then proceed with the export.</li>
+       or your Documents folder).</li>
       </ol>
 
     </article>
 
-    <p>Make sure you <strong>remember</strong> where you exported your
-    clippings to.  You will need to locate the exported clippings file once
-    Clippings is upgraded.</p>
+    <p>Make sure you <strong>remember</strong> where you saved the backup.  You
+    will need to locate the backup clippings file once Clippings is upgraded.</p>
 
     <p class="cta"><b>&raquo;</b> <a href="#" onclick="openClippingsMgr()">Click here to open Clippings Manager</a> and save a backup now.</p>
 
