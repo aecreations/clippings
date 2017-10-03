@@ -55,7 +55,7 @@ aeClippingsService.prototype = {
   MAX_NAME_LENGTH:        64,
 
   // Private constants (not declared in interface definition)
-  _DEBUG:  true,
+  _DEBUG:  false,
   _TEST_CORRUPTION: false,
   _SEQNODE_RESOURCE_URI:  "http://clippings.mozdev.org/rdf/user-clippings-v2",
   _OLD_SEQNODE_RESOURCE_URI: "http://clippings.mozdev.org/rdf/user-clippings",
@@ -168,7 +168,7 @@ aeClippingsService.prototype.getDataSource = function (aDataSrcURL)
     this._count = this._countRec(this._rdfContainer);
   }
 
-  this._log("aeClippingsService.getDataSource(): Initialization complete\nDatasource URL: \"" + aDataSrcURL + "\"\n" + this._count + " item(s) in root folder");
+  this._log("aeClippingsService.getDataSource(): Initialization complete.  Datasource URL: \"" + aDataSrcURL + "\"; " + this._count + " item(s) in root folder");
   return this._dataSrc;
 };
 
@@ -308,7 +308,7 @@ aeClippingsService.prototype._createNewClippingHelper = function (aParentFolderU
     // empty before this new clipping was added to it.
     this._removeDummyNode(aParentFolderURI, ds);
 
-    this._log("aeClippingsService._createNewClippingHelper(): Created a new clipping!\nName: " + name + "\nText: " + text + "\nSource URL: " + srcURL + "\nLabel: " + aLabel);
+    this._log("aeClippingsService._createNewClippingHelper(): Created a new clipping!  Name: " + name + ", text: " + text + ", source URL: " + srcURL + ", label: " + aLabel);
 
     // Notify all observers
     if (! aDontNotify) {
@@ -1246,7 +1246,7 @@ aeClippingsService.prototype.purgeDetachedItems = function ()
     cnt--;
   }
 
-  this._log("Purge completed; there are now " + cnt + " detached item(s)\n(count should be zero)");
+  this._log("Purge completed; there are now " + cnt + " detached item(s) (count should be zero)");
 
   this._detachedItems = [];
 };
@@ -1639,7 +1639,7 @@ aeClippingsService.prototype.flushDataSrc = function (aDoBackup)
     this._dataSrc.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource).Flush();
   }
   catch (e) {
-    this._log("aeClippingsService.flushDataSrc(): Data source flush failed!\n" + e);
+    this._log("aeClippingsService.flushDataSrc(): Data source flush failed!" + e);
     throw e;
   }
   this._log("*** Clippings datasource saved to disk ***");
@@ -1649,7 +1649,7 @@ aeClippingsService.prototype.flushDataSrc = function (aDoBackup)
       this._doBackup();
     }
     catch (e) {
-      this._log("aeClippingsService.flushDataSrc(): WARNING: Backup failed:\n" + e);
+      this._log("aeClippingsService.flushDataSrc(): WARNING: Backup failed:" + e);
     }
   }
    
@@ -1657,7 +1657,7 @@ aeClippingsService.prototype.flushDataSrc = function (aDoBackup)
     this._deleteOldBackupFiles();
   }
   catch (e) {
-    this._log("aeClippingsService.flushDataSrc(): WARNING: Cannot delete old backup file(s):\n" + e);
+    this._log("aeClippingsService.flushDataSrc(): WARNING: Cannot delete old backup file(s): " + e);
   }
 };
 
@@ -1866,7 +1866,7 @@ aeClippingsService.prototype.recoverFromBackup = function ()
       throw Components.Exception("aeClippingsService.recoverFromBackup(): Failed to retrieve URL of nsIFile object", Components.results.NS_ERROR_UNEXPECTED);
     }
 
-    this._log("aeClippingsService.recoverFromBackup(): Trying backup file whose file name is '" + file.leafName + "' and whose URL is:\n'" + url + "'");
+    this._log("aeClippingsService.recoverFromBackup(): Trying backup file whose file name is '" + file.leafName + "' and whose URL is: '" + url + "'");
 
     var extRDFContainer = Components.classes["@mozilla.org/rdf/container;1"].createInstance(Components.interfaces.nsIRDFContainer);
 
@@ -1890,7 +1890,7 @@ aeClippingsService.prototype.recoverFromBackup = function ()
     throw Components.Exception("aeClippingsService.recoverFromBackup(): Cannot find any valid backup files!", Components.results.NS_ERROR_FILE_NOT_FOUND);
   }
   
-  this._log("aeClippingsService.recoverFromBackup(): Found a candidate backup file whose URL is:\n'" + url + "'\nContains " + extRDFContainer.GetCount() + " entries");
+  this._log("aeClippingsService.recoverFromBackup(): Found a candidate backup file whose URL is: '" + url + "' - contains " + extRDFContainer.GetCount() + " entries");
 
   // Delete corrupted data source file
   this._log("aeClippingsService.recoverFromBackup(): Deleting corrupted datasource file");
@@ -1918,7 +1918,7 @@ aeClippingsService.prototype.recoverFromBackup = function ()
 
   var count = this.importFromFile(url, false, true, {});
 
-  this._log("aeClippingsService.recoverFromBackup(): " + count + " entries imported\nnewDataSrc: " + newDataSrc);
+  this._log("aeClippingsService.recoverFromBackup(): " + count + " entries imported - newDataSrc: " + newDataSrc);
 
   return newDataSrc;
 };
@@ -1933,7 +1933,7 @@ aeClippingsService.prototype.notifyDataSrcLocationChanged = function ()
 
   for (let i = 0; i < this._listeners.length; i++) {
     if (this._listeners[i]) {
-      this._log("aeClippingsService.notifyDataSrcLocationChange(): Notifying observer " + i + "\nOrigin: " + this._listeners[i].origin + " (1 = Clippings Manager; 2 = host app window; 3 = New Clipping dialog)");
+      this._log("aeClippingsService.notifyDataSrcLocationChange(): Notifying observer " + i + "; origin: " + this._listeners[i].origin + " (1 = Clippings Manager; 2 = host app window; 3 = New Clipping dialog)");
       this._listeners[i].dataSrcLocationChanged(this._dsFileURL);
     }
   }
@@ -2348,8 +2348,8 @@ aeClippingsService.prototype.importFromFile = function (aFileURL, aDontNotify, a
 
   rv = extRDFContainer.GetCount();
   this._log("External datasource successfully loaded from \"" + aFileURL
-	    + "\":\n" + rv + " item(s) in root folder\nFormat: "
-	    + (isNewDataSrc ? "Clippings 2" : "Clippings 1.x series"));
+	    + "\": " + rv + " item(s) in root folder; format: "
+	    + (isNewDataSrc ? "Clippings RDF/XML" : "Clippings 1.x RDF/XML"));
 
   if (isNewDataSrc) {
     rv = this._importFromFileEx(extRDFContainer, extDataSrc, this._rdfContainer, null, aImportShortcutKeys, true);
@@ -2555,7 +2555,7 @@ aeClippingsService.prototype.importShortcutKeys = function (aImportRootCtr, aImp
 	currentlyAssignedURIStr = currentlyAssignedURIStr.QueryInterface(Components.interfaces.nsISupportsString);
 	currentlyAssignedURI = currentlyAssignedURIStr.data;
 
-	this._log("aeClippingsService.importShortcutKeys(): Overwriting shortcut key assignment for key `" + key + "'\n(was assigned to clipping `" + currentlyAssignedURI + "')");
+	this._log("aeClippingsService.importShortcutKeys(): Overwriting shortcut key assignment for key `" + key + "' (was assigned to clipping `" + currentlyAssignedURI + "')");
 
 	this.setShortcutKey(currentlyAssignedURI, "");
 
