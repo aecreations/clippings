@@ -135,12 +135,33 @@ const REDO_STACK = 2;
 
 
 //
-// DOM utility function
+// Page utility functions
 //
 
 function $(aID)
 {
   return document.getElementById(aID);
+}
+
+
+function getParamsMap(aQueryStr)
+{
+  var rv = {};
+
+  // aQueryStr is the value returned by window.location.search
+  // It would be typically formatted such as "?foo=1&bar=baz"
+  if (aQueryStr) {
+    var search = aQueryStr.substring(1);
+
+    var paramsArray = search.split("&");
+
+    for (let i = 0; i < paramsArray.length; i++) {
+      var param = paramsArray[i].split("=");
+      rv[param[0]] = param[1];
+    }
+  }
+
+  return rv;
 }
 
 
@@ -1069,7 +1090,11 @@ function init()
 
   // Clippings/wx migration notification - for Firefox only.
   if (aeUtils.getHostAppID() == aeConstants.HOSTAPP_FX_GUID) {
-    $("clippings-wx-notification").hidden = false;
+    let params = getParamsMap(window.location.search);
+
+    if (params["hideWxNotice"] === undefined) {
+      $("clippings-wx-notification").hidden = false;
+    }
   }
   
   // First-run help
@@ -3098,6 +3123,7 @@ function backupClippings()
   var fp = Components.classes["@mozilla.org/filepicker;1"]
                      .createInstance(Components.interfaces.nsIFilePicker);
   fp.init(window, gStrBundle.getString("dlgTitleBackup"), fp.modeSave);
+  fp.defaultString = gStrBundle.getString("clippingsBkupFilename");
   fp.defaultExtension = "rdf";
   fp.appendFilter(gStrBundle.getString("rdfImportFilterDesc"), "*.rdf");
 
