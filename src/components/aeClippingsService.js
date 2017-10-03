@@ -2583,6 +2583,95 @@ aeClippingsService.prototype.cancelDeferredShortcutKeyImport = function ()
 };
 
 
+aeClippingsService.prototype.importFromJSON = function (aJSONRawData, aReplaceShortcutKeys)
+{
+  if (! this._rdfContainer) {
+    throw Components.Exception("Data source not initialized",
+			       Components.results.NS_ERROR_NOT_INITIALIZED);
+  }
+
+  let rv = null;
+  let jsonData = {};
+  
+  try {
+    jsonData = JSON.parse(aJSONRawData);
+  }
+  catch (e) {
+    throw Components.Exception("Failed to import JSON data: " + e, Components.results.NS_ERROR_FAILURE);
+  }
+
+  if (jsonData.userClippingsRoot === undefined) {
+    throw Components.Exception("Malformed JSON data", Components.results.NS_ERROR_FAILURE);
+  }
+
+  let shortcutKeyLookup = this.getShortcutKeyDict();
+
+  rv = this._importFromJSONHelper(this.kRootFolderURI, jsonData.userClippingsRoot, aReplaceShortcutKeys, shortcutKeyLookup);
+
+  return rv;
+};
+
+
+aeClippingsService.prototype._importFromJSONHelper = function (aFolderURI, aImportedItems, aReplaceShortcutKeys, aShortcutKeys)
+{
+  function getClippingURIWithShortcutKey(aShortcutKey) {
+    let rv = "";
+    let currentlyAssignedURIStr = {};
+    
+    try {
+      currentlyAssignedURIStr = aShortcutKeys.getValue(aShortcutKey, currentlyAssignedURIStr);
+    }
+    catch (e) {}
+
+    currentlyAssignedURIStr = currentlyAssignedURIStr.QueryInterface(Components.interfaces.nsISupportsString);
+    rv = currentlyAssignedURIStr.data;
+
+    return rv;
+  }
+  
+  let rv = null;
+  let count = 0;
+
+  for (let i = 0; i < aImportedItems.length; i++) {
+    let item = aImportedItems[i];
+    let uri = "";
+    
+    if ("children" in item) {
+      uri = this.createNewFolder(aFolderURI, item.name, true);
+      count++;
+      count += this._importFromJSONHelper(uri, item.children, aReplaceShortcutKeys, aShortcutKeys);
+    }
+    else {
+      uri = this.createNewClipping(aFolderURI, item.name, item.content, item.sourceURL, item.label, true);
+      count++;
+
+      if (! item.shortcutKey) {
+        continue;
+      }
+      
+      if (aShortcutKeys.hasKey(item.shortcutKey)) {
+        if (aReplaceShortcutKeys) {
+	  let clippingURI = getClippingURIWithShortcutKey(item.shortcutKey);
+
+          this._log(`aeClippingsService._importFromJSONHelper(): An imported clipping\'s shortcut key (key = '${item.shortcutKey}') conflicts with an existing clipping (URI: ${clippingURI})`);
+
+          // Unassign the shortcut key on the existing clipping.
+          // Then assign the shortcut key to the newly-imported clipping.
+          this.setShortcutKey(clippingURI, "");
+          this.setShortcutKey(uri, item.shortcutKey);
+        }
+      }
+      else {
+        // There is no shortcut key conflict, so go ahead and assign it.
+        this.setShortcutKey(uri, item.shortcutKey);
+      }
+    }
+  }
+  
+  rv = count;
+  return rv;
+};
+
 
 //
 // Private utility functions

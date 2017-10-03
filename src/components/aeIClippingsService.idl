@@ -274,6 +274,8 @@ interface aeIClippingsService : nsISupports
 
   void cancelDeferredShortcutKeyImport();
 
+  size_t importFromJSON(in aestring aJSONRawData, in boolean aReplaceShortcutKeys);
+  
   /*
    * Method processEmptyFolders():
    * Recursively scans through all empty folders in the data source and appends

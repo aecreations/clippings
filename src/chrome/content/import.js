@@ -81,7 +81,7 @@ function chooseImportFile()
   // Prevent attempt at importing data source file.
   var dsURL = aeUtils.getDataSourcePathURL() + aeConstants.CLIPDAT_FILE_NAME;
   if (gImportURL == dsURL) {
-    aeUtils.alertEx(window.title, aeString.format("%s %S", gStrBundle.getString("errorCannotImportDSFile"), gImportURL));
+    aeUtils.alertEx(document.title, aeString.format("%s %S", gStrBundle.getString("errorCannotImportDSFile"), gImportURL));
     return;
   }
 }
@@ -106,63 +106,107 @@ function importClippings()
   gDlgArgs.numImported = 0;
 
   let importDSRootCtr = {};
+  let replaceShortcutKeys = $("replace-shortcut-keys").checked;
+
   progressMeter.value = 5;
 
-  // TO DO: JSON import.  Below assumes we are always importing RDF/XML file.
-  
-  try {
-    gDlgArgs.numImported = gClippingsSvc.importFromFile(gImportURL, false, false, importDSRootCtr);
-  }
-  catch (e if e.result == Components.results.NS_ERROR_NOT_INITIALIZED) {
-    aeUtils.alertEx(window.title, gStrBundle.getString('alertImportFailedNoDS'));
-    resetProgress();
-    return false;
-  }
-  catch (e if e.result == Components.results.NS_ERROR_FILE_ACCESS_DENIED) {
-    aeUtils.alertEx(window.title, aeString.format("%s: %S", gStrBundle.getString("errorAccessDenied"), gImportPath));
-    resetProgress();
-    return false;
-  }
-  catch (e) {
-    aeUtils.alertEx(window.title, gStrBundle.getFormattedString("alertImportFailed", [gImportPath]));
-    resetProgress();
-    return false;
-  }
+  // Import Clippings/wx JSON file.
+  if (gImportPath.endsWith(".json")) {
+    let readFile = OS.File.read(gImportPath, { encoding: "utf-8" });
 
-  importDSRootCtr = importDSRootCtr.value;
+    readFile.then(aFileData => {
+      importJSONFile(aFileData, replaceShortcutKeys);
+    }).catch(aFileError => {
+      aeUtils.log("Failed to import file: " + aFileError);
+      aeUtils.alertEx(document.title, gStrBundle.getFormattedString("alertImportFailed", [gImportPath]));
+      resetProgress();
+    });
 
-  progressMeter.value = 75;
-  
-  let replaceShortcutKeys = $("replace-shortcut-keys").checked;
-  let importFlag;
-    
-  if (replaceShortcutKeys) {
-    importFlag = gClippingsSvc.IMPORT_REPLACE_CURRENT;
+    aeUtils.log("Reading JSON import file asynchronously...");
+    return false;
   }
   else {
-    importFlag = gClippingsSvc.IMPORT_KEEP_CURRENT;
+    // Import Clippings RDF/XML file.
+    try {
+      gDlgArgs.numImported = gClippingsSvc.importFromFile(gImportURL, false, false, importDSRootCtr);
+    }
+    catch (e if e.result == Components.results.NS_ERROR_NOT_INITIALIZED) {
+      aeUtils.alertEx(document.title, gStrBundle.getString('alertImportFailedNoDS'));
+      resetProgress();
+      return false;
+    }
+    catch (e if e.result == Components.results.NS_ERROR_FILE_ACCESS_DENIED) {
+      aeUtils.alertEx(document.title, aeString.format("%s: %S", gStrBundle.getString("errorAccessDenied"), gImportPath));
+      resetProgress();
+      return false;
+    }
+    catch (e) {
+      aeUtils.alertEx(document.title, gStrBundle.getFormattedString("alertImportFailed", [gImportPath]));
+      resetProgress();
+      return false;
+    }
+
+    importDSRootCtr = importDSRootCtr.value;
+
+    progressMeter.value = 75;
+    
+    let importFlag;
+    
+    if (replaceShortcutKeys) {
+      importFlag = gClippingsSvc.IMPORT_REPLACE_CURRENT;
+    }
+    else {
+      importFlag = gClippingsSvc.IMPORT_KEEP_CURRENT;
+    }
+
+    try {
+      gClippingsSvc.importShortcutKeys(importDSRootCtr, importFlag);
+    }
+    catch (e) {}
+
+    progressMeter.value = 95;
+
+    // Append the "empty" clipping to any empty folders that were imported
+    gClippingsSvc.processEmptyFolders();
+
+    progressMeter.value = 100;
+    
+    gDlgArgs.userCancel = false;
+    return true;
+  }
+
+  aeUtils.log("At end of function doImport() - we should never get here!");
+}
+
+
+function importJSONFile(aJSONFileData, aReplaceShortcutKeys)
+{
+  let progressMeter = $("import-progress");
+
+  function resetProgress() {
+    progressMeter.style.visibility = "hidden";
+    progressMeter.value = 0;
   }
 
   try {
-    gClippingsSvc.importShortcutKeys(importDSRootCtr, importFlag);
+    gDlgArgs.numImported = gClippingsSvc.importFromJSON(aJSONFileData, aReplaceShortcutKeys);
   }
-  catch (e) {}
-
+  catch (e) {
+    aeUtils.alertEx(document.title, gStrBundle.getFormattedString("alertImportFailed", [gImportPath]));
+    resetProgress();
+    return;
+  }
+  
   progressMeter.value = 95;
 
   // Append the "empty" clipping to any empty folders that were imported
   gClippingsSvc.processEmptyFolders();
 
   progressMeter.value = 100;
-  
+      
+  aeUtils.log("Completing function importJSONFile() - forcing window close.");
   gDlgArgs.userCancel = false;
-  return true;
-}
-
-
-function importJSONFile()
-{
-  return true;
+  window.close();
 }
 
 
