@@ -208,10 +208,10 @@
 <!ENTITY exportFormatList.label "Select a format to export Clippings to:">
 <!ENTITY exportFormatList.accesskey "S">
 <!ENTITY description.caption "Description">
-<!ENTITY fmtClippings.listitem "Clippings default">
+<!ENTITY fmtClippings.listitem "Clippings Default">
 <!ENTITY fmtClippingsWx.listitem "Clippings 6">
-<!ENTITY fmtCsv.listitem "CSV file">
-<!ENTITY fmtHtmlDocument.listitem "HTML document">
+<!ENTITY fmtCsv.listitem "CSV File">
+<!ENTITY fmtHtmlDocument.listitem "HTML Document">
 <!ENTITY includeSrcURLs.label "Include source web page addresses of clippings">
 <!ENTITY includeSrcURLs.accesskey "I">
 
