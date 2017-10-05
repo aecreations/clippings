@@ -2888,10 +2888,15 @@ function doImport()
     replaceShortcutKeys: true,
     userCancel: null
   };
+
+  // Suppress reloading of clippings tree when Clippings Manager window
+  // receives focus after the Import Clippings dialog closes.
+  gJustImported = true;
   
   let impDlg = window.openDialog("chrome://clippings/content/import.xul", "import_dlg", "dialog,modal,centerscreen", dlgArgs);
 
   if (dlgArgs.userCancel) {
+    gJustImported = false;
     return;
   }
 
@@ -2903,6 +2908,7 @@ function doImport()
     gStatusBar.label = "";
     aeUtils.beep();
     panel.openPopup(toolsMenu, "after_start", 0, 0, false, false);
+    gJustImported = false;
     return;
   }
 
@@ -2928,6 +2934,8 @@ function doImport()
   if (gFindBar.isActivated()) {
     gFindBar.setSearchResultsUpdateFlag();
   }
+
+  gJustImported = false;
 }
 
 
