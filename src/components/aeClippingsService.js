@@ -2642,7 +2642,9 @@ aeClippingsService.prototype._importFromJSONHelper = function (aFolderURI, aImpo
       count += this._importFromJSONHelper(uri, item.children, aReplaceShortcutKeys, aShortcutKeys);
     }
     else {
-      uri = this.createNewClipping(aFolderURI, item.name, item.content, item.sourceURL, item.label, true);
+      let label = ("label" in item ? item.label : "");
+
+      uri = this.createNewClipping(aFolderURI, item.name, item.content, item.sourceURL, label, true);
       count++;
 
       if (! item.shortcutKey) {
