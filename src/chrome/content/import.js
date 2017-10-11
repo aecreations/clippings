@@ -56,6 +56,8 @@ function init()
   gDlgArgs = window.arguments[0];
 
   $("replace-shortcut-keys").checked = gDlgArgs.replaceShortcutKeys;
+
+  $("import-file-brws").focus();
 }
 
 
