@@ -531,8 +531,7 @@
 	  <description
            onclick="showClippingsMigrationInfo()">&wxComing.desc;</description>
 	  <button id="dismiss-notification" label="&closeButton.label;"
-           oncommand="closeMigrationNotification()"
-           style="-moz-appearance:toolbarbutton;min-width:4em"/>
+           oncommand="closeMigrationNotification()" style="min-width:4em"/>
 	</row>
       </rows>
     </grid>
