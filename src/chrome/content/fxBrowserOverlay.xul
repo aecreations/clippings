@@ -88,9 +88,8 @@
      insertafter="context-selectAll" hidden="true">
 
       <menupopup id="ae-clippings-popup-1">
-	<menuitem id="ae-clippings-wx-ready" label="&wxGetReady.label;"
-         accesskey="&wxGetReady.accesskey;" default="true"
-         command="ae_clippings_wx_get_ready"/>
+	<menuitem label="&wxGetReady.label;" accesskey="&wxGetReady.accesskey;"
+         default="true" command="ae_clippings_wx_get_ready"/>
 	<menuseparator/>
         <menuitem id="ae-clippings-add" label="&new.menuLabel;" 
 	 accesskey="&new.accesskey;" command="ae_new_clipping_from_textbox"/>
@@ -135,6 +134,9 @@
     <menu id="ae-clippings-menu-2" label="&clippings.menuLabel;"
      insertafter="context-selectAll" hidden="true">
       <menupopup>
+	<menuitem label="&wxGetReady.label;" accesskey="&wxGetReady.accesskey;"
+         default="true" command="ae_clippings_wx_get_ready"/>
+        <menuseparator/>
         <menuitem id="ae-clippings-new-from-select" label="&newFromSelect.menuLabel;" accesskey="&newFromSelect.accesskey;" command="ae_new_clipping_from_selection"/>
         <menuitem label="&openClippingsMgr.menuLabel;" accesskey="&openClippingsMgr.accesskey;" command="ae_clippings_manager"/>
 	<menuseparator id="reset-auto-increment-vars-separator-2"/>
