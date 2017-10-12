@@ -16,7 +16,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2005-2016
+ * Portions created by the Initial Developer are Copyright (C) 2005-2017
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -591,7 +591,11 @@ window.aecreations.clippings = {
     oldBkupDir.initWithPath(oldBackupDirPath);
     if (oldBkupDir.exists() && oldBkupDir.isDirectory()) {
       this.aeUtils.log(`Detected old backup folder '.clipbak' in "${dataSrcPathURL}" - renaming it to '${this.aeConstants.BACKUP_DIR_NAME}'`);
-      oldBkupDir.renameTo(null, this.aeConstants.BACKUP_DIR_NAME);
+      try {
+        oldBkupDir.renameTo(null, this.aeConstants.BACKUP_DIR_NAME);
+      catch (e) {
+        this.aeUtils.alertEx(this.strBundle.getString("appName"), e);
+      }
     }
 
     // First-run initialization
