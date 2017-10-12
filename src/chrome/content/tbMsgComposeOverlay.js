@@ -593,6 +593,7 @@ window.aecreations.clippings = {
       this.aeUtils.log(`Detected old backup folder '.clipbak' in "${dataSrcPathURL}" - renaming it to '${this.aeConstants.BACKUP_DIR_NAME}'`);
       try {
         oldBkupDir.renameTo(null, this.aeConstants.BACKUP_DIR_NAME);
+      }
       catch (e) {
         this.aeUtils.alertEx(this.strBundle.getString("appName"), e);
       }
