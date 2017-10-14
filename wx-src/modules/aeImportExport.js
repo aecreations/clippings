@@ -46,17 +46,21 @@ aeImportExport.setDatabase = function (aDatabase)
 aeImportExport.importFromJSON = function (aImportRawJSON, aReplaceShortcutKeys)
 {
   if (! this._db) {
-    throw "aeImportExport: Database not initialized!";
+    throw new Error("aeImportExport: Database not initialized!");
   }
 
-  let importData = JSON.parse(aImportRawJSON);
+  let importData;
+
+  try {
+    importData = JSON.parse(aImportRawJSON);
+  }
+  catch (e) {
+    // SyntaxError - Raw JSON data is invalid.
+    throw e;
+  }
 
   this._log("aeImportExport: Imported JSON data:");
   this._log(importData);
-
-  if (importData === null) {
-    throw "aeImportExport: Unable to read imported JSON data.";
-  }
 
   this._getShortcutKeysToClippingIDs().then(aShortcutKeyLookup => {
     this._log("Starting JSON import...");
