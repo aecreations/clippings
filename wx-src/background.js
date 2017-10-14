@@ -333,7 +333,7 @@ function initMessageListeners()
       else if (aRequest.msgID == "close-clippings-mgr-wnd") {
         gWndIDs.clippingsMgr = null;
       }
-      else if (aRequest.msgID = "paste-shortcut-key") {
+      else if (aRequest.msgID == "paste-shortcut-key") {
         // TO DO: Same logic as for Firefox.
       }
     });
@@ -358,7 +358,7 @@ function initMessageListeners()
       else if (aRequest.msgID == "close-clippings-mgr-wnd") {
         gWndIDs.clippingsMgr = null;
       }
-      else if (aRequest.msgID = "paste-shortcut-key") {
+      else if (aRequest.msgID == "paste-shortcut-key") {
         let shortcutKey = aRequest.shortcutKey;
         if (! shortcutKey) {
           return;
@@ -636,13 +636,16 @@ function pasteClippingByID(aClippingID)
     
     gClippingsDB.clippings.get(aClippingID).then(aClipping => {
       if (! aClipping) {
-        alertEx(aeMsgBox.MSG_CLIPPING_NOT_FOUND);
-        return;
+        throw new Error("Cannot find clipping with ID = " + aClippingID);
+      }
+
+      if (aClipping.parentFolderID == -1) {
+        throw new Error("Attempting to paste a deleted clipping!");
       }
 
       clipping = aClipping;
       console.log(`Pasting clipping named "${clipping.name}"\nid = ${clipping.id}`);
-
+        
       return gClippingsDB.folders.get(aClipping.parentFolderID);
     }).then(aFolder => {
       let parentFldrName = "";
@@ -662,7 +665,7 @@ function pasteClippingByID(aClippingID)
       pasteClipping(clippingInfo);
     });
   }).catch(aErr => {
-    console.error("Clippings/wx: pasteClippingByID(): Database transaction failed!\n" + aErr);
+    console.error("Clippings/wx: pasteClippingByID(): " + aErr);
   });
 }
 
@@ -675,17 +678,25 @@ function pasteClippingByShortcutKey(aShortcutKey)
     
     results.first().then(aClipping => {
       if (! aClipping) {
-        console.warn("Cannot find clipping with shortcut key '%s'", aShortcutKey);
-        return;
+        console.log(`Cannot find clipping with shortcut key '${aShortcutKey}'`);
+        return null;
+      }
+
+      if (aClipping.parentFolderID == -1) {
+        throw new Error(`Shortcut key '${aShortcutKey}' is assigned to a deleted clipping!`);
       }
 
       clipping = aClipping;
       console.log(`Pasting clipping named "${clipping.name}"\nid = ${clipping.id}`);
 
-      let parentFldrName = "";
-
       return gClippingsDB.folders.get(aClipping.parentFolderID);
     }).then(aFolder => {
+      if (aFolder === null) {
+        return;
+      }
+
+      let parentFldrName = "";
+
       if (aFolder) {
         parentFldrName = aFolder.name;
       }
@@ -702,7 +713,7 @@ function pasteClippingByShortcutKey(aShortcutKey)
       pasteClipping(clippingInfo);
     });
   }).catch(aErr => {
-    console.error("Clippings/wx: pasteClippingByID(): Database transaction failed!\n" + aErr);
+    console.error("Clippings/wx: pasteClippingByShortcutKey(): " + aErr);
   });
 }
 

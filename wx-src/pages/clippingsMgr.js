@@ -315,7 +315,10 @@ function initToolbarButtons()
       });
     }
     else {
-      gClippingsDB.clippings.update(id, { parentFolderID: DELETED_ITEMS_FLDR_ID }).then(aNumUpd => {
+      gClippingsDB.clippings.update(id, {
+        parentFolderID: DELETED_ITEMS_FLDR_ID,
+        shortcutKey: ""
+      }).then(aNumUpd => {
         // TO DO: Add deleted clipping to undo stack.
       });
     }
