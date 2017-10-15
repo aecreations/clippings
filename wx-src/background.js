@@ -29,6 +29,7 @@ const HTML_PASTE_AS_FORMATTED = 0;
 const HTML_PASTE_AS_IS = 1;
 
 let gClippingsDB = null;
+let gOS = null;
 
 let gClippingsListeners = {
   ORIGIN_CLIPPINGS_MGR: 1,
@@ -236,7 +237,10 @@ function initHelper()
     });
   }
 
-  chrome.runtime.getPlatformInfo(aInfo => { console.log("Clippings/wx: OS: " + aInfo.os); });
+  chrome.runtime.getPlatformInfo(aInfo => {
+    console.log("Clippings/wx: OS: " + aInfo.os);
+    gOS = aInfo.os;
+  });
 
   chrome.browserAction.onClicked.addListener(aTab => {
     openClippingsManager();
@@ -745,6 +749,12 @@ function pasteClipping(aClippingInfo)
 function getClippingsDB()
 {
   return gClippingsDB;
+}
+
+
+function getOS()
+{
+  return gOS;
 }
 
 
