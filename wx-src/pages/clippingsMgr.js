@@ -41,6 +41,7 @@ let gClippingsListener;
 let gIsClippingsTreeEmpty;
 let gIsReloading = false;
 
+
 // Source URL editing
 let gSrcURLBar = {
   init: function ()
@@ -199,7 +200,7 @@ let gShortcutKey = {
 };
 
 
-
+// Initializing Clippings Manager window
 $(document).ready(() => {
   gClippings = chrome.extension.getBackgroundPage();
 
@@ -324,10 +325,7 @@ $(document).ready(() => {
     },
 
 
-    //
     // Helper methods
-    //
-
     _removeClippingsTreeNode: function (aIDWithSuffix) {
       let tree = getClippingsTree();
       let targetNode = tree.getNodeByKey(aIDWithSuffix);
@@ -381,7 +379,6 @@ $(document).ready(() => {
 
   initToolbarButtons();
   initInstantEditing();
-  //initShortcutKeyMenu();
   gShortcutKey.init();
   gSrcURLBar.init();
   initLabelPicker();
@@ -390,6 +387,7 @@ $(document).ready(() => {
 });
 
 
+// Reloading or closing Clippings Manager window
 $(window).on("beforeunload", function () {
   if (! gIsReloading) {
     browser.runtime.sendMessage({ msgID: "close-clippings-mgr-wnd" });
@@ -401,6 +399,21 @@ $(window).on("beforeunload", function () {
   purgeDeletedItems(DELETED_ITEMS_FLDR_ID);
 });
 
+
+// Keyboard event handlers for the Clippings Manager window
+$(document).keypress(aEvent => {
+  const isMacOS = gClippings.getOS() == "mac";
+
+  // NOTE: CTRL+W is automatically handled; no need to define it here.
+  if (aEvent.key == "F1") {
+    window.alert("No help is available (so leave me alone)");
+  }
+});
+
+
+//
+// Clippings Manager functions
+//
 
 function initToolbarButtons()
 {
