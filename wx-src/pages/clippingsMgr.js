@@ -738,7 +738,17 @@ function finishSrcURLEdit(aAcceptEdit)
     gClippingsDB.clippings.update(id, {
       sourceURL: updatedURL
     }).then(aNumUpdated => {
-      $("#clipping-src-url > a").text(updatedURL);
+      if ($("#clipping-src-url > a").length == 0) {
+        $("#clipping-src-url").html(`<a href="${updatedURL}">${updatedURL}</a>`);
+      }
+      else {
+        if (updatedURL) {
+          $("#clipping-src-url > a").text(updatedURL);
+        }
+        else {
+          $("#clipping-src-url").text("(None)");
+        }
+      }
       dismissSrcURLEditMode();
     });
   }
