@@ -122,6 +122,84 @@ let gSrcURLBar = {
 };
 
 
+// Shortcut key editing
+let gShortcutKey = {
+  _oldKey:   "",
+  _oldIndex: -1,
+
+  init: function ()
+  {
+    $("#clipping-key").change(aEvent => {
+      this.update();
+    }).mousedown(aEvent => {
+      this.setPrevShortcutKey();
+    });
+  },
+
+  getPrevSelectedIndex: function ()
+  {
+    return this._oldIndex;
+  },
+  
+  setPrevShortcutKey: function ()
+  {
+    let selectedNode = getClippingsTree().getActiveNode();
+    if (! selectedNode) {
+      return;
+    }
+
+    let clippingID = parseInt(selectedNode.key);
+    this._oldIndex = $("#clipping-key")[0].selectedIndex;
+
+    gClippingsDB.clippings.get(clippingID).then(aClipping => {
+      this._oldKey = aClipping.shortcutKey;
+    });
+  },
+
+  update: function ()
+  {
+    let shortcutKey = "";
+    let shortcutKeyMenu = $("#clipping-key")[0];
+
+    if (shortcutKeyMenu.selectedIndex == 0) {
+      if (! this._oldKey) {
+	// Skip shortcut key update if none was ever defined.
+	return;
+      }
+    }
+    else {
+      shortcutKey = shortcutKeyMenu.options[shortcutKeyMenu.selectedIndex].text;
+    }
+
+    if (shortcutKey == this._oldKey) {
+      return;
+    }
+
+    // Check if the shortcut key is already assigned.
+    let assignedKeysLookup = {};
+    gClippingsDB.clippings.where("shortcutKey").notEqual("").each((aItem, aCursor) => {
+      assignedKeysLookup[aItem.shortcutKey] = 1;
+    }).then(() => {
+      if (assignedKeysLookup[shortcutKey]) {
+        showModalDlg("#shortcut-key-conflict-msgbox");
+        return;
+      }
+
+      let selectedNode = getClippingsTree().getActiveNode();
+      if (! selectedNode) {
+        throw new Error("Can't set shortcut key if there is no clipping selected.");
+      }
+
+      let clippingID = parseInt(selectedNode.key);
+      gClippingsDB.clippings.update(clippingID, { shortcutKey });
+    }).catch (aErr => {
+      console.error(aErr);
+    });
+  }
+};
+
+
+
 $(document).ready(() => {
   gClippings = chrome.extension.getBackgroundPage();
 
@@ -303,7 +381,8 @@ $(document).ready(() => {
 
   initToolbarButtons();
   initInstantEditing();
-  initShortcutKeyMenu();
+  //initShortcutKeyMenu();
+  gShortcutKey.init();
   gSrcURLBar.init();
   initLabelPicker();
   initDialogs();
@@ -452,6 +531,9 @@ function initDialogs()
 {
   $("#shortcut-key-conflict-msgbox > button.dlg-accept").click(aEvent => {
     closeModalDlg("#shortcut-key-conflict-msgbox");
+
+    // NOTE: As of Firefox 57b8, this doesn't do anything.
+    $("#clipping-key")[0].selectedIndex = gShortcutKey.getPrevSelectedIndex();
   });
 
   initImport();
