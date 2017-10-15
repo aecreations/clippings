@@ -760,7 +760,12 @@ function uploadImportFile(aFileList)
       $("#import-progress-bar").hide();
       console.error(e);
       $("#import-error").text("Error reading selected file.  The file may not be a valid Clippings file.").show();
+      return;
     }
+
+    $("#import-error").text("").hide();
+    $("#import-progress-bar").hide();
+    closeModalDlg("#import-dlg");
   });
 
   fileReader.readAsText(importFile);
