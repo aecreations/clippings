@@ -41,6 +41,86 @@ let gClippingsListener;
 let gIsClippingsTreeEmpty;
 let gIsReloading = false;
 
+// Source URL editing
+let gSrcURLBar = {
+  init: function ()
+  {
+    $("#src-url-edit-mode").hide();
+    $("#edit-url-btn").click(aEvent => { this.edit() });
+    $("#edit-src-url-ok").click(aEvent => { this.acceptEdit() });
+    $("#edit-src-url-cancel").click(aEvent => { this.cancelEdit() });
+  },
+
+  show: function ()
+  {
+    $("#source-url-bar").show();
+  },
+
+  hide: function ()
+  {
+    $("#source-url-bar").hide();
+  },
+
+  isVisible: function ()
+  {
+    return ($("#source-url-bar:visible").length > 0);
+  },
+
+  keypress: function (aEvent)
+  {
+
+  },
+
+  edit: function ()
+  {
+    $("#src-url-normal-mode").hide();
+    $("#src-url-edit-mode").show();
+    $("#clipping-src-url-edit").val($("#clipping-src-url > a").text()).select().focus();
+  },
+
+  isEditing: function ()
+  {
+    return ($("#src-url-edit-mode:visible").length > 0);
+  },
+
+  acceptEdit: function ()
+  {
+    let tree = getClippingsTree();
+    let id = parseInt(tree.activeNode.key);
+    let updatedURL = $("#clipping-src-url-edit").val();
+    
+    gClippingsDB.clippings.update(id, {
+      sourceURL: updatedURL
+    }).then(aNumUpdated => {
+      if ($("#clipping-src-url > a").length == 0) {
+        $("#clipping-src-url").html(`<a href="${updatedURL}">${updatedURL}</a>`);
+      }
+      else {
+        if (updatedURL) {
+          $("#clipping-src-url > a").text(updatedURL);
+        }
+        else {
+          $("#clipping-src-url").text("(None)");
+        }
+      }
+      this._dismissSrcURLEditMode();
+    });
+  },
+
+  cancelEdit: function ()
+  {
+    this._dismissSrcURLEditMode();
+  },
+
+  // Helper
+  _dismissSrcURLEditMode: function ()
+  {
+    $("#src-url-normal-mode").show();
+    $("#src-url-edit-mode").hide();
+    $("#clipping-src-url-edit").val("");
+  }
+};
+
 
 $(document).ready(() => {
   gClippings = chrome.extension.getBackgroundPage();
@@ -224,7 +304,7 @@ $(document).ready(() => {
   initToolbarButtons();
   initInstantEditing();
   initShortcutKeyMenu();
-  initSrcURLEditor();
+  gSrcURLBar.init();
   initLabelPicker();
   initDialogs();
   buildClippingsTree();
@@ -618,9 +698,10 @@ function initLabelPicker()
 function initSrcURLEditor()
 {
   $("#src-url-edit-mode").hide();
-  $("#edit-url-btn").click(aEvent => { editSrcURL() });
-  $("#edit-src-url-ok").click(aEvent => { finishSrcURLEdit(true) });
-  $("#edit-src-url-cancel").click(aEvent => { finishSrcURLEdit(false) });
+  
+  $("#edit-url-btn").click(aEvent => { gSrcURLBar.edit() });
+  $("#edit-src-url-ok").click(aEvent => { gSrcURLBar.acceptEdit() });
+  $("#edit-src-url-cancel").click(aEvent => { gSrcURLBar.cancelEdit() });
 }
 
 
@@ -635,6 +716,10 @@ function updateDisplay(aEvent, aData)
   log("Clippings/wx: clippingsMgr: Updating display...");
 
   setStatusBarMsg();
+
+  if (gSrcURLBar.isEditing()) {
+    gSrcURLBar.cancelEdit();
+  }
   
   let selectedItemID = parseInt(aData.node.key);
 
@@ -709,15 +794,6 @@ function setStatusBarMsg(aMessage)
 
   let tree = getClippingsTree();
   $("#status-bar-msg").text(`${tree.count()} items`);
-}
-
-
-function editSrcURL()
-{
-  $("#src-url-normal-mode").hide();
-  $("#src-url-edit-mode").show();
-
-  $("#clipping-src-url-edit").val($("#clipping-src-url > a").text()).select().focus();
 }
 
 
