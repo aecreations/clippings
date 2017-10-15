@@ -200,6 +200,107 @@ let gShortcutKey = {
 };
 
 
+// Clippings Manager commands
+let gCmd = {
+  newClipping: function ()
+  {
+    if (gIsClippingsTreeEmpty) {
+      unsetEmptyClippingsState();
+    }
+    
+    let tree = getClippingsTree();
+    let selectedNode = tree.activeNode;
+    let parentFolderID = ROOT_FOLDER_ID;
+    
+    if (selectedNode) {
+      let parentNode = selectedNode.getParent();
+      parentFolderID = (parentNode.isRootNode() ? ROOT_FOLDER_ID : parseInt(parentNode.key));
+    }
+
+    let createClipping = gClippingsDB.clippings.add({
+      name: DEFAULT_NEW_CLIPPING_NAME,
+      content: "",
+      shortcutKey: "",
+      parentFolderID: parentFolderID,
+      label: "",
+      sourceURL: ""
+    });
+
+    createClipping.then(aNewClippingID => {
+      // TO DO: Add new clipping creation to undo stack.
+    });
+  },
+
+  newFolder: function ()
+  {
+    if (gIsClippingsTreeEmpty) {
+      unsetEmptyClippingsState();
+    }
+
+    let tree = getClippingsTree();
+    let selectedNode = tree.activeNode;
+    let parentFolderID = ROOT_FOLDER_ID;
+    
+    if (selectedNode) {
+      let parentNode = selectedNode.getParent();
+      parentFolderID = (parentNode.isRootNode() ? ROOT_FOLDER_ID : parseInt(parentNode.key));
+    }
+    
+    let createFolder = gClippingsDB.folders.add({
+      name: DEFAULT_NEW_FOLDER_NAME,
+      parentFolderID: parentFolderID
+    });
+
+    createFolder.then(aNewFolderID => {
+      // TO DO: Add new folder creation to undo stack.
+    });
+  },
+
+  deleteClippingOrFolder: function ()
+  {
+    if (gIsClippingsTreeEmpty) {
+      return;
+    }
+
+    let tree = getClippingsTree();
+    let selectedNode = tree.activeNode;
+    if (! selectedNode) {
+      return;
+    }
+
+    let id = parseInt(selectedNode.key);
+    
+    if (selectedNode.isFolder()) {
+      gClippingsDB.folders.update(id, { parentFolderID: DELETED_ITEMS_FLDR_ID }).then(aNumUpd => {
+        // TO DO: Add deleted folder to undo stack.
+      });
+    }
+    else {
+      gClippingsDB.clippings.update(id, {
+        parentFolderID: DELETED_ITEMS_FLDR_ID,
+        shortcutKey: ""
+      }).then(aNumUpd => {
+        // TO DO: Add deleted clipping to undo stack.
+      });
+    }
+  },
+
+  importFromFile: function ()
+  {
+    // Reset the file upload element so that it doesn't automatically select
+    // the last uploaded file by default.
+    $("#import-dlg #import-clippings-file-upload").val("");
+    $("#import-clippings-replc-shct-keys")[0].checked = true;
+    showModalDlg("#import-dlg");
+  },
+
+  exportToFile: function()
+  {
+    window.alert("The selected option is not available right now.");
+  }
+};
+
+
 // Initializing Clippings Manager window
 $(document).ready(() => {
   gClippings = chrome.extension.getBackgroundPage();
@@ -400,13 +501,27 @@ $(window).on("beforeunload", function () {
 });
 
 
-// Keyboard event handlers for the Clippings Manager window
+// Keyboard event handler
 $(document).keypress(aEvent => {
   const isMacOS = gClippings.getOS() == "mac";
 
-  // NOTE: CTRL+W is automatically handled; no need to define it here.
+  function isAccelKeyPressed()
+  {
+    if (isMacOS) {
+      return aEvent.metaKey;
+    }
+    return aEvent.ctrlKey;
+  }
+
+  // NOTE: CTRL+W/Cmd+W is automatically handled, so no need to define it here.
   if (aEvent.key == "F1") {
     window.alert("No help is available (so leave me alone)");
+  }
+  else if (aEvent.key == "Delete") {
+    gCmd.deleteClippingOrFolder();
+  }
+  else if (aEvent.key.toUpperCase() == "N" && aEvent.altKey) {
+    gCmd.newClipping();
   }
 });
 
@@ -417,93 +532,11 @@ $(document).keypress(aEvent => {
 
 function initToolbarButtons()
 {
-  $("#new-clipping").click(aEvent => {
-    if (gIsClippingsTreeEmpty) {
-      unsetEmptyClippingsState();
-    }
-    
-    let tree = getClippingsTree();
-    let selectedNode = tree.activeNode;
-    let parentFolderID = ROOT_FOLDER_ID;
-    
-    if (selectedNode) {
-      let parentNode = selectedNode.getParent();
-      parentFolderID = (parentNode.isRootNode() ? ROOT_FOLDER_ID : parseInt(parentNode.key));
-    }
+  $("#new-clipping").click(aEvent => { gCmd.newClipping() });
+  $("#new-folder").click(aEvent => { gCmd.newFolder() });
+  $("#delete").click(aEvent => { gCmd.deleteClippingOrFolder() });
 
-    let createClipping = gClippingsDB.clippings.add({
-      name: DEFAULT_NEW_CLIPPING_NAME,
-      content: "",
-      shortcutKey: "",
-      parentFolderID: parentFolderID,
-      label: "",
-      sourceURL: ""
-    });
-
-    createClipping.then(aNewClippingID => {
-      // TO DO: Add new clipping creation to undo stack.
-    });
-  });
-
-  $("#new-folder").click(aEvent => {
-    if (gIsClippingsTreeEmpty) {
-      unsetEmptyClippingsState();
-    }
-
-    let tree = getClippingsTree();
-    let selectedNode = tree.activeNode;
-    let parentFolderID = ROOT_FOLDER_ID;
-    
-    if (selectedNode) {
-      let parentNode = selectedNode.getParent();
-      parentFolderID = (parentNode.isRootNode() ? ROOT_FOLDER_ID : parseInt(parentNode.key));
-    }
-    
-    let createFolder = gClippingsDB.folders.add({
-      name: DEFAULT_NEW_FOLDER_NAME,
-      parentFolderID: parentFolderID
-    });
-
-    createFolder.then(aNewFolderID => {
-      // TO DO: Add new folder creation to undo stack.
-    });
-  });
-
-  $("#delete").click(aEvent => {
-    if (gIsClippingsTreeEmpty) {
-      return;
-    }
-
-    let tree = getClippingsTree();
-    let selectedNode = tree.activeNode;
-    if (! selectedNode) {
-      return;
-    }
-
-    let id = parseInt(selectedNode.key);
-    
-    if (selectedNode.isFolder()) {
-      gClippingsDB.folders.update(id, { parentFolderID: DELETED_ITEMS_FLDR_ID }).then(aNumUpd => {
-        // TO DO: Add deleted folder to undo stack.
-      });
-    }
-    else {
-      gClippingsDB.clippings.update(id, {
-        parentFolderID: DELETED_ITEMS_FLDR_ID,
-        shortcutKey: ""
-      }).then(aNumUpd => {
-        // TO DO: Add deleted clipping to undo stack.
-      });
-    }
-  });
-
-  $("#tmp-import").click(aEvent => {
-    // Reset the file upload element so that it doesn't automatically select
-    // the last uploaded file by default.
-    $("#import-dlg #import-clippings-file-upload").val("");
-    $("#import-clippings-replc-shct-keys")[0].checked = true;
-    showModalDlg("#import-dlg");
-  });
+  $("#tmp-import").click(aEvent => { gCmd.importFromFile() });
 }
 
 
@@ -889,43 +922,6 @@ function setStatusBarMsg(aMessage)
 
   let tree = getClippingsTree();
   $("#status-bar-msg").text(`${tree.count()} items`);
-}
-
-
-function finishSrcURLEdit(aAcceptEdit)
-{
-  function dismissSrcURLEditMode()
-  {
-    $("#clipping-src-url-edit").val("");
-    $("#src-url-edit-mode").hide();
-    $("#src-url-normal-mode").show();
-  }
-  
-  if (aAcceptEdit) {
-    let tree = getClippingsTree();
-    let id = parseInt(tree.activeNode.key);
-    let updatedURL = $("#clipping-src-url-edit").val();
-    
-    gClippingsDB.clippings.update(id, {
-      sourceURL: updatedURL
-    }).then(aNumUpdated => {
-      if ($("#clipping-src-url > a").length == 0) {
-        $("#clipping-src-url").html(`<a href="${updatedURL}">${updatedURL}</a>`);
-      }
-      else {
-        if (updatedURL) {
-          $("#clipping-src-url > a").text(updatedURL);
-        }
-        else {
-          $("#clipping-src-url").text("(None)");
-        }
-      }
-      dismissSrcURLEditMode();
-    });
-  }
-  else {
-    dismissSrcURLEditMode();
-  }
 }
 
 
