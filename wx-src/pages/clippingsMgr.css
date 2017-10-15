@@ -157,12 +157,47 @@ body {
     white-space: nowrap;
 }
 
-#source-url-bar > #clipping-src-url {
-    display: inline-block;
+#source-url-bar > #src-url-label {
+    order: 1;
+    flex: 0 1 auto;
+    margin-right: 6px;
 }
 
-#source-url-bar > #clipping-src-url > a {
+#source-url-bar > #source-url-deck {
+    order: 2;
+    flex: 1 1 auto;
+}
+
+#source-url-bar > #source-url-deck > #src-url-normal-mode > #clipping-src-url {
+    order: 1;
+    flex: 1 1 auto;
+    white-space: nowrap;
+    overflow: hidden;
     text-overflow: ellipsis;
+    width: 24em;
+}
+
+#source-url-bar > #source-url-deck > #src-url-normal-mode > #edit-url-btn {
+    order: 2;
+    flex: 0 1 auto;
+    min-width: 24px;
+}
+
+#source-url-bar > #source-url-deck > #src-url-edit-mode > #clipping-src-url-edit {
+    order: 1;
+    flex: 1 1 auto;
+}
+
+#source-url-bar > #source-url-deck > #src-url-edit-mode > #edit-src-url-ok {
+    order: 2;
+    margin-right: 0;
+    min-width: 18px;
+}
+
+#source-url-bar > #source-url-deck > #src-url-edit-mode > #edit-src-url-cancel {
+    order: 3;
+    margin-right: 0;
+    min-width: 24px;
 }
 
 #item-properties > #options-bar {

@@ -58,9 +58,19 @@
 	<textarea id="clipping-text" class="browser-style" placeholder="Enter clipping text"></textarea>
 
 	<!-- Source URL -->
-	<div id="source-url-bar">
-	  <label>Source address:</label>
-	  <div id="clipping-src-url">(None)</div>
+	<div id="source-url-bar" class="hbox">
+	  <label id="src-url-label">Source address:</label>
+	  <div id="source-url-deck">
+	    <div id="src-url-normal-mode" class="hbox">
+   	      <div id="clipping-src-url">(None)</div>
+              <button id="edit-url-btn">Edit</button>
+	    </div>
+	    <div id="src-url-edit-mode" class="hbox">
+  	      <input type="text" id="clipping-src-url-edit" value=""/>
+	      <button id="edit-src-url-ok">ok</button>
+	      <button id="edit-src-url-cancel">cancel</button>
+	    </div>
+	  </div>
 	</div>
 
 	<!-- Shortcut key -->

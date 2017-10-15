@@ -224,6 +224,7 @@ $(document).ready(() => {
   initToolbarButtons();
   initInstantEditing();
   initShortcutKeyMenu();
+  initSrcURLEditor();
   initLabelPicker();
   initDialogs();
   buildClippingsTree();
@@ -610,7 +611,16 @@ function initShortcutKeyMenu()
 
 function initLabelPicker()
 {
-  $("tmp-clipping-label").hide();
+  $("#tmp-clipping-label").hide();
+}
+
+
+function initSrcURLEditor()
+{
+  $("#src-url-edit-mode").hide();
+  $("#edit-url-btn").click(aEvent => { editSrcURL() });
+  $("#edit-src-url-ok").click(aEvent => { finishSrcURLEdit(true) });
+  $("#edit-src-url-cancel").click(aEvent => { finishSrcURLEdit(false) });
 }
 
 
@@ -699,6 +709,42 @@ function setStatusBarMsg(aMessage)
 
   let tree = getClippingsTree();
   $("#status-bar-msg").text(`${tree.count()} items`);
+}
+
+
+function editSrcURL()
+{
+  $("#src-url-normal-mode").hide();
+  $("#src-url-edit-mode").show();
+
+  $("#clipping-src-url-edit").val($("#clipping-src-url > a").text()).select().focus();
+}
+
+
+function finishSrcURLEdit(aAcceptEdit)
+{
+  function dismissSrcURLEditMode()
+  {
+    $("#clipping-src-url-edit").val("");
+    $("#src-url-edit-mode").hide();
+    $("#src-url-normal-mode").show();
+  }
+  
+  if (aAcceptEdit) {
+    let tree = getClippingsTree();
+    let id = parseInt(tree.activeNode.key);
+    let updatedURL = $("#clipping-src-url-edit").val();
+    
+    gClippingsDB.clippings.update(id, {
+      sourceURL: updatedURL
+    }).then(aNumUpdated => {
+      $("#clipping-src-url > a").text(updatedURL);
+      dismissSrcURLEditMode();
+    });
+  }
+  else {
+    dismissSrcURLEditMode();
+  }
 }
 
 
