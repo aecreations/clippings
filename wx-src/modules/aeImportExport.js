@@ -139,7 +139,7 @@ aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems
       }
     });
   }).catch(aErr => {
-    console.error("aeImportExport._importFromJSONHelper(): Transaction failed!\n" + aErr);
+    console.error("aeImportExport._importFromJSONHelper(): " + aErr);
     throw aErr;
   });
 };
@@ -190,7 +190,11 @@ aeImportExport._importFromRDFHelper = function (aDataSrc, aRDFFolderNode)
 
       this._log(`[${i}]: Item type: "${itemType}"`);
 
-      if (itemType == this.RDF_SEQ) {
+      if (itemType == this.CLIPPINGS_RDF_NS + "null") {
+        this._log("Skipping null clipping in empty folder.");
+        continue;
+      }
+      else if (itemType == this.RDF_SEQ) {
         let folderName = aDataSrc.any($rdf.sym(itemURI), $rdf.sym(this.CLIPPINGS_RDF_NS + "name")).value;
 
         this._info("Folder name: " + folderName);
@@ -239,6 +243,7 @@ aeImportExport._importFromRDFHelper = function (aDataSrc, aRDFFolderNode)
 
         this._log(debugMsg);
       }
+      
       rv.push(cnvItem);
     }
   }
