@@ -42,6 +42,26 @@ let gIsClippingsTreeEmpty;
 let gIsReloading = false;
 
 
+// Undo
+let gUndoStack = {
+  length: 0,
+  _stack: [],
+
+  push: function (aState)
+  {
+    this._stack.push(aState);
+    this.length++;
+  },
+
+  pop: function ()
+  {
+    var rv = this._stack.pop();
+    this.length--;
+    return rv;
+  }
+};
+
+
 // Source URL editing
 let gSrcURLBar = {
   init: function ()
@@ -202,6 +222,30 @@ let gShortcutKey = {
 
 // Clippings Manager commands
 let gCmd = {
+  // Flags for gUndoStack actions
+  ACTION_EDITNAME: 1,
+  ACTION_EDITTEXT: 2,
+  ACTION_DELETECLIPPING: 3,
+  ACTION_CREATENEW: 4,
+  ACTION_CHANGEPOSITION: 5,
+  ACTION_CREATENEWFOLDER: 6,
+  ACTION_DELETEFOLDER: 7,
+  ACTION_MOVETOFOLDER: 8,
+  ACTION_COPYTOFOLDER: 9,
+  ACTION_DELETEEMPTYFOLDER: 10,
+  ACTION_SETSHORTCUTKEY: 11,
+  ACTION_SETLABEL: 12,
+
+  // Flags for aDestUndoStack parameter of functions for reversible actions
+  UNDO_STACK: 1,
+  REDO_STACK: 2,
+
+  // Differentiate between clippings and folders, since they can have the same
+  // ID in the database.
+  ITEMTYPE_CLIPPING: 1,
+  ITEMTYPE_FOLDER: 2,
+
+  
   newClipping: function ()
   {
     if (gIsClippingsTreeEmpty) {
@@ -213,8 +257,7 @@ let gCmd = {
     let parentFolderID = ROOT_FOLDER_ID;
     
     if (selectedNode) {
-      let parentNode = selectedNode.getParent();
-      parentFolderID = (parentNode.isRootNode() ? ROOT_FOLDER_ID : parseInt(parentNode.key));
+      parentFolderID = this._getParentFldrIDOfTreeNode(selectedNode);
     }
 
     let createClipping = gClippingsDB.clippings.add({
@@ -242,8 +285,7 @@ let gCmd = {
     let parentFolderID = ROOT_FOLDER_ID;
     
     if (selectedNode) {
-      let parentNode = selectedNode.getParent();
-      parentFolderID = (parentNode.isRootNode() ? ROOT_FOLDER_ID : parseInt(parentNode.key));
+      parentFolderID = this._getParentFldrIDOfTreeNode(selectedNode);
     }
     
     let createFolder = gClippingsDB.folders.add({
@@ -256,7 +298,7 @@ let gCmd = {
     });
   },
 
-  deleteClippingOrFolder: function ()
+  deleteClippingOrFolder: function (aDestUndoStack)
   {
     if (gIsClippingsTreeEmpty) {
       return;
@@ -269,10 +311,18 @@ let gCmd = {
     }
 
     let id = parseInt(selectedNode.key);
+    let parentFolderID = this._getParentFldrIDOfTreeNode(selectedNode);
     
     if (selectedNode.isFolder()) {
       gClippingsDB.folders.update(id, { parentFolderID: DELETED_ITEMS_FLDR_ID }).then(aNumUpd => {
-        // TO DO: Add deleted folder to undo stack.
+        if (aDestUndoStack == gCmd.UNDO_STACK) {
+          gUndoStack.push({
+            action: this.ACTION_DELETEFOLDER,
+            itemType: this.ITEMTYPE_FOLDER,
+            id,
+            parentFolderID
+          });
+        }
       });
     }
     else {
@@ -280,9 +330,57 @@ let gCmd = {
         parentFolderID: DELETED_ITEMS_FLDR_ID,
         shortcutKey: ""
       }).then(aNumUpd => {
-        // TO DO: Add deleted clipping to undo stack.
+        if (aDestUndoStack == gCmd.UNDO_STACK) {
+          gUndoStack.push({
+            action: this.ACTION_DELETECLIPPING,
+            itemType: this.ITEMTYPE_CLIPPING,
+            id,
+            parentFolderID
+          });
+        }
       });
     }
+  },
+
+  // "Helper" methods are NOT meant to be invoked directly from the UI.
+  moveClippingHelper: function (aClippingID, aNewParentFldrID, aDestUndoStack)
+  {
+    let id, oldParentFldrID;
+    
+    gClippingsDB.clippings.get(aClippingID).then(aClipping => {
+      oldParentFldrID = aClipping.parentFolderID;
+      return gClippingsDB.clippings.update(aClippingID, { parentFolderID: aNewParentFldrID });
+    }).then(aNumUpd => {
+      if (aDestUndoStack == this.UNDO_STACK) {
+        gUndoStack.push({
+          action: this.ACTION_MOVETOFOLDER,
+          itemType: this.ITEMTYPE_CLIPPING,
+          id: aClippingID,
+          oldParentFldrID,
+          newParentFldrID: aNewParentFldrID
+        });
+      }
+    }).catch(aErr => { console.error(aErr) });
+  },
+
+  moveFolderHelper: function (aFolderID, aNewParentFldrID, aDestUndoStack)
+  {
+    let oldParentFldrID;
+    
+    gClippingsDB.folders.get(aFolderID).then(aFolder => {
+      oldParentFldrID = aFolder.parentFolderID;
+      return gClippingsDB.folders.update(aFolderID, { parentFolderID: aNewParentFldrID });
+    }).then(aNumUpd => {
+      if (aDestUndoStack == this.UNDO_STACK) {
+        gUndoStack.push({
+          action: this.ACTION_MOVETOFOLDER,
+          itemType: this.ITEMTYPE_FOLDER,
+          id: aFolderID,
+          oldParentFldrID,
+          newParentFldrID: aNewParentFldrID
+        });
+      }
+    }).catch(aErr => { console.error(aErr) });
   },
 
   importFromFile: function ()
@@ -297,6 +395,16 @@ let gCmd = {
   exportToFile: function()
   {
     window.alert("The selected option is not available right now.");
+  },
+
+  // Helper
+  _getParentFldrIDOfTreeNode: function (aNode)
+  {
+    let rv = null;
+    let parentNode = aNode.getParent();
+    rv = (parentNode.isRootNode() ? ROOT_FOLDER_ID : parseInt(parentNode.key));
+
+    return rv;
   }
 };
 
@@ -518,10 +626,13 @@ $(document).keypress(aEvent => {
     window.alert("No help is available (so leave me alone)");
   }
   else if (aEvent.key == "Delete") {
-    gCmd.deleteClippingOrFolder();
+    gCmd.deleteClippingOrFolder(gCmd.UNDO_STACK);
   }
   else if (aEvent.key.toUpperCase() == "N" && aEvent.altKey) {
     gCmd.newClipping();
+  }
+  else if (aEvent.key.toUpperCase() == "Z" && isAccelKeyPressed()) {
+    window.alert("Can't undo.");
   }
 });
 
@@ -534,7 +645,10 @@ function initToolbarButtons()
 {
   $("#new-clipping").click(aEvent => { gCmd.newClipping() });
   $("#new-folder").click(aEvent => { gCmd.newFolder() });
-  $("#delete").click(aEvent => { gCmd.deleteClippingOrFolder() });
+
+  $("#delete").click(aEvent => {
+    gCmd.deleteClippingOrFolder(gCmd.UNDO_STACK)
+  });
 
   $("#tmp-import").click(aEvent => { gCmd.importFromFile() });
 }
@@ -690,13 +804,13 @@ function buildClippingsTree()
               aData.otherNode.moveTo(aNode, aData.hitMode);
 
               let id = parseInt(aData.otherNode.key);
-              log("clippingsMgr: ID of moved clipping or folder: " + id + "\nID of new parent folder: " + newParentID);
+              log("Clippings/wx: clippingsMgr.js::#clippings-tree.dnd5.dragDrop(): ID of moved clipping or folder: " + id + "\nID of new parent folder: " + newParentID);
 
               if (aData.otherNode.isFolder()) {
-                gClippingsDB.folders.update(id, { parentFolderID: newParentID });
+                gCmd.moveFolderHelper(id, newParentID, gCmd.UNDO_STACK);
               }
               else {
-                gClippingsDB.clippings.update(id, { parentFolderID: newParentID });
+                gCmd.moveClippingHelper(id, newParentID, gCmd.UNDO_STACK);
               }
             }
             else {
