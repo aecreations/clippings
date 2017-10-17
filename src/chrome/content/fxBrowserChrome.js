@@ -564,7 +564,7 @@ window.aecreations.clippings = {
 
   showClippingsMigrationInfo: function ()
   {
-    let srcURL = "chrome://clippings/content/clippings6.xhtml";
+    let srcURL = this.aeUtils.getClippings6PageURL();
     gBrowser.selectedTab = gBrowser.loadOneTab(srcURL, { inBackground: false});
   },
 
