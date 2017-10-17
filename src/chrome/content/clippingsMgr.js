@@ -1434,7 +1434,7 @@ function setStatusBarVisibility()
 
 function showClippingsMigrationInfo()
 {
-  let srcURL = "chrome://clippings/content/clippings6.xhtml";
+  let srcURL = aeUtils.getClippings6PageURL();
   
   if (aeUtils.getHostAppID() == aeConstants.HOSTAPP_FX_GUID) {
     let wnd = aeUtils.getRecentHostAppWindow();
