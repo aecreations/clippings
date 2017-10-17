@@ -10,7 +10,7 @@
     <em:version>5.5.2rc1</em:version>
     <em:description>Save frequently-entered text for pasting later.</em:description>
     <em:creator>AE Creations</em:creator>
-    <em:contributor>Babelzilla Translators</em:contributor>
+    <em:translator>Endor8 (de)</em:translator>
     <em:iconURL>chrome://clippings/skin/images/icon.png</em:iconURL>
     <em:homepageURL>http://aecreations.sourceforge.net/clippings/</em:homepageURL>
     <em:optionsURL>chrome://clippings/content/options.xul</em:optionsURL>
