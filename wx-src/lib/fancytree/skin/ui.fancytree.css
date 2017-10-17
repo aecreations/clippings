@@ -19,8 +19,8 @@
  * Container and UL / LI
  *----------------------------------------------------------------------------*/
 ul.fancytree-container {
-  font-family: tahoma, arial, helvetica;
-  font-size: 10pt;
+  font: caption;
+  font-size: 12px;
   white-space: nowrap;
   padding: 3px;
   margin: 0;

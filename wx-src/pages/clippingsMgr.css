@@ -108,8 +108,8 @@ body {
     order: 1;
     flex: 0 1 auto;
     align-self: stretch;
-    width: 300px;
-    min-width: 300px;
+    width: 256px;
+    min-width: 256px;
     overflow: auto;
     border: 1px solid threedshadow;
     background-color: #fbfbfb;
