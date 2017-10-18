@@ -108,8 +108,8 @@ body {
     order: 1;
     flex: 0 1 auto;
     align-self: stretch;
-    width: 256px;
-    min-width: 256px;
+    width: 220px;
+    min-width: 220px;
     overflow: auto;
     border: 1px solid threedshadow;
     background-color: #fbfbfb;
@@ -123,6 +123,10 @@ body {
     order: 2;
     flex: 1 1 auto;
     align-self: stretch;
+}
+
+#item-properties label {
+    margin-right: 4px;
 }
 
 #item-properties > #clipping-name {
@@ -152,7 +156,7 @@ body {
 #item-properties > #source-url-bar {
     order: 3;
     flex: 0 1 auto;
-    padding: 4px 8px 10px 8px;
+    padding: 4px 8px 8px 8px;
     overflow: hidden;
     white-space: nowrap;
 }
@@ -160,7 +164,6 @@ body {
 #source-url-bar > #src-url-label {
     order: 1;
     flex: 0 1 auto;
-    margin-right: 6px;
 }
 
 #source-url-bar > #source-url-deck {
@@ -203,16 +206,27 @@ body {
 #item-properties > #options-bar {
     order: 4;
     flex: 0 1 auto;
-    padding: 1px 8px 2px 8px;
+    padding: 1px 8px 0px 8px;
 }
 
-#options-bar > .spacer,
+#options-bar > #shortcut-key-select {
+    order: 1;
+    flex: 0 1 auto;
+}
+
+#options-bar > #options-bar-spacer {
+    order: 2;
+    flex: 1 1 auto;
+}
+
 #options-bar > #tmp-clipping-label {
-    display: inline-block;
+    order: 3;
+    flex: 0 1 auto;
 }
 
 #tmp-label {
-    padding: 2px 6px 2px 6px;
+    padding: 2px 8px 2px 8px;
+    border-radius: 2px;
 }
 
 #status-bar {
