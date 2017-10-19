@@ -88,16 +88,24 @@ body {
     order: 2;
 }
 
-#toolbar > #delete {
+#toolbar > #move {
     order: 3;
 }
 
-#toolbar > #spacer-1 {
+#toolbar > #delete {
     order: 4;
 }
 
-#toolbar > #tmp-import {
+#toolbar > #undo {
     order: 5;
+}
+
+#toolbar > #spacer-1 {
+    order: 6;
+}
+
+#toolbar > #tmp-import {
+    order: 7;
 }
 
 #content {
@@ -234,7 +242,7 @@ body {
     height: var(--statusbar-height);
     padding-top: 2px;
     padding-bottom: 2px;
-    padding-left: 16px;
+    padding-left: 8px;
     
     border-top: 1px solid threedlightshadow;
     background-color: -moz-dialog;
@@ -244,7 +252,7 @@ body {
 
 #status-bar-msg {
     width: 100%;
-    text-align: center;
+    text-align: left;
 }
 
 

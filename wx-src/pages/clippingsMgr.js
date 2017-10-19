@@ -40,6 +40,7 @@ let gClippings;
 let gClippingsListener;
 let gIsClippingsTreeEmpty;
 let gIsReloading = false;
+let gClippingsTreeDnD = false;
 
 
 // Undo
@@ -236,7 +237,7 @@ let gCmd = {
   ACTION_SETSHORTCUTKEY: 11,
   ACTION_SETLABEL: 12,
 
-  // Flags for aDestUndoStack parameter of functions for reversible actions
+  // flags for aDestUndoStack parameter of functions for reversible actions
   UNDO_STACK: 1,
   REDO_STACK: 2,
 
@@ -342,8 +343,8 @@ let gCmd = {
     }
   },
 
-  // "Helper" methods are NOT meant to be invoked directly from the UI.
-  moveClippingHelper: function (aClippingID, aNewParentFldrID, aDestUndoStack)
+  // Internal commands are NOT meant to be invoked directly from the UI.
+  moveClippingIntrl: function (aClippingID, aNewParentFldrID, aDestUndoStack)
   {
     let id, oldParentFldrID;
     
@@ -363,7 +364,7 @@ let gCmd = {
     }).catch(aErr => { console.error(aErr) });
   },
 
-  moveFolderHelper: function (aFolderID, aNewParentFldrID, aDestUndoStack)
+  moveFolderIntrl: function (aFolderID, aNewParentFldrID, aDestUndoStack)
   {
     let oldParentFldrID;
     
@@ -397,6 +398,23 @@ let gCmd = {
     window.alert("The selected option is not available right now.");
   },
 
+  undo: function ()
+  {
+    if (gUndoStack.length == 0) {
+      setStatusBarMsg("Nothing to undo");
+      return;
+    }
+
+    let undo = gUndoStack.pop();
+
+    if (undo.action == this.ACTION_DELETECLIPPING) {
+      this.moveClippingIntrl(undo.id, undo.parentFolderID);
+    }
+    else if (undo.action == this.ACTION_DELETEFOLDER) {
+      this.moveFolderIntrl(undo.id, undo.parentFolderID);
+    }
+  },
+  
   // Helper
   _getParentFldrIDOfTreeNode: function (aNode)
   {
@@ -503,10 +521,51 @@ $(document).ready(() => {
     clippingChanged: function (aID, aData, aOldData) {
       let tree = getClippingsTree();
 
-      if (this._isFlaggedForDelete(aData)) {
-        this._removeClippingsTreeNode(aID + "C");
+      if (aData.parentFolderID != aOldData.parentFolderID) {
+        if (this._isFlaggedForDelete(aData)) {
+          this._removeClippingsTreeNode(aID + "C");
+        }
+        else {
+          if (gClippingsTreeDnD) {
+            // Avoid handling moved clipping twice.
+            gClippingsTreeDnD = false;
+            return;
+          }
+          
+          log("Clippings/wx: clippingsMgr.js::gClippingsListener.clippingChanged: Handling clipping move");
+          let changedNode = tree.getNodeByKey(aID + "C");
+          if (changedNode) {
+            let targParentNode;
+            if (aData.parentFolderID == ROOT_FOLDER_ID) {
+              targParentNode = tree.rootNode;
+            }
+            else {
+              targParentNode = tree.getNodeByKey(aData.parentFolderID + "F");
+            }
+            
+            changedNode.moveTo(targParentNode, "child");
+          }
+          else {
+            // Undoing delete.
+            let newNodeData = {
+              key: aID + "C",
+              title: sanitizeTreeNodeTitle(DEBUG_TREE ? `${aData.name} [key=${aID}C]` : aData.name)
+            };
+
+            if (aData.parentFolderID == ROOT_FOLDER_ID) {
+              changedNode = tree.rootNode.addNode(newNodeData);
+            }
+            else {
+              let parentNode = tree.getNodeByKey(aData.parentFolderID + "F");
+              changedNode = parentNode.addNode(newNodeData);
+            }
+          }
+
+          changedNode.setActive();
+          changedNode.makeVisible();  // Doesn't seem to do anything.
+        }
       }
-      else {
+      else if (aData.name != aOldData.name) {
         let changedNode = tree.getNodeByKey(aID + "C");
         changedNode.setTitle(sanitizeTreeNodeTitle(aData.name));
       }
@@ -515,10 +574,55 @@ $(document).ready(() => {
     folderChanged: function (aID, aData, aOldData) {
       let tree = getClippingsTree();
 
-      if (this._isFlaggedForDelete(aData)) {
-        this._removeClippingsTreeNode(aID + "F");
+      if (aData.parentFolderID != aOldData.parentFolderID) {
+        if (this._isFlaggedForDelete(aData)) {
+          this._removeClippingsTreeNode(aID + "F");
+        }
+        else {
+          if (gClippingsTreeDnD) {
+            // Avoid handling moved folder twice.
+            gClippingsTreeDnD = false;
+            return;
+          }
+          
+          log("Clippings/wx: clippingsMgr.js::gClippingsListener.folderChanged: Handling folder move");
+          let changedNode = tree.getNodeByKey(aID + "F");
+          if (changedNode) {
+            let targParentNode;
+            if (aData.parentFolderID == ROOT_FOLDER_ID) {
+              targParentNode = tree.rootNode;
+            }
+            else {
+              targParentNode = tree.getNodeByKey(aData.parentFolderID + "F");
+            }
+            
+            changedNode.moveTo(targParentNode, "child");
+          }
+          else {
+            // Undoing delete.
+            let newNodeData = {
+              key: aID + "F",
+              title: sanitizeTreeNodeTitle(DEBUG_TREE ? `${aData.name} [key=${aID}C]` : aData.name),
+              folder: true,
+              children: []
+            };
+
+            if (aData.parentFolderID == ROOT_FOLDER_ID) {
+              changedNode = tree.rootNode.addNode(newNodeData);
+            }
+            else {
+              let parentNode = tree.getNodeByKey(aData.parentFolderID + "F");
+              changedNode = parentNode.addNode(newNodeData);
+            }
+
+            // TO DO: Rebuild all child nodes of the restored folder.
+          }
+
+          changedNode.setActive();
+          changedNode.makeVisible();  // Doesn't seem to do anything.
+        }
       }
-      else {
+      else if (aData.name != aOldData.name) {
         let changedNode = tree.getNodeByKey(aID + "F");
         changedNode.setTitle(sanitizeTreeNodeTitle(aData.name));
       }
@@ -646,10 +750,16 @@ function initToolbarButtons()
   $("#new-clipping").click(aEvent => { gCmd.newClipping() });
   $("#new-folder").click(aEvent => { gCmd.newFolder() });
 
+  // TEMPORARY
+  $("#move").css({ display: "none" });
+  // END TEMPORARY
+  
   $("#delete").click(aEvent => {
     gCmd.deleteClippingOrFolder(gCmd.UNDO_STACK)
   });
 
+  $("#undo").click(aEvent => { gCmd.undo() });
+  
   $("#tmp-import").click(aEvent => { gCmd.importFromFile() });
 }
 
@@ -802,15 +912,16 @@ function buildClippingsTree()
               }
 
               aData.otherNode.moveTo(aNode, aData.hitMode);
-
+              gClippingsTreeDnD = true;
+              
               let id = parseInt(aData.otherNode.key);
-              log("Clippings/wx: clippingsMgr.js::#clippings-tree.dnd5.dragDrop(): ID of moved clipping or folder: " + id + "\nID of new parent folder: " + newParentID);
+              log(`Clippings/wx: clippingsMgr.js::#clippings-tree.dnd5.dragDrop(): ID of moved clipping or folder: ${id}\nID of new parent folder: ${newParentID}`);
 
               if (aData.otherNode.isFolder()) {
-                gCmd.moveFolderHelper(id, newParentID, gCmd.UNDO_STACK);
+                gCmd.moveFolderIntrl(id, newParentID, gCmd.UNDO_STACK);
               }
               else {
-                gCmd.moveClippingHelper(id, newParentID, gCmd.UNDO_STACK);
+                gCmd.moveClippingIntrl(id, newParentID, gCmd.UNDO_STACK);
               }
             }
             else {
