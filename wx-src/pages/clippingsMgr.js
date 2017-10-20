@@ -561,8 +561,7 @@ $(document).ready(() => {
             }
           }
 
-          changedNode.setActive();
-          changedNode.makeVisible();  // Doesn't seem to do anything.
+          changedNode.makeVisible().then(() => { changedNode.setActive() });
         }
       }
       else if (aData.name != aOldData.name) {
@@ -615,11 +614,9 @@ $(document).ready(() => {
               changedNode = parentNode.addNode(newNodeData);
             }
 
-            // TO DO: Rebuild all child nodes of the restored folder.
+            this._buildChildNodes(changedNode);
           }
-
-          changedNode.setActive();
-          changedNode.makeVisible();  // Doesn't seem to do anything.
+          changedNode.makeVisible().then(() => { changedNode.setActive() });
         }
       }
       else if (aData.name != aOldData.name) {
@@ -639,6 +636,31 @@ $(document).ready(() => {
 
 
     // Helper methods
+    _buildChildNodes: function (aFolderNode) {
+      let id = parseInt(aFolderNode.key);
+      
+      gClippingsDB.transaction("r", gClippingsDB.clippings, gClippingsDB.folders, () => {
+        gClippingsDB.folders.where("parentFolderID").equals(id).each((aItem, aCursor) => {
+          let newFldrNode = aFolderNode.addChildren({
+            key: aItem.id + "F",
+            title: sanitizeTreeNodeTitle(DEBUG_TREE ? `${aItem.name} [key=${aID}C]` : aItem.name),
+            folder: true,
+            children: []
+          });
+          this._buildChildNodes(newFldrNode);
+        }).then(() => {
+          gClippingsDB.clippings.where("parentFolderID").equals(id).each((aItem, aCursor) => {
+            aFolderNode.addChildren({
+              key: aItem.id + "C",
+              title: sanitizeTreeNodeTitle(DEBUG_TREE ? `${aItem.name} [key=${aID}C]` : aItem.name)
+            });
+          });
+        });
+      }).catch(aErr => {
+        console.error("Clippings/wx: clippingsMgr.js::gClippingsListener._buildChildNodes(): " + aErr);
+      });
+    },
+    
     _removeClippingsTreeNode: function (aIDWithSuffix) {
       let tree = getClippingsTree();
       let targetNode = tree.getNodeByKey(aIDWithSuffix);
@@ -682,8 +704,7 @@ $(document).ready(() => {
       }
     },
 
-    _isFlaggedForDelete: function (aItem)
-    {
+    _isFlaggedForDelete: function (aItem) {
       return (aItem.parentFolderID == DELETED_ITEMS_FLDR_ID);
     }
   };
@@ -701,7 +722,7 @@ $(document).ready(() => {
 
 
 // Reloading or closing Clippings Manager window
-$(window).on("beforeunload", function () {
+$(window).on("beforeunload", () => {
   if (! gIsReloading) {
     browser.runtime.sendMessage({ msgID: "close-clippings-mgr-wnd" });
   }
@@ -736,7 +757,7 @@ $(document).keypress(aEvent => {
     gCmd.newClipping();
   }
   else if (aEvent.key.toUpperCase() == "Z" && isAccelKeyPressed()) {
-    window.alert("Can't undo.");
+    gCmd.undo();
   }
 });
 
