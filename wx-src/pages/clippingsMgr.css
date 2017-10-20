@@ -58,7 +58,7 @@ body {
 .toolbar-button {
     flex: 0 1 auto;
     align-self: stretch;
-    min-width: 88px;
+    min-width: 64px;
 }
 
 #banner {
