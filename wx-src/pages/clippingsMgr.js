@@ -413,6 +413,14 @@ let gCmd = {
     else if (undo.action == this.ACTION_DELETEFOLDER) {
       this.moveFolderIntrl(undo.id, undo.parentFolderID);
     }
+    else if (undo.action == this.ACTION_MOVETOFOLDER) {
+      if (undo.itemType == this.ITEMTYPE_CLIPPING) {
+        this.moveClippingIntrl(undo.id, undo.oldParentFldrID);
+      }
+      else if (undo.itemType == this.ITEMTYPE_FOLDER) {
+        this.moveFolderIntrl(undo.id, undo.oldParentFldrID);
+      }
+    }
   },
   
   // Helper
