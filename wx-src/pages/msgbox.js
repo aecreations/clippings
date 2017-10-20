@@ -30,6 +30,8 @@ function init()
   let msgID = url.searchParams.get("msgid") || aeMsgBox.MSG_UNKNOWN;
   document.querySelector("#msgbox-content > p").textContent = aeMsgBox.msg[msgID];
 
+  chrome.history.deleteUrl({ url: url.href });
+
   window.addEventListener("keypress", aEvent => {
     if (aEvent.key == "Enter" || aEvent.key == "Escape") {
       dismiss();

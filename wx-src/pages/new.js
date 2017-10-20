@@ -30,6 +30,8 @@ let gSrcURL = "";
 
 
 $(document).ready(() => {
+  chrome.history.deleteUrl({ url: window.location.href });
+
   gClippings = chrome.extension.getBackgroundPage();
 
   if (gClippings) {

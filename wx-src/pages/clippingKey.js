@@ -25,6 +25,8 @@
 
 
 $(document).ready(() => {
+  chrome.history.deleteUrl({ url: window.location.href });
+
   $("#btn-cancel").click(aEvent => { cancel(aEvent) });
 });
 

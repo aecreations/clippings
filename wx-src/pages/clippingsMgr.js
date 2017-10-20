@@ -726,6 +726,8 @@ $(document).ready(() => {
   initLabelPicker();
   initDialogs();
   buildClippingsTree();
+
+  chrome.history.deleteUrl({ url: window.location.href });
 });
 
 
