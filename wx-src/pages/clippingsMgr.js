@@ -789,7 +789,8 @@ function initToolbarButtons()
     gCmd.deleteClippingOrFolder(gCmd.UNDO_STACK)
   });
 
-  $("#undo").click(aEvent => { gCmd.undo() });
+  $("#undo").click(aEvent => { gCmd.undo() })
+            .attr("title", "Undo Delete and Move only");  // TEMPORARY
   
   $("#tmp-import").click(aEvent => { gCmd.importFromFile() });
 }
@@ -978,21 +979,21 @@ function buildClippingsTree()
 function buildClippingsTreeHelper(aParentFolderID, aFolderData)
 {
   let rv = [];
-  let folderID = aFolderData.id;
+  let fldrID = aFolderData.id;
 
   gClippingsDB.transaction("r", gClippingsDB.folders, gClippingsDB.clippings, () => {
-    gClippingsDB.folders.where("parentFolderID").equals(folderID).each((aItem, aCursor) => {
+    gClippingsDB.folders.where("parentFolderID").equals(fldrID).each((aItem, aCursor) => {
       let folderNode = {
         key: aItem.id + "F",
         title: sanitizeTreeNodeTitle(DEBUG_TREE ? `${aItem.name} [key=${aItem.id}F]` : aItem.name),
         folder: true
       }
-      let childNodes = buildClippingsTreeHelper(folderID, aItem);
+      let childNodes = buildClippingsTreeHelper(fldrID, aItem);
       folderNode.children = childNodes;
 
       rv.push(folderNode);
     }).then(() => {
-      gClippingsDB.clippings.where("parentFolderID").equals(folderID).each((aItem, aCursor) => {
+      gClippingsDB.clippings.where("parentFolderID").equals(fldrID).each((aItem, aCursor) => {
         let clippingNode = {
           key: aItem.id + "C",
           title: sanitizeTreeNodeTitle(DEBUG_TREE ? `${aItem.name} [key=${aItem.id}C]` : aItem.name)
