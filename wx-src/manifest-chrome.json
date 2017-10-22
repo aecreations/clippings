@@ -12,10 +12,11 @@
 
     "permissions": [
 	"contextMenus",
-	"storage",
-	"unlimitedStorage",
+	"downloads",
 	"history",
+	"storage",
 	"tabs"
+	"unlimitedStorage",
     ],
       
     "background": {

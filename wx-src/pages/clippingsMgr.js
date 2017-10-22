@@ -395,7 +395,17 @@ let gCmd = {
 
   exportToFile: function()
   {
-    window.alert("The selected option is not available right now.");
+    aeImportExport.exportToJSON().then(aJSONData => {
+      let blobData = new Blob([aJSONData], { type: "application/json;charset=utf-8"});
+
+      browser.downloads.download({
+        url: URL.createObjectURL(blobData),
+        filename: "clippings.json",
+        saveAs: true
+      });
+    }).catch(aErr => {
+      console.error(aErr);
+    });
   },
 
   undo: function ()
@@ -793,6 +803,7 @@ function initToolbarButtons()
             .attr("title", "Undo Delete and Move only");  // TEMPORARY
   
   $("#tmp-import").click(aEvent => { gCmd.importFromFile() });
+  $("#tmp-export").click(aEvent => { gCmd.exportToFile() });
 }
 
 

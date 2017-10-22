@@ -108,6 +108,10 @@ body {
     order: 7;
 }
 
+#toolbar > #tmp-export {
+    order: 8;
+}
+
 #content {
     height: calc(100% - var(--toolbar-height) - var(--statusbar-height));
 }

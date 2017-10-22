@@ -26,6 +26,7 @@
 let aeImportExport = {
   DEBUG: true,
 
+  CLIPPINGS_JSON_VER: "6.0",
   ROOT_FOLDER_ID: 0,
   
   RDF_MIME_TYPE: "application/rdf+xml",
@@ -142,6 +143,77 @@ aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems
     console.error("aeImportExport._importFromJSONHelper(): " + aErr);
     throw aErr;
   });
+};
+
+
+aeImportExport.exportToJSON = async function ()
+{
+  let rv = "";
+  let expData = {
+    version: this.CLIPPINGS_JSON_VER,
+    createdBy: "Clippings/wx",
+    userClippingsRoot: []
+  };
+
+  rv = await this._db.transaction("r", this._db.clippings, this._db.folders, async () => {
+    await this._db.folders.where("parentFolderID").equals(this.ROOT_FOLDER_ID).each((aItem, aCursor) => {
+      let folder = {
+        name: aItem.name,
+        children: []
+      };
+
+      folder.children = this._exportToJSONHelper(aItem)
+      expData.userClippingsRoot.push(folder);
+    });
+    
+    await this._db.clippings.where("parentFolderID").equals(ROOT_FOLDER_ID).each((aItem, aCursor) => {
+      expData.userClippingsRoot.push({
+        name: aItem.name,
+        content: aItem.content,
+        shortcutKey: aItem.shortcutKey,
+        sourceURL: aItem.sourceURL,
+        label: aItem.label
+      });
+    });
+
+    return JSON.stringify(expData);
+  });
+      
+  return rv;
+};
+
+
+aeImportExport._exportToJSONHelper = function (aFolder)
+{
+  let rv = [];
+  let fldrID = aFolder.id;
+  
+  this._db.transaction("r", this._db.clippings, this._db.folders, () => {
+    this._db.folders.where("parentFolderID").equals(fldrID).each((aItem, aCursor) => {
+      let folder = {
+        name: aItem.name,
+        children: []
+      };
+
+      folder.children = this._exportToJSONHelper(aItem)
+      rv.push(folder);
+    }).then(() => {
+      return this._db.clippings.where("parentFolderID").equals(fldrID).each((aItem, aCursor) => {
+        rv.push({
+          name: aItem.name,
+          content: aItem.content,
+          shortcutKey: aItem.shortcutKey,
+          sourceURL: aItem.sourceURL,
+          label: aItem.label
+        });
+      });
+    });
+  }).catch(aErr => {
+    console.error("aeImportExport._exportToJSONHelper(): " + aErr);
+    throw aErr;
+  });
+
+  return rv;
 };
 
 
