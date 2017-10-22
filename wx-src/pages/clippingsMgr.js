@@ -393,7 +393,7 @@ let gCmd = {
     showModalDlg("#import-dlg");
   },
 
-  exportToFile: function()
+  exportToFile: function ()
   {
     aeImportExport.exportToJSON().then(aJSONData => {
       let blobData = new Blob([aJSONData], { type: "application/json;charset=utf-8"});
@@ -405,6 +405,7 @@ let gCmd = {
       });
     }).catch(aErr => {
       console.error(aErr);
+      window.alert("Error exporting to file:\n" + aErr);
     });
   },
 
