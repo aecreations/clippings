@@ -395,7 +395,9 @@ let gCmd = {
 
   exportToFile: function ()
   {
-    aeImportExport.exportToJSON().then(aJSONData => {
+    let incSrcURLs = true;
+    
+    aeImportExport.exportToJSON(incSrcURLs).then(aJSONData => {
       let blobData = new Blob([aJSONData], { type: "application/json;charset=utf-8"});
 
       browser.downloads.download({

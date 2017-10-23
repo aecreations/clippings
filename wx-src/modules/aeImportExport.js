@@ -146,7 +146,7 @@ aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems
 };
 
 
-aeImportExport.exportToJSON = async function ()
+aeImportExport.exportToJSON = async function (aIncludeSrcURLs)
 {
   let rv = "";
   let expData = {
@@ -162,7 +162,7 @@ aeImportExport.exportToJSON = async function ()
         children: []
       };
 
-      folder.children = this._exportToJSONHelper(aItem)
+      folder.children = this._exportToJSONHelper(aItem, aIncludeSrcURLs)
       expData.userClippingsRoot.push(folder);
     });
     
@@ -171,7 +171,7 @@ aeImportExport.exportToJSON = async function ()
         name: aItem.name,
         content: aItem.content,
         shortcutKey: aItem.shortcutKey,
-        sourceURL: aItem.sourceURL,
+        sourceURL: (aIncludeSrcURLs ? aItem.sourceURL : ""),
         label: aItem.label
       });
     });
@@ -183,7 +183,7 @@ aeImportExport.exportToJSON = async function ()
 };
 
 
-aeImportExport._exportToJSONHelper = function (aFolder)
+aeImportExport._exportToJSONHelper = function (aFolder, aIncludeSrcURLs)
 {
   let rv = [];
   let fldrID = aFolder.id;
@@ -203,7 +203,7 @@ aeImportExport._exportToJSONHelper = function (aFolder)
           name: aItem.name,
           content: aItem.content,
           shortcutKey: aItem.shortcutKey,
-          sourceURL: aItem.sourceURL,
+          sourceURL: (aIncludeSrcURLs ? aItem.sourceURL : ""),
           label: aItem.label
         });
       });
