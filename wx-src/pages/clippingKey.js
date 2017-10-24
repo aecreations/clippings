@@ -40,16 +40,23 @@ $(document).ready(() => {
 
   gClippingsDB = gClippings.getClippingsDB();
   
-  // TO DO: Get shortcut mode from saved prefs.
-  gPasteMode = PASTE_ACTION_SHORTCUT_KEY;
-  
-  $(".deck > #paste-by-shortcut-key").show();
-  $(".deck > #search-by-name").hide();
-
   initAutocomplete();
   $("#btn-cancel").click(aEvent => { cancel(aEvent) });
 
   chrome.history.deleteUrl({ url: window.location.href });
+
+  browser.storage.local.get().then(aPrefs => {
+    gPasteMode = aPrefs.pastePromptAction;
+  
+    if (gPasteMode == PASTE_ACTION_SHORTCUT_KEY) {
+      $(".deck > #search-by-name").hide();
+      $(".deck > #paste-by-shortcut-key").show();
+    }
+    else {
+      $(".deck > #paste-by-shortcut-key").hide();
+      $(".deck > #search-by-name").show();
+    }
+  });
 });
 
 
@@ -57,13 +64,8 @@ $(window).keypress(aEvent => {
   if (aEvent.key == "Escape") {
     cancel(aEvent);
   }
-  else if (aEvent.key == "Enter") {
-    if (gPasteMode == PASTE_ACTION_SHORTCUT_KEY) {
-      cancel(aEvent);
-    }
-    else {
-
-    }
+  else if (aEvent.key == "Enter" && gPasteMode == PASTE_ACTION_SHORTCUT_KEY) {
+    cancel(aEvent);
   }
   else if (aEvent.key == "F1") {
     // TO DO: Show shortcut key legend.
@@ -161,6 +163,11 @@ function cancel(aEvent)
 
 function closeDlg()
 {
-  browser.runtime.sendMessage({ msgID: "close-keybd-shortcut-dlg" });
-  chrome.windows.remove(chrome.windows.WINDOW_ID_CURRENT);
+  // Always remember last paste mode, even if user cancelled.
+  browser.storage.local.set({
+    pastePromptAction: gPasteMode
+  }).then(() => {
+    browser.runtime.sendMessage({ msgID: "close-keybd-shortcut-dlg" });
+    chrome.windows.remove(chrome.windows.WINDOW_ID_CURRENT);
+  });
 }
