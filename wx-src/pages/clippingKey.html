@@ -29,58 +29,90 @@
     <title>Clippings</title>
 
     <link rel="stylesheet" href="chrome://browser/content/extension.css"/>
+    <link rel="stylesheet" href="../lib/EasyAutocomplete/easy-autocomplete.css"/>
     <link rel="stylesheet" href="../style/dialog.css"/>
     <style>
 
-      #icon {
+      .icon {
         float: left;
       }
 
-      #dlg-content {
-        margin-left: 50px;
-      }
-
-      #dlg-content {
+      .deck-content {
         font-size: 13px;
       }
 
-      #key-legend {
+      .key-legend {
         clear: both;
         margin-top: 28px;
+        font-size: 11px;
       }
-      
-      #btn-cancel {
-        margin-right: 8px;
-      
+
+      #paste-by-shct-key-content, #search-by-name-content {
+        margin-left: 44px;
+      }
+
+      #clipping-search {
+        width: 34em;
+        margin-top: 4px;
+        font-size: 12px;
+      }
+
+      /* Autocomplete menu in clipping name search mode */
+      .clipping > .name {
+        font-size: 13px;
+        color: #0c0c0d;
+      }
+
+      .clipping > .preview {
+        font-size: 11px;
+        color: #737373;
+      }
+
+      .easy-autocomplete-container {
+        overflow-y: auto;
+        max-height: 88px;
       }
     </style>
     
   </head>
 
   <body>
-    <div id="paste-by-shortcut-key">
-      <div id="content">
-	<div id="icon">
+    <div class="deck">
+      <div id="paste-by-shortcut-key" class="deck-content">
+	<div id="keyboard-paste-ico" class="icon">
           <img src="../img/keyboard-paste.png"/>
 	</div>
-	<div id="dlg-content">
+	<div id="paste-by-shct-key-content">
 	  <div>Press the shortcut key of the clipping you want to paste.</div>
 	</div>
-
-	<div id="key-legend">
+	<div class="key-legend">
 	  <!--
           <div class="desc">F1 = shortcut key list</div>
-          <div class="desc">TAB = search clipping by name</div>
           -->
+          <div class="desc">TAB = search clipping by name</div>
 	</div>
-      </div>
-    </div>
+      </div>  <!-- #paste-by-shortcut-key -->
+      
+      <div id="search-by-name" class="deck-content">
+	<div id="search-by-name-ico" class="icon">
+	  <img src="chrome://global/skin/icons/Question.png"/>
+	</div>
+	<div id="search-by-name-content" class="browser-style">
+	  <label for="clipping-search">Search for clipping by name:</label>
+	  <input type="text" id="clipping-search"/>
+	</div>
+	<div class="key-legend">
+	  <div class="desc">TAB = shortcut key mode</div>
+	</div>
+      </div>  <!-- #search-by-name -->
+    </div>  <!-- .deck -->
     
     <div id="dlg-buttons">
       <button id="btn-cancel" class="browser-style">Cancel</button>
     </div>
 
     <script src="../lib/jquery.js"></script>
+    <script src="../lib/EasyAutocomplete/jquery.easy-autocomplete.js"></script>
     <script src="clippingKey.js"></script>
   </body>
 </html>

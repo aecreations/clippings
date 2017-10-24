@@ -23,42 +23,144 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+const PASTE_ACTION_SHORTCUT_KEY = 1;
+const PASTE_ACTION_SEARCH_CLIPPING = 2;
+
+const DELETED_ITEMS_FLDR_ID = -1;
+
+let gClippings, gClippingsDB, gPasteMode;
+
 
 $(document).ready(() => {
-  chrome.history.deleteUrl({ url: window.location.href });
+  gClippings = chrome.extension.getBackgroundPage();
 
+  if (! gClippings) {
+    throw new Error("Clippings/wx: clippingKey.js: Failed to retrieve parent browser window!");
+  }
+
+  gClippingsDB = gClippings.getClippingsDB();
+  
+  // TO DO: Get shortcut mode from saved prefs.
+  gPasteMode = PASTE_ACTION_SHORTCUT_KEY;
+  
+  $(".deck > #paste-by-shortcut-key").show();
+  $(".deck > #search-by-name").hide();
+
+  initAutocomplete();
   $("#btn-cancel").click(aEvent => { cancel(aEvent) });
+
+  chrome.history.deleteUrl({ url: window.location.href });
 });
 
 
 $(window).keypress(aEvent => {
-  if (aEvent.key == "Escape" || aEvent.key == "Enter") {
+  if (aEvent.key == "Escape") {
     cancel(aEvent);
   }
+  else if (aEvent.key == "Enter") {
+    if (gPasteMode == PASTE_ACTION_SHORTCUT_KEY) {
+      cancel(aEvent);
+    }
+    else {
+
+    }
+  }
   else if (aEvent.key == "F1") {
-    // TO DO: Show shortcut key help.
+    // TO DO: Show shortcut key legend.
   }
   else if (aEvent.key == "Tab") {
-    // TO DO: Switch to search by name mode.
+    if (gPasteMode == PASTE_ACTION_SHORTCUT_KEY) {
+      $(".deck > #paste-by-shortcut-key").hide();
+      $(".deck > #search-by-name").show();
+      $("#clipping-search").focus();
+      gPasteMode = PASTE_ACTION_SEARCH_CLIPPING;
+    }
+    else if (gPasteMode == PASTE_ACTION_SEARCH_CLIPPING) {
+      $(".deck > #search-by-name").hide();
+      $(".deck > #paste-by-shortcut-key").show();
+      gPasteMode = PASTE_ACTION_SHORTCUT_KEY;
+    }
+
+    aEvent.preventDefault();
   }
   else {
-    let msg = {
-      msgID: "paste-shortcut-key",
-      shortcutKey: aEvent.key
+    if (gPasteMode == PASTE_ACTION_SHORTCUT_KEY) {
+      browser.runtime.sendMessage({
+        msgID: "paste-shortcut-key",
+        shortcutKey: aEvent.key
+      });
+
+      closeDlg();
     }
-    browser.runtime.sendMessage(msg);
-    closeWnd();
   }
 });
 
 
-function cancel(aEvent)
+function initAutocomplete()
 {
-  closeWnd();
+  function sanitize(aStr)
+  {
+    const MAX_LEN = 64;
+    let rv = "";
+    let originalLen = aStr.length;
+
+    rv = aStr.replace(/</g, "&lt;");
+    rv = rv.replace(/>/g, "&gt;");
+    rv = rv.substr(0, MAX_LEN);
+    rv += (originalLen > rv.length ? " ..." : "");
+
+    return rv;
+  }
+  
+  let clippings = [];
+
+  gClippingsDB.clippings.where("parentFolderID").notEqual(DELETED_ITEMS_FLDR_ID).each((aItem, aCursor) => {
+    clippings.push({
+      id: aItem.id,
+      name: sanitize(aItem.name),
+      preview: sanitize(aItem.content)
+    });
+  }).then(() => {
+    let eacOpts = {
+      data: clippings,
+      getValue: "name",
+      list: {
+        match: {
+          enabled: true
+        },
+
+        onChooseEvent: function () {
+          let selectedItem = $("#clipping-search").getSelectedItemData();
+          
+          browser.runtime.sendMessage({
+            msgID: "paste-clipping-by-name",
+            clippingID: selectedItem.id
+          });
+          
+          closeDlg();
+        }
+      },
+      template: {
+        type: "custom",
+        method: function (aValue, aItem) {
+          return `<div class="clipping"><div class="name">${aValue}</div><div class="preview">${aItem.preview}</div></div>`;
+        }
+      }
+    };
+  
+    $("#clipping-search").easyAutocomplete(eacOpts);
+  });
 }
 
 
-function closeWnd()
+function cancel(aEvent)
 {
+  closeDlg();
+}
+
+
+function closeDlg()
+{
+  browser.runtime.sendMessage({ msgID: "close-keybd-shortcut-dlg" });
   chrome.windows.remove(chrome.windows.WINDOW_ID_CURRENT);
 }
