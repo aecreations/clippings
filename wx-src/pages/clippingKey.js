@@ -167,7 +167,7 @@ function closeDlg()
   browser.storage.local.set({
     pastePromptAction: gPasteMode
   }).then(() => {
-    browser.runtime.sendMessage({ msgID: "close-keybd-shortcut-dlg" });
+    browser.runtime.sendMessage({ msgID: "close-keybd-paste-dlg" });
     chrome.windows.remove(chrome.windows.WINDOW_ID_CURRENT);
   });
 }

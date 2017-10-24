@@ -341,7 +341,7 @@ function initMessageListeners()
       else if (aRequest.msgID == "close-clippings-mgr-wnd") {
         gWndIDs.clippingsMgr = null;
       }
-      else if (aRequest.msgID == "close-keybd-shortcut-dlg") {
+      else if (aRequest.msgID == "close-keybd-paste-dlg") {
         gWndIDs.keyboardPaste = null;
       }
       else if (aRequest.msgID == "paste-shortcut-key") {
@@ -372,7 +372,7 @@ function initMessageListeners()
       else if (aRequest.msgID == "close-clippings-mgr-wnd") {
         gWndIDs.clippingsMgr = null;
       }
-      else if (aRequest.msgID == "close-keybd-shortcut-dlg") {
+      else if (aRequest.msgID == "close-keybd-paste-dlg") {
         gWndIDs.keyboardPaste = null;
       }
       else if (aRequest.msgID == "paste-shortcut-key") {
