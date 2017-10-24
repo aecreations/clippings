@@ -27,6 +27,8 @@ const MAX_NAME_LENGTH = 64;
 const ROOT_FOLDER_NAME = "clippings-root";
 const HTML_PASTE_AS_FORMATTED = 0;
 const HTML_PASTE_AS_IS = 1;
+const PASTE_ACTION_SHORTCUT_KEY = 1;
+const PASTE_ACTION_SEARCH_CLIPPING = 2;
 
 let gClippingsDB = null;
 let gOS = null;
@@ -85,6 +87,7 @@ let gNewClipping = {
 
 let gWndIDs = {
   newClipping: null,
+  keyboardPaste: null,
   clippingsMgr: null
 };
 
@@ -122,7 +125,8 @@ async function setDefaultPrefs()
     alwaysSaveSrcURL: false,
     keyboardPaste: true,
     checkSpelling: true,
-    openClippingsMgrInTab: false
+    openClippingsMgrInTab: false,
+    pastePromptAction: PASTE_ACTION_SHORTCUT_KEY
   };
 
   gPrefs = aeClippingsPrefs;
@@ -337,8 +341,14 @@ function initMessageListeners()
       else if (aRequest.msgID == "close-clippings-mgr-wnd") {
         gWndIDs.clippingsMgr = null;
       }
+      else if (aRequest.msgID == "close-keybd-shortcut-dlg") {
+        gWndIDs.keyboardPaste = null;
+      }
       else if (aRequest.msgID == "paste-shortcut-key") {
         // TO DO: Same logic as for Firefox.
+      }
+      else if (aRequest.msgID == "paste-clipping-by-name") {
+        // TO DO: Ditto.
       }
     });
   }                                  
@@ -362,6 +372,9 @@ function initMessageListeners()
       else if (aRequest.msgID == "close-clippings-mgr-wnd") {
         gWndIDs.clippingsMgr = null;
       }
+      else if (aRequest.msgID == "close-keybd-shortcut-dlg") {
+        gWndIDs.keyboardPaste = null;
+      }
       else if (aRequest.msgID == "paste-shortcut-key") {
         let shortcutKey = aRequest.shortcutKey;
         if (! shortcutKey) {
@@ -370,6 +383,9 @@ function initMessageListeners()
 
         console.log("Clippings/wx: Key '%s' was pressed.", shortcutKey);
         pasteClippingByShortcutKey(shortcutKey);
+      }
+      else if (aRequest.msgID == "paste-clipping-by-name") {
+        pasteClippingByID(aRequest.clippingID);
       }
     });
   }
@@ -583,34 +599,8 @@ function openClippingsManager()
 
 function openNewClippingDlg()
 {
-  let url = browser.runtime.getURL("pages/new.html");
-
-  function openNewClippingDlgHelper()
-  {
-    browser.windows.create({
-      url,
-      type: "popup",
-      width: 428, height: 500,
-      left: 96, top: 64
-    }).then(aWnd => {
-      gWndIDs.newClipping = aWnd.id;
-      browser.history.deleteUrl({ url });
-    }, aErr => {
-      console.error(aErr);
-    });
-  }
-  
-  if (gWndIDs.newClipping) {
-    browser.windows.get(gWndIDs.newClipping).then(aWnd => {
-      browser.windows.update(gWndIDs.newClipping, { focused: true });
-    }, aErr => {
-      gWndIDs.newClipping = null;
-      openNewClippingDlgHelper();
-    });
-  }
-  else {
-    openNewClippingDlgHelper();
-  }
+  let url = chrome.runtime.getURL("pages/new.html");
+  openDlgWnd(url, "newClipping", { type: "detached_panel", width: 428, height: 500 });
 }
 
 
@@ -619,17 +609,41 @@ function openShortcutKeyPromptDlg()
   // TO DO: Check first if the cursor is in a web page textbox or HTML editor.
   // If not, then don't do anything.
 
-  // TO DO: Check if the dialog is already open.
-  let url = "pages/clippingKey.html";
+  let url = browser.runtime.getURL("pages/clippingKey.html");
+  openDlgWnd(url, "keyboardPaste", { type: "detached_panel", width: 500, height: 200 });
+}
 
-  chrome.windows.create({
-    url: url,
-    type: "detached_panel",
-    width: 500, height: 170,
-    left: window.screen.availWidth - 500 / 2,
-    top:  window.screen.availHeight - 200 / 2
-  });
 
+function openDlgWnd(aURL, aWndKey, aWndPpty)
+{
+  function openDlgWndHelper()
+  {
+    browser.windows.create({
+      url: aURL,
+      type: aWndPpty.type,
+      width: aWndPpty.width,
+      height: aWndPpty.height,
+      left: window.screen.availWidth - aWndPpty.width / 2,
+      top:  window.screen.availHeight - aWndPpty.height / 2
+    }).then(aWnd => {
+      gWndIDs[aWndKey] = aWnd.id;
+      browser.history.deleteUrl({ url: aURL });
+    }, aErr => {
+      console.error(aErr);
+    });
+  }
+
+  if (gWndIDs[aWndKey]) {
+    browser.windows.get(gWndIDs[aWndKey]).then(aWnd => {
+      browser.windows.update(gWndIDs[aWndKey], { focused: true });
+    }, aErr => {
+      gWndIDs[aWndKey] = null;
+      openDlgWndHelper();
+    });
+  }
+  else {
+    openDlgWndHelper();
+  }
 }
 
 
