@@ -63,6 +63,11 @@ $(document).ready(() => {
 
 $(window).keypress(aEvent => {
   if (aEvent.key == "Escape") {
+    if (gPasteMode == PASTE_ACTION_SEARCH_CLIPPING
+        && $("#eac-container-clipping-search > ul").css("display") != "none") {
+      $("#eac-container-clipping-search > ul").hide();
+      return;
+    }
     cancel(aEvent);
   }
   else if (aEvent.key == "Enter" && gPasteMode == PASTE_ACTION_SHORTCUT_KEY) {
