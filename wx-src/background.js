@@ -246,6 +246,9 @@ function initHelper()
     gOS = aInfo.os;
   });
 
+  console.log("Clippings/wx: Extension preferences:");
+  console.log(gPrefs)
+  
   chrome.browserAction.onClicked.addListener(aTab => {
     openClippingsManager();
   });
@@ -312,7 +315,7 @@ function initHelper()
 
   chrome.commands.onCommand.addListener(aCmdName => {
     if (aCmdName == "ae-clippings-paste-clipping" && gPrefs.keyboardPaste) {
-      openShortcutKeyPromptDlg();
+      openKeyboardPasteDlg();
     }
   });
 
@@ -604,12 +607,12 @@ function openNewClippingDlg()
 }
 
 
-function openShortcutKeyPromptDlg()
+function openKeyboardPasteDlg()
 {
   // TO DO: Check first if the cursor is in a web page textbox or HTML editor.
   // If not, then don't do anything.
 
-  let url = browser.runtime.getURL("pages/clippingKey.html");
+  let url = browser.runtime.getURL("pages/keyboardPaste.html");
   openDlgWnd(url, "keyboardPaste", { type: "detached_panel", width: 500, height: 200 });
 }
 

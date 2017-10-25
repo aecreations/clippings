@@ -55,6 +55,7 @@ $(document).ready(() => {
     else {
       $(".deck > #paste-by-shortcut-key").hide();
       $(".deck > #search-by-name").show();
+      $("#clipping-search").focus();
     }
   });
 });
