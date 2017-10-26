@@ -39,26 +39,6 @@ let gIsReloading = false;
 let gClippingsTreeDnD = false;
 
 
-// Undo
-let gUndoStack = {
-  length: 0,
-  _stack: [],
-
-  push: function (aState)
-  {
-    this._stack.push(aState);
-    this.length++;
-  },
-
-  pop: function ()
-  {
-    var rv = this._stack.pop();
-    this.length--;
-    return rv;
-  }
-};
-
-
 // Source URL editing
 let gSrcURLBar = {
   init: function ()
@@ -219,7 +199,7 @@ let gShortcutKey = {
 
 // Clippings Manager commands
 let gCmd = {
-  // Flags for gUndoStack actions
+  // Flags for undoStack actions
   ACTION_EDITNAME: 1,
   ACTION_EDITTEXT: 2,
   ACTION_DELETECLIPPING: 3,
@@ -241,6 +221,22 @@ let gCmd = {
   // ID in the database.
   ITEMTYPE_CLIPPING: 1,
   ITEMTYPE_FOLDER: 2,
+
+  undoStack: {
+    length: 0,
+    _stack: [],
+
+    push: function (aState) {
+      this._stack.push(aState);
+      this.length++;
+    },
+
+    pop: function () {
+      var rv = this._stack.pop();
+      this.length--;
+      return rv;
+    }
+  },
 
   
   newClipping: function ()
@@ -313,7 +309,7 @@ let gCmd = {
     if (selectedNode.isFolder()) {
       gClippingsDB.folders.update(id, { parentFolderID: aeConst.DELETED_ITEMS_FLDR_ID }).then(aNumUpd => {
         if (aDestUndoStack == gCmd.UNDO_STACK) {
-          gUndoStack.push({
+          this.undoStack.push({
             action: this.ACTION_DELETEFOLDER,
             itemType: this.ITEMTYPE_FOLDER,
             id,
@@ -328,7 +324,7 @@ let gCmd = {
         shortcutKey: ""
       }).then(aNumUpd => {
         if (aDestUndoStack == gCmd.UNDO_STACK) {
-          gUndoStack.push({
+          this.undoStack.push({
             action: this.ACTION_DELETECLIPPING,
             itemType: this.ITEMTYPE_CLIPPING,
             id,
@@ -349,7 +345,7 @@ let gCmd = {
       return gClippingsDB.clippings.update(aClippingID, { parentFolderID: aNewParentFldrID });
     }).then(aNumUpd => {
       if (aDestUndoStack == this.UNDO_STACK) {
-        gUndoStack.push({
+        this.undoStack.push({
           action: this.ACTION_MOVETOFOLDER,
           itemType: this.ITEMTYPE_CLIPPING,
           id: aClippingID,
@@ -369,7 +365,7 @@ let gCmd = {
       return gClippingsDB.folders.update(aFolderID, { parentFolderID: aNewParentFldrID });
     }).then(aNumUpd => {
       if (aDestUndoStack == this.UNDO_STACK) {
-        gUndoStack.push({
+        this.undoStack.push({
           action: this.ACTION_MOVETOFOLDER,
           itemType: this.ITEMTYPE_FOLDER,
           id: aFolderID,
@@ -409,12 +405,12 @@ let gCmd = {
 
   undo: function ()
   {
-    if (gUndoStack.length == 0) {
+    if (this.undoStack.length == 0) {
       setStatusBarMsg("Nothing to undo");
       return;
     }
 
-    let undo = gUndoStack.pop();
+    let undo = this.undoStack.pop();
 
     if (undo.action == this.ACTION_DELETECLIPPING) {
       this.moveClippingIntrl(undo.id, undo.parentFolderID);
