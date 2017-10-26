@@ -166,7 +166,7 @@ aeImportExport.exportToJSON = async function (aIncludeSrcURLs)
       expData.userClippingsRoot.push(folder);
     });
     
-    await this._db.clippings.where("parentFolderID").equals(ROOT_FOLDER_ID).each((aItem, aCursor) => {
+    await this._db.clippings.where("parentFolderID").equals(this.ROOT_FOLDER_ID).each((aItem, aCursor) => {
       expData.userClippingsRoot.push({
         name: aItem.name,
         content: aItem.content,
@@ -340,17 +340,17 @@ aeImportExport._getShortcutKeysToClippingIDs = async function ()
 
 aeImportExport._log = function (aMessage)
 {
-  if (DEBUG) { console.log(aMessage); }
+  if (this.DEBUG) { console.log(aMessage); }
 };
 
 
 aeImportExport._info = function (aMessage)
 {
-  if (DEBUG) { console.info(aMessage); }
+  if (this.DEBUG) { console.info(aMessage); }
 };
 
 
 aeImportExport._warn = function (aMessage)
 {
-  if (DEBUG) { console.warn(aMessage); }
+  if (this.DEBUG) { console.warn(aMessage); }
 };
