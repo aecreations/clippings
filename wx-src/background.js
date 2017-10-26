@@ -25,8 +25,6 @@
 
 const MAX_NAME_LENGTH = 64;
 const ROOT_FOLDER_NAME = "clippings-root";
-const HTML_PASTE_AS_FORMATTED = 0;
-const HTML_PASTE_AS_IS = 1;
 const PASTE_ACTION_SHORTCUT_KEY = 1;
 const PASTE_ACTION_SEARCH_CLIPPING = 2;
 
@@ -119,14 +117,14 @@ browser.runtime.onInstalled.addListener(aDetails => {
 async function setDefaultPrefs()
 {
   let aeClippingsPrefs = {
-    htmlPaste: HTML_PASTE_AS_FORMATTED,
+    htmlPaste: aeConst.HTMLPASTE_AS_FORMATTED,
     autoLineBreak: true,
     autoIncrPlcHldrStartVal: 0,
     alwaysSaveSrcURL: false,
     keyboardPaste: true,
     checkSpelling: true,
     openClippingsMgrInTab: false,
-    pastePromptAction: PASTE_ACTION_SHORTCUT_KEY
+    pastePromptAction: aeConst.PASTEACTION_SHORTCUT_KEY
   };
 
   gPrefs = aeClippingsPrefs;

@@ -23,11 +23,6 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-const PASTE_ACTION_SHORTCUT_KEY = 1;
-const PASTE_ACTION_SEARCH_CLIPPING = 2;
-
-const DELETED_ITEMS_FLDR_ID = -1;
-
 let gClippings, gClippingsDB, gPasteMode;
 
 
@@ -48,7 +43,7 @@ $(document).ready(() => {
   browser.storage.local.get().then(aPrefs => {
     gPasteMode = aPrefs.pastePromptAction;
   
-    if (gPasteMode == PASTE_ACTION_SHORTCUT_KEY) {
+    if (gPasteMode == aeConst.PASTEACTION_SHORTCUT_KEY) {
       $(".deck > #search-by-name").hide();
       $(".deck > #paste-by-shortcut-key").show();
     }
@@ -63,36 +58,36 @@ $(document).ready(() => {
 
 $(window).keypress(aEvent => {
   if (aEvent.key == "Escape") {
-    if (gPasteMode == PASTE_ACTION_SEARCH_CLIPPING
+    if (gPasteMode == aeConst.PASTEACTION_SEARCH_CLIPPING
         && $("#eac-container-clipping-search > ul").css("display") != "none") {
       $("#eac-container-clipping-search > ul").hide();
       return;
     }
     cancel(aEvent);
   }
-  else if (aEvent.key == "Enter" && gPasteMode == PASTE_ACTION_SHORTCUT_KEY) {
+  else if (aEvent.key == "Enter" && gPasteMode == aeConst.PASTEACTION_SHORTCUT_KEY) {
     cancel(aEvent);
   }
   else if (aEvent.key == "F1") {
     // TO DO: Show shortcut key legend.
   }
   else if (aEvent.key == "Tab") {
-    if (gPasteMode == PASTE_ACTION_SHORTCUT_KEY) {
+    if (gPasteMode == aeConst.PASTEACTION_SHORTCUT_KEY) {
       $(".deck > #paste-by-shortcut-key").hide();
       $(".deck > #search-by-name").show();
       $("#clipping-search").focus();
-      gPasteMode = PASTE_ACTION_SEARCH_CLIPPING;
+      gPasteMode = aeConst.PASTEACTION_SEARCH_CLIPPING;
     }
-    else if (gPasteMode == PASTE_ACTION_SEARCH_CLIPPING) {
+    else if (gPasteMode == aeConst.PASTEACTION_SEARCH_CLIPPING) {
       $(".deck > #search-by-name").hide();
       $(".deck > #paste-by-shortcut-key").show();
-      gPasteMode = PASTE_ACTION_SHORTCUT_KEY;
+      gPasteMode = aeConst.PASTEACTION_SHORTCUT_KEY;
     }
 
     aEvent.preventDefault();
   }
   else {
-    if (gPasteMode == PASTE_ACTION_SHORTCUT_KEY) {
+    if (gPasteMode == aeConst.PASTEACTION_SHORTCUT_KEY) {
       browser.runtime.sendMessage({
         msgID: "paste-shortcut-key",
         shortcutKey: aEvent.key
@@ -122,7 +117,7 @@ function initAutocomplete()
   
   let clippings = [];
 
-  gClippingsDB.clippings.where("parentFolderID").notEqual(DELETED_ITEMS_FLDR_ID).each((aItem, aCursor) => {
+  gClippingsDB.clippings.where("parentFolderID").notEqual(aeConst.DELETED_ITEMS_FLDR_ID).each((aItem, aCursor) => {
     clippings.push({
       id: aItem.id,
       name: sanitize(aItem.name),

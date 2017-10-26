@@ -23,16 +23,12 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-const DEBUG = true;
 const DEBUG_TREE = false;
 
 const DEFAULT_NEW_CLIPPING_NAME = "New Clipping";
 const DEFAULT_NEW_FOLDER_NAME = "New Folder";
 const DEFAULT_UNTITLED_CLIPPING_NAME = "Untitled Clipping";
 const DEFAULT_UNTITLED_FOLDER_NAME = "Untitled Folder";
-
-const ROOT_FOLDER_ID = 0;
-const DELETED_ITEMS_FLDR_ID = -1;
 
 let gOS;
 let gClippingsDB;
@@ -255,7 +251,7 @@ let gCmd = {
     
     let tree = getClippingsTree();
     let selectedNode = tree.activeNode;
-    let parentFolderID = ROOT_FOLDER_ID;
+    let parentFolderID = aeConst.ROOT_FOLDER_ID;
     
     if (selectedNode) {
       parentFolderID = this._getParentFldrIDOfTreeNode(selectedNode);
@@ -283,7 +279,7 @@ let gCmd = {
 
     let tree = getClippingsTree();
     let selectedNode = tree.activeNode;
-    let parentFolderID = ROOT_FOLDER_ID;
+    let parentFolderID = aeConst.ROOT_FOLDER_ID;
     
     if (selectedNode) {
       parentFolderID = this._getParentFldrIDOfTreeNode(selectedNode);
@@ -315,7 +311,7 @@ let gCmd = {
     let parentFolderID = this._getParentFldrIDOfTreeNode(selectedNode);
     
     if (selectedNode.isFolder()) {
-      gClippingsDB.folders.update(id, { parentFolderID: DELETED_ITEMS_FLDR_ID }).then(aNumUpd => {
+      gClippingsDB.folders.update(id, { parentFolderID: aeConst.DELETED_ITEMS_FLDR_ID }).then(aNumUpd => {
         if (aDestUndoStack == gCmd.UNDO_STACK) {
           gUndoStack.push({
             action: this.ACTION_DELETEFOLDER,
@@ -328,7 +324,7 @@ let gCmd = {
     }
     else {
       gClippingsDB.clippings.update(id, {
-        parentFolderID: DELETED_ITEMS_FLDR_ID,
+        parentFolderID: aeConst.DELETED_ITEMS_FLDR_ID,
         shortcutKey: ""
       }).then(aNumUpd => {
         if (aDestUndoStack == gCmd.UNDO_STACK) {
@@ -441,7 +437,7 @@ let gCmd = {
   {
     let rv = null;
     let parentNode = aNode.getParent();
-    rv = (parentNode.isRootNode() ? ROOT_FOLDER_ID : parseInt(parentNode.key));
+    rv = (parentNode.isRootNode() ? aeConst.ROOT_FOLDER_ID : parseInt(parentNode.key));
 
     return rv;
   }
@@ -482,7 +478,7 @@ $(document).ready(() => {
       let newNode = null;
 
       if (selectedNode) {
-        if (aData.parentFolderID == ROOT_FOLDER_ID) {
+        if (aData.parentFolderID == aeConst.ROOT_FOLDER_ID) {
           newNode = tree.rootNode.addNode(newNodeData);
         }
         else {
@@ -519,7 +515,7 @@ $(document).ready(() => {
       let newNode = null;
     
       if (selectedNode) {
-        if (aData.parentFolderID == ROOT_FOLDER_ID) {
+        if (aData.parentFolderID == aeConst.ROOT_FOLDER_ID) {
           newNode = tree.rootNode.addNode(newNodeData);
         }
         else {
@@ -557,7 +553,7 @@ $(document).ready(() => {
           let changedNode = tree.getNodeByKey(aID + "C");
           if (changedNode) {
             let targParentNode;
-            if (aData.parentFolderID == ROOT_FOLDER_ID) {
+            if (aData.parentFolderID == aeConst.ROOT_FOLDER_ID) {
               targParentNode = tree.rootNode;
             }
             else {
@@ -573,7 +569,7 @@ $(document).ready(() => {
               title: sanitizeTreeNodeTitle(DEBUG_TREE ? `${aData.name} [key=${aID}C]` : aData.name)
             };
 
-            if (aData.parentFolderID == ROOT_FOLDER_ID) {
+            if (aData.parentFolderID == aeConst.ROOT_FOLDER_ID) {
               changedNode = tree.rootNode.addNode(newNodeData);
             }
             else {
@@ -609,7 +605,7 @@ $(document).ready(() => {
           let changedNode = tree.getNodeByKey(aID + "F");
           if (changedNode) {
             let targParentNode;
-            if (aData.parentFolderID == ROOT_FOLDER_ID) {
+            if (aData.parentFolderID == aeConst.ROOT_FOLDER_ID) {
               targParentNode = tree.rootNode;
             }
             else {
@@ -627,7 +623,7 @@ $(document).ready(() => {
               children: []
             };
 
-            if (aData.parentFolderID == ROOT_FOLDER_ID) {
+            if (aData.parentFolderID == aeConst.ROOT_FOLDER_ID) {
               changedNode = tree.rootNode.addNode(newNodeData);
             }
             else {
@@ -726,7 +722,7 @@ $(document).ready(() => {
     },
 
     _isFlaggedForDelete: function (aItem) {
-      return (aItem.parentFolderID == DELETED_ITEMS_FLDR_ID);
+      return (aItem.parentFolderID == aeConst.DELETED_ITEMS_FLDR_ID);
     }
   };
 
@@ -753,7 +749,7 @@ $(window).on("beforeunload", () => {
   let clippingsListeners = gClippings.getClippingsListeners();
   clippingsListeners.remove(gClippingsListener);
 
-  purgeDeletedItems(DELETED_ITEMS_FLDR_ID);
+  purgeDeletedItems(aeConst.DELETED_ITEMS_FLDR_ID);
 });
 
 
@@ -882,19 +878,19 @@ function buildClippingsTree()
   let treeData = [];
 
   gClippingsDB.transaction("r", gClippingsDB.folders, gClippingsDB.clippings, () => {
-    gClippingsDB.folders.where("parentFolderID").equals(ROOT_FOLDER_ID).each((aItem, aCursor) => {
+    gClippingsDB.folders.where("parentFolderID").equals(aeConst.ROOT_FOLDER_ID).each((aItem, aCursor) => {
       let folderNode = {
         key: aItem.id + "F",
         title: sanitizeTreeNodeTitle(DEBUG_TREE ? `${aItem.name} [key=${aItem.id}F]` : aItem.name),
         folder: true
       };
 
-      let childNodes = buildClippingsTreeHelper(ROOT_FOLDER_ID, aItem);
+      let childNodes = buildClippingsTreeHelper(aeConst.ROOT_FOLDER_ID, aItem);
       folderNode.children = childNodes;
 
       treeData.push(folderNode);
     }).then(() => {
-      return gClippingsDB.clippings.where("parentFolderID").equals(ROOT_FOLDER_ID).each((aItem, aCursor) => {
+      return gClippingsDB.clippings.where("parentFolderID").equals(aeConst.ROOT_FOLDER_ID).each((aItem, aCursor) => {
         let clippingNode = {
           key: aItem.id + "C",
           title: sanitizeTreeNodeTitle(DEBUG_TREE ? `${aItem.name} [key=${aItem.id}C]` : aItem.name)
@@ -948,13 +944,13 @@ function buildClippingsTree()
               }
 
               let parentNode = aNode.getParent();
-              let newParentID = ROOT_FOLDER_ID;
+              let newParentID = aeConst.ROOT_FOLDER_ID;
               
               if (aNode.isFolder() && aData.hitMode == "over") {
                 newParentID = parseInt(aNode.key);
               }
               else {
-                newParentID = (parentNode.isRootNode() ? ROOT_FOLDER_ID : parseInt(parentNode.key));
+                newParentID = (parentNode.isRootNode() ? aeConst.ROOT_FOLDER_ID : parseInt(parentNode.key));
               }
 
               aData.otherNode.moveTo(aNode, aData.hitMode);
@@ -1272,7 +1268,7 @@ function purgeDeletedItems(aFolderID)
     gClippingsDB.folders.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
       purgeDeletedItems(aItem.id);
     }).then(() => {
-      if (aFolderID != DELETED_ITEMS_FLDR_ID) {
+      if (aFolderID != aeConst.DELETED_ITEMS_FLDR_ID) {
         gClippingsDB.folders.delete(aFolderID);
       }
 
@@ -1301,7 +1297,7 @@ function onError(aError)
 {
   showBanner(aError.message);
 
-  if (DEBUG) {
+  if (aeConst.DEBUG) {
     console.error(aError.message);
   }
 }
@@ -1309,17 +1305,17 @@ function onError(aError)
 
 function log(aMessage)
 {
-  if (DEBUG) { console.log(aMessage); }
+  if (aeConst.DEBUG) { console.log(aMessage); }
 }
 
 
 function info(aMessage)
 {
-  if (DEBUG) { console.info(aMessage); }
+  if (aeConst.DEBUG) { console.info(aMessage); }
 }
 
 
 function warn(aMessage)
 {
-  if (DEBUG) { console.warn(aMessage); }
+  if (aeConst.DEBUG) { console.warn(aMessage); }
 }
