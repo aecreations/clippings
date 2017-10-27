@@ -51,8 +51,48 @@ let gClippingsListeners = {
   }
 };
 
-let gClippingsListener = null;
+let gClippingsListener = {
+  origin: null,
+  
+  newClippingCreated: function (aID, aData) {
+    rebuildContextMenu();
+  },
 
+  newFolderCreated: function (aID, aData) {
+    rebuildContextMenu();
+  },
+
+  clippingChanged: function (aID, aData, aOldData) {
+    if (aData.parentFolderID == aOldData.parentFolderID) {
+      updateContextMenuForClipping(aID);
+    }
+    else {
+      rebuildContextMenu();
+    }
+  },
+
+  folderChanged: function (aID, aData, aOldData) {
+    if (aData.parentFolderID == aOldData.parentFolderID) {
+      updateContextMenuForFolder(aID);
+    }
+    else {
+      rebuildContextMenu();
+    }
+  },
+
+  clippingDeleted: function (aID, aOldData) {
+    removeContextMenuForClipping(aID);
+  },
+
+  folderDeleted: function (aID, aOldData) {
+    removeContextMenuForFolder(aID);
+  },
+
+  afterBatchChanges: function () {
+    rebuildContextMenu();
+  }
+};
+  
 let gNewClipping = {
   _name: null,
   _content: null,
@@ -251,50 +291,9 @@ function initHelper()
     openClippingsManager();
   });
 
-  gClippingsListener = {
-    origin: gClippingsListeners.ORIGIN_HOSTAPP,
-    
-    newClippingCreated: function (aID, aData) {
-      rebuildContextMenu();
-    },
-
-    newFolderCreated: function (aID, aData) {
-      rebuildContextMenu();
-    },
-
-    clippingChanged: function (aID, aData, aOldData) {
-      if (aData.parentFolderID == aOldData.parentFolderID) {
-        updateContextMenuForClipping(aID);
-      }
-      else {
-        rebuildContextMenu();
-      }
-    },
-
-    folderChanged: function (aID, aData, aOldData) {
-      if (aData.parentFolderID == aOldData.parentFolderID) {
-        updateContextMenuForFolder(aID);
-      }
-      else {
-        rebuildContextMenu();
-      }
-    },
-
-    clippingDeleted: function (aID, aOldData) {
-      removeContextMenuForClipping(aID);
-    },
-
-    folderDeleted: function (aID, aOldData) {
-      removeContextMenuForFolder(aID);
-    },
-
-    afterBatchChanges: function () {
-      rebuildContextMenu();
-    }
-  };
-  
+  gClippingsListener.origin = gClippingsListeners.ORIGIN_HOSTAPP;
   gClippingsListeners.add(gClippingsListener);
-
+  
   window.addEventListener("unload", onUnload, false);
   initMessageListeners();
 
