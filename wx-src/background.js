@@ -751,6 +751,7 @@ function pasteClipping(aClippingInfo)
     let msgParams = {
       msgID: "paste-clipping",
       content,
+      htmlPaste: gPrefs.htmlPaste,
       autoLineBreak: gPrefs.autoLineBreak
     };
 
