@@ -89,6 +89,13 @@
 	    "shortcutKey": "8",
 	    "label": "red",
 	    "sourceURL": ""
+	},
+	{
+	    "name": "HTML with line breaks",
+	    "content": "This is an <strong>HTML-formatted clipping</strong>\nwith <em>line breaks</em>,\n\nand <u>another</u>.\nHave a nice day!",
+	    "shortcutKey": "",
+	    "label": "yellow",
+	    "sourceURL": ""
 	}
     ]
 }
