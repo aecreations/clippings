@@ -909,6 +909,7 @@ function buildClippingsTree()
       $("#clippings-tree").fancytree({
         extensions: ["dnd5"],
         
+        autoScroll: true,
         source: treeData,
         selectMode: 1,
         icon: (gIsClippingsTreeEmpty ? false : true),
