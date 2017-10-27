@@ -23,6 +23,9 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+const HTMLPASTE_AS_FORMATTED = 1;
+const HTMLPASTE_AS_IS = 2;
+
 
 //
 // Message handlers
@@ -118,6 +121,7 @@ function handleRequestInsertClipping(aRequest)
   }
 
   let clippingText = aRequest.content;
+  let htmlPaste = aRequest.htmlPaste;
   let autoLineBrk = aRequest.autoLineBreak;
   let activeElt = window.document.activeElement;
 
@@ -129,13 +133,18 @@ function handleRequestInsertClipping(aRequest)
   }
   // Rich text editor
   else if (isElementOfType(activeElt, "HTMLIFrameElement")) {
+    console.log("HTML paste mode (1 = HTMLPASTE_AS_FORMATTED, 2 = HTMLPASTE_AS_IS): ");
+    console.log(htmlPaste);
+    console.log("Auto line break: ");
+    console.log(autoLineBrk);
+    
     let doc = activeElt.contentDocument;
-    rv = insertTextIntoRichTextEditor(doc, clippingText);
+    rv = insertTextIntoRichTextEditor(doc, clippingText, autoLineBrk, htmlPaste);
   }
   // Rich text editor used by Gmail and Outlook.com
   else if (isElementOfType(activeElt, "HTMLDivElement")) {
     let doc = activeElt.ownerDocument;
-    rv = insertTextIntoRichTextEditor(doc, clippingText, autoLineBrk);
+    rv = insertTextIntoRichTextEditor(doc, clippingText, autoLineBrk, htmlPaste);
   }
   else {
     rv = null;
@@ -185,7 +194,7 @@ function insertTextIntoTextbox(aTextboxElt, aInsertedText)
 }
 
 
-function insertTextIntoRichTextEditor(aRichTextEditorDocument, aClippingText, aAutoLineBreak)
+function insertTextIntoRichTextEditor(aRichTextEditorDocument, aClippingText, aAutoLineBreak, aPasteMode)
 {
   console.log("Clippings/wx: insertTextIntoRichTextEditor()");
 
@@ -194,7 +203,7 @@ function insertTextIntoRichTextEditor(aRichTextEditorDocument, aClippingText, aA
   let clippingText = aClippingText;
 
   if (hasHTMLTags) {
-    if (hasRestrictedHTMLTags) {
+    if (hasRestrictedHTMLTags || aPasteMode == HTMLPASTE_AS_IS) {
       clippingText = clippingText.replace(/&/g, "&amp;");
       clippingText = clippingText.replace(/</g, "&lt;");
       clippingText = clippingText.replace(/>/g, "&gt;");
