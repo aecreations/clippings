@@ -133,11 +133,6 @@ function handleRequestInsertClipping(aRequest)
   }
   // Rich text editor
   else if (isElementOfType(activeElt, "HTMLIFrameElement")) {
-    console.log("HTML paste mode (1 = HTMLPASTE_AS_FORMATTED, 2 = HTMLPASTE_AS_IS): ");
-    console.log(htmlPaste);
-    console.log("Auto line break: ");
-    console.log(autoLineBrk);
-    
     let doc = activeElt.contentDocument;
     rv = insertTextIntoRichTextEditor(doc, clippingText, autoLineBrk, htmlPaste);
   }
