@@ -1251,15 +1251,18 @@ var EasyAutocomplete = (function(scope) {
 				.off("keyup")
 				.keyup(function(event) {
 
+					const START_SCROLL_IDX = 1;
+					const SCROLL_OFFSET = 48;
+
 					switch(event.keyCode) {
 
-						case 27:
+						case 27:  // Escape
 
 							hideContainer();
 							loseFieldFocus();
 						break;
 
-						case 38:
+						case 38:  // ArrowUp
 
 							event.preventDefault();
 
@@ -1270,11 +1273,15 @@ var EasyAutocomplete = (function(scope) {
 								$field.val(config.get("getValue")(elementsList[selectedElement]));
 
 								selectElement(selectedElement);
-
+							    
+								if (selectedElement < (elementsList.length - 1 - START_SCROLL_IDX)) {
+								    let scrolled = $(".easy-autocomplete-container")[0].scrollTop;
+								    $(".easy-autocomplete-container")[0].scrollTop = scrolled - SCROLL_OFFSET;
+								}
 							}						
 						break;
 
-						case 40:
+						case 40:  // ArrowDown
 
 							event.preventDefault();
 
@@ -1285,7 +1292,11 @@ var EasyAutocomplete = (function(scope) {
 								$field.val(config.get("getValue")(elementsList[selectedElement]));
 
 								selectElement(selectedElement);
-								
+							    
+								if (selectedElement > START_SCROLL_IDX) {
+								    let scrolled = $(".easy-autocomplete-container")[0].scrollTop;
+								    $(".easy-autocomplete-container")[0].scrollTop = scrolled + SCROLL_OFFSET;
+								}
 							}
 
 						break;
@@ -1440,13 +1451,13 @@ var EasyAutocomplete = (function(scope) {
 					.on("keydown", function(evt) {
 	        		    evt = evt || window.event;
 	        		    var keyCode = evt.keyCode;
-	        		    if (keyCode === 38) {
+	        		    if (keyCode === 38) {  // ArrowUp
 	        		        suppressKeypress = true; 
 	        		        return false;
 	        		    }
 		        	})
 					.keydown(function(event) {
-
+					        // Enter
 						if (event.keyCode === 13 && selectedElement > -1) {
 
 							$field.val(config.get("getValue")(elementsList[selectedElement]));
