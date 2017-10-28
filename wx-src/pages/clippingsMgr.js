@@ -611,6 +611,10 @@ let gCmd = {
   // Internal commands are NOT meant to be invoked directly from the UI.
   moveClippingIntrl: function (aClippingID, aNewParentFldrID, aDestUndoStack)
   {
+    if (gIsClippingsTreeEmpty) {
+      unsetEmptyClippingsState();
+    }
+
     let id, oldParentFldrID;
     
     gClippingsDB.clippings.get(aClippingID).then(aClipping => {
@@ -631,6 +635,10 @@ let gCmd = {
 
   moveFolderIntrl: function (aFolderID, aNewParentFldrID, aDestUndoStack)
   {
+    if (gIsClippingsTreeEmpty) {
+      unsetEmptyClippingsState();
+    }
+
     let oldParentFldrID;
     
     gClippingsDB.folders.get(aFolderID).then(aFolder => {
