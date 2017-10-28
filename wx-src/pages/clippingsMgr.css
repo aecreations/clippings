@@ -112,6 +112,24 @@ body {
     order: 8;
 }
 
+#toolbar > #spacer-2 {
+    order: 9;
+    flex: 1 1 auto;
+}
+
+#toolbar > #search-clippings-and-folders {
+    order: 10;
+}
+
+#toolbar > #search-clippings-and-folders > #clear-search {
+    display: inline-block;
+    width: 16px;
+}
+
+#search-box {
+    width: 200px;
+}
+
 #content {
     height: calc(100% - var(--toolbar-height) - var(--statusbar-height));
 }

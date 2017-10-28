@@ -312,6 +312,83 @@ let gClippingsListener = {
 };
 
 
+// Search box
+let gSearchBox = {
+  _isInitialized: false,
+  _isActive: false,
+  _numMatches: null,
+  _clippingsTree: null,
+
+  init: function ()
+  {
+    if (this._isInitialized) {
+      return;
+    }
+    
+    $("#search-box").keyup(aEvent => {
+      this.updateSearch();
+    });
+
+    $("#clear-search").click(aEvent => { this.reset() });
+
+    this._isInitialized = true;
+  },
+
+  show: function ()
+  {
+    $("#search-clippings-and-folders").show();
+  },
+
+  hide: function ()
+  {
+    $("#search-clippings-and-folders").hide();
+  },
+  
+  isVisible: function ()
+  {
+    return ($("#search-clippings-and-folders").css("display") != "none");
+  },
+  
+  isActivated: function ()
+  {
+    return this._isActive;
+  },
+
+  updateSearch: function ()
+  {
+    let tree = getClippingsTree();
+    let numMatches = tree.filterNodes($("#search-box").val());
+    if (numMatches === undefined) {
+      // User cleared search box by deleting all search text
+      setStatusBarMsg();
+      this._isActive = false;
+    }
+    else {
+      setStatusBarMsg(`${numMatches} matches`);
+    }
+
+    this._numMatches = numMatches;
+  },
+
+  getCountMatches: function ()
+  {
+    return this._numMatches;
+  },
+
+  activate: function ()
+  {
+    this._isActive = true;
+  },
+  
+  reset: function ()
+  {
+    getClippingsTree().clearFilter();
+    $("#search-box").val("").focus();
+    setStatusBarMsg();
+    this._isActive = false;
+  }
+};
+
 // Source URL editing
 let gSrcURLBar = {
   init: function ()
@@ -747,6 +824,11 @@ $(document).ready(() => {
   initDialogs();
   buildClippingsTree();
 
+  $("#search-box").focus(aEvent => {
+    gSearchBox.init();
+    gSearchBox.activate();
+  });
+  
   chrome.history.deleteUrl({ url: window.location.href });
 });
 
@@ -779,6 +861,11 @@ $(document).keypress(aEvent => {
   // NOTE: CTRL+W/Cmd+W is automatically handled, so no need to define it here.
   if (aEvent.key == "F1") {
     window.alert("No help is available (so leave me alone)");
+  }
+  else if (aEvent.key == "Escape") {
+    if (gSearchBox.isActivated()) {
+      gSearchBox.reset();
+    }
   }
   else if (aEvent.key == "Delete") {
     gCmd.deleteClippingOrFolder(gCmd.UNDO_STACK);
@@ -915,7 +1002,7 @@ function buildClippingsTree()
       }
       
       $("#clippings-tree").fancytree({
-        extensions: ["dnd5"],
+        extensions: ["dnd5", "filter"],
         
         autoScroll: true,
         source: treeData,
@@ -987,6 +1074,13 @@ function buildClippingsTree()
             }
             aNode.setExpanded();
           }
+        },
+
+        filter: {
+          autoExpand: true,
+          counter: false,
+          highlight: true,
+          mode: "hide"
         }
       });
 
@@ -1122,7 +1216,14 @@ function updateDisplay(aEvent, aData)
 
   log("Clippings/wx: clippingsMgr: Updating display...");
 
-  setStatusBarMsg();
+  if (gSearchBox.isActivated()) {
+    gSearchBox.updateSearch();
+    let numMatches = gSearchBox.getCountMatches();
+    setStatusBarMsg(`${numMatches} matches`);
+  }
+  else {
+    setStatusBarMsg();
+  }
 
   if (gSrcURLBar.isEditing()) {
     gSrcURLBar.cancelEdit();
