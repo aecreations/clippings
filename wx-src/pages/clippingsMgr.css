@@ -149,6 +149,10 @@ body {
     background-color: #fbfbfb;
 }
 
+ul.fancytree-container {
+    border: none;
+}
+
 #item-properties {
     order: 2;
     flex: 1 1 auto;
