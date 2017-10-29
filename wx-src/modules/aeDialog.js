@@ -30,6 +30,7 @@ class aeDialog
     this._dlgID = aDlgID;
     this._initFn = function () {};
     this._unloadFn = function () {};
+    this._afterDlgAcceptFn = function () {};
   }
 
   setInit(aInitFn)
@@ -41,10 +42,14 @@ class aeDialog
   {
     this._unloadFn = aUnloadFn;
   }
-  
-  setAccept(aAcceptFn, aAcceptBtnLabel)
+
+  setAfterAccept(aAfterAcceptFn)
   {
-    $(`#${this._dlgID} > .dlg-btns > .dlg-accept`).text(aAcceptBtnLabel || "OK");
+    this._afterDlgAcceptFn = aAfterAcceptFn;
+  }
+  
+  setAccept(aAcceptFn)
+  {
     $(`#${this._dlgID} > .dlg-btns > .dlg-accept`).click(aEvent => {
       if (aAcceptFn) {
         aAcceptFn(aEvent);
@@ -52,12 +57,12 @@ class aeDialog
       else {
         this.close();
       }
+      this._afterDlgAcceptFn();
     });
   }
 
-  setCancel(aCancelFn, aCancelBtnLabel)
+  setCancel(aCancelFn)
   {
-    $(`#${this._dlgID} > .dlg-btns > .dlg-cancel`).text(aCancelBtnLabel || "Cancel");
     $(`#${this._dlgID} > .dlg-btns > .dlg-cancel`).click(aEvent => {
       if (aCancelFn) {
         aCancelFn(aEvent);
