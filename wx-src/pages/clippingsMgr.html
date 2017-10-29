@@ -142,8 +142,10 @@
 
     <!-- Dialog boxes -->
     <div id="shortcut-key-conflict-msgbox" class="lightbox">
-      <p>The selected shortcut key has already been assigned to another clipping.  Please select a different shortcut key.</p><br/>
-      <button class="dlg-accept browser-style default" style="width:72px;text-align:center">OK</button>
+      <p>The selected shortcut key has already been assigned to another clipping.  Please select a different shortcut key.</p>
+      <div class="dlg-btns">
+	<button class="dlg-accept browser-style default" style="width:72px;text-align:center">OK</button>
+      </div>
     </div>
 
     <div id="import-dlg" class="lightbox">
@@ -172,6 +174,7 @@
     <script src="../lib/rdflib.js"></script>
     <script src="../modules/aeConst.js"></script>
     <script src="../modules/aeImportExport.js"></script>
+    <script src="../modules/aeDialog.js"></script>
     <script src="clippingsMgr.js"></script>
   </body>
 </html>

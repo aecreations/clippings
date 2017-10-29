@@ -36,27 +36,30 @@
 }
 
 .lightbox {
+    --default-width: 480px;
+    --default-height: 130px;
+    
     display: none;
     position: absolute;
 
     /* Default dimensions */
-    top: 25%;
-    left: 25%;
-    width: 50%;
-    height: 50%;
+    width: var(--width, var(--default-width));
+    height: var(--height, var(--default-height));
+    left: calc(calc(100% - var(--width, var(--default-width))) / 2);
+    top: calc(calc(100% - var(--height, var(--default-height))) / 2);
     
     padding: 16px;
     background-color: white;
     z-index: 1002;
 
-    /* TO DO: Use a box shadow instead. */
-    border: 1px solid black;
+    border: 1px solid #0c0c0d;
+    box-shadow: 0px 0px 6px 2px rgba(0,0,0,0.75);
 }
 
 .lightbox > .dlg-btns {
     position: absolute;
-    bottom: 16px;
-    right: 12px;
+    bottom: 14px;
+    right: 6px;
 }
 
 .lightbox > .dlg-btns > button {

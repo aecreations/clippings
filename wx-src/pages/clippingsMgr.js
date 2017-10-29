@@ -36,6 +36,7 @@ let gClippings;
 let gIsClippingsTreeEmpty;
 let gIsReloading = false;
 let gClippingsTreeDnD = false;
+let gDialogs = {};
 
 // Clippings listener object
 let gClippingsListener = {
@@ -529,7 +530,7 @@ let gShortcutKey = {
       assignedKeysLookup[aItem.shortcutKey] = 1;
     }).then(() => {
       if (assignedKeysLookup[shortcutKey]) {
-        showModalDlg("#shortcut-key-conflict-msgbox");
+        gDialogs.shctKeyConflict.showModal();
         return;
       }
 
@@ -736,11 +737,7 @@ let gCmd = {
 
   importFromFile: function ()
   {
-    // Reset the file upload element so that it doesn't automatically select
-    // the last uploaded file by default.
-    $("#import-dlg #import-clippings-file-upload").val("");
-    $("#import-clippings-replc-shct-keys")[0].checked = true;
-    showModalDlg("#import-dlg");
+    gDialogs.importFromFile.showModal();
   },
 
   exportToFile: function ()
@@ -939,28 +936,76 @@ function initInstantEditing()
 
 function initDialogs()
 {
-  $("#shortcut-key-conflict-msgbox > button.dlg-accept").click(aEvent => {
-    closeModalDlg("#shortcut-key-conflict-msgbox");
+  gDialogs.shctKeyConflict = new aeDialog("shortcut-key-conflict-msgbox");
+  gDialogs.shctKeyConflict.setAccept(aEvent => {
+    gDialogs.shctKeyConflict.close();
 
     // NOTE: As of Firefox 57b8, this doesn't do anything.
     $("#clipping-key")[0].selectedIndex = gShortcutKey.getPrevSelectedIndex();
   });
 
-  initImport();
-}
+  gDialogs.importFromFile = new aeDialog("import-dlg");
+  gDialogs.importFromFile.setInit(() => {
+    aeImportExport.setDatabase(gClippingsDB);
 
+    $("#import-clippings-file-upload").on("change", aEvent => {
+      $("#import-error").text("").hide();
+      if (aEvent.target.files.length > 0) {
+        $("#import-dlg button.dlg-accept").removeAttr("disabled");
+      }
+    });
+  });
 
-function showModalDlg(aDlgSelector)
-{
-  $("#lightbox-bkgrd-ovl").addClass("lightbox-show");
-  $(aDlgSelector).addClass("lightbox-show");
-}
+  gDialogs.importFromFile.setUnload(() => {
+    $("#import-error").text("").hide();
+    $("#import-dlg #import-clippings-file-upload").val("");
+    $("#import-clippings-replc-shct-keys")[0].checked = true;
+  });
 
+  gDialogs.importFromFile.setCancel();
 
-function closeModalDlg(aDlgSelector)
-{
-  $(aDlgSelector).removeClass("lightbox-show");
-  $("#lightbox-bkgrd-ovl").removeClass("lightbox-show");
+  gDialogs.importFromFile.setAccept(aEvent => {
+    function uploadImportFile(aFileList) {
+      if (aFileList.length == 0) {
+        return;
+      }
+      
+      let importFile = aFileList[0];
+      console.log("Clippings Manager: Selected import file: '%s'\nFile size: %d bytes", importFile.name, importFile.size);
+
+      let fileReader = new FileReader();
+      fileReader.addEventListener("load", aEvent => {
+        let rawData = aEvent.target.result;
+        let replaceShortcutKeys = ($("#import-clippings-replc-shct-keys:checked").length > 0);
+        
+        try {
+          if (importFile.name.endsWith(".json")) {
+            aeImportExport.importFromJSON(rawData, replaceShortcutKeys);
+          }
+          else if (importFile.name.endsWith(".rdf")) {
+            aeImportExport.importFromRDF(rawData, replaceShortcutKeys);
+          }
+        }
+        catch (e) {
+          $("#import-progress-bar").hide();
+          console.error(e);
+          $("#import-error").text("Error reading selected file.  The file may not be a valid Clippings file.").show();
+          return;
+        }
+
+        $("#import-error").text("").hide();
+        $("#import-progress-bar").hide();
+        gDialogs.importFromFile.close();
+      });
+
+      fileReader.readAsText(importFile);
+    }
+
+    $("#import-progress-bar").show();
+
+    let inputFileElt = $("#import-clippings-file-upload")[0];
+    uploadImportFile(inputFileElt.files);
+  }, "Import");
 }
 
 
@@ -1173,7 +1218,7 @@ function initShortcutKeyMenu()
       assignedKeysLookup[aItem.shortcutKey] = 1;
     }).then(() => {
       if (assignedKeysLookup[shortcutKey]) {
-        showModalDlg("#shortcut-key-conflict-msgbox");
+        gDialogs.shctKeyConflict.showModal();
         return;
       }
 
@@ -1292,76 +1337,6 @@ function setStatusBarMsg(aMessage)
 
   let tree = getClippingsTree();
   $("#status-bar-msg").text(`${tree.count()} items`);
-}
-
-
-function initImport()
-{
-  function hideImportErrMsg()
-  {
-    $("#import-error").text("").hide();
-  }
-  
-  aeImportExport.setDatabase(gClippingsDB);
-
-  $("#import-clippings-file-upload").on("change", aEvent => {
-    hideImportErrMsg();
-    if (aEvent.target.files.length > 0) {
-      $("#import-dlg button.dlg-accept").removeAttr("disabled");
-    }
-  });
-  
-  $("#import-dlg button.dlg-cancel").click(aEvent => {
-    hideImportErrMsg();
-    closeModalDlg("#import-dlg");
-  });
-  
-  $("#import-dlg button.dlg-accept").click(aEvent => {
-    hideImportErrMsg();
-    $("#import-progress-bar").show();
-
-    let inputFileElt = $("#import-clippings-file-upload")[0];
-    uploadImportFile(inputFileElt.files);
-  });
-}
-
-
-function uploadImportFile(aFileList)
-{
-  if (aFileList.length == 0) {
-    return;
-  }
-  
-  let importFile = aFileList[0];
-  console.log("Clippings Manager: Selected import file: '%s'\nFile size: %d bytes", importFile.name, importFile.size);
-
-  let fileReader = new FileReader();
-  fileReader.addEventListener("load", aEvent => {
-    let rawData = aEvent.target.result;
-
-    let replaceShortcutKeys = ($("#import-clippings-replc-shct-keys:checked").length > 0);
-    
-    try {
-      if (importFile.name.endsWith(".json")) {
-        aeImportExport.importFromJSON(rawData, replaceShortcutKeys);
-      }
-      else if (importFile.name.endsWith(".rdf")) {
-        aeImportExport.importFromRDF(rawData, replaceShortcutKeys);
-      }
-    }
-    catch (e) {
-      $("#import-progress-bar").hide();
-      console.error(e);
-      $("#import-error").text("Error reading selected file.  The file may not be a valid Clippings file.").show();
-      return;
-    }
-
-    $("#import-error").text("").hide();
-    $("#import-progress-bar").hide();
-    closeModalDlg("#import-dlg");
-  });
-
-  fileReader.readAsText(importFile);
 }
 
 
