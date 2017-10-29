@@ -1196,16 +1196,6 @@ function initLabelPicker()
 }
 
 
-function initSrcURLEditor()
-{
-  $("#src-url-edit-mode").hide();
-  
-  $("#edit-url-btn").click(aEvent => { gSrcURLBar.edit() });
-  $("#edit-src-url-ok").click(aEvent => { gSrcURLBar.acceptEdit() });
-  $("#edit-src-url-cancel").click(aEvent => { gSrcURLBar.cancelEdit() });
-}
-
-
 function updateDisplay(aEvent, aData)
 {
   if (gIsClippingsTreeEmpty) {
