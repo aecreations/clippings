@@ -1105,6 +1105,8 @@ var EasyAutocomplete = (function(scope) {
 								.empty()
 								.detach();
 
+							$("#ae-eac-num-matches").remove();
+						    
 							elementsList = [];
 							var counter = 0;
 							for(var builderIndex = 0, listBuildersLength = listBuilders.length; builderIndex < listBuildersLength; builderIndex += 1) {
@@ -1160,6 +1162,8 @@ var EasyAutocomplete = (function(scope) {
 
 							$elements_container.append($listContainer);
 
+							$elements_container.append(`<div id="ae-eac-num-matches">${listData.length} matches</div>`);
+						    
 							config.get("list").onLoadEvent();
 						});
 
@@ -1251,15 +1255,15 @@ var EasyAutocomplete = (function(scope) {
 				.off("keyup")
 				.keyup(function(event) {
 
-					const START_SCROLL_IDX = 1;
-					const SCROLL_OFFSET = 48;
+					const AE_START_SCROLL_IDX = 1;
+					const AE_SCROLL_OFFSET = 44;
 
 					switch(event.keyCode) {
 
 						case 27:  // Escape
 
 							hideContainer();
-							loseFieldFocus();
+							//loseFieldFocus();
 						break;
 
 						case 38:  // ArrowUp
@@ -1274,9 +1278,9 @@ var EasyAutocomplete = (function(scope) {
 
 								selectElement(selectedElement);
 							    
-								if (selectedElement < (elementsList.length - 1 - START_SCROLL_IDX)) {
-								    let scrolled = $(".easy-autocomplete-container")[0].scrollTop;
-								    $(".easy-autocomplete-container")[0].scrollTop = scrolled - SCROLL_OFFSET;
+								if (selectedElement < (elementsList.length - 1 - AE_START_SCROLL_IDX)) {
+								    let scrolled = $(".easy-autocomplete-container > ul")[0].scrollTop;
+								    $(".easy-autocomplete-container > ul")[0].scrollTop = scrolled - AE_SCROLL_OFFSET;
 								}
 							}						
 						break;
@@ -1293,9 +1297,9 @@ var EasyAutocomplete = (function(scope) {
 
 								selectElement(selectedElement);
 							    
-								if (selectedElement > START_SCROLL_IDX) {
-								    let scrolled = $(".easy-autocomplete-container")[0].scrollTop;
-								    $(".easy-autocomplete-container")[0].scrollTop = scrolled + SCROLL_OFFSET;
+								if (selectedElement > AE_START_SCROLL_IDX) {
+								    let scrolled = $(".easy-autocomplete-container > ul")[0].scrollTop;
+								    $(".easy-autocomplete-container > ul")[0].scrollTop = scrolled + AE_SCROLL_OFFSET;
 								}
 							}
 

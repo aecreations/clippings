@@ -610,7 +610,7 @@ function openKeyboardPasteDlg()
   // If not, then don't do anything.
 
   let url = browser.runtime.getURL("pages/keyboardPaste.html");
-  openDlgWnd(url, "keyboardPaste", { type: "detached_panel", width: 500, height: 200 });
+  openDlgWnd(url, "keyboardPaste", { type: "detached_panel", width: 500, height: 164 });
 }
 
 

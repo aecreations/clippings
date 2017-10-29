@@ -23,6 +23,9 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+const WNDH_SHORTCUT_KEY = 164;
+const WNDH_SEARCH_CLIPPING = 216;
+
 let gClippings, gClippingsDB, gPasteMode;
 
 
@@ -49,8 +52,10 @@ $(document).ready(() => {
     }
     else {
       $(".deck > #paste-by-shortcut-key").hide();
-      $(".deck > #search-by-name").show();
-      $("#clipping-search").focus();
+      chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, { height: WNDH_SEARCH_CLIPPING }, aWnd => {
+        $(".deck > #search-by-name").show();
+        $("#clipping-search").focus();
+      });
     }
   });
 });
@@ -72,19 +77,25 @@ $(window).keypress(aEvent => {
     // TO DO: Show shortcut key legend.
   }
   else if (aEvent.key == "Tab") {
+    aEvent.preventDefault();
+
     if (gPasteMode == aeConst.PASTEACTION_SHORTCUT_KEY) {
-      $(".deck > #paste-by-shortcut-key").hide();
-      $(".deck > #search-by-name").show();
-      $("#clipping-search").focus();
       gPasteMode = aeConst.PASTEACTION_SEARCH_CLIPPING;
+      $(".deck > #paste-by-shortcut-key").hide();
+
+      chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, { height: WNDH_SEARCH_CLIPPING }, aWnd => {
+        $(".deck > #search-by-name").show();
+        $("#clipping-search").focus();
+      });
     }
     else if (gPasteMode == aeConst.PASTEACTION_SEARCH_CLIPPING) {
-      $(".deck > #search-by-name").hide();
-      $(".deck > #paste-by-shortcut-key").show();
       gPasteMode = aeConst.PASTEACTION_SHORTCUT_KEY;
-    }
+      $(".deck > #search-by-name").hide();
 
-    aEvent.preventDefault();
+      chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, { height: WNDH_SHORTCUT_KEY }, aWnd => {
+        $(".deck > #paste-by-shortcut-key").show();
+      });
+    }
   }
   else {
     if (gPasteMode == aeConst.PASTEACTION_SHORTCUT_KEY) {
@@ -128,8 +139,22 @@ function initAutocomplete()
       data: clippings,
       getValue: "name",
       list: {
+        maxNumberOfElements: 10000,
         match: {
           enabled: true
+        },
+
+        onLoadEvent: function () {
+          let numMatches = $(".easy-autocomplete-container > ul > li").length;
+          $("#num-matches").text(`${numMatches} matches`);
+        },
+        
+        onShowListEvent: function () {
+          $(".easy-autocomplete-container").removeAttr("hidden");
+        },
+        
+        onHideListEvent: function () {
+          $(".easy-autocomplete-container").attr("hidden", "true");
         },
 
         onChooseEvent: function () {
@@ -153,8 +178,12 @@ function initAutocomplete()
   
     $("#clipping-search").easyAutocomplete(eacOpts);
 
+    // EasyAutocomplete adds a <div class="easy-autocomplete"> and places the
+    // clipping search textbox inside it.
     $(".easy-autocomplete").addClass("browser-style");
+
     $("#clipping-search").focus();
+    $(".easy-autocomplete-container").attr("hidden", "true");
   });
 }
 
