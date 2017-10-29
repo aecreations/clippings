@@ -1223,8 +1223,6 @@ var EasyAutocomplete = (function(scope) {
 			function bindFocusOut() {
 				$field.focusout(function () {
 
-				    // !!!
-				    console.log(">> EasyAutocomplete: 'focusout' event");
 					var fieldValue = $field.val(),
 						phrase;
 
@@ -1483,9 +1481,6 @@ var EasyAutocomplete = (function(scope) {
 			function bindFocus() {
 				$field.focus(function() {
 
-				    // !!!
-				    console.log(">> EasyAutocomplete: 'focus' event");
-				    
 					if ($field.val() !== "" && elementsList.length > 0) {
 						
 						selectedElement = -1;
@@ -1497,8 +1492,6 @@ var EasyAutocomplete = (function(scope) {
 
 			function bindBlur() {
 				$field.blur(function() {
-				    // !!!
-				    console.log(">> EasyAutocomplete: 'blur' event");
 					setTimeout(function() { 
 						
 						selectedElement = -1;
