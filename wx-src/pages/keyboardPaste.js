@@ -152,6 +152,9 @@ function initAutocomplete()
     };
   
     $("#clipping-search").easyAutocomplete(eacOpts);
+
+    $(".easy-autocomplete").addClass("browser-style");
+    $("#clipping-search").focus();
   });
 }
 
