@@ -10,8 +10,7 @@
 .easy-autocomplete {
   position: relative;
 }
-.easy-autocomplete input {
-/**
+.easy-autocomplete input.eac {
   border-color: #ccc;
   border-radius: 4px;
   border-style: solid;
@@ -20,7 +19,6 @@
   color: #555;
   float: none;
   padding: 6px 12px;
-**/
 }
 .easy-autocomplete input:hover, .easy-autocomplete input:focus {
   box-shadow: none;
