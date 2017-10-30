@@ -161,8 +161,30 @@
 	<div id="import-error"></div>
       </div>
       <div class="dlg-btns">
-	<button class="dlg-accept browser-style default" disabled="true">OK</button>
+	<button class="dlg-accept browser-style default" disabled="true">Import</button>
 	<button class="dlg-cancel browser-style">Cancel</button>
+      </div>
+    </div>
+
+    <div id="export-dlg" class="lightbox">
+      <div class="dlg-content browser-style">
+	<label style="display:block">Select a format to export Clippings to:</label>
+	<select id="export-format-list" size="3">
+	  <option value="0">Clippings 6</option>
+<!--
+	  <option value="1">HTML Document</option>
+-->
+	</select>
+	<fieldset>
+	  <legend>Description</legend>
+	  <p id="format-description" class="desc"></p>
+	</fieldset>
+	<input type="checkbox" id="include-src-urls" checked="true"/>
+	<label for="include-src-urls">Include source web page addresses of clippings</label>
+      </div>
+      <div class="dlg-btns">
+        <button class="dlg-accept browser-style default">Export</button>
+        <button class="dlg-cancel browser-style">Cancel</button>
       </div>
     </div>
     <div id="lightbox-bkgrd-ovl" class="lightbox-bkgrd"></div>

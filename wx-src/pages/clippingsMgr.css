@@ -291,6 +291,27 @@ ul.fancytree-container {
     height: 14px;
 }
 
+.lightbox fieldset {
+    border-left: none;
+    border-right: none;
+}
+
+.lightbox fieldset > legend {
+    padding-left: 0px;
+    padding-right: 8px;
+    margin-left: -8px;
+}
+
+.lightbox select {
+    font: caption;
+    font-size: 11px;
+}
+
+.lightbox select > option {
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
 #import-dlg {
     --width: 395px;
     --height: 178px;
@@ -311,4 +332,26 @@ ul.fancytree-container {
     display: none;
     margin-top: 8px;
     color: red;
+}
+
+#export-dlg {
+    --width: 360px;
+    --height: 316px;
+}
+
+#export-dlg #export-format-list {
+    width: 100%;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+#export-dlg fieldset {
+    margin-top: 6px;
+    margin-bottom: 12px;
+    height: 106px;
+}
+
+#export-dlg #format-description {
+    margin-top: 2px;
+    margin-bottom: 2px;
 }

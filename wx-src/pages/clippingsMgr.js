@@ -742,20 +742,7 @@ let gCmd = {
 
   exportToFile: function ()
   {
-    let incSrcURLs = true;
-    
-    aeImportExport.exportToJSON(incSrcURLs).then(aJSONData => {
-      let blobData = new Blob([aJSONData], { type: "application/json;charset=utf-8"});
-
-      browser.downloads.download({
-        url: URL.createObjectURL(blobData),
-        filename: "clippings.json",
-        saveAs: true
-      });
-    }).catch(aErr => {
-      console.error(aErr);
-      window.alert("Error exporting to file:\n" + aErr);
-    });
+    gDialogs.exportToFile.showModal();
   },
 
   undo: function ()
@@ -936,6 +923,8 @@ function initInstantEditing()
 
 function initDialogs()
 {
+  aeImportExport.setDatabase(gClippingsDB);
+
   gDialogs.shctKeyConflict = new aeDialog("shortcut-key-conflict-msgbox");
   gDialogs.shctKeyConflict.setAccept(aEvent => {
     gDialogs.shctKeyConflict.close();
@@ -946,8 +935,6 @@ function initDialogs()
 
   gDialogs.importFromFile = new aeDialog("import-dlg");
   gDialogs.importFromFile.setInit(() => {
-    aeImportExport.setDatabase(gClippingsDB);
-
     $("#import-clippings-file-upload").on("change", aEvent => {
       $("#import-error").text("").hide();
       if (aEvent.target.files.length > 0) {
@@ -955,15 +942,12 @@ function initDialogs()
       }
     });
   });
-
   gDialogs.importFromFile.setUnload(() => {
     $("#import-error").text("").hide();
     $("#import-dlg #import-clippings-file-upload").val("");
     $("#import-clippings-replc-shct-keys")[0].checked = true;
   });
-
   gDialogs.importFromFile.setCancel();
-
   gDialogs.importFromFile.setAccept(aEvent => {
     function uploadImportFile(aFileList) {
       if (aFileList.length == 0) {
@@ -1005,7 +989,45 @@ function initDialogs()
 
     let inputFileElt = $("#import-clippings-file-upload")[0];
     uploadImportFile(inputFileElt.files);
-  }, "Import");
+  });
+
+  gDialogs.exportToFile = new aeDialog("export-dlg");
+  gDialogs.exportToFile.setInit(() => {
+    let fmtDesc = [
+      "The default format for backing up and exchanging Clippings data with other users or multiple computers.  Requires Clippings 5.5 or newer installed.",
+      "Exports your Clippings data as an HTML document for printing or display in a web browser."
+    ];
+    
+    $("#export-format-list").change(aEvent => {
+      $("#format-description").text(fmtDesc[aEvent.target.selectedIndex]);
+    });
+
+    $("#export-format-list")[0].selectedIndex = 0;
+    $("#format-description").text(fmtDesc[0]);
+    $("#include-src-urls").prop("checked", true);
+  });
+  gDialogs.exportToFile.setCancel();
+  gDialogs.exportToFile.setAccept();
+  gDialogs.exportToFile.setAfterAccept(() => {
+    setStatusBarMsg("Exporting...");
+    
+    let inclSrcURLs = $("#include-src-urls").prop("checked");
+
+    aeImportExport.exportToJSON(inclSrcURLs).then(aJSONData => {
+      let blobData = new Blob([aJSONData], { type: "application/json;charset=utf-8"});
+
+      return browser.downloads.download({
+        url: URL.createObjectURL(blobData),
+        filename: "clippings.json",
+        saveAs: true
+      });
+    }).then(aDownldItemID => {
+      setStatusBarMsg("Exporting... done");
+    }).catch(aErr => {
+      console.error(aErr);
+      window.alert("Error exporting to file:\n" + aErr);
+    });
+  });
 }
 
 
