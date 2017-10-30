@@ -590,7 +590,7 @@ let gCmd = {
   },
 
   
-  newClipping: function ()
+  newClipping: function (aDestUndoStack)
   {
     if (gIsClippingsTreeEmpty) {
       unsetEmptyClippingsState();
@@ -614,11 +614,17 @@ let gCmd = {
     });
 
     createClipping.then(aNewClippingID => {
-      // TO DO: Add new clipping creation to undo stack.
+      if (aDestUndoStack == this.UNDO_STACK) {
+        this.undoStack.push({
+          action: this.ACTION_CREATENEW,
+          id: aNewClippingID,
+          itemType: this.ITEMTYPE_CLIPPING
+        });
+      }
     });
   },
 
-  newFolder: function ()
+  newFolder: function (aDestUndoStack)
   {
     if (gIsClippingsTreeEmpty) {
       unsetEmptyClippingsState();
@@ -638,7 +644,13 @@ let gCmd = {
     });
 
     createFolder.then(aNewFolderID => {
-      // TO DO: Add new folder creation to undo stack.
+      if (aDestUndoStack == this.UNDO_STACK) {
+        this.undoStack.push({
+          action: this.ACTION_CREATENEWFOLDER,
+          id: aNewFolderID,
+          itemType: this.ITEMTYPE_FOLDER
+        });
+      }
     });
   },
 
@@ -659,7 +671,7 @@ let gCmd = {
     
     if (selectedNode.isFolder()) {
       gClippingsDB.folders.update(id, { parentFolderID: aeConst.DELETED_ITEMS_FLDR_ID }).then(aNumUpd => {
-        if (aDestUndoStack == gCmd.UNDO_STACK) {
+        if (aDestUndoStack == this.UNDO_STACK) {
           this.undoStack.push({
             action: this.ACTION_DELETEFOLDER,
             itemType: this.ITEMTYPE_FOLDER,
@@ -674,7 +686,7 @@ let gCmd = {
         parentFolderID: aeConst.DELETED_ITEMS_FLDR_ID,
         shortcutKey: ""
       }).then(aNumUpd => {
-        if (aDestUndoStack == gCmd.UNDO_STACK) {
+        if (aDestUndoStack == this.UNDO_STACK) {
           this.undoStack.push({
             action: this.ACTION_DELETECLIPPING,
             itemType: this.ITEMTYPE_CLIPPING,
@@ -768,6 +780,12 @@ let gCmd = {
         this.moveFolderIntrl(undo.id, undo.oldParentFldrID);
       }
     }
+    else if (undo.action == this.ACTION_CREATENEW) {
+      this.moveClippingIntrl(undo.id, aeConst.DELETED_ITEMS_FLDR_ID);
+    }
+    else if (undo.action == this.ACTION_CREATENEWFOLDER) {
+      this.moveFolderIntrl(undo.id, aeConst.DELETED_ITEMS_FLDR_ID);
+    }
   },
   
   // Helper
@@ -854,8 +872,9 @@ $(document).keypress(aEvent => {
   else if (aEvent.key == "Delete") {
     gCmd.deleteClippingOrFolder(gCmd.UNDO_STACK);
   }
-  else if (aEvent.key.toUpperCase() == "N" && aEvent.altKey) {
-    gCmd.newClipping();
+  else if (aEvent.key.toUpperCase() == "N" && isAccelKeyPressed()) {
+    aEvent.preventDefault();
+    gCmd.newClipping(gCmd.UNDO_STACK);
   }
   else if (aEvent.key.toUpperCase() == "Z" && isAccelKeyPressed()) {
     gCmd.undo();
@@ -869,8 +888,8 @@ $(document).keypress(aEvent => {
 
 function initToolbarButtons()
 {
-  $("#new-clipping").click(aEvent => { gCmd.newClipping() });
-  $("#new-folder").click(aEvent => { gCmd.newFolder() });
+  $("#new-clipping").click(aEvent => { gCmd.newClipping(gCmd.UNDO_STACK) });
+  $("#new-folder").click(aEvent => { gCmd.newFolder(gCmd.UNDO_STACK) });
 
   // TEMPORARY
   $("#move").css({ display: "none" });
@@ -880,8 +899,7 @@ function initToolbarButtons()
     gCmd.deleteClippingOrFolder(gCmd.UNDO_STACK)
   });
 
-  $("#undo").click(aEvent => { gCmd.undo() })
-            .attr("title", "Undo Delete and Move only");  // TEMPORARY
+  $("#undo").click(aEvent => { gCmd.undo() });
   
   $("#tmp-import").click(aEvent => { gCmd.importFromFile() });
   $("#tmp-export").click(aEvent => { gCmd.exportToFile() });
