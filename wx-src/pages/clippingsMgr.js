@@ -1017,7 +1017,15 @@ function initDialogs()
     ];
     
     $("#export-format-list").change(aEvent => {
-      $("#format-description").text(fmtDesc[aEvent.target.selectedIndex]);
+      let selectedFmtIdx = aEvent.target.selectedIndex;
+      $("#format-description").text(fmtDesc[selectedFmtIdx]);
+
+      if (selectedFmtIdx == 0) { // Clippings 6
+        $("#include-src-urls").removeAttr("disabled");
+      }
+      else if (selectedFmtIdx == 1) {  // HTML Document
+        $("#include-src-urls").attr("disabled", "true").prop("checked", false);
+      }
     });
 
     $("#export-format-list")[0].selectedIndex = 0;
@@ -1027,24 +1035,49 @@ function initDialogs()
   gDialogs.exportToFile.setCancel();
   gDialogs.exportToFile.setAccept();
   gDialogs.exportToFile.setAfterAccept(() => {
+    function saveToFile(aBlobData, aFilename)
+    {
+      browser.downloads.download({
+        url: URL.createObjectURL(aBlobData),
+        filename: aFilename,
+        saveAs: true
+      }).then(aDownldItemID => {
+        setStatusBarMsg("Exporting... done");
+      }).catch(aErr => {
+        if (aErr.fileName == "undefined") {
+          setStatusBarMsg();
+        }
+        else {
+          console.error(aErr);
+          window.alert("Export failed.\n" + aErr);
+        }
+      });
+    }
+    
+    let selectedFmtIdx = $("#export-format-list")[0].selectedIndex;
     setStatusBarMsg("Exporting...");
     
-    let inclSrcURLs = $("#include-src-urls").prop("checked");
+    if (selectedFmtIdx == 0) {  // Clippings 6
+      let inclSrcURLs = $("#include-src-urls").prop("checked");
 
-    aeImportExport.exportToJSON(inclSrcURLs).then(aJSONData => {
-      let blobData = new Blob([aJSONData], { type: "application/json;charset=utf-8"});
+      aeImportExport.exportToJSON(inclSrcURLs).then(aJSONData => {
+        let blobData = new Blob([aJSONData], { type: "application/json;charset=utf-8"});
 
-      return browser.downloads.download({
-        url: URL.createObjectURL(blobData),
-        filename: "clippings.json",
-        saveAs: true
+        saveToFile(blobData, aeConst.CLIPPINGS_EXPORT_FILENAME);
       });
-    }).then(aDownldItemID => {
-      setStatusBarMsg("Exporting... done");
-    }).catch(aErr => {
-      console.error(aErr);
-      window.alert("Error exporting to file:\n" + aErr);
-    });
+    }
+    else if (selectedFmtIdx == 1) {  // HTML Document
+      aeImportExport.exportToHTML().then(aHTMLData => {
+        // TEMPORARY
+        console.log("HTML export: ");
+        console.log(aHTMLData);
+        return;
+        // END TEMPORARY
+        
+        let blobData = new Blob([aHTMLData], { type: "text/html;charset=utf-8"});
+        saveToFile(blobData, aeConst.HTML_EXPORT_FILENAME);
+      });
+    }
   });
 }
 
