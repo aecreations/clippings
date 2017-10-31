@@ -1,0 +1,82 @@
+/* ***** BEGIN LICENSE BLOCK *****
+ * Version: MPL 1.1
+ *
+ * The contents of this file are subject to the Mozilla Public License Version
+ * 1.1 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+ * for the specific language governing rights and limitations under the
+ * License.
+ *
+ * The Original Code is Clippings.
+ *
+ * The Initial Developer of the Original Code is 
+ * Alex Eng <ateng@users.sourceforge.net>.
+ * Portions created by the Initial Developer are Copyright (C) 2005-2017
+ * the Initial Developer. All Rights Reserved.
+ *
+ * Contributor(s):
+ *
+ * ***** END LICENSE BLOCK ***** */
+
+
+input[type="text"], textarea, select {
+    margin-bottom: 12px !important;
+}
+
+input[type="text"], textarea {
+    width: 100%;
+}
+
+textarea {
+    resize: none;
+}
+
+#folder-tree-btn {
+    width: 100%;
+    padding: 4px;
+    background-color: #fbfbfb;
+    border: 1px solid #b1b1b1;
+
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICA8cGF0aCBkPSJNOCwxMkwzLDcsNCw2bDQsNCw0LTQsMSwxWiIgZmlsbD0iIzZBNkE2QSIgLz4KPC9zdmc+Cg==);
+    background-position: calc(100% - 4px) center;
+    background-repeat: no-repeat;
+    font: caption !important;
+    font-size: 11px !important;
+    text-align: start !important;
+}
+
+#folder-tree-btn:hover {
+    background-color: #ebebeb;
+}
+
+#folder-tree-btn:hover:active {
+    background-color: #d4d4d4;
+}
+
+#folder-tree-popup {
+    position: absolute;
+    visibility: hidden;
+    width: 32em;
+    height: 140px;
+    margin-top: 0;
+    border: 1px solid #b1b1b1;
+    background-color: white;
+    box-shadow: 2px 2px 2px 0px rgba(143,143,143,1);
+}
+
+#folder-tree {
+    height: 100%;
+    overflow: auto;
+}
+
+ul.fancytree-container {
+    border: none;
+}
+
+#clipping-options {
+    margin-bottom: 8px;
+}
