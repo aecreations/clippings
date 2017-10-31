@@ -37,12 +37,14 @@
         <fieldset id="paste-options">
           <legend>Paste Options</legend>
 
-	  <label for="html-paste-options">When pasting an HTML-formatted clipping into a rich text edit box:</label>
-	  <select id="html-paste-options">
-	    <option value="1">Paste as formatted text</option>
-	    <option value="2">Paste as plain text, preserving HTML tags</option>
-          </select>
-
+	  <div class="row" style="margin-bottom:4px">
+  	    <label for="html-paste-options">When pasting an HTML-formatted clipping into a rich text edit box:</label>
+	    <select id="html-paste-options">
+	      <option value="1">Paste as formatted text</option>
+	      <option value="2">Paste as plain text, preserving HTML tags</option>
+            </select>
+	  </div>
+	  
 	  <div class="row indent">
 	    <input type="checkbox" id="html-auto-line-break"/>
 	    <label for="html-auto-line-break">Automatically break lines unless &lt;p&gt; or &lt;br&gt; tags exist</label>
@@ -53,7 +55,7 @@
 	    <label for="enable-shortcut-key">Activate shortcut key mode using ALT+SHIFT+Y</label>
           </div>
 
-	  <div class="row">
+	  <div class="row" style="margin-top:4px">
 	    <label for="auto-inc-plchldrs-start-val">Default starting value for auto-incrementing placeholders:</label>
 	    <input type="number" id="auto-inc-plchldrs-start-val" min="0" value="0"/>
 	  </row>
