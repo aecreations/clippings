@@ -46,4 +46,8 @@ let aeConst = {
   // Folder IDs
   ROOT_FOLDER_ID: 0,
   DELETED_ITEMS_FLDR_ID: -1,
+
+  // Export to file
+  CLIPPINGS_EXPORT_FILENAME: "clippings.json",
+  HTML_EXPORT_FILENAME: "clippings.html",
 };
