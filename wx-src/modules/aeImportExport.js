@@ -197,7 +197,7 @@ aeImportExport._exportToJSONHelper = function (aFolder, aIncludeSrcURLs)
         children: []
       };
 
-      folder.children = this._exportToJSONHelper(aItem);
+      folder.children = this._exportToJSONHelper(aItem, aIncludeSrcURLs);
       rv.push(folder);
     }).then(() => {
       return this._db.clippings.where("parentFolderID").equals(fldrID).each((aItem, aCursor) => {
