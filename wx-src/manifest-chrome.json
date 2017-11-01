@@ -49,7 +49,8 @@
     "commands" : {
 	"ae-clippings-paste-clipping": {
 	    "suggested_key": {
-		"default": "Alt+Shift+Y"
+		"default": "Alt+Shift+Y",
+		"mac": "Command+Shift+Y"
 	    },
 	    "description": "Paste a clipping using its shortcut key"
 	}
