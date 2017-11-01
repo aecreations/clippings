@@ -42,6 +42,7 @@ $(document).ready(() => {
 
       $("#clipping-name").val(aResp.name).select().focus();
       $("#clipping-text").val(aResp.content);
+      $("#save-source-url").prop("checked", aResp.saveSrcURL);
       gSrcURL = aResp.url || "";
     });
   }

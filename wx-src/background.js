@@ -313,6 +313,7 @@ function initMessageListeners()
       if (aRequest.msgID == "init-new-clipping-dlg") {
         resp = gNewClipping.get();
         if (resp !== null) {
+          resp.saveSrcURL = gPrefs.alwaysSaveSrcURL;
           aSendResponse(resp);
         }
       }
@@ -344,6 +345,7 @@ function initMessageListeners()
         resp = gNewClipping.get();
 
         if (resp !== null) {
+          resp.saveSrcURL = gPrefs.alwaysSaveSrcURL;
           return Promise.resolve(resp);
         }
       }
