@@ -121,11 +121,26 @@ let gIsInitialized = false;
 browser.runtime.onInstalled.addListener(aDetails => {
   if (aDetails.reason == "install") {
     console.log("Clippings/wx: It appears that the extension was newly installed.  Welcome to Clippings 6!");
+    // TEMPORARY
+    /***
+    let oldVer = "5.5.2";
+    let url = browser.runtime.getURL(`pages/postUpgrade.html?oldVer=${oldVer}`);
+    browser.tabs.create({
+      url: url
+    }).then(aTab => {
+      browser.history.deleteUrl({ url });
+    });
+    ***/
+    // END TEMPORARY
   }
   else if (aDetails.reason == "upgrade") {
-    console.log("Clippings/wx: Upgrading from version " + aDetails.previousVersion);
-    if (parseInt(aDetails.previousVersion) < 6) {
-      console.log("Upgrading from legacy XUL version. Setting default preferences.");
+    let oldVer = aDetails.previousVersion;
+    console.log("Clippings/wx: Upgrading from version " + oldVer);
+    if (parseInt(oldVer) < 6) {
+      let url = browser.runtime.getURL(`pages/postUpgrade.html?oldVer=${oldVer}`);
+      browser.tabs.create({ url }).then(aTab => {
+        browser.history.deleteUrl({ url });
+      });
     }
   }
 });
