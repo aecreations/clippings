@@ -43,7 +43,10 @@ textarea {
     width: 32em;
     height: 140px;
     margin-top: 0;
-    border: 1px solid #b1b1b1;
+    border-top: 1px solid ThreeDLightShadow;
+    border-left: 1px solid ThreeDLightShadow;
+    border-right: 1px solid ThreeDDarkShadow;
+    border-bottom: 1px solid ThreeDDarkShadow;
     background-color: white;
     box-shadow: 2px 2px 2px 0px rgba(143,143,143,1);
 }
