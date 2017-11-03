@@ -275,7 +275,7 @@ aeImportExport.importFromRDF = function (aRDFRawData, aReplaceShortcutKeys)
   }
   catch (e) {
     console.error("aeImportExport.importFromRDF(): Failed to parse Clippings RDF data!\n" + e);
-    return;
+    throw e;
   }
 
   let jsonData = {
