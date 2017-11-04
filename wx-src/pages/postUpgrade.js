@@ -21,6 +21,8 @@ $(() => {
 
   let os = gClippings.getOS();
   let pgURL = new URL(window.location.href);
+
+  browser.history.deleteUrl({ url: pgURL.href });
   
   $("#toggle-no-backup-help").click(aEvent => {
     if ($("#no-backup-help:hidden").length > 0) {
@@ -147,6 +149,10 @@ $(() => {
 });
 
 
+// Suppress browser's context menu.
+$(document).on("contextmenu", aEvent => { aEvent.preventDefault() });
+
+
 function initDialogs()
 {
   $("#skip-import-dlg .dlg-accept").click(aEvent => {
@@ -173,5 +179,27 @@ function closePage()
     return browser.tabs.remove(aTab.id);
   }).catch(aErr => {
     console.error("Clippings/wx: postUpgrade.js: " + aErr);
+  });
+}
+
+
+function asyncGetImportStats()
+{
+  return new Promise((aFnResolve, aFnReject) => {
+    gClippingsDB.transaction("r", gClippingsDB.clippings, gClippingsDB.folders, () => {
+      let numItems = 0;
+    
+      gClippingsDB.folders.count().then(aNumFldrs => {
+        numItems += aNumFldrs;
+        return gClippingsDB.clippings.count();
+      }).then(aNumClippings => {
+        numItems += aNumClippings;
+
+        let msg = `Imported ${numItems} items.`;
+        aFnResolve(msg);
+      }).catch(aErr => {
+        aFnReject(aErr);
+      });
+    });
   });
 }
