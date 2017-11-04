@@ -224,6 +224,7 @@ button.btn-puffy {
 
 #import-btn {
     font-weight: 600;
+    width: 160px;
 }
 
 #import-status {
