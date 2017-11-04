@@ -238,6 +238,13 @@ button.btn-puffy {
     width: 400px;
 }
 
+#import-statistics {
+    display: inline-block;
+    margin-left: 32px;
+    vertical-align: 8px;
+    font-size: 13px;
+}
+
 #import-completed {
     display: none;
 }
