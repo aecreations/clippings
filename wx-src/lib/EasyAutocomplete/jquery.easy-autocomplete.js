@@ -4,7 +4,9 @@
  * 
  * @author Łukasz Pawełczak (http://github.com/pawelczak)
  * @version 1.3.5
- * Copyright  License: 
+ *
+ * Modified for Clippings/wx by Alex Eng <ateng@users.sourceforge.net>
+ * Copyright (c) 2017 AE Creations
  */
 
 /*
