@@ -193,6 +193,62 @@ function initHelper()
 {
   console.log("Clippings/wx: Initializing browser integration...");
   
+  initClippingsDB();
+  
+  if (! ("browser" in window)) {
+    console.log("Clippings/wx: Browser: Google Chrome");
+  }
+  else {
+    let getBrowserInfo = browser.runtime.getBrowserInfo();
+    getBrowserInfo.then(aBrwsInfo => {
+      console.log(`Clippings/wx: Browser: ${aBrwsInfo.name} (version ${aBrwsInfo.version})`);
+    });
+  }
+
+  chrome.runtime.getPlatformInfo(aInfo => {
+    console.log("Clippings/wx: OS: " + aInfo.os);
+    gOS = aInfo.os;
+  });
+
+  console.log("Clippings/wx: Extension preferences:");
+  console.log(gPrefs)
+  
+  chrome.browserAction.onClicked.addListener(aTab => {
+    openClippingsManager();
+  });
+
+  gClippingsListener.origin = gClippingsListeners.ORIGIN_HOSTAPP;
+  gClippingsListeners.add(gClippingsListener);
+  
+  window.addEventListener("unload", onUnload, false);
+  initMessageListeners();
+
+  aeClippingSubst.init(navigator.userAgent, gPrefs.autoIncrPlcHldrStartVal);
+
+  browser.storage.onChanged.addListener((aChanges, aAreaName) => {
+    console.log("Clippings/wx: Detected change to local storage");
+    let changedPrefs = Object.keys(aChanges);
+
+    for (let pref of changedPrefs) {
+      gPrefs[pref] = aChanges[pref].newValue;
+    }
+  });
+  
+  buildContextMenu();
+
+  chrome.commands.onCommand.addListener(aCmdName => {
+    if (aCmdName == "ae-clippings-paste-clipping" && gPrefs.keyboardPaste) {
+      openKeyboardPasteDlg();
+    }
+  });
+
+  gIsInitialized = true;
+  console.log("Clippings/wx: Initialization complete.");
+}
+
+
+function initClippingsDB()
+{
   gClippingsDB = new Dexie("aeClippings");
   gClippingsDB.version(1).stores({
     clippings: "++id, name, parentFolderID"
@@ -261,59 +317,7 @@ function initHelper()
     });
   });
 
-  gClippingsDB.open().catch(e => {
-    console.error("Clippings/wx: Error opening database: " + e);
-  });
-
-  if (! ("browser" in window)) {
-    console.log("Clippings/wx: Browser: Google Chrome");
-  }
-  else {
-    let getBrowserInfo = browser.runtime.getBrowserInfo();
-    getBrowserInfo.then(aBrwsInfo => {
-      console.log(`Clippings/wx: Browser: ${aBrwsInfo.name} (version ${aBrwsInfo.version})`);
-    });
-  }
-
-  chrome.runtime.getPlatformInfo(aInfo => {
-    console.log("Clippings/wx: OS: " + aInfo.os);
-    gOS = aInfo.os;
-  });
-
-  console.log("Clippings/wx: Extension preferences:");
-  console.log(gPrefs)
-  
-  chrome.browserAction.onClicked.addListener(aTab => {
-    openClippingsManager();
-  });
-
-  gClippingsListener.origin = gClippingsListeners.ORIGIN_HOSTAPP;
-  gClippingsListeners.add(gClippingsListener);
-  
-  window.addEventListener("unload", onUnload, false);
-  initMessageListeners();
-
-  aeClippingSubst.init(navigator.userAgent, gPrefs.autoIncrPlcHldrStartVal);
-
-  browser.storage.onChanged.addListener((aChanges, aAreaName) => {
-    console.log("Clippings/wx: Detected change to local storage");
-    let changedPrefs = Object.keys(aChanges);
-
-    for (let pref of changedPrefs) {
-      gPrefs[pref] = aChanges[pref].newValue;
-    }
-  });
-  
-  buildContextMenu();
-
-  chrome.commands.onCommand.addListener(aCmdName => {
-    if (aCmdName == "ae-clippings-paste-clipping" && gPrefs.keyboardPaste) {
-      openKeyboardPasteDlg();
-    }
-  });
-
-  gIsInitialized = true;
-  console.log("Clippings/wx: Initialization complete.");
+  gClippingsDB.open().catch(aErr => { onError(aErr) });
 }
 
 
@@ -420,9 +424,7 @@ function buildContextMenu()
         });
       });
     });
-  }).catch(aErr => {
-    console.error("Clippings/wx::buildContextMenu(): Database transaction failed! %s", aErr.message);
-  });
+  }).catch(aErr => { onError(aErr) });
 }
 
 
@@ -455,9 +457,7 @@ function buildContextSubmenu(aParentFolderID, aFolderData)
         });
       });
     });
-   }).catch(aErr => {
-    console.error("Clippings/wx::buildContextSubmenu(): Database transaction failed! %s", aErr.message);
-  });
+  }).catch(aErr => { onError(aErr) });
 }
 
 
@@ -574,7 +574,7 @@ function openClippingsManager()
       });
     }
     catch (e) {
-      console.error(e);
+      onError(e);
     }
   }
   else {
@@ -627,7 +627,7 @@ function openDlgWnd(aURL, aWndKey, aWndPpty)
       gWndIDs[aWndKey] = aWnd.id;
       browser.history.deleteUrl({ url: aURL });
     }, aErr => {
-      console.error(aErr);
+      onError(aErr);
     });
   }
 
