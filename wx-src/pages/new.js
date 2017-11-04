@@ -72,6 +72,7 @@ $(window).keypress(aEvent => {
 });
 
 
+// TO DO: Consider moving the folder picker code to its own object.
 function initFolderPicker()
 {
   $("#folder-tree-btn").click(aEvent => {
@@ -85,6 +86,12 @@ function initFolderPicker()
     }
   });
 
+  initFolderTree("#folder-tree");
+}
+
+
+function initFolderTree(aTreeEltSelector)  
+{
   let treeData = [
     {
       title: "Clippings",
@@ -107,7 +114,7 @@ function initFolderPicker()
   });
 
   populateFolders.then(() => {
-    $("#folder-tree").fancytree({
+    $(aTreeEltSelector).fancytree({
       source: treeData,
       selectMode: 1,
       icon: true,
@@ -119,7 +126,7 @@ function initFolderPicker()
       click: function (aEvent, aData) {
         if (aData.targetType == "icon" || aData.targetType == "title") {
           selectFolder(aData);
-          let popup = $("#folder-tree-popup");
+          let popup = $(aTreeEltSelector).parent();
           popup.css({ visibility: "hidden" });
         }
       }
