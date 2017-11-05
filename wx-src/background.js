@@ -401,16 +401,22 @@ function buildContextMenu()
   chrome.contextMenus.create({
     id: "ae-clippings-new",
     title: "New...",
-    contexts: ["editable", "selection"]
+    contexts: ["editable", "selection"],
+    documentUrlPatterns: ["<all_urls>"]
   });
 
   chrome.contextMenus.create({
     id: "ae-clippings-manager",
     title: "Organize Clippings",
-    contexts: ["editable", "selection"]
+    contexts: ["editable", "selection"],
+    documentUrlPatterns: ["<all_urls>"]
   });
 
-  chrome.contextMenus.create({ type: "separator", contexts: ["editable"]});
+  chrome.contextMenus.create({
+    type: "separator",
+    contexts: ["editable"],
+    documentUrlPatterns: ["<all_urls>"]
+  });
 
   gClippingsDB.transaction("r", gClippingsDB.folders, gClippingsDB.clippings, () => {
     let populateFolders = gClippingsDB.folders.where("parentFolderID").equals(0).each((aItem, aCursor) => {
@@ -425,7 +431,8 @@ function buildContextMenu()
           icons: {
             16: "img/" + (aItem.label ? `clipping-${aItem.label}.svg` : "clipping.svg")
           },
-          contexts: ["editable"]
+          contexts: ["editable"],
+          documentUrlPatterns: ["<all_urls>"]
         });
       });
     });
@@ -442,7 +449,8 @@ function buildContextSubmenu(aParentFolderID, aFolderData)
     icons: {
       16: "img/folder.svg"
     },
-    contexts: ["editable"]
+    contexts: ["editable"],
+    documentUrlPatterns: ["<all_urls>"]
   };
   if (aParentFolderID != 0) {
     cxtSubmenuData.parentId = "ae-clippings-folder-" + aParentFolderID;
@@ -464,7 +472,8 @@ function buildContextSubmenu(aParentFolderID, aFolderData)
             16: "img/" + (aItem.label ? `clipping-${aItem.label}.svg` : "clipping.svg")
           },
           parentId: cxtSubmenuID,
-          contexts: ["editable"]
+          contexts: ["editable"],
+          documentUrlPatterns: ["<all_urls>"]
         });
       });
     });
@@ -487,7 +496,7 @@ function updateContextMenuForFolder(aUpdatedFolderID)
   let id = Number(aUpdatedFolderID);
   let getFolder = gClippingsDB.folders.get(id);
   getFolder.then(aResult => {
-    chrome.contextMenus.update("ae-clippings-folder-" + aUpdatedFolderID, { title: "[" + aResult.name + "]" });
+    chrome.contextMenus.update("ae-clippings-folder-" + aUpdatedFolderID, { title: aResult.name });
   });
 }
 
