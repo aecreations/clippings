@@ -8,6 +8,7 @@ let gClippingsDB = null;
 let gClippings = null;
 let gParentFolderID = 0;
 let gSrcURL = "";
+let gCreateInFldrMenu;
 
 
 $(document).ready(() => {
@@ -72,7 +73,6 @@ $(window).keypress(aEvent => {
 });
 
 
-// TO DO: Consider moving the folder picker code to its own object.
 function initFolderPicker()
 {
   $("#folder-tree-btn").click(aEvent => {
@@ -86,72 +86,16 @@ function initFolderPicker()
     }
   });
 
-  initFolderTree("#folder-tree");
+  let fldrPickerPopup = new aeFolderPicker("#folder-tree", gClippingsDB);
+  fldrPickerPopup.setOnSelectFolder(selectFolder);
 }
 
 
-function initFolderTree(aTreeEltSelector)  
+function selectFolder(aFolderData)
 {
-  let treeData = [
-    {
-      title: "Clippings",
-      key: 0,
-      folder: true,
-      expanded: true,
-      children: []
-    }
-  ];
-
-  let populateFolders = gClippingsDB.folders.where("parentFolderID").equals(0).each((aItem, aCursor) => {
-    let folderNode = {
-      key: aItem.id,
-      title: aItem.name,
-      folder: true
-    };
-
-    folderNode.children = buildFolderTree(0, aItem);
-    treeData[0].children.push(folderNode);
-  });
-
-  populateFolders.then(() => {
-    $(aTreeEltSelector).fancytree({
-      source: treeData,
-      selectMode: 1,
-      icon: true,
-
-      init: function (aEvent, aData) {
-        aData.tree.getRootNode().children[0].setActive();
-      },
-
-      click: function (aEvent, aData) {
-        if (aData.targetType == "icon" || aData.targetType == "title") {
-          selectFolder(aData);
-          let popup = $(aTreeEltSelector).parent();
-          popup.css({ visibility: "hidden" });
-        }
-      }
-    });
-  });
-}
-
-
-function buildFolderTree(aParentFolderID, aFolderData)
-{
-  let rv = [];
-  let folderID = aFolderData.id;
-
-  gClippingsDB.folders.where("parentFolderID").equals(folderID).each((aItem, aCursor) => {
-    let folderNode = {
-      key: aItem.id,
-      title: aItem.name,
-      folder: true
-    }
-
-    folderNode.children = buildFolderTree(folderID, aItem);    
-    rv.push(folderNode);
-  });
-
-  return rv;
+  gParentFolderID = Number(aFolderData.node.key);
+  $("#folder-tree-btn").text(aFolderData.node.title);
+  $("#folder-tree-popup").css({ visibility: "hidden" });
 }
 
 
@@ -170,13 +114,6 @@ function initShortcutKeyMenu()
       }
     }
   });
-}
-
-
-function selectFolder(aData)
-{
-  gParentFolderID = Number(aData.node.key);
-  $("#folder-tree-btn").text(aData.node.title);
 }
 
 
