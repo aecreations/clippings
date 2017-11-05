@@ -14,26 +14,26 @@ class aeDialog
     this._fnAfterDlgAccept = function () {};
   }
 
-  setInit(aInitFn)
+  setInit(aFnInit)
   {
-    this._fnInit = aInitFn;
+    this._fnInit = aFnInit;
   }
 
-  setUnload(aUnloadFn)
+  setUnload(aFnUnload)
   {
-    this._fnUnload = aUnloadFn;
+    this._fnUnload = aFnUnload;
   }
 
-  setAfterAccept(aAfterAcceptFn)
+  setAfterAccept(aFnAfterAccept)
   {
-    this._fnAfterDlgAccept = aAfterAcceptFn;
+    this._fnAfterDlgAccept = aFnAfterAccept;
   }
   
-  setAccept(aAcceptFn)
+  setAccept(aFnAccept)
   {
     $(`#${this._dlgID} > .dlg-btns > .dlg-accept`).click(aEvent => {
-      if (aAcceptFn) {
-        aAcceptFn(aEvent);
+      if (aFnAccept) {
+        aFnAccept(aEvent);
       }
       else {
         this.close();
@@ -42,11 +42,11 @@ class aeDialog
     });
   }
 
-  setCancel(aCancelFn)
+  setCancel(aFnCancel)
   {
     $(`#${this._dlgID} > .dlg-btns > .dlg-cancel`).click(aEvent => {
-      if (aCancelFn) {
-        aCancelFn(aEvent);
+      if (aFnCancel) {
+        aFnCancel(aEvent);
       }
       else {
         this.close();
