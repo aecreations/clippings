@@ -9,24 +9,24 @@ class aeDialog
   constructor(aDlgID)
   {
     this._dlgID = aDlgID;
-    this._initFn = function () {};
-    this._unloadFn = function () {};
-    this._afterDlgAcceptFn = function () {};
+    this._fnInit = function () {};
+    this._fnUnload = function () {};
+    this._fnAfterDlgAccept = function () {};
   }
 
   setInit(aInitFn)
   {
-    this._initFn = aInitFn;
+    this._fnInit = aInitFn;
   }
 
   setUnload(aUnloadFn)
   {
-    this._unloadFn = aUnloadFn;
+    this._fnUnload = aUnloadFn;
   }
 
   setAfterAccept(aAfterAcceptFn)
   {
-    this._afterDlgAcceptFn = aAfterAcceptFn;
+    this._fnAfterDlgAccept = aAfterAcceptFn;
   }
   
   setAccept(aAcceptFn)
@@ -38,7 +38,7 @@ class aeDialog
       else {
         this.close();
       }
-      this._afterDlgAcceptFn();
+      this._fnAfterDlgAccept();
     });
   }
 
@@ -56,14 +56,14 @@ class aeDialog
 
   showModal()
   {
-    this._initFn();
+    this._fnInit();
     $("#lightbox-bkgrd-ovl").addClass("lightbox-show");
     $(`#${this._dlgID}`).addClass("lightbox-show");
   }
 
   close()
   {
-    this._unloadFn();
+    this._fnUnload();
     $(`#${this._dlgID}`).removeClass("lightbox-show");
     $("#lightbox-bkgrd-ovl").removeClass("lightbox-show");
   }
