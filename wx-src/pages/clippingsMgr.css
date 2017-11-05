@@ -160,6 +160,7 @@ ul.fancytree-container {
     order: 2;
     flex: 1 1 auto;
     margin-top: 2px;
+    margin-bottom: 2px;
     padding: 6px 8px 6px 8px;
     resize: none;
     border-left: none;
@@ -171,9 +172,16 @@ ul.fancytree-container {
 #item-properties > #source-url-bar {
     order: 3;
     flex: 0 1 auto;
+
     padding: 4px 8px 8px 8px;
     overflow: hidden;
     white-space: nowrap;
+
+    line-height: 24px;
+}
+
+#source-url-bar button {
+    margin-bottom: 0;
 }
 
 #source-url-bar > #src-url-label {
@@ -189,6 +197,7 @@ ul.fancytree-container {
 #source-url-bar > #source-url-deck > #src-url-normal-mode > #clipping-src-url {
     order: 1;
     flex: 1 1 auto;
+
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -198,24 +207,44 @@ ul.fancytree-container {
 #source-url-bar > #source-url-deck > #src-url-normal-mode > #edit-url-btn {
     order: 2;
     flex: 0 1 auto;
+
     min-width: 24px;
+    border-radius: 3px;
+}
+
+#source-url-bar > #source-url-deck > #src-url-edit-mode {
+    margin-bottom: 0;
 }
 
 #source-url-bar > #source-url-deck > #src-url-edit-mode > #clipping-src-url-edit {
     order: 1;
     flex: 1 1 auto;
+
+    margin-right: 2px;
 }
 
 #source-url-bar > #source-url-deck > #src-url-edit-mode > #edit-src-url-ok {
     order: 2;
-    margin-right: 0;
+
     min-width: 18px;
+    margin-left: 1px;
+    margin-right: 0;
+    border-right: none;
+    border-radius: 3px 0px 0px 3px;
 }
 
 #source-url-bar > #source-url-deck > #src-url-edit-mode > #edit-src-url-cancel {
     order: 3;
-    margin-right: 0;
+
     min-width: 24px;
+    margin-right: 0;
+    border-radius: 0px 3px 3px 0px;
+}
+
+#edit-src-url-ok:focus,
+#edit-src-url-cancel:focus {
+    box-shadow: unset;
+    border-color: rgb(177, 177, 177) !important;
 }
 
 #item-properties > #options-bar {
