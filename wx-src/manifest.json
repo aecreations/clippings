@@ -49,8 +49,8 @@
 	},
 
 	"default_area": "navbar",
-
-	"default_title": "Organize Clippings"
+        "default_title": "Organize Clippings",
+        "browser_style": false
     },
 
     "commands" : {
@@ -64,6 +64,7 @@
     },
 
     "options_ui": {
-	"page": "pages/options.html"
+        "page": "pages/options.html",
+        "browser_style": true
     }
 }
