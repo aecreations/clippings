@@ -1093,6 +1093,10 @@ function buildClippingsTree()
           title: sanitizeTreeNodeTitle(DEBUG_TREE ? `${aItem.name} [key=${aItem.id}C]` : aItem.name)
         };
 
+        if (aItem.label) {
+          clippingNode.extraClasses = `ae-clipping-label-${aItem.label}`;
+        }
+
         treeData.push(clippingNode);
       });
     }).then(() => {
@@ -1213,6 +1217,10 @@ function buildClippingsTreeHelper(aParentFolderID, aFolderData)
           key: aItem.id + "C",
           title: sanitizeTreeNodeTitle(DEBUG_TREE ? `${aItem.name} [key=${aItem.id}C]` : aItem.name)
         };
+        if (aItem.label) {
+          clippingNode.extraClasses = `ae-clipping-label-${aItem.label}`;
+        }
+
         rv.push(clippingNode);
       });
     });
