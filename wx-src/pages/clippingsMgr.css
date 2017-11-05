@@ -16,6 +16,7 @@ body {
     margin: 0;
     height: 100%;
     overflow: hidden;
+    font-size: 11px;
 }
 
 .hbox, .vbox {
@@ -132,6 +133,80 @@ body {
 ul.fancytree-container {
     border: none;
 }
+
+/* Tree icons for clippings and folders */
+.ui-fancytree .fancytree-node > .fancytree-icon {
+    background-position: unset;
+    background-image: url("../img/clipping.svg");
+}
+
+.fancytree-has-children.fancytree-ico-cf span.fancytree-icon {
+    background-position: unset;
+}
+
+.ui-fancytree .fancytree-folder > .fancytree-icon {
+    background-position: unset;
+    background-image: url("../img/folder.svg");
+}
+
+.ui-fancytree .fancytree-expanded > .fancytree-icon {
+    background-position: unset;
+    background-image: url("../img/folder-open.svg");
+}
+
+/* Tree icons for clippings with labels */
+.ui-fancytree .ae-clipping-label-red > .fancytree-icon {
+    background-position: unset;
+    background-image: url("../img/clipping-red.svg");
+}
+    
+.ui-fancytree .ae-clipping-label-orange > .fancytree-icon {
+    background-position: unset;
+    background-image: url("../img/clipping-orange.svg");
+}
+
+.ui-fancytree .ae-clipping-label-yellow > .fancytree-icon {
+    background-position: unset;
+    background-image: url("../img/clipping-yellow.svg");
+}
+
+.ui-fancytree .ae-clipping-label-green > .fancytree-icon {
+    background-position: unset;
+    background-image: url("../img/clipping-green.svg");
+}
+
+.ui-fancytree .ae-clipping-label-purple > .fancytree-icon {
+    background-position: unset;
+    background-image: url("../img/clipping-purple.svg");
+}
+
+.ui-fancytree .ae-clipping-label-blue > .fancytree-icon {
+    background-position: unset;
+    background-image: url("../img/clipping-blue.svg");
+}
+
+.ui-fancytree .ae-clipping-label-grey > .fancytree-icon {
+    background-position: unset;
+    background-image: url("../img/clipping-grey.svg");
+}
+
+/* Suppress Fancytree node icon hover styling */
+.fancytree-ico-ef span.fancytree-icon:hover {
+    background-position: unset;
+}
+
+.fancytree-has-children.fancytree-ico-cf span.fancytree-icon:hover {
+    background-position: unset;
+}
+
+.fancytree-ico-cf span.fancytree-icon:hover {
+    background-position: unset;
+}
+
+.fancytree-ico-c span.fancytree-icon:hover {
+    background-position: unset;
+}
+
 
 #item-properties {
     order: 2;
