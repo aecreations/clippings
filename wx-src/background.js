@@ -119,6 +119,8 @@ let gIsInitialized = false;
 //
 
 browser.runtime.onInstalled.addListener(aDetails => {
+  console.log(`Clippings/wx: Extension install reason: ${aDetails.reason}; previous version: ${aDetails.previousVersion}`);
+  
   if (aDetails.reason == "install") {
     console.log("Clippings/wx: It appears that the extension was newly installed.  Welcome to Clippings 6!");
     // TEMPORARY
@@ -420,6 +422,9 @@ function buildContextMenu()
         chrome.contextMenus.create({
           id: "ae-clippings-clipping-" + aItem.id,
           title: aItem.name,
+          icons: {
+            16: "img/" + (aItem.label ? `clipping-${aItem.label}.svg` : "clipping.svg")
+          },
           contexts: ["editable"]
         });
       });
@@ -433,7 +438,10 @@ function buildContextSubmenu(aParentFolderID, aFolderData)
   let folderID = aFolderData.id;
   let cxtSubmenuData = {
     id: "ae-clippings-folder-" + folderID,
-    title: "[" + aFolderData.name + "]",
+    title: aFolderData.name,
+    icons: {
+      16: "img/folder.svg"
+    },
     contexts: ["editable"]
   };
   if (aParentFolderID != 0) {
@@ -452,6 +460,9 @@ function buildContextSubmenu(aParentFolderID, aFolderData)
         chrome.contextMenus.create({
           id: "ae-clippings-clipping-" + aItem.id,
           title: aItem.name,
+          icons: {
+            16: "img/" + (aItem.label ? `clipping-${aItem.label}.svg` : "clipping.svg")
+          },
           parentId: cxtSubmenuID,
           contexts: ["editable"]
         });

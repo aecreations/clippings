@@ -3,7 +3,7 @@
 EXT_VER=`./getver.pl`
 DIST_FILE=clippings-$(EXT_VER).zip
 DIST_DEST=/cygdrive/e/
-EXCLUDE=*~ *\.pl *\.sh *\.devel *\.release Makefile
+EXCLUDE=*~ *\.pl *\.sh *\.devel *\.release Makefile *-chrome\.json
 
 
 $(DIST_FILE):
