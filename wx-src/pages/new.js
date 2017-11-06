@@ -94,7 +94,7 @@ function initFolderPicker()
 function selectFolder(aFolderData)
 {
   gParentFolderID = Number(aFolderData.node.key);
-  $("#folder-tree-btn").text(aFolderData.node.title);
+  $("#folder-tree-btn").text(aFolderData.node.title).val(gParentFolderID);
   $("#folder-tree-popup").css({ visibility: "hidden" });
 }
 

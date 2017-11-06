@@ -92,8 +92,10 @@ input[type="radio"] + label {
 }
 
 #dlg-buttons {
-    width: 100%;
-    text-align: right;
+    position: absolute;
+    bottom: 14px;
+    right: 8px;
+    z-index: -1;
 }
 
 #btn-accept, #btn-cancel {

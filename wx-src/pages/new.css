@@ -17,12 +17,12 @@ textarea {
 
 #folder-tree-btn {
     width: 100%;
-    padding: 4px;
+    padding: 4px 4px 4px 28px;
     background-color: #fbfbfb;
     border: 1px solid #b1b1b1;
 
-    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICA8cGF0aCBkPSJNOCwxMkwzLDcsNCw2bDQsNCw0LTQsMSwxWiIgZmlsbD0iIzZBNkE2QSIgLz4KPC9zdmc+Cg==);
-    background-position: calc(100% - 4px) center;
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICA8cGF0aCBkPSJNOCwxMkwzLDcsNCw2bDQsNCw0LTQsMSwxWiIgZmlsbD0iIzZBNkE2QSIgLz4KPC9zdmc+Cg=="), url("../img/folder.svg");
+    background-position: calc(100% - 4px) center, 8px;
     background-repeat: no-repeat;
     font: caption !important;
     font-size: 11px !important;
@@ -33,6 +33,11 @@ textarea {
     background-color: #ebebeb;
 }
 
+#folder-tree-btn[value="0"] {
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICA8cGF0aCBkPSJNOCwxMkwzLDcsNCw2bDQsNCw0LTQsMSwxWiIgZmlsbD0iIzZBNkE2QSIgLz4KPC9zdmc+Cg=="), url("../img/clippings-root.svg");
+    background-position: calc(100% - 4px) center, 8px;
+}
+
 #folder-tree-btn:hover:active {
     background-color: #d4d4d4;
 }
@@ -40,7 +45,7 @@ textarea {
 #folder-tree-popup {
     position: absolute;
     visibility: hidden;
-    width: 32em;
+    width: 386px;
     height: 140px;
     margin-top: 0;
     border-top: 1px solid ThreeDLightShadow;
