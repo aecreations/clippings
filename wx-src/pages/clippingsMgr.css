@@ -178,6 +178,7 @@ ul.fancytree-container {
     white-space: nowrap;
 
     line-height: 24px;
+    background-color: white;
 }
 
 #source-url-bar button {
@@ -226,19 +227,47 @@ ul.fancytree-container {
 #source-url-bar > #source-url-deck > #src-url-edit-mode > #edit-src-url-ok {
     order: 2;
 
-    min-width: 18px;
+    min-width: 24px;
     margin-left: 1px;
     margin-right: 0;
     border-right: none;
     border-radius: 3px 0px 0px 3px;
 }
 
+#edit-src-url-ok {
+    background-image: url("../img/ok.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+#edit-src-url-ok:hover {
+    background-image: url("../img/ok_hover.svg");
+}
+
+#edit-src-url-ok:active {
+    background-image: url("../img/ok_active.svg");
+}
+
 #source-url-bar > #source-url-deck > #src-url-edit-mode > #edit-src-url-cancel {
     order: 3;
 
-    min-width: 24px;
+    min-width: 26px;
     margin-right: 0;
     border-radius: 0px 3px 3px 0px;
+}
+
+#edit-src-url-cancel {
+    background-image: url("../img/cancel.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+#edit-src-url-cancel:hover {
+    background-image: url("../img/cancel_hover.svg");
+}
+
+#edit-src-url-cancel:active {
+    background-image: url("../img/cancel_active.svg");
 }
 
 #edit-src-url-ok:focus,
@@ -251,11 +280,16 @@ ul.fancytree-container {
     order: 4;
     flex: 0 1 auto;
     padding: 1px 8px 0px 8px;
+    background-color: white;
 }
 
 #options-bar > #shortcut-key-select {
     order: 1;
     flex: 0 1 auto;
+}
+
+#options-bar > #shortcut-key-select > #clipping-key {
+    margin-bottom: 0;
 }
 
 #options-bar > #options-bar-spacer {
@@ -269,8 +303,9 @@ ul.fancytree-container {
 }
 
 #tmp-label {
-    padding: 2px 8px 2px 8px;
+    padding: 4px 10px 4px 10px;
     border-radius: 2px;
+    line-height: 24px;
 }
 
 #status-bar {
