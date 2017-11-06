@@ -119,31 +119,12 @@ let gIsInitialized = false;
 //
 
 browser.runtime.onInstalled.addListener(aDetails => {
-  console.log(`Clippings/wx: Extension install reason: ${aDetails.reason}; previous version: ${aDetails.previousVersion}`);
-  
   if (aDetails.reason == "install") {
     console.log("Clippings/wx: It appears that the extension was newly installed.  Welcome to Clippings 6!");
-    // TEMPORARY
-    /***
-    let oldVer = "5.5.2";
-    let url = browser.runtime.getURL(`pages/postUpgrade.html?oldVer=${oldVer}`);
-    browser.tabs.create({
-      url: url
-    }).then(aTab => {
-      browser.history.deleteUrl({ url });
-    });
-    ***/
-    // END TEMPORARY
   }
   else if (aDetails.reason == "upgrade") {
     let oldVer = aDetails.previousVersion;
     console.log("Clippings/wx: Upgrading from version " + oldVer);
-    if (parseInt(oldVer) < 6) {
-      let url = browser.runtime.getURL(`pages/postUpgrade.html?oldVer=${oldVer}`);
-      browser.tabs.create({ url }).then(aTab => {
-        browser.history.deleteUrl({ url });
-      });
-    }
   }
 });
 
@@ -247,10 +228,7 @@ function initHelper()
 
   if (gPrefs.showWelcome) {
     openWelcomePage();
-
-    if (! aeConst.DEBUG) {
-      browser.storage.local.set({ showWelcome: false });
-    }
+    browser.storage.local.set({ showWelcome: false });
   }
 
   gIsInitialized = true;
@@ -530,8 +508,6 @@ function rebuildContextMenu()
 
 function openWelcomePage()
 {
-  console.log("Clippings/wx: openWelcomePage()");
-
   let url = browser.runtime.getURL("pages/welcome.html");
   browser.tabs.create({ url }).then(aTab => {
     browser.history.deleteUrl({ url });
