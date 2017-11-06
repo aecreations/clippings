@@ -9,7 +9,7 @@
     <title>Welcome to Clippings 6</title>
 
     <link rel="stylesheet" href="../style/lightbox.css"/>
-    <link rel="stylesheet" href="postUpgrade.css"/>
+    <link rel="stylesheet" href="welcome.css"/>
   </head>
 
   <body>
@@ -18,16 +18,33 @@
     </div>
 
     <main class="deck">
-      <div id="select-backup-file-pg" class="deck-content">
+      <div id="welcome-pg" class="deck-content">
 	<div id="main-header">
-	  <div id="upgrade-success-header">
-     	    <img id="upgrade-success-icon" src="../img/success.svg"/>
+	  <div id="install-success-header">
+     	    <img id="install-success-icon" src="../img/success.svg"/>
 	    <h1>Welcome to Clippings 6!</h1>
-	    <div class="subhead">Upgrade successfully completed.</div>
+	    <div class="subhead">Installation successfully completed.</div>
 	  </div>
 	</div>
-	
-	<h2>Import Clippings Backup File</h2>
+
+	<div id="jumbo-btns">
+	  <div id="welcome-current-user">
+	    <h2>Current Users</h2>
+	    <p>Bring your clippings over from a previous version of Clippings by importing a backup file.</p>
+	    <button id="goto-import-bkup" class="puffy">Import My Clippings</button>
+	  </div>
+
+	  <div id="welcome-new-user">
+	    <h2>New Users</h2>
+	    <p>Learn the essential features of Clippings in just a few minutes by browsing the Quick Start Guide.</p>
+	    <button id="goto-quick-start" class="puffy">Quick Start Guide</button>
+	  </div>
+	</div>
+
+      </div> <!-- #welcome-page -->
+
+      <div id="select-backup-file-pg" class="deck-content">
+	<h1>Import Clippings Backup File</h1>
 
 	<p>To get started, click <b class="cmd">Browse</b>, then locate the backup
 	file on your system.</p>
@@ -61,6 +78,8 @@
 	    <button id="import-btn" class="default btn-puffy">Import</button>
 	  </div>
 	</div>
+
+	<p id="select-backup-pg-back-link" class="hyperlink back-to-welcome-pg">Back to Welcome Page</p>
 	
       </div>  <!-- #select-backup-file-pg -->
 
@@ -114,6 +133,6 @@
     <script src="../lib/jquery.js"></script>
     <script src="../lib/rdflib.js"></script>
     <script src="../modules/aeImportExport.js"></script>
-    <script src="postUpgrade.js"></script>
+    <script src="welcome.js"></script>
   </body>
 </html>

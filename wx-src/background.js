@@ -155,6 +155,7 @@ browser.runtime.onInstalled.addListener(aDetails => {
 async function setDefaultPrefs()
 {
   let aeClippingsPrefs = {
+    showWelcome: true,
     htmlPaste: aeConst.HTMLPASTE_AS_FORMATTED,
     autoLineBreak: true,
     autoIncrPlcHldrStartVal: 0,
@@ -243,6 +244,14 @@ function initHelper()
       openKeyboardPasteDlg();
     }
   });
+
+  if (gPrefs.showWelcome) {
+    openWelcomePage();
+
+    if (! aeConst.DEBUG) {
+      browser.storage.local.set({ showWelcome: false });
+    }
+  }
 
   gIsInitialized = true;
   console.log("Clippings/wx: Initialization complete.");
@@ -519,29 +528,14 @@ function rebuildContextMenu()
 }
 
 
-function createClipping(aName, aContent, aShortcutKey, aSrcURL)
+function openWelcomePage()
 {
-  let createClipping = gClippingsDB.clippings.add({
-    name: aName,
-    content: aContent,
-    parentFolderID: 0,
-    shortcutKey: aShortcutKey || "",
-    sourceURL: aSrcURL || ""
+  console.log("Clippings/wx: openWelcomePage()");
+
+  let url = browser.runtime.getURL("pages/welcome.html");
+  browser.tabs.create({ url }).then(aTab => {
+    browser.history.deleteUrl({ url });
   });
-
-  createClipping.then(aID => {
-    if (isGoogleChrome()) {
-      window.alert("Successfully created new clipping \"" + aName + "\".");
-    }
-    console.info("Clippings/wx: Successfully created new clipping!\nid = %d", aID);
-    
-    let getClipping = gClippingsDB.clippings.get(aID);
-    getClipping.then(aResult => {
-      console.log("Name: %s\nText: %s", aResult.name, aResult.content);
-    });
-
-    rebuildContextMenu();
-  }, onError);
 }
 
 

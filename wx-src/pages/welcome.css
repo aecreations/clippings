@@ -120,6 +120,7 @@ button.btn-puffy {
 }
 
 .instruction-header {
+    font-size: 15px;
     font-weight: bold;
 }
 
@@ -135,13 +136,19 @@ button.btn-puffy {
     margin-left: 12%;
 }
 
-.deck > #select-backup-file-pg {
-    padding: 6px 24px 24px 24px;
+.deck-content {
+    padding: 6px 24px 24px 24px;    
+}
+
+.deck > #welcome-pg {
     display: block;
 }
 
+.deck > #select-backup-file-pg {
+    display: none;
+}
+
 .deck > #import-backup-pg {
-    padding: 6px 24px 24px 24px;
     display: none;
 }
 
@@ -152,7 +159,7 @@ button.btn-puffy {
     padding-bottom: 8px;
 }
 
-#upgrade-success-header {
+#install-success-header {
     display: inline-block;
     width: 36rem;
     margin-top: 18px;
@@ -160,14 +167,14 @@ button.btn-puffy {
     text-align: left;
 }
 
-#upgrade-success-icon {
+#install-success-icon {
     width: 128px;
     height: 128px;
     float: left;
     margin-right: 24px;
 }
 
-#upgrade-success-header > h1 {
+#install-success-header > h1 {
     margin-bottom: 8px;
     margin-top: 20px;
     font-size: 33px;
@@ -175,7 +182,15 @@ button.btn-puffy {
     letter-spacing: -0.5px;
 }
 
-#upgrade-success-header > .subhead {
+#install-success-header > .subhead {
+    font-size: 22px;
+    font-weight: 300;
+}
+
+#select-backup-file-pg h1 {
+    padding-bottom: 8px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 32px;
     font-size: 22px;
     font-weight: 300;
 }
@@ -220,6 +235,16 @@ button.btn-puffy {
     display: none;
     margin-top: 24px;
     margin-bottom: 12px;
+}
+
+#select-backup-pg-back-link {
+    margin-top: 32px;
+    font-size: 13px;
+}
+
+#select-backup-pg-back-link::before {
+    content: url("../img/goback.png");
+    margin-right: 6px;
 }
 
 #import-btn {
@@ -289,23 +314,28 @@ button.btn-puffy {
 
 .lightbox {
     box-shadow: 0px 0px 6px 3px rgba(72, 72, 72, 0.8);
-}
-
-#skip-import-dlg {
-    --width: 520px;
-    --height: 150px;
     padding-left: 28px;
     padding-right: 28px;
     top: 100px;
     font-size: 15px;
 }
 
-#skip-import-dlg > .dlg-btns {
+#skip-import-dlg {
+    --width: 520px;
+    --height: 150px;
+}
+
+#close-welcome-confirm-dlg {
+    --width: 430px;
+    --height: 128px;
+}
+
+.lightbox > .dlg-btns {
     bottom: 24px;
     right: 14px;
 }
 
-#skip-import-dlg > .dlg-btns > button {
+.lightbox > .dlg-btns > button {
     padding-left: 24px;
     padding-right: 24px;
 }

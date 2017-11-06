@@ -24,6 +24,15 @@ $(() => {
 
   browser.history.deleteUrl({ url: pgURL.href });
   
+  $("#goto-import-bkup").click(aEvent => {
+    $("#welcome-pg").hide();
+    $("#select-backup-file-pg").fadeIn("slow");
+  });
+
+  $("#goto-quick-start").click(aEvent => {
+    window.location.href = "http://aecreations.sourceforge.net/clippings/quickstart.php";
+  })
+
   $("#toggle-no-backup-help").click(aEvent => {
     if ($("#no-backup-help:hidden").length > 0) {
       $("#toggle-no-backup-help > .expander-icon").text("\u25bc ");
@@ -67,8 +76,14 @@ $(() => {
   });
   
   $("#skip-import").click(aEvent => {
-    showModal("skip-import-dlg");
+    showModal("#skip-import-dlg");
   });
+
+  $("#select-backup-pg-back-link").click(aEvent => {
+    $("#select-backup-file-pg").hide();
+    resetSelectBackupFilePageState();    
+    $("#welcome-pg").fadeIn("fast");
+  })
   
   $("#import-btn").click(aEvent => {
     function uploadImportFile(aFileList) {
@@ -130,10 +145,8 @@ $(() => {
   });
 
   $("#retry-import").click(aEvent => {
-    $("#import-clippings-file-upload").val("");
     $("#import-backup-pg").hide();
-    $("#import-progress-bar").attr("value", "0");
-    $("#ready-import").hide();
+    resetSelectBackupFilePageState();
     $("#select-backup-file-pg").fadeIn("fast");
   });
 
@@ -153,6 +166,15 @@ $(() => {
 $(document).on("contextmenu", aEvent => { aEvent.preventDefault() });
 
 
+function resetSelectBackupFilePageState()
+{
+  $("#import-clippings-file-upload").val("");
+  $("#import-progress-bar").attr("value", "0");
+  $("#ready-import").hide();
+  $("#no-backup-help").hide();
+  $("#toggle-no-backup-help > .expander-icon").text("\u25b6 ");
+}
+
 function initDialogs()
 {
   $("#skip-import-dlg .dlg-accept").click(aEvent => {
@@ -160,16 +182,16 @@ function initDialogs()
   });
 
   $("#skip-import-dlg .dlg-cancel").click(aEvent => {
-    $(`#skip-import-dlg`).removeClass("lightbox-show");    
+    $("#skip-import-dlg").removeClass("lightbox-show");    
     $("#lightbox-bkgrd-ovl").hide();
-  })
+  });
 }
 
 
-function showModal(aDlgID)
+function showModal(aDlgEltSelector)
 {
   $("#lightbox-bkgrd-ovl").show();
-  $(`#${aDlgID}`).addClass("lightbox-show");
+  $(aDlgEltSelector).addClass("lightbox-show");
 }
 
 
