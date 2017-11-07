@@ -845,17 +845,21 @@ $(document).keypress(aEvent => {
   if (aEvent.key == "F1") {
     window.alert("No help is available (so leave me alone)");
   }
+  else if (aEvent.key == "Enter") {
+    // TO DO: Invoke accept action on any open modal dialogs.
+  }
   else if (aEvent.key == "Escape") {
     if (gSearchBox.isActivated()) {
       gSearchBox.reset();
     }
+    // TO DO: Invoke cancel on any open modal dialogs.
   }
   else if (aEvent.key == "Delete") {
     gCmd.deleteClippingOrFolder(gCmd.UNDO_STACK);
   }
-  else if (aEvent.key.toUpperCase() == "N" && isAccelKeyPressed()) {
+  else if (aEvent.key.toUpperCase() == "F" && isAccelKeyPressed()) {
     aEvent.preventDefault();
-    gCmd.newClipping(gCmd.UNDO_STACK);
+    $("#search-box").focus();
   }
   else if (aEvent.key.toUpperCase() == "Z" && isAccelKeyPressed()) {
     gCmd.undo();
