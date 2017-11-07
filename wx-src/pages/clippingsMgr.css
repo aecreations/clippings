@@ -174,21 +174,40 @@ input[type="search"]::placeholder {
     order: 6;
 }
 
-#toolbar > #tmp-import {
+#toolbar > #clippings-mgr-options {
     order: 7;
+    background-image: url("../img/options.svg");
 }
 
-#toolbar > #tmp-export {
-    order: 8;
+#toolbar > #clippings-mgr-options:hover {
+    background-image: url("../img/options_hover.svg");
+}
+
+/* jQuery contextMenu CSS overrides */
+.ae-menuitem {
+    padding-top: 4px;
+    padding-bottom: 4px;
+    margin-left: 1px;
+    margin-right: 1px;
+    font-size: 12px;
+}
+
+.ae-menuitem:hover {
+    background-color: #eee;
+    color: #0c0c0d;
+}
+
+.ae-menuitem:active {
+    background-color: #ddd;
 }
 
 #toolbar > #spacer-2 {
-    order: 9;
+    order: 8;
     flex: 1 1 auto;
 }
 
 #toolbar > #search-clippings-and-folders {
-    order: 10;
+    order: 9;
 
     margin-top: 1px;
     margin-bottom: 1px;

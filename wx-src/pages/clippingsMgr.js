@@ -885,9 +885,51 @@ function initToolbarButtons()
   });
 
   $("#undo").click(aEvent => { gCmd.undo() });
-  
-  $("#tmp-import").click(aEvent => { gCmd.importFromFile() });
-  $("#tmp-export").click(aEvent => { gCmd.exportToFile() });
+
+  // Tools menu
+  $.contextMenu({
+    selector: "#clippings-mgr-options",
+    trigger: "left",
+    callback: function (aItemKey, aOpt, aRootMenu, aOriginalEvent) {
+      switch (aItemKey) {
+      case "importFromFile":
+        gCmd.importFromFile();
+        break;
+
+      case "exportToFile":
+        gCmd.exportToFile();
+        break;
+
+      default:
+        window.alert("The selected action is not available right now.");
+        break;
+      }
+    },
+    items: {
+      backup: {
+        name: "Backup...",
+        className: "ae-menuitem"
+      },
+      restoreFromBkup: {
+        name: "Restore...",
+        className: "ae-menuitem"
+      },
+      separator1: "--------",
+      importFromFile: {
+        name: "Import...",
+        className: "ae-menuitem"
+      },
+      exportToFile: {
+        name: "Export...",
+        className: "ae-menuitem"
+      },
+      separator2: "--------",
+      removeAllSrcURLs: {
+        name: "Remove Source Web Addresses...",
+        className: "ae-menuitem"
+      },
+    }
+  });
 }
 
 

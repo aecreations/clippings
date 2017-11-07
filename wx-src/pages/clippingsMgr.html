@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="chrome://browser/content/extension.css"/>
     <link rel="stylesheet" href="../lib/fancytree/skin/ui.fancytree.css"/>
     <link rel="stylesheet" href="../style/clippingTree.css"/>
+    <link rel="stylesheet" href="../lib/contextMenu/jquery.contextMenu.css"/>
     <link rel="stylesheet" href="../style/lightbox.css"/>
     <link rel="stylesheet" href="clippingsMgr.css"/>
   </head>
@@ -23,17 +24,11 @@
     <div id="toolbar" class="hbox">
       <button id="new-clipping" class="toolbar-button toolbar-button-labelled">New Clipping</button>
       <button id="new-folder" class="toolbar-button toolbar-button-labelled">New Folder</button>
-      <button id="move" class="toolbar-button"></button>
-      <button id="delete" class="toolbar-button"></button>
-      <button id="undo" class="toolbar-button"></button>
+      <button id="move" class="toolbar-button" title="Move or Copy"></button>
+      <button id="delete" class="toolbar-button" title="Delete"></button>
+      <button id="undo" class="toolbar-button" title="Undo"></button>
       <span id="spacer-1" class="spacer"></span>
-      <!-- TEMPORARY -->
-      <button id="tmp-import" class="toolbar-button">Import</button>
-      <button id="tmp-export" class="toolbar-button">Export</button>
-      <!-- END TEMPORARY -->
-<!--
-      <button id="clippings-options" class="toolbar-button"></button>
--->
+      <button id="clippings-mgr-options" class="toolbar-button" title="Tools"></button>
       <span id="spacer-2" class="spacer"></span>
       <div id="search-clippings-and-folders">
 	<input type="search" id="search-box" placeholder="Find clippings and folders"/>
@@ -178,6 +173,7 @@
     <script src="../lib/fancytree/jquery.fancytree.dnd5.js"></script>
     <script src="../lib/fancytree/jquery.fancytree.filter.js"></script>
     <script src="../lib/rdflib.js"></script>
+    <script src="../lib/contextMenu/jquery.contextMenu.min.js"></script>
     <script src="../modules/aeConst.js"></script>
     <script src="../modules/aeImportExport.js"></script>
     <script src="../modules/aeDialog.js"></script>
