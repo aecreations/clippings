@@ -4,7 +4,7 @@
 
 
 :root {
-    --toolbar-height: 28px;
+    --toolbar-height: 30px;
     --statusbar-height: 22px;
 }
 
@@ -17,6 +17,36 @@ body {
     height: 100%;
     overflow: hidden;
     font-size: 11px;
+}
+
+input[type="text"],
+input[type="search"],
+select {
+    font-size: 11px;
+    background-color: -moz-Field;
+    color: -moz-FieldText;
+}
+
+.browser-style > input[type="text"],
+.browser-style > input[type="text"]:not(disabled):hover {
+    border-top: 1px solid transparent;
+    border-left: 1px solid transparent;
+    border-right: 1px solid transparent;
+}
+
+input[type="search"] {
+    padding-left: 20px;
+    border-top: 1px solid transparent;
+    border-left: 1px solid transparent;
+    border-right: 1px solid transparent;
+    border-bottom: 1px solid #b1b1b1;
+    background-image: url("chrome://global/skin/icons/search-textbox.svg");
+    background-position: 4px;
+    background-repeat: no-repeat;
+}
+
+input[type="search"]::placeholder {
+    font-style: italic;
 }
 
 .hbox, .vbox {
@@ -39,7 +69,41 @@ body {
 .toolbar-button {
     flex: 0 1 auto;
     align-self: stretch;
-    min-width: 64px;
+    min-width: 30px;
+    margin-left: 1px;
+    margin-right: 1px;
+    border: 1px solid transparent;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: ThreeDFace;
+    color: ButtonText;
+    font: caption;
+    font-size: 11px;
+}
+
+.toolbar-button:hover {
+    border: 1px solid ThreeDShadow;
+    border-radius: 2px;
+    background-color: -moz-ButtonHoverFace;
+    color: -moz-ButtonHoverText;
+}
+
+.toolbar-button:active {
+    border: 1px solid ThreeDDarkShadow;
+    box-shadow: inset 0px 0px 2px 1px ThreeDShadow;
+    background-color: ThreeDLightShadow;
+}
+
+.toolbar-button-labelled {
+    background-position: 4px;
+    padding-left: 24px;
+    padding-right: 6px;
+}
+
+.toolbar-button-labelled:active {
+    background-position: 4px;
+    padding-left: 24px;
+    padding-right: 6px;
 }
 
 #banner {
@@ -63,22 +127,47 @@ body {
 
 #toolbar > #new-clipping {
     order: 1;
+    background-image: url("../img/newClipping.svg");
+}
+
+#toolbar > #new-clipping:hover {
+    background-image: url("../img/newClipping_hover.svg");
 }
 
 #toolbar > #new-folder {
     order: 2;
+    background-image: url("../img/newFolder.svg");
+}
+
+#toolbar > #new-folder:hover {
+    background-image: url("../img/newFolder_hover.svg");
 }
 
 #toolbar > #move {
     order: 3;
+    background-image: url("../img/moveTo.svg");
+}
+
+#toolbar > #move:hover {
+    background-image: url("../img/moveTo_hover.svg");
 }
 
 #toolbar > #delete {
     order: 4;
+    background-image: url("../img/delete.svg");
+}
+
+#toolbar > #delete:hover {
+    background-image: url("../img/delete_hover.svg");
 }
 
 #toolbar > #undo {
     order: 5;
+    background-image: url("../img/undo.svg");
+}
+
+#toolbar > #undo:hover {
+    background-image: url("../img/undo_hover.svg");
 }
 
 #toolbar > #spacer-1 {
@@ -100,15 +189,42 @@ body {
 
 #toolbar > #search-clippings-and-folders {
     order: 10;
+
+    margin-top: 1px;
+    margin-bottom: 1px;
+    margin-right: -12px; /* To accommodate "clear search" button hack. */
+}
+
+#search-box:hover {
+    border-bottom: 1px solid #858585;
+}
+
+#search-box:focus,
+#search-box:focus:hover {
+    border-color: #0996f8;
+    box-shadow: 0 0 0 2px rgba(97, 181, 255, 0.75);
+}
+
+#search-box {
+    width: 180px;
+    height: 100%;
+    padding-right: 20px;
+    font: caption;
+    font-size: 11px;
 }
 
 #toolbar > #search-clippings-and-folders > #clear-search {
     display: inline-block;
-    width: 16px;
-}
-
-#search-box {
-    width: 200px;
+    position: relative;
+    top: 1px;
+    left: -20px;
+    width: 12px;
+    height: 12px;
+    background-color: white;
+    background-image: url("../img/search-reset.svg");
+    background-position-x: center;
+    background-position-y: center;
+    background-repeat: no-repeat;
 }
 
 #content {
@@ -149,11 +265,14 @@ ul.fancytree-container {
     flex: 0 1 auto;
     height: auto;
     margin-top: 2px;
+    margin-left: 2px;
+    margin-right: 2px;
     padding: 6px 8px 6px 8px;
     border-left: none;
     border-right: none;
     border-top: none;
-    border-bottom: 1px solid threedshadow;
+    border-bottom: 1px solid #b1b1b1;
+    background-color: -moz-Field;
 }
 
 #item-properties > #clipping-text {
@@ -161,12 +280,15 @@ ul.fancytree-container {
     flex: 1 1 auto;
     margin-top: 2px;
     margin-bottom: 2px;
+    margin-left: 2px;
+    margin-right: 2px;
     padding: 6px 8px 6px 8px;
     resize: none;
     border-left: none;
     border-right: none;
     border-top: none;
-    border-bottom: 1px solid threedshadow;
+    border-bottom: 1px solid #b1b1b1;
+    background-color: -moz-Field;
 }
 
 #item-properties > #source-url-bar {
