@@ -738,6 +738,11 @@ let gCmd = {
     gDialogs.exportToFile.showModal();
   },
 
+  removeAllSrcURLs: function ()
+  {
+    gDialogs.removeAllSrcURLs.showModal();
+  },
+
   undo: function ()
   {
     if (this.undoStack.length == 0) {
@@ -900,6 +905,10 @@ function initToolbarButtons()
         gCmd.exportToFile();
         break;
 
+      case "removeAllSrcURLs":
+        gCmd.removeAllSrcURLs();
+        break;
+        
       default:
         window.alert("The selected action is not available right now.");
         break;
@@ -1037,6 +1046,9 @@ function initDialogs()
   });
 
   gDialogs.exportToFile = new aeDialog("export-dlg");
+  gDialogs.exportToFile.FMT_CLIPPINGS_WX = 0;
+  gDialogs.exportToFile.FMT_HTML = 1;
+  
   gDialogs.exportToFile.setInit(() => {
     let fmtDesc = [
       "The default format for backing up and exchanging Clippings data with other users or multiple computers.  Requires Clippings 5.5 or newer installed.",
@@ -1047,16 +1059,16 @@ function initDialogs()
       let selectedFmtIdx = aEvent.target.selectedIndex;
       $("#format-description").text(fmtDesc[selectedFmtIdx]);
 
-      if (selectedFmtIdx == 0) { // Clippings 6
+      if (selectedFmtIdx == gDialogs.exportToFile.FMT_CLIPPINGS_WX) {
         $("#include-src-urls").removeAttr("disabled");
       }
-      else if (selectedFmtIdx == 1) {  // HTML Document
+      else if (selectedFmtIdx == gDialogs.exportToFile.FMT_HTML) {
         $("#include-src-urls").attr("disabled", "true").prop("checked", false);
       }
     });
 
-    $("#export-format-list")[0].selectedIndex = 0;
-    $("#format-description").text(fmtDesc[0]);
+    $("#export-format-list")[0].selectedIndex = gDialogs.exportToFile.FMT_CLIPPINGS_WX;
+    $("#format-description").text(fmtDesc[gDialogs.exportToFile.FMT_CLIPPINGS_WX]);
     $("#include-src-urls").prop("checked", true);
   });
   gDialogs.exportToFile.setCancel();
@@ -1084,7 +1096,7 @@ function initDialogs()
     let selectedFmtIdx = $("#export-format-list")[0].selectedIndex;
     setStatusBarMsg("Exporting...");
     
-    if (selectedFmtIdx == 0) {  // Clippings 6
+    if (selectedFmtIdx == gDialogs.exportToFile.FMT_CLIPPINGS_WX) {
       let inclSrcURLs = $("#include-src-urls").prop("checked");
 
       aeImportExport.exportToJSON(inclSrcURLs).then(aJSONData => {
@@ -1093,7 +1105,7 @@ function initDialogs()
         saveToFile(blobData, aeConst.CLIPPINGS_EXPORT_FILENAME);
       });
     }
-    else if (selectedFmtIdx == 1) {  // HTML Document
+    else if (selectedFmtIdx == gDialogs.exportToFile.FMT_HTML) {
       aeImportExport.exportToHTML().then(aHTMLData => {
         // TEMPORARY
         console.log("HTML export: ");
@@ -1105,6 +1117,16 @@ function initDialogs()
         saveToFile(blobData, aeConst.HTML_EXPORT_FILENAME);
       });
     }
+  });
+
+  gDialogs.removeAllSrcURLs = new aeDialog("remove-all-source-urls-dlg");
+  gDialogs.removeAllSrcURLs.setCancel();
+  gDialogs.removeAllSrcURLs.setAccept();
+  gDialogs.removeAllSrcURLs.setAfterAccept(() => {
+    gClippingsDB.clippings.toCollection().modify({ sourceURL: "" }).then(aNumUpd => {
+      // TO DO: Put this in a notification box.
+      window.alert("The source web page addresses of your clippings have been removed.");
+    });
   });
 }
 
