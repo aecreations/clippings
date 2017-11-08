@@ -68,7 +68,7 @@
     padding: 3px;
     background-color: -moz-dialog;
     border: 1px solid #b1b1b1;
-    box-shadow: 2px 2px 2px 0px rgba(143,143,143,1);
+    box-shadow: 4px 4px 2px -2px #8F8F8F;
 }
 
 .easy-autocomplete-container[hidden="true"] {
