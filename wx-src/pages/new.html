@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="chrome://browser/content/extension.css"/>
     <link rel="stylesheet" href="../style/dialog.css"/>
     <link rel="stylesheet" href="../lib/fancytree/skin/ui.fancytree.css"/>
+    <link rel="stylesheet" href="../style/lightbox.css"/>
     <link rel="stylesheet" href="../style/clippingTree.css"/>
     <link rel="stylesheet" href="new.css"/>
   </head>
@@ -28,8 +29,10 @@
       <br/>
       
       <label>Create in:</label>
-      <button id="folder-tree-btn" value="0">Clippings</button>
-
+      <div class="hbox">
+        <button id="folder-tree-btn" value="0">Clippings</button>
+        <button id="new-folder-btn" class="browser-style" title="New Folder"></button>
+      </div>
       <div id="folder-tree-popup">
 	<div id="folder-tree"></div>
       </div>
@@ -92,8 +95,25 @@
       <button id="btn-cancel" class="browser-style">Cancel</button>
     </div>
 
+    <!-- Dialog boxes -->
+    <div id="new-folder-dlg" class="lightbox">
+      <div class="dlg-content browser-style">
+	<label for="new-fldr-name">New folder name:</label>
+	<input type="text" id="new-fldr-name"/>
+	<label for="new-folder-dlg-fldr-tree">Create as a subfolder of:</label>
+	<div id="new-folder-dlg-fldr-tree"></div>
+      </div>
+      <div class="dlg-btns">
+        <button class="dlg-accept browser-style default">OK</button>
+        <button class="dlg-cancel browser-style">Cancel</button>
+      </div>
+    </div>
+    <div id="lightbox-bkgrd-ovl" class="lightbox-bkgrd"></div>
+    
     <script src="../lib/jquery.js"></script>
     <script src="../lib/fancytree/jquery.fancytree-all-deps.min.js"></script>
+    <script src="../modules/aeConst.js"></script>
+    <script src="../modules/aeDialog.js"></script>
     <script src="../modules/aeFolderPicker.js"></script>
     <script src="new.js"></script>
   </body>

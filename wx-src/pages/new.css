@@ -9,6 +9,7 @@ input[type="text"], textarea, select {
 
 input[type="text"], textarea {
     width: 100%;
+    margin-top: 4px;
 }
 
 textarea {
@@ -16,6 +17,8 @@ textarea {
 }
 
 #folder-tree-btn {
+    order: 1;
+    
     width: 100%;
     padding: 4px 4px 4px 28px;
     background-color: #fbfbfb;
@@ -45,7 +48,7 @@ textarea {
 #folder-tree-popup {
     position: absolute;
     visibility: hidden;
-    width: 386px;
+    width: 350px;
     height: 140px;
     margin-top: 0;
     border-top: 1px solid ThreeDLightShadow;
@@ -53,7 +56,7 @@ textarea {
     border-right: 1px solid ThreeDDarkShadow;
     border-bottom: 1px solid ThreeDDarkShadow;
     background-color: white;
-    box-shadow: 2px 2px 2px 0px rgba(143,143,143,1);
+    box-shadow: 4px 4px 2px -2px #8F8F8F;
 }
 
 #folder-tree {
@@ -65,6 +68,32 @@ ul.fancytree-container {
     border: none;
 }
 
+#new-folder-btn {
+    order: 2;
+    
+    min-width: 32px;
+    margin: 0 0 0 4px;
+    background-image: url("../img/newFolder.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
 #clipping-options {
     margin-bottom: 8px;
+}
+
+#new-folder-dlg {
+    --width: 320px;
+    --height: 256px;
+    top: 10%;
+}
+
+#new-folder-dlg-fldr-tree {
+    margin-top: 4px;
+    border: 1px solid #b1b1b1;
+}
+
+#new-folder-dlg-fldr-tree > .fancytree-container {
+    height: 100px;
+    overflow: auto;
 }

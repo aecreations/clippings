@@ -9,6 +9,8 @@ let gClippings = null;
 let gParentFolderID = 0;
 let gSrcURL = "";
 let gCreateInFldrMenu;
+let gFolderPickerPopup;
+let gNewFolderDlg;
 
 
 $(document).ready(() => {
@@ -55,9 +57,11 @@ $(document).ready(() => {
     }
   });
 
+  initDialogs();
   initFolderPicker();
   initShortcutKeyMenu();
-  
+
+  $("#new-folder-btn").click(aEvent => { gNewFolderDlg.showModal() });
   $("#btn-accept").click(aEvent => { accept(aEvent) });
   $("#btn-cancel").click(aEvent => { cancel(aEvent) });
 });
@@ -73,6 +77,84 @@ $(window).keypress(aEvent => {
 });
 
 
+function initDialogs()
+{
+  gNewFolderDlg = new aeDialog("new-folder-dlg");
+  gNewFolderDlg.fldrTree = null;
+  gNewFolderDlg.selectedFldrNode = null;
+  
+  let that = gNewFolderDlg;
+  gNewFolderDlg.setInit(() => {
+    if (that.fldrTree) {
+      that.fldrTree.getTree().getNodeByKey(Number(aeConst.ROOT_FOLDER_ID).toString()).setActive();
+    }
+    else {
+      that.fldrTree = new aeFolderPicker("#new-folder-dlg-fldr-tree", gClippingsDB);
+      that.fldrTree.setOnSelectFolder(aFolderData => {
+         that.selectedFldrNode = aFolderData.node;
+      });
+    }
+
+    $("#new-fldr-name").on("blur", aEvent => {
+      if (! aEvent.target.value) {
+        aEvent.target.value = "New Folder";
+      }
+    });
+
+    $("#new-fldr-name").val("New Folder").select().focus();
+  });
+  
+  gNewFolderDlg.setCancel();
+  gNewFolderDlg.setAccept(aEvent => {
+    let newFldrDlgTree = that.fldrTree.getTree();
+    let parentFldrID = aeConst.ROOT_FOLDER_ID;
+
+    if (that.selectedFldrNode) {
+      parentFldrID = Number(that.selectedFldrNode.key);
+    }
+
+    console.log("The folder '%s' will be created under the folder whose ID is %s", $("#new-fldr-name").val(), parentFldrID);
+    
+    gClippingsDB.folders.add({
+      name: $("#new-fldr-name").val(),
+      parentFolderID: parentFldrID
+    }).then(aFldrID => {
+      let newFldrName = $("#new-fldr-name").val();
+      
+      // Update the folder tree in the main dialog.
+      let newFldrNodeData = {
+        key: aFldrID,
+        title: newFldrName,
+        folder: true,
+        children: []
+      };
+
+      let mainFldrTree = gFolderPickerPopup.getTree();
+      let parentNode;
+
+      if (parentFldrID == aeConst.ROOT_FOLDER_ID) {
+        parentNode = mainFldrTree.getRootNode();
+      }
+      else {
+        parentNode = mainFldrTree.getNodeByKey(Number(parentFldrID).toString());
+      }
+
+      let newFldrNode = parentNode.addNode(newFldrNodeData);
+      newFldrNode.setActive();
+
+      $("#folder-tree-btn").text(newFldrName).val(aFldrID);
+
+      gParentFolderID = aFldrID;
+      that.close();
+    });
+  });
+
+  gNewFolderDlg.setUnload(() => {
+    $("#new-folder-dlg-fldr-tree > .fancytree-container")[0].scrollTop = 0;
+  });
+}
+
+
 function initFolderPicker()
 {
   $("#folder-tree-btn").click(aEvent => {
@@ -86,8 +168,8 @@ function initFolderPicker()
     }
   });
 
-  let fldrPickerPopup = new aeFolderPicker("#folder-tree", gClippingsDB);
-  fldrPickerPopup.setOnSelectFolder(selectFolder);
+  gFolderPickerPopup = new aeFolderPicker("#folder-tree", gClippingsDB);
+  gFolderPickerPopup.setOnSelectFolder(selectFolder);
 }
 
 
