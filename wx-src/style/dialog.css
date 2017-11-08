@@ -26,6 +26,19 @@ fieldset > legend {
     margin-left: -8px;
 }
 
+.hbox, .vbox {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.hbox {
+    flex-flow: row nowrap;
+}
+
+.vbox {
+    flex-flow: column nowrap;
+}
+
 .browser-style > input[type="text"] {
     background-color: white;
     border-top: none;
