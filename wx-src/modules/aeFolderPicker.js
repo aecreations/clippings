@@ -43,6 +43,7 @@ class aeFolderPicker
 	source: treeData,
 	selectMode: 1,
 	icon: true,
+        escapeTitles: true,
 
 	init: function (aEvent, aData) {
           aData.tree.getRootNode().children[0].setActive();
@@ -79,5 +80,12 @@ class aeFolderPicker
   setOnSelectFolder(aFnOnSelectFolder)
   {
     this._fnOnSelectFolder = aFnOnSelectFolder;
+  }
+
+  getTree()
+  {
+    let rv = $(this._treeEltSelector).fancytree("getTree");
+
+    return rv;
   }
 }
