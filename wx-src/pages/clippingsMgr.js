@@ -915,15 +915,13 @@ function initToolbarButtons()
       }
     },
     items: {
-      backup: {
-        name: "Backup...",
-        className: "ae-menuitem"
-      },
+      /***
       restoreFromBkup: {
-        name: "Restore...",
+        name: "Restore From Backup...",
         className: "ae-menuitem"
       },
       separator1: "--------",
+      ***/
       importFromFile: {
         name: "Import...",
         className: "ae-menuitem"
