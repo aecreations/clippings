@@ -5,6 +5,7 @@
 
 body {
     margin: 16px;
+    font-size: 11px;
 }
 
 button {
@@ -45,6 +46,12 @@ fieldset > legend {
     border-right: 1px solid transparent;
     border-bottom: 1px solid #b1b1b1;
     background-color: -moz-Field;
+}
+
+.browser-style > input[type="text"],
+.browser-style > textarea,
+select.browser-style {
+    font-size: 11px;
 }
 
 .browser-style > input[type="text"][disabled],
