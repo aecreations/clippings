@@ -239,7 +239,7 @@ input[type="search"]::placeholder {
     left: -20px;
     width: 12px;
     height: 12px;
-    background-color: white;
+    background-color: -moz-Field;
     background-image: url("../img/search-reset.svg");
     background-position-x: center;
     background-position-y: center;
