@@ -29,12 +29,12 @@ $(document).ready(() => {
   
     if (gPasteMode == aeConst.PASTEACTION_SHORTCUT_KEY) {
       $(".deck > #search-by-name").hide();
-      $(".deck > #paste-by-shortcut-key").show();
+      $(".deck > #paste-by-shortcut-key").fadeIn("fast");
     }
     else {
       $(".deck > #paste-by-shortcut-key").hide();
       chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, { height: WNDH_SEARCH_CLIPPING }, aWnd => {
-        $(".deck > #search-by-name").show();
+        $(".deck > #search-by-name").fadeIn("fast");
         $("#clipping-search").focus();
       });
     }
@@ -65,7 +65,7 @@ $(window).keypress(aEvent => {
       $(".deck > #paste-by-shortcut-key").hide();
 
       chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, { height: WNDH_SEARCH_CLIPPING }, aWnd => {
-        $(".deck > #search-by-name").show();
+        $(".deck > #search-by-name").fadeIn("fast");
         $("#clipping-search").focus();
       });
     }
@@ -74,7 +74,7 @@ $(window).keypress(aEvent => {
       $(".deck > #search-by-name").hide();
 
       chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, { height: WNDH_SHORTCUT_KEY }, aWnd => {
-        $(".deck > #paste-by-shortcut-key").show();
+        $(".deck > #paste-by-shortcut-key").fadeIn("fast");
       });
     }
   }
@@ -161,10 +161,25 @@ function initAutocomplete()
 
     // EasyAutocomplete adds a <div class="easy-autocomplete"> and places the
     // clipping search textbox inside it.
-    $(".easy-autocomplete").addClass("browser-style");
+    $(".easy-autocomplete").addClass("browser-style").css({ width: "100%" });
+
+    $("#clipping-search").on("keyup", aEvent => {
+      if (aEvent.target.value == "") {
+        $("#clear-search").hide();
+      }
+      else {
+        $("#clear-search").show();
+      }
+    })
+    
+    $("#clear-search").click(aEvent => {
+      $("#clipping-search").val("").focus();
+      $("#clear-search").hide();
+    });
 
     $("#clipping-search").focus();
     $(".easy-autocomplete-container").attr("hidden", "true");
+    $("#clear-search").hide();
   });
 }
 
