@@ -40,10 +40,11 @@ fieldset > legend {
 }
 
 .browser-style > input[type="text"] {
-    background-color: white;
-    border-top: none;
-    border-left: none;
-    border-right: none;
+    border-top: 1px solid transparent;
+    border-left: 1px solid transparent;
+    border-right: 1px solid transparent;
+    border-bottom: 1px solid #b1b1b1;
+    background-color: -moz-Field;
 }
 
 .browser-style > input[type="text"][disabled],
@@ -54,9 +55,9 @@ fieldset > legend {
 }
 
 .browser-style > input[type="text"]:not(disabled):hover {
-    border-top: none;
-    border-left: none;
-    border-right: none;
+    border-top: 1px solid transparent;
+    border-left: 1px solid transparent;
+    border-right: 1px solid transparent;
 }
 
 .browser-style > input[type="text"]:active {
