@@ -27,19 +27,25 @@
 	  </div>
 	</div>
 
-	<div id="jumbo-btns">
-	  <div id="welcome-current-user">
+	<div id="welcome-actions">
+	  <div id="welcome-current-user" class="welcome-action-card">
 	    <h2>Current Users</h2>
 	    <p>Bring your clippings over from a previous version of Clippings by importing a backup file.</p>
-	    <button id="goto-import-bkup" class="puffy">Import My Clippings</button>
+	    <div class="card-btns">
+  	      <button id="goto-import-bkup" class="btn-puffy default">Import My Clippings</button>
+	    </div>
 	  </div>
 
-	  <div id="welcome-new-user">
+	  <div id="welcome-new-user" class="welcome-action-card">
 	    <h2>New Users</h2>
 	    <p>Learn the essential features of Clippings in just a few minutes by browsing the Quick Start Guide.</p>
-	    <button id="goto-quick-start" class="puffy">Quick Start Guide</button>
+	    <div class="card-btns">
+  	      <button id="goto-quick-start" class="btn-puffy default">Quick Start Guide</button>
+	    </div>
 	  </div>
 	</div>
+
+	<p id="dismiss-welcome" class="hyperlink">Close this page</p>
 
       </div> <!-- #welcome-page -->
 
@@ -118,6 +124,16 @@
 	
       </div>  <!-- #import-backup-pg -->
     </main>
+
+    <div id="dismiss-welcome-dlg" class="lightbox">
+      <div class="dlg-content">
+	<p>Are you sure you want to close the Welcome to Clippings page?</p>
+      </div>
+      <div class="dlg-btns">
+	<button class="dlg-cancel">Go Back</button>
+	<button class="dlg-accept default">Close This Page</button>
+      </div>
+    </div>
 
     <div id="skip-import-dlg" class="lightbox">
       <div class="dlg-content">

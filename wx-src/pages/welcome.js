@@ -33,6 +33,10 @@ $(() => {
     window.location.href = "http://aecreations.sourceforge.net/clippings/quickstart.php";
   })
 
+  $("#dismiss-welcome").click(aEvent => {
+    showModal("#dismiss-welcome-dlg");
+  });
+  
   $("#toggle-no-backup-help").click(aEvent => {
     if ($("#no-backup-help:hidden").length > 0) {
       $("#toggle-no-backup-help > .expander-icon").text("\u25bc ");
@@ -177,12 +181,17 @@ function resetSelectBackupFilePageState()
 
 function initDialogs()
 {
-  $("#skip-import-dlg .dlg-accept").click(aEvent => {
+  $("#skip-import-dlg .dlg-accept, #dismiss-welcome-dlg .dlg-accept").click(aEvent => {
     closePage();
   });
 
   $("#skip-import-dlg .dlg-cancel").click(aEvent => {
     $("#skip-import-dlg").removeClass("lightbox-show");    
+    $("#lightbox-bkgrd-ovl").hide();
+  });
+
+  $("#dismiss-welcome-dlg .dlg-cancel").click(aEvent => {
+    $("#dismiss-welcome-dlg").removeClass("lightbox-show");    
     $("#lightbox-bkgrd-ovl").hide();
   });
 }
