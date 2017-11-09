@@ -16,9 +16,11 @@ textarea {
     resize: none;
 }
 
-#folder-tree-btn {
+#new-clipping-fldr-tree-btn {
     order: 1;
-    
+}
+
+.folder-picker-menubtn {
     width: 100%;
     padding: 4px 4px 4px 28px;
     background-color: #fbfbfb;
@@ -32,25 +34,22 @@ textarea {
     text-align: start !important;
 }
 
-#folder-tree-btn:hover {
+.folder-picker-menubtn:hover {
     background-color: #ebebeb;
 }
 
-#folder-tree-btn[value="0"] {
+.folder-picker-menubtn[value="0"] {
     background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICA8cGF0aCBkPSJNOCwxMkwzLDcsNCw2bDQsNCw0LTQsMSwxWiIgZmlsbD0iIzZBNkE2QSIgLz4KPC9zdmc+Cg=="), url("../img/clippings-root.svg");
     background-position: calc(100% - 4px) center, 8px;
 }
 
-#folder-tree-btn:hover:active {
+.folder-picker-menubtn:hover:active {
     background-color: #d4d4d4;
 }
 
-#folder-tree-popup {
+.folder-tree-popup {
     position: absolute;
     visibility: hidden;
-    width: 350px;
-    height: 140px;
-    margin-top: 0;
     border-top: 1px solid ThreeDLightShadow;
     border-left: 1px solid ThreeDLightShadow;
     border-right: 1px solid ThreeDDarkShadow;
@@ -59,7 +58,13 @@ textarea {
     box-shadow: 4px 4px 2px -2px #8F8F8F;
 }
 
-#folder-tree {
+#new-clipping-fldr-tree-popup {
+    width: 350px;
+    height: 140px;
+    margin-top: 0;
+}
+
+.folder-tree {
     height: 100%;
     overflow: auto;
 }
@@ -85,7 +90,7 @@ ul.fancytree-container {
 #new-folder-dlg {
     --width: 320px;
     --height: 256px;
-    top: 10%;
+    top: 64px;
 }
 
 #new-folder-dlg-fldr-tree {

@@ -157,8 +157,8 @@ function initDialogs()
 
 function initFolderPicker()
 {
-  $("#folder-tree-btn").click(aEvent => {
-    let popup = $("#folder-tree-popup");
+  $(".folder-picker-menubtn").click(aEvent => {
+    let popup = $(".folder-tree-popup");
 
     if (popup.css("visibility") == "hidden") {
       popup.css({ visibility: "visible" });
@@ -168,7 +168,7 @@ function initFolderPicker()
     }
   });
 
-  gFolderPickerPopup = new aeFolderPicker("#folder-tree", gClippingsDB);
+  gFolderPickerPopup = new aeFolderPicker("#new-clipping-fldr-tree", gClippingsDB);
   gFolderPickerPopup.setOnSelectFolder(selectFolder);
 }
 
@@ -176,8 +176,8 @@ function initFolderPicker()
 function selectFolder(aFolderData)
 {
   gParentFolderID = Number(aFolderData.node.key);
-  $("#folder-tree-btn").text(aFolderData.node.title).val(gParentFolderID);
-  $("#folder-tree-popup").css({ visibility: "hidden" });
+  $("#new-clipping-fldr-tree-btn").text(aFolderData.node.title).val(gParentFolderID);
+  $("#new-clipping-fldr-tree-popup").css({ visibility: "hidden" });
 }
 
 
