@@ -32,6 +32,10 @@ class aeDialog
   setAccept(aFnAccept)
   {
     $(`#${this._dlgID} > .dlg-btns > .dlg-accept`).click(aEvent => {
+      if (aEvent.target.disabled) {
+        return;
+      }
+      
       if (aFnAccept) {
         aFnAccept(aEvent);
       }
@@ -45,6 +49,10 @@ class aeDialog
   setCancel(aFnCancel)
   {
     $(`#${this._dlgID} > .dlg-btns > .dlg-cancel`).click(aEvent => {
+      if (aEvent.target.disabled) {
+        return;
+      }
+
       if (aFnCancel) {
         aFnCancel(aEvent);
       }
@@ -66,5 +74,24 @@ class aeDialog
     this._fnUnload();
     $(`#${this._dlgID}`).removeClass("lightbox-show");
     $("#lightbox-bkgrd-ovl").removeClass("lightbox-show");
+  }
+
+  static acceptDlgs()
+  {
+    let openDlgElts = $(".lightbox-show");
+
+    if (openDlgElts.length > 0) {
+      // Normally there should just be 1 dialog open at a time.
+      $(".lightbox-show .dlg-accept:not(:disabled)").click();
+    }
+  }
+
+  static cancelDlgs()
+  {
+    let openDlgElts = $(".lightbox-show");
+
+    if (openDlgElts.length > 0) {
+      $(".lightbox-show .dlg-cancel:not(:disabled)").click();
+    }
   }
 }
