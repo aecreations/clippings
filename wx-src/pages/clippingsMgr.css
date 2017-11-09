@@ -187,8 +187,6 @@ input[type="search"]::placeholder {
 .ae-menuitem {
     padding-top: 4px;
     padding-bottom: 4px;
-    margin-left: 1px;
-    margin-right: 1px;
     font-size: 12px;
 }
 
