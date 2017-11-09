@@ -3,9 +3,30 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+let gClippings;
+
 
 // Options page initialization
 $(() => {
+  chrome.runtime.getBackgroundPage(aBkgrdWnd => {
+    gClippings = aBkgrdWnd;
+
+    init();
+  });
+});
+
+
+function init()
+{
+  let os = gClippings.getOS();
+  let keybdPasteKeys = "ALT+SHIFT+Y";
+  
+  if (os == "mac") {
+    keybdPasteKeys = "\u2318\u21e7Y";
+  }
+
+  $("#keyboard-paste-keys").text(keybdPasteKeys);
+  
   browser.storage.local.get().then(aPrefs => {
     $("#html-paste-options").val(aPrefs.htmlPaste).change(aEvent => {
       setPref({ htmlPaste: aEvent.target.value });
@@ -30,7 +51,7 @@ $(() => {
     // TEMPORARY - "Check spelling" checkbox option is disabled.
     $("#check-spelling").attr("checked", aPrefs.checkSpelling);
   });
-});
+}
 
 
 function setPref(aPref)
