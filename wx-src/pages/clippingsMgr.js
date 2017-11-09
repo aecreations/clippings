@@ -846,18 +846,21 @@ $(document).keypress(aEvent => {
     return aEvent.ctrlKey;
   }
 
+  log("Clippings/wx: clippingsMgr.js: $(document).keypress(): Key pressed: " + aEvent.key);
+  
   // NOTE: CTRL+W/Cmd+W is automatically handled, so no need to define it here.
   if (aEvent.key == "F1") {
     window.alert("No help is available (so leave me alone)");
   }
   else if (aEvent.key == "Enter") {
-    // TO DO: Invoke accept action on any open modal dialogs.
+    aeDialog.acceptDlgs();
   }
   else if (aEvent.key == "Escape") {
     if (gSearchBox.isActivated()) {
       gSearchBox.reset();
     }
-    // TO DO: Invoke cancel on any open modal dialogs.
+
+    aeDialog.cancelDlgs();
   }
   else if (aEvent.key == "Delete") {
     gCmd.deleteClippingOrFolder(gCmd.UNDO_STACK);
@@ -987,6 +990,8 @@ function initDialogs()
 
   gDialogs.importFromFile = new aeDialog("import-dlg");
   gDialogs.importFromFile.setInit(() => {
+    $("#import-dlg button.dlg-accept").attr("disabled", "true");
+    
     $("#import-clippings-file-upload").on("change", aEvent => {
       $("#import-error").text("").hide();
       if (aEvent.target.files.length > 0) {
