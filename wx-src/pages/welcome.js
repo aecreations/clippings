@@ -56,23 +56,14 @@ $(() => {
   }
   else if (os == "mac") {
     osFileBrwsApp = "Finder";
-    keybdPasteKey = "\u8984\u8679Y";
+    keybdPasteKey = "\u2318\u21e7Y";
   }
   $("#os-file-browser").text(osFileBrwsApp);
   $("#keybd-paste-key").text(keybdPasteKey);
 
-  let previousVer = pgURL.searchParams.get("oldVer");
-  let bkupFldrName = "";
-  if (parseFloat(previousVer) == 5.5) {
-    bkupFldrName = "clippings-backup";
+  if (os != "win") {
+    $("#hidden-bkup-fldr-note").text(" (You may need to use the command line to see this folder.)");
   }
-  else {
-    bkupFldrName = ".clipbak";
-    if (os != "win") {
-      $("#hidden-bkup-fldr-note").text(" (You may need to use the command line to see this folder.)");
-    }
-  }
-  $("#bkup-fldr-name").text(bkupFldrName);
   
   $("#import-clippings-file-upload").on("change", aEvent => {
     $("#import-failed").hide();
@@ -144,8 +135,7 @@ $(() => {
     $("#select-backup-file-pg").hide();
     $("#import-backup-pg").fadeIn("slow");
 
-    // TO DO: Introduce a 1-second delay before starting import.
-    uploadImportFile(inputFileElt.files);
+    window.setTimeout(() => { uploadImportFile(inputFileElt.files) }, 1500);
   });
 
   $("#retry-import").click(aEvent => {
@@ -214,6 +204,8 @@ function closePage()
 }
 
 
+// TO DO:
+// This doesn't work. Use ClippingsListener instead.
 function asyncGetImportStats()
 {
   return new Promise((aFnResolve, aFnReject) => {
