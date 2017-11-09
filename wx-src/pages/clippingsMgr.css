@@ -19,6 +19,10 @@ body {
     font-size: 11px;
 }
 
+button[disabled] {
+    opacity: 0.4;
+}
+
 input[type="text"],
 input[type="search"],
 select {

@@ -11,8 +11,13 @@ body {
 button {
     min-width: 88px;
     min-height: 28px;
+    border-radius: 2px;
     font-size: 13px !important;
     text-align: center !important;
+}
+
+button[disabled] {
+    opacity: 0.4;
 }
 
 fieldset {
