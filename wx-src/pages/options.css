@@ -26,6 +26,11 @@ body {
     font-size: 13px;
 }
 
+input[type="number"],
+select {
+    font-size: 13px;
+}
+
 fieldset {
     border-bottom: none;
     border-left: none;
@@ -40,6 +45,10 @@ fieldset > legend {
     margin-left: -8px;
 }
 
+label {
+    margin-right: 4px;
+}
+
 .pref-section-header {
     font-size: 17px;
     font-weight: 600;
@@ -49,17 +58,28 @@ fieldset > legend {
 }
 
 .row {
-    margin-bottom: 8px;
+    margin-top: 6px;
+    margin-bottom: 10px;
 }
 
 .indent {
     margin-left: 2em;
 }
 
-
 .description {
-    margin-top: 3px;
-    margin-bottom: 8px;
+    margin-top: 6px;
+    margin-bottom: 16px;
     width: 48em;
     font-size: 11px;
 }
+
+.browser-style > input[type="checkbox"] + label::before {
+    width: 14px;
+    height: 14px;
+    vertical-align: -3px;
+}
+
+#auto-inc-plchldrs-start-val {
+    width: 6em;
+}
+

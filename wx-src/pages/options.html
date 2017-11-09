@@ -11,13 +11,13 @@
   </head>
 
   <body>
-    <div id="ae-clippings-preferences">
+    <main id="ae-clippings-preferences">
       <div id="prefpane-general" class="pref-section-header">Options</div>
       <div class="pref-section-content">
         <fieldset id="paste-options">
           <legend>Paste Options</legend>
 
-	  <div class="row" style="margin-bottom:4px">
+	  <div class="row">
   	    <label for="html-paste-options">When pasting an HTML-formatted clipping into a rich text edit box:</label>
 	    <select id="html-paste-options" class="browser-style">
 	      <option value="1">Paste as formatted text</option>
@@ -25,17 +25,17 @@
             </select>
 	  </div>
 	  
-	  <div class="row indent">
+	  <div class="indent browser-style">
 	    <input type="checkbox" id="html-auto-line-break"/>
 	    <label for="html-auto-line-break">Automatically break lines unless &lt;p&gt; or &lt;br&gt; tags exist</label>
 	    <p class="description">An HTML-formatted clipping will always be pasted as plain text if pasting into a plain textbox, or if the clipping contains restricted tags such as &lt;script&gt;, &lt;applet&gt;, &lt;object&gt;, &lt;iframe&gt;, etc.</p>
           </div>
-	  <div class="row" style="margin-top:12px">
+	  <div class="row browser-style">
 	    <input type="checkbox" id="enable-shortcut-key"/>
 	    <label for="enable-shortcut-key">Activate shortcut key mode using ALT+SHIFT+Y (&#8984;&#8679;Y on Mac)</label>
           </div>
 
-	  <div class="row" style="margin-top:4px">
+	  <div class="row">
 	    <label for="auto-inc-plchldrs-start-val">Default starting value for auto-incrementing placeholders:</label>
 	    <input type="number" id="auto-inc-plchldrs-start-val" min="0" value="0"/>
 	  </row>
@@ -45,11 +45,11 @@
       <fieldset id="general-options">
 	<legend>General Options</legend>
 
-	<div class="row">
+	<div class="row browser-style">
 	  <input type="checkbox" id="always-save-src-url"/>
 	  <label for="always-save-src-url">Always save the address of the source web page</label>
         </div>
-	<div class="row">
+	<div class="row browser-style">
 	  <input type="checkbox" id="check-spelling" disabled="true"/>
 	  <label for="check-spelling">Check spelling</label>
         </div>
@@ -57,14 +57,14 @@
 <!--
       <div class="pref-section-header">Appearance</div>
       <div class="pref-section-content">
-	<div class="row">
+	<div class="row browser-style">
 	  <input type="checkbox" id="rev-contrast-icons"/>
 	  <label for="rev-contrast-icons">Use reverse contrast icon for the toolbar button</label>
         </div>
       </div>
 -->
 
-    </div>
+    </main>
 
     <script src="../lib/jquery.js"></script>
     <script type="application/javascript" src="options.js"></script>
