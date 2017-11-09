@@ -142,7 +142,7 @@ function initDialogs()
       let newFldrNode = parentNode.addNode(newFldrNodeData);
       newFldrNode.setActive();
 
-      $("#folder-tree-btn").text(newFldrName).val(aFldrID);
+      $("#new-clipping-fldr-picker-menubtn").text(newFldrName).val(aFldrID);
 
       gParentFolderID = aFldrID;
       that.close();
@@ -176,7 +176,7 @@ function initFolderPicker()
 function selectFolder(aFolderData)
 {
   gParentFolderID = Number(aFolderData.node.key);
-  $("#new-clipping-fldr-tree-btn").text(aFolderData.node.title).val(gParentFolderID);
+  $("#new-clipping-fldr-picker-menubtn").text(aFolderData.node.title).val(gParentFolderID);
   $("#new-clipping-fldr-tree-popup").css({ visibility: "hidden" });
 }
 
