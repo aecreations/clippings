@@ -4,7 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
-const DEBUG_TREE = true;
+const DEBUG_TREE = false;
 
 const DEFAULT_NEW_CLIPPING_NAME = "New Clipping";
 const DEFAULT_NEW_FOLDER_NAME = "New Folder";
@@ -1136,6 +1136,20 @@ function initDialogs()
   gDialogs.moveTo.fldrTree = null;
   gDialogs.moveTo.selectedFldrNode = null;
 
+  gDialogs.moveTo.resetTree = function () {
+    let fldrTree = that.fldrTree.getTree();
+    fldrTree.clear();
+    that.fldrTree = null;
+    that.selectedFldrNode = null;
+
+    // Destroy and then recreate the element used to instantiate Fancytree,
+    // so that we start fresh when the dialog is invoked again.
+    $("#move-to-fldr-tree").children().remove();
+    let parentElt = $("#move-to-fldr-tree").parent();
+    parentElt.children("#move-to-fldr-tree").remove();
+    $('<div id="move-to-fldr-tree"></div>').insertAfter("#move-to-label");
+  };
+
   let that = gDialogs.moveTo;
   gDialogs.moveTo.setInit(() => {
     // TEMPORARY
@@ -1144,9 +1158,11 @@ function initDialogs()
     // END TEMPORARY
     
     if (that.fldrTree) {
+      console.log("Move To: Reusing folder picker tree from last dialog invocation");
       that.fldrTree.getTree().getNodeByKey(Number(aeConst.ROOT_FOLDER_ID).toString()).setActive();
     }
     else {
+      console.log("Move To: Initializing folder picker tree");
       that.fldrTree = new aeFolderPicker("#move-to-fldr-tree", gClippingsDB);
       that.fldrTree.setOnSelectFolder(aFolderData => {
         that.selectedFldrNode = aFolderData.node;
@@ -1165,8 +1181,12 @@ function initDialogs()
     }
   });
 
-  // TO DO: Always destroy folder tree after dismissing dialog.
-  gDialogs.moveTo.setCancel();
+  // TO DO: Always destroy folder tree when dismissing dialog.
+  gDialogs.moveTo.setCancel(() => {
+    that.resetTree();
+    that.close();
+  });
+
   gDialogs.moveTo.setAccept(() => {
     let clippingsMgrTree = getClippingsTree();
     let selectedNode = clippingsMgrTree.activeNode;
@@ -1198,6 +1218,7 @@ function initDialogs()
       gCmd.moveClippingIntrl(id, destFolderID, gCmd.UNDO_STACK);
     }
 
+    that.resetTree();
     that.close();
   });
 }
