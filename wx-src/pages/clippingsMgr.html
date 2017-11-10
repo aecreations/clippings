@@ -177,6 +177,21 @@
       </div>
 
     </div>
+
+    <div id="move-dlg" class="lightbox">
+      <div class="dlg-content browser-style">
+	<label id="move-to-label" for="move-to-fldr-tree">Move to:</label>
+	<div id="move-to-fldr-tree"></div>
+	
+	<input type="checkbox" id="copy-instead-of-move"/>
+	<label for="copy-instead-of-move">Create a copy</label>
+	<div id="move-error"></div>
+      </div>
+      <div class="dlg-btns">
+        <button class="dlg-accept browser-style default">OK</button>
+        <button class="dlg-cancel browser-style">Cancel</button>
+      </div>
+    </div>
     <div id="lightbox-bkgrd-ovl" class="lightbox-bkgrd"></div>
     
     <script src="../lib/jquery.js"></script>
@@ -188,6 +203,7 @@
     <script src="../modules/aeConst.js"></script>
     <script src="../modules/aeImportExport.js"></script>
     <script src="../modules/aeDialog.js"></script>
+    <script src="../modules/aeFolderPicker.js"></script>
     <script src="clippingsMgr.js"></script>
   </body>
 </html>

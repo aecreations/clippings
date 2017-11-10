@@ -500,9 +500,15 @@ ul.fancytree-container {
     padding-bottom: 3px;
 }
 
+#shortcut-key-conflict-msgbox,
+#remove-all-source-urls-dlg {
+    top: 64px;
+}
+
 #import-dlg {
     --width: 395px;
     --height: 178px;
+    top: 48px;
 }
 
 #import-dlg #import-clippings-file-upload {
@@ -525,6 +531,7 @@ ul.fancytree-container {
 #export-dlg {
     --width: 360px;
     --height: 316px;
+    top: 22px;
 }
 
 #export-dlg #export-format-list {
@@ -542,4 +549,26 @@ ul.fancytree-container {
 #export-dlg #format-description {
     margin-top: 2px;
     margin-bottom: 2px;
+}
+
+#move-dlg {
+    --width: 340px;
+    --height: 286px;
+    top: 32px;
+}
+
+#move-dlg #move-to-fldr-tree {
+    margin-top: 4px;
+    margin-bottom: 8px;
+    border: 1px solid #b1b1b1;
+}
+
+#move-dlg #move-to-fldr-tree > .fancytree-container {
+    height: 154px;
+    overflow: auto;
+}
+
+#move-dlg #move-error {
+    margin: 4px 0 4px 0;
+    color: red;
 }

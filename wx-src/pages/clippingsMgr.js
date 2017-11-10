@@ -4,7 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
-const DEBUG_TREE = false;
+const DEBUG_TREE = true;
 
 const DEFAULT_NEW_CLIPPING_NAME = "New Clipping";
 const DEFAULT_NEW_FOLDER_NAME = "New Folder";
@@ -635,6 +635,11 @@ let gCmd = {
     });
   },
 
+  moveClippingOrFolder: function ()
+  {
+    gDialogs.moveTo.showModal();
+  },
+  
   deleteClippingOrFolder: function (aDestUndoStack)
   {
     if (gIsClippingsTreeEmpty) {
@@ -883,15 +888,10 @@ function initToolbarButtons()
 {
   $("#new-clipping").click(aEvent => { gCmd.newClipping(gCmd.UNDO_STACK) });
   $("#new-folder").click(aEvent => { gCmd.newFolder(gCmd.UNDO_STACK) });
-
-  // TEMPORARY
-  $("#move").css({ display: "none" });
-  // END TEMPORARY
-  
+  $("#move").click(aEvent => { gCmd.moveClippingOrFolder() });
   $("#delete").click(aEvent => {
     gCmd.deleteClippingOrFolder(gCmd.UNDO_STACK)
   });
-
   $("#undo").click(aEvent => { gCmd.undo() });
 
   // Tools menu
@@ -1130,6 +1130,75 @@ function initDialogs()
       // TO DO: Put this in a notification box.
       window.alert("The source web page addresses of your clippings have been removed.");
     });
+  });
+
+  gDialogs.moveTo = new aeDialog("move-dlg");
+  gDialogs.moveTo.fldrTree = null;
+  gDialogs.moveTo.selectedFldrNode = null;
+
+  let that = gDialogs.moveTo;
+  gDialogs.moveTo.setInit(() => {
+    // TEMPORARY
+    $("#copy-instead-of-move").hide();
+    $("#copy-instead-of-move + label").hide();
+    // END TEMPORARY
+    
+    if (that.fldrTree) {
+      that.fldrTree.getTree().getNodeByKey(Number(aeConst.ROOT_FOLDER_ID).toString()).setActive();
+    }
+    else {
+      that.fldrTree = new aeFolderPicker("#move-to-fldr-tree", gClippingsDB);
+      that.fldrTree.setOnSelectFolder(aFolderData => {
+        that.selectedFldrNode = aFolderData.node;
+      });
+    }
+
+    $("#copy-instead-of-move").removeProp("checked");
+    $("#move-error").text("");
+    that.selectedFldrNode = null;
+
+    if (getClippingsTree().activeNode.folder) {
+      $("#move-to-label").text("Move folder to:");
+    }
+    else {
+      $("#move-to-label").text("Move clipping to:");
+    }
+  });
+
+  // TO DO: Always destroy folder tree after dismissing dialog.
+  gDialogs.moveTo.setCancel();
+  gDialogs.moveTo.setAccept(() => {
+    let clippingsMgrTree = getClippingsTree();
+    let selectedNode = clippingsMgrTree.activeNode;
+    let id = parseInt(selectedNode.key);
+    let parentNode = selectedNode.getParent();
+
+    let parentFolderID = (parentNode.isRootNode() ? aeConst.ROOT_FOLDER_ID : parseInt(parentNode.key));
+
+    let destFolderID = aeConst.ROOT_FOLDER_ID;
+    if (that.selectedFldrNode) {
+      destFolderID = parseInt(that.selectedFldrNode.key);
+    }
+
+    log(`clippingsMgr.js: Move To dialog: current parent of selected item: ${parentFolderID}; move to folder ID: ${destFolderID}`);
+    
+    if (parentFolderID == destFolderID) {
+      $("#move-error").text("Cannot move into the same folder.");
+      return;
+    }
+
+    // TO DO: Error handling:
+    // - Cannot move a folder into one of its subfolders - show message:
+    //   "Cannot move to the selected folder."
+
+    if (selectedNode.isFolder()) {
+      gCmd.moveFolderIntrl(id, destFolderID, gCmd.UNDO_STACK);
+    }
+    else {
+      gCmd.moveClippingIntrl(id, destFolderID, gCmd.UNDO_STACK);
+    }
+
+    that.close();
   });
 }
 
