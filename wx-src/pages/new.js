@@ -204,6 +204,13 @@ function initShortcutKeyMenu()
       }
     }
   });
+
+  let keybPasteKey = "ALT+SHIFT+Y";
+  if (gClippings.getOS() == "mac") {
+    keybPasteKey = "\u2325\u21e7Y";
+  }
+  let tooltip = `To quickly paste this clipping into a web page textbox in Firefox, press ${keybPasteKey} followed by the shortcut key.`;
+  $("#shct-key-tooltip").attr("title", tooltip);
 }
 
 

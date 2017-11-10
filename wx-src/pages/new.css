@@ -3,6 +3,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
+label {
+    margin-right: 4px;
+}
+
 input[type="text"], textarea, select {
     margin-bottom: 12px !important;
 }
@@ -25,6 +29,7 @@ textarea {
     padding: 4px 4px 4px 28px;
     background-color: #fbfbfb;
     border: 1px solid #b1b1b1;
+    border-radius: 0;
 
     background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICA8cGF0aCBkPSJNOCwxMkwzLDcsNCw2bDQsNCw0LTQsMSwxWiIgZmlsbD0iIzZBNkE2QSIgLz4KPC9zdmc+Cg=="), url("../img/folder.svg");
     background-position: calc(100% - 4px) center, 8px;
@@ -85,6 +90,14 @@ ul.fancytree-container {
 
 #clipping-options {
     margin-bottom: 8px;
+}
+
+#clipping-key {
+    margin-right: 4px;
+}
+
+#shct-key-tooltip {
+    vertical-align: middle;
 }
 
 #new-folder-dlg {
