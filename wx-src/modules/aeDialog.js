@@ -76,6 +76,11 @@ class aeDialog
     $("#lightbox-bkgrd-ovl").removeClass("lightbox-show");
   }
 
+  static isOpen()
+  {
+    return ($(".lightbox-show").length > 0);
+  }
+  
   static acceptDlgs()
   {
     let openDlgElts = $(".lightbox-show");

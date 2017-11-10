@@ -69,9 +69,17 @@ $(document).ready(() => {
 
 $(window).keypress(aEvent => {
   if (aEvent.key == "Enter") {
+    if (aeDialog.isOpen()) {
+      aeDialog.acceptDlgs();
+      return;
+    }
     accept(aEvent);
   }
   else if (aEvent.key == "Escape") {
+    if (aeDialog.isOpen()) {
+      aeDialog.cancelDlgs();
+      return;
+    }
     cancel(aEvent);
   }
 });
