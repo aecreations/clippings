@@ -52,7 +52,7 @@ let gClippingsListener = {
       newNode = tree.rootNode.addNode(newNodeData);
     }
     
-    newNode.makeVisible().then(() => {
+    newNode.makeVisible().done(() => {
       newNode.setActive();
       $("#clipping-name").val(aData.name);
       $("#clipping-text").val("");
@@ -90,7 +90,7 @@ let gClippingsListener = {
       newNode = tree.rootNode.addNode(newNodeData);
     }
 
-    newNode.makeVisible().then(() => {
+    newNode.makeVisible().done(() => {
       newNode.setActive();
       $("#clipping-name").val(aData.name);
       $("#clipping-text").val("");
