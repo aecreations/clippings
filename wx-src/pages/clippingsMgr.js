@@ -1181,7 +1181,6 @@ function initDialogs()
     }
   });
 
-  // TO DO: Always destroy folder tree when dismissing dialog.
   gDialogs.moveTo.setCancel(() => {
     that.resetTree();
     that.close();
@@ -1203,7 +1202,7 @@ function initDialogs()
     log(`clippingsMgr.js: Move To dialog: current parent of selected item: ${parentFolderID}; move to folder ID: ${destFolderID}`);
     
     if (parentFolderID == destFolderID) {
-      $("#move-error").text("Cannot move into the same folder.");
+      $("#move-error").text("Item already exists in the selected folder.");
       return;
     }
 
@@ -1399,6 +1398,7 @@ function setEmptyClippingsState()
   rv = [{ title: "No clippings found.", key: "0" }];
   gIsClippingsTreeEmpty = true;
   $("#clipping-name, #clipping-text, #source-url-bar, #options-bar").hide();
+  $("#intro-content").show();
   
   return rv;
 }
@@ -1411,6 +1411,7 @@ function unsetEmptyClippingsState()
   emptyMsgNode.remove();
   tree.options.icon = true;
   gIsClippingsTreeEmpty = false;
+  $("#intro-content").hide();
   $("#clipping-name, #clipping-text, #options-bar").show();
 }
 

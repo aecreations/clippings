@@ -271,6 +271,22 @@ ul.fancytree-container {
     border: none;
 }
 
+#intro-content {
+    display: none;
+    font-size: 13px;
+    margin: 8px 24px 8px 24px;
+}
+
+#intro-content h3 {
+    font-size: 17px;
+    font-weight: 600;
+}
+
+#intro-content h4 {
+    font-size: 13px;
+    font-weight: 600;
+}
+
 #item-properties {
     order: 2;
     flex: 1 1 auto;
