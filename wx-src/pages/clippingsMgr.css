@@ -79,23 +79,20 @@ input[type="search"]::placeholder {
     border: 1px solid transparent;
     background-position: center;
     background-repeat: no-repeat;
-    background-color: ThreeDFace;
-    color: ButtonText;
+    background-color: transparent;
+    color: #0c0c0d;
     font: caption;
     font-size: 11px;
 }
 
 .toolbar-button:hover {
-    border: 1px solid ThreeDShadow;
     border-radius: 2px;
-    background-color: -moz-ButtonHoverFace;
-    color: -moz-ButtonHoverText;
+    background-color: rgba(12, 12, 13, 0.2)
 }
 
 .toolbar-button:active {
-    border: 1px solid ThreeDDarkShadow;
-    box-shadow: inset 0px 0px 2px 1px ThreeDShadow;
-    background-color: ThreeDLightShadow;
+    border-radius: 2px;
+    background-color: rgba(12, 12, 13, 0.3);
 }
 
 .toolbar-button-labelled {
@@ -197,6 +194,7 @@ input[type="search"]::placeholder {
 .ae-menuitem:hover {
     background-color: #eee;
     color: #0c0c0d;
+    cursor: default;
 }
 
 .ae-menuitem:active {
