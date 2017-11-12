@@ -7,13 +7,46 @@
 let gClippingsDB = null;
 let gClippings = null;
 
+let gClippingsListener = {
+  origin: null,
+
+  afterBatchChanges: function () {
+    // Populate import statistics.
+    $("#import-statistics").text(".");
+    
+    gClippingsDB.transaction("r", gClippingsDB.clippings, gClippingsDB.folders, () => {
+      let numItems = 0;
+    
+      gClippingsDB.folders.count().then(aNumFldrs => {
+        $("#import-statistics").text("..");
+        numItems += aNumFldrs;
+        return gClippingsDB.clippings.count();
+
+      }).then(aNumClippings => {
+        $("#import-statistics").text("...");
+        numItems += aNumClippings;
+        $("#import-statistics").text(`Imported ${numItems} items.`);
+      });
+    }).catch(aErr => {
+      console.error("Clippings/wx: welcome.js: gClippingsListener.afterBatchChanges(): " + aErr);
+    });
+  },
+  
+  newClippingCreated: function (aID, aData) {},
+  newFolderCreated: function (aID, aData) {},
+  clippingChanged: function (aID, aData, aOldData) {},
+  folderChanged: function (aID, aData, aOldData) {},
+  clippingDeleted: function (aID, aOldData) {},
+  folderDeleted: function (aID, aOldData) {}
+};
+
 
 // Page initialization
 $(() => {
   gClippings = chrome.extension.getBackgroundPage();
 
   if (! gClippings) {
-    throw new Error("Clippings/wx: postUpgrade.js: Failed to retrieve parent browser window!");
+    throw new Error("Clippings/wx: welcome.js: Failed to retrieve parent browser window!");
   }
 
   gClippingsDB = gClippings.getClippingsDB();
@@ -23,6 +56,10 @@ $(() => {
   let pgURL = new URL(window.location.href);
 
   browser.history.deleteUrl({ url: pgURL.href });
+
+  let clippingsListeners = gClippings.getClippingsListeners();
+  gClippingsListener.origin = clippingsListeners.ORIGIN_WELCOME_PG;
+  clippingsListeners.add(gClippingsListener);
   
   $("#goto-import-bkup").click(aEvent => {
     $("#welcome-pg").hide();
@@ -49,7 +86,7 @@ $(() => {
   })
 
   let osFileBrwsApp = "";
-  let keybdPasteKey = "ALT + SHIFT + Y";
+  let keybdPasteKey = "ALT\u00a0+\u00a0SHIFT\u00a0+\u00a0Y";
   
   if (os == "win") {
     osFileBrwsApp = "Windows Explorer";
@@ -90,7 +127,7 @@ $(() => {
       $("#import-progress-bar").attr("value", "2");
       
       let importFile = aFileList[0];
-      console.log("Clippings/wx: postUpgrade.js: Selected import file: '%s'\nFile size: %d bytes", importFile.name, importFile.size);
+      console.log("Clippings/wx: welcome.js: Selected import file: '%s'\nFile size: %d bytes", importFile.name, importFile.size);
 
       $("#import-progress-bar").attr("value", "5");
       
@@ -199,30 +236,6 @@ function closePage()
   browser.tabs.getCurrent().then(aTab => {
     return browser.tabs.remove(aTab.id);
   }).catch(aErr => {
-    console.error("Clippings/wx: postUpgrade.js: " + aErr);
-  });
-}
-
-
-// TO DO:
-// This doesn't work. Use ClippingsListener instead.
-function asyncGetImportStats()
-{
-  return new Promise((aFnResolve, aFnReject) => {
-    gClippingsDB.transaction("r", gClippingsDB.clippings, gClippingsDB.folders, () => {
-      let numItems = 0;
-    
-      gClippingsDB.folders.count().then(aNumFldrs => {
-        numItems += aNumFldrs;
-        return gClippingsDB.clippings.count();
-      }).then(aNumClippings => {
-        numItems += aNumClippings;
-
-        let msg = `Imported ${numItems} items.`;
-        aFnResolve(msg);
-      }).catch(aErr => {
-        aFnReject(aErr);
-      });
-    });
+    console.error("Clippings/wx: welcome.js: " + aErr);
   });
 }
