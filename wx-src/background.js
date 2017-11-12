@@ -16,6 +16,7 @@ let gClippingsListeners = {
   ORIGIN_CLIPPINGS_MGR: 1,
   ORIGIN_HOSTAPP: 2,
   ORIGIN_NEW_CLIPPING_DLG: 3,
+  ORIGIN_WELCOME_PG: 4,
 
   _listeners: [],
 
@@ -120,11 +121,11 @@ let gIsInitialized = false;
 
 browser.runtime.onInstalled.addListener(aDetails => {
   if (aDetails.reason == "install") {
-    console.log("Clippings/wx: It appears that the extension was newly installed.  Welcome to Clippings 6!");
+    log("Clippings/wx: It appears that the extension was newly installed.  Welcome to Clippings 6!");
   }
   else if (aDetails.reason == "upgrade") {
     let oldVer = aDetails.previousVersion;
-    console.log("Clippings/wx: Upgrading from version " + oldVer);
+    log("Clippings/wx: Upgrading from version " + oldVer);
   }
 });
 
@@ -160,7 +161,7 @@ function init()
 
   browser.storage.local.get().then(aPrefs => {
     if (aPrefs.htmlPaste === undefined) {
-      console.log("Clippings/wx: No user preferences were previously set.  Setting default user preferences.");
+      log("Clippings/wx: No user preferences were previously set.  Setting default user preferences.");
       setDefaultPrefs().then(() => {
         initHelper();
       });
@@ -175,28 +176,25 @@ function init()
 
 function initHelper()
 {
-  console.log("Clippings/wx: Initializing browser integration...");
+  log("Clippings/wx: Initializing browser integration...");
   
   initClippingsDB();
   
   if (! ("browser" in window)) {
-    console.log("Clippings/wx: Browser: Google Chrome");
+    log("Clippings/wx: Browser: Google Chrome");
   }
   else {
     let getBrowserInfo = browser.runtime.getBrowserInfo();
     getBrowserInfo.then(aBrwsInfo => {
-      console.log(`Clippings/wx: Browser: ${aBrwsInfo.name} (version ${aBrwsInfo.version})`);
+      log(`Clippings/wx: Browser: ${aBrwsInfo.name} (version ${aBrwsInfo.version})`);
     });
   }
 
   chrome.runtime.getPlatformInfo(aInfo => {
-    console.log("Clippings/wx: OS: " + aInfo.os);
+    log("Clippings/wx: OS: " + aInfo.os);
     gOS = aInfo.os;
   });
 
-  console.log("Clippings/wx: Extension preferences:");
-  console.log(gPrefs)
-  
   chrome.browserAction.onClicked.addListener(aTab => {
     openClippingsManager();
   });
@@ -210,7 +208,6 @@ function initHelper()
   aeClippingSubst.init(navigator.userAgent, gPrefs.autoIncrPlcHldrStartVal);
 
   browser.storage.onChanged.addListener((aChanges, aAreaName) => {
-    console.log("Clippings/wx: Detected change to local storage");
     let changedPrefs = Object.keys(aChanges);
 
     for (let pref of changedPrefs) {
@@ -232,7 +229,7 @@ function initHelper()
   }
 
   gIsInitialized = true;
-  console.log("Clippings/wx: Initialization complete.");
+  log("Clippings/wx: Initialization complete.");
 }
 
 
@@ -255,23 +252,19 @@ function initClippingsDB()
   gClippingsDB.on("changes", aChanges => {
     const CREATED = 1, UPDATED = 2, DELETED = 3;
 
-    console.log("Clippings/wx: Database change observer: changes object: ");
-    console.log(aChanges);
-
     let clippingsListeners = gClippingsListeners.get();
 
     if (aChanges.length > 1) {
-      console.log("Detecting multiple database changes. Skipping iteration through the changes array and invoking afterBatchChanges() on all listeners.");
       clippingsListeners.forEach(aListener => { aListener.afterBatchChanges() });
       return;
     }
 
-    console.log("Invoking listener method on %s listeners.", clippingsListeners.length);
+    log("Invoking DB listener method on %s listeners.", clippingsListeners.length);
     
     aChanges.forEach(aChange => {
       switch (aChange.type) {
       case CREATED:
-        console.log("Clippings/wx: Database observer detected CREATED event");
+        log("Clippings/wx: Database observer detected CREATED event");
         if (aChange.table == "clippings") {
           clippingsListeners.forEach(aListener => { aListener.newClippingCreated(aChange.key, aChange.obj) });
         }
@@ -281,7 +274,7 @@ function initClippingsDB()
         break;
         
       case UPDATED:
-        console.log("Clippings/wx: Database observer detected UPDATED event");
+        log("Clippings/wx: Database observer detected UPDATED event");
         if (aChange.table == "clippings") {
           clippingsListeners.forEach(aListener => { aListener.clippingChanged(aChange.key, aChange.obj, aChange.oldObj) });
         }
@@ -291,7 +284,7 @@ function initClippingsDB()
         break;
         
       case DELETED:
-        console.log("Clippings/wx: Database observer detected DELETED event");
+        log("Clippings/wx: Database observer detected DELETED event");
         if (aChange.table == "clippings") {
           clippingsListeners.forEach(aListener => { aListener.clippingDeleted(aChange.key, aChange.oldObj) });
         }
@@ -314,7 +307,7 @@ function initMessageListeners()
 {
   if (isGoogleChrome()) {
     chrome.runtime.onMessage.addListener((aRequest, aSender, aSendResponse) => {
-      console.log(`Clippings/wx: Received Chrome message '${aRequest.msgID}'`);
+      log(`Clippings/wx: Received Chrome message '${aRequest.msgID}'`);
 
       let resp = null;
 
@@ -345,7 +338,7 @@ function initMessageListeners()
   else {
     // Firefox
     browser.runtime.onMessage.addListener(aRequest => {
-      console.log("Clippings/wx: Received message '%s'", aRequest.msgID);
+      log("Clippings/wx: Received message '%s'", aRequest.msgID);
       
       let resp = null;
 
@@ -372,7 +365,7 @@ function initMessageListeners()
           return;
         }
 
-        console.log("Clippings/wx: Key '%s' was pressed.", shortcutKey);
+        log("Clippings/wx: Key '%s' was pressed.", shortcutKey);
         pasteClippingByShortcutKey(shortcutKey);
       }
       else if (aRequest.msgID == "paste-clipping-by-name") {
@@ -650,7 +643,7 @@ function pasteClippingByID(aClippingID)
       }
 
       clipping = aClipping;
-      console.log(`Pasting clipping named "${clipping.name}"\nid = ${clipping.id}`);
+      log(`Pasting clipping named "${clipping.name}"\nid = ${clipping.id}`);
         
       return gClippingsDB.folders.get(aClipping.parentFolderID);
     }).then(aFolder => {
@@ -684,7 +677,7 @@ function pasteClippingByShortcutKey(aShortcutKey)
     
     results.first().then(aClipping => {
       if (! aClipping) {
-        console.log(`Cannot find clipping with shortcut key '${aShortcutKey}'`);
+        log(`Cannot find clipping with shortcut key '${aShortcutKey}'`);
         return null;
       }
 
@@ -693,7 +686,7 @@ function pasteClippingByShortcutKey(aShortcutKey)
       }
 
       clipping = aClipping;
-      console.log(`Pasting clipping named "${clipping.name}"\nid = ${clipping.id}`);
+      log(`Pasting clipping named "${clipping.name}"\nid = ${clipping.id}`);
 
       return gClippingsDB.folders.get(aClipping.parentFolderID);
     }).then(aFolder => {
@@ -742,7 +735,7 @@ function pasteClipping(aClippingInfo)
       autoLineBreak: gPrefs.autoLineBreak
     };
 
-    console.log("Clippings/wx: Extension sending message 'paste-clipping' to content script");
+    log("Clippings/wx: Extension sending message 'paste-clipping' to content script");
           
     chrome.tabs.sendMessage(activeTabID, msgParams, null);
   });
@@ -801,12 +794,6 @@ function onUnload(aEvent)
 }
 
 
-function onError(aError)
-{
-  console.error("Clippings/wx: " + aError);
-}
-
-
 //
 // Click event listener for the context menu items
 //
@@ -831,7 +818,7 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
         }
       });
       
-      console.log("Clippings/wx: Extension sending message 'new-clipping' to content script; active tab ID: " + activeTabID);
+      log("Clippings/wx: Extension sending message 'new-clipping' to content script; active tab ID: " + activeTabID);
 
       if (isGoogleChrome()) {
         chrome.tabs.sendMessage(activeTabID, { msgID: "new-clipping", hostApp: "chrome" }, null, aResp => {
@@ -890,5 +877,32 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
   }
 });
 
-
 init();
+
+
+//
+// Error reporting and debugging output
+//
+
+function onError(aError)
+{
+  console.error("Clippings/wx: " + aError);
+}
+
+
+function log(aMessage)
+{
+  if (aeConst.DEBUG) { console.log(aMessage); }
+}
+
+
+function info(aMessage)
+{
+  if (aeConst.DEBUG) { console.info(aMessage); }
+}
+
+
+function warn(aMessage)
+{
+  if (aeConst.DEBUG) { console.warn(aMessage); }
+}
