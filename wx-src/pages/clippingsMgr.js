@@ -709,6 +709,32 @@ let gCmd = {
     }).catch(aErr => { console.error(aErr) });
   },
 
+  copyClippingIntrl: function (aClippingID, aDestFldrID, aDestUndoStack)
+  {
+    gClippingsDB.clippings.get(aClippingID).then(aClipping => {
+      let clippingCpy = {
+        name: aClipping.name,
+        content: aClipping.content,
+        shortcutKey: "",
+        parentFolderID: aDestFldrID,
+        label: aClipping.label,
+        sourceURL: aClipping.sourceURL
+      };
+
+      return gClippingsDB.clippings.add(clippingCpy);
+    }).then(aNewClippingID => {
+      if (aDestUndoStack == this.UNDO_STACK) {
+        this.undoStack.push({
+          action: this.ACTION_COPYTOFOLDER,
+          id: aNewClippingID,
+          itemType: this.ITEMTYPE_CLIPPING
+        });
+      }
+    }).catch(aErr => {
+      console.error(aErr);
+    });
+  },
+  
   moveFolderIntrl: function (aFolderID, aNewParentFldrID, aDestUndoStack)
   {
     if (gIsClippingsTreeEmpty) {
@@ -733,6 +759,26 @@ let gCmd = {
     }).catch(aErr => { console.error(aErr) });
   },
 
+  copyFolderIntrl: function (aFolderID, aDestFldrID, aDestUndoStack)
+  {
+    gClippingsDB.folders.get(aFolderID).then(aFolder => {
+      let folderCpy = {
+        name: aFolder.name,
+        parentFolderID: aDestFldrID,
+      };
+
+      return gClippingsDB.folders.add(folderCpy);
+    }).then(aNewFolderID => {
+      if (aDestUndoStack == this.UNDO_STACK) {
+        this.undoStack.push({
+          action: this.ACTION_COPYTOFOLDER,
+          id: aNewFolderID,
+          itemType: this.ITEMTYPE_FOLDER
+        });
+      }
+    });
+  },
+  
   importFromFile: function ()
   {
     gDialogs.importFromFile.showModal();
@@ -769,6 +815,14 @@ let gCmd = {
       }
       else if (undo.itemType == this.ITEMTYPE_FOLDER) {
         this.moveFolderIntrl(undo.id, undo.oldParentFldrID);
+      }
+    }
+    else if (undo.action == this.ACTION_COPYTOFOLDER) {
+      if (undo.itemType == this.ITEMTYPE_CLIPPING) {
+        this.moveClippingIntrl(undo.id, aeConst.DELETED_ITEMS_FLDR_ID);
+      }
+      else if (undo.itemType == this.ITEMTYPE_FOLDER) {
+        this.moveFolderIntrl(undo.id, aeConst.DELETED_ITEMS_FLDR_ID);
       }
     }
     else if (undo.action == this.ACTION_CREATENEW) {
@@ -851,7 +905,7 @@ $(document).keypress(aEvent => {
     return aEvent.ctrlKey;
   }
 
-  log("Clippings/wx: clippingsMgr.js: $(document).keypress(): Key pressed: " + aEvent.key);
+  //log("Clippings/wx: clippingsMgr.js: $(document).keypress(): Key pressed: " + aEvent.key);
   
   // NOTE: CTRL+W/Cmd+W is automatically handled, so no need to define it here.
   if (aEvent.key == "F1") {
@@ -1152,24 +1206,17 @@ function initDialogs()
 
   let that = gDialogs.moveTo;
   gDialogs.moveTo.setInit(() => {
-    // TEMPORARY
-    $("#copy-instead-of-move").hide();
-    $("#copy-instead-of-move + label").hide();
-    // END TEMPORARY
-    
     if (that.fldrTree) {
-      console.log("Move To: Reusing folder picker tree from last dialog invocation");
       that.fldrTree.getTree().getNodeByKey(Number(aeConst.ROOT_FOLDER_ID).toString()).setActive();
     }
     else {
-      console.log("Move To: Initializing folder picker tree");
       that.fldrTree = new aeFolderPicker("#move-to-fldr-tree", gClippingsDB);
       that.fldrTree.setOnSelectFolder(aFolderData => {
         that.selectedFldrNode = aFolderData.node;
       });
     }
 
-    $("#copy-instead-of-move").removeProp("checked");
+    $("#copy-instead-of-move").prop("checked", false);
     $("#move-error").text("");
     that.selectedFldrNode = null;
 
@@ -1199,9 +1246,11 @@ function initDialogs()
       destFolderID = parseInt(that.selectedFldrNode.key);
     }
 
-    log(`clippingsMgr.js: Move To dialog: current parent of selected item: ${parentFolderID}; move to folder ID: ${destFolderID}`);
+    log(`clippingsMgr.js: Move To dialog: current parent of selected item: ${parentFolderID}; move or copy to folder ID: ${destFolderID}`);
     
-    if (parentFolderID == destFolderID) {
+    let makeCopy = $("#copy-instead-of-move").prop("checked");
+
+    if (parentFolderID == destFolderID && !makeCopy) {
       $("#move-error").text("Item already exists in the selected folder.");
       return;
     }
@@ -1211,10 +1260,20 @@ function initDialogs()
     //   "Cannot move to the selected folder."
 
     if (selectedNode.isFolder()) {
-      gCmd.moveFolderIntrl(id, destFolderID, gCmd.UNDO_STACK);
+      if (makeCopy) {
+        gCmd.copyFolderIntrl(id, destFolderID, gCmd.UNDO_STACK);
+      }
+      else {
+        gCmd.moveFolderIntrl(id, destFolderID, gCmd.UNDO_STACK);
+      }
     }
     else {
-      gCmd.moveClippingIntrl(id, destFolderID, gCmd.UNDO_STACK);
+      if (makeCopy) {
+        gCmd.copyClippingIntrl(id, destFolderID, gCmd.UNDO_STACK);
+      }
+      else {
+        gCmd.moveClippingIntrl(id, destFolderID, gCmd.UNDO_STACK);
+      }
     }
 
     that.resetTree();
