@@ -193,6 +193,13 @@ $(() => {
 });
 
 
+// Closing Welcome page
+$(window).on("beforeunload", aEvent => {
+  let clippingsListeners = gClippings.getClippingsListeners();
+  clippingsListeners.remove(gClippingsListener);
+});
+
+
 // Suppress browser's context menu.
 $(document).on("contextmenu", aEvent => { aEvent.preventDefault() });
 
