@@ -1209,6 +1209,9 @@ function initDialogs()
         saveAs: true
       }).then(aDownldItemID => {
         setStatusBarMsg("Exporting... done");
+
+        // TO DO: Get the path of the exported file, not just the file name.
+        window.alert(`Clippings export to "${aFilename}" was successfully completed.`);
       }).catch(aErr => {
         if (aErr.fileName == "undefined") {
           setStatusBarMsg();
