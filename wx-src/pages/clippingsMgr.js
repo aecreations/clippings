@@ -1236,12 +1236,6 @@ function initDialogs()
     }
     else if (selectedFmtIdx == gDialogs.exportToFile.FMT_HTML) {
       aeImportExport.exportToHTML().then(aHTMLData => {
-        // TEMPORARY
-        console.log("HTML export: ");
-        console.log(aHTMLData);
-        return;
-        // END TEMPORARY
-        
         let blobData = new Blob([aHTMLData], { type: "text/html;charset=utf-8"});
         saveToFile(blobData, aeConst.HTML_EXPORT_FILENAME);
       });
