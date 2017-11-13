@@ -261,7 +261,7 @@ function initClippingsDB()
       return;
     }
 
-    log("Invoking DB listener method on %s listeners.", clippingsListeners.length);
+    log(`Invoking DB listener method on ${clippingsListeners.length} listeners.`);
     
     aChanges.forEach(aChange => {
       switch (aChange.type) {
@@ -309,7 +309,7 @@ function initMessageListeners()
 {
   if (isGoogleChrome()) {
     chrome.runtime.onMessage.addListener((aRequest, aSender, aSendResponse) => {
-      log(`Clippings/wx: Received Chrome message '${aRequest.msgID}'`);
+      log(`Clippings/wx: Received Chrome message "${aRequest.msgID}"`);
 
       let resp = null;
 
@@ -340,7 +340,7 @@ function initMessageListeners()
   else {
     // Firefox
     browser.runtime.onMessage.addListener(aRequest => {
-      log("Clippings/wx: Received message '%s'", aRequest.msgID);
+      log(`Clippings/wx: Received message "${aRequest.msgID}"`);
       
       let resp = null;
 
@@ -367,7 +367,7 @@ function initMessageListeners()
           return;
         }
 
-        log("Clippings/wx: Key '%s' was pressed.", shortcutKey);
+        log(`Clippings/wx: Key '${shortcutKey}' was pressed.`);
         pasteClippingByShortcutKey(shortcutKey);
       }
       else if (aRequest.msgID == "paste-clipping-by-name") {
@@ -737,7 +737,7 @@ function pasteClipping(aClippingInfo)
       autoLineBreak: gPrefs.autoLineBreak
     };
 
-    log("Clippings/wx: Extension sending message 'paste-clipping' to content script");
+    log("Clippings/wx: Extension sending message \"paste-clipping\" to content script");
           
     chrome.tabs.sendMessage(activeTabID, msgParams, null);
   });
@@ -825,7 +825,7 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
         }
       });
       
-      log("Clippings/wx: Extension sending message 'new-clipping' to content script; active tab ID: " + activeTabID);
+      log("Clippings/wx: Extension sending message \"new-clipping\" to content script; active tab ID: " + activeTabID);
 
       if (isGoogleChrome()) {
         chrome.tabs.sendMessage(activeTabID, { msgID: "new-clipping", hostApp: "chrome" }, null, aResp => {
