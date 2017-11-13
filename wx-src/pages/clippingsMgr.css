@@ -121,7 +121,7 @@ input[type="search"]::placeholder {
     padding-left: 2px;
     padding-top: 2px;
     padding-bottom: 2px;
-    background: linear-gradient(to bottom, #ffffff 0%, #dedede 100%);
+    background: linear-gradient(to bottom, #fcfcfc 0%, #dedede 100%);
     color: #0c0c0d;
     border-bottom: 1px solid threedshadow;
 }
@@ -289,6 +289,7 @@ ul.fancytree-container {
     order: 2;
     flex: 1 1 auto;
     align-self: stretch;
+    margin-bottom: 0;
 }
 
 #item-properties label {
@@ -436,6 +437,7 @@ ul.fancytree-container {
 #item-properties > #options-bar {
     order: 4;
     flex: 0 1 auto;
+    margin-bottom: 6px;
     padding: 1px 8px 0px 8px;
     background-color: white;
 }
