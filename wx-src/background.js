@@ -762,6 +762,11 @@ function getClippingsListeners()
 }
 
 
+function getPrefs()
+{
+  return gPrefs;
+}
+
 function isGoogleChrome()
 {
   return (! ("browser" in window));
