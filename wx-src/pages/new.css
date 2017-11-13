@@ -55,10 +55,7 @@ textarea {
 .folder-tree-popup {
     position: absolute;
     visibility: hidden;
-    border-top: 1px solid ThreeDLightShadow;
-    border-left: 1px solid ThreeDLightShadow;
-    border-right: 1px solid ThreeDDarkShadow;
-    border-bottom: 1px solid ThreeDDarkShadow;
+    border: 1px solid #b1b1b1;
     background-color: white;
     box-shadow: 4px 4px 2px -2px #8F8F8F;
 }
@@ -108,7 +105,6 @@ ul.fancytree-container {
 
 #new-folder-dlg-fldr-tree {
     margin-top: 0;
-    border: 1px solid #b1b1b1;
 }
 
 #new-folder-dlg-fldr-tree-popup {
