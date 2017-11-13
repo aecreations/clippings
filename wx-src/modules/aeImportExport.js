@@ -129,7 +129,7 @@ aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems
 };
 
 
-aeImportExport.exportToJSON = async function (aIncludeSrcURLs)
+aeImportExport.exportToJSON = async function (aIncludeSrcURLs, aDontStringify)
 {
   let rv = "";
   let expData = {
@@ -159,6 +159,9 @@ aeImportExport.exportToJSON = async function (aIncludeSrcURLs)
       });
     });
 
+    if (aDontStringify) {
+      return expData;
+    }
     return JSON.stringify(expData);
   });
       
