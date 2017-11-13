@@ -203,71 +203,43 @@ aeImportExport._exportToJSONHelper = function (aFolder, aIncludeSrcURLs)
 };
 
 
-aeImportExport.exportToHTML = function ()
+aeImportExport.exportToHTML = async function ()
 {
-  return new Promise((aFnResolve, aFnReject) => {
-    let htmlSrc = `<!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>${this.HTML_EXPORT_PAGE_TITLE}</title></head><body><h1>${this.HTML_EXPORT_PAGE_TITLE}</h1><dl>`;
-
-    this._db.transaction("r", this._db.clippings, this._db.folders, () => {
-      this._db.folders.where("parentFolderID").equals(this.ROOT_FOLDER_ID).each((aItem, aCursor) => {
-        let dt = `<dt class="folder"><h2>${aItem.name}</h2></dt>`;
-        let dd = "<dd>";
-        dd = dd.concat(this._exportHTMLRec(aItem));
+  function exportToHTMLHelper(aFldrItems)
+  {
+    let rv = "<dl>";
+    let that = aeImportExport;
+    
+    for (let item of aFldrItems) {
+      if (item.children) {
+        let name = that._sanitize(item.name);
+        let dt = `<dt class="folder"><h2>${name}</h2></dt>`;
+        let dd = "<dd>" + exportToHTMLHelper(item.children);
         dd += "</dd>";
-        htmlSrc += dt + dd;
+        rv += dt + dd;
+      }
+      else {
+        let name = that._sanitize(item.name);
+        let dt = `<dt class="clipping"><h3>${name}</h3></dt>`;
+        let text = that._sanitize(item.content);
+        text = text.replace(/\n/g, "<br>");
+        let dd = `<dd>${text}</dd>`;
+        rv += dt + dd;
+      }
+    }
 
-      }).then(() => {
-        return this._db.clippings.where("parentFolderID").equals(this.ROOT_FOLDER_ID).each((aItem, aCursor) => {
-          let dt = `<dt class="clipping"><h3>${aItem.name}</h3></dt>`;
-          let text = aItem.content;
-          text = text.replace(/\n/g, "<br>");
-          let dd = `<dd>${text}</dd>`;
-          htmlSrc += dt + dd;
-        });
-      }).then(() => {
-        htmlSrc += "</dl></body></html>";
-        aFnResolve(htmlSrc);
-      });
-    }).catch(aErr => {
-      console.error("aeImportExport.exportToHTML(): " + aErr);
-      aFnReject(aErr);
-    });
-  });
-};
-
-
-aeImportExport._exportHTMLRec = function (aFolder)
-{
-  let rv = "<dl>";
-  let fldrID = aFolder.id;
-
-  console.log("_exportHTMLRec(): folder: " + aFolder.name + " (fldrID=" + fldrID + ")");
+    rv = rv + "</dl>";
+    return rv;
+  }
   
-  // This helper method should be called from within a Dexie transaction zone.
-  this._db.folders.where("parentFolderID").equals(fldrID).each((aItem, aCursor) => {
-    let dt = `<dt class="folder"><h2>${aItem.name}</h2></dt>`;
-    let dd = "<dd>";
-    dd = dd.concat(this._exportHTMLRec(aItem));
-    dd += "</dd>";
-    rv += dt + dd;
-  }).then(() => {
-    return this._db.clippings.where("parentFolderID").equals(fldrID).each((aItem, aCursor) => {
-      let dt = `<dt class="clipping"><h3>${aItem.name}</h3></dt>`;
-      let text = aItem.content;
-      text = text.replace(/\n/g, "<br>");
-      let dd = `<dd>${text}</dd>`;
-      rv += dt + dd;
-    });
-  }).then(() => {
-    rv += "</dl>";
+  let rv = "";
+  let expData = await this.exportToJSON(false, true);
 
-    console.log("aeImportExport._exportHTMLRec(): rv: ");
-    console.log(rv);
-  }).catch(aErr => {
-    console.error("aeImportExport._exportHTMLRec(): " + aErr);
-    throw aErr;
-  });
+  let htmlSrc = `<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>${this.HTML_EXPORT_PAGE_TITLE}</title></head><body><h1>${this.HTML_EXPORT_PAGE_TITLE}</h1>`;
+
+  htmlSrc = exportToHTMLHelper(expData.userClippingsRoot);
+  rv = htmlSrc + "</body></html>";
 
   return rv;
 };
@@ -389,6 +361,16 @@ aeImportExport._getShortcutKeysToClippingIDs = async function ()
   
   return rv;
 };
+
+
+aeImportExport._sanitize = function (aStr)
+{
+  let rv = aStr.replace(/</g, "&lt;");
+  rv = rv.replace(/>/g, "&gt;");
+
+  return rv;
+};
+
 
 //
 // Debugging methods
