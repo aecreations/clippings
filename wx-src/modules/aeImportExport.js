@@ -138,33 +138,45 @@ aeImportExport.exportToJSON = async function (aIncludeSrcURLs, aDontStringify)
     userClippingsRoot: []
   };
 
-  rv = await this._db.transaction("r", this._db.clippings, this._db.folders, async () => {
-    await this._db.folders.where("parentFolderID").equals(this.ROOT_FOLDER_ID).each((aItem, aCursor) => {
-      let folder = {
-        name: aItem.name,
-        children: []
-      };
+  try {
+    rv = await this._db.transaction("r", this._db.clippings, this._db.folders, async () => {
+      await this._db.folders.where("parentFolderID").equals(this.ROOT_FOLDER_ID).each((aItem, aCursor) => {
+        let folder = {
+          name: aItem.name,
+          children: []
+        };
 
-      folder.children = this._exportToJSONHelper(aItem, aIncludeSrcURLs)
-      expData.userClippingsRoot.push(folder);
-    });
-    
-    await this._db.clippings.where("parentFolderID").equals(this.ROOT_FOLDER_ID).each((aItem, aCursor) => {
-      expData.userClippingsRoot.push({
-        name: aItem.name,
-        content: aItem.content,
-        shortcutKey: aItem.shortcutKey,
-        sourceURL: (aIncludeSrcURLs ? aItem.sourceURL : ""),
-        label: aItem.label
+        folder.children = this._exportToJSONHelper(aItem, aIncludeSrcURLs)
+        expData.userClippingsRoot.push(folder);
       });
+
+      await this._db.clippings.where("parentFolderID").equals(this.ROOT_FOLDER_ID).each((aItem, aCursor) => {
+        expData.userClippingsRoot.push({
+          name: aItem.name,
+          content: aItem.content,
+          shortcutKey: aItem.shortcutKey,
+          sourceURL: (aIncludeSrcURLs ? aItem.sourceURL : ""),
+          label: aItem.label
+        });
+      });
+
+      if (aDontStringify) {
+        return expData;
+      }
+      return JSON.stringify(expData);
     });
+  }
+  catch (e) {
+    console.error("aeImportExport.exportToJSON(): " + e);
+    this._log("JSON export data: ");
+    this._log(expData);
 
     if (aDontStringify) {
       return expData;
     }
     return JSON.stringify(expData);
-  });
-      
+  }
+  
   return rv;
 };
 
@@ -234,11 +246,12 @@ aeImportExport.exportToHTML = async function ()
   
   let rv = "";
   let expData = await this.exportToJSON(false, true);
-
+  
   let htmlSrc = `<!DOCTYPE html>
 <html><head><meta charset="utf-8"><title>${this.HTML_EXPORT_PAGE_TITLE}</title></head><body><h1>${this.HTML_EXPORT_PAGE_TITLE}</h1>`;
 
-  htmlSrc = exportToHTMLHelper(expData.userClippingsRoot);
+  htmlSrc += exportToHTMLHelper(expData.userClippingsRoot);
+  
   rv = htmlSrc + "</body></html>";
 
   return rv;
