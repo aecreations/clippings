@@ -6,16 +6,16 @@
 
 class aeFolderPicker
 {
-  constructor(aTreeEltSelector, aClippingsDB)
+  constructor(aTreeEltSelector, aClippingsDB, aActiveTreeNodeKey)
   {
     this._treeEltSelector = aTreeEltSelector;
     this._db = aClippingsDB;
     this._fnOnSelectFolder = function (aFolderData) {};
 
-    this._init();
+    this._init(aActiveTreeNodeKey);
   }
 
-  _init()
+  _init(aActiveTreeNodeKey)
   {
     let treeData = [
       {
@@ -46,7 +46,12 @@ class aeFolderPicker
         escapeTitles: true,
 
 	init: function (aEvent, aData) {
-          aData.tree.getRootNode().children[0].setActive();
+          if (aActiveTreeNodeKey) {
+            aData.tree.activateKey(aActiveTreeNodeKey);
+          }
+          else {
+            aData.tree.getRootNode().children[0].setActive();
+          }
 	},
 
 	click: function (aEvent, aData) {
