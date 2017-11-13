@@ -348,7 +348,7 @@ button.btn-puffy {
     margin-left: 16px;
     margin-top: 32px;
     margin-bottom: 32px;
-    padding: 8px;
+    padding: 8px 32px 8px 12px;
     background-color: #edf9ff;
     border: 1px solid #b5e6fe;
     border-radius: 4px;
