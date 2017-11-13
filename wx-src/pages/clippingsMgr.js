@@ -1072,7 +1072,6 @@ function initToolbar()
 function initInstantEditing()
 {
   $("#clipping-name").blur(aEvent => {
-    log("Clippings/wx::clippingsMgr.js: Blur event fired on clipping name textbox");
     let tree = getClippingsTree();
     let selectedNode = tree.activeNode;
     let name = aEvent.target.value;
@@ -1089,7 +1088,6 @@ function initInstantEditing()
   });
   
   $("#clipping-text").blur(aEvent => {
-    log("Clippings/wx::clippingsMgr.js: Blur event fired on clipping content text area");
     let tree = getClippingsTree();
     let selectedNode = tree.activeNode;
     let id = parseInt(selectedNode.key);
