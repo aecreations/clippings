@@ -783,6 +783,27 @@ let gCmd = {
     });
   },
   
+  showHideDetailsPane: function ()
+  {
+    $("#source-url-bar, #options-bar").toggle();
+    let isVisible = $("#source-url-bar, #options-bar").css("display") != "none";
+    chrome.storage.local.set({ clippingsMgrDetailsPane: isVisible });
+  },
+
+  showHideStatusBar: function ()
+  {
+    $("#status-bar").toggle();
+    let isVisible = $("#status-bar").css("display") != "none";
+    recalcContentAreaHeight(isVisible);
+    
+    chrome.storage.local.set({ clippingsMgrStatusBar: isVisible });
+  },
+  
+  openExtensionPrefs: function ()
+  {
+    chrome.runtime.openOptionsPage();
+  },
+  
   importFromFile: function ()
   {
     gDialogs.importFromFile.showModal();
@@ -867,7 +888,7 @@ $(document).ready(() => {
   gClippingsListener.origin = clippingsListeners.ORIGIN_CLIPPINGS_MGR;
   clippingsListeners.add(gClippingsListener);
 
-  initToolbarButtons();
+  initToolbar();
   initInstantEditing();
   gShortcutKey.init();
   gSrcURLBar.init();
@@ -949,8 +970,17 @@ $(document).keypress(aEvent => {
 // Clippings Manager functions
 //
 
-function initToolbarButtons()
+function initToolbar()
 {
+  // Show or hide the details pane and status bar.
+  if (! gClippings.getPrefs().clippingsMgrDetailsPane) {
+    $("#source-url-bar, #options-bar").hide();
+  }
+  if (! gClippings.getPrefs().clippingsMgrStatusBar) {
+    $("#status-bar").hide();
+    recalcContentAreaHeight($("#status-bar").css("display") != "none");
+  }
+  
   $("#new-clipping").click(aEvent => { gCmd.newClipping(gCmd.UNDO_STACK) });
   $("#new-folder").click(aEvent => { gCmd.newFolder(gCmd.UNDO_STACK) });
   $("#move").click(aEvent => { gCmd.moveClippingOrFolder() });
@@ -975,6 +1005,18 @@ function initToolbarButtons()
 
       case "removeAllSrcURLs":
         gCmd.removeAllSrcURLs();
+        break;
+
+      case "toggleDetailsPane":
+        gCmd.showHideDetailsPane();
+        break;
+
+      case "toggleStatusBar":
+        gCmd.showHideStatusBar();
+        break;
+
+      case "openExtensionPrefs":
+        gCmd.openExtensionPrefs();
         break;
         
       default:
@@ -1003,6 +1045,25 @@ function initToolbarButtons()
         name: "Remove Source Web Addresses...",
         className: "ae-menuitem"
       },
+      separator3: "--------",
+      showHideSubmenu: {
+        name: "Show/Hide",
+        items: {
+          toggleDetailsPane: {
+            name: "Details Pane",
+            className: "ae-menuitem"
+          },
+          
+          toggleStatusBar: {
+            name: "Status Bar",
+            className: "ae-menuitem"
+          }
+        }
+      },
+      openExtensionPrefs: {
+        name: "Options...",
+        className: "ae-menuitem"
+      }
     }
   });
 }
@@ -1577,7 +1638,10 @@ function updateDisplay(aEvent, aData)
     getClipping.then(aResult => {
       $("#clipping-name").val(aResult.name);
       $("#clipping-text").val(aResult.content).show();
-      $("#source-url-bar, #options-bar").show();
+
+      if (gClippings.getPrefs().clippingsMgrDetailsPane) {
+        $("#source-url-bar, #options-bar").show();
+      }
       
       if (aResult.sourceURL) {
         $("#clipping-src-url").html(`<a href="${aResult.sourceURL}">${aResult.sourceURL}</a>`);
@@ -1619,6 +1683,13 @@ function updateDisplay(aEvent, aData)
       }
     });
   }
+}
+
+
+function recalcContentAreaHeight(aIsStatusBarVisible)
+{
+  let statusBarHgt = aIsStatusBarVisible ? "var(--statusbar-height)" : "0px";
+  $("#content").css({ height: `calc(100% - var(--toolbar-height) - ${statusBarHgt})`});
 }
 
 
