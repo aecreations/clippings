@@ -43,7 +43,8 @@ textarea {
     background-color: #ebebeb;
 }
 
-.folder-picker-menubtn[value="0"] {
+.folder-picker-menubtn[value="0"],
+{
     background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICA8cGF0aCBkPSJNOCwxMkwzLDcsNCw2bDQsNCw0LTQsMSwxWiIgZmlsbD0iIzZBNkE2QSIgLz4KPC9zdmc+Cg=="), url("../img/clippings-root.svg");
     background-position: calc(100% - 4px) center, 8px;
 }
@@ -58,11 +59,14 @@ textarea {
     border: 1px solid #b1b1b1;
     background-color: white;
     box-shadow: 4px 4px 2px -2px #8F8F8F;
+    z-index: 100;
 }
 
 #new-clipping-fldr-tree-popup {
+    bottom: 12px;
+    left: 16px;
     width: 350px;
-    height: 140px;
+    height: 151px;
     margin-top: 0;
 }
 
@@ -85,16 +89,44 @@ ul.fancytree-container {
     background-repeat: no-repeat;
 }
 
+#clipping-options-groupbox > legend {
+    padding-left: 8px;
+    margin-left: 18px;
+}
+
 #clipping-options {
+    display: none;
+    margin-top: 4px;
     margin-bottom: 8px;
 }
 
+#btn-expand-options {
+    position: relative;
+    top: -24px;
+    left: -8px;
+    float: left;
+
+    min-width: 26px;
+    min-height: 24px;
+    font: caption;
+    font-size: 11px;
+
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICA8cGF0aCBkPSJNOCwxMkwzLDcsNCw2bDQsNCw0LTQsMSwxWiIgZmlsbD0iIzZBNkE2QSIgLz4KPC9zdmc+Cg==");
+    background-position: calc(100% - 4px) center;
+    background-repeat: no-repeat;
+}
+
 #clipping-key {
+    margin-top: 4px;
     margin-right: 4px;
 }
 
 #shct-key-tooltip {
     vertical-align: middle;
+}
+
+#dlg-buttons {
+    z-index: 1;
 }
 
 #new-folder-dlg {

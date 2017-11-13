@@ -26,6 +26,14 @@ $(document).ready(() => {
     return;
   }
 
+  $("#btn-expand-options").click(aEvent => {
+    chrome.windows.getCurrent(aWnd => {
+      chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, { height: 480 }, aWnd => {
+        $("#clipping-options").show();
+      });
+    });
+  });
+  
   if (gClippings.isGoogleChrome()) {
     chrome.runtime.sendMessage({ msgID: "init-new-clipping-dlg" }, aResp => {
       // TO DO: Same logic as for Firefox.

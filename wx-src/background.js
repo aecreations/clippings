@@ -145,7 +145,9 @@ async function setDefaultPrefs()
     keyboardPaste: true,
     checkSpelling: true,
     openClippingsMgrInTab: false,
-    pastePromptAction: aeConst.PASTEACTION_SHORTCUT_KEY
+    pastePromptAction: aeConst.PASTEACTION_SHORTCUT_KEY,
+    clippingsMgrDetailsPane: false,
+    clippingsMgrStatusBar: false,
   };
 
   gPrefs = aeClippingsPrefs;
@@ -581,7 +583,7 @@ function openClippingsManager()
 function openNewClippingDlg()
 {
   let url = chrome.runtime.getURL("pages/new.html");
-  openDlgWnd(url, "newClipping", { type: "detached_panel", width: 428, height: 466 });
+  openDlgWnd(url, "newClipping", { type: "detached_panel", width: 428, height: 420 });
 }
 
 
