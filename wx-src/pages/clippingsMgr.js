@@ -637,6 +637,10 @@ let gCmd = {
 
   moveClippingOrFolder: function ()
   {
+    if (gIsClippingsTreeEmpty) {
+      return;
+    }
+
     gDialogs.moveTo.showModal();
   },
   
