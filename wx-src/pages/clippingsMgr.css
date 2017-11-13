@@ -281,8 +281,14 @@ ul.fancytree-container {
 }
 
 #intro-content h4 {
+    margin-top: 4px;
+    margin-bottom: 4px;
     font-size: 13px;
     font-weight: 600;
+}
+
+#intro-content .shortcut-key-tbl {
+    font-size: 12px;
 }
 
 #item-properties {
@@ -517,7 +523,9 @@ ul.fancytree-container {
 }
 
 #shortcut-key-conflict-msgbox,
-#remove-all-source-urls-dlg {
+#remove-all-source-urls-dlg,
+#mini-help-dlg,
+#generic-msg-box {
     top: 64px;
 }
 
@@ -588,3 +596,14 @@ ul.fancytree-container {
     margin: 4px 0 4px 0;
     color: red;
 }
+
+#mini-help-dlg {
+    --width: 450px;
+    --height: 270px;
+    top: 48px;
+}
+
+#generic-msg-box {
+    --width: 22em;    
+}
+

@@ -44,9 +44,10 @@
 	<div id="intro-content">
 	  <h3>Welcome to Clippings Manager</h3>
 	  <p>Use Clippings Manager to edit, rename or delete clippings, and organize your collection of clippings into folders.</p>
-
-	  <!-- TO DO: Shortcut key table -->
+	  <h4>Shortcut Keys</h4>
+	  <table id="intro-shortcut-key-tbl" class="shortcut-key-tbl"></table>
 	</div>
+
 	<input type="text" id="clipping-name" placeholder="Clipping Name"/>
 	<textarea id="clipping-text" class="browser-style" placeholder="Enter clipping text"></textarea>
 
@@ -194,6 +195,28 @@
       <div class="dlg-btns">
         <button class="dlg-accept browser-style default">OK</button>
         <button class="dlg-cancel browser-style">Cancel</button>
+      </div>
+    </div>
+
+    <div id="mini-help-dlg" class="lightbox">
+      <div class="dlg-content browser-style">
+	<p>Use Clippings Manager to edit, rename or delete clippings, and organize your collection of clippings into folders.</p>
+	<fieldset>
+	  <legend>Shortcut Keys</legend>
+	  <table id="mini-help-shortcut-key-tbl" class="shortcut-key-tbl"></table>
+        </fieldset>
+      </div>
+      <div class="dlg-btns">
+	<button class="dlg-cancel browser-style default">Close</button>
+      </div>
+    </div>
+
+    <div id="generic-msg-box" class="lightbox">
+      <div class="dlg-content browser-style">
+	<p>No help is available (so leave me alone)</p>
+      </div>
+      <div class="dlg-btns">
+	<button class="dlg-cancel browser-style default">OK</button>
       </div>
     </div>
     <div id="lightbox-bkgrd-ovl" class="lightbox-bkgrd"></div>

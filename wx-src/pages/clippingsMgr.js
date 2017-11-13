@@ -785,9 +785,15 @@ let gCmd = {
   
   showHideDetailsPane: function ()
   {
-    $("#source-url-bar, #options-bar").toggle();
-    let isVisible = $("#source-url-bar, #options-bar").css("display") != "none";
-    chrome.storage.local.set({ clippingsMgrDetailsPane: isVisible });
+    if (gIsClippingsTreeEmpty) {
+      let currSetting = gClippings.getPrefs().clippingsMgrDetailsPane;
+      chrome.storage.local.set({ clippingsMgrDetailsPane: !currSetting });
+    }
+    else {
+      $("#source-url-bar, #options-bar").toggle();
+      let isVisible = $("#source-url-bar, #options-bar").css("display") != "none";
+      chrome.storage.local.set({ clippingsMgrDetailsPane: isVisible });
+    }
   },
 
   showHideStatusBar: function ()
@@ -941,7 +947,12 @@ $(document).keypress(aEvent => {
   
   // NOTE: CTRL+W/Cmd+W is automatically handled, so no need to define it here.
   if (aEvent.key == "F1") {
-    window.alert("No help is available (so leave me alone)");
+    if ($("#intro-content").css("display") == "none") {
+      gDialogs.miniHelp.showModal();
+    }
+    else {
+      gDialogs.genericMsgBox.showModal();
+    }
   }
   else if (aEvent.key == "Enter") {
     aeDialog.acceptDlgs();
@@ -1102,6 +1113,24 @@ function initInstantEditing()
 
 function initDialogs()
 {
+  // Also initialize the intro banner and help dialog.
+  const isMacOS = gClippings.getOS() == "mac";
+  let shctKeyTbls = $(".shortcut-key-tbl");
+  let shctKeys = [];
+  if (isMacOS) {
+    shctKeys = ["\u2326", "esc", "\u2318F", "\u2318W", "\u2318Z", "F1"];
+  }
+  else {
+    shctKeys = ["DEL", "ESC", "CTRL+F", "CTRL+W", "CTRL+Z", "F1"];
+  }
+  
+  $(`<tr><td style="width:6em">${shctKeys[0]}</td><td>Delete Clipping/Folder</td></tr>`).appendTo(shctKeyTbls);
+  $(`<tr><td>${shctKeys[1]}</td><td>Clear Find Bar</td></tr>`).appendTo(shctKeyTbls);
+  $(`<tr><td>${shctKeys[2]}</td><td>Find Clippings and Folders</td></tr>`).appendTo(shctKeyTbls);
+  $(`<tr><td>${shctKeys[3]}</td><td>Close Clippings Manager</td></tr>`).appendTo(shctKeyTbls);
+  $(`<tr><td>${shctKeys[4]}</td><td>Undo</td></tr>`).appendTo(shctKeyTbls);
+  $(`<tr><td>${shctKeys[5]}</td><td>Show Clippings Manager intro</td></tr>`).appendTo(shctKeyTbls);
+  
   aeImportExport.setDatabase(gClippingsDB);
 
   gDialogs.shctKeyConflict = new aeDialog("shortcut-key-conflict-msgbox");
@@ -1346,6 +1375,11 @@ function initDialogs()
     that.resetTree();
     that.close();
   });
+
+  gDialogs.miniHelp = new aeDialog("mini-help-dlg");
+  gDialogs.miniHelp.setCancel();
+  gDialogs.genericMsgBox = new aeDialog("generic-msg-box");
+  gDialogs.genericMsgBox.setCancel();
 }
 
 
