@@ -101,8 +101,11 @@
       <div class="dlg-content browser-style">
 	<label for="new-fldr-name">New folder name:</label>
 	<input type="text" id="new-fldr-name"/>
-	<label for="new-folder-dlg-fldr-tree">Create as a subfolder of:</label>
-	<div id="new-folder-dlg-fldr-tree"></div>
+	<label id="new-folder-dlg-fldr-picker-label" for="new-folder-dlg-fldr-picker-mnubtn">Create as a subfolder of:</label>
+	<button id="new-folder-dlg-fldr-picker-mnubtn" class="folder-picker-menubtn" value="0">Clippings</button>
+	<div id="new-folder-dlg-fldr-tree-popup" class="folder-tree-popup">
+	  <div id="new-folder-dlg-fldr-tree" class="folder-tree"></div>
+        </div>
       </div>
       <div class="dlg-btns">
         <button class="dlg-accept browser-style default">OK</button>

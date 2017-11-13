@@ -102,16 +102,19 @@ ul.fancytree-container {
 
 #new-folder-dlg {
     --width: 320px;
-    --height: 256px;
+    --height: 180px;
     top: 64px;
 }
 
 #new-folder-dlg-fldr-tree {
-    margin-top: 4px;
+    margin-top: 0;
     border: 1px solid #b1b1b1;
 }
 
-#new-folder-dlg-fldr-tree > .fancytree-container {
-    height: 100px;
-    overflow: auto;
+#new-folder-dlg-fldr-tree-popup {
+    width: 286px;
+    height: 160px;
+    margin-top: 0;
+    z-index: 100;
 }
+

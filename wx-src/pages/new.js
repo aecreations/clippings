@@ -88,26 +88,63 @@ $(window).keypress(aEvent => {
 function initDialogs()
 {
   gNewFolderDlg = new aeDialog("new-folder-dlg");
+  gNewFolderDlg.firstInit = true;
   gNewFolderDlg.fldrTree = null;
   gNewFolderDlg.selectedFldrNode = null;
-  
-  let that = gNewFolderDlg;
-  gNewFolderDlg.setInit(() => {
-    if (that.fldrTree) {
-      that.fldrTree.getTree().getNodeByKey(Number(aeConst.ROOT_FOLDER_ID).toString()).setActive();
-    }
-    else {
-      that.fldrTree = new aeFolderPicker("#new-folder-dlg-fldr-tree", gClippingsDB);
-      that.fldrTree.setOnSelectFolder(aFolderData => {
-         that.selectedFldrNode = aFolderData.node;
-      });
-    }
 
-    $("#new-fldr-name").on("blur", aEvent => {
-      if (! aEvent.target.value) {
-        aEvent.target.value = "New Folder";
-      }
+  let that = gNewFolderDlg;
+  gNewFolderDlg.resetTree = function () {
+    let fldrTree = that.fldrTree.getTree();
+    fldrTree.clear();
+    that.fldrTree = null;
+    that.selectedFldrNode = null;
+
+    // Remove and recreate the Fancytree <div> element.
+    $("#new-folder-dlg-fldr-tree").children().remove();
+    let parentElt = $("#new-folder-dlg-fldr-tree").parent();
+    parentElt.children("#new-folder-dlg-fldr-tree").remove();
+    $('<div id="new-folder-dlg-fldr-tree" class="folder-tree"></div>').appendTo("#new-folder-dlg-fldr-tree-popup");
+  };
+  
+  gNewFolderDlg.setInit(() => {
+    let parentDlgFldrPickerMnuBtn = $("#new-clipping-fldr-picker-menubtn");
+    let fldrPickerMnuBtn = $("#new-folder-dlg-fldr-picker-mnubtn");
+    let fldrPickerPopup = $("#new-folder-dlg-fldr-tree-popup");
+    let selectedFldrID = parentDlgFldrPickerMnuBtn.val();
+    let selectedFldrName = parentDlgFldrPickerMnuBtn.text();
+
+    that.fldrTree = new aeFolderPicker(
+      "#new-folder-dlg-fldr-tree",
+      gClippingsDB,
+      selectedFldrID
+    );
+
+    that.fldrTree.setOnSelectFolder(aFolderData => {
+      that.selectedFldrNode = aFolderData.node;
+      fldrPickerMnuBtn.val(aFolderData.node.key).text(aFolderData.node.title);
+      fldrPickerPopup.css({ visibility: "hidden" });
     });
+
+    fldrPickerMnuBtn.val(selectedFldrID).text(selectedFldrName);
+
+    if (that.firstInit) {
+      fldrPickerMnuBtn.click(aEvent => {
+        if (fldrPickerPopup.css("visibility") == "visible") {
+          fldrPickerPopup.css({ visibility: "hidden" });
+        }
+        else {
+          fldrPickerPopup.css({ visibility: "visible" });
+        }
+      })
+      
+      $("#new-fldr-name").on("blur", aEvent => {
+        if (! aEvent.target.value) {
+          aEvent.target.value = "New Folder";
+        }
+      });
+      
+      that.firstInit = false;
+    }
 
     $("#new-fldr-name").val("New Folder").select().focus();
   });
@@ -120,9 +157,11 @@ function initDialogs()
     if (that.selectedFldrNode) {
       parentFldrID = Number(that.selectedFldrNode.key);
     }
+    else {
+      // User didn't choose a different parent folder.
+      parentFldrID = $("#new-folder-dlg-fldr-picker-mnubtn").val();
+    }
 
-    console.log("The folder '%s' will be created under the folder whose ID is %s", $("#new-fldr-name").val(), parentFldrID);
-    
     gClippingsDB.folders.add({
       name: $("#new-fldr-name").val(),
       parentFolderID: parentFldrID
@@ -151,22 +190,19 @@ function initDialogs()
       newFldrNode.setActive();
 
       $("#new-clipping-fldr-picker-menubtn").text(newFldrName).val(aFldrID);
-
       gParentFolderID = aFldrID;
+
+      that.resetTree();
       that.close();
     });
-  });
-
-  gNewFolderDlg.setUnload(() => {
-    $("#new-folder-dlg-fldr-tree > .fancytree-container")[0].scrollTop = 0;
   });
 }
 
 
 function initFolderPicker()
 {
-  $(".folder-picker-menubtn").click(aEvent => {
-    let popup = $(".folder-tree-popup");
+  $("#new-clipping-fldr-picker-menubtn").click(aEvent => {
+    let popup = $("#new-clipping-fldr-tree-popup");
 
     if (popup.css("visibility") == "hidden") {
       popup.css({ visibility: "visible" });
