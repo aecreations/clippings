@@ -10,7 +10,7 @@ let aeImportExport = {
   CLIPPINGS_JSON_VER: "6.0",
   ROOT_FOLDER_ID: 0,
 
-  HTML_EXPORT_PAGE_TITLE: "Clippings/wx",
+  HTML_EXPORT_PAGE_TITLE: "Clippings",
   
   RDF_MIME_TYPE: "application/rdf+xml",
   RDF_SEQ: "http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq",
@@ -200,35 +200,37 @@ aeImportExport._exportToJSONHelper = function (aFolder, aIncludeSrcURLs)
 };
 
 
-aeImportExport.exportToHTML = async function ()
+aeImportExport.exportToHTML = function ()
 {
-  let rv;
-
-  let htmlSrc = `<!DOCTYPE html>
+  return new Promise((aFnResolve, aFnReject) => {
+    let htmlSrc = `<!DOCTYPE html>
 <html><head><meta charset="utf-8"><title>${this.HTML_EXPORT_PAGE_TITLE}</title></head><body><h1>${this.HTML_EXPORT_PAGE_TITLE}</h1><dl>`;
 
-  rv = await this._db.transaction("r", this._db.clippings, this._db.folders, async () => {
-    await this._db.folders.where("parentFolderID").equals(this.ROOT_FOLDER_ID).each((aItem, aCursor) => {
-      let dt = `<dt class="folder"><h2>${aItem.name}</h2></dt>`;
-      let dd = "<dd>";
-      dd = dd.concat(this._exportHTMLRec(aItem));
-      dd += "</dd>";
-      htmlSrc += dt + dd;
-    });
-    
-    await this._db.clippings.where("parentFolderID").equals(this.ROOT_FOLDER_ID).each((aItem, aCursor) => {
-      let dt = `<dt class="clipping"><h3>${aItem.name}</h3></dt>`;
-      let text = aItem.content;
-      text = text.replace(/\n/g, "<br>");
-      let dd = `<dd>${text}</dd>`;
-      htmlSrc += dt + dd;
-    });
+    this._db.transaction("r", this._db.clippings, this._db.folders, () => {
+      this._db.folders.where("parentFolderID").equals(this.ROOT_FOLDER_ID).each((aItem, aCursor) => {
+        let dt = `<dt class="folder"><h2>${aItem.name}</h2></dt>`;
+        let dd = "<dd>";
+        dd = dd.concat(this._exportHTMLRec(aItem));
+        dd += "</dd>";
+        htmlSrc += dt + dd;
 
-    htmlSrc += "</dl></body></html>";
-    return htmlSrc;
+      }).then(() => {
+        return this._db.clippings.where("parentFolderID").equals(this.ROOT_FOLDER_ID).each((aItem, aCursor) => {
+          let dt = `<dt class="clipping"><h3>${aItem.name}</h3></dt>`;
+          let text = aItem.content;
+          text = text.replace(/\n/g, "<br>");
+          let dd = `<dd>${text}</dd>`;
+          htmlSrc += dt + dd;
+        });
+      }).then(() => {
+        htmlSrc += "</dl></body></html>";
+        aFnResolve(htmlSrc);
+      });
+    }).catch(aErr => {
+      console.error("aeImportExport.exportToHTML(): " + aErr);
+      aFnReject(aErr);
+    });
   });
-
-  return rv;
 };
 
 
@@ -236,31 +238,34 @@ aeImportExport._exportHTMLRec = function (aFolder)
 {
   let rv = "<dl>";
   let fldrID = aFolder.id;
+
+  console.log("_exportHTMLRec(): folder: " + aFolder.name + " (fldrID=" + fldrID + ")");
   
-  this._db.transaction("r", this._db.clippings, this._db.folders, () => {
-    this._db.folders.where("parentFolderID").equals(fldrID).each((aItem, aCursor) => {
-      let dt = `<dt class="folder"><h2>${aItem.name}</h2></dt>`;
-      let dd = "<dd>";
-      dd = dd.concat(this._exportHTMLRec(aItem));
-      dd += "</dd>";
+  // This helper method should be called from within a Dexie transaction zone.
+  this._db.folders.where("parentFolderID").equals(fldrID).each((aItem, aCursor) => {
+    let dt = `<dt class="folder"><h2>${aItem.name}</h2></dt>`;
+    let dd = "<dd>";
+    dd = dd.concat(this._exportHTMLRec(aItem));
+    dd += "</dd>";
+    rv += dt + dd;
+  }).then(() => {
+    return this._db.clippings.where("parentFolderID").equals(fldrID).each((aItem, aCursor) => {
+      let dt = `<dt class="clipping"><h3>${aItem.name}</h3></dt>`;
+      let text = aItem.content;
+      text = text.replace(/\n/g, "<br>");
+      let dd = `<dd>${text}</dd>`;
       rv += dt + dd;
-    }).then(() => {
-      return this._db.clippings.where("parentFolderID").equals(fldrID).each((aItem, aCursor) => {
-        let dt = `<dt class="clipping"><h3>${aItem.name}</h3></dt>`;
-        let text = aItem.content;
-        text = text.replace(/\n/g, "<br>");
-        let dd = `<dd>${text}</dd>`;
-        rv += dt + dd;
-      });
-    }).then(() => {
-      rv += "</dl>";
     });
+  }).then(() => {
+    rv += "</dl>";
+
+    console.log("aeImportExport._exportHTMLRec(): rv: ");
+    console.log(rv);
   }).catch(aErr => {
     console.error("aeImportExport._exportHTMLRec(): " + aErr);
     throw aErr;
   });
 
-  // TO DO: The concatenated strings that are built above are lost here...?
   return rv;
 };
 
