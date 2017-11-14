@@ -100,6 +100,13 @@ $(window).keypress(aEvent => {
 });
 
 
+$(window).on("contextmenu", aEvent => {
+  if (aEvent.target.tagName != "INPUT" && aEvent.target.tagName != "TEXTAREA") {
+    aEvent.preventDefault();
+  }
+});
+
+
 function initDialogs()
 {
   gNewFolderDlg = new aeDialog("new-folder-dlg");
