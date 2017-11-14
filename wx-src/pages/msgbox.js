@@ -17,6 +17,10 @@ function init()
       dismiss();
     }
   });
+
+  window.addEventListener("contextmenu", aEvent => {
+    aEvent.preventDefault();
+  });
   
   let btnAccept = document.querySelector("#btn-accept");
   btnAccept.addEventListener("click", aEvent => { dismiss(aEvent) });
