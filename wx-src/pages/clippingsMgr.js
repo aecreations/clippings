@@ -977,6 +977,13 @@ $(document).keypress(aEvent => {
 });
 
 
+$(window).on("contextmenu", aEvent => {
+  if (aEvent.target.tagName != "INPUT" && aEvent.target.tagName != "TEXTAREA") {
+    aEvent.preventDefault();
+  }
+});
+
+
 //
 // Clippings Manager functions
 //
@@ -1124,9 +1131,9 @@ function initDialogs()
     shctKeys = ["DEL", "ESC", "CTRL+F", "CTRL+W", "CTRL+Z", "F1"];
   }
   
-  $(`<tr><td style="width:6em">${shctKeys[0]}</td><td>Delete Clipping/Folder</td></tr>`).appendTo(shctKeyTbls);
+  $(`<tr><td style="width:6em">${shctKeys[0]}</td><td>Delete selected clipping or folder</td></tr>`).appendTo(shctKeyTbls);
   $(`<tr><td>${shctKeys[1]}</td><td>Clear Find Bar</td></tr>`).appendTo(shctKeyTbls);
-  $(`<tr><td>${shctKeys[2]}</td><td>Find Clippings and Folders</td></tr>`).appendTo(shctKeyTbls);
+  $(`<tr><td>${shctKeys[2]}</td><td>Find clippings and folders</td></tr>`).appendTo(shctKeyTbls);
   $(`<tr><td>${shctKeys[3]}</td><td>Close Clippings Manager</td></tr>`).appendTo(shctKeyTbls);
   $(`<tr><td>${shctKeys[4]}</td><td>Undo</td></tr>`).appendTo(shctKeyTbls);
   $(`<tr><td>${shctKeys[5]}</td><td>Show Clippings Manager intro</td></tr>`).appendTo(shctKeyTbls);
