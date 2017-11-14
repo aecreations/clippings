@@ -2,12 +2,13 @@
     "manifest_version": 2,
     "name": "Clippings",
     "description": "Save frequently-entered text for pasting later.",
-    "version": "5.999.2",
-    "version_name": "6.0b2+",
+    "version": "6.0",
+    "version_name": "6.0rc1",
     "homepage_url": "http://aecreations.sourceforge.net/clippings/index.php",
     
     "icons": {
-        "48": "img/clippings-wx.png"
+        "48": "img/icon.svg",
+        "96": "img/icon.svg"
     },
 
     "permissions": [
