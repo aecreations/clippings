@@ -12,7 +12,8 @@
     },
 
     "icons": {
-        "48": "img/clippings-wx.png"
+        "48": "img/icon.svg",
+        "96": "img/icon.svg"
     },
 
     "permissions": [
