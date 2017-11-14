@@ -19,14 +19,19 @@ body {
     font-size: 11px;
 }
 
+button {
+    font-size: 11px !important;
+}
+
 button[disabled] {
     opacity: 0.4;
 }
 
 input[type="text"],
 input[type="search"],
+textarea,
 select {
-    font-size: 11px;
+    font-size: 11px !important;
     background-color: -moz-Field;
     color: -moz-FieldText;
 }
@@ -185,13 +190,15 @@ input[type="search"]::placeholder {
 }
 
 /* jQuery contextMenu CSS overrides */
-.ae-menuitem {
+.ae-menuitem,
+.context-menu-submenu {
     padding-top: 4px;
     padding-bottom: 4px;
     font-size: 12px;
 }
 
-.ae-menuitem:hover {
+.ae-menuitem:hover,
+.context-menu-submenu:hover {
     background-color: #eee;
     color: #0c0c0d;
     cursor: default;
@@ -504,6 +511,8 @@ ul.fancytree-container {
 .lightbox fieldset {
     border-left: none;
     border-right: none;
+    border-top: 1px solid silver;
+    border-bottom: 1px solid #b1b1b1;
 }
 
 .lightbox fieldset > legend {
@@ -562,6 +571,7 @@ ul.fancytree-container {
     width: 100%;
     margin-top: 4px;
     margin-bottom: 4px;
+    border: 1px solid #b1b1b1;
 }
 
 #export-dlg fieldset {
