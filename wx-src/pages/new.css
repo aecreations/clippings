@@ -70,6 +70,12 @@ textarea {
     margin-top: 0;
 }
 
+/* This class to be applied to the folder tree popup if the clipping options*/
+/* is expanded. */
+.new-clipping-fldr-tree-popup-fixpos {
+    bottom: unset !important;
+}
+
 .folder-tree {
     height: 100%;
     overflow: auto;

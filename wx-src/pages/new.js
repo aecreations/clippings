@@ -30,6 +30,7 @@ $(document).ready(() => {
     chrome.windows.getCurrent(aWnd => {
       chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, { height: 480 }, aWnd => {
         $("#clipping-options").show();
+        $("#new-clipping-fldr-tree-popup").addClass("new-clipping-fldr-tree-popup-fixpos");
       });
     });
   });
