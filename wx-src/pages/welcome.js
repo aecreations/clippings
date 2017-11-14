@@ -105,6 +105,9 @@ $(() => {
   $("#import-clippings-file-upload").on("change", aEvent => {
     $("#import-failed").hide();
     $("#ready-import").fadeIn("slow", "linear");
+
+    let filename = aEvent.target.files[0].name;
+    $("#import-clippings-file-name").val(filename);
   });
   
   $("#skip-import").click(aEvent => {

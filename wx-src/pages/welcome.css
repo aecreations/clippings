@@ -265,12 +265,45 @@ button.btn-puffy {
 }
 
 #import-clippings-file-upload {
-    width: 60%;
-    height: 32px;
-    float: left;
-    padding: 4px;
-    border: 1px solid #eee;
-    border-radius: 4px;
+    opacity: 0;
+    width: 8px;
+}
+
+#import-clippings-file-upload-btn {
+    height: 22px;
+    padding: 3px 16px 3px 16px;
+    border: 1px solid rgba(12, 12, 13, 0.1) !important;
+    background-color: rgba(12, 12, 13, 0.1);
+    border-radius: 2px;
+    box-shadow: 0 0 0 0 transparent;
+    font-size: 13px;
+    
+    transition-duration: 250ms;
+    transition-property: box-shadow, border;
+}
+
+#import-clippings-file-upload-btn:hover {
+    background-color: rgba(12, 12, 13, 0.2);
+    border: 1px solid rgba(12, 12, 13, 0.2) !important;
+}
+
+#import-clippings-file-upload-btn:active {
+    background-color: rgba(12, 12, 13, 0.3);
+    border: 1px solid rgba(12, 12, 13, 0.3) !important;
+}
+
+#import-clippings-file-name {
+    width: 370px;
+    height: 24px;
+    border: 0;
+    padding-left: 8px;
+    padding-right: 8px;
+    font: caption;
+    font-size: 13px !important;
+
+    background-image: url("../img/tbd-edge-l.svg"), url("../img/tbd-bg.svg"), url("../img/tbd-edge-r.svg");
+    background-position: left, center, right;
+    background-repeat: no-repeat, repeat-x, no-repeat;
 }
 
 #skip-import {
