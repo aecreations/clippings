@@ -58,3 +58,10 @@ function setPref(aPref)
 {
   browser.storage.local.set(aPref);
 }
+
+
+$(window).on("contextmenu", aEvent => {
+  if (aEvent.target.tagName != "INPUT" && aEvent.target.tagName != "TEXTAREA") {
+    aEvent.preventDefault();
+  }
+});
