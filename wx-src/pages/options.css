@@ -6,16 +6,23 @@
 
 
 body {
+    background-image: url("../img/bkgrd.png");
     font-size: 13px;
 }
 
+#addon-icon {
+    vertical-align: -14px;
+    margin-right: 8px;
+}
+
 h2 {
+    display: inline-block;
     margin-top: 0;
     margin-right: 6px;
     margin-bottom: 20px;
     font-size: 22px;
     font-weight: 600;
-    letter-spacing: -0.5px;
+    letter-spacing: -0.2px;
 }
 
 main {
@@ -34,16 +41,17 @@ select {
 }
 
 fieldset {
-    border-bottom: none;
-    border-left: none;
-    border-right: none;
-    padding: 4px 12px 8px 12px;
-    margin-bottom: 8px;
+    border-top: 1px solid silver;
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
 }
 
-fieldset > legend {
+legend {
+    margin-left: 2px;
     padding-left: 4px;
     padding-right: 4px;
+    font-size: 15px;
 }
 
 label {
