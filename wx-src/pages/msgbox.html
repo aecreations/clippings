@@ -25,6 +25,13 @@
         float: left;
       }
 
+      #msgbox-icon {
+	width: 32px;
+	height: 32px;
+	background-image: url("chrome://global/skin/icons/warning-64.png");
+	background-size: contain;
+      }
+
       #msgbox-content {
         margin-left: 44px;
       }
@@ -55,7 +62,7 @@
   <body>
     <div id="content">
       <div id="icon">
-        <img src="chrome://global/skin/icons/Warning.png"/>
+        <div id="msgbox-icon"></div>
       </div>
       <div id="msgbox-content">
         <p></p>

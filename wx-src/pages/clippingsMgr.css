@@ -503,6 +503,16 @@ ul.fancytree-container {
  * Dialog boxes
  */
 
+.lightbox .msgbox-icon {
+    float: left;
+    width: 32px;
+    height: 32px;
+    margin-top: 0;
+    margin-right: 12px;
+    background-image: url("chrome://global/skin/icons/warning-64.png");
+    background-size: contain;
+}
+
 .lightbox .browser-style input[type="checkbox"] + label::before {
     width: 14px;
     height: 14px;
@@ -609,11 +619,11 @@ ul.fancytree-container {
 
 #mini-help-dlg {
     --width: 450px;
-    --height: 270px;
+    --height: 300px;
     top: 48px;
 }
 
 #generic-msg-box {
-    --width: 22em;    
+    --width: 28em;
 }
 
