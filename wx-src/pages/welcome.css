@@ -27,7 +27,6 @@ main {
 main h2 {
     font-size: 22px;
     font-weight: 600;
-    letter-spacing: -0.4px;
     color: #0c0c0d;
 }
 
@@ -126,11 +125,13 @@ button.btn-puffy {
     border-radius: 4px;
     box-shadow: 0px 0px 6px 0px #EBEDEA;
     text-align: center;
+    background-position: top;
+    background-repeat: no-repeat;
 }
 
 .welcome-action-card > h2 {
-    border-bottom: 1px solid #eee;
     padding-bottom: 8px;
+    color: white;
 }
 
 .welcome-action-card > p {
@@ -151,11 +152,13 @@ button.btn-puffy {
 #welcome-current-user {
     order: 1;
     margin-right: 16px;
+    background-image: url("../img/welcm-curr-card-bg.svg");
 }
 
 #welcome-new-user {
     order: 2;
     margin-left: 16px;
+    background-image: url("../img/welcm-new-card-bg.svg");
 }
 
 #dismiss-welcome {
