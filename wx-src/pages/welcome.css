@@ -131,6 +131,8 @@ button.btn-puffy {
 
 .welcome-action-card > h2 {
     padding-bottom: 8px;
+    margin-top: 8px;
+    margin-bottom: 28px;
     color: white;
 }
 
