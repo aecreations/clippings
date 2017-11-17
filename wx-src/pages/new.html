@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>New Clipping</title>
+    
+    <link rel="stylesheet" href="chrome://browser/content/extension.css"/>
+    <link rel="stylesheet" href="../style/dialog.css"/>
+    <link rel="stylesheet" href="../lib/fancytree/skin/ui.fancytree.css"/>
+    <link rel="stylesheet" href="../style/lightbox.css"/>
+    <link rel="stylesheet" href="../style/clippingTree.css"/>
+    <link rel="stylesheet" href="new.css"/>
+  </head>
+
+  <body>
+    <div id="content" class="browser-style">
+      <label for="clipping-name">Name:</label>
+      <br/>
+      <input type="text" id="clipping-name" size="50" />
+      <br/>
+      <label for="clipping-text">Text:</label>
+      <br/>
+      <textarea id="clipping-text" class="browser-style"
+       placeholder="Enter clipping text" rows="8"></textarea>
+      <br/>
+      
+      <label>Create in:</label>
+      <div class="hbox">
+        <button id="new-clipping-fldr-picker-menubtn" class="folder-picker-menubtn" value="0">Clippings</button>
+        <button id="new-folder-btn" class="browser-style" title="New Folder"></button>
+      </div>
+      <div id="new-clipping-fldr-tree-popup" class="folder-tree-popup">
+	<div id="new-clipping-fldr-tree" class="folder-tree"></div>
+      </div>
+
+      <div class="separator" style="margin-top:16px"></div>
+
+      <fieldset id="clipping-options-groupbox">
+	<legend>Options</legend>
+        <button id="btn-expand-options" class="browser-style"></button>
+	<div id="clipping-options" class="browser-style">
+  	  <input type="checkbox" id="save-source-url"/>
+	  <label for="save-source-url">Save the address of the source web page</label>
+	  <br/>
+	  <label for="clipping-key">Shortcut key:</label>
+	  <select id="clipping-key" class="browser-style" size="1">
+	    <option>(None)</option>
+	    <option>A</option>
+	    <option>B</option>
+	    <option>C</option>
+	    <option>D</option>
+	    <option>E</option>
+	    <option>F</option>
+	    <option>G</option>
+	    <option>H</option>
+	    <option>I</option>
+	    <option>J</option>
+	    <option>K</option>
+	    <option>L</option>
+	    <option>M</option>
+	    <option>N</option>
+	    <option>O</option>
+	    <option>P</option>
+	    <option>Q</option>
+	    <option>R</option>
+	    <option>S</option>
+	    <option>T</option>
+	    <option>U</option>
+	    <option>V</option>
+	    <option>W</option>
+	    <option>X</option>
+	    <option>Y</option>
+	    <option>Z</option>
+	    <option>1</option>
+	    <option>2</option>
+	    <option>3</option>
+	    <option>4</option>
+	    <option>5</option>
+	    <option>6</option>
+	    <option>7</option>
+	    <option>8</option>
+	    <option>9</option>
+	    <option>0</option>
+	  </select>
+	  <img id="shct-key-tooltip" src="../img/help-tooltip.svg"/>
+        </div>
+      </div> <!-- fieldset -->
+    </div>  <!-- #content -->
+
+    <div id="dlg-buttons">
+      <button id="btn-accept" class="browser-style default">OK</button>
+      <button id="btn-cancel" class="browser-style">Cancel</button>
+    </div>
+
+    <!-- Dialog boxes -->
+    <div id="new-folder-dlg" class="lightbox">
+      <div class="dlg-content browser-style">
+	<label for="new-fldr-name">New folder name:</label>
+	<input type="text" id="new-fldr-name"/>
+	<label id="new-folder-dlg-fldr-picker-label" for="new-folder-dlg-fldr-picker-mnubtn">Create as a subfolder of:</label>
+	<button id="new-folder-dlg-fldr-picker-mnubtn" class="folder-picker-menubtn" value="0">Clippings</button>
+	<div id="new-folder-dlg-fldr-tree-popup" class="folder-tree-popup">
+	  <div id="new-folder-dlg-fldr-tree" class="folder-tree"></div>
+        </div>
+      </div>
+      <div class="dlg-btns">
+        <button class="dlg-accept browser-style default">OK</button>
+        <button class="dlg-cancel browser-style">Cancel</button>
+      </div>
+    </div>
+    <div id="lightbox-bkgrd-ovl" class="lightbox-bkgrd"></div>
+    
+    <script src="../lib/jquery.js"></script>
+    <script src="../lib/fancytree/jquery.fancytree-all-deps.min.js"></script>
+    <script src="../modules/aeConst.js"></script>
+    <script src="../modules/aeDialog.js"></script>
+    <script src="../modules/aeFolderPicker.js"></script>
+    <script src="new.js"></script>
+  </body>
+</html>

@@ -1,0 +1,93 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+@import url("chrome://browser/content/extension.css");
+
+
+body {
+    background-image: url("../img/bkgrd.png");
+    font-size: 13px;
+}
+
+#addon-icon {
+    vertical-align: -14px;
+    margin-right: 8px;
+}
+
+h2 {
+    display: inline-block;
+    margin-top: 0;
+    margin-right: 6px;
+    margin-bottom: 20px;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.2px;
+}
+
+main {
+    width: 640px;
+    margin: 24px auto 24px auto;
+    padding: 16px;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    box-shadow: 0 0 8px 2px #e0e0e0;
+    background-color: #fefefe;
+}
+
+input[type="number"],
+select {
+    font-size: 13px !important;
+}
+
+fieldset {
+    border-top: 1px solid silver;
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+}
+
+legend {
+    margin-left: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
+    font-size: 15px;
+}
+
+label {
+    margin-right: 4px;
+}
+
+.row {
+    margin-top: 6px;
+    margin-bottom: 10px;
+    margin-left: 4px;
+}
+
+.indent {
+    margin-left: 2em;
+}
+
+.description {
+    margin-top: 6px;
+    margin-bottom: 16px;
+    width: 48em;
+    font-size: 11px;
+}
+
+.browser-style > input[type="checkbox"] + label::before {
+    width: 14px;
+    height: 14px;
+    vertical-align: -3px;
+}
+
+#html-paste-options {
+    width: 420px;
+    height: 28px;
+    margin-top: 4px;
+}
+
+#auto-inc-plchldrs-start-val {
+    width: 64px;
+}
+

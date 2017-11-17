@@ -1,0 +1,466 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+:root {
+    --page-width: 900px;
+}
+
+body {
+    margin: 0;
+    font: caption;
+    background-image: url("../img/postUpgrade-bkgrd.png");
+}
+
+main {
+    width: var(--page-width);
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0;
+    margin-bottom: 18px;
+    border: 1px solid #eee;
+    border-radius: 2px;
+    box-shadow: 0px 1px 5px 0px #7E7A78;
+    background-color: #ffffff;    
+}
+
+main h2 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #0c0c0d;
+}
+
+main h3 {
+    font-size: 18px;
+    color: #0c0c0d;
+    margin-left: 2rem;
+}
+
+main p, li {
+    font-size: 15px;
+    font-weight: 400;
+    color: #0c0c0d;
+    margin-left: 2rem;
+}
+
+li {
+    margin-left: 2em;
+}
+
+strong {
+    font-weight: 700;
+    color: #0c0c0d;
+
+}
+
+a, .hyperlink {
+    text-decoration: none;
+    color: #0060df;
+}
+
+a:hover, .hyperlink:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+button {
+    min-width: 88px;
+    height: 32px;
+    padding: 0 20px 0;
+    outline: unset;
+    border-radius: 2px;
+    box-shadow: 0 0 0 0 transparent;
+    border: 1px solid rgba(12, 12, 13, 0.1) !important;
+    background-color: rgba(12, 12, 13, 0.1);
+    font: caption;
+    font-size: 15px;
+}
+
+button.default {
+    background-color: #0060df;
+    border: 1px solid #0060df;
+    border-radius: 2px;
+    color: #fff;
+}
+
+button:hover {
+    background-color: rgba(12, 12, 13, 0.2);
+    border: 1px solid rgba(12, 12, 13, 0.2) !important;
+}
+
+button.default:hover {
+    background-color: #003eaa;
+    border: 1px solid #003eaa;
+}
+
+button:active {
+    background-color: rgba(12, 12, 13, 0.3);
+    border: 1px solid rgba(12, 12, 13, 0.3) !important;
+}
+
+button.default:active {
+    background-color: #002275;
+    border: 1px solid #002275;
+}
+
+button.btn-puffy {
+    border-radius: 4px;
+    min-width: 120px;
+    height: 48px;
+    font-size: 15px;
+    padding: 0 16px 0;
+}
+
+#welcome-actions {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+}
+
+.welcome-action-card {
+    width: 256px;
+    margin-top: 36px;
+    padding: 16px 32px 16px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    box-shadow: 0px 0px 6px 0px #EBEDEA;
+    text-align: center;
+    background-position: top;
+    background-repeat: no-repeat;
+}
+
+.welcome-action-card > h2 {
+    padding-bottom: 8px;
+    margin-top: 8px;
+    margin-bottom: 28px;
+    color: white;
+}
+
+.welcome-action-card > p {
+    margin-left: 0;
+}
+
+.welcome-action-card > .card-btns {
+    width: 100%;
+    padding-top: 12px;
+    padding-bottom: 8px;
+    text-align: center;
+}
+
+.welcome-action-card > .card-btns > button {
+    width: 100%;
+}
+
+#welcome-current-user {
+    order: 1;
+    margin-right: 16px;
+    background-image: url("../img/welcm-curr-card-bg.svg");
+}
+
+#welcome-new-user {
+    order: 2;
+    margin-left: 16px;
+    background-image: url("../img/welcm-new-card-bg.svg");
+}
+
+#dismiss-welcome {
+    font-size: 13px;
+    text-align: center;
+    margin-top: 32px;
+    margin-left: unset;
+}
+
+.cmd {
+    font-weight: 600;
+}
+
+.expander-icon {
+    color: #bf6501;
+}
+
+.msg-icon {
+    width: 32px;
+    height: 32px;
+}
+
+.instruction-header {
+    font-size: 15px !important;
+    font-weight: bold;
+}
+
+.pg-buttons {
+    margin-top: 24px;
+    text-align: center;
+}
+
+#top-banner {
+    width: var(--page-width);
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 8px;
+    padding-bottom: 0;
+    background-color: transparent;
+}
+
+.deck-content {
+    padding: 6px 24px 24px 24px;    
+}
+
+.deck > #welcome-pg {
+    display: block;
+}
+
+.deck > #select-backup-file-pg {
+    display: none;
+}
+
+.deck > #import-backup-pg {
+    display: none;
+}
+
+#main-header {
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 8px;
+}
+
+#install-success-header {
+    display: inline-block;
+    width: 36rem;
+    margin-top: 18px;
+    margin-bottom: 18px;
+    text-align: left;
+}
+
+#install-success-icon {
+    width: 128px;
+    height: 128px;
+    float: left;
+    margin-right: 24px;
+}
+
+#install-success-header > h1 {
+    margin-bottom: 8px;
+    margin-top: 20px;
+    font-size: 33px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+}
+
+#install-success-header > .subhead {
+    font-size: 22px;
+    font-weight: 300;
+}
+
+#select-backup-file-pg h1 {
+    padding-bottom: 8px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 32px;
+    font-size: 22px;
+    font-weight: 300;
+}
+
+#import-file-uploader {
+    margin-left: 2rem;
+    padding: 8px;
+}
+
+#import-clippings-file-upload {
+    opacity: 0;
+    width: 8px;
+}
+
+#import-clippings-file-upload-btn {
+    height: 22px;
+    padding: 3px 16px 3px 16px;
+    border: 1px solid rgba(12, 12, 13, 0.1) !important;
+    background-color: rgba(12, 12, 13, 0.1);
+    border-radius: 2px;
+    box-shadow: 0 0 0 0 transparent;
+    font-size: 13px;
+    
+    transition-duration: 250ms;
+    transition-property: box-shadow, border;
+}
+
+#import-clippings-file-upload-btn:hover {
+    background-color: rgba(12, 12, 13, 0.2);
+    border: 1px solid rgba(12, 12, 13, 0.2) !important;
+}
+
+#import-clippings-file-upload-btn:active {
+    background-color: rgba(12, 12, 13, 0.3);
+    border: 1px solid rgba(12, 12, 13, 0.3) !important;
+}
+
+#import-clippings-file-name {
+    width: 370px;
+    height: 24px;
+    border: 0;
+    padding-left: 8px;
+    padding-right: 8px;
+    font: caption;
+    font-size: 13px !important;
+
+    background-image: url("../img/tbd-edge-l.svg"), url("../img/tbd-bg.svg"), url("../img/tbd-edge-r.svg");
+    background-position: left, center, right;
+    background-repeat: no-repeat, repeat-x, no-repeat;
+}
+
+#skip-import {
+    margin-left: 24px;
+    font-size: 13px;
+}
+
+#toggle-no-backup-help {
+    clear: both;
+    margin-top: 16px;
+}
+
+#no-backup-help {
+    display: none;
+    width: 85%;
+    margin-left: 2rem;
+
+    padding: 8px;
+    border: 1px solid #fce910;
+    background-color: cornsilk;
+    border-radius: 4px;
+    text-shadow: 1px 1px white;
+}
+
+#no-backup-help > p,
+#no-backup-help > ol > li {
+    font-size: 13px;
+}
+
+#no-backup-help > ol > li {
+    margin-bottom: 8px;
+}
+
+#ready-import {
+    display: none;
+    margin-top: 24px;
+    margin-bottom: 12px;
+}
+
+#select-backup-pg-back-link {
+    margin-top: 32px;
+    font-size: 13px;
+}
+
+#select-backup-pg-back-link::before {
+    content: url("../img/goback.png");
+    margin-right: 6px;
+}
+
+#import-btn {
+    font-weight: 600;
+    width: 160px;
+}
+
+#import-status {
+    font-size: 17px;
+    font-weight: 600;
+}
+
+#import-progress-bar {
+    margin-left: 2rem;
+    margin-bottom: 8px;
+    width: 400px;
+}
+
+#import-statistics {
+    display: inline-block;
+    margin-left: 32px;
+    vertical-align: 8px;
+    font-size: 13px;
+}
+
+#import-completed {
+    display: none;
+}
+
+#shortcut-key-note {
+    margin: 32px;
+    padding: 8px 32px 8px 12px;
+    background-color: #edf9ff;
+    border: 1px solid #b5e6fe;
+    border-radius: 4px;
+    text-shadow: 1px 1px white;
+}
+
+#shortcut-key-note > img {
+    float: left;
+    margin-top: 16px;
+    margin-left: 12px;
+    margin-right: 20px;
+    width: 32px;
+    height: 32px;
+}
+
+#shortcut-key-note > p {
+    margin-top: 12px;
+    margin-bottom: 12px;
+    line-height: 24px;
+}
+
+#keybd-paste-key {
+    font-weight: bold;
+}
+
+#import-failed {
+    display: none;
+}
+
+#import-failed > .error {
+    color: red;
+}
+
+.lightbox {
+    top: 100px;
+    padding-left: 28px;
+    padding-right: 28px;
+    border: 1px solid #484848;
+    box-shadow: 0px 0px 8px 2px rgba(48, 48, 48, 0.8);
+    border-radius: 4px;
+    font-size: 15px;
+}
+
+#dismiss-welcome-dlg {
+    --width: 510px;
+    --height: 128px;
+}
+
+#dismiss-welcome-dlg .msgbox-icon {
+    float: left;
+    width: 48px;
+    height: 48px;
+    margin-top: 8px;
+    margin-right: 12px;
+    background-image: url("chrome://global/skin/icons/question-64.png");
+    background-size: contain;
+}
+
+#dismiss-welcome-dlg .dlg-content {
+    margin-top: 2px;
+}
+
+#skip-import-dlg {
+    --width: 520px;
+    --height: 150px;
+}
+
+.lightbox > .dlg-btns {
+    bottom: 24px;
+    right: 14px;
+}
+
+.lightbox > .dlg-btns > button {
+    padding-left: 24px;
+    padding-right: 24px;
+    font-size: 15px !important;
+}
+

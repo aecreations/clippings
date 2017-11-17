@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Clippings Manager</title>
+
+    <link rel="stylesheet" href="chrome://browser/content/extension.css"/>
+    <link rel="stylesheet" href="../lib/fancytree/skin/ui.fancytree.css"/>
+    <link rel="stylesheet" href="../style/clippingTree.css"/>
+    <link rel="stylesheet" href="../lib/contextMenu/jquery.contextMenu.css"/>
+    <link rel="stylesheet" href="../style/lightbox.css"/>
+    <link rel="stylesheet" href="clippingsMgr.css"/>
+  </head>
+
+  <body>
+    <div id="banner">
+      <span id="banner-msg"></span>
+    </div>
+
+    <div id="toolbar" class="hbox">
+      <button id="new-clipping" class="toolbar-button toolbar-button-labelled">New Clipping</button>
+      <button id="new-folder" class="toolbar-button toolbar-button-labelled">New Folder</button>
+      <button id="move" class="toolbar-button" title="Move or Copy"></button>
+      <button id="delete" class="toolbar-button" title="Delete"></button>
+      <button id="undo" class="toolbar-button" title="Undo"></button>
+      <span id="spacer-1" class="spacer"></span>
+      <button id="clippings-mgr-options" class="toolbar-button toolbar-button-labelled" title="Tools">Tools</button>
+      <span id="spacer-2" class="spacer"></span>
+      <div id="search-clippings-and-folders">
+	<input type="search" id="search-box" placeholder="Find clippings and folders"/>
+	<div id="clear-search"></div>
+      </div>
+    </div>
+    
+    <div id="content" class="hbox">
+
+      <div id="clippings-tree"></div>
+
+      <div id="item-properties" class="vbox browser-style">
+	<div id="intro-content">
+	  <h3>Welcome to Clippings Manager</h3>
+	  <p>Use Clippings Manager to edit, rename or delete clippings, and organize your collection of clippings into folders.</p>
+	  <h4>Shortcut Keys</h4>
+	  <table id="intro-shortcut-key-tbl" class="shortcut-key-tbl"></table>
+	</div>
+
+	<input type="text" id="clipping-name" placeholder="Clipping Name"/>
+	<textarea id="clipping-text" class="browser-style" placeholder="Enter clipping text"></textarea>
+
+	<!-- Source URL -->
+	<div id="source-url-bar" class="hbox">
+	  <label id="src-url-label">Source address:</label>
+	  <div id="source-url-deck">
+	    <div id="src-url-normal-mode" class="hbox">
+   	      <div id="clipping-src-url">(None)</div>
+              <button id="edit-url-btn" class="browser-style">Edit</button>
+	    </div>
+	    <div id="src-url-edit-mode" class="hbox browser-style">
+  	      <input type="text" id="clipping-src-url-edit" value=""/>
+	      <button id="edit-src-url-ok" class="browser-style" title="OK"></button>
+	      <button id="edit-src-url-cancel" class="browser-style" title="Cancel"></button>
+	    </div>
+	  </div>
+	</div>
+
+	<!-- Shortcut key -->
+	<div id="options-bar" class="hbox">
+	  <div id="shortcut-key-select">
+          <label for="clipping-key">Shortcut key:</label>
+          <select id="clipping-key" class="browser-style" size="1">
+  	    <option>(None)</option>
+	    <option>A</option>
+	    <option>B</option>
+	    <option>C</option>
+	    <option>D</option>
+	    <option>E</option>
+	    <option>F</option>
+	    <option>G</option>
+	    <option>H</option>
+	    <option>I</option>
+	    <option>J</option>
+	    <option>K</option>
+	    <option>L</option>
+	    <option>M</option>
+	    <option>N</option>
+	    <option>O</option>
+	    <option>P</option>
+	    <option>Q</option>
+	    <option>R</option>
+	    <option>S</option>
+	    <option>T</option>
+	    <option>U</option>
+	    <option>V</option>
+	    <option>W</option>
+	    <option>X</option>
+	    <option>Y</option>
+	    <option>Z</option>
+	    <option>1</option>
+	    <option>2</option>
+	    <option>3</option>
+	    <option>4</option>
+	    <option>5</option>
+	    <option>6</option>
+	    <option>7</option>
+	    <option>8</option>
+	    <option>9</option>
+	    <option>0</option>
+	  </select>
+	  </div>  <!-- #shortcut-key-select -->
+	  
+	  <div id="options-bar-spacer" class="spacer"></div>
+	  <div id="tmp-clipping-label">
+	    <label>Label:</label>
+	    <span id="tmp-label"></span>
+	  </div>
+	</div> <!-- #options-bar -->
+      </div>
+      
+    </div> <!-- #content -->
+
+    <div id="status-bar" class="hbox">
+      <span id="status-bar-msg"></span>
+    </div>
+
+    <!-- Dialog boxes -->
+    <div id="shortcut-key-conflict-msgbox" class="lightbox">
+      <div class="msgbox-icon" style="margin-top:8px"></div>
+      <p>The selected shortcut key has already been assigned to another clipping.  Please select a different shortcut key.</p>
+      <div class="dlg-btns">
+	<button class="dlg-accept browser-style default" style="width:72px;text-align:center">OK</button>
+      </div>
+    </div>
+
+    <div id="import-dlg" class="lightbox">
+      <div class="dlg-content browser-style">
+        <label>Select import file:</label>
+	<br/>
+        <input type="file" id="import-clippings-file-upload" accept=".rdf, .json"/>
+	<br/>
+	<input type="checkbox" id="import-clippings-replc-shct-keys" checked="true"/>
+	<label for="import-clippings-replc-shct-keys">Replace shortcut keys</label>
+	<br/>
+	<progress id="import-progress-bar"></progress>
+	<div id="import-error"></div>
+      </div>
+      <div class="dlg-btns">
+	<button class="dlg-accept browser-style default" disabled="true">Import</button>
+	<button class="dlg-cancel browser-style">Cancel</button>
+      </div>
+    </div>
+
+    <div id="export-dlg" class="lightbox">
+      <div class="dlg-content browser-style">
+	<label style="display:block">Select a format to export Clippings to:</label>
+	<select id="export-format-list" size="3">
+	  <option value="0">Clippings 6</option>
+	  <option value="1">HTML Document</option>
+	</select>
+	<fieldset>
+	  <legend>Description</legend>
+	  <p id="format-description" class="desc"></p>
+	</fieldset>
+	<input type="checkbox" id="include-src-urls" checked="true"/>
+	<label for="include-src-urls">Include source web page addresses of clippings</label>
+      </div>
+      <div class="dlg-btns">
+        <button class="dlg-accept browser-style default">Export</button>
+        <button class="dlg-cancel browser-style">Cancel</button>
+      </div>
+    </div>
+
+    <div id="remove-all-source-urls-dlg" class="lightbox">
+      <div class="dlg-content browser-style">
+	<div class="msgbox-icon"></div>
+	<p>All source web page addresses of your clippings will be removed.  Do you want to continue?</p>
+      </div>	  
+      <div class="dlg-btns">
+        <button class="dlg-accept browser-style">Yes</button>
+        <button class="dlg-cancel browser-style default">No</button>
+      </div>
+
+    </div>
+
+    <div id="move-dlg" class="lightbox">
+      <div class="dlg-content browser-style">
+	<label id="move-to-label" for="move-to-fldr-tree">Move to:</label>
+	<div id="move-to-fldr-tree"></div>
+	
+	<input type="checkbox" id="copy-instead-of-move"/>
+	<label for="copy-instead-of-move">Create a copy</label>
+	<div id="move-error"></div>
+      </div>
+      <div class="dlg-btns">
+        <button class="dlg-accept browser-style default">OK</button>
+        <button class="dlg-cancel browser-style">Cancel</button>
+      </div>
+    </div>
+
+    <div id="mini-help-dlg" class="lightbox">
+      <div class="dlg-content browser-style">
+	<p style="font-size:12px;font-weight:bold">Clippings Manager</p>
+	<p>Use Clippings Manager to edit, rename or delete clippings, and organize your collection of clippings into folders.</p>
+	<fieldset>
+	  <legend>Shortcut Keys</legend>
+	  <table id="mini-help-shortcut-key-tbl" class="shortcut-key-tbl"></table>
+        </fieldset>
+      </div>
+      <div class="dlg-btns">
+	<button class="dlg-cancel browser-style default">Close</button>
+      </div>
+    </div>
+
+    <div id="generic-msg-box" class="lightbox">
+      <div class="dlg-content browser-style">
+	<div class="msgbox-icon"></div>
+	<p>No help is available (so leave me alone).</p>
+      </div>
+      <div class="dlg-btns">
+	<button class="dlg-cancel browser-style default">OK</button>
+      </div>
+    </div>
+    <div id="lightbox-bkgrd-ovl" class="lightbox-bkgrd"></div>
+    
+    <script src="../lib/jquery.js"></script>
+    <script src="../lib/fancytree/jquery.fancytree-all-deps.min.js"></script>
+    <script src="../lib/fancytree/jquery.fancytree.dnd5.js"></script>
+    <script src="../lib/fancytree/jquery.fancytree.filter.js"></script>
+    <script src="../lib/rdflib.js"></script>
+    <script src="../lib/contextMenu/jquery.contextMenu.min.js"></script>
+    <script src="../modules/aeConst.js"></script>
+    <script src="../modules/aeImportExport.js"></script>
+    <script src="../modules/aeDialog.js"></script>
+    <script src="../modules/aeFolderPicker.js"></script>
+    <script src="clippingsMgr.js"></script>
+  </body>
+</html>

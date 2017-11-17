@@ -1,0 +1,22 @@
+{
+    "version": "6.0",
+    "userClippingsRoot": [
+	{
+	    "name": "Clipping from corrupted JSON file",
+	    "content": "There is a corrupted clipping in this file!  (But there are no issues with this particular one.)",
+	    "shortcutKey": "",
+	    "label": "",
+	    "sourceURL": "https://aecreations.sourceforge.net/"
+	},
+	{
+	    "name": "Corrupted clipping",
+	    "text": "The property 'text' is not valid; also, 'content' is missing entirely",
+	    "shortcutKey": "K",
+	    "label": "red",
+	    "sourceURL": ""	    
+	},
+	{
+	    "name": "Corrupted folder or clipping, not sure which it is...",
+	}
+    ]
+}

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Welcome to Clippings 6</title>
+
+    <link rel="stylesheet" href="../style/lightbox.css"/>
+    <link rel="stylesheet" href="welcome.css"/>
+  </head>
+
+  <body>
+    <div id="top-banner">
+      <img src="../img/banner.svg"/>
+    </div>
+
+    <main class="deck">
+      <div id="welcome-pg" class="deck-content">
+	<div id="main-header">
+	  <div id="install-success-header">
+     	    <img id="install-success-icon" src="../img/success.svg"/>
+	    <h1>Welcome to Clippings 6!</h1>
+	    <div class="subhead">Installation successfully completed.</div>
+	  </div>
+	</div>
+
+	<div id="welcome-actions">
+	  <div id="welcome-current-user" class="welcome-action-card">
+	    <h2>Current Users</h2>
+	    <p>Bring your clippings over from a previous version of Clippings.</p>
+	    <div class="card-btns">
+  	      <button id="goto-import-bkup" class="btn-puffy default">Import My Clippings</button>
+	    </div>
+	  </div>
+
+	  <div id="welcome-new-user" class="welcome-action-card">
+	    <h2>New Users</h2>
+	    <p>Learn the essential features of Clippings in just a few minutes.</p>
+	    <div class="card-btns">
+  	      <button id="goto-quick-start" class="btn-puffy default">Quick Start Guide</button>
+	    </div>
+	  </div>
+	</div>
+
+	<p id="dismiss-welcome" class="hyperlink">Close this page</p>
+
+      </div> <!-- #welcome-page -->
+
+      <div id="select-backup-file-pg" class="deck-content">
+	<h1>Import Clippings Backup File</h1>
+
+	<p>To get started, click <b class="cmd">Browse</b>, then locate the backup
+	file on your system.</p>
+
+	<div id="import-file-uploader">
+	  <input type="text" id="import-clippings-file-name" readonly="true"/>
+	  <label id="import-clippings-file-upload-btn" for="import-clippings-file-upload">Browse...</label>
+          <input type="file" id="import-clippings-file-upload" accept=".rdf, .json"/>
+	  <span id="skip-import" class="hyperlink">Skip Import</span>
+        </div>
+
+	<p id="toggle-no-backup-help"><b class="expander-icon">&#9654; </b><span  class="hyperlink">What to do if you didn't create a backup</span></p>
+
+	<div id="no-backup-help">
+
+	  <p class="instruction-header">If you didn't back up your clippings, follow these steps:<p>
+
+          <ol>
+	    <li>Use <span id="os-file-browser">the file manager on your system</span> to find the Clippings data source location. Depending on your previous settings, it may be your Firefox profile folder, or another folder located elsewhere.</li>
+
+	    <li>Open the data source folder and locate the Clippings backup folder. It should be named "clippings-backup" or ".clipbak". <span id="hidden-bkup-fldr-note"></span></li>
+
+	    <li>Open the Clippings backup folder and locate the most recent backup file. Copy this to your Desktop or Documents folder.</li>
+
+	    <li>Click <b class="cmd">Browse</b> above, and then select the backup file.</li>
+	  </ol>
+	</div>
+
+	<div id="ready-import">
+	  <p>When ready, click <b class="cmd">Import</b> to bring your Clippings data over to Clippings 6.</p>
+
+	  <div class="pg-buttons">
+	    <button id="import-btn" class="default btn-puffy">Import</button>
+	  </div>
+	</div>
+
+	<p id="select-backup-pg-back-link" class="hyperlink back-to-welcome-pg">Back to Welcome Page</p>
+	
+      </div>  <!-- #select-backup-file-pg -->
+
+      <div id="import-backup-pg" class="deck-content">
+
+	<p id="import-status">Importing clippings...</p>
+
+	<progress id="import-progress-bar" value="0" max="100"></progress>
+	<div id="import-statistics"></div>
+	
+	<div id="import-completed">
+
+	  <p>Your clippings have been successfully imported. Clippings is now ready to use.</p>
+
+	  <div id="shortcut-key-note">
+	    <img class="msg-icon" src="../img/info.svg"/>
+	    <p>The Clippings keyboard paste key <strong>has changed</strong> in Clippings 6. To paste a clipping by its shortcut key or to search by name, press <span id="keybd-paste-key"></span>.</p>
+	  </div>
+	  
+	  <div class="pg-buttons">
+	    <button id="open-clippings-mgr" style="margin-right:18px">Open Clippings Manager</button>
+	    <button id="finish-btn" class="default">Close This Page</button>
+	  </div>
+	</div>
+
+	<div id="import-failed">
+
+	  <p class="error">Error reading selected file.  The file may not be a valid Clippings file.</p>
+
+	  <p>Click <b class="cmd">Try Again</b> to go back and select another backup file.</p>
+
+	  <div class="pg-buttons">
+	    <button id="retry-import">Try Again</button>
+          </div>
+        </div>
+	
+      </div>  <!-- #import-backup-pg -->
+    </main>
+
+    <div id="dismiss-welcome-dlg" class="lightbox">
+      <div class="icon">
+	<div class="msgbox-icon"></div>
+      </div>
+      <div class="dlg-content">
+	<p>Are you sure you want to leave the Welcome to Clippings page?</p>
+      </div>
+      <div class="dlg-btns">
+	<button class="dlg-cancel">Go Back</button>
+	<button class="dlg-accept default">Close This Page</button>
+      </div>
+    </div>
+
+    <div id="skip-import-dlg" class="lightbox">
+      <div class="dlg-content">
+	<p>You can import your clippings backup later by opening Clippings Manager and then choosing <b class="cmd">Tools &rarr; Import</b>.</p>
+      </div>
+      <div class="dlg-btns">
+	<button class="dlg-cancel">Go Back</button>
+	<button class="dlg-accept default">Close This Page</button>
+      </div>
+    </div>
+    <div id="lightbox-bkgrd-ovl" class="lightbox-bkgrd"></div>
+
+    <script src="../lib/jquery.js"></script>
+    <script src="../lib/rdflib.js"></script>
+    <script src="../modules/aeImportExport.js"></script>
+    <script src="welcome.js"></script>
+  </body>
+</html>

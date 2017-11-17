@@ -1,0 +1,154 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+label {
+    margin-right: 4px;
+}
+
+input[type="text"], textarea, select {
+    margin-bottom: 12px !important;
+}
+
+input[type="text"], textarea {
+    width: 100%;
+    margin-top: 4px;
+}
+
+textarea {
+    resize: none;
+}
+
+#new-clipping-fldr-tree-btn {
+    order: 1;
+}
+
+.folder-picker-menubtn {
+    width: 100%;
+    padding: 4px 4px 4px 28px;
+    background-color: #fbfbfb;
+    border: 1px solid #b1b1b1;
+    border-radius: 0;
+
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICA8cGF0aCBkPSJNOCwxMkwzLDcsNCw2bDQsNCw0LTQsMSwxWiIgZmlsbD0iIzZBNkE2QSIgLz4KPC9zdmc+Cg=="), url("../img/folder.svg");
+    background-position: calc(100% - 4px) center, 8px;
+    background-repeat: no-repeat;
+    font: caption !important;
+    font-size: 11px !important;
+    text-align: start !important;
+}
+
+.folder-picker-menubtn:hover {
+    background-color: #ebebeb;
+}
+
+.folder-picker-menubtn[value="0"],
+{
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICA8cGF0aCBkPSJNOCwxMkwzLDcsNCw2bDQsNCw0LTQsMSwxWiIgZmlsbD0iIzZBNkE2QSIgLz4KPC9zdmc+Cg=="), url("../img/clippings-root.svg");
+    background-position: calc(100% - 4px) center, 8px;
+}
+
+.folder-picker-menubtn:hover:active {
+    background-color: #d4d4d4;
+}
+
+.folder-tree-popup {
+    position: absolute;
+    visibility: hidden;
+    border: 1px solid #b1b1b1;
+    background-color: white;
+    box-shadow: 4px 4px 2px -2px #8F8F8F;
+    z-index: 100;
+}
+
+#new-clipping-fldr-tree-popup {
+    bottom: 12px;
+    left: 16px;
+    width: 350px;
+    height: 151px;
+    margin-top: 0;
+}
+
+/* This class to be applied to the folder tree popup if the clipping options*/
+/* is expanded. */
+.new-clipping-fldr-tree-popup-fixpos {
+    bottom: unset !important;
+}
+
+.folder-tree {
+    height: 100%;
+    overflow: auto;
+}
+
+ul.fancytree-container {
+    border: none;
+}
+
+#new-folder-btn {
+    order: 2;
+    
+    min-width: 32px;
+    margin: 0 0 0 4px;
+    background-image: url("../img/newFolder.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+#clipping-options-groupbox > legend {
+    padding-left: 8px;
+    margin-left: 18px;
+}
+
+#clipping-options {
+    display: none;
+    margin-top: 4px;
+    margin-bottom: 8px;
+}
+
+#btn-expand-options {
+    position: relative;
+    top: -24px;
+    left: -8px;
+    float: left;
+
+    min-width: 26px;
+    min-height: 24px;
+    font: caption;
+    font-size: 11px;
+
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICA8cGF0aCBkPSJNOCwxMkwzLDcsNCw2bDQsNCw0LTQsMSwxWiIgZmlsbD0iIzZBNkE2QSIgLz4KPC9zdmc+Cg==");
+    background-position: calc(100% - 4px) center;
+    background-repeat: no-repeat;
+}
+
+#clipping-key {
+    margin-top: 4px;
+    margin-right: 4px;
+}
+
+#shct-key-tooltip {
+    vertical-align: middle;
+}
+
+#dlg-buttons {
+    z-index: 1;
+}
+
+#new-folder-dlg {
+    --width: 320px;
+    --height: 180px;
+    top: 64px;
+}
+
+#new-folder-dlg-fldr-tree {
+    margin-top: 0;
+}
+
+#new-folder-dlg-fldr-tree-popup {
+    width: 286px;
+    height: 160px;
+    margin-top: 0;
+    z-index: 100;
+}
+

@@ -1,0 +1,129 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+body {
+    margin: 16px;
+    font-size: 11px;
+}
+
+button {
+    min-width: 88px;
+    min-height: 28px;
+    border-radius: 2px;
+    font-size: 13px !important;
+    text-align: center !important;
+}
+
+button[disabled] {
+    opacity: 0.4;
+}
+
+fieldset {
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+}
+
+fieldset > legend {
+    padding-left: 0px;
+    padding-right: 8px;
+    margin-left: -8px;
+}
+
+.hbox, .vbox {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.hbox {
+    flex-flow: row nowrap;
+}
+
+.vbox {
+    flex-flow: column nowrap;
+}
+
+.browser-style > input[type="text"] {
+    border-top: 1px solid transparent;
+    border-left: 1px solid transparent;
+    border-right: 1px solid transparent;
+    border-bottom: 1px solid #b1b1b1;
+    background-color: -moz-Field;
+}
+
+.browser-style > input[type="text"],
+.browser-style > textarea,
+select.browser-style {
+    font-size: 11px;
+}
+
+.browser-style > input[type="text"][disabled],
+.browser-style > input[type="text"][disabled]:hover,
+.browser-style > input[type="text"][readonly],
+.browser-style > input[type="text"][readonly]:hover{
+    border-bottom: 1px dotted;
+}
+
+.browser-style > input[type="text"]:not(disabled):hover {
+    border-top: 1px solid transparent;
+    border-left: 1px solid transparent;
+    border-right: 1px solid transparent;
+}
+
+.browser-style > input[type="text"]:active {
+    border: 1px solid #0996f8;
+}
+
+.browser-style > input[type="text"]:active[readonly] {
+    border: 1px solid #0996f8;
+}
+
+.browser-style > input[type="text"]:focus,
+.browser-style > input[type="text"]:focus:hover {
+    border: 1px solid #0996f8;
+}
+
+.browser-style > input[type="text"][readonly]:focus,
+.browser-style > input[type="text"][readonly]:focus:hover {
+    box-shadow: 0 0 0 1px rgba(97, 181, 255, 0.75);
+}
+
+input[type="checkbox"] {
+    vertical-align: -2px;
+}
+
+input[type="checkbox"] + label {
+    line-height: 1.8em;
+}
+
+.browser-style > input[type="checkbox"] + label::before {
+    width: 14px;
+    height: 14px;
+}
+
+input[type="radio"] {
+    vertical-align: -2px;
+}
+
+input[type="radio"] + label {
+    line-height: 1.8em;
+    margin-right: 1.5em;
+}
+
+.browser-style > input[type="radio"] + label::before {
+    width: 14px;
+    height: 14px;
+}
+
+#dlg-buttons {
+    position: absolute;
+    bottom: 14px;
+    right: 8px;
+    z-index: -1;
+}
+
+#btn-accept, #btn-cancel {
+    margin-right: 10px;
+}

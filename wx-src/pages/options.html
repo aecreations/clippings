@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Clippings Options</title>
+    <link rel="stylesheet" href="options.css"/>
+  </head>
+
+  <body>
+    <main id="ae-clippings-preferences">
+      <img id="addon-icon" src="../img/icon.svg"/>
+      <h2>Clippings Options</h2>
+
+      <div class="pref-section-content">
+        <fieldset id="paste-options">
+          <legend>Paste Options</legend>
+
+	  <div class="row" style="margin-bottom:6px">
+  	    <label for="html-paste-options">When pasting an HTML-formatted clipping into a rich text edit box:</label>
+	    <br/>
+	    <select id="html-paste-options" class="browser-style">
+	      <option value="1">Paste as formatted text</option>
+	      <option value="2">Paste as plain text, preserving HTML tags</option>
+            </select>
+	  </div>
+	  
+	  <div class="indent browser-style">
+	    <input type="checkbox" id="html-auto-line-break"/>
+	    <label for="html-auto-line-break">Automatically break lines unless &lt;p&gt; or &lt;br&gt; tags exist</label>
+	    <p class="description">An HTML-formatted clipping will always be pasted as plain text if pasting into a plain textbox, or if the clipping contains restricted tags such as &lt;script&gt;, &lt;applet&gt;, &lt;object&gt;, &lt;iframe&gt;, etc.</p>
+          </div>
+	  <div class="row browser-style">
+	    <input type="checkbox" id="enable-shortcut-key"/>
+	    <label for="enable-shortcut-key">Activate shortcut key mode using <span id="keyboard-paste-keys"></span</label>
+          </div>
+
+	  <div class="row">
+	    <label for="auto-inc-plchldrs-start-val">Default starting value for auto-incrementing placeholders:</label>
+	    <input type="number" id="auto-inc-plchldrs-start-val" min="0" value="0"/>
+	  </row>
+        </fieldset>
+      </div>
+
+      <fieldset id="general-options">
+	<legend>General Options</legend>
+
+	<div class="row browser-style">
+	  <input type="checkbox" id="always-save-src-url"/>
+	  <label for="always-save-src-url">Always save the address of the source web page</label>
+        </div>
+	<div class="row browser-style">
+	  <input type="checkbox" id="check-spelling" disabled="true"/>
+	  <label for="check-spelling">Check spelling</label>
+        </div>
+      </fieldset>
+<!--
+      <div class="pref-section-header">Appearance</div>
+      <div class="pref-section-content">
+	<div class="row browser-style">
+	  <input type="checkbox" id="rev-contrast-icons"/>
+	  <label for="rev-contrast-icons">Use reverse contrast icon for the toolbar button</label>
+        </div>
+      </div>
+-->
+
+    </main>
+
+    <script src="../lib/jquery.js"></script>
+    <script type="application/javascript" src="options.js"></script>
+
+  </body>
+</html>

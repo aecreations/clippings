@@ -1,0 +1,73 @@
+{
+    "manifest_version": 2,
+    "name": "Clippings",
+    "description": "Save frequently-entered text for pasting later.",
+    "version": "6.0",
+    "homepage_url": "http://aecreations.sourceforge.net/clippings/index.php",
+    
+    "applications": {
+	"gecko": {
+	    "strict_min_version": "56.0"
+	}
+    },
+
+    "icons": {
+        "48": "img/icon.svg",
+        "96": "img/icon.svg"
+    },
+
+    "permissions": [
+	"contextMenus",
+	"downloads",
+	"history",
+	"storage",
+	"tabs",
+	"unlimitedStorage"
+    ],
+    
+    "background": {
+	"scripts": [
+	    "lib/dexie/dexie.js",
+	    "lib/dexie/dexie-observable.js",
+	    "modules/aeConst.js",
+	    "modules/aeMsgBox.js",
+	    "modules/aeClippingSubst.js",
+	    "background.js"
+	]
+    },
+    
+    "content_scripts": [
+	{
+	    "matches": ["<all_urls>"],
+	    "all_frames": true,
+	    "js": ["content.js"]
+	}
+    ],
+
+    "browser_action": {
+	"default_icon": {
+	    "16": "img/icon.svg",
+            "32": "img/icon.svg"
+	},
+
+	"default_area": "navbar",
+        "default_title": "Organize Clippings",
+        "browser_style": false
+    },
+
+    "commands" : {
+	"ae-clippings-paste-clipping": {
+	    "suggested_key": {
+		"default": "Alt+Shift+Y",
+		"mac": "Command+Shift+Y"
+	    },
+	    "description": "Paste a clipping using its shortcut key"
+	}
+    },
+
+    "options_ui": {
+        "page": "pages/options.html",
+        "open_in_tab": true,
+        "browser_style": true
+    }
+}
