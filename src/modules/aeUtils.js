@@ -129,6 +129,29 @@ aeUtils.copyTextToClipboard = function (aText)
 };
 
 
+aeUtils.getClippings6PageURL = function ()
+{
+  let rv = "";
+  let locale = Services.prefs.getCharPref("general.useragent.locale");
+  let preURL = "chrome://clippings/content/clippings6";
+  let suffix = "";
+
+  switch (locale) {
+  case "de":
+    suffix = "_de";
+    break;
+
+  default:
+    suffix = "";
+    break;
+  }
+
+  rv = `${preURL}${suffix}.xhtml`;
+
+  return rv;
+};
+
+  
 aeUtils.getDataSourcePathURL = function ()
 {
   var rv;

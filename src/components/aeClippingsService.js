@@ -1,4 +1,4 @@
-/* -*- mode: C++; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
+/* -*- mode: javascript; tab-width: 8; indent-tabs-mode: nil; js-indent-level: 2 -*- */
 /* ***** BEGIN LICENSE BLOCK *****
  * Version: MPL 1.1
  *
@@ -16,7 +16,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2005-2015
+ * Portions created by the Initial Developer are Copyright (C) 2005-2017
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -32,7 +32,8 @@ aeClippingsService.prototype = {
   // Public constants
   FILETYPE_RDF_XML: 0,
   FILETYPE_CLIPPINGS_1X: 1,
-  FILETYPE_HTML: 2,
+  FILETYPE_CSV: 2,
+  FILETYPE_WX_JSON: 3,
 
   ORIGIN_CLIPPINGS_MGR: 1,
   ORIGIN_HOSTAPP: 2,
@@ -167,7 +168,7 @@ aeClippingsService.prototype.getDataSource = function (aDataSrcURL)
     this._count = this._countRec(this._rdfContainer);
   }
 
-  this._log("aeClippingsService.getDataSource(): Initialization complete\nDatasource URL: \"" + aDataSrcURL + "\"\n" + this._count + " item(s) in root folder");
+  this._log("aeClippingsService.getDataSource(): Initialization complete.  Datasource URL: \"" + aDataSrcURL + "\"; " + this._count + " item(s) in root folder");
   return this._dataSrc;
 };
 
@@ -186,6 +187,14 @@ aeClippingsService.prototype.reset = function ()
 aeClippingsService.prototype.setBackupDir = function (aBackupDirURL)
 {
   this._backupDirURL = aBackupDirURL;
+};
+
+
+aeClippingsService.prototype.getBackupDir = function ()
+{
+  this._log("Clippings backup location (URL): " + this._backupDirURL);
+  let rv = this._getFileFromURL(this._backupDirURL);
+  return rv;
 };
 
 
@@ -299,7 +308,7 @@ aeClippingsService.prototype._createNewClippingHelper = function (aParentFolderU
     // empty before this new clipping was added to it.
     this._removeDummyNode(aParentFolderURI, ds);
 
-    this._log("aeClippingsService._createNewClippingHelper(): Created a new clipping!\nName: " + name + "\nText: " + text + "\nSource URL: " + srcURL + "\nLabel: " + aLabel);
+    this._log("aeClippingsService._createNewClippingHelper(): Created a new clipping!  Name: " + name + ", text: " + text + ", source URL: " + srcURL + ", label: " + aLabel);
 
     // Notify all observers
     if (! aDontNotify) {
@@ -1237,7 +1246,7 @@ aeClippingsService.prototype.purgeDetachedItems = function ()
     cnt--;
   }
 
-  this._log("Purge completed; there are now " + cnt + " detached item(s)\n(count should be zero)");
+  this._log("Purge completed; there are now " + cnt + " detached item(s) (count should be zero)");
 
   this._detachedItems = [];
 };
@@ -1630,7 +1639,7 @@ aeClippingsService.prototype.flushDataSrc = function (aDoBackup)
     this._dataSrc.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource).Flush();
   }
   catch (e) {
-    this._log("aeClippingsService.flushDataSrc(): Data source flush failed!\n" + e);
+    this._log("aeClippingsService.flushDataSrc(): Data source flush failed!" + e);
     throw e;
   }
   this._log("*** Clippings datasource saved to disk ***");
@@ -1640,7 +1649,7 @@ aeClippingsService.prototype.flushDataSrc = function (aDoBackup)
       this._doBackup();
     }
     catch (e) {
-      this._log("aeClippingsService.flushDataSrc(): WARNING: Backup failed:\n" + e);
+      this._log("aeClippingsService.flushDataSrc(): WARNING: Backup failed:" + e);
     }
   }
    
@@ -1648,7 +1657,7 @@ aeClippingsService.prototype.flushDataSrc = function (aDoBackup)
     this._deleteOldBackupFiles();
   }
   catch (e) {
-    this._log("aeClippingsService.flushDataSrc(): WARNING: Cannot delete old backup file(s):\n" + e);
+    this._log("aeClippingsService.flushDataSrc(): WARNING: Cannot delete old backup file(s): " + e);
   }
 };
 
@@ -1857,7 +1866,7 @@ aeClippingsService.prototype.recoverFromBackup = function ()
       throw Components.Exception("aeClippingsService.recoverFromBackup(): Failed to retrieve URL of nsIFile object", Components.results.NS_ERROR_UNEXPECTED);
     }
 
-    this._log("aeClippingsService.recoverFromBackup(): Trying backup file whose file name is '" + file.leafName + "' and whose URL is:\n'" + url + "'");
+    this._log("aeClippingsService.recoverFromBackup(): Trying backup file whose file name is '" + file.leafName + "' and whose URL is: '" + url + "'");
 
     var extRDFContainer = Components.classes["@mozilla.org/rdf/container;1"].createInstance(Components.interfaces.nsIRDFContainer);
 
@@ -1881,7 +1890,7 @@ aeClippingsService.prototype.recoverFromBackup = function ()
     throw Components.Exception("aeClippingsService.recoverFromBackup(): Cannot find any valid backup files!", Components.results.NS_ERROR_FILE_NOT_FOUND);
   }
   
-  this._log("aeClippingsService.recoverFromBackup(): Found a candidate backup file whose URL is:\n'" + url + "'\nContains " + extRDFContainer.GetCount() + " entries");
+  this._log("aeClippingsService.recoverFromBackup(): Found a candidate backup file whose URL is: '" + url + "' - contains " + extRDFContainer.GetCount() + " entries");
 
   // Delete corrupted data source file
   this._log("aeClippingsService.recoverFromBackup(): Deleting corrupted datasource file");
@@ -1909,7 +1918,7 @@ aeClippingsService.prototype.recoverFromBackup = function ()
 
   var count = this.importFromFile(url, false, true, {});
 
-  this._log("aeClippingsService.recoverFromBackup(): " + count + " entries imported\nnewDataSrc: " + newDataSrc);
+  this._log("aeClippingsService.recoverFromBackup(): " + count + " entries imported - newDataSrc: " + newDataSrc);
 
   return newDataSrc;
 };
@@ -1924,7 +1933,7 @@ aeClippingsService.prototype.notifyDataSrcLocationChanged = function ()
 
   for (let i = 0; i < this._listeners.length; i++) {
     if (this._listeners[i]) {
-      this._log("aeClippingsService.notifyDataSrcLocationChange(): Notifying observer " + i + "\nOrigin: " + this._listeners[i].origin + " (1 = Clippings Manager; 2 = host app window; 3 = New Clipping dialog)");
+      this._log("aeClippingsService.notifyDataSrcLocationChange(): Notifying observer " + i + "; origin: " + this._listeners[i].origin + " (1 = Clippings Manager; 2 = host app window; 3 = New Clipping dialog)");
       this._listeners[i].dataSrcLocationChanged(this._dsFileURL);
     }
   }
@@ -1973,7 +1982,8 @@ aeClippingsService.prototype.exportToFile = function (aFileURL, aFileType, aIncl
   var extSeqNode;
   var extDS;
 
-  if (aFileType == this.FILETYPE_RDF_XML) {
+  if (aFileType == this.FILETYPE_RDF_XML || aFileType == this.FILETYPE_CSV
+      || aFileType == this.FILETYPE_WX_JSON) {
     extSeqNode = this._rdfSvc.GetResource(this._SEQNODE_RESOURCE_URI);
   }
   else if (aFileType == this.FILETYPE_CLIPPINGS_1X) {
@@ -1985,47 +1995,149 @@ aeClippingsService.prototype.exportToFile = function (aFileURL, aFileType, aIncl
   }
 
   // Must delete existing file with the same name; otherwise, the `FlushTo'
-  // call below will append instead of overwrite.
+  // call below will append instead of overwrite the RDF/XML file.
   var file = this._getFileFromURL(aFileURL);
   if (file.exists()) {
-    this._log("NOTE: A data source file with the same URL already exists; removing it.");
+    this._log("NOTE: An export file with the same URL already exists; removing it.");
     file.remove(false);
   }
 
-  try {
-    // Exported data source file will be created automatically.
-    extDS = this._rdfSvc.GetDataSourceBlocking(aFileURL);
+  let count, format, extRootCtr, jsonData, csvData;
+
+  if (aFileType == this.FILETYPE_RDF_XML || aFileType == this.FILETYPE_CLIPPINGS_1X) {
+    try {
+      // Exported data source file will be created automatically.
+      extDS = this._rdfSvc.GetDataSourceBlocking(aFileURL);
+    }
+    catch (e) {
+      throw e;
+    }
+
+    extRootCtr = this._rdfContainerUtils.MakeSeq(extDS, extSeqNode);
+    extRootCtr = extRootCtr.QueryInterface(Components.interfaces.nsIRDFContainer);
   }
-  catch (e) {
-    throw e;
+  else {
+    csvData = [];
+    jsonData = {
+      version: "6.0",
+      createdBy: "Clippings 5.5",
+      userClippingsRoot: []
+    };
   }
 
-  this._log("Initialized export data source; URL:\n'" + aFileURL + "'");
+  this._log("Initialized export file - URL: '" + aFileURL + "'");
 
-  var count, format;
-  var extRootCtr = this._rdfContainerUtils.MakeSeq(extDS, extSeqNode);
-  extRootCtr = extRootCtr.QueryInterface(Components.interfaces.nsIRDFContainer);
-  
   if (aFileType == this.FILETYPE_CLIPPINGS_1X) {
     count = this._exportLegacyRDFXML(this._rdfContainer, extDS, extRootCtr);
-    format = "Clippings 1.x series";
+    format = "Clippings 1.x RDF/XML";
+  }
+  else if (aFileType == this.FILETYPE_CSV) {
+    count = this._exportAsCSV(this._rdfContainer, csvData);
+    format = "CSV";
+  }
+  else if (aFileType == this.FILETYPE_WX_JSON) {
+    count = this._exportAsClippingsWxJSON(this._rdfContainer, jsonData.userClippingsRoot, aIncludeSrcURLs);
+    format = "Clippings/wx JSON";
   }
   else {
     // A prime example of software reuse.
     count = this._importFromFileEx(this._rdfContainer, this._dataSrc, extRootCtr, extDS, true, aIncludeSrcURLs);
-    format = "Clippings 2";
+    format = "Clippings RDF/XML";
   }
 
   this._log("Exported " + count + " item(s); format: " + format);
 
-  var rds = extDS.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource);
-  try {
-    rds.FlushTo(aFileURL);
+  if (aFileType == this.FILETYPE_RDF_XML || aFileType == this.FILETYPE_CLIPPINGS_1X) {
+    var rds = extDS.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource);
+    try {
+      rds.FlushTo(aFileURL);
+    }
+    catch (e) {
+      this._log(e);
+      throw e;
+    }
+    return;
   }
-  catch (e) {
-    this._log(e);
-    throw e;
+
+  let fileData = "";
+  
+  if (aFileType == this.FILETYPE_CSV) {
+    fileData = csvData.join("\r\n");
   }
+  else if (aFileType == this.FILETYPE_WX_JSON) {
+    fileData = JSON.stringify(jsonData);
+  }
+
+  this.writeFile(aFileURL, fileData);
+};
+
+
+aeClippingsService.prototype._exportAsCSV = function (aFolderCtr, aCSVData)
+{
+  let rv = 0;
+  let count = 0;
+  let childrenEnum = aFolderCtr.GetElements();
+  
+  while (childrenEnum.hasMoreElements()) {
+    let child = childrenEnum.getNext();
+    child = child.QueryInterface(Components.interfaces.nsIRDFResource);
+    let childURI = child.Value;
+
+    if (this.isFolder(childURI)) {
+      let subfolderCtr = this._getSeqContainerFromFolder(childURI);
+      count += this._exportAsCSV(subfolderCtr, aCSVData);
+    }
+    else if (this.isClipping(childURI)) {
+      let name = this.getName(childURI);
+      let content = this.getText(childURI);
+      content = content.replace(/\"/g, '""');
+      aCSVData.push(`"${name}","${content}"`);
+      count++;
+    }
+  }
+  rv = count;
+  
+  return rv;
+};
+
+
+aeClippingsService.prototype._exportAsClippingsWxJSON = function (aFolderCtr, aJSONFolderData, aIncludeSrcURLs)
+{
+  let rv;
+  let count = 0;
+  let childrenEnum = aFolderCtr.GetElements();
+  
+  while (childrenEnum.hasMoreElements()) {
+    let child = childrenEnum.getNext();
+    child = child.QueryInterface(Components.interfaces.nsIRDFResource);
+    let childURI = child.Value;
+    if (this.isFolder(childURI)) {
+      let subfolderCtr = this._getSeqContainerFromFolder(childURI);
+      let fldrItems = [];
+      count += this._exportAsClippingsWxJSON(subfolderCtr, fldrItems, aIncludeSrcURLs);
+      aJSONFolderData.push({
+        name: this.getName(childURI),
+        children: fldrItems
+      });
+
+      count++;
+    }
+    else if (this.isClipping(childURI)) {
+      let srcURL = (aIncludeSrcURLs ? this.getSourceURL(childURI) : "");
+      aJSONFolderData.push({
+        name:        this.getName(childURI),
+        content:     this.getText(childURI),
+        shortcutKey: this.getShortcutKey(childURI),
+        sourceURL:   srcURL,
+        label:       this.getLabel(childURI)
+      });
+
+      count++;
+    }
+  }
+  rv = count;
+  
+  return rv;
 };
 
 
@@ -2236,8 +2348,8 @@ aeClippingsService.prototype.importFromFile = function (aFileURL, aDontNotify, a
 
   rv = extRDFContainer.GetCount();
   this._log("External datasource successfully loaded from \"" + aFileURL
-	    + "\":\n" + rv + " item(s) in root folder\nFormat: "
-	    + (isNewDataSrc ? "Clippings 2" : "Clippings 1.x series"));
+	    + "\": " + rv + " item(s) in root folder; format: "
+	    + (isNewDataSrc ? "Clippings RDF/XML" : "Clippings 1.x RDF/XML"));
 
   if (isNewDataSrc) {
     rv = this._importFromFileEx(extRDFContainer, extDataSrc, this._rdfContainer, null, aImportShortcutKeys, true);
@@ -2443,7 +2555,7 @@ aeClippingsService.prototype.importShortcutKeys = function (aImportRootCtr, aImp
 	currentlyAssignedURIStr = currentlyAssignedURIStr.QueryInterface(Components.interfaces.nsISupportsString);
 	currentlyAssignedURI = currentlyAssignedURIStr.data;
 
-	this._log("aeClippingsService.importShortcutKeys(): Overwriting shortcut key assignment for key `" + key + "'\n(was assigned to clipping `" + currentlyAssignedURI + "')");
+	this._log("aeClippingsService.importShortcutKeys(): Overwriting shortcut key assignment for key `" + key + "' (was assigned to clipping `" + currentlyAssignedURI + "')");
 
 	this.setShortcutKey(currentlyAssignedURI, "");
 
@@ -2470,6 +2582,97 @@ aeClippingsService.prototype.cancelDeferredShortcutKeyImport = function ()
   this._deferredShortcutKeyImport = {};
 };
 
+
+aeClippingsService.prototype.importFromJSON = function (aJSONRawData, aReplaceShortcutKeys)
+{
+  if (! this._rdfContainer) {
+    throw Components.Exception("Data source not initialized",
+			       Components.results.NS_ERROR_NOT_INITIALIZED);
+  }
+
+  let rv = null;
+  let jsonData = {};
+  
+  try {
+    jsonData = JSON.parse(aJSONRawData);
+  }
+  catch (e) {
+    throw Components.Exception("Failed to import JSON data: " + e, Components.results.NS_ERROR_FAILURE);
+  }
+
+  if (jsonData.userClippingsRoot === undefined) {
+    throw Components.Exception("Malformed JSON data", Components.results.NS_ERROR_FAILURE);
+  }
+
+  let shortcutKeyLookup = this.getShortcutKeyDict();
+
+  rv = this._importFromJSONHelper(this.kRootFolderURI, jsonData.userClippingsRoot, aReplaceShortcutKeys, shortcutKeyLookup);
+
+  return rv;
+};
+
+
+aeClippingsService.prototype._importFromJSONHelper = function (aFolderURI, aImportedItems, aReplaceShortcutKeys, aShortcutKeys)
+{
+  function getClippingURIWithShortcutKey(aShortcutKey) {
+    let rv = "";
+    let currentlyAssignedURIStr = {};
+    
+    try {
+      currentlyAssignedURIStr = aShortcutKeys.getValue(aShortcutKey, currentlyAssignedURIStr);
+    }
+    catch (e) {}
+
+    currentlyAssignedURIStr = currentlyAssignedURIStr.QueryInterface(Components.interfaces.nsISupportsString);
+    rv = currentlyAssignedURIStr.data;
+
+    return rv;
+  }
+  
+  let rv = null;
+  let count = 0;
+
+  for (let i = 0; i < aImportedItems.length; i++) {
+    let item = aImportedItems[i];
+    let uri = "";
+    
+    if ("children" in item) {
+      uri = this.createNewFolder(aFolderURI, item.name, true);
+      count++;
+      count += this._importFromJSONHelper(uri, item.children, aReplaceShortcutKeys, aShortcutKeys);
+    }
+    else {
+      let label = ("label" in item ? item.label : "");
+
+      uri = this.createNewClipping(aFolderURI, item.name, item.content, item.sourceURL, label, true);
+      count++;
+
+      if (! item.shortcutKey) {
+        continue;
+      }
+      
+      if (aShortcutKeys.hasKey(item.shortcutKey)) {
+        if (aReplaceShortcutKeys) {
+	  let clippingURI = getClippingURIWithShortcutKey(item.shortcutKey);
+
+          this._log(`aeClippingsService._importFromJSONHelper(): An imported clipping\'s shortcut key (key = '${item.shortcutKey}') conflicts with an existing clipping (URI: ${clippingURI})`);
+
+          // Unassign the shortcut key on the existing clipping.
+          // Then assign the shortcut key to the newly-imported clipping.
+          this.setShortcutKey(clippingURI, "");
+          this.setShortcutKey(uri, item.shortcutKey);
+        }
+      }
+      else {
+        // There is no shortcut key conflict, so go ahead and assign it.
+        this.setShortcutKey(uri, item.shortcutKey);
+      }
+    }
+  }
+  
+  rv = count;
+  return rv;
+};
 
 
 //

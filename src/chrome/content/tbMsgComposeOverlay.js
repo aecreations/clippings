@@ -1,4 +1,4 @@
-/* -*- mode: C++; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
+/* -*- mode: javascript; tab-width: 8; indent-tabs-mode: nil; js-indent-level: 2 -*- */
 /* ***** BEGIN LICENSE BLOCK *****
  * Version: MPL 1.1
  *
@@ -16,7 +16,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2005-2016
+ * Portions created by the Initial Developer are Copyright (C) 2005-2017
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -579,6 +579,24 @@ window.aecreations.clippings = {
     if (! prefsMigrated) {
       this.aePrefMigrator.migratePrefs();
       this.aeUtils.setPref("clippings.migrated_prefs", true);
+    }
+
+    // Rename backup folder so that it isn't hidden on macOS and Linux.
+    let dataSrcPathURL = this.aeUtils.getDataSourcePathURL();
+    let oldBackupDirURL = dataSrcPathURL + this.aeConstants.OLD_BACKUP_DIR_NAME;
+    let oldBackupDirPath = this.aeUtils.getFilePathFromURL(oldBackupDirURL);
+    let oldBkupDir = Components.classes["@mozilla.org/file/local;1"]
+                               .createInstance(Components.interfaces.nsIFile);
+
+    oldBkupDir.initWithPath(oldBackupDirPath);
+    if (oldBkupDir.exists() && oldBkupDir.isDirectory()) {
+      this.aeUtils.log(`Detected old backup folder '.clipbak' in "${dataSrcPathURL}" - renaming it to '${this.aeConstants.BACKUP_DIR_NAME}'`);
+      try {
+        oldBkupDir.renameTo(null, this.aeConstants.BACKUP_DIR_NAME);
+      }
+      catch (e) {
+        this.aeUtils.alertEx(this.strBundle.getString("appName"), e);
+      }
     }
 
     // First-run initialization

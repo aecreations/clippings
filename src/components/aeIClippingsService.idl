@@ -15,7 +15,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2005-2015
+ * Portions created by the Initial Developer are Copyright (C) 2005-2017
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -31,6 +31,7 @@ interface nsIRDFDataSource;
 interface aeIDictionary;
 interface nsIRDFContainer;
 interface nsIDOMElement;
+interface nsIFile;
 
 
 [scriptable, uuid(24cea707-946d-11da-a72b-0800200c9a66)]
@@ -53,7 +54,8 @@ interface aeIClippingsService : nsISupports
    */
   const short FILETYPE_RDF_XML = 0;
   const short FILETYPE_CLIPPINGS_1X = 1;  /* Clippings 1.x series */
-  const short FILETYPE_HTML = 2;
+  const short FILETYPE_CSV = 2;
+  const short FILETYPE_WX_JSON = 3;
 
   /*
    * aOrigin constants for methods createNewFolderEx() and copyTo(). 
@@ -272,6 +274,8 @@ interface aeIClippingsService : nsISupports
 
   void cancelDeferredShortcutKeyImport();
 
+  size_t importFromJSON(in aestring aJSONRawData, in boolean aReplaceShortcutKeys);
+  
   /*
    * Method processEmptyFolders():
    * Recursively scans through all empty folders in the data source and appends
@@ -300,6 +304,8 @@ interface aeIClippingsService : nsISupports
 
   void setMaxBackupFiles(in unsigned short aNumFiles);
 
+  nsIFile getBackupDir();
+  
   /*
    * Method getBackupFileNamesDict(): 
    * Returns a aeIDictionary object containing mappings of backup file names

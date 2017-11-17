@@ -17,6 +17,8 @@
 <!ENTITY toolbarbutton.tooltip "Markierung hierher ziehen, um ein neues Clipping zu erzeugen.">
 <!ENTITY resetAutoIncrVars.label "Automatische Nummerngebung der Platzhalter zurücksetzen">
 <!ENTITY empty.label "(Leer)">
+<!ENTITY wxGetReady.label "Mach dich bereit für Clippings 6...">
+<!ENTITY wxGetReady.accesskey "6">
 
 <!-- Extension preferences dialog -->
 <!ENTITY prefGeneral.label "Allgemein">
@@ -51,10 +53,12 @@
 <!ENTITY backupFiles.caption "Daten sichern">
 <!ENTITY maxFiles.label "Maximale Anzahl der beizubehaltenden Dateien:">
 <!ENTITY maxFiles.accesskey "M">
+<!ENTITY showbkup.label "Sicherungs-Speicherort zeigen">
+<!ENTITY showbkup.accesskey "S">
 <!ENTITY srcURLs.caption "Quell-Webseitenadressen">
 <!ENTITY removeAllSrcURLs.label "Alles entfernen">
 <!ENTITY removeAllSrcURLs.accesskey "e">
-<!ENTITY removeAllSrcURLs.description "Alle Quell-Webseitenadressen(URLs) entfernen">
+<!ENTITY removeAllSrcURLs.description "Alle Quell-Webseitenadressen (URLs) entfernen">
 
 <!ENTITY showStatusBar.label "In der Statusleiste anzeigen">
 <!ENTITY showStatusBar.accesskey "S">
@@ -190,6 +194,13 @@
 <!ENTITY defaultValue.description "Mehrere Werte mit &quot;|&quot;-Symbol trennen. Beispiel: rot|grün|blau">
 <!ENTITY autoIncrement.description "Nach Einfügen eines Textbausteins, werden Sie aufgefordert den ersten numerischen Wert anzugeben. Der Wert wird automatisch, jedes Mal, um einen Punkt erhöht, wenn der gleiche Baustein eingefügt wird, bis es im Clippings-Kontextmenü zurückgesetzt wird.">
 
+<!-- Import dialog -->
+<!ENTITY import.title "Clippings importieren">
+<!ENTITY importButton.label "Importieren">
+<!ENTITY selectImpFile.label "Datei zum Importieren auswählen:">
+<!ENTITY replcShctKey.label "Tastenkombinationen ersetzen">
+<!ENTITY replcShctKey.accesskey "e">
+
 <!-- Export dialog -->
 <!ENTITY export.title "Textbausteine exportieren…">
 <!ENTITY exportButton.label "Exportieren…">
@@ -198,6 +209,8 @@
 <!ENTITY exportFormatList.accesskey "F">
 <!ENTITY description.caption "Beschreibung">
 <!ENTITY fmtClippings.listitem "Clippings-Datei">
+<!ENTITY fmtClippingsWx.listitem "Clippings 6">
+<!ENTITY fmtCsv.listitem "CSV Datei">
 <!ENTITY fmtHtmlDocument.listitem "HTML-Datei">
 <!ENTITY includeSrcURLs.label "Webseiten Quelladresse des Textbausteins integrieren">
 <!ENTITY includeSrcURLs.accesskey "i">
@@ -221,6 +234,7 @@
 <!ENTITY createAsUnquoted.accesskey "u">
 <!ENTITY removeExtraLineBreaks.label "Zusätzliche Zeilenumbrüche entfernen">
 <!ENTITY removeExtraLineBreaks.accesskey "ü">
+<!ENTITY none1.label "(keine)">
 <!ENTITY none.label "(keines)">
 <!ENTITY newClippingOptions.label "Optionen">
 <!ENTITY newClippingOptions.accesskey "O">
@@ -269,4 +283,4 @@
 <!ENTITY closeButton.label "Schließen">
 <!ENTITY closeButton.accesskey "S">
 <!ENTITY errorNoClipboardContent.desc "Die Zwischenablage ist leer oder enthält keine Textdaten.">
-
+<!ENTITY wxComing.desc "Clippings 6 kommt bald! Für weitere Informnationen zur Vorbereitung für die Aktualisierung, hier klicken.">

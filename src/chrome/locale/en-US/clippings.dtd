@@ -17,6 +17,8 @@
 <!ENTITY toolbarbutton.tooltip "Drag selection here to create new clipping">
 <!ENTITY resetAutoIncrVars.label "Reset Auto-increment Placeholders">
 <!ENTITY empty.label "(Empty)">
+<!ENTITY wxGetReady.label "Get Ready for Clippings 6...">
+<!ENTITY wxGetReady.accesskey "6">
 
 <!-- Extension preferences dialog -->
 <!ENTITY prefGeneral.label "General">
@@ -51,6 +53,8 @@
 <!ENTITY backupFiles.caption "Backup Files">
 <!ENTITY maxFiles.label "Maximum number of files to keep:">
 <!ENTITY maxFiles.accesskey "M">
+<!ENTITY showbkup.label "Show Backup Location">
+<!ENTITY showbkup.accesskey "S">
 <!ENTITY srcURLs.caption "Source Web Page Addresses">
 <!ENTITY removeAllSrcURLs.label "Remove All">
 <!ENTITY removeAllSrcURLs.accesskey "R">
@@ -190,6 +194,13 @@
 <!ENTITY defaultValue.description "Separate multiple values with a ''|'' symbol.  Example: red|green|blue">
 <!ENTITY autoIncrement.description "When the clipping is pasted, you will be prompted for the starting numeric value.  The value will automatically increase by one every time the same clipping is pasted, until it is reset from the Clippings context menu.">
 
+<!-- Import dialog -->
+<!ENTITY import.title "Import Clippings">
+<!ENTITY importButton.label "Import">
+<!ENTITY selectImpFile.label "Select import file:">
+<!ENTITY replcShctKey.label "Replace shortcut keys">
+<!ENTITY replcShctKey.accesskey "R">
+
 <!-- Export dialog -->
 <!ENTITY export.title "Export Clippings">
 <!ENTITY exportButton.label "Export">
@@ -197,7 +208,9 @@
 <!ENTITY exportFormatList.label "Select a format to export Clippings to:">
 <!ENTITY exportFormatList.accesskey "S">
 <!ENTITY description.caption "Description">
-<!ENTITY fmtClippings.listitem "Clippings File">
+<!ENTITY fmtClippings.listitem "Clippings Default">
+<!ENTITY fmtClippingsWx.listitem "Clippings 6">
+<!ENTITY fmtCsv.listitem "CSV File">
 <!ENTITY fmtHtmlDocument.listitem "HTML Document">
 <!ENTITY includeSrcURLs.label "Include source web page addresses of clippings">
 <!ENTITY includeSrcURLs.accesskey "I">
@@ -269,4 +282,4 @@
 <!ENTITY closeButton.label "Close">
 <!ENTITY closeButton.accesskey "C">
 <!ENTITY errorNoClipboardContent.desc "Clipboard is empty or does not contain textual data.">
-
+<!ENTITY wxComing.desc "Clippings 6 is coming soon!  Click here to learn how to prepare for the upgrade.">

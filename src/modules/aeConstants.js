@@ -37,7 +37,8 @@ var aeConstants = {
   // Clippings datasource files
   CLIPDAT_FILE_NAME: "clipdat2.rdf",
   CLIPDAT_1X_FILE_NAME: "clipdat.rdf",
-  BACKUP_DIR_NAME:   ".clipbak",
+  OLD_BACKUP_DIR_NAME:   ".clipbak",
+  BACKUP_DIR_NAME: "clippings-backup",
 
   // Constants for HTML paste options
   HTMLPASTE_ASK_THE_USER: 0,

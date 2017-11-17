@@ -88,13 +88,13 @@ menu.ae-clippings-folder-menu[open="true"] {
 /* Thunderbird integration */
 @media all {
   #ae-clippings-icon {
-    list-style-image: url("chrome://clippings-laf/skin/images/clippings16.svg");
+    list-style-image: url("chrome://clippings-laf/skin/images/clippings16-tb.svg");
   }
 }
 
 @media (-moz-os-version: windows-win7) {
   #ae-clippings-icon {
-    list-style-image: url("chrome://clippings/skin/win/images/clippings16-win7.png");
+    list-style-image: url("chrome://clippings/skin/win/images/clippings16-tb-win7.png");
   }
 }
 

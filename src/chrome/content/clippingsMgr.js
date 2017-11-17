@@ -1,4 +1,4 @@
-/* -*- mode: C++; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
+/* -*- mode: javascript; tab-width: 8; indent-tabs-mode: nil; js-indent-level: 2 -*- */
 /* ***** BEGIN LICENSE BLOCK *****
  * Version: MPL 1.1
  *
@@ -16,7 +16,7 @@
  *
  * The Initial Developer of the Original Code is 
  * Alex Eng <ateng@users.sourceforge.net>.
- * Portions created by the Initial Developer are Copyright (C) 2005-2016
+ * Portions created by the Initial Developer are Copyright (C) 2005-2017
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
@@ -135,12 +135,33 @@ const REDO_STACK = 2;
 
 
 //
-// DOM utility function
+// Page utility functions
 //
 
 function $(aID)
 {
   return document.getElementById(aID);
+}
+
+
+function getParamsMap(aQueryStr)
+{
+  var rv = {};
+
+  // aQueryStr is the value returned by window.location.search
+  // It would be typically formatted such as "?foo=1&bar=baz"
+  if (aQueryStr) {
+    var search = aQueryStr.substring(1);
+
+    var paramsArray = search.split("&");
+
+    for (let i = 0; i < paramsArray.length; i++) {
+      var param = paramsArray[i].split("=");
+      rv[param[0]] = param[1];
+    }
+  }
+
+  return rv;
 }
 
 
@@ -1067,6 +1088,15 @@ function init()
     treeElt.setAttribute("treelines", "true");
   }
 
+  // Clippings/wx migration notification - for Firefox only.
+  if (aeUtils.getHostAppID() == aeConstants.HOSTAPP_FX_GUID
+      && aeUtils.getPref("clippings.show_wx_notice", true)) {
+    let params = getParamsMap(window.location.search);
+    if (params["hideWxNotice"] === undefined) {
+      $("clippings-wx-notification").hidden = false;
+    }
+  }
+  
   // First-run help
   if (aeUtils.getPref("clippings.clipmgr.first_run", true)) {
     window.setTimeout(function () { showHelp(); }, 1000);
@@ -1399,6 +1429,32 @@ function setStatusBarVisibility()
 {
   var showStatusBar = aeUtils.getPref("clippings.clipmgr.status_bar", true);
   $("status-bar").hidden = !showStatusBar;
+}
+
+
+function showClippingsMigrationInfo()
+{
+  let srcURL = aeUtils.getClippings6PageURL();
+  
+  if (aeUtils.getHostAppID() == aeConstants.HOSTAPP_FX_GUID) {
+    let wnd = aeUtils.getRecentHostAppWindow();
+    
+    if (wnd) {
+      let newBrwsTab = wnd.gBrowser.loadOneTab(srcURL);
+      wnd.gBrowser.selectedTab = newBrwsTab;
+    }
+    else {
+        wnd = window.open(srcURL);
+    }
+    
+    wnd.focus();
+  }
+}
+
+
+function closeMigrationNotification()
+{
+  $("clippings-wx-notification").hidden = true;
 }
 
 
@@ -1955,6 +2011,12 @@ function reload()
     gIsClippingsDirty = false;
   }
 
+  if (! gClippingsList) {
+    // Handle case where reload() invoked when Clippings Manager was just
+    // opened.
+    return;
+  }
+  
   // currIndex == -1 if nothing was selected
   var currIndex = gClippingsList.selectedIndex;
   currIndex = currIndex == -1 ? 0 : currIndex;
@@ -2565,8 +2627,6 @@ function updateLabelMenu()
 
   let label = gClippingsSvc.getLabel(uri);
 
-  aeUtils.log(aeString.format("updateLabelMenu(): Label of selected clipping: %s", label));
-
   gClippingLabelPicker.selectedLabel = label;  
   gClippingLabelPickerCxtMenu.selectedLabel = label;
 
@@ -2823,18 +2883,84 @@ function doExport()
 
 function doImport()
 {
+  let dlgArgs = {
+    numImported: null,
+    replaceShortcutKeys: true,
+    userCancel: null
+  };
+
+  // Suppress reloading of clippings tree when Clippings Manager window
+  // receives focus after the Import Clippings dialog closes.
+  gJustImported = true;
+  
+  let impDlg = window.openDialog("chrome://clippings/content/import.xul", "import_dlg", "dialog,modal,centerscreen", dlgArgs);
+
+  if (dlgArgs.userCancel) {
+    gJustImported = false;
+    return;
+  }
+
+  // Handle empty RDF files
+  if (dlgArgs.numImported == 0) {
+    let toolsMenu = $("clippings-options");
+    let panel = $("import-empty-alert");
+    $("import-empty-alert-msg").value = gStrBundle.getString("msgNoItems");
+    gStatusBar.label = "";
+    aeUtils.beep();
+    panel.openPopup(toolsMenu, "after_start", 0, 0, false, false);
+    gJustImported = false;
+    return;
+  }
+
+  var deck = $("entry-properties");
+  if (gClippingsList.getRowCount() > 0) {
+    deck.selectedIndex = 0;
+    gClippingsList.selectedIndex = 0;
+    gClippingsList.tree.click();
+  }
+
+  // Status bar msg is overwritten in listbox.click() call, so redisplay
+  // status of import.
+  gStatusBar.label = aeString.format("%s%s",
+                                     gStrBundle.getString("importBegin"),
+                                     gStrBundle.getString("importDone"));
+  try {
+    gClippingsSvc.flushDataSrc(true);
+  }
+  catch (e) {
+    // Don't do anything for now - try again when closing Clippings Manager.
+  }
+
+  if (gFindBar.isActivated()) {
+    gFindBar.setSearchResultsUpdateFlag();
+  }
+
+  gJustImported = false;
+}
+
+
+// DEPRECATED
+function doImportEx()
+{
   var fp = Components.classes["@mozilla.org/filepicker;1"]
                      .createInstance(Components.interfaces.nsIFilePicker);
   fp.init(window, gStrBundle.getString("dlgTitleImportClippings"), fp.modeOpen);
   fp.appendFilter(gStrBundle.getString("rdfImportFilterDesc"), "*.rdf");
+  fp.appendFilter(gStrBundle.getString("wxJSONImportFilterDesc"), "*.json");
 
   var dlgResult = fp.show();
   if (dlgResult != fp.returnOK) {
     return doImport.USER_CANCEL;
   }
 
-  var url = fp.fileURL.QueryInterface(Components.interfaces.nsIURI).spec;
+  var url = fp.fileURL.QueryInterface(Components.interfaces.nsIURI).spec;  
   var path = fp.file.QueryInterface(Components.interfaces.nsIFile).path;
+
+  if (url.endsWith(".json")) {
+    window.alert("The selected option is not available right now.");
+    return;
+  }
+  
   var dsURL = aeUtils.getDataSourcePathURL() + aeConstants.CLIPDAT_FILE_NAME;
 
   // Prevent attempt at importing data source file.
@@ -3005,6 +3131,7 @@ function backupClippings()
   var fp = Components.classes["@mozilla.org/filepicker;1"]
                      .createInstance(Components.interfaces.nsIFilePicker);
   fp.init(window, gStrBundle.getString("dlgTitleBackup"), fp.modeSave);
+  fp.defaultString = gStrBundle.getString("clippingsBkupFilename");
   fp.defaultExtension = "rdf";
   fp.appendFilter(gStrBundle.getString("rdfImportFilterDesc"), "*.rdf");
 
@@ -3041,6 +3168,8 @@ function backupClippings()
         doAlert(gStrBundle.getString("errorBackupFailed"));
         return;
       }
+      
+      aeUtils.setPref("clippings.show_wx_notice", false);
     }
   };
 
