@@ -785,14 +785,21 @@ let gCmd = {
   
   showHideDetailsPane: function ()
   {
+    let currSetting = gClippings.getPrefs().clippingsMgrDetailsPane;
+    chrome.storage.local.set({ clippingsMgrDetailsPane: !currSetting });
+
     if (gIsClippingsTreeEmpty) {
-      let currSetting = gClippings.getPrefs().clippingsMgrDetailsPane;
-      chrome.storage.local.set({ clippingsMgrDetailsPane: !currSetting });
+      return;
     }
-    else {
+
+    let tree = getClippingsTree();
+    let selectedNode = tree.activeNode;
+    if (! selectedNode) {
+      return;
+    }
+
+    if (! selectedNode.isFolder()) {
       $("#source-url-bar, #options-bar").toggle();
-      let isVisible = $("#source-url-bar, #options-bar").css("display") != "none";
-      chrome.storage.local.set({ clippingsMgrDetailsPane: isVisible });
     }
   },
 
@@ -1046,7 +1053,16 @@ function initToolbar()
     },
     items: {
       /***
-      restoreFromBkup: {
+      newFromClipboard: {
+        name: "New From Clipboard",
+        className: "ae-menuitem"
+      },
+      separator0: "--------",
+      backup: {
+        name: "Backup...",
+        className: "ae-menuitem"
+      },
+      restoreFromBackup: {
         name: "Restore From Backup...",
         className: "ae-menuitem"
       },
@@ -1071,7 +1087,10 @@ function initToolbar()
         items: {
           toggleDetailsPane: {
             name: "Details Pane",
-            className: "ae-menuitem"
+            className: "ae-menuitem",
+            disabled: function (aKey, aOpt) {
+              return isFolderSelected();
+            }
           },
           
           toggleStatusBar: {
@@ -1634,6 +1653,17 @@ function initLabelPicker()
 }
 
 
+function isFolderSelected()
+{
+  let selectedNode = getClippingsTree().activeNode;
+
+  if (! selectedNode) {
+    return undefined;
+  }
+  return selectedNode.isFolder();
+}
+
+
 function updateDisplay(aEvent, aData)
 {
   if (gIsClippingsTreeEmpty) {
@@ -1642,7 +1672,7 @@ function updateDisplay(aEvent, aData)
     return;
   }
 
-  log("Clippings/wx: clippingsMgr: Updating display...");
+  log("Clippings/wx: clippingsMgr.js: Updating display...");
 
   if (gSearchBox.isActivated()) {
     gSearchBox.updateSearch();
@@ -1660,8 +1690,7 @@ function updateDisplay(aEvent, aData)
   let selectedItemID = parseInt(aData.node.key);
 
   if (aData.node.isFolder()) {
-    let getFolder = gClippingsDB.folders.get(selectedItemID);
-    getFolder.then(aResult => {
+    gClippingsDB.folders.get(selectedItemID).then(aResult => {
       $("#clipping-name").val(aResult.name);
       $("#clipping-text").val("").hide();
 
@@ -1672,8 +1701,7 @@ function updateDisplay(aEvent, aData)
     });
   }
   else {
-    let getClipping = gClippingsDB.clippings.get(selectedItemID);
-    getClipping.then(aResult => {
+    gClippingsDB.clippings.get(selectedItemID).then(aResult => {
       $("#clipping-name").val(aResult.name);
       $("#clipping-text").val(aResult.content).show();
 
