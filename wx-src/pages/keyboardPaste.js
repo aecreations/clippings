@@ -5,7 +5,7 @@
 
 
 const WNDH_SHORTCUT_KEY = 164;
-const WNDH_SEARCH_CLIPPING = 216;
+const WNDH_SEARCH_CLIPPING = 222;
 
 let gClippings, gClippingsDB, gPasteMode;
 
