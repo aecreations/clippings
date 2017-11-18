@@ -172,6 +172,7 @@ function initAutocomplete()
 
     $("#clipping-search").on("keyup", aEvent => {
       if (aEvent.target.value == "") {
+        $("#num-matches").text("\u00a0");  /* Non-breaking space. */
         $("#clear-search").hide();
       }
       else {
@@ -181,6 +182,7 @@ function initAutocomplete()
     
     $("#clear-search").click(aEvent => {
       $("#clipping-search").val("").focus();
+      $("#num-matches").text("\u00a0");
       $("#clear-search").hide();
     });
 
