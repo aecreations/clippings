@@ -204,6 +204,11 @@ input[type="search"]::placeholder {
     cursor: default;
 }
 
+.context-menu-disabled:hover {
+    background-color: transparent;
+    color: #bbb;
+}
+
 .ae-menuitem:active {
     background-color: #ddd;
 }
