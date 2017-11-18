@@ -965,7 +965,9 @@ $(document).keypress(aEvent => {
     aeDialog.cancelDlgs();
   }
   else if (aEvent.key == "Delete") {
-    gCmd.deleteClippingOrFolder(gCmd.UNDO_STACK);
+    if (aEvent.target.tagName == "UL" && aEvent.target.classList.contains("ui-fancytree")) {
+      gCmd.deleteClippingOrFolder(gCmd.UNDO_STACK);
+    }
   }
   else if (aEvent.key.toUpperCase() == "F" && isAccelKeyPressed()) {
     aEvent.preventDefault();
