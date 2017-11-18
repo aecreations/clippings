@@ -296,14 +296,15 @@ button.btn-puffy {
 }
 
 #import-clippings-file-name {
-    width: 370px;
+    width: 380px;
     height: 24px;
     border: 0;
     padding-left: 8px;
     padding-right: 8px;
     font: caption;
     font-size: 13px !important;
-
+    text-shadow: 1px 1px white;
+    
     background-image: url("../img/tbd-edge-l.svg"), url("../img/tbd-bg.svg"), url("../img/tbd-edge-r.svg");
     background-position: left, center, right;
     background-repeat: no-repeat, repeat-x, no-repeat;
