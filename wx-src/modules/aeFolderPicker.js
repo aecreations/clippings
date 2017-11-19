@@ -23,6 +23,7 @@ class aeFolderPicker
 	key: 0,
 	folder: true,
 	expanded: true,
+        extraClasses: "ae-clippings-root",
 	children: []
       }
     ];
