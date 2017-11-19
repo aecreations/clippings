@@ -4,6 +4,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
+const DEBUG_SIMULATE_DB_ERROR = false;
+
 let gClippingsDB = null;
 let gClippings = null;
 let gParentFolderID = 0;
@@ -17,12 +19,24 @@ $(document).ready(() => {
   chrome.history.deleteUrl({ url: window.location.href });
 
   gClippings = chrome.extension.getBackgroundPage();
-
+  
   if (gClippings) {
     gClippingsDB = gClippings.getClippingsDB();
   }
   else {
-    console.error("Clippings/wx::new.js: Error initializing dialog - unable to locate parent browser window.");
+    console.error("Clippings/wx::new.js: Error initializing New Clipping dialog - unable to locate parent browser window.");
+
+    let errorMsgBox = new aeDialog("create-clipping-error-msgbox");
+    errorMsgBox.setInit(()=> {
+      let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
+      errMsgElt.text("Clippings is unable to retrieve the selected text. Make sure that Private Browsing mode is turned off, and then try again.");
+    });
+    errorMsgBox.setAccept(() => {
+      $("#btn-accept").attr("disabled", "true");
+      $("#btn-cancel").click(aEvent => { cancel(aEvent) });
+      errorMsgBox.close();
+    });
+    errorMsgBox.showModal();
     return;
   }
 
@@ -297,19 +311,39 @@ function accept(aEvent)
     shortcutKey = shortcutKeyMenu.options[shortcutKeyMenu.selectedIndex].text;
   }
 
-  let createClipping = gClippingsDB.clippings.add({
+  let errorMsgBox = new aeDialog("create-clipping-error-msgbox");
+
+  gClippingsDB.clippings.add({
     name: $("#clipping-name").val(),
     content: $("#clipping-text").val(),
     shortcutKey: shortcutKey,
     parentFolderID: gParentFolderID,
     label: "",
     sourceURL: ($("#save-source-url")[0].checked ? gSrcURL : "")
-  });
 
-  createClipping.then(aID => {
+  }).then(aID => {
+    if (DEBUG_SIMULATE_DB_ERROR) {
+      throw new Dexie.OpenFailedError;
+    }
+
     closeDlg();
-  }, aErr => {
-    window.alert("Error creating clipping: " + aErr);
+
+  }).catch("OpenFailedError", aErr => {
+    errorMsgBox.setInit(() => {
+      console.error(`Error creating clipping: ${aErr}`);
+      let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
+      errMsgElt.text("Unable to save the new clipping.  The Clippings database was not initialized.");
+    });
+    errorMsgBox.setAccept();
+    errorMsgBox.showModal();
+
+  }).catch(aErr => {
+    errorMsgBox.setInit(() => {
+      let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
+      errMsgElt.text(`Error creating clipping: ${aErr}`);
+    });
+    errorMsgBox.setAccept();
+    errorMsgBox.showModal();
   });
 }
 

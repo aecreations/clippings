@@ -170,3 +170,22 @@ ul.fancytree-container {
     z-index: 1101;
 }
 
+#create-clipping-error-msgbox {
+    --width: 360px;
+    --height: 140px;
+    top: 64px;
+}
+
+#create-clipping-error-msgbox .msgbox-error-icon {
+    float: left;
+    width: 32px;
+    height: 32px;
+    margin-top: 0;
+    margin-right: 12px;
+    background-image: url("chrome://global/skin/icons/warning-64.png");
+    background-size: contain;
+}
+
+#create-clipping-error-msgbox .msgbox-error-msg {
+    color: red;
+}
