@@ -68,7 +68,7 @@ textarea {
     height: 100%;
     background-color: white;
     z-index: 1003;
-    opacity: 0.4;
+    opacity: 0;
 }
 
 .folder-tree-popup {
