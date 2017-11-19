@@ -146,6 +146,7 @@ function initDialogs()
       that.selectedFldrNode = aFolderData.node;
       fldrPickerMnuBtn.val(aFolderData.node.key).text(aFolderData.node.title);
       fldrPickerPopup.css({ visibility: "hidden" });
+      $("#new-folder-dlg-fldr-tree-popup-bkgrd-ovl").hide();
     });
 
     fldrPickerMnuBtn.val(selectedFldrID).text(selectedFldrName);
@@ -154,9 +155,11 @@ function initDialogs()
       fldrPickerMnuBtn.click(aEvent => {
         if (fldrPickerPopup.css("visibility") == "visible") {
           fldrPickerPopup.css({ visibility: "hidden" });
+          $("#new-folder-dlg-fldr-tree-popup-bkgrd-ovl").hide();
         }
         else {
           fldrPickerPopup.css({ visibility: "visible" });
+          $("#new-folder-dlg-fldr-tree-popup-bkgrd-ovl").show();
         }
       })
       
@@ -224,14 +227,25 @@ function initDialogs()
 
 function initFolderPicker()
 {
+  // Initialize the hidden background that user can click on to dismiss an open
+  // folder picker popup.
+  $(".popup-bkgrd").click(aEvent => {
+    // TO DO: Why are we using `visibility' and not `display'??
+    $(".folder-tree-popup").css({ visibility: "hidden" });
+    $(".popup-bkgrd").hide();
+  });
+
+  // Initialize the folder picker in the main New Clipping dialog.
   $("#new-clipping-fldr-picker-menubtn").click(aEvent => {
     let popup = $("#new-clipping-fldr-tree-popup");
 
     if (popup.css("visibility") == "hidden") {
       popup.css({ visibility: "visible" });
+      $(".popup-bkgrd").show();
     }
     else {
       popup.css({ visibility: "hidden" });
+      $(".popup-bkgrd").hide();
     }
   });
 
@@ -245,6 +259,7 @@ function selectFolder(aFolderData)
   gParentFolderID = Number(aFolderData.node.key);
   $("#new-clipping-fldr-picker-menubtn").text(aFolderData.node.title).val(gParentFolderID);
   $("#new-clipping-fldr-tree-popup").css({ visibility: "hidden" });
+  $(".popup-bkgrd").hide();
 }
 
 
