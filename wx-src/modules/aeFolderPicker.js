@@ -61,6 +61,9 @@ class aeFolderPicker
           }
 	}
       });
+    }).catch(aErr => {
+      console.error("aeFolderPicker._init(): " + aErr);
+      throw aErr;
     });
   }
 
