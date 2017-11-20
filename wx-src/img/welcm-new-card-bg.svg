@@ -21,21 +21,21 @@
     <linearGradient
        id="linearGradient4097">
       <stop
-         style="stop-color:#faa967;stop-opacity:1;"
+         style="stop-color:#f3ab6f;stop-opacity:1;"
          offset="0"
          id="stop4099" />
       <stop
          id="stop4113"
          offset="0.09350391"
-         style="stop-color:#e3a571;stop-opacity:1;" />
+         style="stop-color:#e8a36a;stop-opacity:1;" />
       <stop
          id="stop4109"
          offset="0.18700783"
-         style="stop-color:#f0a05b;stop-opacity:1;" />
+         style="stop-color:#e29859;stop-opacity:1;" />
       <stop
          id="stop4107"
          offset="0.3402921"
-         style="stop-color:#ec8e3e;stop-opacity:1;" />
+         style="stop-color:#dd8f4c;stop-opacity:1;" />
       <stop
          id="stop4105"
          offset="0.51849353"
@@ -68,11 +68,11 @@
          id="stop4054" />
       <stop
          id="stop4060"
-         offset="0.26588747"
+         offset="0.13171093"
          style="stop-color:#ef9b57;stop-opacity:1;" />
       <stop
          style="stop-color:#ecb180;stop-opacity:1;"
-         offset="0.44928825"
+         offset="0.28412026"
          id="stop4062" />
       <stop
          style="stop-color:#dc863f;stop-opacity:1;"
@@ -115,8 +115,8 @@
      borderopacity="1.0"
      inkscape:pageopacity="1"
      inkscape:pageshadow="2"
-     inkscape:zoom="1"
-     inkscape:cx="155.23214"
+     inkscape:zoom="2"
+     inkscape:cx="81.115269"
      inkscape:cy="73.140758"
      inkscape:current-layer="layer1"
      showgrid="false"
