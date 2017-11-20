@@ -73,6 +73,7 @@ $(() => {
 
         if (aErr.name && aErr.name == "OpenFailedError") { 
           showModal("#private-browsing-error-msgbox");
+          browser.storage.local.set({ showWelcome: true });
         }
       });
     }
