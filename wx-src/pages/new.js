@@ -4,8 +4,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
-const DEBUG_SIMULATE_DB_ERROR = false;
-
 let gClippingsDB = null;
 let gClippings = null;
 let gParentFolderID = 0;
@@ -25,18 +23,7 @@ $(document).ready(() => {
   }
   else {
     console.error("Clippings/wx::new.js: Error initializing New Clipping dialog - unable to locate parent browser window.");
-
-    let errorMsgBox = new aeDialog("create-clipping-error-msgbox");
-    errorMsgBox.setInit(()=> {
-      let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
-      errMsgElt.text("Clippings is unable to retrieve the selected text. Make sure that Private Browsing mode is turned off, and then try again.");
-    });
-    errorMsgBox.setAccept(() => {
-      $("#btn-accept").attr("disabled", "true");
-      $("#btn-cancel").click(aEvent => { cancel(aEvent) });
-      errorMsgBox.close();
-    });
-    errorMsgBox.showModal();
+    showInitError();
     return;
   }
 
@@ -120,6 +107,28 @@ $(window).on("contextmenu", aEvent => {
     aEvent.preventDefault();
   }
 });
+
+
+// Google Chrome only.
+$(window).on("unhandledrejection", aEvent => {
+  aEvent.preventDefault();
+  showInitError();
+});
+
+
+function showInitError()
+{
+  let errorMsgBox = new aeDialog("create-clipping-error-msgbox");
+  errorMsgBox.setInit(()=> {
+    let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
+    errMsgElt.text("Clippings doesn't work when Firefox is in Private Browsing mode.  Restart Firefox with Private Browsing turned off, and then try again.");
+  });
+  errorMsgBox.setAccept(() => {
+    errorMsgBox.close();
+    closeDlg();
+  });
+  errorMsgBox.showModal();
+}
 
 
 function initDialogs()
@@ -329,10 +338,12 @@ function accept(aEvent)
     closeDlg();
 
   }).catch("OpenFailedError", aErr => {
+    // This should never happen - OpenFailedError should've been caught during
+    // dialog initialization.
     errorMsgBox.setInit(() => {
       console.error(`Error creating clipping: ${aErr}`);
       let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
-      errMsgElt.text("Unable to save the new clipping.  The Clippings database was not initialized.");
+      errMsgElt.text("Unable to save the new clipping.  Make sure that Private Browsing mode is turned off, and then try again.");
     });
     errorMsgBox.setAccept();
     errorMsgBox.showModal();

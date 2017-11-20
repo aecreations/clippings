@@ -894,16 +894,7 @@ $(document).ready(() => {
   else {
     console.error("Error initializing Clippings Manager: Unable to locate parent browser window.");
     $("#clipping-name, #clipping-text, #source-url-bar, #options-bar").hide();
-
-    let errorMsgBox = new aeDialog("init-error-msgbox");
-    errorMsgBox.setInit(() => {
-      $("#init-error-msgbox > .dlg-content > .msgbox-error-msg").text("Clippings doesn't work when Firefox is in Private Browsing mode.  Restart Firefox with Private Browsing turned off, and then try again.");
-    });
-    errorMsgBox.setAccept(() => {
-      closeWnd();
-    });
-
-    errorMsgBox.showModal();
+    showInitError();
     return;
   }
 
@@ -1556,6 +1547,7 @@ function buildClippingsTree()
     });
   }).catch(aErr => {
     console.error("Clippings/wx::buildContextMenu(): %s", aErr.message);
+    showInitError();
   });
 }
 
@@ -1828,6 +1820,20 @@ function showBanner(aMessage)
 //
 // Error reporting and debugging output
 //
+
+function showInitError()
+{
+  let errorMsgBox = new aeDialog("init-error-msgbox");
+  errorMsgBox.setInit(() => {
+    $("#init-error-msgbox > .dlg-content > .msgbox-error-msg").text("Clippings doesn't work when Firefox is in Private Browsing mode.  Restart Firefox with Private Browsing turned off, and then try again.");
+  });
+  errorMsgBox.setAccept(() => {
+    closeWnd();
+  });
+
+  errorMsgBox.showModal();
+}
+
 
 function onError(aError)
 {
