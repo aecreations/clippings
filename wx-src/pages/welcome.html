@@ -128,9 +128,7 @@
     </main>
 
     <div id="dismiss-welcome-dlg" class="lightbox">
-      <div class="icon">
-	<div class="msgbox-icon"></div>
-      </div>
+      <div class="msgbox-icon"></div>
       <div class="dlg-content">
 	<p>Are you sure you want to leave the Welcome to Clippings page?</p>
       </div>
@@ -149,9 +147,29 @@
 	<button class="dlg-accept default">Close This Page</button>
       </div>
     </div>
+
+    <div id="private-browsing-error-msgbox" class="lightbox">
+      <div class="msgbox-error-icon"></div>
+      <div class="dlg-content">
+	<p class="error-msg">Clippings can't import the backup file, because the Clippings database is not accessible.</p>
+	<div class="error-howto-fix-detail">
+	  <p>This may occur if Private Browsing mode in Firefox is turned on.  <strong>Clippings won't work in Private Browsing mode.</strong></p>
+	  <p>Make sure that Private Browsing mode is turned off, then restart Firefox and try again. If this doesn't work, follow these steps:</p>
+	  <ol>
+	    <li>Open the Firefox menu and select <span class="cmd">Help &rarr; Troubleshooting Information</span>.</li>
+	    <li>Click Refresh Firefox, then follow the prompts. Firefox will restart.</li>
+	    <li>Reinstall Clippings, and then try importing the backup file again.</li>
+	  </ol>
+	</div>
+      </div>
+      <div class="dlg-btns">
+	<button class="dlg-accept default">Close</button>
+      </div>
+    </div>
     <div id="lightbox-bkgrd-ovl" class="lightbox-bkgrd"></div>
 
     <script src="../lib/jquery.js"></script>
+    <script src="../lib/dexie/dexie.js"></script>
     <script src="../lib/rdflib.js"></script>
     <script src="../modules/aeImportExport.js"></script>
     <script src="welcome.js"></script>
