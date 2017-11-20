@@ -331,10 +331,6 @@ function accept(aEvent)
     sourceURL: ($("#save-source-url")[0].checked ? gSrcURL : "")
 
   }).then(aID => {
-    if (DEBUG_SIMULATE_DB_ERROR) {
-      throw new Dexie.OpenFailedError;
-    }
-
     closeDlg();
 
   }).catch("OpenFailedError", aErr => {
