@@ -785,14 +785,21 @@ let gCmd = {
   
   showHideDetailsPane: function ()
   {
+    let currSetting = gClippings.getPrefs().clippingsMgrDetailsPane;
+    chrome.storage.local.set({ clippingsMgrDetailsPane: !currSetting });
+
     if (gIsClippingsTreeEmpty) {
-      let currSetting = gClippings.getPrefs().clippingsMgrDetailsPane;
-      chrome.storage.local.set({ clippingsMgrDetailsPane: !currSetting });
+      return;
     }
-    else {
+
+    let tree = getClippingsTree();
+    let selectedNode = tree.activeNode;
+    if (! selectedNode) {
+      return;
+    }
+
+    if (! selectedNode.isFolder()) {
       $("#source-url-bar, #options-bar").toggle();
-      let isVisible = $("#source-url-bar, #options-bar").css("display") != "none";
-      chrome.storage.local.set({ clippingsMgrDetailsPane: isVisible });
     }
   },
 
@@ -885,7 +892,10 @@ $(document).ready(() => {
     log("Clippings/wx: clippingsMgr: Successfully opened Clippings DB");
   }
   else {
-    showBanner("Error initializing Clippings Manager: Unable to locate parent browser window.");
+    console.error("Error initializing Clippings Manager: Unable to locate parent browser window.");
+    $("#clipping-name, #clipping-text, #source-url-bar, #options-bar").hide();
+    showInitError();
+    return;
   }
 
   chrome.runtime.getPlatformInfo(aInfo => { gOS = aInfo.os; });
@@ -933,6 +943,11 @@ $(window).on("beforeunload", () => {
 
 // Keyboard event handler
 $(document).keypress(aEvent => {
+  if (! gClippings) {
+    // Clippings Manager initialization failed.
+    return;
+  }
+  
   const isMacOS = gClippings.getOS() == "mac";
 
   function isAccelKeyPressed()
@@ -965,7 +980,9 @@ $(document).keypress(aEvent => {
     aeDialog.cancelDlgs();
   }
   else if (aEvent.key == "Delete") {
-    gCmd.deleteClippingOrFolder(gCmd.UNDO_STACK);
+    if (aEvent.target.tagName == "UL" && aEvent.target.classList.contains("ui-fancytree")) {
+      gCmd.deleteClippingOrFolder(gCmd.UNDO_STACK);
+    }
   }
   else if (aEvent.key.toUpperCase() == "F" && isAccelKeyPressed()) {
     aEvent.preventDefault();
@@ -1044,7 +1061,16 @@ function initToolbar()
     },
     items: {
       /***
-      restoreFromBkup: {
+      newFromClipboard: {
+        name: "New From Clipboard",
+        className: "ae-menuitem"
+      },
+      separator0: "--------",
+      backup: {
+        name: "Backup...",
+        className: "ae-menuitem"
+      },
+      restoreFromBackup: {
         name: "Restore From Backup...",
         className: "ae-menuitem"
       },
@@ -1069,7 +1095,10 @@ function initToolbar()
         items: {
           toggleDetailsPane: {
             name: "Details Pane",
-            className: "ae-menuitem"
+            className: "ae-menuitem",
+            disabled: function (aKey, aOpt) {
+              return isFolderSelected();
+            }
           },
           
           toggleStatusBar: {
@@ -1518,6 +1547,7 @@ function buildClippingsTree()
     });
   }).catch(aErr => {
     console.error("Clippings/wx::buildContextMenu(): %s", aErr.message);
+    showInitError();
   });
 }
 
@@ -1632,6 +1662,17 @@ function initLabelPicker()
 }
 
 
+function isFolderSelected()
+{
+  let selectedNode = getClippingsTree().activeNode;
+
+  if (! selectedNode) {
+    return undefined;
+  }
+  return selectedNode.isFolder();
+}
+
+
 function updateDisplay(aEvent, aData)
 {
   if (gIsClippingsTreeEmpty) {
@@ -1640,7 +1681,7 @@ function updateDisplay(aEvent, aData)
     return;
   }
 
-  log("Clippings/wx: clippingsMgr: Updating display...");
+  log("Clippings/wx: clippingsMgr.js: Updating display...");
 
   if (gSearchBox.isActivated()) {
     gSearchBox.updateSearch();
@@ -1658,8 +1699,7 @@ function updateDisplay(aEvent, aData)
   let selectedItemID = parseInt(aData.node.key);
 
   if (aData.node.isFolder()) {
-    let getFolder = gClippingsDB.folders.get(selectedItemID);
-    getFolder.then(aResult => {
+    gClippingsDB.folders.get(selectedItemID).then(aResult => {
       $("#clipping-name").val(aResult.name);
       $("#clipping-text").val("").hide();
 
@@ -1670,8 +1710,7 @@ function updateDisplay(aEvent, aData)
     });
   }
   else {
-    let getClipping = gClippingsDB.clippings.get(selectedItemID);
-    getClipping.then(aResult => {
+    gClippingsDB.clippings.get(selectedItemID).then(aResult => {
       $("#clipping-name").val(aResult.name);
       $("#clipping-text").val(aResult.content).show();
 
@@ -1761,6 +1800,12 @@ function purgeDeletedItems(aFolderID)
 }
 
 
+function closeWnd()
+{
+  chrome.windows.remove(chrome.windows.WINDOW_ID_CURRENT);
+}
+
+
 function showBanner(aMessage)
 {
   let bannerElt = $("#banner");
@@ -1769,6 +1814,24 @@ function showBanner(aMessage)
   bannerMsgElt.children().remove();
   bannerMsgElt.text(aMessage);
   bannerElt.css("display", "block");
+}
+
+
+//
+// Error reporting and debugging output
+//
+
+function showInitError()
+{
+  let errorMsgBox = new aeDialog("init-error-msgbox");
+  errorMsgBox.setInit(() => {
+    $("#init-error-msgbox > .dlg-content > .msgbox-error-msg").text("Clippings doesn't work when Firefox is in Private Browsing mode.  Restart Firefox with Private Browsing turned off, and then try again.");
+  });
+  errorMsgBox.setAccept(() => {
+    closeWnd();
+  });
+
+  errorMsgBox.showModal();
 }
 
 

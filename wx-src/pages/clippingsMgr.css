@@ -204,6 +204,11 @@ input[type="search"]::placeholder {
     cursor: default;
 }
 
+.context-menu-disabled:hover {
+    background-color: transparent;
+    color: #bbb;
+}
+
 .ae-menuitem:active {
     background-color: #ddd;
 }
@@ -614,6 +619,14 @@ ul.fancytree-container {
 
 #move-dlg #move-error {
     margin: 4px 0 4px 0;
+    color: red;
+}
+
+#init-error-msgbox {
+    top: 64px;
+}
+
+#init-error-msgbox > .dlg-content > .msgbox-error-msg {
     color: red;
 }
 

@@ -4,6 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
+const DEBUG = false;
 const HTMLPASTE_AS_FORMATTED = 1;
 const HTMLPASTE_AS_IS = 2;
 
@@ -17,13 +18,13 @@ function handleRequestNewClipping(aRequest)
   let rv = null;
 
   if (! document.hasFocus()) {
-    console.warn("Clippings/wx::content.js:handleRequestNewClipping(): This web page does not have the focus; exiting message handler.");
+    warn("Clippings/wx::content.js:handleRequestNewClipping(): This web page does not have the focus; exiting message handler.");
     return rv;
   }
 
   let activeElt = window.document.activeElement;
 
-  console.log("Clippings/wx::content.js::handleRequestNewClipping(): activeElt = " + (activeElt ? activeElt.toString() : "???"));
+  log("Clippings/wx::content.js::handleRequestNewClipping(): activeElt = " + (activeElt ? activeElt.toString() : "???"));
 
   if (isElementOfType(activeElt, "HTMLInputElement")
       || isElementOfType(activeElt, "HTMLTextAreaElement")) {
@@ -85,7 +86,7 @@ function handleRequestNewClipping(aRequest)
       rv.content = "";
     }
 
-    console.info("Content retrieved from " + activeElt.toString() + ":\n" + rv.content);
+    info("Content retrieved from " + activeElt.toString() + ":\n" + rv.content);
   }
   
   return rv;
@@ -97,7 +98,7 @@ function handleRequestInsertClipping(aRequest)
   let rv = null;
 
   if (! document.hasFocus()) {
-    console.warn("Clippings/wx::content.js:handleRequestInsertClipping(): This web page does not have the focus; exiting message handler.");
+    warn("Clippings/wx::content.js:handleRequestInsertClipping(): This web page does not have the focus; exiting message handler.");
     return rv;
   }
 
@@ -106,7 +107,7 @@ function handleRequestInsertClipping(aRequest)
   let autoLineBrk = aRequest.autoLineBreak;
   let activeElt = window.document.activeElement;
 
-  console.log("Clippings/wx::content.js::handleRequestInsertClipping(): activeElt = " + (activeElt ? activeElt.toString() : "???"));  
+  log("Clippings/wx::content.js::handleRequestInsertClipping(): activeElt = " + (activeElt ? activeElt.toString() : "???"));  
 
   if (isElementOfType(activeElt, "HTMLInputElement")
       || isElementOfType(activeElt, "HTMLTextAreaElement")) {
@@ -143,7 +144,7 @@ function isElementOfType(aElement, aTypeStr)
 
 function insertTextIntoTextbox(aTextboxElt, aInsertedText)
 {
-  console.log("Clippings/wx: insertTextIntoTextbox()");
+  log("Clippings/wx: insertTextIntoTextbox()");
   
   var text, pre, post, pos;
   text = aTextboxElt.value;
@@ -172,7 +173,7 @@ function insertTextIntoTextbox(aTextboxElt, aInsertedText)
 
 function insertTextIntoRichTextEditor(aRichTextEditorDocument, aClippingText, aAutoLineBreak, aPasteMode)
 {
-  console.log("Clippings/wx: insertTextIntoRichTextEditor()");
+  log("Clippings/wx: insertTextIntoRichTextEditor()");
 
   let hasHTMLTags = aClippingText.search(/<[a-z1-6]+( [a-z]+(\="?.*"?)?)*>/i) != -1;
   let hasRestrictedHTMLTags = aClippingText.search(/<\?|<%|<!DOCTYPE|(<\b(html|head|body|meta|script|applet|embed|object|i?frame|frameset)\b)/i) != -1;
@@ -226,12 +227,12 @@ function isGoogleChrome()
 
 function init()
 {
-  console.log("Clippings/wx::content.js: Initializing content script for:\n%s", window.location.href);
-  console.log("Document body element: %s (DOM nodeName=%s)", document.body, document.body.nodeName);
+  log("Clippings/wx::content.js: Initializing content script for:\n%s", window.location.href);
+  log("Document body element: %s (DOM nodeName=%s)", document.body, document.body.nodeName);
 
   if (isGoogleChrome()) {
     chrome.runtime.onMessage.addListener((aRequest, aSender, aSendResponse) => {
-      console.log("Clippings/wx::content.js: Received message '" + aRequest.msgID + "' from Chrome extension.\n" + window.location.href);
+      log("Clippings/wx::content.js: Received message '" + aRequest.msgID + "' from Chrome extension.\n" + window.location.href);
 
       let resp = null;
   
@@ -250,7 +251,7 @@ function init()
   else {
     // Firefox
     browser.runtime.onMessage.addListener(aRequest => {
-      console.log("Clippings/wx::content.js: Received message '%s' from extension.\n%s", aRequest.msgID, window.location.href);
+      log("Clippings/wx::content.js: Received message '%s' from extension.\n%s", aRequest.msgID, window.location.href);
 
       let resp = null;
   
@@ -271,3 +272,29 @@ function init()
 init();
 
 
+//
+// Error reporting and debugging output
+//
+
+function onError(aError)
+{
+  console.error("Clippings/wx::content.js: " + aError);
+}
+
+
+function log(aMessage)
+{
+  if (DEBUG) { console.log(aMessage); }
+}
+
+
+function info(aMessage)
+{
+  if (DEBUG) { console.info(aMessage); }
+}
+
+
+function warn(aMessage)
+{
+  if (DEBUG) { console.warn(aMessage); }
+}

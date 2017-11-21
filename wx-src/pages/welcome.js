@@ -46,6 +46,8 @@ $(() => {
   gClippings = chrome.extension.getBackgroundPage();
 
   if (! gClippings) {
+    showModal("#private-browsing-error-msgbox");
+    
     throw new Error("Clippings/wx: welcome.js: Failed to retrieve parent browser window!");
   }
 
@@ -62,8 +64,24 @@ $(() => {
   clippingsListeners.add(gClippingsListener);
   
   $("#goto-import-bkup").click(aEvent => {
+    function initImportPg() {
+      verifyDB().then(aNumClippings => {
+        console.log(`Clippings/wx: welcome.js: Database verification successful (${aNumClippings} clippings in database).`);
+
+      }).catch(aErr => {
+        console.error("Clippings/wx: welcome.js: $(#goto-import-bkup).click()::initImportPg(): " + aErr);
+
+        if (aErr.name && aErr.name == "OpenFailedError") { 
+          showModal("#private-browsing-error-msgbox");
+          browser.storage.local.set({ showWelcome: true });
+        }
+      });
+    }
+    
     $("#welcome-pg").hide();
     $("#select-backup-file-pg").fadeIn("slow");
+
+    window.setTimeout(() => { initImportPg() }, 800);
   });
 
   $("#goto-quick-start").click(aEvent => {
@@ -73,7 +91,7 @@ $(() => {
   $("#dismiss-welcome").click(aEvent => {
     showModal("#dismiss-welcome-dlg");
   });
-  
+
   $("#toggle-no-backup-help").click(aEvent => {
     if ($("#no-backup-help:hidden").length > 0) {
       $("#toggle-no-backup-help > .expander-icon").text("\u25bc ");
@@ -216,9 +234,26 @@ function resetSelectBackupFilePageState()
   $("#toggle-no-backup-help > .expander-icon").text("\u25b6 ");
 }
 
+
+function verifyDB()
+{
+  return new Promise((aFnResolve, aFnReject) => {
+    let numClippings;
+
+    gClippingsDB.clippings.count(aNumItems => {
+      numClippings = aNumItems;
+    }).then(() => {
+      aFnResolve(numClippings);
+    }).catch(aErr => {
+      aFnReject(aErr);
+    });
+  });
+}
+
+
 function initDialogs()
 {
-  $("#skip-import-dlg .dlg-accept, #dismiss-welcome-dlg .dlg-accept").click(aEvent => {
+  $("#skip-import-dlg .dlg-accept, #dismiss-welcome-dlg .dlg-accept, #private-browsing-error-msgbox .dlg-accept").click(aEvent => {
     closePage();
   });
 

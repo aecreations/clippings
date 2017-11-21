@@ -23,6 +23,11 @@
     background-image: url("../img/folder-open.svg");
 }
 
+.ui-fancytree .ae-clippings-root > .fancytree-icon {
+    background-position: unset;
+    background-image: url("../img/clippings-root.svg");    
+}
+
 /* Tree icons for clippings with labels */
 .ui-fancytree .ae-clipping-label-red > .fancytree-icon {
     background-position: unset;

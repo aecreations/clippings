@@ -319,11 +319,11 @@ span.fancytree-node {
 }
 span.fancytree-title {
   color: black;
-  cursor: pointer;
+  cursor: default;
   display: inline-block;
   vertical-align: top;
   min-height: 20px;
-  padding: 0 3px 0 3px;
+  padding: 1px 3px 0 3px;
   margin: 0px 0 0 3px;
   border: 1px solid transparent;
   -webkit-border-radius: 0px;

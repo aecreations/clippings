@@ -17,12 +17,13 @@ $(document).ready(() => {
   chrome.history.deleteUrl({ url: window.location.href });
 
   gClippings = chrome.extension.getBackgroundPage();
-
+  
   if (gClippings) {
     gClippingsDB = gClippings.getClippingsDB();
   }
   else {
-    console.error("Clippings/wx::new.js: Error initializing dialog - unable to locate parent browser window.");
+    console.error("Clippings/wx::new.js: Error initializing New Clipping dialog - unable to locate parent browser window.");
+    showInitError();
     return;
   }
 
@@ -108,6 +109,28 @@ $(window).on("contextmenu", aEvent => {
 });
 
 
+// Google Chrome only.
+$(window).on("unhandledrejection", aEvent => {
+  aEvent.preventDefault();
+  showInitError();
+});
+
+
+function showInitError()
+{
+  let errorMsgBox = new aeDialog("create-clipping-error-msgbox");
+  errorMsgBox.setInit(()=> {
+    let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
+    errMsgElt.text("Clippings doesn't work when Firefox is in Private Browsing mode.  Restart Firefox with Private Browsing turned off, and then try again.");
+  });
+  errorMsgBox.setAccept(() => {
+    errorMsgBox.close();
+    closeDlg();
+  });
+  errorMsgBox.showModal();
+}
+
+
 function initDialogs()
 {
   gNewFolderDlg = new aeDialog("new-folder-dlg");
@@ -146,6 +169,7 @@ function initDialogs()
       that.selectedFldrNode = aFolderData.node;
       fldrPickerMnuBtn.val(aFolderData.node.key).text(aFolderData.node.title);
       fldrPickerPopup.css({ visibility: "hidden" });
+      $("#new-folder-dlg-fldr-tree-popup-bkgrd-ovl").hide();
     });
 
     fldrPickerMnuBtn.val(selectedFldrID).text(selectedFldrName);
@@ -154,9 +178,11 @@ function initDialogs()
       fldrPickerMnuBtn.click(aEvent => {
         if (fldrPickerPopup.css("visibility") == "visible") {
           fldrPickerPopup.css({ visibility: "hidden" });
+          $("#new-folder-dlg-fldr-tree-popup-bkgrd-ovl").hide();
         }
         else {
           fldrPickerPopup.css({ visibility: "visible" });
+          $("#new-folder-dlg-fldr-tree-popup-bkgrd-ovl").show();
         }
       })
       
@@ -224,14 +250,25 @@ function initDialogs()
 
 function initFolderPicker()
 {
+  // Initialize the hidden background that user can click on to dismiss an open
+  // folder picker popup.
+  $(".popup-bkgrd").click(aEvent => {
+    // TO DO: Why are we using `visibility' and not `display'??
+    $(".folder-tree-popup").css({ visibility: "hidden" });
+    $(".popup-bkgrd").hide();
+  });
+
+  // Initialize the folder picker in the main New Clipping dialog.
   $("#new-clipping-fldr-picker-menubtn").click(aEvent => {
     let popup = $("#new-clipping-fldr-tree-popup");
 
     if (popup.css("visibility") == "hidden") {
       popup.css({ visibility: "visible" });
+      $(".popup-bkgrd").show();
     }
     else {
       popup.css({ visibility: "hidden" });
+      $(".popup-bkgrd").hide();
     }
   });
 
@@ -245,6 +282,7 @@ function selectFolder(aFolderData)
   gParentFolderID = Number(aFolderData.node.key);
   $("#new-clipping-fldr-picker-menubtn").text(aFolderData.node.title).val(gParentFolderID);
   $("#new-clipping-fldr-tree-popup").css({ visibility: "hidden" });
+  $(".popup-bkgrd").hide();
 }
 
 
@@ -282,19 +320,37 @@ function accept(aEvent)
     shortcutKey = shortcutKeyMenu.options[shortcutKeyMenu.selectedIndex].text;
   }
 
-  let createClipping = gClippingsDB.clippings.add({
+  let errorMsgBox = new aeDialog("create-clipping-error-msgbox");
+
+  gClippingsDB.clippings.add({
     name: $("#clipping-name").val(),
     content: $("#clipping-text").val(),
     shortcutKey: shortcutKey,
     parentFolderID: gParentFolderID,
     label: "",
     sourceURL: ($("#save-source-url")[0].checked ? gSrcURL : "")
-  });
 
-  createClipping.then(aID => {
+  }).then(aID => {
     closeDlg();
-  }, aErr => {
-    window.alert("Error creating clipping: " + aErr);
+
+  }).catch("OpenFailedError", aErr => {
+    // This should never happen - OpenFailedError should've been caught during
+    // dialog initialization.
+    errorMsgBox.setInit(() => {
+      console.error(`Error creating clipping: ${aErr}`);
+      let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
+      errMsgElt.text("Unable to save the new clipping.  Make sure that Private Browsing mode is turned off, and then try again.");
+    });
+    errorMsgBox.setAccept();
+    errorMsgBox.showModal();
+
+  }).catch(aErr => {
+    errorMsgBox.setInit(() => {
+      let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
+      errMsgElt.text(`Error creating clipping: ${aErr}`);
+    });
+    errorMsgBox.setAccept();
+    errorMsgBox.showModal();
   });
 }
 
