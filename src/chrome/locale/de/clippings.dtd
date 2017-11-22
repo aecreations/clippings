@@ -283,4 +283,4 @@
 <!ENTITY closeButton.label "Schließen">
 <!ENTITY closeButton.accesskey "S">
 <!ENTITY errorNoClipboardContent.desc "Die Zwischenablage ist leer oder enthält keine Textdaten.">
-<!ENTITY wxComing.desc "Clippings 6 kommt bald! Für weitere Informnationen zur Vorbereitung für die Aktualisierung, hier klicken.">
+<!ENTITY wxComing.desc "Clippings 6 ist jetzt verfügbar! Für weitere Informnationen zur Vorbereitung für die Aktualisierung, hier klicken.">
