@@ -614,7 +614,9 @@ window.aecreations.clippings = {
         oldBkupDir.renameTo(null, this.aeConstants.BACKUP_DIR_NAME);
       }
       catch (e) {
-        this.aeUtils.alertEx(this.strBundle.getString("appName"), e);
+        this.aeUtils.log(e);
+        this.aeUtils.alertEx(this.strBundle.getString("appName"),
+                             this.strBundle.getFormattedString("bkupFldrRenameError", [this.aeUtils.getFilePathFromURL(dataSrcPathURL)]));
       }
     }
 
