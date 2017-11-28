@@ -6,9 +6,9 @@
 
 class aeDialog
 {
-  constructor(aDlgID)
+  constructor(aDlgEltSelector)
   {
-    this._dlgID = aDlgID;
+    this._dlgEltStor = aDlgEltSelector;
     this._fnInit = function () {};
     this._fnUnload = function () {};
     this._fnAfterDlgAccept = function () {};
@@ -31,7 +31,7 @@ class aeDialog
   
   setAccept(aFnAccept)
   {
-    $(`#${this._dlgID} > .dlg-btns > .dlg-accept`).click(aEvent => {
+    $(`${this._dlgEltStor} > .dlg-btns > .dlg-accept`).click(aEvent => {
       if (aEvent.target.disabled) {
         return;
       }
@@ -48,7 +48,7 @@ class aeDialog
 
   setCancel(aFnCancel)
   {
-    $(`#${this._dlgID} > .dlg-btns > .dlg-cancel`).click(aEvent => {
+    $(`${this._dlgEltStor} > .dlg-btns > .dlg-cancel`).click(aEvent => {
       if (aEvent.target.disabled) {
         return;
       }
@@ -66,13 +66,13 @@ class aeDialog
   {
     this._fnInit();
     $("#lightbox-bkgrd-ovl").addClass("lightbox-show");
-    $(`#${this._dlgID}`).addClass("lightbox-show");
+    $(`${this._dlgEltStor}`).addClass("lightbox-show");
   }
 
   close()
   {
     this._fnUnload();
-    $(`#${this._dlgID}`).removeClass("lightbox-show");
+    $(`${this._dlgEltStor}`).removeClass("lightbox-show");
     $("#lightbox-bkgrd-ovl").removeClass("lightbox-show");
   }
 

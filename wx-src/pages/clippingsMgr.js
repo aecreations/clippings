@@ -1169,7 +1169,7 @@ function initDialogs()
   
   aeImportExport.setDatabase(gClippingsDB);
 
-  gDialogs.shctKeyConflict = new aeDialog("shortcut-key-conflict-msgbox");
+  gDialogs.shctKeyConflict = new aeDialog("#shortcut-key-conflict-msgbox");
   gDialogs.shctKeyConflict.setAccept(aEvent => {
     gDialogs.shctKeyConflict.close();
 
@@ -1177,7 +1177,7 @@ function initDialogs()
     $("#clipping-key")[0].selectedIndex = gShortcutKey.getPrevSelectedIndex();
   });
 
-  gDialogs.importFromFile = new aeDialog("import-dlg");
+  gDialogs.importFromFile = new aeDialog("#import-dlg");
   gDialogs.importFromFile.setInit(() => {
     $("#import-dlg button.dlg-accept").attr("disabled", "true");
     
@@ -1237,7 +1237,7 @@ function initDialogs()
     uploadImportFile(inputFileElt.files);
   });
 
-  gDialogs.exportToFile = new aeDialog("export-dlg");
+  gDialogs.exportToFile = new aeDialog("#export-dlg");
   gDialogs.exportToFile.FMT_CLIPPINGS_WX = 0;
   gDialogs.exportToFile.FMT_HTML = 1;
   
@@ -1308,7 +1308,7 @@ function initDialogs()
     }
   });
 
-  gDialogs.removeAllSrcURLs = new aeDialog("remove-all-source-urls-dlg");
+  gDialogs.removeAllSrcURLs = new aeDialog("#remove-all-source-urls-dlg");
   gDialogs.removeAllSrcURLs.setCancel();
   gDialogs.removeAllSrcURLs.setAccept();
   gDialogs.removeAllSrcURLs.setAfterAccept(() => {
@@ -1318,7 +1318,7 @@ function initDialogs()
     });
   });
 
-  gDialogs.moveTo = new aeDialog("move-dlg");
+  gDialogs.moveTo = new aeDialog("#move-dlg");
   gDialogs.moveTo.fldrTree = null;
   gDialogs.moveTo.selectedFldrNode = null;
 
@@ -1412,9 +1412,9 @@ function initDialogs()
     that.close();
   });
 
-  gDialogs.miniHelp = new aeDialog("mini-help-dlg");
+  gDialogs.miniHelp = new aeDialog("#mini-help-dlg");
   gDialogs.miniHelp.setCancel();
-  gDialogs.genericMsgBox = new aeDialog("generic-msg-box");
+  gDialogs.genericMsgBox = new aeDialog("#generic-msg-box");
   gDialogs.genericMsgBox.setCancel();
 }
 
@@ -1823,7 +1823,7 @@ function showBanner(aMessage)
 
 function showInitError()
 {
-  let errorMsgBox = new aeDialog("init-error-msgbox");
+  let errorMsgBox = new aeDialog("#init-error-msgbox");
   errorMsgBox.setInit(() => {
     $("#init-error-msgbox > .dlg-content > .msgbox-error-msg").text("Clippings doesn't work when Firefox is in Private Browsing mode.  Restart Firefox with Private Browsing turned off, and then try again.");
   });

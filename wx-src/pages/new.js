@@ -118,7 +118,7 @@ $(window).on("unhandledrejection", aEvent => {
 
 function showInitError()
 {
-  let errorMsgBox = new aeDialog("create-clipping-error-msgbox");
+  let errorMsgBox = new aeDialog("#create-clipping-error-msgbox");
   errorMsgBox.setInit(()=> {
     let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
     errMsgElt.text("Clippings doesn't work when Firefox is in Private Browsing mode.  Restart Firefox with Private Browsing turned off, and then try again.");
@@ -133,7 +133,7 @@ function showInitError()
 
 function initDialogs()
 {
-  gNewFolderDlg = new aeDialog("new-folder-dlg");
+  gNewFolderDlg = new aeDialog("#new-folder-dlg");
   gNewFolderDlg.firstInit = true;
   gNewFolderDlg.fldrTree = null;
   gNewFolderDlg.selectedFldrNode = null;
@@ -320,7 +320,7 @@ function accept(aEvent)
     shortcutKey = shortcutKeyMenu.options[shortcutKeyMenu.selectedIndex].text;
   }
 
-  let errorMsgBox = new aeDialog("create-clipping-error-msgbox");
+  let errorMsgBox = new aeDialog("#create-clipping-error-msgbox");
 
   gClippingsDB.clippings.add({
     name: $("#clipping-name").val(),
