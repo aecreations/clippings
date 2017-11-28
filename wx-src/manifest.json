@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Clippings",
     "description": "Save frequently-entered text for pasting later.",
-    "version": "6.0.1",
+    "version": "6.0.1+",
     "homepage_url": "http://aecreations.sourceforge.net/clippings/index.php",
     "author": "AE Creations",
     
