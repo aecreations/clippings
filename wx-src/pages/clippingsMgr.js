@@ -1193,7 +1193,6 @@ function initDialogs()
     $("#import-dlg #import-clippings-file-upload").val("");
     $("#import-clippings-replc-shct-keys")[0].checked = true;
   });
-  gDialogs.importFromFile.setCancel();
   gDialogs.importFromFile.setAccept(aEvent => {
     function uploadImportFile(aFileList) {
       if (aFileList.length == 0) {
@@ -1263,8 +1262,7 @@ function initDialogs()
     $("#format-description").text(fmtDesc[gDialogs.exportToFile.FMT_CLIPPINGS_WX]);
     $("#include-src-urls").prop("checked", true);
   });
-  gDialogs.exportToFile.setCancel();
-  gDialogs.exportToFile.setAccept();
+
   gDialogs.exportToFile.setAfterAccept(() => {
     function saveToFile(aBlobData, aFilename)
     {
@@ -1309,8 +1307,6 @@ function initDialogs()
   });
 
   gDialogs.removeAllSrcURLs = new aeDialog("#remove-all-source-urls-dlg");
-  gDialogs.removeAllSrcURLs.setCancel();
-  gDialogs.removeAllSrcURLs.setAccept();
   gDialogs.removeAllSrcURLs.setAfterAccept(() => {
     gClippingsDB.clippings.toCollection().modify({ sourceURL: "" }).then(aNumUpd => {
       // TO DO: Put this in a notification box.
@@ -1360,12 +1356,12 @@ function initDialogs()
     }
   });
 
-  gDialogs.moveTo.setCancel(() => {
+  gDialogs.moveTo.setCancel(aEvent => {
     that.resetTree();
     that.close();
   });
 
-  gDialogs.moveTo.setAccept(() => {
+  gDialogs.moveTo.setAccept(aEvent => {
     let clippingsMgrTree = getClippingsTree();
     let selectedNode = clippingsMgrTree.activeNode;
     let id = parseInt(selectedNode.key);
@@ -1413,9 +1409,7 @@ function initDialogs()
   });
 
   gDialogs.miniHelp = new aeDialog("#mini-help-dlg");
-  gDialogs.miniHelp.setCancel();
   gDialogs.genericMsgBox = new aeDialog("#generic-msg-box");
-  gDialogs.genericMsgBox.setCancel();
 }
 
 

@@ -12,8 +12,42 @@ class aeDialog
     this._fnInit = function () {};
     this._fnUnload = function () {};
     this._fnAfterDlgAccept = function () {};
+
+    this._fnDlgAccept = function (aEvent) {
+      this.close();
+    };
+    
+    this._fnDlgCancel = function (aEvent) {
+      this.close();
+    };
+
+    this._init();
   }
 
+  _init()
+  {
+    let dlgAcceptElt = $(`${this._dlgEltStor} > .dlg-btns > .dlg-accept`);
+    if (dlgAcceptElt.length > 0) {
+      dlgAcceptElt.click(aEvent => {
+        if (aEvent.target.disabled) {
+          return;
+        }
+        this._fnDlgAccept(aEvent);
+        this._fnAfterDlgAccept();
+      });
+    }
+
+    let dlgCancelElt = $(`${this._dlgEltStor} > .dlg-btns > .dlg-cancel`);
+    if (dlgCancelElt.length > 0) {
+      dlgCancelElt.click(aEvent => {
+        if (aEvent.target.disabled) {
+          return;
+        }
+        this._fnDlgCancel(aEvent);
+      });
+    }
+  }
+  
   setInit(aFnInit)
   {
     this._fnInit = aFnInit;
@@ -31,35 +65,12 @@ class aeDialog
   
   setAccept(aFnAccept)
   {
-    $(`${this._dlgEltStor} > .dlg-btns > .dlg-accept`).click(aEvent => {
-      if (aEvent.target.disabled) {
-        return;
-      }
-      
-      if (aFnAccept) {
-        aFnAccept(aEvent);
-      }
-      else {
-        this.close();
-      }
-      this._fnAfterDlgAccept();
-    });
+    this._fnDlgAccept = aFnAccept;
   }
 
   setCancel(aFnCancel)
   {
-    $(`${this._dlgEltStor} > .dlg-btns > .dlg-cancel`).click(aEvent => {
-      if (aEvent.target.disabled) {
-        return;
-      }
-
-      if (aFnCancel) {
-        aFnCancel(aEvent);
-      }
-      else {
-        this.close();
-      }
-    });
+    this._fnDlgCancel = aFnCancel;    
   }
 
   showModal()

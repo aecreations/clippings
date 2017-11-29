@@ -119,7 +119,7 @@ $(window).on("unhandledrejection", aEvent => {
 function showInitError()
 {
   let errorMsgBox = new aeDialog("#create-clipping-error-msgbox");
-  errorMsgBox.setInit(()=> {
+  errorMsgBox.setInit(() => {
     let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
     errMsgElt.text("Clippings doesn't work when Firefox is in Private Browsing mode.  Restart Firefox with Private Browsing turned off, and then try again.");
   });
@@ -198,7 +198,6 @@ function initDialogs()
     $("#new-fldr-name").val("New Folder").select().focus();
   });
   
-  gNewFolderDlg.setCancel();
   gNewFolderDlg.setAccept(aEvent => {
     let newFldrDlgTree = that.fldrTree.getTree();
     let parentFldrID = aeConst.ROOT_FOLDER_ID;
