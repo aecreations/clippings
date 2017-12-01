@@ -1170,15 +1170,15 @@ function initDialogs()
   aeImportExport.setDatabase(gClippingsDB);
 
   gDialogs.shctKeyConflict = new aeDialog("#shortcut-key-conflict-msgbox");
-  gDialogs.shctKeyConflict.setAccept(aEvent => {
+  gDialogs.shctKeyConflict.onAccept = aEvent => {
     gDialogs.shctKeyConflict.close();
 
     // NOTE: As of Firefox 57b8, this doesn't do anything.
     $("#clipping-key")[0].selectedIndex = gShortcutKey.getPrevSelectedIndex();
-  });
+  };
 
   gDialogs.importFromFile = new aeDialog("#import-dlg");
-  gDialogs.importFromFile.setInit(() => {
+  gDialogs.importFromFile.onInit = () => {
     $("#import-dlg button.dlg-accept").attr("disabled", "true");
     
     $("#import-clippings-file-upload").on("change", aEvent => {
@@ -1187,13 +1187,13 @@ function initDialogs()
         $("#import-dlg button.dlg-accept").removeAttr("disabled");
       }
     });
-  });
-  gDialogs.importFromFile.setUnload(() => {
+  };
+  gDialogs.importFromFile.onUnload = () => {
     $("#import-error").text("").hide();
     $("#import-dlg #import-clippings-file-upload").val("");
     $("#import-clippings-replc-shct-keys")[0].checked = true;
-  });
-  gDialogs.importFromFile.setAccept(aEvent => {
+  };
+  gDialogs.importFromFile.onAccept = aEvent => {
     function uploadImportFile(aFileList) {
       if (aFileList.length == 0) {
         return;
@@ -1234,13 +1234,13 @@ function initDialogs()
 
     let inputFileElt = $("#import-clippings-file-upload")[0];
     uploadImportFile(inputFileElt.files);
-  });
+  };
 
   gDialogs.exportToFile = new aeDialog("#export-dlg");
   gDialogs.exportToFile.FMT_CLIPPINGS_WX = 0;
   gDialogs.exportToFile.FMT_HTML = 1;
   
-  gDialogs.exportToFile.setInit(() => {
+  gDialogs.exportToFile.onInit = () => {
     let fmtDesc = [
       "The default format for backing up and exchanging Clippings data with other users or multiple computers.  Requires Clippings 5.5 or newer installed.",
       "Exports your Clippings data as an HTML document for printing or display in a web browser."
@@ -1261,9 +1261,9 @@ function initDialogs()
     $("#export-format-list")[0].selectedIndex = gDialogs.exportToFile.FMT_CLIPPINGS_WX;
     $("#format-description").text(fmtDesc[gDialogs.exportToFile.FMT_CLIPPINGS_WX]);
     $("#include-src-urls").prop("checked", true);
-  });
+  };
 
-  gDialogs.exportToFile.setAfterAccept(() => {
+  gDialogs.exportToFile.onAfterAccept = () => {
     function saveToFile(aBlobData, aFilename)
     {
       browser.downloads.download({
@@ -1304,15 +1304,15 @@ function initDialogs()
         saveToFile(blobData, aeConst.HTML_EXPORT_FILENAME);
       });
     }
-  });
+  };
 
   gDialogs.removeAllSrcURLs = new aeDialog("#remove-all-source-urls-dlg");
-  gDialogs.removeAllSrcURLs.setAfterAccept(() => {
+  gDialogs.removeAllSrcURLs.onAfterAccept = () => {
     gClippingsDB.clippings.toCollection().modify({ sourceURL: "" }).then(aNumUpd => {
       // TO DO: Put this in a notification box.
       window.alert("The source web page addresses of your clippings have been removed.");
     });
-  });
+  };
 
   gDialogs.moveTo = new aeDialog("#move-dlg");
   gDialogs.moveTo.fldrTree = null;
@@ -1333,7 +1333,7 @@ function initDialogs()
   };
 
   let that = gDialogs.moveTo;
-  gDialogs.moveTo.setInit(() => {
+  gDialogs.moveTo.onInit = () => {
     if (that.fldrTree) {
       that.fldrTree.getTree().getNodeByKey(Number(aeConst.ROOT_FOLDER_ID).toString()).setActive();
     }
@@ -1354,14 +1354,14 @@ function initDialogs()
     else {
       $("#move-to-label").text("Move clipping to:");
     }
-  });
+  };
 
-  gDialogs.moveTo.setCancel(aEvent => {
+  gDialogs.moveTo.onCancel = aEvent => {
     that.resetTree();
     that.close();
-  });
+  };
 
-  gDialogs.moveTo.setAccept(aEvent => {
+  gDialogs.moveTo.onAccept = aEvent => {
     let clippingsMgrTree = getClippingsTree();
     let selectedNode = clippingsMgrTree.activeNode;
     let id = parseInt(selectedNode.key);
@@ -1406,7 +1406,7 @@ function initDialogs()
 
     that.resetTree();
     that.close();
-  });
+  };
 
   gDialogs.miniHelp = new aeDialog("#mini-help-dlg");
   gDialogs.genericMsgBox = new aeDialog("#generic-msg-box");
@@ -1818,12 +1818,12 @@ function showBanner(aMessage)
 function showInitError()
 {
   let errorMsgBox = new aeDialog("#init-error-msgbox");
-  errorMsgBox.setInit(() => {
+  errorMsgBox.onInit = () => {
     $("#init-error-msgbox > .dlg-content > .msgbox-error-msg").text("Clippings doesn't work when Firefox is in Private Browsing mode.  Restart Firefox with Private Browsing turned off, and then try again.");
-  });
-  errorMsgBox.setAccept(() => {
+  };
+  errorMsgBox.onAccept = () => {
     closeWnd();
-  });
+  };
 
   errorMsgBox.showModal();
 }

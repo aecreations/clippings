@@ -119,14 +119,14 @@ $(window).on("unhandledrejection", aEvent => {
 function showInitError()
 {
   let errorMsgBox = new aeDialog("#create-clipping-error-msgbox");
-  errorMsgBox.setInit(() => {
+  errorMsgBox.onInit = () => {
     let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
     errMsgElt.text("Clippings doesn't work when Firefox is in Private Browsing mode.  Restart Firefox with Private Browsing turned off, and then try again.");
-  });
-  errorMsgBox.setAccept(() => {
+  };
+  errorMsgBox.onAccept = () => {
     errorMsgBox.close();
     closeDlg();
-  });
+  };
   errorMsgBox.showModal();
 }
 
@@ -152,7 +152,7 @@ function initDialogs()
     $('<div id="new-folder-dlg-fldr-tree" class="folder-tree"></div>').appendTo("#new-folder-dlg-fldr-tree-popup");
   };
   
-  gNewFolderDlg.setInit(() => {
+  gNewFolderDlg.onInit = () => {
     let parentDlgFldrPickerMnuBtn = $("#new-clipping-fldr-picker-menubtn");
     let fldrPickerMnuBtn = $("#new-folder-dlg-fldr-picker-mnubtn");
     let fldrPickerPopup = $("#new-folder-dlg-fldr-tree-popup");
@@ -196,9 +196,9 @@ function initDialogs()
     }
 
     $("#new-fldr-name").val("New Folder").select().focus();
-  });
+  };
   
-  gNewFolderDlg.setAccept(aEvent => {
+  gNewFolderDlg.onAccept = aEvent => {
     let newFldrDlgTree = that.fldrTree.getTree();
     let parentFldrID = aeConst.ROOT_FOLDER_ID;
 
@@ -243,7 +243,7 @@ function initDialogs()
       that.resetTree();
       that.close();
     });
-  });
+  };
 }
 
 
@@ -335,20 +335,18 @@ function accept(aEvent)
   }).catch("OpenFailedError", aErr => {
     // This should never happen - OpenFailedError should've been caught during
     // dialog initialization.
-    errorMsgBox.setInit(() => {
+    errorMsgBox.onInit = () => {
       console.error(`Error creating clipping: ${aErr}`);
       let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
       errMsgElt.text("Unable to save the new clipping.  Make sure that Private Browsing mode is turned off, and then try again.");
-    });
-    errorMsgBox.setAccept();
+    };
     errorMsgBox.showModal();
 
   }).catch(aErr => {
-    errorMsgBox.setInit(() => {
+    errorMsgBox.onInit = () => {
       let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
       errMsgElt.text(`Error creating clipping: ${aErr}`);
-    });
-    errorMsgBox.setAccept();
+    };
     errorMsgBox.showModal();
   });
 }

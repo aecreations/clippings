@@ -48,27 +48,27 @@ class aeDialog
     }
   }
   
-  setInit(aFnInit)
+  set onInit(aFnInit)
   {
     this._fnInit = aFnInit;
   }
 
-  setUnload(aFnUnload)
+  set onUnload(aFnUnload)
   {
     this._fnUnload = aFnUnload;
   }
 
-  setAfterAccept(aFnAfterAccept)
+  set onAfterAccept(aFnAfterAccept)
   {
     this._fnAfterDlgAccept = aFnAfterAccept;
   }
   
-  setAccept(aFnAccept)
+  set onAccept(aFnAccept)
   {
     this._fnDlgAccept = aFnAccept;
   }
 
-  setCancel(aFnCancel)
+  set onCancel(aFnCancel)
   {
     this._fnDlgCancel = aFnCancel;    
   }
