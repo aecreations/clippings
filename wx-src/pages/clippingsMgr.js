@@ -1339,9 +1339,9 @@ function initDialogs()
     }
     else {
       that.fldrTree = new aeFolderPicker("#move-to-fldr-tree", gClippingsDB);
-      that.fldrTree.setOnSelectFolder(aFolderData => {
+      that.fldrTree.onSelectFolder = aFolderData => {
         that.selectedFldrNode = aFolderData.node;
-      });
+      };
     }
 
     $("#copy-instead-of-move").prop("checked", false);

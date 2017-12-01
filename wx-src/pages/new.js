@@ -165,12 +165,12 @@ function initDialogs()
       selectedFldrID
     );
 
-    that.fldrTree.setOnSelectFolder(aFolderData => {
+    that.fldrTree.onSelectFolder = aFolderData => {
       that.selectedFldrNode = aFolderData.node;
       fldrPickerMnuBtn.val(aFolderData.node.key).text(aFolderData.node.title);
       fldrPickerPopup.css({ visibility: "hidden" });
       $("#new-folder-dlg-fldr-tree-popup-bkgrd-ovl").hide();
-    });
+    };
 
     fldrPickerMnuBtn.val(selectedFldrID).text(selectedFldrName);
 
@@ -272,7 +272,7 @@ function initFolderPicker()
   });
 
   gFolderPickerPopup = new aeFolderPicker("#new-clipping-fldr-tree", gClippingsDB);
-  gFolderPickerPopup.setOnSelectFolder(selectFolder);
+  gFolderPickerPopup.onSelectFolder = selectFolder;
 }
 
 
