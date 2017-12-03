@@ -220,6 +220,8 @@ function initHelper()
   buildContextMenu();
 
   chrome.commands.onCommand.addListener(aCmdName => {
+    info(`Clippings/wx: Command "${aCmdName}" invoked!`);
+
     if (aCmdName == "ae-clippings-paste-clipping" && gPrefs.keyboardPaste) {
       openKeyboardPasteDlg();
     }
