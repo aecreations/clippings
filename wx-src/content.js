@@ -18,13 +18,13 @@ function handleRequestNewClipping(aRequest)
   let rv = null;
 
   if (! document.hasFocus()) {
-    warn("Clippings/wx::content.js:handleRequestNewClipping(): This web page does not have the focus; exiting message handler.");
+    warn("Clippings/wx::content.js: handleRequestNewClipping(): This web page does not have the focus; exiting message handler.");
     return rv;
   }
 
   let activeElt = window.document.activeElement;
 
-  log("Clippings/wx::content.js::handleRequestNewClipping(): activeElt = " + (activeElt ? activeElt.toString() : "???"));
+  log("Clippings/wx::content.js: handleRequestNewClipping(): activeElt = " + (activeElt ? activeElt.toString() : "???"));
 
   if (isElementOfType(activeElt, "HTMLInputElement")
       || isElementOfType(activeElt, "HTMLTextAreaElement")) {
@@ -98,7 +98,7 @@ function handleRequestInsertClipping(aRequest)
   let rv = null;
 
   if (! document.hasFocus()) {
-    warn("Clippings/wx::content.js:handleRequestInsertClipping(): This web page does not have the focus; exiting message handler.");
+    warn("Clippings/wx::content.js: handleRequestInsertClipping(): This web page does not have the focus; exiting message handler.");
     return rv;
   }
 
@@ -107,7 +107,7 @@ function handleRequestInsertClipping(aRequest)
   let autoLineBrk = aRequest.autoLineBreak;
   let activeElt = window.document.activeElement;
 
-  log("Clippings/wx::content.js::handleRequestInsertClipping(): activeElt = " + (activeElt ? activeElt.toString() : "???"));  
+  log("Clippings/wx::content.js: handleRequestInsertClipping(): activeElt = " + (activeElt ? activeElt.toString() : "???"));  
 
   if (isElementOfType(activeElt, "HTMLInputElement")
       || isElementOfType(activeElt, "HTMLTextAreaElement")) {
@@ -144,7 +144,7 @@ function isElementOfType(aElement, aTypeStr)
 
 function insertTextIntoTextbox(aTextboxElt, aInsertedText)
 {
-  log("Clippings/wx: insertTextIntoTextbox()");
+  log("Clippings/wx::content.js: >> insertTextIntoTextbox()");
   
   var text, pre, post, pos;
   text = aTextboxElt.value;
@@ -173,7 +173,7 @@ function insertTextIntoTextbox(aTextboxElt, aInsertedText)
 
 function insertTextIntoRichTextEditor(aRichTextEditorDocument, aClippingText, aAutoLineBreak, aPasteMode)
 {
-  log("Clippings/wx: insertTextIntoRichTextEditor()");
+  log("Clippings/wx::content.js: >> insertTextIntoRichTextEditor()");
 
   let hasHTMLTags = aClippingText.search(/<[a-z1-6]+( [a-z]+(\="?.*"?)?)*>/i) != -1;
   let hasRestrictedHTMLTags = aClippingText.search(/<\?|<%|<!DOCTYPE|(<\b(html|head|body|meta|script|applet|embed|object|i?frame|frameset)\b)/i) != -1;
@@ -227,8 +227,7 @@ function isGoogleChrome()
 
 function init()
 {
-  log("Clippings/wx::content.js: Initializing content script for:\n%s", window.location.href);
-  log("Document body element: %s (DOM nodeName=%s)", document.body, document.body.nodeName);
+  log(`Clippings/wx::content.js: Initializing content script for:\n${window.location.href}`);
 
   if (isGoogleChrome()) {
     chrome.runtime.onMessage.addListener((aRequest, aSender, aSendResponse) => {
@@ -251,7 +250,7 @@ function init()
   else {
     // Firefox
     browser.runtime.onMessage.addListener(aRequest => {
-      log("Clippings/wx::content.js: Received message '%s' from extension.\n%s", aRequest.msgID, window.location.href);
+      log(`Clippings/wx::content.js: Received message "${aRequest.msgID}" from extension.\n${window.location.href}`);
 
       let resp = null;
   
