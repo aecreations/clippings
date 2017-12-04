@@ -207,8 +207,10 @@ function initDialogs()
     }
     else {
       // User didn't choose a different parent folder.
-      parentFldrID = $("#new-folder-dlg-fldr-picker-mnubtn").val();
+      parentFldrID = Number($("#new-folder-dlg-fldr-picker-mnubtn").val());
     }
+
+    console.log("Clippings/wx::new.js: gNewFolderDlg.onAccept(): parentFldrID = " + parentFldrID);
 
     gClippingsDB.folders.add({
       name: $("#new-fldr-name").val(),
@@ -228,7 +230,7 @@ function initDialogs()
       let parentNode;
 
       if (parentFldrID == aeConst.ROOT_FOLDER_ID) {
-        parentNode = mainFldrTree.getRootNode();
+        parentNode = mainFldrTree.rootNode.getFirstChild();
       }
       else {
         parentNode = mainFldrTree.getNodeByKey(Number(parentFldrID).toString());
@@ -303,7 +305,7 @@ function initShortcutKeyMenu()
 
   let keybPasteKey = "ALT+SHIFT+Y";
   if (gClippings.getOS() == "mac") {
-    keybPasteKey = "\u2325\u21e7Y";
+    keybPasteKey = "\u2318\u21e7Y";
   }
   let tooltip = `To quickly paste this clipping into a web page textbox in Firefox, press ${keybPasteKey} followed by the shortcut key.`;
   $("#shct-key-tooltip").attr("title", tooltip);
