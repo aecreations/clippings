@@ -766,13 +766,13 @@ let gCmd = {
   copyFolderIntrl: function (aFolderID, aDestFldrID, aDestUndoStack)
   {
     gClippingsDB.folders.get(aFolderID).then(aFolder => {
-      let folderCpy = {
+      return gClippingsDB.folders.add({
         name: aFolder.name,
         parentFolderID: aDestFldrID,
-      };
-
-      return gClippingsDB.folders.add(folderCpy);
+      });
     }).then(aNewFolderID => {
+      this._copyFolderHelper(aFolderID, aNewFolderID);
+      
       if (aDestUndoStack == this.UNDO_STACK) {
         this.undoStack.push({
           action: this.ACTION_COPYTOFOLDER,
@@ -780,6 +780,9 @@ let gCmd = {
           itemType: this.ITEMTYPE_FOLDER
         });
       }
+    }).catch(aErr => {
+      console.error("Clippings/wx::clippingsMgr.js: gCmd.copyFolderIntrl(): " + aErr);
+      window.alert("Error copying folder: " + aErr);
     });
   },
   
@@ -879,6 +882,34 @@ let gCmd = {
     rv = (parentNode.isRootNode() ? aeConst.ROOT_FOLDER_ID : parseInt(parentNode.key));
 
     return rv;
+  },
+
+  _copyFolderHelper: function (aSrcFldrID, aTargFldrID)
+  {
+    gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
+      gClippingsDB.folders.where("parentFolderID").equals(aSrcFldrID).each((aItem, aCursor) => {
+        gClippingsDB.folders.add({
+          name: aItem.name,
+          parentFolderID: aTargFldrID,
+        }).then(aNewSubFldrID => {
+          this._copyFolderHelper(aItem.id, aNewSubFldrID);
+        });
+
+      }).then(() => {
+        return gClippingsDB.clippings.where("parentFolderID").equals(aSrcFldrID).each((aItem, aCursor) => {
+          gClippingsDB.clippings.add({
+            name: aItem.name,
+            content: aItem.content,
+            shortcutKey: "",
+            sourceURL: aItem.sourceURL,
+            label: aItem.label,
+            parentFolderID: aTargFldrID
+          });
+        });
+      });
+    }).catch(aErr => {
+      console.error("Clippings/wx::clippingsMgr.js: gCmd._copyFolderHelper(): " + aErr);
+    });
   }
 };
 
