@@ -1850,7 +1850,7 @@ function showInitError()
 {
   let errorMsgBox = new aeDialog("#init-error-msgbox");
   errorMsgBox.onInit = () => {
-    $("#init-error-msgbox > .dlg-content > .msgbox-error-msg").text("Clippings doesn't work when Firefox is in Private Browsing mode.  Restart Firefox with Private Browsing turned off, and then try again.");
+    $("#init-error-msgbox > .dlg-content > .msgbox-error-msg").text("Clippings doesn't work when the privacy settings in Firefox are too restrictive, such as turning on Private Browsing mode.  Try changing these settings back to their defaults, then restart Firefox and try again.");
   };
   errorMsgBox.onAccept = () => {
     closeWnd();

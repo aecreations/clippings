@@ -22,6 +22,7 @@ $(document).ready(() => {
     gClippingsDB = gClippings.getClippingsDB();
   }
   else {
+    // gClippingsDB is null if Private Browsing mode is turned on.
     console.error("Clippings/wx::new.js: Error initializing New Clipping dialog - unable to locate parent browser window.");
     showInitError();
     return;
@@ -121,7 +122,7 @@ function showInitError()
   let errorMsgBox = new aeDialog("#create-clipping-error-msgbox");
   errorMsgBox.onInit = () => {
     let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
-    errMsgElt.text("Clippings doesn't work when Firefox is in Private Browsing mode.  Restart Firefox with Private Browsing turned off, and then try again.");
+    errMsgElt.text("Clippings doesn't work when the privacy settings in Firefox are too restrictive, such as turning on Private Browsing mode.  Try changing these settings back to their defaults, then restart Firefox and try again.");
   };
   errorMsgBox.onAccept = () => {
     errorMsgBox.close();
@@ -335,12 +336,12 @@ function accept(aEvent)
     closeDlg();
 
   }).catch("OpenFailedError", aErr => {
-    // This should never happen - OpenFailedError should've been caught during
-    // dialog initialization.
+    // OpenFailedError exception thrown if Firefox is set to "Never remember
+    // history."
     errorMsgBox.onInit = () => {
       console.error(`Error creating clipping: ${aErr}`);
       let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
-      errMsgElt.text("Unable to save the new clipping.  Make sure that Private Browsing mode is turned off, and then try again.");
+      errMsgElt.text("Unable to save the new clipping.  Check that the privacy settings in Firefox are not too restrictive (such as turning on Private Browsing mode), then restart Firefox and try again.");
     };
     errorMsgBox.showModal();
 

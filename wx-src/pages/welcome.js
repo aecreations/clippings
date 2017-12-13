@@ -71,7 +71,12 @@ $(() => {
       }).catch(aErr => {
         console.error("Clippings/wx: welcome.js: $(#goto-import-bkup).click()::initImportPg(): " + aErr);
 
-        if (aErr.name && aErr.name == "OpenFailedError") { 
+        // OpenFailedError thrown if Dexie can't open the database.  This
+        // happens if Private Browsing mode is turned on, or if Firefox is set
+        // to "Never remember history."
+        // TypeError thrown if gClippingsDB is null. This happens if browser
+        // cookies are turned off.
+        if (aErr.name && (aErr.name == "OpenFailedError" || aErr.name == "TypeError")) { 
           showModal("#private-browsing-error-msgbox");
           browser.storage.local.set({ showWelcome: true });
         }
