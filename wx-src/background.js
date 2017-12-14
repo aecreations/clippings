@@ -752,6 +752,22 @@ function getClippingsDB()
 }
 
 
+function verifyDB()
+{
+  return new Promise((aFnResolve, aFnReject) => {
+    let numClippings;
+
+    gClippingsDB.clippings.count(aNumItems => {
+      numClippings = aNumItems;
+    }).then(() => {
+      aFnResolve(numClippings);
+    }).catch(aErr => {
+      aFnReject(aErr);
+    });
+  });
+}
+
+
 function getOS()
 {
   return gOS;

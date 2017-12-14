@@ -65,7 +65,7 @@ $(() => {
   
   $("#goto-import-bkup").click(aEvent => {
     function initImportPg() {
-      verifyDB().then(aNumClippings => {
+      gClippings.verifyDB().then(aNumClippings => {
         console.log(`Clippings/wx: welcome.js: Database verification successful (${aNumClippings} clippings in database).`);
 
       }).catch(aErr => {
@@ -237,22 +237,6 @@ function resetSelectBackupFilePageState()
   $("#ready-import").hide();
   $("#no-backup-help").hide();
   $("#toggle-no-backup-help > .expander-icon").text("\u25b6 ");
-}
-
-
-function verifyDB()
-{
-  return new Promise((aFnResolve, aFnReject) => {
-    let numClippings;
-
-    gClippingsDB.clippings.count(aNumItems => {
-      numClippings = aNumItems;
-    }).then(() => {
-      aFnResolve(numClippings);
-    }).catch(aErr => {
-      aFnReject(aErr);
-    });
-  });
 }
 
 
