@@ -28,6 +28,16 @@ $(document).ready(() => {
     return;
   }
 
+  gClippings.verifyDB().then(aNumClippings => {
+    initHelper();
+  }).catch(aErr => {
+    showInitError();
+  });
+});
+
+
+function initHelper()
+{
   $("#btn-expand-options").click(aEvent => {
     chrome.windows.getCurrent(aWnd => {
       chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, { height: 480 }, aWnd => {
@@ -82,7 +92,7 @@ $(document).ready(() => {
   browser.windows.getCurrent((win) => {
     browser.windows.update(win.id, {width:win.width+1})
   });
-});
+}
 
 
 $(window).keypress(aEvent => {
