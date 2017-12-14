@@ -628,6 +628,7 @@ ul.fancytree-container {
 }
 
 #init-error-msgbox > .dlg-content > .msgbox-error-msg {
+    margin-left: 44px;
     color: red;
 }
 
