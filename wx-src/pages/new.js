@@ -65,7 +65,7 @@ function initHelper()
       }
 
       $("#clipping-name").val(aResp.name).select().focus();
-      $("#clipping-text").val(aResp.content);
+      $("#clipping-text").val(aResp.content).attr("spellcheck", aResp.checkSpelling);
       $("#save-source-url").prop("checked", aResp.saveSrcURL);
       gSrcURL = aResp.url || "";
     });

@@ -319,6 +319,7 @@ function initMessageListeners()
         resp = gNewClipping.get();
         if (resp !== null) {
           resp.saveSrcURL = gPrefs.alwaysSaveSrcURL;
+          resp.checkSpelling = gPrefs.checkSpelling;
           aSendResponse(resp);
         }
       }
@@ -351,6 +352,7 @@ function initMessageListeners()
 
         if (resp !== null) {
           resp.saveSrcURL = gPrefs.alwaysSaveSrcURL;
+          resp.checkSpelling = gPrefs.checkSpelling;
           return Promise.resolve(resp);
         }
       }

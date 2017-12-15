@@ -48,8 +48,9 @@ function init()
       setPref({ alwaysSaveSrcURL: aEvent.target.checked });
     });
 
-    // TEMPORARY - "Check spelling" checkbox option is disabled.
-    $("#check-spelling").attr("checked", aPrefs.checkSpelling);
+    $("#check-spelling").attr("checked", aPrefs.checkSpelling).click(aEvent => {
+      setPref({ checkSpelling: aEvent.target.checked });
+    });
   });
 }
 

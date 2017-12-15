@@ -947,7 +947,7 @@ $(document).ready(() => {
     gSearchBox.init();
     gSearchBox.activate();
   });
-  
+
   chrome.history.deleteUrl({ url: window.location.href });
 
   // Fix for Fx57 bug where bundled page loaded using
@@ -1174,7 +1174,7 @@ function initInstantEditing()
       let text = aEvent.target.value;
       gClippingsDB.clippings.update(id, { content: text });
     }
-  });
+  }).attr("spellcheck", gClippings.getPrefs().checkSpelling);
 }
 
 
