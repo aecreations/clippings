@@ -1015,12 +1015,30 @@ $(document).keypress(aEvent => {
       gCmd.deleteClippingOrFolder(gCmd.UNDO_STACK);
     }
   }
+  else if (aEvent.key == "/") {
+    if (aEvent.target.tagName != "INPUT" && aEvent.target.tagName != "TEXTAREA") {
+      aEvent.preventDefault();
+    }
+  }
+  else if (aEvent.key == "F5") {
+    // Suppress browser reload.
+    aEvent.preventDefault();
+  }
   else if (aEvent.key.toUpperCase() == "F" && isAccelKeyPressed()) {
     aEvent.preventDefault();
     $("#search-box").focus();
   }
   else if (aEvent.key.toUpperCase() == "Z" && isAccelKeyPressed()) {
     gCmd.undo();
+  }
+  else {
+    // Ignore standard browser shortcut keys.
+    let key = aEvent.key.toUpperCase();
+    if (isAccelKeyPressed() && (key == "A" || key == "D" || key == "N"
+                                || key == "P" || key == "R" || key == "S"
+                                || key == "U")) {
+      aEvent.preventDefault();
+    }
   }
 });
 
@@ -1338,6 +1356,7 @@ function initDialogs()
   };
 
   gDialogs.removeAllSrcURLs = new aeDialog("#remove-all-source-urls-dlg");
+  // TO DO: Swap button action keys (ENTER, ESC).
   gDialogs.removeAllSrcURLs.onAfterAccept = () => {
     gClippingsDB.clippings.toCollection().modify({ sourceURL: "" }).then(aNumUpd => {
       // TO DO: Put this in a notification box.
