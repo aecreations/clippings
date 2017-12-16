@@ -309,6 +309,9 @@ let gSearchBox = {
     
     $("#search-box").keyup(aEvent => {
       this.updateSearch();
+      $("#clear-search").css({
+        visibility: (aEvent.target.value ? "visible" : "hidden")
+      });
     });
 
     $("#clear-search").click(aEvent => { this.reset() });
@@ -366,6 +369,7 @@ let gSearchBox = {
   {
     getClippingsTree().clearFilter();
     $("#search-box").val("").focus();
+    $("#clear-search").css({ visibility: "hidden" });
     setStatusBarMsg();
     this._isActive = false;
   }

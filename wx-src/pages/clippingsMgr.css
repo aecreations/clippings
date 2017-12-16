@@ -256,6 +256,7 @@ input[type="search"]::placeholder {
     background-position-x: center;
     background-position-y: center;
     background-repeat: no-repeat;
+    visibility: hidden;
 }
 
 #content {
