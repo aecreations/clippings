@@ -1356,13 +1356,13 @@ function initDialogs()
   };
 
   gDialogs.removeAllSrcURLs = new aeDialog("#remove-all-source-urls-dlg");
-  // TO DO: Swap button action keys (ENTER, ESC).
-  gDialogs.removeAllSrcURLs.onAfterAccept = () => {
+  $("#remove-all-source-urls-dlg > .dlg-btns > .dlg-btn-yes").click(aEvent => {
+    gDialogs.removeAllSrcURLs.close();
     gClippingsDB.clippings.toCollection().modify({ sourceURL: "" }).then(aNumUpd => {
       // TO DO: Put this in a notification box.
       window.alert("The source web page addresses of your clippings have been removed.");
     });
-  };
+  });
 
   gDialogs.moveTo = new aeDialog("#move-dlg");
   gDialogs.moveTo.fldrTree = null;
