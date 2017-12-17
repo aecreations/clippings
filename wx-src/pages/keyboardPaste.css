@@ -21,6 +21,11 @@
     margin-left: 44px;
 }
 
+#search-by-name-ico > img {
+    width: 36px;
+    height: 36px;
+}
+
 #clipping-search {
     width: 100%;
     margin-top: 4px;
