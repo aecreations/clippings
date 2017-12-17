@@ -1510,7 +1510,8 @@ function buildClippingsTree()
       
       $("#clippings-tree").fancytree({
         extensions: ["dnd5", "filter"],
-        
+
+        debugLevel: 0,
         autoScroll: true,
         source: treeData,
         selectMode: 1,
