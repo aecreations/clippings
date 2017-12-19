@@ -105,9 +105,40 @@ let gNewClipping = {
   }
 };
 
+let gPlaceholders = {
+  _plchldrs: null,
+  _clpCtnt: null,
+
+  set: function (aPlaceholders, aClippingText) {
+    this._plchldrs = aPlaceholders;
+    this._clpCtnt = aClippingText;
+  },
+
+  get: function () {
+    let rv = this.copy();
+    this.reset();
+
+    return rv;
+  },
+
+  copy: function () {
+    let rv = {
+      placeholders: this._plchldrs.slice(),
+      content: this._clpCtnt
+    };
+    return rv;
+  },
+
+  reset: function () {
+    this._plchldrs = null;
+    this._clpCtnt = null;
+  }
+};
+
 let gWndIDs = {
   newClipping: null,
   keyboardPaste: null,
+  placeholderPrmt: null,
   clippingsMgr: null
 };
 
@@ -323,6 +354,12 @@ function initMessageListeners()
           aSendResponse(resp);
         }
       }
+      else if (aRequest.msgID == "init-placeholder-prmt-dlg") {
+        resp = {
+          // TO DO: Populate response object; replicate Firefox code below.
+        };
+        aSendResponse(resp);
+      }
       else if (aRequest.msgID == "close-new-clipping-dlg") {
         gWndIDs.newClipping = null;
       }
@@ -337,6 +374,9 @@ function initMessageListeners()
       }
       else if (aRequest.msgID == "paste-clipping-by-name") {
         // TO DO: Ditto.
+      }
+      else if (aRequest.msgID == "close-placeholder-prmt-dlg") {
+        // TO DO: Ditto as well.
       }
     });
   }                                  
@@ -355,6 +395,10 @@ function initMessageListeners()
           resp.checkSpelling = gPrefs.checkSpelling;
           return Promise.resolve(resp);
         }
+      }
+      else if (aRequest.msgID == "init-placeholder-prmt-dlg") {
+        resp = gPlaceholders.get();
+        return Promise.resolve(resp);
       }
       else if (aRequest.msgID == "close-new-clipping-dlg") {
         gWndIDs.newClipping = null;
@@ -376,6 +420,24 @@ function initMessageListeners()
       }
       else if (aRequest.msgID == "paste-clipping-by-name") {
         pasteClippingByID(aRequest.clippingID);
+      }
+      else if (aRequest.msgID == "paste-clipping-with-plchldrs") {
+        let content = aRequest.processedContent;
+
+        chrome.tabs.query({ active: true, currentWindow: true }, aTabs => {
+          if (! aTabs[0]) {
+            // This should never happen...
+            alertEx(aeMsgBox.MSG_NO_ACTIVE_BROWSER_TAB);
+            return;
+          }
+
+          let activeTabID = aTabs[0].id;
+          pasteProcessedClipping(content, activeTabID);
+          
+        });
+      }
+      else if (aRequest.msgID == "close-placeholder-prmt-dlg") {
+        gWndIDs.placeholderPrmt = null;
       }
     });
   }
@@ -601,6 +663,15 @@ function openKeyboardPasteDlg()
 }
 
 
+function openPlaceholderPromptDlg()
+{
+  // TO DO: Same checking for cursor location as in the preceding function.
+
+  let url = browser.runtime.getURL("pages/placeholderPrompt.html");
+  openDlgWnd(url, "placeholderPrmt", { type: "detached_panel", width: 500, height: 180 });
+}
+
+
 function openDlgWnd(aURL, aWndKey, aWndPpty)
 {
   function openDlgWndHelper()
@@ -733,18 +804,41 @@ function pasteClipping(aClippingInfo)
     }
 
     let activeTabID = aTabs[0].id;
-    let content = aeClippingSubst.processClippingText(aClippingInfo);
-    let msgParams = {
-      msgID: "paste-clipping",
-      content,
-      htmlPaste: gPrefs.htmlPaste,
-      autoLineBreak: gPrefs.autoLineBreak
-    };
 
-    log("Clippings/wx: Extension sending message \"paste-clipping\" to content script");
-          
-    chrome.tabs.sendMessage(activeTabID, msgParams, null);
+    let preprocessedCtnt = aeClippingSubst.processStdPlaceholders(aClippingInfo);  
+    let plchldrs = aeClippingSubst.getCustomPlaceholders(preprocessedCtnt);
+    if (plchldrs.length > 0) {
+      gPlaceholders.set(plchldrs, preprocessedCtnt);
+      openPlaceholderPromptDlg();
+      return;
+    }
+
+    let autoIncrPlchldrs = aeClippingSubst.getAutoIncrPlaceholders(preprocessedCtnt);
+    if (autoIncrPlchldrs.length > 0) {
+      // TO DO:
+      // Populate the auto-incrementing placeholder reset menu on the context
+      // menu for the Clippings toolbar button.
+      console.log("Clippings/wx: Auto-incrementing placeholder names:");
+      console.log(autoIncrPlchldrs);
+    }
+
+    pasteProcessedClipping(preprocessedCtnt, activeTabID);
   });
+}
+
+
+function pasteProcessedClipping(aClippingContent, aActiveTabID)
+{
+  let msgParams = {
+    msgID: "paste-clipping",
+    content: aClippingContent,
+    htmlPaste: gPrefs.htmlPaste,
+    autoLineBreak: gPrefs.autoLineBreak
+  };
+
+  log("Clippings/wx: Extension sending message \"paste-clipping\" to content script");
+  
+  chrome.tabs.sendMessage(aActiveTabID, msgParams, null);
 }
 
 

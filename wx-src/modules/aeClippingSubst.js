@@ -34,6 +34,53 @@ aeClippingSubst.init = function (aUserAgentStr, aAutoIncrementStartVal)
 };
 
 
+aeClippingSubst.getCustomPlaceholders = function (aClippingText)
+{
+  let rv = [];
+  let re = /\$\[([\w\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)(\{([\w \-\.\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF\|])+\})?\]/gm;
+
+  let result;
+  
+  while ((result = re.exec(aClippingText)) != null) {
+    rv.push(result[1]);
+  }
+
+  return rv;
+};
+
+
+aeClippingSubst.getAutoIncrPlaceholders = function (aClippingText)
+{
+  let rv = [];
+  let re = /\#\[([a-zA-Z0-9_\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)\]/gm;
+
+  let result;
+
+  while ((result = re.exec(aClippingText)) != null) {
+    rv.push(result[1]);
+  }
+
+  return rv;
+};
+
+
+aeClippingSubst.processStdPlaceholders = function (aClippingInfo)
+{
+  let rv = "";
+  let date = new Date();
+
+  rv = aClippingInfo.text.replace(/\$\[DATE\]/gm, date.toLocaleDateString());
+  rv = rv.replace(/\$\[TIME\]/gm, date.toLocaleTimeString());
+  rv = rv.replace(/\$\[NAME\]/gm, aClippingInfo.name);
+  rv = rv.replace(/\$\[FOLDER\]/gm, aClippingInfo.parentFolderName);
+  rv = rv.replace(/\$\[HOSTAPP\]/gm, this._hostAppName);
+  rv = rv.replace(/\$\[UA\]/gm, this._userAgentStr);
+
+  return rv;
+};
+
+
+// DEPRECATED
 aeClippingSubst.processClippingText = function (aClippingInfo)
 {
   if ((/^\[NOSUBST\]/.test(aClippingInfo.name))) {
@@ -145,6 +192,7 @@ aeClippingSubst.processClippingText = function (aClippingInfo)
 
   return rv;
 };
+// END DEPRECATED
 
 
 aeClippingSubst.getAutoIncrementVarNames = function ()

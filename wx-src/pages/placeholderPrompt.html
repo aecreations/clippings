@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Clippings</title>
+
+    <link rel="stylesheet" href="chrome://browser/content/extension.css"/>
+    <link rel="stylesheet" href="../style/dialog.css"/>
+    <link rel="stylesheet" href="placeholderPrompt.css"/>
+  </head>
+
+  <body>
+    <div class="deck">
+      <div id="plchldr-single" class="deck-content">
+	<div class="icon">
+	  <div class="prompt-icon"></div>
+	</div>
+	<div id="plchldr-single-content" class="prompt-content browser-style">
+	  <p id="single-prmt-label"></p>
+	  <input type="text" id="single-prmt-input"/>
+	</div>
+      </div>
+      
+      <div id="plchldr-multi" class="deck-content">
+	<div class="icon">
+	  <div class="prompt-icon"></div>
+	</div>
+	<div id="plchldr-multi-content" class="prompt-content browser-style">
+	  <p id="multi-prmt-label">Enter the values for the following placeholders.</p>
+	  <div id="plchldr-table"></div>
+	</div>
+      </div>
+    </div>  <!-- .deck -->
+    
+    <div id="dlg-buttons">
+      <button id="btn-accept" class="browser-style default">OK</button>
+      <button id="btn-cancel" class="browser-style">Cancel</button>
+    </div>
+
+    <script src="../lib/jquery.js"></script>
+    <script src="../modules/aeConst.js"></script>
+    <script src="placeholderPrompt.js"></script>
+  </body>
+</html>
