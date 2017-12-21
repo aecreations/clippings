@@ -34,17 +34,24 @@ aeClippingSubst.init = function (aUserAgentStr, aAutoIncrementStartVal)
 };
 
 
+aeClippingSubst.hasNoSubstFlag = function (aClippingName) {
+  return (/^\[NOSUBST\]/.test(aClippingName));
+};
+
+
 aeClippingSubst.getCustomPlaceholders = function (aClippingText)
 {
   let rv = [];
+  let plchldrs = new Set();
   let re = /\$\[([\w\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)(\{([\w \-\.\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF\|])+\})?\]/gm;
 
   let result;
   
   while ((result = re.exec(aClippingText)) != null) {
-    rv.push(result[1]);
+    plchldrs.add(result[1]);
   }
 
+  rv = Array.from(plchldrs);
   return rv;
 };
 
@@ -75,6 +82,31 @@ aeClippingSubst.processStdPlaceholders = function (aClippingInfo)
   rv = rv.replace(/\$\[FOLDER\]/gm, aClippingInfo.parentFolderName);
   rv = rv.replace(/\$\[HOSTAPP\]/gm, this._hostAppName);
   rv = rv.replace(/\$\[UA\]/gm, this._userAgentStr);
+
+  return rv;
+};
+
+
+aeClippingSubst.processAutoIncrPlaceholders = function (aClippingText)
+{
+  let rv = "";
+  
+  let fnAutoIncrement = (aMatch, aP1) => {
+    let varName = aP1;
+
+    if (varName in this._autoIncrementVars) {
+      return ++this._autoIncrementVars[varName];
+    }
+
+    let rv = "";
+    
+    this._autoIncrementVars[varName] = this._autoIncrementStartVal;
+    rv = this._autoIncrementVars[varName];
+    
+    return rv;
+  }
+
+  rv = aClippingText.replace(/\#\[([a-zA-Z0-9_\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)\]/gm, fnAutoIncrement);
 
   return rv;
 };

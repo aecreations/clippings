@@ -804,25 +804,33 @@ function pasteClipping(aClippingInfo)
     }
 
     let activeTabID = aTabs[0].id;
+    let processedCtnt = "";
 
-    let preprocessedCtnt = aeClippingSubst.processStdPlaceholders(aClippingInfo);  
-    let plchldrs = aeClippingSubst.getCustomPlaceholders(preprocessedCtnt);
-    if (plchldrs.length > 0) {
-      gPlaceholders.set(plchldrs, preprocessedCtnt);
-      openPlaceholderPromptDlg();
-      return;
+    if (aeClippingSubst.hasNoSubstFlag(aClippingInfo.name)) {
+      processedCtnt = aClippingInfo.text;
     }
+    else {
+      processedCtnt = aeClippingSubst.processStdPlaceholders(aClippingInfo);
 
-    let autoIncrPlchldrs = aeClippingSubst.getAutoIncrPlaceholders(preprocessedCtnt);
-    if (autoIncrPlchldrs.length > 0) {
-      // TO DO:
-      // Populate the auto-incrementing placeholder reset menu on the context
-      // menu for the Clippings toolbar button.
-      console.log("Clippings/wx: Auto-incrementing placeholder names:");
-      console.log(autoIncrPlchldrs);
+      let autoIncrPlchldrs = aeClippingSubst.getAutoIncrPlaceholders(processedCtnt);
+      if (autoIncrPlchldrs.length > 0) {
+        // TO DO:
+        // Populate the auto-incrementing placeholder reset menu on the context
+        // menu for the Clippings toolbar button.
+        console.log("Clippings/wx: Auto-incrementing placeholder names:");
+        console.log(autoIncrPlchldrs);
+        processedCtnt = aeClippingSubst.processAutoIncrPlaceholders(processedCtnt);
+      }
+
+      let plchldrs = aeClippingSubst.getCustomPlaceholders(processedCtnt);
+      if (plchldrs.length > 0) {
+        gPlaceholders.set(plchldrs, processedCtnt);
+        openPlaceholderPromptDlg();
+        return;
+      }
     }
-
-    pasteProcessedClipping(preprocessedCtnt, activeTabID);
+    
+    pasteProcessedClipping(processedCtnt, activeTabID);
   });
 }
 
