@@ -4,7 +4,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
-const WNDH_PLCHLDR_MULTI = 294;
+const WNDH_PLCHLDR_MULTI = 292;
+const WNDH_PLCHLDR_MULTI_SHORT = 242;
 
 let gClippings = null;
 let gPlaceholders = null;
@@ -43,7 +44,9 @@ $(() => {
       }
       else {
         $("#plchldr-multi").show();
-        chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, { height: WNDH_PLCHLDR_MULTI }, aWnd => {
+        let height = gPlaceholders.length == 2 ? WNDH_PLCHLDR_MULTI_SHORT : WNDH_PLCHLDR_MULTI;
+        
+        chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, { height }, aWnd => {
           for (let plchldr of gPlaceholders) {
             $("#plchldr-table").append(`<div class="ph-row browser-style" data-placeholder="${plchldr}"><label class="ph-name">${plchldr}:</label><br/><input type="text" class="ph-input"/></div>`);
           }
