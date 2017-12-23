@@ -993,6 +993,11 @@ $(document).keypress(aEvent => {
     return aEvent.ctrlKey;
   }
 
+  function isTextboxFocused(aEvent)
+  {
+    return (aEvent.target.tagName == "INPUT" || aEvent.target.tagName == "TEXTAREA");
+  }
+  
   //log("Clippings/wx: clippingsMgr.js: $(document).keypress(): Key pressed: " + aEvent.key);
   
   // NOTE: CTRL+W/Cmd+W is automatically handled, so no need to define it here.
@@ -1020,13 +1025,18 @@ $(document).keypress(aEvent => {
     }
   }
   else if (aEvent.key == "/") {
-    if (aEvent.target.tagName != "INPUT" && aEvent.target.tagName != "TEXTAREA") {
+    if (! isTextboxFocused(aEvent)) {
       aEvent.preventDefault();
     }
   }
   else if (aEvent.key == "F5") {
     // Suppress browser reload.
     aEvent.preventDefault();
+  }
+  else if (aEvent.key.toUpperCase() == "A" && isAccelKeyPressed()) {
+    if (! isTextboxFocused(aEvent)) {
+      aEvent.preventDefault();
+    }
   }
   else if (aEvent.key.toUpperCase() == "F" && isAccelKeyPressed()) {
     aEvent.preventDefault();
@@ -1038,9 +1048,8 @@ $(document).keypress(aEvent => {
   else {
     // Ignore standard browser shortcut keys.
     let key = aEvent.key.toUpperCase();
-    if (isAccelKeyPressed() && (key == "A" || key == "D" || key == "N"
-                                || key == "P" || key == "R" || key == "S"
-                                || key == "U")) {
+    if (isAccelKeyPressed() && (key == "D" || key == "N" || key == "P"
+                                || key == "R" || key == "S" || key == "U")) {
       aEvent.preventDefault();
     }
   }
