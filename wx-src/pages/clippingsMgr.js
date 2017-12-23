@@ -112,7 +112,7 @@ let gClippingsListener = {
           return;
         }
         
-        log("Clippings/wx: clippingsMgr.js::gClippingsListener.clippingChanged: Handling clipping move");
+        log("Clippings/wx::clippingsMgr.js::gClippingsListener.clippingChanged: Handling clipping move");
         let changedNode = tree.getNodeByKey(aID + "C");
         if (changedNode) {
           let targParentNode;
@@ -165,7 +165,7 @@ let gClippingsListener = {
           return;
         }
         
-        log("Clippings/wx: clippingsMgr.js::gClippingsListener.folderChanged: Handling folder move");
+        log("Clippings/wx::clippingsMgr.js::gClippingsListener.folderChanged: Handling folder move");
         let changedNode = tree.getNodeByKey(aID + "F");
         if (changedNode) {
           let targParentNode;
@@ -239,7 +239,7 @@ let gClippingsListener = {
         });
       });
     }).catch(aErr => {
-      console.error("Clippings/wx: clippingsMgr.js::gClippingsListener._buildChildNodes(): " + aErr);
+      console.error("Clippings/wx::clippingsMgr.js::gClippingsListener._buildChildNodes(): " + aErr);
     });
   },
   
@@ -692,6 +692,11 @@ let gCmd = {
     }
   },
 
+  pasteClipping: function (aClippingID)
+  {
+    info("Clippings/wx::clippingsMgr.js: gCmd.pasteClipping(): Not implemented.");
+  },
+
   // Internal commands are NOT meant to be invoked directly from the UI.
   moveClippingIntrl: function (aClippingID, aNewParentFldrID, aDestUndoStack)
   {
@@ -924,7 +929,7 @@ $(document).ready(() => {
 
   if (gClippings) {
     gClippingsDB = gClippings.getClippingsDB();
-    log("Clippings/wx: clippingsMgr: Successfully opened Clippings DB");
+    log("Clippings/wx::clippingsMgr: Successfully opened Clippings DB");
   }
   else {
     console.error("Error initializing Clippings Manager: Unable to locate parent browser window.");
@@ -998,7 +1003,7 @@ $(document).keypress(aEvent => {
     return (aEvent.target.tagName == "INPUT" || aEvent.target.tagName == "TEXTAREA");
   }
   
-  //log("Clippings/wx: clippingsMgr.js: $(document).keypress(): Key pressed: " + aEvent.key);
+  //log("Clippings/wx::clippingsMgr.js: $(document).keypress(): Key pressed: " + aEvent.key);
   
   // NOTE: CTRL+W/Cmd+W is automatically handled, so no need to define it here.
   if (aEvent.key == "F1") {
@@ -1538,6 +1543,18 @@ function buildClippingsTree()
           updateDisplay(aEvent, aData);
         },
 
+        dblclick: function (aEvent, aData) {
+          log("Clippings/wx::clippingsMgr.js: Double-click event fired on clippings tree");
+          updateDisplay(aEvent, aData);
+
+          if (aData.targetType == "title" || aData.targetType == "icon") {
+            if (! aData.node.isFolder()) {
+              let clippingID = parseInt(aData.node.key);
+              gCmd.pasteClipping(clippingID);
+            }
+          }
+        },
+
         dnd5: {
           preventRecursiveMoves: true,
           preventVoidMoves: true,
@@ -1573,7 +1590,7 @@ function buildClippingsTree()
               gClippingsTreeDnD = true;
               
               let id = parseInt(aData.otherNode.key);
-              log(`Clippings/wx: clippingsMgr.js::#clippings-tree.dnd5.dragDrop(): ID of moved clipping or folder: ${id}\nID of new parent folder: ${newParentID}`);
+              log(`Clippings/wx::clippingsMgr.js::#clippings-tree.dnd5.dragDrop(): ID of moved clipping or folder: ${id}\nID of new parent folder: ${newParentID}`);
 
               if (aData.otherNode.isFolder()) {
                 gCmd.moveFolderIntrl(id, newParentID, gCmd.UNDO_STACK);
@@ -1739,7 +1756,7 @@ function updateDisplay(aEvent, aData)
     return;
   }
 
-  log("Clippings/wx: clippingsMgr.js: Updating display...");
+  log("Clippings/wx::clippingsMgr.js: Updating display...");
 
   if (gSearchBox.isActivated()) {
     gSearchBox.updateSearch();
