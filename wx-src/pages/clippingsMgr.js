@@ -419,9 +419,23 @@ let gSrcURLBar = {
 
   acceptEdit: function ()
   {
+    let updatedURL = $("#clipping-src-url-edit").val();
+
+    if (updatedURL != "" && updatedURL.search(/^http:\/\//) == -1
+        && updatedURL.search(/^https:\/\//) == -1) {
+
+      if (updatedURL.search(/^www/) != -1) {
+        updatedURL = "http://" + updatedURL;
+        $("#clipping-src-url-edit").val(updatedURL);
+      }
+      else {
+        $("#clipping-src-url-edit").select().focus();
+        return;
+      }
+    }
+    
     let tree = getClippingsTree();
     let id = parseInt(tree.activeNode.key);
-    let updatedURL = $("#clipping-src-url-edit").val();
     
     gClippingsDB.clippings.update(id, {
       sourceURL: updatedURL
