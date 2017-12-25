@@ -1871,7 +1871,9 @@ function updateDisplay(aEvent, aData)
   if (gSearchBox.isActivated()) {
     gSearchBox.updateSearch();
     let numMatches = gSearchBox.getCountMatches();
-    setStatusBarMsg(`${numMatches} matches`);
+    if (numMatches !== undefined) {
+      setStatusBarMsg(`${numMatches} matches`);
+    }
   }
   else {
     setStatusBarMsg();
