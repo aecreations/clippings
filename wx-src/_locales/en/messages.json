@@ -1,0 +1,21 @@
+{
+  "extName": {
+    "message": "Clippings",
+    "description": "Name of the extension"
+  },
+
+  "extDesc": {
+    "message": "Save frequently-entered text for pasting later.",
+    "description": "Description of the extension"
+  },
+
+  "browserActionTitle": {
+    "message": "Clippings",
+    "description": "Toolbar button label"
+  },
+
+  "cmdDesc": {
+    "message": "Paste a clipping using its shortcut key",
+    "description": "Shortcut key command description"
+  }
+}
