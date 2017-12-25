@@ -565,6 +565,27 @@ ul.fancytree-container {
     margin-bottom: 14px;
 }
 
+#import-dlg #restore-backup-warning {
+    display: none;   
+}
+
+#import-dlg #restore-backup-warning > .warning-icon {
+    float: left;
+    width: 16px;
+    height: 16px;
+    margin-top: 4px;
+    background-image: url("chrome://global/skin/icons/warning-large.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+#import-dlg #restore-backup-warning > p {
+    margin: 0px 0px 0px 24px;
+    padding: 8px;
+    background-color: #fbfb77;
+    border-radius: 4px;
+}
+
 #import-dlg progress {
     display: none;
     width: 355px;

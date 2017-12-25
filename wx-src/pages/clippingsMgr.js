@@ -843,8 +843,15 @@ let gCmd = {
     chrome.runtime.openOptionsPage();
   },
   
+  restoreFromBackup: function ()
+  {
+    gDialogs.importFromFile.mode = gDialogs.importFromFile.IMP_REPLACE;
+    gDialogs.importFromFile.showModal();
+  },
+  
   importFromFile: function ()
   {
+    gDialogs.importFromFile.mode = gDialogs.importFromFile.IMP_APPEND;
     gDialogs.importFromFile.showModal();
   },
 
@@ -1111,6 +1118,10 @@ function initToolbar()
     trigger: "left",
     callback: function (aItemKey, aOpt, aRootMenu, aOriginalEvent) {
       switch (aItemKey) {
+      case "restoreFromBackup":
+        gCmd.restoreFromBackup();
+        break;
+        
       case "importFromFile":
         gCmd.importFromFile();
         break;
@@ -1147,6 +1158,7 @@ function initToolbar()
         className: "ae-menuitem"
       },
       separator0: "--------",
+      ***/
       backup: {
         name: "Backup...",
         className: "ae-menuitem"
@@ -1156,7 +1168,6 @@ function initToolbar()
         className: "ae-menuitem"
       },
       separator1: "--------",
-      ***/
       importFromFile: {
         name: "Import...",
         className: "ae-menuitem"
@@ -1259,7 +1270,24 @@ function initDialogs()
   };
 
   gDialogs.importFromFile = new aeDialog("#import-dlg");
+  gDialogs.importFromFile.IMP_APPEND = 0;
+  gDialogs.importFromFile.IMP_REPLACE = 1;
+  gDialogs.importFromFile.mode = gDialogs.importFromFile.IMP_APPEND;
+
   gDialogs.importFromFile.onInit = () => {
+    if (gDialogs.importFromFile.mode == gDialogs.importFromFile.IMP_REPLACE) {
+      $("#import-clippings-label").text("Select backup file:");
+      $("#import-clippings-replc-shct-keys-checkbox").hide();
+      $("#restore-backup-warning").show();
+      $("#import-dlg-action-btn").text("Restore Backup");
+    }
+    else {
+      $("#import-clippings-label").text("Select import file:");
+      $("#import-clippings-replc-shct-keys-checkbox").show();
+      $("#restore-backup-warning").hide();
+      $("#import-dlg-action-btn").text("Import");
+    }
+
     $("#import-dlg button.dlg-accept").attr("disabled", "true");
     
     $("#import-clippings-file-upload").on("change", aEvent => {
@@ -1267,20 +1295,29 @@ function initDialogs()
       if (aEvent.target.files.length > 0) {
         $("#import-dlg button.dlg-accept").removeAttr("disabled");
       }
+
+      if (gDialogs.importFromFile.mode == gDialogs.importFromFile.IMP_REPLACE) {
+        $("#restore-backup-warning").show();
+      }
     });
   };
-  gDialogs.importFromFile.onUnload = () => {
+  gDialogs.importFromFile.onUnload = () => {   
     $("#import-error").text("").hide();
     $("#import-dlg #import-clippings-file-upload").val("");
     $("#import-clippings-replc-shct-keys")[0].checked = true;
   };
   gDialogs.importFromFile.onAccept = aEvent => {
-    function uploadImportFile(aFileList) {
-      if (aFileList.length == 0) {
+    function importFile() {
+      let inputFileElt = $("#import-clippings-file-upload")[0];
+      let fileList = inputFileElt.files;
+
+      if (fileList.length == 0) {
         return;
       }
       
-      let importFile = aFileList[0];
+      $("#import-progress-bar").show();
+
+      let importFile = fileList[0];
       console.log("Clippings Manager: Selected import file: '%s'\nFile size: %d bytes", importFile.name, importFile.size);
 
       let fileReader = new FileReader();
@@ -1311,12 +1348,27 @@ function initDialogs()
       fileReader.readAsText(importFile);
     }
 
-    $("#import-progress-bar").show();
+    if (gDialogs.importFromFile.mode == gDialogs.importFromFile.IMP_REPLACE) {
+      info("Clippings/wx::clippingsMgr.js: Import dialog mode: Restore From Backup");
 
-    let inputFileElt = $("#import-clippings-file-upload")[0];
-    uploadImportFile(inputFileElt.files);
+      $("#restore-backup-warning").hide();
+
+      gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
+        gClippingsDB.clippings.clear().then(() => {
+          return gClippingsDB.folders.clear();
+        }).then(() => {
+          importFile();
+        });
+      }).catch(aErr => {
+        console.error("Clippings/wx::clippingsMgr.js: gDialogs.importFromFile.onAccept(): " + aErr);
+      });
+    }
+    else {
+      info("Clippings/wx::clippingsMgr.js: Import dialog mode: Import File");
+      importFile();
+    }
   };
-
+  
   gDialogs.exportToFile = new aeDialog("#export-dlg");
   gDialogs.exportToFile.FMT_CLIPPINGS_WX = 0;
   gDialogs.exportToFile.FMT_HTML = 1;
@@ -1369,7 +1421,8 @@ function initDialogs()
     
     let selectedFmtIdx = $("#export-format-list")[0].selectedIndex;
     setStatusBarMsg("Exporting...");
-    
+
+    // TO DO: Catch exceptions thrown from the aeImportExport export methods.
     if (selectedFmtIdx == gDialogs.exportToFile.FMT_CLIPPINGS_WX) {
       let inclSrcURLs = $("#include-src-urls").prop("checked");
 

@@ -137,18 +137,24 @@
 
     <div id="import-dlg" class="lightbox">
       <div class="dlg-content browser-style">
-        <label>Select import file:</label>
+        <label id="import-clippings-label">Select import file:</label>
 	<br/>
         <input type="file" id="import-clippings-file-upload" accept=".rdf, .json"/>
 	<br/>
-	<input type="checkbox" id="import-clippings-replc-shct-keys" checked="true"/>
-	<label for="import-clippings-replc-shct-keys">Replace shortcut keys</label>
-	<br/>
+	<div id="import-clippings-replc-shct-keys-checkbox">
+	  <input type="checkbox" id="import-clippings-replc-shct-keys" checked="true"/>
+	  <label for="import-clippings-replc-shct-keys">Replace shortcut keys</label>
+	  <br/>
+	</div>
+	<div id="restore-backup-warning">
+	  <div class="warning-icon"></div>
+	  <p>Restoring from a backup file will replace all of your clippings with the backup. This action can't be undone.</p>
+        </div>
 	<progress id="import-progress-bar"></progress>
 	<div id="import-error"></div>
       </div>
       <div class="dlg-btns">
-	<button class="dlg-accept browser-style default" disabled="true">Import</button>
+	<button id="import-dlg-action-btn" class="dlg-accept browser-style default" disabled="true">Import</button>
 	<button class="dlg-cancel browser-style">Cancel</button>
       </div>
     </div>
