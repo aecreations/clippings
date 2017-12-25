@@ -843,6 +843,39 @@ let gCmd = {
     chrome.runtime.openOptionsPage();
   },
   
+  backup: function ()
+  {
+    const INCLUDE_SRC_URLS = true;
+    
+    aeImportExport.setDatabase(gClippingsDB);
+    setStatusBarMsg("Saving backup file...");
+
+    let blobData;
+    aeImportExport.exportToJSON(INCLUDE_SRC_URLS).then(aJSONData => {
+      blobData = new Blob([aJSONData], { type: "application/json;charset=utf-8"});
+
+      browser.downloads.download({
+        url: URL.createObjectURL(blobData),
+        filename: aeConst.CLIPPINGS_BACKUP_FILENAME,
+        saveAs: true
+      }).then(aDownldItemID => {
+        setStatusBarMsg("Saving backup file... done");
+      }).catch(aErr => {
+        if (aErr.fileName == "undefined") {
+          setStatusBarMsg();
+        }
+        else {
+          console.error(aErr);
+          setStatusBarMsg("Backup failed.");
+          window.alert("Sorry, an error occurred while creating the backup file.\n\nDetails:\n" + aErr);
+        }
+      });
+    }).catch(aErr => {
+      window.alert("Sorry, an error occurred during the backup.\n\nDetails:\n" + aErr);
+      setStatusBarMsg("Backup failed.");
+    });
+  },
+  
   restoreFromBackup: function ()
   {
     gDialogs.importFromFile.mode = gDialogs.importFromFile.IMP_REPLACE;
@@ -1118,6 +1151,10 @@ function initToolbar()
     trigger: "left",
     callback: function (aItemKey, aOpt, aRootMenu, aOriginalEvent) {
       switch (aItemKey) {
+      case "backup":
+        gCmd.backup();
+        break;
+        
       case "restoreFromBackup":
         gCmd.restoreFromBackup();
         break;
@@ -1414,7 +1451,8 @@ function initDialogs()
         }
         else {
           console.error(aErr);
-          window.alert("Export failed.\n" + aErr);
+          setStatusBarMsg("Export failed.");
+          window.alert("Sorry, an error occurred while creating the export file.\n\nDetails:\n" + aErr);
         }
       });
     }
@@ -1422,7 +1460,6 @@ function initDialogs()
     let selectedFmtIdx = $("#export-format-list")[0].selectedIndex;
     setStatusBarMsg("Exporting...");
 
-    // TO DO: Catch exceptions thrown from the aeImportExport export methods.
     if (selectedFmtIdx == gDialogs.exportToFile.FMT_CLIPPINGS_WX) {
       let inclSrcURLs = $("#include-src-urls").prop("checked");
 
@@ -1430,12 +1467,18 @@ function initDialogs()
         let blobData = new Blob([aJSONData], { type: "application/json;charset=utf-8"});
 
         saveToFile(blobData, aeConst.CLIPPINGS_EXPORT_FILENAME);
+      }).catch(aErr => {
+        window.alert("Sorry, an error occurred while exporting to Clippings 6 format.\n\nDetails:\n" + aErr);
+        setStatusBarMsg("Export failed.");
       });
     }
     else if (selectedFmtIdx == gDialogs.exportToFile.FMT_HTML) {
       aeImportExport.exportToHTML().then(aHTMLData => {
         let blobData = new Blob([aHTMLData], { type: "text/html;charset=utf-8"});
         saveToFile(blobData, aeConst.HTML_EXPORT_FILENAME);
+      }).catch(aErr => {
+        window.alert("Sorry, an error occurred while exporting to HTML Document format.\n\nDetails:\n" + aErr);
+        setStatusBarMsg("Export failed.");
       });
     }
   };
