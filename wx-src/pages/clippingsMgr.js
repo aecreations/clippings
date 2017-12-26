@@ -18,6 +18,7 @@ let gIsClippingsTreeEmpty;
 let gIsReloading = false;
 let gClippingsTreeDnD = false;
 let gDialogs = {};
+let gOpenerWndID;
 
 // Clippings listener object
 let gClippingsListener = {
@@ -804,6 +805,30 @@ let gCmd = {
     });
   },
   
+  gotoURL: function (aURL)
+  {
+    try {
+      chrome.windows.get(gOpenerWndID, aOpenerWnd => {
+        chrome.windows.create({
+          url: aURL,
+          type: "normal",
+          state: "normal",
+          width: aOpenerWnd.width,
+          height: aOpenerWnd.height,
+        });     
+      });
+    }
+    catch (aErr) {
+      warn("Clippings/wx::clippingsMgr.js: gCmd.gotoURL(): " + aErr);
+
+      chrome.windows.create({
+        url: aURL,
+        type: "normal",
+        state: "normal"
+      });
+    }
+  },
+  
   showHideDetailsPane: function ()
   {
     let currSetting = gClippings.getPrefs().clippingsMgrDetailsPane;
@@ -949,6 +974,9 @@ $(document).ready(() => {
 
   chrome.runtime.getPlatformInfo(aInfo => { gOS = aInfo.os; });
 
+  let wndURL = new URL(window.location.href);
+  gOpenerWndID = Number(wndURL.searchParams.get("openerWndID"));
+  
   let clippingsListeners = gClippings.getClippingsListeners();
   gClippingsListener.origin = clippingsListeners.ORIGIN_CLIPPINGS_MGR;
   clippingsListeners.add(gClippingsListener);
@@ -1796,11 +1824,7 @@ function updateDisplay(aEvent, aData)
         $("#clipping-src-url").html(`<a href="${aResult.sourceURL}">${aResult.sourceURL}</a>`);
         $("#clipping-src-url > a").click(aEvent => {
           aEvent.preventDefault();
-          chrome.windows.create({
-            url: aEvent.target.textContent,
-            type: "normal",
-            state: "normal"
-          });
+          gCmd.gotoURL(aEvent.target.textContent);
         });
       }
       else {
