@@ -620,46 +620,50 @@ function openClippingsManager()
 {
   let clippingsMgrURL = chrome.runtime.getURL("pages/clippingsMgr.html");
 
-  function openClippingsMgrHelper()
-  {
-    browser.windows.create({
-      url: clippingsMgrURL,
-      type: "popup",
-      width: 750, height: 400,
-      left: 64, top: 128
-    }).then(aWnd => {
-      gWndIDs.clippingsMgr = aWnd.id;
-      browser.history.deleteUrl({ url: clippingsMgrURL });
-    });
-  }
-  
-  let openInNewTab = gPrefs.openClippingsMgrInTab;
+  chrome.windows.getCurrent(aBrwsWnd => {
+    clippingsMgrURL += "?openerWndID=" + aBrwsWnd.id;
+    
+    function openClippingsMgrHelper()
+    {
+      browser.windows.create({
+        url: clippingsMgrURL,
+        type: "popup",
+        width: 750, height: 400,
+        left: 64, top: 128
+      }).then(aWnd => {
+        gWndIDs.clippingsMgr = aWnd.id;
+        browser.history.deleteUrl({ url: clippingsMgrURL });
+      });
+    }
+    
+    let openInNewTab = gPrefs.openClippingsMgrInTab;
 
-  if (isGoogleChrome() || openInNewTab) {
-    try {
-      chrome.tabs.create({ url: clippingsMgrURL }, () => {
-        chrome.history.deleteUrl({ url: clippingsMgrURL });
-      });
-    }
-    catch (e) {
-      onError(e);
-    }
-  }
-  else {
-    if (gWndIDs.clippingsMgr) {
-      browser.windows.get(gWndIDs.clippingsMgr).then(aWnd => {
-        browser.windows.update(gWndIDs.clippingsMgr, { focused: true });
-      }, aErr => {
-        // Handle dangling ref to previously-closed Clippings Manager window
-        // because it was closed before it finished initializing.
-        gWndIDs.clippingsMgr = null;
-        openClippingsMgrHelper();
-      });
+    if (isGoogleChrome() || openInNewTab) {
+      try {
+        chrome.tabs.create({ url: clippingsMgrURL }, () => {
+          chrome.history.deleteUrl({ url: clippingsMgrURL });
+        });
+      }
+      catch (e) {
+        onError(e);
+      }
     }
     else {
-      openClippingsMgrHelper();
+      if (gWndIDs.clippingsMgr) {
+        browser.windows.get(gWndIDs.clippingsMgr).then(aWnd => {
+          browser.windows.update(gWndIDs.clippingsMgr, { focused: true });
+        }, aErr => {
+          // Handle dangling ref to previously-closed Clippings Manager window
+          // because it was closed before it finished initializing.
+          gWndIDs.clippingsMgr = null;
+          openClippingsMgrHelper();
+        });
+      }
+      else {
+        openClippingsMgrHelper();
+      }
     }
-  }      
+  });
 }
 
 
