@@ -1760,12 +1760,16 @@ function buildClippingsTree()
 
       setStatusBarMsg(gIsClippingsTreeEmpty ? "0 items" : null);
 
-      console.log("Finished building clippings tree. Now initializing context menu.");
-
       // Context menu for the clippings tree.
       $.contextMenu({
         selector: "#clippings-tree > ul.ui-fancytree > li",
 
+        events: {
+          show: function (aOpts) {
+            return (! gIsClippingsTreeEmpty);
+          }
+        },
+        
         callback: function (aItemKey, aOpt, aRootMenu, aOriginalEvent) {
           switch (aItemKey) {
           case "moveOrCopy":
