@@ -548,10 +548,15 @@ ul.fancytree-container {
 }
 
 #shortcut-key-conflict-msgbox,
+#clipping-missing-src-url-msgbox,
 #remove-all-source-urls-dlg,
 #mini-help-dlg,
 #generic-msg-box {
     top: 64px;
+}
+
+#clipping-missing-src-url-msgbox {
+    --width: 430px;
 }
 
 #import-dlg {

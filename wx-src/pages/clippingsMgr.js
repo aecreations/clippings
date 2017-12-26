@@ -1334,6 +1334,8 @@ function initDialogs()
     $("#clipping-key")[0].selectedIndex = gShortcutKey.getPrevSelectedIndex();
   };
 
+  gDialogs.clippingMissingSrcURL = new aeDialog("#clipping-missing-src-url-msgbox");
+  
   gDialogs.importFromFile = new aeDialog("#import-dlg");
   gDialogs.importFromFile.IMP_APPEND = 0;
   gDialogs.importFromFile.IMP_REPLACE = 1;
@@ -1757,6 +1759,70 @@ function buildClippingsTree()
       });
 
       setStatusBarMsg(gIsClippingsTreeEmpty ? "0 items" : null);
+
+      console.log("Finished building clippings tree. Now initializing context menu.");
+
+      // Context menu for the clippings tree.
+      $.contextMenu({
+        selector: "#clippings-tree > ul.ui-fancytree > li",
+
+        callback: function (aItemKey, aOpt, aRootMenu, aOriginalEvent) {
+          switch (aItemKey) {
+          case "moveOrCopy":
+            gCmd.moveClippingOrFolder();
+            break;
+            
+          case "deleteItem":
+            gCmd.deleteClippingOrFolder(gCmd.UNDO_STACK);
+            break;
+            
+          case "gotoSrcURL":
+            let tree = getClippingsTree();
+            let selectedNode = tree.activeNode;
+            if (!selectedNode || selectedNode.isFolder()) {
+              return;
+            }
+
+            let clippingID = parseInt(selectedNode.key);
+            gClippingsDB.clippings.get(clippingID).then(aClipping => {
+              let srcURL = aClipping.sourceURL;
+              if (srcURL == "") {
+                gDialogs.clippingMissingSrcURL.showModal();
+                return;
+              }
+              gCmd.gotoURL(srcURL);
+            });
+            break;
+          default:
+            window.alert("The selected action is not available right now.");
+            break;
+          }
+        },
+        
+        items: {
+          moveOrCopy: {
+            name: "Move or Copy...",
+            className: "ae-menuitem"
+          },
+          gotoSrcURL: {
+            name: "Go to Source Web Page",
+            className: "ae-menuitem",
+            visible: function (aItemKey, aOpt) {
+              let tree = getClippingsTree();
+              let selectedNode = tree.activeNode;
+              if (!selectedNode || selectedNode.isFolder()) {
+                return false;
+              }
+              return true;
+            }
+          },
+          separator0: "--------",
+          deleteItem: {
+            name: "Delete",
+            className: "ae-menuitem"
+          }
+        }
+      });
     });
   }).catch(aErr => {
     console.error("Clippings/wx::buildContextMenu(): %s", aErr.message);
