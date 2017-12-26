@@ -1355,11 +1355,15 @@ function initDialogs()
       $("#import-dlg-action-btn").text("Import");
     }
 
+    $("#import-clippings-file-path").val("");
     $("#import-dlg button.dlg-accept").attr("disabled", "true");
     
     $("#import-clippings-file-upload").on("change", aEvent => {
       $("#import-error").text("").hide();
-      if (aEvent.target.files.length > 0) {
+
+      let inputFileElt = aEvent.target;
+      if (inputFileElt.files.length > 0) {
+        $("#import-clippings-file-path").val(inputFileElt.files[0].name);
         $("#import-dlg button.dlg-accept").removeAttr("disabled");
       }
 

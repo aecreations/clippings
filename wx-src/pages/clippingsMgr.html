@@ -145,9 +145,11 @@
     <div id="import-dlg" class="lightbox">
       <div class="dlg-content browser-style">
         <label id="import-clippings-label">Select import file:</label>
-	<br/>
-        <input type="file" id="import-clippings-file-upload" accept=".rdf, .json"/>
-	<br/>
+	<div id="import-clippings-filepicker" class="browser-style">
+	  <input type="text" id="import-clippings-file-path" readonly="true"/>
+	  <label id="import-clippings-file-upload-btn" for="import-clippings-file-upload">Browse...</label>
+	  <input type="file" id="import-clippings-file-upload" accept=".rdf, .json"/>
+	</div>
 	<div id="import-clippings-replc-shct-keys-checkbox">
 	  <input type="checkbox" id="import-clippings-replc-shct-keys" checked="true"/>
 	  <label for="import-clippings-replc-shct-keys">Replace shortcut keys</label>
