@@ -213,8 +213,7 @@ let gClippingsListener = {
 
   afterBatchChanges: function ()
   {
-    gIsReloading = true;
-    window.location.reload();
+    info("Clippings/wx::clippingsMgr.js: gClippingsListener.afterBatchChanges()");
   },
 
   // Helper methods
@@ -1411,9 +1410,15 @@ function initDialogs()
           return;
         }
 
+        log("Clippings/wx::clippingsMgr.js: gDialogs.importFromFile.onAccept()::importFile(): Finished importing data.");
+        
         $("#import-error").text("").hide();
         $("#import-progress-bar").hide();
         gDialogs.importFromFile.close();
+
+        // TO DO: Change message to show the number of items imported.
+        window.alert("Clippings Manager needs to reload. Click OK to continue.");
+        window.location.reload();
       });
 
       fileReader.readAsText(importFile);
@@ -1423,11 +1428,14 @@ function initDialogs()
       info("Clippings/wx::clippingsMgr.js: Import dialog mode: Restore From Backup");
 
       $("#restore-backup-warning").hide();
-
+      
       gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
+        log("Clippings/wx::clippingsMgr.js: gDialogs.importFromFile.onAccept(): Starting restore from backup file.\nDeleting all clippings and folders");
+        
         gClippingsDB.clippings.clear().then(() => {
           return gClippingsDB.folders.clear();
         }).then(() => {
+          log("Finished deleting all clippings and folders. Starting import of backup file.");
           importFile();
         });
       }).catch(aErr => {
@@ -1523,6 +1531,9 @@ function initDialogs()
     gClippingsDB.clippings.toCollection().modify({ sourceURL: "" }).then(aNumUpd => {
       // TO DO: Put this in a notification box.
       window.alert("The source web page addresses of your clippings have been removed.");
+
+      // Reselect the selected tree node to force a call to updateDisplay().
+      getClippingsTree().reactivate(true);
     });
   });
 
