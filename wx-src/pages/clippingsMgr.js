@@ -1416,8 +1416,7 @@ function initDialogs()
         $("#import-progress-bar").hide();
         gDialogs.importFromFile.close();
 
-        // TO DO: Change message to show the number of items imported.
-        window.alert("Clippings Manager needs to reload. Click OK to continue.");
+        window.alert(`Import from "${importFile.name}" is successfully completed.`);
         window.location.reload();
       });
 
