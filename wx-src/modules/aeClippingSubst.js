@@ -43,6 +43,7 @@ aeClippingSubst.getCustomPlaceholders = function (aClippingText)
 {
   let rv = [];
   let plchldrs = new Set();
+
   let re = /\$\[([\w\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)(\{([\w \-\.\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF\|])+\})?\]/gm;
 
   let result;
@@ -52,6 +53,27 @@ aeClippingSubst.getCustomPlaceholders = function (aClippingText)
   }
 
   rv = Array.from(plchldrs);
+  return rv;
+};
+
+
+aeClippingSubst.getCustomPlaceholderDefaultVals = function (aClippingText)
+{
+  let rv = {};
+
+  let re = /\$\[([\w\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)(\{([\w \-\.\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF\|])+\})?\]/gm;
+
+  let result;
+  
+  while ((result = re.exec(aClippingText)) != null) {
+    let plchldrName = result[1];
+    
+    if (result[2]) {
+      let defVal = result[2];
+      rv[plchldrName] = defVal.substring(defVal.indexOf("{") + 1, defVal.indexOf("}"));
+    }
+  }
+  
   return rv;
 };
 

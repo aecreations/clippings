@@ -108,9 +108,11 @@ let gNewClipping = {
 let gPlaceholders = {
   _plchldrs: null,
   _clpCtnt: null,
+  _plchldrsWithDefVals: null,
 
-  set: function (aPlaceholders, aClippingText) {
+  set: function (aPlaceholders, aPlaceholdersWithDefaultVals, aClippingText) {
     this._plchldrs = aPlaceholders;
+    this._plchldrsWithDefVals = aPlaceholdersWithDefaultVals;
     this._clpCtnt = aClippingText;
   },
 
@@ -124,6 +126,7 @@ let gPlaceholders = {
   copy: function () {
     let rv = {
       placeholders: this._plchldrs.slice(),
+      placeholdersWithDefaultVals: Object.assign({}, this._plchldrsWithDefVals),
       content: this._clpCtnt
     };
     return rv;
@@ -131,6 +134,7 @@ let gPlaceholders = {
 
   reset: function () {
     this._plchldrs = null;
+    this._plchldrsWithDefVals = null;
     this._clpCtnt = null;
   }
 };
@@ -845,7 +849,11 @@ function pasteClipping(aClippingInfo)
 
       let plchldrs = aeClippingSubst.getCustomPlaceholders(processedCtnt);
       if (plchldrs.length > 0) {
-        gPlaceholders.set(plchldrs, processedCtnt);
+        let plchldrsWithDefaultVals = aeClippingSubst.getCustomPlaceholderDefaultVals(processedCtnt);
+        console.log("Placeholders with default values:");
+        console.log(plchldrsWithDefaultVals);
+        
+        gPlaceholders.set(plchldrs, plchldrsWithDefaultVals, processedCtnt);
         openPlaceholderPromptDlg();
         return;
       }

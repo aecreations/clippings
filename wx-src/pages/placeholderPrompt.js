@@ -9,6 +9,7 @@ const WNDH_PLCHLDR_MULTI_SHORT = 242;
 
 let gClippings = null;
 let gPlaceholders = null;
+let gPlaceholdersWithDefaultVals = null;
 let gClippingContent = null;
 
 
@@ -35,12 +36,18 @@ $(() => {
 
     sendMsg.then(aResp => {
       gPlaceholders = aResp.placeholders;
+      gPlaceholdersWithDefaultVals = aResp.placeholdersWithDefaultVals;
       gClippingContent = aResp.content;
-      
+
       if (gPlaceholders.length == 1) {
+        let plchldr = gPlaceholders[0];
         $("#plchldr-single").show();
-        $("#single-prmt-label").text(`Enter value for "${gPlaceholders[0]}":`);
+        $("#single-prmt-label").text(`Enter value for "${plchldr}":`);
         $("#single-prmt-input").focus();
+
+        if (plchldr in gPlaceholdersWithDefaultVals) {
+          $("#single-prmt-input").val(gPlaceholdersWithDefaultVals[plchldr]).select();
+        }
       }
       else {
         $("#plchldr-multi").show();
@@ -48,10 +55,14 @@ $(() => {
         
         chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, { height }, aWnd => {
           for (let plchldr of gPlaceholders) {
-            $("#plchldr-table").append(`<div class="ph-row browser-style" data-placeholder="${plchldr}"><label class="ph-name">${plchldr}:</label><br/><input type="text" class="ph-input"/></div>`);
+            let defaultVal = "";
+            if (plchldr in gPlaceholdersWithDefaultVals) {
+              defaultVal = gPlaceholdersWithDefaultVals[plchldr];
+            }
+            $("#plchldr-table").append(`<div class="ph-row browser-style" data-placeholder="${plchldr}"><label class="ph-name">${plchldr}:</label><br/><input type="text" class="ph-input" value="${defaultVal}"/></div>`);
           }
           $("#plchldr-table").fadeIn("fast");
-          $(".ph-input")[0].focus();
+          $(".ph-input")[0].select().focus();
         });
       }
     });
