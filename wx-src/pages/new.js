@@ -22,11 +22,22 @@ $(document).ready(() => {
     gClippingsDB = gClippings.getClippingsDB();
   }
   else {
+    // gClippingsDB is null if Private Browsing mode is turned on.
     console.error("Clippings/wx::new.js: Error initializing New Clipping dialog - unable to locate parent browser window.");
     showInitError();
     return;
   }
 
+  gClippings.verifyDB().then(aNumClippings => {
+    initHelper();
+  }).catch(aErr => {
+    showInitError();
+  });
+});
+
+
+function initHelper()
+{
   $("#btn-expand-options").click(aEvent => {
     chrome.windows.getCurrent(aWnd => {
       chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, { height: 480 }, aWnd => {
@@ -54,7 +65,7 @@ $(document).ready(() => {
       }
 
       $("#clipping-name").val(aResp.name).select().focus();
-      $("#clipping-text").val(aResp.content);
+      $("#clipping-text").val(aResp.content).attr("spellcheck", aResp.checkSpelling);
       $("#save-source-url").prop("checked", aResp.saveSrcURL);
       gSrcURL = aResp.url || "";
     });
@@ -81,7 +92,7 @@ $(document).ready(() => {
   browser.windows.getCurrent((win) => {
     browser.windows.update(win.id, {width:win.width+1})
   });
-});
+}
 
 
 $(window).keypress(aEvent => {
@@ -118,22 +129,22 @@ $(window).on("unhandledrejection", aEvent => {
 
 function showInitError()
 {
-  let errorMsgBox = new aeDialog("create-clipping-error-msgbox");
-  errorMsgBox.setInit(()=> {
+  let errorMsgBox = new aeDialog("#create-clipping-error-msgbox");
+  errorMsgBox.onInit = () => {
     let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
-    errMsgElt.text("Clippings doesn't work when Firefox is in Private Browsing mode.  Restart Firefox with Private Browsing turned off, and then try again.");
-  });
-  errorMsgBox.setAccept(() => {
+    errMsgElt.text("Clippings doesn't work when the privacy settings in Firefox are too restrictive, such as turning on Private Browsing mode.  Try changing these settings back to their defaults, then restart Firefox and try again.");
+  };
+  errorMsgBox.onAccept = () => {
     errorMsgBox.close();
     closeDlg();
-  });
+  };
   errorMsgBox.showModal();
 }
 
 
 function initDialogs()
 {
-  gNewFolderDlg = new aeDialog("new-folder-dlg");
+  gNewFolderDlg = new aeDialog("#new-folder-dlg");
   gNewFolderDlg.firstInit = true;
   gNewFolderDlg.fldrTree = null;
   gNewFolderDlg.selectedFldrNode = null;
@@ -152,7 +163,7 @@ function initDialogs()
     $('<div id="new-folder-dlg-fldr-tree" class="folder-tree"></div>').appendTo("#new-folder-dlg-fldr-tree-popup");
   };
   
-  gNewFolderDlg.setInit(() => {
+  gNewFolderDlg.onInit = () => {
     let parentDlgFldrPickerMnuBtn = $("#new-clipping-fldr-picker-menubtn");
     let fldrPickerMnuBtn = $("#new-folder-dlg-fldr-picker-mnubtn");
     let fldrPickerPopup = $("#new-folder-dlg-fldr-tree-popup");
@@ -165,12 +176,12 @@ function initDialogs()
       selectedFldrID
     );
 
-    that.fldrTree.setOnSelectFolder(aFolderData => {
+    that.fldrTree.onSelectFolder = aFolderData => {
       that.selectedFldrNode = aFolderData.node;
       fldrPickerMnuBtn.val(aFolderData.node.key).text(aFolderData.node.title);
       fldrPickerPopup.css({ visibility: "hidden" });
       $("#new-folder-dlg-fldr-tree-popup-bkgrd-ovl").hide();
-    });
+    };
 
     fldrPickerMnuBtn.val(selectedFldrID).text(selectedFldrName);
 
@@ -196,10 +207,9 @@ function initDialogs()
     }
 
     $("#new-fldr-name").val("New Folder").select().focus();
-  });
+  };
   
-  gNewFolderDlg.setCancel();
-  gNewFolderDlg.setAccept(aEvent => {
+  gNewFolderDlg.onAccept = aEvent => {
     let newFldrDlgTree = that.fldrTree.getTree();
     let parentFldrID = aeConst.ROOT_FOLDER_ID;
 
@@ -208,8 +218,10 @@ function initDialogs()
     }
     else {
       // User didn't choose a different parent folder.
-      parentFldrID = $("#new-folder-dlg-fldr-picker-mnubtn").val();
+      parentFldrID = Number($("#new-folder-dlg-fldr-picker-mnubtn").val());
     }
+
+    console.log("Clippings/wx::new.js: gNewFolderDlg.onAccept(): parentFldrID = " + parentFldrID);
 
     gClippingsDB.folders.add({
       name: $("#new-fldr-name").val(),
@@ -229,7 +241,7 @@ function initDialogs()
       let parentNode;
 
       if (parentFldrID == aeConst.ROOT_FOLDER_ID) {
-        parentNode = mainFldrTree.getRootNode();
+        parentNode = mainFldrTree.rootNode.getFirstChild();
       }
       else {
         parentNode = mainFldrTree.getNodeByKey(Number(parentFldrID).toString());
@@ -244,7 +256,7 @@ function initDialogs()
       that.resetTree();
       that.close();
     });
-  });
+  };
 }
 
 
@@ -273,7 +285,7 @@ function initFolderPicker()
   });
 
   gFolderPickerPopup = new aeFolderPicker("#new-clipping-fldr-tree", gClippingsDB);
-  gFolderPickerPopup.setOnSelectFolder(selectFolder);
+  gFolderPickerPopup.onSelectFolder = selectFolder;
 }
 
 
@@ -304,7 +316,7 @@ function initShortcutKeyMenu()
 
   let keybPasteKey = "ALT+SHIFT+Y";
   if (gClippings.getOS() == "mac") {
-    keybPasteKey = "\u2325\u21e7Y";
+    keybPasteKey = "\u2318\u21e7Y";
   }
   let tooltip = `To quickly paste this clipping into a web page textbox in Firefox, press ${keybPasteKey} followed by the shortcut key.`;
   $("#shct-key-tooltip").attr("title", tooltip);
@@ -320,7 +332,7 @@ function accept(aEvent)
     shortcutKey = shortcutKeyMenu.options[shortcutKeyMenu.selectedIndex].text;
   }
 
-  let errorMsgBox = new aeDialog("create-clipping-error-msgbox");
+  let errorMsgBox = new aeDialog("#create-clipping-error-msgbox");
 
   gClippingsDB.clippings.add({
     name: $("#clipping-name").val(),
@@ -334,22 +346,20 @@ function accept(aEvent)
     closeDlg();
 
   }).catch("OpenFailedError", aErr => {
-    // This should never happen - OpenFailedError should've been caught during
-    // dialog initialization.
-    errorMsgBox.setInit(() => {
+    // OpenFailedError exception thrown if Firefox is set to "Never remember
+    // history."
+    errorMsgBox.onInit = () => {
       console.error(`Error creating clipping: ${aErr}`);
       let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
-      errMsgElt.text("Unable to save the new clipping.  Make sure that Private Browsing mode is turned off, and then try again.");
-    });
-    errorMsgBox.setAccept();
+      errMsgElt.text("Unable to save the new clipping.  Check that the privacy settings in Firefox are not too restrictive (such as turning on Private Browsing mode), then restart Firefox and try again.");
+    };
     errorMsgBox.showModal();
 
   }).catch(aErr => {
-    errorMsgBox.setInit(() => {
+    errorMsgBox.onInit = () => {
       let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
       errMsgElt.text(`Error creating clipping: ${aErr}`);
-    });
-    errorMsgBox.setAccept();
+    };
     errorMsgBox.showModal();
   });
 }

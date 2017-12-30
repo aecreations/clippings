@@ -6,73 +6,84 @@
 
 class aeDialog
 {
-  constructor(aDlgID)
+  constructor(aDlgEltSelector)
   {
-    this._dlgID = aDlgID;
+    this._dlgEltStor = aDlgEltSelector;
     this._fnInit = function () {};
     this._fnUnload = function () {};
     this._fnAfterDlgAccept = function () {};
+
+    this._fnDlgAccept = function (aEvent) {
+      this.close();
+    };
+    
+    this._fnDlgCancel = function (aEvent) {
+      this.close();
+    };
+
+    this._init();
   }
 
-  setInit(aFnInit)
+  _init()
+  {
+    let dlgAcceptElt = $(`${this._dlgEltStor} > .dlg-btns > .dlg-accept`);
+    if (dlgAcceptElt.length > 0) {
+      dlgAcceptElt.click(aEvent => {
+        if (aEvent.target.disabled) {
+          return;
+        }
+        this._fnDlgAccept(aEvent);
+        this._fnAfterDlgAccept();
+      });
+    }
+
+    let dlgCancelElt = $(`${this._dlgEltStor} > .dlg-btns > .dlg-cancel`);
+    if (dlgCancelElt.length > 0) {
+      dlgCancelElt.click(aEvent => {
+        if (aEvent.target.disabled) {
+          return;
+        }
+        this._fnDlgCancel(aEvent);
+      });
+    }
+  }
+  
+  set onInit(aFnInit)
   {
     this._fnInit = aFnInit;
   }
 
-  setUnload(aFnUnload)
+  set onUnload(aFnUnload)
   {
     this._fnUnload = aFnUnload;
   }
 
-  setAfterAccept(aFnAfterAccept)
+  set onAfterAccept(aFnAfterAccept)
   {
     this._fnAfterDlgAccept = aFnAfterAccept;
   }
   
-  setAccept(aFnAccept)
+  set onAccept(aFnAccept)
   {
-    $(`#${this._dlgID} > .dlg-btns > .dlg-accept`).click(aEvent => {
-      if (aEvent.target.disabled) {
-        return;
-      }
-      
-      if (aFnAccept) {
-        aFnAccept(aEvent);
-      }
-      else {
-        this.close();
-      }
-      this._fnAfterDlgAccept();
-    });
+    this._fnDlgAccept = aFnAccept;
   }
 
-  setCancel(aFnCancel)
+  set onCancel(aFnCancel)
   {
-    $(`#${this._dlgID} > .dlg-btns > .dlg-cancel`).click(aEvent => {
-      if (aEvent.target.disabled) {
-        return;
-      }
-
-      if (aFnCancel) {
-        aFnCancel(aEvent);
-      }
-      else {
-        this.close();
-      }
-    });
+    this._fnDlgCancel = aFnCancel;    
   }
 
   showModal()
   {
     this._fnInit();
     $("#lightbox-bkgrd-ovl").addClass("lightbox-show");
-    $(`#${this._dlgID}`).addClass("lightbox-show");
+    $(`${this._dlgEltStor}`).addClass("lightbox-show");
   }
 
   close()
   {
     this._fnUnload();
-    $(`#${this._dlgID}`).removeClass("lightbox-show");
+    $(`${this._dlgEltStor}`).removeClass("lightbox-show");
     $("#lightbox-bkgrd-ovl").removeClass("lightbox-show");
   }
 

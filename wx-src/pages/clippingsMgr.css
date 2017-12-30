@@ -256,6 +256,7 @@ input[type="search"]::placeholder {
     background-position-x: center;
     background-position-y: center;
     background-repeat: no-repeat;
+    visibility: hidden;
 }
 
 #content {
@@ -623,10 +624,12 @@ ul.fancytree-container {
 }
 
 #init-error-msgbox {
+    --height: 136px;
     top: 64px;
 }
 
 #init-error-msgbox > .dlg-content > .msgbox-error-msg {
+    margin-left: 44px;
     color: red;
 }
 

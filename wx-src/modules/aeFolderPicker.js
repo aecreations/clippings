@@ -86,7 +86,7 @@ class aeFolderPicker
     return rv;
   }
 
-  setOnSelectFolder(aFnOnSelectFolder)
+  set onSelectFolder(aFnOnSelectFolder)
   {
     this._fnOnSelectFolder = aFnOnSelectFolder;
   }

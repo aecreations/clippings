@@ -309,6 +309,9 @@ let gSearchBox = {
     
     $("#search-box").keyup(aEvent => {
       this.updateSearch();
+      $("#clear-search").css({
+        visibility: (aEvent.target.value ? "visible" : "hidden")
+      });
     });
 
     $("#clear-search").click(aEvent => { this.reset() });
@@ -366,6 +369,7 @@ let gSearchBox = {
   {
     getClippingsTree().clearFilter();
     $("#search-box").val("").focus();
+    $("#clear-search").css({ visibility: "hidden" });
     setStatusBarMsg();
     this._isActive = false;
   }
@@ -766,13 +770,13 @@ let gCmd = {
   copyFolderIntrl: function (aFolderID, aDestFldrID, aDestUndoStack)
   {
     gClippingsDB.folders.get(aFolderID).then(aFolder => {
-      let folderCpy = {
+      return gClippingsDB.folders.add({
         name: aFolder.name,
         parentFolderID: aDestFldrID,
-      };
-
-      return gClippingsDB.folders.add(folderCpy);
+      });
     }).then(aNewFolderID => {
+      this._copyFolderHelper(aFolderID, aNewFolderID);
+      
       if (aDestUndoStack == this.UNDO_STACK) {
         this.undoStack.push({
           action: this.ACTION_COPYTOFOLDER,
@@ -780,6 +784,9 @@ let gCmd = {
           itemType: this.ITEMTYPE_FOLDER
         });
       }
+    }).catch(aErr => {
+      console.error("Clippings/wx::clippingsMgr.js: gCmd.copyFolderIntrl(): " + aErr);
+      window.alert("Error copying folder: " + aErr);
     });
   },
   
@@ -879,6 +886,34 @@ let gCmd = {
     rv = (parentNode.isRootNode() ? aeConst.ROOT_FOLDER_ID : parseInt(parentNode.key));
 
     return rv;
+  },
+
+  _copyFolderHelper: function (aSrcFldrID, aTargFldrID)
+  {
+    gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
+      gClippingsDB.folders.where("parentFolderID").equals(aSrcFldrID).each((aItem, aCursor) => {
+        gClippingsDB.folders.add({
+          name: aItem.name,
+          parentFolderID: aTargFldrID,
+        }).then(aNewSubFldrID => {
+          this._copyFolderHelper(aItem.id, aNewSubFldrID);
+        });
+
+      }).then(() => {
+        return gClippingsDB.clippings.where("parentFolderID").equals(aSrcFldrID).each((aItem, aCursor) => {
+          gClippingsDB.clippings.add({
+            name: aItem.name,
+            content: aItem.content,
+            shortcutKey: "",
+            sourceURL: aItem.sourceURL,
+            label: aItem.label,
+            parentFolderID: aTargFldrID
+          });
+        });
+      });
+    }).catch(aErr => {
+      console.error("Clippings/wx::clippingsMgr.js: gCmd._copyFolderHelper(): " + aErr);
+    });
   }
 };
 
@@ -916,7 +951,7 @@ $(document).ready(() => {
     gSearchBox.init();
     gSearchBox.activate();
   });
-  
+
   chrome.history.deleteUrl({ url: window.location.href });
 
   // Fix for Fx57 bug where bundled page loaded using
@@ -984,12 +1019,30 @@ $(document).keypress(aEvent => {
       gCmd.deleteClippingOrFolder(gCmd.UNDO_STACK);
     }
   }
+  else if (aEvent.key == "/") {
+    if (aEvent.target.tagName != "INPUT" && aEvent.target.tagName != "TEXTAREA") {
+      aEvent.preventDefault();
+    }
+  }
+  else if (aEvent.key == "F5") {
+    // Suppress browser reload.
+    aEvent.preventDefault();
+  }
   else if (aEvent.key.toUpperCase() == "F" && isAccelKeyPressed()) {
     aEvent.preventDefault();
     $("#search-box").focus();
   }
   else if (aEvent.key.toUpperCase() == "Z" && isAccelKeyPressed()) {
     gCmd.undo();
+  }
+  else {
+    // Ignore standard browser shortcut keys.
+    let key = aEvent.key.toUpperCase();
+    if (isAccelKeyPressed() && (key == "A" || key == "D" || key == "N"
+                                || key == "P" || key == "R" || key == "S"
+                                || key == "U")) {
+      aEvent.preventDefault();
+    }
   }
 });
 
@@ -1143,7 +1196,7 @@ function initInstantEditing()
       let text = aEvent.target.value;
       gClippingsDB.clippings.update(id, { content: text });
     }
-  });
+  }).attr("spellcheck", gClippings.getPrefs().checkSpelling);
 }
 
 
@@ -1169,16 +1222,16 @@ function initDialogs()
   
   aeImportExport.setDatabase(gClippingsDB);
 
-  gDialogs.shctKeyConflict = new aeDialog("shortcut-key-conflict-msgbox");
-  gDialogs.shctKeyConflict.setAccept(aEvent => {
+  gDialogs.shctKeyConflict = new aeDialog("#shortcut-key-conflict-msgbox");
+  gDialogs.shctKeyConflict.onAccept = aEvent => {
     gDialogs.shctKeyConflict.close();
 
     // NOTE: As of Firefox 57b8, this doesn't do anything.
     $("#clipping-key")[0].selectedIndex = gShortcutKey.getPrevSelectedIndex();
-  });
+  };
 
-  gDialogs.importFromFile = new aeDialog("import-dlg");
-  gDialogs.importFromFile.setInit(() => {
+  gDialogs.importFromFile = new aeDialog("#import-dlg");
+  gDialogs.importFromFile.onInit = () => {
     $("#import-dlg button.dlg-accept").attr("disabled", "true");
     
     $("#import-clippings-file-upload").on("change", aEvent => {
@@ -1187,14 +1240,13 @@ function initDialogs()
         $("#import-dlg button.dlg-accept").removeAttr("disabled");
       }
     });
-  });
-  gDialogs.importFromFile.setUnload(() => {
+  };
+  gDialogs.importFromFile.onUnload = () => {
     $("#import-error").text("").hide();
     $("#import-dlg #import-clippings-file-upload").val("");
     $("#import-clippings-replc-shct-keys")[0].checked = true;
-  });
-  gDialogs.importFromFile.setCancel();
-  gDialogs.importFromFile.setAccept(aEvent => {
+  };
+  gDialogs.importFromFile.onAccept = aEvent => {
     function uploadImportFile(aFileList) {
       if (aFileList.length == 0) {
         return;
@@ -1235,13 +1287,13 @@ function initDialogs()
 
     let inputFileElt = $("#import-clippings-file-upload")[0];
     uploadImportFile(inputFileElt.files);
-  });
+  };
 
-  gDialogs.exportToFile = new aeDialog("export-dlg");
+  gDialogs.exportToFile = new aeDialog("#export-dlg");
   gDialogs.exportToFile.FMT_CLIPPINGS_WX = 0;
   gDialogs.exportToFile.FMT_HTML = 1;
   
-  gDialogs.exportToFile.setInit(() => {
+  gDialogs.exportToFile.onInit = () => {
     let fmtDesc = [
       "The default format for backing up and exchanging Clippings data with other users or multiple computers.  Requires Clippings 5.5 or newer installed.",
       "Exports your Clippings data as an HTML document for printing or display in a web browser."
@@ -1262,10 +1314,9 @@ function initDialogs()
     $("#export-format-list")[0].selectedIndex = gDialogs.exportToFile.FMT_CLIPPINGS_WX;
     $("#format-description").text(fmtDesc[gDialogs.exportToFile.FMT_CLIPPINGS_WX]);
     $("#include-src-urls").prop("checked", true);
-  });
-  gDialogs.exportToFile.setCancel();
-  gDialogs.exportToFile.setAccept();
-  gDialogs.exportToFile.setAfterAccept(() => {
+  };
+
+  gDialogs.exportToFile.onAfterAccept = () => {
     function saveToFile(aBlobData, aFilename)
     {
       browser.downloads.download({
@@ -1306,19 +1357,18 @@ function initDialogs()
         saveToFile(blobData, aeConst.HTML_EXPORT_FILENAME);
       });
     }
-  });
+  };
 
-  gDialogs.removeAllSrcURLs = new aeDialog("remove-all-source-urls-dlg");
-  gDialogs.removeAllSrcURLs.setCancel();
-  gDialogs.removeAllSrcURLs.setAccept();
-  gDialogs.removeAllSrcURLs.setAfterAccept(() => {
+  gDialogs.removeAllSrcURLs = new aeDialog("#remove-all-source-urls-dlg");
+  $("#remove-all-source-urls-dlg > .dlg-btns > .dlg-btn-yes").click(aEvent => {
+    gDialogs.removeAllSrcURLs.close();
     gClippingsDB.clippings.toCollection().modify({ sourceURL: "" }).then(aNumUpd => {
       // TO DO: Put this in a notification box.
       window.alert("The source web page addresses of your clippings have been removed.");
     });
   });
 
-  gDialogs.moveTo = new aeDialog("move-dlg");
+  gDialogs.moveTo = new aeDialog("#move-dlg");
   gDialogs.moveTo.fldrTree = null;
   gDialogs.moveTo.selectedFldrNode = null;
 
@@ -1337,15 +1387,15 @@ function initDialogs()
   };
 
   let that = gDialogs.moveTo;
-  gDialogs.moveTo.setInit(() => {
+  gDialogs.moveTo.onInit = () => {
     if (that.fldrTree) {
       that.fldrTree.getTree().getNodeByKey(Number(aeConst.ROOT_FOLDER_ID).toString()).setActive();
     }
     else {
       that.fldrTree = new aeFolderPicker("#move-to-fldr-tree", gClippingsDB);
-      that.fldrTree.setOnSelectFolder(aFolderData => {
+      that.fldrTree.onSelectFolder = aFolderData => {
         that.selectedFldrNode = aFolderData.node;
-      });
+      };
     }
 
     $("#copy-instead-of-move").prop("checked", false);
@@ -1358,14 +1408,14 @@ function initDialogs()
     else {
       $("#move-to-label").text("Move clipping to:");
     }
-  });
+  };
 
-  gDialogs.moveTo.setCancel(() => {
+  gDialogs.moveTo.onCancel = aEvent => {
     that.resetTree();
     that.close();
-  });
+  };
 
-  gDialogs.moveTo.setAccept(() => {
+  gDialogs.moveTo.onAccept = aEvent => {
     let clippingsMgrTree = getClippingsTree();
     let selectedNode = clippingsMgrTree.activeNode;
     let id = parseInt(selectedNode.key);
@@ -1410,12 +1460,10 @@ function initDialogs()
 
     that.resetTree();
     that.close();
-  });
+  };
 
-  gDialogs.miniHelp = new aeDialog("mini-help-dlg");
-  gDialogs.miniHelp.setCancel();
-  gDialogs.genericMsgBox = new aeDialog("generic-msg-box");
-  gDialogs.genericMsgBox.setCancel();
+  gDialogs.miniHelp = new aeDialog("#mini-help-dlg");
+  gDialogs.genericMsgBox = new aeDialog("#generic-msg-box");
 }
 
 
@@ -1462,7 +1510,8 @@ function buildClippingsTree()
       
       $("#clippings-tree").fancytree({
         extensions: ["dnd5", "filter"],
-        
+
+        debugLevel: 0,
         autoScroll: true,
         source: treeData,
         selectMode: 1,
@@ -1823,13 +1872,13 @@ function showBanner(aMessage)
 
 function showInitError()
 {
-  let errorMsgBox = new aeDialog("init-error-msgbox");
-  errorMsgBox.setInit(() => {
-    $("#init-error-msgbox > .dlg-content > .msgbox-error-msg").text("Clippings doesn't work when Firefox is in Private Browsing mode.  Restart Firefox with Private Browsing turned off, and then try again.");
-  });
-  errorMsgBox.setAccept(() => {
+  let errorMsgBox = new aeDialog("#init-error-msgbox");
+  errorMsgBox.onInit = () => {
+    $("#init-error-msgbox > .dlg-content > .msgbox-error-msg").text("Clippings doesn't work when the privacy settings in Firefox are too restrictive, such as turning on Private Browsing mode.  Try changing these settings back to their defaults, then restart Firefox and try again.");
+  };
+  errorMsgBox.onAccept = () => {
     closeWnd();
-  });
+  };
 
   errorMsgBox.showModal();
 }

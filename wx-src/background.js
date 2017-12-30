@@ -220,6 +220,8 @@ function initHelper()
   buildContextMenu();
 
   chrome.commands.onCommand.addListener(aCmdName => {
+    info(`Clippings/wx: Command "${aCmdName}" invoked!`);
+
     if (aCmdName == "ae-clippings-paste-clipping" && gPrefs.keyboardPaste) {
       openKeyboardPasteDlg();
     }
@@ -317,6 +319,7 @@ function initMessageListeners()
         resp = gNewClipping.get();
         if (resp !== null) {
           resp.saveSrcURL = gPrefs.alwaysSaveSrcURL;
+          resp.checkSpelling = gPrefs.checkSpelling;
           aSendResponse(resp);
         }
       }
@@ -349,6 +352,7 @@ function initMessageListeners()
 
         if (resp !== null) {
           resp.saveSrcURL = gPrefs.alwaysSaveSrcURL;
+          resp.checkSpelling = gPrefs.checkSpelling;
           return Promise.resolve(resp);
         }
       }
@@ -747,6 +751,22 @@ function pasteClipping(aClippingInfo)
 function getClippingsDB()
 {
   return gClippingsDB;
+}
+
+
+function verifyDB()
+{
+  return new Promise((aFnResolve, aFnReject) => {
+    let numClippings;
+
+    gClippingsDB.clippings.count(aNumItems => {
+      numClippings = aNumItems;
+    }).then(() => {
+      aFnResolve(numClippings);
+    }).catch(aErr => {
+      aFnReject(aErr);
+    });
+  });
 }
 
 
