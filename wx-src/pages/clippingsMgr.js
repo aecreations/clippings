@@ -1476,6 +1476,21 @@ function initDialogs()
   };
 
   gDialogs.exportToFile.onAfterAccept = () => {
+    function getErrStr(aErr)
+    {
+      let rv = `${aErr.name}: ${aErr.message}`;
+
+      if (aErr.fileName) {
+        rv += "\nSource: " + aErr.fileName;
+      }
+
+      if (aErr.lineNumber) {
+        rv += ":" + aErr.lineNumber;
+      }
+
+      return rv;
+    }
+    
     function saveToFile(aBlobData, aFilename)
     {
       browser.downloads.download({
@@ -1484,7 +1499,7 @@ function initDialogs()
         saveAs: true
       }).then(aDownldItemID => {
         setStatusBarMsg("Exporting... done");
-
+        
         // TO DO: Get the path of the exported file, not just the file name.
         window.alert(`Clippings export to "${aFilename}" was successfully completed.`);
       }).catch(aErr => {
@@ -1494,7 +1509,7 @@ function initDialogs()
         else {
           console.error(aErr);
           setStatusBarMsg("Export failed.");
-          window.alert("Sorry, an error occurred while creating the export file.\n\nDetails:\n" + aErr);
+          window.alert("Sorry, an error occurred while creating the export file.\n\nDetails:\n" + getErrStr(aErr));
         }
       });
     }
@@ -1510,7 +1525,7 @@ function initDialogs()
 
         saveToFile(blobData, aeConst.CLIPPINGS_EXPORT_FILENAME);
       }).catch(aErr => {
-        window.alert("Sorry, an error occurred while exporting to Clippings 6 format.\n\nDetails:\n" + aErr);
+        window.alert("Sorry, an error occurred while exporting to Clippings 6 format.\n\nDetails:\n" + getErrStr(aErr));
         setStatusBarMsg("Export failed.");
       });
     }
@@ -1519,7 +1534,7 @@ function initDialogs()
         let blobData = new Blob([aHTMLData], { type: "text/html;charset=utf-8"});
         saveToFile(blobData, aeConst.HTML_EXPORT_FILENAME);
       }).catch(aErr => {
-        window.alert("Sorry, an error occurred while exporting to HTML Document format.\n\nDetails:\n" + aErr);
+        window.alert("Sorry, an error occurred while exporting to HTML Document format.\n\nDetails:\n" + getErrStr(aErr));
         setStatusBarMsg("Export failed.");
       });
     }
