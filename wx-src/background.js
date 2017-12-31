@@ -849,7 +849,7 @@ function pasteClipping(aClippingInfo)
 
       let plchldrs = aeClippingSubst.getCustomPlaceholders(processedCtnt);
       if (plchldrs.length > 0) {
-        let plchldrsWithDefaultVals = aeClippingSubst.getCustomPlaceholderDefaultVals(processedCtnt);
+        let plchldrsWithDefaultVals = aeClippingSubst.getCustomPlaceholderDefaultVals(processedCtnt, aClippingInfo);
         console.log("Placeholders with default values:");
         console.log(plchldrsWithDefaultVals);
         
