@@ -57,7 +57,7 @@ $(() => {
             for (let val of vals) {
               optionElts += `<option value="${val}">${val}</option>`;
             }
-            $("#single-prmt-input").replaceWith(`<select id="single-prmt-input">${optionElts}</select>`);
+            $("#single-prmt-input").replaceWith(`<select id="single-prmt-input" class="browser-style">${optionElts}</select>`);
           }
         }
       }
@@ -78,7 +78,7 @@ $(() => {
               for (let val of vals) {
                 optionElts += `<option value="${val}">${val}</option>`;
               }
-              $("#plchldr-table").append(`<div class="ph-row browser-style" data-placeholder="${plchldr}"><label class="ph-name">${plchldr}:</label><br/><select class="ph-input">${optionElts}</select></div>`);
+              $("#plchldr-table").append(`<div class="ph-row browser-style" data-placeholder="${plchldr}"><label class="ph-name">${plchldr}:</label><br/><select class="ph-input browser-style">${optionElts}</select></div>`);
             }
             else {
               $("#plchldr-table").append(`<div class="ph-row browser-style" data-placeholder="${plchldr}"><label class="ph-name">${plchldr}:</label><br/><input type="text" class="ph-input" value="${defaultVal}"/></div>`);
