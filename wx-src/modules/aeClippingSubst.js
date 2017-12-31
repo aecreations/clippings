@@ -10,6 +10,15 @@
  * predefined values or user-input text.
  */
 let aeClippingSubst = {
+  // Match placeholder names containing alphanumeric char's, underscores, and
+  // the following Unicode blocks: Latin-1 Supplement, Latin Extended-A, Latin
+  // Extended-B, Cyrillic, Hebrew.
+  // For normal placeholders, allow {|} chars for optional default values, and
+  // within the { and }, allow the same characters as placeholder names, but
+  // including the space, hyphen and period.
+  REGEXP_CUSTOM_PLACEHOLDER: /\$\[([\w\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)(\{([\w \-\.\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF\|])+\})?\]/gm,
+  REGEXP_AUTO_INCR_PLACEHOLDER: /\#\[([a-zA-Z0-9_\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)\]/gm,
+  
   _userAgentStr: null,
   _hostAppName: null,
   _autoIncrementVars: {},
@@ -44,7 +53,7 @@ aeClippingSubst.getCustomPlaceholders = function (aClippingText)
   let rv = [];
   let plchldrs = new Set();
 
-  let re = /\$\[([\w\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)(\{([\w \-\.\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF\|])+\})?\]/gm;
+  let re = this.REGEXP_CUSTOM_PLACEHOLDER;
 
   let result;
   
@@ -60,8 +69,7 @@ aeClippingSubst.getCustomPlaceholders = function (aClippingText)
 aeClippingSubst.getCustomPlaceholderDefaultVals = function (aClippingText, aClippingInfo)
 {
   let rv = {};
-
-  let re = /\$\[([\w\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)(\{([\w \-\.\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF\|])+\})?\]/gm;
+  let re = this.REGEXP_CUSTOM_PLACEHOLDER;
 
   let result;
   
@@ -113,7 +121,7 @@ aeClippingSubst.getCustomPlaceholderDefaultVals = function (aClippingText, aClip
 aeClippingSubst.getAutoIncrPlaceholders = function (aClippingText)
 {
   let rv = [];
-  let re = /\#\[([a-zA-Z0-9_\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)\]/gm;
+  let re = this.REGEXP_AUTO_INCR_PLACEHOLDER;
 
   let result;
 
@@ -160,125 +168,10 @@ aeClippingSubst.processAutoIncrPlaceholders = function (aClippingText)
     return rv;
   }
 
-  rv = aClippingText.replace(/\#\[([a-zA-Z0-9_\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)\]/gm, fnAutoIncrement);
+  rv = aClippingText.replace(this.REGEXP_AUTO_INCR_PLACEHOLDER, fnAutoIncrement);
 
   return rv;
 };
-
-
-// DEPRECATED
-aeClippingSubst.processClippingText = function (aClippingInfo)
-{
-  if ((/^\[NOSUBST\]/.test(aClippingInfo.name))) {
-    return aClippingInfo.text;
-  }
-
-  var rv = "";
-
-  // Remember the value of the same placeholder that was filled in previously
-  var knownTags = {};
-  
-  var fnReplace = (aMatch, aP1, aP2, aOffset, aString) => {
-    let varName = aP1;
-
-    if (varName in knownTags) {
-      return knownTags[varName];
-    }
-
-    let hasDefaultVal = false;
-    let hasMultipleVals = false;
-
-    if (aP2) {
-      hasDefaultVal = true;
-
-      if (aP2.indexOf("|") != -1) {
-        hasMultipleVals = true;
-      }
-    }
-
-    // Pre-populate input with default value, if any.
-    let defaultVal = "";
-    if (hasDefaultVal) {
-	defaultVal = aP2.substring(aP2.indexOf("{") + 1, aP2.indexOf("}"));
-
-      let date = new Date();
-
-      switch (defaultVal) {
-      case "_DATE_":
-        defaultVal = date.toLocaleDateString();
-        break;
-
-      case "_TIME_":
-        defaultVal = date.toLocaleTimeString();
-        break;
-
-      case "_NAME_":
-        defaultVal = aClippingInfo.name;
-        break;
-
-      case "_FOLDER_":
-        defaultVal = aClippingInfo.parentFolderName;
-        break;
-
-      case "_HOSTAPP_":
-        defaultVal = this._hostAppName;
-        break;
-        
-      case "_UA_":
-        defaultVal = this._userAgentStr;
-        break;
-        
-      default:
-        break;
-      }
-    }
-
-    var rv = "";
-
-    // TO DO: Prompt for replacement text
-    rv = "$[" + varName + "]";
-    
-    return rv;
-  };
-
-  var fnAutoIncrement = (aMatch, aP1) => {
-    let varName = aP1;
-
-    if (varName in this._autoIncrementVars) {
-      return ++this._autoIncrementVars[varName];
-    }
-
-    var rv = "";
-    
-    // TO DO: Prompt for initial numeric value
-    this._autoIncrementVars[varName] = this._autoIncrementStartVal;
-
-    rv = this._autoIncrementVars[varName];
-    
-    return rv;
-  };
-
-  let date = new Date();
-
-  rv = aClippingInfo.text.replace(/\$\[DATE\]/gm, date.toLocaleDateString());
-  rv = rv.replace(/\$\[TIME\]/gm, date.toLocaleTimeString());
-  rv = rv.replace(/\$\[NAME\]/gm, aClippingInfo.name);
-  rv = rv.replace(/\$\[FOLDER\]/gm, aClippingInfo.parentFolderName);
-  rv = rv.replace(/\$\[HOSTAPP\]/gm, this._hostAppName);
-  rv = rv.replace(/\$\[UA\]/gm, this._userAgentStr);
-
-  // Match placeholder names containing alphanumeric char's, underscores, and
-  // the following Unicode blocks: Latin-1 Supplement, Latin Extended-A, Latin
-  // Extended-B, Cyrillic, Hebrew.
-  // For normal placeholders, allow {|} chars for optional default values, and
-  // within the { and }, allow the same characters as placeholder names, but
-  // including the space, hyphen and period.
-  rv = rv.replace(/\$\[([\w\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)(\{([\w \-\.\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF\|])+\})?\]/gm, fnReplace);
-  rv = rv.replace(/\#\[([a-zA-Z0-9_\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)\]/gm, fnAutoIncrement);
-
-  return rv;
-};
-// END DEPRECATED
 
 
 aeClippingSubst.getAutoIncrementVarNames = function ()
