@@ -46,7 +46,20 @@ $(() => {
         $("#single-prmt-input").focus();
 
         if (plchldr in gPlaceholdersWithDefaultVals) {
-          $("#single-prmt-input").val(gPlaceholdersWithDefaultVals[plchldr]).select();
+          let defaultVal = gPlaceholdersWithDefaultVals[plchldr];
+
+          if (defaultVal.indexOf("|") == -1) {
+            $("#single-prmt-input").val(defaultVal).select();
+          }
+          else {
+            let vals = defaultVal.split("|");
+            // TO DO: Replace textbox with drop-down menu.  Hint: Use jQuery $(...).replaceWith()
+            let optionElts = "";
+            for (let val of vals) {
+              optionElts += `<option value="${val}">${val}</option>`;
+            }
+            $("#single-prmt-input").replaceWith(`<select id="single-prmt-input">${optionElts}</select>`);
+          }
         }
       }
       else {
@@ -59,7 +72,18 @@ $(() => {
             if (plchldr in gPlaceholdersWithDefaultVals) {
               defaultVal = gPlaceholdersWithDefaultVals[plchldr];
             }
-            $("#plchldr-table").append(`<div class="ph-row browser-style" data-placeholder="${plchldr}"><label class="ph-name">${plchldr}:</label><br/><input type="text" class="ph-input" value="${defaultVal}"/></div>`);
+
+            if (defaultVal && defaultVal.indexOf("|") != -1) {
+              let vals = defaultVal.split("|");
+              let optionElts = "";
+              for (let val of vals) {
+                optionElts += `<option value="${val}">${val}</option>`;
+              }
+              $("#plchldr-table").append(`<div class="ph-row browser-style" data-placeholder="${plchldr}"><label class="ph-name">${plchldr}:</label><br/><select class="ph-input">${optionElts}</select></div>`);
+            }
+            else {
+              $("#plchldr-table").append(`<div class="ph-row browser-style" data-placeholder="${plchldr}"><label class="ph-name">${plchldr}:</label><br/><input type="text" class="ph-input" value="${defaultVal}"/></div>`);
+            }
           }
           $("#plchldr-table").fadeIn("fast");
           $(".ph-input")[0].select().focus();
@@ -99,18 +123,35 @@ $(window).on("contextmenu", aEvent => {
 
 function accept(aEvent)
 {
+  function getPlchldrRegExp(aPlaceholder)
+  {
+    let rv = "";
+
+    if (aPlaceholder in gPlaceholdersWithDefaultVals) {
+      let subre = gPlaceholdersWithDefaultVals[aPlaceholder].replace(/\|/g, "\\|");
+      rv = aPlaceholder + "\\{" +  subre + "\\}";
+    }
+    else {
+      rv = aPlaceholder;
+    }
+    return rv;
+  }
+  
   let content = "";
 
   if (gPlaceholders.length == 1) {
+    let plchldr = getPlchldrRegExp(gPlaceholders[0]);
+    
     content = gClippingContent.replace(
-      new RegExp("\\$\\[" + gPlaceholders[0] + "\\]", "g"),
+      new RegExp("\\$\\[" + plchldr + "\\]", "g"),
       $("#single-prmt-input").val()
     );
   }
   else {
     content = gClippingContent;
     for (let i = 0; i < gPlaceholders.length; i++) {
-      let plchldr = gPlaceholders[i];
+      let plchldr = getPlchldrRegExp(gPlaceholders[i]);
+
       content = content.replace(
         new RegExp("\\$\\[" + plchldr + "\\]", "g"),
         $(".ph-input")[i].value
