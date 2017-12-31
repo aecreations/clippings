@@ -53,7 +53,6 @@ $(() => {
           }
           else {
             let vals = defaultVal.split("|");
-            // TO DO: Replace textbox with drop-down menu.  Hint: Use jQuery $(...).replaceWith()
             let optionElts = "";
             for (let val of vals) {
               optionElts += `<option value="${val}">${val}</option>`;
