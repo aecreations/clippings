@@ -57,7 +57,7 @@ aeClippingSubst.getCustomPlaceholders = function (aClippingText)
 };
 
 
-aeClippingSubst.getCustomPlaceholderDefaultVals = function (aClippingText)
+aeClippingSubst.getCustomPlaceholderDefaultVals = function (aClippingText, aClippingInfo)
 {
   let rv = {};
 
@@ -70,7 +70,39 @@ aeClippingSubst.getCustomPlaceholderDefaultVals = function (aClippingText)
     
     if (result[2]) {
       let defVal = result[2];
-      rv[plchldrName] = defVal.substring(defVal.indexOf("{") + 1, defVal.indexOf("}"));
+      let defaultVal = defVal.substring(defVal.indexOf("{") + 1, defVal.indexOf("}"));
+      let date = new Date();
+
+      switch (defaultVal) {
+      case "_DATE_":
+        defaultVal = date.toLocaleDateString();
+        break;
+
+      case "_TIME_":
+        defaultVal = date.toLocaleTimeString();
+        break;
+
+      case "_NAME_":
+        defaultVal = aClippingInfo.name;
+        break;
+
+      case "_FOLDER_":
+        defaultVal = aClippingInfo.parentFolderName;
+        break;
+
+      case "_HOSTAPP_":
+        defaultVal = this._hostAppName;
+        break;
+        
+      case "_UA_":
+        defaultVal = this._userAgentStr;
+        break;
+        
+      default:
+        break;
+      }
+
+      rv[plchldrName] = defaultVal;
     }
   }
   
