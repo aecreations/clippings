@@ -316,7 +316,7 @@ function initShortcutKeyMenu()
 
   let keybPasteKey = "ALT+SHIFT+Y";
   if (gClippings.getOS() == "mac") {
-    keybPasteKey = "\u2318\u21e7Y";
+    keybPasteKey = "\u21e7\u2318Y";
   }
   let tooltip = `To quickly paste this clipping into a web page textbox in Firefox, press ${keybPasteKey} followed by the shortcut key.`;
   $("#shct-key-tooltip").attr("title", tooltip);
