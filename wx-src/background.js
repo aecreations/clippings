@@ -11,6 +11,7 @@ const PASTE_ACTION_SEARCH_CLIPPING = 2;
 
 let gClippingsDB = null;
 let gOS = null;
+let gAutoIncrPlchldrs = null;
 
 let gClippingsListeners = {
   ORIGIN_CLIPPINGS_MGR: 1,
@@ -243,6 +244,7 @@ function initHelper()
   initMessageListeners();
 
   aeClippingSubst.init(navigator.userAgent, gPrefs.autoIncrPlcHldrStartVal);
+  gAutoIncrPlchldrs = new Set();
 
   browser.storage.onChanged.addListener((aChanges, aAreaName) => {
     let changedPrefs = Object.keys(aChanges);
@@ -467,6 +469,16 @@ function initMessageListeners()
 
 function buildContextMenu()
 {
+  // Context menu for browser action button.
+  chrome.contextMenus.create({
+    id: "ae-clippings-reset-autoincr-plchldrs",
+    title: "Reset Auto-increment Placeholders",
+    enabled: false,
+    contexts: ["browser_action"],
+    documentUrlPatterns: ["<all_urls>"]
+  });
+
+  // Context menu for web page textbox or HTML editor.
   chrome.contextMenus.create({
     id: "ae-clippings-new",
     title: "New...",
@@ -585,6 +597,48 @@ function removeContextMenuForFolder(aRemovedFolderID)
 function rebuildContextMenu()
 {
   chrome.contextMenus.removeAll(() => { buildContextMenu() });
+}
+
+
+function buildAutoIncrementPlchldrResetMenu(aAutoIncrPlchldrs)
+{
+  let enabledResetMenu = false;
+  
+  aAutoIncrPlchldrs.forEach(function (aItem, aIndex, aArray) {
+    if (! gAutoIncrPlchldrs.has(aItem)) {
+      gAutoIncrPlchldrs.add(aItem);
+
+      let menuItem = {
+        id: `ae-clippings-reset-autoincr-${aItem}`,
+        title: `#[${aItem}]`,
+        parentId: "ae-clippings-reset-autoincr-plchldrs",
+        contexts: ["browser_action"],
+        documentUrlPatterns: ["<all_urls>"]
+      };
+      
+      chrome.contextMenus.create(menuItem, () => {
+        if (! enabledResetMenu) {
+          chrome.contextMenus.update("ae-clippings-reset-autoincr-plchldrs", {
+            enabled: true
+          }, () => { enabledResetMenu = true });
+        }
+      });
+    }
+  });
+}
+
+
+function resetAutoIncrPlaceholder(aPlaceholder)
+{
+  log(`Clippings/wx: resetAutoIncrPlaceholder(): Resetting placeholder: #[${aPlaceholder}]`);
+
+  aeClippingSubst.resetAutoIncrementVar(aPlaceholder);
+  gAutoIncrPlchldrs.delete(aPlaceholder);
+  chrome.contextMenus.remove(`ae-clippings-reset-autoincr-${aPlaceholder}`, () => {
+    if (gAutoIncrPlchldrs.size == 0) {
+      chrome.contextMenus.update("ae-clippings-reset-autoincr-plchldrs", { enabled: false });
+    }
+  });
 }
 
 
@@ -844,6 +898,8 @@ function pasteClipping(aClippingInfo)
         // menu for the Clippings toolbar button.
         console.log("Clippings/wx: Auto-incrementing placeholder names:");
         console.log(autoIncrPlchldrs);
+
+        buildAutoIncrementPlchldrResetMenu(autoIncrPlchldrs);
         processedCtnt = aeClippingSubst.processAutoIncrPlaceholders(processedCtnt);
       }
 
@@ -1030,6 +1086,10 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
     if (aInfo.menuItemId.startsWith("ae-clippings-clipping-")) {
       let id = Number(aInfo.menuItemId.substr(22));
       pasteClippingByID(id);
+    }
+    else if (aInfo.menuItemId.startsWith("ae-clippings-reset-autoincr-")) {
+      let plchldr = aInfo.menuItemId.substr(28);
+      resetAutoIncrPlaceholder(plchldr);
     }
     break;
   }
