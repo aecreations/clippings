@@ -279,7 +279,7 @@ input[type="search"]::placeholder {
     width: 220px;
     min-width: 220px;
     overflow: auto;
-    border: 1px solid threedshadow;
+    border-right: 1px solid transparent;
     background-color: #fbfbfb;
 }
 
@@ -313,8 +313,17 @@ ul.fancytree-container {
     font-size: 12px;
 }
 
-#item-properties {
+#tree-splitter {
     order: 2;
+    position: relative;
+    width: 2px;
+    background-color: #fbfbfb;
+    border-right: 1px solid #b1b1b1;
+    cursor: col-resize;
+}
+
+#item-properties {
+    order: 3;
     flex: 1 1 auto;
     align-self: stretch;
     margin-bottom: 0;

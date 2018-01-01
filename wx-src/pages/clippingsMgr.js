@@ -1010,7 +1010,7 @@ $(document).ready(() => {
     log("Clippings/wx::clippingsMgr: Successfully opened Clippings DB");
   }
   else {
-    console.error("Error initializing Clippings Manager: Unable to locate parent browser window.");
+    console.error("Error initializing Clippings Manager: Failed to retrieve background page!");
     $("#clipping-name, #clipping-text, #source-url-bar, #options-bar").hide();
     showInitError();
     return;
@@ -1038,6 +1038,8 @@ $(document).ready(() => {
     gSearchBox.activate();
   });
 
+  initTreeSplitter();
+  
   chrome.history.deleteUrl({ url: window.location.href });
 
   // Fix for Fx57 bug where bundled page loaded using
@@ -1898,6 +1900,51 @@ function buildClippingsTreeHelper(aParentFolderID, aFolderData)
   });
 
   return rv;
+}
+
+
+function initTreeSplitter()
+{
+  // Adapted from https://codepen.io/lingtalfi/pen/zoNeJp
+  // Requires Simple Drag library: https://github.com/lingtalfi/simpledrag
+  var leftPane = document.getElementById("clippings-tree");
+  var rightPane = document.getElementById("item-properties");
+  var paneSep = document.getElementById("tree-splitter");
+
+  // The script below constrains the target to move horizontally between a left and a right
+  // virtual boundaries.
+  // - the left limit is positioned at 10% of the screen width
+  // - the right limit is positioned at 60% of the screen width
+  var leftLimit = 10;
+  var rightLimit = 60;
+
+  paneSep.sdrag(function (el, pageX, startX, pageY, startY, fix) {
+
+    fix.skipX = true;
+
+    if (pageX < window.innerWidth * leftLimit / 100) {
+      pageX = window.innerWidth * leftLimit / 100;
+      fix.pageX = pageX;
+    }
+    if (pageX > window.innerWidth * rightLimit / 100) {
+      pageX = window.innerWidth * rightLimit / 100;
+      fix.pageX = pageX;
+    }
+
+    var cur = pageX / window.innerWidth * 100;
+    if (cur < 0) {
+      cur = 0;
+    }
+    if (cur > window.innerWidth) {
+      cur = window.innerWidth;
+    }
+
+
+    var right = (100-cur-2);
+    leftPane.style.width = cur + '%';
+    rightPane.style.width = right + '%';
+
+  }, null, 'horizontal');
 }
 
 

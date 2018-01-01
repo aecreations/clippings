@@ -39,7 +39,7 @@
     <div id="content" class="hbox">
 
       <div id="clippings-tree"></div>
-
+      <div id="tree-splitter"></div>
       <div id="item-properties" class="vbox browser-style">
 	<div id="intro-content">
 	  <h3>Welcome to Clippings Manager</h3>
@@ -70,46 +70,46 @@
 	<!-- Shortcut key -->
 	<div id="options-bar" class="hbox">
 	  <div id="shortcut-key-select">
-          <label for="clipping-key">Shortcut key:</label>
-          <select id="clipping-key" class="browser-style" size="1">
-  	    <option>(None)</option>
-	    <option>A</option>
-	    <option>B</option>
-	    <option>C</option>
-	    <option>D</option>
-	    <option>E</option>
-	    <option>F</option>
-	    <option>G</option>
-	    <option>H</option>
-	    <option>I</option>
-	    <option>J</option>
-	    <option>K</option>
-	    <option>L</option>
-	    <option>M</option>
-	    <option>N</option>
-	    <option>O</option>
-	    <option>P</option>
-	    <option>Q</option>
-	    <option>R</option>
-	    <option>S</option>
-	    <option>T</option>
-	    <option>U</option>
-	    <option>V</option>
-	    <option>W</option>
-	    <option>X</option>
-	    <option>Y</option>
-	    <option>Z</option>
-	    <option>1</option>
-	    <option>2</option>
-	    <option>3</option>
-	    <option>4</option>
-	    <option>5</option>
-	    <option>6</option>
-	    <option>7</option>
-	    <option>8</option>
-	    <option>9</option>
-	    <option>0</option>
-	  </select>
+	    <label for="clipping-key">Shortcut key:</label>
+	    <select id="clipping-key" class="browser-style" size="1">
+	      <option>(None)</option>
+	      <option>A</option>
+	      <option>B</option>
+	      <option>C</option>
+	      <option>D</option>
+	      <option>E</option>
+	      <option>F</option>
+	      <option>G</option>
+	      <option>H</option>
+	      <option>I</option>
+	      <option>J</option>
+	      <option>K</option>
+	      <option>L</option>
+	      <option>M</option>
+	      <option>N</option>
+	      <option>O</option>
+	      <option>P</option>
+	      <option>Q</option>
+	      <option>R</option>
+	      <option>S</option>
+	      <option>T</option>
+	      <option>U</option>
+	      <option>V</option>
+	      <option>W</option>
+	      <option>X</option>
+	      <option>Y</option>
+	      <option>Z</option>
+	      <option>1</option>
+	      <option>2</option>
+	      <option>3</option>
+	      <option>4</option>
+	      <option>5</option>
+	      <option>6</option>
+	      <option>7</option>
+	      <option>8</option>
+	      <option>9</option>
+	      <option>0</option>
+	    </select>
 	  </div>  <!-- #shortcut-key-select -->
 	  
 	  <div id="options-bar-spacer" class="spacer"></div>
@@ -118,7 +118,7 @@
 	    <span id="tmp-label"></span>
 	  </div>
 	</div> <!-- #options-bar -->
-      </div>
+      </div>   <!-- #item-properties -->
       
     </div> <!-- #content -->
 
@@ -256,6 +256,7 @@
     <script src="../lib/fancytree/jquery.fancytree.filter.js"></script>
     <script src="../lib/rdflib.js"></script>
     <script src="../lib/contextMenu/jquery.contextMenu.min.js"></script>
+    <script src="../lib/simpledrag.js"></script>
     <script src="../modules/aeConst.js"></script>
     <script src="../modules/aeImportExport.js"></script>
     <script src="../modules/aeDialog.js"></script>
