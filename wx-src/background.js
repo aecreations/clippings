@@ -251,6 +251,10 @@ function initHelper()
 
     for (let pref of changedPrefs) {
       gPrefs[pref] = aChanges[pref].newValue;
+
+      if (pref == "autoIncrPlcHldrStartVal") {
+        aeClippingSubst.setAutoIncrementStartValue(aChanges[pref].newValue);
+      }
     }
   });
   

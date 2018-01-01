@@ -43,6 +43,12 @@ aeClippingSubst.init = function (aUserAgentStr, aAutoIncrementStartVal)
 };
 
 
+aeClippingSubst.setAutoIncrementStartValue = function (aValue)
+{
+  this._autoIncrementStartVal = aValue;
+};
+
+
 aeClippingSubst.hasNoSubstFlag = function (aClippingName) {
   return (/^\[NOSUBST\]/.test(aClippingName));
 };
