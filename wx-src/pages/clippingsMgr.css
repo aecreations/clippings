@@ -208,7 +208,7 @@ input[type="search"]::placeholder {
 
 .ae-menuitem:hover,
 .context-menu-submenu:hover {
-    background-color: #eee;
+    background-color: #ededf0;
     color: #0c0c0d;
     cursor: default;
 }
@@ -219,7 +219,12 @@ input[type="search"]::placeholder {
 }
 
 .ae-menuitem:active {
-    background-color: #ddd;
+    background-color: #d7d7db;
+}
+
+.context-menu-item.context-menu-hover {
+    background-color: #ededf0;
+    color: #0c0c0d;
 }
 
 #toolbar > #spacer-2 {
