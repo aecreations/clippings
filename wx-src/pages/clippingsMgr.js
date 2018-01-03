@@ -1368,6 +1368,21 @@ function initDialogs()
   };
 
   gDialogs.exportToFile.onAfterAccept = () => {
+    function getErrStr(aErr)
+    {
+      let rv = `${aErr.name}: ${aErr.message}`;
+
+      if (aErr.fileName) {
+        rv += "\nSource: " + aErr.fileName;
+      }
+
+      if (aErr.lineNumber) {
+        rv += ":" + aErr.lineNumber;
+      }
+
+      return rv;
+    }
+
     function saveToFile(aBlobData, aFilename)
     {
       browser.downloads.download({
@@ -1385,7 +1400,8 @@ function initDialogs()
         }
         else {
           console.error(aErr);
-          window.alert("Export failed.\n" + aErr);
+          setStatusBarMsg("Export failed.");
+          window.alert("Sorry, an error occurred while creating the export file.\n\nDetails:\n" + getErrStr(aErr));
         }
       });
     }
@@ -1400,12 +1416,18 @@ function initDialogs()
         let blobData = new Blob([aJSONData], { type: "application/json;charset=utf-8"});
 
         saveToFile(blobData, aeConst.CLIPPINGS_EXPORT_FILENAME);
+      }).catch(aErr => {
+        window.alert("Sorry, an error occurred while exporting to Clippings 6 format.\n\nDetails:\n" + getErrStr(aErr));
+        setStatusBarMsg("Export failed.");
       });
     }
     else if (selectedFmtIdx == gDialogs.exportToFile.FMT_HTML) {
       aeImportExport.exportToHTML().then(aHTMLData => {
         let blobData = new Blob([aHTMLData], { type: "text/html;charset=utf-8"});
         saveToFile(blobData, aeConst.HTML_EXPORT_FILENAME);
+      }).catch(aErr => {
+        window.alert("Sorry, an error occurred while exporting to HTML Document format.\n\nDetails:\n" + getErrStr(aErr));
+        setStatusBarMsg("Export failed.");
       });
     }
   };
