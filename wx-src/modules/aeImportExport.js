@@ -5,7 +5,7 @@
 
 
 let aeImportExport = {
-  DEBUG: true,
+  DEBUG: false,
 
   CLIPPINGS_JSON_VER: "6.0",
   ROOT_FOLDER_ID: 0,
