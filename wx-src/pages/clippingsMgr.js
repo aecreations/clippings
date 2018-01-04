@@ -2101,9 +2101,13 @@ function updateDisplay(aEvent, aData)
       $("#clipping-src-url").text("");
       let shortcutKeyMenu = $("#clipping-key")[0];
       shortcutKeyMenu.selectedIndex = 0;
+
+      $("#item-properties").css({ backgroundColor: "#f6f6f6" });
     });
   }
   else {
+    $("#item-properties").css({ backgroundColor: "white" });
+    
     gClippingsDB.clippings.get(selectedItemID).then(aResult => {
       $("#clipping-name").val(aResult.name);
       $("#clipping-text").val(aResult.content).show();
