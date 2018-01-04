@@ -2102,11 +2102,11 @@ function updateDisplay(aEvent, aData)
       let shortcutKeyMenu = $("#clipping-key")[0];
       shortcutKeyMenu.selectedIndex = 0;
 
-      $("#item-properties").css({ backgroundColor: "#f6f6f6" });
+      $("#item-properties").addClass("folder-only");
     });
   }
   else {
-    $("#item-properties").css({ backgroundColor: "white" });
+    $("#item-properties").removeClass("folder-only");
     
     gClippingsDB.clippings.get(selectedItemID).then(aResult => {
       $("#clipping-name").val(aResult.name);
