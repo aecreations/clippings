@@ -225,6 +225,13 @@ input[type="search"]::placeholder {
     cursor: default;
 }
 
+.context-menu-icon-checked {
+    background-image: url("../img/checked.svg");
+    background-repeat: no-repeat;
+    background-position-x: 4px;
+    background-position-y: center;
+}
+
 #toolbar > #spacer-2 {
     order: 8;
     flex: 1 1 auto;
