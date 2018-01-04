@@ -1179,6 +1179,16 @@ function initToolbar()
     selector: "#clippings-mgr-options",
     trigger: "left",
 
+    events: {
+      activated: function (aOptions) {
+        $("#clippings-mgr-options").addClass("toolbar-button-menu-open");
+      },
+
+      hide: function (aOptions) {
+        $("#clippings-mgr-options").removeClass("toolbar-button-menu-open");
+      }
+    },
+    
     position: function (aOpt, aX, aY) {
       aX = undefined;
       aY = undefined;
@@ -1268,12 +1278,23 @@ function initToolbar()
             className: "ae-menuitem",
             disabled: function (aKey, aOpt) {
               return isFolderSelected();
+            },
+            icon: function (aOpt, $itemElement, aItemKey, aItem) {
+              if ($("#source-url-bar").css("display") != "none"
+                  && $("#options-bar").css("display") != "none") {
+                return "context-menu-icon-checked";
+              }
             }
           },
           
           toggleStatusBar: {
             name: "Status Bar",
-            className: "ae-menuitem"
+            className: "ae-menuitem",
+            icon: function (aOpt, $itemElement, aItemKey, aItem) {
+              if ($("#status-bar").css("display") != "none") {
+                return "context-menu-icon-checked";
+              }
+            }
           }
         }
       },
