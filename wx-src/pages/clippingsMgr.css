@@ -101,12 +101,17 @@ input[type="search"]::placeholder {
 
 .toolbar-button:hover {
     border-radius: 2px;
-    background-color: rgba(12, 12, 13, 0.2)
+    background-color: rgba(12, 12, 13, 0.2);
 }
 
 .toolbar-button:active {
     border-radius: 2px;
     background-color: rgba(12, 12, 13, 0.3);
+}
+
+.toolbar-button-menu-open {
+    border-radius: 2px 2px 0px 0px;
+    background-color: #d7d7db;
 }
 
 .toolbar-button-labelled {
