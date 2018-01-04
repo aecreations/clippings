@@ -1178,6 +1178,18 @@ function initToolbar()
   $.contextMenu({
     selector: "#clippings-mgr-options",
     trigger: "left",
+
+    position: function (aOpt, aX, aY) {
+      aX = undefined;
+      aY = undefined;
+
+      aOpt.$menu.position({
+        my: "left top",
+        at: "left bottom",
+        of: $("#clippings-mgr-options")
+      });
+    },
+    
     callback: function (aItemKey, aOpt, aRootMenu, aOriginalEvent) {
       switch (aItemKey) {
       case "backup":
