@@ -142,7 +142,7 @@ input[type="search"]::placeholder {
     padding-bottom: 2px;
     background: linear-gradient(to bottom, #fcfcfc 0%, #dedede 100%);
     color: #0c0c0d;
-    border-bottom: 1px solid threedshadow;
+    border-bottom: 1px solid silver;
 }
 
 #toolbar > #new-clipping {
