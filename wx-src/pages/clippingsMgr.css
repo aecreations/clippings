@@ -196,11 +196,14 @@ input[type="search"]::placeholder {
 
 #toolbar > #clippings-mgr-options {
     order: 7;
-    background-image: url("../img/options.svg");
+    padding-right: 12px;
+    background-image: url("../img/options.svg"), url("../img/drop-down.svg");
+    background-position-x: 4px, right;
+    
 }
 
 #toolbar > #clippings-mgr-options:hover {
-    background-image: url("../img/options_hover.svg");
+    background-image: url("../img/options_hover.svg"), url("../img/drop-down.svg");
 }
 
 /* jQuery contextMenu CSS overrides */
