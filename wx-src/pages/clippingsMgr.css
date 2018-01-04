@@ -206,25 +206,18 @@ input[type="search"]::placeholder {
     font-size: 12px;
 }
 
-.ae-menuitem:hover,
-.context-menu-submenu:hover {
-    background-color: #ededf0;
-    color: #0c0c0d;
-    cursor: default;
-}
-
 .context-menu-disabled:hover {
     background-color: transparent;
-    color: #bbb;
 }
 
 .ae-menuitem:active {
-    background-color: #d7d7db;
+    background-color: #d7d7db !important;
 }
 
 .context-menu-item.context-menu-hover {
     background-color: #ededf0;
     color: #0c0c0d;
+    cursor: default;
 }
 
 #toolbar > #spacer-2 {
@@ -282,7 +275,7 @@ input[type="search"]::placeholder {
     flex: 0 1 auto;
     align-self: stretch;
     width: 220px;
-    min-width: 220px;
+    min-width: 128px;
     overflow: auto;
     border-right: 1px solid transparent;
     background-color: #fbfbfb;
