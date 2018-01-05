@@ -739,6 +739,12 @@ ul.fancytree-container {
     top: 48px;
 }
 
+#mini-help-dlg p.hlp-hdr {
+    margin-top: 0;
+    font-size: 12px;
+    font-weight: bold;
+}
+
 #generic-msg-box {
     --width: 28em;
 }
