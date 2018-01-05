@@ -19,6 +19,7 @@ let gIsReloading = false;
 let gClippingsTreeDnD = false;
 let gDialogs = {};
 let gOpenerWndID;
+let gIsMaximized;
 
 // Clippings listener object
 let gClippingsListener = {
@@ -862,6 +863,18 @@ let gCmd = {
     chrome.storage.local.set({ clippingsMgrStatusBar: isVisible });
   },
   
+  toggleMaximize: function ()
+  {
+    chrome.windows.getCurrent(null, aWnd => {
+      let updWndInfo = {
+        state: (aWnd.state == "maximized" ? "normal" : "maximized")
+      };
+      chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, updWndInfo, aUpdWnd => {
+        gIsMaximized = !gIsMaximized;
+      });
+    });
+  },
+
   openExtensionPrefs: function ()
   {
     chrome.runtime.openOptionsPage();
@@ -1020,6 +1033,7 @@ $(document).ready(() => {
 
   let wndURL = new URL(window.location.href);
   gOpenerWndID = Number(wndURL.searchParams.get("openerWndID"));
+  gIsMaximized = false;
   
   let clippingsListeners = gClippings.getClippingsListeners();
   gClippingsListener.origin = clippingsListeners.ORIGIN_CLIPPINGS_MGR;
@@ -1120,6 +1134,9 @@ $(document).keypress(aEvent => {
   else if (aEvent.key == "F5") {
     // Suppress browser reload.
     aEvent.preventDefault();
+  }
+  else if (aEvent.key == "F10" && isAccelKeyPressed()) {
+    gCmd.toggleMaximize();
   }
   else if (aEvent.key.toUpperCase() == "A" && isAccelKeyPressed()) {
     if (! isTextboxFocused(aEvent)) {
@@ -1230,6 +1247,10 @@ function initToolbar()
         gCmd.showHideStatusBar();
         break;
 
+      case "maximizeWnd":
+        window.setTimeout(() => { gCmd.toggleMaximize() }, 100);
+        break;
+        
       case "openExtensionPrefs":
         gCmd.openExtensionPrefs();
         break;
@@ -1298,6 +1319,16 @@ function initToolbar()
           }
         }
       },
+      maximizeWnd: {
+        name: "Maximize",
+        className: "ae-menuitem",
+        icon: function (aKey, aOpt) {
+          if (gIsMaximized) {
+            return "context-menu-icon-checked";
+          }
+        }
+      },
+      separator4: "--------",
       openExtensionPrefs: {
         name: "Options...",
         className: "ae-menuitem"
@@ -1345,10 +1376,10 @@ function initDialogs()
   let shctKeyTbls = $(".shortcut-key-tbl");
   let shctKeys = [];
   if (isMacOS) {
-    shctKeys = ["\u2326", "esc", "\u2318F", "\u2318W", "\u2318Z", "F1"];
+    shctKeys = ["\u2326", "esc", "\u2318F", "\u2318W", "\u2318Z", "F1", "\u2318F10"];
   }
   else {
-    shctKeys = ["DEL", "ESC", "CTRL+F", "CTRL+W", "CTRL+Z", "F1"];
+    shctKeys = ["DEL", "ESC", "CTRL+F", "CTRL+W", "CTRL+Z", "F1", "CTRL+F10"];
   }
   
   $(`<tr><td style="width:6em">${shctKeys[0]}</td><td>Delete selected clipping or folder</td></tr>`).appendTo(shctKeyTbls);
@@ -1357,6 +1388,7 @@ function initDialogs()
   $(`<tr><td>${shctKeys[3]}</td><td>Close Clippings Manager</td></tr>`).appendTo(shctKeyTbls);
   $(`<tr><td>${shctKeys[4]}</td><td>Undo</td></tr>`).appendTo(shctKeyTbls);
   $(`<tr><td>${shctKeys[5]}</td><td>Show Clippings Manager intro</td></tr>`).appendTo(shctKeyTbls);
+  $(`<tr><td>${shctKeys[6]}</td><td>Maximize Window</td></tr>`).appendTo(shctKeyTbls);
   
   aeImportExport.setDatabase(gClippingsDB);
 
