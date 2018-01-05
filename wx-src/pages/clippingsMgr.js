@@ -870,7 +870,7 @@ let gCmd = {
         state: (aWnd.state == "maximized" ? "normal" : "maximized")
       };
       chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, updWndInfo, aUpdWnd => {
-        gIsMaximized = !gIsMaximized;
+        gIsMaximized = aUpdWnd.state == "maximized";
       });
     });
   },
