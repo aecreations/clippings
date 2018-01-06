@@ -46,12 +46,7 @@ let gClippingsListener = {
   },
 
   clippingChanged: function (aID, aData, aOldData) {
-    if (aData.parentFolderID == aOldData.parentFolderID) {
-      updateContextMenuForClipping(aID);
-    }
-    else {
-      rebuildContextMenu();
-    }
+    rebuildContextMenu();
   },
 
   folderChanged: function (aID, aData, aOldData) {
@@ -569,9 +564,23 @@ function buildContextSubmenu(aParentFolderID, aFolderData)
 function updateContextMenuForClipping(aUpdatedClippingID)
 {
   let id = Number(aUpdatedClippingID);
-  let getClipping = gClippingsDB.clippings.get(id);
-  getClipping.then(aResult => {
-    chrome.contextMenus.update("ae-clippings-clipping-" + aUpdatedClippingID, { title: aResult.name });
+  gClippingsDB.clippings.get(id).then(aResult => {
+    let updatePpty = {
+      title: aResult.name,
+      icons: {
+        16: "img/" + (aResult.label ? `clipping-${aResult.label}.svg` : "clipping.svg")
+      }
+    };
+    
+    try {
+      // This will fail due to the 'icons' property not supported on the
+      // 'updateProperties' parameter to contextMenus.update().
+      // See https://bugzilla.mozilla.org/show_bug.cgi?id=1414566
+      chrome.contextMenus.update(`ae-clippings-clipping-${aUpdatedClippingID}`, updatePpty);
+    }
+    catch (e) {
+      console.error("Clippings/wx: updateContextMenuForClipping(): " + e);
+    }
   });
 }
 
