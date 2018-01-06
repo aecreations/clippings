@@ -2082,7 +2082,39 @@ function initShortcutKeyMenu()
 
 function initLabelPicker()
 {
-  $("#tmp-clipping-label").hide();
+  $("#clipping-label-picker").on("change", aEvent => {
+    if (isFolderSelected()) {
+      return;
+    }
+   
+    let selectedNode = getClippingsTree().activeNode;
+    let id = parseInt(selectedNode.key);
+    let label = aEvent.target.value;
+    let color = label;
+
+    gClippingsDB.clippings.update(id, { label: color }).then(aNumUpd => {
+      if (! label) {
+        color = "initial";
+      }
+      else if (label == "yellow") {
+        color = "rgb(200, 200, 0)";
+      }
+
+      // Set the icon color on the tree list.
+      if (selectedNode.extraClasses !== undefined) {
+        let result = selectedNode.extraClasses.match(/ae\-clipping\-label\-[a-z]+/);
+        if (result) {
+          selectedNode.removeClass(result[0]);
+        }
+      }
+
+      if (label) {
+        selectedNode.addClass(`ae-clipping-label-${label}`);
+      }
+      
+      $(aEvent.target).css({ color });
+    });   
+  });
 }
 
 
@@ -2170,17 +2202,14 @@ function updateDisplay(aEvent, aData)
       }
 
       if (aResult.label) {
-        let color = "white";
-        if (aResult.label.toLowerCase() == "yellow") {
-          color = "black";
+        let color = aResult.label;
+        if (aResult.label == "yellow") {
+          color = "rgb(200, 200, 0)";
         }
-        $("#tmp-label").css({ color, backgroundColor: aResult.label });
-        $("#tmp-label").text(aResult.label.toLowerCase());
-        $("#tmp-clipping-label").show();
+        $("#clipping-label-picker").val(aResult.label).css({ color });
       }
       else {
-        $("#tmp-label").text("");
-        $("#tmp-clipping-label").hide();
+        $("#clipping-label-picker").val("").css({ color: "initial" });
       }
     });
   }
