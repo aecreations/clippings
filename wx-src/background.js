@@ -179,6 +179,7 @@ async function setDefaultPrefs()
     pastePromptAction: aeConst.PASTEACTION_SHORTCUT_KEY,
     clippingsMgrDetailsPane: false,
     clippingsMgrStatusBar: false,
+    clippingsMgrMinzWhenInactv: undefined,
   };
 
   gPrefs = aeClippingsPrefs;
@@ -226,6 +227,15 @@ function initHelper()
   chrome.runtime.getPlatformInfo(aInfo => {
     log("Clippings/wx: OS: " + aInfo.os);
     gOS = aInfo.os;
+
+    if (gPrefs.clippingsMgrMinzWhenInactv === undefined) {
+      if (aeConst.DEBUG) {
+        gPrefs.clippingsMgrMinzWhenInactv = true;
+      }
+      else {
+        gPrefs.clippingsMgrMinzWhenInactv = (gOS == "linux");
+      }
+    }
   });
 
   chrome.browserAction.onClicked.addListener(aTab => {

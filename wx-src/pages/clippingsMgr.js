@@ -875,6 +875,12 @@ let gCmd = {
     });
   },
 
+  toggleMinimizeWhenInactive: function ()
+  {
+    let currSetting = gClippings.getPrefs().clippingsMgrMinzWhenInactv;
+    chrome.storage.local.set({ clippingsMgrMinzWhenInactv: !currSetting });
+  },
+  
   openExtensionPrefs: function ()
   {
     chrome.runtime.openOptionsPage();
@@ -1168,6 +1174,18 @@ $(window).on("contextmenu", aEvent => {
 });
 
 
+$(window).on("blur", aEvent => {
+  if (gOS == "linux" || aeConst.DEBUG) {
+    if (gClippings.getPrefs().clippingsMgrMinzWhenInactv) {
+      let updInfo = {
+        state: "minimized"
+      };
+      chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, updInfo);
+    }
+  }
+});
+
+
 //
 // Clippings Manager functions
 //
@@ -1250,6 +1268,10 @@ function initToolbar()
       case "maximizeWnd":
         window.setTimeout(() => { gCmd.toggleMaximize() }, 100);
         break;
+
+      case "minimizeWhenInactive":
+        gCmd.toggleMinimizeWhenInactive();
+        break;
         
       case "openExtensionPrefs":
         gCmd.openExtensionPrefs();
@@ -1326,6 +1348,18 @@ function initToolbar()
           if (gIsMaximized) {
             return "context-menu-icon-checked";
           }
+        }
+      },
+      minimizeWhenInactive: {
+        name: "Minimize When Inactive",
+        className: "ae-menuitem",
+        icon: function (aKey, aOpt) {
+          if (gClippings.getPrefs().clippingsMgrMinzWhenInactv) {
+            return "context-menu-icon-checked";
+          }
+        },
+        visible: function (aKey, aOpt) {
+          return (gOS == "linux" || aeConst.DEBUG);
         }
       },
       separator4: "--------",
