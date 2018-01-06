@@ -80,6 +80,7 @@ function initHelper()
 
   initDialogs();
   initFolderPicker();
+  initLabelPicker();
   initShortcutKeyMenu();
 
   $("#new-folder-btn").click(aEvent => { gNewFolderDlg.showModal() });
@@ -323,6 +324,23 @@ function initShortcutKeyMenu()
 }
 
 
+function initLabelPicker()
+{
+  $("#clipping-label-picker").on("change", aEvent => {
+    let label = aEvent.target.value;
+    let color = label;
+
+    if (! label) {
+      color = "initial";
+    }
+    else if (label == "yellow") {
+      color = "rgb(200, 200, 0)";
+    }
+    $(aEvent.target).css({ color });
+  });
+}
+
+
 function accept(aEvent)
 {
   let shortcutKeyMenu = $("#clipping-key")[0];
@@ -332,6 +350,9 @@ function accept(aEvent)
     shortcutKey = shortcutKeyMenu.options[shortcutKeyMenu.selectedIndex].text;
   }
 
+  let labelPicker = $("#clipping-label-picker");
+  let label = labelPicker.val() ? labelPicker.val() : "";
+
   let errorMsgBox = new aeDialog("#create-clipping-error-msgbox");
 
   gClippingsDB.clippings.add({
@@ -339,7 +360,7 @@ function accept(aEvent)
     content: $("#clipping-text").val(),
     shortcutKey: shortcutKey,
     parentFolderID: gParentFolderID,
-    label: "",
+    label,
     sourceURL: ($("#save-source-url")[0].checked ? gSrcURL : "")
 
   }).then(aID => {
