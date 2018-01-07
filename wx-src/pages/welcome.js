@@ -116,7 +116,7 @@ $(() => {
   }
   else if (os == "mac") {
     osFileBrwsApp = "Finder";
-    keybdPasteKey = "\u2318\u21e7Y";
+    keybdPasteKey = "\u21e7\u2318Y";
   }
   $("#os-file-browser").text(osFileBrwsApp);
   $("#keybd-paste-key").text(keybdPasteKey);
