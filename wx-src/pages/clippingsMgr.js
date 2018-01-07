@@ -1320,7 +1320,7 @@ function initToolbar()
             name: "Details Pane",
             className: "ae-menuitem",
             disabled: function (aKey, aOpt) {
-              return isFolderSelected();
+              return (gIsClippingsTreeEmpty || isFolderSelected());
             },
             icon: function (aOpt, $itemElement, aItemKey, aItem) {
               if ($("#source-url-bar").css("display") != "none"
@@ -1344,6 +1344,9 @@ function initToolbar()
       maximizeWnd: {
         name: "Maximize",
         className: "ae-menuitem",
+        visible: function (aKey, aOpt) {
+          return (gOS != "mac" || aeConst.DEBUG);
+        },
         icon: function (aKey, aOpt) {
           if (gIsMaximized) {
             return "context-menu-icon-checked";
@@ -1353,16 +1356,21 @@ function initToolbar()
       minimizeWhenInactive: {
         name: "Minimize When Inactive",
         className: "ae-menuitem",
+        visible: function (aKey, aOpt) {
+          return (gOS == "linux" || aeConst.DEBUG);
+        },
         icon: function (aKey, aOpt) {
           if (gClippings.getPrefs().clippingsMgrMinzWhenInactv) {
             return "context-menu-icon-checked";
           }
-        },
-        visible: function (aKey, aOpt) {
-          return (gOS == "linux" || aeConst.DEBUG);
         }
       },
-      separator4: "--------",
+      windowCmdsSeparator: {
+        type: "cm_separator",
+        visible: function (akey, aOpt) {
+          return (gOS != "mac" || aeConst.DEBUG);
+        }
+      },
       openExtensionPrefs: {
         name: "Options...",
         className: "ae-menuitem"
