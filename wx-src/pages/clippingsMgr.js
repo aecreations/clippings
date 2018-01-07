@@ -547,6 +547,48 @@ let gShortcutKey = {
   }
 };
 
+// Clipping label picker in the options bar
+let gClippingLabelPicker = {
+  _labelPicker: null,
+  
+  init(aLabelPickerStor)
+  {
+    this._labelPicker = $(aLabelPickerStor);
+
+    this._labelPicker.on("change", aEvent => {
+      if (isFolderSelected()) {
+        return;
+      }
+
+      let selectedNode = getClippingsTree().activeNode;
+      let id = parseInt(selectedNode.key);
+      let label = this.selectedLabel;
+
+      gCmd.setLabelIntrl(id, label, gCmd.UNDO_STACK);
+    });
+  },
+
+  get selectedLabel()
+  {
+    return this._labelPicker.val();
+  },
+
+  set selectedLabel(aLabel)
+  {
+    let color = aLabel;
+
+    if (! aLabel) {
+      color = "initial";
+    }
+    else if (aLabel == "yellow") {
+      color = "rgb(200, 200, 0)";
+    }
+
+    this._labelPicker.css({ color });
+    this._labelPicker.val(aLabel);
+  }
+};
+
 
 // Clippings Manager commands
 let gCmd = {
@@ -810,6 +852,43 @@ let gCmd = {
     });
   },
   
+  setLabelIntrl: function (aClippingID, aLabel, aDestUndoStack)
+  {
+    let selectedNode = getClippingsTree().activateKey(aClippingID + "C");
+    let oldLabel;
+
+    gClippingsDB.clippings.get(aClippingID).then(aResult => {
+      oldLabel = aResult.label;
+      return gClippingsDB.clippings.update(aClippingID, { label: aLabel });
+
+    }).then(aNumUpd => {
+      // Set the icon color on the tree list.
+      if (selectedNode.extraClasses !== undefined) {
+        let result = selectedNode.extraClasses.match(/ae\-clipping\-label\-[a-z]+/);
+        if (result) {
+          selectedNode.removeClass(result[0]);
+        }
+      }
+
+      if (aLabel) {
+        selectedNode.addClass(`ae-clipping-label-${aLabel}`);
+      }
+
+      gClippingLabelPicker.selectedLabel = aLabel;
+      
+      if (aDestUndoStack == this.UNDO_STACK) {
+        this.undoStack.push({
+          action: this.ACTION_SETLABEL,
+          id: aClippingID,
+          label: aLabel,
+          oldLabel
+        });
+      }
+    }).catch(aErr => {
+      console.error("Clippings/wx::clippingsMgr.js: gCmd.setLabel(): " + aErr);
+    });
+  },
+  
   gotoURL: function (aURL)
   {
     try {
@@ -978,6 +1057,9 @@ let gCmd = {
     else if (undo.action == this.ACTION_CREATENEWFOLDER) {
       this.moveFolderIntrl(undo.id, aeConst.DELETED_ITEMS_FLDR_ID);
     }
+    else if (undo.action == this.ACTION_SETLABEL) {
+      this.setLabelIntrl(undo.id, undo.oldLabel);
+    }
   },
   
   // Helper
@@ -1049,7 +1131,7 @@ $(document).ready(() => {
   initInstantEditing();
   gShortcutKey.init();
   gSrcURLBar.init();
-  initLabelPicker();
+  gClippingLabelPicker.init("#clipping-label-picker");
   initDialogs();
   buildClippingsTree();
 
@@ -2118,44 +2200,6 @@ function initShortcutKeyMenu()
       let clippingID = parseInt(selectedNode.key);
       gClippingsDB.clippings.update(clippingID, { shortcutKey });
     });
-  });
-}
-
-
-function initLabelPicker()
-{
-  $("#clipping-label-picker").on("change", aEvent => {
-    if (isFolderSelected()) {
-      return;
-    }
-   
-    let selectedNode = getClippingsTree().activeNode;
-    let id = parseInt(selectedNode.key);
-    let label = aEvent.target.value;
-    let color = label;
-
-    gClippingsDB.clippings.update(id, { label: color }).then(aNumUpd => {
-      if (! label) {
-        color = "initial";
-      }
-      else if (label == "yellow") {
-        color = "rgb(200, 200, 0)";
-      }
-
-      // Set the icon color on the tree list.
-      if (selectedNode.extraClasses !== undefined) {
-        let result = selectedNode.extraClasses.match(/ae\-clipping\-label\-[a-z]+/);
-        if (result) {
-          selectedNode.removeClass(result[0]);
-        }
-      }
-
-      if (label) {
-        selectedNode.addClass(`ae-clipping-label-${label}`);
-      }
-      
-      $(aEvent.target).css({ color });
-    });   
   });
 }
 
