@@ -229,12 +229,7 @@ function initHelper()
     gOS = aInfo.os;
 
     if (gPrefs.clippingsMgrMinzWhenInactv === undefined) {
-      if (aeConst.DEBUG) {
-        gPrefs.clippingsMgrMinzWhenInactv = true;
-      }
-      else {
-        gPrefs.clippingsMgrMinzWhenInactv = (gOS == "linux");
-      }
+      gPrefs.clippingsMgrMinzWhenInactv = (gOS == "linux");
     }
   });
 

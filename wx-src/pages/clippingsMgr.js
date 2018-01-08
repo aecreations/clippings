@@ -1545,7 +1545,7 @@ function initToolbar()
         name: "Maximize",
         className: "ae-menuitem",
         visible: function (aKey, aOpt) {
-          return (gOS != "mac" || aeConst.DEBUG);
+          return (gOS != "mac");
         },
         icon: function (aKey, aOpt) {
           if (gIsMaximized) {
@@ -1557,7 +1557,7 @@ function initToolbar()
         name: "Minimize When Inactive",
         className: "ae-menuitem",
         visible: function (aKey, aOpt) {
-          return (gOS == "linux" || aeConst.DEBUG);
+          return (gOS == "linux");
         },
         icon: function (aKey, aOpt) {
           if (gClippings.getPrefs().clippingsMgrMinzWhenInactv) {
@@ -1568,7 +1568,7 @@ function initToolbar()
       windowCmdsSeparator: {
         type: "cm_separator",
         visible: function (akey, aOpt) {
-          return (gOS != "mac" || aeConst.DEBUG);
+          return (gOS != "mac");
         }
       },
       openExtensionPrefs: {
