@@ -594,7 +594,7 @@ let gClippingLabelPicker = {
 let gCmd = {
   // Flags for undoStack actions
   ACTION_EDITNAME: 1,
-  ACTION_EDITTEXT: 2,
+  ACTION_EDITCONTENT: 2,
   ACTION_DELETECLIPPING: 3,
   ACTION_CREATENEW: 4,
   ACTION_CHANGEPOSITION: 5,
@@ -852,6 +852,102 @@ let gCmd = {
     });
   },
   
+  editFolderNameIntrl: function (aFolderID, aName, aDestUndoStack)
+  {
+    return new Promise((aFnResolve, aFnReject) => {
+      let oldName = "";
+      
+      gClippingsDB.folders.get(aFolderID).then(aResult => {
+        oldName = aResult.name;
+
+        if (aName == oldName) {
+          return 0;
+        }
+        return gClippingsDB.folders.update(aFolderID, { name: aName });
+
+      }).then(aNumUpd => {
+        if (aNumUpd && aDestUndoStack == this.UNDO_STACK) {
+          this.undoStack.push({
+            action: this.ACTION_EDITNAME,
+            id: aFolderID,
+            name: aName,
+            oldName,
+            itemType: this.ITEMTYPE_FOLDER
+          });
+        }
+        aFnResolve();
+
+      }).catch(aErr => {
+        console.error("Clippings/wx::clippingsMgr.js: gCmd.editFolderNameIntrl(): " + aErr);
+        aFnReject(aErr);
+      });
+    });
+  },
+
+  editClippingNameIntrl: function (aClippingID, aName, aDestUndoStack)
+  {
+    return new Promise((aFnResolve, aFnReject) => {
+      let oldName = "";
+      
+      gClippingsDB.clippings.get(aClippingID).then(aResult => {
+        oldName = aResult.name;
+
+        if (aName == oldName) {
+          return 0;
+        }
+        return gClippingsDB.clippings.update(aClippingID, { name: aName });
+
+      }).then(aNumUpd => {
+        if (aNumUpd && aDestUndoStack == this.UNDO_STACK) {
+          this.undoStack.push({
+            action: this.ACTION_EDITNAME,
+            id: aClippingID,
+            name: aName,
+            oldName,
+            itemType: this.ITEMTYPE_CLIPPING
+          });
+        }
+        aFnResolve();
+
+      }).catch(aErr => {
+        console.error("Clippings/wx::clippingsMgr.js: gCmd.editClippingNameIntrl(): " + aErr);
+        aFnReject(aErr);
+      });
+    });
+  },
+
+  editClippingContentIntrl: function (aClippingID, aContent, aDestUndoStack)
+  {
+    return new Promise((aFnResolve, aFnReject) => {
+      let oldContent = "";
+      
+      gClippingsDB.clippings.get(aClippingID).then(aResult => {
+        oldContent = aResult.content;
+
+        if (aContent == oldContent) {
+          return 0;
+        }
+        return gClippingsDB.clippings.update(aClippingID, { content: aContent });
+
+      }).then(aNumUpd => {
+        if (aNumUpd && aDestUndoStack == this.UNDO_STACK) {
+          this.undoStack.push({
+            action: this.ACTION_EDITCONTENT,
+            id: aClippingID,
+            content: aContent,
+            oldContent,
+            itemType: this.ITEMTYPE_CLIPPING
+          });
+        }
+        aFnResolve();
+        
+      }).catch(aErr => {
+        console.error("Clippings/wx::clippingsMgr.js: gCmd.editClippingContentIntrl(): " + aErr);
+        aFnReject(aErr);
+      });
+    });
+  },
+  
   setLabelIntrl: function (aClippingID, aLabel, aDestUndoStack)
   {
     let selectedNode = getClippingsTree().activateKey(aClippingID + "C");
@@ -1056,6 +1152,28 @@ let gCmd = {
     }
     else if (undo.action == this.ACTION_CREATENEWFOLDER) {
       this.moveFolderIntrl(undo.id, aeConst.DELETED_ITEMS_FLDR_ID);
+    }
+    else if (undo.action == this.ACTION_EDITNAME) {
+      if (undo.itemType == this.ITEMTYPE_CLIPPING) {
+        this.editClippingNameIntrl(undo.id, undo.oldName).then(() => {
+          let clpNode = getClippingsTree().activateKey(undo.id + "C");
+          clpNode.title = undo.oldName;
+          $("#clipping-name").val(undo.oldName).select();
+        });
+      }
+      else if (undo.itemType == this.ITEMTYPE_FOLDER) {
+        this.editFolderNameIntrl(undo.id, undo.oldName).then(() => {
+          let fldrNode = getClippingsTree().activateKey(undo.id + "F");
+          fldrNode.title = undo.oldName;
+          $("#clipping-name").val(undo.oldName).select();
+        });
+      }
+    }
+    else if (undo.action == this.ACTION_EDITCONTENT) {
+      this.editClippingContentIntrl(undo.id, undo.oldContent).then(() => {
+        getClippingsTree().activateKey(undo.id + "C");
+        $("#clipping-text").val(undo.oldContent).select();
+      });
     }
     else if (undo.action == this.ACTION_SETLABEL) {
       this.setLabelIntrl(undo.id, undo.oldLabel);
@@ -1471,12 +1589,20 @@ function initInstantEditing()
     let id = parseInt(selectedNode.key);
 
     if (selectedNode.isFolder()) {
-      name = (name ? name : DEFAULT_UNTITLED_FOLDER_NAME);
-      gClippingsDB.folders.update(id, { name });
+      if (name) {
+        gCmd.editFolderNameIntrl(id, name, gCmd.UNDO_STACK);
+      }
+      else {
+        gCmd.editFolderNameIntrl(id, DEFAULT_UNTITLED_FOLDER_NAME);
+      }
     }
     else {
-      name = (name ? name : DEFAULT_UNTITLED_CLIPPING_NAME);
-      gClippingsDB.clippings.update(id, { name });
+      if (name) {
+        gCmd.editClippingNameIntrl(id, name, gCmd.UNDO_STACK);
+      }
+      else {
+        gCmd.editClippingNameIntrl(id, DEFAULT_UNTITLED_CLIPPING_NAME);
+      }
     }
   });
   
@@ -1486,8 +1612,8 @@ function initInstantEditing()
     let id = parseInt(selectedNode.key);
 
     if (! selectedNode.folder) {
-      let text = aEvent.target.value;
-      gClippingsDB.clippings.update(id, { content: text });
+      let content = aEvent.target.value;
+      gCmd.editClippingContentIntrl(id, content, gCmd.UNDO_STACK);
     }
   }).attr("spellcheck", gClippings.getPrefs().checkSpelling);
 }
