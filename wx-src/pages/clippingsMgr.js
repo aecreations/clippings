@@ -6,11 +6,6 @@
 
 const DEBUG_TREE = false;
 
-const DEFAULT_NEW_CLIPPING_NAME = "New Clipping";
-const DEFAULT_NEW_FOLDER_NAME = "New Folder";
-const DEFAULT_UNTITLED_CLIPPING_NAME = "Untitled Clipping";
-const DEFAULT_UNTITLED_FOLDER_NAME = "Untitled Folder";
-
 let gOS;
 let gClippingsDB;
 let gClippings;
@@ -449,7 +444,7 @@ let gSrcURLBar = {
           $("#clipping-src-url > a").text(updatedURL);
         }
         else {
-          $("#clipping-src-url").text("(None)");
+          $("#clipping-src-url").text(chrome.i18n.getMessage("none"));
         }
       }
       this._dismissSrcURLEditMode();
@@ -647,7 +642,7 @@ let gCmd = {
     }
 
     let createClipping = gClippingsDB.clippings.add({
-      name: DEFAULT_NEW_CLIPPING_NAME,
+      name: chrome.i18n.getMessage("newClipping"),
       content: "",
       shortcutKey: "",
       parentFolderID: parentFolderID,
@@ -681,7 +676,7 @@ let gCmd = {
     }
     
     let createFolder = gClippingsDB.folders.add({
-      name: DEFAULT_NEW_FOLDER_NAME,
+      name: chrome.i18n.getMessage("newFolder"),
       parentFolderID: parentFolderID
     });
 
@@ -1593,7 +1588,7 @@ function initInstantEditing()
         gCmd.editFolderNameIntrl(id, name, gCmd.UNDO_STACK);
       }
       else {
-        gCmd.editFolderNameIntrl(id, DEFAULT_UNTITLED_FOLDER_NAME);
+        gCmd.editFolderNameIntrl(id, chrome.i18n.getMessage("untitledFolder"));
       }
     }
     else {
@@ -1601,7 +1596,7 @@ function initInstantEditing()
         gCmd.editClippingNameIntrl(id, name, gCmd.UNDO_STACK);
       }
       else {
-        gCmd.editClippingNameIntrl(id, DEFAULT_UNTITLED_CLIPPING_NAME);
+        gCmd.editClippingNameIntrl(id, chrome.i18n.getMessage("untitledClipping"));
       }
     }
   });
@@ -2400,7 +2395,7 @@ function updateDisplay(aEvent, aData)
         });
       }
       else {
-        $("#clipping-src-url").text("(None)");
+        $("#clipping-src-url").text(chrome.i18n.getMessage("none"));
       }
       
       let shortcutKeyMenu = $("#clipping-key")[0];

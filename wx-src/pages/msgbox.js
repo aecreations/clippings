@@ -8,7 +8,7 @@ function init()
 {
   let url = new URL(window.location.href);
   let msgID = url.searchParams.get("msgid") || aeMsgBox.MSG_UNKNOWN;
-  document.querySelector("#msgbox-content > p").textContent = aeMsgBox.msg[msgID];
+  document.querySelector("#msgbox-content > p").textContent = chrome.i18n.getMessage(msgID);
 
   chrome.history.deleteUrl({ url: url.href });
 

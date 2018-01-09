@@ -17,5 +17,101 @@
   "cmdDesc": {
     "message": "Paste a clipping using its shortcut key",
     "description": "Shortcut key command description"
+  },
+
+  "hostAppFx": {
+    "message": "Firefox"
+  },
+
+  "hostAppTb": {
+    "message": "Thunderbird"
+  },
+
+  "hostAppAll": {
+    "message": "Firefox or Thunderbird"
+  },
+  
+  "btnOK": {
+    "message": "OK"
+  },
+
+  "btnCancel": {
+    "message": "Cancel"
+  },
+
+  "btnClose": {
+    "message": "Close",
+    "description": "Dialog action button"
+  },
+
+  "btnFinish": {
+    "message": "Finish"
+  },
+
+  "msgUnavail": {
+    "message": "The selected action is not available right now."
+  },
+
+  "msgNoTextSel": {
+    "message": "No text was selected. Please select text first."
+  },
+
+  "msgBrwsWndNotFocused": {
+    "message": "Please return to the browser window and try again."
+  },
+
+  "msgClpgNotFound": {
+    "message": "Unable to find the selected clipping!"
+  },
+
+  "msgNoActvBrwsTab": {
+    "message": "Unable to paste clipping because there is no active browser tab."
+  },
+
+  "msgRetryPgBusy": {
+    "message": "The page is currently busy. Wait for the page to finish, and then try again."
+  },
+
+  "msgRetryPgNotLoaded": {
+    "message": "Unable to retrieve selected text. Reload the page, and then try again."
+  },
+  
+  "msgUnknown": {
+    "message": "No help is available (so leave me alone)."
+  },
+
+  "none": {
+    "message": "None"
+  },
+
+  "newClipping": {
+    "message": "New Clipping"
+  },
+
+  "newFolder": {
+    "message": "New Folder"
+  },
+  
+  "untitledClipping": {
+    "message": "Untitled Clipping"
+  },
+
+  "untitledFolder": {
+    "message": "Untitled Folder"
+  },
+ 
+  "cxtMenuNew": {
+    "message": "New...",
+    "description": "Clippings context menu"
+  },
+
+  "cxtMenuOpenClippingsMgr": {
+    "message": "Organize Clippings",
+    "description": "Clippings context menu"
+  },
+
+  "baMenuResetAutoIncrPlaceholders": {
+    "message": "Reset Auto-increment Placeholders",
+    "description": "Clippings browser action submenu"
   }
 }

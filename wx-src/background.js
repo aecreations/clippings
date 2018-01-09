@@ -476,7 +476,7 @@ function buildContextMenu()
   // Context menu for browser action button.
   chrome.contextMenus.create({
     id: "ae-clippings-reset-autoincr-plchldrs",
-    title: "Reset Auto-increment Placeholders",
+    title: chrome.i18n.getMessage("baMenuResetAutoIncrPlaceholders"),
     enabled: false,
     contexts: ["browser_action"],
     documentUrlPatterns: ["<all_urls>"]
@@ -485,14 +485,14 @@ function buildContextMenu()
   // Context menu for web page textbox or HTML editor.
   chrome.contextMenus.create({
     id: "ae-clippings-new",
-    title: "New...",
+    title: chrome.i18n.getMessage("cxtMenuNew"),
     contexts: ["editable", "selection"],
     documentUrlPatterns: ["<all_urls>"]
   });
 
   chrome.contextMenus.create({
     id: "ae-clippings-manager",
-    title: "Organize Clippings",
+    title: chrome.i18n.getMessage("cxtMenuOpenClippingsMgr"),
     contexts: ["editable", "selection"],
     documentUrlPatterns: ["<all_urls>"]
   });
@@ -1000,7 +1000,7 @@ function isGoogleChrome()
 
 function alertEx(aMessageID)
 {
-  let message = aeMsgBox.msg[aMessageID];
+  let message = chrome.i18n.getMessage(aMessageID);
   
   if (isGoogleChrome()) {
     window.alert(message);
