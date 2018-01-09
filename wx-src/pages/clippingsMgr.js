@@ -1369,6 +1369,11 @@ $(window).on("contextmenu", aEvent => {
 });
 
 
+$(window).on("click", aEvent => {
+  aeDialog.hidePopups();
+});
+
+
 $(window).on("blur", aEvent => {
   if (gOS == "linux" || aeConst.DEBUG) {
     if (gClippings.getPrefs().clippingsMgrMinzWhenInactv) {
@@ -1855,13 +1860,15 @@ function initDialogs()
   $("#remove-all-source-urls-dlg > .dlg-btns > .dlg-btn-yes").click(aEvent => {
     gDialogs.removeAllSrcURLs.close();
     gClippingsDB.clippings.toCollection().modify({ sourceURL: "" }).then(aNumUpd => {
-      // TO DO: Put this in a notification box.
-      window.alert("The source web page addresses of your clippings have been removed.");
-
-      // Reselect the selected tree node to force a call to updateDisplay().
-      getClippingsTree().reactivate(true);
+      gDialogs.removeAllSrcURLsConfirm.openPopup();
     });
   });
+
+  gDialogs.removeAllSrcURLsConfirm = new aeDialog("#all-src-urls-removed-confirm-popup");
+  gDialogs.removeAllSrcURLsConfirm.onAfterAccept = () => {
+    // Reselect the selected tree node to force a call to updateDisplay().
+    getClippingsTree().reactivate(true);
+  };
 
   gDialogs.moveTo = new aeDialog("#move-dlg");
   gDialogs.moveTo.fldrTree = null;

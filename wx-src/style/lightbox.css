@@ -43,21 +43,69 @@
     font-size: 11px;
 }
 
-.lightbox > .dlg-btns {
+.panel-bkgrd {
+    display: none;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    z-index: 1001;
+    opacity: 0;
+}
+
+.panel {
+    --default-height: 100px;
+
+    display: none;
+    position: absolute;
+
+    min-width: 256px;
+    max-width: 480px;
+    height: var(--default-height);
+    right: 8px;
+    top: 36px;
+
+    padding: 12px;
+    background-color: white;
+    z-index: 1002;
+
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    box-shadow: 4px 4px 3px -2px #8F8F8F;
+
+    font-size: 11px;
+}
+
+.panel p {
+    margin-top: 4px;
+    margin-bottom: 0;
+}
+
+.lightbox > .dlg-btns,
+.panel > .dlg-btns {
     position: absolute;
     bottom: 14px;
     right: 6px;
 }
 
-.lightbox > .dlg-btns > button {
+.lightbox > .dlg-btns > button,
+.panel > .dlg-btns > button {
     min-width: 72px;
     min-height: 24px;
-    margin-right: 10px;
     border-radius: 2px;
     text-align: center;
     font-size: 11px !important;
 }
 
-.lightbox-show {
+.lightbox > .dlg-btns > button {
+    margin-right: 10px;   
+}
+.panel > .dlg-btns > button {
+    margin-right: 6px;
+    margin-bottom: 0;
+}
+
+.lightbox-show, .panel-show {
     display: block;
 }
