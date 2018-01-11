@@ -2422,23 +2422,7 @@ function updateDisplay(aEvent, aData)
         }
       }
 
-      if (aResult.label) {
-        let bgColor = aResult.label;
-        let fgColor = "white";
-        if (bgColor == "yellow") {
-          fgColor = "black";
-        }
-        $("#clipping-label-picker").val(aResult.label).css({
-          backgroundColor: bgColor,
-          color: fgColor
-        });
-      }
-      else {
-        $("#clipping-label-picker").val("").css({
-          backgroundColor: "white",
-          color: "black"
-        });
-      }
+      gClippingLabelPicker.selectedLabel = aResult.label;
     });
   }
 }
