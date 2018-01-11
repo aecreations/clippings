@@ -328,15 +328,20 @@ function initLabelPicker()
 {
   $("#clipping-label-picker").on("change", aEvent => {
     let label = aEvent.target.value;
-    let color = label;
+    let bgColor = label;
+    let fgColor = "white";
 
     if (! label) {
-      color = "initial";
+      bgColor = "white";
+      fgColor = "initial";
     }
     else if (label == "yellow") {
-      color = "rgb(200, 200, 0)";
+      fgColor = "initial";
     }
-    $(aEvent.target).css({ color });
+    $(aEvent.target).css({
+      backgroundColor: bgColor,
+      color: fgColor,
+    });
   });
 }
 

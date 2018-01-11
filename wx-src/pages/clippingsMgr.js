@@ -570,16 +570,21 @@ let gClippingLabelPicker = {
 
   set selectedLabel(aLabel)
   {
-    let color = aLabel;
+    let bgColor = aLabel;
+    let fgColor = "white";
 
     if (! aLabel) {
-      color = "initial";
+      bgColor = "white";
+      fgColor = "initial";
     }
     else if (aLabel == "yellow") {
-      color = "rgb(200, 200, 0)";
+      fgColor = "initial";
     }
 
-    this._labelPicker.css({ color });
+    this._labelPicker.css({
+      backgroundColor: bgColor,
+      color: fgColor
+    });
     this._labelPicker.val(aLabel);
   }
 };
@@ -2418,14 +2423,21 @@ function updateDisplay(aEvent, aData)
       }
 
       if (aResult.label) {
-        let color = aResult.label;
-        if (aResult.label == "yellow") {
-          color = "rgb(200, 200, 0)";
+        let bgColor = aResult.label;
+        let fgColor = "white";
+        if (bgColor == "yellow") {
+          fgColor = "black";
         }
-        $("#clipping-label-picker").val(aResult.label).css({ color });
+        $("#clipping-label-picker").val(aResult.label).css({
+          backgroundColor: bgColor,
+          color: fgColor
+        });
       }
       else {
-        $("#clipping-label-picker").val("").css({ color: "initial" });
+        $("#clipping-label-picker").val("").css({
+          backgroundColor: "white",
+          color: "black"
+        });
       }
     });
   }

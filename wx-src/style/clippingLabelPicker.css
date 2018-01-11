@@ -3,7 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
-#clipping-label-picker {
+#clipping-label-picker > option {
     background-color: white;
 }
 
@@ -34,4 +34,5 @@
 #clipping-label-picker > option[value="grey"] {
     color: gray;
 }
+
 
