@@ -1593,7 +1593,8 @@ function initInstantEditing()
         gCmd.editFolderNameIntrl(id, name, gCmd.UNDO_STACK);
       }
       else {
-        gCmd.editFolderNameIntrl(id, chrome.i18n.getMessage("untitledFolder"));
+        aEvent.target.value = chrome.i18n.getMessage("untitledFolder");
+        gCmd.editFolderNameIntrl(id, chrome.i18n.getMessage("untitledFolder"), gCmd.UNDO_STACK);
       }
     }
     else {
@@ -1601,7 +1602,8 @@ function initInstantEditing()
         gCmd.editClippingNameIntrl(id, name, gCmd.UNDO_STACK);
       }
       else {
-        gCmd.editClippingNameIntrl(id, chrome.i18n.getMessage("untitledClipping"));
+        aEvent.target.value = chrome.i18n.getMessage("untitledFolder")
+        gCmd.editClippingNameIntrl(id, chrome.i18n.getMessage("untitledClipping"), gCmd.UNDO_STACK);
       }
     }
   });
