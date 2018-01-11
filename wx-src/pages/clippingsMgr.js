@@ -1607,7 +1607,7 @@ function initInstantEditing()
         gCmd.editClippingNameIntrl(id, name, gCmd.UNDO_STACK);
       }
       else {
-        aEvent.target.value = chrome.i18n.getMessage("untitledFolder")
+        aEvent.target.value = chrome.i18n.getMessage("untitledClipping");
         gCmd.editClippingNameIntrl(id, chrome.i18n.getMessage("untitledClipping"), gCmd.UNDO_STACK);
       }
     }
