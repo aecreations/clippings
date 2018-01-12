@@ -1306,8 +1306,6 @@ $(document).keypress(aEvent => {
     return (aEvent.target.tagName == "INPUT" || aEvent.target.tagName == "TEXTAREA");
   }
   
-  //log("Clippings/wx::clippingsMgr.js: $(document).keypress(): Key pressed: " + aEvent.key);
-  
   // NOTE: CTRL+W/Cmd+W is automatically handled, so no need to define it here.
   if (aEvent.key == "F1") {
     if ($("#intro-content").css("display") == "none") {
@@ -1318,13 +1316,18 @@ $(document).keypress(aEvent => {
     }
   }
   else if (aEvent.key == "Enter") {
+    if (gSrcURLBar.isEditing()) {
+      gSrcURLBar.acceptEdit();
+    }
     aeDialog.acceptDlgs();
   }
   else if (aEvent.key == "Escape") {
     if (gSearchBox.isActivated()) {
       gSearchBox.reset();
     }
-
+    if (gSrcURLBar.isEditing()) {
+      gSrcURLBar.cancelEdit();
+    }
     aeDialog.cancelDlgs();
   }
   else if (aEvent.key == "Delete") {
