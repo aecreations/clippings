@@ -124,6 +124,8 @@ class aeDialog
       // Normally there should just be 1 dialog open at a time.
       $(".lightbox-show .dlg-accept:not(:disabled)").click();
     }
+
+    this.hidePopups();
   }
 
   static cancelDlgs()
@@ -133,6 +135,8 @@ class aeDialog
     if (openDlgElts.length > 0) {
       $(".lightbox-show .dlg-cancel:not(:disabled)").click();
     }
+
+    this.hidePopups();
   }
 
   static hidePopups()
@@ -141,8 +145,7 @@ class aeDialog
 
     if (openPopupPanelElts.length > 0) {
       $(".panel").removeClass("panel-show");
+      $("#panel-bkgrd-ovl").removeClass("panel-show");
     }
-
-    $("#panel-bkgrd-ovl").removeClass("panel-show");
   }
 }
