@@ -46,12 +46,14 @@ select {
 }
 
 .browser-style > input[type="text"]:active[readonly] {
-    border: 1px solid #0996f8;
+    border-color: transparent;
+    box-shadow: none;
 }
 
 .browser-style > input[type="text"][readonly]:focus,
 .browser-style > input[type="text"][readonly]:focus:hover {
-    box-shadow: 0 0 0 1px rgba(97, 181, 255, 0.75);
+    border-color: transparent;
+    box-shadow: none;
 }
 
 input[type="search"] {
@@ -593,7 +595,7 @@ ul.fancytree-container {
 #import-dlg {
     --width: 395px;
     --height: 178px;
-    top: 48px;
+    top: 40px;
 }
 
 #import-dlg #import-clippings-filepicker {
@@ -603,7 +605,10 @@ ul.fancytree-container {
 }
 
 #import-dlg #import-clippings-file-path {
-    width: calc(100% - 86px);
+    order: 1;
+    flex: 1 1 auto;
+
+    margin-right: 2px;
 }
 
 #import-dlg #import-clippings-file-path,
@@ -612,6 +617,9 @@ ul.fancytree-container {
 }
 
 #import-dlg #import-clippings-file-upload-btn {
+    order: 2;
+    flex: 0 1 auto;
+    
     min-width: 72px;
     min-height: 24px;
     padding: 3px 16px 3px 16px;
@@ -732,7 +740,7 @@ ul.fancytree-container {
 #mini-help-dlg {
     --width: 450px;
     --height: 300px;
-    top: 48px;
+    top: 36px;
 }
 
 #mini-help-dlg p.hlp-hdr {
