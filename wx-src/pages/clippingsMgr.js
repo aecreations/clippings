@@ -987,24 +987,52 @@ let gCmd = {
   
   gotoURL: function (aURL)
   {
-    try {
-      chrome.windows.get(gOpenerWndID, aOpenerWnd => {
+    const DEFAULT_MAX_WIDTH = 1000;
+    const DEFAULT_MAX_HEIGHT = 720;
+    
+    if (gClippings.isGoogleChrome()) {
+      try {
+        chrome.windows.get(gOpenerWndID, aOpenerWnd => {
+          chrome.windows.create({
+            url: aURL,
+            type: "normal",
+            state: "normal",
+            width: aOpenerWnd.width,
+            height: aOpenerWnd.height,
+          });     
+        });
+      }
+      catch (aErr) {
+        warn("Clippings/wx::clippingsMgr.js: gCmd.gotoURL(): " + aErr);
+
         chrome.windows.create({
+          url: aURL,
+          type: "normal",
+          state: "normal",
+          width: DEFAULT_MAX_WIDTH,
+          height: DEFAULT_MAX_HEIGHT,
+        });
+      }
+    }
+    else {
+      browser.windows.get(gOpenerWndID).then(aOpenerWnd => {
+        browser.windows.create({
           url: aURL,
           type: "normal",
           state: "normal",
           width: aOpenerWnd.width,
           height: aOpenerWnd.height,
-        });     
-      });
-    }
-    catch (aErr) {
-      warn("Clippings/wx::clippingsMgr.js: gCmd.gotoURL(): " + aErr);
+        });
+      }).catch(aErr => {
+        warn("Clippings/wx::clippingsMgr.js: gCmd.gotoURL(): " + aErr);
 
-      chrome.windows.create({
-        url: aURL,
-        type: "normal",
-        state: "normal"
+        browser.windows.create({
+          url: aURL,
+          type: "normal",
+          state: "normal",
+          width: DEFAULT_MAX_WIDTH,
+          height: DEFAULT_MAX_HEIGHT,
+        });
       });
     }
   },
@@ -1743,7 +1771,6 @@ function initDialogs()
         $("#import-progress-bar").hide();
         gDialogs.importFromFile.close();
 
-        //window.alert(`Import from "${importFile.name}" is successfully completed.`);
         gDialogs.importConfirmMsgBox.setMessage(`Import from "${importFile.name}" is successfully completed.`);
         gDialogs.importConfirmMsgBox.showModal();
       });
@@ -1828,7 +1855,7 @@ function initDialogs()
         setStatusBarMsg("Exporting... done");
         
         // TO DO: Get the path of the exported file, not just the file name.
-        gDialogs.exportConfirmMsgBox.setMessage(`Clippings export to "${aFilename}" was successfully completed.`);
+        gDialogs.exportConfirmMsgBox.setMessage(`Clippings export to "${aFilename}" is successfully completed.`);
         gDialogs.exportConfirmMsgBox.showModal();
 
       }).catch(aErr => {
