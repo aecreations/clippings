@@ -137,9 +137,9 @@
 
     <!-- Notification popup panels -->
     <div id="all-src-urls-removed-confirm-popup" class="panel">
-      <p>The source web page addresses of your clippings have been removed.</p>
+      <p>Removed source web page addresses from your clippings.</p>
       <div class="dlg-btns">
-	<button class="dlg-accept browser-style default">OK</button>
+	<button class="dlg-accept browser-style">OK</button>
       </div>
     </div>
     <div id="panel-bkgrd-ovl" class="panel-bkgrd"></div>
@@ -160,6 +160,7 @@
 	<button class="dlg-accept browser-style default">OK</button>
       </div>
     </div>
+
     <div id="import-dlg" class="lightbox">
       <div class="dlg-content browser-style">
         <label id="import-clippings-label">Select import file:</label>
@@ -186,6 +187,14 @@
       </div>
     </div>
 
+    <div id="import-confirm-msgbox" class="lightbox">
+      <div class="msgbox-icon"></div>
+      <p class="msgbox-content"></p>
+      <div class="dlg-btns">
+	<button class="dlg-accept browser-style default">Reload</button>
+      </div>
+    </div>
+
     <div id="export-dlg" class="lightbox">
       <div class="dlg-content browser-style">
 	<label style="display:block">Select a format to export Clippings to:</label>
@@ -203,6 +212,14 @@
       <div class="dlg-btns">
         <button class="dlg-accept browser-style default">Export</button>
         <button class="dlg-cancel browser-style">Cancel</button>
+      </div>
+    </div>
+
+    <div id="export-confirm-msgbox" class="lightbox">
+      <div class="msgbox-icon"></div>
+      <p class="msgbox-content"></p>
+      <div class="dlg-btns">
+	<button class="dlg-accept browser-style default">OK</button>
       </div>
     </div>
 

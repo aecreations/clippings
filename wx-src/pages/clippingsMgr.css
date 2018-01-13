@@ -583,6 +583,8 @@ ul.fancytree-container {
 #shortcut-key-conflict-msgbox,
 #clipping-missing-src-url-msgbox,
 #remove-all-source-urls-dlg,
+#import-confirm-msgbox,
+#export-confirm-msgbox,
 #mini-help-dlg,
 #generic-msg-box {
     top: 64px;
@@ -703,6 +705,15 @@ ul.fancytree-container {
 #export-dlg #format-description {
     margin-top: 2px;
     margin-bottom: 2px;
+}
+
+#import-confirm-msgbox > .msgbox-icon,
+#export-confirm-msgbox > .msgbox-icon {
+    margin-top: 8px;
+}
+
+#import-confirm-msgbox {
+    --width: 400px;
 }
 
 #move-dlg {

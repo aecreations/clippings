@@ -1648,7 +1648,7 @@ function initDialogs()
   $(`<tr><td>${shctKeys[3]}</td><td>Close Clippings Manager</td></tr>`).appendTo(shctKeyTbls);
   $(`<tr><td>${shctKeys[4]}</td><td>Undo</td></tr>`).appendTo(shctKeyTbls);
   $(`<tr><td>${shctKeys[5]}</td><td>Show Clippings Manager intro</td></tr>`).appendTo(shctKeyTbls);
-  $(`<tr><td>${shctKeys[6]}</td><td>Maximize Window</td></tr>`).appendTo(shctKeyTbls);
+  $(`<tr><td>${shctKeys[6]}</td><td>Maximize window</td></tr>`).appendTo(shctKeyTbls);
   
   aeImportExport.setDatabase(gClippingsDB);
 
@@ -1743,8 +1743,9 @@ function initDialogs()
         $("#import-progress-bar").hide();
         gDialogs.importFromFile.close();
 
-        window.alert(`Import from "${importFile.name}" is successfully completed.`);
-        window.location.reload();
+        //window.alert(`Import from "${importFile.name}" is successfully completed.`);
+        gDialogs.importConfirmMsgBox.setMessage(`Import from "${importFile.name}" is successfully completed.`);
+        gDialogs.importConfirmMsgBox.showModal();
       });
 
       fileReader.readAsText(importFile);
@@ -1827,7 +1828,9 @@ function initDialogs()
         setStatusBarMsg("Exporting... done");
         
         // TO DO: Get the path of the exported file, not just the file name.
-        window.alert(`Clippings export to "${aFilename}" was successfully completed.`);
+        gDialogs.exportConfirmMsgBox.setMessage(`Clippings export to "${aFilename}" was successfully completed.`);
+        gDialogs.exportConfirmMsgBox.showModal();
+
       }).catch(aErr => {
         if (aErr.fileName == "undefined") {
           setStatusBarMsg();
@@ -1866,6 +1869,19 @@ function initDialogs()
     }
   };
 
+  gDialogs.importConfirmMsgBox = new aeDialog("#import-confirm-msgbox");
+  gDialogs.importConfirmMsgBox.setMessage = (aMessage) => {
+    $("#import-confirm-msgbox > .msgbox-content").text(aMessage);
+  };
+  gDialogs.importConfirmMsgBox.onAfterAccept = () => {
+    window.location.reload();
+  };
+
+  gDialogs.exportConfirmMsgBox = new aeDialog("#export-confirm-msgbox");
+  gDialogs.exportConfirmMsgBox.setMessage = (aMessage) => {
+    $("#export-confirm-msgbox > .msgbox-content").text(aMessage);
+  };
+  
   gDialogs.removeAllSrcURLs = new aeDialog("#remove-all-source-urls-dlg");
   $("#remove-all-source-urls-dlg > .dlg-btns > .dlg-btn-yes").click(aEvent => {
     gDialogs.removeAllSrcURLs.close();
