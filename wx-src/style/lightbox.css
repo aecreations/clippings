@@ -97,8 +97,8 @@
 }
 
 .panel .panel-content {
-    margin: 4px 48px 4px 0px;
-    vertical-align: top;
+    margin-right: 64px;
+    vertical-align: 8px;
     font-size: 13px;
     color: #0c0c0d;
 }
