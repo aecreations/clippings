@@ -4,7 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
-const WNDH_PLCHLDR_MULTI = 292;
+const WNDH_PLCHLDR_MULTI = 284;
 const WNDH_PLCHLDR_MULTI_SHORT = 242;
 
 let gClippings = null;
@@ -78,10 +78,10 @@ $(() => {
               for (let val of vals) {
                 optionElts += `<option value="${val}">${val}</option>`;
               }
-              $("#plchldr-table").append(`<div class="ph-row browser-style" data-placeholder="${plchldr}"><label class="ph-name">${plchldr}:</label><br/><select class="ph-input browser-style">${optionElts}</select></div>`);
+              $("#plchldr-table").append(`<div class="ph-row browser-style" data-placeholder="${plchldr}"><label class="ph-name">${plchldr}:</label><select class="ph-input browser-style">${optionElts}</select></div>`);
             }
             else {
-              $("#plchldr-table").append(`<div class="ph-row browser-style" data-placeholder="${plchldr}"><label class="ph-name">${plchldr}:</label><br/><input type="text" class="ph-input" value="${defaultVal}"/></div>`);
+              $("#plchldr-table").append(`<div class="ph-row browser-style" data-placeholder="${plchldr}"><label class="ph-name">${plchldr}:</label><input type="text" class="ph-input" value="${defaultVal}"/></div>`);
             }
           }
           $("#plchldr-table").fadeIn("fast");

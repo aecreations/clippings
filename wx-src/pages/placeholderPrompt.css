@@ -35,6 +35,7 @@ button {
 
 .prompt-content > p {
     margin-top: 2px;
+    margin-bottom: 12px;
     font-size: 13px;
 }
 
@@ -48,11 +49,17 @@ button {
     max-height: 146px;
     overflow-y: auto;
     padding: 4px 8px 4px 8px;
-    border: 1px solid #ccc;
+    border: 1px solid #ddd;
     background-color: #eee;
+}
+
+.ph-name {
+    display: inline-block;
+    height: 14px;
 }
 
 .ph-input {
     width: 100%;
     margin-top: 2px;
+    margin-bottom: 0;
 }
