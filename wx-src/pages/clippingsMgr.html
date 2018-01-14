@@ -136,14 +136,21 @@
     </div>
 
     <!-- Notification popup panels -->
+    <div id="panel-bkgrd-ovl" class="panel-bkgrd"></div>
     <div id="all-src-urls-removed-confirm-popup" class="panel">
       <div class="notify-icon"></div>
       <div class="panel-content">Removed source web page addresses from your clippings.</div>
       <div class="notify-dismiss dlg-accept"></div>
     </div>
-    <div id="panel-bkgrd-ovl" class="panel-bkgrd"></div>
+
+    <div id="no-undo-popup" class="panel">
+      <div class="notify-icon"></div>
+      <div class="panel-content">Nothing to undo</div>
+      <div class="notify-dismiss dlg-accept"></div>
+    </div>
     
     <!-- Dialog boxes -->
+    <div id="lightbox-bkgrd-ovl" class="lightbox-bkgrd"></div>
     <div id="shortcut-key-conflict-msgbox" class="lightbox">
       <div class="msgbox-icon" style="margin-top:8px"></div>
       <p>The selected shortcut key has already been assigned to another clipping.  Please select a different shortcut key.</p>
@@ -280,7 +287,6 @@
 	<button class="dlg-accept browser-style default">OK</button>
       </div>
     </div>
-    <div id="lightbox-bkgrd-ovl" class="lightbox-bkgrd"></div>
     
     <script src="../lib/jquery.js"></script>
     <script src="../lib/fancytree/jquery.fancytree-all-deps.min.js"></script>

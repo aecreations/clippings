@@ -1147,7 +1147,7 @@ let gCmd = {
   undo: function ()
   {
     if (this.undoStack.length == 0) {
-      setStatusBarMsg("Nothing to undo");
+      window.setTimeout(() => { gDialogs.noUndoNotify.openPopup() }, 100);
       return;
     }
 
@@ -1689,6 +1689,7 @@ function initDialogs()
   };
 
   gDialogs.clippingMissingSrcURL = new aeDialog("#clipping-missing-src-url-msgbox");
+  gDialogs.noUndoNotify = new aeDialog("#no-undo-popup");
   
   gDialogs.importFromFile = new aeDialog("#import-dlg");
   gDialogs.importFromFile.IMP_APPEND = 0;
