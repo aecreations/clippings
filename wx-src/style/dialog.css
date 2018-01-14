@@ -120,7 +120,7 @@ input[type="radio"] + label {
 #dlg-buttons {
     position: absolute;
     bottom: 14px;
-    right: 8px;
+    right: 6px;
     z-index: -1;
 }
 
