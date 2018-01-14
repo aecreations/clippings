@@ -528,6 +528,9 @@ ul.fancytree-container {
     
     border-top: 1px solid threedlightshadow;
     background-color: -moz-dialog;
+    background-image: url("chrome://global/skin/icons/resizer.png");
+    background-position: right bottom;
+    background-repeat: no-repeat;
 
     font: small-caption;
 }
