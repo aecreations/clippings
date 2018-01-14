@@ -4,6 +4,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
+const WNDH_OPTIONS_EXPANDED = 470;
+
 let gClippingsDB = null;
 let gClippings = null;
 let gParentFolderID = 0;
@@ -40,7 +42,7 @@ function initHelper()
 {
   $("#btn-expand-options").click(aEvent => {
     chrome.windows.getCurrent(aWnd => {
-      chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, { height: 480 }, aWnd => {
+      chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, { height: WNDH_OPTIONS_EXPANDED }, aWnd => {
         $("#clipping-options").show();
         $("#new-clipping-fldr-tree-popup").addClass("new-clipping-fldr-tree-popup-fixpos");
       });
