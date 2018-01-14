@@ -4,7 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
-const WNDH_PLCHLDR_MULTI = 284;
+const WNDH_PLCHLDR_MULTI = 288;
 const WNDH_PLCHLDR_MULTI_SHORT = 242;
 
 let gClippings = null;
