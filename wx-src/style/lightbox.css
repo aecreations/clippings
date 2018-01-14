@@ -77,9 +77,49 @@
     font-size: 11px;
 }
 
-.panel p {
-    margin-top: 4px;
-    margin-bottom: 0;
+.panel {
+    height: 26px;
+    padding: unset;
+    background-color: #ededf0;
+    box-shadow: 0 2px 5px #00000080;
+}
+
+.notify-icon, .panel-content, .notify-dismiss {
+    display: inline-block;
+}
+
+.panel .notify-icon {
+    width: 16px;
+    height: 16px;
+    margin: 4px;
+    background-image: url("chrome://global/skin/icons/info.svg");
+    background-size: contain;
+}
+
+.panel .panel-content {
+    margin: 4px 48px 4px 0px;
+    vertical-align: top;
+    font-size: 13px;
+    color: #0c0c0d;
+}
+
+.panel .notify-dismiss {
+    position: absolute;
+    right: 0px;
+    width: 16px;
+    height: 16px;
+    margin: 4px;
+    background-image: url("../img/close-panel.svg");
+    background-size: contain;
+    border-radius: 2px;
+}
+
+.panel .notify-dismiss:hover {
+    background-color: rgba(12, 12, 13, 0.2);
+}
+
+.panel .notify-dismiss:active {
+    background-color: rgba(12, 12, 13, 0.3);
 }
 
 .lightbox > .dlg-btns,
@@ -100,10 +140,6 @@
 
 .lightbox > .dlg-btns > button {
     margin-right: 10px;   
-}
-.panel > .dlg-btns > button {
-    margin-right: 6px;
-    margin-bottom: 0;
 }
 
 .lightbox-show, .panel-show {
