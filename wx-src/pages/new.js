@@ -4,7 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
-const WNDH_OPTIONS_EXPANDED = 470;
+const WNDH_OPTIONS_EXPANDED = 478;
 
 let gClippingsDB = null;
 let gClippings = null;
