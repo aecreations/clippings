@@ -2,6 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+@import url("../style/clippingLabelPicker.css");
+
 
 :root {
     --toolbar-height: 30px;
@@ -41,6 +43,17 @@ select {
     border-top: 1px solid transparent;
     border-left: 1px solid transparent;
     border-right: 1px solid transparent;
+}
+
+.browser-style > input[type="text"]:active[readonly] {
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.browser-style > input[type="text"][readonly]:focus,
+.browser-style > input[type="text"][readonly]:focus:hover {
+    border-color: transparent;
+    box-shadow: none;
 }
 
 input[type="search"] {
@@ -92,12 +105,17 @@ input[type="search"]::placeholder {
 
 .toolbar-button:hover {
     border-radius: 2px;
-    background-color: rgba(12, 12, 13, 0.2)
+    background-color: rgba(12, 12, 13, 0.2);
 }
 
 .toolbar-button:active {
     border-radius: 2px;
     background-color: rgba(12, 12, 13, 0.3);
+}
+
+.toolbar-button-menu-open {
+    border-radius: 2px 2px 0px 0px;
+    background-color: #d7d7db;
 }
 
 .toolbar-button-labelled {
@@ -128,7 +146,7 @@ input[type="search"]::placeholder {
     padding-bottom: 2px;
     background: linear-gradient(to bottom, #fcfcfc 0%, #dedede 100%);
     color: #0c0c0d;
-    border-bottom: 1px solid threedshadow;
+    border-bottom: 1px solid silver;
 }
 
 #toolbar > #new-clipping {
@@ -182,11 +200,14 @@ input[type="search"]::placeholder {
 
 #toolbar > #clippings-mgr-options {
     order: 7;
-    background-image: url("../img/options.svg");
+    padding-right: 12px;
+    background-image: url("../img/options.svg"), url("../img/drop-down.svg");
+    background-position-x: 4px, right;
+    
 }
 
 #toolbar > #clippings-mgr-options:hover {
-    background-image: url("../img/options_hover.svg");
+    background-image: url("../img/options_hover.svg"), url("../img/drop-down.svg");
 }
 
 /* jQuery contextMenu CSS overrides */
@@ -197,20 +218,25 @@ input[type="search"]::placeholder {
     font-size: 12px;
 }
 
-.ae-menuitem:hover,
-.context-menu-submenu:hover {
-    background-color: #eee;
+.context-menu-disabled:hover {
+    background-color: transparent;
+}
+
+.ae-menuitem:active {
+    background-color: #d7d7db !important;
+}
+
+.context-menu-item.context-menu-hover {
+    background-color: #ededf0;
     color: #0c0c0d;
     cursor: default;
 }
 
-.context-menu-disabled:hover {
-    background-color: transparent;
-    color: #bbb;
-}
-
-.ae-menuitem:active {
-    background-color: #ddd;
+.context-menu-icon-checked {
+    background-image: url("../img/checked.svg");
+    background-repeat: no-repeat;
+    background-position-x: 4px;
+    background-position-y: center;
 }
 
 #toolbar > #spacer-2 {
@@ -268,9 +294,9 @@ input[type="search"]::placeholder {
     flex: 0 1 auto;
     align-self: stretch;
     width: 220px;
-    min-width: 220px;
+    min-width: 128px;
     overflow: auto;
-    border: 1px solid threedshadow;
+    border-right: 1px solid transparent;
     background-color: #fbfbfb;
 }
 
@@ -304,11 +330,24 @@ ul.fancytree-container {
     font-size: 12px;
 }
 
-#item-properties {
+#tree-splitter {
     order: 2;
+    position: relative;
+    width: 2px;
+    background-color: #fbfbfb;
+    border-right: 1px solid #b1b1b1;
+    cursor: col-resize;
+}
+
+#item-properties {
+    order: 3;
     flex: 1 1 auto;
     align-self: stretch;
     margin-bottom: 0;
+}
+
+#item-properties.folder-only {
+    background-color: #f6f6f6;
 }
 
 #item-properties label {
@@ -475,15 +514,9 @@ ul.fancytree-container {
     flex: 1 1 auto;
 }
 
-#options-bar > #tmp-clipping-label {
+#options-bar > #clipping-label {
     order: 3;
     flex: 0 1 auto;
-}
-
-#tmp-label {
-    padding: 4px 10px 4px 10px;
-    border-radius: 2px;
-    line-height: 24px;
 }
 
 #status-bar {
@@ -495,6 +528,9 @@ ul.fancytree-container {
     
     border-top: 1px solid threedlightshadow;
     background-color: -moz-dialog;
+    background-image: url("chrome://global/skin/icons/resizer.png");
+    background-position: right bottom;
+    background-repeat: no-repeat;
 
     font: small-caption;
 }
@@ -548,21 +584,94 @@ ul.fancytree-container {
 }
 
 #shortcut-key-conflict-msgbox,
+#clipping-missing-src-url-msgbox,
 #remove-all-source-urls-dlg,
+#import-confirm-msgbox,
+#export-confirm-msgbox,
 #mini-help-dlg,
 #generic-msg-box {
     top: 64px;
 }
 
+#clipping-missing-src-url-msgbox {
+    --width: 430px;
+}
+
 #import-dlg {
     --width: 395px;
     --height: 178px;
-    top: 48px;
+    top: 40px;
+}
+
+#import-dlg #import-clippings-filepicker {
+    width: 100%;
+    margin-top: 2px;
+    margin-bottom: 12px;
+}
+
+#import-dlg #import-clippings-file-path {
+    order: 1;
+    flex: 1 1 auto;
+
+    margin-right: 2px;
+}
+
+#import-dlg #import-clippings-file-path,
+#import-dlg #import-clippings-file-path:hover {
+    border-bottom: 1px dotted #b1b1b1;
+}
+
+#import-dlg #import-clippings-file-upload-btn {
+    order: 2;
+    flex: 0 1 auto;
+    
+    min-width: 72px;
+    min-height: 24px;
+    padding: 3px 16px 3px 16px;
+    border: 1px solid #b1b1b1;
+    border-radius: 2px;
+    box-shadow: 0 0 0 0 transparent;
+    background-color: #fbfbfb;
+
+    transition-duration: 250ms;
+    transition-property: box-shadow, border;    
+}
+
+#import-dlg #import-clippings-file-upload-btn:hover {
+    background-color: #ebebeb;
+    border: 1px solid #b1b1b1;
+}
+
+#import-dlg #import-clippings-file-upload-btn:active {
+    background-color: #d4d4d4;
+    border: 1px solid #858585;
 }
 
 #import-dlg #import-clippings-file-upload {
+    opacity: 0;
+    width: 0px;
+    height: 0px;
+}
+
+#import-dlg #restore-backup-warning {
+    display: none;   
+}
+
+#import-dlg #restore-backup-warning > .warning-icon {
+    float: left;
+    width: 16px;
+    height: 16px;
     margin-top: 4px;
-    margin-bottom: 14px;
+    background-image: url("chrome://global/skin/icons/warning-large.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+#import-dlg #restore-backup-warning > p {
+    margin: 0px 0px 0px 24px;
+    padding: 8px;
+    background-color: #fbfb77;
+    border-radius: 4px;
 }
 
 #import-dlg progress {
@@ -601,6 +710,15 @@ ul.fancytree-container {
     margin-bottom: 2px;
 }
 
+#import-confirm-msgbox > .msgbox-icon,
+#export-confirm-msgbox > .msgbox-icon {
+    margin-top: 8px;
+}
+
+#import-confirm-msgbox {
+    --width: 400px;
+}
+
 #move-dlg {
     --width: 340px;
     --height: 286px;
@@ -636,7 +754,13 @@ ul.fancytree-container {
 #mini-help-dlg {
     --width: 450px;
     --height: 300px;
-    top: 48px;
+    top: 36px;
+}
+
+#mini-help-dlg p.hlp-hdr {
+    margin-top: 0;
+    font-size: 12px;
+    font-weight: bold;
 }
 
 #generic-msg-box {

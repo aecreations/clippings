@@ -4,6 +4,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
+const WNDH_OPTIONS_EXPANDED = 478;
+
 let gClippingsDB = null;
 let gClippings = null;
 let gParentFolderID = 0;
@@ -40,7 +42,7 @@ function initHelper()
 {
   $("#btn-expand-options").click(aEvent => {
     chrome.windows.getCurrent(aWnd => {
-      chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, { height: 480 }, aWnd => {
+      chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, { height: WNDH_OPTIONS_EXPANDED }, aWnd => {
         $("#clipping-options").show();
         $("#new-clipping-fldr-tree-popup").addClass("new-clipping-fldr-tree-popup-fixpos");
       });
@@ -80,6 +82,7 @@ function initHelper()
 
   initDialogs();
   initFolderPicker();
+  initLabelPicker();
   initShortcutKeyMenu();
 
   $("#new-folder-btn").click(aEvent => { gNewFolderDlg.showModal() });
@@ -316,10 +319,32 @@ function initShortcutKeyMenu()
 
   let keybPasteKey = "ALT+SHIFT+Y";
   if (gClippings.getOS() == "mac") {
-    keybPasteKey = "\u2318\u21e7Y";
+    keybPasteKey = "\u21e7\u2318Y";
   }
   let tooltip = `To quickly paste this clipping into a web page textbox in Firefox, press ${keybPasteKey} followed by the shortcut key.`;
   $("#shct-key-tooltip").attr("title", tooltip);
+}
+
+
+function initLabelPicker()
+{
+  $("#clipping-label-picker").on("change", aEvent => {
+    let label = aEvent.target.value;
+    let bgColor = label;
+    let fgColor = "white";
+
+    if (! label) {
+      bgColor = "white";
+      fgColor = "initial";
+    }
+    else if (label == "yellow") {
+      fgColor = "initial";
+    }
+    $(aEvent.target).css({
+      backgroundColor: bgColor,
+      color: fgColor,
+    });
+  });
 }
 
 
@@ -332,6 +357,9 @@ function accept(aEvent)
     shortcutKey = shortcutKeyMenu.options[shortcutKeyMenu.selectedIndex].text;
   }
 
+  let labelPicker = $("#clipping-label-picker");
+  let label = labelPicker.val() ? labelPicker.val() : "";
+
   let errorMsgBox = new aeDialog("#create-clipping-error-msgbox");
 
   gClippingsDB.clippings.add({
@@ -339,7 +367,7 @@ function accept(aEvent)
     content: $("#clipping-text").val(),
     shortcutKey: shortcutKey,
     parentFolderID: gParentFolderID,
-    label: "",
+    label,
     sourceURL: ($("#save-source-url")[0].checked ? gSrcURL : "")
 
   }).then(aID => {

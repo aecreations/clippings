@@ -17,6 +17,10 @@
     font-size: 11px;
 }
 
+#paste-by-shortcut-key, #search-by-name {
+    display: none;
+}
+
 #paste-by-shct-key-content, #search-by-name-content {
     margin-left: 44px;
 }

@@ -39,7 +39,7 @@
     <div id="content" class="hbox">
 
       <div id="clippings-tree"></div>
-
+      <div id="tree-splitter"></div>
       <div id="item-properties" class="vbox browser-style">
 	<div id="intro-content">
 	  <h3>Welcome to Clippings Manager</h3>
@@ -70,55 +70,64 @@
 	<!-- Shortcut key -->
 	<div id="options-bar" class="hbox">
 	  <div id="shortcut-key-select">
-          <label for="clipping-key">Shortcut key:</label>
-          <select id="clipping-key" class="browser-style" size="1">
-  	    <option>(None)</option>
-	    <option>A</option>
-	    <option>B</option>
-	    <option>C</option>
-	    <option>D</option>
-	    <option>E</option>
-	    <option>F</option>
-	    <option>G</option>
-	    <option>H</option>
-	    <option>I</option>
-	    <option>J</option>
-	    <option>K</option>
-	    <option>L</option>
-	    <option>M</option>
-	    <option>N</option>
-	    <option>O</option>
-	    <option>P</option>
-	    <option>Q</option>
-	    <option>R</option>
-	    <option>S</option>
-	    <option>T</option>
-	    <option>U</option>
-	    <option>V</option>
-	    <option>W</option>
-	    <option>X</option>
-	    <option>Y</option>
-	    <option>Z</option>
-	    <option>1</option>
-	    <option>2</option>
-	    <option>3</option>
-	    <option>4</option>
-	    <option>5</option>
-	    <option>6</option>
-	    <option>7</option>
-	    <option>8</option>
-	    <option>9</option>
-	    <option>0</option>
-	  </select>
+	    <label for="clipping-key">Shortcut key:</label>
+	    <select id="clipping-key" class="browser-style" size="1">
+	      <option>(None)</option>
+	      <option>A</option>
+	      <option>B</option>
+	      <option>C</option>
+	      <option>D</option>
+	      <option>E</option>
+	      <option>F</option>
+	      <option>G</option>
+	      <option>H</option>
+	      <option>I</option>
+	      <option>J</option>
+	      <option>K</option>
+	      <option>L</option>
+	      <option>M</option>
+	      <option>N</option>
+	      <option>O</option>
+	      <option>P</option>
+	      <option>Q</option>
+	      <option>R</option>
+	      <option>S</option>
+	      <option>T</option>
+	      <option>U</option>
+	      <option>V</option>
+	      <option>W</option>
+	      <option>X</option>
+	      <option>Y</option>
+	      <option>Z</option>
+	      <option>1</option>
+	      <option>2</option>
+	      <option>3</option>
+	      <option>4</option>
+	      <option>5</option>
+	      <option>6</option>
+	      <option>7</option>
+	      <option>8</option>
+	      <option>9</option>
+	      <option>0</option>
+	    </select>
 	  </div>  <!-- #shortcut-key-select -->
 	  
 	  <div id="options-bar-spacer" class="spacer"></div>
-	  <div id="tmp-clipping-label">
-	    <label>Label:</label>
-	    <span id="tmp-label"></span>
+	  <div id="clipping-label">
+	    <label for="clipping-label-picker">Label:</label>
+	    <select id="clipping-label-picker" class="browser-style">
+	      <option value="">None</option>
+	      <option value="red">Red</option>
+	      <option value="orange">Orange</option>
+	      <option value="yellow">Yellow</option>
+	      <option value="green">Green</option>
+	      <option value="blue">Blue</option>
+	      <option value="purple">Purple</option>
+	      <option value="grey">Grey</option>
+	    </select>
 	  </div>
 	</div> <!-- #options-bar -->
-      </div>
+      </div>   <!-- #item-properties -->
       
     </div> <!-- #content -->
 
@@ -126,7 +135,22 @@
       <span id="status-bar-msg"></span>
     </div>
 
+    <!-- Notification popup panels -->
+    <div id="panel-bkgrd-ovl" class="panel-bkgrd"></div>
+    <div id="all-src-urls-removed-confirm-popup" class="panel">
+      <div class="notify-icon"></div>
+      <div class="panel-content">Removed source web page addresses from your clippings.</div>
+      <div class="notify-dismiss dlg-accept"></div>
+    </div>
+
+    <div id="no-undo-popup" class="panel">
+      <div class="notify-icon"></div>
+      <div class="panel-content">Nothing to undo</div>
+      <div class="notify-dismiss dlg-accept"></div>
+    </div>
+    
     <!-- Dialog boxes -->
+    <div id="lightbox-bkgrd-ovl" class="lightbox-bkgrd"></div>
     <div id="shortcut-key-conflict-msgbox" class="lightbox">
       <div class="msgbox-icon" style="margin-top:8px"></div>
       <p>The selected shortcut key has already been assigned to another clipping.  Please select a different shortcut key.</p>
@@ -135,21 +159,45 @@
       </div>
     </div>
 
+    <div id="clipping-missing-src-url-msgbox" class="lightbox">
+      <div class="msgbox-icon"></div>
+      <p>The selected clipping doesn't have a source web page address.</p>
+      <div class="dlg-btns">
+	<button class="dlg-accept browser-style default">OK</button>
+      </div>
+    </div>
+
     <div id="import-dlg" class="lightbox">
       <div class="dlg-content browser-style">
-        <label>Select import file:</label>
-	<br/>
-        <input type="file" id="import-clippings-file-upload" accept=".rdf, .json"/>
-	<br/>
-	<input type="checkbox" id="import-clippings-replc-shct-keys" checked="true"/>
-	<label for="import-clippings-replc-shct-keys">Replace shortcut keys</label>
-	<br/>
+        <label id="import-clippings-label">Select import file:</label>
+	<div id="import-clippings-filepicker" class="hbox browser-style">
+	  <input type="text" id="import-clippings-file-path" readonly="true"/>
+	  <label id="import-clippings-file-upload-btn" for="import-clippings-file-upload">Browse...</label>
+	  <input type="file" id="import-clippings-file-upload" accept=".rdf, .json"/>
+	</div>
+	<div id="import-clippings-replc-shct-keys-checkbox" class="browser-style">
+	  <input type="checkbox" id="import-clippings-replc-shct-keys" checked="true"/>
+	  <label for="import-clippings-replc-shct-keys">Replace shortcut keys</label>
+	  <br/>
+	</div>
+	<div id="restore-backup-warning">
+	  <div class="warning-icon"></div>
+	  <p>Restoring from a backup file will replace all of your clippings with the backup. This action can't be undone.</p>
+        </div>
 	<progress id="import-progress-bar"></progress>
 	<div id="import-error"></div>
       </div>
       <div class="dlg-btns">
-	<button class="dlg-accept browser-style default" disabled="true">Import</button>
+	<button id="import-dlg-action-btn" class="dlg-accept browser-style default" disabled="true">Import</button>
 	<button class="dlg-cancel browser-style">Cancel</button>
+      </div>
+    </div>
+
+    <div id="import-confirm-msgbox" class="lightbox">
+      <div class="msgbox-icon"></div>
+      <p class="msgbox-content"></p>
+      <div class="dlg-btns">
+	<button class="dlg-accept browser-style default">Reload</button>
       </div>
     </div>
 
@@ -170,6 +218,14 @@
       <div class="dlg-btns">
         <button class="dlg-accept browser-style default">Export</button>
         <button class="dlg-cancel browser-style">Cancel</button>
+      </div>
+    </div>
+
+    <div id="export-confirm-msgbox" class="lightbox">
+      <div class="msgbox-icon"></div>
+      <p class="msgbox-content"></p>
+      <div class="dlg-btns">
+	<button class="dlg-accept browser-style default">OK</button>
       </div>
     </div>
 
@@ -212,7 +268,7 @@
 
     <div id="mini-help-dlg" class="lightbox">
       <div class="dlg-content browser-style">
-	<p style="font-size:12px;font-weight:bold">Clippings Manager</p>
+	<p class="hlp-hdr">Clippings Manager</p>
 	<p>Use Clippings Manager to edit, rename or delete clippings, and organize your collection of clippings into folders.</p>
 	<fieldset>
 	  <legend>Shortcut Keys</legend>
@@ -225,22 +281,22 @@
     </div>
 
     <div id="generic-msg-box" class="lightbox">
-      <div class="dlg-content browser-style">
-	<div class="msgbox-icon"></div>
-	<p>No help is available (so leave me alone).</p>
-      </div>
+      <div class="msgbox-icon"></div>
+      <p>No help is available (so leave me alone).</p>
       <div class="dlg-btns">
 	<button class="dlg-accept browser-style default">OK</button>
       </div>
     </div>
-    <div id="lightbox-bkgrd-ovl" class="lightbox-bkgrd"></div>
     
     <script src="../lib/jquery.js"></script>
     <script src="../lib/fancytree/jquery.fancytree-all-deps.min.js"></script>
     <script src="../lib/fancytree/jquery.fancytree.dnd5.js"></script>
     <script src="../lib/fancytree/jquery.fancytree.filter.js"></script>
     <script src="../lib/rdflib.js"></script>
+    <script src="../lib/contextMenu/jquery.ui.position.min.js"></script>
     <script src="../lib/contextMenu/jquery.contextMenu.min.js"></script>
+    <script src="../lib/simpledrag.js"></script>
+    <script src="../lib/i18n.js"></script>
     <script src="../modules/aeConst.js"></script>
     <script src="../modules/aeImportExport.js"></script>
     <script src="../modules/aeDialog.js"></script>

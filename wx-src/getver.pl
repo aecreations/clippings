@@ -1,4 +1,4 @@
-#!/cygdrive/c/Perl/bin/perl.exe
+#!/usr/bin/perl
 
 # Retrieves the version number of the WebExtension.
 # This script must be executed in the same directory as the extension's

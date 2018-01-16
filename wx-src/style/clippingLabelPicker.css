@@ -1,0 +1,39 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+#clipping-label-picker > option {
+    background-color: white;
+    color: initial;
+}
+
+#clipping-label-picker > option[value="red"] {
+    color: red;
+}
+
+#clipping-label-picker > option[value="orange"] {
+    color: orange;
+}
+
+#clipping-label-picker > option[value="yellow"] {
+    color: rgb(200, 200, 0);
+}
+
+#clipping-label-picker > option[value="green"] {
+    color: green;
+}
+
+#clipping-label-picker > option[value="blue"] {
+    color: blue;
+}
+
+#clipping-label-picker > option[value="purple"] {
+    color: purple;
+}
+
+#clipping-label-picker > option[value="grey"] {
+    color: gray;
+}
+
+

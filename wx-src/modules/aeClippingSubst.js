@@ -10,6 +10,15 @@
  * predefined values or user-input text.
  */
 let aeClippingSubst = {
+  // Match placeholder names containing alphanumeric char's, underscores, and
+  // the following Unicode blocks: Latin-1 Supplement, Latin Extended-A, Latin
+  // Extended-B, Cyrillic, Hebrew.
+  // For normal placeholders, allow {|} chars for optional default values, and
+  // within the { and }, allow the same characters as placeholder names, but
+  // including the space, hyphen and period.
+  REGEXP_CUSTOM_PLACEHOLDER: /\$\[([\w\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)(\{([\w \-\.\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF\|])+\})?\]/gm,
+  REGEXP_AUTO_INCR_PLACEHOLDER: /\#\[([a-zA-Z0-9_\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)\]/gm,
+  
   _userAgentStr: null,
   _hostAppName: null,
   _autoIncrementVars: {},
@@ -34,40 +43,48 @@ aeClippingSubst.init = function (aUserAgentStr, aAutoIncrementStartVal)
 };
 
 
-aeClippingSubst.processClippingText = function (aClippingInfo)
+aeClippingSubst.setAutoIncrementStartValue = function (aValue)
 {
-  if ((/^\[NOSUBST\]/.test(aClippingInfo.name))) {
-    return aClippingInfo.text;
+  this._autoIncrementStartVal = aValue;
+};
+
+
+aeClippingSubst.hasNoSubstFlag = function (aClippingName) {
+  return (/^\[NOSUBST\]/.test(aClippingName));
+};
+
+
+aeClippingSubst.getCustomPlaceholders = function (aClippingText)
+{
+  let rv = [];
+  let plchldrs = new Set();
+
+  let re = this.REGEXP_CUSTOM_PLACEHOLDER;
+
+  let result;
+  
+  while ((result = re.exec(aClippingText)) != null) {
+    plchldrs.add(result[1]);
   }
 
-  var rv = "";
+  rv = Array.from(plchldrs);
+  return rv;
+};
 
-  // Remember the value of the same placeholder that was filled in previously
-  var knownTags = {};
+
+aeClippingSubst.getCustomPlaceholderDefaultVals = function (aClippingText, aClippingInfo)
+{
+  let rv = {};
+  let re = this.REGEXP_CUSTOM_PLACEHOLDER;
+
+  let result;
   
-  var fnReplace = (aMatch, aP1, aP2, aOffset, aString) => {
-    let varName = aP1;
-
-    if (varName in knownTags) {
-      return knownTags[varName];
-    }
-
-    let hasDefaultVal = false;
-    let hasMultipleVals = false;
-
-    if (aP2) {
-      hasDefaultVal = true;
-
-      if (aP2.indexOf("|") != -1) {
-        hasMultipleVals = true;
-      }
-    }
-
-    // Pre-populate input with default value, if any.
-    let defaultVal = "";
-    if (hasDefaultVal) {
-	defaultVal = aP2.substring(aP2.indexOf("{") + 1, aP2.indexOf("}"));
-
+  while ((result = re.exec(aClippingText)) != null) {
+    let plchldrName = result[1];
+    
+    if (result[2]) {
+      let defVal = result[2];
+      let defaultVal = defVal.substring(defVal.indexOf("{") + 1, defVal.indexOf("}"));
       let date = new Date();
 
       switch (defaultVal) {
@@ -98,33 +115,33 @@ aeClippingSubst.processClippingText = function (aClippingInfo)
       default:
         break;
       }
+
+      rv[plchldrName] = defaultVal;
     }
+  }
+  
+  return rv;
+};
 
-    var rv = "";
 
-    // TO DO: Prompt for replacement text
-    rv = "$[" + varName + "]";
-    
-    return rv;
-  };
+aeClippingSubst.getAutoIncrPlaceholders = function (aClippingText)
+{
+  let rv = [];
+  let re = this.REGEXP_AUTO_INCR_PLACEHOLDER;
 
-  var fnAutoIncrement = (aMatch, aP1) => {
-    let varName = aP1;
+  let result;
 
-    if (varName in this._autoIncrementVars) {
-      return ++this._autoIncrementVars[varName];
-    }
+  while ((result = re.exec(aClippingText)) != null) {
+    rv.push(result[1]);
+  }
 
-    var rv = "";
-    
-    // TO DO: Prompt for initial numeric value
-    this._autoIncrementVars[varName] = this._autoIncrementStartVal;
+  return rv;
+};
 
-    rv = this._autoIncrementVars[varName];
-    
-    return rv;
-  };
 
+aeClippingSubst.processStdPlaceholders = function (aClippingInfo)
+{
+  let rv = "";
   let date = new Date();
 
   rv = aClippingInfo.text.replace(/\$\[DATE\]/gm, date.toLocaleDateString());
@@ -134,14 +151,30 @@ aeClippingSubst.processClippingText = function (aClippingInfo)
   rv = rv.replace(/\$\[HOSTAPP\]/gm, this._hostAppName);
   rv = rv.replace(/\$\[UA\]/gm, this._userAgentStr);
 
-  // Match placeholder names containing alphanumeric char's, underscores, and
-  // the following Unicode blocks: Latin-1 Supplement, Latin Extended-A, Latin
-  // Extended-B, Cyrillic, Hebrew.
-  // For normal placeholders, allow {|} chars for optional default values, and
-  // within the { and }, allow the same characters as placeholder names, but
-  // including the space, hyphen and period.
-  rv = rv.replace(/\$\[([\w\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)(\{([\w \-\.\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF\|])+\})?\]/gm, fnReplace);
-  rv = rv.replace(/\#\[([a-zA-Z0-9_\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)\]/gm, fnAutoIncrement);
+  return rv;
+};
+
+
+aeClippingSubst.processAutoIncrPlaceholders = function (aClippingText)
+{
+  let rv = "";
+  
+  let fnAutoIncrement = (aMatch, aP1) => {
+    let varName = aP1;
+
+    if (varName in this._autoIncrementVars) {
+      return ++this._autoIncrementVars[varName];
+    }
+
+    let rv = "";
+    
+    this._autoIncrementVars[varName] = this._autoIncrementStartVal;
+    rv = this._autoIncrementVars[varName];
+    
+    return rv;
+  }
+
+  rv = aClippingText.replace(this.REGEXP_AUTO_INCR_PLACEHOLDER, fnAutoIncrement);
 
   return rv;
 };

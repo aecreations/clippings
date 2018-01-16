@@ -6,7 +6,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Clippings</title>
+    <title data-i18n="extName"></title>
 
     <link rel="stylesheet" href="chrome://browser/content/extension.css"/>
     <style>
@@ -70,9 +70,10 @@
     </div>
 
     <div id="msgbox-buttons">
-      <button id="btn-accept" class="browser-style default">OK</button>
+      <button id="btn-accept" class="browser-style default" data-i18n="btnOK"></button>
     </div>
 
+    <script src="../lib/i18n.js"></script>
     <script src="../modules/aeMsgBox.js"></script>
     <script src="msgbox.js"></script>
   </body>

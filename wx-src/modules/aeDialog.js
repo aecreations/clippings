@@ -14,11 +14,21 @@ class aeDialog
     this._fnAfterDlgAccept = function () {};
 
     this._fnDlgAccept = function (aEvent) {
-      this.close();
+      if ($(this._dlgEltStor).hasClass("panel")) {
+        this.hidePopup();
+      }
+      else {
+        this.close();
+      }
     };
     
     this._fnDlgCancel = function (aEvent) {
-      this.close();
+      if ($(this._dlgEltStor).hasClass("panel")) {
+        this.hidePopup();
+      }
+      else {
+        this.close();
+      }
     };
 
     this._init();
@@ -87,6 +97,20 @@ class aeDialog
     $("#lightbox-bkgrd-ovl").removeClass("lightbox-show");
   }
 
+  openPopup()
+  {
+    this._fnInit();
+    $("#panel-bkgrd-ovl").addClass("panel-show");
+    $(`${this._dlgEltStor}`).addClass("panel-show");
+  }
+
+  hidePopup()
+  {
+    this._fnUnload();
+    $(`${this._dlgEltStor}`).removeClass("panel-show");
+    $("#panel-bkgrd-ovl").removeClass("panel-show");
+  }
+  
   static isOpen()
   {
     return ($(".lightbox-show").length > 0);
@@ -100,6 +124,8 @@ class aeDialog
       // Normally there should just be 1 dialog open at a time.
       $(".lightbox-show .dlg-accept:not(:disabled)").click();
     }
+
+    this.hidePopups();
   }
 
   static cancelDlgs()
@@ -108,6 +134,18 @@ class aeDialog
 
     if (openDlgElts.length > 0) {
       $(".lightbox-show .dlg-cancel:not(:disabled)").click();
+    }
+
+    this.hidePopups();
+  }
+
+  static hidePopups()
+  {
+    let openPopupPanelElts = $(".panel");
+
+    if (openPopupPanelElts.length > 0) {
+      $(".panel").removeClass("panel-show");
+      $("#panel-bkgrd-ovl").removeClass("panel-show");
     }
   }
 }

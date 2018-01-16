@@ -2,6 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+@import url("../style/clippingLabelPicker.css");
+
 
 label {
     margin-right: 4px;
@@ -113,6 +115,10 @@ ul.fancytree-container {
     background-repeat: no-repeat;
 }
 
+#clipping-options-groupbox {
+    padding-right: 0;
+}
+
 #clipping-options-groupbox > legend {
     padding-left: 8px;
     margin-left: 18px;
@@ -122,6 +128,7 @@ ul.fancytree-container {
     display: none;
     margin-top: 4px;
     margin-bottom: 8px;
+    margin-left: 26px;
 }
 
 #btn-expand-options {
@@ -140,8 +147,26 @@ ul.fancytree-container {
     background-repeat: no-repeat;
 }
 
+#clipping-options #shct-key-and-label-opts {
+    margin-top: 8px;
+}
+
+#clipping-options #shortcut-key-select {
+    order: 1;
+    flex: 0 1 auto;
+}
+
+#clipping-options #clipping-options-spacer {
+    order: 2;
+    flex: 1 1 auto;
+}
+
+#clipping-options #clipping-label {
+    order: 3;
+    flex: 0 1 auto;
+}
+
 #clipping-key {
-    margin-top: 4px;
     margin-right: 4px;
 }
 

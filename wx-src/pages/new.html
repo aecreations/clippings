@@ -43,51 +43,70 @@
       <fieldset id="clipping-options-groupbox">
 	<legend>Options</legend>
         <button id="btn-expand-options" class="browser-style"></button>
-	<div id="clipping-options" class="browser-style">
-  	  <input type="checkbox" id="save-source-url"/>
-	  <label for="save-source-url">Save the address of the source web page</label>
-	  <br/>
-	  <label for="clipping-key">Shortcut key:</label>
-	  <select id="clipping-key" class="browser-style" size="1">
-	    <option>(None)</option>
-	    <option>A</option>
-	    <option>B</option>
-	    <option>C</option>
-	    <option>D</option>
-	    <option>E</option>
-	    <option>F</option>
-	    <option>G</option>
-	    <option>H</option>
-	    <option>I</option>
-	    <option>J</option>
-	    <option>K</option>
-	    <option>L</option>
-	    <option>M</option>
-	    <option>N</option>
-	    <option>O</option>
-	    <option>P</option>
-	    <option>Q</option>
-	    <option>R</option>
-	    <option>S</option>
-	    <option>T</option>
-	    <option>U</option>
-	    <option>V</option>
-	    <option>W</option>
-	    <option>X</option>
-	    <option>Y</option>
-	    <option>Z</option>
-	    <option>1</option>
-	    <option>2</option>
-	    <option>3</option>
-	    <option>4</option>
-	    <option>5</option>
-	    <option>6</option>
-	    <option>7</option>
-	    <option>8</option>
-	    <option>9</option>
-	    <option>0</option>
-	  </select>
-	  <img id="shct-key-tooltip" src="../img/help-tooltip.svg"/>
+	<div id="clipping-options">
+	  <div class="row browser-style">
+	    <input type="checkbox" id="save-source-url"/>
+	    <label for="save-source-url">Save the address of the source web page</label>
+	  </div>
+	  <div id="shct-key-and-label-opts" class="row hbox">
+	    <div id="shortcut-key-select">
+	      <label for="clipping-key">Shortcut key:</label>
+	      <select id="clipping-key" class="browser-style" size="1">
+		<option>None</option>
+		<option>A</option>
+		<option>B</option>
+		<option>C</option>
+		<option>D</option>
+		<option>E</option>
+		<option>F</option>
+		<option>G</option>
+		<option>H</option>
+		<option>I</option>
+		<option>J</option>
+		<option>K</option>
+		<option>L</option>
+		<option>M</option>
+		<option>N</option>
+		<option>O</option>
+		<option>P</option>
+		<option>Q</option>
+		<option>R</option>
+		<option>S</option>
+		<option>T</option>
+		<option>U</option>
+		<option>V</option>
+		<option>W</option>
+		<option>X</option>
+		<option>Y</option>
+		<option>Z</option>
+		<option>1</option>
+		<option>2</option>
+		<option>3</option>
+		<option>4</option>
+		<option>5</option>
+		<option>6</option>
+		<option>7</option>
+		<option>8</option>
+		<option>9</option>
+		<option>0</option>
+	      </select>
+	      <img id="shct-key-tooltip" src="../img/help-tooltip.svg"/>
+	    </div>
+	    <div id="clipping-options-spacer" class="spacer"></div>
+	    <div id="clipping-label">
+	      <label for="clipping-label-picker">Label:</label>
+	      <select id="clipping-label-picker" class="browser-style">
+		<option value="">None</option>
+		<option value="red">Red</option>
+		<option value="orange">Orange</option>
+		<option value="yellow">Yellow</option>
+		<option value="green">Green</option>
+		<option value="blue">Blue</option>
+		<option value="purple">Purple</option>
+		<option value="grey">Grey</option>
+	      </select>
+	    </div>
+	  </div>
         </div>
       </div> <!-- fieldset -->
     </div>  <!-- #content -->

@@ -22,7 +22,7 @@ function init()
   let keybdPasteKeys = "ALT+SHIFT+Y";
   
   if (os == "mac") {
-    keybdPasteKeys = "\u2318\u21e7Y";
+    keybdPasteKeys = "\u21e7\u2318Y";
   }
 
   $("#keyboard-paste-keys").text(keybdPasteKeys);

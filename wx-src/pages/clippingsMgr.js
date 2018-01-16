@@ -6,11 +6,6 @@
 
 const DEBUG_TREE = false;
 
-const DEFAULT_NEW_CLIPPING_NAME = "New Clipping";
-const DEFAULT_NEW_FOLDER_NAME = "New Folder";
-const DEFAULT_UNTITLED_CLIPPING_NAME = "Untitled Clipping";
-const DEFAULT_UNTITLED_FOLDER_NAME = "Untitled Folder";
-
 let gOS;
 let gClippingsDB;
 let gClippings;
@@ -18,6 +13,8 @@ let gIsClippingsTreeEmpty;
 let gIsReloading = false;
 let gClippingsTreeDnD = false;
 let gDialogs = {};
+let gOpenerWndID;
+let gIsMaximized;
 
 // Clippings listener object
 let gClippingsListener = {
@@ -112,7 +109,7 @@ let gClippingsListener = {
           return;
         }
         
-        log("Clippings/wx: clippingsMgr.js::gClippingsListener.clippingChanged: Handling clipping move");
+        log("Clippings/wx::clippingsMgr.js::gClippingsListener.clippingChanged: Handling clipping move");
         let changedNode = tree.getNodeByKey(aID + "C");
         if (changedNode) {
           let targParentNode;
@@ -165,7 +162,7 @@ let gClippingsListener = {
           return;
         }
         
-        log("Clippings/wx: clippingsMgr.js::gClippingsListener.folderChanged: Handling folder move");
+        log("Clippings/wx::clippingsMgr.js::gClippingsListener.folderChanged: Handling folder move");
         let changedNode = tree.getNodeByKey(aID + "F");
         if (changedNode) {
           let targParentNode;
@@ -212,8 +209,7 @@ let gClippingsListener = {
 
   afterBatchChanges: function ()
   {
-    gIsReloading = true;
-    window.location.reload();
+    info("Clippings/wx::clippingsMgr.js: gClippingsListener.afterBatchChanges()");
   },
 
   // Helper methods
@@ -239,7 +235,7 @@ let gClippingsListener = {
         });
       });
     }).catch(aErr => {
-      console.error("Clippings/wx: clippingsMgr.js::gClippingsListener._buildChildNodes(): " + aErr);
+      console.error("Clippings/wx::clippingsMgr.js::gClippingsListener._buildChildNodes(): " + aErr);
     });
   },
   
@@ -419,9 +415,23 @@ let gSrcURLBar = {
 
   acceptEdit: function ()
   {
+    let updatedURL = $("#clipping-src-url-edit").val();
+
+    if (updatedURL != "" && updatedURL.search(/^http:\/\//) == -1
+        && updatedURL.search(/^https:\/\//) == -1) {
+
+      if (updatedURL.search(/^www/) != -1) {
+        updatedURL = "http://" + updatedURL;
+        $("#clipping-src-url-edit").val(updatedURL);
+      }
+      else {
+        $("#clipping-src-url-edit").select().focus();
+        return;
+      }
+    }
+    
     let tree = getClippingsTree();
     let id = parseInt(tree.activeNode.key);
-    let updatedURL = $("#clipping-src-url-edit").val();
     
     gClippingsDB.clippings.update(id, {
       sourceURL: updatedURL
@@ -434,7 +444,7 @@ let gSrcURLBar = {
           $("#clipping-src-url > a").text(updatedURL);
         }
         else {
-          $("#clipping-src-url").text("(None)");
+          $("#clipping-src-url").text(chrome.i18n.getMessage("none"));
         }
       }
       this._dismissSrcURLEditMode();
@@ -532,12 +542,59 @@ let gShortcutKey = {
   }
 };
 
+// Clipping label picker in the options bar
+let gClippingLabelPicker = {
+  _labelPicker: null,
+  
+  init(aLabelPickerStor)
+  {
+    this._labelPicker = $(aLabelPickerStor);
+
+    this._labelPicker.on("change", aEvent => {
+      if (isFolderSelected()) {
+        return;
+      }
+
+      let selectedNode = getClippingsTree().activeNode;
+      let id = parseInt(selectedNode.key);
+      let label = this.selectedLabel;
+
+      gCmd.setLabelIntrl(id, label, gCmd.UNDO_STACK);
+    });
+  },
+
+  get selectedLabel()
+  {
+    return this._labelPicker.val();
+  },
+
+  set selectedLabel(aLabel)
+  {
+    let bgColor = aLabel;
+    let fgColor = "white";
+
+    if (! aLabel) {
+      bgColor = "white";
+      fgColor = "initial";
+    }
+    else if (aLabel == "yellow") {
+      fgColor = "initial";
+    }
+
+    this._labelPicker.css({
+      backgroundColor: bgColor,
+      color: fgColor
+    });
+    this._labelPicker.val(aLabel);
+  }
+};
+
 
 // Clippings Manager commands
 let gCmd = {
   // Flags for undoStack actions
   ACTION_EDITNAME: 1,
-  ACTION_EDITTEXT: 2,
+  ACTION_EDITCONTENT: 2,
   ACTION_DELETECLIPPING: 3,
   ACTION_CREATENEW: 4,
   ACTION_CHANGEPOSITION: 5,
@@ -590,7 +647,7 @@ let gCmd = {
     }
 
     let createClipping = gClippingsDB.clippings.add({
-      name: DEFAULT_NEW_CLIPPING_NAME,
+      name: chrome.i18n.getMessage("newClipping"),
       content: "",
       shortcutKey: "",
       parentFolderID: parentFolderID,
@@ -624,7 +681,7 @@ let gCmd = {
     }
     
     let createFolder = gClippingsDB.folders.add({
-      name: DEFAULT_NEW_FOLDER_NAME,
+      name: chrome.i18n.getMessage("newFolder"),
       parentFolderID: parentFolderID
     });
 
@@ -690,6 +747,11 @@ let gCmd = {
         }
       });
     }
+  },
+
+  pasteClipping: function (aClippingID)
+  {
+    info("Clippings/wx::clippingsMgr.js: gCmd.pasteClipping(): Not implemented.");
   },
 
   // Internal commands are NOT meant to be invoked directly from the UI.
@@ -790,6 +852,191 @@ let gCmd = {
     });
   },
   
+  editFolderNameIntrl: function (aFolderID, aName, aDestUndoStack)
+  {
+    return new Promise((aFnResolve, aFnReject) => {
+      let oldName = "";
+      
+      gClippingsDB.folders.get(aFolderID).then(aResult => {
+        oldName = aResult.name;
+
+        if (aName == oldName) {
+          return 0;
+        }
+        return gClippingsDB.folders.update(aFolderID, { name: aName });
+
+      }).then(aNumUpd => {
+        if (aNumUpd && aDestUndoStack == this.UNDO_STACK) {
+          this.undoStack.push({
+            action: this.ACTION_EDITNAME,
+            id: aFolderID,
+            name: aName,
+            oldName,
+            itemType: this.ITEMTYPE_FOLDER
+          });
+        }
+        aFnResolve();
+
+      }).catch(aErr => {
+        console.error("Clippings/wx::clippingsMgr.js: gCmd.editFolderNameIntrl(): " + aErr);
+        aFnReject(aErr);
+      });
+    });
+  },
+
+  editClippingNameIntrl: function (aClippingID, aName, aDestUndoStack)
+  {
+    return new Promise((aFnResolve, aFnReject) => {
+      let oldName = "";
+      
+      gClippingsDB.clippings.get(aClippingID).then(aResult => {
+        oldName = aResult.name;
+
+        if (aName == oldName) {
+          return 0;
+        }
+        return gClippingsDB.clippings.update(aClippingID, { name: aName });
+
+      }).then(aNumUpd => {
+        if (aNumUpd && aDestUndoStack == this.UNDO_STACK) {
+          this.undoStack.push({
+            action: this.ACTION_EDITNAME,
+            id: aClippingID,
+            name: aName,
+            oldName,
+            itemType: this.ITEMTYPE_CLIPPING
+          });
+        }
+        aFnResolve();
+
+      }).catch(aErr => {
+        console.error("Clippings/wx::clippingsMgr.js: gCmd.editClippingNameIntrl(): " + aErr);
+        aFnReject(aErr);
+      });
+    });
+  },
+
+  editClippingContentIntrl: function (aClippingID, aContent, aDestUndoStack)
+  {
+    return new Promise((aFnResolve, aFnReject) => {
+      let oldContent = "";
+      
+      gClippingsDB.clippings.get(aClippingID).then(aResult => {
+        oldContent = aResult.content;
+
+        if (aContent == oldContent) {
+          return 0;
+        }
+        return gClippingsDB.clippings.update(aClippingID, { content: aContent });
+
+      }).then(aNumUpd => {
+        if (aNumUpd && aDestUndoStack == this.UNDO_STACK) {
+          this.undoStack.push({
+            action: this.ACTION_EDITCONTENT,
+            id: aClippingID,
+            content: aContent,
+            oldContent,
+            itemType: this.ITEMTYPE_CLIPPING
+          });
+        }
+        aFnResolve();
+        
+      }).catch(aErr => {
+        console.error("Clippings/wx::clippingsMgr.js: gCmd.editClippingContentIntrl(): " + aErr);
+        aFnReject(aErr);
+      });
+    });
+  },
+  
+  setLabelIntrl: function (aClippingID, aLabel, aDestUndoStack)
+  {
+    let selectedNode = getClippingsTree().activateKey(aClippingID + "C");
+    let oldLabel;
+
+    gClippingsDB.clippings.get(aClippingID).then(aResult => {
+      oldLabel = aResult.label;
+      return gClippingsDB.clippings.update(aClippingID, { label: aLabel });
+
+    }).then(aNumUpd => {
+      // Set the icon color on the tree list.
+      if (selectedNode.extraClasses !== undefined) {
+        let result = selectedNode.extraClasses.match(/ae\-clipping\-label\-[a-z]+/);
+        if (result) {
+          selectedNode.removeClass(result[0]);
+        }
+      }
+
+      if (aLabel) {
+        selectedNode.addClass(`ae-clipping-label-${aLabel}`);
+      }
+
+      gClippingLabelPicker.selectedLabel = aLabel;
+      
+      if (aDestUndoStack == this.UNDO_STACK) {
+        this.undoStack.push({
+          action: this.ACTION_SETLABEL,
+          id: aClippingID,
+          label: aLabel,
+          oldLabel
+        });
+      }
+    }).catch(aErr => {
+      console.error("Clippings/wx::clippingsMgr.js: gCmd.setLabel(): " + aErr);
+    });
+  },
+  
+  gotoURL: function (aURL)
+  {
+    const DEFAULT_MAX_WIDTH = 1000;
+    const DEFAULT_MAX_HEIGHT = 720;
+    
+    if (gClippings.isGoogleChrome()) {
+      try {
+        chrome.windows.get(gOpenerWndID, aOpenerWnd => {
+          chrome.windows.create({
+            url: aURL,
+            type: "normal",
+            state: "normal",
+            width: aOpenerWnd.width,
+            height: aOpenerWnd.height,
+          });     
+        });
+      }
+      catch (aErr) {
+        warn("Clippings/wx::clippingsMgr.js: gCmd.gotoURL(): " + aErr);
+
+        chrome.windows.create({
+          url: aURL,
+          type: "normal",
+          state: "normal",
+          width: DEFAULT_MAX_WIDTH,
+          height: DEFAULT_MAX_HEIGHT,
+        });
+      }
+    }
+    else {
+      browser.windows.get(gOpenerWndID).then(aOpenerWnd => {
+        browser.windows.create({
+          url: aURL,
+          type: "normal",
+          state: "normal",
+          width: aOpenerWnd.width,
+          height: aOpenerWnd.height,
+        });
+      }).catch(aErr => {
+        warn("Clippings/wx::clippingsMgr.js: gCmd.gotoURL(): " + aErr);
+
+        browser.windows.create({
+          url: aURL,
+          type: "normal",
+          state: "normal",
+          width: DEFAULT_MAX_WIDTH,
+          height: DEFAULT_MAX_HEIGHT,
+        });
+      });
+    }
+  },
+  
   showHideDetailsPane: function ()
   {
     let currSetting = gClippings.getPrefs().clippingsMgrDetailsPane;
@@ -819,13 +1066,71 @@ let gCmd = {
     chrome.storage.local.set({ clippingsMgrStatusBar: isVisible });
   },
   
+  toggleMaximize: function ()
+  {
+    chrome.windows.getCurrent(null, aWnd => {
+      let updWndInfo = {
+        state: (aWnd.state == "maximized" ? "normal" : "maximized")
+      };
+      chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, updWndInfo, aUpdWnd => {
+        gIsMaximized = aUpdWnd.state == "maximized";
+      });
+    });
+  },
+
+  toggleMinimizeWhenInactive: function ()
+  {
+    let currSetting = gClippings.getPrefs().clippingsMgrMinzWhenInactv;
+    chrome.storage.local.set({ clippingsMgrMinzWhenInactv: !currSetting });
+  },
+  
   openExtensionPrefs: function ()
   {
     chrome.runtime.openOptionsPage();
   },
   
+  backup: function ()
+  {
+    const INCLUDE_SRC_URLS = true;
+    
+    aeImportExport.setDatabase(gClippingsDB);
+    setStatusBarMsg("Saving backup file...");
+
+    let blobData;
+    aeImportExport.exportToJSON(INCLUDE_SRC_URLS).then(aJSONData => {
+      blobData = new Blob([aJSONData], { type: "application/json;charset=utf-8"});
+
+      browser.downloads.download({
+        url: URL.createObjectURL(blobData),
+        filename: aeConst.CLIPPINGS_BACKUP_FILENAME,
+        saveAs: true
+      }).then(aDownldItemID => {
+        setStatusBarMsg("Saving backup file... done");
+      }).catch(aErr => {
+        if (aErr.fileName == "undefined") {
+          setStatusBarMsg();
+        }
+        else {
+          console.error(aErr);
+          setStatusBarMsg("Backup failed.");
+          window.alert("Sorry, an error occurred while creating the backup file.\n\nDetails:\n" + aErr);
+        }
+      });
+    }).catch(aErr => {
+      window.alert("Sorry, an error occurred during the backup.\n\nDetails:\n" + aErr);
+      setStatusBarMsg("Backup failed.");
+    });
+  },
+  
+  restoreFromBackup: function ()
+  {
+    gDialogs.importFromFile.mode = gDialogs.importFromFile.IMP_REPLACE;
+    gDialogs.importFromFile.showModal();
+  },
+  
   importFromFile: function ()
   {
+    gDialogs.importFromFile.mode = gDialogs.importFromFile.IMP_APPEND;
     gDialogs.importFromFile.showModal();
   },
 
@@ -842,7 +1147,7 @@ let gCmd = {
   undo: function ()
   {
     if (this.undoStack.length == 0) {
-      setStatusBarMsg("Nothing to undo");
+      window.setTimeout(() => { gDialogs.noUndoNotify.openPopup() }, 100);
       return;
     }
 
@@ -875,6 +1180,31 @@ let gCmd = {
     }
     else if (undo.action == this.ACTION_CREATENEWFOLDER) {
       this.moveFolderIntrl(undo.id, aeConst.DELETED_ITEMS_FLDR_ID);
+    }
+    else if (undo.action == this.ACTION_EDITNAME) {
+      if (undo.itemType == this.ITEMTYPE_CLIPPING) {
+        this.editClippingNameIntrl(undo.id, undo.oldName).then(() => {
+          let clpNode = getClippingsTree().activateKey(undo.id + "C");
+          clpNode.title = undo.oldName;
+          $("#clipping-name").val(undo.oldName).select();
+        });
+      }
+      else if (undo.itemType == this.ITEMTYPE_FOLDER) {
+        this.editFolderNameIntrl(undo.id, undo.oldName).then(() => {
+          let fldrNode = getClippingsTree().activateKey(undo.id + "F");
+          fldrNode.title = undo.oldName;
+          $("#clipping-name").val(undo.oldName).select();
+        });
+      }
+    }
+    else if (undo.action == this.ACTION_EDITCONTENT) {
+      this.editClippingContentIntrl(undo.id, undo.oldContent).then(() => {
+        getClippingsTree().activateKey(undo.id + "C");
+        $("#clipping-text").val(undo.oldContent).select();
+      });
+    }
+    else if (undo.action == this.ACTION_SETLABEL) {
+      this.setLabelIntrl(undo.id, undo.oldLabel);
     }
   },
   
@@ -924,10 +1254,10 @@ $(document).ready(() => {
 
   if (gClippings) {
     gClippingsDB = gClippings.getClippingsDB();
-    log("Clippings/wx: clippingsMgr: Successfully opened Clippings DB");
+    log("Clippings/wx::clippingsMgr: Successfully opened Clippings DB");
   }
   else {
-    console.error("Error initializing Clippings Manager: Unable to locate parent browser window.");
+    console.error("Error initializing Clippings Manager: Failed to retrieve background page!");
     $("#clipping-name, #clipping-text, #source-url-bar, #options-bar").hide();
     showInitError();
     return;
@@ -935,6 +1265,10 @@ $(document).ready(() => {
 
   chrome.runtime.getPlatformInfo(aInfo => { gOS = aInfo.os; });
 
+  let wndURL = new URL(window.location.href);
+  gOpenerWndID = Number(wndURL.searchParams.get("openerWndID"));
+  gIsMaximized = false;
+  
   let clippingsListeners = gClippings.getClippingsListeners();
   gClippingsListener.origin = clippingsListeners.ORIGIN_CLIPPINGS_MGR;
   clippingsListeners.add(gClippingsListener);
@@ -943,7 +1277,7 @@ $(document).ready(() => {
   initInstantEditing();
   gShortcutKey.init();
   gSrcURLBar.init();
-  initLabelPicker();
+  gClippingLabelPicker.init("#clipping-label-picker");
   initDialogs();
   buildClippingsTree();
 
@@ -952,6 +1286,8 @@ $(document).ready(() => {
     gSearchBox.activate();
   });
 
+  initTreeSplitter();
+  
   chrome.history.deleteUrl({ url: window.location.href });
 
   // Fix for Fx57 bug where bundled page loaded using
@@ -993,7 +1329,10 @@ $(document).keypress(aEvent => {
     return aEvent.ctrlKey;
   }
 
-  //log("Clippings/wx: clippingsMgr.js: $(document).keypress(): Key pressed: " + aEvent.key);
+  function isTextboxFocused(aEvent)
+  {
+    return (aEvent.target.tagName == "INPUT" || aEvent.target.tagName == "TEXTAREA");
+  }
   
   // NOTE: CTRL+W/Cmd+W is automatically handled, so no need to define it here.
   if (aEvent.key == "F1") {
@@ -1005,13 +1344,18 @@ $(document).keypress(aEvent => {
     }
   }
   else if (aEvent.key == "Enter") {
+    if (gSrcURLBar.isEditing()) {
+      gSrcURLBar.acceptEdit();
+    }
     aeDialog.acceptDlgs();
   }
   else if (aEvent.key == "Escape") {
     if (gSearchBox.isActivated()) {
       gSearchBox.reset();
     }
-
+    if (gSrcURLBar.isEditing()) {
+      gSrcURLBar.cancelEdit();
+    }
     aeDialog.cancelDlgs();
   }
   else if (aEvent.key == "Delete") {
@@ -1020,13 +1364,21 @@ $(document).keypress(aEvent => {
     }
   }
   else if (aEvent.key == "/") {
-    if (aEvent.target.tagName != "INPUT" && aEvent.target.tagName != "TEXTAREA") {
+    if (! isTextboxFocused(aEvent)) {
       aEvent.preventDefault();
     }
   }
   else if (aEvent.key == "F5") {
     // Suppress browser reload.
     aEvent.preventDefault();
+  }
+  else if (aEvent.key == "F10" && isAccelKeyPressed()) {
+    gCmd.toggleMaximize();
+  }
+  else if (aEvent.key.toUpperCase() == "A" && isAccelKeyPressed()) {
+    if (! isTextboxFocused(aEvent)) {
+      aEvent.preventDefault();
+    }
   }
   else if (aEvent.key.toUpperCase() == "F" && isAccelKeyPressed()) {
     aEvent.preventDefault();
@@ -1038,9 +1390,8 @@ $(document).keypress(aEvent => {
   else {
     // Ignore standard browser shortcut keys.
     let key = aEvent.key.toUpperCase();
-    if (isAccelKeyPressed() && (key == "A" || key == "D" || key == "N"
-                                || key == "P" || key == "R" || key == "S"
-                                || key == "U")) {
+    if (isAccelKeyPressed() && (key == "D" || key == "N" || key == "P"
+                                || key == "R" || key == "S" || key == "U")) {
       aEvent.preventDefault();
     }
   }
@@ -1050,6 +1401,23 @@ $(document).keypress(aEvent => {
 $(window).on("contextmenu", aEvent => {
   if (aEvent.target.tagName != "INPUT" && aEvent.target.tagName != "TEXTAREA") {
     aEvent.preventDefault();
+  }
+});
+
+
+$(window).on("click", aEvent => {
+  aeDialog.hidePopups();
+});
+
+
+$(window).on("blur", aEvent => {
+  if (gOS == "linux" || aeConst.DEBUG) {
+    if (gClippings.getPrefs().clippingsMgrMinzWhenInactv) {
+      let updInfo = {
+        state: "minimized"
+      };
+      chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, updInfo);
+    }
   }
 });
 
@@ -1081,8 +1449,38 @@ function initToolbar()
   $.contextMenu({
     selector: "#clippings-mgr-options",
     trigger: "left",
+
+    events: {
+      activated: function (aOptions) {
+        $("#clippings-mgr-options").addClass("toolbar-button-menu-open");
+      },
+
+      hide: function (aOptions) {
+        $("#clippings-mgr-options").removeClass("toolbar-button-menu-open");
+      }
+    },
+    
+    position: function (aOpt, aX, aY) {
+      aX = undefined;
+      aY = undefined;
+
+      aOpt.$menu.position({
+        my: "left top",
+        at: "left bottom",
+        of: $("#clippings-mgr-options")
+      });
+    },
+    
     callback: function (aItemKey, aOpt, aRootMenu, aOriginalEvent) {
       switch (aItemKey) {
+      case "backup":
+        gCmd.backup();
+        break;
+        
+      case "restoreFromBackup":
+        gCmd.restoreFromBackup();
+        break;
+        
       case "importFromFile":
         gCmd.importFromFile();
         break;
@@ -1103,6 +1501,14 @@ function initToolbar()
         gCmd.showHideStatusBar();
         break;
 
+      case "maximizeWnd":
+        window.setTimeout(() => { gCmd.toggleMaximize() }, 100);
+        break;
+
+      case "minimizeWhenInactive":
+        gCmd.toggleMinimizeWhenInactive();
+        break;
+        
       case "openExtensionPrefs":
         gCmd.openExtensionPrefs();
         break;
@@ -1119,6 +1525,7 @@ function initToolbar()
         className: "ae-menuitem"
       },
       separator0: "--------",
+      ***/
       backup: {
         name: "Backup...",
         className: "ae-menuitem"
@@ -1128,7 +1535,6 @@ function initToolbar()
         className: "ae-menuitem"
       },
       separator1: "--------",
-      ***/
       importFromFile: {
         name: "Import...",
         className: "ae-menuitem"
@@ -1150,14 +1556,55 @@ function initToolbar()
             name: "Details Pane",
             className: "ae-menuitem",
             disabled: function (aKey, aOpt) {
-              return isFolderSelected();
+              return (gIsClippingsTreeEmpty || isFolderSelected());
+            },
+            icon: function (aOpt, $itemElement, aItemKey, aItem) {
+              if ($("#source-url-bar").css("display") != "none"
+                  && $("#options-bar").css("display") != "none") {
+                return "context-menu-icon-checked";
+              }
             }
           },
           
           toggleStatusBar: {
             name: "Status Bar",
-            className: "ae-menuitem"
+            className: "ae-menuitem",
+            icon: function (aOpt, $itemElement, aItemKey, aItem) {
+              if ($("#status-bar").css("display") != "none") {
+                return "context-menu-icon-checked";
+              }
+            }
           }
+        }
+      },
+      maximizeWnd: {
+        name: "Maximize",
+        className: "ae-menuitem",
+        visible: function (aKey, aOpt) {
+          return (gOS != "mac");
+        },
+        icon: function (aKey, aOpt) {
+          if (gIsMaximized) {
+            return "context-menu-icon-checked";
+          }
+        }
+      },
+      minimizeWhenInactive: {
+        name: "Minimize When Inactive",
+        className: "ae-menuitem",
+        visible: function (aKey, aOpt) {
+          return (gOS == "linux");
+        },
+        icon: function (aKey, aOpt) {
+          if (gClippings.getPrefs().clippingsMgrMinzWhenInactv) {
+            return "context-menu-icon-checked";
+          }
+        }
+      },
+      windowCmdsSeparator: {
+        type: "cm_separator",
+        visible: function (akey, aOpt) {
+          return (gOS != "mac");
         }
       },
       openExtensionPrefs: {
@@ -1178,12 +1625,22 @@ function initInstantEditing()
     let id = parseInt(selectedNode.key);
 
     if (selectedNode.isFolder()) {
-      name = (name ? name : DEFAULT_UNTITLED_FOLDER_NAME);
-      gClippingsDB.folders.update(id, { name });
+      if (name) {
+        gCmd.editFolderNameIntrl(id, name, gCmd.UNDO_STACK);
+      }
+      else {
+        aEvent.target.value = chrome.i18n.getMessage("untitledFolder");
+        gCmd.editFolderNameIntrl(id, chrome.i18n.getMessage("untitledFolder"), gCmd.UNDO_STACK);
+      }
     }
     else {
-      name = (name ? name : DEFAULT_UNTITLED_CLIPPING_NAME);
-      gClippingsDB.clippings.update(id, { name });
+      if (name) {
+        gCmd.editClippingNameIntrl(id, name, gCmd.UNDO_STACK);
+      }
+      else {
+        aEvent.target.value = chrome.i18n.getMessage("untitledClipping");
+        gCmd.editClippingNameIntrl(id, chrome.i18n.getMessage("untitledClipping"), gCmd.UNDO_STACK);
+      }
     }
   });
   
@@ -1193,8 +1650,8 @@ function initInstantEditing()
     let id = parseInt(selectedNode.key);
 
     if (! selectedNode.folder) {
-      let text = aEvent.target.value;
-      gClippingsDB.clippings.update(id, { content: text });
+      let content = aEvent.target.value;
+      gCmd.editClippingContentIntrl(id, content, gCmd.UNDO_STACK);
     }
   }).attr("spellcheck", gClippings.getPrefs().checkSpelling);
 }
@@ -1207,10 +1664,10 @@ function initDialogs()
   let shctKeyTbls = $(".shortcut-key-tbl");
   let shctKeys = [];
   if (isMacOS) {
-    shctKeys = ["\u2326", "esc", "\u2318F", "\u2318W", "\u2318Z", "F1"];
+    shctKeys = ["\u2326", "esc", "\u2318F", "\u2318W", "\u2318Z", "F1", "\u2318F10"];
   }
   else {
-    shctKeys = ["DEL", "ESC", "CTRL+F", "CTRL+W", "CTRL+Z", "F1"];
+    shctKeys = ["DEL", "ESC", "CTRL+F", "CTRL+W", "CTRL+Z", "F1", "CTRL+F10"];
   }
   
   $(`<tr><td style="width:6em">${shctKeys[0]}</td><td>Delete selected clipping or folder</td></tr>`).appendTo(shctKeyTbls);
@@ -1219,6 +1676,7 @@ function initDialogs()
   $(`<tr><td>${shctKeys[3]}</td><td>Close Clippings Manager</td></tr>`).appendTo(shctKeyTbls);
   $(`<tr><td>${shctKeys[4]}</td><td>Undo</td></tr>`).appendTo(shctKeyTbls);
   $(`<tr><td>${shctKeys[5]}</td><td>Show Clippings Manager intro</td></tr>`).appendTo(shctKeyTbls);
+  $(`<tr><td>${shctKeys[6]}</td><td>Maximize window</td></tr>`).appendTo(shctKeyTbls);
   
   aeImportExport.setDatabase(gClippingsDB);
 
@@ -1230,29 +1688,62 @@ function initDialogs()
     $("#clipping-key")[0].selectedIndex = gShortcutKey.getPrevSelectedIndex();
   };
 
+  gDialogs.clippingMissingSrcURL = new aeDialog("#clipping-missing-src-url-msgbox");
+  gDialogs.noUndoNotify = new aeDialog("#no-undo-popup");
+  
   gDialogs.importFromFile = new aeDialog("#import-dlg");
+  gDialogs.importFromFile.IMP_APPEND = 0;
+  gDialogs.importFromFile.IMP_REPLACE = 1;
+  gDialogs.importFromFile.mode = gDialogs.importFromFile.IMP_APPEND;
+
   gDialogs.importFromFile.onInit = () => {
+    if (gDialogs.importFromFile.mode == gDialogs.importFromFile.IMP_REPLACE) {
+      $("#import-clippings-label").text("Select backup file:");
+      $("#import-clippings-replc-shct-keys-checkbox").hide();
+      $("#restore-backup-warning").show();
+      $("#import-dlg-action-btn").text("Restore Backup");
+    }
+    else {
+      $("#import-clippings-label").text("Select import file:");
+      $("#import-clippings-replc-shct-keys-checkbox").show();
+      $("#restore-backup-warning").hide();
+      $("#import-dlg-action-btn").text("Import");
+    }
+
+    $("#import-clippings-file-path").val("");
     $("#import-dlg button.dlg-accept").attr("disabled", "true");
     
     $("#import-clippings-file-upload").on("change", aEvent => {
       $("#import-error").text("").hide();
-      if (aEvent.target.files.length > 0) {
+
+      let inputFileElt = aEvent.target;
+      if (inputFileElt.files.length > 0) {
+        $("#import-clippings-file-path").val(inputFileElt.files[0].name);
         $("#import-dlg button.dlg-accept").removeAttr("disabled");
+      }
+
+      if (gDialogs.importFromFile.mode == gDialogs.importFromFile.IMP_REPLACE) {
+        $("#restore-backup-warning").show();
       }
     });
   };
-  gDialogs.importFromFile.onUnload = () => {
+  gDialogs.importFromFile.onUnload = () => {   
     $("#import-error").text("").hide();
     $("#import-dlg #import-clippings-file-upload").val("");
     $("#import-clippings-replc-shct-keys")[0].checked = true;
   };
   gDialogs.importFromFile.onAccept = aEvent => {
-    function uploadImportFile(aFileList) {
-      if (aFileList.length == 0) {
+    function importFile() {
+      let inputFileElt = $("#import-clippings-file-upload")[0];
+      let fileList = inputFileElt.files;
+
+      if (fileList.length == 0) {
         return;
       }
       
-      let importFile = aFileList[0];
+      $("#import-progress-bar").show();
+
+      let importFile = fileList[0];
       console.log("Clippings Manager: Selected import file: '%s'\nFile size: %d bytes", importFile.name, importFile.size);
 
       let fileReader = new FileReader();
@@ -1275,20 +1766,43 @@ function initDialogs()
           return;
         }
 
+        log("Clippings/wx::clippingsMgr.js: gDialogs.importFromFile.onAccept()::importFile(): Finished importing data.");
+        
         $("#import-error").text("").hide();
         $("#import-progress-bar").hide();
         gDialogs.importFromFile.close();
+
+        gDialogs.importConfirmMsgBox.setMessage(`Import from "${importFile.name}" is successfully completed.`);
+        gDialogs.importConfirmMsgBox.showModal();
       });
 
       fileReader.readAsText(importFile);
     }
 
-    $("#import-progress-bar").show();
+    if (gDialogs.importFromFile.mode == gDialogs.importFromFile.IMP_REPLACE) {
+      info("Clippings/wx::clippingsMgr.js: Import dialog mode: Restore From Backup");
 
-    let inputFileElt = $("#import-clippings-file-upload")[0];
-    uploadImportFile(inputFileElt.files);
+      $("#restore-backup-warning").hide();
+      
+      gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
+        log("Clippings/wx::clippingsMgr.js: gDialogs.importFromFile.onAccept(): Starting restore from backup file.\nDeleting all clippings and folders");
+        
+        gClippingsDB.clippings.clear().then(() => {
+          return gClippingsDB.folders.clear();
+        }).then(() => {
+          log("Finished deleting all clippings and folders. Starting import of backup file.");
+          importFile();
+        });
+      }).catch(aErr => {
+        console.error("Clippings/wx::clippingsMgr.js: gDialogs.importFromFile.onAccept(): " + aErr);
+      });
+    }
+    else {
+      info("Clippings/wx::clippingsMgr.js: Import dialog mode: Import File");
+      importFile();
+    }
   };
-
+  
   gDialogs.exportToFile = new aeDialog("#export-dlg");
   gDialogs.exportToFile.FMT_CLIPPINGS_WX = 0;
   gDialogs.exportToFile.FMT_HTML = 1;
@@ -1317,6 +1831,21 @@ function initDialogs()
   };
 
   gDialogs.exportToFile.onAfterAccept = () => {
+    function getErrStr(aErr)
+    {
+      let rv = `${aErr.name}: ${aErr.message}`;
+
+      if (aErr.fileName) {
+        rv += "\nSource: " + aErr.fileName;
+      }
+
+      if (aErr.lineNumber) {
+        rv += ":" + aErr.lineNumber;
+      }
+
+      return rv;
+    }
+    
     function saveToFile(aBlobData, aFilename)
     {
       browser.downloads.download({
@@ -1325,23 +1854,26 @@ function initDialogs()
         saveAs: true
       }).then(aDownldItemID => {
         setStatusBarMsg("Exporting... done");
-
+        
         // TO DO: Get the path of the exported file, not just the file name.
-        window.alert(`Clippings export to "${aFilename}" was successfully completed.`);
+        gDialogs.exportConfirmMsgBox.setMessage(`Clippings export to "${aFilename}" is successfully completed.`);
+        gDialogs.exportConfirmMsgBox.showModal();
+
       }).catch(aErr => {
         if (aErr.fileName == "undefined") {
           setStatusBarMsg();
         }
         else {
           console.error(aErr);
-          window.alert("Export failed.\n" + aErr);
+          setStatusBarMsg("Export failed.");
+          window.alert("Sorry, an error occurred while creating the export file.\n\nDetails:\n" + getErrStr(aErr));
         }
       });
     }
     
     let selectedFmtIdx = $("#export-format-list")[0].selectedIndex;
     setStatusBarMsg("Exporting...");
-    
+
     if (selectedFmtIdx == gDialogs.exportToFile.FMT_CLIPPINGS_WX) {
       let inclSrcURLs = $("#include-src-urls").prop("checked");
 
@@ -1349,24 +1881,48 @@ function initDialogs()
         let blobData = new Blob([aJSONData], { type: "application/json;charset=utf-8"});
 
         saveToFile(blobData, aeConst.CLIPPINGS_EXPORT_FILENAME);
+      }).catch(aErr => {
+        window.alert("Sorry, an error occurred while exporting to Clippings 6 format.\n\nDetails:\n" + getErrStr(aErr));
+        setStatusBarMsg("Export failed.");
       });
     }
     else if (selectedFmtIdx == gDialogs.exportToFile.FMT_HTML) {
       aeImportExport.exportToHTML().then(aHTMLData => {
         let blobData = new Blob([aHTMLData], { type: "text/html;charset=utf-8"});
         saveToFile(blobData, aeConst.HTML_EXPORT_FILENAME);
+      }).catch(aErr => {
+        window.alert("Sorry, an error occurred while exporting to HTML Document format.\n\nDetails:\n" + getErrStr(aErr));
+        setStatusBarMsg("Export failed.");
       });
     }
   };
 
+  gDialogs.importConfirmMsgBox = new aeDialog("#import-confirm-msgbox");
+  gDialogs.importConfirmMsgBox.setMessage = (aMessage) => {
+    $("#import-confirm-msgbox > .msgbox-content").text(aMessage);
+  };
+  gDialogs.importConfirmMsgBox.onAfterAccept = () => {
+    window.location.reload();
+  };
+
+  gDialogs.exportConfirmMsgBox = new aeDialog("#export-confirm-msgbox");
+  gDialogs.exportConfirmMsgBox.setMessage = (aMessage) => {
+    $("#export-confirm-msgbox > .msgbox-content").text(aMessage);
+  };
+  
   gDialogs.removeAllSrcURLs = new aeDialog("#remove-all-source-urls-dlg");
   $("#remove-all-source-urls-dlg > .dlg-btns > .dlg-btn-yes").click(aEvent => {
     gDialogs.removeAllSrcURLs.close();
     gClippingsDB.clippings.toCollection().modify({ sourceURL: "" }).then(aNumUpd => {
-      // TO DO: Put this in a notification box.
-      window.alert("The source web page addresses of your clippings have been removed.");
+      gDialogs.removeAllSrcURLsConfirm.openPopup();
     });
   });
+
+  gDialogs.removeAllSrcURLsConfirm = new aeDialog("#all-src-urls-removed-confirm-popup");
+  gDialogs.removeAllSrcURLsConfirm.onAfterAccept = () => {
+    // Reselect the selected tree node to force a call to updateDisplay().
+    getClippingsTree().reactivate(true);
+  };
 
   gDialogs.moveTo = new aeDialog("#move-dlg");
   gDialogs.moveTo.fldrTree = null;
@@ -1529,6 +2085,18 @@ function buildClippingsTree()
           updateDisplay(aEvent, aData);
         },
 
+        dblclick: function (aEvent, aData) {
+          log("Clippings/wx::clippingsMgr.js: Double-click event fired on clippings tree");
+          updateDisplay(aEvent, aData);
+
+          if (aData.targetType == "title" || aData.targetType == "icon") {
+            if (! aData.node.isFolder()) {
+              let clippingID = parseInt(aData.node.key);
+              gCmd.pasteClipping(clippingID);
+            }
+          }
+        },
+
         dnd5: {
           preventRecursiveMoves: true,
           preventVoidMoves: true,
@@ -1564,7 +2132,7 @@ function buildClippingsTree()
               gClippingsTreeDnD = true;
               
               let id = parseInt(aData.otherNode.key);
-              log(`Clippings/wx: clippingsMgr.js::#clippings-tree.dnd5.dragDrop(): ID of moved clipping or folder: ${id}\nID of new parent folder: ${newParentID}`);
+              log(`Clippings/wx::clippingsMgr.js::#clippings-tree.dnd5.dragDrop(): ID of moved clipping or folder: ${id}\nID of new parent folder: ${newParentID}`);
 
               if (aData.otherNode.isFolder()) {
                 gCmd.moveFolderIntrl(id, newParentID, gCmd.UNDO_STACK);
@@ -1593,6 +2161,74 @@ function buildClippingsTree()
       });
 
       setStatusBarMsg(gIsClippingsTreeEmpty ? "0 items" : null);
+
+      // Context menu for the clippings tree.
+      $.contextMenu({
+        selector: "#clippings-tree > ul.ui-fancytree > li",
+
+        events: {
+          show: function (aOpts) {
+            return (! gIsClippingsTreeEmpty);
+          }
+        },
+        
+        callback: function (aItemKey, aOpt, aRootMenu, aOriginalEvent) {
+          switch (aItemKey) {
+          case "moveOrCopy":
+            gCmd.moveClippingOrFolder();
+            break;
+            
+          case "deleteItem":
+            gCmd.deleteClippingOrFolder(gCmd.UNDO_STACK);
+            break;
+            
+          case "gotoSrcURL":
+            let tree = getClippingsTree();
+            let selectedNode = tree.activeNode;
+            if (!selectedNode || selectedNode.isFolder()) {
+              return;
+            }
+
+            let clippingID = parseInt(selectedNode.key);
+            gClippingsDB.clippings.get(clippingID).then(aClipping => {
+              let srcURL = aClipping.sourceURL;
+              if (srcURL == "") {
+                gDialogs.clippingMissingSrcURL.showModal();
+                return;
+              }
+              gCmd.gotoURL(srcURL);
+            });
+            break;
+          default:
+            window.alert("The selected action is not available right now.");
+            break;
+          }
+        },
+        
+        items: {
+          moveOrCopy: {
+            name: "Move or Copy...",
+            className: "ae-menuitem"
+          },
+          gotoSrcURL: {
+            name: "Go to Source Web Page",
+            className: "ae-menuitem",
+            visible: function (aItemKey, aOpt) {
+              let tree = getClippingsTree();
+              let selectedNode = tree.activeNode;
+              if (!selectedNode || selectedNode.isFolder()) {
+                return false;
+              }
+              return true;
+            }
+          },
+          separator0: "--------",
+          deleteItem: {
+            name: "Delete",
+            className: "ae-menuitem"
+          }
+        }
+      });
     });
   }).catch(aErr => {
     console.error("Clippings/wx::buildContextMenu(): %s", aErr.message);
@@ -1635,6 +2271,51 @@ function buildClippingsTreeHelper(aParentFolderID, aFolderData)
   });
 
   return rv;
+}
+
+
+function initTreeSplitter()
+{
+  // Adapted from https://codepen.io/lingtalfi/pen/zoNeJp
+  // Requires Simple Drag library: https://github.com/lingtalfi/simpledrag
+  var leftPane = document.getElementById("clippings-tree");
+  var rightPane = document.getElementById("item-properties");
+  var paneSep = document.getElementById("tree-splitter");
+
+  // The script below constrains the target to move horizontally between a left and a right
+  // virtual boundaries.
+  // - the left limit is positioned at 10% of the screen width
+  // - the right limit is positioned at 60% of the screen width
+  var leftLimit = 10;
+  var rightLimit = 60;
+
+  paneSep.sdrag(function (el, pageX, startX, pageY, startY, fix) {
+
+    fix.skipX = true;
+
+    if (pageX < window.innerWidth * leftLimit / 100) {
+      pageX = window.innerWidth * leftLimit / 100;
+      fix.pageX = pageX;
+    }
+    if (pageX > window.innerWidth * rightLimit / 100) {
+      pageX = window.innerWidth * rightLimit / 100;
+      fix.pageX = pageX;
+    }
+
+    var cur = pageX / window.innerWidth * 100;
+    if (cur < 0) {
+      cur = 0;
+    }
+    if (cur > window.innerWidth) {
+      cur = window.innerWidth;
+    }
+
+
+    var right = (100-cur-2);
+    leftPane.style.width = cur + '%';
+    rightPane.style.width = right + '%';
+
+  }, null, 'horizontal');
 }
 
 
@@ -1705,12 +2386,6 @@ function initShortcutKeyMenu()
 }
 
 
-function initLabelPicker()
-{
-  $("#tmp-clipping-label").hide();
-}
-
-
 function isFolderSelected()
 {
   let selectedNode = getClippingsTree().activeNode;
@@ -1730,12 +2405,14 @@ function updateDisplay(aEvent, aData)
     return;
   }
 
-  log("Clippings/wx: clippingsMgr.js: Updating display...");
+  log("Clippings/wx::clippingsMgr.js: Updating display...");
 
   if (gSearchBox.isActivated()) {
     gSearchBox.updateSearch();
     let numMatches = gSearchBox.getCountMatches();
-    setStatusBarMsg(`${numMatches} matches`);
+    if (numMatches !== undefined) {
+      setStatusBarMsg(`${numMatches} matches`);
+    }
   }
   else {
     setStatusBarMsg();
@@ -1756,9 +2433,13 @@ function updateDisplay(aEvent, aData)
       $("#clipping-src-url").text("");
       let shortcutKeyMenu = $("#clipping-key")[0];
       shortcutKeyMenu.selectedIndex = 0;
+
+      $("#item-properties").addClass("folder-only");
     });
   }
   else {
+    $("#item-properties").removeClass("folder-only");
+    
     gClippingsDB.clippings.get(selectedItemID).then(aResult => {
       $("#clipping-name").val(aResult.name);
       $("#clipping-text").val(aResult.content).show();
@@ -1771,15 +2452,11 @@ function updateDisplay(aEvent, aData)
         $("#clipping-src-url").html(`<a href="${aResult.sourceURL}">${aResult.sourceURL}</a>`);
         $("#clipping-src-url > a").click(aEvent => {
           aEvent.preventDefault();
-          chrome.windows.create({
-            url: aEvent.target.textContent,
-            type: "normal",
-            state: "normal"
-          });
+          gCmd.gotoURL(aEvent.target.textContent);
         });
       }
       else {
-        $("#clipping-src-url").text("(None)");
+        $("#clipping-src-url").text(chrome.i18n.getMessage("none"));
       }
       
       let shortcutKeyMenu = $("#clipping-key")[0];
@@ -1792,19 +2469,7 @@ function updateDisplay(aEvent, aData)
         }
       }
 
-      if (aResult.label) {
-        let color = "white";
-        if (aResult.label.toLowerCase() == "yellow") {
-          color = "black";
-        }
-        $("#tmp-label").css({ color, backgroundColor: aResult.label });
-        $("#tmp-label").text(aResult.label.toLowerCase());
-        $("#tmp-clipping-label").show();
-      }
-      else {
-        $("#tmp-label").text("");
-        $("#tmp-clipping-label").hide();
-      }
+      gClippingLabelPicker.selectedLabel = aResult.label;
     });
   }
 }

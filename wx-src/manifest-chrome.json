@@ -1,9 +1,9 @@
 {
     "manifest_version": 2,
-    "name": "Clippings",
-    "description": "Save frequently-entered text for pasting later.",
-    "version": "6.0.1.1",
-    "version_name": "6.0.1.1",
+    "name": "__MSG_extName__",
+    "description": "__MSG_extDesc__",
+    "version": "6.0.2",
+    "version_name": "6.0.2",
     "homepage_url": "http://aecreations.sourceforge.net/clippings/index.php",
     "author": "AE Creations",
   
@@ -46,7 +46,7 @@
             "32": "img/icon.svg"
 	},
 
-	"default_title": "Clippings"
+	"default_title": "__MSG_browserActionTitle__"
     },
 
     "commands" : {
@@ -55,7 +55,9 @@
 		"default": "Alt+Shift+Y",
 		"mac": "Command+Shift+Y"
 	    },
-	    "description": "Paste a clipping using its shortcut key"
+	    "description": "__MSG_cmdDesc__"
 	}
-    }
+    },
+
+    "default_locale": "en"
 }

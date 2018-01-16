@@ -5,7 +5,7 @@
 
 
 let aeImportExport = {
-  DEBUG: true,
+  DEBUG: false,
 
   CLIPPINGS_JSON_VER: "6.0",
   ROOT_FOLDER_ID: 0,
@@ -171,12 +171,9 @@ aeImportExport.exportToJSON = async function (aIncludeSrcURLs, aDontStringify)
     this._log("JSON export data: ");
     this._log(expData);
 
-    if (aDontStringify) {
-      return expData;
-    }
-    return JSON.stringify(expData);
+    throw e;
   }
-  
+
   return rv;
 };
 
@@ -245,7 +242,15 @@ aeImportExport.exportToHTML = async function ()
   }
   
   let rv = "";
-  let expData = await this.exportToJSON(false, true);
+
+  let expData;
+  try {
+    expData = await this.exportToJSON(false, true);
+  }
+  catch (e) {
+    console.error("aeImportExport.exportToHTML(): " + e);
+    throw e;
+  }
   
   let htmlSrc = `<!DOCTYPE html>
 <html><head><meta charset="utf-8"><title>${this.HTML_EXPORT_PAGE_TITLE}</title></head><body><h1>${this.HTML_EXPORT_PAGE_TITLE}</h1>`;

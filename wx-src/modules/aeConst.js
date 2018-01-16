@@ -30,4 +30,5 @@ let aeConst = {
   // Export to file
   CLIPPINGS_EXPORT_FILENAME: "clippings.json",
   HTML_EXPORT_FILENAME: "clippings.html",
+  CLIPPINGS_BACKUP_FILENAME: "clippings-backup.json",
 };

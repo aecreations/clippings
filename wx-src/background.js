@@ -11,6 +11,7 @@ const PASTE_ACTION_SEARCH_CLIPPING = 2;
 
 let gClippingsDB = null;
 let gOS = null;
+let gAutoIncrPlchldrs = null;
 
 let gClippingsListeners = {
   ORIGIN_CLIPPINGS_MGR: 1,
@@ -45,12 +46,7 @@ let gClippingsListener = {
   },
 
   clippingChanged: function (aID, aData, aOldData) {
-    if (aData.parentFolderID == aOldData.parentFolderID) {
-      updateContextMenuForClipping(aID);
-    }
-    else {
-      rebuildContextMenu();
-    }
+    rebuildContextMenu();
   },
 
   folderChanged: function (aID, aData, aOldData) {
@@ -105,9 +101,44 @@ let gNewClipping = {
   }
 };
 
+let gPlaceholders = {
+  _plchldrs: null,
+  _clpCtnt: null,
+  _plchldrsWithDefVals: null,
+
+  set: function (aPlaceholders, aPlaceholdersWithDefaultVals, aClippingText) {
+    this._plchldrs = aPlaceholders;
+    this._plchldrsWithDefVals = aPlaceholdersWithDefaultVals;
+    this._clpCtnt = aClippingText;
+  },
+
+  get: function () {
+    let rv = this.copy();
+    this.reset();
+
+    return rv;
+  },
+
+  copy: function () {
+    let rv = {
+      placeholders: this._plchldrs.slice(),
+      placeholdersWithDefaultVals: Object.assign({}, this._plchldrsWithDefVals),
+      content: this._clpCtnt
+    };
+    return rv;
+  },
+
+  reset: function () {
+    this._plchldrs = null;
+    this._plchldrsWithDefVals = null;
+    this._clpCtnt = null;
+  }
+};
+
 let gWndIDs = {
   newClipping: null,
   keyboardPaste: null,
+  placeholderPrmt: null,
   clippingsMgr: null
 };
 
@@ -148,6 +179,7 @@ async function setDefaultPrefs()
     pastePromptAction: aeConst.PASTEACTION_SHORTCUT_KEY,
     clippingsMgrDetailsPane: false,
     clippingsMgrStatusBar: false,
+    clippingsMgrMinzWhenInactv: undefined,
   };
 
   gPrefs = aeClippingsPrefs;
@@ -195,6 +227,10 @@ function initHelper()
   chrome.runtime.getPlatformInfo(aInfo => {
     log("Clippings/wx: OS: " + aInfo.os);
     gOS = aInfo.os;
+
+    if (gPrefs.clippingsMgrMinzWhenInactv === undefined) {
+      gPrefs.clippingsMgrMinzWhenInactv = (gOS == "linux");
+    }
   });
 
   chrome.browserAction.onClicked.addListener(aTab => {
@@ -208,12 +244,17 @@ function initHelper()
   initMessageListeners();
 
   aeClippingSubst.init(navigator.userAgent, gPrefs.autoIncrPlcHldrStartVal);
+  gAutoIncrPlchldrs = new Set();
 
   browser.storage.onChanged.addListener((aChanges, aAreaName) => {
     let changedPrefs = Object.keys(aChanges);
 
     for (let pref of changedPrefs) {
       gPrefs[pref] = aChanges[pref].newValue;
+
+      if (pref == "autoIncrPlcHldrStartVal") {
+        aeClippingSubst.setAutoIncrementStartValue(aChanges[pref].newValue);
+      }
     }
   });
   
@@ -304,6 +345,23 @@ function initClippingsDB()
   });
 
   gClippingsDB.open().catch(aErr => { onError(aErr) });
+
+  isStoragePersisted().then(async aIsPersisted => {
+    if (aIsPersisted) {
+      info("Clippings/wx: Storage is successfully persisted.");
+    }
+    else {
+      warn("Clippings/wx: Storage is NOT persisted. This may happen if Clippings is installed as a temporary add-on.");
+    }
+  });
+}
+
+
+
+async function isStoragePersisted()
+{
+  return await navigator.storage && navigator.storage.persisted &&
+    navigator.storage.persisted();
 }
 
 
@@ -323,6 +381,12 @@ function initMessageListeners()
           aSendResponse(resp);
         }
       }
+      else if (aRequest.msgID == "init-placeholder-prmt-dlg") {
+        resp = {
+          // TO DO: Populate response object; replicate Firefox code below.
+        };
+        aSendResponse(resp);
+      }
       else if (aRequest.msgID == "close-new-clipping-dlg") {
         gWndIDs.newClipping = null;
       }
@@ -337,6 +401,9 @@ function initMessageListeners()
       }
       else if (aRequest.msgID == "paste-clipping-by-name") {
         // TO DO: Ditto.
+      }
+      else if (aRequest.msgID == "close-placeholder-prmt-dlg") {
+        // TO DO: Ditto as well.
       }
     });
   }                                  
@@ -355,6 +422,10 @@ function initMessageListeners()
           resp.checkSpelling = gPrefs.checkSpelling;
           return Promise.resolve(resp);
         }
+      }
+      else if (aRequest.msgID == "init-placeholder-prmt-dlg") {
+        resp = gPlaceholders.get();
+        return Promise.resolve(resp);
       }
       else if (aRequest.msgID == "close-new-clipping-dlg") {
         gWndIDs.newClipping = null;
@@ -377,6 +448,24 @@ function initMessageListeners()
       else if (aRequest.msgID == "paste-clipping-by-name") {
         pasteClippingByID(aRequest.clippingID);
       }
+      else if (aRequest.msgID == "paste-clipping-with-plchldrs") {
+        let content = aRequest.processedContent;
+
+        chrome.tabs.query({ active: true, currentWindow: true }, aTabs => {
+          if (! aTabs[0]) {
+            // This should never happen...
+            alertEx(aeMsgBox.MSG_NO_ACTIVE_BROWSER_TAB);
+            return;
+          }
+
+          let activeTabID = aTabs[0].id;
+          pasteProcessedClipping(content, activeTabID);
+          
+        });
+      }
+      else if (aRequest.msgID == "close-placeholder-prmt-dlg") {
+        gWndIDs.placeholderPrmt = null;
+      }
     });
   }
 }
@@ -384,16 +473,26 @@ function initMessageListeners()
 
 function buildContextMenu()
 {
+  // Context menu for browser action button.
+  chrome.contextMenus.create({
+    id: "ae-clippings-reset-autoincr-plchldrs",
+    title: chrome.i18n.getMessage("baMenuResetAutoIncrPlaceholders"),
+    enabled: false,
+    contexts: ["browser_action"],
+    documentUrlPatterns: ["<all_urls>"]
+  });
+
+  // Context menu for web page textbox or HTML editor.
   chrome.contextMenus.create({
     id: "ae-clippings-new",
-    title: "New...",
+    title: chrome.i18n.getMessage("cxtMenuNew"),
     contexts: ["editable", "selection"],
     documentUrlPatterns: ["<all_urls>"]
   });
 
   chrome.contextMenus.create({
     id: "ae-clippings-manager",
-    title: "Organize Clippings",
+    title: chrome.i18n.getMessage("cxtMenuOpenClippingsMgr"),
     contexts: ["editable", "selection"],
     documentUrlPatterns: ["<all_urls>"]
   });
@@ -470,9 +569,23 @@ function buildContextSubmenu(aParentFolderID, aFolderData)
 function updateContextMenuForClipping(aUpdatedClippingID)
 {
   let id = Number(aUpdatedClippingID);
-  let getClipping = gClippingsDB.clippings.get(id);
-  getClipping.then(aResult => {
-    chrome.contextMenus.update("ae-clippings-clipping-" + aUpdatedClippingID, { title: aResult.name });
+  gClippingsDB.clippings.get(id).then(aResult => {
+    let updatePpty = {
+      title: aResult.name,
+      icons: {
+        16: "img/" + (aResult.label ? `clipping-${aResult.label}.svg` : "clipping.svg")
+      }
+    };
+    
+    try {
+      // This will fail due to the 'icons' property not supported on the
+      // 'updateProperties' parameter to contextMenus.update().
+      // See https://bugzilla.mozilla.org/show_bug.cgi?id=1414566
+      chrome.contextMenus.update(`ae-clippings-clipping-${aUpdatedClippingID}`, updatePpty);
+    }
+    catch (e) {
+      console.error("Clippings/wx: updateContextMenuForClipping(): " + e);
+    }
   });
 }
 
@@ -502,6 +615,48 @@ function removeContextMenuForFolder(aRemovedFolderID)
 function rebuildContextMenu()
 {
   chrome.contextMenus.removeAll(() => { buildContextMenu() });
+}
+
+
+function buildAutoIncrementPlchldrResetMenu(aAutoIncrPlchldrs)
+{
+  let enabledResetMenu = false;
+  
+  aAutoIncrPlchldrs.forEach(function (aItem, aIndex, aArray) {
+    if (! gAutoIncrPlchldrs.has(aItem)) {
+      gAutoIncrPlchldrs.add(aItem);
+
+      let menuItem = {
+        id: `ae-clippings-reset-autoincr-${aItem}`,
+        title: `#[${aItem}]`,
+        parentId: "ae-clippings-reset-autoincr-plchldrs",
+        contexts: ["browser_action"],
+        documentUrlPatterns: ["<all_urls>"]
+      };
+      
+      chrome.contextMenus.create(menuItem, () => {
+        if (! enabledResetMenu) {
+          chrome.contextMenus.update("ae-clippings-reset-autoincr-plchldrs", {
+            enabled: true
+          }, () => { enabledResetMenu = true });
+        }
+      });
+    }
+  });
+}
+
+
+function resetAutoIncrPlaceholder(aPlaceholder)
+{
+  log(`Clippings/wx: resetAutoIncrPlaceholder(): Resetting placeholder: #[${aPlaceholder}]`);
+
+  aeClippingSubst.resetAutoIncrementVar(aPlaceholder);
+  gAutoIncrPlchldrs.delete(aPlaceholder);
+  chrome.contextMenus.remove(`ae-clippings-reset-autoincr-${aPlaceholder}`, () => {
+    if (gAutoIncrPlchldrs.size == 0) {
+      chrome.contextMenus.update("ae-clippings-reset-autoincr-plchldrs", { enabled: false });
+    }
+  });
 }
 
 
@@ -541,53 +696,57 @@ function openClippingsManager()
 {
   let clippingsMgrURL = chrome.runtime.getURL("pages/clippingsMgr.html");
 
-  function openClippingsMgrHelper()
-  {
-    browser.windows.create({
-      url: clippingsMgrURL,
-      type: "popup",
-      width: 750, height: 400,
-      left: 64, top: 128
-    }).then(aWnd => {
-      gWndIDs.clippingsMgr = aWnd.id;
-      browser.history.deleteUrl({ url: clippingsMgrURL });
-    });
-  }
-  
-  let openInNewTab = gPrefs.openClippingsMgrInTab;
+  chrome.windows.getCurrent(aBrwsWnd => {
+    clippingsMgrURL += "?openerWndID=" + aBrwsWnd.id;
+    
+    function openClippingsMgrHelper()
+    {
+      browser.windows.create({
+        url: clippingsMgrURL,
+        type: "popup",
+        width: 750, height: 400,
+        left: 64, top: 128
+      }).then(aWnd => {
+        gWndIDs.clippingsMgr = aWnd.id;
+        browser.history.deleteUrl({ url: clippingsMgrURL });
+      });
+    }
+    
+    let openInNewTab = gPrefs.openClippingsMgrInTab;
 
-  if (isGoogleChrome() || openInNewTab) {
-    try {
-      chrome.tabs.create({ url: clippingsMgrURL }, () => {
-        chrome.history.deleteUrl({ url: clippingsMgrURL });
-      });
-    }
-    catch (e) {
-      onError(e);
-    }
-  }
-  else {
-    if (gWndIDs.clippingsMgr) {
-      browser.windows.get(gWndIDs.clippingsMgr).then(aWnd => {
-        browser.windows.update(gWndIDs.clippingsMgr, { focused: true });
-      }, aErr => {
-        // Handle dangling ref to previously-closed Clippings Manager window
-        // because it was closed before it finished initializing.
-        gWndIDs.clippingsMgr = null;
-        openClippingsMgrHelper();
-      });
+    if (isGoogleChrome() || openInNewTab) {
+      try {
+        chrome.tabs.create({ url: clippingsMgrURL }, () => {
+          chrome.history.deleteUrl({ url: clippingsMgrURL });
+        });
+      }
+      catch (e) {
+        onError(e);
+      }
     }
     else {
-      openClippingsMgrHelper();
+      if (gWndIDs.clippingsMgr) {
+        browser.windows.get(gWndIDs.clippingsMgr).then(aWnd => {
+          browser.windows.update(gWndIDs.clippingsMgr, { focused: true });
+        }, aErr => {
+          // Handle dangling ref to previously-closed Clippings Manager window
+          // because it was closed before it finished initializing.
+          gWndIDs.clippingsMgr = null;
+          openClippingsMgrHelper();
+        });
+      }
+      else {
+        openClippingsMgrHelper();
+      }
     }
-  }      
+  });
 }
 
 
 function openNewClippingDlg()
 {
   let url = chrome.runtime.getURL("pages/new.html");
-  openDlgWnd(url, "newClipping", { type: "detached_panel", width: 428, height: 420 });
+  openDlgWnd(url, "newClipping", { type: "detached_panel", width: 428, height: 418 });
 }
 
 
@@ -598,6 +757,15 @@ function openKeyboardPasteDlg()
 
   let url = browser.runtime.getURL("pages/keyboardPaste.html");
   openDlgWnd(url, "keyboardPaste", { type: "detached_panel", width: 500, height: 164 });
+}
+
+
+function openPlaceholderPromptDlg()
+{
+  // TO DO: Same checking for cursor location as in the preceding function.
+
+  let url = browser.runtime.getURL("pages/placeholderPrompt.html");
+  openDlgWnd(url, "placeholderPrmt", { type: "detached_panel", width: 500, height: 180 });
 }
 
 
@@ -733,18 +901,55 @@ function pasteClipping(aClippingInfo)
     }
 
     let activeTabID = aTabs[0].id;
-    let content = aeClippingSubst.processClippingText(aClippingInfo);
-    let msgParams = {
-      msgID: "paste-clipping",
-      content,
-      htmlPaste: gPrefs.htmlPaste,
-      autoLineBreak: gPrefs.autoLineBreak
-    };
+    let processedCtnt = "";
 
-    log("Clippings/wx: Extension sending message \"paste-clipping\" to content script");
-          
-    chrome.tabs.sendMessage(activeTabID, msgParams, null);
+    if (aeClippingSubst.hasNoSubstFlag(aClippingInfo.name)) {
+      processedCtnt = aClippingInfo.text;
+    }
+    else {
+      processedCtnt = aeClippingSubst.processStdPlaceholders(aClippingInfo);
+
+      let autoIncrPlchldrs = aeClippingSubst.getAutoIncrPlaceholders(processedCtnt);
+      if (autoIncrPlchldrs.length > 0) {
+        // TO DO:
+        // Populate the auto-incrementing placeholder reset menu on the context
+        // menu for the Clippings toolbar button.
+        console.log("Clippings/wx: Auto-incrementing placeholder names:");
+        console.log(autoIncrPlchldrs);
+
+        buildAutoIncrementPlchldrResetMenu(autoIncrPlchldrs);
+        processedCtnt = aeClippingSubst.processAutoIncrPlaceholders(processedCtnt);
+      }
+
+      let plchldrs = aeClippingSubst.getCustomPlaceholders(processedCtnt);
+      if (plchldrs.length > 0) {
+        let plchldrsWithDefaultVals = aeClippingSubst.getCustomPlaceholderDefaultVals(processedCtnt, aClippingInfo);
+        console.log("Placeholders with default values:");
+        console.log(plchldrsWithDefaultVals);
+        
+        gPlaceholders.set(plchldrs, plchldrsWithDefaultVals, processedCtnt);
+        openPlaceholderPromptDlg();
+        return;
+      }
+    }
+    
+    pasteProcessedClipping(processedCtnt, activeTabID);
   });
+}
+
+
+function pasteProcessedClipping(aClippingContent, aActiveTabID)
+{
+  let msgParams = {
+    msgID: "paste-clipping",
+    content: aClippingContent,
+    htmlPaste: gPrefs.htmlPaste,
+    autoLineBreak: gPrefs.autoLineBreak
+  };
+
+  log("Clippings/wx: Extension sending message \"paste-clipping\" to content script");
+  
+  chrome.tabs.sendMessage(aActiveTabID, msgParams, null);
 }
 
 
@@ -795,7 +1000,7 @@ function isGoogleChrome()
 
 function alertEx(aMessageID)
 {
-  let message = aeMsgBox.msg[aMessageID];
+  let message = chrome.i18n.getMessage(aMessageID);
   
   if (isGoogleChrome()) {
     window.alert(message);
@@ -899,6 +1104,10 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
     if (aInfo.menuItemId.startsWith("ae-clippings-clipping-")) {
       let id = Number(aInfo.menuItemId.substr(22));
       pasteClippingByID(id);
+    }
+    else if (aInfo.menuItemId.startsWith("ae-clippings-reset-autoincr-")) {
+      let plchldr = aInfo.menuItemId.substr(28);
+      resetAutoIncrPlaceholder(plchldr);
     }
     break;
   }
