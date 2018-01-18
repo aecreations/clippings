@@ -17,6 +17,7 @@ let gDialogs = {};
 let gOpenerWndID;
 let gIsMaximized;
 let gSuppressAutoMinzWnd;
+let gWndResizeTimerID;
 
 // Clippings listener object
 let gClippingsListener = {
@@ -1431,6 +1432,25 @@ $(window).on("blur", aEvent => {
       chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, updInfo);
     }
   }
+});
+
+
+$(window).on("resize", aEvent => {
+  // On Linux, prevent auto-minimizing of window while user is resizing it.
+  if (gOS != "linux") {
+    return;
+  }
+
+  if (! gClippings.getPrefs().clippingsMgrMinzWhenInactv) {
+    return;
+  }
+  
+  if (! gSuppressAutoMinzWnd) {
+    gSuppressAutoMinzWnd = true;
+  }
+  
+  window.clearTimeout(gWndResizeTimerID);
+  gWndResizeTimerID = window.setTimeout(() => { gSuppressAutoMinzWnd = false }, 500);
 });
 
 
