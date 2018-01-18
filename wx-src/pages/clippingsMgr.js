@@ -1613,7 +1613,7 @@ function initToolbar()
         name: "Maximize",
         className: "ae-menuitem",
         visible: function (aKey, aOpt) {
-          return (gOS != "mac" || DEBUG_WND_ACTIONS);
+          return (gOS == "win" || DEBUG_WND_ACTIONS);
         },
         icon: function (aKey, aOpt) {
           if (gIsMaximized) {
