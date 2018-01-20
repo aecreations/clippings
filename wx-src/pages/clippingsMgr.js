@@ -1118,12 +1118,12 @@ let gCmd = {
         else {
           console.error(aErr);
           setStatusBarMsg("Backup failed.");
-          window.alert("Sorry, an error occurred while creating the backup file.\n\nDetails:\n" + aErr);
+          window.alert("Sorry, an error occurred while creating the backup file.\n\nDetails:\n" + getErrStr(aErr));
         }
         gSuppressAutoMinzWnd = false;
       });
     }).catch(aErr => {
-      window.alert("Sorry, an error occurred during the backup.\n\nDetails:\n" + aErr);
+      window.alert("Sorry, an error occurred during the backup.\n\nDetails:\n" + getErrStr(aErr));
       setStatusBarMsg("Backup failed.");
     });
   },
@@ -1848,21 +1848,6 @@ function initDialogs()
   };
 
   gDialogs.exportToFile.onAfterAccept = () => {
-    function getErrStr(aErr)
-    {
-      let rv = `${aErr.name}: ${aErr.message}`;
-
-      if (aErr.fileName) {
-        rv += "\nSource: " + aErr.fileName;
-      }
-
-      if (aErr.lineNumber) {
-        rv += ":" + aErr.lineNumber;
-      }
-
-      return rv;
-    }
-    
     function saveToFile(aBlobData, aFilename)
     {
       browser.downloads.download({
@@ -2570,13 +2555,28 @@ function showInitError()
 }
 
 
+function getErrStr(aErr)
+{
+  let rv = `${aErr.name}: ${aErr.message}`;
+
+  if (aErr.fileName) {
+    rv += "\nSource: " + aErr.fileName;
+  }
+  else {
+    rv += "\nSource: unknown";
+  }
+
+  if (aErr.lineNumber) {
+    rv += ":" + aErr.lineNumber;
+  }
+
+  return rv;
+}
+
+
 function onError(aError)
 {
-  showBanner(aError.message);
-
-  if (aeConst.DEBUG) {
-    console.error(aError.message);
-  }
+  console.error(aError);
 }
 
 
