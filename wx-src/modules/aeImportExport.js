@@ -5,7 +5,7 @@
 
 
 let aeImportExport = {
-  DEBUG: false,
+  DEBUG: true,
 
   CLIPPINGS_JSON_VER: "6.0",
   ROOT_FOLDER_ID: 0,
@@ -129,86 +129,66 @@ aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems
 };
 
 
-aeImportExport.exportToJSON = async function (aIncludeSrcURLs, aDontStringify)
+aeImportExport.exportToJSON = function (aIncludeSrcURLs, aDontStringify)
 {
-  let rv = "";
   let expData = {
     version: this.CLIPPINGS_JSON_VER,
     createdBy: "Clippings/wx",
     userClippingsRoot: []
   };
 
-  try {
-    rv = await this._db.transaction("r", this._db.clippings, this._db.folders, async () => {
-      await this._db.folders.where("parentFolderID").equals(this.ROOT_FOLDER_ID).each((aItem, aCursor) => {
+  return new Promise((aFnResolve, aFnReject) => {
+    this._exportToJSONHelper(this.ROOT_FOLDER_ID, aIncludeSrcURLs).then(aExpItems => {
+      expData.userClippingsRoot = aExpItems;
+
+      if (aDontStringify) {
+        aFnResolve(expData);
+      }
+      aFnResolve(JSON.stringify(expData));
+
+    }).catch(aErr => {
+      console.error("aeImportExport.exportToJSON(): " + aErr);
+      aFnReject(aErr);
+    });
+  });
+}
+
+
+aeImportExport._exportToJSONHelper = function (aFolderID, aIncludeSrcURLs)
+{
+  let rv = [];
+  
+  return new Promise((aFnResolve, aFnReject) => {
+    this._db.transaction("r", this._db.clippings, this._db.folders, () => {
+      this._db.folders.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
         let folder = {
           name: aItem.name,
           children: []
         };
 
-        folder.children = this._exportToJSONHelper(aItem, aIncludeSrcURLs)
-        expData.userClippingsRoot.push(folder);
-      });
-
-      await this._db.clippings.where("parentFolderID").equals(this.ROOT_FOLDER_ID).each((aItem, aCursor) => {
-        expData.userClippingsRoot.push({
-          name: aItem.name,
-          content: aItem.content,
-          shortcutKey: aItem.shortcutKey,
-          sourceURL: (aIncludeSrcURLs ? aItem.sourceURL : ""),
-          label: aItem.label
+        this._exportToJSONHelper(aItem.id, aIncludeSrcURLs).then(aChildItems => {
+          folder.children = aChildItems;
+          rv.push(folder);
         });
-      });
-
-      if (aDontStringify) {
-        return expData;
-      }
-      return JSON.stringify(expData);
-    });
-  }
-  catch (e) {
-    console.error("aeImportExport.exportToJSON(): " + e);
-    this._log("JSON export data: ");
-    this._log(expData);
-
-    throw e;
-  }
-
-  return rv;
-};
-
-
-aeImportExport._exportToJSONHelper = function (aFolder, aIncludeSrcURLs)
-{
-  let rv = [];
-  let fldrID = aFolder.id;
-  
-  this._db.transaction("r", this._db.clippings, this._db.folders, () => {
-    this._db.folders.where("parentFolderID").equals(fldrID).each((aItem, aCursor) => {
-      let folder = {
-        name: aItem.name,
-        children: []
-      };
-
-      folder.children = this._exportToJSONHelper(aItem, aIncludeSrcURLs);
-      rv.push(folder);
-    }).then(() => {
-      return this._db.clippings.where("parentFolderID").equals(fldrID).each((aItem, aCursor) => {
-        rv.push({
-          name: aItem.name,
-          content: aItem.content,
-          shortcutKey: aItem.shortcutKey,
-          sourceURL: (aIncludeSrcURLs ? aItem.sourceURL : ""),
-          label: aItem.label
+      }).then(() => {
+        return this._db.clippings.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
+          let clipping = {
+            name: aItem.name,
+            content: aItem.content,
+            shortcutKey: aItem.shortcutKey,
+            sourceURL: (aIncludeSrcURLs ? aItem.sourceURL : ""),
+            label: aItem.label,
+          };
+          rv.push(clipping);
         });
+      }).then(() => {
+        aFnResolve(rv);
       });
+    }).catch(aErr => {
+      console.error("aeImportExport._exportToJSONHelper(): " + aErr);
+      aFnReject(aErr);
     });
-  }).catch(aErr => {
-    console.error("aeImportExport._exportToJSONHelper(): " + aErr);
-    throw aErr;
   });
-
-  return rv;
 };
 
 
