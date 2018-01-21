@@ -1673,8 +1673,10 @@ function initDialogs()
 {
   // Also initialize the intro banner and help dialog.
   const isMacOS = gClippings.getOS() == "mac";
+  const isLinux = gClippings.getOS() == "linux";
   let shctKeyTbls = $(".shortcut-key-tbl");
   let shctKeys = [];
+  
   if (isMacOS) {
     shctKeys = ["\u2326", "esc", "\u2318F", "\u2318W", "\u2318Z", "F1", "\u2318F10"];
   }
@@ -1688,8 +1690,11 @@ function initDialogs()
   $(`<tr><td>${shctKeys[3]}</td><td>Close Clippings Manager</td></tr>`).appendTo(shctKeyTbls);
   $(`<tr><td>${shctKeys[4]}</td><td>Undo</td></tr>`).appendTo(shctKeyTbls);
   $(`<tr><td>${shctKeys[5]}</td><td>Show Clippings Manager intro</td></tr>`).appendTo(shctKeyTbls);
-  $(`<tr><td>${shctKeys[6]}</td><td>Maximize window</td></tr>`).appendTo(shctKeyTbls);
-  
+
+  if (! isLinux) {
+    $(`<tr><td>${shctKeys[6]}</td><td>Maximize window</td></tr>`).appendTo(shctKeyTbls);
+  }
+
   aeImportExport.setDatabase(gClippingsDB);
 
   gDialogs.shctKeyConflict = new aeDialog("#shortcut-key-conflict-msgbox");
