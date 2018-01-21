@@ -2030,6 +2030,10 @@ function initDialogs()
   };
 
   gDialogs.miniHelp = new aeDialog("#mini-help-dlg");
+  if (! isMacOS) {
+    $("#mini-help-dlg").css({ height: "310px"})
+  }
+  
   gDialogs.genericMsgBox = new aeDialog("#generic-msg-box");
 }
 
