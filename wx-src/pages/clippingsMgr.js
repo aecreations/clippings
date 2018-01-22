@@ -5,6 +5,7 @@
 
 
 const DEBUG_TREE = false;
+const DEBUG_WND_ACTIONS = false;
 
 let gOS;
 let gClippingsDB;
@@ -15,6 +16,7 @@ let gClippingsTreeDnD = false;
 let gDialogs = {};
 let gOpenerWndID;
 let gIsMaximized;
+let gSuppressAutoMinzWnd;
 
 // Clippings listener object
 let gClippingsListener = {
@@ -1100,12 +1102,15 @@ let gCmd = {
     aeImportExport.exportToJSON(INCLUDE_SRC_URLS).then(aJSONData => {
       blobData = new Blob([aJSONData], { type: "application/json;charset=utf-8"});
 
+      gSuppressAutoMinzWnd = true;
+      
       browser.downloads.download({
         url: URL.createObjectURL(blobData),
         filename: aeConst.CLIPPINGS_BACKUP_FILENAME,
         saveAs: true
       }).then(aDownldItemID => {
         setStatusBarMsg("Saving backup file... done");
+        gSuppressAutoMinzWnd = false;
       }).catch(aErr => {
         if (aErr.fileName == "undefined") {
           setStatusBarMsg();
@@ -1113,11 +1118,12 @@ let gCmd = {
         else {
           console.error(aErr);
           setStatusBarMsg("Backup failed.");
-          window.alert("Sorry, an error occurred while creating the backup file.\n\nDetails:\n" + aErr);
+          window.alert("Sorry, an error occurred while creating the backup file.\n\nDetails:\n" + getErrStr(aErr));
         }
+        gSuppressAutoMinzWnd = false;
       });
     }).catch(aErr => {
-      window.alert("Sorry, an error occurred during the backup.\n\nDetails:\n" + aErr);
+      window.alert("Sorry, an error occurred during the backup.\n\nDetails:\n" + getErrStr(aErr));
       setStatusBarMsg("Backup failed.");
     });
   },
@@ -1268,6 +1274,12 @@ $(document).ready(() => {
   let wndURL = new URL(window.location.href);
   gOpenerWndID = Number(wndURL.searchParams.get("openerWndID"));
   gIsMaximized = false;
+
+  if (DEBUG_WND_ACTIONS) {
+    if (gClippings.getPrefs().clippingsMgrMinzWhenInactv === undefined) {
+      chrome.storage.local.set({ clippingsMgrMinzWhenInactv: true });
+    }
+  }
   
   let clippingsListeners = gClippings.getClippingsListeners();
   gClippingsListener.origin = clippingsListeners.ORIGIN_CLIPPINGS_MGR;
@@ -1411,8 +1423,8 @@ $(window).on("click", aEvent => {
 
 
 $(window).on("blur", aEvent => {
-  if (gOS == "linux" || aeConst.DEBUG) {
-    if (gClippings.getPrefs().clippingsMgrMinzWhenInactv) {
+  if (gOS == "linux" || DEBUG_WND_ACTIONS) {
+    if (gClippings.getPrefs().clippingsMgrMinzWhenInactv && !gSuppressAutoMinzWnd) {
       let updInfo = {
         state: "minimized"
       };
@@ -1581,7 +1593,7 @@ function initToolbar()
         name: "Maximize",
         className: "ae-menuitem",
         visible: function (aKey, aOpt) {
-          return (gOS != "mac");
+          return (gOS == "win" || DEBUG_WND_ACTIONS);
         },
         icon: function (aKey, aOpt) {
           if (gIsMaximized) {
@@ -1593,7 +1605,7 @@ function initToolbar()
         name: "Minimize When Inactive",
         className: "ae-menuitem",
         visible: function (aKey, aOpt) {
-          return (gOS == "linux");
+          return (gOS == "linux" || DEBUG_WND_ACTIONS);
         },
         icon: function (aKey, aOpt) {
           if (gClippings.getPrefs().clippingsMgrMinzWhenInactv) {
@@ -1604,7 +1616,7 @@ function initToolbar()
       windowCmdsSeparator: {
         type: "cm_separator",
         visible: function (akey, aOpt) {
-          return (gOS != "mac");
+          return (gOS != "mac" || DEBUG_WND_ACTIONS);
         }
       },
       openExtensionPrefs: {
@@ -1661,8 +1673,10 @@ function initDialogs()
 {
   // Also initialize the intro banner and help dialog.
   const isMacOS = gClippings.getOS() == "mac";
+  const isLinux = gClippings.getOS() == "linux";
   let shctKeyTbls = $(".shortcut-key-tbl");
   let shctKeys = [];
+  
   if (isMacOS) {
     shctKeys = ["\u2326", "esc", "\u2318F", "\u2318W", "\u2318Z", "F1", "\u2318F10"];
   }
@@ -1676,8 +1690,11 @@ function initDialogs()
   $(`<tr><td>${shctKeys[3]}</td><td>Close Clippings Manager</td></tr>`).appendTo(shctKeyTbls);
   $(`<tr><td>${shctKeys[4]}</td><td>Undo</td></tr>`).appendTo(shctKeyTbls);
   $(`<tr><td>${shctKeys[5]}</td><td>Show Clippings Manager intro</td></tr>`).appendTo(shctKeyTbls);
-  $(`<tr><td>${shctKeys[6]}</td><td>Maximize window</td></tr>`).appendTo(shctKeyTbls);
-  
+
+  if (! isLinux) {
+    $(`<tr><td>${shctKeys[6]}</td><td>Maximize window</td></tr>`).appendTo(shctKeyTbls);
+  }
+
   aeImportExport.setDatabase(gClippingsDB);
 
   gDialogs.shctKeyConflict = new aeDialog("#shortcut-key-conflict-msgbox");
@@ -1712,6 +1729,7 @@ function initDialogs()
 
     $("#import-clippings-file-path").val("");
     $("#import-dlg button.dlg-accept").attr("disabled", "true");
+    gSuppressAutoMinzWnd = true;
     
     $("#import-clippings-file-upload").on("change", aEvent => {
       $("#import-error").text("").hide();
@@ -1731,6 +1749,7 @@ function initDialogs()
     $("#import-error").text("").hide();
     $("#import-dlg #import-clippings-file-upload").val("");
     $("#import-clippings-replc-shct-keys")[0].checked = true;
+    gSuppressAutoMinzWnd = false;
   };
   gDialogs.importFromFile.onAccept = aEvent => {
     function importFile() {
@@ -1771,6 +1790,7 @@ function initDialogs()
         $("#import-error").text("").hide();
         $("#import-progress-bar").hide();
         gDialogs.importFromFile.close();
+        gSuppressAutoMinzWnd = false;
 
         gDialogs.importConfirmMsgBox.setMessage(`Import from "${importFile.name}" is successfully completed.`);
         gDialogs.importConfirmMsgBox.showModal();
@@ -1812,6 +1832,8 @@ function initDialogs()
       "The default format for backing up and exchanging Clippings data with other users or multiple computers.  Requires Clippings 5.5 or newer installed.",
       "Exports your Clippings data as an HTML document for printing or display in a web browser."
     ];
+
+    gSuppressAutoMinzWnd = true;
     
     $("#export-format-list").change(aEvent => {
       let selectedFmtIdx = aEvent.target.selectedIndex;
@@ -1831,21 +1853,6 @@ function initDialogs()
   };
 
   gDialogs.exportToFile.onAfterAccept = () => {
-    function getErrStr(aErr)
-    {
-      let rv = `${aErr.name}: ${aErr.message}`;
-
-      if (aErr.fileName) {
-        rv += "\nSource: " + aErr.fileName;
-      }
-
-      if (aErr.lineNumber) {
-        rv += ":" + aErr.lineNumber;
-      }
-
-      return rv;
-    }
-    
     function saveToFile(aBlobData, aFilename)
     {
       browser.downloads.download({
@@ -1853,6 +1860,7 @@ function initDialogs()
         filename: aFilename,
         saveAs: true
       }).then(aDownldItemID => {
+        gSuppressAutoMinzWnd = false;
         setStatusBarMsg("Exporting... done");
         
         // TO DO: Get the path of the exported file, not just the file name.
@@ -1860,6 +1868,7 @@ function initDialogs()
         gDialogs.exportConfirmMsgBox.showModal();
 
       }).catch(aErr => {
+        gSuppressAutoMinzWnd = false;
         if (aErr.fileName == "undefined") {
           setStatusBarMsg();
         }
@@ -1884,6 +1893,7 @@ function initDialogs()
       }).catch(aErr => {
         window.alert("Sorry, an error occurred while exporting to Clippings 6 format.\n\nDetails:\n" + getErrStr(aErr));
         setStatusBarMsg("Export failed.");
+        gSuppressAutoMinzWnd = false;
       });
     }
     else if (selectedFmtIdx == gDialogs.exportToFile.FMT_HTML) {
@@ -1893,6 +1903,7 @@ function initDialogs()
       }).catch(aErr => {
         window.alert("Sorry, an error occurred while exporting to HTML Document format.\n\nDetails:\n" + getErrStr(aErr));
         setStatusBarMsg("Export failed.");
+        gSuppressAutoMinzWnd = false;
       });
     }
   };
@@ -2019,6 +2030,10 @@ function initDialogs()
   };
 
   gDialogs.miniHelp = new aeDialog("#mini-help-dlg");
+  if (! isMacOS) {
+    $("#mini-help-dlg").css({ height: "310px"})
+  }
+  
   gDialogs.genericMsgBox = new aeDialog("#generic-msg-box");
 }
 
@@ -2549,13 +2564,28 @@ function showInitError()
 }
 
 
+function getErrStr(aErr)
+{
+  let rv = `${aErr.name}: ${aErr.message}`;
+
+  if (aErr.fileName) {
+    rv += "\nSource: " + aErr.fileName;
+  }
+  else {
+    rv += "\nSource: unknown";
+  }
+
+  if (aErr.lineNumber) {
+    rv += ":" + aErr.lineNumber;
+  }
+
+  return rv;
+}
+
+
 function onError(aError)
 {
-  showBanner(aError.message);
-
-  if (aeConst.DEBUG) {
-    console.error(aError.message);
-  }
+  console.error(aError);
 }
 
 

@@ -19,7 +19,8 @@
    sodipodi:docname="help-tooltip.svg"
    inkscape:export-filename="/Users/aecreations/Documents/Graphics/Inkscape/Clippings/help-tooltip.png"
    inkscape:export-xdpi="90"
-   inkscape:export-ydpi="90">
+   inkscape:export-ydpi="90"
+   enable-background="new">
   <defs
      id="defs3014">
     <linearGradient
@@ -34,28 +35,6 @@
          id="stop3806" />
     </linearGradient>
     <linearGradient
-       id="linearGradient5757">
-      <stop
-         style="stop-color:#d8d4ff;stop-opacity:1;"
-         offset="0"
-         id="stop5759" />
-      <stop
-         style="stop-color:#9f99de;stop-opacity:1;"
-         offset="1"
-         id="stop5761" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient5329">
-      <stop
-         id="stop5331"
-         offset="0"
-         style="stop-color:#444740;stop-opacity:1;" />
-      <stop
-         id="stop5333"
-         offset="1"
-         style="stop-color:#111111;stop-opacity:1;" />
-    </linearGradient>
-    <linearGradient
        osb:paint="gradient"
        id="linearGradient5347">
       <stop
@@ -66,39 +45,6 @@
          id="stop5351"
          offset="1"
          style="stop-color:#000000;stop-opacity:0;" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient5375">
-      <stop
-         id="stop5377"
-         offset="0"
-         style="stop-color:#e3e0e0;stop-opacity:1;" />
-      <stop
-         id="stop5379"
-         offset="1"
-         style="stop-color:#babdc6;stop-opacity:1;" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient3769">
-      <stop
-         id="stop3771"
-         offset="0"
-         style="stop-color:#f5f5f5;stop-opacity:1;" />
-      <stop
-         id="stop3773"
-         offset="1"
-         style="stop-color:#e6e6e6;stop-opacity:1;" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient3771">
-      <stop
-         id="stop3774"
-         offset="0"
-         style="stop-color:#f7f7f7;stop-opacity:1;" />
-      <stop
-         id="stop3776"
-         offset="1"
-         style="stop-color:#e6e6e6;stop-opacity:1;" />
     </linearGradient>
     <linearGradient
        inkscape:collect="always"
@@ -118,7 +64,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="32"
-     inkscape:cx="4.4974767"
+     inkscape:cx="-5.0806483"
      inkscape:cy="-0.8985439"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -159,7 +105,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -167,19 +113,17 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-10,-186.36218)">
+     transform="translate(-10,-186.36218)"
+     style="display:inline;opacity:1;">
     <circle
        style="fill:url(#linearGradient3808);fill-opacity:1;fill-rule:nonzero;stroke:none"
        id="path3796"
        transform="matrix(1.2631579,0,0,1.2631579,9.3684211,185.73061)"
-       d="M 10,5.25 A 4.75,4.75 0 0 1 5.25,10 4.75,4.75 0 0 1 0.5,5.25 4.75,4.75 0 0 1 5.25,0.5 4.75,4.75 0 0 1 10,5.25 Z"
-       sodipodi:type="arc"
-       sodipodi:ry="4.75"
-       sodipodi:rx="4.75"
-       sodipodi:cy="5.25"
-       sodipodi:cx="5.25" />
+       cx="5.25"
+       cy="5.25"
+       r="4.75" />
     <path
-       style="fill:none;stroke:#ffffff;stroke-width:2.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       style="fill:none;stroke:#ffffff;stroke-width:2.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="M 16.01294,191.31478 16,196.15247"
        id="path3010"
        inkscape:connector-curvature="0"
@@ -191,8 +135,8 @@
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
     <path
-       style="fill:none;stroke:#ffffff;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       d="m 13.5,195.86218 5.008888,0"
+       style="fill:none;stroke:#ffffff;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 13.5,195.86218 h 5.008888"
        id="path3782"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />

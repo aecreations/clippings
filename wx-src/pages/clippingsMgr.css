@@ -659,10 +659,10 @@ ul.fancytree-container {
 
 #import-dlg #restore-backup-warning > .warning-icon {
     float: left;
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
     margin-top: 4px;
-    background-image: url("chrome://global/skin/icons/warning-large.png");
+    background-image: url("chrome://global/skin/icons/warning-64.png");
     background-repeat: no-repeat;
     background-size: contain;
 }
@@ -754,7 +754,7 @@ ul.fancytree-container {
 #mini-help-dlg {
     --width: 450px;
     --height: 300px;
-    top: 36px;
+    top: 28px;
 }
 
 #mini-help-dlg p.hlp-hdr {
