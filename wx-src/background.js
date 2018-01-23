@@ -180,6 +180,11 @@ async function setDefaultPrefs()
     clippingsMgrDetailsPane: false,
     clippingsMgrStatusBar: false,
     clippingsMgrMinzWhenInactv: undefined,
+    clippingsMgrPersistWnd: true,
+    clippingsMgrWndState: "normal",
+    clippingsMgrWndPos: null,
+    clippingsMgrWndSize: [750, 400],
+    clippingsMgrTreeWidth: 220,
   };
 
   gPrefs = aeClippingsPrefs;
@@ -701,12 +706,31 @@ function openClippingsManager()
     
     function openClippingsMgrHelper()
     {
-      browser.windows.create({
+      let wndInfo = {
         url: clippingsMgrURL,
         type: "popup",
-        width: 750, height: 400,
-        left: 64, top: 128
-      }).then(aWnd => {
+      };
+
+      // The 'clippingsMgrWndPos' pref would be null if this is the first time
+      // that the Clippings Manager window is opened.
+      if (gPrefs.clippingsMgrWndPos === null) {
+        wndInfo.width = 750;
+        wndInfo.height = 400;
+        wndInfo.left = 64;
+        wndInfo.top = 128;
+      }
+      else {
+        wndInfo.state = gPrefs.clippingsMgrWndState;
+        
+        if (gPrefs.clippingsMgrWndState == "normal") {
+          wndInfo.left = gPrefs.clippingsMgrWndPos[0];
+          wndInfo.top = gPrefs.clippingsMgrWndPos[1];
+          wndInfo.width = gPrefs.clippingsMgrWndSize[0];
+          wndInfo.height = gPrefs.clippingsMgrWndSize[1];
+        }
+      }
+      
+      browser.windows.create(wndInfo).then(aWnd => {
         gWndIDs.clippingsMgr = aWnd.id;
         browser.history.deleteUrl({ url: clippingsMgrURL });
       });

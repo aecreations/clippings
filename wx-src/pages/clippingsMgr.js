@@ -1280,7 +1280,7 @@ $(document).ready(() => {
       chrome.storage.local.set({ clippingsMgrMinzWhenInactv: true });
     }
   }
-  
+
   let clippingsListeners = gClippings.getClippingsListeners();
   gClippingsListener.origin = clippingsListeners.ORIGIN_CLIPPINGS_MGR;
   clippingsListeners.add(gClippingsListener);
@@ -1302,6 +1302,17 @@ $(document).ready(() => {
   
   chrome.history.deleteUrl({ url: window.location.href });
 
+  if (gClippings.getPrefs().clippingsMgrPersistWnd) {
+    let wndPos = gClippings.getPrefs().clippingsMgrWndPos;
+
+    // The 'clippingsMgrWndPos' pref would be null if this is the first time
+    // that the Clippings Manager window is opened.
+    if (wndPos !== null) {
+      let treeWidth = gClippings.getPrefs().clippingsMgrTreeWidth;
+      $("#clippings-tree").css({ width: `${treeWidth}px` });
+    }
+  } 
+  
   // Fix for Fx57 bug where bundled page loaded using
   // browser.windows.create won't show contents unless resized.
   // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1402110>
@@ -1313,14 +1324,55 @@ $(document).ready(() => {
 
 // Reloading or closing Clippings Manager window
 $(window).on("beforeunload", () => {
-  if (! gIsReloading) {
-    browser.runtime.sendMessage({ msgID: "close-clippings-mgr-wnd" });
+  function b4Unloadhelper()
+  {
+    let clippingsListeners = gClippings.getClippingsListeners();
+    clippingsListeners.remove(gClippingsListener);
+
+    purgeDeletedItems(aeConst.DELETED_ITEMS_FLDR_ID);
   }
   
-  let clippingsListeners = gClippings.getClippingsListeners();
-  clippingsListeners.remove(gClippingsListener);
+  if (gIsReloading) {
+    b4UnloadHelper();
+  }
+  else {  // Closing Clippings Manager window.
+    if (gClippings.isGoogleChrome()) {
+      // TO DO: Same logic as below.
+    }
+    else {
+      browser.runtime.sendMessage({ msgID: "close-clippings-mgr-wnd" });
 
-  purgeDeletedItems(aeConst.DELETED_ITEMS_FLDR_ID);
+      if (gClippings.getPrefs().clippingsMgrPersistWnd) {
+        log("Saving Clippings Manager window state...");
+        browser.windows.getCurrent().then(aWnd => {
+          log("Retrieving current window state");
+          let wndPrefs = {
+            clippingsMgrWndState: aWnd.state,
+            clippingsMgrTreeWidth: parseInt($("#clippings-tree").css("width")),
+          };
+
+          if (aWnd.state == "normal") {
+            wndPrefs.clippingsMgrWndPos = [aWnd.left, aWnd.top];
+            wndPrefs.clippingsMgrWndSize = [aWnd.width, aWnd.height];
+          }
+
+          log("Persisting window state into local storage");
+          browser.storage.local.set(wndPrefs).then(() => {
+            log("Successfully saved Clippings Manager window state. Continuing with 'beforeunload' event handler.");
+            b4UnloadHelper();
+          }).catch(aErr => {
+            console.error(aErr);
+            b4UnloadHelper();
+          });
+        }).catch(aErr => {
+          console.error("Failed to persist window state: " + aErr);
+        });
+      }
+      else {
+        b4UnloadHelper();
+      }
+    }
+  }
 });
 
 
