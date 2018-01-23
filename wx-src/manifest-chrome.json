@@ -13,6 +13,7 @@
     },
 
     "permissions": [
+        "clipboardRead",
 	"contextMenus",
 	"downloads",
 	"history",

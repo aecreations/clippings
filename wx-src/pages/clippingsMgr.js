@@ -6,6 +6,7 @@
 
 const DEBUG_TREE = false;
 const DEBUG_WND_ACTIONS = false;
+const NEW_CLIPPING_FROM_CLIPBOARD = "New Clipping From Clipboard";
 
 let gOS;
 let gClippingsDB;
@@ -50,11 +51,18 @@ let gClippingsListener = {
       // No clippings or folders.
       newNode = tree.rootNode.addNode(newNodeData);
     }
-    
+
     newNode.makeVisible().done(() => {
       newNode.setActive();
       $("#clipping-name").val(aData.name);
       $("#clipping-text").val("");
+
+      // New clipping created from clipboard contents.
+      if (aData.name == NEW_CLIPPING_FROM_CLIPBOARD) {
+        log("Clippings/wx::clippingsMgr.js: gClippingsListener.newClippingCreated(): Focusing on clipping content editor textbox");
+        $("#clipping-text").focus();
+        document.execCommand("paste");  // THIS DOES NOT WORK!
+      }
     });
   },
 
@@ -634,7 +642,7 @@ let gCmd = {
   },
 
   
-  newClipping: function (aDestUndoStack)
+  newClipping: function (aDestUndoStack, aIsFromClipboard)
   {
     if (gIsClippingsTreeEmpty) {
       unsetEmptyClippingsState();
@@ -648,8 +656,13 @@ let gCmd = {
       parentFolderID = this._getParentFldrIDOfTreeNode(selectedNode);
     }
 
+    let name = chrome.i18n.getMessage("newClipping");
+    if (aIsFromClipboard) {
+      name = NEW_CLIPPING_FROM_CLIPBOARD;
+    }
+
     let createClipping = gClippingsDB.clippings.add({
-      name: chrome.i18n.getMessage("newClipping"),
+      name,
       content: "",
       shortcutKey: "",
       parentFolderID: parentFolderID,
@@ -749,11 +762,6 @@ let gCmd = {
         }
       });
     }
-  },
-
-  pasteClipping: function (aClippingID)
-  {
-    info("Clippings/wx::clippingsMgr.js: gCmd.pasteClipping(): Not implemented.");
   },
 
   // Internal commands are NOT meant to be invoked directly from the UI.
@@ -1301,10 +1309,10 @@ $(document).ready(() => {
   initTreeSplitter();
   
   chrome.history.deleteUrl({ url: window.location.href });
-
+/**
   let treeWidth = gClippings.getPrefs().clippingsMgrTreeWidth || 220;
   $("#clippings-tree").css({ width: `${treeWidth}px` });
-  
+**/  
   // Fix for Fx57 bug where bundled page loaded using
   // browser.windows.create won't show contents unless resized.
   // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1402110>
@@ -1316,6 +1324,15 @@ $(document).ready(() => {
 
 // Reloading or closing Clippings Manager window
 $(window).on("beforeunload", () => {
+  if (! gIsReloading) {
+    browser.runtime.sendMessage({ msgID: "close-clippings-mgr-wnd" });
+  }
+
+  let clippingsListeners = gClippings.getClippingsListeners();
+  clippingsListeners.remove(gClippingsListener);
+  
+  purgeDeletedItems(aeConst.DELETED_ITEMS_FLDR_ID);
+/**
   function b4UnloadHelper()
   {
     let clippingsListeners = gClippings.getClippingsListeners();
@@ -1333,7 +1350,7 @@ $(window).on("beforeunload", () => {
     }
     else {
       browser.runtime.sendMessage({ msgID: "close-clippings-mgr-wnd" });
-
+      b4UnloadHelper();
       log("Saving Clippings Manager tree width...");
       let wndPrefs = {
         clippingsMgrTreeWidth: parseInt($("#clippings-tree").css("width")),
@@ -1349,6 +1366,7 @@ $(window).on("beforeunload", () => {
       });
     }
   }
+**/
 });
 
 
@@ -1513,6 +1531,10 @@ function initToolbar()
     
     callback: function (aItemKey, aOpt, aRootMenu, aOriginalEvent) {
       switch (aItemKey) {
+      case "newFromClipboard":
+        gCmd.newClipping(gCmd.UNDO_STACK, true);
+        break;
+        
       case "backup":
         gCmd.backup();
         break;
@@ -1559,13 +1581,11 @@ function initToolbar()
       }
     },
     items: {
-      /***
       newFromClipboard: {
         name: "New From Clipboard",
         className: "ae-menuitem"
       },
       separator0: "--------",
-      ***/
       backup: {
         name: "Backup...",
         className: "ae-menuitem"
