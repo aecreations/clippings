@@ -180,7 +180,6 @@ async function setDefaultPrefs()
     clippingsMgrDetailsPane: false,
     clippingsMgrStatusBar: false,
     clippingsMgrMinzWhenInactv: undefined,
-    clippingsMgrTreeWidth: 220,
   };
 
   gPrefs = aeClippingsPrefs;

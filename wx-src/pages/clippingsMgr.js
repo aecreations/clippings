@@ -1309,10 +1309,7 @@ $(document).ready(() => {
   initTreeSplitter();
   
   chrome.history.deleteUrl({ url: window.location.href });
-/**
-  let treeWidth = gClippings.getPrefs().clippingsMgrTreeWidth || 220;
-  $("#clippings-tree").css({ width: `${treeWidth}px` });
-**/  
+
   // Fix for Fx57 bug where bundled page loaded using
   // browser.windows.create won't show contents unless resized.
   // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1402110>
@@ -1332,41 +1329,6 @@ $(window).on("beforeunload", () => {
   clippingsListeners.remove(gClippingsListener);
   
   purgeDeletedItems(aeConst.DELETED_ITEMS_FLDR_ID);
-/**
-  function b4UnloadHelper()
-  {
-    let clippingsListeners = gClippings.getClippingsListeners();
-    clippingsListeners.remove(gClippingsListener);
-
-    purgeDeletedItems(aeConst.DELETED_ITEMS_FLDR_ID);
-  }
-  
-  if (gIsReloading) {
-    b4UnloadHelper();
-  }
-  else {  // Closing Clippings Manager window.
-    if (gClippings.isGoogleChrome()) {
-      // TO DO: Same logic as below.
-    }
-    else {
-      browser.runtime.sendMessage({ msgID: "close-clippings-mgr-wnd" });
-      b4UnloadHelper();
-      log("Saving Clippings Manager tree width...");
-      let wndPrefs = {
-        clippingsMgrTreeWidth: parseInt($("#clippings-tree").css("width")),
-      };
-
-      log("Persisting window state into local storage");
-      browser.storage.local.set(wndPrefs).then(() => {
-        log("Successfully saved Clippings Manager window state. Continuing with 'beforeunload' event handler.");
-        b4UnloadHelper();
-      }).catch(aErr => {
-        console.error(aErr);
-        b4UnloadHelper();
-      });
-    }
-  }
-**/
 });
 
 
