@@ -1545,9 +1545,17 @@ function initToolbar()
     items: {
       newFromClipboard: {
         name: "New From Clipboard",
-        className: "ae-menuitem"
+        className: "ae-menuitem",
+        visible: function (aKey, aOpt) {
+          return gClippings.isGoogleChrome();
+        }
       },
-      separator0: "--------",
+      backupSeparator: {
+        type: "cm_separator",
+        visible: function (akey, aOpt) {
+          return gClippings.isGoogleChrome();
+        }
+      },
       backup: {
         name: "Backup...",
         className: "ae-menuitem"
