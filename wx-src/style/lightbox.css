@@ -84,11 +84,11 @@
     box-shadow: 0 2px 5px #00000080;
 }
 
-.notify-icon, .panel-content, .notify-dismiss {
+.msgbar-icon, .msgbar-content, .msgbar-dismiss {
     display: inline-block;
 }
 
-.panel .notify-icon {
+.panel .msgbar-icon {
     width: 16px;
     height: 16px;
     margin: 4px;
@@ -96,14 +96,14 @@
     background-size: contain;
 }
 
-.panel .panel-content {
+.panel .msgbar-content {
     margin-right: 64px;
     vertical-align: 8px;
     font-size: 13px;
     color: #0c0c0d;
 }
 
-.panel .notify-dismiss {
+.panel .msgbar-dismiss {
     position: absolute;
     right: 0px;
     width: 16px;
@@ -114,11 +114,11 @@
     border-radius: 2px;
 }
 
-.panel .notify-dismiss:hover {
+.panel .msgbar-dismiss:hover {
     background-color: rgba(12, 12, 13, 0.2);
 }
 
-.panel .notify-dismiss:active {
+.panel .msgbar-dismiss:active {
     background-color: rgba(12, 12, 13, 0.3);
 }
 

@@ -1724,7 +1724,7 @@ function initDialogs()
   };
 
   gDialogs.clippingMissingSrcURL = new aeDialog("#clipping-missing-src-url-msgbox");
-  gDialogs.noUndoNotify = new aeDialog("#no-undo-popup");
+  gDialogs.noUndoNotify = new aeDialog("#no-undo-msgbar");
   
   gDialogs.importFromFile = new aeDialog("#import-dlg");
   gDialogs.importFromFile.IMP_APPEND = 0;
@@ -1947,8 +1947,8 @@ function initDialogs()
     });
   });
 
-  gDialogs.removeAllSrcURLsConfirm = new aeDialog("#all-src-urls-removed-confirm-popup");
-  gDialogs.removeAllSrcURLsConfirm.onAfterAccept = () => {
+  gDialogs.removeAllSrcURLsConfirm = new aeDialog("#all-src-urls-removed-confirm-msgbar");
+  gDialogs.removeAllSrcURLsConfirm.onUnload = () => {
     // Reselect the selected tree node to force a call to updateDisplay().
     getClippingsTree().reactivate(true);
   };
