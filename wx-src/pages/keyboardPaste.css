@@ -59,13 +59,13 @@ body {
     width: 100%;
     border-collapse: collapse;
     border-spacing: 0;
-    margin-top: 1px;
 }
 
 #shortcut-list-content table > thead {
     display: block;
     height: var(--col-hdr-height);
-    background-color: #ddd;
+    background-color: #eee;
+    border-bottom: 1px solid #d4d4d4;
 }
 
 #shortcut-list-content table > thead > tr > th {
@@ -74,7 +74,7 @@ body {
 }
 
 #shortcut-list-content table > thead > tr > th:nth-child(1) {
-    border-right: 1px solid white;
+    border-right: 1px solid #d8d8d8;
 }
 
 #shortcut-list-content table > tbody {
@@ -93,14 +93,12 @@ body {
     padding-right: 4px;
 }
 
-#shortcut-list-content table > tbody > tr:hover {
+#shortcut-list-content table > tbody > tr:active {
     background-color: #eff9fe;
-    border-color: #70c0e7;
 }
 
-#shortcut-list-content table > tbody > tr:active {
+#shortcut-list-content table > tbody > tr.selected-row {
     background-color: #cbe8f6;
-    border-color: #26a0da;
 }
 
 #shortcut-list-content table th:nth-child(1),

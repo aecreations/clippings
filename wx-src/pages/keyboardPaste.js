@@ -232,7 +232,16 @@ function initShortcutList()
   chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, updWndInfo, aWnd => {
     aeImportExport.getShortcutKeyListHTML(false).then(aShctListHTML => {
       $("#shortcut-list-content").append(aShctListHTML);
+
+      $("#shortcut-list-content > table > tbody > tr").on("mouseup", aEvent => {
+        $("#shortcut-list-content > table > tbody > tr").removeClass("selected-row");
+        $(aEvent.target).parent().addClass("selected-row");
+        $("#paste-clipping").removeAttr("disabled");
+      });
+      
       $(".deck > #shortcut-list").fadeIn("fast");
+    }).catch(aErr => {
+      console.error("Clippings/wx::keyboardPaste.js: initShortcutList(): " + aErr);
     });
   });
 }
