@@ -11,6 +11,7 @@ const PASTE_ACTION_SEARCH_CLIPPING = 2;
 
 let gClippingsDB = null;
 let gOS = null;
+let gHostAppName = null;
 let gAutoIncrPlchldrs = null;
 
 let gClippingsListeners = {
@@ -215,11 +216,13 @@ function initHelper()
   initClippingsDB();
   
   if (! ("browser" in window)) {
+    gHostAppName = "Google Chrome";
     log("Clippings/wx: Browser: Google Chrome");
   }
   else {
     let getBrowserInfo = browser.runtime.getBrowserInfo();
     getBrowserInfo.then(aBrwsInfo => {
+      gHostAppName = `${aBrwsInfo.name} ${aBrwsInfo.version}`;
       log(`Clippings/wx: Browser: ${aBrwsInfo.name} (version ${aBrwsInfo.version})`);
     });
   }
@@ -980,6 +983,12 @@ function verifyDB()
 function getOS()
 {
   return gOS;
+}
+
+
+function getHostAppName()
+{
+  return gHostAppName;
 }
 
 
