@@ -25,9 +25,7 @@
 	  <div>Press the shortcut key of the clipping you want to paste.</div>
 	</div>
 	<div class="key-legend">
-	  <!--
-          <div class="desc">F1 = shortcut key list</div>
-          -->
+          <div class="desc">F1 = shortcut list</div>
           <div class="desc">TAB = search clipping by name</div>
 	</div>
       </div>  <!-- #paste-by-shortcut-key -->
@@ -49,6 +47,14 @@
 	  <div class="desc">TAB = shortcut key mode</div>
 	</div>
       </div>  <!-- #search-by-name -->
+
+      <div id="shortcut-list">
+        <div id="shortcut-list-toolbar" class="hbox">
+	  <button id="paste-clipping" class="toolbar-button toolbar-button-labelled">Insert Clipping</button>
+	  <button id="export-shct-list" class="toolbar-button toolbar-button-labelled">Save</button>
+	</div>
+	<div id="shortcut-list-content"></div>
+      </div>  <!-- #shortcut-list -->
     </div>  <!-- .deck -->
     
     <div id="dlg-buttons">
@@ -58,6 +64,7 @@
     <script src="../lib/jquery.js"></script>
     <script src="../lib/EasyAutocomplete/jquery.easy-autocomplete.js"></script>
     <script src="../modules/aeConst.js"></script>
+    <script src="../modules/aeImportExport.js"></script>
     <script src="keyboardPaste.js"></script>
   </body>
 </html>

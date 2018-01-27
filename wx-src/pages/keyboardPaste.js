@@ -6,6 +6,8 @@
 
 const WNDH_SHORTCUT_KEY = 164;
 const WNDH_SEARCH_CLIPPING = 222;
+const WNDH_SHORTCUT_LIST = 260;
+const WNDW_SHORTCUT_LIST = 420;
 
 let gClippings, gClippingsDB, gPasteMode;
 
@@ -18,6 +20,15 @@ $(document).ready(() => {
   }
 
   gClippingsDB = gClippings.getClippingsDB();
+
+  aeImportExport.setDatabase(gClippingsDB);
+  aeImportExport.setL10nStrings({
+    shctTitle: "Clippings Shortcut Keys",
+    hostAppInfo: `Clippings 6.0.2.1+ on ${gClippings.getHostAppName()}`,
+    shctKeyInstrxns: "To paste a clipping into a web page textbox in Firefox, press ALT+SHIFT+Y (Command+Shift+Y on macOS), then the shortcut key.",
+    shctKeyColHdr: "Shortcut Key",
+    clippingNameColHdr: "Clipping Name",
+  });
   
   initAutocomplete();
   $("#btn-cancel").click(aEvent => { cancel(aEvent) });
@@ -62,11 +73,23 @@ $(window).keypress(aEvent => {
     cancel(aEvent);
   }
   else if (aEvent.key == "F1") {
-    // TO DO: Show shortcut key legend.
+    if (gPasteMode == aeConst.PASTEACTION_SHORTCUT_KEY) {
+      $(".deck > #paste-by-shortcut-key").hide();
+      initShortcutList();
+      return;
+    }
+  }
+  else if (aEvent.key == "F12" && aeConst.DEBUG) {
+    // Allow opening Developer Tools.
+    return;
   }
   else if (aEvent.key == "Tab") {
     aEvent.preventDefault();
 
+    if (isShortcutListDisplayed()) {
+      return;
+    }
+    
     if (gPasteMode == aeConst.PASTEACTION_SHORTCUT_KEY) {
       gPasteMode = aeConst.PASTEACTION_SEARCH_CLIPPING;
       $(".deck > #paste-by-shortcut-key").hide();
@@ -86,6 +109,10 @@ $(window).keypress(aEvent => {
     }
   }
   else {
+    if (isShortcutListDisplayed()) {
+      return;
+    }
+    
     if (gPasteMode == aeConst.PASTEACTION_SHORTCUT_KEY) {
       browser.runtime.sendMessage({
         msgID: "paste-shortcut-key",
@@ -190,6 +217,30 @@ function initAutocomplete()
     $(".easy-autocomplete-container").attr("hidden", "true");
     $("#clear-search").hide();
   });
+}
+
+
+function initShortcutList()
+{
+  $("#dlg-buttons").remove();
+
+  let updWndInfo = {
+    width: WNDW_SHORTCUT_LIST,
+    height: WNDH_SHORTCUT_LIST,
+  };
+  
+  chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, updWndInfo, aWnd => {
+    aeImportExport.getShortcutKeyListHTML(false).then(aShctListHTML => {
+      $("#shortcut-list-content").append(aShctListHTML);
+      $(".deck > #shortcut-list").fadeIn("fast");
+    });
+  });
+}
+
+
+function isShortcutListDisplayed()
+{
+  return ($("#shortcut-list").css("display") == "block");
 }
 
 

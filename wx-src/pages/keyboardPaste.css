@@ -3,6 +3,15 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
+:root {
+    --toolbar-height: 30px;
+    --col-hdr-height: 22px;
+}
+
+body {
+    overflow: hidden;
+}
+
 .icon {
     float: left;
 }
@@ -17,8 +26,73 @@
     font-size: 11px;
 }
 
-#paste-by-shortcut-key, #search-by-name {
+#paste-by-shortcut-key, #search-by-name, #shortcut-list {
     display: none;
+}
+
+#shortcut-list #shortcut-list-toolbar {
+    margin: -16px -16px 0 -16px;
+    height: var(--toolbar-height);
+    padding-left: 2px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    background: linear-gradient(to bottom, #fcfcfc 0%, #dedede 100%);
+    color: #0c0c0d;
+    border-bottom: 1px solid silver;
+}
+
+#shortcut-list-toolbar #paste-clipping {
+    order: 1;
+}
+
+#shortcut-list-toolbar #export-shct-list {
+    order: 2;
+}
+
+#shortcut-list-content {
+    margin-left: -16px;
+    margin-right: -16px;
+    height: calc(100% - var(--toolbar-height));
+}
+
+#shortcut-list-content table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 1px;
+}
+
+#shortcut-list-content table > thead {
+    display: block;
+    height: var(--col-hdr-height);
+}
+
+#shortcut-list-content table > thead > tr > th {
+    padding: 3px 4px 3px 4px;
+    background-color: #ddd;
+    font-weight: normal;
+}
+
+#shortcut-list-content table > tbody {
+    display: block;
+    height: 182px;
+    /*height: calc(100% - var(--toolbar-height) - var(--col-hdr-height));*/
+    overflow-y: auto;
+}
+
+#shortcut-list-content table > tbody > tr > td {
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+#shortcut-list-content table th:nth-child(1),
+#shortcut-list-content table td:nth-child(1) {
+    min-width: 90px;
+}
+
+#shortcut-list-content table th:nth-child(2),
+#shortcut-list-content table td:nth-child(2) {
+    width: 100%;
+    white-space: nowrap;
 }
 
 #paste-by-shct-key-content, #search-by-name-content {
