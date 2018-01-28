@@ -224,6 +224,35 @@ function initShortcutList()
 {
   $("#dlg-buttons").remove();
 
+  $("#shortcut-list-toolbar > #paste-clipping").click(aEvent => {
+    let clippingID = $("#shortcut-list-content > table > tbody > tr.selected-row").data("id");
+    console.log("Selected clipping ID: " + clippingID);
+    window.alert("The selected action is not available right now.");
+  });
+
+  $("#shortcut-list-toolbar > #export-shct-list").click(aEvent => {
+    aeImportExport.getShortcutKeyListHTML(true).then(aHTMLData => {
+      let blobData = new Blob([aHTMLData], { type: "text/html;charset=utf-8"});
+      let downldOpts = {
+        url: URL.createObjectURL(blobData),
+        filename: aeConst.HTML_EXPORT_SHORTCUTS_FILENAME,
+        saveAs: true,
+      };
+      return browser.downloads.download(downldOpts);
+
+    }).then(aDownldItemID => {
+      log("Successfully exported the shortcut list.");
+    }).catch(aErr => {
+      if (aErr.fileName == "undefined") {
+        log("User cancel");
+      }
+      else {
+        console.error(aErr);
+        window.alert("Sorry, an error occurred while creating the export file.\n\nDetails:\n" + getErrStr(aErr));
+      }
+    });
+  });
+  
   let updWndInfo = {
     width: WNDW_SHORTCUT_LIST,
     height: WNDH_SHORTCUT_LIST,
@@ -236,7 +265,10 @@ function initShortcutList()
       $("#shortcut-list-content > table > tbody > tr").on("mouseup", aEvent => {
         $("#shortcut-list-content > table > tbody > tr").removeClass("selected-row");
         $(aEvent.target).parent().addClass("selected-row");
-        $("#paste-clipping").removeAttr("disabled");
+
+        if ($("#paste-clipping").attr("disabled")) {
+          $("#paste-clipping").removeAttr("disabled");
+        }
       });
       
       $(".deck > #shortcut-list").fadeIn("fast");
@@ -268,4 +300,29 @@ function closeDlg()
     browser.runtime.sendMessage({ msgID: "close-keybd-paste-dlg" });
     chrome.windows.remove(chrome.windows.WINDOW_ID_CURRENT);
   });
+}
+
+
+function getErrStr(aErr)
+{
+  let rv = `${aErr.name}: ${aErr.message}`;
+
+  if (aErr.fileName) {
+    rv += "\nSource: " + aErr.fileName;
+  }
+  else {
+    rv += "\nSource: unknown";
+  }
+
+  if (aErr.lineNumber) {
+    rv += ":" + aErr.lineNumber;
+  }
+
+  return rv;
+}
+
+
+function log(aMessage)
+{
+  if (aeConst.DEBUG) { console.log(aMessage); }
 }
