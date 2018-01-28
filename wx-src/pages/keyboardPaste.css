@@ -49,6 +49,10 @@ body {
     order: 2;
 }
 
+#shortcut-list-toolbar #close {
+    order: 3;
+}
+
 #shortcut-list-content {
     margin-left: -16px;
     margin-right: -16px;
