@@ -397,7 +397,7 @@ aeImportExport.getShortcutKeyListHTML = function (aIsFullHTMLDoc)
         htmlSrc += `<td>${shctKey}</td><td>${aShctKeyMap[shctKey].name}</td></tr>\n`;
       }
 
-      htmlSrc += "\n</tbody></table>";
+      htmlSrc += "</tbody></table>";
       if (aIsFullHTMLDoc) {
         htmlSrc += "\n</body></html>";
       }
