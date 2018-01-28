@@ -20,6 +20,48 @@ body {
     font-size: 13px;
 }
 
+button {
+    font-size: 11px !important;
+}
+
+.toolbar-button {
+    flex: 0 1 auto;
+    align-self: stretch;
+    min-width: 30px;
+    min-height: 24px;
+    margin-left: 1px;
+    margin-right: 1px;
+    border: 1px solid transparent;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    color: #0c0c0d;
+    font: caption;
+    font-size: 11px;
+}
+
+.toolbar-button:hover {
+    border-radius: 2px;
+    background-color: rgba(12, 12, 13, 0.2);
+}
+
+.toolbar-button:active {
+    border-radius: 2px;
+    background-color: rgba(12, 12, 13, 0.3);
+}
+
+.toolbar-button-labelled {
+    background-position: 4px;
+    padding-left: 24px;
+    padding-right: 6px;
+}
+
+.toolbar-button-labelled:active {
+    background-position: 4px;
+    padding-left: 24px;
+    padding-right: 6px;
+}
+
 .key-legend {
     clear: both;
     margin-top: 28px;
@@ -43,14 +85,34 @@ body {
 
 #shortcut-list-toolbar #paste-clipping {
     order: 1;
+    background-image: url("../img/clipping.svg");
 }
 
 #shortcut-list-toolbar #export-shct-list {
     order: 2;
+    background-image: url("../img/save.svg");
+}
+
+#shortcut-list-toolbar #export-shct-list:hover {
+    background-image: url("../img/save_hover.svg");
 }
 
 #shortcut-list-toolbar #close {
     order: 3;
+
+    margin-left: 8px;
+    min-width: 30px;
+    min-height: 24px;
+    border-radius: 3px;
+    background-color: transparent;
+}
+
+#shortcut-list-toolbar #close:hover {
+    background-color: rgba(12, 12, 13, 0.1);
+}
+
+#shortcut-list-toolbar #close:active {
+    background-color: rgba(12, 12, 13, 0.2);
 }
 
 #shortcut-list-content {
