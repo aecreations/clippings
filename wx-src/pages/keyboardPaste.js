@@ -114,12 +114,7 @@ $(window).keypress(aEvent => {
     }
     
     if (gPasteMode == aeConst.PASTEACTION_SHORTCUT_KEY) {
-      browser.runtime.sendMessage({
-        msgID: "paste-shortcut-key",
-        shortcutKey: aEvent.key
-      });
-
-      closeDlg();
+      execShortcut(aEvent.key);
     }
   }
 });
@@ -225,32 +220,16 @@ function initShortcutList()
   $("#dlg-buttons").remove();
 
   $("#shortcut-list-toolbar > #paste-clipping").click(aEvent => {
-    let clippingID = $("#shortcut-list-content > table > tbody > tr.selected-row").data("id");
-    console.log("Selected clipping ID: " + clippingID);
-    window.alert("The selected action is not available right now.");
+    let clippingKey = $("#shortcut-list-content > table > tbody > tr.selected-row td:first-child").text();
+    execShortcut(clippingKey);
   });
 
   $("#shortcut-list-toolbar > #export-shct-list").click(aEvent => {
-    aeImportExport.getShortcutKeyListHTML(true).then(aHTMLData => {
-      let blobData = new Blob([aHTMLData], { type: "text/html;charset=utf-8"});
-      let downldOpts = {
-        url: URL.createObjectURL(blobData),
-        filename: aeConst.HTML_EXPORT_SHORTCUTS_FILENAME,
-        saveAs: true,
-      };
-      return browser.downloads.download(downldOpts);
+    exportShortcutList();
+  });
 
-    }).then(aDownldItemID => {
-      log("Successfully exported the shortcut list.");
-    }).catch(aErr => {
-      if (aErr.fileName == "undefined") {
-        log("User cancel");
-      }
-      else {
-        console.error(aErr);
-        window.alert("Sorry, an error occurred while creating the export file.\n\nDetails:\n" + getErrStr(aErr));
-      }
-    });
+  $("#shortcut-list-toolbar > #close").click(aEvent => {
+    closeDlg();
   });
   
   let updWndInfo = {
@@ -270,7 +249,7 @@ function initShortcutList()
           $("#paste-clipping").removeAttr("disabled");
         }
       });
-      
+
       $(".deck > #shortcut-list").fadeIn("fast");
     }).catch(aErr => {
       console.error("Clippings/wx::keyboardPaste.js: initShortcutList(): " + aErr);
@@ -282,6 +261,41 @@ function initShortcutList()
 function isShortcutListDisplayed()
 {
   return ($("#shortcut-list").css("display") == "block");
+}
+
+
+function exportShortcutList()
+{
+  aeImportExport.getShortcutKeyListHTML(true).then(aHTMLData => {
+    let blobData = new Blob([aHTMLData], { type: "text/html;charset=utf-8"});
+    let downldOpts = {
+      url: URL.createObjectURL(blobData),
+      filename: aeConst.HTML_EXPORT_SHORTCUTS_FILENAME,
+      saveAs: true,
+    };
+    return browser.downloads.download(downldOpts);
+
+  }).then(aDownldItemID => {
+    log("Successfully exported the shortcut list.");
+  }).catch(aErr => {
+    if (aErr.fileName == "undefined") {
+      log("User cancel");
+    }
+    else {
+      console.error(aErr);
+      window.alert("Sorry, an error occurred while creating the export file.\n\nDetails:\n" + getErrStr(aErr));
+    }
+  });
+}
+
+function execShortcut(aShortcutKey)
+{
+  browser.runtime.sendMessage({
+    msgID: "paste-shortcut-key",
+    shortcutKey: aShortcutKey
+  });
+
+  closeDlg();
 }
 
 
