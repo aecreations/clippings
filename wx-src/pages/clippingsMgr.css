@@ -509,6 +509,10 @@ ul.fancytree-container {
     margin-bottom: 0;
 }
 
+#options-bar > #shortcut-key-select > #show-shortcut-list {
+    height: 24px;
+}
+
 #options-bar > #options-bar-spacer {
     order: 2;
     flex: 1 1 auto;
@@ -595,6 +599,96 @@ ul.fancytree-container {
 
 #clipping-missing-src-url-msgbox {
     --width: 430px;
+}
+
+#shortcut-list-popup {
+    --width: 420px;
+    --height: 236px;
+    top: 48px;
+    padding: 0;
+}
+
+#shortcut-list-popup #shortcut-list-titlebar {
+    height: 30px;
+    padding-left: 2px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    background: linear-gradient(to bottom, #fcfcfc 0%, #dedede 100%);
+    border-bottom: 1px solid #c0c0c0;
+}
+
+#shortcut-list-popup #shortcut-list-titlebar > #shct-list-panel-title {
+    order: 1;
+    flex: 0 1 auto;
+
+    padding: 6px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+#shortcut-list-popup #shortcut-list-titlebar > #export-shct-list {
+    order: 2;
+    flex: 0 1 auto;
+    background-image: url("../img/save.svg");
+}
+
+#shortcut-list-popup #shortcut-list-titlebar > #close-shct-list-popup {
+    position: absolute;
+    right: 0px;
+    width: 16px;
+    min-width: 16px;
+    height: 16px;
+    margin: 4px;
+    background-image: url("../img/close-panel.svg");
+    background-size: contain;
+}
+
+#shortcut-list-content table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+#shortcut-list-content table > thead {
+    display: block;
+    height: 20px;
+    background-color: #eee;
+    border-bottom: 1px solid #d4d4d4;
+}
+
+#shortcut-list-content table > thead > tr > th {
+    padding: 3px 4px 3px 4px;
+    font-weight: normal;
+}
+
+#shortcut-list-content table > thead > tr > th:nth-child(1) {
+    border-right: 1px solid #d8d8d8;
+}
+
+#shortcut-list-content table > tbody {
+    display: block;
+    height: 184px;
+    overflow-y: auto;
+}
+
+#shortcut-list-content table > tbody > tr {
+    height: 20px;
+}
+
+#shortcut-list-content table > tbody > tr > td {
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+#shortcut-list-content table th:nth-child(1),
+#shortcut-list-content table td:nth-child(1) {
+    min-width: 90px;
+}
+
+#shortcut-list-content table th:nth-child(2),
+#shortcut-list-content table td:nth-child(2) {
+    width: 100%;
+    white-space: nowrap;
 }
 
 #import-dlg {

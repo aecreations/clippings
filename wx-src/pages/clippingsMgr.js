@@ -1047,6 +1047,11 @@ let gCmd = {
     }
   },
   
+  showShortcutList: function ()
+  {
+    window.setTimeout(() => { gDialogs.shortcutList.openPopup() }, 100);
+  },
+
   showHideDetailsPane: function ()
   {
     let currSetting = gClippings.getPrefs().clippingsMgrDetailsPane;
@@ -1426,6 +1431,11 @@ $(window).on("contextmenu", aEvent => {
 
 
 $(window).on("click", aEvent => {
+  // HACK!!
+  if ($("#shortcut-list-popup").hasClass("panel-show")) {
+    return;
+  }
+  
   aeDialog.hidePopups();
 });
 
@@ -1643,6 +1653,8 @@ function initToolbar()
       }
     }
   });
+
+  $("#show-shortcut-list").click(aEvent => { gCmd.showShortcutList() });
 }
 
 
@@ -1725,6 +1737,48 @@ function initDialogs()
 
   gDialogs.clippingMissingSrcURL = new aeDialog("#clipping-missing-src-url-msgbox");
   gDialogs.noUndoNotify = new aeDialog("#no-undo-msgbar");
+
+  gDialogs.shortcutList = new aeDialog("#shortcut-list-popup");
+  gDialogs.shortcutList.isInitialized = false;
+  gDialogs.shortcutList.onInit = () => {
+    log("Clippings Shortcuts popup: initializing");
+
+    let that = gDialogs.shortcutList;
+    if (! that.isInitialized) {
+      // TO DO: Initialize the UI strings for the HTML export content.
+      /***
+      aeImportExport.setL10nStrings({
+        // ...
+      });
+      ***/
+      $("#export-shct-list").click(aEvent => {
+        // TO DO: Perform HTML export of shortcut list.
+        window.alert("The selected action is not available right now.");
+        aEvent.stopPropagation();
+      });
+
+      // TEMPORARY - This really should go into the aeDialog module.
+      $("#shortcut-list-popup .panel-dismiss").click(aEvent => {
+        that.hidePopup();
+      });
+      // END TEMPORARY
+      
+      that.isInitialized = true;
+    }
+
+    // TEMPORARY - Until we fix omitted call to onUnload() on popup panels.
+    $("#shortcut-list-content").empty();
+    
+    aeImportExport.getShortcutKeyListHTML(false).then(aShctListHTML => {
+      $("#shortcut-list-content").append(aShctListHTML);
+    }).catch(aErr => {
+      console.error("Clippings/wx::clippingsMgr.js: gDialogs.shortcutList.onInit(): " + aErr);
+    });
+  };
+  gDialogs.shortcutList.onUnload = () => {
+    log("Clippings Shortcuts popup: unloading");
+    $("#shortcut-list-content").empty();
+  };
   
   gDialogs.importFromFile = new aeDialog("#import-dlg");
   gDialogs.importFromFile.IMP_APPEND = 0;
