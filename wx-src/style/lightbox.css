@@ -20,7 +20,7 @@
     opacity: 0.5;
 }
 
-.lightbox {
+.lightbox, .panel {
     --default-width: 480px;
     --default-height: 130px;
     
@@ -55,29 +55,25 @@
 }
 
 .panel {
-    --default-height: 100px;
-
-    display: none;
-    position: absolute;
-
-    min-width: 256px;
-    max-width: 480px;
-    height: var(--default-height);
-    right: 8px;
-    top: 36px;
-
     padding: 12px;
     background-color: white;
     z-index: 1002;
 
     border: 1px solid #ddd;
     border-radius: 2px;
-    box-shadow: 4px 4px 3px -2px #8F8F8F;
+    box-shadow: 0 2px 5px #00000080;
 
     font-size: 11px;
 }
 
-.panel {
+.msgbar {
+    left: unset;
+    right: 8px;
+    top: 36px;
+
+    min-width: 256px;
+    max-width: 480px;
+    width: unset;
     height: 26px;
     padding: unset;
     background-color: #ededf0;
@@ -88,7 +84,7 @@
     display: inline-block;
 }
 
-.panel .msgbar-icon {
+.msgbar .msgbar-icon {
     width: 16px;
     height: 16px;
     margin: 4px;
@@ -96,14 +92,14 @@
     background-size: contain;
 }
 
-.panel .msgbar-content {
+.msgbar .msgbar-content {
     margin-right: 64px;
     vertical-align: 8px;
     font-size: 13px;
     color: #0c0c0d;
 }
 
-.panel .msgbar-dismiss {
+.msgbar .msgbar-dismiss {
     position: absolute;
     right: 0px;
     width: 16px;
@@ -114,11 +110,11 @@
     border-radius: 2px;
 }
 
-.panel .msgbar-dismiss:hover {
+.msgbar .msgbar-dismiss:hover {
     background-color: rgba(12, 12, 13, 0.2);
 }
 
-.panel .msgbar-dismiss:active {
+.msgbar .msgbar-dismiss:active {
     background-color: rgba(12, 12, 13, 0.3);
 }
 
