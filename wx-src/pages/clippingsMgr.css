@@ -370,7 +370,7 @@ ul.fancytree-container {
 }
 
 #item-properties > #clipping-text {
-    order: 2;
+    order: 3;
     flex: 1 1 auto;
     margin-top: 2px;
     margin-bottom: 2px;
@@ -385,8 +385,53 @@ ul.fancytree-container {
     background-color: -moz-Field;
 }
 
-#item-properties > #source-url-bar {
+#item-properties > #placeholder-toolbar {
+    order: 2;
+    flex: 0 1 auto;
+    display: none;
+    
+    height: var(--toolbar-height);
+    padding-left: 8px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+
+    background-color: #eee;
+    color: #0c0c0d;
+    border-bottom: 1px solid silver;
+}
+
+#item-properties > #placeholder-toolbar > button {
+    height: 24px;
+}
+
+#item-properties > #placeholder-toolbar > label {
+    order: 1;
+    flex: 0 1 auto;
+
+    margin-right: 0;
+}
+
+#item-properties > #placeholder-toolbar > #plchldr-presets {
+    order: 2;
+    flex: 0 1 auto;
+    
+    padding-right: 12px;
+    background-image: url("../img/drop-down.svg");
+    background-position-x: right;
+}
+
+#item-properties > #placeholder-toolbar > #custom-plchldr {
     order: 3;
+    flex: 0 1 auto;
+}
+
+#item-properties > #placeholder-toolbar > #auto-incr-plchldr {
+    order: 4;
+    flex: 0 1 auto;
+}
+
+#item-properties > #source-url-bar {
+    order: 4;
     flex: 0 1 auto;
 
     padding: 4px 8px 8px 8px;
@@ -493,7 +538,7 @@ ul.fancytree-container {
 }
 
 #item-properties > #options-bar {
-    order: 4;
+    order: 5;
     flex: 0 1 auto;
     margin-bottom: 6px;
     padding: 1px 8px 0px 8px;

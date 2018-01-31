@@ -180,6 +180,7 @@ async function setDefaultPrefs()
     pastePromptAction: aeConst.PASTEACTION_SHORTCUT_KEY,
     clippingsMgrDetailsPane: false,
     clippingsMgrStatusBar: false,
+    clippingsMgrPlchldrToolbar: false,
     clippingsMgrMinzWhenInactv: undefined,
   };
 

@@ -1052,6 +1052,26 @@ let gCmd = {
     window.setTimeout(() => { gDialogs.shortcutList.openPopup() }, 100);
   },
 
+  showHidePlaceholderToolbar: function ()
+  {
+    let currSetting = gClippings.getPrefs().clippingsMgrPlchldrToolbar;
+    chrome.storage.local.set({ clippingsMgrPlchldrToolbar: !currSetting });
+    
+    if (gIsClippingsTreeEmpty) {
+      return;
+    }
+
+    let tree = getClippingsTree();
+    let selectedNode = tree.activeNode;
+    if (! selectedNode) {
+      return;
+    }
+
+    if (! selectedNode.isFolder()) {
+      $("#placeholder-toolbar").toggle();
+    }
+  },
+  
   showHideDetailsPane: function ()
   {
     let currSetting = gClippings.getPrefs().clippingsMgrDetailsPane;
@@ -1475,6 +1495,104 @@ function initToolbar()
   });
   $("#undo").click(aEvent => { gCmd.undo() });
 
+  // Placeholder toolbar -> Presets menu
+  $.contextMenu({
+    selector: "#plchldr-presets",
+    trigger: "left",
+
+    events: {
+      activated: function (aOptions) {
+        $("#plchldr-presets").addClass("toolbar-button-menu-open");
+      },
+
+      hide: function (aOptions) {
+        $("#plchldr-presets").removeClass("toolbar-button-menu-open");
+      },
+    },
+
+    position: function (aOpt, aX, aY) {
+      aX = undefined;
+      aY = undefined;
+
+      aOpt.$menu.position({
+        my: "left top",
+        at: "left bottom",
+        of: $("#plchldr-presets"),
+      });
+    },
+
+    callback: function (aItemKey, aOpt, aRootMenu, aOriginalEvent) {
+      let contentTextArea = $("#clipping-text");
+      contentTextArea.focus();
+
+      function insertPlaceholder(aPlaceholder) {
+        insertTextIntoTextbox(contentTextArea, aPlaceholder);
+      }
+      
+      switch (aItemKey) {
+      case "insDate":
+        insertPlaceholder("$[DATE]");
+        break;
+        
+      case "insTime":
+        insertPlaceholder("$[TIME]");
+        break;
+        
+      case "insAppName":
+        insertPlaceholder("$[HOSTAPP]");
+        break;
+        
+      case "insUserAgent":
+        insertPlaceholder("$[UA]");
+        break;
+        
+      case "insClippingName":
+        insertPlaceholder("$[NAME]");
+        break;
+        
+      case "insParentFolderName":
+        insertPlaceholder("$[FOLDER]");
+        break;
+        
+      default:
+        window.alert("The selected action is not available right now.");
+        break;
+      }
+    },
+
+    items: {
+      insDate: {
+        name: "Date",
+        className: "ae-menuitem"
+      },
+
+      insTime: {
+        name: "Time",
+        className: "ae-menuitem"
+      },
+
+      insAppName: {
+        name: "Application Name",
+        className: "ae-menuitem"
+      },
+
+      insUserAgent: {
+        name: "User Agent",
+        className: "ae-menuitem"
+      },
+
+      insClippingName: {
+        name: "Clipping Name",
+        className: "ae-menuitem"
+      },
+
+      insParentFolderName: {
+        name: "Parent Folder Name",
+        className: "ae-menuitem"
+      }
+    }
+  });
+  
   // Tools menu
   $.contextMenu({
     selector: "#clippings-mgr-options",
@@ -1527,6 +1645,10 @@ function initToolbar()
         gCmd.removeAllSrcURLs();
         break;
 
+      case "togglePlchldrToolbar":
+        gCmd.showHidePlaceholderToolbar();
+        break;
+        
       case "toggleDetailsPane":
         gCmd.showHideDetailsPane();
         break;
@@ -1605,7 +1727,18 @@ function initToolbar()
               }
             }
           },
-          
+          togglePlchldrToolbar: {
+            name: "Placeholder Toolbar",
+            className: "ae-menuitem",
+            disabled: function (aKey, aOpt) {
+              return (gIsClippingsTreeEmpty || isFolderSelected());
+            },
+            icon: function (aOpt, $itemElement, aItemKey, aItem) {
+              if ($("#placeholder-toolbar").css("display") != "none") {
+                return "context-menu-icon-checked";
+              }
+            }
+          },         
           toggleStatusBar: {
             name: "Status Bar",
             className: "ae-menuitem",
@@ -2516,7 +2649,7 @@ function updateDisplay(aEvent, aData)
       $("#clipping-name").val(aResult.name);
       $("#clipping-text").val("").hide();
 
-      $("#source-url-bar, #options-bar").hide();
+      $("#source-url-bar, #options-bar, #placeholder-toolbar").hide();
       $("#clipping-src-url").text("");
       let shortcutKeyMenu = $("#clipping-key")[0];
       shortcutKeyMenu.selectedIndex = 0;
@@ -2533,6 +2666,10 @@ function updateDisplay(aEvent, aData)
 
       if (gClippings.getPrefs().clippingsMgrDetailsPane) {
         $("#source-url-bar, #options-bar").show();
+      }
+
+      if (gClippings.getPrefs().clippingsMgrPlchldrToolbar) {
+        $("#placeholder-toolbar").show();
       }
       
       if (aResult.sourceURL) {
@@ -2559,6 +2696,33 @@ function updateDisplay(aEvent, aData)
       gClippingLabelPicker.selectedLabel = aResult.label;
     });
   }
+}
+
+
+function insertTextIntoTextbox(aTextboxElt, aInsertedText)
+{
+  let text, pre, post, pos;
+  let textbox = aTextboxElt[0];
+  
+  text = textbox.value;
+
+  if (textbox.selectionStart == textbox.selectionEnd) {
+    var point = textbox.selectionStart;
+    pre = text.substring(0, point);
+    post = text.substring(point, text.length);
+    pos = point + aInsertedText.length;
+  }
+  else {
+    var p1 = textbox.selectionStart;
+    var p2 = textbox.selectionEnd;
+    pre = text.substring(0, p1);
+    post = text.substring(p2, text.length);
+    pos = p1 + aInsertedText.length;
+  }
+
+  textbox.value = pre + aInsertedText + post;
+  textbox.selectionStart = pos;
+  textbox.selectionEnd = pos;
 }
 
 
