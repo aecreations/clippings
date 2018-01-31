@@ -2393,6 +2393,17 @@ function buildClippingsTree()
         },
         
         callback: function (aItemKey, aOpt, aRootMenu, aOriginalEvent) {
+          function setLabel(aLabel) {
+            let tree = getClippingsTree();
+            let selectedNode = tree.activeNode;
+            if (!selectedNode || selectedNode.isFolder()) {
+              return;
+            }
+
+            let clippingID = parseInt(selectedNode.key);
+            gCmd.setLabelIntrl(clippingID, aLabel, gCmd.UNDO_STACK);
+          }
+          
           switch (aItemKey) {
           case "moveOrCopy":
             gCmd.moveClippingOrFolder();
@@ -2419,6 +2430,21 @@ function buildClippingsTree()
               gCmd.gotoURL(srcURL);
             });
             break;
+
+          case "labelNone":
+            setLabel("");
+            break;
+            
+          case "labelRed":
+          case "labelOrange":
+          case "labelYellow":
+          case "labelGreen":
+          case "labelBlue":
+          case "labelPurple":
+          case "labelGrey":
+            setLabel(aItemKey.substr(5).toLowerCase());
+            break;
+
           default:
             window.alert("The selected action is not available right now.");
             break;
@@ -2440,6 +2466,86 @@ function buildClippingsTree()
                 return false;
               }
               return true;
+            }
+          },
+          labelSubmenu: {
+            name: "Label",
+            visible: function (aItemKey, aOpt) {
+              return (! isFolderSelected());
+            },
+            items: {
+              labelNone: {
+                name: "None",
+                className: "ae-menuitem",
+                icon: function (aOpt, $itemElement, aItemKey, aItem) {
+                  if (gClippingLabelPicker.selectedLabel == "") {
+                    return "context-menu-icon-checked";
+                  }
+                }
+              },
+              labelRed: {
+                name: "Red",
+                className: "ae-menuitem clipping-label-red",
+                icon: function (aOpt, $itemElement, aItemKey, aItem) {
+                  if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
+                    return "context-menu-icon-checked";
+                  }
+                }
+              },
+              labelOrange: {
+                name: "Orange",
+                className: "ae-menuitem clipping-label-orange",
+                icon: function (aOpt, $itemElement, aItemKey, aItem) {
+                  if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
+                    return "context-menu-icon-checked";
+                  }
+                }
+              },
+              labelYellow: {
+                name: "Yellow",
+                className: "ae-menuitem clipping-label-yellow",
+                icon: function (aOpt, $itemElement, aItemKey, aItem) {
+                  if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
+                    return "context-menu-icon-checked";
+                  }
+                }
+              },
+              labelGreen: {
+                name: "Green",
+                className: "ae-menuitem clipping-label-green",
+                icon: function (aOpt, $itemElement, aItemKey, aItem) {
+                  if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
+                    return "context-menu-icon-checked";
+                  }
+                }
+              },
+              labelBlue: {
+                name: "Blue",
+                className: "ae-menuitem clipping-label-blue",
+                icon: function (aOpt, $itemElement, aItemKey, aItem) {
+                  if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
+                    return "context-menu-icon-checked";
+                  }
+                }
+              },
+              labelPurple: {
+                name: "Purple",
+                className: "ae-menuitem clipping-label-purple",
+                icon: function (aOpt, $itemElement, aItemKey, aItem) {
+                  if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
+                    return "context-menu-icon-checked";
+                  }
+                }
+              },
+              labelGrey: {
+                name: "Gray",
+                className: "ae-menuitem clipping-label-grey",
+                icon: function (aOpt, $itemElement, aItemKey, aItem) {
+                  if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
+                    return "context-menu-icon-checked";
+                  }
+                }
+              },
             }
           },
           separator0: "--------",

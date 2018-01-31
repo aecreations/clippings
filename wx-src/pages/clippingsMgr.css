@@ -339,6 +339,35 @@ ul.fancytree-container {
     cursor: col-resize;
 }
 
+/* Label submenu on clippings tree context menu */
+.clipping-label-red {
+    color: red;
+}
+
+.clipping-label-orange {
+    color: orange;
+}
+
+.clipping-label-yellow {
+    color: rgb(200, 200, 0);
+}
+
+.clipping-label-green {
+    color: green;
+}
+
+.clipping-label-blue {
+    color: blue;
+}
+
+.clipping-label-purple {
+    color: purple;
+}
+
+.clipping-label-grey {
+    color: gray;
+}
+
 #item-properties {
     order: 3;
     flex: 1 1 auto;
