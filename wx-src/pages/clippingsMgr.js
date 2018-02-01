@@ -1874,8 +1874,6 @@ function initDialogs()
   gDialogs.shortcutList = new aeDialog("#shortcut-list-dlg");
   gDialogs.shortcutList.isInitialized = false;
   gDialogs.shortcutList.onInit = () => {
-    log("Clippings/wx::clippingsMgr.js: Clippings Shortcuts dialog: initializing");
-
     let that = gDialogs.shortcutList;
     if (! that.isInitialized) {
       let instrxns = "To paste a clipping from the list below into a web page textbox in Firefox, press ALT+SHIFT+Y, then the shortcut key.";
@@ -1916,10 +1914,6 @@ function initDialogs()
       that.isInitialized = true;
     }
 
-    // TEMPORARY - Until we fix omitted call to onUnload() on popup panels.
-    /**
-    $("#shortcut-list-content").empty();
-    **/    
     aeImportExport.getShortcutKeyListHTML(false).then(aShctListHTML => {
       $("#shortcut-list-content").append(aShctListHTML);
     }).catch(aErr => {
@@ -1927,7 +1921,6 @@ function initDialogs()
     });
   };
   gDialogs.shortcutList.onUnload = () => {
-    log("Clippings/wx::clippingsMgr.js: Shortcuts dialog: unloading");
     $("#shortcut-list-content").empty();
   };
   
