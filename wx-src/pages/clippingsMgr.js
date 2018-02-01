@@ -1884,16 +1884,33 @@ function initDialogs()
       }
       $("#shortcut-instrxns").text(instrxns);
       
-      // TO DO: Initialize the UI strings for the HTML export content.
-      /***
       aeImportExport.setL10nStrings({
-        // ...
+        shctTitle: "Clippings Shortcut Keys",
+        hostAppInfo: `Clippings 6.0.3a1+ on ${gClippings.getHostAppName()}`,
+        shctKeyInstrxns: "To paste a clipping into a web page textbox in Firefox, press ALT+SHIFT+Y (Command+Shift+Y on macOS), then the shortcut key.",
+        shctKeyColHdr: "Shortcut Key",
+        clippingNameColHdr: "Clipping Name",
       });
-      ***/
+
       $("#export-shct-list").click(aEvent => {
-        // TO DO: Perform HTML export of shortcut list.
-        window.alert("The selected action is not available right now.");
-        aEvent.stopPropagation();
+        aeImportExport.getShortcutKeyListHTML(true).then(aHTMLData => {
+          let blobData = new Blob([aHTMLData], { type: "text/html;charset=utf-8"});
+          let downldOpts = {
+            url: URL.createObjectURL(blobData),
+            filename: aeConst.HTML_EXPORT_SHORTCUTS_FILENAME,
+            saveAs: true,
+          };
+          return browser.downloads.download(downldOpts);
+
+        }).catch(aErr => {
+          if (aErr.fileName == "undefined") {
+            // User cancel
+          }
+          else {
+            console.error(aErr);
+            window.alert("Sorry, an error occurred while creating the export file.\n\nDetails:\n" + getErrStr(aErr));
+          }
+        });
       });
       
       that.isInitialized = true;
