@@ -118,7 +118,7 @@
 	      <option>9</option>
 	      <option>0</option>
 	    </select>
-	    <button id="show-shortcut-list" class="toolbar-button">Shortcut List</button>
+	    <button id="show-shortcut-list" class="toolbar-button" title="Shortcut Help">(?)</button>
 	  </div>  <!-- #shortcut-key-select -->
 	  
 	  <div id="options-bar-spacer" class="spacer"></div>
@@ -145,16 +145,7 @@
     </div>
 
     <!-- Popup panels -->
-    <div id="panel-bkgrd-ovl" class="panel-bkgrd"></div>
-    <div id="shortcut-list-popup" class="panel">
-      <div id="shortcut-list-titlebar" class="hbox">
-        <span id="shct-list-panel-title">Shortcut List</span>
-        <button id="export-shct-list" class="toolbar-button toolbar-button-labelled">Export As HTML</button>
-	<button id="close-shct-list-popup" class="toolbar-button panel-dismiss"></button>
-      </div>
-      <div id="shortcut-list-content"></div>    
-    </div>
-      
+    <div id="panel-bkgrd-ovl" class="panel-bkgrd"></div>      
     <div id="all-src-urls-removed-confirm-msgbar" class="msgbar panel">
       <div class="msgbar-icon"></div>
       <div class="msgbar-content">Removed source web page addresses from your clippings.</div>
@@ -169,6 +160,17 @@
     
     <!-- Dialog boxes -->
     <div id="lightbox-bkgrd-ovl" class="lightbox-bkgrd"></div>
+    <div id="shortcut-list-dlg" class="lightbox">
+      <p class="hlp-hdr">Clippings Shortcuts</p>
+      <p id="shortcut-instrxns"></p>
+      <div id="shortcut-list-content"></div>    
+      <div class="dlg-btns hbox">
+        <button id="export-shct-list" class="browser-style">Export As HTML</button>
+	<span id="shortcut-list-btns-spacer"></span>
+	<button class="dlg-accept browser-style default">Close</button>
+      </div>
+    </div>
+
     <div id="shortcut-key-conflict-msgbox" class="lightbox">
       <div class="msgbox-icon" style="margin-top:8px"></div>
       <p>The selected shortcut key has already been assigned to another clipping.  Please select a different shortcut key.</p>

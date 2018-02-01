@@ -675,46 +675,36 @@ ul.fancytree-container {
     --width: 430px;
 }
 
-#shortcut-list-popup {
+#shortcut-list-dlg {
     --width: 420px;
-    --height: 236px;
-    top: 48px;
-    padding: 0;
+    --height: 322px;
+    top: 24px;
 }
 
-#shortcut-list-popup #shortcut-list-titlebar {
-    height: 30px;
-    padding-left: 2px;
-    padding-top: 2px;
-    padding-bottom: 2px;
-    background: linear-gradient(to bottom, #fcfcfc 0%, #dedede 100%);
-    border-bottom: 1px solid #c0c0c0;
+#shortcut-list-dlg > .dlg-btns {
+    width: 100%;
 }
 
-#shortcut-list-popup #shortcut-list-titlebar > #shct-list-panel-title {
+#shortcut-list-dlg > .dlg-btns > #export-shct-list {
     order: 1;
     flex: 0 1 auto;
-
-    padding: 6px;
-    font-size: 12px;
-    font-weight: bold;
+    margin-left: 22px;
 }
 
-#shortcut-list-popup #shortcut-list-titlebar > #export-shct-list {
+#shortcut-list-dlg > .dlg-btns > #shortcut-list-btns-spacer {
     order: 2;
-    flex: 0 1 auto;
-    background-image: url("../img/save.svg");
+    flex: 1 1 auto;
 }
 
-#shortcut-list-popup #shortcut-list-titlebar > #close-shct-list-popup {
-    position: absolute;
-    right: 0px;
-    width: 16px;
-    min-width: 16px;
-    height: 16px;
-    margin: 4px;
-    background-image: url("../img/close-panel.svg");
-    background-size: contain;
+#shortcut-list-dlg > .dlg-btns > .dlg-accept {
+    order: 3;
+    flex: 0 1 auto;
+}
+
+#shortcut-list-content {
+    margin-left: -16px;
+    margin-right: -16px;
+    height: calc(100% - var(--toolbar-height));
 }
 
 #shortcut-list-content table {
@@ -741,8 +731,10 @@ ul.fancytree-container {
 
 #shortcut-list-content table > tbody {
     display: block;
-    height: 184px;
+    height: 160px;
+    overflow-x: none;
     overflow-y: auto;
+    border-bottom: 1px solid #d4d4d4;
 }
 
 #shortcut-list-content table > tbody > tr {
@@ -925,7 +917,8 @@ ul.fancytree-container {
     top: 28px;
 }
 
-#mini-help-dlg p.hlp-hdr {
+#shortcut-list-dlg .hlp-hdr,
+#mini-help-dlg .hlp-hdr {
     margin-top: 0;
     font-size: 12px;
     font-weight: bold;
