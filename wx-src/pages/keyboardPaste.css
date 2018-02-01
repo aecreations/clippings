@@ -145,8 +145,8 @@ button {
 
 #shortcut-list-content table > tbody {
     display: block;
-    height: 184px;
-    /*height: calc(100% - var(--toolbar-height) - var(--col-hdr-height));*/
+    height: 186px;
+    overflow-x: none;
     overflow-y: auto;
 }
 
