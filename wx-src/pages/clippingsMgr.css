@@ -399,7 +399,7 @@ ul.fancytree-container {
 }
 
 #item-properties > #clipping-text {
-    order: 3;
+    order: 2;
     flex: 1 1 auto;
     margin-top: 2px;
     margin-bottom: 2px;
@@ -415,7 +415,7 @@ ul.fancytree-container {
 }
 
 #item-properties > #placeholder-toolbar {
-    order: 2;
+    order: 3;
     flex: 0 1 auto;
     display: none;
     
@@ -426,7 +426,6 @@ ul.fancytree-container {
 
     background-color: #eee;
     color: #0c0c0d;
-    border-bottom: 1px solid silver;
 }
 
 #item-properties > #placeholder-toolbar > button {
@@ -661,6 +660,16 @@ ul.fancytree-container {
     padding-bottom: 3px;
 }
 
+.lightbox .row {
+    width: 100%;
+}
+
+.lightbox .row > input[type="text"] {
+    width: 100%;
+    margin-top: 2px;
+    margin-bottom: 8px;
+}
+
 #shortcut-key-conflict-msgbox,
 #clipping-missing-src-url-msgbox,
 #remove-all-source-urls-dlg,
@@ -669,6 +678,28 @@ ul.fancytree-container {
 #mini-help-dlg,
 #generic-msg-box {
     top: 64px;
+}
+
+#custom-placeholder-dlg {
+    --width: 330px;
+    --height: 206px;
+    top: 48px;
+}
+
+#numeric-placeholder-dlg {
+    --width: 330px;
+    --height: 190px;
+    top: 48px;
+}
+
+#custom-placeholder-dlg input[type="text"],
+#numeric-placeholder-dlg input[type="text"] {
+    display: block;
+}
+
+#custom-placeholder-dlg .input-error,
+#numeric-placeholder-dlg .input-error {
+    background-color: pink;
 }
 
 #clipping-missing-src-url-msgbox {

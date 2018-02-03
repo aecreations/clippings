@@ -54,10 +54,8 @@
 	<div id="placeholder-toolbar" class="hbox">
           <label>Insert Placeholder:</label>
 	  <button id="plchldr-presets" class="toolbar-button">Presets</button>
-<!--
 	  <button id="custom-plchldr" class="toolbar-button toolbar-button-labelled">Custom</button>
 	  <button id="auto-incr-plchldr" class="toolbar-button toolbar-button-labelled">Numeric</button>
--->
         </div>
 	
 	<!-- Source URL -->
@@ -177,6 +175,44 @@
       <p>The selected shortcut key has already been assigned to another clipping.  Please select a different shortcut key.</p>
       <div class="dlg-btns">
 	<button class="dlg-accept browser-style default">OK</button>
+      </div>
+    </div>
+
+    <div id="custom-placeholder-dlg" class="lightbox">
+      <div class="dlg-content">
+	<div class="row browser-style">
+	<label for="custom-plchldr-name">Name of custom placeholder:</label>
+	<input type="text" id="custom-plchldr-name" required
+         placeholder="Letters, numbers, underscores, no spaces"
+	 pattern="[^a-zA-Z0-9_\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]"/>
+	</div>
+	<div class="row browser-style">
+  	  <label for="custom-plchldr-default-val">Default value (optional):</label>
+  	  <input type="text" id="custom-plchldr-default-val"/>
+        </div>
+	<p>Separate multiple default values with a <q>|</q> symbol.  Example: red|green|blue</p>
+      </div>
+      <div class="dlg-btns">
+	<button class="dlg-accept browser-style default">OK</button>
+        <button class="dlg-cancel browser-style">Cancel</button>
+      </div>
+    </div>
+
+    <div id="numeric-placeholder-dlg" class="lightbox">      
+      <div class="dlg-content">
+        <div class="row browser-style">
+  	  <label>Name of numeric placeholder:</label>
+	  <input type="text" id="numeric-plchldr-name" required
+	   placeholder="Letters, numbers, underscores, no spaces"
+ 	   pattern="[^a-zA-Z0-9_\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]"/>
+        </div>
+	<p>Each time the clipping is pasted, the value of this placeholder
+      will automatically increase by one, until the placeholder is reset from the Clippings toolbar
+      context menu.</p>
+      </div>
+      <div class="dlg-btns">
+	<button class="dlg-accept browser-style default">OK</button>
+        <button class="dlg-cancel browser-style">Cancel</button>
       </div>
     </div>
 

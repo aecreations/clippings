@@ -1052,6 +1052,16 @@ let gCmd = {
     gDialogs.shortcutList.showModal();
   },
 
+  insertCustomPlaceholder: function ()
+  {
+    gDialogs.insCustomPlchldr.showModal();
+  },
+
+  insertNumericPlaceholder: function ()
+  {
+    gDialogs.insAutoIncrPlchldr.showModal();
+  },
+  
   showHidePlaceholderToolbar: function ()
   {
     let currSetting = gClippings.getPrefs().clippingsMgrPlchldrToolbar;
@@ -1787,6 +1797,8 @@ function initToolbar()
     }
   });
 
+  $("#custom-plchldr").click(aEvent => { gCmd.insertCustomPlaceholder() });
+  $("#auto-incr-plchldr").click(aEvent => { gCmd.insertNumericPlaceholder() });
   $("#show-shortcut-list").click(aEvent => { gCmd.showShortcutList() });
 }
 
@@ -1922,6 +1934,88 @@ function initDialogs()
   };
   gDialogs.shortcutList.onUnload = () => {
     $("#shortcut-list-content").empty();
+  };
+
+  gDialogs.insCustomPlchldr = new aeDialog("#custom-placeholder-dlg");
+  gDialogs.insCustomPlchldr.isInitialized = false;
+  gDialogs.insCustomPlchldr.validatePlaceholderName = function (aName) {
+    if (aName.match(/[^a-zA-Z0-9_\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]/)) {
+      return false;
+    }
+    return true;    
+  };
+  gDialogs.insCustomPlchldr.onInit = () => {
+    let that = gDialogs.insCustomPlchldr;
+
+    if (! that.isInitialized) {
+      $("#custom-plchldr-name").on("keypress", aEvent => {
+        if ($(aEvent.target).hasClass("input-error")) {
+          $(aEvent.target).removeClass("input-error");
+        }
+      });
+      that.isInitialized = true;
+    }
+    
+    $("#custom-plchldr-default-val").val("");
+    $("#custom-plchldr-name").removeClass("input-error").val("").focus();
+  };
+  gDialogs.insCustomPlchldr.onAccept = () => {
+    let placeholderName = $("#custom-plchldr-name").val();
+    if (! placeholderName) {
+      $("#custom-plchldr-name").focus();
+      return;
+    }
+    
+    let that = gDialogs.insCustomPlchldr;
+    if (! that.validatePlaceholderName(placeholderName)) {
+      $("#custom-plchldr-name").addClass("input-error").focus();
+      return;
+    }
+
+    let placeholderValue = $("#custom-plchldr-default-val").val();
+    let placeholder = "$[" + placeholderName;
+
+    if (placeholderValue) {
+      placeholder = placeholder + "{" + placeholderValue + "}]";
+    }
+    else {
+      placeholder = placeholder + "]";
+    }
+
+    insertTextIntoTextbox($("#clipping-text"), placeholder);
+    that.close();
+  };
+
+  gDialogs.insAutoIncrPlchldr = new aeDialog("#numeric-placeholder-dlg");
+  gDialogs.insAutoIncrPlchldr.isInitialized = false;
+  gDialogs.insAutoIncrPlchldr.onInit = () => {
+    let that = gDialogs.insAutoIncrPlchldr;
+    if (! that.isInitialized) {
+      $("#numeric-plchldr-name").on("keypress", aEvent => {
+        if ($(aEvent.target).hasClass("input-error")) {
+          $(aEvent.target).removeClass("input-error");
+        }
+      });
+    }
+    $("#numeric-plchldr-name").removeClass("input-error").val("").focus();
+  };
+  gDialogs.insAutoIncrPlchldr.onAccept = () => {
+    let placeholderName = $("#numeric-plchldr-name").val();
+    if (! placeholderName) {
+      $("#numeric-plchldr-name").focus();
+      return;
+    }
+    
+    if (! gDialogs.insCustomPlchldr.validatePlaceholderName(placeholderName)) {
+      $("#numeric-plchldr-name").addClass("input-error").focus();
+      return;
+    }
+
+    let that = gDialogs.insAutoIncrPlchldr;
+    let placeholder = "#[" + placeholderName + "]";
+
+    insertTextIntoTextbox($("#clipping-text"), placeholder);
+    that.close();
   };
   
   gDialogs.importFromFile = new aeDialog("#import-dlg");
