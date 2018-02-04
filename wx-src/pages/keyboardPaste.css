@@ -90,11 +90,11 @@ button {
 
 #shortcut-list-toolbar #export-shct-list {
     order: 2;
-    background-image: url("../img/save.svg");
+    background-image: url("../img/export.svg");
 }
 
 #shortcut-list-toolbar #export-shct-list:hover {
-    background-image: url("../img/save_hover.svg");
+    background-image: url("../img/export_hover.svg");
 }
 
 #shortcut-list-toolbar #close {
