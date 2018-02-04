@@ -432,6 +432,22 @@ ul.fancytree-container {
     height: 24px;
 }
 
+#item-properties > #placeholder-toolbar > #custom-plchldr {
+    background-image: url("../img/customPlchldr.svg");
+}
+
+#item-properties > #placeholder-toolbar > #custom-plchldr:hover {
+    background-image: url("../img/customPlchldr_hover.svg");
+}
+
+#item-properties > #placeholder-toolbar > #auto-incr-plchldr {
+    background-image: url("../img/numericPlchldr.svg");
+}
+
+#item-properties > #placeholder-toolbar > #auto-incr-plchldr:hover {
+    background-image: url("../img/numericPlchldr_hover.svg");
+}
+
 #item-properties > #placeholder-toolbar > label {
     order: 1;
     flex: 0 1 auto;
