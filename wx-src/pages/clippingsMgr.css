@@ -600,6 +600,12 @@ ul.fancytree-container {
 
 #options-bar > #shortcut-key-select > #show-shortcut-list {
     height: 24px;
+    vertical-align: bottom;
+    background-image: url("../img/help.svg");
+}
+
+#options-bar > #shortcut-key-select > #show-shortcut-list:hover {
+    background-image: url("../img/help_hover.svg");
 }
 
 #options-bar > #options-bar-spacer {
