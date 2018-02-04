@@ -48,6 +48,10 @@
     "message": "Finish"
   },
 
+  "btnBrowse": {
+    "message": "Browse..."
+  },
+
   "msgUnavail": {
     "message": "The selected action is not available right now."
   },
@@ -113,5 +117,185 @@
   "baMenuResetAutoIncrPlaceholders": {
     "message": "Reset Auto-increment Placeholders",
     "description": "Clippings browser action submenu"
+  },
+
+  "welcomePageTitle": {
+    "message": "Welcome to Clippings 6",
+    "description": "Welcome to Clippings (post-installation) page title"
+  },
+
+  "welcInstallSuccessHdg": {
+    "message": "Welcome to Clippings 6!"
+  },
+
+  "welcInstallSuccessSubh": {
+    "message": "Installation successfully completed."
+  },
+
+  "welcCurrUsrHdg": {
+    "message": "Current Users"
+  },
+
+  "welcCurrUsrDesc": {
+    "message": "Bring your clippings over from a previous version of Clippings."
+  },
+
+  "welcCurrUsrCTA": {
+    "message": "Import My Clippings"
+  },
+
+  "welcNewUsrHdg": {
+    "message": "New Users"
+  },
+
+  "welcNewUsrDesc": {
+    "message": "Learn the essential features of Clippings in just a few minutes."
+  },
+
+  "welcNewUsrCTA": {
+    "message": "Quick Start Guide"
+  },
+
+  "closeWelcomePg": {
+    "message": "Close This Page"
+  },
+
+  "welcImportHdg": {
+    "message": "Import Clippings Backup File"
+  },
+
+  "welcImportDesc": {
+    "message": "To get started, click Browse, then locate the backup file on your system."
+  },
+
+  "welcSkipImport": {
+    "message": "Skip Import"
+  },
+
+  "welcNoBackupExpand": {
+    "message": "What to do if you didn't create a backup"
+  },
+
+  "welcNoBackupSubh": {
+    "message": "If you didn't back up your clippings, follow these steps:"
+  },
+
+  "welcFileMgrWindows": {
+    "message": "Windows Explorer",
+    "description": "File manager application on Windows, for locating Clippings backup folder"
+  },
+
+  "welcFileMgrMac": {
+    "message": "Finder",
+    "description": "File manager application on macOS, for locating Clippings backup folder"
+  },
+
+  "welcFileMgrGeneric": {
+    "message": "the file manager on your system"
+  },
+
+  "welcShowBkupFileNote": {
+    "message": " (You may need to use the command line to see this folder.)",
+    "description": "Note to Linux and macOS users about showing hidden backup folder."
+  },
+  
+  "welcNoBackupInstrxnStep1": {
+    "message": "Use $1 to find the Clippings data source location. Depending on your previous settings, it may be your Firefox profile folder, or another folder located elsewhere."
+  },
+
+  "welcNoBackupInstrxnStep2": {
+    "message": "Open the data source folder and locate the Clippings backup folder. It should be named \"clippings-backup\" or \".clipbak\". $1"
+  },
+  
+  "welcNoBackupInstrxnStep3": {
+    "message": "Open the Clippings backup folder and locate the most recent backup file. Copy this to your Desktop or Documents folder."
+  },
+
+  "welcNoBackupInstrxnStep4": {
+    "message": "Click Browse above, and then select the backup file."
+  },
+
+  "welcReadyImport": {
+    "message": "When ready, click Import to bring your Clippings data over to Clippings 6."
+  },
+
+  "welcImportBtn": {
+    "message": "Import"
+  },
+
+  "welcBack": {
+    "message": "Back to Welcome Page"
+  },
+
+  "welcImportStatus": {
+    "message": "Importing clippings..."
+  },
+
+  "welcImportStatusDone": {
+    "message": "Importing clippings... done!"
+  },
+
+  "welcImportCount": {
+    "message": "Imported $1 items."
+  },
+
+  "welcImportConfirmDone": {
+    "message": "Your clippings have been successfully imported. Clippings is now ready to use."
+  },
+
+  "welcShctKeyNote": {
+    "message": "The Clippings keyboard paste key <strong>has changed</strong> in Clippings 6. To paste a clipping by its shortcut key or to search by name, press <span id=\"keybd-paste-key\">$1</span>."
+  },
+
+  "welcOpenClipMgr": {
+    "message": "Open Clippings Manager"
+  },
+
+  "welcImportError": {
+    "message": "Error reading selected file.  The file may not be a valid Clippings file."
+  },
+
+  "welcImportRetry": {
+    "message": "Click Try Again to go back and select another backup file."
+  },
+
+  "welcImportRetryBtn": {
+    "message": "Try Again"
+  },
+
+  "welcLeaveConfirm": {
+    "message": "Are you sure you want to leave the Welcome to Clippings page?"
+  },
+
+  "welcCancelDlg": {
+    "message": "Go Back"
+  },
+
+  "welcImportLater": {
+    "message": "You can import your clippings backup later by opening Clippings Manager and then selecting Tools \u2192 Import."
+  },
+
+  "welcCantImportHdg": {
+    "message": "Clippings can't import the backup file, because the Clippings database is not accessible."
+  },
+
+  "welcCantImportCause": {
+    "message": "This may happen if the privacy settings in Firefox are too restrictive (for example, turning on Private Browsing mode).  These settings can interfere with WebExtensions such as Clippings."
+  },
+
+  "welcCantImportFix": {
+    "message": "Make sure that the browser's privacy settings are at their defaults, then restart Firefox and try again. If this doesn't fix it, follow these steps:"
+  },
+
+  "welcCantImportFixStep1": {
+    "message": "Open the Firefox menu and select Help \u2192 Troubleshooting Information."
+  },
+
+  "welcCantImportFixStep2": {
+    "message": "Click Refresh Firefox, then follow the prompts. Firefox will restart."
+  },
+
+  "welcCantImportFixStep3": {
+    "message": "Reinstall Clippings, and then try importing the backup file again."
   }
 }

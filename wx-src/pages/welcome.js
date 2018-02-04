@@ -4,6 +4,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
+const DEBUG_SIMULATE_DB_ACCESS_ERROR = false;
+
 let gClippingsDB = null;
 let gClippings = null;
 
@@ -25,7 +27,7 @@ let gClippingsListener = {
       }).then(aNumClippings => {
         $("#import-statistics").text("...");
         numItems += aNumClippings;
-        $("#import-statistics").text(`Imported ${numItems} items.`);
+        $("#import-statistics").text(chrome.i18n.getMessage("welcImportCount", numItems));
       });
     }).catch(aErr => {
       console.error("Clippings/wx: welcome.js: gClippingsListener.afterBatchChanges(): " + aErr);
@@ -68,6 +70,10 @@ $(() => {
       gClippings.verifyDB().then(aNumClippings => {
         console.log(`Clippings/wx: welcome.js: Database verification successful (${aNumClippings} clippings in database).`);
 
+        if (DEBUG_SIMULATE_DB_ACCESS_ERROR) {
+          throw new TypeError("This is a test");
+        }
+        
       }).catch(aErr => {
         console.error("Clippings/wx: welcome.js: $(#goto-import-bkup).click()::initImportPg(): " + aErr);
 
@@ -112,19 +118,27 @@ $(() => {
   let keybdPasteKey = "ALT\u00a0+\u00a0SHIFT\u00a0+\u00a0Y";
   
   if (os == "win") {
-    osFileBrwsApp = "Windows Explorer";
+    osFileBrwsApp = chrome.i18n.getMessage("welcFileMgrWindows");
   }
   else if (os == "mac") {
-    osFileBrwsApp = "Finder";
+    osFileBrwsApp = chrome.i18n.getMessage("welcFileMgrMac");
     keybdPasteKey = "\u21e7\u2318Y";
   }
-  $("#os-file-browser").text(osFileBrwsApp);
-  $("#keybd-paste-key").text(keybdPasteKey);
+  else {
+    osFileBrwsApp = chrome.i18n.getMessage("welcFileMgrGeneric");
+  }
 
+  $("#no-backup-instrxn-step1").text(chrome.i18n.getMessage("welcNoBackupInstrxnStep1", osFileBrwsApp));
+
+  let hiddenBkupFldrNote = "";
   if (os != "win") {
-    $("#hidden-bkup-fldr-note").text(" (You may need to use the command line to see this folder.)");
+    hiddenBkupFldrNote = chrome.i18n.getMessage("welcShowBkupFileNote");
   }
   
+  $("#no-backup-instrxn-step2").text(chrome.i18n.getMessage("welcNoBackupInstrxnStep2", hiddenBkupFldrNote));
+
+  $("#shortcut-key-note-detail").html(chrome.i18n.getMessage("welcShctKeyNote", keybdPasteKey));
+
   $("#import-clippings-file-upload").on("change", aEvent => {
     $("#import-failed").hide();
     $("#ready-import").fadeIn("slow", "linear");
@@ -179,7 +193,7 @@ $(() => {
 
         // Reached here if import successful.
         $("#import-progress-bar").attr("value", "98");
-        $("#import-status").text("Importing clippings... done!");
+        $("#import-status").text(chrome.i18n.getMessage("welcImportStatusDone"));
         $("#import-completed").show();
         $("#import-progress-bar").attr("value", "100");
       });
