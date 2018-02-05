@@ -393,5 +393,57 @@
 
   "saveClippingError": {
     "message": "Unable to save the new clipping.  Check that the privacy settings in Firefox are not too restrictive (such as turning on Private Browsing mode), then restart Firefox and try again."
+  },
+
+  "shortcutKeyDesc": {
+    "message": "Press the shortcut key of the clipping you want to paste."
+  },
+
+  "keybPasteDlgF1": {
+    "message": "F1 = shortcut list"
+  },
+
+  "keybPasteDlgTab": {
+    "message": "TAB = search clipping by name"
+  },
+
+  "srchByNameDesc": {
+    "message": "Search for clipping by name:"
+  },
+
+  "numMatches": {
+    "message": "$1 matches"
+  },
+
+  "insClipping": {
+    "message": "Insert Clipping"
+  },
+  
+  "exportHTML": {
+    "message": "Export To HTML"
+  },
+
+  "expHTMLTitle": {
+    "message": "Clippings Shortcut Keys",
+    "description": "HTML export of shortcut key list - page title"
+  },
+
+  "expHTMLHostAppInfo": {
+    "message": "Clippings $1 on $2",
+    "description": "Clippings <extVersion> on Firefox <fxVersion>"
+  },
+
+  "expHTMLShctKeyInstrxn": {
+    "message": "To paste a clipping into a web page textbox in Firefox, press ALT+SHIFT+Y (Command+Shift+Y on macOS), then the shortcut key."
+  },
+
+  "expHTMLShctKeyCol": {
+    "message": "Shortcut Key"
+  },
+
+  "expHTMLClipNameCol": {
+    "message": "Clipping Name"
   }
+
+  
 }

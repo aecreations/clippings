@@ -20,16 +20,18 @@ $(document).ready(() => {
   }
 
   gClippingsDB = gClippings.getClippingsDB();
+  let extVer = chrome.runtime.getManifest().version;
 
   aeImportExport.setDatabase(gClippingsDB);
+
   aeImportExport.setL10nStrings({
-    shctTitle: "Clippings Shortcut Keys",
-    hostAppInfo: `Clippings 6.0.2.1+ on ${gClippings.getHostAppName()}`,
-    shctKeyInstrxns: "To paste a clipping into a web page textbox in Firefox, press ALT+SHIFT+Y (Command+Shift+Y on macOS), then the shortcut key.",
-    shctKeyColHdr: "Shortcut Key",
-    clippingNameColHdr: "Clipping Name",
+    shctTitle: chrome.i18n.getMessage("expHTMLTitle"),
+    hostAppInfo: chrome.i18n.getMessage("expHTMLHostAppInfo", [extVer, gClippings.getHostAppName()]),
+    shctKeyInstrxns: chrome.i18n.getMessage("expHTMLShctKeyInstrxn"),
+    shctKeyColHdr: chrome.i18n.getMessage("expHTMLShctKeyCol"),
+    clippingNameColHdr: chrome.i18n.getMessage("expHTMLClipNameCol"),
   });
-  
+
   initAutocomplete();
   $("#btn-cancel").click(aEvent => { cancel(aEvent) });
 
@@ -37,7 +39,7 @@ $(document).ready(() => {
 
   browser.storage.local.get().then(aPrefs => {
     gPasteMode = aPrefs.pastePromptAction;
-  
+    
     if (gPasteMode == aeConst.PASTEACTION_SHORTCUT_KEY) {
       $(".deck > #search-by-name").hide();
       $(".deck > #paste-by-shortcut-key").fadeIn("fast");
@@ -156,7 +158,7 @@ function initAutocomplete()
 
         onLoadEvent: function () {
           let numMatches = $(".easy-autocomplete-container > ul > li").length;
-          $("#num-matches").text(`${numMatches} matches`);
+          $("#num-matches").text(chrome.i18n.getMessage("numMatches", numMatches));
         },
         
         onShowListEvent: function () {
