@@ -76,7 +76,7 @@ function initHelper()
   $("#clipping-name").blur(aEvent => {
     let name = aEvent.target.value;
     if (! name) {
-      $("#clipping-name").val("New Clipping");
+      $("#clipping-name").val(chrome.i18n.getMessage("newFolder"));
     }
   });
 
@@ -135,7 +135,7 @@ function showInitError()
   let errorMsgBox = new aeDialog("#create-clipping-error-msgbox");
   errorMsgBox.onInit = () => {
     let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
-    errMsgElt.text("Clippings doesn't work when the privacy settings in Firefox are too restrictive, such as turning on Private Browsing mode.  Try changing these settings back to their defaults, then restart Firefox and try again.");
+    errMsgElt.text(chrome.i18n.getMessage("initError"));
   };
   errorMsgBox.onAccept = () => {
     errorMsgBox.close();
@@ -202,14 +202,14 @@ function initDialogs()
       
       $("#new-fldr-name").on("blur", aEvent => {
         if (! aEvent.target.value) {
-          aEvent.target.value = "New Folder";
+          aEvent.target.value = chrome.i18n.getMessage("newFolder");
         }
       });
       
       that.firstInit = false;
     }
 
-    $("#new-fldr-name").val("New Folder").select().focus();
+    $("#new-fldr-name").val(chrome.i18n.getMessage("newFolder")).select().focus();
   };
   
   gNewFolderDlg.onAccept = aEvent => {
@@ -287,6 +287,8 @@ function initFolderPicker()
     }
   });
 
+  $("#new-folder-btn").attr("title", chrome.i18n.getMessage("btnNewFolder"));
+
   gFolderPickerPopup = new aeFolderPicker("#new-clipping-fldr-tree", gClippingsDB);
   gFolderPickerPopup.onSelectFolder = selectFolder;
 }
@@ -312,16 +314,16 @@ function initShortcutKeyMenu()
     for (let option of shortcutKeyMenu.options) {
       if (assignedKeysLookup[option.text]) {
         option.setAttribute("disabled", "true");
-        option.setAttribute("title", `'${option.text}' is already assigned`);
+        option.setAttribute("title", chrome.i18n.getMessage("shortcutKeyAssigned"));
       }
     }
   });
 
-  let keybPasteKey = "ALT+SHIFT+Y";
+  let keybPasteKey = aeConst.SHORTCUT_KEY_PREFIX;
   if (gClippings.getOS() == "mac") {
-    keybPasteKey = "\u21e7\u2318Y";
+    keybPasteKey = aeConst.SHORTCUT_KEY_PREFIX_MAC;
   }
-  let tooltip = `To quickly paste this clipping into a web page textbox in Firefox, press ${keybPasteKey} followed by the shortcut key.`;
+  let tooltip = chrome.i18n.getMessage("shortcutKeyHint", keybPasteKey);
   $("#shct-key-tooltip").attr("title", tooltip);
 }
 
@@ -379,7 +381,7 @@ function accept(aEvent)
     errorMsgBox.onInit = () => {
       console.error(`Error creating clipping: ${aErr}`);
       let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
-      errMsgElt.text("Unable to save the new clipping.  Check that the privacy settings in Firefox are not too restrictive (such as turning on Private Browsing mode), then restart Firefox and try again.");
+      errMsgElt.text(chrome.i18n.getMessage("saveClippingError"));
     };
     errorMsgBox.showModal();
 

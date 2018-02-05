@@ -6,7 +6,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>New Clipping</title>
+    <title data-i18n="newClippingDlgTitle"></title>
     
     <link rel="stylesheet" href="chrome://browser/content/extension.css"/>
     <link rel="stylesheet" href="../style/dialog.css"/>
@@ -18,20 +18,21 @@
 
   <body>
     <div id="content" class="browser-style">
-      <label for="clipping-name">Name:</label>
+      <label for="clipping-name" data-i18n="labelName"></label>
       <br/>
       <input type="text" id="clipping-name" size="50" />
       <br/>
-      <label for="clipping-text">Text:</label>
+      <label for="clipping-text" data-i18n="labelContent"></label>
       <br/>
       <textarea id="clipping-text" class="browser-style"
        placeholder="Enter clipping text" rows="8"></textarea>
       <br/>
       
-      <label>Create in:</label>
+      <label data-i18n="labelCreateInFldr"></label>
       <div class="hbox">
-        <button id="new-clipping-fldr-picker-menubtn" class="folder-picker-menubtn" value="0">Clippings</button>
-        <button id="new-folder-btn" class="browser-style" title="New Folder"></button>
+        <button id="new-clipping-fldr-picker-menubtn" class="folder-picker-menubtn" value="0"
+	 data-i18n="rootFldrName"></button>
+        <button id="new-folder-btn" class="browser-style"></button>
       </div>
       <div id="new-clipping-fldr-tree-popup" class="folder-tree-popup">
 	<div id="new-clipping-fldr-tree" class="folder-tree"></div>
@@ -41,18 +42,18 @@
       <div class="separator" style="margin-top:16px"></div>
 
       <fieldset id="clipping-options-groupbox">
-	<legend>Options</legend>
+	<legend data-i18n="labelCreateClippingOptions"></legend>
         <button id="btn-expand-options" class="browser-style"></button>
 	<div id="clipping-options">
 	  <div class="row browser-style">
 	    <input type="checkbox" id="save-source-url"/>
-	    <label for="save-source-url">Save the address of the source web page</label>
+	    <label for="save-source-url" data-i18n="labelSaveSrcURL"></label>
 	  </div>
 	  <div id="shct-key-and-label-opts" class="row hbox">
 	    <div id="shortcut-key-select">
-	      <label for="clipping-key">Shortcut key:</label>
+	      <label for="clipping-key" data-i18n="labelShortcutKey"></label>
 	      <select id="clipping-key" class="browser-style" size="1">
-		<option>None</option>
+		<option data-i18n="none"></option>
 		<option>A</option>
 		<option>B</option>
 		<option>C</option>
@@ -94,16 +95,16 @@
 	    </div>
 	    <div id="clipping-options-spacer" class="spacer"></div>
 	    <div id="clipping-label">
-	      <label for="clipping-label-picker">Label:</label>
+	      <label for="clipping-label-picker" data-i18n="labelLabel"></label>
 	      <select id="clipping-label-picker" class="browser-style">
-		<option value="">None</option>
-		<option value="red">Red</option>
-		<option value="orange">Orange</option>
-		<option value="yellow">Yellow</option>
-		<option value="green">Green</option>
-		<option value="blue">Blue</option>
-		<option value="purple">Purple</option>
-		<option value="grey">Grey</option>
+		<option value="" data-i18n="none"></option>
+		<option value="red" data-i18n="labelRed"></option>
+		<option value="orange" data-i18n="labelOrange"></option>
+		<option value="yellow" data-i18n="labelYellow"></option>
+		<option value="green" data-i18n="labelGreen"></option>
+		<option value="blue" data-i18n="labelBlue"></option>
+		<option value="purple" data-i18n="labelPurple"></option>
+		<option value="grey" data-i18n="labelGrey"></option>
 	      </select>
 	    </div>
 	  </div>
@@ -112,25 +113,27 @@
     </div>  <!-- #content -->
 
     <div id="dlg-buttons">
-      <button id="btn-accept" class="browser-style default">OK</button>
-      <button id="btn-cancel" class="browser-style">Cancel</button>
+      <button id="btn-accept" class="browser-style default" data-i18n="btnOK"></button>
+      <button id="btn-cancel" class="browser-style" data-i18n="btnCancel"></button>
     </div>
 
     <!-- Dialog boxes -->
     <div id="new-folder-dlg" class="lightbox">
       <div class="dlg-content browser-style">
-	<label for="new-fldr-name">New folder name:</label>
+	<label for="new-fldr-name" data-i18n="labelNewFldrName"></label>
 	<input type="text" id="new-fldr-name"/>
-	<label id="new-folder-dlg-fldr-picker-label" for="new-folder-dlg-fldr-picker-mnubtn">Create as a subfolder of:</label>
-	<button id="new-folder-dlg-fldr-picker-mnubtn" class="folder-picker-menubtn" value="0">Clippings</button>
+	<label id="new-folder-dlg-fldr-picker-label" for="new-folder-dlg-fldr-picker-mnubtn"
+	 data-i18n="labelCreateAsSubfOf"></label>
+	<button id="new-folder-dlg-fldr-picker-mnubtn" class="folder-picker-menubtn" value="0"
+         data-i18n="rootFldrName"></button>
 	<div id="new-folder-dlg-fldr-tree-popup" class="folder-tree-popup">
 	  <div id="new-folder-dlg-fldr-tree" class="folder-tree"></div>
         </div>
 	<div id="new-folder-dlg-fldr-tree-popup-bkgrd-ovl" class="popup-bkgrd"></div>
       </div>
       <div class="dlg-btns">
-        <button class="dlg-accept browser-style default">OK</button>
-        <button class="dlg-cancel browser-style">Cancel</button>
+        <button class="dlg-accept browser-style default" data-i18n="btnOK"></button>
+        <button class="dlg-cancel browser-style" data-i18n="btnCancel"></button>
       </div>
     </div>
 
@@ -140,13 +143,14 @@
 	<p class="msgbox-error-msg"></p>
       </div>
       <div class="dlg-btns">
-        <button class="dlg-accept browser-style default">OK</button>
+        <button class="dlg-accept browser-style default" data-i18n="btnOK"></button>
       </div>
     </div>
     <div id="lightbox-bkgrd-ovl" class="lightbox-bkgrd"></div>
     
     <script src="../lib/jquery.js"></script>
     <script src="../lib/fancytree/jquery.fancytree-all-deps.min.js"></script>
+    <script src="../lib/i18n.js"></script>
     <script src="../modules/aeConst.js"></script>
     <script src="../modules/aeDialog.js"></script>
     <script src="../modules/aeFolderPicker.js"></script>

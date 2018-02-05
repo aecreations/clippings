@@ -104,6 +104,39 @@
     "message": "Untitled Folder"
   },
  
+  "rootFldrName": {
+    "message": "Clippings",
+    "description": "Name of root folder"
+  },
+
+  "labelRed": {
+    "message": "Red"
+  },
+
+  "labelOrange": {
+    "message": "Orange"
+  },
+
+  "labelYellow": {
+    "message": "Yellow"
+  },
+
+  "labelGreen": {
+    "message": "Green"
+  },
+
+  "labelBlue": {
+    "message": "Blue"
+  },
+
+  "labelPurple": {
+    "message": "Purple"
+  },
+
+  "labelGrey": {
+    "message": "Gray"
+  },
+  
   "cxtMenuNew": {
     "message": "New...",
     "description": "Clippings context menu"
@@ -297,5 +330,68 @@
 
   "welcCantImportFixStep3": {
     "message": "Reinstall Clippings, and then try importing the backup file again."
+  },
+
+  "newClippingDlgTitle": {
+    "message": "New Clipping",
+    "description": "New Clipping dialog"
+  },
+
+  "labelName": {
+    "message": "Name:"
+  },
+
+  "labelContent": {
+    "message": "Text:"
+  },
+
+  "labelCreateInFldr": {
+    "message": "Create in:"
+  },
+
+  "btnNewFolder": {
+    "message": "New Folder"
+  },
+  
+  "labelCreateClippingOptions": {
+    "message": "Options",
+    "description": "Button to expand clipping options (source URL, label) in New Clipping dialog"
+  },
+
+  "labelSaveSrcURL": {
+    "message": "Save the address of the source web page"
+  },
+
+  "labelShortcutKey": {
+    "message": "Shortcut key:"
+  },
+
+  "labelLabel": {
+    "message": "Label:",
+    "description": "Clipping label"
+  },
+
+  "labelNewFldrName": {
+    "message": "New folder name:"
+  },
+
+  "labelCreateAsSubfOf": {
+    "message": "Create as a subfolder of:"
+  },
+
+  "shortcutKeyHint": {
+    "message": "To quickly paste this clipping into a web page textbox in Firefox, press $1 followed by the shortcut key."
+  },
+
+  "shortcutKeyAssigned": {
+    "message": "'$1' is already assigned"
+  },
+
+  "initError": {
+    "message": "Clippings doesn't work when the privacy settings in Firefox are too restrictive, such as turning on Private Browsing mode.  Try changing these settings back to their defaults, then restart Firefox and try again."
+  },
+
+  "saveClippingError": {
+    "message": "Unable to save the new clipping.  Check that the privacy settings in Firefox are not too restrictive (such as turning on Private Browsing mode), then restart Firefox and try again."
   }
 }
