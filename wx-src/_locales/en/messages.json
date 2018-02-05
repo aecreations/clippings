@@ -453,5 +453,228 @@
   "plchldrPromptMultiDesc": {
     "message": "Enter the values for the following placeholders.",
     "description": "Placeholder prompt dialog - multiple placeholders"
+  },
+
+  "clippingsMgrWndTitle": {
+    "message": "Clippings Manager",
+    "description": "Clippings Manager window title"
+  },
+
+  "tbNewClipping": {
+    "message": "New Clipping"
+  },
+
+  "tbNewFolder": {
+    "message": "New Folder"
+  },
+
+  "tbMoveOrCopy": {
+    "message": "Move or Copy"
+  },
+
+  "tbDelete": {
+    "message": "Delete"
+  },
+
+  "tbUndo": {
+    "message": "Undo"
+  },
+
+  "tbTools": {
+    "message": "Tools"
+  },
+
+  "clipMgrSrchBarHint": {
+    "message": "Find clippings and folders",
+    "description": "Clippings Manager search bar hint text"
+  },
+
+  "clipMgrIntroHdg": {
+    "message": "Welcome to Clippings Manager"
+  },
+
+  "clipMgrIntroDesc": {
+    "message": "Use Clippings Manager to edit, rename or delete clippings, and organize your collection of clippings into folders."
+  },
+
+  "clipMgrIntroKeybHdg": {
+    "message": "Keyboard Shortcuts"
+  },
+
+  "labelInsPlchldr": {
+    "message": "Insert Placeholder:",
+    "description": "Clippings Manager - Placeholder Toolbar"
+  },
+
+  "tbPlchldrPresets": {
+    "message": "Presets"
+  },
+
+  "tbPlchldrCustom": {
+    "message": "Custom"
+  },
+
+  "tbPlchldrNumeric": {
+    "message": "Numeric"
+  },
+
+  "labelSrcURL": {
+    "message": "Source address:"
+  },
+
+  "btnEditSrcURL": {
+    "message": "Edit"
+  },
+
+  "mnuNewFromClipbd": {
+    "message": "New From Clipboard"
+  },
+
+  "mnuBackup": {
+    "message": "Backup..."
+  },
+
+  "mnuRestoreFromBackup": {
+    "message": "Restore From Backup..."
+  },
+
+  "mnuImport": {
+    "message": "Import..."
+  },
+
+  "mnuExport": {
+    "message": "Export..."
+  },
+
+  "mnuRemoveAllSrcURLs": {
+    "message": "Remove Source Web Addresses..."
+  },
+
+  "mnuShowHide": {
+    "message": "Show/Hide"
+  },
+
+  "mnuShowHideDetails": {
+    "message": "Details Pane"
+  },
+
+  "mnuShowHidePlchldrBar": {
+    "message": "Placeholder Toolbar"
+  },
+
+  "mnuShowHideStatusBar": {
+    "message": "Status Bar"
+  },
+
+  "mnuMaximize": {
+    "message": "Maximize"
+  },
+
+  "mnuMinimizeWhenInactive": {
+    "message": "Minimize When Inactive"
+  },
+
+  "mnuShowExtPrefs": {
+    "message": "Options..."
+  },
+
+  "mnuMoveOrCopy": {
+    "message": "Move or Copy..."
+  },
+
+  "mnuEditLabel": {
+    "message": "Label"
+  },
+
+  "mnuGoToSrcURL": {
+    "message": "Go to Source Web Page"
+  },
+
+  "mnuPlchldrDate": {
+    "message": "Date",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+
+  "mnuPlchldrTime": {
+    "message": "Time",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+
+  "mnuPlchldrAppName": {
+    "message": "Application Name",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+
+  "mnuPlchldrUsrAgent": {
+    "message": "User Agent",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+
+  "mnuPlchldrClipName": {
+    "message": "Clipping Name",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  
+  "mnuPlchldrFldrName": {
+    "message": "Parent Folder Name",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+
+  "clipMgrNameHint": {
+    "message": "Clipping Name",
+    "description": "Clippings Manager - clipping name textbox hint text"
+  },
+
+  "clipMgrContentHint": {
+    "message": "Enter clipping text",
+    "description": "Clippings Manager - clipping content textarea hint text"
+  },
+
+  "clipMgrShortcutHelpHint": {
+    "message": "Shortcut Help"
+  },
+
+  "clipMgrNoItems": {
+    "message": "No clippings found."
+  },
+
+  "clipMgrIntroCmdDel": {
+    "message": "Delete selected clipping or folder",
+    "description": "Clippings Manager intro - key binding description"
+  },
+
+  "clipMgrIntroCmdClearSrchBar": {
+    "message": "Clear Find Bar",
+    "description": "Clippings Manager intro - key binding description"
+  },
+
+  "clipMgrIntroCmdSrch": {
+    "message": "Find clippings and folders",
+    "description": "Clippings Manager intro - key binding description"
+  },
+
+  "clipMgrIntroCmdClose": {
+    "message": "Close Clippings Manager",
+    "description": "Clippings Manager intro - key binding description"
+  },
+
+  "clipMgrIntroCmdUndo": {
+    "message": "Undo",
+    "description": "Clippings Manager intro - key binding description"
+  },
+
+  "clipMgrIntroCmdShowIntro": {
+    "message": "Show Clippings Manager intro",
+    "description": "Clippings Manager intro - key binding description"
+  },
+
+  "clipMgrIntroCmdMaximize": {
+    "message": "Maximize window",
+    "description": "Clippings Manager intro - key binding description"
+  },
+
+  "clipMgrStatusBar": {
+    "message": "$1 items"
   }
+  
 }

@@ -264,7 +264,7 @@ let gClippingsListener = {
       tree.options.icon = false;
       let emptyMsgNode = setEmptyClippingsState();
       tree.rootNode.addNode(emptyMsgNode);
-      setStatusBarMsg("0 items");
+      setStatusBarMsg(chrome.i18n.getMessage("clipMgrStatusBar", "0"));
     }
     else {
       // Select the node that used to be occupied by the delete node. If the
@@ -313,6 +313,7 @@ let gSearchBox = {
       return;
     }
     
+    $("#search-box").attr("placeholder", chrome.i18n.getMessage("clipMgrSrchBarHint"));
     $("#search-box").keyup(aEvent => {
       this.updateSearch();
       $("#clear-search").css({
@@ -387,8 +388,8 @@ let gSrcURLBar = {
   {
     $("#src-url-edit-mode").hide();
     $("#edit-url-btn").click(aEvent => { this.edit() });
-    $("#edit-src-url-ok").click(aEvent => { this.acceptEdit() });
-    $("#edit-src-url-cancel").click(aEvent => { this.cancelEdit() });
+    $("#edit-src-url-ok").attr("title", chrome.i18n.getMessage("btnOK")).click(aEvent => { this.acceptEdit() });
+    $("#edit-src-url-cancel").attr("title", chrome.i18n.getMessage("btnCancel")).click(aEvent => { this.cancelEdit() });
   },
 
   show: function ()
@@ -488,6 +489,8 @@ let gShortcutKey = {
     }).mousedown(aEvent => {
       this.setPrevShortcutKey();
     });
+
+    $("#show-shortcut-list").attr("title", chrome.i18n.getMessage("clipMgrShortcutHelpHint"));
   },
 
   getPrevSelectedIndex: function ()
@@ -1499,11 +1502,13 @@ function initToolbar()
   
   $("#new-clipping").click(aEvent => { gCmd.newClipping(gCmd.UNDO_STACK) });
   $("#new-folder").click(aEvent => { gCmd.newFolder(gCmd.UNDO_STACK) });
-  $("#move").click(aEvent => { gCmd.moveClippingOrFolder() });
-  $("#delete").click(aEvent => {
-    gCmd.deleteClippingOrFolder(gCmd.UNDO_STACK)
+  $("#move").attr("title", chrome.i18n.getMessage("tbMoveOrCopy")).click(aEvent => {
+    gCmd.moveClippingOrFolder();
   });
-  $("#undo").click(aEvent => { gCmd.undo() });
+  $("#delete").attr("title", chrome.i18n.getMessage("tbDelete")).click(aEvent => {
+    gCmd.deleteClippingOrFolder(gCmd.UNDO_STACK);
+  });
+  $("#undo").attr("title", chrome.i18n.getMessage("tbUndo")).click(aEvent => { gCmd.undo() });
 
   // Placeholder toolbar -> Presets menu
   $.contextMenu({
@@ -1572,32 +1577,32 @@ function initToolbar()
 
     items: {
       insDate: {
-        name: "Date",
+        name: chrome.i18n.getMessage("mnuPlchldrDate"),
         className: "ae-menuitem"
       },
 
       insTime: {
-        name: "Time",
+        name: chrome.i18n.getMessage("mnuPlchldrTime"),
         className: "ae-menuitem"
       },
 
       insAppName: {
-        name: "Application Name",
+        name: chrome.i18n.getMessage("mnuPlchldrAppName"),
         className: "ae-menuitem"
       },
 
       insUserAgent: {
-        name: "User Agent",
+        name: chrome.i18n.getMessage("mnuPlchldrUsrAgent"),
         className: "ae-menuitem"
       },
 
       insClippingName: {
-        name: "Clipping Name",
+        name: chrome.i18n.getMessage("mnuPlchldrClipName"),
         className: "ae-menuitem"
       },
 
       insParentFolderName: {
-        name: "Parent Folder Name",
+        name: chrome.i18n.getMessage("mnuPlchldrFldrName"),
         className: "ae-menuitem"
       }
     }
@@ -1686,7 +1691,7 @@ function initToolbar()
     },
     items: {
       newFromClipboard: {
-        name: "New From Clipboard",
+        name: chrome.i18n.getMessage("mnuNewFromClipbd"),
         className: "ae-menuitem",
         visible: function (aKey, aOpt) {
           return gClippings.isGoogleChrome();
@@ -1699,33 +1704,33 @@ function initToolbar()
         }
       },
       backup: {
-        name: "Backup...",
+        name: chrome.i18n.getMessage("mnuBackup"),
         className: "ae-menuitem"
       },
       restoreFromBackup: {
-        name: "Restore From Backup...",
+        name: chrome.i18n.getMessage("mnuRestoreFromBackup"),
         className: "ae-menuitem"
       },
       separator1: "--------",
       importFromFile: {
-        name: "Import...",
+        name: chrome.i18n.getMessage("mnuImport"),
         className: "ae-menuitem"
       },
       exportToFile: {
-        name: "Export...",
+        name: chrome.i18n.getMessage("mnuExport"),
         className: "ae-menuitem"
       },
       separator2: "--------",
       removeAllSrcURLs: {
-        name: "Remove Source Web Addresses...",
+        name: chrome.i18n.getMessage("mnuRemoveAllSrcURLs"),
         className: "ae-menuitem"
       },
       separator3: "--------",
       showHideSubmenu: {
-        name: "Show/Hide",
+        name: chrome.i18n.getMessage("mnuShowHide"),
         items: {
           toggleDetailsPane: {
-            name: "Details Pane",
+            name: chrome.i18n.getMessage("mnuShowHideDetails"),
             className: "ae-menuitem",
             disabled: function (aKey, aOpt) {
               return (gIsClippingsTreeEmpty || isFolderSelected());
@@ -1738,7 +1743,7 @@ function initToolbar()
             }
           },
           togglePlchldrToolbar: {
-            name: "Placeholder Toolbar",
+            name: chrome.i18n.getMessage("mnuShowHidePlchldrBar"),
             className: "ae-menuitem",
             disabled: function (aKey, aOpt) {
               return (gIsClippingsTreeEmpty || isFolderSelected());
@@ -1750,7 +1755,7 @@ function initToolbar()
             }
           },         
           toggleStatusBar: {
-            name: "Status Bar",
+            name: chrome.i18n.getMessage("mnuShowHideStatusBar"),
             className: "ae-menuitem",
             icon: function (aOpt, $itemElement, aItemKey, aItem) {
               if ($("#status-bar").css("display") != "none") {
@@ -1761,7 +1766,7 @@ function initToolbar()
         }
       },
       maximizeWnd: {
-        name: "Maximize",
+        name: chrome.i18n.getMessage("mnuMaximize"),
         className: "ae-menuitem",
         visible: function (aKey, aOpt) {
           return (gOS == "win" || DEBUG_WND_ACTIONS);
@@ -1773,7 +1778,7 @@ function initToolbar()
         }
       },
       minimizeWhenInactive: {
-        name: "Minimize When Inactive",
+        name: chrome.i18n.getMessage("mnuMinimizeWhenInactive"),
         className: "ae-menuitem",
         visible: function (aKey, aOpt) {
           return (gOS == "linux" || DEBUG_WND_ACTIONS);
@@ -1791,7 +1796,7 @@ function initToolbar()
         }
       },
       openExtensionPrefs: {
-        name: "Options...",
+        name: chrome.i18n.getMessage("mnuShowExtPrefs"),
         className: "ae-menuitem"
       }
     }
@@ -1805,7 +1810,7 @@ function initToolbar()
 
 function initInstantEditing()
 {
-  $("#clipping-name").blur(aEvent => {
+  $("#clipping-name").attr("placeholder", chrome.i18n.getMessage("clipMgrNameHint")).blur(aEvent => {
     let tree = getClippingsTree();
     let selectedNode = tree.activeNode;
     let name = aEvent.target.value;
@@ -1831,7 +1836,7 @@ function initInstantEditing()
     }
   });
   
-  $("#clipping-text").blur(aEvent => {
+  $("#clipping-text").attr("placeholder", chrome.i18n.getMessage("clipMgrContentHint")).blur(aEvent => {
     let tree = getClippingsTree();
     let selectedNode = tree.activeNode;
     let id = parseInt(selectedNode.key);
@@ -1859,15 +1864,15 @@ function initDialogs()
     shctKeys = ["DEL", "ESC", "CTRL+F", "CTRL+W", "CTRL+Z", "F1", "CTRL+F10"];
   }
   
-  $(`<tr><td style="width:6em">${shctKeys[0]}</td><td>Delete selected clipping or folder</td></tr>`).appendTo(shctKeyTbls);
-  $(`<tr><td>${shctKeys[1]}</td><td>Clear Find Bar</td></tr>`).appendTo(shctKeyTbls);
-  $(`<tr><td>${shctKeys[2]}</td><td>Find clippings and folders</td></tr>`).appendTo(shctKeyTbls);
-  $(`<tr><td>${shctKeys[3]}</td><td>Close Clippings Manager</td></tr>`).appendTo(shctKeyTbls);
-  $(`<tr><td>${shctKeys[4]}</td><td>Undo</td></tr>`).appendTo(shctKeyTbls);
-  $(`<tr><td>${shctKeys[5]}</td><td>Show Clippings Manager intro</td></tr>`).appendTo(shctKeyTbls);
+  $(`<tr><td style="width:6em">${shctKeys[0]}</td><td>${chrome.i18n.getMessage("clipMgrIntroCmdDel")}</td></tr>`).appendTo(shctKeyTbls);
+  $(`<tr><td>${shctKeys[1]}</td><td>${chrome.i18n.getMessage("clipMgrIntroCmdClearSrchBar")}</td></tr>`).appendTo(shctKeyTbls);
+  $(`<tr><td>${shctKeys[2]}</td><td>${chrome.i18n.getMessage("clipMgrIntroCmdSrch")}</td></tr>`).appendTo(shctKeyTbls);
+  $(`<tr><td>${shctKeys[3]}</td><td>${chrome.i18n.getMessage("clipMgrIntroCmdClose")}</td></tr>`).appendTo(shctKeyTbls);
+  $(`<tr><td>${shctKeys[4]}</td><td>${chrome.i18n.getMessage("clipMgrIntroCmdUndo")}</td></tr>`).appendTo(shctKeyTbls);
+  $(`<tr><td>${shctKeys[5]}</td><td>${chrome.i18n.getMessage("clipMgrIntroCmdShowIntro")}</td></tr>`).appendTo(shctKeyTbls);
 
   if (! isLinux) {
-    $(`<tr><td>${shctKeys[6]}</td><td>Maximize window</td></tr>`).appendTo(shctKeyTbls);
+    $(`<tr><td>${shctKeys[6]}</td><td>${chrome.i18n.getMessage("clipMgrIntroCmdMaximize")}</td></tr>`).appendTo(shctKeyTbls);
   }
 
   aeImportExport.setDatabase(gClippingsDB);
@@ -2485,7 +2490,7 @@ function buildClippingsTree()
         }
       });
 
-      setStatusBarMsg(gIsClippingsTreeEmpty ? "0 items" : null);
+      setStatusBarMsg(gIsClippingsTreeEmpty ? chrome.i18n.getMessage("clipMgrStatusBar", "0") : null);
 
       // Context menu for the clippings tree.
       $.contextMenu({
@@ -2558,11 +2563,11 @@ function buildClippingsTree()
         
         items: {
           moveOrCopy: {
-            name: "Move or Copy...",
+            name: chrome.i18n.getMessage("mnuMoveOrCopy"),
             className: "ae-menuitem"
           },
           gotoSrcURL: {
-            name: "Go to Source Web Page",
+            name: chrome.i18n.getMessage("mnuGoToSrcURL"),
             className: "ae-menuitem",
             visible: function (aItemKey, aOpt) {
               let tree = getClippingsTree();
@@ -2574,13 +2579,13 @@ function buildClippingsTree()
             }
           },
           labelSubmenu: {
-            name: "Label",
+            name: chrome.i18n.getMessage("mnuEditLabel"),
             visible: function (aItemKey, aOpt) {
               return (! isFolderSelected());
             },
             items: {
               labelNone: {
-                name: "None",
+                name: chrome.i18n.getMessage("none"),
                 className: "ae-menuitem",
                 icon: function (aOpt, $itemElement, aItemKey, aItem) {
                   if (gClippingLabelPicker.selectedLabel == "") {
@@ -2589,7 +2594,7 @@ function buildClippingsTree()
                 }
               },
               labelRed: {
-                name: "Red",
+                name: chrome.i18n.getMessage("labelRed"),
                 className: "ae-menuitem clipping-label-red",
                 icon: function (aOpt, $itemElement, aItemKey, aItem) {
                   if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
@@ -2598,7 +2603,7 @@ function buildClippingsTree()
                 }
               },
               labelOrange: {
-                name: "Orange",
+                name: chrome.i18n.getMessage("labelOrange"),
                 className: "ae-menuitem clipping-label-orange",
                 icon: function (aOpt, $itemElement, aItemKey, aItem) {
                   if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
@@ -2607,7 +2612,7 @@ function buildClippingsTree()
                 }
               },
               labelYellow: {
-                name: "Yellow",
+                name: chrome.i18n.getMessage("labelYellow"),
                 className: "ae-menuitem clipping-label-yellow",
                 icon: function (aOpt, $itemElement, aItemKey, aItem) {
                   if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
@@ -2616,7 +2621,7 @@ function buildClippingsTree()
                 }
               },
               labelGreen: {
-                name: "Green",
+                name: chrome.i18n.getMessage("labelGreen"),
                 className: "ae-menuitem clipping-label-green",
                 icon: function (aOpt, $itemElement, aItemKey, aItem) {
                   if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
@@ -2625,7 +2630,7 @@ function buildClippingsTree()
                 }
               },
               labelBlue: {
-                name: "Blue",
+                name: chrome.i18n.getMessage("labelBlue"),
                 className: "ae-menuitem clipping-label-blue",
                 icon: function (aOpt, $itemElement, aItemKey, aItem) {
                   if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
@@ -2634,7 +2639,7 @@ function buildClippingsTree()
                 }
               },
               labelPurple: {
-                name: "Purple",
+                name: chrome.i18n.getMessage("labelPurple"),
                 className: "ae-menuitem clipping-label-purple",
                 icon: function (aOpt, $itemElement, aItemKey, aItem) {
                   if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
@@ -2643,7 +2648,7 @@ function buildClippingsTree()
                 }
               },
               labelGrey: {
-                name: "Gray",
+                name: chrome.i18n.getMessage("labelGrey"),
                 className: "ae-menuitem clipping-label-grey",
                 icon: function (aOpt, $itemElement, aItemKey, aItem) {
                   if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
@@ -2655,7 +2660,7 @@ function buildClippingsTree()
           },
           separator0: "--------",
           deleteItem: {
-            name: "Delete",
+            name: chrome.i18n.getMessage("tbDelete"),
             className: "ae-menuitem"
           }
         }
@@ -2753,7 +2758,7 @@ function initTreeSplitter()
 function setEmptyClippingsState()
 {
   var rv;
-  rv = [{ title: "No clippings found.", key: "0" }];
+  rv = [{ title: chrome.i18n.getMessage("clipMgrNoItems"), key: "0" }];
   gIsClippingsTreeEmpty = true;
   $("#clipping-name, #clipping-text, #source-url-bar, #options-bar").hide();
   $("#intro-content").show();
@@ -2832,7 +2837,7 @@ function updateDisplay(aEvent, aData)
 {
   if (gIsClippingsTreeEmpty) {
     $("#source-url-bar, #options-bar").hide();
-    setStatusBarMsg("0 items");
+    setStatusBarMsg(chrome.i18n.getMessage("clipMgrStatusBar", "0"));
     return;
   }
 
@@ -2842,7 +2847,7 @@ function updateDisplay(aEvent, aData)
     gSearchBox.updateSearch();
     let numMatches = gSearchBox.getCountMatches();
     if (numMatches !== undefined) {
-      setStatusBarMsg(`${numMatches} matches`);
+      setStatusBarMsg(chrome.i18n.getMessage("numMatches", numMatches));
     }
   }
   else {
@@ -2952,7 +2957,7 @@ function setStatusBarMsg(aMessage)
   }
 
   let tree = getClippingsTree();
-  $("#status-bar-msg").text(`${tree.count()} items`);
+  $("#status-bar-msg").text(chrome.i18n.getMessage("clipMgrStatusBar", tree.count()));
 }
 
 
@@ -3001,7 +3006,7 @@ function showInitError()
 {
   let errorMsgBox = new aeDialog("#init-error-msgbox");
   errorMsgBox.onInit = () => {
-    $("#init-error-msgbox > .dlg-content > .msgbox-error-msg").text("Clippings doesn't work when the privacy settings in Firefox are too restrictive, such as turning on Private Browsing mode.  Try changing these settings back to their defaults, then restart Firefox and try again.");
+    $("#init-error-msgbox > .dlg-content > .msgbox-error-msg").text(chrome.i18n.getMessage("initError"));
   };
   errorMsgBox.onAccept = () => {
     closeWnd();

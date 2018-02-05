@@ -6,7 +6,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Clippings Manager</title>
+    <title data-i18n="clippingsMgrWndTitle"></title>
 
     <link rel="stylesheet" href="chrome://browser/content/extension.css"/>
     <link rel="stylesheet" href="../lib/fancytree/skin/ui.fancytree.css"/>
@@ -22,13 +22,14 @@
     </div>
 
     <div id="toolbar" class="hbox">
-      <button id="new-clipping" class="toolbar-button toolbar-button-labelled">New Clipping</button>
-      <button id="new-folder" class="toolbar-button toolbar-button-labelled">New Folder</button>
+      <button id="new-clipping" class="toolbar-button toolbar-button-labelled" data-i18n="tbNewClipping"></button>
+      <button id="new-folder" class="toolbar-button toolbar-button-labelled" data-i18n="tbNewFolder"></button>
       <button id="move" class="toolbar-button" title="Move or Copy"></button>
       <button id="delete" class="toolbar-button" title="Delete"></button>
       <button id="undo" class="toolbar-button" title="Undo"></button>
       <span id="spacer-1" class="spacer"></span>
-      <button id="clippings-mgr-options" class="toolbar-button toolbar-button-labelled" title="Tools">Tools</button>
+      <button id="clippings-mgr-options" class="toolbar-button toolbar-button-labelled"
+       data-i18n="tbTools"></button>
       <span id="spacer-2" class="spacer"></span>
       <div id="search-clippings-and-folders">
 	<input type="search" id="search-box" placeholder="Find clippings and folders"/>
@@ -42,34 +43,36 @@
       <div id="tree-splitter"></div>
       <div id="item-properties" class="vbox browser-style">
 	<div id="intro-content">
-	  <h3>Welcome to Clippings Manager</h3>
-	  <p>Use Clippings Manager to edit, rename or delete clippings, and organize your collection of clippings into folders.</p>
-	  <h4>Keyboard Shortcuts</h4>
+	  <h3 data-i18n="clipMgrIntroHdg"></h3>
+	  <p data-i18n="clipMgrIntroDesc"></p>
+	  <h4 data-i18n="clipMgrIntroKeybHdg"></h4>
 	  <table id="intro-shortcut-key-tbl" class="shortcut-key-tbl"></table>
 	</div>
 
-	<input type="text" id="clipping-name" placeholder="Clipping Name"/>
-	<textarea id="clipping-text" class="browser-style" placeholder="Enter clipping text"></textarea>
+	<input type="text" id="clipping-name"/>
+	<textarea id="clipping-text" class="browser-style"></textarea>
 
 	<div id="placeholder-toolbar" class="hbox">
-          <label>Insert Placeholder:</label>
-	  <button id="plchldr-presets" class="toolbar-button">Presets</button>
-	  <button id="custom-plchldr" class="toolbar-button toolbar-button-labelled">Custom</button>
-	  <button id="auto-incr-plchldr" class="toolbar-button toolbar-button-labelled">Numeric</button>
+          <label data-i18n="labelInsPlchldr"></label>
+	  <button id="plchldr-presets" class="toolbar-button" data-i18n="tbPlchldrPresets"></button>
+	  <button id="custom-plchldr" class="toolbar-button toolbar-button-labelled"
+	   data-i18n="tbPlchldrCustom"></button>
+	  <button id="auto-incr-plchldr" class="toolbar-button toolbar-button-labelled"
+	   data-i18n="tbPlchldrNumeric"></button>
         </div>
 	
 	<!-- Source URL -->
 	<div id="source-url-bar" class="hbox">
-	  <label id="src-url-label">Source address:</label>
+	  <label id="src-url-label" data-i18n="labelSrcURL"></label>
 	  <div id="source-url-deck">
 	    <div id="src-url-normal-mode" class="hbox">
-   	      <div id="clipping-src-url">(None)</div>
-              <button id="edit-url-btn" class="browser-style">Edit</button>
+   	      <div id="clipping-src-url" data-i18n="none"></div>
+              <button id="edit-url-btn" class="browser-style" data-i18n="btnEditSrcURL"></button>
 	    </div>
 	    <div id="src-url-edit-mode" class="hbox browser-style">
   	      <input type="text" id="clipping-src-url-edit" value=""/>
-	      <button id="edit-src-url-ok" class="browser-style" title="OK"></button>
-	      <button id="edit-src-url-cancel" class="browser-style" title="Cancel"></button>
+	      <button id="edit-src-url-ok" class="browser-style"></button>
+	      <button id="edit-src-url-cancel" class="browser-style"></button>
 	    </div>
 	  </div>
 	</div>
@@ -77,9 +80,9 @@
 	<!-- Shortcut key -->
 	<div id="options-bar" class="hbox">
 	  <div id="shortcut-key-select">
-	    <label for="clipping-key">Shortcut key:</label>
+	    <label for="clipping-key" data-i18n="labelShortcutKey"></label>
 	    <select id="clipping-key" class="browser-style" size="1">
-	      <option>(None)</option>
+	      <option data-i18n="none"></option>
 	      <option>A</option>
 	      <option>B</option>
 	      <option>C</option>
@@ -117,21 +120,21 @@
 	      <option>9</option>
 	      <option>0</option>
 	    </select>
-	    <button id="show-shortcut-list" class="toolbar-button" title="Shortcut Help"></button>
+	    <button id="show-shortcut-list" class="toolbar-button"></button>
 	  </div>  <!-- #shortcut-key-select -->
 	  
 	  <div id="options-bar-spacer" class="spacer"></div>
 	  <div id="clipping-label">
-	    <label for="clipping-label-picker">Label:</label>
+	    <label for="clipping-label-picker" data-i18n="labelLabel"></label>
 	    <select id="clipping-label-picker" class="browser-style">
-	      <option value="">None</option>
-	      <option value="red">Red</option>
-	      <option value="orange">Orange</option>
-	      <option value="yellow">Yellow</option>
-	      <option value="green">Green</option>
-	      <option value="blue">Blue</option>
-	      <option value="purple">Purple</option>
-	      <option value="grey">Grey</option>
+	      <option value="" data-i18n="none"></option>
+	      <option value="red" data-i18n="labelRed"></option>
+	      <option value="orange" data-i18n="labelOrange"></option>
+	      <option value="yellow" data-i18n="labelYellow"></option>
+	      <option value="green" data-i18n="labelGreen"></option>
+	      <option value="blue" data-i18n="labelBlue"></option>
+	      <option value="purple" data-i18n="labelPurple"></option>
+	      <option value="grey" data-i18n="labelGrey"></option>
 	    </select>
 	  </div>
 	</div> <!-- #options-bar -->
