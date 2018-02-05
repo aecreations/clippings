@@ -314,7 +314,7 @@ function initShortcutKeyMenu()
     for (let option of shortcutKeyMenu.options) {
       if (assignedKeysLookup[option.text]) {
         option.setAttribute("disabled", "true");
-        option.setAttribute("title", chrome.i18n.getMessage("shortcutKeyAssigned"));
+        option.setAttribute("title", chrome.i18n.getMessage("shortcutKeyAssigned", option.text));
       }
     }
   });
