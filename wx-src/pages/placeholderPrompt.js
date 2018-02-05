@@ -42,7 +42,7 @@ $(() => {
       if (gPlaceholders.length == 1) {
         let plchldr = gPlaceholders[0];
         $("#plchldr-single").show();
-        $("#single-prmt-label").text(`Enter value for "${plchldr}":`);
+        $("#single-prmt-label").text(chrome.i18n.getMessage("plchldrPromptSingleDesc", plchldr));
         $("#single-prmt-input").focus();
 
         if (plchldr in gPlaceholdersWithDefaultVals) {
