@@ -675,6 +675,14 @@
 
   "clipMgrStatusBar": {
     "message": "$1 items"
+  },
+
+  "clipMgrRemoveSrcURLsConfirm": {
+    "message": "Removed source web page addresses from your clippings."
+  },
+
+  "clipMgrNoUndo": {
+    "message": "Nothing to undo"
   }
   
 }
