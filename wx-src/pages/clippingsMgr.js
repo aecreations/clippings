@@ -313,7 +313,11 @@ let gSearchBox = {
       return;
     }
     
-    $("#search-box").attr("placeholder", chrome.i18n.getMessage("clipMgrSrchBarHint"));
+    $("#search-box").prop("placeholder", chrome.i18n.getMessage("clipMgrSrchBarHint"));
+    $("#search-box").focus(aEvent => {
+      gSearchBox.activate();
+    });
+
     $("#search-box").keyup(aEvent => {
       this.updateSearch();
       $("#clear-search").css({
@@ -1338,12 +1342,6 @@ $(document).ready(() => {
   gClippingLabelPicker.init("#clipping-label-picker");
   initDialogs();
   buildClippingsTree();
-
-  $("#search-box").focus(aEvent => {
-    gSearchBox.init();
-    gSearchBox.activate();
-  });
-
   initTreeSplitter();
   
   chrome.history.deleteUrl({ url: window.location.href });
@@ -1805,6 +1803,8 @@ function initToolbar()
   $("#custom-plchldr").click(aEvent => { gCmd.insertCustomPlaceholder() });
   $("#auto-incr-plchldr").click(aEvent => { gCmd.insertNumericPlaceholder() });
   $("#show-shortcut-list").click(aEvent => { gCmd.showShortcutList() });
+
+  gSearchBox.init();
 }
 
 
