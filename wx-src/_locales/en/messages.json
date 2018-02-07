@@ -44,6 +44,14 @@
     "description": "Dialog action button"
   },
 
+  "btnYes": {
+    "message": "Yes"
+  },
+
+  "btnNo": {
+    "message": "No"
+  },
+
   "btnFinish": {
     "message": "Finish"
   },
@@ -368,7 +376,7 @@
 
   "labelLabel": {
     "message": "Label:",
-    "description": "Clipping label"
+    "description": "Label for the Clipping label menu"
   },
 
   "labelNewFldrName": {
@@ -683,6 +691,38 @@
 
   "clipMgrNoUndo": {
     "message": "Nothing to undo"
+  },
+
+  "clipMgrShortcutKeyHelpHdg": {
+    "message": "Clippings Shortcut Keys"
+  },
+
+  "clipMgrShortcutHelpInstrxn": {
+    "message": "To paste a clipping from the list below into a web page textbox in Firefox, press $1, then the shortcut key."
+  },
+
+  "clipMgrShortcutKeyAssigned": {
+    "message": "The selected shortcut key has already been assigned to another clipping.  Please select a different shortcut key."
+  },
+
+  "clipMgrNoSrcURL": {
+    "message": "The selected clipping doesn't have a source web page address."
+  },
+
+  "clipMgrImportConfirm": {
+    "message": "Import from \"$1\" is successfully completed."
+  },
+
+  "btnReload": {
+    "message": "Reload"
+  },
+
+  "clipMgrExportConfirm": {
+    "message": "Clippings export to \"$1\" is successfully completed."
+  },
+
+  "clipMgrWarnRemoveSrcURLs": {
+    "message": "All source web page addresses of your clippings will be removed.  Do you want to continue?"
   }
   
 }

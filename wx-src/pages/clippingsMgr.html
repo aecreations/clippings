@@ -163,21 +163,21 @@
     <!-- Dialog boxes -->
     <div id="lightbox-bkgrd-ovl" class="lightbox-bkgrd"></div>
     <div id="shortcut-list-dlg" class="lightbox">
-      <p class="hlp-hdr">Clippings Shortcut Keys</p>
+      <p class="hlp-hdr" data-i18n="clipMgrShortcutKeyHelpHdg"></p>
       <p id="shortcut-instrxns"></p>
       <div id="shortcut-list-content"></div>    
       <div class="dlg-btns hbox">
-        <button id="export-shct-list" class="browser-style">Export To HTML</button>
+        <button id="export-shct-list" class="browser-style" data-i18n="exportHTML"></button>
 	<span id="shortcut-list-btns-spacer"></span>
-	<button class="dlg-accept browser-style default">Close</button>
+	<button class="dlg-accept browser-style default" data-i18n="btnClose"></button>
       </div>
     </div>
 
     <div id="shortcut-key-conflict-msgbox" class="lightbox">
       <div class="msgbox-icon" style="margin-top:8px"></div>
-      <p>The selected shortcut key has already been assigned to another clipping.  Please select a different shortcut key.</p>
+      <p data-i18n="clipMgrShortcutKeyAssigned"></p>
       <div class="dlg-btns">
-	<button class="dlg-accept browser-style default">OK</button>
+	<button class="dlg-accept browser-style default" data-i18n="btnOK"></button>
       </div>
     </div>
 
@@ -221,9 +221,9 @@
 
     <div id="clipping-missing-src-url-msgbox" class="lightbox">
       <div class="msgbox-icon"></div>
-      <p>The selected clipping doesn't have a source web page address.</p>
+      <p data-i18n="clipMgrNoSrcURL"></p>
       <div class="dlg-btns">
-	<button class="dlg-accept browser-style default">OK</button>
+	<button class="dlg-accept browser-style default" data-i18n="btnOK"></button>
       </div>
     </div>
 
@@ -257,7 +257,7 @@
       <div class="msgbox-icon"></div>
       <p class="msgbox-content"></p>
       <div class="dlg-btns">
-	<button class="dlg-accept browser-style default">Reload</button>
+	<button class="dlg-accept browser-style default" data-i18n="btnReload"></button>
       </div>
     </div>
 
@@ -285,18 +285,18 @@
       <div class="msgbox-icon"></div>
       <p class="msgbox-content"></p>
       <div class="dlg-btns">
-	<button class="dlg-accept browser-style default">OK</button>
+	<button class="dlg-accept browser-style default" data-i18n="btnOK"></button>
       </div>
     </div>
 
     <div id="remove-all-source-urls-dlg" class="lightbox">
       <div class="dlg-content browser-style">
 	<div class="msgbox-icon"></div>
-	<p>All source web page addresses of your clippings will be removed.  Do you want to continue?</p>
+	<p data-i18n="clipMgrWarnRemoveSrcURLs"></p>
       </div>	  
       <div class="dlg-btns">
-        <button class="dlg-btn-yes browser-style">Yes</button>
-        <button class="dlg-accept browser-style default">No</button>
+        <button class="dlg-btn-yes browser-style" data-i18n="btnYes"></button>
+        <button class="dlg-accept browser-style default" data-i18n="btnNo"></button>
       </div>
 
     </div>
@@ -322,7 +322,7 @@
 	<p class="msgbox-error-msg"></p>
       </div>
       <div class="dlg-btns">
-        <button class="dlg-accept browser-style default">OK</button>
+        <button class="dlg-accept browser-style default" data-i18n="btnOK"></button>
       </div>
     </div>
 
@@ -336,15 +336,15 @@
         </fieldset>
       </div>
       <div class="dlg-btns">
-	<button class="dlg-accept browser-style default"data-i18n="btnClose"></button>
+	<button class="dlg-accept browser-style default" data-i18n="btnClose"></button>
       </div>
     </div>
 
     <div id="generic-msg-box" class="lightbox">
       <div class="msgbox-icon"></div>
-      <p>No help is available (so leave me alone).</p>
+      <p data-i18n="msgUnknown"></p>
       <div class="dlg-btns">
-	<button class="dlg-accept browser-style default">OK</button>
+	<button class="dlg-accept browser-style default" data-i18n="btnOK"></button>
       </div>
     </div>
     

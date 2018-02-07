@@ -1893,18 +1893,19 @@ function initDialogs()
   gDialogs.shortcutList.onInit = () => {
     let that = gDialogs.shortcutList;
     if (! that.isInitialized) {
-      let instrxns = "To paste a clipping from the list below into a web page textbox in Firefox, press ALT+SHIFT+Y, then the shortcut key.";
-      if (gOS == "mac") {
-        instrxns = "To paste a clipping from the list below into a web page textbox in Firefox, press \u21E7\u2318Y, then the shortcut key.";
+      let shctPrefixKey = aeConst.SHORTCUT_KEY_PREFIX;
+      if (isMacOS) {
+        shctPrefixKey = aeConst.SHORTCUT_KEY_PREFIX_MAC;
       }
-      $("#shortcut-instrxns").text(instrxns);
+      $("#shortcut-instrxns").text(chrome.i18n.getMessage("clipMgrShortcutHelpInstrxn", shctPrefixKey));
+      let extVer = chrome.runtime.getManifest().version;
       
       aeImportExport.setL10nStrings({
-        shctTitle: "Clippings Shortcut Keys",
-        hostAppInfo: `Clippings 6.0.3a1+ on ${gClippings.getHostAppName()}`,
-        shctKeyInstrxns: "To paste a clipping into a web page textbox in Firefox, press ALT+SHIFT+Y (Command+Shift+Y on macOS), then the shortcut key.",
-        shctKeyColHdr: "Shortcut Key",
-        clippingNameColHdr: "Clipping Name",
+        shctTitle: chrome.i18n.getMessage("expHTMLTitle"),
+        hostAppInfo: chrome.i18n.getMessage("expHTMLHostAppInfo", [extVer, gClippings.getHostAppName()]),
+        shctKeyInstrxns: chrome.i18n.getMessage("expHTMLShctKeyInstrxn"),
+        shctKeyColHdr: chrome.i18n.getMessage("expHTMLShctKeyCol"),
+        clippingNameColHdr: chrome.i18n.getMessage("expHTMLClipNameCol"),
       });
 
       $("#export-shct-list").click(aEvent => {
@@ -2107,7 +2108,7 @@ function initDialogs()
         gDialogs.importFromFile.close();
         gSuppressAutoMinzWnd = false;
 
-        gDialogs.importConfirmMsgBox.setMessage(`Import from "${importFile.name}" is successfully completed.`);
+        gDialogs.importConfirmMsgBox.setMessage(chrome.i18n.getMessage("clipMgrImportConfirm", importFile.name));
         gDialogs.importConfirmMsgBox.showModal();
       });
 
@@ -2178,8 +2179,7 @@ function initDialogs()
         gSuppressAutoMinzWnd = false;
         setStatusBarMsg("Exporting... done");
         
-        // TO DO: Get the path of the exported file, not just the file name.
-        gDialogs.exportConfirmMsgBox.setMessage(`Clippings export to "${aFilename}" is successfully completed.`);
+        gDialogs.exportConfirmMsgBox.setMessage(chrome.i18n.getMessage("clipMgrExportConfirm", aFilename));
         gDialogs.exportConfirmMsgBox.showModal();
 
       }).catch(aErr => {
