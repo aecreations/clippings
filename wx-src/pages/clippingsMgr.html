@@ -301,16 +301,17 @@
 
     <div id="move-dlg" class="lightbox">
       <div class="dlg-content browser-style">
-	<label id="move-to-label" for="move-to-fldr-tree">Move to:</label>
+	<label id="move-to-label" for="move-to-fldr-tree" data-i18n="labelMoveTo"></label>
 	<div id="move-to-fldr-tree"></div>
 	
 	<input type="checkbox" id="copy-instead-of-move"/>
-	<label for="copy-instead-of-move">Create a copy</label>
+	<label for="copy-instead-of-move" data-i18n="cbCreateCopy"></label>
 	<div id="move-error"></div>
       </div>
       <div class="dlg-btns">
-        <button class="dlg-accept browser-style default">OK</button>
-        <button class="dlg-cancel browser-style">Cancel</button>
+        <button id="move-dlg-action-btn" class="dlg-accept browser-style default"
+	 data-i18n="btnMove"></button>
+        <button class="dlg-cancel browser-style" data-i18n="btnCancel"></button>
       </div>
     </div>
 

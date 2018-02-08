@@ -839,6 +839,34 @@
 
   "exportError": {
     "message": "Error exporting Clippings data.\n\nDetails:\n$1"
+  },
+
+  "labelMoveClipping": {
+    "message": "Move clipping to:"
+  },
+
+  "labelMoveFolder": {
+    "message": "Move folder to:"
+  },
+
+  "labelCopyClipping": {
+    "message": "Copy clipping to:"
+  },
+
+  "labelCopyFolder": {
+    "message": "Copy folder to:"
+  },
+
+  "cbCreateCopy": {
+    "message": "Create a copy"
+  },
+
+  "btnMove": {
+    "message": "Move"
+  },
+
+  "btnCopy": {
+    "message": "Copy"
   }
 
   

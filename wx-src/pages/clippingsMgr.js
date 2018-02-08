@@ -2253,6 +2253,7 @@ function initDialogs()
   };
 
   gDialogs.moveTo = new aeDialog("#move-dlg");
+  gDialogs.moveTo.isInitialized = false;
   gDialogs.moveTo.fldrTree = null;
   gDialogs.moveTo.selectedFldrNode = null;
 
@@ -2272,6 +2273,30 @@ function initDialogs()
 
   let that = gDialogs.moveTo;
   gDialogs.moveTo.onInit = () => {
+    if (! that.isInitialized) {
+      $("#copy-instead-of-move").click(aEvent => {
+        if (aEvent.target.checked) {
+          if (getClippingsTree().activeNode.folder) {
+            $("#move-to-label").text(chrome.i18n.getMessage("labelCopyFolder"));
+          }
+          else {
+            $("#move-to-label").text(chrome.i18n.getMessage("labelCopyClipping"));
+          }
+          $("#move-dlg-action-btn").text(chrome.i18n.getMessage("btnCopy"));
+        }
+        else {
+          if (getClippingsTree().activeNode.folder) {
+            $("#move-to-label").text(chrome.i18n.getMessage("labelMoveFolder"));
+          }
+          else {
+            $("#move-to-label").text(chrome.i18n.getMessage("labelMoveClipping"));
+          }
+          $("#move-dlg-action-btn").text(chrome.i18n.getMessage("btnMove"));
+        }
+      });
+      that.isInitialized = true;
+    }
+    
     if (that.fldrTree) {
       that.fldrTree.getTree().getNodeByKey(Number(aeConst.ROOT_FOLDER_ID).toString()).setActive();
     }
@@ -2283,14 +2308,15 @@ function initDialogs()
     }
 
     $("#copy-instead-of-move").prop("checked", false);
+    $("#move-dlg-action-btn").text(chrome.i18n.getMessage("btnMove"));
     $("#move-error").text("");
     that.selectedFldrNode = null;
 
     if (getClippingsTree().activeNode.folder) {
-      $("#move-to-label").text("Move folder to:");
+      $("#move-to-label").text(chrome.i18n.getMessage("labelMoveFolder"));
     }
     else {
-      $("#move-to-label").text("Move clipping to:");
+      $("#move-to-label").text(chrome.i18n.getMessage("labelMoveClipping"));
     }
   };
 
