@@ -1146,7 +1146,7 @@ let gCmd = {
     const INCLUDE_SRC_URLS = true;
     
     aeImportExport.setDatabase(gClippingsDB);
-    setStatusBarMsg("Saving backup file...");
+    setStatusBarMsg(chrome.i18n.getMessage("statusSavingBkup"));
 
     let blobData;
     aeImportExport.exportToJSON(INCLUDE_SRC_URLS).then(aJSONData => {
@@ -1159,7 +1159,7 @@ let gCmd = {
         filename: aeConst.CLIPPINGS_BACKUP_FILENAME,
         saveAs: true
       }).then(aDownldItemID => {
-        setStatusBarMsg("Saving backup file... done");
+        setStatusBarMsg(chrome.i18n.getMessage("statusSavingBkupDone"));
         gSuppressAutoMinzWnd = false;
       }).catch(aErr => {
         if (aErr.fileName == "undefined") {
@@ -1167,14 +1167,14 @@ let gCmd = {
         }
         else {
           console.error(aErr);
-          setStatusBarMsg("Backup failed.");
-          window.alert("Sorry, an error occurred while creating the backup file.\n\nDetails:\n" + getErrStr(aErr));
+          setStatusBarMsg(chrome.i18n.getMessage("statusSavingBkupFailed"));
+          window.alert(chrome.i18n.getMessage("backupError", aErr));
         }
         gSuppressAutoMinzWnd = false;
       });
     }).catch(aErr => {
       window.alert("Sorry, an error occurred during the backup.\n\nDetails:\n" + getErrStr(aErr));
-      setStatusBarMsg("Backup failed.");
+      setStatusBarMsg(chrome.i18n.getMessage("statusSavingBkupFailed"));
     });
   },
   
@@ -1954,6 +1954,7 @@ function initDialogs()
     let that = gDialogs.insCustomPlchldr;
 
     if (! that.isInitialized) {
+      $("#custom-plchldr-name").prop("placeholder", chrome.i18n.getMessage("placeholderNameHint"));
       $("#custom-plchldr-name").on("keypress", aEvent => {
         if ($(aEvent.target).hasClass("input-error")) {
           $(aEvent.target).removeClass("input-error");
@@ -1997,6 +1998,7 @@ function initDialogs()
   gDialogs.insAutoIncrPlchldr.onInit = () => {
     let that = gDialogs.insAutoIncrPlchldr;
     if (! that.isInitialized) {
+      $("#numeric-plchldr-name").prop("placeholder", chrome.i18n.getMessage("placeholderNameHint"));
       $("#numeric-plchldr-name").on("keypress", aEvent => {
         if ($(aEvent.target).hasClass("input-error")) {
           $(aEvent.target).removeClass("input-error");
@@ -2031,16 +2033,16 @@ function initDialogs()
 
   gDialogs.importFromFile.onInit = () => {
     if (gDialogs.importFromFile.mode == gDialogs.importFromFile.IMP_REPLACE) {
-      $("#import-clippings-label").text("Select backup file:");
+      $("#import-clippings-label").text(chrome.i18n.getMessage("labelSelBkupFile"));
       $("#import-clippings-replc-shct-keys-checkbox").hide();
       $("#restore-backup-warning").show();
-      $("#import-dlg-action-btn").text("Restore Backup");
+      $("#import-dlg-action-btn").text(chrome.i18n.getMessage("btnRestoreBkup"));
     }
     else {
-      $("#import-clippings-label").text("Select import file:");
+      $("#import-clippings-label").text(chrome.i18n.getMessage("labelSelImportFile"));
       $("#import-clippings-replc-shct-keys-checkbox").show();
       $("#restore-backup-warning").hide();
-      $("#import-dlg-action-btn").text("Import");
+      $("#import-dlg-action-btn").text(chrome.i18n.getMessage("btnImport"));
     }
 
     $("#import-clippings-file-path").val("");
@@ -2097,7 +2099,7 @@ function initDialogs()
         catch (e) {
           $("#import-progress-bar").hide();
           console.error(e);
-          $("#import-error").text("Error reading selected file.  The file may not be a valid Clippings file.").show();
+          $("#import-error").text(chrome.i18n.getMessage("importError")).show();
           return;
         }
 
@@ -2145,8 +2147,8 @@ function initDialogs()
   
   gDialogs.exportToFile.onInit = () => {
     let fmtDesc = [
-      "The default format for backing up and exchanging Clippings data with other users or multiple computers.  Requires Clippings 5.5 or newer installed.",
-      "Exports your Clippings data as an HTML document for printing or display in a web browser."
+      chrome.i18n.getMessage("expFmtClippings6Desc"), // Clippings 6
+      chrome.i18n.getMessage("expFmtHTMLDocDesc"),    // HTML Document
     ];
 
     gSuppressAutoMinzWnd = true;
@@ -2177,7 +2179,7 @@ function initDialogs()
         saveAs: true
       }).then(aDownldItemID => {
         gSuppressAutoMinzWnd = false;
-        setStatusBarMsg("Exporting... done");
+        setStatusBarMsg(chrome.i18n.getMessage("statusExportDone"));
         
         gDialogs.exportConfirmMsgBox.setMessage(chrome.i18n.getMessage("clipMgrExportConfirm", aFilename));
         gDialogs.exportConfirmMsgBox.showModal();
@@ -2189,14 +2191,14 @@ function initDialogs()
         }
         else {
           console.error(aErr);
-          setStatusBarMsg("Export failed.");
-          window.alert("Sorry, an error occurred while creating the export file.\n\nDetails:\n" + getErrStr(aErr));
+          setStatusBarMsg(chrome.i18n.getMessage("statusExportFailed"));
+          window.alert(chrome.i18n.getMessage("exportError", aErr));
         }
       });
     }
     
     let selectedFmtIdx = $("#export-format-list")[0].selectedIndex;
-    setStatusBarMsg("Exporting...");
+    setStatusBarMsg(chrome.i18n.getMessage("statusExportStart"));
 
     if (selectedFmtIdx == gDialogs.exportToFile.FMT_CLIPPINGS_WX) {
       let inclSrcURLs = $("#include-src-urls").prop("checked");
@@ -2207,7 +2209,7 @@ function initDialogs()
         saveToFile(blobData, aeConst.CLIPPINGS_EXPORT_FILENAME);
       }).catch(aErr => {
         window.alert("Sorry, an error occurred while exporting to Clippings 6 format.\n\nDetails:\n" + getErrStr(aErr));
-        setStatusBarMsg("Export failed.");
+        setStatusBarMsg(chrome.i18n.getMessage("statusExportFailed"));
         gSuppressAutoMinzWnd = false;
       });
     }
@@ -2217,7 +2219,7 @@ function initDialogs()
         saveToFile(blobData, aeConst.HTML_EXPORT_FILENAME);
       }).catch(aErr => {
         window.alert("Sorry, an error occurred while exporting to HTML Document format.\n\nDetails:\n" + getErrStr(aErr));
-        setStatusBarMsg("Export failed.");
+        setStatusBarMsg(chrome.i18n.getMessage("statusExportFailed"));
         gSuppressAutoMinzWnd = false;
       });
     }

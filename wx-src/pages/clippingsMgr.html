@@ -184,38 +184,34 @@
     <div id="custom-placeholder-dlg" class="lightbox">
       <div class="dlg-content">
 	<div class="row browser-style">
-	<label for="custom-plchldr-name">Name of custom placeholder:</label>
+	<label for="custom-plchldr-name" data-i18n="labelCustPlchldrName"></label>
 	<input type="text" id="custom-plchldr-name" required
-         placeholder="Letters, numbers, underscores, no spaces"
 	 pattern="[^a-zA-Z0-9_\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]"/>
 	</div>
 	<div class="row browser-style">
-  	  <label for="custom-plchldr-default-val">Default value (optional):</label>
+  	  <label for="custom-plchldr-default-val" data-i18n="labelCustPlchldrVal"></label>
   	  <input type="text" id="custom-plchldr-default-val"/>
         </div>
-	<p>Separate multiple default values with a <q>|</q> symbol.  Example: red|green|blue</p>
+	<p data-i18n="custPlchldrValDesc"></p>
       </div>
       <div class="dlg-btns">
-	<button class="dlg-accept browser-style default">OK</button>
-        <button class="dlg-cancel browser-style">Cancel</button>
+	<button class="dlg-accept browser-style default" data-i18n="btnOK"></button>
+        <button class="dlg-cancel browser-style" data-i18n="btnCancel"></button>
       </div>
     </div>
 
     <div id="numeric-placeholder-dlg" class="lightbox">      
       <div class="dlg-content">
         <div class="row browser-style">
-  	  <label>Name of numeric placeholder:</label>
+  	  <label data-i18n="labelNumPlchldrName"></label>
 	  <input type="text" id="numeric-plchldr-name" required
-	   placeholder="Letters, numbers, underscores, no spaces"
  	   pattern="[^a-zA-Z0-9_\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]"/>
         </div>
-	<p>Each time the clipping is pasted, the value of this placeholder
-      will automatically increase by one, until the placeholder is reset from the Clippings toolbar
-      button context menu.</p>
+	<p data-i18n="numPlchldrDesc"></p>
       </div>
       <div class="dlg-btns">
-	<button class="dlg-accept browser-style default">OK</button>
-        <button class="dlg-cancel browser-style">Cancel</button>
+	<button class="dlg-accept browser-style default" data-i18n="btnOK"></button>
+        <button class="dlg-cancel browser-style" data-i18n="btnCancel"></button>
       </div>
     </div>
 
@@ -229,27 +225,29 @@
 
     <div id="import-dlg" class="lightbox">
       <div class="dlg-content browser-style">
-        <label id="import-clippings-label">Select import file:</label>
+        <label id="import-clippings-label" data-i18n="labelSelImportFile"></label>
 	<div id="import-clippings-filepicker" class="hbox browser-style">
 	  <input type="text" id="import-clippings-file-path" readonly="true"/>
-	  <label id="import-clippings-file-upload-btn" for="import-clippings-file-upload">Browse...</label>
+	  <label id="import-clippings-file-upload-btn" for="import-clippings-file-upload"
+	   data-i18n="btnBrowse"></label>
 	  <input type="file" id="import-clippings-file-upload" accept=".rdf, .json"/>
 	</div>
 	<div id="import-clippings-replc-shct-keys-checkbox" class="browser-style">
 	  <input type="checkbox" id="import-clippings-replc-shct-keys" checked="true"/>
-	  <label for="import-clippings-replc-shct-keys">Replace shortcut keys</label>
+	  <label for="import-clippings-replc-shct-keys" data-i18n="cbImportReplcShctKeys"></label>
 	  <br/>
 	</div>
 	<div id="restore-backup-warning">
 	  <div class="warning-icon"></div>
-	  <p>Restoring from a backup file will replace all of your clippings with the backup. This action can't be undone.</p>
+	  <p data-i18n="warnBackupOverwrite"></p>
         </div>
 	<progress id="import-progress-bar"></progress>
 	<div id="import-error"></div>
       </div>
       <div class="dlg-btns">
-	<button id="import-dlg-action-btn" class="dlg-accept browser-style default" disabled="true">Import</button>
-	<button class="dlg-cancel browser-style">Cancel</button>
+	<button id="import-dlg-action-btn" class="dlg-accept browser-style default" disabled="true"
+	 data-i18n="btnImport"></button>
+	<button class="dlg-cancel browser-style" data-i18n="btnCancel"></button>
       </div>
     </div>
 
@@ -263,21 +261,21 @@
 
     <div id="export-dlg" class="lightbox">
       <div class="dlg-content browser-style">
-	<label style="display:block">Select a format to export Clippings to:</label>
+	<label style="display:block" data-i18n="labelSelExportFmt"></label>
 	<select id="export-format-list" size="3">
-	  <option value="0">Clippings 6</option>
-	  <option value="1">HTML Document</option>
+	  <option value="0" data-i18n="expFmtClippings6"></option>
+	  <option value="1" data-i18n="expFmtHTMLDoc"></option>
 	</select>
 	<fieldset>
-	  <legend>Description</legend>
+	  <legend data-i18n="expFmtDescHdg"></legend>
 	  <p id="format-description" class="desc"></p>
 	</fieldset>
 	<input type="checkbox" id="include-src-urls" checked="true"/>
-	<label for="include-src-urls">Include source web page addresses of clippings</label>
+	<label for="include-src-urls" data-i18n="cbExpInclSrcURLs"></label>
       </div>
       <div class="dlg-btns">
-        <button class="dlg-accept browser-style default">Export</button>
-        <button class="dlg-cancel browser-style">Cancel</button>
+        <button class="dlg-accept browser-style default" data-i18n="btnExport"></button>
+        <button class="dlg-cancel browser-style" data-i18n="btnCancel"></button>
       </div>
     </div>
 

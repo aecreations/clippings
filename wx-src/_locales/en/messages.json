@@ -723,6 +723,123 @@
 
   "clipMgrWarnRemoveSrcURLs": {
     "message": "All source web page addresses of your clippings will be removed.  Do you want to continue?"
+  },
+
+  "placeholderNameHint": {
+    "message": "Letters, numbers, underscores, no spaces"
+  },
+
+  "labelCustPlchldrName": {
+    "message": "Name of custom placeholder:"
+  },
+
+  "labelNumPlchldrName": {
+    "message": "Name of numeric placeholder:"
+  },
+
+  "labelCustPlchldrVal": {
+    "message": "Default value (optional):"
+  },
+  
+  "custPlchdlrValDesc": {
+    "message": "Separate multiple default values with a \"|\" symbol.  Example: red|green|blue"
+  },
+
+  "numPlchldrDesc": {
+    "message": "Each time the clipping is pasted, the value of this placeholder will automatically increase by one, until the placeholder is reset from the Clippings toolbar button context menu."
+  },
+
+  "labelSelImportFile": {
+    "message": "Select import file:"
+  },
+
+  "labelSelBkupFile": {
+    "message": 	"Select backup file:"
+  },
+
+  "statusSavingBkup": {
+    "message": "Saving backup file..."
+  },
+
+  "statusSavingBkupDone": {
+    "message": "Saving backup file... done"
+  },
+
+  "statusSavingBkupFailed": {
+    "message": "Backup failed."
+  },
+
+  "backupError": {
+    "message": "Sorry, an error occurred while creating the backup file.\n\nDetails:\n$1"
+  },
+
+  "cbImportReplcShctKeys": {
+    "message": "Replace shortcut keys"
+  },
+
+  "warnBackupOverwrite": {
+    "message": "Restoring from a backup file will replace all of your clippings with the backup. This action can't be undone."
+  },
+
+  "btnImport": {
+    "message": "Import"
+  },
+
+  "btnRestoreBkup": {
+    "message": "Restore Backup"
+  },
+
+  "importError": {
+    "message": "Error reading selected file. The file may not be a valid Clippings file."
+  },
+
+  "labelSelExportFmt": {
+    "message": "Select a format to export clippings to:"
+  },
+
+  "expFmtDescHdg": {
+    "message": "Description"
+  },
+
+  "expFmtClippings6": {
+    "message": "Clippings 6"
+  },
+
+  "expFmtClippings6Desc": {
+    "message": "The default format for backing up and exchanging Clippings data with other users or multiple computers.  Requires Clippings 5.5 or newer installed."
+  },
+
+  "expFmtHTMLDoc": {
+    "message": "HTML Document"
+  },
+
+  "expFmtHTMLDocDesc": {
+    "message": "Exports your Clippings data as an HTML document for printing or display in a web browser."
+  },
+
+  "cbExpInclSrcURLs": {
+    "message": "Include source web page addresses of clippings"
+  },
+
+  "btnExport": {
+    "message": "Export"
+  },
+
+  "statusExportStart": {
+    "message": "Exporting..."
+  },
+
+  "statusExportDone": {
+    "message": "Exporting... done"
+  },
+
+  "statusExportFailed": {
+    "message": "Export failed."
+  },
+
+  "exportError": {
+    "message": "Error exporting Clippings data.\n\nDetails:\n$1"
   }
+
   
 }
