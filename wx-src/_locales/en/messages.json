@@ -867,7 +867,53 @@
 
   "btnCopy": {
     "message": "Copy"
-  }
+  },
 
-  
+  "prefsTitle": {
+    "message": "Clippings Options"
+  },
+
+  "prefsHdgPasteOptions": {
+    "message": "Paste Options"
+  },
+
+  "labelPasteOptions": {
+    "message": "When pasting an HTML-formatted clipping into a rich text edit box:"
+  },
+
+  "pasteOptFormatted": {
+    "message": "Paste as formatted text"
+  },
+
+  "pasteOptRawHTML": {
+    "message": "Paste as plain text, preserving HTML tags"
+  },
+
+  "cbAutoLineBreak": {
+    "message": "Automatically break lines unless <p> or <br> tags exist"
+  },
+
+  "htmlPasteDesc": {
+    "message": "An HTML-formatted clipping will always be pasted as plain text if pasting into a plain textbox, or if the clipping contains restricted tags such as <script>, <applet>, <object>, <iframe>, etc."
+  },
+
+  "prefsShortcutMode": {
+    "message": "Activate shortcut key mode using $1"
+  },
+
+  "prefsDefaultNumPlchldrStart": {
+    "message": "Default starting value for auto-incrementing placeholders:"
+  },
+
+  "prefsHdgGeneralOptions": {
+    "message": "General Options"
+  },
+
+  "cbAlwaysSaveSrcURL": {
+    "message": "Always save the address of the source web page"
+  },
+
+  "cbCheckSpelling": {
+    "message": "Check spelling"
+  }
 }

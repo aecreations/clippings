@@ -19,13 +19,12 @@ $(() => {
 function init()
 {
   let os = gClippings.getOS();
-  let keybdPasteKeys = "ALT+SHIFT+Y";
+  let keybPasteKeys = aeConst.SHORTCUT_KEY_PREFIX;
   
   if (os == "mac") {
-    keybdPasteKeys = "\u21e7\u2318Y";
+    keybPasteKeys = aeConst.SHORTCUT_KEY_PREFIX_MAC;
   }
-
-  $("#keyboard-paste-keys").text(keybdPasteKeys);
+  $("#enable-shortcut-key-label").text(chrome.i18n.getMessage("prefsShortcutMode", keybPasteKeys));
   
   browser.storage.local.get().then(aPrefs => {
     $("#html-paste-options").val(aPrefs.htmlPaste).change(aEvent => {
