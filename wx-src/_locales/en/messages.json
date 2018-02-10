@@ -741,8 +741,8 @@
     "message": "Default value (optional):"
   },
   
-  "custPlchdlrValDesc": {
-    "message": "Separate multiple default values with a \"|\" symbol.  Example: red|green|blue"
+  "custPlchldrValDesc": {
+    "message": "Separate multiple default values with a \u201c|\u201d symbol. Example: red|green|blue"
   },
 
   "numPlchldrDesc": {
