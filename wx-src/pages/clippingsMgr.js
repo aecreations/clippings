@@ -2253,7 +2253,7 @@ function initDialogs()
   });
 
   gDialogs.removeAllSrcURLsConfirm = new aeDialog("#all-src-urls-removed-confirm-msgbar");
-  gDialogs.removeAllSrcURLsConfirm.onUnload = () => {
+  gDialogs.removeAllSrcURLsConfirm.onInit = () => {
     // Reselect the selected tree node to force a call to updateDisplay().
     getClippingsTree().reactivate(true);
   };
