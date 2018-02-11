@@ -730,7 +730,7 @@ ul.fancytree-container {
 
 #shortcut-list-dlg {
     --width: 420px;
-    --height: 322px;
+    --height: 324px;
     top: 24px;
 }
 
@@ -785,7 +785,7 @@ ul.fancytree-container {
 #shortcut-list-content table > tbody {
     display: block;
     height: 160px;
-    overflow-x: none;
+    overflow-x: hidden;
     overflow-y: auto;
     border-bottom: 1px solid #d4d4d4;
 }
