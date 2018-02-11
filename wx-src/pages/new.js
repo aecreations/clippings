@@ -209,7 +209,11 @@ function initDialogs()
       that.firstInit = false;
     }
 
-    $("#new-fldr-name").val(chrome.i18n.getMessage("newFolder")).select().focus();
+    $("#new-fldr-name").val(chrome.i18n.getMessage("newFolder"));
+  };
+
+  gNewFolderDlg.onShow = () => {
+    $("#new-fldr-name").select().focus();
   };
   
   gNewFolderDlg.onAccept = aEvent => {

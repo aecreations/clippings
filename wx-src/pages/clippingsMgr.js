@@ -1964,7 +1964,10 @@ function initDialogs()
     }
     
     $("#custom-plchldr-default-val").val("");
-    $("#custom-plchldr-name").removeClass("input-error").val("").focus();
+    $("#custom-plchldr-name").removeClass("input-error").val("");
+  };
+  gDialogs.insCustomPlchldr.onShow = () => {
+    $("#custom-plchldr-name").focus();
   };
   gDialogs.insCustomPlchldr.onAccept = () => {
     let placeholderName = $("#custom-plchldr-name").val();
@@ -2005,7 +2008,10 @@ function initDialogs()
         }
       });
     }
-    $("#numeric-plchldr-name").removeClass("input-error").val("").focus();
+    $("#numeric-plchldr-name").removeClass("input-error").val("");
+  };
+  gDialogs.insAutoIncrPlchldr.onShow = () => {
+    $("#numeric-plchldr-name").focus();
   };
   gDialogs.insAutoIncrPlchldr.onAccept = () => {
     let placeholderName = $("#numeric-plchldr-name").val();
