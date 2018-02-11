@@ -2794,7 +2794,7 @@ function setEmptyClippingsState()
   var rv;
   rv = [{ title: chrome.i18n.getMessage("clipMgrNoItems"), key: "0" }];
   gIsClippingsTreeEmpty = true;
-  $("#clipping-name, #clipping-text, #source-url-bar, #options-bar").hide();
+  $("#clipping-name, #clipping-text, #placeholder-toolbar, #source-url-bar, #options-bar").hide();
   $("#intro-content").show();
   
   return rv;
@@ -2809,7 +2809,15 @@ function unsetEmptyClippingsState()
   tree.options.icon = true;
   gIsClippingsTreeEmpty = false;
   $("#intro-content").hide();
-  $("#clipping-name, #clipping-text, #options-bar").show();
+  $("#clipping-name, #clipping-text").show();
+
+  let prefs = gClippings.getPrefs();
+  if (prefs.clippingsMgrDetailsPane) {
+    $("#source-url-bar, #options-bar").show();
+  }
+  if (prefs.clippingsMgrPlchldrToolbar) {
+    $("#placeholder-toolbar").show();
+  }
 }
 
 
