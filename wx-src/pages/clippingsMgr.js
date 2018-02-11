@@ -1389,9 +1389,15 @@ $(document).keypress(aEvent => {
   {
     return (aEvent.target.tagName == "INPUT" || aEvent.target.tagName == "TEXTAREA");
   }
+
+  aeDialog.hidePopups();
   
   // NOTE: CTRL+W/Cmd+W is automatically handled, so no need to define it here.
   if (aEvent.key == "F1") {
+    if (aeDialog.isOpen()) {
+      return;
+    }
+
     if ($("#intro-content").css("display") == "none") {
       gDialogs.miniHelp.showModal();
     }
