@@ -6,6 +6,7 @@
 
 const DEBUG_TREE = false;
 const DEBUG_WND_ACTIONS = false;
+const ENABLE_PASTE_CLIPPING = false;
 const NEW_CLIPPING_FROM_CLIPBOARD = "New Clipping From Clipboard";
 
 let gOS;
@@ -1051,6 +1052,28 @@ let gCmd = {
           height: DEFAULT_MAX_HEIGHT,
         });
       });
+    }
+  },
+
+  pasteClipping: function (aClippingID)
+  {
+    if (ENABLE_PASTE_CLIPPING) {
+      log(`Clippings/wx::clippingsMgr.js: gCmd.pasteClipping(): clipping ID = ${aClippingID}`);
+      if (gClippings.isGoogleChrome()) {
+        // TO DO: Similar logic as below, but don't close the window.
+      }
+      else {
+        browser.runtime.sendMessage({
+          msgID: "paste-clipping-by-name",
+          clippingID: aClippingID,
+          fromClippingsMgr: true
+        });
+        // Must close this window, or else pasting won't work!
+        closeWnd();
+      }
+    }
+    else {
+      warn("Clippings/wx::clippingsMgr.js: gCmd.pasteClipping(): Action disabled");
     }
   },
   

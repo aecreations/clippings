@@ -450,7 +450,8 @@ function initMessageListeners()
         pasteClippingByShortcutKey(shortcutKey);
       }
       else if (aRequest.msgID == "paste-clipping-by-name") {
-        pasteClippingByID(aRequest.clippingID);
+        let externReq = aRequest.fromClippingsMgr;
+        pasteClippingByID(aRequest.clippingID, externReq);
       }
       else if (aRequest.msgID == "paste-clipping-with-plchldrs") {
         let content = aRequest.processedContent;
@@ -812,7 +813,7 @@ function openDlgWnd(aURL, aWndKey, aWndPpty)
 }
 
 
-function pasteClippingByID(aClippingID)
+function pasteClippingByID(aClippingID, aExternalRequest)
 {
   gClippingsDB.transaction("r", gClippingsDB.clippings, gClippingsDB.folders, () => {
     let clipping = null;
@@ -845,7 +846,7 @@ function pasteClippingByID(aClippingID)
         parentFolderName: parentFldrName
       };
 
-      pasteClipping(clippingInfo);
+      pasteClipping(clippingInfo, aExternalRequest);
     });
   }).catch(aErr => {
     console.error("Clippings/wx: pasteClippingByID(): " + aErr);
@@ -901,9 +902,20 @@ function pasteClippingByShortcutKey(aShortcutKey)
 }
 
 
-function pasteClipping(aClippingInfo)
+function pasteClipping(aClippingInfo, aExternalRequest)
 {
-  chrome.tabs.query({ active: true, currentWindow: true }, aTabs => {
+  let queryInfo = {
+    active: true,
+  };
+
+  if (aExternalRequest) {
+    queryInfo.lastFocusedWindow = true;
+  }
+  else {
+    queryInfo.currentWindow = true;
+  }
+  
+  chrome.tabs.query(queryInfo, aTabs => {
     if (! aTabs[0]) {
       // This should never happen...
       alertEx(aeMsgBox.MSG_NO_ACTIVE_BROWSER_TAB);
@@ -921,9 +933,6 @@ function pasteClipping(aClippingInfo)
 
       let autoIncrPlchldrs = aeClippingSubst.getAutoIncrPlaceholders(processedCtnt);
       if (autoIncrPlchldrs.length > 0) {
-        // TO DO:
-        // Populate the auto-incrementing placeholder reset menu on the context
-        // menu for the Clippings toolbar button.
         console.log("Clippings/wx: Auto-incrementing placeholder names:");
         console.log(autoIncrPlchldrs);
 
