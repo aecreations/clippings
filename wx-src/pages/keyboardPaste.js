@@ -8,6 +8,7 @@ const WNDH_SHORTCUT_KEY = 164;
 const WNDH_SEARCH_CLIPPING = 222;
 const WNDH_SHORTCUT_LIST = 260;
 const WNDW_SHORTCUT_LIST = 420;
+const DLG_HEIGHT_ADJ_WINDOWS = 20;
 
 let gClippings, gClippingsDB, gPasteMode;
 
@@ -238,6 +239,9 @@ function initShortcutList()
     width: WNDW_SHORTCUT_LIST,
     height: WNDH_SHORTCUT_LIST,
   };
+  if (gClippings.getOS() == "win") {
+    updWndInfo.height += DLG_HEIGHT_ADJ_WINDOWS;
+  }
   
   chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, updWndInfo, aWnd => {
     aeImportExport.getShortcutKeyListHTML(false).then(aShctListHTML => {

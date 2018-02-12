@@ -4,8 +4,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
-const WNDH_PLCHLDR_MULTI = 288;
-const WNDH_PLCHLDR_MULTI_SHORT = 242;
+const WNDH_PLCHLDR_MULTI = 284;
+const WNDH_PLCHLDR_MULTI_SHORT = 240;
+const DLG_HEIGHT_ADJ_WINDOWS = 20;
 
 let gClippings = null;
 let gPlaceholders = null;
@@ -64,6 +65,9 @@ $(() => {
       else {
         $("#plchldr-multi").show();
         let height = gPlaceholders.length == 2 ? WNDH_PLCHLDR_MULTI_SHORT : WNDH_PLCHLDR_MULTI;
+        if (gClippings.getOS() == "win") {
+          height += DLG_HEIGHT_ADJ_WINDOWS;
+        }
         
         chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, { height }, aWnd => {
           for (let plchldr of gPlaceholders) {

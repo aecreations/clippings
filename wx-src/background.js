@@ -752,7 +752,11 @@ function openClippingsManager()
 function openNewClippingDlg()
 {
   let url = chrome.runtime.getURL("pages/new.html");
-  openDlgWnd(url, "newClipping", { type: "detached_panel", width: 428, height: 418 });
+  let height = 386;
+  if (gOS == "win") {
+    height = 418;
+  }
+  openDlgWnd(url, "newClipping", { type: "detached_panel", width: 428, height });
 }
 
 
