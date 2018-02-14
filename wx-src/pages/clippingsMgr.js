@@ -2116,7 +2116,7 @@ function initDialogs()
       $("#import-progress-bar").show();
 
       let importFile = fileList[0];
-      console.log("Clippings Manager: Selected import file: '%s'\nFile size: %d bytes", importFile.name, importFile.size);
+      log("Clippings Manager: Selected import file: '%s'\nFile size: %d bytes", importFile.name, importFile.size);
 
       let fileReader = new FileReader();
       fileReader.addEventListener("load", aEvent => {
