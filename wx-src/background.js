@@ -933,9 +933,6 @@ function pasteClipping(aClippingInfo, aExternalRequest)
 
       let autoIncrPlchldrs = aeClippingSubst.getAutoIncrPlaceholders(processedCtnt);
       if (autoIncrPlchldrs.length > 0) {
-        console.log("Clippings/wx: Auto-incrementing placeholder names:");
-        console.log(autoIncrPlchldrs);
-
         buildAutoIncrementPlchldrResetMenu(autoIncrPlchldrs);
         processedCtnt = aeClippingSubst.processAutoIncrPlaceholders(processedCtnt);
       }
@@ -943,9 +940,6 @@ function pasteClipping(aClippingInfo, aExternalRequest)
       let plchldrs = aeClippingSubst.getCustomPlaceholders(processedCtnt);
       if (plchldrs.length > 0) {
         let plchldrsWithDefaultVals = aeClippingSubst.getCustomPlaceholderDefaultVals(processedCtnt, aClippingInfo);
-        console.log("Placeholders with default values:");
-        console.log(plchldrsWithDefaultVals);
-        
         gPlaceholders.set(plchldrs, plchldrsWithDefaultVals, processedCtnt);
         openPlaceholderPromptDlg();
         return;
