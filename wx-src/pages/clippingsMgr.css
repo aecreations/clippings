@@ -731,7 +731,7 @@ ul.fancytree-container {
 #shortcut-list-dlg {
     --width: 420px;
     --height: 324px;
-    top: 20px;
+    top: 18px;
 }
 
 #shortcut-list-dlg > .dlg-btns {
