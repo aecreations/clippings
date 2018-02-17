@@ -188,6 +188,15 @@ body {
     height: 20px;
 }
 
+#search-label-text, #num-matches {
+    flex: 0 1 auto;
+    width: 100%;
+}
+
+#search-label-spacer {
+    flex: 1 1 auto;
+}
+
 #clipping-search {
     width: 100%;
     height: 24px;
@@ -220,7 +229,16 @@ body {
     font-size: 11px;   
 }
 
-/* Autocomplete menu in clipping name search mode */
+/* EasyAutocomplete textbox styling override */
+.easy-autocomplete input {
+    border-color: unset;
+    border-radius: 0;
+    color: unset;
+    float: unset;
+    padding: unset;
+}
+
+/* EasyAutocomplete menu */
 .clipping > .name {
     font-size: 13px;
     color: #0c0c0d;
@@ -256,6 +274,7 @@ body {
     height: 44px;
 }
 
+/* Not used as of 6.0.3 */
 .easy-autocomplete-container > #ae-eac-num-matches {
     width: 100%;
     text-align: center;

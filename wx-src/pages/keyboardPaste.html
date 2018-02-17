@@ -9,7 +9,7 @@
     <title data-i18n="extName"></title>
 
     <link rel="stylesheet" href="chrome://browser/content/extension.css"/>
-    <link rel="stylesheet" href="../lib/EasyAutocomplete/easy-autocomplete.css"/>
+    <link rel="stylesheet" href="../lib/EasyAutocomplete/easy-autocomplete.min.css"/>
     <link rel="stylesheet" href="../style/dialog.css"/>
     <link rel="stylesheet" href="keyboardPaste.css"/>
 
@@ -35,12 +35,13 @@
 	  <img src="chrome://global/skin/icons/question-64.png"/>
 	</div>
 	<div id="search-by-name-content" class="browser-style">
-	  <div id="clipping-search-label">
-	    <label for="clipping-search" data-i18n="srchByNameDesc"></label>
+	  <div id="clipping-search-label" class="hbox">
+	    <label id="search-label-text" for="clipping-search" data-i18n="srchByNameDesc"></label>
+	    <span id="search-label-spacer"></span>
+ 	    <label id="num-matches">&nbsp;</label>
           </div>
-	  <input type="text" id="clipping-search"/>
 	  <div id="clear-search"></div>
-	  <div id="num-matches">&nbsp;</div>
+	  <input type="text" id="clipping-search"/>
 	</div>
 
 	<div class="key-legend">
@@ -65,7 +66,7 @@
     </div>
 
     <script src="../lib/jquery.js"></script>
-    <script src="../lib/EasyAutocomplete/jquery.easy-autocomplete.js"></script>
+    <script src="../lib/EasyAutocomplete/jquery.easy-autocomplete.min.js"></script>
     <script src="../lib/i18n.js"></script>
     <script src="../modules/aeConst.js"></script>
     <script src="../modules/aeImportExport.js"></script>
