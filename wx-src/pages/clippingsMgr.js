@@ -1342,7 +1342,14 @@ $(document).ready(() => {
     return;
   }
 
-  chrome.runtime.getPlatformInfo(aInfo => { gOS = aInfo.os; });
+  chrome.runtime.getPlatformInfo(aInfo => {
+    gOS = aInfo.os;
+
+    // Platform-specific initialization.
+    if (gOS == "mac") {
+      $("#status-bar").css({ backgroundImage: "none" });
+    }
+  });
 
   let wndURL = new URL(window.location.href);
   gOpenerWndID = Number(wndURL.searchParams.get("openerWndID"));
@@ -1526,7 +1533,7 @@ function initToolbar()
     $("#status-bar").hide();
     recalcContentAreaHeight($("#status-bar").css("display") != "none");
   }
-  
+
   $("#new-clipping").click(aEvent => { gCmd.newClipping(gCmd.UNDO_STACK) });
   $("#new-folder").click(aEvent => { gCmd.newFolder(gCmd.UNDO_STACK) });
   $("#move").attr("title", chrome.i18n.getMessage("tbMoveOrCopy")).click(aEvent => {
