@@ -3,6 +3,17 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
+/* Fancytree style overrides */
+ul.fancytree-container {
+    font: caption;
+    font-size: 11px;
+}
+
+span.fancytree-title {
+    cursor: default;
+    padding: 1px 3px 0 3px;
+}
+
 /* Tree icons for clippings and folders */
 .ui-fancytree .fancytree-node > .fancytree-icon {
     background-position: unset;
