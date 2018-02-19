@@ -41,15 +41,14 @@ select {
 }
 
 fieldset {
-    border-top: 1px solid silver;
+    border-top: 1px solid #d7d7db;
     border-right: 0;
     border-bottom: 0;
     border-left: 0;
 }
 
 legend {
-    margin-left: 2px;
-    padding-left: 4px;
+    margin-left: -12px;
     padding-right: 4px;
     font-size: 15px;
 }
