@@ -755,7 +755,7 @@ function openNewClippingDlg()
   let url = chrome.runtime.getURL("pages/new.html");
   let height = 386;
   if (gOS == "win") {
-    height = 418;
+    height = 422;
   }
   openDlgWnd(url, "newClipping", { type: "detached_panel", width: 428, height });
 }
