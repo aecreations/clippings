@@ -115,14 +115,14 @@ $(() => {
   })
 
   let osFileBrwsApp = "";
-  let keybdPasteKey = "ALT\u00a0+\u00a0SHIFT\u00a0+\u00a0Y";
+  let keybPasteKey = "ALT\u00a0+\u00a0SHIFT\u00a0+\u00a0Y";
   
   if (os == "win") {
     osFileBrwsApp = chrome.i18n.getMessage("welcFileMgrWindows");
   }
   else if (os == "mac") {
     osFileBrwsApp = chrome.i18n.getMessage("welcFileMgrMac");
-    keybdPasteKey = "\u21e7\u2318Y";
+    keybPasteKey = "\u21e7\u2318Y";
   }
   else {
     osFileBrwsApp = chrome.i18n.getMessage("welcFileMgrGeneric");
@@ -137,7 +137,8 @@ $(() => {
   
   $("#no-backup-instrxn-step2").text(chrome.i18n.getMessage("welcNoBackupInstrxnStep2", hiddenBkupFldrNote));
 
-  $("#shortcut-key-note-detail").html(chrome.i18n.getMessage("welcShctKeyNote", keybdPasteKey));
+  let cleanHTML = DOMPurify.sanitize(chrome.i18n.getMessage("welcShctKeyNote", keybPasteKey), { SAFE_FOR_JQUERY: true });
+  $("#shortcut-key-note-detail").html(cleanHTML);
 
   $("#import-clippings-file-upload").on("change", aEvent => {
     $("#import-failed").hide();
