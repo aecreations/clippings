@@ -137,8 +137,8 @@ $(() => {
   
   $("#no-backup-instrxn-step2").text(chrome.i18n.getMessage("welcNoBackupInstrxnStep2", hiddenBkupFldrNote));
 
-  let cleanHTML = DOMPurify.sanitize(chrome.i18n.getMessage("welcShctKeyNote", keybPasteKey), { SAFE_FOR_JQUERY: true });
-  $("#shortcut-key-note-detail").html(cleanHTML);
+  let shctKeyNoteHTML = DOMPurify.sanitize(chrome.i18n.getMessage("welcShctKeyNote", keybPasteKey), { SAFE_FOR_JQUERY: true });
+  $("#shortcut-key-note-detail").html(shctKeyNoteHTML);
 
   $("#import-clippings-file-upload").on("change", aEvent => {
     $("#import-failed").hide();
