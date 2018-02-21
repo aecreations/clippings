@@ -432,6 +432,10 @@ ul.fancytree-container {
     height: 24px;
 }
 
+#item-properties > #placeholder-toolbar > #plchldr-presets:active {
+    padding-left: -2px;
+}
+
 #item-properties > #placeholder-toolbar > #custom-plchldr {
     background-image: url("../img/customPlchldr.svg");
 }
