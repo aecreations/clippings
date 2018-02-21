@@ -14,6 +14,13 @@ let gPlaceholdersWithDefaultVals = null;
 let gClippingContent = null;
 
 
+// DOM utility
+function sanitizeHTML(aHTMLStr)
+{
+  return DOMPurify.sanitize(aHTMLStr, { SAFE_FOR_JQUERY: true });
+}
+
+
 // Page initialization
 $(() => {
   chrome.history.deleteUrl({ url: window.location.href });
@@ -56,9 +63,9 @@ $(() => {
             let vals = defaultVal.split("|");
             let optionElts = "";
             for (let val of vals) {
-              optionElts += `<option value="${val}">${val}</option>`;
+              optionElts += sanitizeHTML(`<option value="${val}">${val}</option>`);
             }
-            $("#single-prmt-input").replaceWith(`<select id="single-prmt-input" class="browser-style">${optionElts}</select>`);
+            $("#single-prmt-input").replaceWith(sanitizeHTML(`<select id="single-prmt-input" class="browser-style">${optionElts}</select>`));
           }
         }
       }
@@ -80,12 +87,12 @@ $(() => {
               let vals = defaultVal.split("|");
               let optionElts = "";
               for (let val of vals) {
-                optionElts += `<option value="${val}">${val}</option>`;
+                optionElts += sanitizeHTML(`<option value="${val}">${val}</option>`);
               }
-              $("#plchldr-table").append(`<div class="ph-row browser-style" data-placeholder="${plchldr}"><label class="ph-name">${plchldr}:</label><select class="ph-input browser-style">${optionElts}</select></div>`);
+              $("#plchldr-table").append(sanitizeHTML(`<div class="ph-row browser-style" data-placeholder="${plchldr}"><label class="ph-name">${plchldr}:</label><select class="ph-input browser-style">${optionElts}</select></div>`));
             }
             else {
-              $("#plchldr-table").append(`<div class="ph-row browser-style" data-placeholder="${plchldr}"><label class="ph-name">${plchldr}:</label><input type="text" class="ph-input" value="${defaultVal}"/></div>`);
+              $("#plchldr-table").append(sanitizeHTML(`<div class="ph-row browser-style" data-placeholder="${plchldr}"><label class="ph-name">${plchldr}:</label><input type="text" class="ph-input" value="${defaultVal}"/></div>`));
             }
           }
           $("#plchldr-table").fadeIn("fast");
