@@ -131,6 +131,7 @@ function initAutocomplete()
     let rv = "";
     let originalLen = aStr.length;
 
+    rv = DOMPurify.sanitize(aStr, { SAFE_FOR_JQUERY: true });
     rv = aStr.replace(/</g, "&lt;");
     rv = rv.replace(/>/g, "&gt;");
     rv = rv.substr(0, MAX_LEN);
@@ -184,7 +185,8 @@ function initAutocomplete()
       template: {
         type: "custom",
         method: function (aValue, aItem) {
-          return `<div class="clipping"><div class="name">${aValue}</div><div class="preview">${aItem.preview}</div></div>`;
+          let menuItemStr = DOMPurify.sanitize(`<div class="clipping"><div class="name">${aValue}</div><div class="preview">${aItem.preview}</div></div>`, { SAFE_FOR_JQUERY: true });
+          return menuItemStr;
         }
       }
     };
@@ -197,7 +199,7 @@ function initAutocomplete()
 
     $("#clipping-search").on("keyup", aEvent => {
       if (aEvent.target.value == "") {
-        $("#num-matches").text("\u00a0");  /* Non-breaking space. */
+        $("#num-matches").text("\u00a0");  // Non-breaking space.
         $("#clear-search").hide();
       }
       else {
