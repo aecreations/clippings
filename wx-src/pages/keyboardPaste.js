@@ -8,7 +8,7 @@ const WNDH_SHORTCUT_KEY = 164;
 const WNDH_SEARCH_CLIPPING = 222;
 const WNDH_SHORTCUT_LIST = 260;
 const WNDW_SHORTCUT_LIST = 420;
-const DLG_HEIGHT_ADJ_WINDOWS = 24;
+const DLG_HEIGHT_ADJ_WINDOWS = 20;
 
 let gClippings, gClippingsDB, gPasteMode;
 
