@@ -13,6 +13,14 @@ const DLG_HEIGHT_ADJ_WINDOWS = 24;
 let gClippings, gClippingsDB, gPasteMode;
 
 
+// DOM utility
+function sanitizeHTML(aHTMLStr)
+{
+  return DOMPurify.sanitize(aHTMLStr, { SAFE_FOR_JQUERY: true });
+}
+
+
+// Initialize dialog
 $(document).ready(() => {
   gClippings = chrome.extension.getBackgroundPage();
 
@@ -131,7 +139,7 @@ function initAutocomplete()
     let rv = "";
     let originalLen = aStr.length;
 
-    rv = DOMPurify.sanitize(aStr, { SAFE_FOR_JQUERY: true });
+    rv = sanitizeHTML(aStr);
     rv = aStr.replace(/</g, "&lt;");
     rv = rv.replace(/>/g, "&gt;");
     rv = rv.substr(0, MAX_LEN);
@@ -185,7 +193,7 @@ function initAutocomplete()
       template: {
         type: "custom",
         method: function (aValue, aItem) {
-          let menuItemStr = DOMPurify.sanitize(`<div class="clipping"><div class="name">${aValue}</div><div class="preview">${aItem.preview}</div></div>`, { SAFE_FOR_JQUERY: true });
+          let menuItemStr = sanitizeHTML(`<div class="clipping"><div class="name">${aValue}</div><div class="preview">${aItem.preview}</div></div>`);
           return menuItemStr;
         }
       }
@@ -247,7 +255,7 @@ function initShortcutList()
   
   chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, updWndInfo, aWnd => {
     aeImportExport.getShortcutKeyListHTML(false).then(aShctListHTML => {
-      $("#shortcut-list-content").append(aShctListHTML);
+      $("#shortcut-list-content").append(sanitizeHTML(aShctListHTML));
 
       $("#shortcut-list-content > table > tbody > tr").on("mouseup", aEvent => {
         $("#shortcut-list-content > table > tbody > tr").removeClass("selected-row");
