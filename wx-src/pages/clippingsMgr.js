@@ -2064,7 +2064,9 @@ function initDialogs()
       placeholder = placeholder + "]";
     }
 
-    insertTextIntoTextbox($("#clipping-text"), placeholder);
+    let contentTextArea = $("#clipping-text");
+    contentTextArea.focus();
+    insertTextIntoTextbox(contentTextArea, placeholder);
     that.close();
   };
 
@@ -2100,7 +2102,9 @@ function initDialogs()
     let that = gDialogs.insAutoIncrPlchldr;
     let placeholder = "#[" + placeholderName + "]";
 
-    insertTextIntoTextbox($("#clipping-text"), placeholder);
+    let contentTextArea = $("#clipping-text");
+    contentTextArea.focus();
+    insertTextIntoTextbox(contentTextArea, placeholder);
     that.close();
   };
   
