@@ -415,6 +415,10 @@
     "message": "TAB = search clipping by name"
   },
 
+  "keybPasteDlgTabShctMode": {
+    "message": "TAB = shortcut key mode"
+  },
+
   "srchByNameDesc": {
     "message": "Search for clipping by name:"
   },

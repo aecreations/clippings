@@ -315,6 +315,9 @@
   "keybPasteDlgTab": {
     "message": "TAB = Textbaustein nach Namen suchen"
   },
+  "keybPasteDlgTabShctMode": {
+    "message": "TAB = Tastaturkürzel-Modus"
+  },
   "srchByNameDesc": {
     "message": "Clipping nach Namen suchen:"
   },
