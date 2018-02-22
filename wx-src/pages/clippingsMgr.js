@@ -20,6 +20,14 @@ let gOpenerWndID;
 let gIsMaximized;
 let gSuppressAutoMinzWnd;
 
+
+// DOM utility
+function sanitizeHTML(aHTMLStr)
+{
+  return DOMPurify.sanitize(aHTMLStr, { SAFE_FOR_JQUERY: true });
+}
+
+
 // Clippings listener object
 let gClippingsListener = {
   origin: null,
@@ -453,7 +461,7 @@ let gSrcURLBar = {
       sourceURL: updatedURL
     }).then(aNumUpdated => {
       if ($("#clipping-src-url > a").length == 0) {
-        $("#clipping-src-url").html(`<a href="${updatedURL}">${updatedURL}</a>`);
+        $("#clipping-src-url").html(sanitizeHTML(`<a href="${updatedURL}">${updatedURL}</a>`));
       }
       else {
         if (updatedURL) {
@@ -1885,32 +1893,60 @@ function initInstantEditing()
 }
 
 
-function initDialogs()
+function initIntroBannerAndHelpDlg()
 {
-  // Also initialize the intro banner and help dialog.
   const isMacOS = gClippings.getOS() == "mac";
   const isLinux = gClippings.getOS() == "linux";
+
+  function buildKeyMapTable(aTableDOMElt)
+  {
+    let shctKeys = [];
+    if (isMacOS) {
+      shctKeys = ["\u2326", "esc", "\u2318F", "\u2318W", "\u2318Z", "F1", "\u2318F10"];
+    }
+    else {
+      shctKeys = ["DEL", "ESC", "CTRL+F", "CTRL+W", "CTRL+Z", "F1", "CTRL+F10"];
+    }
+
+    function buildKeyMapTableRow(aShctKey, aCmdL10nStrIdx)
+    {
+      let tr = document.createElement("tr");
+      let tdKey = document.createElement("td");
+      let tdCmd = document.createElement("td");
+      tdKey.appendChild(document.createTextNode(aShctKey));
+      tdCmd.appendChild(document.createTextNode(chrome.i18n.getMessage(aCmdL10nStrIdx)));
+      tr.appendChild(tdKey);
+      tr.appendChild(tdCmd);
+
+      return tr;
+    }
+
+    aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[0], "clipMgrIntroCmdDel"));
+    aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[1], "clipMgrIntroCmdClearSrchBar"));
+    aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[2], "clipMgrIntroCmdSrch"));
+    aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[3], "clipMgrIntroCmdClose"));
+    aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[4], "clipMgrIntroCmdUndo"));
+    aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[5], "clipMgrIntroCmdShowIntro"));
+
+    if (! isLinux) {
+      aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[6], "clipMgrIntroCmdMaximize"));
+    }
+  }
+ 
   let shctKeyTbls = $(".shortcut-key-tbl");
-  let shctKeys = [];
-  
-  if (isMacOS) {
-    shctKeys = ["\u2326", "esc", "\u2318F", "\u2318W", "\u2318Z", "F1", "\u2318F10"];
-  }
-  else {
-    shctKeys = ["DEL", "ESC", "CTRL+F", "CTRL+W", "CTRL+Z", "F1", "CTRL+F10"];
-  }
-  
-  $(`<tr><td style="width:6em">${shctKeys[0]}</td><td>${chrome.i18n.getMessage("clipMgrIntroCmdDel")}</td></tr>`).appendTo(shctKeyTbls);
-  $(`<tr><td>${shctKeys[1]}</td><td>${chrome.i18n.getMessage("clipMgrIntroCmdClearSrchBar")}</td></tr>`).appendTo(shctKeyTbls);
-  $(`<tr><td>${shctKeys[2]}</td><td>${chrome.i18n.getMessage("clipMgrIntroCmdSrch")}</td></tr>`).appendTo(shctKeyTbls);
-  $(`<tr><td>${shctKeys[3]}</td><td>${chrome.i18n.getMessage("clipMgrIntroCmdClose")}</td></tr>`).appendTo(shctKeyTbls);
-  $(`<tr><td>${shctKeys[4]}</td><td>${chrome.i18n.getMessage("clipMgrIntroCmdUndo")}</td></tr>`).appendTo(shctKeyTbls);
-  $(`<tr><td>${shctKeys[5]}</td><td>${chrome.i18n.getMessage("clipMgrIntroCmdShowIntro")}</td></tr>`).appendTo(shctKeyTbls);
 
-  if (! isLinux) {
-    $(`<tr><td>${shctKeys[6]}</td><td>${chrome.i18n.getMessage("clipMgrIntroCmdMaximize")}</td></tr>`).appendTo(shctKeyTbls);
+  for (let tbl of shctKeyTbls) {
+    buildKeyMapTable(tbl);
   }
+}
 
+
+function initDialogs()
+{
+  const isMacOS = gClippings.getOS() == "mac";
+
+  initIntroBannerAndHelpDlg();
+  
   aeImportExport.setDatabase(gClippingsDB);
 
   gDialogs.shctKeyConflict = new aeDialog("#shortcut-key-conflict-msgbox");
@@ -1969,7 +2005,7 @@ function initDialogs()
     }
 
     aeImportExport.getShortcutKeyListHTML(false).then(aShctListHTML => {
-      $("#shortcut-list-content").append(aShctListHTML);
+      $("#shortcut-list-content").append(sanitizeHTML(aShctListHTML));
     }).catch(aErr => {
       console.error("Clippings/wx::clippingsMgr.js: gDialogs.shortcutList.onInit(): " + aErr);
     });
@@ -2860,7 +2896,8 @@ function unsetEmptyClippingsState()
 function sanitizeTreeNodeTitle(aNodeTitle)
 {
   let rv = "";
-  rv = aNodeTitle.replace(/</g, "&lt;");
+  rv = sanitizeHTML(aNodeTitle);
+  rv = rv.replace(/</g, "&lt;");
   rv = rv.replace(/>/g, "&gt;");
   
   return rv;
@@ -2967,7 +3004,7 @@ function updateDisplay(aEvent, aData)
       }
       
       if (aResult.sourceURL) {
-        $("#clipping-src-url").html(`<a href="${aResult.sourceURL}">${aResult.sourceURL}</a>`);
+        $("#clipping-src-url").html(sanitizeHTML(`<a href="${aResult.sourceURL}">${aResult.sourceURL}</a>`));
         $("#clipping-src-url > a").click(aEvent => {
           aEvent.preventDefault();
           gCmd.gotoURL(aEvent.target.textContent);
