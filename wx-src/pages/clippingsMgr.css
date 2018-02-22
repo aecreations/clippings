@@ -330,6 +330,10 @@ ul.fancytree-container {
     font-size: 12px;
 }
 
+.shortcut-key-tbl > tr > td:first-of-type {
+    width: 6em;
+}
+
 #tree-splitter {
     order: 2;
     position: relative;
