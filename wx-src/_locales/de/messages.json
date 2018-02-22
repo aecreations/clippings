@@ -1,0 +1,700 @@
+{
+  "extName": {
+    "message": "Clippings",
+    "description": "Name of the extension"
+  },
+  "extDesc": {
+    "message": "Häufig eingegebenen Text für später speichern.",
+    "description": "Description of the extension"
+  },
+  "browserActionTitle": {
+    "message": "Clippings",
+    "description": "Toolbar button label"
+  },
+  "cmdDesc": {
+    "message": "Textbaustein mit Hilfe einer Tastenkürzels einfügen",
+    "description": "Shortcut key command description"
+  },
+  "hostAppFx": {
+    "message": "Firefox"
+  },
+  "hostAppTb": {
+    "message": "Thunderbird"
+  },
+  "hostAppAll": {
+    "message": "Firefox oder Thunderbird"
+  },
+  "btnOK": {
+    "message": "OK"
+  },
+  "btnCancel": {
+    "message": "Abbrechen"
+  },
+  "btnClose": {
+    "message": "Schließen",
+    "description": "Dialog action button"
+  },
+  "btnYes": {
+    "message": "Ja"
+  },
+  "btnNo": {
+    "message": "Nein"
+  },
+  "btnFinish": {
+    "message": "Beenden"
+  },
+  "btnBrowse": {
+    "message": "Durchsuchen..."
+  },
+  "msgUnavail": {
+    "message": "Die ausgewählte Aktion steht derzeit nicht zur Verfügung."
+  },
+  "msgNoTextSel": {
+    "message": "Kein Text ausgewählt. Wählen Sie zuerst Text aus."
+  },
+  "msgBrwsWndNotFocused": {
+    "message": "Bitte kehren Sie zum Browser-Fenster zurück und versuchen Sie es erneut."
+  },
+  "msgClpgNotFound": {
+    "message": "Der ausgewählte Textbaustein konnte nicht gefunden werden!"
+  },
+  "msgNoActvBrwsTab": {
+    "message": "Der Textbaustein kann nicht eingefügt werden, da es keinen aktiven Browser-Tab gibt."
+  },
+  "msgRetryPgBusy": {
+    "message": "Die Seite ist derzeit beschäftigt. Warten Sie, bis die Seite fertig ist und versuchen Sie es dann erneut."
+  },
+  "msgRetryPgNotLoaded": {
+    "message": "Der ausgewählte Text konnte nicht abgerufen werden. Laden Sie die Seite erneut und versuchen Sie es dann erneut."
+  },
+  "msgUnknown": {
+    "message": "Keine Hilfe verfügbar (lass mich also in Ruhe)."
+  },
+  "none": {
+    "message": "Keins"
+  },
+  "newClipping": {
+    "message": "Neuer Textbaustein"
+  },
+  "newFolder": {
+    "message": "Neuer Ordner"
+  },
+  "untitledClipping": {
+    "message": "Unbenannter Textbaustein"
+  },
+  "untitledFolder": {
+    "message": "Unbenannter Ordner"
+  },
+  "rootFldrName": {
+    "message": "Clippings",
+    "description": "Name of root folder"
+  },
+  "labelRed": {
+    "message": "Rot"
+  },
+  "labelOrange": {
+    "message": "Orange"
+  },
+  "labelYellow": {
+    "message": "Gelb"
+  },
+  "labelGreen": {
+    "message": "Grün"
+  },
+  "labelBlue": {
+    "message": "Blau"
+  },
+  "labelPurple": {
+    "message": "Lila"
+  },
+  "labelGrey": {
+    "message": "Grau"
+  },
+  "cxtMenuNew": {
+    "message": "Neu...",
+    "description": "Clippings context menu"
+  },
+  "cxtMenuOpenClippingsMgr": {
+    "message": "Textbausteine organisieren",
+    "description": "Clippings context menu"
+  },
+  "baMenuResetAutoIncrPlaceholders": {
+    "message": "Auto-Inkrement-Platzhalter zurücksetzen",
+    "description": "Clippings browser action submenu"
+  },
+  "welcomePageTitle": {
+    "message": "Willkommen bei Clippings 6",
+    "description": "Welcome to Clippings (post-installation) page title"
+  },
+  "welcInstallSuccessHdg": {
+    "message": "Willkommen bei Clippings 6!"
+  },
+  "welcInstallSuccessSubh": {
+    "message": "Installation erfolgreich abgeschlossen."
+  },
+  "welcCurrUsrHdg": {
+    "message": "Aktive Benutzer"
+  },
+  "welcCurrUsrDesc": {
+    "message": "Übernehmen Sie ihre Textbausteine aus einer früheren Clippings-Version."
+  },
+  "welcCurrUsrCTA": {
+    "message": "Meine Textbausteine importieren"
+  },
+  "welcNewUsrHdg": {
+    "message": "Neue Benutzer"
+  },
+  "welcNewUsrDesc": {
+    "message": "Lernen Sie die wesentlichen Funktionen von Clippings in nur wenigen Minuten kennen."
+  },
+  "welcNewUsrCTA": {
+    "message": "Kurzanleitung"
+  },
+  "closeWelcomePg": {
+    "message": "Diese Seite schließen"
+  },
+  "welcImportHdg": {
+    "message": "Clippings-Backup-Datei importieren"
+  },
+  "welcImportDesc": {
+    "message": "Um loszulegen, klicken Sie auf Durchsuchen und suchen Sie nach der Backup-Datei auf Ihrem System."
+  },
+  "welcSkipImport": {
+    "message": "Importieren überspringen"
+  },
+  "welcNoBackupExpand": {
+    "message": "Was tun, wenn Sie kein Sicherung erstellt haben"
+  },
+  "welcNoBackupSubh": {
+    "message": "Wenn Sie Ihre Textbausteine nicht gesichert haben, gehen Sie folgendermaßen vor:"
+  },
+  "welcFileMgrWindows": {
+    "message": "Windows Explorer",
+    "description": "File manager application on Windows, for locating Clippings backup folder"
+  },
+  "welcFileMgrMac": {
+    "message": "Finder",
+    "description": "File manager application on macOS, for locating Clippings backup folder"
+  },
+  "welcFileMgrGeneric": {
+    "message": "der Datei-Manager auf Ihrem System"
+  },
+  "welcShowBkupFileNote": {
+    "message": "(Sie müssen möglicherweise die Befehlszeile verwenden, um diesen Ordner zu sehen.)",
+    "description": "Note to Linux and macOS users about showing hidden backup folder."
+  },
+  "welcNoBackupInstrxnStep1": {
+    "message": "Verwenden Sie $1, um den Ort der Datenquelle von Clippings zu finden. Je nach Ihren früheren Einstellungen kann das Ihr Firefox-Profilverzeichnis oder ein anderer Ordner anderswo sein."
+  },
+  "welcNoBackupInstrxnStep2": {
+    "message": "Öffnen Sie den Ordner der Datenquelle und suchen Sie den Sicherungsordner von Clippings. Er sollte \"clippings-backup\" oder \".clipbak\" heißen. $1"
+  },
+  "welcNoBackupInstrxnStep3": {
+    "message": "Öffnen Sie den Sicherungsordner von Clippings und suchen Sie nach der neuesten Sicherungsdatei. Kopieren Sie diese in Ihren Ordner Desktop oder Dokumente."
+  },
+  "welcNoBackupInstrxnStep4": {
+    "message": "Klicken Sie oben auf Durchsuchen und wählen Sie dann die Sicherungsdatei aus."
+  },
+  "welcReadyImport": {
+    "message": "Wenn Sie fertig sind, klicken Sie auf Importieren, um Ihre Clippings-Daten in Clippings 6 zu überführen."
+  },
+  "welcImportBtn": {
+    "message": "Importieren"
+  },
+  "welcBack": {
+    "message": "Zurück zur Willkommensseite"
+  },
+  "welcImportStatus": {
+    "message": "Importiere Textbausteine..."
+  },
+  "welcImportStatusDone": {
+    "message": "Importiere Textbausteine... fertig!"
+  },
+  "welcImportCount": {
+    "message": "$1 Einträge importiert."
+  },
+  "welcImportConfirmDone": {
+    "message": "Ihre Textbausteine wurden erfolgreich importiert. Clippings kann sie jetzt verwenden."
+  },
+  "welcShctKeyNote": {
+    "message": "Die Clippings-Taste für das Einfügen von Textbausteinen <strong>hat sich in Clippings 6 geändert<\/strong>. Um einen Textbaustein mit seinem Tastaturkürzel einzufügen oder nach dem Namen zu suchen, drücken Sie <span id=\"keybd-paste-key\">$1<\/span>."
+  },
+  "welcOpenClipMgr": {
+    "message": "Textbaustein-Manager öffnen"
+  },
+  "welcImportError": {
+    "message": "Fehler beim Lesen der ausgewählten Datei. Die Datei ist möglicherweise keine gültige Clippings-Datei."
+  },
+  "welcImportRetry": {
+    "message": "Klicken Sie auf Erneut versuchen, um zurück zu gehen und eine andere Sicherungsdatei auszuwählen."
+  },
+  "welcImportRetryBtn": {
+    "message": "Erneut versuchen"
+  },
+  "welcLeaveConfirm": {
+    "message": "Wollen Sie wirklich die Clippings-Willkommenseite verlassen?"
+  },
+  "welcCancelDlg": {
+    "message": "Zurück"
+  },
+  "welcImportLater": {
+    "message": "Sie können Ihre Clippings-Sicherung später importieren, indem Sie den Textbaustein-Manager öffnen und dann Extras → Importieren auswählen."
+  },
+  "welcCantImportHdg": {
+    "message": "Clippings kann die Sicherungsdatei nicht importieren, da die Clippings-Datenbank nicht zugänglich ist."
+  },
+  "welcCantImportCause": {
+    "message": "Das kann passieren, wenn die Datenschutz-Einstellungen in Firefox zu restriktiv sind (zum Beispiel wenn der private Modus aktiviert ist). Diese Einstellungen können WebExtensions wie Clippings beeinflussen."
+  },
+  "welcCantImportFix": {
+    "message": "Stellen Sie sicher, dass die Datenschutz-Einstellungen des Browsers die Standardwerte verwenden und starten Sie dann Firefox neu und versuchen Sie es erneut. Falls das nicht hilft, gehen Sie folgendermaßen vor:"
+  },
+  "welcCantImportFixStep1": {
+    "message": "Öffnen Sie das Firefox-Menü und wählen Sie Hilfe → Informationen zur Fehlerbehebung."
+  },
+  "welcCantImportFixStep2": {
+    "message": "Klicken Sie auf Firefox bereinigen... und folgen Sie den Anweisungen. Firefox wird neu starten."
+  },
+  "welcCantImportFixStep3": {
+    "message": "Installieren Sie Clippings erneut und versuchen Sie die Sicherungsdatei erneut zu importieren."
+  },
+  "newClippingDlgTitle": {
+    "message": "Neuer Textbaustein",
+    "description": "New Clipping dialog"
+  },
+  "labelName": {
+    "message": "Name:"
+  },
+  "labelContent": {
+    "message": "Text:"
+  },
+  "labelCreateInFldr": {
+    "message": "Erstellen in:"
+  },
+  "btnNewFolder": {
+    "message": "Neuer Ordner"
+  },
+  "labelCreateClippingOptions": {
+    "message": "Optionen",
+    "description": "Button to expand clipping options (source URL, label) in New Clipping dialog"
+  },
+  "labelSaveSrcURL": {
+    "message": "Speichern Sie die Adresse der Quell-Webseite"
+  },
+  "labelShortcutKey": {
+    "message": "Tastaturkürzel:"
+  },
+  "labelLabel": {
+    "message": "Beschriftung:",
+    "description": "Label for the Clipping label menu"
+  },
+  "labelNewFldrName": {
+    "message": "Neuer Ordnername:"
+  },
+  "labelCreateAsSubfOf": {
+    "message": "Als Unterordner erstellen von:"
+  },
+  "shortcutKeyHint": {
+    "message": "Um diesen Textbaustein schnell in das Textfeld einer Webseite einzufügen, drücken Sie $1 gefolgt von dem Tastaturkürzel."
+  },
+  "shortcutKeyAssigned": {
+    "message": "'$1' ist bereits zugeordnet"
+  },
+  "initError": {
+    "message": "Clippings funktioniert nicht, wenn die Datenschutzeinstellungen in Firefox zu restriktiv sind, zum Beispiel wenn der private Modus aktiviert ist. Ändern Sie diese Einstellungen zurück auf ihre Standardwerte, starten Sie dann Firefox neu und versuchen Sie es erneut."
+  },
+  "saveClippingError": {
+    "message": "Der neue Textbaustein kann nicht gespeichert werden. Prüfen Sie, ob die Datenschutzeinstellungen in Firefox nicht zu restriktiv sind (zum Beispiel wenn der private Modus aktiviert ist), starten Sie dann Firefox neu und versuchen Sie es erneut."
+  },
+  "shortcutKeyDesc": {
+    "message": "Drücken Sie das Tastaturkürzel des Textbausteins, den Sie einfügen möchten."
+  },
+  "keybPasteDlgF1": {
+    "message": "F1 = Liste der Tastaturkürzel"
+  },
+  "keybPasteDlgTab": {
+    "message": "TAB = Textbaustein nach Namen suchen"
+  },
+  "srchByNameDesc": {
+    "message": "Clipping nach Namen suchen:"
+  },
+  "numMatches": {
+    "message": "1 Treffer"
+  },
+  "insClipping": {
+    "message": "Clipping einfügen"
+  },
+  "exportHTML": {
+    "message": "Als HTML exportieren"
+  },
+  "expHTMLTitle": {
+    "message": "Tastenkürzel von Clippings",
+    "description": "HTML export of shortcut key list - page title"
+  },
+  "expHTMLHostAppInfo": {
+    "message": "Clippings $1 auf $2",
+    "description": "Clippings <extVersion> on Firefox <fxVersion>"
+  },
+  "expHTMLShctKeyInstrxn": {
+    "message": "Um ein Clipping in ein Webseiten-Textfeld in Firefox einzufügen, drücken Sie ALT+UMSCH+Y (CMD+UMSCH+Y auf MacOS) und danach das Tastenkürzel."
+  },
+  "expHTMLShctKeyCol": {
+    "message": "Tastenkombination"
+  },
+  "expHTMLClipNameCol": {
+    "message": "Clipping-Name"
+  },
+  "plchldrPromptSingleDesc": {
+    "message": "Geben Sie den Wert für \"$1\" ein:",
+    "description": "Placeholder prompt dialog - single placeholder"
+  },
+  "plchldrPromptMultiDesc": {
+    "message": "Geben Sie die Werte für die folgenden Platzhalter ein.",
+    "description": "Placeholder prompt dialog - multiple placeholders"
+  },
+  "clippingsMgrWndTitle": {
+    "message": "Textbaustein-Manager",
+    "description": "Clippings Manager window title"
+  },
+  "tbNewClipping": {
+    "message": "Neuer Textbaustein"
+  },
+  "tbNewFolder": {
+    "message": "Neuer Ordner"
+  },
+  "tbMoveOrCopy": {
+    "message": "Verschieben oder kopieren"
+  },
+  "tbDelete": {
+    "message": "Löschen"
+  },
+  "tbUndo": {
+    "message": "Rückgängig"
+  },
+  "tbTools": {
+    "message": "Extras"
+  },
+  "clipMgrSrchBarHint": {
+    "message": "Textbausteine und Ordner suchen",
+    "description": "Clippings Manager search bar hint text"
+  },
+  "clipMgrIntroHdg": {
+    "message": "Willkommen im Textbaustein-Manager"
+  },
+  "clipMgrIntroDesc": {
+    "message": "Verwenden Sie den Textbaustein-Manager, um Textbausteine zu bearbeiten, umzubenennen oder zu löschen und Ihre Sammlung von Textbausteinen in Ordnern zu organisieren."
+  },
+  "clipMgrIntroKeybHdg": {
+    "message": "Tastaturkürzel"
+  },
+  "labelInsPlchldr": {
+    "message": "Platzhalter einfügen:",
+    "description": "Clippings Manager - Placeholder Toolbar"
+  },
+  "tbPlchldrPresets": {
+    "message": "Voreinstellungen"
+  },
+  "tbPlchldrCustom": {
+    "message": "Benutzerdefiniert"
+  },
+  "tbPlchldrNumeric": {
+    "message": "Numerisch"
+  },
+  "labelSrcURL": {
+    "message": "Quelladresse:"
+  },
+  "btnEditSrcURL": {
+    "message": "Bearbeiten"
+  },
+  "mnuNewFromClipbd": {
+    "message": "Neu aus Zwischenablage"
+  },
+  "mnuBackup": {
+    "message": "Sicherung..."
+  },
+  "mnuRestoreFromBackup": {
+    "message": "Aus Sicherung wiederherstellen..."
+  },
+  "mnuImport": {
+    "message": "Importieren..."
+  },
+  "mnuExport": {
+    "message": "Exportieren..."
+  },
+  "mnuRemoveAllSrcURLs": {
+    "message": "Webseiten-Quelladressen entfernen..."
+  },
+  "mnuShowHide": {
+    "message": "Anzeigen\/Verbergen"
+  },
+  "mnuShowHideDetails": {
+    "message": "Detailbereich"
+  },
+  "mnuShowHidePlchldrBar": {
+    "message": "Platzhalter-Symbolleiste"
+  },
+  "mnuShowHideStatusBar": {
+    "message": "Statusleiste"
+  },
+  "mnuMaximize": {
+    "message": "Maximieren"
+  },
+  "mnuMinimizeWhenInactive": {
+    "message": "Minimieren, falls inaktiv"
+  },
+  "mnuShowExtPrefs": {
+    "message": "Optionen..."
+  },
+  "mnuMoveOrCopy": {
+    "message": "Verschieben oder kopieren..."
+  },
+  "mnuEditLabel": {
+    "message": "Beschriftung"
+  },
+  "mnuGoToSrcURL": {
+    "message": "Zur Quell-Webseite gehen"
+  },
+  "mnuPlchldrDate": {
+    "message": "Datum",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "mnuPlchldrTime": {
+    "message": "Zeit",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "mnuPlchldrAppName": {
+    "message": "Name der Anwendung",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "mnuPlchldrUsrAgent": {
+    "message": "User-Agent",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "mnuPlchldrClipName": {
+    "message": "Name des Textbausteins",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "mnuPlchldrFldrName": {
+    "message": "Name des übergeordneten Ordners",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "clipMgrNameHint": {
+    "message": "Name des Textbausteins",
+    "description": "Clippings Manager - clipping name textbox hint text"
+  },
+  "clipMgrContentHint": {
+    "message": "Text des Textbausteins eingeben",
+    "description": "Clippings Manager - clipping content textarea hint text"
+  },
+  "clipMgrShortcutHelpHint": {
+    "message": "Tastaturkürzel-Hilfe"
+  },
+  "clipMgrNoItems": {
+    "message": "Keine Textbausteine gefunden."
+  },
+  "clipMgrIntroCmdDel": {
+    "message": "Ausgewählten Textbaustein oder Ordner löschen",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdClearSrchBar": {
+    "message": "Suchleiste leeren",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdSrch": {
+    "message": "Textbausteine und Ordner suchen",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdClose": {
+    "message": "Textbaustein-Manager schließen",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdUndo": {
+    "message": "Rückgängig",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdShowIntro": {
+    "message": "Einführung in den Textbaustein-Manager zeigen",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdMaximize": {
+    "message": "Fenster maximieren",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrStatusBar": {
+    "message": "$1 Einträge"
+  },
+  "clipMgrRemoveSrcURLsConfirm": {
+    "message": "Adressen der Quell-Webseiten wurden aus Ihren Textbausteins entfernt."
+  },
+  "clipMgrNoUndo": {
+    "message": "Nichts zum rückgängig machen"
+  },
+  "clipMgrShortcutKeyHelpHdg": {
+    "message": "Tastaturkürzel von Clippings"
+  },
+  "clipMgrShortcutHelpInstrxn": {
+    "message": "Um einen Textbaustein aus der Liste unten in das Textfeld einer Webseite einzufügen, drücken Sie $1 und dann das Tastaturkürzel."
+  },
+  "clipMgrShortcutKeyAssigned": {
+    "message": "Das ausgewählte Tastaturkürzel wurde bereits einem anderen Textbaustein zugeordnet. Bitte wählen Sie ein anderes Tastaturkürzel aus."
+  },
+  "clipMgrNoSrcURL": {
+    "message": "Der ausgewählte Textbaustein hat keine Quell-Webseiten-Adresse."
+  },
+  "clipMgrImportConfirm": {
+    "message": "Der Import aus \"$1\" ist erfolgreich abgeschlossen."
+  },
+  "btnReload": {
+    "message": "Neu laden"
+  },
+  "clipMgrExportConfirm": {
+    "message": "Der Export von Textbausteinen nach \"$1\" ist erfolgreich abgeschlossen."
+  },
+  "clipMgrWarnRemoveSrcURLs": {
+    "message": "Alle Quell-Webseiten-Adressen Ihrer Textbausteine werden entfernt. Möchten Sie fortfahren?"
+  },
+  "placeholderNameHint": {
+    "message": "Buchstaben, Ziffern, Unterstriche, ohne Leerzeichen"
+  },
+  "labelCustPlchldrName": {
+    "message": "Name des benutzerdefinierten Platzhalters:"
+  },
+  "labelNumPlchldrName": {
+    "message": "Name des numerischen Platzhalters:"
+  },
+  "labelCustPlchldrVal": {
+    "message": "Standardwert (optional):"
+  },
+  "custPlchldrValDesc": {
+    "message": "Mehrere Standardwerte mit \"|\"-Symbol trennen. Beispiel: rot|grün|blau"
+  },
+  "numPlchldrDesc": {
+    "message": "Jedesmal nach Einfügen eines Textbausteins wird der Wert dieses Platzhalters automatisch um einen Punkt erhöht, bis der Platzhalter über die das Kontextmenü der Clippings-Schaltfläche in der Symbolleiste zurückgesetzt wird."
+  },
+  "labelSelImportFile": {
+    "message": "Wählen Sie die Import-Datei:"
+  },
+  "labelSelBkupFile": {
+    "message": "Wählen Sie die Sicherungsdatei:"
+  },
+  "statusSavingBkup": {
+    "message": "Speichere die Sicherungsdatei..."
+  },
+  "statusSavingBkupDone": {
+    "message": "Speichere die Sicherungsdatei... fertig"
+  },
+  "statusSavingBkupFailed": {
+    "message": "Sicherung fehlgeschlagen."
+  },
+  "backupError": {
+    "message": "Leider ist ein Fehler beim Erstellen der Sicherungsdatei aufgetreten.\n\nDetails: \n$1"
+  },
+  "cbImportReplcShctKeys": {
+    "message": "Tastaturkürzel ersetzen"
+  },
+  "warnBackupOverwrite": {
+    "message": "Die Wiederherstellung aus der Sicherungsdatei wird alle Ihre aktuellen Textbausteine mit denen aus der Datensicherung überschreiben. Diese Aktion kann nicht rückgängig gemacht werden."
+  },
+  "btnImport": {
+    "message": "Importieren"
+  },
+  "btnRestoreBkup": {
+    "message": "Sicherung wiederherstellen"
+  },
+  "importError": {
+    "message": "Fehler beim Lesen der ausgewählten Datei. Die Datei ist möglicherweise keine gültige Clippings-Datei."
+  },
+  "labelSelExportFmt": {
+    "message": "Wählen sie ein Format zur Speicherung derTextbausteine nach:"
+  },
+  "expFmtDescHdg": {
+    "message": "Beschreibung"
+  },
+  "expFmtClippings6": {
+    "message": "Clippings 6"
+  },
+  "expFmtClippings6Desc": {
+    "message": "Das Standardformat für die Sicherung von Clippings-Daten und ihren Austausch mit anderen Benutzern oder mehreren Computern. Erfordert Clippings 5.5 oder höher."
+  },
+  "expFmtHTMLDoc": {
+    "message": "HTML-Dokument"
+  },
+  "expFmtHTMLDocDesc": {
+    "message": "Exportiert Ihre Clippings-Daten als HTML-Dokument für den Druck oder die Anzeige in einem Webbrowser."
+  },
+  "cbExpInclSrcURLs": {
+    "message": "Adressen von Quell-Webseiten der Techtbausteine einbeziehen"
+  },
+  "btnExport": {
+    "message": "Exportieren"
+  },
+  "statusExportStart": {
+    "message": "Exportiere..."
+  },
+  "statusExportDone": {
+    "message": "Exportiere... fertig"
+  },
+  "statusExportFailed": {
+    "message": "Exportieren fehlgeschlagen."
+  },
+  "exportError": {
+    "message": "Fehler beim Exportieren der Clippings-Daten.\n\nDetails:\n$1"
+  },
+  "labelMoveClipping": {
+    "message": "Textbaustein verschieben nach:"
+  },
+  "labelMoveFolder": {
+    "message": "Ordner verschieben nach:"
+  },
+  "labelCopyClipping": {
+    "message": "Textbaustein kopieren nach:"
+  },
+  "labelCopyFolder": {
+    "message": "Ordner kopieren nach:"
+  },
+  "cbCreateCopy": {
+    "message": "Kopie erstellen"
+  },
+  "btnMove": {
+    "message": "Verschieben"
+  },
+  "btnCopy": {
+    "message": "Kopieren"
+  },
+  "prefsTitle": {
+    "message": "Clippings-Optionen"
+  },
+  "prefsHdgPasteOptions": {
+    "message": "Einfügeoptionen"
+  },
+  "labelPasteOptions": {
+    "message": "Beim Einfügen eines HTML-formatierten Textbausteins in eine Rich-Text-Box:"
+  },
+  "pasteOptFormatted": {
+    "message": "Als formatierten Text einfügen"
+  },
+  "pasteOptRawHTML": {
+    "message": "Als Reintext unter Beibehaltung der HTML-Tags einfügen"
+  },
+  "cbAutoLineBreak": {
+    "message": "Zeilen automatisch umbrechen, es sei denn die Tags <p> oder <br> existieren"
+  },
+  "htmlPasteDesc": {
+    "message": "Einen als HTML formatierten Textbaustein immer als reinen Text einefügen, wenn er in eine reine Textbox eingefügt wird oder der Textbaustein einschränkende Tags wie z. B. <script>, <applet>, <object>, <iframe> usw. enthält."
+  },
+  "prefsShortcutMode": {
+    "message": "Aktivieren sie den Tastaturkürzelmodus mit $1"
+  },
+  "prefsDefaultNumPlchldrStart": {
+    "message": "Standarstartwert für die automatische Erhöhung von Platzhaltern:"
+  },
+  "prefsHdgGeneralOptions": {
+    "message": "Allgemeine Optionen"
+  },
+  "cbAlwaysSaveSrcURL": {
+    "message": "Adresse der Quell-Webseite immer speichern"
+  },
+  "cbCheckSpelling": {
+    "message": "Rechtsschreibprüfung"
+  }
+}
