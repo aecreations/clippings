@@ -264,6 +264,9 @@ function initShortcutList()
         if ($("#paste-clipping").attr("disabled")) {
           $("#paste-clipping").removeAttr("disabled");
         }
+      }).on("dblclick", aEvent => {
+        let clippingKey = $("#shortcut-list-content > table > tbody > tr.selected-row td:first-child").text();
+        execShortcut(clippingKey);
       });
 
       $(".deck > #shortcut-list").fadeIn("fast");
