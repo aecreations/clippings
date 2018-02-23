@@ -919,5 +919,21 @@
 
   "cbCheckSpelling": {
     "message": "Check spelling"
+  },
+
+  "keyCtrl": {
+    "message": "CTRL"
+  },
+
+  "keyShift": {
+    "message": "SHIFT"
+  },
+
+  "keyDel": {
+    "message": "DEL"
+  },
+
+  "keyEsc": {
+    "message": "ESC"
   }
 }

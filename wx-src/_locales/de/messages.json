@@ -699,5 +699,21 @@
   },
   "cbCheckSpelling": {
     "message": "Rechtsschreibprüfung"
+  },
+
+  "keyCtrl": {
+    "message": "Strg"
+  },
+
+  "keyShift": {
+    "message": "Umsch"
+  },
+
+  "keyDel": {
+    "message": "Entf"
+  },
+
+  "keyEsc": {
+    "message": "Esc"
   }
 }
