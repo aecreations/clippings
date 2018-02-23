@@ -921,6 +921,10 @@
     "message": "Check spelling"
   },
 
+  "keyAlt": {
+    "message": "ALT"
+  },
+  
   "keyCtrl": {
     "message": "CTRL"
   },

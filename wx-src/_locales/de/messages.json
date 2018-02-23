@@ -701,6 +701,10 @@
     "message": "Rechtsschreibprüfung"
   },
 
+  "keyAlt": {
+    "message": "Alt"
+  },
+  
   "keyCtrl": {
     "message": "Strg"
   },
