@@ -1905,7 +1905,15 @@ function initIntroBannerAndHelpDlg()
       shctKeys = ["\u2326", "esc", "\u2318F", "\u2318W", "\u2318Z", "F1", "\u2318F10"];
     }
     else {
-      shctKeys = ["DEL", "ESC", "CTRL+F", "CTRL+W", "CTRL+Z", "F1", "CTRL+F10"];
+      shctKeys = [
+        chrome.i18n.getMessage("keyDel"),
+        chrome.i18n.getMessage("keyEsc"),
+        `${chrome.i18n.getMessage("keyCtrl")}+F`,  // CTRL+F
+        `${chrome.i18n.getMessage("keyCtrl")}+W`,  // CTRL+W
+        `${chrome.i18n.getMessage("keyCtrl")}+Z`,  // CTRL+Z
+        "F1",
+        `${chrome.i18n.getMessage("keyCtrl")}+F10`, // CTRL+F10
+      ];
     }
 
     function buildKeyMapTableRow(aShctKey, aCmdL10nStrIdx)
