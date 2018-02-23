@@ -115,7 +115,7 @@ $(() => {
   })
 
   let osFileBrwsApp = "";
-  let keybPasteKey = "ALT\u00a0+\u00a0SHIFT\u00a0+\u00a0Y";
+  let keybPasteKey = `${chrome.i18n.getMessage("keyAlt")}\u00a0+\u00a0${chrome.i18n.getMessage("keyShift")}\u00a0+\u00a0Y`;
   
   if (os == "win") {
     osFileBrwsApp = chrome.i18n.getMessage("welcFileMgrWindows");

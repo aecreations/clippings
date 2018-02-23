@@ -329,7 +329,7 @@ function initShortcutKeyMenu()
     }
   });
 
-  let keybPasteKey = aeConst.SHORTCUT_KEY_PREFIX;
+  let keybPasteKey = `${chrome.i18n.getMessage("keyAlt")}+${chrome.i18n.getMessage("keyShift")}+Y`;
   if (gClippings.getOS() == "mac") {
     keybPasteKey = aeConst.SHORTCUT_KEY_PREFIX_MAC;
   }

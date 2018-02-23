@@ -1973,7 +1973,7 @@ function initDialogs()
   gDialogs.shortcutList.onInit = () => {
     let that = gDialogs.shortcutList;
     if (! that.isInitialized) {
-      let shctPrefixKey = aeConst.SHORTCUT_KEY_PREFIX;
+      let shctPrefixKey = `${chrome.i18n.getMessage("keyAlt")}+${chrome.i18n.getMessage("keyShift")}+Y`;
       if (isMacOS) {
         shctPrefixKey = aeConst.SHORTCUT_KEY_PREFIX_MAC;
       }
