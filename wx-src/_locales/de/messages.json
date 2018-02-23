@@ -626,7 +626,7 @@
     "message": "Exportiert Ihre Clippings-Daten als HTML-Dokument für den Druck oder die Anzeige in einem Webbrowser."
   },
   "cbExpInclSrcURLs": {
-    "message": "Adressen von Quell-Webseiten der Techtbausteine einbeziehen"
+    "message": "Adressen von Quell-Webseiten der Textbausteine einbeziehen"
   },
   "btnExport": {
     "message": "Exportieren"
@@ -683,13 +683,13 @@
     "message": "Zeilen automatisch umbrechen, es sei denn die Tags <p> oder <br> existieren"
   },
   "htmlPasteDesc": {
-    "message": "Einen als HTML formatierten Textbaustein immer als reinen Text einefügen, wenn er in eine reine Textbox eingefügt wird oder der Textbaustein einschränkende Tags wie z. B. <script>, <applet>, <object>, <iframe> usw. enthält."
+    "message": "Einen als HTML formatierten Textbaustein immer als reinen Text einfügen, wenn er in eine reine Textbox eingefügt wird oder der Textbaustein einschränkende Tags wie z. B. <script>, <applet>, <object>, <iframe> usw. enthält."
   },
   "prefsShortcutMode": {
     "message": "Aktivieren sie den Tastaturkürzelmodus mit $1"
   },
   "prefsDefaultNumPlchldrStart": {
-    "message": "Standarstartwert für die automatische Erhöhung von Platzhaltern:"
+    "message": "Standardstartwert für die automatische Erhöhung von Platzhaltern:"
   },
   "prefsHdgGeneralOptions": {
     "message": "Allgemeine Optionen"
