@@ -3,6 +3,15 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
+:root {
+    --toolbar-height: 30px;
+    --col-hdr-height: 20px;
+}
+
+body {
+    overflow: hidden;
+}
+
 .icon {
     float: left;
 }
@@ -11,14 +20,159 @@
     font-size: 13px;
 }
 
+.toolbar-button {
+    flex: 0 1 auto;
+    align-self: stretch;
+    min-width: 30px;
+    min-height: 24px;
+    margin-left: 1px;
+    margin-right: 1px;
+    border: 1px solid transparent;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    color: #0c0c0d;
+    font: caption;
+    font-size: 11px !important;
+}
+
+.toolbar-button:hover {
+    border-radius: 2px;
+    background-color: rgba(12, 12, 13, 0.2);
+}
+
+.toolbar-button:active {
+    border-radius: 2px;
+    background-color: rgba(12, 12, 13, 0.3);
+}
+
+.toolbar-button-labelled {
+    background-position: 4px;
+    padding-left: 24px;
+    padding-right: 6px;
+}
+
+.toolbar-button-labelled:active {
+    background-position: 4px;
+    padding-left: 24px;
+    padding-right: 6px;
+}
+
 .key-legend {
     clear: both;
     margin-top: 28px;
     font-size: 11px;
 }
 
-#paste-by-shortcut-key, #search-by-name {
+#paste-by-shortcut-key, #search-by-name, #shortcut-list {
     display: none;
+}
+
+#shortcut-list #shortcut-list-toolbar {
+    margin: -16px -16px 0 -16px;
+    height: var(--toolbar-height);
+    padding-left: 2px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    background: linear-gradient(to bottom, #fcfcfc 0%, #dedede 100%);
+    color: #0c0c0d;
+    border-bottom: 1px solid silver;
+}
+
+#shortcut-list-toolbar #paste-clipping {
+    order: 1;
+    background-image: url("../img/clipping.svg");
+}
+
+#shortcut-list-toolbar #export-shct-list {
+    order: 2;
+    background-image: url("../img/export.svg");
+}
+
+#shortcut-list-toolbar #export-shct-list:hover {
+    background-image: url("../img/export_hover.svg");
+}
+
+#shortcut-list-toolbar #close {
+    order: 3;
+
+    margin-left: 8px;
+    min-width: 30px;
+    min-height: 24px;
+    border-radius: 3px;
+    background-color: transparent;
+    font-size: 11px !important;
+}
+
+#shortcut-list-toolbar #close:hover {
+    background-color: rgba(12, 12, 13, 0.1);
+}
+
+#shortcut-list-toolbar #close:active {
+    background-color: rgba(12, 12, 13, 0.2);
+}
+
+#shortcut-list-content {
+    margin-left: -16px;
+    margin-right: -16px;
+    height: calc(100% - var(--toolbar-height));
+}
+
+#shortcut-list-content table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+#shortcut-list-content table > thead {
+    display: block;
+    height: var(--col-hdr-height);
+    background-color: #eee;
+    border-bottom: 1px solid #d4d4d4;
+}
+
+#shortcut-list-content table > thead > tr > th {
+    padding: 3px 4px 3px 4px;
+    font-weight: normal;
+}
+
+#shortcut-list-content table > thead > tr > th:nth-child(1) {
+    border-right: 1px solid #d8d8d8;
+}
+
+#shortcut-list-content table > tbody {
+    display: block;
+    height: 186px;
+    overflow-x: none;
+    overflow-y: auto;
+}
+
+#shortcut-list-content table > tbody > tr {
+    height: 20px;
+}
+
+#shortcut-list-content table > tbody > tr > td {
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+#shortcut-list-content table > tbody > tr:active {
+    background-color: #eff9fe;
+}
+
+#shortcut-list-content table > tbody > tr.selected-row {
+    background-color: #cbe8f6;
+}
+
+#shortcut-list-content table th:nth-child(1),
+#shortcut-list-content table td:nth-child(1) {
+    min-width: 90px;
+}
+
+#shortcut-list-content table th:nth-child(2),
+#shortcut-list-content table td:nth-child(2) {
+    width: 100%;
+    white-space: nowrap;
 }
 
 #paste-by-shct-key-content, #search-by-name-content {
@@ -32,6 +186,15 @@
 
 #clipping-search-label {
     height: 20px;
+}
+
+#search-label-text, #num-matches {
+    flex: 0 1 auto;
+    width: 100%;
+}
+
+#search-label-spacer {
+    flex: 1 1 auto;
 }
 
 #clipping-search {
@@ -66,7 +229,16 @@
     font-size: 11px;   
 }
 
-/* Autocomplete menu in clipping name search mode */
+/* EasyAutocomplete textbox styling override */
+.easy-autocomplete input {
+    border-color: unset;
+    border-radius: 0;
+    color: unset;
+    float: unset;
+    padding: unset;
+}
+
+/* EasyAutocomplete menu */
 .clipping > .name {
     font-size: 13px;
     color: #0c0c0d;
@@ -102,6 +274,7 @@
     height: 44px;
 }
 
+/* Not used as of 6.0.3 */
 .easy-autocomplete-container > #ae-eac-num-matches {
     width: 100%;
     text-align: center;

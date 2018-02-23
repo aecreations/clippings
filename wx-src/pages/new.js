@@ -4,7 +4,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
-const WNDH_OPTIONS_EXPANDED = 478;
+const WNDH_OPTIONS_EXPANDED = 450;
+const DLG_HEIGHT_ADJ_WINDOWS = 32;
 
 let gClippingsDB = null;
 let gClippings = null;
@@ -42,7 +43,12 @@ function initHelper()
 {
   $("#btn-expand-options").click(aEvent => {
     chrome.windows.getCurrent(aWnd => {
-      chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, { height: WNDH_OPTIONS_EXPANDED }, aWnd => {
+      let height = WNDH_OPTIONS_EXPANDED;
+      if (gClippings.getOS() == "win") {
+        height += DLG_HEIGHT_ADJ_WINDOWS;
+      }
+      
+      chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, { height }, aWnd => {
         $("#clipping-options").show();
         $("#new-clipping-fldr-tree-popup").addClass("new-clipping-fldr-tree-popup-fixpos");
       });
@@ -76,7 +82,7 @@ function initHelper()
   $("#clipping-name").blur(aEvent => {
     let name = aEvent.target.value;
     if (! name) {
-      $("#clipping-name").val("New Clipping");
+      $("#clipping-name").val(chrome.i18n.getMessage("newFolder"));
     }
   });
 
@@ -135,7 +141,7 @@ function showInitError()
   let errorMsgBox = new aeDialog("#create-clipping-error-msgbox");
   errorMsgBox.onInit = () => {
     let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
-    errMsgElt.text("Clippings doesn't work when the privacy settings in Firefox are too restrictive, such as turning on Private Browsing mode.  Try changing these settings back to their defaults, then restart Firefox and try again.");
+    errMsgElt.text(chrome.i18n.getMessage("initError"));
   };
   errorMsgBox.onAccept = () => {
     errorMsgBox.close();
@@ -202,14 +208,18 @@ function initDialogs()
       
       $("#new-fldr-name").on("blur", aEvent => {
         if (! aEvent.target.value) {
-          aEvent.target.value = "New Folder";
+          aEvent.target.value = chrome.i18n.getMessage("newFolder");
         }
       });
       
       that.firstInit = false;
     }
 
-    $("#new-fldr-name").val("New Folder").select().focus();
+    $("#new-fldr-name").val(chrome.i18n.getMessage("newFolder"));
+  };
+
+  gNewFolderDlg.onShow = () => {
+    $("#new-fldr-name").select().focus();
   };
   
   gNewFolderDlg.onAccept = aEvent => {
@@ -287,6 +297,8 @@ function initFolderPicker()
     }
   });
 
+  $("#new-folder-btn").attr("title", chrome.i18n.getMessage("btnNewFolder"));
+
   gFolderPickerPopup = new aeFolderPicker("#new-clipping-fldr-tree", gClippingsDB);
   gFolderPickerPopup.onSelectFolder = selectFolder;
 }
@@ -312,16 +324,16 @@ function initShortcutKeyMenu()
     for (let option of shortcutKeyMenu.options) {
       if (assignedKeysLookup[option.text]) {
         option.setAttribute("disabled", "true");
-        option.setAttribute("title", `'${option.text}' is already assigned`);
+        option.setAttribute("title", chrome.i18n.getMessage("shortcutKeyAssigned", option.text));
       }
     }
   });
 
-  let keybPasteKey = "ALT+SHIFT+Y";
+  let keybPasteKey = `${chrome.i18n.getMessage("keyAlt")}+${chrome.i18n.getMessage("keyShift")}+Y`;
   if (gClippings.getOS() == "mac") {
-    keybPasteKey = "\u21e7\u2318Y";
+    keybPasteKey = aeConst.SHORTCUT_KEY_PREFIX_MAC;
   }
-  let tooltip = `To quickly paste this clipping into a web page textbox in Firefox, press ${keybPasteKey} followed by the shortcut key.`;
+  let tooltip = chrome.i18n.getMessage("shortcutKeyHint", keybPasteKey);
   $("#shct-key-tooltip").attr("title", tooltip);
 }
 
@@ -379,7 +391,7 @@ function accept(aEvent)
     errorMsgBox.onInit = () => {
       console.error(`Error creating clipping: ${aErr}`);
       let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
-      errMsgElt.text("Unable to save the new clipping.  Check that the privacy settings in Firefox are not too restrictive (such as turning on Private Browsing mode), then restart Firefox and try again.");
+      errMsgElt.text(chrome.i18n.getMessage("saveClippingError"));
     };
     errorMsgBox.showModal();
 

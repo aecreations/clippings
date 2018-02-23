@@ -6,10 +6,10 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Clippings</title>
+    <title data-i18n="extName"></title>
 
     <link rel="stylesheet" href="chrome://browser/content/extension.css"/>
-    <link rel="stylesheet" href="../lib/EasyAutocomplete/easy-autocomplete.css"/>
+    <link rel="stylesheet" href="../lib/EasyAutocomplete/easy-autocomplete.min.css"/>
     <link rel="stylesheet" href="../style/dialog.css"/>
     <link rel="stylesheet" href="keyboardPaste.css"/>
 
@@ -22,13 +22,11 @@
           <img src="../img/keyboard-paste.png"/>
 	</div>
 	<div id="paste-by-shct-key-content">
-	  <div>Press the shortcut key of the clipping you want to paste.</div>
+	  <div data-i18n="shortcutKeyDesc"></div>
 	</div>
 	<div class="key-legend">
-	  <!--
-          <div class="desc">F1 = shortcut key list</div>
-          -->
-          <div class="desc">TAB = search clipping by name</div>
+          <div class="desc" data-i18n="keybPasteDlgF1"></div>
+          <div class="desc" data-i18n="keybPasteDlgTab"></div>
 	</div>
       </div>  <!-- #paste-by-shortcut-key -->
       
@@ -37,27 +35,42 @@
 	  <img src="chrome://global/skin/icons/question-64.png"/>
 	</div>
 	<div id="search-by-name-content" class="browser-style">
-	  <div id="clipping-search-label">
-	    <label for="clipping-search">Search for clipping by name:</label>
+	  <div id="clipping-search-label" class="hbox">
+	    <label id="search-label-text" for="clipping-search" data-i18n="srchByNameDesc"></label>
+	    <span id="search-label-spacer"></span>
+ 	    <label id="num-matches">&nbsp;</label>
           </div>
-	  <input type="text" id="clipping-search"/>
 	  <div id="clear-search"></div>
-	  <div id="num-matches">&nbsp;</div>
+	  <input type="text" id="clipping-search"/>
 	</div>
 
 	<div class="key-legend">
-	  <div class="desc">TAB = shortcut key mode</div>
+	  <div class="desc" data-i18n="keybPasteDlgTabShctMode"></div>
 	</div>
       </div>  <!-- #search-by-name -->
+
+      <div id="shortcut-list">
+        <div id="shortcut-list-toolbar" class="hbox">
+	  <button id="paste-clipping" class="toolbar-button toolbar-button-labelled"
+	   disabled="true" data-i18n="insClipping"></button>
+	  <button id="export-shct-list" class="toolbar-button toolbar-button-labelled"
+	   data-i18n="exportHTML"></button>
+	  <button id="close" class="browser-style" data-i18n="btnClose"></button>
+	</div>
+	<div id="shortcut-list-content"></div>
+      </div>  <!-- #shortcut-list -->
     </div>  <!-- .deck -->
     
     <div id="dlg-buttons">
-      <button id="btn-cancel" class="browser-style">Cancel</button>
+      <button id="btn-cancel" class="browser-style" data-i18n="btnCancel"></button>
     </div>
 
     <script src="../lib/jquery.js"></script>
-    <script src="../lib/EasyAutocomplete/jquery.easy-autocomplete.js"></script>
+    <script src="../lib/EasyAutocomplete/jquery.easy-autocomplete.min.js"></script>
+    <script src="../lib/purify.min.js"></script>
+    <script src="../lib/i18n.js"></script>
     <script src="../modules/aeConst.js"></script>
+    <script src="../modules/aeImportExport.js"></script>
     <script src="keyboardPaste.js"></script>
   </body>
 </html>

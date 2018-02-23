@@ -6,10 +6,10 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Clippings Manager</title>
+    <title data-i18n="clippingsMgrWndTitle"></title>
 
     <link rel="stylesheet" href="chrome://browser/content/extension.css"/>
-    <link rel="stylesheet" href="../lib/fancytree/skin/ui.fancytree.css"/>
+    <link rel="stylesheet" href="../lib/fancytree/skin/ui.fancytree.min.css"/>
     <link rel="stylesheet" href="../style/clippingTree.css"/>
     <link rel="stylesheet" href="../lib/contextMenu/jquery.contextMenu.css"/>
     <link rel="stylesheet" href="../style/lightbox.css"/>
@@ -22,16 +22,17 @@
     </div>
 
     <div id="toolbar" class="hbox">
-      <button id="new-clipping" class="toolbar-button toolbar-button-labelled">New Clipping</button>
-      <button id="new-folder" class="toolbar-button toolbar-button-labelled">New Folder</button>
-      <button id="move" class="toolbar-button" title="Move or Copy"></button>
-      <button id="delete" class="toolbar-button" title="Delete"></button>
-      <button id="undo" class="toolbar-button" title="Undo"></button>
+      <button id="new-clipping" class="toolbar-button toolbar-button-labelled" data-i18n="tbNewClipping"></button>
+      <button id="new-folder" class="toolbar-button toolbar-button-labelled" data-i18n="tbNewFolder"></button>
+      <button id="move" class="toolbar-button"></button>
+      <button id="delete" class="toolbar-button"></button>
+      <button id="undo" class="toolbar-button"></button>
       <span id="spacer-1" class="spacer"></span>
-      <button id="clippings-mgr-options" class="toolbar-button toolbar-button-labelled" title="Tools">Tools</button>
+      <button id="clippings-mgr-options" class="toolbar-button toolbar-button-labelled"
+       data-i18n="tbTools"></button>
       <span id="spacer-2" class="spacer"></span>
       <div id="search-clippings-and-folders">
-	<input type="search" id="search-box" placeholder="Find clippings and folders"/>
+	<input type="search" id="search-box"/>
 	<div id="clear-search"></div>
       </div>
     </div>
@@ -42,27 +43,36 @@
       <div id="tree-splitter"></div>
       <div id="item-properties" class="vbox browser-style">
 	<div id="intro-content">
-	  <h3>Welcome to Clippings Manager</h3>
-	  <p>Use Clippings Manager to edit, rename or delete clippings, and organize your collection of clippings into folders.</p>
-	  <h4>Shortcut Keys</h4>
+	  <h3 data-i18n="clipMgrIntroHdg"></h3>
+	  <p data-i18n="clipMgrIntroDesc"></p>
+	  <h4 data-i18n="clipMgrIntroKeybHdg"></h4>
 	  <table id="intro-shortcut-key-tbl" class="shortcut-key-tbl"></table>
 	</div>
 
-	<input type="text" id="clipping-name" placeholder="Clipping Name"/>
-	<textarea id="clipping-text" class="browser-style" placeholder="Enter clipping text"></textarea>
+	<input type="text" id="clipping-name"/>
+	<textarea id="clipping-text" class="browser-style"></textarea>
 
+	<div id="placeholder-toolbar" class="hbox">
+          <label data-i18n="labelInsPlchldr"></label>
+	  <button id="plchldr-presets" class="toolbar-button" data-i18n="tbPlchldrPresets"></button>
+	  <button id="custom-plchldr" class="toolbar-button toolbar-button-labelled"
+	   data-i18n="tbPlchldrCustom"></button>
+	  <button id="auto-incr-plchldr" class="toolbar-button toolbar-button-labelled"
+	   data-i18n="tbPlchldrNumeric"></button>
+        </div>
+	
 	<!-- Source URL -->
 	<div id="source-url-bar" class="hbox">
-	  <label id="src-url-label">Source address:</label>
+	  <label id="src-url-label" data-i18n="labelSrcURL"></label>
 	  <div id="source-url-deck">
 	    <div id="src-url-normal-mode" class="hbox">
-   	      <div id="clipping-src-url">(None)</div>
-              <button id="edit-url-btn" class="browser-style">Edit</button>
+   	      <div id="clipping-src-url" data-i18n="none"></div>
+              <button id="edit-url-btn" class="browser-style" data-i18n="btnEditSrcURL"></button>
 	    </div>
 	    <div id="src-url-edit-mode" class="hbox browser-style">
   	      <input type="text" id="clipping-src-url-edit" value=""/>
-	      <button id="edit-src-url-ok" class="browser-style" title="OK"></button>
-	      <button id="edit-src-url-cancel" class="browser-style" title="Cancel"></button>
+	      <button id="edit-src-url-ok" class="browser-style"></button>
+	      <button id="edit-src-url-cancel" class="browser-style"></button>
 	    </div>
 	  </div>
 	</div>
@@ -70,9 +80,9 @@
 	<!-- Shortcut key -->
 	<div id="options-bar" class="hbox">
 	  <div id="shortcut-key-select">
-	    <label for="clipping-key">Shortcut key:</label>
+	    <label for="clipping-key" data-i18n="labelShortcutKey"></label>
 	    <select id="clipping-key" class="browser-style" size="1">
-	      <option>(None)</option>
+	      <option data-i18n="none"></option>
 	      <option>A</option>
 	      <option>B</option>
 	      <option>C</option>
@@ -110,20 +120,21 @@
 	      <option>9</option>
 	      <option>0</option>
 	    </select>
+	    <button id="show-shortcut-list" class="toolbar-button"></button>
 	  </div>  <!-- #shortcut-key-select -->
 	  
 	  <div id="options-bar-spacer" class="spacer"></div>
 	  <div id="clipping-label">
-	    <label for="clipping-label-picker">Label:</label>
+	    <label for="clipping-label-picker" data-i18n="labelLabel"></label>
 	    <select id="clipping-label-picker" class="browser-style">
-	      <option value="">None</option>
-	      <option value="red">Red</option>
-	      <option value="orange">Orange</option>
-	      <option value="yellow">Yellow</option>
-	      <option value="green">Green</option>
-	      <option value="blue">Blue</option>
-	      <option value="purple">Purple</option>
-	      <option value="grey">Grey</option>
+	      <option value="" data-i18n="none"></option>
+	      <option value="red" data-i18n="labelRed"></option>
+	      <option value="orange" data-i18n="labelOrange"></option>
+	      <option value="yellow" data-i18n="labelYellow"></option>
+	      <option value="green" data-i18n="labelGreen"></option>
+	      <option value="blue" data-i18n="labelBlue"></option>
+	      <option value="purple" data-i18n="labelPurple"></option>
+	      <option value="grey" data-i18n="labelGrey"></option>
 	    </select>
 	  </div>
 	</div> <!-- #options-bar -->
@@ -135,61 +146,108 @@
       <span id="status-bar-msg"></span>
     </div>
 
-    <!-- Notification popup panels -->
-    <div id="panel-bkgrd-ovl" class="panel-bkgrd"></div>
-    <div id="all-src-urls-removed-confirm-popup" class="panel">
-      <div class="notify-icon"></div>
-      <div class="panel-content">Removed source web page addresses from your clippings.</div>
-      <div class="notify-dismiss dlg-accept"></div>
+    <!-- Popup panels -->
+    <div id="panel-bkgrd-ovl" class="panel-bkgrd"></div>      
+    <div id="all-src-urls-removed-confirm-msgbar" class="msgbar panel">
+      <div class="msgbar-icon"></div>
+      <div class="msgbar-content" data-i18n="clipMgrRemoveSrcURLsConfirm"></div>
+      <div class="msgbar-dismiss dlg-accept"></div>
     </div>
 
-    <div id="no-undo-popup" class="panel">
-      <div class="notify-icon"></div>
-      <div class="panel-content">Nothing to undo</div>
-      <div class="notify-dismiss dlg-accept"></div>
+    <div id="no-undo-msgbar" class="msgbar panel">
+      <div class="msgbar-icon"></div>
+      <div class="msgbar-content" data-i18n="clipMgrNoUndo"></div>
+      <div class="msgbar-dismiss dlg-accept"></div>
     </div>
     
     <!-- Dialog boxes -->
     <div id="lightbox-bkgrd-ovl" class="lightbox-bkgrd"></div>
+    <div id="shortcut-list-dlg" class="lightbox">
+      <p class="hlp-hdr" data-i18n="clipMgrShortcutKeyHelpHdg"></p>
+      <p id="shortcut-instrxns"></p>
+      <div id="shortcut-list-content"></div>    
+      <div class="dlg-btns hbox">
+        <button id="export-shct-list" class="browser-style" data-i18n="exportHTML"></button>
+	<span id="shortcut-list-btns-spacer"></span>
+	<button class="dlg-accept browser-style default" data-i18n="btnClose"></button>
+      </div>
+    </div>
+
     <div id="shortcut-key-conflict-msgbox" class="lightbox">
       <div class="msgbox-icon" style="margin-top:8px"></div>
-      <p>The selected shortcut key has already been assigned to another clipping.  Please select a different shortcut key.</p>
+      <p data-i18n="clipMgrShortcutKeyAssigned"></p>
       <div class="dlg-btns">
-	<button class="dlg-accept browser-style default">OK</button>
+	<button class="dlg-accept browser-style default" data-i18n="btnOK"></button>
+      </div>
+    </div>
+
+    <div id="custom-placeholder-dlg" class="lightbox">
+      <div class="dlg-content">
+	<div class="row browser-style">
+	<label for="custom-plchldr-name" data-i18n="labelCustPlchldrName"></label>
+	<input type="text" id="custom-plchldr-name" required
+	 pattern="[^a-zA-Z0-9_\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]"/>
+	</div>
+	<div class="row browser-style">
+  	  <label for="custom-plchldr-default-val" data-i18n="labelCustPlchldrVal"></label>
+  	  <input type="text" id="custom-plchldr-default-val"/>
+        </div>
+	<p data-i18n="custPlchldrValDesc"></p>
+      </div>
+      <div class="dlg-btns">
+	<button class="dlg-accept browser-style default" data-i18n="btnOK"></button>
+        <button class="dlg-cancel browser-style" data-i18n="btnCancel"></button>
+      </div>
+    </div>
+
+    <div id="numeric-placeholder-dlg" class="lightbox">      
+      <div class="dlg-content">
+        <div class="row browser-style">
+  	  <label data-i18n="labelNumPlchldrName"></label>
+	  <input type="text" id="numeric-plchldr-name" required
+ 	   pattern="[^a-zA-Z0-9_\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]"/>
+        </div>
+	<p data-i18n="numPlchldrDesc"></p>
+      </div>
+      <div class="dlg-btns">
+	<button class="dlg-accept browser-style default" data-i18n="btnOK"></button>
+        <button class="dlg-cancel browser-style" data-i18n="btnCancel"></button>
       </div>
     </div>
 
     <div id="clipping-missing-src-url-msgbox" class="lightbox">
       <div class="msgbox-icon"></div>
-      <p>The selected clipping doesn't have a source web page address.</p>
+      <p data-i18n="clipMgrNoSrcURL"></p>
       <div class="dlg-btns">
-	<button class="dlg-accept browser-style default">OK</button>
+	<button class="dlg-accept browser-style default" data-i18n="btnOK"></button>
       </div>
     </div>
 
     <div id="import-dlg" class="lightbox">
       <div class="dlg-content browser-style">
-        <label id="import-clippings-label">Select import file:</label>
+        <label id="import-clippings-label" data-i18n="labelSelImportFile"></label>
 	<div id="import-clippings-filepicker" class="hbox browser-style">
 	  <input type="text" id="import-clippings-file-path" readonly="true"/>
-	  <label id="import-clippings-file-upload-btn" for="import-clippings-file-upload">Browse...</label>
+	  <label id="import-clippings-file-upload-btn" for="import-clippings-file-upload"
+	   data-i18n="btnBrowse"></label>
 	  <input type="file" id="import-clippings-file-upload" accept=".rdf, .json"/>
 	</div>
 	<div id="import-clippings-replc-shct-keys-checkbox" class="browser-style">
 	  <input type="checkbox" id="import-clippings-replc-shct-keys" checked="true"/>
-	  <label for="import-clippings-replc-shct-keys">Replace shortcut keys</label>
+	  <label for="import-clippings-replc-shct-keys" data-i18n="cbImportReplcShctKeys"></label>
 	  <br/>
 	</div>
 	<div id="restore-backup-warning">
 	  <div class="warning-icon"></div>
-	  <p>Restoring from a backup file will replace all of your clippings with the backup. This action can't be undone.</p>
+	  <p data-i18n="warnBackupOverwrite"></p>
         </div>
 	<progress id="import-progress-bar"></progress>
 	<div id="import-error"></div>
       </div>
       <div class="dlg-btns">
-	<button id="import-dlg-action-btn" class="dlg-accept browser-style default" disabled="true">Import</button>
-	<button class="dlg-cancel browser-style">Cancel</button>
+	<button id="import-dlg-action-btn" class="dlg-accept browser-style default" disabled="true"
+	 data-i18n="btnImport"></button>
+	<button class="dlg-cancel browser-style" data-i18n="btnCancel"></button>
       </div>
     </div>
 
@@ -197,27 +255,27 @@
       <div class="msgbox-icon"></div>
       <p class="msgbox-content"></p>
       <div class="dlg-btns">
-	<button class="dlg-accept browser-style default">Reload</button>
+	<button class="dlg-accept browser-style default" data-i18n="btnReload"></button>
       </div>
     </div>
 
     <div id="export-dlg" class="lightbox">
       <div class="dlg-content browser-style">
-	<label style="display:block">Select a format to export Clippings to:</label>
+	<label style="display:block" data-i18n="labelSelExportFmt"></label>
 	<select id="export-format-list" size="3">
-	  <option value="0">Clippings 6</option>
-	  <option value="1">HTML Document</option>
+	  <option value="0" data-i18n="expFmtClippings6"></option>
+	  <option value="1" data-i18n="expFmtHTMLDoc"></option>
 	</select>
 	<fieldset>
-	  <legend>Description</legend>
+	  <legend data-i18n="expFmtDescHdg"></legend>
 	  <p id="format-description" class="desc"></p>
 	</fieldset>
 	<input type="checkbox" id="include-src-urls" checked="true"/>
-	<label for="include-src-urls">Include source web page addresses of clippings</label>
+	<label for="include-src-urls" data-i18n="cbExpInclSrcURLs"></label>
       </div>
       <div class="dlg-btns">
-        <button class="dlg-accept browser-style default">Export</button>
-        <button class="dlg-cancel browser-style">Cancel</button>
+        <button class="dlg-accept browser-style default" data-i18n="btnExport"></button>
+        <button class="dlg-cancel browser-style" data-i18n="btnCancel"></button>
       </div>
     </div>
 
@@ -225,34 +283,35 @@
       <div class="msgbox-icon"></div>
       <p class="msgbox-content"></p>
       <div class="dlg-btns">
-	<button class="dlg-accept browser-style default">OK</button>
+	<button class="dlg-accept browser-style default" data-i18n="btnOK"></button>
       </div>
     </div>
 
     <div id="remove-all-source-urls-dlg" class="lightbox">
       <div class="dlg-content browser-style">
 	<div class="msgbox-icon"></div>
-	<p>All source web page addresses of your clippings will be removed.  Do you want to continue?</p>
+	<p data-i18n="clipMgrWarnRemoveSrcURLs"></p>
       </div>	  
       <div class="dlg-btns">
-        <button class="dlg-btn-yes browser-style">Yes</button>
-        <button class="dlg-accept browser-style default">No</button>
+        <button class="dlg-btn-yes browser-style" data-i18n="btnYes"></button>
+        <button class="dlg-accept browser-style default" data-i18n="btnNo"></button>
       </div>
 
     </div>
 
     <div id="move-dlg" class="lightbox">
       <div class="dlg-content browser-style">
-	<label id="move-to-label" for="move-to-fldr-tree">Move to:</label>
+	<label id="move-to-label" for="move-to-fldr-tree" data-i18n="labelMoveTo"></label>
 	<div id="move-to-fldr-tree"></div>
 	
 	<input type="checkbox" id="copy-instead-of-move"/>
-	<label for="copy-instead-of-move">Create a copy</label>
+	<label for="copy-instead-of-move" data-i18n="cbCreateCopy"></label>
 	<div id="move-error"></div>
       </div>
       <div class="dlg-btns">
-        <button class="dlg-accept browser-style default">OK</button>
-        <button class="dlg-cancel browser-style">Cancel</button>
+        <button id="move-dlg-action-btn" class="dlg-accept browser-style default"
+	 data-i18n="btnMove"></button>
+        <button class="dlg-cancel browser-style" data-i18n="btnCancel"></button>
       </div>
     </div>
 
@@ -262,33 +321,34 @@
 	<p class="msgbox-error-msg"></p>
       </div>
       <div class="dlg-btns">
-        <button class="dlg-accept browser-style default">OK</button>
+        <button class="dlg-accept browser-style default" data-i18n="btnOK"></button>
       </div>
     </div>
 
     <div id="mini-help-dlg" class="lightbox">
       <div class="dlg-content browser-style">
-	<p class="hlp-hdr">Clippings Manager</p>
-	<p>Use Clippings Manager to edit, rename or delete clippings, and organize your collection of clippings into folders.</p>
+	<p class="hlp-hdr" data-i18n="clippingsMgrWndTitle"></p>
+	<p data-i18n="clipMgrIntroDesc"></p>
 	<fieldset>
-	  <legend>Shortcut Keys</legend>
+	  <legend data-i18n="clipMgrIntroKeybHdg"></legend>
 	  <table id="mini-help-shortcut-key-tbl" class="shortcut-key-tbl"></table>
         </fieldset>
       </div>
       <div class="dlg-btns">
-	<button class="dlg-accept browser-style default">Close</button>
+	<button class="dlg-accept browser-style default" data-i18n="btnClose"></button>
       </div>
     </div>
 
     <div id="generic-msg-box" class="lightbox">
       <div class="msgbox-icon"></div>
-      <p>No help is available (so leave me alone).</p>
+      <p data-i18n="msgUnknown"></p>
       <div class="dlg-btns">
-	<button class="dlg-accept browser-style default">OK</button>
+	<button class="dlg-accept browser-style default" data-i18n="btnOK"></button>
       </div>
     </div>
     
     <script src="../lib/jquery.js"></script>
+    <script src="../lib/purify.min.js"></script>
     <script src="../lib/fancytree/jquery.fancytree-all-deps.min.js"></script>
     <script src="../lib/fancytree/jquery.fancytree.dnd5.js"></script>
     <script src="../lib/fancytree/jquery.fancytree.filter.js"></script>

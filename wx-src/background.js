@@ -11,6 +11,7 @@ const PASTE_ACTION_SEARCH_CLIPPING = 2;
 
 let gClippingsDB = null;
 let gOS = null;
+let gHostAppName = null;
 let gAutoIncrPlchldrs = null;
 
 let gClippingsListeners = {
@@ -179,6 +180,7 @@ async function setDefaultPrefs()
     pastePromptAction: aeConst.PASTEACTION_SHORTCUT_KEY,
     clippingsMgrDetailsPane: false,
     clippingsMgrStatusBar: false,
+    clippingsMgrPlchldrToolbar: false,
     clippingsMgrMinzWhenInactv: undefined,
   };
 
@@ -215,11 +217,13 @@ function initHelper()
   initClippingsDB();
   
   if (! ("browser" in window)) {
+    gHostAppName = "Google Chrome";
     log("Clippings/wx: Browser: Google Chrome");
   }
   else {
     let getBrowserInfo = browser.runtime.getBrowserInfo();
     getBrowserInfo.then(aBrwsInfo => {
+      gHostAppName = `${aBrwsInfo.name} ${aBrwsInfo.version}`;
       log(`Clippings/wx: Browser: ${aBrwsInfo.name} (version ${aBrwsInfo.version})`);
     });
   }
@@ -446,7 +450,8 @@ function initMessageListeners()
         pasteClippingByShortcutKey(shortcutKey);
       }
       else if (aRequest.msgID == "paste-clipping-by-name") {
-        pasteClippingByID(aRequest.clippingID);
+        let externReq = aRequest.fromClippingsMgr;
+        pasteClippingByID(aRequest.clippingID, externReq);
       }
       else if (aRequest.msgID == "paste-clipping-with-plchldrs") {
         let content = aRequest.processedContent;
@@ -701,12 +706,14 @@ function openClippingsManager()
     
     function openClippingsMgrHelper()
     {
-      browser.windows.create({
+      let wndInfo = {
         url: clippingsMgrURL,
         type: "popup",
         width: 750, height: 400,
-        left: 64, top: 128
-      }).then(aWnd => {
+        left: 64, top: 128,
+      };
+
+      browser.windows.create(wndInfo).then(aWnd => {
         gWndIDs.clippingsMgr = aWnd.id;
         browser.history.deleteUrl({ url: clippingsMgrURL });
       });
@@ -746,7 +753,11 @@ function openClippingsManager()
 function openNewClippingDlg()
 {
   let url = chrome.runtime.getURL("pages/new.html");
-  openDlgWnd(url, "newClipping", { type: "detached_panel", width: 428, height: 418 });
+  let height = 386;
+  if (gOS == "win") {
+    height = 422;
+  }
+  openDlgWnd(url, "newClipping", { type: "detached_panel", width: 428, height });
 }
 
 
@@ -802,7 +813,7 @@ function openDlgWnd(aURL, aWndKey, aWndPpty)
 }
 
 
-function pasteClippingByID(aClippingID)
+function pasteClippingByID(aClippingID, aExternalRequest)
 {
   gClippingsDB.transaction("r", gClippingsDB.clippings, gClippingsDB.folders, () => {
     let clipping = null;
@@ -835,7 +846,7 @@ function pasteClippingByID(aClippingID)
         parentFolderName: parentFldrName
       };
 
-      pasteClipping(clippingInfo);
+      pasteClipping(clippingInfo, aExternalRequest);
     });
   }).catch(aErr => {
     console.error("Clippings/wx: pasteClippingByID(): " + aErr);
@@ -891,9 +902,20 @@ function pasteClippingByShortcutKey(aShortcutKey)
 }
 
 
-function pasteClipping(aClippingInfo)
+function pasteClipping(aClippingInfo, aExternalRequest)
 {
-  chrome.tabs.query({ active: true, currentWindow: true }, aTabs => {
+  let queryInfo = {
+    active: true,
+  };
+
+  if (aExternalRequest) {
+    queryInfo.lastFocusedWindow = true;
+  }
+  else {
+    queryInfo.currentWindow = true;
+  }
+  
+  chrome.tabs.query(queryInfo, aTabs => {
     if (! aTabs[0]) {
       // This should never happen...
       alertEx(aeMsgBox.MSG_NO_ACTIVE_BROWSER_TAB);
@@ -911,12 +933,6 @@ function pasteClipping(aClippingInfo)
 
       let autoIncrPlchldrs = aeClippingSubst.getAutoIncrPlaceholders(processedCtnt);
       if (autoIncrPlchldrs.length > 0) {
-        // TO DO:
-        // Populate the auto-incrementing placeholder reset menu on the context
-        // menu for the Clippings toolbar button.
-        console.log("Clippings/wx: Auto-incrementing placeholder names:");
-        console.log(autoIncrPlchldrs);
-
         buildAutoIncrementPlchldrResetMenu(autoIncrPlchldrs);
         processedCtnt = aeClippingSubst.processAutoIncrPlaceholders(processedCtnt);
       }
@@ -924,9 +940,6 @@ function pasteClipping(aClippingInfo)
       let plchldrs = aeClippingSubst.getCustomPlaceholders(processedCtnt);
       if (plchldrs.length > 0) {
         let plchldrsWithDefaultVals = aeClippingSubst.getCustomPlaceholderDefaultVals(processedCtnt, aClippingInfo);
-        console.log("Placeholders with default values:");
-        console.log(plchldrsWithDefaultVals);
-        
         gPlaceholders.set(plchldrs, plchldrsWithDefaultVals, processedCtnt);
         openPlaceholderPromptDlg();
         return;
@@ -978,6 +991,12 @@ function verifyDB()
 function getOS()
 {
   return gOS;
+}
+
+
+function getHostAppName()
+{
+  return gHostAppName;
 }
 
 

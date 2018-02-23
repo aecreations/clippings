@@ -6,6 +6,8 @@
 
 const DEBUG_TREE = false;
 const DEBUG_WND_ACTIONS = false;
+const ENABLE_PASTE_CLIPPING = false;
+const NEW_CLIPPING_FROM_CLIPBOARD = "New Clipping From Clipboard";
 
 let gOS;
 let gClippingsDB;
@@ -17,6 +19,14 @@ let gDialogs = {};
 let gOpenerWndID;
 let gIsMaximized;
 let gSuppressAutoMinzWnd;
+
+
+// DOM utility
+function sanitizeHTML(aHTMLStr)
+{
+  return DOMPurify.sanitize(aHTMLStr, { SAFE_FOR_JQUERY: true });
+}
+
 
 // Clippings listener object
 let gClippingsListener = {
@@ -50,11 +60,18 @@ let gClippingsListener = {
       // No clippings or folders.
       newNode = tree.rootNode.addNode(newNodeData);
     }
-    
+
     newNode.makeVisible().done(() => {
       newNode.setActive();
       $("#clipping-name").val(aData.name);
       $("#clipping-text").val("");
+
+      // New clipping created from clipboard contents.
+      if (aData.name == NEW_CLIPPING_FROM_CLIPBOARD) {
+        log("Clippings/wx::clippingsMgr.js: gClippingsListener.newClippingCreated(): Focusing on clipping content editor textbox");
+        $("#clipping-text").focus();
+        document.execCommand("paste");  // THIS DOES NOT WORK!
+      }
     });
   },
 
@@ -256,7 +273,7 @@ let gClippingsListener = {
       tree.options.icon = false;
       let emptyMsgNode = setEmptyClippingsState();
       tree.rootNode.addNode(emptyMsgNode);
-      setStatusBarMsg("0 items");
+      setStatusBarMsg(chrome.i18n.getMessage("clipMgrStatusBar", "0"));
     }
     else {
       // Select the node that used to be occupied by the delete node. If the
@@ -305,6 +322,11 @@ let gSearchBox = {
       return;
     }
     
+    $("#search-box").prop("placeholder", chrome.i18n.getMessage("clipMgrSrchBarHint"));
+    $("#search-box").focus(aEvent => {
+      gSearchBox.activate();
+    });
+
     $("#search-box").keyup(aEvent => {
       this.updateSearch();
       $("#clear-search").css({
@@ -379,8 +401,8 @@ let gSrcURLBar = {
   {
     $("#src-url-edit-mode").hide();
     $("#edit-url-btn").click(aEvent => { this.edit() });
-    $("#edit-src-url-ok").click(aEvent => { this.acceptEdit() });
-    $("#edit-src-url-cancel").click(aEvent => { this.cancelEdit() });
+    $("#edit-src-url-ok").attr("title", chrome.i18n.getMessage("btnOK")).click(aEvent => { this.acceptEdit() });
+    $("#edit-src-url-cancel").attr("title", chrome.i18n.getMessage("btnCancel")).click(aEvent => { this.cancelEdit() });
   },
 
   show: function ()
@@ -439,7 +461,7 @@ let gSrcURLBar = {
       sourceURL: updatedURL
     }).then(aNumUpdated => {
       if ($("#clipping-src-url > a").length == 0) {
-        $("#clipping-src-url").html(`<a href="${updatedURL}">${updatedURL}</a>`);
+        $("#clipping-src-url").html(sanitizeHTML(`<a href="${updatedURL}">${updatedURL}</a>`));
       }
       else {
         if (updatedURL) {
@@ -480,6 +502,8 @@ let gShortcutKey = {
     }).mousedown(aEvent => {
       this.setPrevShortcutKey();
     });
+
+    $("#show-shortcut-list").attr("title", chrome.i18n.getMessage("clipMgrShortcutHelpHint"));
   },
 
   getPrevSelectedIndex: function ()
@@ -634,7 +658,7 @@ let gCmd = {
   },
 
   
-  newClipping: function (aDestUndoStack)
+  newClipping: function (aDestUndoStack, aIsFromClipboard)
   {
     if (gIsClippingsTreeEmpty) {
       unsetEmptyClippingsState();
@@ -648,8 +672,13 @@ let gCmd = {
       parentFolderID = this._getParentFldrIDOfTreeNode(selectedNode);
     }
 
+    let name = chrome.i18n.getMessage("newClipping");
+    if (aIsFromClipboard) {
+      name = NEW_CLIPPING_FROM_CLIPBOARD;
+    }
+
     let createClipping = gClippingsDB.clippings.add({
-      name: chrome.i18n.getMessage("newClipping"),
+      name,
       content: "",
       shortcutKey: "",
       parentFolderID: parentFolderID,
@@ -749,11 +778,6 @@ let gCmd = {
         }
       });
     }
-  },
-
-  pasteClipping: function (aClippingID)
-  {
-    info("Clippings/wx::clippingsMgr.js: gCmd.pasteClipping(): Not implemented.");
   },
 
   // Internal commands are NOT meant to be invoked directly from the UI.
@@ -1038,6 +1062,63 @@ let gCmd = {
       });
     }
   },
+
+  pasteClipping: function (aClippingID)
+  {
+    if (ENABLE_PASTE_CLIPPING) {
+      log(`Clippings/wx::clippingsMgr.js: gCmd.pasteClipping(): clipping ID = ${aClippingID}`);
+      if (gClippings.isGoogleChrome()) {
+        // TO DO: Similar logic as below, but don't close the window.
+      }
+      else {
+        browser.runtime.sendMessage({
+          msgID: "paste-clipping-by-name",
+          clippingID: aClippingID,
+          fromClippingsMgr: true
+        });
+        // Must close this window, or else pasting won't work!
+        closeWnd();
+      }
+    }
+    else {
+      warn("Clippings/wx::clippingsMgr.js: gCmd.pasteClipping(): Action disabled");
+    }
+  },
+  
+  showShortcutList: function ()
+  {
+    gDialogs.shortcutList.showModal();
+  },
+
+  insertCustomPlaceholder: function ()
+  {
+    gDialogs.insCustomPlchldr.showModal();
+  },
+
+  insertNumericPlaceholder: function ()
+  {
+    gDialogs.insAutoIncrPlchldr.showModal();
+  },
+  
+  showHidePlaceholderToolbar: function ()
+  {
+    let currSetting = gClippings.getPrefs().clippingsMgrPlchldrToolbar;
+    chrome.storage.local.set({ clippingsMgrPlchldrToolbar: !currSetting });
+    
+    if (gIsClippingsTreeEmpty) {
+      return;
+    }
+
+    let tree = getClippingsTree();
+    let selectedNode = tree.activeNode;
+    if (! selectedNode) {
+      return;
+    }
+
+    if (! selectedNode.isFolder()) {
+      $("#placeholder-toolbar").toggle();
+    }
+  },
   
   showHideDetailsPane: function ()
   {
@@ -1096,7 +1177,7 @@ let gCmd = {
     const INCLUDE_SRC_URLS = true;
     
     aeImportExport.setDatabase(gClippingsDB);
-    setStatusBarMsg("Saving backup file...");
+    setStatusBarMsg(chrome.i18n.getMessage("statusSavingBkup"));
 
     let blobData;
     aeImportExport.exportToJSON(INCLUDE_SRC_URLS).then(aJSONData => {
@@ -1109,7 +1190,7 @@ let gCmd = {
         filename: aeConst.CLIPPINGS_BACKUP_FILENAME,
         saveAs: true
       }).then(aDownldItemID => {
-        setStatusBarMsg("Saving backup file... done");
+        setStatusBarMsg(chrome.i18n.getMessage("statusSavingBkupDone"));
         gSuppressAutoMinzWnd = false;
       }).catch(aErr => {
         if (aErr.fileName == "undefined") {
@@ -1117,14 +1198,14 @@ let gCmd = {
         }
         else {
           console.error(aErr);
-          setStatusBarMsg("Backup failed.");
-          window.alert("Sorry, an error occurred while creating the backup file.\n\nDetails:\n" + getErrStr(aErr));
+          setStatusBarMsg(chrome.i18n.getMessage("statusSavingBkupFailed"));
+          window.alert(chrome.i18n.getMessage("backupError", aErr));
         }
         gSuppressAutoMinzWnd = false;
       });
     }).catch(aErr => {
       window.alert("Sorry, an error occurred during the backup.\n\nDetails:\n" + getErrStr(aErr));
-      setStatusBarMsg("Backup failed.");
+      setStatusBarMsg(chrome.i18n.getMessage("statusSavingBkupFailed"));
     });
   },
   
@@ -1269,7 +1350,14 @@ $(document).ready(() => {
     return;
   }
 
-  chrome.runtime.getPlatformInfo(aInfo => { gOS = aInfo.os; });
+  chrome.runtime.getPlatformInfo(aInfo => {
+    gOS = aInfo.os;
+
+    // Platform-specific initialization.
+    if (gOS == "mac") {
+      $("#status-bar").css({ backgroundImage: "none" });
+    }
+  });
 
   let wndURL = new URL(window.location.href);
   gOpenerWndID = Number(wndURL.searchParams.get("openerWndID"));
@@ -1280,7 +1368,7 @@ $(document).ready(() => {
       chrome.storage.local.set({ clippingsMgrMinzWhenInactv: true });
     }
   }
-  
+
   let clippingsListeners = gClippings.getClippingsListeners();
   gClippingsListener.origin = clippingsListeners.ORIGIN_CLIPPINGS_MGR;
   clippingsListeners.add(gClippingsListener);
@@ -1292,12 +1380,6 @@ $(document).ready(() => {
   gClippingLabelPicker.init("#clipping-label-picker");
   initDialogs();
   buildClippingsTree();
-
-  $("#search-box").focus(aEvent => {
-    gSearchBox.init();
-    gSearchBox.activate();
-  });
-
   initTreeSplitter();
   
   chrome.history.deleteUrl({ url: window.location.href });
@@ -1316,10 +1398,10 @@ $(window).on("beforeunload", () => {
   if (! gIsReloading) {
     browser.runtime.sendMessage({ msgID: "close-clippings-mgr-wnd" });
   }
-  
+
   let clippingsListeners = gClippings.getClippingsListeners();
   clippingsListeners.remove(gClippingsListener);
-
+  
   purgeDeletedItems(aeConst.DELETED_ITEMS_FLDR_ID);
 });
 
@@ -1345,9 +1427,15 @@ $(document).keypress(aEvent => {
   {
     return (aEvent.target.tagName == "INPUT" || aEvent.target.tagName == "TEXTAREA");
   }
+
+  aeDialog.hidePopups();
   
   // NOTE: CTRL+W/Cmd+W is automatically handled, so no need to define it here.
   if (aEvent.key == "F1") {
+    if (aeDialog.isOpen()) {
+      return;
+    }
+
     if ($("#intro-content").css("display") == "none") {
       gDialogs.miniHelp.showModal();
     }
@@ -1418,6 +1506,11 @@ $(window).on("contextmenu", aEvent => {
 
 
 $(window).on("click", aEvent => {
+  // HACK!!
+  if ($("#shortcut-list-popup").hasClass("panel-show")) {
+    return;
+  }
+  
   aeDialog.hidePopups();
 });
 
@@ -1448,15 +1541,115 @@ function initToolbar()
     $("#status-bar").hide();
     recalcContentAreaHeight($("#status-bar").css("display") != "none");
   }
-  
+
   $("#new-clipping").click(aEvent => { gCmd.newClipping(gCmd.UNDO_STACK) });
   $("#new-folder").click(aEvent => { gCmd.newFolder(gCmd.UNDO_STACK) });
-  $("#move").click(aEvent => { gCmd.moveClippingOrFolder() });
-  $("#delete").click(aEvent => {
-    gCmd.deleteClippingOrFolder(gCmd.UNDO_STACK)
+  $("#move").attr("title", chrome.i18n.getMessage("tbMoveOrCopy")).click(aEvent => {
+    gCmd.moveClippingOrFolder();
   });
-  $("#undo").click(aEvent => { gCmd.undo() });
+  $("#delete").attr("title", chrome.i18n.getMessage("tbDelete")).click(aEvent => {
+    gCmd.deleteClippingOrFolder(gCmd.UNDO_STACK);
+  });
+  $("#undo").attr("title", chrome.i18n.getMessage("tbUndo")).click(aEvent => { gCmd.undo() });
 
+  // Placeholder toolbar -> Presets menu
+  $.contextMenu({
+    selector: "#plchldr-presets",
+    trigger: "left",
+
+    events: {
+      activated: function (aOptions) {
+        $("#plchldr-presets").addClass("toolbar-button-menu-open");
+      },
+
+      hide: function (aOptions) {
+        $("#plchldr-presets").removeClass("toolbar-button-menu-open");
+      },
+    },
+
+    position: function (aOpt, aX, aY) {
+      aX = undefined;
+      aY = undefined;
+
+      aOpt.$menu.position({
+        my: "left top",
+        at: "left bottom",
+        of: $("#plchldr-presets"),
+      });
+    },
+
+    callback: function (aItemKey, aOpt, aRootMenu, aOriginalEvent) {
+      let contentTextArea = $("#clipping-text");
+      contentTextArea.focus();
+
+      function insertPlaceholder(aPlaceholder) {
+        insertTextIntoTextbox(contentTextArea, aPlaceholder);
+      }
+      
+      switch (aItemKey) {
+      case "insDate":
+        insertPlaceholder("$[DATE]");
+        break;
+        
+      case "insTime":
+        insertPlaceholder("$[TIME]");
+        break;
+        
+      case "insAppName":
+        insertPlaceholder("$[HOSTAPP]");
+        break;
+        
+      case "insUserAgent":
+        insertPlaceholder("$[UA]");
+        break;
+        
+      case "insClippingName":
+        insertPlaceholder("$[NAME]");
+        break;
+        
+      case "insParentFolderName":
+        insertPlaceholder("$[FOLDER]");
+        break;
+        
+      default:
+        window.alert("The selected action is not available right now.");
+        break;
+      }
+    },
+
+    items: {
+      insDate: {
+        name: chrome.i18n.getMessage("mnuPlchldrDate"),
+        className: "ae-menuitem"
+      },
+
+      insTime: {
+        name: chrome.i18n.getMessage("mnuPlchldrTime"),
+        className: "ae-menuitem"
+      },
+
+      insAppName: {
+        name: chrome.i18n.getMessage("mnuPlchldrAppName"),
+        className: "ae-menuitem"
+      },
+
+      insUserAgent: {
+        name: chrome.i18n.getMessage("mnuPlchldrUsrAgent"),
+        className: "ae-menuitem"
+      },
+
+      insClippingName: {
+        name: chrome.i18n.getMessage("mnuPlchldrClipName"),
+        className: "ae-menuitem"
+      },
+
+      insParentFolderName: {
+        name: chrome.i18n.getMessage("mnuPlchldrFldrName"),
+        className: "ae-menuitem"
+      }
+    }
+  });
+  
   // Tools menu
   $.contextMenu({
     selector: "#clippings-mgr-options",
@@ -1485,6 +1678,10 @@ function initToolbar()
     
     callback: function (aItemKey, aOpt, aRootMenu, aOriginalEvent) {
       switch (aItemKey) {
+      case "newFromClipboard":
+        gCmd.newClipping(gCmd.UNDO_STACK, true);
+        break;
+        
       case "backup":
         gCmd.backup();
         break;
@@ -1505,6 +1702,10 @@ function initToolbar()
         gCmd.removeAllSrcURLs();
         break;
 
+      case "togglePlchldrToolbar":
+        gCmd.showHidePlaceholderToolbar();
+        break;
+        
       case "toggleDetailsPane":
         gCmd.showHideDetailsPane();
         break;
@@ -1531,41 +1732,47 @@ function initToolbar()
       }
     },
     items: {
-      /***
       newFromClipboard: {
-        name: "New From Clipboard",
-        className: "ae-menuitem"
+        name: chrome.i18n.getMessage("mnuNewFromClipbd"),
+        className: "ae-menuitem",
+        visible: function (aKey, aOpt) {
+          return gClippings.isGoogleChrome();
+        }
       },
-      separator0: "--------",
-      ***/
+      backupSeparator: {
+        type: "cm_separator",
+        visible: function (akey, aOpt) {
+          return gClippings.isGoogleChrome();
+        }
+      },
       backup: {
-        name: "Backup...",
+        name: chrome.i18n.getMessage("mnuBackup"),
         className: "ae-menuitem"
       },
       restoreFromBackup: {
-        name: "Restore From Backup...",
+        name: chrome.i18n.getMessage("mnuRestoreFromBackup"),
         className: "ae-menuitem"
       },
       separator1: "--------",
       importFromFile: {
-        name: "Import...",
+        name: chrome.i18n.getMessage("mnuImport"),
         className: "ae-menuitem"
       },
       exportToFile: {
-        name: "Export...",
+        name: chrome.i18n.getMessage("mnuExport"),
         className: "ae-menuitem"
       },
       separator2: "--------",
       removeAllSrcURLs: {
-        name: "Remove Source Web Addresses...",
+        name: chrome.i18n.getMessage("mnuRemoveAllSrcURLs"),
         className: "ae-menuitem"
       },
       separator3: "--------",
       showHideSubmenu: {
-        name: "Show/Hide",
+        name: chrome.i18n.getMessage("mnuShowHide"),
         items: {
           toggleDetailsPane: {
-            name: "Details Pane",
+            name: chrome.i18n.getMessage("mnuShowHideDetails"),
             className: "ae-menuitem",
             disabled: function (aKey, aOpt) {
               return (gIsClippingsTreeEmpty || isFolderSelected());
@@ -1577,9 +1784,20 @@ function initToolbar()
               }
             }
           },
-          
+          togglePlchldrToolbar: {
+            name: chrome.i18n.getMessage("mnuShowHidePlchldrBar"),
+            className: "ae-menuitem",
+            disabled: function (aKey, aOpt) {
+              return (gIsClippingsTreeEmpty || isFolderSelected());
+            },
+            icon: function (aOpt, $itemElement, aItemKey, aItem) {
+              if ($("#placeholder-toolbar").css("display") != "none") {
+                return "context-menu-icon-checked";
+              }
+            }
+          },         
           toggleStatusBar: {
-            name: "Status Bar",
+            name: chrome.i18n.getMessage("mnuShowHideStatusBar"),
             className: "ae-menuitem",
             icon: function (aOpt, $itemElement, aItemKey, aItem) {
               if ($("#status-bar").css("display") != "none") {
@@ -1590,7 +1808,7 @@ function initToolbar()
         }
       },
       maximizeWnd: {
-        name: "Maximize",
+        name: chrome.i18n.getMessage("mnuMaximize"),
         className: "ae-menuitem",
         visible: function (aKey, aOpt) {
           return (gOS == "win" || DEBUG_WND_ACTIONS);
@@ -1602,7 +1820,7 @@ function initToolbar()
         }
       },
       minimizeWhenInactive: {
-        name: "Minimize When Inactive",
+        name: chrome.i18n.getMessage("mnuMinimizeWhenInactive"),
         className: "ae-menuitem",
         visible: function (aKey, aOpt) {
           return (gOS == "linux" || DEBUG_WND_ACTIONS);
@@ -1620,17 +1838,23 @@ function initToolbar()
         }
       },
       openExtensionPrefs: {
-        name: "Options...",
+        name: chrome.i18n.getMessage("mnuShowExtPrefs"),
         className: "ae-menuitem"
       }
     }
   });
+
+  $("#custom-plchldr").click(aEvent => { gCmd.insertCustomPlaceholder() });
+  $("#auto-incr-plchldr").click(aEvent => { gCmd.insertNumericPlaceholder() });
+  $("#show-shortcut-list").click(aEvent => { gCmd.showShortcutList() });
+
+  gSearchBox.init();
 }
 
 
 function initInstantEditing()
 {
-  $("#clipping-name").blur(aEvent => {
+  $("#clipping-name").attr("placeholder", chrome.i18n.getMessage("clipMgrNameHint")).blur(aEvent => {
     let tree = getClippingsTree();
     let selectedNode = tree.activeNode;
     let name = aEvent.target.value;
@@ -1656,7 +1880,7 @@ function initInstantEditing()
     }
   });
   
-  $("#clipping-text").blur(aEvent => {
+  $("#clipping-text").attr("placeholder", chrome.i18n.getMessage("clipMgrContentHint")).blur(aEvent => {
     let tree = getClippingsTree();
     let selectedNode = tree.activeNode;
     let id = parseInt(selectedNode.key);
@@ -1669,32 +1893,68 @@ function initInstantEditing()
 }
 
 
-function initDialogs()
+function initIntroBannerAndHelpDlg()
 {
-  // Also initialize the intro banner and help dialog.
   const isMacOS = gClippings.getOS() == "mac";
   const isLinux = gClippings.getOS() == "linux";
+
+  function buildKeyMapTable(aTableDOMElt)
+  {
+    let shctKeys = [];
+    if (isMacOS) {
+      shctKeys = ["\u2326", "esc", "\u2318F", "\u2318W", "\u2318Z", "F1", "\u2318F10"];
+    }
+    else {
+      shctKeys = [
+        chrome.i18n.getMessage("keyDel"),
+        chrome.i18n.getMessage("keyEsc"),
+        `${chrome.i18n.getMessage("keyCtrl")}+F`,  // CTRL+F
+        `${chrome.i18n.getMessage("keyCtrl")}+W`,  // CTRL+W
+        `${chrome.i18n.getMessage("keyCtrl")}+Z`,  // CTRL+Z
+        "F1",
+        `${chrome.i18n.getMessage("keyCtrl")}+F10`, // CTRL+F10
+      ];
+    }
+
+    function buildKeyMapTableRow(aShctKey, aCmdL10nStrIdx)
+    {
+      let tr = document.createElement("tr");
+      let tdKey = document.createElement("td");
+      let tdCmd = document.createElement("td");
+      tdKey.appendChild(document.createTextNode(aShctKey));
+      tdCmd.appendChild(document.createTextNode(chrome.i18n.getMessage(aCmdL10nStrIdx)));
+      tr.appendChild(tdKey);
+      tr.appendChild(tdCmd);
+
+      return tr;
+    }
+
+    aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[0], "clipMgrIntroCmdDel"));
+    aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[1], "clipMgrIntroCmdClearSrchBar"));
+    aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[2], "clipMgrIntroCmdSrch"));
+    aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[3], "clipMgrIntroCmdClose"));
+    aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[4], "clipMgrIntroCmdUndo"));
+    aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[5], "clipMgrIntroCmdShowIntro"));
+
+    if (! isLinux) {
+      aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[6], "clipMgrIntroCmdMaximize"));
+    }
+  }
+ 
   let shctKeyTbls = $(".shortcut-key-tbl");
-  let shctKeys = [];
-  
-  if (isMacOS) {
-    shctKeys = ["\u2326", "esc", "\u2318F", "\u2318W", "\u2318Z", "F1", "\u2318F10"];
-  }
-  else {
-    shctKeys = ["DEL", "ESC", "CTRL+F", "CTRL+W", "CTRL+Z", "F1", "CTRL+F10"];
-  }
-  
-  $(`<tr><td style="width:6em">${shctKeys[0]}</td><td>Delete selected clipping or folder</td></tr>`).appendTo(shctKeyTbls);
-  $(`<tr><td>${shctKeys[1]}</td><td>Clear Find Bar</td></tr>`).appendTo(shctKeyTbls);
-  $(`<tr><td>${shctKeys[2]}</td><td>Find clippings and folders</td></tr>`).appendTo(shctKeyTbls);
-  $(`<tr><td>${shctKeys[3]}</td><td>Close Clippings Manager</td></tr>`).appendTo(shctKeyTbls);
-  $(`<tr><td>${shctKeys[4]}</td><td>Undo</td></tr>`).appendTo(shctKeyTbls);
-  $(`<tr><td>${shctKeys[5]}</td><td>Show Clippings Manager intro</td></tr>`).appendTo(shctKeyTbls);
 
-  if (! isLinux) {
-    $(`<tr><td>${shctKeys[6]}</td><td>Maximize window</td></tr>`).appendTo(shctKeyTbls);
+  for (let tbl of shctKeyTbls) {
+    buildKeyMapTable(tbl);
   }
+}
 
+
+function initDialogs()
+{
+  const isMacOS = gClippings.getOS() == "mac";
+
+  initIntroBannerAndHelpDlg();
+  
   aeImportExport.setDatabase(gClippingsDB);
 
   gDialogs.shctKeyConflict = new aeDialog("#shortcut-key-conflict-msgbox");
@@ -1706,7 +1966,155 @@ function initDialogs()
   };
 
   gDialogs.clippingMissingSrcURL = new aeDialog("#clipping-missing-src-url-msgbox");
-  gDialogs.noUndoNotify = new aeDialog("#no-undo-popup");
+  gDialogs.noUndoNotify = new aeDialog("#no-undo-msgbar");
+
+  gDialogs.shortcutList = new aeDialog("#shortcut-list-dlg");
+  gDialogs.shortcutList.isInitialized = false;
+  gDialogs.shortcutList.onInit = () => {
+    let that = gDialogs.shortcutList;
+    if (! that.isInitialized) {
+      let shctPrefixKey = `${chrome.i18n.getMessage("keyAlt")}+${chrome.i18n.getMessage("keyShift")}+Y`;
+      if (isMacOS) {
+        shctPrefixKey = aeConst.SHORTCUT_KEY_PREFIX_MAC;
+      }
+      $("#shortcut-instrxns").text(chrome.i18n.getMessage("clipMgrShortcutHelpInstrxn", shctPrefixKey));
+      let extVer = chrome.runtime.getManifest().version;
+      
+      aeImportExport.setL10nStrings({
+        shctTitle: chrome.i18n.getMessage("expHTMLTitle"),
+        hostAppInfo: chrome.i18n.getMessage("expHTMLHostAppInfo", [extVer, gClippings.getHostAppName()]),
+        shctKeyInstrxns: chrome.i18n.getMessage("expHTMLShctKeyInstrxn"),
+        shctKeyColHdr: chrome.i18n.getMessage("expHTMLShctKeyCol"),
+        clippingNameColHdr: chrome.i18n.getMessage("expHTMLClipNameCol"),
+      });
+
+      $("#export-shct-list").click(aEvent => {
+        aeImportExport.getShortcutKeyListHTML(true).then(aHTMLData => {
+          let blobData = new Blob([aHTMLData], { type: "text/html;charset=utf-8"});
+          let downldOpts = {
+            url: URL.createObjectURL(blobData),
+            filename: aeConst.HTML_EXPORT_SHORTCUTS_FILENAME,
+            saveAs: true,
+          };
+          return browser.downloads.download(downldOpts);
+
+        }).catch(aErr => {
+          if (aErr.fileName == "undefined") {
+            // User cancel
+          }
+          else {
+            console.error(aErr);
+            window.alert("Sorry, an error occurred while creating the export file.\n\nDetails:\n" + getErrStr(aErr));
+          }
+        });
+      });
+      
+      that.isInitialized = true;
+    }
+
+    aeImportExport.getShortcutKeyListHTML(false).then(aShctListHTML => {
+      $("#shortcut-list-content").append(sanitizeHTML(aShctListHTML));
+    }).catch(aErr => {
+      console.error("Clippings/wx::clippingsMgr.js: gDialogs.shortcutList.onInit(): " + aErr);
+    });
+  };
+  gDialogs.shortcutList.onUnload = () => {
+    $("#shortcut-list-content").empty();
+  };
+
+  gDialogs.insCustomPlchldr = new aeDialog("#custom-placeholder-dlg");
+  gDialogs.insCustomPlchldr.isInitialized = false;
+  gDialogs.insCustomPlchldr.validatePlaceholderName = function (aName) {
+    if (aName.match(/[^a-zA-Z0-9_\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]/)) {
+      return false;
+    }
+    return true;    
+  };
+  gDialogs.insCustomPlchldr.onInit = () => {
+    let that = gDialogs.insCustomPlchldr;
+
+    if (! that.isInitialized) {
+      $("#custom-plchldr-name").prop("placeholder", chrome.i18n.getMessage("placeholderNameHint"));
+      $("#custom-plchldr-name").on("keypress", aEvent => {
+        if ($(aEvent.target).hasClass("input-error")) {
+          $(aEvent.target).removeClass("input-error");
+        }
+      });
+      that.isInitialized = true;
+    }
+    
+    $("#custom-plchldr-default-val").val("");
+    $("#custom-plchldr-name").removeClass("input-error").val("");
+  };
+  gDialogs.insCustomPlchldr.onShow = () => {
+    $("#custom-plchldr-name").focus();
+  };
+  gDialogs.insCustomPlchldr.onAccept = () => {
+    let placeholderName = $("#custom-plchldr-name").val();
+    if (! placeholderName) {
+      $("#custom-plchldr-name").focus();
+      return;
+    }
+    
+    let that = gDialogs.insCustomPlchldr;
+    if (! that.validatePlaceholderName(placeholderName)) {
+      $("#custom-plchldr-name").addClass("input-error").focus();
+      return;
+    }
+
+    let placeholderValue = $("#custom-plchldr-default-val").val();
+    let placeholder = "$[" + placeholderName;
+
+    if (placeholderValue) {
+      placeholder = placeholder + "{" + placeholderValue + "}]";
+    }
+    else {
+      placeholder = placeholder + "]";
+    }
+
+    let contentTextArea = $("#clipping-text");
+    contentTextArea.focus();
+    insertTextIntoTextbox(contentTextArea, placeholder);
+    that.close();
+  };
+
+  gDialogs.insAutoIncrPlchldr = new aeDialog("#numeric-placeholder-dlg");
+  gDialogs.insAutoIncrPlchldr.isInitialized = false;
+  gDialogs.insAutoIncrPlchldr.onInit = () => {
+    let that = gDialogs.insAutoIncrPlchldr;
+    if (! that.isInitialized) {
+      $("#numeric-plchldr-name").prop("placeholder", chrome.i18n.getMessage("placeholderNameHint"));
+      $("#numeric-plchldr-name").on("keypress", aEvent => {
+        if ($(aEvent.target).hasClass("input-error")) {
+          $(aEvent.target).removeClass("input-error");
+        }
+      });
+    }
+    $("#numeric-plchldr-name").removeClass("input-error").val("");
+  };
+  gDialogs.insAutoIncrPlchldr.onShow = () => {
+    $("#numeric-plchldr-name").focus();
+  };
+  gDialogs.insAutoIncrPlchldr.onAccept = () => {
+    let placeholderName = $("#numeric-plchldr-name").val();
+    if (! placeholderName) {
+      $("#numeric-plchldr-name").focus();
+      return;
+    }
+    
+    if (! gDialogs.insCustomPlchldr.validatePlaceholderName(placeholderName)) {
+      $("#numeric-plchldr-name").addClass("input-error").focus();
+      return;
+    }
+
+    let that = gDialogs.insAutoIncrPlchldr;
+    let placeholder = "#[" + placeholderName + "]";
+
+    let contentTextArea = $("#clipping-text");
+    contentTextArea.focus();
+    insertTextIntoTextbox(contentTextArea, placeholder);
+    that.close();
+  };
   
   gDialogs.importFromFile = new aeDialog("#import-dlg");
   gDialogs.importFromFile.IMP_APPEND = 0;
@@ -1715,16 +2123,16 @@ function initDialogs()
 
   gDialogs.importFromFile.onInit = () => {
     if (gDialogs.importFromFile.mode == gDialogs.importFromFile.IMP_REPLACE) {
-      $("#import-clippings-label").text("Select backup file:");
+      $("#import-clippings-label").text(chrome.i18n.getMessage("labelSelBkupFile"));
       $("#import-clippings-replc-shct-keys-checkbox").hide();
       $("#restore-backup-warning").show();
-      $("#import-dlg-action-btn").text("Restore Backup");
+      $("#import-dlg-action-btn").text(chrome.i18n.getMessage("btnRestoreBkup"));
     }
     else {
-      $("#import-clippings-label").text("Select import file:");
+      $("#import-clippings-label").text(chrome.i18n.getMessage("labelSelImportFile"));
       $("#import-clippings-replc-shct-keys-checkbox").show();
       $("#restore-backup-warning").hide();
-      $("#import-dlg-action-btn").text("Import");
+      $("#import-dlg-action-btn").text(chrome.i18n.getMessage("btnImport"));
     }
 
     $("#import-clippings-file-path").val("");
@@ -1763,7 +2171,7 @@ function initDialogs()
       $("#import-progress-bar").show();
 
       let importFile = fileList[0];
-      console.log("Clippings Manager: Selected import file: '%s'\nFile size: %d bytes", importFile.name, importFile.size);
+      log("Clippings Manager: Selected import file: '%s'\nFile size: %d bytes", importFile.name, importFile.size);
 
       let fileReader = new FileReader();
       fileReader.addEventListener("load", aEvent => {
@@ -1781,7 +2189,7 @@ function initDialogs()
         catch (e) {
           $("#import-progress-bar").hide();
           console.error(e);
-          $("#import-error").text("Error reading selected file.  The file may not be a valid Clippings file.").show();
+          $("#import-error").text(chrome.i18n.getMessage("importError")).show();
           return;
         }
 
@@ -1792,7 +2200,7 @@ function initDialogs()
         gDialogs.importFromFile.close();
         gSuppressAutoMinzWnd = false;
 
-        gDialogs.importConfirmMsgBox.setMessage(`Import from "${importFile.name}" is successfully completed.`);
+        gDialogs.importConfirmMsgBox.setMessage(chrome.i18n.getMessage("clipMgrImportConfirm", importFile.name));
         gDialogs.importConfirmMsgBox.showModal();
       });
 
@@ -1829,8 +2237,8 @@ function initDialogs()
   
   gDialogs.exportToFile.onInit = () => {
     let fmtDesc = [
-      "The default format for backing up and exchanging Clippings data with other users or multiple computers.  Requires Clippings 5.5 or newer installed.",
-      "Exports your Clippings data as an HTML document for printing or display in a web browser."
+      chrome.i18n.getMessage("expFmtClippings6Desc"), // Clippings 6
+      chrome.i18n.getMessage("expFmtHTMLDocDesc"),    // HTML Document
     ];
 
     gSuppressAutoMinzWnd = true;
@@ -1861,10 +2269,9 @@ function initDialogs()
         saveAs: true
       }).then(aDownldItemID => {
         gSuppressAutoMinzWnd = false;
-        setStatusBarMsg("Exporting... done");
+        setStatusBarMsg(chrome.i18n.getMessage("statusExportDone"));
         
-        // TO DO: Get the path of the exported file, not just the file name.
-        gDialogs.exportConfirmMsgBox.setMessage(`Clippings export to "${aFilename}" is successfully completed.`);
+        gDialogs.exportConfirmMsgBox.setMessage(chrome.i18n.getMessage("clipMgrExportConfirm", aFilename));
         gDialogs.exportConfirmMsgBox.showModal();
 
       }).catch(aErr => {
@@ -1874,14 +2281,14 @@ function initDialogs()
         }
         else {
           console.error(aErr);
-          setStatusBarMsg("Export failed.");
-          window.alert("Sorry, an error occurred while creating the export file.\n\nDetails:\n" + getErrStr(aErr));
+          setStatusBarMsg(chrome.i18n.getMessage("statusExportFailed"));
+          window.alert(chrome.i18n.getMessage("exportError", aErr));
         }
       });
     }
     
     let selectedFmtIdx = $("#export-format-list")[0].selectedIndex;
-    setStatusBarMsg("Exporting...");
+    setStatusBarMsg(chrome.i18n.getMessage("statusExportStart"));
 
     if (selectedFmtIdx == gDialogs.exportToFile.FMT_CLIPPINGS_WX) {
       let inclSrcURLs = $("#include-src-urls").prop("checked");
@@ -1892,7 +2299,7 @@ function initDialogs()
         saveToFile(blobData, aeConst.CLIPPINGS_EXPORT_FILENAME);
       }).catch(aErr => {
         window.alert("Sorry, an error occurred while exporting to Clippings 6 format.\n\nDetails:\n" + getErrStr(aErr));
-        setStatusBarMsg("Export failed.");
+        setStatusBarMsg(chrome.i18n.getMessage("statusExportFailed"));
         gSuppressAutoMinzWnd = false;
       });
     }
@@ -1902,7 +2309,7 @@ function initDialogs()
         saveToFile(blobData, aeConst.HTML_EXPORT_FILENAME);
       }).catch(aErr => {
         window.alert("Sorry, an error occurred while exporting to HTML Document format.\n\nDetails:\n" + getErrStr(aErr));
-        setStatusBarMsg("Export failed.");
+        setStatusBarMsg(chrome.i18n.getMessage("statusExportFailed"));
         gSuppressAutoMinzWnd = false;
       });
     }
@@ -1929,13 +2336,14 @@ function initDialogs()
     });
   });
 
-  gDialogs.removeAllSrcURLsConfirm = new aeDialog("#all-src-urls-removed-confirm-popup");
-  gDialogs.removeAllSrcURLsConfirm.onAfterAccept = () => {
+  gDialogs.removeAllSrcURLsConfirm = new aeDialog("#all-src-urls-removed-confirm-msgbar");
+  gDialogs.removeAllSrcURLsConfirm.onInit = () => {
     // Reselect the selected tree node to force a call to updateDisplay().
     getClippingsTree().reactivate(true);
   };
 
   gDialogs.moveTo = new aeDialog("#move-dlg");
+  gDialogs.moveTo.isInitialized = false;
   gDialogs.moveTo.fldrTree = null;
   gDialogs.moveTo.selectedFldrNode = null;
 
@@ -1955,6 +2363,30 @@ function initDialogs()
 
   let that = gDialogs.moveTo;
   gDialogs.moveTo.onInit = () => {
+    if (! that.isInitialized) {
+      $("#copy-instead-of-move").click(aEvent => {
+        if (aEvent.target.checked) {
+          if (getClippingsTree().activeNode.folder) {
+            $("#move-to-label").text(chrome.i18n.getMessage("labelCopyFolder"));
+          }
+          else {
+            $("#move-to-label").text(chrome.i18n.getMessage("labelCopyClipping"));
+          }
+          $("#move-dlg-action-btn").text(chrome.i18n.getMessage("btnCopy"));
+        }
+        else {
+          if (getClippingsTree().activeNode.folder) {
+            $("#move-to-label").text(chrome.i18n.getMessage("labelMoveFolder"));
+          }
+          else {
+            $("#move-to-label").text(chrome.i18n.getMessage("labelMoveClipping"));
+          }
+          $("#move-dlg-action-btn").text(chrome.i18n.getMessage("btnMove"));
+        }
+      });
+      that.isInitialized = true;
+    }
+    
     if (that.fldrTree) {
       that.fldrTree.getTree().getNodeByKey(Number(aeConst.ROOT_FOLDER_ID).toString()).setActive();
     }
@@ -1966,14 +2398,15 @@ function initDialogs()
     }
 
     $("#copy-instead-of-move").prop("checked", false);
+    $("#move-dlg-action-btn").text(chrome.i18n.getMessage("btnMove"));
     $("#move-error").text("");
     that.selectedFldrNode = null;
 
     if (getClippingsTree().activeNode.folder) {
-      $("#move-to-label").text("Move folder to:");
+      $("#move-to-label").text(chrome.i18n.getMessage("labelMoveFolder"));
     }
     else {
-      $("#move-to-label").text("Move clipping to:");
+      $("#move-to-label").text(chrome.i18n.getMessage("labelMoveClipping"));
     }
   };
 
@@ -2175,7 +2608,7 @@ function buildClippingsTree()
         }
       });
 
-      setStatusBarMsg(gIsClippingsTreeEmpty ? "0 items" : null);
+      setStatusBarMsg(gIsClippingsTreeEmpty ? chrome.i18n.getMessage("clipMgrStatusBar", "0") : null);
 
       // Context menu for the clippings tree.
       $.contextMenu({
@@ -2188,6 +2621,17 @@ function buildClippingsTree()
         },
         
         callback: function (aItemKey, aOpt, aRootMenu, aOriginalEvent) {
+          function setLabel(aLabel) {
+            let tree = getClippingsTree();
+            let selectedNode = tree.activeNode;
+            if (!selectedNode || selectedNode.isFolder()) {
+              return;
+            }
+
+            let clippingID = parseInt(selectedNode.key);
+            gCmd.setLabelIntrl(clippingID, aLabel, gCmd.UNDO_STACK);
+          }
+          
           switch (aItemKey) {
           case "moveOrCopy":
             gCmd.moveClippingOrFolder();
@@ -2214,6 +2658,21 @@ function buildClippingsTree()
               gCmd.gotoURL(srcURL);
             });
             break;
+
+          case "labelNone":
+            setLabel("");
+            break;
+            
+          case "labelRed":
+          case "labelOrange":
+          case "labelYellow":
+          case "labelGreen":
+          case "labelBlue":
+          case "labelPurple":
+          case "labelGrey":
+            setLabel(aItemKey.substr(5).toLowerCase());
+            break;
+
           default:
             window.alert("The selected action is not available right now.");
             break;
@@ -2222,11 +2681,11 @@ function buildClippingsTree()
         
         items: {
           moveOrCopy: {
-            name: "Move or Copy...",
+            name: chrome.i18n.getMessage("mnuMoveOrCopy"),
             className: "ae-menuitem"
           },
           gotoSrcURL: {
-            name: "Go to Source Web Page",
+            name: chrome.i18n.getMessage("mnuGoToSrcURL"),
             className: "ae-menuitem",
             visible: function (aItemKey, aOpt) {
               let tree = getClippingsTree();
@@ -2237,9 +2696,89 @@ function buildClippingsTree()
               return true;
             }
           },
+          labelSubmenu: {
+            name: chrome.i18n.getMessage("mnuEditLabel"),
+            visible: function (aItemKey, aOpt) {
+              return (! isFolderSelected());
+            },
+            items: {
+              labelNone: {
+                name: chrome.i18n.getMessage("none"),
+                className: "ae-menuitem",
+                icon: function (aOpt, $itemElement, aItemKey, aItem) {
+                  if (gClippingLabelPicker.selectedLabel == "") {
+                    return "context-menu-icon-checked";
+                  }
+                }
+              },
+              labelRed: {
+                name: chrome.i18n.getMessage("labelRed"),
+                className: "ae-menuitem clipping-label-red",
+                icon: function (aOpt, $itemElement, aItemKey, aItem) {
+                  if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
+                    return "context-menu-icon-checked";
+                  }
+                }
+              },
+              labelOrange: {
+                name: chrome.i18n.getMessage("labelOrange"),
+                className: "ae-menuitem clipping-label-orange",
+                icon: function (aOpt, $itemElement, aItemKey, aItem) {
+                  if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
+                    return "context-menu-icon-checked";
+                  }
+                }
+              },
+              labelYellow: {
+                name: chrome.i18n.getMessage("labelYellow"),
+                className: "ae-menuitem clipping-label-yellow",
+                icon: function (aOpt, $itemElement, aItemKey, aItem) {
+                  if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
+                    return "context-menu-icon-checked";
+                  }
+                }
+              },
+              labelGreen: {
+                name: chrome.i18n.getMessage("labelGreen"),
+                className: "ae-menuitem clipping-label-green",
+                icon: function (aOpt, $itemElement, aItemKey, aItem) {
+                  if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
+                    return "context-menu-icon-checked";
+                  }
+                }
+              },
+              labelBlue: {
+                name: chrome.i18n.getMessage("labelBlue"),
+                className: "ae-menuitem clipping-label-blue",
+                icon: function (aOpt, $itemElement, aItemKey, aItem) {
+                  if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
+                    return "context-menu-icon-checked";
+                  }
+                }
+              },
+              labelPurple: {
+                name: chrome.i18n.getMessage("labelPurple"),
+                className: "ae-menuitem clipping-label-purple",
+                icon: function (aOpt, $itemElement, aItemKey, aItem) {
+                  if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
+                    return "context-menu-icon-checked";
+                  }
+                }
+              },
+              labelGrey: {
+                name: chrome.i18n.getMessage("labelGrey"),
+                className: "ae-menuitem clipping-label-grey",
+                icon: function (aOpt, $itemElement, aItemKey, aItem) {
+                  if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
+                    return "context-menu-icon-checked";
+                  }
+                }
+              },
+            }
+          },
           separator0: "--------",
           deleteItem: {
-            name: "Delete",
+            name: chrome.i18n.getMessage("tbDelete"),
             className: "ae-menuitem"
           }
         }
@@ -2337,9 +2876,9 @@ function initTreeSplitter()
 function setEmptyClippingsState()
 {
   var rv;
-  rv = [{ title: "No clippings found.", key: "0" }];
+  rv = [{ title: chrome.i18n.getMessage("clipMgrNoItems"), key: "0" }];
   gIsClippingsTreeEmpty = true;
-  $("#clipping-name, #clipping-text, #source-url-bar, #options-bar").hide();
+  $("#clipping-name, #clipping-text, #placeholder-toolbar, #source-url-bar, #options-bar").hide();
   $("#intro-content").show();
   
   return rv;
@@ -2354,14 +2893,23 @@ function unsetEmptyClippingsState()
   tree.options.icon = true;
   gIsClippingsTreeEmpty = false;
   $("#intro-content").hide();
-  $("#clipping-name, #clipping-text, #options-bar").show();
+  $("#clipping-name, #clipping-text").show();
+
+  let prefs = gClippings.getPrefs();
+  if (prefs.clippingsMgrDetailsPane) {
+    $("#source-url-bar, #options-bar").show();
+  }
+  if (prefs.clippingsMgrPlchldrToolbar) {
+    $("#placeholder-toolbar").show();
+  }
 }
 
 
 function sanitizeTreeNodeTitle(aNodeTitle)
 {
   let rv = "";
-  rv = aNodeTitle.replace(/</g, "&lt;");
+  rv = sanitizeHTML(aNodeTitle);
+  rv = rv.replace(/</g, "&lt;");
   rv = rv.replace(/>/g, "&gt;");
   
   return rv;
@@ -2416,7 +2964,7 @@ function updateDisplay(aEvent, aData)
 {
   if (gIsClippingsTreeEmpty) {
     $("#source-url-bar, #options-bar").hide();
-    setStatusBarMsg("0 items");
+    setStatusBarMsg(chrome.i18n.getMessage("clipMgrStatusBar", "0"));
     return;
   }
 
@@ -2426,7 +2974,7 @@ function updateDisplay(aEvent, aData)
     gSearchBox.updateSearch();
     let numMatches = gSearchBox.getCountMatches();
     if (numMatches !== undefined) {
-      setStatusBarMsg(`${numMatches} matches`);
+      setStatusBarMsg(chrome.i18n.getMessage("numMatches", numMatches));
     }
   }
   else {
@@ -2444,7 +2992,7 @@ function updateDisplay(aEvent, aData)
       $("#clipping-name").val(aResult.name);
       $("#clipping-text").val("").hide();
 
-      $("#source-url-bar, #options-bar").hide();
+      $("#source-url-bar, #options-bar, #placeholder-toolbar").hide();
       $("#clipping-src-url").text("");
       let shortcutKeyMenu = $("#clipping-key")[0];
       shortcutKeyMenu.selectedIndex = 0;
@@ -2462,9 +3010,13 @@ function updateDisplay(aEvent, aData)
       if (gClippings.getPrefs().clippingsMgrDetailsPane) {
         $("#source-url-bar, #options-bar").show();
       }
+
+      if (gClippings.getPrefs().clippingsMgrPlchldrToolbar) {
+        $("#placeholder-toolbar").show();
+      }
       
       if (aResult.sourceURL) {
-        $("#clipping-src-url").html(`<a href="${aResult.sourceURL}">${aResult.sourceURL}</a>`);
+        $("#clipping-src-url").html(sanitizeHTML(`<a href="${aResult.sourceURL}">${aResult.sourceURL}</a>`));
         $("#clipping-src-url > a").click(aEvent => {
           aEvent.preventDefault();
           gCmd.gotoURL(aEvent.target.textContent);
@@ -2490,6 +3042,33 @@ function updateDisplay(aEvent, aData)
 }
 
 
+function insertTextIntoTextbox(aTextboxElt, aInsertedText)
+{
+  let text, pre, post, pos;
+  let textbox = aTextboxElt[0];
+  
+  text = textbox.value;
+
+  if (textbox.selectionStart == textbox.selectionEnd) {
+    var point = textbox.selectionStart;
+    pre = text.substring(0, point);
+    post = text.substring(point, text.length);
+    pos = point + aInsertedText.length;
+  }
+  else {
+    var p1 = textbox.selectionStart;
+    var p2 = textbox.selectionEnd;
+    pre = text.substring(0, p1);
+    post = text.substring(p2, text.length);
+    pos = p1 + aInsertedText.length;
+  }
+
+  textbox.value = pre + aInsertedText + post;
+  textbox.selectionStart = pos;
+  textbox.selectionEnd = pos;
+}
+
+
 function recalcContentAreaHeight(aIsStatusBarVisible)
 {
   let statusBarHgt = aIsStatusBarVisible ? "var(--statusbar-height)" : "0px";
@@ -2505,7 +3084,7 @@ function setStatusBarMsg(aMessage)
   }
 
   let tree = getClippingsTree();
-  $("#status-bar-msg").text(`${tree.count()} items`);
+  $("#status-bar-msg").text(chrome.i18n.getMessage("clipMgrStatusBar", tree.count()));
 }
 
 
@@ -2554,7 +3133,7 @@ function showInitError()
 {
   let errorMsgBox = new aeDialog("#init-error-msgbox");
   errorMsgBox.onInit = () => {
-    $("#init-error-msgbox > .dlg-content > .msgbox-error-msg").text("Clippings doesn't work when the privacy settings in Firefox are too restrictive, such as turning on Private Browsing mode.  Try changing these settings back to their defaults, then restart Firefox and try again.");
+    $("#init-error-msgbox > .dlg-content > .msgbox-error-msg").text(chrome.i18n.getMessage("initError"));
   };
   errorMsgBox.onAccept = () => {
     closeWnd();

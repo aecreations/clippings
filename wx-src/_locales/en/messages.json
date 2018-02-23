@@ -44,8 +44,20 @@
     "description": "Dialog action button"
   },
 
+  "btnYes": {
+    "message": "Yes"
+  },
+
+  "btnNo": {
+    "message": "No"
+  },
+
   "btnFinish": {
     "message": "Finish"
+  },
+
+  "btnBrowse": {
+    "message": "Browse..."
   },
 
   "msgUnavail": {
@@ -100,6 +112,39 @@
     "message": "Untitled Folder"
   },
  
+  "rootFldrName": {
+    "message": "Clippings",
+    "description": "Name of root folder"
+  },
+
+  "labelRed": {
+    "message": "Red"
+  },
+
+  "labelOrange": {
+    "message": "Orange"
+  },
+
+  "labelYellow": {
+    "message": "Yellow"
+  },
+
+  "labelGreen": {
+    "message": "Green"
+  },
+
+  "labelBlue": {
+    "message": "Blue"
+  },
+
+  "labelPurple": {
+    "message": "Purple"
+  },
+
+  "labelGrey": {
+    "message": "Gray"
+  },
+  
   "cxtMenuNew": {
     "message": "New...",
     "description": "Clippings context menu"
@@ -113,5 +158,786 @@
   "baMenuResetAutoIncrPlaceholders": {
     "message": "Reset Auto-increment Placeholders",
     "description": "Clippings browser action submenu"
+  },
+
+  "welcomePageTitle": {
+    "message": "Welcome to Clippings 6",
+    "description": "Welcome to Clippings (post-installation) page title"
+  },
+
+  "welcInstallSuccessHdg": {
+    "message": "Welcome to Clippings 6!"
+  },
+
+  "welcInstallSuccessSubh": {
+    "message": "Installation successfully completed."
+  },
+
+  "welcCurrUsrHdg": {
+    "message": "Current Users"
+  },
+
+  "welcCurrUsrDesc": {
+    "message": "Bring your clippings over from a previous version of Clippings."
+  },
+
+  "welcCurrUsrCTA": {
+    "message": "Import My Clippings"
+  },
+
+  "welcNewUsrHdg": {
+    "message": "New Users"
+  },
+
+  "welcNewUsrDesc": {
+    "message": "Learn the essential features of Clippings in just a few minutes."
+  },
+
+  "welcNewUsrCTA": {
+    "message": "Quick Start Guide"
+  },
+
+  "closeWelcomePg": {
+    "message": "Close This Page"
+  },
+
+  "welcImportHdg": {
+    "message": "Import Clippings Backup File"
+  },
+
+  "welcImportDesc": {
+    "message": "To get started, click Browse, then locate the backup file on your system."
+  },
+
+  "welcSkipImport": {
+    "message": "Skip Import"
+  },
+
+  "welcNoBackupExpand": {
+    "message": "What to do if you didn't create a backup"
+  },
+
+  "welcNoBackupSubh": {
+    "message": "If you didn't back up your clippings, follow these steps:"
+  },
+
+  "welcFileMgrWindows": {
+    "message": "Windows Explorer",
+    "description": "File manager application on Windows, for locating Clippings backup folder"
+  },
+
+  "welcFileMgrMac": {
+    "message": "Finder",
+    "description": "File manager application on macOS, for locating Clippings backup folder"
+  },
+
+  "welcFileMgrGeneric": {
+    "message": "the file manager on your system"
+  },
+
+  "welcShowBkupFileNote": {
+    "message": " (You may need to use the command line to see this folder.)",
+    "description": "Note to Linux and macOS users about showing hidden backup folder."
+  },
+  
+  "welcNoBackupInstrxnStep1": {
+    "message": "Use $1 to find the Clippings data source location. Depending on your previous settings, it may be your Firefox profile folder, or another folder located elsewhere."
+  },
+
+  "welcNoBackupInstrxnStep2": {
+    "message": "Open the data source folder and locate the Clippings backup folder. It should be named \"clippings-backup\" or \".clipbak\". $1"
+  },
+  
+  "welcNoBackupInstrxnStep3": {
+    "message": "Open the Clippings backup folder and locate the most recent backup file. Copy this to your Desktop or Documents folder."
+  },
+
+  "welcNoBackupInstrxnStep4": {
+    "message": "Click Browse above, and then select the backup file."
+  },
+
+  "welcReadyImport": {
+    "message": "When ready, click Import to bring your Clippings data over to Clippings 6."
+  },
+
+  "welcImportBtn": {
+    "message": "Import"
+  },
+
+  "welcBack": {
+    "message": "Back to Welcome Page"
+  },
+
+  "welcImportStatus": {
+    "message": "Importing clippings..."
+  },
+
+  "welcImportStatusDone": {
+    "message": "Importing clippings... done!"
+  },
+
+  "welcImportCount": {
+    "message": "Imported $1 items."
+  },
+
+  "welcImportConfirmDone": {
+    "message": "Your clippings have been successfully imported. Clippings is now ready to use."
+  },
+
+  "welcShctKeyNote": {
+    "message": "The Clippings keyboard paste key <strong>has changed</strong> in Clippings 6. To paste a clipping by its shortcut key or to search by name, press <span id=\"keybd-paste-key\">$1</span>."
+  },
+
+  "welcOpenClipMgr": {
+    "message": "Open Clippings Manager"
+  },
+
+  "welcImportError": {
+    "message": "Error reading selected file.  The file may not be a valid Clippings file."
+  },
+
+  "welcImportRetry": {
+    "message": "Click Try Again to go back and select another backup file."
+  },
+
+  "welcImportRetryBtn": {
+    "message": "Try Again"
+  },
+
+  "welcLeaveConfirm": {
+    "message": "Are you sure you want to leave the Welcome to Clippings page?"
+  },
+
+  "welcCancelDlg": {
+    "message": "Go Back"
+  },
+
+  "welcImportLater": {
+    "message": "You can import your clippings backup later by opening Clippings Manager and then selecting Tools \u2192 Import."
+  },
+
+  "welcCantImportHdg": {
+    "message": "Clippings can't import the backup file, because the Clippings database is not accessible."
+  },
+
+  "welcCantImportCause": {
+    "message": "This may happen if the privacy settings in Firefox are too restrictive (for example, turning on Private Browsing mode).  These settings can interfere with WebExtensions such as Clippings."
+  },
+
+  "welcCantImportFix": {
+    "message": "Make sure that the browser's privacy settings are at their defaults, then restart Firefox and try again. If this doesn't fix it, follow these steps:"
+  },
+
+  "welcCantImportFixStep1": {
+    "message": "Open the Firefox menu and select Help \u2192 Troubleshooting Information."
+  },
+
+  "welcCantImportFixStep2": {
+    "message": "Click Refresh Firefox, then follow the prompts. Firefox will restart."
+  },
+
+  "welcCantImportFixStep3": {
+    "message": "Reinstall Clippings, and then try importing the backup file again."
+  },
+
+  "newClippingDlgTitle": {
+    "message": "New Clipping",
+    "description": "New Clipping dialog"
+  },
+
+  "labelName": {
+    "message": "Name:"
+  },
+
+  "labelContent": {
+    "message": "Text:"
+  },
+
+  "labelCreateInFldr": {
+    "message": "Create in:"
+  },
+
+  "btnNewFolder": {
+    "message": "New Folder"
+  },
+  
+  "labelCreateClippingOptions": {
+    "message": "Options",
+    "description": "Button to expand clipping options (source URL, label) in New Clipping dialog"
+  },
+
+  "labelSaveSrcURL": {
+    "message": "Save the address of the source web page"
+  },
+
+  "labelShortcutKey": {
+    "message": "Shortcut key:"
+  },
+
+  "labelLabel": {
+    "message": "Label:",
+    "description": "Label for the Clipping label menu"
+  },
+
+  "labelNewFldrName": {
+    "message": "New folder name:"
+  },
+
+  "labelCreateAsSubfOf": {
+    "message": "Create as a subfolder of:"
+  },
+
+  "shortcutKeyHint": {
+    "message": "To quickly paste this clipping into a web page textbox in Firefox, press $1 followed by the shortcut key."
+  },
+
+  "shortcutKeyAssigned": {
+    "message": "'$1' is already assigned"
+  },
+
+  "initError": {
+    "message": "Clippings doesn't work when the privacy settings in Firefox are too restrictive, such as turning on Private Browsing mode.  Try changing these settings back to their defaults, then restart Firefox and try again."
+  },
+
+  "saveClippingError": {
+    "message": "Unable to save the new clipping.  Check that the privacy settings in Firefox are not too restrictive (such as turning on Private Browsing mode), then restart Firefox and try again."
+  },
+
+  "shortcutKeyDesc": {
+    "message": "Press the shortcut key of the clipping you want to paste."
+  },
+
+  "keybPasteDlgF1": {
+    "message": "F1 = shortcut list"
+  },
+
+  "keybPasteDlgTab": {
+    "message": "TAB = search clipping by name"
+  },
+
+  "keybPasteDlgTabShctMode": {
+    "message": "TAB = shortcut key mode"
+  },
+
+  "srchByNameDesc": {
+    "message": "Search for clipping by name:"
+  },
+
+  "numMatches": {
+    "message": "$1 matches"
+  },
+
+  "insClipping": {
+    "message": "Insert Clipping"
+  },
+  
+  "exportHTML": {
+    "message": "Export To HTML"
+  },
+
+  "expHTMLTitle": {
+    "message": "Clippings Shortcut Keys",
+    "description": "HTML export of shortcut key list - page title"
+  },
+
+  "expHTMLHostAppInfo": {
+    "message": "Clippings $1 on $2",
+    "description": "Clippings <extVersion> on Firefox <fxVersion>"
+  },
+
+  "expHTMLShctKeyInstrxn": {
+    "message": "To paste a clipping into a web page textbox in Firefox, press ALT+SHIFT+Y (Command+Shift+Y on macOS), then the shortcut key."
+  },
+
+  "expHTMLShctKeyCol": {
+    "message": "Shortcut Key"
+  },
+
+  "expHTMLClipNameCol": {
+    "message": "Clipping Name"
+  },
+
+  "plchldrPromptSingleDesc": {
+    "message": "Enter value for \"$1\":",
+    "description": "Placeholder prompt dialog - single placeholder"
+  },
+
+  "plchldrPromptMultiDesc": {
+    "message": "Enter the values for the following placeholders.",
+    "description": "Placeholder prompt dialog - multiple placeholders"
+  },
+
+  "clippingsMgrWndTitle": {
+    "message": "Clippings Manager",
+    "description": "Clippings Manager window title"
+  },
+
+  "tbNewClipping": {
+    "message": "New Clipping"
+  },
+
+  "tbNewFolder": {
+    "message": "New Folder"
+  },
+
+  "tbMoveOrCopy": {
+    "message": "Move or Copy"
+  },
+
+  "tbDelete": {
+    "message": "Delete"
+  },
+
+  "tbUndo": {
+    "message": "Undo"
+  },
+
+  "tbTools": {
+    "message": "Tools"
+  },
+
+  "clipMgrSrchBarHint": {
+    "message": "Find clippings and folders",
+    "description": "Clippings Manager search bar hint text"
+  },
+
+  "clipMgrIntroHdg": {
+    "message": "Welcome to Clippings Manager"
+  },
+
+  "clipMgrIntroDesc": {
+    "message": "Use Clippings Manager to edit, rename or delete clippings, and organize your collection of clippings into folders."
+  },
+
+  "clipMgrIntroKeybHdg": {
+    "message": "Keyboard Shortcuts"
+  },
+
+  "labelInsPlchldr": {
+    "message": "Insert Placeholder:",
+    "description": "Clippings Manager - Placeholder Toolbar"
+  },
+
+  "tbPlchldrPresets": {
+    "message": "Presets"
+  },
+
+  "tbPlchldrCustom": {
+    "message": "Custom"
+  },
+
+  "tbPlchldrNumeric": {
+    "message": "Numeric"
+  },
+
+  "labelSrcURL": {
+    "message": "Source address:"
+  },
+
+  "btnEditSrcURL": {
+    "message": "Edit"
+  },
+
+  "mnuNewFromClipbd": {
+    "message": "New From Clipboard"
+  },
+
+  "mnuBackup": {
+    "message": "Backup..."
+  },
+
+  "mnuRestoreFromBackup": {
+    "message": "Restore From Backup..."
+  },
+
+  "mnuImport": {
+    "message": "Import..."
+  },
+
+  "mnuExport": {
+    "message": "Export..."
+  },
+
+  "mnuRemoveAllSrcURLs": {
+    "message": "Remove Source Web Addresses..."
+  },
+
+  "mnuShowHide": {
+    "message": "Show/Hide"
+  },
+
+  "mnuShowHideDetails": {
+    "message": "Details Pane"
+  },
+
+  "mnuShowHidePlchldrBar": {
+    "message": "Placeholder Toolbar"
+  },
+
+  "mnuShowHideStatusBar": {
+    "message": "Status Bar"
+  },
+
+  "mnuMaximize": {
+    "message": "Maximize"
+  },
+
+  "mnuMinimizeWhenInactive": {
+    "message": "Minimize When Inactive"
+  },
+
+  "mnuShowExtPrefs": {
+    "message": "Options..."
+  },
+
+  "mnuMoveOrCopy": {
+    "message": "Move or Copy..."
+  },
+
+  "mnuEditLabel": {
+    "message": "Label"
+  },
+
+  "mnuGoToSrcURL": {
+    "message": "Go to Source Web Page"
+  },
+
+  "mnuPlchldrDate": {
+    "message": "Date",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+
+  "mnuPlchldrTime": {
+    "message": "Time",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+
+  "mnuPlchldrAppName": {
+    "message": "Application Name",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+
+  "mnuPlchldrUsrAgent": {
+    "message": "User Agent",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+
+  "mnuPlchldrClipName": {
+    "message": "Clipping Name",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  
+  "mnuPlchldrFldrName": {
+    "message": "Parent Folder Name",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+
+  "clipMgrNameHint": {
+    "message": "Clipping Name",
+    "description": "Clippings Manager - clipping name textbox hint text"
+  },
+
+  "clipMgrContentHint": {
+    "message": "Enter clipping text",
+    "description": "Clippings Manager - clipping content textarea hint text"
+  },
+
+  "clipMgrShortcutHelpHint": {
+    "message": "Shortcut Help"
+  },
+
+  "clipMgrNoItems": {
+    "message": "No clippings found."
+  },
+
+  "clipMgrIntroCmdDel": {
+    "message": "Delete selected clipping or folder",
+    "description": "Clippings Manager intro - key binding description"
+  },
+
+  "clipMgrIntroCmdClearSrchBar": {
+    "message": "Clear Find Bar",
+    "description": "Clippings Manager intro - key binding description"
+  },
+
+  "clipMgrIntroCmdSrch": {
+    "message": "Find clippings and folders",
+    "description": "Clippings Manager intro - key binding description"
+  },
+
+  "clipMgrIntroCmdClose": {
+    "message": "Close Clippings Manager",
+    "description": "Clippings Manager intro - key binding description"
+  },
+
+  "clipMgrIntroCmdUndo": {
+    "message": "Undo",
+    "description": "Clippings Manager intro - key binding description"
+  },
+
+  "clipMgrIntroCmdShowIntro": {
+    "message": "Show Clippings Manager intro",
+    "description": "Clippings Manager intro - key binding description"
+  },
+
+  "clipMgrIntroCmdMaximize": {
+    "message": "Maximize window",
+    "description": "Clippings Manager intro - key binding description"
+  },
+
+  "clipMgrStatusBar": {
+    "message": "$1 items"
+  },
+
+  "clipMgrRemoveSrcURLsConfirm": {
+    "message": "Removed source web page addresses from your clippings."
+  },
+
+  "clipMgrNoUndo": {
+    "message": "Nothing to undo"
+  },
+
+  "clipMgrShortcutKeyHelpHdg": {
+    "message": "Clippings Shortcut Keys"
+  },
+
+  "clipMgrShortcutHelpInstrxn": {
+    "message": "To paste a clipping from the list below into a web page textbox in Firefox, press $1, then the shortcut key."
+  },
+
+  "clipMgrShortcutKeyAssigned": {
+    "message": "The selected shortcut key has already been assigned to another clipping.  Please select a different shortcut key."
+  },
+
+  "clipMgrNoSrcURL": {
+    "message": "The selected clipping doesn't have a source web page address."
+  },
+
+  "clipMgrImportConfirm": {
+    "message": "Import from \"$1\" is successfully completed."
+  },
+
+  "btnReload": {
+    "message": "Reload"
+  },
+
+  "clipMgrExportConfirm": {
+    "message": "Clippings export to \"$1\" is successfully completed."
+  },
+
+  "clipMgrWarnRemoveSrcURLs": {
+    "message": "All source web page addresses of your clippings will be removed.  Do you want to continue?"
+  },
+
+  "placeholderNameHint": {
+    "message": "Letters, numbers, underscores, no spaces"
+  },
+
+  "labelCustPlchldrName": {
+    "message": "Name of custom placeholder:"
+  },
+
+  "labelNumPlchldrName": {
+    "message": "Name of numeric placeholder:"
+  },
+
+  "labelCustPlchldrVal": {
+    "message": "Default value (optional):"
+  },
+  
+  "custPlchldrValDesc": {
+    "message": "Separate multiple default values with a \u201c|\u201d symbol. Example: red|green|blue"
+  },
+
+  "numPlchldrDesc": {
+    "message": "Each time the clipping is pasted, the value of this placeholder will automatically increase by one, until the placeholder is reset from the Clippings toolbar button context menu."
+  },
+
+  "labelSelImportFile": {
+    "message": "Select import file:"
+  },
+
+  "labelSelBkupFile": {
+    "message": 	"Select backup file:"
+  },
+
+  "statusSavingBkup": {
+    "message": "Saving backup file..."
+  },
+
+  "statusSavingBkupDone": {
+    "message": "Saving backup file... done"
+  },
+
+  "statusSavingBkupFailed": {
+    "message": "Backup failed."
+  },
+
+  "backupError": {
+    "message": "Sorry, an error occurred while creating the backup file.\n\nDetails:\n$1"
+  },
+
+  "cbImportReplcShctKeys": {
+    "message": "Replace shortcut keys"
+  },
+
+  "warnBackupOverwrite": {
+    "message": "Restoring from a backup file will replace all of your clippings with the backup. This action can't be undone."
+  },
+
+  "btnImport": {
+    "message": "Import"
+  },
+
+  "btnRestoreBkup": {
+    "message": "Restore Backup"
+  },
+
+  "importError": {
+    "message": "Error reading selected file. The file may not be a valid Clippings file."
+  },
+
+  "labelSelExportFmt": {
+    "message": "Select a format to export clippings to:"
+  },
+
+  "expFmtDescHdg": {
+    "message": "Description"
+  },
+
+  "expFmtClippings6": {
+    "message": "Clippings 6"
+  },
+
+  "expFmtClippings6Desc": {
+    "message": "The default format for backing up and exchanging Clippings data with other users or multiple computers.  Requires Clippings 5.5 or newer installed."
+  },
+
+  "expFmtHTMLDoc": {
+    "message": "HTML Document"
+  },
+
+  "expFmtHTMLDocDesc": {
+    "message": "Exports your Clippings data as an HTML document for printing or display in a web browser."
+  },
+
+  "cbExpInclSrcURLs": {
+    "message": "Include source web page addresses of clippings"
+  },
+
+  "btnExport": {
+    "message": "Export"
+  },
+
+  "statusExportStart": {
+    "message": "Exporting..."
+  },
+
+  "statusExportDone": {
+    "message": "Exporting... done"
+  },
+
+  "statusExportFailed": {
+    "message": "Export failed."
+  },
+
+  "exportError": {
+    "message": "Error exporting Clippings data.\n\nDetails:\n$1"
+  },
+
+  "labelMoveClipping": {
+    "message": "Move clipping to:"
+  },
+
+  "labelMoveFolder": {
+    "message": "Move folder to:"
+  },
+
+  "labelCopyClipping": {
+    "message": "Copy clipping to:"
+  },
+
+  "labelCopyFolder": {
+    "message": "Copy folder to:"
+  },
+
+  "cbCreateCopy": {
+    "message": "Create a copy"
+  },
+
+  "btnMove": {
+    "message": "Move"
+  },
+
+  "btnCopy": {
+    "message": "Copy"
+  },
+
+  "prefsTitle": {
+    "message": "Clippings Options"
+  },
+
+  "prefsHdgPasteOptions": {
+    "message": "Paste Options"
+  },
+
+  "labelPasteOptions": {
+    "message": "When pasting an HTML-formatted clipping into a rich text edit box:"
+  },
+
+  "pasteOptFormatted": {
+    "message": "Paste as formatted text"
+  },
+
+  "pasteOptRawHTML": {
+    "message": "Paste as plain text, preserving HTML tags"
+  },
+
+  "cbAutoLineBreak": {
+    "message": "Automatically break lines unless <p> or <br> tags exist"
+  },
+
+  "htmlPasteDesc": {
+    "message": "An HTML-formatted clipping will always be pasted as plain text if pasting into a plain textbox, or if the clipping contains restricted tags such as <script>, <applet>, <object>, <iframe>, etc."
+  },
+
+  "prefsShortcutMode": {
+    "message": "Activate shortcut key mode using $1"
+  },
+
+  "prefsDefaultNumPlchldrStart": {
+    "message": "Default starting value for auto-incrementing placeholders:"
+  },
+
+  "prefsHdgGeneralOptions": {
+    "message": "General Options"
+  },
+
+  "cbAlwaysSaveSrcURL": {
+    "message": "Always save the address of the source web page"
+  },
+
+  "cbCheckSpelling": {
+    "message": "Check spelling"
+  },
+
+  "keyAlt": {
+    "message": "ALT"
+  },
+  
+  "keyCtrl": {
+    "message": "CTRL"
+  },
+
+  "keyShift": {
+    "message": "SHIFT"
+  },
+
+  "keyDel": {
+    "message": "DEL"
+  },
+
+  "keyEsc": {
+    "message": "ESC"
   }
 }

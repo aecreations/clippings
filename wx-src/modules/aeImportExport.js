@@ -17,13 +17,30 @@ let aeImportExport = {
   CLIPPINGS_RDF_NS: "http://clippings.mozdev.org/ns/rdf#",
   CLIPPINGS_RDF_ROOT_FOLDER: "http://clippings.mozdev.org/rdf/user-clippings-v2",
   
-  _db: null
+  _db: null,
+  _shctTitle: "Clippings Shortcuts",
+  _hostAppStr: "Clippings/wx on Firefox Quantum",
+  _shctKeyInstrxns: "To paste, press ALT+SHIFT+Y (Command+Shift+Y on Mac), then the shortcut key.",
+  _shctKeyColHdr: "Shortcut Key",
+  _clipNameColHdr: "Clipping Name",
 };
 
 
 aeImportExport.setDatabase = function (aDatabase)
 {
-  this._db = aDatabase;
+  if (! this._db) {
+    this._db = aDatabase;
+  }
+};
+
+
+aeImportExport.setL10nStrings = function (aStrings)
+{
+  this._shctTitle = aStrings.shctTitle;
+  this._hostAppInfo = aStrings.hostAppInfo;
+  this._shctKeyInstrxns = aStrings.shctKeyInstrxns;
+  this._shctKeyColHdr = aStrings.shctKeyColHdr;
+  this._clipNameColHdr = aStrings.clippingNameColHdr;
 };
 
 
@@ -349,12 +366,74 @@ aeImportExport._importFromRDFHelper = function (aDataSrc, aRDFFolderNode)
 };
 
 
+aeImportExport.getShortcutKeyListHTML = function (aIsFullHTMLDoc)
+{
+  let rv = "";
+  let htmlSrc = "";
+
+  if (aIsFullHTMLDoc) {
+    htmlSrc += `<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>${this._shctTitle}</title></head>
+<body>
+<h1>${this._shctTitle}</h1>
+<p class="app-info" style="font-size:small">${this._hostAppInfo}</p>
+<p>${this._shctKeyInstrxns}</p>
+<table border="2">`;
+  }
+  else {
+    htmlSrc += "<table>";
+  }
+  htmlSrc += `<thead><tr><th>${this._shctKeyColHdr}</th><th>${this._clipNameColHdr}</th></tr></thead><tbody>`;
+
+  return new Promise((aFnResolve, aFnReject) => {
+    this._getShortcutKeyMap().then(aShctKeyMap => {
+      for (let shctKey in aShctKeyMap) {
+        if (aIsFullHTMLDoc) {
+          htmlSrc += "<tr>";
+        }
+        else {
+          htmlSrc += `<tr data-id="${aShctKeyMap[shctKey].id}">`;
+        }
+        htmlSrc += `<td>${shctKey}</td><td>${aShctKeyMap[shctKey].name}</td></tr>\n`;
+      }
+
+      htmlSrc += "</tbody></table>";
+      if (aIsFullHTMLDoc) {
+        htmlSrc += "\n</body></html>";
+      }
+
+      rv = htmlSrc;
+      aFnResolve(rv);
+
+    }).catch(aErr => {
+      console.error("aeImportExport.getShortcutKeyListHTML(): " + aErr);
+      aFnReject(aErr);
+    });
+  });
+};
+
+
 aeImportExport._getShortcutKeysToClippingIDs = async function ()
 {
   let rv = {};
 
   await this._db.clippings.where("shortcutKey").notEqual("").each((aItem, aCursor) => {
     rv[aItem.shortcutKey] = aItem.id;
+  });
+  
+  return rv;
+};
+
+
+aeImportExport._getShortcutKeyMap = async function ()
+{
+  let rv = {};
+  
+  await this._db.clippings.where("shortcutKey").notEqual("").each((aItem, aCursor) => {
+    rv[aItem.shortcutKey] = {
+      id: aItem.id,
+      name: aItem.name
+    };
   });
   
   return rv;

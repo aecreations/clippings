@@ -6,10 +6,21 @@
 
 const WNDH_SHORTCUT_KEY = 164;
 const WNDH_SEARCH_CLIPPING = 222;
+const WNDH_SHORTCUT_LIST = 260;
+const WNDW_SHORTCUT_LIST = 420;
+const DLG_HEIGHT_ADJ_WINDOWS = 14;
 
 let gClippings, gClippingsDB, gPasteMode;
 
 
+// DOM utility
+function sanitizeHTML(aHTMLStr)
+{
+  return DOMPurify.sanitize(aHTMLStr, { SAFE_FOR_JQUERY: true });
+}
+
+
+// Initialize dialog
 $(document).ready(() => {
   gClippings = chrome.extension.getBackgroundPage();
 
@@ -18,7 +29,18 @@ $(document).ready(() => {
   }
 
   gClippingsDB = gClippings.getClippingsDB();
-  
+  let extVer = chrome.runtime.getManifest().version;
+
+  aeImportExport.setDatabase(gClippingsDB);
+
+  aeImportExport.setL10nStrings({
+    shctTitle: chrome.i18n.getMessage("expHTMLTitle"),
+    hostAppInfo: chrome.i18n.getMessage("expHTMLHostAppInfo", [extVer, gClippings.getHostAppName()]),
+    shctKeyInstrxns: chrome.i18n.getMessage("expHTMLShctKeyInstrxn"),
+    shctKeyColHdr: chrome.i18n.getMessage("expHTMLShctKeyCol"),
+    clippingNameColHdr: chrome.i18n.getMessage("expHTMLClipNameCol"),
+  });
+
   initAutocomplete();
   $("#btn-cancel").click(aEvent => { cancel(aEvent) });
 
@@ -26,7 +48,7 @@ $(document).ready(() => {
 
   browser.storage.local.get().then(aPrefs => {
     gPasteMode = aPrefs.pastePromptAction;
-  
+    
     if (gPasteMode == aeConst.PASTEACTION_SHORTCUT_KEY) {
       $(".deck > #search-by-name").hide();
       $(".deck > #paste-by-shortcut-key").fadeIn("fast");
@@ -62,11 +84,23 @@ $(window).keypress(aEvent => {
     cancel(aEvent);
   }
   else if (aEvent.key == "F1") {
-    // TO DO: Show shortcut key legend.
+    if (gPasteMode == aeConst.PASTEACTION_SHORTCUT_KEY) {
+      $(".deck > #paste-by-shortcut-key").hide();
+      initShortcutList();
+      return;
+    }
+  }
+  else if (aEvent.key == "F12" && aeConst.DEBUG) {
+    // Allow opening Developer Tools.
+    return;
   }
   else if (aEvent.key == "Tab") {
     aEvent.preventDefault();
 
+    if (isShortcutListDisplayed()) {
+      return;
+    }
+    
     if (gPasteMode == aeConst.PASTEACTION_SHORTCUT_KEY) {
       gPasteMode = aeConst.PASTEACTION_SEARCH_CLIPPING;
       $(".deck > #paste-by-shortcut-key").hide();
@@ -86,13 +120,12 @@ $(window).keypress(aEvent => {
     }
   }
   else {
+    if (isShortcutListDisplayed()) {
+      return;
+    }
+    
     if (gPasteMode == aeConst.PASTEACTION_SHORTCUT_KEY) {
-      browser.runtime.sendMessage({
-        msgID: "paste-shortcut-key",
-        shortcutKey: aEvent.key
-      });
-
-      closeDlg();
+      execShortcut(aEvent.key);
     }
   }
 });
@@ -106,6 +139,7 @@ function initAutocomplete()
     let rv = "";
     let originalLen = aStr.length;
 
+    rv = sanitizeHTML(aStr);
     rv = aStr.replace(/</g, "&lt;");
     rv = rv.replace(/>/g, "&gt;");
     rv = rv.substr(0, MAX_LEN);
@@ -134,7 +168,7 @@ function initAutocomplete()
 
         onLoadEvent: function () {
           let numMatches = $(".easy-autocomplete-container > ul > li").length;
-          $("#num-matches").text(`${numMatches} matches`);
+          $("#num-matches").text(chrome.i18n.getMessage("numMatches", numMatches));
         },
         
         onShowListEvent: function () {
@@ -159,7 +193,8 @@ function initAutocomplete()
       template: {
         type: "custom",
         method: function (aValue, aItem) {
-          return `<div class="clipping"><div class="name">${aValue}</div><div class="preview">${aItem.preview}</div></div>`;
+          let menuItemStr = sanitizeHTML(`<div class="clipping"><div class="name">${aValue}</div><div class="preview">${aItem.preview}</div></div>`);
+          return menuItemStr;
         }
       }
     };
@@ -172,7 +207,7 @@ function initAutocomplete()
 
     $("#clipping-search").on("keyup", aEvent => {
       if (aEvent.target.value == "") {
-        $("#num-matches").text("\u00a0");  /* Non-breaking space. */
+        $("#num-matches").text("\u00a0");  // Non-breaking space.
         $("#clear-search").hide();
       }
       else {
@@ -193,6 +228,96 @@ function initAutocomplete()
 }
 
 
+function initShortcutList()
+{
+  $("#dlg-buttons").remove();
+
+  $("#shortcut-list-toolbar > #paste-clipping").click(aEvent => {
+    let clippingKey = $("#shortcut-list-content > table > tbody > tr.selected-row td:first-child").text();
+    execShortcut(clippingKey);
+  });
+
+  $("#shortcut-list-toolbar > #export-shct-list").click(aEvent => {
+    exportShortcutList();
+  });
+
+  $("#shortcut-list-toolbar > #close").click(aEvent => {
+    closeDlg();
+  });
+  
+  let updWndInfo = {
+    width: WNDW_SHORTCUT_LIST,
+    height: WNDH_SHORTCUT_LIST,
+  };
+  if (gClippings.getOS() == "win") {
+    updWndInfo.height += DLG_HEIGHT_ADJ_WINDOWS;
+  }
+  
+  chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, updWndInfo, aWnd => {
+    aeImportExport.getShortcutKeyListHTML(false).then(aShctListHTML => {
+      $("#shortcut-list-content").append(sanitizeHTML(aShctListHTML));
+
+      $("#shortcut-list-content > table > tbody > tr").on("mouseup", aEvent => {
+        $("#shortcut-list-content > table > tbody > tr").removeClass("selected-row");
+        $(aEvent.target).parent().addClass("selected-row");
+
+        if ($("#paste-clipping").attr("disabled")) {
+          $("#paste-clipping").removeAttr("disabled");
+        }
+      }).on("dblclick", aEvent => {
+        let clippingKey = $("#shortcut-list-content > table > tbody > tr.selected-row td:first-child").text();
+        execShortcut(clippingKey);
+      });
+
+      $(".deck > #shortcut-list").fadeIn("fast");
+    }).catch(aErr => {
+      console.error("Clippings/wx::keyboardPaste.js: initShortcutList(): " + aErr);
+    });
+  });
+}
+
+
+function isShortcutListDisplayed()
+{
+  return ($("#shortcut-list").css("display") == "block");
+}
+
+
+function exportShortcutList()
+{
+  aeImportExport.getShortcutKeyListHTML(true).then(aHTMLData => {
+    let blobData = new Blob([aHTMLData], { type: "text/html;charset=utf-8"});
+    let downldOpts = {
+      url: URL.createObjectURL(blobData),
+      filename: aeConst.HTML_EXPORT_SHORTCUTS_FILENAME,
+      saveAs: true,
+    };
+    return browser.downloads.download(downldOpts);
+
+  }).then(aDownldItemID => {
+    log("Successfully exported the shortcut list.");
+  }).catch(aErr => {
+    if (aErr.fileName == "undefined") {
+      log("User cancel");
+    }
+    else {
+      console.error(aErr);
+      window.alert("Sorry, an error occurred while creating the export file.\n\nDetails:\n" + getErrStr(aErr));
+    }
+  });
+}
+
+function execShortcut(aShortcutKey)
+{
+  browser.runtime.sendMessage({
+    msgID: "paste-shortcut-key",
+    shortcutKey: aShortcutKey
+  });
+
+  closeDlg();
+}
+
+
 function cancel(aEvent)
 {
   closeDlg();
@@ -208,4 +333,29 @@ function closeDlg()
     browser.runtime.sendMessage({ msgID: "close-keybd-paste-dlg" });
     chrome.windows.remove(chrome.windows.WINDOW_ID_CURRENT);
   });
+}
+
+
+function getErrStr(aErr)
+{
+  let rv = `${aErr.name}: ${aErr.message}`;
+
+  if (aErr.fileName) {
+    rv += "\nSource: " + aErr.fileName;
+  }
+  else {
+    rv += "\nSource: unknown";
+  }
+
+  if (aErr.lineNumber) {
+    rv += ":" + aErr.lineNumber;
+  }
+
+  return rv;
+}
+
+
+function log(aMessage)
+{
+  if (aeConst.DEBUG) { console.log(aMessage); }
 }

@@ -4,13 +4,21 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
-const WNDH_PLCHLDR_MULTI = 288;
-const WNDH_PLCHLDR_MULTI_SHORT = 242;
+const WNDH_PLCHLDR_MULTI = 284;
+const WNDH_PLCHLDR_MULTI_SHORT = 240;
+const DLG_HEIGHT_ADJ_WINDOWS = 20;
 
 let gClippings = null;
 let gPlaceholders = null;
 let gPlaceholdersWithDefaultVals = null;
 let gClippingContent = null;
+
+
+// DOM utility
+function sanitizeHTML(aHTMLStr)
+{
+  return DOMPurify.sanitize(aHTMLStr, { SAFE_FOR_JQUERY: true });
+}
 
 
 // Page initialization
@@ -42,7 +50,7 @@ $(() => {
       if (gPlaceholders.length == 1) {
         let plchldr = gPlaceholders[0];
         $("#plchldr-single").show();
-        $("#single-prmt-label").text(`Enter value for "${plchldr}":`);
+        $("#single-prmt-label").text(chrome.i18n.getMessage("plchldrPromptSingleDesc", plchldr));
         $("#single-prmt-input").focus();
 
         if (plchldr in gPlaceholdersWithDefaultVals) {
@@ -55,15 +63,18 @@ $(() => {
             let vals = defaultVal.split("|");
             let optionElts = "";
             for (let val of vals) {
-              optionElts += `<option value="${val}">${val}</option>`;
+              optionElts += sanitizeHTML(`<option value="${val}">${val}</option>`);
             }
-            $("#single-prmt-input").replaceWith(`<select id="single-prmt-input" class="browser-style">${optionElts}</select>`);
+            $("#single-prmt-input").replaceWith(sanitizeHTML(`<select id="single-prmt-input" class="browser-style">${optionElts}</select>`));
           }
         }
       }
       else {
         $("#plchldr-multi").show();
         let height = gPlaceholders.length == 2 ? WNDH_PLCHLDR_MULTI_SHORT : WNDH_PLCHLDR_MULTI;
+        if (gClippings.getOS() == "win") {
+          height += DLG_HEIGHT_ADJ_WINDOWS;
+        }
         
         chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, { height }, aWnd => {
           for (let plchldr of gPlaceholders) {
@@ -76,12 +87,12 @@ $(() => {
               let vals = defaultVal.split("|");
               let optionElts = "";
               for (let val of vals) {
-                optionElts += `<option value="${val}">${val}</option>`;
+                optionElts += sanitizeHTML(`<option value="${val}">${val}</option>`);
               }
-              $("#plchldr-table").append(`<div class="ph-row browser-style" data-placeholder="${plchldr}"><label class="ph-name">${plchldr}:</label><select class="ph-input browser-style">${optionElts}</select></div>`);
+              $("#plchldr-table").append(sanitizeHTML(`<div class="ph-row browser-style" data-placeholder="${plchldr}"><label class="ph-name">${plchldr}:</label><select class="ph-input browser-style">${optionElts}</select></div>`));
             }
             else {
-              $("#plchldr-table").append(`<div class="ph-row browser-style" data-placeholder="${plchldr}"><label class="ph-name">${plchldr}:</label><input type="text" class="ph-input" value="${defaultVal}"/></div>`);
+              $("#plchldr-table").append(sanitizeHTML(`<div class="ph-row browser-style" data-placeholder="${plchldr}"><label class="ph-name">${plchldr}:</label><input type="text" class="ph-input" value="${defaultVal}"/></div>`));
             }
           }
           $("#plchldr-table").fadeIn("fast");

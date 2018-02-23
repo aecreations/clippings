@@ -10,6 +10,7 @@ class aeDialog
   {
     this._dlgEltStor = aDlgEltSelector;
     this._fnInit = function () {};
+    this._fnDlgShow = function () {};
     this._fnUnload = function () {};
     this._fnAfterDlgAccept = function () {};
 
@@ -68,6 +69,11 @@ class aeDialog
     this._fnUnload = aFnUnload;
   }
 
+  set onShow(aFnShow)
+  {
+    this._fnDlgShow = aFnShow;
+  }
+  
   set onAfterAccept(aFnAfterAccept)
   {
     this._fnAfterDlgAccept = aFnAfterAccept;
@@ -88,6 +94,7 @@ class aeDialog
     this._fnInit();
     $("#lightbox-bkgrd-ovl").addClass("lightbox-show");
     $(`${this._dlgEltStor}`).addClass("lightbox-show");
+    this._fnDlgShow();
   }
 
   close()
