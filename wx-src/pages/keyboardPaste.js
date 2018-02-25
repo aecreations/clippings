@@ -84,6 +84,10 @@ $(window).keypress(aEvent => {
     cancel(aEvent);
   }
   else if (aEvent.key == "F1") {
+    if (isShortcutListDisplayed()) {
+      return;
+    }
+
     if (gPasteMode == aeConst.PASTEACTION_SHORTCUT_KEY) {
       $(".deck > #paste-by-shortcut-key").hide();
       initShortcutList();
@@ -151,12 +155,35 @@ function initAutocomplete()
   let clippings = [];
 
   gClippingsDB.clippings.where("parentFolderID").notEqual(aeConst.DELETED_ITEMS_FLDR_ID).each((aItem, aCursor) => {
-    clippings.push({
-      id: aItem.id,
+    clippings.push(
+      sanitize(aItem.name)
+      /**
+      { id: aItem.id,
       name: sanitize(aItem.name),
-      preview: sanitize(aItem.content)
-    });
+      preview: sanitize(aItem.content) }
+      **/
+    );
   }).then(() => {
+    // Initialize the autocomplete UI widget.
+    $("#clipping-search").textext({
+      plugins: "autocomplete",
+      autocomplete: {
+        dropdownMaxHeight: "128px",
+        render: function (aSuggestion)
+        {
+          let menuItemStr = sanitizeHTML(`<div class="clipping"><div class="name">${aSuggestion}</div></div>`);
+          return menuItemStr;
+        }
+      }
+    }).bind("getSuggestions", function (aEvent, aData) {
+      let query = (aData ? aData.query : '') || '';
+      // TO DO: Make the search case insensitive always.
+      // For now, only match if search string is lowercase.
+      $(this).trigger("setSuggestions", {
+        result: clippings.filter(aClippingName => aClippingName.toLowerCase().includes(query))
+      });
+    });
+    /***
     let eacOpts = {
       data: clippings,
       getValue: "name",
@@ -204,7 +231,8 @@ function initAutocomplete()
     // EasyAutocomplete adds a <div class="easy-autocomplete"> and places the
     // clipping search textbox inside it.
     $(".easy-autocomplete").addClass("browser-style").css({ width: "100%" });
-
+    ***/
+    
     $("#clipping-search").on("keyup", aEvent => {
       if (aEvent.target.value == "") {
         $("#num-matches").text("\u00a0");  // Non-breaking space.
@@ -222,8 +250,10 @@ function initAutocomplete()
     });
 
     $("#clipping-search").focus();
-    $(".easy-autocomplete-container").attr("hidden", "true");
     $("#clear-search").hide();
+    /***
+    $(".easy-autocomplete-container").attr("hidden", "true");
+    ***/
   });
 }
 

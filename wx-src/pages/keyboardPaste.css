@@ -208,6 +208,10 @@ body {
     background-position: 4px;
     background-repeat: no-repeat;
     font-size: 13px;
+
+    /* TextExt overrides */
+    font: caption;
+    font-size: 13px;
 }
 
 #clear-search {
@@ -231,16 +235,7 @@ body {
     font-size: 11px;   
 }
 
-/* EasyAutocomplete textbox styling override */
-.easy-autocomplete input {
-    border-color: unset;
-    border-radius: 0;
-    color: unset;
-    float: unset;
-    padding: unset;
-}
-
-/* EasyAutocomplete menu */
+/* Autocomplete menu */
 .clipping > .name {
     font-size: 13px;
     color: #0c0c0d;
@@ -251,6 +246,16 @@ body {
     color: #737373;
 }
 
+/* TextExt overrides */
+.text-core {
+    width: 100%;
+}
+
+.text-core > .text-wrap {
+    width: 100%;
+}
+
+/**
 .easy-autocomplete-container {
     z-index: 100;
     padding: 3px;
@@ -275,7 +280,7 @@ body {
     border: none;
     height: 44px;
 }
-
+**/
 /* Not used as of 6.0.3 */
 .easy-autocomplete-container > #ae-eac-num-matches {
     width: 100%;
