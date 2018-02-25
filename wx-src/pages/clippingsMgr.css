@@ -778,6 +778,7 @@ ul.fancytree-container {
 
 #shortcut-list-content table > thead {
     display: block;
+    width: 418px;
     height: 20px;
     background-color: #eee;
     border-bottom: 1px solid #d4d4d4;
@@ -794,6 +795,7 @@ ul.fancytree-container {
 
 #shortcut-list-content table > tbody {
     display: block;
+    width: 418px;
     height: 160px;
     overflow-x: hidden;
     overflow-y: auto;
