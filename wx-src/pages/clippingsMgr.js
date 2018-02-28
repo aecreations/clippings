@@ -2270,10 +2270,16 @@ function initDialogs()
       }).then(aDownldItemID => {
         gSuppressAutoMinzWnd = false;
         setStatusBarMsg(chrome.i18n.getMessage("statusExportDone"));
-        
-        gDialogs.exportConfirmMsgBox.setMessage(chrome.i18n.getMessage("clipMgrExportConfirm", aFilename));
-        gDialogs.exportConfirmMsgBox.showModal();
 
+        return browser.downloads.search({ id: aDownldItemID });
+
+      }).then(aDownldItems => {
+
+        if (aDownldItems && aDownldItems.length > 0) {
+          let exportFilePath = aDownldItems[0].filename;
+          gDialogs.exportConfirmMsgBox.setMessage(chrome.i18n.getMessage("clipMgrExportConfirm", exportFilePath));
+          gDialogs.exportConfirmMsgBox.showModal();
+        }
       }).catch(aErr => {
         gSuppressAutoMinzWnd = false;
         if (aErr.fileName == "undefined") {
