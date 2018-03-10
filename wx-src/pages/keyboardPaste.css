@@ -59,9 +59,11 @@ body {
 }
 
 .key-legend {
-    clear: both;
-    margin-top: 28px;
+    position: absolute;
+    left: 16px;
+    bottom: 24px;
     font-size: 11px;
+    z-index: 1;
 }
 
 #paste-by-shortcut-key, #search-by-name, #shortcut-list {
@@ -236,56 +238,45 @@ body {
 }
 
 /* Autocomplete menu */
+#search-results-popup {
+    display: none;
+    height: 112px;
+    margin-top: 1px;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    background-color: white;
+    border: 1px solid #b1b1b1;
+    box-shadow: 4px 4px 2px -2px #8F8F8F;
+}
+
+#search-results-listbox {
+    border: 1px solid white;
+    z-index: 100;
+}
+
+.clipping {
+    width: 100%;
+    height: 36px;    
+    border: 1px solid transparent;
+    background-color: white;
+}
+
+.clipping[selected="true"] {
+    background-color: #eff9fe;
+    border-color: #70c0e7;
+}
+
 .clipping > .name {
+    height: 18px;
+    padding: 0px 4px 0px 4px;
     font-size: 13px;
     color: #0c0c0d;
 }
 
 .clipping > .preview {
+    height: 18px;
+    padding: 0px 4px 0px 4px;
     font-size: 11px;
     color: #737373;
-}
-
-/* TextExt overrides */
-.text-core {
-    width: 100%;
-}
-
-.text-core > .text-wrap {
-    width: 100%;
-}
-
-/**
-.easy-autocomplete-container {
-    z-index: 100;
-    padding: 3px;
-    background-color: -moz-dialog;
-    border: 1px solid #b1b1b1;
-    box-shadow: 4px 4px 2px -2px #8F8F8F;
-}
-
-.easy-autocomplete-container[hidden="true"] {
-    padding: 0;
-    border: none;
-}
-
-.easy-autocomplete-container > ul {
-    overflow-y: auto;
-    max-height: 88px;
-    margin-bottom: 0;
-    border: 1px solid #ccc;
-}
-
-.easy-autocomplete-container > ul > li {
-    border: none;
-    height: 44px;
-}
-**/
-/* Not used as of 6.0.3 */
-.easy-autocomplete-container > #ae-eac-num-matches {
-    width: 100%;
-    text-align: center;
-    font-size: 11px;
-    padding-top: 2px;
-    padding-bottom: 2px;
 }

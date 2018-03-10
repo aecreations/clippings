@@ -9,8 +9,6 @@
     <title data-i18n="extName"></title>
 
     <link rel="stylesheet" href="chrome://browser/content/extension.css"/>
-    <link rel="stylesheet" href="../lib/textext/css/textext.core.css"/>
-    <link rel="stylesheet" href="../lib/textext/css/textext.plugin.autocomplete.css"/>
     <link rel="stylesheet" href="../style/dialog.css"/>
     <link rel="stylesheet" href="keyboardPaste.css"/>
 
@@ -43,6 +41,9 @@
           </div>
 	  <div id="clear-search"></div>
 	  <input type="text" id="clipping-search"/>
+	  <div id="search-results-popup" class="ae-autocomplete-menu">
+	    <div id="search-results-listbox"></div>
+	  </div>
 	</div>
 
 	<div class="key-legend">
@@ -67,8 +68,6 @@
     </div>
 
     <script src="../lib/jquery.js"></script>
-    <script src="../lib/textext/js/textext.core.js"></script>
-    <script src="../lib/textext/js/textext.plugin.autocomplete.js"></script>
     <script src="../lib/purify.min.js"></script>
     <script src="../lib/i18n.js"></script>
     <script src="../modules/aeConst.js"></script>

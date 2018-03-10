@@ -12,6 +12,245 @@ const DLG_HEIGHT_ADJ_WINDOWS = 14;
 
 let gClippings, gClippingsDB, gPasteMode;
 
+let gAutocompleteMenu = {
+  _SCRL_LENGTH: 36,
+  _SCRL_ITEMS_THRESHOLD: 3,
+  _POPUP_MAX_HEIGHT: 112,
+  
+  _textboxElt: null,
+  _popupElt: null,
+  _listboxElt: null,
+  _srchData: null,
+  _selectedIdx: -1,
+
+  init(aClippingData)
+  {
+    this._srchData = aClippingData;
+    this._textboxElt = $("#clipping-search");
+    this._popupElt = $("#search-results-popup");
+    this._listboxElt = $("#search-results-listbox");
+
+    this._textboxElt.on("keypress", aEvent => {
+      let searchText = aEvent.target.value;
+
+      if (aEvent.key == "ArrowDown" || aEvent.key == "Down") {
+        if (! this.isPopupShowing()) {
+          return;
+        }
+
+        aEvent.preventDefault();
+        
+        if (searchText == "") {
+          log("No search text was entered.");
+          return;
+        }
+
+        if (this._selectedIdx == -1) {
+          let firstChild = this._listboxElt.children()[0];
+          firstChild.setAttribute("selected", "true");
+          this._selectedIdx = 0;
+        }
+        else if (this._selectedIdx == (this._listboxElt.children().length - 1)) {
+          log("At the last item of the search results popup.");
+          return;
+        }
+        else {
+          this._selectedIdx++;
+          this._clearSelection();
+          
+          let selectedItem = null;
+          let popupMenuItems = this._listboxElt.children();
+          
+          for (let i = 0; i < popupMenuItems.length; i++) {
+            if (i == this._selectedIdx) {
+              selectedItem = popupMenuItems[i];
+              selectedItem.setAttribute("selected", "true");
+              break;
+            }
+          }
+
+          if (this._selectedIdx >= this._SCRL_ITEMS_THRESHOLD) {
+            this._popupElt[0].scrollTop = (this._selectedIdx - 2) * this._SCRL_LENGTH;
+          }
+        }
+      }
+      else if (aEvent.key == "ArrowUp" || aEvent.key == "Up") {
+        if (! this.isPopupShowing()) {
+          return;
+        }
+        
+        aEvent.preventDefault();
+
+        if (searchText == "") {
+          log("No search text was entered.");
+          return;
+        }
+
+        if (this._selectedIdx == -1) {
+          log("Nothing selected (???)");
+          return;
+        }
+        else if (this._selectedIdx == 0) {
+          log("At the first item of the search results popup.");
+          return;
+        }
+        else {
+          this._selectedIdx--;
+          this._clearSelection();
+          
+          let selectedItem = null;
+          let popupMenuItems = this._listboxElt.children();
+          
+          for (let i = 0; i < popupMenuItems.length; i++) {
+            if (i == this._selectedIdx) {
+              selectedItem = popupMenuItems[i];
+              selectedItem.setAttribute("selected", "true");
+              break;
+            }
+          }
+
+          if (this._selectedIdx <= this._SCRL_ITEMS_THRESHOLD) {
+            this._popupElt[0].scrollTop = this._selectedIdx * this._SCRL_LENGTH;
+          }
+        }
+      }
+      else if (aEvent.key == "Enter") {
+        if (this._selectedIdx == -1) {
+          log("Nothing selected");
+          return;
+        }
+        
+        let selectedItem = $('div.clipping[selected="true"]')[0];
+        let clippingID = Number(selectedItem.dataset.clippingId);
+        this._selectClipping(clippingID);
+      }
+    });
+
+    this._textboxElt.on("input", aEvent => {
+      if (this.isPopupShowing()) {
+        this._popupElt[0].scrollTop = 0;
+        this._listboxElt.empty();
+        this._popupElt.hide();
+        this._selectedIdx = -1;
+        $("#search-by-name .key-legend").show();
+      }
+      
+      let searchText = aEvent.target.value;
+      let menuItemsData = [];
+      let menuItemsDataIdx = 0;
+
+      if (searchText == "") {
+        $("#num-matches").text("");
+        return;
+      }
+
+      for (let i = 0; i < this._srchData.length; i++) {
+        let clipping = this._srchData[i];
+        let re = new RegExp(searchText, "i");
+        // TO DO: Sanitize regexp to handle these characters: ()[]{}-/^$
+        
+        if (clipping.name.search(re) != -1) {
+          menuItemsData.push({
+            index: menuItemsDataIdx++,
+            id: clipping.id,
+            name: clipping.name,
+            preview: clipping.preview
+          });
+        }
+      }
+
+      let numMatches = menuItemsData.length;
+      $("#num-matches").text(chrome.i18n.getMessage("numMatches", numMatches));
+
+      if (numMatches > 0) {
+        // Populate the popup.
+        let listbox = this._listboxElt[0];
+        
+        for (let item of menuItemsData) {
+          let clippingDiv = document.createElement("div");
+          let nameDiv = document.createElement("div");
+          let previewDiv = document.createElement("div");
+          
+          clippingDiv.className = "clipping";
+          clippingDiv.dataset.index = item.index;
+          clippingDiv.dataset.clippingId = item.id;
+          
+          nameDiv.className = "name";
+          nameDiv.appendChild(document.createTextNode(item.name));
+          
+          previewDiv.className = "preview";
+          previewDiv.appendChild(document.createTextNode(item.preview));
+          
+          clippingDiv.appendChild(nameDiv);
+          clippingDiv.appendChild(previewDiv);
+
+          listbox.appendChild(clippingDiv);
+        }
+
+        // Set height of popup when there are 1, 2, or 3+ search results.
+        if (numMatches < this._SCRL_ITEMS_THRESHOLD) {
+          let heightVal = (numMatches * this._SCRL_LENGTH) + 4;
+          this._popupElt.css({ height: `${heightVal}px` });
+          $("#search-by-name .key-legend").show();
+        }
+        else {
+          this._popupElt.css({ height: `${this._POPUP_MAX_HEIGHT}px` });
+          $("#search-by-name .key-legend").hide();
+        }
+        
+        this._popupElt.show();
+      }
+    });
+    
+    this._listboxElt.on("mouseover", aEvent => {
+      this._clearSelection();
+      let selectedItem = aEvent.target.parentNode;
+      if (selectedItem.className == "clipping") {
+        selectedItem.setAttribute("selected", "true");
+        this._selectedIdx = selectedItem.dataset.index;
+      }
+    });
+
+    this._listboxElt.on("mouseup", aEvent => {
+      let selectedItem = aEvent.target.parentNode;
+      let clippingID = Number(selectedItem.dataset.clippingId);
+      this._selectClipping(clippingID);
+    });
+  },
+
+  isPopupShowing()
+  {
+    return this._popupElt.css("display") != "none";
+  },
+
+  hidePopup()
+  {
+    this._popupElt[0].scrollTop = 0;
+    this._popupElt.hide();
+    this._selectedIdx = -1;
+    this._clearSelection();
+    $("#search-by-name .key-legend").show();
+  },
+  
+  _clearSelection()
+  {
+    let oldSelectedItem = $('div.clipping[selected="true"]');
+    oldSelectedItem.removeAttr("selected");
+  },
+  
+  _selectClipping(aClippingID)
+  {
+    this._popupElt.hide();
+
+    browser.runtime.sendMessage({
+      msgID: "paste-clipping-by-name",
+      clippingID: aClippingID
+    });
+
+    closeDlg();
+  }
+};
+
 
 // DOM utility
 function sanitizeHTML(aHTMLStr)
@@ -73,10 +312,17 @@ $(document).ready(() => {
 
 $(window).keypress(aEvent => {
   if (aEvent.key == "Escape") {
-    if (gPasteMode == aeConst.PASTEACTION_SEARCH_CLIPPING
-        && $("#eac-container-clipping-search > ul").css("display") != "none") {
-      $("#eac-container-clipping-search > ul").hide();
-      return;
+    if (gPasteMode == aeConst.PASTEACTION_SEARCH_CLIPPING) {
+      if (gAutocompleteMenu.isPopupShowing()) {
+        gAutocompleteMenu.hidePopup();
+        return;
+      }
+      else {
+        if ($("#clipping-search").val() != "") {
+          $("#clipping-search").val("");
+          return;
+        }
+      }
     }
     cancel(aEvent);
   }
@@ -152,87 +398,18 @@ function initAutocomplete()
     return rv;
   }
   
-  let clippings = [];
+  let allClippings = [];
 
   gClippingsDB.clippings.where("parentFolderID").notEqual(aeConst.DELETED_ITEMS_FLDR_ID).each((aItem, aCursor) => {
-    clippings.push(
-      sanitize(aItem.name)
-      /**
-      { id: aItem.id,
+    allClippings.push({
+      id: aItem.id,
       name: sanitize(aItem.name),
       preview: sanitize(aItem.content) }
-      **/
     );
   }).then(() => {
     // Initialize the autocomplete UI widget.
-    $("#clipping-search").textext({
-      plugins: "autocomplete",
-      autocomplete: {
-        dropdownMaxHeight: "128px",
-        render: function (aSuggestion)
-        {
-          let menuItemStr = sanitizeHTML(`<div class="clipping"><div class="name">${aSuggestion}</div></div>`);
-          return menuItemStr;
-        }
-      }
-    }).bind("getSuggestions", function (aEvent, aData) {
-      let query = (aData ? aData.query : '') || '';
-      // TO DO: Make the search case insensitive always.
-      // For now, only match if search string is lowercase.
-      $(this).trigger("setSuggestions", {
-        result: clippings.filter(aClippingName => aClippingName.toLowerCase().includes(query))
-      });
-    });
-    /***
-    let eacOpts = {
-      data: clippings,
-      getValue: "name",
-      list: {
-        maxNumberOfElements: 10000,
-        match: {
-          enabled: true
-        },
+    gAutocompleteMenu.init(allClippings);
 
-        onLoadEvent: function () {
-          let numMatches = $(".easy-autocomplete-container > ul > li").length;
-          $("#num-matches").text(chrome.i18n.getMessage("numMatches", numMatches));
-        },
-        
-        onShowListEvent: function () {
-          $(".easy-autocomplete-container").removeAttr("hidden");
-        },
-        
-        onHideListEvent: function () {
-          $(".easy-autocomplete-container").attr("hidden", "true");
-        },
-
-        onChooseEvent: function () {
-          let selectedItem = $("#clipping-search").getSelectedItemData();
-          
-          browser.runtime.sendMessage({
-            msgID: "paste-clipping-by-name",
-            clippingID: selectedItem.id
-          });
-          
-          closeDlg();
-        }
-      },
-      template: {
-        type: "custom",
-        method: function (aValue, aItem) {
-          let menuItemStr = sanitizeHTML(`<div class="clipping"><div class="name">${aValue}</div><div class="preview">${aItem.preview}</div></div>`);
-          return menuItemStr;
-        }
-      }
-    };
-  
-    $("#clipping-search").easyAutocomplete(eacOpts);
-
-    // EasyAutocomplete adds a <div class="easy-autocomplete"> and places the
-    // clipping search textbox inside it.
-    $(".easy-autocomplete").addClass("browser-style").css({ width: "100%" });
-    ***/
-    
     $("#clipping-search").on("keyup", aEvent => {
       if (aEvent.target.value == "") {
         $("#num-matches").text("\u00a0");  // Non-breaking space.
@@ -251,9 +428,6 @@ function initAutocomplete()
 
     $("#clipping-search").focus();
     $("#clear-search").hide();
-    /***
-    $(".easy-autocomplete-container").attr("hidden", "true");
-    ***/
   });
 }
 
