@@ -34,6 +34,11 @@ let gAutocompleteMenu = {
       let searchText = aEvent.target.value;
 
       if (aEvent.key == "ArrowDown" || aEvent.key == "Down") {
+        if (searchText == "") {
+          log("No search text was entered.");
+          return;
+        }
+
         if (! this.isPopupShowing()) {
           this._popupElt.show();
           let popupHt = parseInt(this._popupElt.css("height"));
@@ -46,11 +51,6 @@ let gAutocompleteMenu = {
 
         aEvent.preventDefault();
         
-        if (searchText == "") {
-          log("No search text was entered.");
-          return;
-        }
-
         if (this._selectedIdx == -1) {
           let firstChild = this._listboxElt.children()[0];
           firstChild.setAttribute("selected", "true");
@@ -81,16 +81,16 @@ let gAutocompleteMenu = {
         }
       }
       else if (aEvent.key == "ArrowUp" || aEvent.key == "Up") {
+        if (searchText == "") {
+          log("No search text was entered.");
+          return;
+        }
+
         if (! this.isPopupShowing()) {
           return;
         }
         
         aEvent.preventDefault();
-
-        if (searchText == "") {
-          log("No search text was entered.");
-          return;
-        }
 
         if (this._selectedIdx == -1) {
           log("Nothing selected (???)");
@@ -396,8 +396,6 @@ function initAutocomplete()
     let originalLen = aStr.length;
 
     rv = sanitizeHTML(aStr);
-    rv = aStr.replace(/</g, "&lt;");
-    rv = rv.replace(/>/g, "&gt;");
     rv = rv.substr(0, MAX_LEN);
     rv += (originalLen > rv.length ? " ..." : "");
 
@@ -429,6 +427,11 @@ function initAutocomplete()
     $("#clear-search").click(aEvent => {
       $("#clipping-search").val("").focus();
       $("#num-matches").text("\u00a0");
+      
+      if (gAutocompleteMenu.isPopupShowing()) {
+        gAutocompleteMenu.hidePopup();
+      }
+      
       $("#clear-search").hide();
     });
 
