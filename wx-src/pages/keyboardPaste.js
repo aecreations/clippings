@@ -35,6 +35,12 @@ let gAutocompleteMenu = {
 
       if (aEvent.key == "ArrowDown" || aEvent.key == "Down") {
         if (! this.isPopupShowing()) {
+          this._popupElt.show();
+          let popupHt = parseInt(this._popupElt.css("height"));
+          if (popupHt == this._POPUP_MAX_HEIGHT) {
+            $("#search-by-name .key-legend").hide();
+          }
+          aEvent.preventDefault();
           return;
         }
 
