@@ -263,7 +263,7 @@ input[type="search"]::placeholder {
 }
 
 #search-box {
-    width: 180px;
+    width: 220px;
     height: 100%;
     padding-right: 20px;
     font: caption;
