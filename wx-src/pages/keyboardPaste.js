@@ -14,7 +14,8 @@ let gClippings, gClippingsDB, gPasteMode;
 
 let gAutocompleteMenu = {
   _SCRL_LENGTH: 36,
-  _SCRL_ITEMS_THRESHOLD: 3,
+  _SCRL_START_IDX: 2,
+  _MAX_VISIBLE_POPUP_ITEMS: 3,
   _POPUP_MAX_HEIGHT: 112,
   
   _textboxElt: null,
@@ -75,8 +76,9 @@ let gAutocompleteMenu = {
             }
           }
 
-          if (this._selectedIdx >= this._SCRL_ITEMS_THRESHOLD) {
-            this._popupElt[0].scrollTop = (this._selectedIdx - 2) * this._SCRL_LENGTH;
+          if (this._selectedIdx > this._SCRL_START_IDX) {
+            let scrolled = this._popupElt[0].scrollTop;
+            this._popupElt[0].scrollTop = scrolled + this._SCRL_LENGTH;
           }
         }
       }
@@ -115,8 +117,9 @@ let gAutocompleteMenu = {
             }
           }
 
-          if (this._selectedIdx <= this._SCRL_ITEMS_THRESHOLD) {
-            this._popupElt[0].scrollTop = this._selectedIdx * this._SCRL_LENGTH;
+          if (this._selectedIdx < (popupMenuItems.length - 1 - this._SCRL_START_IDX)) {
+            let scrolled = this._popupElt[0].scrollTop;
+            this._popupElt[0].scrollTop = scrolled - this._SCRL_LENGTH;
           }
         }
       }
@@ -194,7 +197,7 @@ let gAutocompleteMenu = {
         }
 
         // Set height of popup when there are 1, 2, or 3+ search results.
-        if (numMatches < this._SCRL_ITEMS_THRESHOLD) {
+        if (numMatches < this._MAX_VISIBLE_POPUP_ITEMS) {
           let heightVal = (numMatches * this._SCRL_LENGTH) + 4;
           this._popupElt.css({ height: `${heightVal}px` });
           $("#search-by-name .key-legend").show();
