@@ -369,7 +369,7 @@ let gSearchBox = {
       this._isActive = false;
     }
     else {
-      setStatusBarMsg(`${numMatches} matches`);
+      setStatusBarMsg(chrome.i18n.getMessage("numMatches", numMatches));
     }
 
     this._numMatches = numMatches;
