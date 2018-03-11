@@ -392,15 +392,16 @@ $(window).keypress(aEvent => {
 
 function initAutocomplete()
 {
-  function sanitize(aStr)
+  function sanitize(aStr, aMaxLength)
   {
-    const MAX_LEN = 64;
+    const DEFAULT_LENGTH = 64;
     let rv = "";
     let originalLen = aStr.length;
+    let length = aMaxLength ? aMaxLength : DEFAULT_LENGTH;
 
     rv = sanitizeHTML(aStr);
-    rv = rv.substr(0, MAX_LEN);
-    rv += (originalLen > rv.length ? " ..." : "");
+    rv = rv.substr(0, length);
+    rv += (originalLen > rv.length ? "..." : "");
 
     return rv;
   }
@@ -410,9 +411,9 @@ function initAutocomplete()
   gClippingsDB.clippings.where("parentFolderID").notEqual(aeConst.DELETED_ITEMS_FLDR_ID).each((aItem, aCursor) => {
     allClippings.push({
       id: aItem.id,
-      name: sanitize(aItem.name),
-      preview: sanitize(aItem.content) }
-    );
+      name: sanitize(aItem.name, 56),
+      preview: sanitize(aItem.content),
+    });
   }).then(() => {
     // Initialize the autocomplete UI widget.
     gAutocompleteMenu.init(allClippings);
