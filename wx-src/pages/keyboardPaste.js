@@ -474,6 +474,9 @@ function initShortcutList()
     aeImportExport.getShortcutKeyListHTML(false).then(aShctListHTML => {
       $("#shortcut-list-content").append(sanitizeHTML(aShctListHTML));
 
+      $("#shortcut-list-content > table > thead").css({ width: `${updWndInfo.width}px` });
+      $("#shortcut-list-content > table > tbody").css({ width: `${updWndInfo.width}px` });
+
       $("#shortcut-list-content > table > tbody > tr").on("mouseup", aEvent => {
         $("#shortcut-list-content > table > tbody > tr").removeClass("selected-row");
         $(aEvent.target).parent().addClass("selected-row");

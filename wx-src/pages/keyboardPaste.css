@@ -128,7 +128,6 @@ body {
 
 #shortcut-list-content table > thead {
     display: block;
-    width: 420px;
     height: var(--col-hdr-height);
     background-color: #eee;
     border-bottom: 1px solid #d4d4d4;
@@ -145,7 +144,6 @@ body {
 
 #shortcut-list-content table > tbody {
     display: block;
-    width: 420px;
     height: 186px;
     overflow-x: hidden;
     overflow-y: auto;
