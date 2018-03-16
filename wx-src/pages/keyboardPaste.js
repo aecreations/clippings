@@ -447,8 +447,6 @@ function initAutocomplete()
 
 function initShortcutList()
 {
-  const SHCTLIST_TABLE_WIDTH_ADJ_WINDOWS = 8;
-  
   $("#dlg-buttons").remove();
 
   $("#shortcut-list-toolbar > #paste-clipping").click(aEvent => {
@@ -476,10 +474,7 @@ function initShortcutList()
     aeImportExport.getShortcutKeyListHTML(false).then(aShctListHTML => {
       $("#shortcut-list-content").append(sanitizeHTML(aShctListHTML));
 
-      let tblWidth = updWndInfo.width;
-      if (gClippings.getOS() == "win") {
-        tblWidth -= SHCTLIST_TABLE_WIDTH_ADJ_WINDOWS;
-      }
+      let tblWidth = window.innerWidth;
       $("#shortcut-list-content > table > thead").css({ width: `${tblWidth}px` });
       $("#shortcut-list-content > table > tbody").css({ width: `${tblWidth}px` });
 
