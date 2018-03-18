@@ -1,0 +1,718 @@
+{
+  "extName": {
+    "message": "Wycinki",
+    "description": "Name of the extension"
+  },
+  "extDesc": {
+    "message": "Zapisz często wprowadzany tekst do wklejania później.",
+    "description": "Description of the extension"
+  },
+  "browserActionTitle": {
+    "message": "Wycinki",
+    "description": "Toolbar button label"
+  },
+  "cmdDesc": {
+    "message": "Wklej wycinek używając skrótu klawiaturowego",
+    "description": "Shortcut key command description"
+  },
+  "hostAppFx": {
+    "message": "Firefox"
+  },
+  "hostAppTb": {
+    "message": "Thunderbird"
+  },
+  "hostAppAll": {
+    "message": "Firefox lub Thunderbird"
+  },
+  "btnOK": {
+    "message": "OK"
+  },
+  "btnCancel": {
+    "message": "Anuluj"
+  },
+  "btnClose": {
+    "message": "Zamknij",
+    "description": "Dialog action button"
+  },
+  "btnYes": {
+    "message": "Tak"
+  },
+  "btnNo": {
+    "message": "Nie"
+  },
+  "btnFinish": {
+    "message": "Zakończ"
+  },
+  "btnBrowse": {
+    "message": "Przeglądaj..."
+  },
+  "msgUnavail": {
+    "message": "Wybrana akcja nie jest obecnie dostępna."
+  },
+  "msgNoTextSel": {
+    "message": "Tekst nie został wybrany. Najpierw wybierz tekst."
+  },
+  "msgBrwsWndNotFocused": {
+    "message": "Wróć do okna przeglądarki i spróbuj ponownie."
+  },
+  "msgClpgNotFound": {
+    "message": "Nie można odnaleźć zaznaczonego wycinka!"
+  },
+  "msgNoActvBrwsTab": {
+    "message": "Nie można wkleić wycinka, ponieważ nie ma aktywnej karty przeglądarki."
+  },
+  "msgRetryPgBusy": {
+    "message": "Strona jest obecnie zajęta. Poczekaj aż strona skończy i spróbuj ponownie."
+  },
+  "msgRetryPgNotLoaded": {
+    "message": "Nie można pobrać zaznaczonego tekstu. Odśwież stronę, a następnie spróbuj ponownie."
+  },
+  "msgUnknown": {
+    "message": "Pomoc nie jest dostępna (więc Zostaw mnie w spokoju)."
+  },
+  "none": {
+    "message": "Brak"
+  },
+  "newClipping": {
+    "message": "Nowy wycinek"
+  },
+  "newFolder": {
+    "message": "Nowy folder"
+  },
+  "untitledClipping": {
+    "message": "Wycinek bez nazwy"
+  },
+  "untitledFolder": {
+    "message": "Folder bez nazwy"
+  },
+  "rootFldrName": {
+    "message": "Wycinki",
+    "description": "Name of root folder"
+  },
+  "labelRed": {
+    "message": "Czerwony"
+  },
+  "labelOrange": {
+    "message": "Pomarańczowy"
+  },
+  "labelYellow": {
+    "message": "Żółty"
+  },
+  "labelGreen": {
+    "message": "Zielony"
+  },
+  "labelBlue": {
+    "message": "Niebieski"
+  },
+  "labelPurple": {
+    "message": "Fioletowy"
+  },
+  "labelGrey": {
+    "message": "Szary"
+  },
+  "cxtMenuNew": {
+    "message": "Nowy...",
+    "description": "Clippings context menu"
+  },
+  "cxtMenuOpenClippingsMgr": {
+    "message": "Organizuj Wycinki",
+    "description": "Clippings context menu"
+  },
+  "baMenuResetAutoIncrPlaceholders": {
+    "message": "Zresetuj symbole zastępcze automatycznego przyrostu",
+    "description": "Clippings browser action submenu"
+  },
+  "welcomePageTitle": {
+    "message": "Witamy w Wycinki 6",
+    "description": "Welcome to Clippings (post-installation) page title"
+  },
+  "welcInstallSuccessHdg": {
+    "message": "Witamy w Wycinki 6!"
+  },
+  "welcInstallSuccessSubh": {
+    "message": "Instalacja została ukończona pomyślnie."
+  },
+  "welcCurrUsrHdg": {
+    "message": "Aktualni użytkownicy"
+  },
+  "welcCurrUsrDesc": {
+    "message": "Przenieś swoje wycinki z poprzedniej wersji wycinków."
+  },
+  "welcCurrUsrCTA": {
+    "message": "Importuj moje wycinki"
+  },
+  "welcNewUsrHdg": {
+    "message": "Nowi użytkownicy"
+  },
+  "welcNewUsrDesc": {
+    "message": "Dowiedz się podstawowych funkcji wycinków w kilka minut."
+  },
+  "welcNewUsrCTA": {
+    "message": "Przewodnik Szybkiego Startu"
+  },
+  "closeWelcomePg": {
+    "message": "Zamknij tę stronę"
+  },
+  "welcImportHdg": {
+    "message": "Importuj plik kopii zapasowej wycinków"
+  },
+  "welcImportDesc": {
+    "message": "Aby rozpocząć pracę, kliknij przycisk Przeglądaj, a następnie zlokalizuj plik kopii zapasowej w systemie."
+  },
+  "welcSkipImport": {
+    "message": "Pomiń Importowanie"
+  },
+  "welcNoBackupExpand": {
+    "message": "Co zrobić, jeśli nie zrobiłeś kopii zapasowej"
+  },
+  "welcNoBackupSubh": {
+    "message": "Jeśli nie zrobiłeś kopii zapasowej swoich wycinków, wykonaj następujące kroki:"
+  },
+  "welcFileMgrWindows": {
+    "message": "Eksplorator Windows",
+    "description": "File manager application on Windows, for locating Clippings backup folder"
+  },
+  "welcFileMgrMac": {
+    "message": "Wyszukiwarka",
+    "description": "File manager application on macOS, for locating Clippings backup folder"
+  },
+  "welcFileMgrGeneric": {
+    "message": "menedżer Plików na Twoim Systemie"
+  },
+  "welcShowBkupFileNote": {
+    "message": " (Możesz potrzebować użyć Wiersza Polecenia aby zobaczyć ten folder.)",
+    "description": "Note to Linux and macOS users about showing hidden backup folder."
+  },
+  "welcNoBackupInstrxnStep1": {
+    "message": "Użyj $1 aby znaleźć lokalizację źródła danych wycinki. W zależności od poprzednich ustawień, to może być folder twojego profilu Firefox, lub inny folder zlokalizowany gdzie indziej."
+  },
+  "welcNoBackupInstrxnStep2": {
+    "message": "Otwórz folder źródła danych i zlokalizuj folder kopii zapasowej wycinków. Powinien być nazwany \"clippings-backup\" lub \".clipbak\". $1"
+  },
+  "welcNoBackupInstrxnStep3": {
+    "message": "Otwórz folder kopii zapasowych wycinków i zlokalizuj najnowszą kopie zapasową. Skopiuj to na Pulpit lub do folderu Dokumenty."
+  },
+  "welcNoBackupInstrxnStep4": {
+    "message": "Kliknij Przeglądaj powyżej i wybierz kopię zapasową."
+  },
+  "welcReadyImport": {
+    "message": "Kiedy gotowe, kliknij Importuj aby przenieść twoje dane Wycinków do Wycinki 6."
+  },
+  "welcImportBtn": {
+    "message": "Importuj"
+  },
+  "welcBack": {
+    "message": "Wróć do Strony Powitalnej"
+  },
+  "welcImportStatus": {
+    "message": "Importowanie wycinków..."
+  },
+  "welcImportStatusDone": {
+    "message": "Importowanie wycinków... gotowe!"
+  },
+  "welcImportCount": {
+    "message": "Zaimportowano $1 rzeczy."
+  },
+  "welcImportConfirmDone": {
+    "message": "Twoje wycinki zostały zaimportowane pomyślnie. Wycinki są gotowe do używania."
+  },
+  "welcShctKeyNote": {
+    "message": "Skrót klawiaturowy wycinków do wklejania <strong>się zmienił<\/strong> w Wycinki 6. By wkleić wycinek przez jego skrót klawiaturowy lub wyszukać przez nazwę, wciśnij <span id=\"keybd-paste-key\">$1<\/span>."
+  },
+  "welcOpenClipMgr": {
+    "message": "Otwórz Menedżera Wycinków"
+  },
+  "welcImportError": {
+    "message": "Błąd podczas czytania wybranego pliku. Plik może nie być odpowiednim plikiem wycinków."
+  },
+  "welcImportRetry": {
+    "message": "Kliknij Spróbuj Ponownie by wrócić i wybierz inną kopię zapasową."
+  },
+  "welcImportRetryBtn": {
+    "message": "Spróbuj ponownie"
+  },
+  "welcLeaveConfirm": {
+    "message": "Czy jesteś pewien że chcesz opuścić stronę powitalną wycinków?"
+  },
+  "welcCancelDlg": {
+    "message": "Powrót"
+  },
+  "welcImportLater": {
+    "message": "Możesz importować swoją kopię zapasową wycinków później otwierając Menedżera Wycinków i wybierając Narzędzia → Importuj."
+  },
+  "welcCantImportHdg": {
+    "message": "Wycinki nie mogą zaimportować pliku kopii zapasowej, ponieważ baza danych Wycinków nie jest dostępna."
+  },
+  "welcCantImportCause": {
+    "message": "Może się to zdarzyć, jeśli ustawienia prywatności w przeglądarce Firefox są zbyt restrykcyjne (np. Włączanie trybu przeglądania prywatnego).  Te ustawienia mogą kolidować z WebExtensions, takie jak wycinki."
+  },
+  "welcCantImportFix": {
+    "message": "Upewnij się, że ustawienia prywatności przeglądarki są wartości domyślnej, a następnie ponownie uruchom Firefoksa i spróbuj ponownie. Jeśli to nie pomoże, wykonaj następujące kroki:"
+  },
+  "welcCantImportFixStep1": {
+    "message": "Otwórz menu Firefox i wybierz opcję Pomoc → informacje dla rozwiązywania problemów."
+  },
+  "welcCantImportFixStep2": {
+    "message": "Kliknij przycisk Odśwież Firefox, a następnie postępuj zgodnie z monitami. Firefox uruchomi się ponownie."
+  },
+  "welcCantImportFixStep3": {
+    "message": "Zainstaluj ponownie wycinki i ponów próbę importowania pliku kopii zapasowej."
+  },
+  "newClippingDlgTitle": {
+    "message": "Nowy wycinek",
+    "description": "New Clipping dialog"
+  },
+  "labelName": {
+    "message": "Nazwa:"
+  },
+  "labelContent": {
+    "message": "Tekst:"
+  },
+  "labelCreateInFldr": {
+    "message": "Utwórz w:"
+  },
+  "btnNewFolder": {
+    "message": "Nowy folder"
+  },
+  "labelCreateClippingOptions": {
+    "message": "Opcje",
+    "description": "Button to expand clipping options (source URL, label) in New Clipping dialog"
+  },
+  "labelSaveSrcURL": {
+    "message": "Zapisz adres źródłowej strony internetowej"
+  },
+  "labelShortcutKey": {
+    "message": "Skrót Klawiaturowy:"
+  },
+  "labelLabel": {
+    "message": "Etykieta:",
+    "description": "Label for the Clipping label menu"
+  },
+  "labelNewFldrName": {
+    "message": "Nazwa nowego folderu:"
+  },
+  "labelCreateAsSubfOf": {
+    "message": "Utwórz jako podfolder:"
+  },
+  "shortcutKeyHint": {
+    "message": "Aby szybko wkleić ten wycinek do pola tekstowego strony sieci web w przeglądarce Firefox, naciśnij $1, a następnie skrót klawiaturowy."
+  },
+  "shortcutKeyAssigned": {
+    "message": "'$1' jest już przypisana"
+  },
+  "initError": {
+    "message": "Wycinki nie działają gdy ustawienia prywatności w Firefoksie są zbyt ścisłe, takie jak włączanie trybu prywatnego przeglądania. Spróbuj zmienić te ustawienia do wartości domyślnych, potem zrestartuj Firefoksa i spróbuj ponownie."
+  },
+  "saveClippingError": {
+    "message": "Nie można zapisać nowego wycinka.  Sprawdź, czy ustawienia prywatności w Firefoxie nie są zbyt ścisłe (np. włączenie trybu przeglądania prywatnego), a następnie zrestartuj Firefoksa i spróbuj ponownie."
+  },
+  "shortcutKeyDesc": {
+    "message": "Naciśnij skrót klawiaturowy wycinka, którego chcesz wkleić."
+  },
+  "keybPasteDlgF1": {
+    "message": "F1 = lista skrótów"
+  },
+  "keybPasteDlgTab": {
+    "message": "TAB = wyszukuj wycinki przez nazwę"
+  },
+  "keybPasteDlgTabShctMode": {
+    "message": "TAB = tryb skrótów klawiaturowych"
+  },
+  "srchByNameDesc": {
+    "message": "Wyszukuj wycinka przez nazwę:"
+  },
+  "numMatches": {
+    "message": "$1 dopasowań"
+  },
+  "insClipping": {
+    "message": "Wstaw wycinek"
+  },
+  "exportHTML": {
+    "message": "Eksportuj do pliku HTML"
+  },
+  "expHTMLTitle": {
+    "message": "Skróty klawiaturowe wycinek",
+    "description": "HTML export of shortcut key list - page title"
+  },
+  "expHTMLHostAppInfo": {
+    "message": "Wycinki $1 na $2",
+    "description": "Clippings <extVersion> on Firefox <fxVersion>"
+  },
+  "expHTMLShctKeyInstrxn": {
+    "message": "Aby wkleić wycinek to pola tekstowego strony w Firefoxie, naciśnij ALT+SHIFT+Y (Command+Shift+Y na macOS), potem skrót klawiaturowy."
+  },
+  "expHTMLShctKeyCol": {
+    "message": "Skrót klawiaturowy"
+  },
+  "expHTMLClipNameCol": {
+    "message": "Nazwa wycinka"
+  },
+  "plchldrPromptSingleDesc": {
+    "message": "Wprowadź wartość dla \"$1\":",
+    "description": "Placeholder prompt dialog - single placeholder"
+  },
+  "plchldrPromptMultiDesc": {
+    "message": "Wprowadź wartości dla następujących symboli zastępczych.",
+    "description": "Placeholder prompt dialog - multiple placeholders"
+  },
+  "clippingsMgrWndTitle": {
+    "message": "Menedżer wycinków",
+    "description": "Clippings Manager window title"
+  },
+  "tbNewClipping": {
+    "message": "Nowy wycinek"
+  },
+  "tbNewFolder": {
+    "message": "Nowy folder"
+  },
+  "tbMoveOrCopy": {
+    "message": "Przenieś lub Kopiuj"
+  },
+  "tbDelete": {
+    "message": "Usuń"
+  },
+  "tbUndo": {
+    "message": "Cofnij"
+  },
+  "tbTools": {
+    "message": "Narzędzia"
+  },
+  "clipMgrSrchBarHint": {
+    "message": "Znajdź Wycinki i foldery",
+    "description": "Clippings Manager search bar hint text"
+  },
+  "clipMgrIntroHdg": {
+    "message": "Witaj w Menedżerze wycinków"
+  },
+  "clipMgrIntroDesc": {
+    "message": "Używać Menedżera wycinków do Edytowania, zmieniania nazwy lub usuwania wycinków i organizuj swoją kolekcję wycinków w folderach."
+  },
+  "clipMgrIntroKeybHdg": {
+    "message": "Skróty Klawiaturowe"
+  },
+  "labelInsPlchldr": {
+    "message": "Wstaw symbol zastępczy:",
+    "description": "Clippings Manager - Placeholder Toolbar"
+  },
+  "tbPlchldrPresets": {
+    "message": "Predefiniowane symbole zastępcze"
+  },
+  "tbPlchldrCustom": {
+    "message": "Niestandardowe"
+  },
+  "tbPlchldrNumeric": {
+    "message": "Numeryczne"
+  },
+  "labelSrcURL": {
+    "message": "Adres źródłowy:"
+  },
+  "btnEditSrcURL": {
+    "message": "Edytuj"
+  },
+  "mnuNewFromClipbd": {
+    "message": "Nowe ze schowka"
+  },
+  "mnuBackup": {
+    "message": "Kopia zapasowa..."
+  },
+  "mnuRestoreFromBackup": {
+    "message": "Przywróć z kopii zapasowej..."
+  },
+  "mnuImport": {
+    "message": "Importuj..."
+  },
+  "mnuExport": {
+    "message": "Eksportuj..."
+  },
+  "mnuRemoveAllSrcURLs": {
+    "message": "Usuń Adresy Źródłowych Stron..."
+  },
+  "mnuShowHide": {
+    "message": "Pokaż\/Ukryj"
+  },
+  "mnuShowHideDetails": {
+    "message": "Okienko szczegółów"
+  },
+  "mnuShowHidePlchldrBar": {
+    "message": "Pasek narzędzi Symboli zastępczych"
+  },
+  "mnuShowHideStatusBar": {
+    "message": "Pasek statusu"
+  },
+  "mnuMaximize": {
+    "message": "Maksymalizuj"
+  },
+  "mnuMinimizeWhenInactive": {
+    "message": "Minimalizuj kiedy nieaktywny"
+  },
+  "mnuShowExtPrefs": {
+    "message": "Opcje..."
+  },
+  "mnuMoveOrCopy": {
+    "message": "Przenieś lub Kopiuj..."
+  },
+  "mnuEditLabel": {
+    "message": "Etykieta"
+  },
+  "mnuGoToSrcURL": {
+    "message": "Idź do źródłowej strony"
+  },
+  "mnuPlchldrDate": {
+    "message": "Data",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "mnuPlchldrTime": {
+    "message": "Czas",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "mnuPlchldrAppName": {
+    "message": "Nazwa aplikacji",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "mnuPlchldrUsrAgent": {
+    "message": "Agent użytkownika",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "mnuPlchldrClipName": {
+    "message": "Nazwa wycinka",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "mnuPlchldrFldrName": {
+    "message": "Nazwa folderu nadrzędnego",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "clipMgrNameHint": {
+    "message": "Nazwa wycinka",
+    "description": "Clippings Manager - clipping name textbox hint text"
+  },
+  "clipMgrContentHint": {
+    "message": "Wprowadź tekst wycinka",
+    "description": "Clippings Manager - clipping content textarea hint text"
+  },
+  "clipMgrShortcutHelpHint": {
+    "message": "Pomoc skrótów"
+  },
+  "clipMgrNoItems": {
+    "message": "Nie znaleziono wycinków."
+  },
+  "clipMgrIntroCmdDel": {
+    "message": "Usuń zaznaczony wycinek lub folder",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdClearSrchBar": {
+    "message": "Wyczyść Pasek Wyszukiwania",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdSrch": {
+    "message": "Znajdź Wycinki i foldery",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdClose": {
+    "message": "Zamknij Menedżera Wycinków",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdUndo": {
+    "message": "Cofnij",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdShowIntro": {
+    "message": "Pokaż Wprowadzenie Menedżera Wycinków",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdMaximize": {
+    "message": "Maksymalizuj okno",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrStatusBar": {
+    "message": "$1 przedmiotów"
+  },
+  "clipMgrRemoveSrcURLsConfirm": {
+    "message": "Usunięto adresy stron źródłowych z twoich wycinków."
+  },
+  "clipMgrNoUndo": {
+    "message": "Nic do cofania"
+  },
+  "clipMgrShortcutKeyHelpHdg": {
+    "message": "Skróty klawiaturowe wycinek"
+  },
+  "clipMgrShortcutHelpInstrxn": {
+    "message": "Aby wkleić wycinek z listy poniżej do pola tekstowego strony w Firefoxie, naciśnij $1, a następnie skrót klawiaturowy."
+  },
+  "clipMgrShortcutKeyAssigned": {
+    "message": "Wybrany skrót klawiaturowy jest już przypisany do innego wycinka. Proszę wybrać inny skrót klawiaturowy."
+  },
+  "clipMgrNoSrcURL": {
+    "message": "Wybrany wycinek nie ma adresu źródłowej strony."
+  },
+  "clipMgrImportConfirm": {
+    "message": "Importowanie z \"$1\" zakończono pomyślnie."
+  },
+  "btnReload": {
+    "message": "Załaduj ponownie"
+  },
+  "clipMgrExportConfirm": {
+    "message": "Eksportowanie wycinków do \"$1\" zakończono pomyślnie."
+  },
+  "clipMgrWarnRemoveSrcURLs": {
+    "message": "Wszystkie adresy stron źródłowych twoich wycinków zostaną usunięte. Czy chcesz kontynuować?"
+  },
+  "placeholderNameHint": {
+    "message": "Litery, liczby, znaki podkreślenia, bez spacji"
+  },
+  "labelCustPlchldrName": {
+    "message": "Nazwa niestandardowego symbolu zastępczego:"
+  },
+  "labelNumPlchldrName": {
+    "message": "Nazwa numerycznego symbolu zastępczego:"
+  },
+  "labelCustPlchldrVal": {
+    "message": "Domyślna wartość (opcjonalnie):"
+  },
+  "custPlchldrValDesc": {
+    "message": "Oddziel wiele domyślnych wartości używając znaku \"|\". np.: czerwony|zielony|niebieski"
+  },
+  "numPlchldrDesc": {
+    "message": "Za każdym razem, gdy wycinek jest wklejany, wartość tego symbolu zastępczego będzie automatycznie zwiększać się o jeden, do momentu zresetowania symbolu zastępczego z menu kontekstowego przycisku paska narzędzi wycinków."
+  },
+  "labelSelImportFile": {
+    "message": "Wybierz plik importu:"
+  },
+  "labelSelBkupFile": {
+    "message": "Wybierz kopię zapasową:"
+  },
+  "statusSavingBkup": {
+    "message": "Zapisywanie kopii zapasowej..."
+  },
+  "statusSavingBkupDone": {
+    "message": "Zapisywanie kopii zapasowej... gotowe"
+  },
+  "statusSavingBkupFailed": {
+    "message": "Tworzenie kopii zapasowej nie powiodło się."
+  },
+  "backupError": {
+    "message": "Przepraszamy, wystąpił błąd podczas tworzenia kopii zapasowej.\n\nSzczegóły:\n$1"
+  },
+  "cbImportReplcShctKeys": {
+    "message": "Zamień skróty klawiaturowe"
+  },
+  "warnBackupOverwrite": {
+    "message": "Przywracanie z kopii zapasowej zastąpi wszystkie twoje wycinki kopią zapasową. Tej czynności nie można cofnąć."
+  },
+  "btnImport": {
+    "message": "Importuj"
+  },
+  "btnRestoreBkup": {
+    "message": "Przywróć kopie zapasową"
+  },
+  "importError": {
+    "message": "Błąd podczas czytania wybranego pliku. Plik może nie być prawidłowym plikiem Wycinków."
+  },
+  "labelSelExportFmt": {
+    "message": "Wybierz format aby eksportować wycinki do:"
+  },
+  "expFmtDescHdg": {
+    "message": "Opis"
+  },
+  "expFmtClippings6": {
+    "message": "Wycinki 6"
+  },
+  "expFmtClippings6Desc": {
+    "message": "Domyślny format dla tworzenia kopii zapasowych i wymiany danych wycinków z innych użytkownikami lub wieloma komputerami.  Wymaga zainstalowanych Wycinków 5.5 lub nowszej wersji."
+  },
+  "expFmtHTMLDoc": {
+    "message": "Dokument HTML"
+  },
+  "expFmtHTMLDocDesc": {
+    "message": "Eksportuje twoje dane wycinków jako dokument HTML do drukowania lub wyświetlania w przeglądarce sieci web."
+  },
+  "cbExpInclSrcURLs": {
+    "message": "Uwzględnij adresy stron źródłowych wycinków"
+  },
+  "btnExport": {
+    "message": "Eksportuj"
+  },
+  "statusExportStart": {
+    "message": "Eksportowanie..."
+  },
+  "statusExportDone": {
+    "message": "Eksportowanie... gotowe"
+  },
+  "statusExportFailed": {
+    "message": "Eksport nie powiódł się."
+  },
+  "exportError": {
+    "message": "Wystąpił błąd podczas eksportowania danych wycinków.\n\nSzczegóły:\n$1"
+  },
+  "labelMoveClipping": {
+    "message": "Przenieś wycinki do:"
+  },
+  "labelMoveFolder": {
+    "message": "Przenieś folder do:"
+  },
+  "labelCopyClipping": {
+    "message": "Kopiuj wycinki do:"
+  },
+  "labelCopyFolder": {
+    "message": "Kopiuj folder do:"
+  },
+  "cbCreateCopy": {
+    "message": "Utwórz kopię"
+  },
+  "btnMove": {
+    "message": "Przenieś"
+  },
+  "btnCopy": {
+    "message": "Kopiuj"
+  },
+  "prefsTitle": {
+    "message": "Opcje wycinków"
+  },
+  "prefsHdgPasteOptions": {
+    "message": "Opcje wklejania"
+  },
+  "labelPasteOptions": {
+    "message": "Podczas wklejania wycinka w formacie HTML do pola edycji tekstu sformatowanego:"
+  },
+  "pasteOptFormatted": {
+    "message": "Wklej jako tekst sformatowany"
+  },
+  "pasteOptRawHTML": {
+    "message": "Wklej jako zwykły tekst, zachowując Tagi HTML"
+  },
+  "cbAutoLineBreak": {
+    "message": "Automatycznie przerywaj linie, chyba że istnieją znaczniki <p> lub <br>"
+  },
+  "htmlPasteDesc": {
+    "message": "Wycinek w formacie HTML będzie zawsze wklejane jako zwykły tekst, jeśli zostanie wklejone do zwykłego pola tekstowego lub jeśli wycinek zawiera ograniczone tagi, takie jak <script>, <applet>, <object>, <iframe>, itp."
+  },
+  "prefsShortcutMode": {
+    "message": "Aktywuj tryb skrótów klawiaturowych używając $1"
+  },
+  "prefsDefaultNumPlchldrStart": {
+    "message": "Domyślna wartość początkowa dla automatycznie powiększających się symboli zastępczych:"
+  },
+  "prefsHdgGeneralOptions": {
+    "message": "Opcje ogólne"
+  },
+  "cbAlwaysSaveSrcURL": {
+    "message": "Zawsze zapisuj adres strony źródłowej"
+  },
+  "cbCheckSpelling": {
+    "message": "Sprawdzanie pisowni"
+  },
+  "keyAlt": {
+    "message": "ALT"
+  },
+  "keyCtrl": {
+    "message": "CTRL"
+  },
+  "keyShift": {
+    "message": "SHIFT"
+  },
+  "keyDel": {
+    "message": "DEL"
+  },
+  "keyEsc": {
+    "message": "ESC"
+  }
+}

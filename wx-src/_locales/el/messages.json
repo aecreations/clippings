@@ -1,0 +1,718 @@
+{
+  "extName": {
+    "message": "Αποκόμματα",
+    "description": "Name of the extension"
+  },
+  "extDesc": {
+    "message": "Αποθήκευση συχνά χρησιμοποιημένου-κειμένου που έχει εισαχθεί για επικόλληση αργότερα.",
+    "description": "Description of the extension"
+  },
+  "browserActionTitle": {
+    "message": "Clippings",
+    "description": "Toolbar button label"
+  },
+  "cmdDesc": {
+    "message": "Επικολλήστε ένα απόκομμα χρησιμοποιώντας το πλήκτρο συντόμευσης",
+    "description": "Shortcut key command description"
+  },
+  "hostAppFx": {
+    "message": "Firefox"
+  },
+  "hostAppTb": {
+    "message": "Thunderbird"
+  },
+  "hostAppAll": {
+    "message": "Firefox η Thunderbird"
+  },
+  "btnOK": {
+    "message": "ΟΚ"
+  },
+  "btnCancel": {
+    "message": "Ακύρωση"
+  },
+  "btnClose": {
+    "message": "Κλείσιμο",
+    "description": "Dialog action button"
+  },
+  "btnYes": {
+    "message": "Ναί"
+  },
+  "btnNo": {
+    "message": "Όχι"
+  },
+  "btnFinish": {
+    "message": "Τέλος"
+  },
+  "btnBrowse": {
+    "message": "Περιήγηση..."
+  },
+  "msgUnavail": {
+    "message": "Η επιλεγμένη ενέργεια δεν είναι διαθέσιμη αυτήν τη στιγμή."
+  },
+  "msgNoTextSel": {
+    "message": "Δεν έχει επιλεγεί κείμενο. Παρακαλώ επιλέξτε πρώτα το κείμενο."
+  },
+  "msgBrwsWndNotFocused": {
+    "message": "Επιστρέψτε στο παράθυρο του προγράμματος περιήγησης και προσπαθήστε ξανά."
+  },
+  "msgClpgNotFound": {
+    "message": "Αδυναμία έυρεσης τού επιλεγμένου ψαλιδίσματος!"
+  },
+  "msgNoActvBrwsTab": {
+    "message": "Δεν είναι δυνατή η επικόλληση αποκοπής, επειδή δεν υπάρχει κανένα ενεργό πρόγραμμα περιήγησης."
+  },
+  "msgRetryPgBusy": {
+    "message": "Η σελίδα είναι απασχολημένη. Περιμένετε για τη σελίδα μέχρι το τέλος, και στη συνέχεια προσπαθήστε ξανά."
+  },
+  "msgRetryPgNotLoaded": {
+    "message": "Δεν είναι δυνατή η ανάκτηση του επιλεγμένου κειμένου. Επαναφορτώστε την σελίδα και, στη συνέχεια, προσπαθήστε ξανά."
+  },
+  "msgUnknown": {
+    "message": "Η βοήθεια δεν είναι διαθέσιμη (οπότε άσε με ήσυχο)."
+  },
+  "none": {
+    "message": "Κανένας"
+  },
+  "newClipping": {
+    "message": "Νέο ψαλίδισμα"
+  },
+  "newFolder": {
+    "message": "Νέος φάκελος"
+  },
+  "untitledClipping": {
+    "message": "Άτιτλο αποκοπής"
+  },
+  "untitledFolder": {
+    "message": "Χωρίς τίτλο φακέλου"
+  },
+  "rootFldrName": {
+    "message": "Αποκόμματα",
+    "description": "Name of root folder"
+  },
+  "labelRed": {
+    "message": "Κόκκινο"
+  },
+  "labelOrange": {
+    "message": "Πορτοκαλί"
+  },
+  "labelYellow": {
+    "message": "Κίτρινο"
+  },
+  "labelGreen": {
+    "message": "Πράσινο"
+  },
+  "labelBlue": {
+    "message": "Μπλέ"
+  },
+  "labelPurple": {
+    "message": "Μωβ"
+  },
+  "labelGrey": {
+    "message": "Γκρι"
+  },
+  "cxtMenuNew": {
+    "message": "Νέα...",
+    "description": "Clippings context menu"
+  },
+  "cxtMenuOpenClippingsMgr": {
+    "message": "Οργάνωση αποκομμάτων",
+    "description": "Clippings context menu"
+  },
+  "baMenuResetAutoIncrPlaceholders": {
+    "message": "Επαναφορά αυτόματης προσαύξησης συμβόλων κράτησης θέσης",
+    "description": "Clippings browser action submenu"
+  },
+  "welcomePageTitle": {
+    "message": "Καλώς ήλθατε στο Clippings 6",
+    "description": "Welcome to Clippings (post-installation) page title"
+  },
+  "welcInstallSuccessHdg": {
+    "message": "Καλώς ήλθατε στο Clippings 6!"
+  },
+  "welcInstallSuccessSubh": {
+    "message": "Η εγκατάσταση ολοκληρώθηκε με επιτυχία."
+  },
+  "welcCurrUsrHdg": {
+    "message": "Τρέχοντες χρήστες"
+  },
+  "welcCurrUsrDesc": {
+    "message": "Φέρτε τα αποκόμματά σας από μια προηγούμενη έκδοση τού Clipping."
+  },
+  "welcCurrUsrCTA": {
+    "message": "Εισαγωγή αποκομμάτων"
+  },
+  "welcNewUsrHdg": {
+    "message": "Νέοι χρήστες"
+  },
+  "welcNewUsrDesc": {
+    "message": "Μάθετε τα βασικά χαρακτηριστικά τού Clipping σε λίγα λεπτά."
+  },
+  "welcNewUsrCTA": {
+    "message": "Οδηγός γρήγορης έναρξης"
+  },
+  "closeWelcomePg": {
+    "message": "Κλείσιμο αυτής της σελίδας"
+  },
+  "welcImportHdg": {
+    "message": "Εισαγωγή αντιγράφου ασφαλείας αποκομμάτων"
+  },
+  "welcImportDesc": {
+    "message": "Για να ξεκινήσετε, κάντε κλικ στο κουμπί Αναζήτηση και, στη συνέχεια, εντοπίστε το αρχείο αντιγράφου ασφαλείας στο σύστημά σας."
+  },
+  "welcSkipImport": {
+    "message": "Παράλειψη Εισαγωγής"
+  },
+  "welcNoBackupExpand": {
+    "message": "Τι θα γίνει αν δεν έχετε δημιουργήσει ένα αντίγραφο ασφαλείας"
+  },
+  "welcNoBackupSubh": {
+    "message": "Αν δεν έχετε δημιουργήσει ένα αντίγραφο ασφαλείας για τα αποκόμματα σας, ακολουθήστε τα εξής βήματα:"
+  },
+  "welcFileMgrWindows": {
+    "message": "Windows Explorer",
+    "description": "File manager application on Windows, for locating Clippings backup folder"
+  },
+  "welcFileMgrMac": {
+    "message": "Finder",
+    "description": "File manager application on macOS, for locating Clippings backup folder"
+  },
+  "welcFileMgrGeneric": {
+    "message": "ο διαχειριστής αρχείων στο σύστημά σας"
+  },
+  "welcShowBkupFileNote": {
+    "message": " (Μπορεί να χρειαστεί να χρησιμοποιήσετε την γραμμή εντολών για να δείτε αυτό το φάκελο.)",
+    "description": "Note to Linux and macOS users about showing hidden backup folder."
+  },
+  "welcNoBackupInstrxnStep1": {
+    "message": "Χρησιμοποιήστε το $1 για να βρείτε την πηγή δεδομένων τοποθεσίας αποκομμάτων. Ανάλογα με τις προηγούμενες ρυθμίσεις σας, μπορεί να βρίσκονται στον φάκελο τού Firefox προφίλσας, η σε άλλο φάκελο που βρίσκεται αλλού."
+  },
+  "welcNoBackupInstrxnStep2": {
+    "message": "Ανοίξτε το αρχείο προέλευσης δεδομένων και εντοπίστε τον φάκελο αντιγράφων ασφαλείας τού Clippings. Πρέπει να ονομαστεί \"-clippings-δημιουργία αντιγράφων ασφαλείας\" ή \".clipbak\". $1"
+  },
+  "welcNoBackupInstrxnStep3": {
+    "message": "Ανοίξτε τον φάκελο αντιγράφων ασφαλείας τού Clippings και εντοπίστε το πιο πρόσφατο αντίγραφο ασφαλείας του αρχείου. Αντιγράψτε το στην επιφάνεια εργασίας σας η στο φάκελο \"Έγγραφα\"."
+  },
+  "welcNoBackupInstrxnStep4": {
+    "message": "Κάντε κλικ στο κουμπί Αναζήτηση επάνω, και, στη συνέχεια, επιλέξτε το αρχείο αντιγράφου ασφαλείας."
+  },
+  "welcReadyImport": {
+    "message": "Όταν είστε έτοιμοι, πατήστε το πλήκτρο Εισαγωγή για να επικολληθούν τα δεδομένα των αποκομμάτων σας στο Clippings 6."
+  },
+  "welcImportBtn": {
+    "message": "Εισαγωγή"
+  },
+  "welcBack": {
+    "message": "Πίσω στην Αρχική Σελίδα"
+  },
+  "welcImportStatus": {
+    "message": "Εισαγωγή αποκομμάτων..."
+  },
+  "welcImportStatusDone": {
+    "message": "Η εισαγωγή αποκομμάτων... ολοκληρώθηκε!"
+  },
+  "welcImportCount": {
+    "message": "Έγινε εισαγωγή $1 αντικειμένων."
+  },
+  "welcImportConfirmDone": {
+    "message": "Τα αποκόμματα σας έχουν εισαχθεί με επιτυχία. Το Clippings είναι τώρα έτοιμο για χρήση."
+  },
+  "welcShctKeyNote": {
+    "message": "Τα κλειδί επικόλλησης <strong>έχει αλλάξει<\/strong> στο Clippings 6. Για να επικολλήσετε ένα απόκομμα από το πλήκτρο συντόμευσης η να κάνετε αναζήτηση με το όνομα, πατήστε το πλήκτρο <span id=\"keybd-paste-key\">$1<\/span>."
+  },
+  "welcOpenClipMgr": {
+    "message": "Άνοιγμα τού Clippings Manager"
+  },
+  "welcImportError": {
+    "message": "Σφάλμα κατά την ανάγνωση επιλεγμένου αρχείου. Το αρχείο ενδέχεται να μην είναι έγκυρο αρχείο Αποκομμάτων."
+  },
+  "welcImportRetry": {
+    "message": "Πατήστε το πλήκτρο Προσπαθήστε Ξανά και επιλέξτε ένα άλλο αρχείο αντιγράφου ασφαλείας."
+  },
+  "welcImportRetryBtn": {
+    "message": "Προσπαθήστε ξανά"
+  },
+  "welcLeaveConfirm": {
+    "message": "Είστε σίγουρος ότι θέλετε να φύγετε από την σελίδα Welcome to Clippings;"
+  },
+  "welcCancelDlg": {
+    "message": "Μετάβαση πίσω"
+  },
+  "welcImportLater": {
+    "message": "Μπορείτε να εισάγετε τα αποκόμματα backup αργότερα με το άνοιγμα Clippings Manager και, στην συνέχεια, επιλέγοντας Εργαλεία → Εισαγωγή."
+  },
+  "welcCantImportHdg": {
+    "message": "Αδυναμία εισαγωγής τού αρχείο αντιγράφου ασφαλείας, επειδή η βάση δεδομένων τού Clippings δεν είναι προσβάσιμη."
+  },
+  "welcCantImportCause": {
+    "message": "Αυτό μπορεί να συμβεί αν οι ρυθμίσεις απορρήτου στο Firefox είναι πολύ περιοριστικές (για παράδειγμα, η λειτουργία Ιδιωτικής περιήγησης). Αυτές οι ρυθμίσεις μπορούν να παρεμβαίνουν με WebExtensions στο Clippings."
+  },
+  "welcCantImportFix": {
+    "message": "Βεβαιωθείτε ότι οι ρυθμίσεις απορρήτου τού προγράμματος περιήγησης, έχουν προεπιλεχθεί και, στην συνέχεια, κάντε επανεκκίνηση του Firefox και προσπαθήστε ξανά. Αν αυτό δεν διορθωθεί αυτό, ακολουθήστε τα εξής βήματα:"
+  },
+  "welcCantImportFixStep1": {
+    "message": "Ανοίξτε το μενού του Firefox και επιλέξτε Βοήθεια → Πληροφορίες αντιμετώπισης Προβλημάτων."
+  },
+  "welcCantImportFixStep2": {
+    "message": "Κάντε κλικ στο κουμπί Ανανέωση Firefox, στη συνέχεια, ακολουθήστε τις οδηγίες. Το Firefox θα επανεκκινηθεί."
+  },
+  "welcCantImportFixStep3": {
+    "message": "Επανεγκαταστήστε το Clippings, και στην συνέχεια προσπαθήστε να εισαγάγετε το αρχείο αντιγράφων ασφαλείας και πάλι."
+  },
+  "newClippingDlgTitle": {
+    "message": "Νέο ψαλίδισμα",
+    "description": "New Clipping dialog"
+  },
+  "labelName": {
+    "message": "Όνομα:"
+  },
+  "labelContent": {
+    "message": "Κείμενο:"
+  },
+  "labelCreateInFldr": {
+    "message": "Δημιουργήθηκε στο:"
+  },
+  "btnNewFolder": {
+    "message": "Νέος φάκελος"
+  },
+  "labelCreateClippingOptions": {
+    "message": "Επιλογές",
+    "description": "Button to expand clipping options (source URL, label) in New Clipping dialog"
+  },
+  "labelSaveSrcURL": {
+    "message": "Συνεχής αποθήκευση της διεύθυνσης πηγαίας ιστοσελίδας"
+  },
+  "labelShortcutKey": {
+    "message": "Πλήκτρο Συντόμευσης:"
+  },
+  "labelLabel": {
+    "message": "Ετικέτα:",
+    "description": "Label for the Clipping label menu"
+  },
+  "labelNewFldrName": {
+    "message": "Νέο όνομα φακέλου:"
+  },
+  "labelCreateAsSubfOf": {
+    "message": "Δημιουργία υποφακέλου:"
+  },
+  "shortcutKeyHint": {
+    "message": "Για γρήγορη επικόλληση αυτού τού ψαλιδίσματος σε μια ιστοσελίδα κειμένου στο Firefox, πατήστε $1 ακολουθούμενο από το πλήκτρο συντόμευσης."
+  },
+  "shortcutKeyAssigned": {
+    "message": "Το \"$1 \" έχει ήδη ανατεθεί"
+  },
+  "initError": {
+    "message": "Το Clippings δεν λειτουργεί όταν οι ρυθμίσεις απορρήτου τού Firefox είναι πολύ περιοριστικές, όπως η λειτουργία Ιδιωτικής Περιήγησης. Δοκιμάστε να αλλάξετε αυτές τις ρυθμίσεις στις προεπιλογές, στη συνέχεια, κάντε επανεκκίνηση τού Firefox και προσπαθήστε ξανά."
+  },
+  "saveClippingError": {
+    "message": "Αδυναμία αποθήκευσης τού νέου ψαλίδισμας. Ελέγξτε ότι οι ρυθμίσεις απορρήτου τού Firefox δεν είναι υπερβολικά περιοριστικές (όπως η μετατροπή σε Private Browsing mode) και, στη συνέχεια, κάντε επανεκκίνηση του Firefox και προσπαθήστε ξανά."
+  },
+  "shortcutKeyDesc": {
+    "message": "Πατήστε το πλήκτρο συντόμευσης αν θέλετε να επικολλήσετε."
+  },
+  "keybPasteDlgF1": {
+    "message": "F1 = λίστα συντομεύσεων"
+  },
+  "keybPasteDlgTab": {
+    "message": "TAB = αναζήτηση ψαλιδίσματος με βάση το όνομα"
+  },
+  "keybPasteDlgTabShctMode": {
+    "message": "ΚΑΡΤΈΛΑ = λειτουργία πλήκτρων συντόμευσης"
+  },
+  "srchByNameDesc": {
+    "message": "Αναζήτηση για ψαλίδισμα με όνομα:"
+  },
+  "numMatches": {
+    "message": "1 αντιστοιχία"
+  },
+  "insClipping": {
+    "message": "Εισαγωγή αποσπάσματος"
+  },
+  "exportHTML": {
+    "message": "Εξαγωγή σε HTML"
+  },
+  "expHTMLTitle": {
+    "message": "Πλήκτρα συντόμευσης αποκομμάτων",
+    "description": "HTML export of shortcut key list - page title"
+  },
+  "expHTMLHostAppInfo": {
+    "message": "Αποκόμματα $1, $ 2",
+    "description": "Clippings <extVersion> on Firefox <fxVersion>"
+  },
+  "expHTMLShctKeyInstrxn": {
+    "message": "Για να επικολλήσετε ένα απόκομμα σε ένα πλαίσιο κειμένου σελίδας web στ5ο Firefox, πατήστε ALT + SHIFT + Y (εντολή + Shift + Y σε macOS), στη συνέχεια, το πλήκτρο συντόμευσης."
+  },
+  "expHTMLShctKeyCol": {
+    "message": "Πλήκτρο Συντόμευσης"
+  },
+  "expHTMLClipNameCol": {
+    "message": "Όνομα αποκοπής"
+  },
+  "plchldrPromptSingleDesc": {
+    "message": "Εισαγάγετε την τιμή για την «$1»:",
+    "description": "Placeholder prompt dialog - single placeholder"
+  },
+  "plchldrPromptMultiDesc": {
+    "message": "Πληκτρολογήστε τις τιμές για τα ακόλουθα σύμβολα κράτησης θέσης.",
+    "description": "Placeholder prompt dialog - multiple placeholders"
+  },
+  "clippingsMgrWndTitle": {
+    "message": "Διαχείριση αποκομμάτων",
+    "description": "Clippings Manager window title"
+  },
+  "tbNewClipping": {
+    "message": "Νέο ψαλίδισμα"
+  },
+  "tbNewFolder": {
+    "message": "Νέος φάκελος"
+  },
+  "tbMoveOrCopy": {
+    "message": "Μετακίνηση ή αντιγραφή"
+  },
+  "tbDelete": {
+    "message": "Διαγραφή"
+  },
+  "tbUndo": {
+    "message": "Αναίρεση"
+  },
+  "tbTools": {
+    "message": "Εργαλεία"
+  },
+  "clipMgrSrchBarHint": {
+    "message": "Έυρεση αποκομμάτων και φακέλων",
+    "description": "Clippings Manager search bar hint text"
+  },
+  "clipMgrIntroHdg": {
+    "message": "Καλώς ήλθατε στο Clippings Manager"
+  },
+  "clipMgrIntroDesc": {
+    "message": "Χρησιμοποιήστε το Clippings Manager να επεξεργαστείτε, να μετονομάσετε η να διαγράψετε αποκόμματα και οργανώστε την συλλογή αποκομμάτων σε φακέλους."
+  },
+  "clipMgrIntroKeybHdg": {
+    "message": "Συντομεύσεις πληκτρολογίου"
+  },
+  "labelInsPlchldr": {
+    "message": "Εισαγωγή συμβόλου κράτησης θέσης:",
+    "description": "Clippings Manager - Placeholder Toolbar"
+  },
+  "tbPlchldrPresets": {
+    "message": "Προεπιλογές"
+  },
+  "tbPlchldrCustom": {
+    "message": "Προσαρμογή"
+  },
+  "tbPlchldrNumeric": {
+    "message": "Αριθμητικό"
+  },
+  "labelSrcURL": {
+    "message": "Διεύθυνση προέλευσης:"
+  },
+  "btnEditSrcURL": {
+    "message": "Επεξεργασία"
+  },
+  "mnuNewFromClipbd": {
+    "message": "Νέο από το Πρόχειρο"
+  },
+  "mnuBackup": {
+    "message": "Δημιουργία αντιγράφων ασφαλείας..."
+  },
+  "mnuRestoreFromBackup": {
+    "message": "Επαναφορά από αντίγραφο ασφαλείας..."
+  },
+  "mnuImport": {
+    "message": "Εισαγωγή..."
+  },
+  "mnuExport": {
+    "message": "Εξαγωγή..."
+  },
+  "mnuRemoveAllSrcURLs": {
+    "message": "Κατάργηση διευθύνσεων διαδικτυακής προέλευσης..."
+  },
+  "mnuShowHide": {
+    "message": "Εμφάνιση\/απόκρυψη"
+  },
+  "mnuShowHideDetails": {
+    "message": "Παράθυρο λεπτομερειών"
+  },
+  "mnuShowHidePlchldrBar": {
+    "message": "Σύμβολο κράτησης θέσης γραμμής εργαλείων"
+  },
+  "mnuShowHideStatusBar": {
+    "message": "Γραμμή κατάστασης"
+  },
+  "mnuMaximize": {
+    "message": "Μεγιστοποίηση"
+  },
+  "mnuMinimizeWhenInactive": {
+    "message": "Ελαχιστοποίηση κατά την ανενεργεία"
+  },
+  "mnuShowExtPrefs": {
+    "message": "Επιλογές..."
+  },
+  "mnuMoveOrCopy": {
+    "message": "Μετακίνηση ή αντιγραφή..."
+  },
+  "mnuEditLabel": {
+    "message": "Ετικέτα"
+  },
+  "mnuGoToSrcURL": {
+    "message": "Μετάβαση στην πηγαία ιστοσελίδα"
+  },
+  "mnuPlchldrDate": {
+    "message": "Ημερομηνία",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "mnuPlchldrTime": {
+    "message": "Ώρα",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "mnuPlchldrAppName": {
+    "message": "Όνομα εφαρμογής",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "mnuPlchldrUsrAgent": {
+    "message": "Πρωτόκολο Δικτύου",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "mnuPlchldrClipName": {
+    "message": "Όνομα αποκοπής",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "mnuPlchldrFldrName": {
+    "message": "Όνομα γονικού φακέλου",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "clipMgrNameHint": {
+    "message": "Όνομα αποκοπής",
+    "description": "Clippings Manager - clipping name textbox hint text"
+  },
+  "clipMgrContentHint": {
+    "message": "Εισάγετε το ψαλίδισμα κείμενο",
+    "description": "Clippings Manager - clipping content textarea hint text"
+  },
+  "clipMgrShortcutHelpHint": {
+    "message": "Βοήθεια συντομεύσεων"
+  },
+  "clipMgrNoItems": {
+    "message": "Δεν βρέθηκαν αποκόμματα."
+  },
+  "clipMgrIntroCmdDel": {
+    "message": "Διαγραφή των επιλεγμένων αποκομμάτων η τού φακέλου",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdClearSrchBar": {
+    "message": "Εκκαθάριση γραμμής Αναζήτησης",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdSrch": {
+    "message": "Έυρεση αποκομμάτων και φακέλων",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdClose": {
+    "message": "Κλείσιμο τού Clippings Manager",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdUndo": {
+    "message": "Αναίρεση",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdShowIntro": {
+    "message": "Εμφάνιση εισαγωγής τού Clippings Manager",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdMaximize": {
+    "message": "Μεγιστοποίηση παραθύρου",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrStatusBar": {
+    "message": "1 στοιχεία"
+  },
+  "clipMgrRemoveSrcURLsConfirm": {
+    "message": "Αφαίρεση πηγής των διευθύνσεων ιστοσελίδων από τα αποκόμματα σας."
+  },
+  "clipMgrNoUndo": {
+    "message": "Τίποτα για αναίρεση"
+  },
+  "clipMgrShortcutKeyHelpHdg": {
+    "message": "Πλήκτρα συντόμευσης αποκομμάτων"
+  },
+  "clipMgrShortcutHelpInstrxn": {
+    "message": "Για να επικολλήσετε ένα απόκομμα από την παρακάτω λίστα σε μια διαδικτυακή σελίδα κειμένου στο Firefox, πατήστε $1 και, στη συνέχεια, το πλήκτρο συντόμευσης."
+  },
+  "clipMgrShortcutKeyAssigned": {
+    "message": "Το επιλεγμένο πλήκτρο συντόμευσης ήδη αντιστοιχιστεί σε άλλο ψαλίδισμα. Παρακαλώ επιλέξτε ένα διαφορετικό πλήκτρο συντόμευσης."
+  },
+  "clipMgrNoSrcURL": {
+    "message": "Το επιλεγμένο απόκομμα δεν έχει πηγή διεύθυνση της ιστοσελίδας."
+  },
+  "clipMgrImportConfirm": {
+    "message": "Η εισαγωγή από το \"$1\" ολοκληρώθηκε με επιτυχία."
+  },
+  "btnReload": {
+    "message": "Επαναφόρτωση"
+  },
+  "clipMgrExportConfirm": {
+    "message": "Η εισαγωγή από το \"$1\" ολοκληρώθηκε με επιτυχία."
+  },
+  "clipMgrWarnRemoveSrcURLs": {
+    "message": "Όλες οι πηγές διευθύνσεων ιστοσελίδων των αποκομμάτων σας θα αφαιρεθούν. Θέλετε να συνεχίσετε;"
+  },
+  "placeholderNameHint": {
+    "message": "Γράμματα, αριθμοί, κάτω παύλες, κενά"
+  },
+  "labelCustPlchldrName": {
+    "message": "Όνομα συμβόλου κράτησης θέσης:"
+  },
+  "labelNumPlchldrName": {
+    "message": "Όνομα αριθμητικού συμβόλου κράτησης θέσης:"
+  },
+  "labelCustPlchldrVal": {
+    "message": "Προεπιλεγμένη τιμή (προαιρετικό):"
+  },
+  "custPlchldrValDesc": {
+    "message": "Διαχωρισμός πολλαπλών προεπιλεγμένων τιμών με ένα \"|\" σύμβολο. Παράδειγμα: κόκκινο|πράσινο|μπλε"
+  },
+  "numPlchldrDesc": {
+    "message": "Κάθε φορά που το απόκομμα έχει επικολληθεί, η αξία του αυτό τού σύμβολου κράτησης θέσης αυτόματα θα αυξηθεί κατά μία, μέχρι το σύμβολο κράτησης θέσης να επαναφερθεί από την γραμμή εργαλείων."
+  },
+  "labelSelImportFile": {
+    "message": "Επιλογή αρχείου για εισαγωγή:"
+  },
+  "labelSelBkupFile": {
+    "message": "Επιλέξτε αρχείο αντιγράφου ασφαλείας:"
+  },
+  "statusSavingBkup": {
+    "message": "Αποθήκευση αρχείου αντιγράφου ασφαλείας..."
+  },
+  "statusSavingBkupDone": {
+    "message": "Η αποθήκευση αρχείου αντιγράφου ασφαλείας... ολοκληρώθηκε"
+  },
+  "statusSavingBkupFailed": {
+    "message": "Απέτυχε η δημιουργία αντιγράφου ασφαλείας."
+  },
+  "backupError": {
+    "message": "Συγγνώμη, παρουσιάστηκε ένα σφάλμα κατά τη δημιουργία του αρχείου αντιγράφου ασφαλείας.\n\nΛεπτομέρειες:\n$1"
+  },
+  "cbImportReplcShctKeys": {
+    "message": "Αντικατάσταση πλήκτρων συντόμευσης"
+  },
+  "warnBackupOverwrite": {
+    "message": "Επαναφορά από ένα αρχείο αντιγράφου ασφαλείας θα αντικαταστήσει όλα τα αποκόμματα σας με τη δημιουργία αντιγράφων ασφαλείας. Αυτή η ενέργεια δεν μπορεί να αναιρεθεί."
+  },
+  "btnImport": {
+    "message": "Εισαγωγή"
+  },
+  "btnRestoreBkup": {
+    "message": "Επαναφορά αντιγράφου ασφαλείας"
+  },
+  "importError": {
+    "message": "Σφάλμα κατά την ανάγνωση επιλεγμένου αρχείου. Το αρχείο ενδέχεται να μην είναι έγκυρο αρχείο Αποκομμάτων."
+  },
+  "labelSelExportFmt": {
+    "message": "Επιλέξτε μια μορφή για την εξαγωγή αποκομμάτων:"
+  },
+  "expFmtDescHdg": {
+    "message": "Περιγραφή"
+  },
+  "expFmtClippings6": {
+    "message": "Clippings 6"
+  },
+  "expFmtClippings6Desc": {
+    "message": "Η προεπιλεγμένη μορφή για την δημιουργία αντιγράφων ασφαλείας και ανταλλαγή δεδομένων με άλλους χρήστες η πολλούς υπολογιστές. Απαιτείτε το Clippings 5.5 η νεότερη εγκατεστημένη έκδοση."
+  },
+  "expFmtHTMLDoc": {
+    "message": "Έγγραφο HTML"
+  },
+  "expFmtHTMLDocDesc": {
+    "message": "Εξαγωγές δεδομένων αποκομμάτων, όπως ένα έγγραφο HTML για εκτύπωση η εμφάνιση σε ένα πρόγραμμα περιήγησης διαδικτύου."
+  },
+  "cbExpInclSrcURLs": {
+    "message": "Αφαίρεση πηγής των διευθύνσεων ιστοσελίδων από τα αποκόμματα σας"
+  },
+  "btnExport": {
+    "message": "Εξαγωγή"
+  },
+  "statusExportStart": {
+    "message": "Εξάγονται..."
+  },
+  "statusExportDone": {
+    "message": "Η εξαγωγή... ολοκληρώθηκε"
+  },
+  "statusExportFailed": {
+    "message": "Η εξαγωγή απέτυχε."
+  },
+  "exportError": {
+    "message": "Σφάλμα κατά την εξαγωγή δεδομένων.\n\nΛεπτομέρειες:\n$1"
+  },
+  "labelMoveClipping": {
+    "message": "Μετακίνηση ψαλιδίσματος σε:"
+  },
+  "labelMoveFolder": {
+    "message": "Μετακίνηση φακέλου σε:"
+  },
+  "labelCopyClipping": {
+    "message": "Αντιγραφή ψαλιδίσματος σε:"
+  },
+  "labelCopyFolder": {
+    "message": "Αντιγραφή φακέλου σε:"
+  },
+  "cbCreateCopy": {
+    "message": "Δημιουργία αντιγράφου"
+  },
+  "btnMove": {
+    "message": "Μετακίνηση"
+  },
+  "btnCopy": {
+    "message": "Αντιγραφή"
+  },
+  "prefsTitle": {
+    "message": "Ρυθμίσεις τού Clippings"
+  },
+  "prefsHdgPasteOptions": {
+    "message": "Ρυθμίσεις επικόλλησης"
+  },
+  "labelPasteOptions": {
+    "message": "Όταν γίνεται επικόλληση ενός μορφοποιημένου HTML ψαλιδίσματος σε ένα πλούσιο επεξεργασία κειμένου κουτί:"
+  },
+  "pasteOptFormatted": {
+    "message": "Επικόλληση ως μορφοποιημένο κείμενο"
+  },
+  "pasteOptRawHTML": {
+    "message": "Επικόλληση ως απλό κείμενο, διατηρώντας τις HTML ετικέτες"
+  },
+  "cbAutoLineBreak": {
+    "message": "Αυτόματο σπ'ασιμο γραμμών, εκτός αν <p> η <br> υπάρχουν ετικέτες"
+  },
+  "htmlPasteDesc": {
+    "message": "Ένα μορφοποίημένο HTML ψαλίδισμα πάντα θα επικολλήτε, ως απλό κείμενο, ως επικόλληση σε ένα απλό πλαίσιο κειμένου, η αν το απόκομμα περιέχει περιορισμένες ετικέτες όπως <script>, <applet>, <object>, <iframe>, κ. λπ."
+  },
+  "prefsShortcutMode": {
+    "message": "Ενεργοποίηση του πλήκτρου συντόμευσης λειτουργίας χρησιμοποιώντας το $1"
+  },
+  "prefsDefaultNumPlchldrStart": {
+    "message": "Προεπιλεγμένη τιμή εκκίνησης για αυτόματη επαύξηση συμβόλων κράτησης θέσης:"
+  },
+  "prefsHdgGeneralOptions": {
+    "message": "Γενικές επιλογές"
+  },
+  "cbAlwaysSaveSrcURL": {
+    "message": "Συνεχής αποθήκευση της διεύθυνσης πηγαίας ιστοσελίδας"
+  },
+  "cbCheckSpelling": {
+    "message": "Έλεγχος ορθογραφίας"
+  },
+  "keyAlt": {
+    "message": "ALT"
+  },
+  "keyCtrl": {
+    "message": "CTRL"
+  },
+  "keyShift": {
+    "message": "SHIFT"
+  },
+  "keyDel": {
+    "message": "DEL"
+  },
+  "keyEsc": {
+    "message": "ESC"
+  }
+}
