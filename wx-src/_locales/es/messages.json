@@ -1,0 +1,718 @@
+{
+  "extName": {
+    "message": "Clippings",
+    "description": "Name of the extension"
+  },
+  "extDesc": {
+    "message": "Guardar el texto frecuente para pegar posteriormente.",
+    "description": "Description of the extension"
+  },
+  "browserActionTitle": {
+    "message": "Clippings",
+    "description": "Toolbar button label"
+  },
+  "cmdDesc": {
+    "message": "Pegar usando la tecla de acceso rápido",
+    "description": "Shortcut key command description"
+  },
+  "hostAppFx": {
+    "message": "Firefox"
+  },
+  "hostAppTb": {
+    "message": "Thunderbird"
+  },
+  "hostAppAll": {
+    "message": "Firefox o Thunderbird"
+  },
+  "btnOK": {
+    "message": "Aceptar"
+  },
+  "btnCancel": {
+    "message": "Cancelar"
+  },
+  "btnClose": {
+    "message": "Cerrar",
+    "description": "Dialog action button"
+  },
+  "btnYes": {
+    "message": "Si"
+  },
+  "btnNo": {
+    "message": "No"
+  },
+  "btnFinish": {
+    "message": "Hecho"
+  },
+  "btnBrowse": {
+    "message": "Explorar..."
+  },
+  "msgUnavail": {
+    "message": "La acción seleccionada no está disponible ahora mismo."
+  },
+  "msgNoTextSel": {
+    "message": "No hay texto seleccionado. Selecciona el texto primero."
+  },
+  "msgBrwsWndNotFocused": {
+    "message": "Por favor, vuelva a la ventana del navegador e inténtelo de nuevo."
+  },
+  "msgClpgNotFound": {
+    "message": "¡No es posible encontrar el recorte seleccionado!"
+  },
+  "msgNoActvBrwsTab": {
+    "message": "No se puede pegar ya que no hay ninguna pestaña activa."
+  },
+  "msgRetryPgBusy": {
+    "message": "La página está ocupada. Espere a que acabe e inténtelo de nuevo."
+  },
+  "msgRetryPgNotLoaded": {
+    "message": "No puedo leer el texto seleccionado. Recargue la página y pruebe otra vez."
+  },
+  "msgUnknown": {
+    "message": "No hay ayuda disponible (no, no es broma)."
+  },
+  "none": {
+    "message": "Ninguno"
+  },
+  "newClipping": {
+    "message": "Nuevo recorte"
+  },
+  "newFolder": {
+    "message": "Crear directorio"
+  },
+  "untitledClipping": {
+    "message": "Recorte sin nombre"
+  },
+  "untitledFolder": {
+    "message": "Directorio sin nombre"
+  },
+  "rootFldrName": {
+    "message": "Recortes",
+    "description": "Name of root folder"
+  },
+  "labelRed": {
+    "message": "Rojo"
+  },
+  "labelOrange": {
+    "message": "Naranja"
+  },
+  "labelYellow": {
+    "message": "Amarillo"
+  },
+  "labelGreen": {
+    "message": "Verde"
+  },
+  "labelBlue": {
+    "message": "Azul"
+  },
+  "labelPurple": {
+    "message": "Púrpura"
+  },
+  "labelGrey": {
+    "message": "Gris"
+  },
+  "cxtMenuNew": {
+    "message": "Nuevo...",
+    "description": "Clippings context menu"
+  },
+  "cxtMenuOpenClippingsMgr": {
+    "message": "Organizar recortes",
+    "description": "Clippings context menu"
+  },
+  "baMenuResetAutoIncrPlaceholders": {
+    "message": "Reiniciar marcadores autoincrementales",
+    "description": "Clippings browser action submenu"
+  },
+  "welcomePageTitle": {
+    "message": "Bienvenido a Clippings 6",
+    "description": "Welcome to Clippings (post-installation) page title"
+  },
+  "welcInstallSuccessHdg": {
+    "message": "¡Bienvenido a Clippings 6!"
+  },
+  "welcInstallSuccessSubh": {
+    "message": "Instalación finalizada."
+  },
+  "welcCurrUsrHdg": {
+    "message": "Usuarios actuales"
+  },
+  "welcCurrUsrDesc": {
+    "message": "Importa tus recortes desde una versión antigua de Clippings."
+  },
+  "welcCurrUsrCTA": {
+    "message": "Importar \"Mis recortes\""
+  },
+  "welcNewUsrHdg": {
+    "message": "Nuevos usuarios"
+  },
+  "welcNewUsrDesc": {
+    "message": "Da un vistazo rápido a las características básicas de Clippings."
+  },
+  "welcNewUsrCTA": {
+    "message": "Guía de uso básico"
+  },
+  "closeWelcomePg": {
+    "message": "Cerrar esta página"
+  },
+  "welcImportHdg": {
+    "message": "Importar backup de Clippings"
+  },
+  "welcImportDesc": {
+    "message": "Para iniciar haz click sobre \"Explorar\", después selecciona el fichero de recuperación."
+  },
+  "welcSkipImport": {
+    "message": "No importar"
+  },
+  "welcNoBackupExpand": {
+    "message": "Que hacer si no se ha creado el backup"
+  },
+  "welcNoBackupSubh": {
+    "message": "Si no has guardado tus recortes sigue los siguientes pasos:"
+  },
+  "welcFileMgrWindows": {
+    "message": "Windows Explorer",
+    "description": "File manager application on Windows, for locating Clippings backup folder"
+  },
+  "welcFileMgrMac": {
+    "message": "Finder",
+    "description": "File manager application on macOS, for locating Clippings backup folder"
+  },
+  "welcFileMgrGeneric": {
+    "message": "el explorador de archivos en tu sistema"
+  },
+  "welcShowBkupFileNote": {
+    "message": " (Puede que tengas que usar la linea de comandos para ver el directorio)",
+    "description": "Note to Linux and macOS users about showing hidden backup folder."
+  },
+  "welcNoBackupInstrxnStep1": {
+    "message": "Usa $1 para encontrar la localización de los datos de Clippings. Dependiendo de tu configuración puede que sea el directorio del perfil de Firefox u otro directorio en cualquier otro lugar."
+  },
+  "welcNoBackupInstrxnStep2": {
+    "message": "Abre el directorio donde están los datos y localiza el directorio de backups de Clippings. Debería llamarse \"clippings-backup\" o \".clipbak\".$1"
+  },
+  "welcNoBackupInstrxnStep3": {
+    "message": "Abre el directorio de backups y selecciona el fichero más reciente. Copialo a tu Escritorio o al directorio de Documentos."
+  },
+  "welcNoBackupInstrxnStep4": {
+    "message": "Pulsa \"Examinar\" y selecciona el fichero del backup."
+  },
+  "welcReadyImport": {
+    "message": "Cuando estés listo pulsa Importar para restaurar tus datos antiguos en Clippings 6."
+  },
+  "welcImportBtn": {
+    "message": "Importar"
+  },
+  "welcBack": {
+    "message": "Volver a la página de inicio"
+  },
+  "welcImportStatus": {
+    "message": "Importando recortes..."
+  },
+  "welcImportStatusDone": {
+    "message": "Importando recortes... ¡listo!"
+  },
+  "welcImportCount": {
+    "message": "$1 registros importados."
+  },
+  "welcImportConfirmDone": {
+    "message": "Tus recortes se han importado correctamente. Clippings ya está preparado para empezar."
+  },
+  "welcShctKeyNote": {
+    "message": "La tecla de pegar de Clippings <strong>ha cambiado<\/strong> en Clippings 6. Para pegar un recorte usando la tecla de pegado o buscar por nombre pulsa <span id=\"keybd-paste-key\">$1<\/span>."
+  },
+  "welcOpenClipMgr": {
+    "message": "Abrir gestor de recortes"
+  },
+  "welcImportError": {
+    "message": "Error leyendo el fichero. Puede que no sea un fichero de Clippings válido."
+  },
+  "welcImportRetry": {
+    "message": "Pulsa Volver a Intentar para seleccionar otro fichero de backup."
+  },
+  "welcImportRetryBtn": {
+    "message": "Volver a intentar"
+  },
+  "welcLeaveConfirm": {
+    "message": "¿Estás seguro de que quieres salir de la página de Bienvenido a Clippings?"
+  },
+  "welcCancelDlg": {
+    "message": "Regresar"
+  },
+  "welcImportLater": {
+    "message": "Puedes importar el backup más adelante abriendo el Gestor de recortes y seleccionando Herramientas->Importar."
+  },
+  "welcCantImportHdg": {
+    "message": "Clippings no puede importar el fichero porque la base de datos no es accesible."
+  },
+  "welcCantImportCause": {
+    "message": "Esto puede ocurrir si la configuración de privacidad en Firefox es demasiado restrictiva (por ejemplo, el modo de navegación privada).  Esta configuración puede interferir con WebExtensions como recortes."
+  },
+  "welcCantImportFix": {
+    "message": "Asegúrese de que configuración de privacidad del navegador está con los valores predeterminados, entonces reinicie Firefox y vuelva a intentarlo. Si esto no lo soluciona, siga estos pasos:"
+  },
+  "welcCantImportFixStep1": {
+    "message": "Abra el menú Firefox y selecciona ayuda → información de solución de problemas."
+  },
+  "welcCantImportFixStep2": {
+    "message": "Haga clic en actualizar Firefox, luego siga las instrucciones. Firefox se reiniciará."
+  },
+  "welcCantImportFixStep3": {
+    "message": "Reinstale Clippings y luego intente importar el archivo de backup otra vez."
+  },
+  "newClippingDlgTitle": {
+    "message": "Nuevo recorte",
+    "description": "New Clipping dialog"
+  },
+  "labelName": {
+    "message": "Nombre:"
+  },
+  "labelContent": {
+    "message": "Texto:"
+  },
+  "labelCreateInFldr": {
+    "message": "Creado en:"
+  },
+  "btnNewFolder": {
+    "message": "Carpeta nueva"
+  },
+  "labelCreateClippingOptions": {
+    "message": "Opciones",
+    "description": "Button to expand clipping options (source URL, label) in New Clipping dialog"
+  },
+  "labelSaveSrcURL": {
+    "message": "Guardar la dirección de la página web"
+  },
+  "labelShortcutKey": {
+    "message": "Acceso directo del teclado:"
+  },
+  "labelLabel": {
+    "message": "Etiqueta:",
+    "description": "Label for the Clipping label menu"
+  },
+  "labelNewFldrName": {
+    "message": "Nombre de la nueva carpeta:"
+  },
+  "labelCreateAsSubfOf": {
+    "message": "Crear como subcarpeta de:"
+  },
+  "shortcutKeyHint": {
+    "message": "Para pegar rápidamente este recorte en un cuadro de texto de en Firefox pulsa $1 seguido de la tecla de acceso rápido."
+  },
+  "shortcutKeyAssigned": {
+    "message": "'$1' ya está asignada"
+  },
+  "initError": {
+    "message": "Clippings es incompatible si las políticas de privacidad de Firefox son muy restrictivas, así como con el Modo Privado. \nReinicia los valores de privacidad a sus valores por defecto."
+  },
+  "saveClippingError": {
+    "message": "No se pudo guardar el recorte. Comprueba que la configuración de privacidad no sea muy restrictiva (por ejemplo el modo de navegación privada), reinicia Firefox y vuelve a intentarlo."
+  },
+  "shortcutKeyDesc": {
+    "message": "Pulsa la tecla de acceso rápido del recorte que desees pegar."
+  },
+  "keybPasteDlgF1": {
+    "message": "F1 = lista de accesos rápidos"
+  },
+  "keybPasteDlgTab": {
+    "message": "TAB = buscar recorte por nombre"
+  },
+  "keybPasteDlgTabShctMode": {
+    "message": "TAB = modo de tecla de acceso rápido"
+  },
+  "srchByNameDesc": {
+    "message": "Buscar recorte por nombre:"
+  },
+  "numMatches": {
+    "message": "$1 coincidencia(s)"
+  },
+  "insClipping": {
+    "message": "Insertar recorte"
+  },
+  "exportHTML": {
+    "message": "Exportar a HTML"
+  },
+  "expHTMLTitle": {
+    "message": "Teclas de acceso rápido de Clippings",
+    "description": "HTML export of shortcut key list - page title"
+  },
+  "expHTMLHostAppInfo": {
+    "message": "Clippings $1 en $2",
+    "description": "Clippings <extVersion> on Firefox <fxVersion>"
+  },
+  "expHTMLShctKeyInstrxn": {
+    "message": "Para pegar un recorte en un cuadro de texto pulsa ALT+SHIFT+Y (Command+Shift+Y en macOS) y después la tecla de acceso directo."
+  },
+  "expHTMLShctKeyCol": {
+    "message": "Tecla de acceso rápido"
+  },
+  "expHTMLClipNameCol": {
+    "message": "Nombre del recorte"
+  },
+  "plchldrPromptSingleDesc": {
+    "message": "Introduzca el valor para \"$1\":",
+    "description": "Placeholder prompt dialog - single placeholder"
+  },
+  "plchldrPromptMultiDesc": {
+    "message": "Introduce los valores para los siguientes marcadores.",
+    "description": "Placeholder prompt dialog - multiple placeholders"
+  },
+  "clippingsMgrWndTitle": {
+    "message": "Gestor de recortes",
+    "description": "Clippings Manager window title"
+  },
+  "tbNewClipping": {
+    "message": "Nuevo recorte"
+  },
+  "tbNewFolder": {
+    "message": "Carpeta nueva"
+  },
+  "tbMoveOrCopy": {
+    "message": "Mover o copiar"
+  },
+  "tbDelete": {
+    "message": "Borrar"
+  },
+  "tbUndo": {
+    "message": "Deshacer"
+  },
+  "tbTools": {
+    "message": "Herramientas"
+  },
+  "clipMgrSrchBarHint": {
+    "message": "Encontrar carpetas y recortes",
+    "description": "Clippings Manager search bar hint text"
+  },
+  "clipMgrIntroHdg": {
+    "message": "Bienvenido al Gestor de recortes"
+  },
+  "clipMgrIntroDesc": {
+    "message": "Usa el Gestor de recortes para editar, renombrar o borrar recortas u organizar tu colección de recortes en directorios."
+  },
+  "clipMgrIntroKeybHdg": {
+    "message": "Atajos de teclado"
+  },
+  "labelInsPlchldr": {
+    "message": "Añadir marcador:",
+    "description": "Clippings Manager - Placeholder Toolbar"
+  },
+  "tbPlchldrPresets": {
+    "message": "Preajustes"
+  },
+  "tbPlchldrCustom": {
+    "message": "Personalizar"
+  },
+  "tbPlchldrNumeric": {
+    "message": "Numérico"
+  },
+  "labelSrcURL": {
+    "message": "Dirección de origen:"
+  },
+  "btnEditSrcURL": {
+    "message": "Editar"
+  },
+  "mnuNewFromClipbd": {
+    "message": "Nuevo desde el portapapeles"
+  },
+  "mnuBackup": {
+    "message": "Copia de seguridad..."
+  },
+  "mnuRestoreFromBackup": {
+    "message": "Restaurar desde una copia de seguridad..."
+  },
+  "mnuImport": {
+    "message": "Importar..."
+  },
+  "mnuExport": {
+    "message": "Exportar..."
+  },
+  "mnuRemoveAllSrcURLs": {
+    "message": "Eliminar dirección web..."
+  },
+  "mnuShowHide": {
+    "message": "Mostrar\/Ocultar"
+  },
+  "mnuShowHideDetails": {
+    "message": "Panel de detalles"
+  },
+  "mnuShowHidePlchldrBar": {
+    "message": "Barra de marcadores"
+  },
+  "mnuShowHideStatusBar": {
+    "message": "Barra de Estado"
+  },
+  "mnuMaximize": {
+    "message": "Maximizar"
+  },
+  "mnuMinimizeWhenInactive": {
+    "message": "Minimizar cuando esté inactivo"
+  },
+  "mnuShowExtPrefs": {
+    "message": "Opciones..."
+  },
+  "mnuMoveOrCopy": {
+    "message": "Mover o copiar..."
+  },
+  "mnuEditLabel": {
+    "message": "Etiqueta"
+  },
+  "mnuGoToSrcURL": {
+    "message": "Ir a la Página Web"
+  },
+  "mnuPlchldrDate": {
+    "message": "Fecha",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "mnuPlchldrTime": {
+    "message": "Hora",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "mnuPlchldrAppName": {
+    "message": "Nombre de la Aplicación",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "mnuPlchldrUsrAgent": {
+    "message": "User Agent",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "mnuPlchldrClipName": {
+    "message": "Nombre del recorte",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "mnuPlchldrFldrName": {
+    "message": "Nombre de la carpeta superior",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "clipMgrNameHint": {
+    "message": "Nombre del recorte",
+    "description": "Clippings Manager - clipping name textbox hint text"
+  },
+  "clipMgrContentHint": {
+    "message": "Ingrese el texto del recorte",
+    "description": "Clippings Manager - clipping content textarea hint text"
+  },
+  "clipMgrShortcutHelpHint": {
+    "message": "Ayuda de acceso directo"
+  },
+  "clipMgrNoItems": {
+    "message": "No se encontraron recortes."
+  },
+  "clipMgrIntroCmdDel": {
+    "message": "Eliminar la carpeta o el recorte seleccionado",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdClearSrchBar": {
+    "message": "Limpiar barra de búsqueda",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdSrch": {
+    "message": "Encontrar carpetas y recortes",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdClose": {
+    "message": "Cerrar Gestor de recortes",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdUndo": {
+    "message": "Deshacer",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdShowIntro": {
+    "message": "Mostrar la introducción del Gestor de recortes",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdMaximize": {
+    "message": "Maximizar ventana",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrStatusBar": {
+    "message": "$1 elementos"
+  },
+  "clipMgrRemoveSrcURLsConfirm": {
+    "message": "Eliminar las direcciones web de sus recortes."
+  },
+  "clipMgrNoUndo": {
+    "message": "Nada que deshacer"
+  },
+  "clipMgrShortcutKeyHelpHdg": {
+    "message": "Teclas de acceso rápido de Clippings"
+  },
+  "clipMgrShortcutHelpInstrxn": {
+    "message": "Para pegar un recorte de la lista en un cuadro de text de una página web pulsa $1 y la tecla de acceso rápido."
+  },
+  "clipMgrShortcutKeyAssigned": {
+    "message": "La tecla de acceso rápido seleccionada ya está asignada. Seleccione otra tecla."
+  },
+  "clipMgrNoSrcURL": {
+    "message": "El recorte seleccionado no tiene una dirección web."
+  },
+  "clipMgrImportConfirm": {
+    "message": "La importación de \"$1\" se ha completado."
+  },
+  "btnReload": {
+    "message": "Recargar"
+  },
+  "clipMgrExportConfirm": {
+    "message": "La importación de \"$1\" se ha completado."
+  },
+  "clipMgrWarnRemoveSrcURLs": {
+    "message": "Todas las direcciones web de los recortes serán eliminadas. ¿Quieres continuar?"
+  },
+  "placeholderNameHint": {
+    "message": "Letras, números, subrayado, espacios no"
+  },
+  "labelCustPlchldrName": {
+    "message": "Nombre de los marcadores personalizados:"
+  },
+  "labelNumPlchldrName": {
+    "message": "Nombre de los marcadores numéricos:"
+  },
+  "labelCustPlchldrVal": {
+    "message": "Valor por defecto (opcional):"
+  },
+  "custPlchldrValDesc": {
+    "message": "Separa cada valor con el símbolo \"|\". Ejemplo: rojo|verde|azul"
+  },
+  "numPlchldrDesc": {
+    "message": "Cada vez que se pega un recorte el valor de su marcador se incrementa en uno hasta que el marcador es reseteado desde el menú contextual de la barra de herramientas de Clippings."
+  },
+  "labelSelImportFile": {
+    "message": "Seleccionar fichero a importar:"
+  },
+  "labelSelBkupFile": {
+    "message": "Seleccione el archivo de backup:"
+  },
+  "statusSavingBkup": {
+    "message": "Guardando fichero de backup..."
+  },
+  "statusSavingBkupDone": {
+    "message": "Guardando fichero de backup...¡listo!"
+  },
+  "statusSavingBkupFailed": {
+    "message": "El backup falló."
+  },
+  "backupError": {
+    "message": "Lo siento, ha ocurrido un error mientras se generaba el backup.\n\nDetalles:\n$1"
+  },
+  "cbImportReplcShctKeys": {
+    "message": "Reemplazar teclas de acceso rápido"
+  },
+  "warnBackupOverwrite": {
+    "message": "Restaurar una copia de seguridad reemplazará todos tus recortes con los del backup. Esta acción no se puede deshacer."
+  },
+  "btnImport": {
+    "message": "Importar"
+  },
+  "btnRestoreBkup": {
+    "message": "Restaurar backup"
+  },
+  "importError": {
+    "message": "Error leyendo el fichero. Puede que no sea un fichero válido para Clippings."
+  },
+  "labelSelExportFmt": {
+    "message": "Selecciona un formato para la exportación:"
+  },
+  "expFmtDescHdg": {
+    "message": "Descripción"
+  },
+  "expFmtClippings6": {
+    "message": "Clippings 6"
+  },
+  "expFmtClippings6Desc": {
+    "message": "El formato predeterminado de backup e intercambio de datos con otros usuarios de Clippings.  Requiere Clippings 5.5 o más reciente instalado."
+  },
+  "expFmtHTMLDoc": {
+    "message": "Documento HTML"
+  },
+  "expFmtHTMLDocDesc": {
+    "message": "Exporta los datos de Clippings como un documento HTML para imprimir o ver en un explorador web."
+  },
+  "cbExpInclSrcURLs": {
+    "message": "Incluir las direcciones origen de los recortes"
+  },
+  "btnExport": {
+    "message": "Exportar"
+  },
+  "statusExportStart": {
+    "message": "Exportando..."
+  },
+  "statusExportDone": {
+    "message": "Exportando... hecho"
+  },
+  "statusExportFailed": {
+    "message": "Fallo al exportar."
+  },
+  "exportError": {
+    "message": "Error exportando datos de Clippings.\n\nDetalles: \n$1"
+  },
+  "labelMoveClipping": {
+    "message": "Mover el recorte a:"
+  },
+  "labelMoveFolder": {
+    "message": "Mover carpeta a:"
+  },
+  "labelCopyClipping": {
+    "message": "Copiar el recorte a:"
+  },
+  "labelCopyFolder": {
+    "message": "Copiar la carpeta a:"
+  },
+  "cbCreateCopy": {
+    "message": "Crear una copia"
+  },
+  "btnMove": {
+    "message": "Mover"
+  },
+  "btnCopy": {
+    "message": "Copiar"
+  },
+  "prefsTitle": {
+    "message": "Opciones de Clippings"
+  },
+  "prefsHdgPasteOptions": {
+    "message": "Opciones de pegado"
+  },
+  "labelPasteOptions": {
+    "message": "Al pegar un recorte de formato HTML en un cuadro de texto enriquecido:"
+  },
+  "pasteOptFormatted": {
+    "message": "Pegar como texto con formato"
+  },
+  "pasteOptRawHTML": {
+    "message": "Pegar como texto sin formato, conservando las etiquetas HTML"
+  },
+  "cbAutoLineBreak": {
+    "message": "Salto de línea automático a no ser que existan las etiquetas <p> o <br>"
+  },
+  "htmlPasteDesc": {
+    "message": "Un recorte con formato HTML siempre se pegará como texto sin formato si se pega en un cuadro de texto simple o si el recorte contiene etiquetas restringidos tales como <script>, <applet>, <object>, <iframe>, etcetera."
+  },
+  "prefsShortcutMode": {
+    "message": "Activar el modo de acceso directo con $1"
+  },
+  "prefsDefaultNumPlchldrStart": {
+    "message": "Valor inicial para marcadores autoincrementales:"
+  },
+  "prefsHdgGeneralOptions": {
+    "message": "Opciones Generales"
+  },
+  "cbAlwaysSaveSrcURL": {
+    "message": "Siempre guardar la dirección de la página web"
+  },
+  "cbCheckSpelling": {
+    "message": "Comprobar ortografía"
+  },
+  "keyAlt": {
+    "message": "ALT"
+  },
+  "keyCtrl": {
+    "message": "CTRL"
+  },
+  "keyShift": {
+    "message": "SHIFT\/MAYÚS"
+  },
+  "keyDel": {
+    "message": "BORRAR"
+  },
+  "keyEsc": {
+    "message": "ESC"
+  }
+}
