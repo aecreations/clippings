@@ -313,13 +313,31 @@ $(document).ready(() => {
   // Fix for Fx57 bug where bundled page loaded using
   // browser.windows.create won't show contents unless resized.
   // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1402110>
-  browser.windows.getCurrent((win) => {
-    browser.windows.update(win.id, {width:win.width+1})
+  browser.windows.getCurrent(aWnd => {
+    browser.windows.update(aWnd.id, {
+      width: aWnd.width + 1,
+      focused: true,
+    });
   });
 });
 
 
 $(window).keypress(aEvent => {
+  const isMacOS = gClippings.getOS() == "mac";
+
+  function isAccelKeyPressed()
+  {
+    if (isMacOS) {
+      return aEvent.metaKey;
+    }
+    return aEvent.ctrlKey;
+  }
+
+  function isTextboxFocused(aEvent)
+  {
+    return (aEvent.target.tagName == "INPUT" || aEvent.target.tagName == "TEXTAREA");
+  }
+
   if (aEvent.key == "Escape") {
     if (gPasteMode == aeConst.PASTEACTION_SEARCH_CLIPPING) {
       if (gAutocompleteMenu.isPopupShowing()) {
@@ -378,7 +396,23 @@ $(window).keypress(aEvent => {
       });
     }
   }
+  else if (aEvent.key == "/") {
+    if (! isTextboxFocused(aEvent)) {
+      aEvent.preventDefault();
+    }
+  }
+  else if (aEvent.key == "F5") {
+    // Suppress browser reload.
+    aEvent.preventDefault();
+  }
   else {
+    // Ignore standard browser shortcut keys.
+    let key = aEvent.key.toUpperCase();
+    if (isAccelKeyPressed() && (key == "D" || key == "F" || key == "N" || key == "P"
+                                || key == "R" || key == "S" || key == "U")) {
+      aEvent.preventDefault();
+    }
+
     if (isShortcutListDisplayed()) {
       return;
     }
