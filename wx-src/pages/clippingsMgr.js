@@ -1490,7 +1490,7 @@ $(document).keypress(aEvent => {
   else {
     // Ignore standard browser shortcut keys.
     let key = aEvent.key.toUpperCase();
-    if (isAccelKeyPressed() && (key == "D" || key == "N" || key == "P"
+    if (isAccelKeyPressed() && (key == "D" || key == "F" || key == "N" || key == "P"
                                 || key == "R" || key == "S" || key == "U")) {
       aEvent.preventDefault();
     }
