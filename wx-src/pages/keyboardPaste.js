@@ -144,7 +144,7 @@ let gAutocompleteMenu = {
         $("#search-by-name .key-legend").show();
       }
       
-      let searchText = aEvent.target.value;
+      let searchText = this._sanitizeRegExp(aEvent.target.value);
       let menuItemsData = [];
       let menuItemsDataIdx = 0;
 
@@ -156,7 +156,6 @@ let gAutocompleteMenu = {
       for (let i = 0; i < this._srchData.length; i++) {
         let clipping = this._srchData[i];
         let re = new RegExp(searchText, "i");
-        // TO DO: Sanitize regexp to handle these characters: ()[]{}-/^$
         
         if (clipping.name.search(re) != -1) {
           menuItemsData.push({
@@ -257,6 +256,22 @@ let gAutocompleteMenu = {
     });
 
     closeDlg();
+  },
+
+  _sanitizeRegExp(aRegExpStr)
+  {
+    let rv = aRegExpStr.replace(/\\/g, "\\\\");
+    rv = rv.replace(/\(/g, "\\(");
+    rv = rv.replace(/\)/g, "\\)");
+    rv = rv.replace(/\[/g, "\\[");
+    rv = rv.replace(/\]/g, "\\]");
+    rv = rv.replace(/\{/g, "\\{");
+    rv = rv.replace(/\}/g, "\\}");
+    rv = rv.replace(/\-/g, "\\-");
+    rv = rv.replace(/\^/g, "\\^");
+    rv = rv.replace(/\$/g, "\\$");
+
+    return rv;
   }
 };
 
