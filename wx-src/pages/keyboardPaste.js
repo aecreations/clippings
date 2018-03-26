@@ -270,7 +270,11 @@ let gAutocompleteMenu = {
     rv = rv.replace(/\-/g, "\\-");
     rv = rv.replace(/\^/g, "\\^");
     rv = rv.replace(/\$/g, "\\$");
-
+    rv = rv.replace(/\|/g, "\\|");
+    rv = rv.replace(/\+/g, "\\+");
+    rv = rv.replace(/\*/g, "\\*");
+    rv = rv.replace(/\?/g, "\\?");
+    
     return rv;
   }
 };
