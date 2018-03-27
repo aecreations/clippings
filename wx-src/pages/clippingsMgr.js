@@ -369,7 +369,7 @@ let gSearchBox = {
       this._isActive = false;
     }
     else {
-      setStatusBarMsg(`${numMatches} matches`);
+      setStatusBarMsg(chrome.i18n.getMessage("numMatches", numMatches));
     }
 
     this._numMatches = numMatches;
@@ -1490,7 +1490,7 @@ $(document).keypress(aEvent => {
   else {
     // Ignore standard browser shortcut keys.
     let key = aEvent.key.toUpperCase();
-    if (isAccelKeyPressed() && (key == "D" || key == "N" || key == "P"
+    if (isAccelKeyPressed() && (key == "D" || key == "F" || key == "N" || key == "P"
                                 || key == "R" || key == "S" || key == "U")) {
       aEvent.preventDefault();
     }
@@ -2270,10 +2270,16 @@ function initDialogs()
       }).then(aDownldItemID => {
         gSuppressAutoMinzWnd = false;
         setStatusBarMsg(chrome.i18n.getMessage("statusExportDone"));
-        
-        gDialogs.exportConfirmMsgBox.setMessage(chrome.i18n.getMessage("clipMgrExportConfirm", aFilename));
-        gDialogs.exportConfirmMsgBox.showModal();
 
+        return browser.downloads.search({ id: aDownldItemID });
+
+      }).then(aDownldItems => {
+
+        if (aDownldItems && aDownldItems.length > 0) {
+          let exportFilePath = aDownldItems[0].filename;
+          gDialogs.exportConfirmMsgBox.setMessage(chrome.i18n.getMessage("clipMgrExportConfirm", exportFilePath));
+          gDialogs.exportConfirmMsgBox.showModal();
+        }
       }).catch(aErr => {
         gSuppressAutoMinzWnd = false;
         if (aErr.fileName == "undefined") {

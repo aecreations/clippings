@@ -16,6 +16,14 @@ function init()
     if (aEvent.key == "Enter" || aEvent.key == "Escape") {
       dismiss();
     }
+    else if (aEvent.key == "/") {
+      // Suppress quick find in page.
+      aEvent.preventDefault();
+    }
+    else if (aEvent.key == "F5") {
+      // Suppress browser reload.
+      aEvent.preventDefault();
+    }
   });
 
   window.addEventListener("contextmenu", aEvent => {
