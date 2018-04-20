@@ -2357,6 +2357,7 @@ function initDialogs()
   gDialogs.moveTo.selectedFldrNode = null;
 
   gDialogs.moveTo.resetTree = function () {
+    let that = gDialogs.moveTo;
     let fldrTree = that.fldrTree.getTree();
     fldrTree.clear();
     that.fldrTree = null;
@@ -2370,8 +2371,9 @@ function initDialogs()
     $('<div id="move-to-fldr-tree"></div>').insertAfter("#move-to-label");
   };
 
-  let that = gDialogs.moveTo;
   gDialogs.moveTo.onInit = () => {
+    let that = gDialogs.moveTo;
+
     if (! that.isInitialized) {
       $("#copy-instead-of-move").click(aEvent => {
         if (aEvent.target.checked) {
@@ -2420,11 +2422,14 @@ function initDialogs()
   };
 
   gDialogs.moveTo.onCancel = aEvent => {
+    let that = gDialogs.moveTo;
+
     that.resetTree();
     that.close();
   };
 
   gDialogs.moveTo.onAccept = aEvent => {
+    let that = gDialogs.moveTo;
     let clippingsMgrTree = getClippingsTree();
     let selectedNode = clippingsMgrTree.activeNode;
     let id = parseInt(selectedNode.key);
@@ -2442,7 +2447,7 @@ function initDialogs()
     let makeCopy = $("#copy-instead-of-move").prop("checked");
 
     if (parentFolderID == destFolderID && !makeCopy) {
-      $("#move-error").text("Item already exists in the selected folder.");
+      $("#move-error").text(chrome.i18n.getMessage("errMoveToSameParent"));
       return;
     }
 
