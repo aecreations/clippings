@@ -1,0 +1,76 @@
+{
+    "manifest_version": 2,
+    "name": "__MSG_extName__",
+    "description": "__MSG_extDesc__",
+    "version": "6.0.4+",
+    "homepage_url": "http://aecreations.sourceforge.net/clippings/index.php",
+    "author": "AE Creations",
+    
+    "applications": {
+	"gecko": {
+	    "strict_min_version": "57.0"
+	}
+    },
+
+    "icons": {
+        "48": "img/icon.svg",
+        "96": "img/icon.svg"
+    },
+
+    "permissions": [
+	"contextMenus",
+	"downloads",
+	"history",
+	"storage",
+	"tabs",
+	"unlimitedStorage"
+    ],
+    
+    "background": {
+	"scripts": [
+	    "lib/dexie/dexie.js",
+	    "lib/dexie/dexie-observable.js",
+	    "modules/aeConst.js",
+	    "modules/aeMsgBox.js",
+	    "modules/aeClippingSubst.js",
+	    "background.js"
+	]
+    },
+    
+    "content_scripts": [
+	{
+	    "matches": ["<all_urls>"],
+	    "all_frames": true,
+	    "js": ["content.js"]
+	}
+    ],
+
+    "browser_action": {
+	"default_icon": {
+	    "16": "img/clippings16.svg",
+            "32": "img/clippings32.svg"
+	},
+
+	"default_area": "navbar",
+        "default_title": "__MSG_browserActionTitle__",
+        "browser_style": false
+    },
+
+    "commands" : {
+	"ae-clippings-paste-clipping": {
+	    "suggested_key": {
+		"default": "Alt+Shift+Y",
+		"mac": "Command+Shift+Y"
+	    },
+	    "description": "__MSG_cmdDesc__"
+	}
+    },
+
+    "options_ui": {
+        "page": "pages/options.html",
+        "open_in_tab": true,
+        "browser_style": true
+    },
+
+    "default_locale": "en"
+}
