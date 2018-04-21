@@ -24,8 +24,8 @@
       
     "background": {
 	"scripts": [
-	    "lib/dexie/dexie.js",
-	    "lib/dexie/dexie-observable.js",
+	    "lib/dexie/dexie.min.js",
+	    "lib/dexie/dexie-observable.min.js",
 	    "modules/aeConst.js",
 	    "modules/aeMsgBox.js",
 	    "modules/aeClippingSubst.js",
