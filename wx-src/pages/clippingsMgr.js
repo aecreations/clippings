@@ -1768,7 +1768,10 @@ function initToolbar()
       separator2: "--------",
       removeAllSrcURLs: {
         name: chrome.i18n.getMessage("mnuRemoveAllSrcURLs"),
-        className: "ae-menuitem"
+        className: "ae-menuitem",
+        disabled: function (aKey, aOpt) {
+          return (gIsClippingsTreeEmpty);
+        }
       },
       separator3: "--------",
       showHideSubmenu: {
