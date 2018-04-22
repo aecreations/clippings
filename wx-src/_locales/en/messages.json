@@ -871,8 +871,8 @@
   },
 
   "errMoveToSubfldr": {
-    "message": "Cannot move to the selected folder.",
-    "description": "Error message when attempting to move a folder into a subfolder of itself"
+    "message": "Cannot move or copy to the selected folder.",
+    "description": "Error message when attempting to move or copy a folder into a subfolder of itself"
   },
 
   "btnMove": {
