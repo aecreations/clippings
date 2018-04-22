@@ -2438,14 +2438,15 @@ function initDialogs()
     let id = parseInt(selectedNode.key);
     let parentNode = selectedNode.getParent();
 
-    let parentFolderID = (parentNode.isRootNode() ? aeConst.ROOT_FOLDER_ID : parseInt(parentNode.key));
-
-    let destFolderID = aeConst.ROOT_FOLDER_ID;
-    if (that.selectedFldrNode) {
-      destFolderID = parseInt(that.selectedFldrNode.key);
+    // Handle case where default selection of root folder node wasn't changed.
+    if (that.selectedFldrNode === null) {
+      that.selectedFldrNode = that.fldrTree.getTree().getNodeByKey(Number(aeConst.ROOT_FOLDER_ID).toString());
     }
+    
+    let parentFolderID = (parentNode.isRootNode() ? aeConst.ROOT_FOLDER_ID : parseInt(parentNode.key));
+    let destFolderID = parseInt(that.selectedFldrNode.key);
 
-    log(`clippingsMgr.js: Move To dialog: current parent of selected item: ${parentFolderID}; move or copy to folder ID: ${destFolderID}`);
+    log(`clippingsMgr.js: Move To dialog: ID of selected item: ${id}; it is ${selectedNode.isFolder()} that the selected item in the clippings tree is a folder; current parent of selected item: ${parentFolderID}; move or copy to folder ID: ${destFolderID}`);
     
     let makeCopy = $("#copy-instead-of-move").prop("checked");
 
@@ -2454,9 +2455,28 @@ function initDialogs()
       return;
     }
 
-    // TO DO: Error handling:
-    // - Cannot move a folder into one of its subfolders - show message:
-    //   "Cannot move to the selected folder."
+    // Handle case where selected folder and destination folder are the same.
+    if (selectedNode.isFolder() && id == destFolderID) {
+      $("#move-error").text(chrome.i18n.getMessage("errMoveToSubfldr"));
+      return;
+    }
+
+    // Prevent infinite recursion when moving or copying a folder into one of
+    // its subfolders.
+    if (that.selectedFldrNode.isFolder()) {
+      let parentNode, parentID;
+      parentNode = that.selectedFldrNode.getParent();
+      parentID = parentNode.isRootNode() ? aeConst.ROOT_FOLDER_ID : parseInt(parentNode.key);
+
+      while (parentID != aeConst.ROOT_FOLDER_ID) {
+        if (parentID == id) {
+          $("#move-error").text(chrome.i18n.getMessage("errMoveToSubfldr"));
+          return;
+        }
+        parentNode = parentNode.getParent();
+        parentID = parentNode.isRootNode() ? aeConst.ROOT_FOLDER_ID : parseInt(parentNode.key);
+      }
+    }
 
     if (selectedNode.isFolder()) {
       if (makeCopy) {
