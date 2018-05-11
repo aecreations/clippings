@@ -332,6 +332,15 @@ function initFolderPicker()
     }
   });
 
+  // Set the width of the folder picker drop-down to match the width of the menu
+  // button that opens it.
+  let menuBtnStyle = window.getComputedStyle($("#new-clipping-fldr-picker-menubtn")[0]);
+  let menuBtnWidth = parseInt(menuBtnStyle.width);
+  
+  // Need to add 1px to the popup width to compensate for having to add 1 pixel
+  // to the width of the New Clipping popup window.
+  $("#new-clipping-fldr-tree-popup").css({ width: `${menuBtnWidth + 1}px` });
+  
   $("#new-folder-btn").attr("title", chrome.i18n.getMessage("btnNewFolder"));
 
   gFolderPickerPopup = new aeFolderPicker("#new-clipping-fldr-tree", gClippingsDB);
