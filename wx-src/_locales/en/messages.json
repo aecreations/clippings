@@ -821,6 +821,14 @@
     "message": "Exports your Clippings data as an HTML document for printing or display in a web browser."
   },
 
+  "expFmtCSV": {
+    "message": "CSV File"
+  },
+
+  "expFmtCSVDesc": {
+    "message": "Use the Comma-Separated Values (CSV) format to exchange Clippings data with other applications. Only clipping names and content are exported."
+  },
+
   "cbExpInclSrcURLs": {
     "message": "Include source web page addresses of clippings"
   },

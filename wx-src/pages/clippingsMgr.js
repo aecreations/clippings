@@ -2240,11 +2240,13 @@ function initDialogs()
   gDialogs.exportToFile = new aeDialog("#export-dlg");
   gDialogs.exportToFile.FMT_CLIPPINGS_WX = 0;
   gDialogs.exportToFile.FMT_HTML = 1;
+  gDialogs.exportToFile.FMT_CSV = 2;
   
   gDialogs.exportToFile.onInit = () => {
     let fmtDesc = [
       chrome.i18n.getMessage("expFmtClippings6Desc"), // Clippings 6
       chrome.i18n.getMessage("expFmtHTMLDocDesc"),    // HTML Document
+      chrome.i18n.getMessage("expFmtCSVDesc"),        // CSV File
     ];
 
     gSuppressAutoMinzWnd = true;
@@ -2256,7 +2258,8 @@ function initDialogs()
       if (selectedFmtIdx == gDialogs.exportToFile.FMT_CLIPPINGS_WX) {
         $("#include-src-urls").removeAttr("disabled");
       }
-      else if (selectedFmtIdx == gDialogs.exportToFile.FMT_HTML) {
+      else if (selectedFmtIdx == gDialogs.exportToFile.FMT_HTML
+              || selectedFmtIdx == gDialogs.exportToFile.FMT_CSV) {
         $("#include-src-urls").attr("disabled", "true").prop("checked", false);
       }
     });
@@ -2264,6 +2267,10 @@ function initDialogs()
     $("#export-format-list")[0].selectedIndex = gDialogs.exportToFile.FMT_CLIPPINGS_WX;
     $("#format-description").text(fmtDesc[gDialogs.exportToFile.FMT_CLIPPINGS_WX]);
     $("#include-src-urls").prop("checked", true);
+  };
+
+  gDialogs.exportToFile.onShow = () => {
+    $("#export-format-list")[0].focus();
   };
 
   gDialogs.exportToFile.onAfterAccept = () => {
@@ -2321,6 +2328,17 @@ function initDialogs()
         saveToFile(blobData, aeConst.HTML_EXPORT_FILENAME);
       }).catch(aErr => {
         window.alert("Sorry, an error occurred while exporting to HTML Document format.\n\nDetails:\n" + getErrStr(aErr));
+        setStatusBarMsg(chrome.i18n.getMessage("statusExportFailed"));
+        gSuppressAutoMinzWnd = false;
+      });
+    }
+    else if (selectedFmtIdx == gDialogs.exportToFile.FMT_CSV) {
+      aeImportExport.exportToCSV().then(aCSVData => {
+        let blobData = new Blob([aCSVData], { type: "text/csv;charset=utf-8" });
+        saveToFile(blobData, aeConst.CSV_EXPORT_FILENAME);
+
+      }).catch(aErr => {
+        window.alert("Sorry, an error occurred while exporting to CSV format.\n\nDetails:\n" + getErrStr(aErr));
         setStatusBarMsg(chrome.i18n.getMessage("statusExportFailed"));
         gSuppressAutoMinzWnd = false;
       });

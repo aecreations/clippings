@@ -260,6 +260,44 @@ aeImportExport.exportToHTML = async function ()
 };
 
 
+aeImportExport.exportToCSV = async function ()
+{
+  function exportToCSVHelper(aFldrItems, aCSVData)
+  {
+    let that = aeImportExport;
+
+    for (let item of aFldrItems) {
+      if (item.children) {
+        exportToCSVHelper(item.children, aCSVData);
+      }
+      else {
+        let name = item.name;
+        let content = item.content;
+        content = content.replace(/\"/g, '""');
+        aCSVData.push(`"${name}","${content}"`);
+      }
+    }
+  }
+
+  let rv = "";
+
+  let expData;
+  try {
+    expData = await this.exportToJSON(false, true);
+  }
+  catch (e) {
+    console.error("aeImportExport.exportToCSV(): " + e);
+    throw e;
+  }
+
+  let csvData = [];
+  exportToCSVHelper(expData.userClippingsRoot, csvData);
+  rv = csvData.join("\r\n");
+
+  return rv;
+};
+
+
 aeImportExport.importFromRDF = function (aRDFRawData, aReplaceShortcutKeys)
 {
   this._log(`aeImportExport.importFromRDF(): Reading raw RDF data (size: ${aRDFRawData.length} bytes)`);
