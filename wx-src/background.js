@@ -153,11 +153,12 @@ let gIsInitialized = false;
 
 browser.runtime.onInstalled.addListener(aDetails => {
   if (aDetails.reason == "install") {
-    log("Clippings/wx: It appears that the extension was newly installed.  Welcome to Clippings 6!");
+    log("Clippings/wx: It appears that the extension is newly installed.  Welcome to Clippings 6!");
   }
   else if (aDetails.reason == "upgrade") {
     let oldVer = aDetails.previousVersion;
-    log("Clippings/wx: Upgrading from version " + oldVer);
+    let currVer = chrome.runtime.getManifest().version;
+    log(`Clippings/wx: Upgrading from version ${oldVer} to ${currVer}`);
   }
 });
 
