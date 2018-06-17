@@ -865,6 +865,16 @@
     "message": "Create a copy"
   },
 
+  "errMoveToSameParent": {
+    "message": "Item already exists in the selected folder.",
+    "description": "Error message when attempting to move clipping/folder to the same parent folder"
+  },
+
+  "errMoveToSubfldr": {
+    "message": "Cannot move or copy to the selected folder.",
+    "description": "Error message when attempting to move or copy a folder into a subfolder of itself"
+  },
+
   "btnMove": {
     "message": "Move"
   },

@@ -98,8 +98,11 @@ function initHelper()
   // Fix for Fx57 bug where bundled page loaded using
   // browser.windows.create won't show contents unless resized.
   // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1402110>
-  browser.windows.getCurrent((win) => {
-    browser.windows.update(win.id, {width:win.width+1})
+  browser.windows.getCurrent(aWnd => {
+    browser.windows.update(aWnd.id, {
+      width: aWnd.width + 1,
+      focused: true,
+    });
   });
 }
 
@@ -329,6 +332,15 @@ function initFolderPicker()
     }
   });
 
+  // Set the width of the folder picker drop-down to match the width of the menu
+  // button that opens it.
+  let menuBtnStyle = window.getComputedStyle($("#new-clipping-fldr-picker-menubtn")[0]);
+  let menuBtnWidth = parseInt(menuBtnStyle.width);
+  
+  // Need to add 1px to the popup width to compensate for having to add 1 pixel
+  // to the width of the New Clipping popup window.
+  $("#new-clipping-fldr-tree-popup").css({ width: `${menuBtnWidth + 1}px` });
+  
   $("#new-folder-btn").attr("title", chrome.i18n.getMessage("btnNewFolder"));
 
   gFolderPickerPopup = new aeFolderPicker("#new-clipping-fldr-tree", gClippingsDB);

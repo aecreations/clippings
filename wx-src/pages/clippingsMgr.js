@@ -1387,8 +1387,11 @@ $(document).ready(() => {
   // Fix for Fx57 bug where bundled page loaded using
   // browser.windows.create won't show contents unless resized.
   // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1402110>
-  browser.windows.getCurrent((win) => {
-    browser.windows.update(win.id, {width:win.width+1})
+  browser.windows.getCurrent(aWnd => {
+    browser.windows.update(aWnd.id, {
+      width: aWnd.width + 1,
+      focused: true,
+    });
   });
 });
 
@@ -1765,7 +1768,10 @@ function initToolbar()
       separator2: "--------",
       removeAllSrcURLs: {
         name: chrome.i18n.getMessage("mnuRemoveAllSrcURLs"),
-        className: "ae-menuitem"
+        className: "ae-menuitem",
+        disabled: function (aKey, aOpt) {
+          return (gIsClippingsTreeEmpty);
+        }
       },
       separator3: "--------",
       showHideSubmenu: {
@@ -2354,6 +2360,7 @@ function initDialogs()
   gDialogs.moveTo.selectedFldrNode = null;
 
   gDialogs.moveTo.resetTree = function () {
+    let that = gDialogs.moveTo;
     let fldrTree = that.fldrTree.getTree();
     fldrTree.clear();
     that.fldrTree = null;
@@ -2367,8 +2374,9 @@ function initDialogs()
     $('<div id="move-to-fldr-tree"></div>').insertAfter("#move-to-label");
   };
 
-  let that = gDialogs.moveTo;
   gDialogs.moveTo.onInit = () => {
+    let that = gDialogs.moveTo;
+
     if (! that.isInitialized) {
       $("#copy-instead-of-move").click(aEvent => {
         if (aEvent.target.checked) {
@@ -2417,35 +2425,58 @@ function initDialogs()
   };
 
   gDialogs.moveTo.onCancel = aEvent => {
+    let that = gDialogs.moveTo;
+
     that.resetTree();
     that.close();
   };
 
   gDialogs.moveTo.onAccept = aEvent => {
+    let that = gDialogs.moveTo;
     let clippingsMgrTree = getClippingsTree();
     let selectedNode = clippingsMgrTree.activeNode;
     let id = parseInt(selectedNode.key);
     let parentNode = selectedNode.getParent();
 
-    let parentFolderID = (parentNode.isRootNode() ? aeConst.ROOT_FOLDER_ID : parseInt(parentNode.key));
-
-    let destFolderID = aeConst.ROOT_FOLDER_ID;
-    if (that.selectedFldrNode) {
-      destFolderID = parseInt(that.selectedFldrNode.key);
+    // Handle case where default selection of root folder node wasn't changed.
+    if (that.selectedFldrNode === null) {
+      that.selectedFldrNode = that.fldrTree.getTree().getNodeByKey(Number(aeConst.ROOT_FOLDER_ID).toString());
     }
+    
+    let parentFolderID = (parentNode.isRootNode() ? aeConst.ROOT_FOLDER_ID : parseInt(parentNode.key));
+    let destFolderID = parseInt(that.selectedFldrNode.key);
 
-    log(`clippingsMgr.js: Move To dialog: current parent of selected item: ${parentFolderID}; move or copy to folder ID: ${destFolderID}`);
+    log(`clippingsMgr.js: Move To dialog: ID of selected item: ${id}; it is ${selectedNode.isFolder()} that the selected item in the clippings tree is a folder; current parent of selected item: ${parentFolderID}; move or copy to folder ID: ${destFolderID}`);
     
     let makeCopy = $("#copy-instead-of-move").prop("checked");
 
     if (parentFolderID == destFolderID && !makeCopy) {
-      $("#move-error").text("Item already exists in the selected folder.");
+      $("#move-error").text(chrome.i18n.getMessage("errMoveToSameParent"));
       return;
     }
 
-    // TO DO: Error handling:
-    // - Cannot move a folder into one of its subfolders - show message:
-    //   "Cannot move to the selected folder."
+    // Handle case where selected folder and destination folder are the same.
+    if (selectedNode.isFolder() && id == destFolderID) {
+      $("#move-error").text(chrome.i18n.getMessage("errMoveToSubfldr"));
+      return;
+    }
+
+    // Prevent infinite recursion when moving or copying a folder into one of
+    // its subfolders.
+    if (that.selectedFldrNode.isFolder()) {
+      let parentNode, parentID;
+      parentNode = that.selectedFldrNode.getParent();
+      parentID = parentNode.isRootNode() ? aeConst.ROOT_FOLDER_ID : parseInt(parentNode.key);
+
+      while (parentID != aeConst.ROOT_FOLDER_ID) {
+        if (parentID == id) {
+          $("#move-error").text(chrome.i18n.getMessage("errMoveToSubfldr"));
+          return;
+        }
+        parentNode = parentNode.getParent();
+        parentID = parentNode.isRootNode() ? aeConst.ROOT_FOLDER_ID : parseInt(parentNode.key);
+      }
+    }
 
     if (selectedNode.isFolder()) {
       if (makeCopy) {
