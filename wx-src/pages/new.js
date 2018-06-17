@@ -417,34 +417,46 @@ function accept(aEvent)
   let label = labelPicker.val() ? labelPicker.val() : "";
 
   let errorMsgBox = new aeDialog("#create-clipping-error-msgbox");
+  let numItemsInParent = 0;  // For calculating display order of new clipping.
 
-  gClippingsDB.clippings.add({
-    name: $("#clipping-name").val(),
-    content: $("#clipping-text").val(),
-    shortcutKey: shortcutKey,
-    parentFolderID: gParentFolderID,
-    label,
-    sourceURL: ($("#save-source-url")[0].checked ? gSrcURL : "")
+  gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
+    gClippingsDB.folders.where("parentFolderID").equals(gParentFolderID).count().then(aNumFldrs => {
+      numItemsInParent += aNumFldrs;
+      return gClippingsDB.clippings.where("parentFolderID").equals(gParentFolderID).count();
 
-  }).then(aID => {
-    closeDlg();
+    }).then(aNumClippings => {
+      numItemsInParent += aNumClippings;
+    
+      return gClippingsDB.clippings.add({
+        name: $("#clipping-name").val(),
+        content: $("#clipping-text").val(),
+        shortcutKey: shortcutKey,
+        parentFolderID: gParentFolderID,
+        label,
+        displayOrder: numItemsInParent,
+        sourceURL: ($("#save-source-url")[0].checked ? gSrcURL : "")
+      });
 
-  }).catch("OpenFailedError", aErr => {
-    // OpenFailedError exception thrown if Firefox is set to "Never remember
-    // history."
-    errorMsgBox.onInit = () => {
-      console.error(`Error creating clipping: ${aErr}`);
-      let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
-      errMsgElt.text(chrome.i18n.getMessage("saveClippingError"));
-    };
-    errorMsgBox.showModal();
+    }).then(aID => {
+      closeDlg();
 
-  }).catch(aErr => {
-    errorMsgBox.onInit = () => {
-      let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
-      errMsgElt.text(`Error creating clipping: ${aErr}`);
-    };
-    errorMsgBox.showModal();
+    }).catch("OpenFailedError", aErr => {
+      // OpenFailedError exception thrown if Firefox is set to "Never remember
+      // history."
+      errorMsgBox.onInit = () => {
+        console.error(`Error creating clipping: ${aErr}`);
+        let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
+        errMsgElt.text(chrome.i18n.getMessage("saveClippingError"));
+      };
+      errorMsgBox.showModal();
+
+    }).catch(aErr => {
+      errorMsgBox.onInit = () => {
+        let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
+        errMsgElt.text(`Error creating clipping: ${aErr}`);
+      };
+      errorMsgBox.showModal();
+    });
   });
 }
 

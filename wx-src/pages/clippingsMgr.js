@@ -119,7 +119,10 @@ let gClippingsListener = {
 
     if (aData.parentFolderID != aOldData.parentFolderID) {
       if (this._isFlaggedForDelete(aData)) {
+        let parentFldrID = aOldData.parentFolderID;
+        
         this._removeClippingsTreeNode(aID + "C");
+        gCmd.updateDisplayOrder(parentFldrID, false);
       }
       else {
         if (gClippingsTreeDnD) {
@@ -172,7 +175,10 @@ let gClippingsListener = {
 
     if (aData.parentFolderID != aOldData.parentFolderID) {
       if (this._isFlaggedForDelete(aData)) {
+        let parentFldrID = aOldData.parentFolderID;
+        
         this._removeClippingsTreeNode(aID + "F");
+        gCmd.updateDisplayOrder(parentFldrID, false);
       }
       else {
         if (gClippingsTreeDnD) {
@@ -667,9 +673,17 @@ let gCmd = {
     let tree = getClippingsTree();
     let selectedNode = tree.activeNode;
     let parentFolderID = aeConst.ROOT_FOLDER_ID;
+    let displayOrder = 0;
     
     if (selectedNode) {
       parentFolderID = this._getParentFldrIDOfTreeNode(selectedNode);
+      let parentFldrChildNodes = selectedNode.getParent().getChildren();
+      if (parentFldrChildNodes === undefined) {
+        warn("Clippings/wx::clippingsMgr.js: gCmd.newClipping(): Can't get child nodes of the parent node, because Fancytree lazy loading is in effect!");
+      }
+      else {
+        displayOrder = parentFldrChildNodes.length;
+      }
     }
 
     let name = chrome.i18n.getMessage("newClipping");
@@ -683,7 +697,8 @@ let gCmd = {
       shortcutKey: "",
       parentFolderID: parentFolderID,
       label: "",
-      sourceURL: ""
+      sourceURL: "",
+      displayOrder
     });
 
     createClipping.then(aNewClippingID => {
@@ -706,14 +721,23 @@ let gCmd = {
     let tree = getClippingsTree();
     let selectedNode = tree.activeNode;
     let parentFolderID = aeConst.ROOT_FOLDER_ID;
+    let displayOrder = 0;
     
     if (selectedNode) {
       parentFolderID = this._getParentFldrIDOfTreeNode(selectedNode);
+      let parentFldrChildNodes = selectedNode.getParent().getChildren();
+      if (parentFldrChildNodes === undefined) {
+        warn("Clippings/wx::clippingsMgr.js: gCmd.newFolder(): Can't get child nodes of the parent node, because Fancytree lazy loading is in effect!");
+      }
+      else {
+        displayOrder = parentFldrChildNodes.length;
+      }
     }
     
     let createFolder = gClippingsDB.folders.add({
       name: chrome.i18n.getMessage("newFolder"),
-      parentFolderID: parentFolderID
+      parentFolderID,
+      displayOrder,
     });
 
     createFolder.then(aNewFolderID => {
@@ -1011,6 +1035,53 @@ let gCmd = {
     });
   },
   
+  updateDisplayOrder: function (aFolderID, aDestUndoStack, aUndoInfo)
+  {
+    let tree = getClippingsTree();
+    let folderNode;
+    
+    if (aFolderID == aeConst.ROOT_FOLDER_ID) {
+      folderNode = tree.getRootNode();
+    }
+    else {
+      folderNode = tree.getNodeByKey(aFolderID + "F");
+    }
+
+    let childNodes = folderNode.getChildren();
+
+    gClippingsDB.transaction("rw", gClippingsDB.folders, gClippingsDB.clippings, () => {
+      let seqUpdates = [];
+      
+      for (let i = 0; i < childNodes.length; i++) {
+        let key = childNodes[i].key;
+        let suffix = key.substring(key.length - 1);
+
+        if (suffix == "F") {
+          let fldrSeqUpd = gClippingsDB.folders.update(parseInt(childNodes[i].key), { displayOrder: i });
+          seqUpdates.push(fldrSeqUpd);
+        }
+        else if (suffix == "C") {
+          let clipSeqUpd = gClippingsDB.clippings.update(parseInt(childNodes[i].key), { displayOrder: i });
+          seqUpdates.push(clipSeqUpd);
+        }
+      }
+
+      Promise.all(seqUpdates).then(numUpd => {
+        log("Display order updates for each folder item is completed.");
+
+        if (aDestUndoStack == this.UNDO_STACK) {
+          this.undoStack.push({
+            action: this.ACTION_CHANGEPOSITION,
+            folderID: aFolderID,
+            // TO DO: Add other undo info ...
+          });
+        }
+      });
+    }).catch(aErr => {
+      console.error("Clippings/wx::clippingsMgr.js::gCmd.updateDisplayOrder(): %s", aErr.message);
+    });
+  },
+
   gotoURL: function (aURL)
   {
     const DEFAULT_MAX_WIDTH = 1000;
@@ -2643,6 +2714,8 @@ function buildClippingsTree()
               else {
                 gCmd.moveClippingIntrl(id, newParentID, gCmd.UNDO_STACK);
               }
+
+              gCmd.updateDisplayOrder(newParentID, false);
             }
             else {
               // Drop a non-node
