@@ -2607,310 +2607,287 @@ function getClippingsTree()
 function buildClippingsTree()
 {
   let treeData = [];
+  
+  buildClippingsTreeHelper(aeConst.ROOT_FOLDER_ID).then(aTreeData => {
+    if (aTreeData.length == 0) {
+      treeData = setEmptyClippingsState();
+    }
+    else {
+      treeData = aTreeData;
+    }
 
-  gClippingsDB.transaction("r", gClippingsDB.folders, gClippingsDB.clippings, () => {
-    gClippingsDB.folders.where("parentFolderID").equals(aeConst.ROOT_FOLDER_ID).each((aItem, aCursor) => {
-      let folderNode = {
-        key: aItem.id + "F",
-        title: sanitizeTreeNodeTitle(DEBUG_TREE ? `${aItem.name} [key=${aItem.id}F]` : aItem.name),
-        folder: true
-      };
+    $("#clippings-tree").fancytree({
+      extensions: ["dnd5", "filter"],
 
-      let childNodes = buildClippingsTreeHelper(aeConst.ROOT_FOLDER_ID, aItem);
-      folderNode.children = childNodes;
+      debugLevel: 0,
+      autoScroll: true,
+      source: treeData,
+      selectMode: 1,
+      icon: (gIsClippingsTreeEmpty ? false : true),
 
-      treeData.push(folderNode);
-    }).then(() => {
-      return gClippingsDB.clippings.where("parentFolderID").equals(aeConst.ROOT_FOLDER_ID).each((aItem, aCursor) => {
-        let clippingNode = {
-          key: aItem.id + "C",
-          title: sanitizeTreeNodeTitle(DEBUG_TREE ? `${aItem.name} [key=${aItem.id}C]` : aItem.name)
-        };
-
-        if (aItem.label) {
-          clippingNode.extraClasses = `ae-clipping-label-${aItem.label}`;
+      init: function (aEvent, aData) {
+        let rootNode = aData.tree.getRootNode();
+        if (rootNode.children.length > 0 && !gIsClippingsTreeEmpty) {
+          rootNode.children[0].setActive();
         }
+      },
 
-        treeData.push(clippingNode);
-      });
-    }).then(() => {
-      if (treeData.length == 0) {
-        treeData = setEmptyClippingsState();
-      }
-      
-      $("#clippings-tree").fancytree({
-        extensions: ["dnd5", "filter"],
+      activate: function (aEvent, aData) {
+        log("Clippings/wx::clippingsMgr.js: Activate event fired on clippings tree");
+        updateDisplay(aEvent, aData);
+      },
 
-        debugLevel: 0,
-        autoScroll: true,
-        source: treeData,
-        selectMode: 1,
-        icon: (gIsClippingsTreeEmpty ? false : true),
+      dblclick: function (aEvent, aData) {
+        log("Clippings/wx::clippingsMgr.js: Double-click event fired on clippings tree");
+        updateDisplay(aEvent, aData);
 
-        init: function (aEvent, aData) {
-          let rootNode = aData.tree.getRootNode();
-          if (rootNode.children.length > 0 && !gIsClippingsTreeEmpty) {
-            rootNode.children[0].setActive();
+        if (aData.targetType == "title" || aData.targetType == "icon") {
+          if (! aData.node.isFolder()) {
+            let clippingID = parseInt(aData.node.key);
+            gCmd.pasteClipping(clippingID);
           }
+        }
+      },
+
+      dnd5: {
+        preventRecursiveMoves: true,
+        preventVoidMoves: true,
+        scroll: true,
+
+        dragStart: function (aNode, aData) {
+          return true;
         },
 
-        activate: function (aEvent, aData) {
-          log("Clippings/wx::clippingsMgr.js: Activate event fired on clippings tree");
-          updateDisplay(aEvent, aData);
+        dragEnter: function (aNode, aData) {
+          aData.dataTransfer.dropEffect = "move";
+          return true;
         },
 
-        dblclick: function (aEvent, aData) {
-          log("Clippings/wx::clippingsMgr.js: Double-click event fired on clippings tree");
-          updateDisplay(aEvent, aData);
-
-          if (aData.targetType == "title" || aData.targetType == "icon") {
-            if (! aData.node.isFolder()) {
-              let clippingID = parseInt(aData.node.key);
-              gCmd.pasteClipping(clippingID);
+        dragDrop: function (aNode, aData) {
+          if (aData.otherNode) {
+            // Prevent dropping a node into a non-folder node.
+            if (!aNode.isFolder() && aData.hitMode == "over") {
+              return;
             }
-          }
-        },
 
-        dnd5: {
-          preventRecursiveMoves: true,
-          preventVoidMoves: true,
-          scroll: true,
-
-          dragStart: function (aNode, aData) {
-            return true;
-          },
-
-          dragEnter: function (aNode, aData) {
-            aData.dataTransfer.dropEffect = "move";
-            return true;
-          },
-
-          dragDrop: function (aNode, aData) {
-            if (aData.otherNode) {
-              // Prevent dropping a node into a non-folder node.
-              if (!aNode.isFolder() && aData.hitMode == "over") {
-                return;
-              }
-
-              let parentNode = aNode.getParent();
-              let newParentID = aeConst.ROOT_FOLDER_ID;
-              
-              if (aNode.isFolder() && aData.hitMode == "over") {
-                newParentID = parseInt(aNode.key);
-              }
-              else {
-                newParentID = (parentNode.isRootNode() ? aeConst.ROOT_FOLDER_ID : parseInt(parentNode.key));
-              }
-
-              aData.otherNode.moveTo(aNode, aData.hitMode);
-              gClippingsTreeDnD = true;
-              
-              let id = parseInt(aData.otherNode.key);
-              log(`Clippings/wx::clippingsMgr.js::#clippings-tree.dnd5.dragDrop(): ID of moved clipping or folder: ${id}\nID of new parent folder: ${newParentID}`);
-
-              if (aData.otherNode.isFolder()) {
-                gCmd.moveFolderIntrl(id, newParentID, gCmd.UNDO_STACK);
-              }
-              else {
-                gCmd.moveClippingIntrl(id, newParentID, gCmd.UNDO_STACK);
-              }
-
-              gCmd.updateDisplayOrder(newParentID, false);
+            let parentNode = aNode.getParent();
+            let newParentID = aeConst.ROOT_FOLDER_ID;
+            
+            if (aNode.isFolder() && aData.hitMode == "over") {
+              newParentID = parseInt(aNode.key);
             }
             else {
-              // Drop a non-node
-              let dndData = aData.dataTransfer.getData("text");
-              parentNode.addNode({ title: dndData }, aData.hitMode);
-
-              // TO DO: Create the clipping in the database.
+              newParentID = (parentNode.isRootNode() ? aeConst.ROOT_FOLDER_ID : parseInt(parentNode.key));
             }
-            aNode.setExpanded();
-          }
-        },
 
-        filter: {
-          autoExpand: true,
-          counter: false,
-          highlight: true,
-          mode: "hide"
+            aData.otherNode.moveTo(aNode, aData.hitMode);
+            gClippingsTreeDnD = true;
+            
+            let id = parseInt(aData.otherNode.key);
+            log(`Clippings/wx::clippingsMgr.js::#clippings-tree.dnd5.dragDrop(): ID of moved clipping or folder: ${id}\nID of new parent folder: ${newParentID}`);
+
+            if (aData.otherNode.isFolder()) {
+              gCmd.moveFolderIntrl(id, newParentID, gCmd.UNDO_STACK);
+            }
+            else {
+              gCmd.moveClippingIntrl(id, newParentID, gCmd.UNDO_STACK);
+            }
+
+            gCmd.updateDisplayOrder(newParentID, false);
+          }
+          else {
+            // Drop a non-node
+            let dndData = aData.dataTransfer.getData("text");
+            parentNode.addNode({ title: dndData }, aData.hitMode);
+
+            // TO DO: Create the clipping in the database.
+          }
+          aNode.setExpanded();
         }
-      });
+      },
 
-      setStatusBarMsg(gIsClippingsTreeEmpty ? chrome.i18n.getMessage("clipMgrStatusBar", "0") : null);
+      filter: {
+        autoExpand: true,
+        counter: false,
+        highlight: true,
+        mode: "hide"
+      }
+    });
 
-      // Context menu for the clippings tree.
-      $.contextMenu({
-        selector: "#clippings-tree > ul.ui-fancytree > li",
+    setStatusBarMsg(gIsClippingsTreeEmpty ? chrome.i18n.getMessage("clipMgrStatusBar", "0") : null);
 
-        events: {
-          show: function (aOpts) {
-            return (! gIsClippingsTreeEmpty);
+    // Context menu for the clippings tree.
+    $.contextMenu({
+      selector: "#clippings-tree > ul.ui-fancytree > li",
+
+      events: {
+        show: function (aOpts) {
+          return (! gIsClippingsTreeEmpty);
+        }
+      },
+      
+      callback: function (aItemKey, aOpt, aRootMenu, aOriginalEvent) {
+        function setLabel(aLabel) {
+          let tree = getClippingsTree();
+          let selectedNode = tree.activeNode;
+          if (!selectedNode || selectedNode.isFolder()) {
+            return;
           }
-        },
+
+          let clippingID = parseInt(selectedNode.key);
+          gCmd.setLabelIntrl(clippingID, aLabel, gCmd.UNDO_STACK);
+        }
         
-        callback: function (aItemKey, aOpt, aRootMenu, aOriginalEvent) {
-          function setLabel(aLabel) {
-            let tree = getClippingsTree();
-            let selectedNode = tree.activeNode;
-            if (!selectedNode || selectedNode.isFolder()) {
-              return;
-            }
-
-            let clippingID = parseInt(selectedNode.key);
-            gCmd.setLabelIntrl(clippingID, aLabel, gCmd.UNDO_STACK);
-          }
+        switch (aItemKey) {
+        case "moveOrCopy":
+          gCmd.moveClippingOrFolder();
+          break;
           
-          switch (aItemKey) {
-          case "moveOrCopy":
-            gCmd.moveClippingOrFolder();
-            break;
-            
-          case "deleteItem":
-            gCmd.deleteClippingOrFolder(gCmd.UNDO_STACK);
-            break;
-            
-          case "gotoSrcURL":
+        case "deleteItem":
+          gCmd.deleteClippingOrFolder(gCmd.UNDO_STACK);
+          break;
+          
+        case "gotoSrcURL":
+          let tree = getClippingsTree();
+          let selectedNode = tree.activeNode;
+          if (!selectedNode || selectedNode.isFolder()) {
+            return;
+          }
+
+          let clippingID = parseInt(selectedNode.key);
+          gClippingsDB.clippings.get(clippingID).then(aClipping => {
+            let srcURL = aClipping.sourceURL;
+            if (srcURL == "") {
+              gDialogs.clippingMissingSrcURL.showModal();
+              return;
+            }
+            gCmd.gotoURL(srcURL);
+          });
+          break;
+
+        case "labelNone":
+          setLabel("");
+          break;
+          
+        case "labelRed":
+        case "labelOrange":
+        case "labelYellow":
+        case "labelGreen":
+        case "labelBlue":
+        case "labelPurple":
+        case "labelGrey":
+          setLabel(aItemKey.substr(5).toLowerCase());
+          break;
+
+        default:
+          window.alert("The selected action is not available right now.");
+          break;
+        }
+      },
+      
+      items: {
+        moveOrCopy: {
+          name: chrome.i18n.getMessage("mnuMoveOrCopy"),
+          className: "ae-menuitem"
+        },
+        gotoSrcURL: {
+          name: chrome.i18n.getMessage("mnuGoToSrcURL"),
+          className: "ae-menuitem",
+          visible: function (aItemKey, aOpt) {
             let tree = getClippingsTree();
             let selectedNode = tree.activeNode;
             if (!selectedNode || selectedNode.isFolder()) {
-              return;
+              return false;
             }
-
-            let clippingID = parseInt(selectedNode.key);
-            gClippingsDB.clippings.get(clippingID).then(aClipping => {
-              let srcURL = aClipping.sourceURL;
-              if (srcURL == "") {
-                gDialogs.clippingMissingSrcURL.showModal();
-                return;
-              }
-              gCmd.gotoURL(srcURL);
-            });
-            break;
-
-          case "labelNone":
-            setLabel("");
-            break;
-            
-          case "labelRed":
-          case "labelOrange":
-          case "labelYellow":
-          case "labelGreen":
-          case "labelBlue":
-          case "labelPurple":
-          case "labelGrey":
-            setLabel(aItemKey.substr(5).toLowerCase());
-            break;
-
-          default:
-            window.alert("The selected action is not available right now.");
-            break;
+            return true;
           }
         },
-        
-        items: {
-          moveOrCopy: {
-            name: chrome.i18n.getMessage("mnuMoveOrCopy"),
-            className: "ae-menuitem"
+        labelSubmenu: {
+          name: chrome.i18n.getMessage("mnuEditLabel"),
+          visible: function (aItemKey, aOpt) {
+            return (! isFolderSelected());
           },
-          gotoSrcURL: {
-            name: chrome.i18n.getMessage("mnuGoToSrcURL"),
-            className: "ae-menuitem",
-            visible: function (aItemKey, aOpt) {
-              let tree = getClippingsTree();
-              let selectedNode = tree.activeNode;
-              if (!selectedNode || selectedNode.isFolder()) {
-                return false;
+          items: {
+            labelNone: {
+              name: chrome.i18n.getMessage("none"),
+              className: "ae-menuitem",
+              icon: function (aOpt, $itemElement, aItemKey, aItem) {
+                if (gClippingLabelPicker.selectedLabel == "") {
+                  return "context-menu-icon-checked";
+                }
               }
-              return true;
-            }
-          },
-          labelSubmenu: {
-            name: chrome.i18n.getMessage("mnuEditLabel"),
-            visible: function (aItemKey, aOpt) {
-              return (! isFolderSelected());
             },
-            items: {
-              labelNone: {
-                name: chrome.i18n.getMessage("none"),
-                className: "ae-menuitem",
-                icon: function (aOpt, $itemElement, aItemKey, aItem) {
-                  if (gClippingLabelPicker.selectedLabel == "") {
-                    return "context-menu-icon-checked";
-                  }
+            labelRed: {
+              name: chrome.i18n.getMessage("labelRed"),
+              className: "ae-menuitem clipping-label-red",
+              icon: function (aOpt, $itemElement, aItemKey, aItem) {
+                if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
+                  return "context-menu-icon-checked";
                 }
-              },
-              labelRed: {
-                name: chrome.i18n.getMessage("labelRed"),
-                className: "ae-menuitem clipping-label-red",
-                icon: function (aOpt, $itemElement, aItemKey, aItem) {
-                  if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
-                    return "context-menu-icon-checked";
-                  }
+              }
+            },
+            labelOrange: {
+              name: chrome.i18n.getMessage("labelOrange"),
+              className: "ae-menuitem clipping-label-orange",
+              icon: function (aOpt, $itemElement, aItemKey, aItem) {
+                if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
+                  return "context-menu-icon-checked";
                 }
-              },
-              labelOrange: {
-                name: chrome.i18n.getMessage("labelOrange"),
-                className: "ae-menuitem clipping-label-orange",
-                icon: function (aOpt, $itemElement, aItemKey, aItem) {
-                  if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
-                    return "context-menu-icon-checked";
-                  }
+              }
+            },
+            labelYellow: {
+              name: chrome.i18n.getMessage("labelYellow"),
+              className: "ae-menuitem clipping-label-yellow",
+              icon: function (aOpt, $itemElement, aItemKey, aItem) {
+                if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
+                  return "context-menu-icon-checked";
                 }
-              },
-              labelYellow: {
-                name: chrome.i18n.getMessage("labelYellow"),
-                className: "ae-menuitem clipping-label-yellow",
-                icon: function (aOpt, $itemElement, aItemKey, aItem) {
-                  if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
-                    return "context-menu-icon-checked";
-                  }
+              }
+            },
+            labelGreen: {
+              name: chrome.i18n.getMessage("labelGreen"),
+              className: "ae-menuitem clipping-label-green",
+              icon: function (aOpt, $itemElement, aItemKey, aItem) {
+                if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
+                  return "context-menu-icon-checked";
                 }
-              },
-              labelGreen: {
-                name: chrome.i18n.getMessage("labelGreen"),
-                className: "ae-menuitem clipping-label-green",
-                icon: function (aOpt, $itemElement, aItemKey, aItem) {
-                  if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
-                    return "context-menu-icon-checked";
-                  }
+              }
+            },
+            labelBlue: {
+              name: chrome.i18n.getMessage("labelBlue"),
+              className: "ae-menuitem clipping-label-blue",
+              icon: function (aOpt, $itemElement, aItemKey, aItem) {
+                if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
+                  return "context-menu-icon-checked";
                 }
-              },
-              labelBlue: {
-                name: chrome.i18n.getMessage("labelBlue"),
-                className: "ae-menuitem clipping-label-blue",
-                icon: function (aOpt, $itemElement, aItemKey, aItem) {
-                  if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
-                    return "context-menu-icon-checked";
-                  }
+              }
+            },
+            labelPurple: {
+              name: chrome.i18n.getMessage("labelPurple"),
+              className: "ae-menuitem clipping-label-purple",
+              icon: function (aOpt, $itemElement, aItemKey, aItem) {
+                if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
+                  return "context-menu-icon-checked";
                 }
-              },
-              labelPurple: {
-                name: chrome.i18n.getMessage("labelPurple"),
-                className: "ae-menuitem clipping-label-purple",
-                icon: function (aOpt, $itemElement, aItemKey, aItem) {
-                  if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
-                    return "context-menu-icon-checked";
-                  }
+              }
+            },
+            labelGrey: {
+              name: chrome.i18n.getMessage("labelGrey"),
+              className: "ae-menuitem clipping-label-grey",
+              icon: function (aOpt, $itemElement, aItemKey, aItem) {
+                if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
+                  return "context-menu-icon-checked";
                 }
-              },
-              labelGrey: {
-                name: chrome.i18n.getMessage("labelGrey"),
-                className: "ae-menuitem clipping-label-grey",
-                icon: function (aOpt, $itemElement, aItemKey, aItem) {
-                  if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
-                    return "context-menu-icon-checked";
-                  }
-                }
-              },
-            }
-          },
-          separator0: "--------",
-          deleteItem: {
-            name: chrome.i18n.getMessage("tbDelete"),
-            className: "ae-menuitem"
+              }
+            },
           }
+        },
+        separator0: "--------",
+        deleteItem: {
+          name: chrome.i18n.getMessage("tbDelete"),
+          className: "ae-menuitem"
         }
-      });
+      }
     });
   }).catch(aErr => {
     console.error("Clippings/wx::buildContextMenu(): %s", aErr.message);
@@ -2919,40 +2896,65 @@ function buildClippingsTree()
 }
 
 
-function buildClippingsTreeHelper(aParentFolderID, aFolderData)
+function buildClippingsTreeHelper(aFolderID)
 {
   let rv = [];
-  let fldrID = aFolderData.id;
 
-  gClippingsDB.transaction("r", gClippingsDB.folders, gClippingsDB.clippings, () => {
-    gClippingsDB.folders.where("parentFolderID").equals(fldrID).each((aItem, aCursor) => {
-      let folderNode = {
-        key: aItem.id + "F",
-        title: sanitizeTreeNodeTitle(DEBUG_TREE ? `${aItem.name} [key=${aItem.id}F]` : aItem.name),
-        folder: true
-      }
-      let childNodes = buildClippingsTreeHelper(fldrID, aItem);
-      folderNode.children = childNodes;
-
-      rv.push(folderNode);
-    }).then(() => {
-      gClippingsDB.clippings.where("parentFolderID").equals(fldrID).each((aItem, aCursor) => {
-        let clippingNode = {
-          key: aItem.id + "C",
-          title: sanitizeTreeNodeTitle(DEBUG_TREE ? `${aItem.name} [key=${aItem.id}C]` : aItem.name)
-        };
-        if (aItem.label) {
-          clippingNode.extraClasses = `ae-clipping-label-${aItem.label}`;
+  return new Promise((aFnResolve, aFnReject) => {
+    gClippingsDB.transaction("r", gClippingsDB.folders, gClippingsDB.clippings, () => {
+      gClippingsDB.folders.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
+        let folderNode = {
+          key: aItem.id + "F",
+          title: sanitizeTreeNodeTitle(DEBUG_TREE ? `${aItem.name} [key=${aItem.id}F]` : aItem.name),
+          folder: true
         }
 
-        rv.push(clippingNode);
-      });
-    });
-  }).catch(aErr => {
-    console.error("Clippings/wx::clippingsMgr.js::buildClippingsTreeHelper(): %s", aErr.message);
-  });
+        if (aItem.displayOrder === undefined) {
+          folderNode.displayOrder = 0;
+        }
+        else {
+          folderNode.displayOrder = aItem.displayOrder;
+        }
+        
+        buildClippingsTreeHelper(aItem.id).then(aChildNodes => {
+          folderNode.children = aChildNodes;
+          rv.push(folderNode);
+        });
+      }).then(() => {
+        return gClippingsDB.clippings.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
+          let clippingNode = {
+            key: aItem.id + "C",
+            title: sanitizeTreeNodeTitle(DEBUG_TREE ? `${aItem.name} [key=${aItem.id}C]` : aItem.name)
+          };
+          if (aItem.label) {
+            clippingNode.extraClasses = `ae-clipping-label-${aItem.label}`;
+          }
 
-  return rv;
+          if (aItem.displayOrder == undefined) {
+            clippingNode.displayOrder = 0;
+          }
+          else {
+            clippingNode.displayOrder = aItem.displayOrder;
+          }
+
+          rv.push(clippingNode);
+        });
+      }).then(() => {
+        rv.sort((aPred, aSucc) => {
+          let rv = 0;
+          if (aPred.displayOrder !== undefined && aSucc.displayOrder !== undefined) {
+            rv = aPred.displayOrder - aSucc.displayOrder;
+          }
+          return rv;
+        });
+
+        aFnResolve(rv);
+      });
+    }).catch(aErr => {
+      console.error("Clippings/wx::clippingsMgr.js::buildClippingsTreeHelperEx(): %s", aErr.message);
+      aFnReject(aErr);
+    });
+  });
 }
 
 
