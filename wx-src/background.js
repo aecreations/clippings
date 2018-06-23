@@ -13,6 +13,8 @@ let gClippingsDB = null;
 let gOS = null;
 let gHostAppName = null;
 let gAutoIncrPlchldrs = null;
+let gClippingMenuItemIDMap = {};
+let gFolderMenuItemIDMap = {};
 
 let gClippingsListeners = {
   ORIGIN_CLIPPINGS_MGR: 1,
@@ -304,16 +306,31 @@ function initClippingsDB()
     let clippingsListeners = gClippingsListeners.get();
 
     if (aChanges.length > 1) {
+      // Don't do anything if only displayOrder was changed.
+      let isDisplayOrderOnlyChanged = false;
+      for (let i = 0; i < aChanges.length; i++) {
+        let pptyChanges = aChanges[i].mods;
+
+        if (pptyChanges !== undefined && ("displayOrder" in pptyChanges) && Object.keys(pptyChanges).length == 1) {
+          isDisplayOrderOnlyChanged = true;
+        }
+      }
+
+      if (isDisplayOrderOnlyChanged) {
+        return;
+      }
+
+      info("Clippings/wx: Multiple DB changes detected. Calling afterBatchChanges() on all Clippings listeners.");
       clippingsListeners.forEach(aListener => { aListener.afterBatchChanges() });
       return;
     }
 
-    log(`Invoking DB listener method on ${clippingsListeners.length} listeners.`);
+    log(`Clippings/wx: Invoking DB listener method on ${clippingsListeners.length} listeners.`);
     
     aChanges.forEach(aChange => {
       switch (aChange.type) {
       case CREATED:
-        log("Clippings/wx: Database observer detected CREATED event");
+        info("Clippings/wx: Database observer detected CREATED event");
         if (aChange.table == "clippings") {
           clippingsListeners.forEach(aListener => { aListener.newClippingCreated(aChange.key, aChange.obj) });
         }
@@ -323,7 +340,13 @@ function initClippingsDB()
         break;
         
       case UPDATED:
-        log("Clippings/wx: Database observer detected UPDATED event");
+        info("Clippings/wx: Database observer detected UPDATED event");
+
+        // Don't do anything if only the displayOrder was changed.
+        if (aChange.mods !== undefined && ("displayOrder" in aChange.mods) && Object.keys(aChange.mods).length == 1) {
+          break;
+        }
+
         if (aChange.table == "clippings") {
           clippingsListeners.forEach(aListener => { aListener.clippingChanged(aChange.key, aChange.obj, aChange.oldObj) });
         }
@@ -333,7 +356,7 @@ function initClippingsDB()
         break;
         
       case DELETED:
-        log("Clippings/wx: Database observer detected DELETED event");
+        info("Clippings/wx: Database observer detected DELETED event");
         if (aChange.table == "clippings") {
           clippingsListeners.forEach(aListener => { aListener.clippingDeleted(aChange.key, aChange.oldObj) });
         }
@@ -509,14 +532,17 @@ function buildContextMenu()
   });
 
   gClippingsDB.transaction("r", gClippingsDB.folders, gClippingsDB.clippings, () => {
-    let populateFolders = gClippingsDB.folders.where("parentFolderID").equals(0).each((aItem, aCursor) => {
-      buildContextSubmenu(0, aItem);
+    let populateFolders = gClippingsDB.folders.where("parentFolderID").equals(aeConst.ROOT_FOLDER_ID).each((aItem, aCursor) => {
+      buildContextSubmenu(aeConst.ROOT_FOLDER_ID, aItem);
     });
 
     populateFolders.then(() => {
-      gClippingsDB.clippings.where("parentFolderID").equals(0).each((aItem, aCursor) => {
+      gClippingsDB.clippings.where("parentFolderID").equals(aeConst.ROOT_FOLDER_ID).each((aItem, aCursor) => {
+        let menuItemID = "ae-clippings-clipping-" + aItem.id + "_" + Date.now();
+        gClippingMenuItemIDMap[aItem.id] = menuItemID;
+        
         chrome.contextMenus.create({
-          id: "ae-clippings-clipping-" + aItem.id,
+          id: menuItemID,
           title: aItem.name,
           icons: {
             16: "img/" + (aItem.label ? `clipping-${aItem.label}.svg` : "clipping.svg")
@@ -530,11 +556,14 @@ function buildContextMenu()
 }
 
 
-function buildContextSubmenu(aParentFolderID, aFolderData)
+function buildContextSubmenu(aParentFolderMenuID, aFolderData)
 {
   let folderID = aFolderData.id;
+  let fldrMenuItemID = "ae-clippings-folder-" + folderID + "_" + Date.now();
+  gFolderMenuItemIDMap[folderID] = fldrMenuItemID;
+
   let cxtSubmenuData = {
-    id: "ae-clippings-folder-" + folderID,
+    id: fldrMenuItemID,
     title: aFolderData.name,
     icons: {
       16: "img/folder.svg"
@@ -542,21 +571,25 @@ function buildContextSubmenu(aParentFolderID, aFolderData)
     contexts: ["editable"],
     documentUrlPatterns: ["<all_urls>"]
   };
-  if (aParentFolderID != 0) {
-    cxtSubmenuData.parentId = "ae-clippings-folder-" + aParentFolderID;
+
+  if (aParentFolderMenuID != aeConst.ROOT_FOLDER_ID) {
+    cxtSubmenuData.parentId = aParentFolderMenuID;
   }
   
   let cxtSubmenuID = chrome.contextMenus.create(cxtSubmenuData);
 
   gClippingsDB.transaction("r", gClippingsDB.folders, gClippingsDB.clippings, () => {
     let populateSubfolders = gClippingsDB.folders.where("parentFolderID").equals(folderID).each((aItem, aCursor) => {
-      buildContextSubmenu(folderID, aItem);
+      buildContextSubmenu(cxtSubmenuID, aItem);
     });
 
     populateSubfolders.then(() => {
       gClippingsDB.clippings.where("parentFolderID").equals(folderID).each((aItem, aCursor) => {
+        let menuItemID = "ae-clippings-clipping-" + aItem.id + "_" + Date.now();
+        gClippingMenuItemIDMap[aItem.id] = menuItemID;
+        
         chrome.contextMenus.create({
-          id: "ae-clippings-clipping-" + aItem.id,
+          id: menuItemID,
           title: aItem.name,
           icons: {
             16: "img/" + (aItem.label ? `clipping-${aItem.label}.svg` : "clipping.svg")
@@ -586,7 +619,8 @@ function updateContextMenuForClipping(aUpdatedClippingID)
       // This will fail due to the 'icons' property not supported on the
       // 'updateProperties' parameter to contextMenus.update().
       // See https://bugzilla.mozilla.org/show_bug.cgi?id=1414566
-      chrome.contextMenus.update(`ae-clippings-clipping-${aUpdatedClippingID}`, updatePpty);
+      let menuItemID = gClippingMenuItemIDMap[id];
+      chrome.contextMenus.update(menuItemID, updatePpty);
     }
     catch (e) {
       console.error("Clippings/wx: updateContextMenuForClipping(): " + e);
@@ -598,28 +632,36 @@ function updateContextMenuForClipping(aUpdatedClippingID)
 function updateContextMenuForFolder(aUpdatedFolderID)
 {
   let id = Number(aUpdatedFolderID);
-  let getFolder = gClippingsDB.folders.get(id);
-  getFolder.then(aResult => {
-    chrome.contextMenus.update("ae-clippings-folder-" + aUpdatedFolderID, { title: aResult.name });
+  gClippingsDB.folders.get(id).then(aResult => {
+    let menuItemID = gFolderMenuItemIDMap[id];
+    chrome.contextMenus.update(menuItemID, { title: aResult.name });
   });
 }
 
 
 function removeContextMenuForClipping(aRemovedClippingID)
 {
-  chrome.contextMenus.remove("ae-clippings-clipping-" + aRemovedClippingID);
+  let menuItemID = gClippingMenuItemIDMap[aRemovedClippingID];
+  chrome.contextMenus.remove(menuItemID);
+  delete gClippingMenuItemIDMap[aRemovedClippingID];
 }
 
 
 function removeContextMenuForFolder(aRemovedFolderID)
 {
-  chrome.contextMenus.remove("ae-clippings-folder-" + aRemovedFolderID);
+  let menuItemID = gFolderMenuItemIDMap[aRemovedFolderID];
+  chrome.contextMenus.remove(menuItemID);
+  delete gFolderMenuItemIDMap[aRemovedFolderID];
 }
 
 
 function rebuildContextMenu()
 {
-  chrome.contextMenus.removeAll(() => { buildContextMenu() });
+  chrome.contextMenus.removeAll(() => {
+    gClippingMenuItemIDMap = {};
+    gFolderMenuItemIDMap = {};
+    buildContextMenu();
+  });
 }
 
 
@@ -1121,7 +1163,7 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
 
   default:
     if (aInfo.menuItemId.startsWith("ae-clippings-clipping-")) {
-      let id = Number(aInfo.menuItemId.substr(22));
+      let id = Number(aInfo.menuItemId.substring(aInfo.menuItemId.lastIndexOf("-") + 1, aInfo.menuItemId.indexOf("_")));
       pasteClippingByID(id);
     }
     else if (aInfo.menuItemId.startsWith("ae-clippings-reset-autoincr-")) {
