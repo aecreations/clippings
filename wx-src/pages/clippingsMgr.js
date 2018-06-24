@@ -2270,6 +2270,10 @@ function initDialogs()
     $("#include-src-urls").prop("checked", true);
   };
 
+  gDialogs.exportToFile.onShow = () => {
+    $("#export-format-list")[0].focus();
+  };
+
   gDialogs.exportToFile.onAfterAccept = () => {
     function saveToFile(aBlobData, aFilename)
     {
