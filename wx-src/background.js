@@ -306,20 +306,6 @@ function initClippingsDB()
     let clippingsListeners = gClippingsListeners.get();
 
     if (aChanges.length > 1) {
-      // Don't do anything if only displayOrder was changed.
-      let isDisplayOrderOnlyChanged = false;
-      for (let i = 0; i < aChanges.length; i++) {
-        let pptyChanges = aChanges[i].mods;
-
-        if (pptyChanges !== undefined && ("displayOrder" in pptyChanges) && Object.keys(pptyChanges).length == 1) {
-          isDisplayOrderOnlyChanged = true;
-        }
-      }
-
-      if (isDisplayOrderOnlyChanged) {
-        return;
-      }
-
       info("Clippings/wx: Multiple DB changes detected. Calling afterBatchChanges() on all Clippings listeners.");
       clippingsListeners.forEach(aListener => { aListener.afterBatchChanges() });
       return;
@@ -341,11 +327,6 @@ function initClippingsDB()
         
       case UPDATED:
         info("Clippings/wx: Database observer detected UPDATED event");
-
-        // Don't do anything if only the displayOrder was changed.
-        if (aChange.mods !== undefined && ("displayOrder" in aChange.mods) && Object.keys(aChange.mods).length == 1) {
-          break;
-        }
 
         if (aChange.table == "clippings") {
           clippingsListeners.forEach(aListener => { aListener.clippingChanged(aChange.key, aChange.obj, aChange.oldObj) });
