@@ -61,6 +61,10 @@ let gClippingsListener = {
       newNode = tree.rootNode.addNode(newNodeData);
     }
 
+    if (aData.label) {
+      newNode.addClass(`ae-clipping-label-${aData.label}`);
+    }
+
     newNode.makeVisible().done(() => {
       newNode.setActive();
       $("#clipping-name").val(aData.name);
@@ -2659,6 +2663,12 @@ function buildClippingsTree()
         },
 
         dragEnter: function (aNode, aData) {
+          if (! aNode.isFolder()) {
+            // Prevent attempt to drop a node into a non-folder node; in such a
+            // case, only allow reordering of nodes.
+            return ["before", "after"];
+          }
+          
           aData.dataTransfer.dropEffect = "move";
           return true;
         },
@@ -2672,7 +2682,7 @@ function buildClippingsTree()
 
             let parentNode = aNode.getParent();
             let newParentID = aeConst.ROOT_FOLDER_ID;
-            
+
             if (aNode.isFolder() && aData.hitMode == "over") {
               newParentID = parseInt(aNode.key);
             }
