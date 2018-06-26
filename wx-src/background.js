@@ -500,6 +500,89 @@ function initMessageListeners()
 }
 
 
+function getContextMenuData(aFolderID)
+{
+  function fnSortMenuItems(aPred, aSucc)
+  {
+    let rv = 0;
+    if (aPred.displayOrder !== undefined && aSucc.displayOrder !== undefined) {
+      rv = aPred.displayOrder - aSucc.displayOrder;
+    }
+    return rv;    
+  }
+  
+  let rv = [];
+
+  return new Promise((aFnResolve, aFnReject) => {
+    gClippingsDB.transaction("r", gClippingsDB.folders, gClippingsDB.clippings, () => {
+      gClippingsDB.folders.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
+        let fldrMenuItemID = "ae-clippings-folder-" + aItem.id + "_" + Date.now();
+        gFolderMenuItemIDMap[aItem.id] = fldrMenuItemID;
+
+        let submenuItemData = {
+          id: fldrMenuItemID,
+          title: aItem.name,
+          icons: {
+            16: "img/folder.svg"
+          },
+        };
+
+        if (aItem.displayOrder === undefined) {
+          submenuItemData.displayOrder = 0;
+        }
+        else {
+          submenuItemData.displayOrder = aItem.displayOrder;
+        }
+
+        if (aFolderID != aeConst.ROOT_FOLDER_ID) {
+          let parentFldrMenuItemID = gFolderMenuItemIDMap[aFolderID];
+          submenuItemData.parentId = parentFldrMenuItemID;
+        }
+
+        getContextMenuData(aItem.id).then(aSubmenuData => {
+          aSubmenuData.sort(fnSortMenuItems);
+          submenuItemData.submenuItems = aSubmenuData;
+          rv.push(submenuItemData);
+        });
+
+      }).then(() => {
+        return gClippingsDB.clippings.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
+          let menuItemID = "ae-clippings-clipping-" + aItem.id + "_" + Date.now();
+          gClippingMenuItemIDMap[aItem.id] = menuItemID;
+
+          let menuItemData = {
+            id: menuItemID,
+            title: aItem.name,
+            icons: {
+              16: "img/" + (aItem.label ? `clipping-${aItem.label}.svg` : "clipping.svg")
+            },
+          };
+
+          if (aItem.displayOrder === undefined) {
+            menuItemData.displayOrder = 0;
+          }
+          else {
+            menuItemData.displayOrder = aItem.displayOrder;
+          }
+          
+          if (aFolderID != aeConst.ROOT_FOLDER_ID) {
+            let fldrMenuItemID = gFolderMenuItemIDMap[aFolderID];
+            menuItemData.parentId = fldrMenuItemID;
+          }
+
+          rv.push(menuItemData);
+        });
+      }).then(() => {
+        rv.sort(fnSortMenuItems);
+        aFnResolve(rv);
+      });
+    }).catch(aErr => {
+      aFnReject(aErr);
+    });
+  });
+}
+
+
 function buildContextMenu()
 {
   // Context menu for browser action button.
@@ -526,82 +609,47 @@ function buildContextMenu()
     documentUrlPatterns: ["<all_urls>"]
   });
 
-  chrome.contextMenus.create({
-    type: "separator",
-    contexts: ["editable"],
-    documentUrlPatterns: ["<all_urls>"]
-  });
-
-  gClippingsDB.transaction("r", gClippingsDB.folders, gClippingsDB.clippings, () => {
-    let populateFolders = gClippingsDB.folders.where("parentFolderID").equals(aeConst.ROOT_FOLDER_ID).each((aItem, aCursor) => {
-      buildContextSubmenu(aeConst.ROOT_FOLDER_ID, aItem);
-    });
-
-    populateFolders.then(() => {
-      gClippingsDB.clippings.where("parentFolderID").equals(aeConst.ROOT_FOLDER_ID).each((aItem, aCursor) => {
-        let menuItemID = "ae-clippings-clipping-" + aItem.id + "_" + Date.now();
-        gClippingMenuItemIDMap[aItem.id] = menuItemID;
-        
-        chrome.contextMenus.create({
-          id: menuItemID,
-          title: aItem.name,
-          icons: {
-            16: "img/" + (aItem.label ? `clipping-${aItem.label}.svg` : "clipping.svg")
-          },
-          contexts: ["editable"],
-          documentUrlPatterns: ["<all_urls>"]
-        });
+  getContextMenuData(aeConst.ROOT_FOLDER_ID).then(aMenuData => {
+    if (aeConst.DEBUG) {
+      console.log("buildContextMenu(): Menu data: ");
+      console.log(aMenuData);
+    }
+    
+    if (aMenuData.length > 0) {
+      chrome.contextMenus.create({
+        type: "separator",
+        contexts: ["editable"],
+        documentUrlPatterns: ["<all_urls>"]
       });
-    });
+
+      buildContextMenuHelper(aMenuData);
+    }
   }).catch(aErr => { onError(aErr) });
 }
 
 
-function buildContextSubmenu(aParentFolderMenuID, aFolderData)
+function buildContextMenuHelper(aMenuData)
 {
-  let folderID = aFolderData.id;
-  let fldrMenuItemID = "ae-clippings-folder-" + folderID + "_" + Date.now();
-  gFolderMenuItemIDMap[folderID] = fldrMenuItemID;
+  for (let i = 0; i < aMenuData.length; i++) {
+    let menuData = aMenuData[i];
+    let menuItem = {
+      id: menuData.id,
+      title: menuData.title,
+      icons: menuData.icons,
+      contexts: ["editable"],
+      documentUrlPatterns: ["<all_urls>"]
+    };
 
-  let cxtSubmenuData = {
-    id: fldrMenuItemID,
-    title: aFolderData.name,
-    icons: {
-      16: "img/folder.svg"
-    },
-    contexts: ["editable"],
-    documentUrlPatterns: ["<all_urls>"]
-  };
+    if (menuData.parentId !== undefined && menuData.parentId != aeConst.ROOT_FOLDER_ID) {
+      menuItem.parentId = menuData.parentId;
+    }
 
-  if (aParentFolderMenuID != aeConst.ROOT_FOLDER_ID) {
-    cxtSubmenuData.parentId = aParentFolderMenuID;
+    chrome.contextMenus.create(menuItem);
+    
+    if (menuData.submenuItems) {
+      buildContextMenuHelper(menuData.submenuItems);
+    }
   }
-  
-  let cxtSubmenuID = chrome.contextMenus.create(cxtSubmenuData);
-
-  gClippingsDB.transaction("r", gClippingsDB.folders, gClippingsDB.clippings, () => {
-    let populateSubfolders = gClippingsDB.folders.where("parentFolderID").equals(folderID).each((aItem, aCursor) => {
-      buildContextSubmenu(cxtSubmenuID, aItem);
-    });
-
-    populateSubfolders.then(() => {
-      gClippingsDB.clippings.where("parentFolderID").equals(folderID).each((aItem, aCursor) => {
-        let menuItemID = "ae-clippings-clipping-" + aItem.id + "_" + Date.now();
-        gClippingMenuItemIDMap[aItem.id] = menuItemID;
-        
-        chrome.contextMenus.create({
-          id: menuItemID,
-          title: aItem.name,
-          icons: {
-            16: "img/" + (aItem.label ? `clipping-${aItem.label}.svg` : "clipping.svg")
-          },
-          parentId: cxtSubmenuID,
-          contexts: ["editable"],
-          documentUrlPatterns: ["<all_urls>"]
-        });
-      });
-    });
-  }).catch(aErr => { onError(aErr) });
 }
 
 
