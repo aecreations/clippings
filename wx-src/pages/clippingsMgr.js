@@ -126,7 +126,7 @@ let gClippingsListener = {
         let parentFldrID = aOldData.parentFolderID;
         
         this._removeClippingsTreeNode(aID + "C");
-        gCmd.updateDisplayOrder(parentFldrID, false);
+        gCmd.updateDisplayOrder(parentFldrID, false, {}, true);
       }
       else {
         if (gClippingsTreeDnD) {
@@ -182,7 +182,7 @@ let gClippingsListener = {
         let parentFldrID = aOldData.parentFolderID;
         
         this._removeClippingsTreeNode(aID + "F");
-        gCmd.updateDisplayOrder(parentFldrID, false);
+        gCmd.updateDisplayOrder(parentFldrID, false, {}, true);
       }
       else {
         if (gClippingsTreeDnD) {
@@ -1039,7 +1039,7 @@ let gCmd = {
     });
   },
   
-  updateDisplayOrder: function (aFolderID, aDestUndoStack, aUndoInfo)
+  updateDisplayOrder: function (aFolderID, aDestUndoStack, aUndoInfo, aSuppressClippingsMenuRebuild)
   {
     let tree = getClippingsTree();
     let folderNode;
@@ -1071,7 +1071,7 @@ let gCmd = {
       }
 
       Promise.all(seqUpdates).then(numUpd => {
-        log("Display order updates for each folder item is completed.");
+        log("Clippings/wx::clippingsMgr.js: gCmd.updateDisplayOrder(): Display order updates for each folder item is completed");
 
         if (aDestUndoStack == this.UNDO_STACK) {
           this.undoStack.push({
@@ -1079,6 +1079,10 @@ let gCmd = {
             folderID: aFolderID,
             // TO DO: Add other undo info ...
           });
+        }
+
+        if (! aSuppressClippingsMenuRebuild) {
+          gClippings.rebuildContextMenu();
         }
       });
     }).catch(aErr => {
@@ -2690,18 +2694,31 @@ function buildClippingsTree()
               newParentID = (parentNode.isRootNode() ? aeConst.ROOT_FOLDER_ID : parseInt(parentNode.key));
             }
 
+            let oldParentID;
+            if (aData.otherNode.getParent().isRootNode()) {
+              oldParentID = 0;
+            }
+            else {
+              oldParentID = parseInt(aData.otherNode.getParent().key);
+            }
+
             aData.otherNode.moveTo(aNode, aData.hitMode);
             gClippingsTreeDnD = true;
             
             let id = parseInt(aData.otherNode.key);
-            log(`Clippings/wx::clippingsMgr.js::#clippings-tree.dnd5.dragDrop(): ID of moved clipping or folder: ${id}\nID of new parent folder: ${newParentID}`);
+            log(`Clippings/wx::clippingsMgr.js::#clippings-tree.dnd5.dragDrop(): ID of moved clipping or folder: ${id}\nID of old parent folder: ${oldParentID}\nID of new parent folder: ${newParentID}`);
 
-            if (aData.otherNode.isFolder()) {
-              gCmd.moveFolderIntrl(id, newParentID, gCmd.UNDO_STACK);
+            if (newParentID == oldParentID) {
+              log(`It appears that the node (key = ${aNode.key}) was just reordered, as it was moved within the same folder. Rebuilding Clippings context menu.`);
             }
             else {
-              gCmd.moveClippingIntrl(id, newParentID, gCmd.UNDO_STACK);
-            }
+              if (aData.otherNode.isFolder()) {
+                gCmd.moveFolderIntrl(id, newParentID, gCmd.UNDO_STACK);
+              }
+              else {
+                gCmd.moveClippingIntrl(id, newParentID, gCmd.UNDO_STACK);
+              }
+            }           
 
             gCmd.updateDisplayOrder(newParentID, false);
           }
