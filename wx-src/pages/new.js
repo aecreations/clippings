@@ -193,8 +193,8 @@ function initDialogs()
   gNewFolderDlg.fldrTree = null;
   gNewFolderDlg.selectedFldrNode = null;
 
-  let that = gNewFolderDlg;
   gNewFolderDlg.resetTree = function () {
+    let that = gNewFolderDlg;
     let fldrTree = that.fldrTree.getTree();
     fldrTree.clear();
     that.fldrTree = null;
@@ -208,6 +208,7 @@ function initDialogs()
   };
   
   gNewFolderDlg.onInit = () => {
+    let that = gNewFolderDlg;
     let parentDlgFldrPickerMnuBtn = $("#new-clipping-fldr-picker-menubtn");
     let fldrPickerMnuBtn = $("#new-folder-dlg-fldr-picker-mnubtn");
     let fldrPickerPopup = $("#new-folder-dlg-fldr-tree-popup");
@@ -258,6 +259,7 @@ function initDialogs()
   };
   
   gNewFolderDlg.onAccept = aEvent => {
+    let that = gNewFolderDlg;
     let newFldrDlgTree = that.fldrTree.getTree();
     let parentFldrID = aeConst.ROOT_FOLDER_ID;
 
@@ -271,38 +273,53 @@ function initDialogs()
 
     console.log("Clippings/wx::new.js: gNewFolderDlg.onAccept(): parentFldrID = " + parentFldrID);
 
-    gClippingsDB.folders.add({
-      name: $("#new-fldr-name").val(),
-      parentFolderID: parentFldrID
-    }).then(aFldrID => {
-      let newFldrName = $("#new-fldr-name").val();
+    let numItemsInParent = 0;  // For calculating display order of new folder.
+
+    gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
+      gClippingsDB.folders.where("parentFolderID").equals(parentFldrID).count().then(aNumFldrs => {
+        numItemsInParent += aNumFldrs;
+        return gClippingsDB.clippings.where("parentFolderID").equals(parentFldrID).count();
+        
+      }).then(aNumClippings => {
+        numItemsInParent += aNumClippings;
+
+        return gClippingsDB.folders.add({
+          name: $("#new-fldr-name").val(),
+          parentFolderID: parentFldrID,
+          displayOrder: numItemsInParent,
+        });
+      }).then(aFldrID => {
+        let newFldrName = $("#new-fldr-name").val();
       
-      // Update the folder tree in the main dialog.
-      let newFldrNodeData = {
-        key: aFldrID,
-        title: newFldrName,
-        folder: true,
-        children: []
-      };
-
-      let mainFldrTree = gFolderPickerPopup.getTree();
-      let parentNode;
-
-      if (parentFldrID == aeConst.ROOT_FOLDER_ID) {
-        parentNode = mainFldrTree.rootNode.getFirstChild();
-      }
-      else {
-        parentNode = mainFldrTree.getNodeByKey(Number(parentFldrID).toString());
-      }
-
-      let newFldrNode = parentNode.addNode(newFldrNodeData);
-      newFldrNode.setActive();
-
-      $("#new-clipping-fldr-picker-menubtn").text(newFldrName).val(aFldrID);
-      gParentFolderID = aFldrID;
-
-      that.resetTree();
-      that.close();
+        // Update the folder tree in the main dialog.
+        let newFldrNodeData = {
+          key: aFldrID,
+          title: newFldrName,
+          folder: true,
+          children: []
+        };
+        
+        let mainFldrTree = gFolderPickerPopup.getTree();
+        let parentNode;
+        
+        if (parentFldrID == aeConst.ROOT_FOLDER_ID) {
+          parentNode = mainFldrTree.rootNode.getFirstChild();
+        }
+        else {
+          parentNode = mainFldrTree.getNodeByKey(Number(parentFldrID).toString());
+        }
+        
+        let newFldrNode = parentNode.addNode(newFldrNodeData);
+        newFldrNode.setActive();
+        
+        $("#new-clipping-fldr-picker-menubtn").text(newFldrName).val(aFldrID);
+        gParentFolderID = aFldrID;
+        
+        that.resetTree();
+        that.close();
+      });
+    }).catch(aErr => {
+      window.alert(aErr);
     });
   };
 }
