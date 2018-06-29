@@ -126,7 +126,7 @@ let gClippingsListener = {
         let parentFldrID = aOldData.parentFolderID;
         
         this._removeClippingsTreeNode(aID + "C");
-        gCmd.updateDisplayOrder(parentFldrID, false, {}, true);
+        gCmd.updateDisplayOrder(parentFldrID, null, null, true);
       }
       else {
         if (gClippingsTreeDnD) {
@@ -182,7 +182,7 @@ let gClippingsListener = {
         let parentFldrID = aOldData.parentFolderID;
         
         this._removeClippingsTreeNode(aID + "F");
-        gCmd.updateDisplayOrder(parentFldrID, false, {}, true);
+        gCmd.updateDisplayOrder(parentFldrID, null, null, true);
       }
       else {
         if (gClippingsTreeDnD) {
