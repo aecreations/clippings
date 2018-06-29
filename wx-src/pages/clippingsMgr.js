@@ -2967,10 +2967,10 @@ function buildClippingsTreeHelper(aFolderID)
           rv.push(clippingNode);
         });
       }).then(() => {
-        rv.sort((aPred, aSucc) => {
+        rv.sort((aItem1, aItem2) => {
           let rv = 0;
-          if (aPred.displayOrder !== undefined && aSucc.displayOrder !== undefined) {
-            rv = aPred.displayOrder - aSucc.displayOrder;
+          if (aItem1.displayOrder !== undefined && aItem2.displayOrder !== undefined) {
+            rv = aItem1.displayOrder - aItem2.displayOrder;
           }
           return rv;
         });
