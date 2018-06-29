@@ -17,16 +17,7 @@ class aeFolderPicker
 
   _init(aActiveTreeNodeKey)
   {
-    let treeData = [
-      {
-	title: "Clippings",
-	key: 0,
-	folder: true,
-	expanded: true,
-        extraClasses: "ae-clippings-root",
-	children: []
-      }
-    ];
+    let rootFldrTreeNodes = [];
 
     this._db.folders.where("parentFolderID").equals(0).each((aItem, aCursor) => {
       let folderNode = {
@@ -35,10 +26,32 @@ class aeFolderPicker
 	folder: true
       };
 
-      folderNode.children = this._buildFolderTree(aItem);
-      treeData[0].children.push(folderNode);
+      if (aItem.displayOrder === undefined) {
+        folderNode.displayOrder = 0;
+      }
+      else {
+        folderNode.displayOrder = aItem.displayOrder;
+      }
+
+      this._buildFolderTree(aItem).then(aChildItems => {
+        folderNode.children = aChildItems;
+        rootFldrTreeNodes.push(folderNode);
+      });
     }).then(() => {
       let that = this;
+
+      rootFldrTreeNodes.sort((aItem1, aItem2) => { return this._sort(aItem1, aItem2) });
+
+      let treeData = [
+        {
+	  title: "Clippings",
+	  key: 0,
+	  folder: true,
+	  expanded: true,
+          extraClasses: "ae-clippings-root",
+	  children: rootFldrTreeNodes,
+        }
+      ];
       
       $(this._treeEltSelector).fancytree({
 	source: treeData,
@@ -46,7 +59,8 @@ class aeFolderPicker
 	icon: true,
         escapeTitles: true,
 
-	init: function (aEvent, aData) {
+	init(aEvent, aData)
+        {
           if (aActiveTreeNodeKey) {
             aData.tree.activateKey(aActiveTreeNodeKey);
           }
@@ -55,7 +69,8 @@ class aeFolderPicker
           }
 	},
 
-	click: function (aEvent, aData) {
+	click(aEvent, aData)
+        {
           if (aData.targetType == "icon" || aData.targetType == "title") {
 	    that._fnOnSelectFolder(aData);
           }
@@ -69,21 +84,42 @@ class aeFolderPicker
 
   _buildFolderTree(aFolderData)
   {
+    let that = this;
     let rv = [];
     let folderID = aFolderData.id;
 
-    this._db.folders.where("parentFolderID").equals(folderID).each((aItem, aCursor) => {
-      let folderNode = {
-	key: aItem.id,
-	title: aItem.name,
-	folder: true
-      }
+    return new Promise((aFnAccept, aFnReject) => {
+      that._db.folders.where("parentFolderID").equals(folderID).each((aItem, aCursor) => {
+        let folderNode = {
+	  key: aItem.id,
+	  title: aItem.name,
+	  folder: true
+        };
 
-      folderNode.children = this._buildFolderTree(aItem);    
-      rv.push(folderNode);
+        if (aItem.displayOrder === undefined) {
+          folderNode.displayOrder = 0;
+        }
+        else {
+          folderNode.displayOrder = aItem.displayOrder;
+        }
+
+        that._buildFolderTree(aItem).then(aChildItems => {
+          folderNode.children = aChildItems;    
+          rv.push(folderNode);  
+        });
+      }).then(() => {
+        rv.sort((aItem1, aItem2) => { return that._sort(aItem1, aItem2) });
+        aFnAccept(rv);
+      });
     });
+  }
 
-    return rv;
+  _sort(aTreeNode1, aTreeNode2) {
+    let rv = 0;
+    if (aTreeNode1.displayOrder !== undefined && aTreeNode2.displayOrder !== undefined) {
+      rv = aTreeNode1.displayOrder - aTreeNode2.displayOrder;
+    }
+    return rv; 
   }
 
   set onSelectFolder(aFnOnSelectFolder)
