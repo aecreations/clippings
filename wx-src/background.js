@@ -502,11 +502,11 @@ function initMessageListeners()
 
 function getContextMenuData(aFolderID)
 {
-  function fnSortMenuItems(aPred, aSucc)
+  function fnSortMenuItems(aItem1, aItem2)
   {
     let rv = 0;
-    if (aPred.displayOrder !== undefined && aSucc.displayOrder !== undefined) {
-      rv = aPred.displayOrder - aSucc.displayOrder;
+    if (aItem1.displayOrder !== undefined && aItem2.displayOrder !== undefined) {
+      rv = aItem1.displayOrder - aItem2.displayOrder;
     }
     return rv;    
   }
