@@ -2245,7 +2245,10 @@ function initDialogs()
     gSuppressAutoMinzWnd = false;
   };
   gDialogs.importFromFile.onAccept = aEvent => {
-    function importFile() {
+    let that = gDialogs.importFromFile;
+    
+    function importFile(aAppendItems)
+    {
       let inputFileElt = $("#import-clippings-file-upload")[0];
       let fileList = inputFileElt.files;
 
@@ -2265,10 +2268,10 @@ function initDialogs()
         
         try {
           if (importFile.name.endsWith(".json")) {
-            aeImportExport.importFromJSON(rawData, replaceShortcutKeys);
+            aeImportExport.importFromJSON(rawData, replaceShortcutKeys, aAppendItems);
           }
           else if (importFile.name.endsWith(".rdf")) {
-            aeImportExport.importFromRDF(rawData, replaceShortcutKeys);
+            aeImportExport.importFromRDF(rawData, replaceShortcutKeys, aAppendItems);
           }
         }
         catch (e) {
@@ -2290,9 +2293,9 @@ function initDialogs()
       });
 
       fileReader.readAsText(importFile);
-    }
+    } // END nested function
 
-    if (gDialogs.importFromFile.mode == gDialogs.importFromFile.IMP_REPLACE) {
+    if (that.mode == that.IMP_REPLACE) {
       info("Clippings/wx::clippingsMgr.js: Import dialog mode: Restore From Backup");
 
       $("#restore-backup-warning").hide();
@@ -2304,7 +2307,7 @@ function initDialogs()
           return gClippingsDB.folders.clear();
         }).then(() => {
           log("Finished deleting all clippings and folders. Starting import of backup file.");
-          importFile();
+          importFile(false);
         });
       }).catch(aErr => {
         console.error("Clippings/wx::clippingsMgr.js: gDialogs.importFromFile.onAccept(): " + aErr);
@@ -2312,7 +2315,7 @@ function initDialogs()
     }
     else {
       info("Clippings/wx::clippingsMgr.js: Import dialog mode: Import File");
-      importFile();
+      importFile(true);
     }
   };
   
