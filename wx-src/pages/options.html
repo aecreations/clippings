@@ -7,6 +7,8 @@
   <head>
     <meta charset="utf-8">
     <title data-i18n="prefsTitle"></title>
+
+    <link rel="stylesheet" href="../style/lightbox.css"/>
     <link rel="stylesheet" href="options.css"/>
   </head>
 
@@ -31,7 +33,7 @@
 	  <div class="indent browser-style">
 	    <input type="checkbox" id="html-auto-line-break"/>
 	    <label for="html-auto-line-break" data-i18n="cbAutoLineBreak"></label>
-	    <p class="description" data-i18n="htmlPasteDesc"></p>
+	    <p class="note" data-i18n="htmlPasteDesc"></p>
           </div>
 	  <div class="row browser-style">
 	    <input type="checkbox" id="enable-shortcut-key"/>
@@ -57,11 +59,138 @@
 	  <label for="check-spelling" data-i18n="cbCheckSpelling"></label>
 	</div>
       </fieldset>
+
+      <fieldset id="sync-options">
+	<legend>Sync Clippings</legend>
+
+	<div class="row browser-style">
+	  <p class="description" style="margin-bottom:0">You can synchronize your clippings with
+	  Thunderbird or other Firefox installations by putting the
+	  clippings you want to share into a special "Sync Clippings"
+	  folder.  The synchronized clippings will be saved in a file on your
+	  system.  Requires the <a href="http://aecreations.sourceforge.net/">Sync Clippings</a> helper
+	  app.</p>
+	  <p class="description" style="margin-top:6px"><a id="show-sync-help" href="#">Learn more about Sync Clippings.</a></p>
+
+	  <p id="sync-status">Sync Clippings is turned off.</p>
+        </div>
+        <div class="row browser-style">
+	  <button id="toggle-sync">Turn On Sync</button>
+	</div>
+
+      </fieldset>	
     </main>
 
+    <div id="sync-clippings-dlg" class="lightbox">
+      <div class="dlg-content">
+        <div id="sync-connection-check" class="deck">
+	  <p class="label">Connecting to the Sync Clippings helper app...<p>
+	  <progress style="width:100%"></progress>
+	</div>
+	<div id="sync-cxn-error" class="deck">
+          <div class="msgbox-icon"></div>
+          <div class="dlg-content">
+	    <div class="error-msg">Unable to connect to the Sync Clippings helper
+	      app. Make sure that the app is installed.</div>
+            <p class="label">The Sync Clippings helper app is needed to sync
+      your clippings. You can download it from the <a href="http://aecreations.sourceforge.net/clippings/">AE Creations website</a>.</p>
+          </div>
+        </div>
+	<div id="generic-error" class="deck">
+	  <div class="msgbox-icon"></div>
+          <div class="dlg-content">
+	    <div class="error-msg">An error has occurred with the Sync
+      Clippings helper app.</div>
+	    <p class="label">Error details:</p>
+	    <textarea id="sync-err-detail">Object [object] is not an instance of an object.</textarea>
+	  </div>
+        </div>
+	<div id="sync-folder-location" class="deck">
+	  <div class="row">
+ 	    <div class="label">Sync file location:</div>
+          </div>
+	  <div class="row">
+  	    <input type="text" id="sync-fldr-curr-location" readonly="true" style="width:100%" value="C:\Users\aeng\Documents\clippings\6.1-test"/>
+          </div>
+	  <div class="row">
+	    <p class="description">Your Sync Clippings data is stored in this file
+      location. To change it, click Change Sync Location.</p>
+          </div>
+	  <div class="row border-bottom">
+	    <button id="change-sync-location">Change Sync Location</button>
+	  </div>
+	</div>
+	<div id="sync-folder-location-change" class="deck">
+	  <div class="row">
+ 	    <div class="label">Sync file location:</div>
+	  </div>
+	  <div class="row">
+	    <input type="text" id="sync-fldr-new-location" readonly="true"/>
+	    <label id="sync-fldr-new-location-btn" for="sync-fldr-new-location-upload" data-i18n="btnBrowse"></label>
+	    <input type="file" id="sync-fldr-new-location-upload" accept=".json"/>
+	  </div>
+	  <p class="description">Click Browse, then select the file location on
+      your system where you want the Sync Clippings data to be stored.</p>
+	</div>
+      </div>
+      <div class="dlg-btns">
+	<button class="dlg-accept default" data-i18n="btnOK"></button>
+	<button class="dlg-cancel" data-i18n="btnCancel"></button>
+      </div>
+    </div>
+
+    <div id="turn-off-sync-clippings-dlg" class="lightbox">
+      <div class="msgbox-icon"></div>
+      <div class="dlg-content">
+	<p class="label">Are you sure you want to turn off Sync Clippings?</p>
+      </div>
+      <div class="dlg-btns">
+	<button class="dlg-accept" data-i18n="btnYes"></button>
+	<button class="dlg-cancel default" data-i18n="btnNo"></button>
+      </div>
+    </div>
+
+    <div id="sync-clippings-help-dlg" class="lightbox">
+      <div class="dlg-content">
+        <p class="dlg-subhead" style="margin-top:6px">Sync Clippings</p>
+	<p>You can synchronize your clippings with
+	  Thunderbird or other Firefox installations by putting the
+	  clippings you want to share into a special "Sync Clippings"
+	folder.  These clippings will appear in the "Sync Clippings" folder in
+     those applications. You can choose which clippings you want to sync by
+      moving or copying them into the "Sync Clippings" folder in Clippings
+	Manager.</p>
+
+	<p>The special "Sync Clippings" folder will be automatically created
+	once Sync Clippings is set up.</p>
+
+	<p class="dlg-subhead">Setting Up</p>
+	<p>Sync Clippings needs to be turned on in the applications you
+	want to synchronize your clippings with. Sync Clippings is supported on
+	Firefox 60 and newer, and Thunderbird 60 and newer (with Clippings for
+	Thunderbird 5.6 installed).</p>
+
+	<p>The Sync Clippings helper app needs to be installed on your
+	system. It is available for download from the <a href="http://aecreations.sourceforge.net">AE Creations website</a>. It will be
+	launched automatically when Firefox is started. Note that you don't need
+	to install the Sync Clippings helper app if you won't be using Sync Clippings.</p>
+	
+	<p>In Firefox, activate Clippings Sync from the the Clippings preferences
+	page by clicking <b>Turn On Sync</b>.  You will be prompted to choose a
+	file location on your system where the synced clippings data will be
+	saved, if this was not set already.</p>
+
+      </div>
+      <div class="dlg-btns">
+	<button class="dlg-accept default" data-i18n="btnOK"></button>
+      </div>
+    </div>
+    <div id="lightbox-bkgrd-ovl" class="lightbox-bkgrd"></div>
+    
     <script src="../lib/jquery.js"></script>
     <script src="../lib/i18n.js"></script>
     <script src="../modules/aeConst.js"></script>
+    <script src="../modules/aeDialog.js"></script>
     <script src="options.js"></script>
 
   </body>

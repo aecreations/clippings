@@ -57,6 +57,50 @@ label {
     margin-right: 4px;
 }
 
+button {
+    min-width: 88px;
+    height: 32px;
+    padding: 0 20px 0;
+    outline: unset;
+    border-radius: 2px;
+    box-shadow: 0 0 0 0 transparent;
+    border: 1px solid rgba(12, 12, 13, 0.1) !important;
+    background-color: rgba(12, 12, 13, 0.1);
+    font: caption;
+    font-size: 15px;
+}
+
+button[disabled] {
+    opacity: 0.4;
+}
+
+button.default {
+    background-color: #0060df;
+    border: 1px solid #0060df;
+    border-radius: 2px;
+    color: #fff;
+}
+
+button:hover {
+    background-color: rgba(12, 12, 13, 0.2);
+    border: 1px solid rgba(12, 12, 13, 0.2) !important;
+}
+
+button.default:hover {
+    background-color: #003eaa;
+    border: 1px solid #003eaa;
+}
+
+button:active {
+    background-color: rgba(12, 12, 13, 0.3);
+    border: 1px solid rgba(12, 12, 13, 0.3) !important;
+}
+
+button.default:active {
+    background-color: #002275;
+    border: 1px solid #002275;
+}
+
 .row {
     margin-top: 6px;
     margin-bottom: 10px;
@@ -67,11 +111,18 @@ label {
     margin-left: 2em;
 }
 
-.description {
+.note, description {
     margin-top: 6px;
     margin-bottom: 16px;
-    width: 48em;
+    margin-right: 18px;
+}
+
+.note {
     font-size: 11px;
+}
+
+.description {
+    font-size: 13px;
 }
 
 .browser-style > input[type="checkbox"] + label::before {
@@ -88,5 +139,180 @@ label {
 
 #auto-inc-plchldrs-start-val {
     width: 64px;
+}
+
+#sync-status {
+    font-size: 15px;
+}
+
+#sync-options .description {
+    margin-top: 0;
+    margin-bottom: 6px;
+}
+
+.lightbox {
+    top: 64px;
+    padding-left: 28px;
+    padding-right: 28px;
+    border: 1px solid #484848;
+    box-shadow: 0px 0px 8px 2px rgba(48, 48, 48, 0.8);
+    border-radius: 4px;
+    font-size: 15px;
+}
+
+.lightbox p {
+    font-size: 13px;
+}
+
+.lightbox .label {
+    font-size: 15px;
+}
+
+.lightbox .dlg-subhead {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.lightbox > .dlg-btns {
+    bottom: 24px;
+    right: 14px;
+}
+
+.lightbox > .dlg-btns > button {
+    padding-left: 24px;
+    padding-right: 24px;
+    border-radius: 2px;
+    font-size: 15px !important;
+}
+
+.lightbox input[type="text"] {
+    border-top: 1px solid transparent;
+    border-left: 1px solid transparent;
+    border-right: 1px solid transparent;
+    border-bottom: 1px solid #b1b1b1;
+    background-color: -moz-Field;
+    font-size: 13px;
+}
+
+.lightbox input[type="text"][disabled],
+.lightbox input[type="text"][disabled]:hover,
+.lightbox input[type="text"][readonly],
+.lightbox input[type="text"][readonly]:hover{
+    border-bottom: 1px dotted;
+}
+
+.lightbox .row {
+    margin-left: unset;
+}
+
+.lightbox .border-bottom {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 18px;
+}
+
+#sync-clippings-dlg {
+    top: 128px;
+    --width: 480px;
+    --height: 256px;
+}
+
+#sync-clippings-dlg #sync-cxn-error .msgbox-icon,
+#sync-clippings-dlg #generic-error .msgbox-icon {
+    float: left;
+    width: 48px;
+    height: 48px;
+    margin-top: 4px;
+    margin-right: 12px;
+    background-image: url("../img/error.svg");
+    background-size: contain;
+}
+
+#sync-clippings-dlg #sync-cxn-error .error-msg,
+#sync-clippings-dlg #generic-error .error-msg {
+    margin-top: 12px;
+    margin-left: 64px;
+    background-color: #ffd2d2;
+    padding: 12px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+#sync-clippings-dlg #generic-error #sync-err-detail {
+    width: 100%;
+    height: 100%;
+    font: message-box;
+    font-size: 15px;
+    border: 0;
+    resize: unset;
+}
+
+#sync-clippings-dlg #sync-fldr-new-location {
+    /* TO DO: Use CSS flexbox to arrange textbox and Browse button. */
+    width: 310px;
+    height: 24px;
+    border: 0;
+    padding-left: 8px;
+    padding-right: 8px;
+    font: caption;
+    font-size: 13px !important;
+    text-shadow: 1px 1px white;
+    
+    background-image: url("../img/tbd-edge-l.svg"), url("../img/tbd-bg.svg"), url("../img/tbd-edge-r.svg");
+    background-position: left, center, right;
+    background-repeat: no-repeat, repeat-x, no-repeat;
+}
+
+#sync-clippings-dlg #sync-fldr-new-location-btn {
+    height: 22px;
+    padding: 3px 16px 3px 16px;
+    border: 1px solid rgba(12, 12, 13, 0.1) !important;
+    background-color: rgba(12, 12, 13, 0.1);
+    border-radius: 2px;
+    box-shadow: 0 0 0 0 transparent;
+    font-size: 13px;
+    
+    transition-duration: 250ms;
+    transition-property: box-shadow, border;
+}
+
+#sync-clippings-dlg #sync-fldr-new-location-btn:hover {
+    background-color: rgba(12, 12, 13, 0.2);
+    border: 1px solid rgba(12, 12, 13, 0.2) !important;
+}
+
+#sync-clippings-dlg #sync-fldr-new-location-btn:active {
+    background-color: rgba(12, 12, 13, 0.3);
+    border: 1px solid rgba(12, 12, 13, 0.3) !important;
+}
+
+#sync-clippings-dlg #sync-fldr-new-location-upload {
+    opacity: 0;
+    width: 4px;
+}
+
+#turn-off-sync-clippings-dlg {
+    top: 160px;
+    --width: 510px;
+    --height: 150px;
+}
+
+#turn-off-sync-clippings-dlg .msgbox-icon {
+    float: left;
+    width: 48px;
+    height: 48px;
+    margin-top: 8px;
+    margin-right: 12px;
+    background-image: url("chrome://global/skin/icons/question-64.png");
+    background-size: contain;
+}
+
+#sync-clippings-help-dlg {
+    --width: 600px;
+    --height: 496px;
+}
+
+#sync-clippings-help-dlg .dlg-content {
+    max-height: 440px;
+    overflow-y: auto;
 }
 
