@@ -220,16 +220,16 @@ aeImportExport.exportToHTML = async function ()
     
     for (let item of aFldrItems) {
       if (item.children) {
-        let name = that._sanitize(item.name);
+        let name = that._escapeHTML(item.name);
         let dt = `<dt class="folder"><h2>${name}</h2></dt>`;
         let dd = "<dd>" + exportToHTMLHelper(item.children);
         dd += "</dd>";
         rv += dt + dd;
       }
       else {
-        let name = that._sanitize(item.name);
+        let name = that._escapeHTML(item.name);
         let dt = `<dt class="clipping"><h3>${name}</h3></dt>`;
-        let text = that._sanitize(item.content);
+        let text = that._escapeHTML(item.content);
         text = text.replace(/\n/g, "<br>");
         let dd = `<dd>${text}</dd>`;
         rv += dt + dd;
@@ -480,7 +480,7 @@ aeImportExport._getShortcutKeyMap = async function ()
 };
 
 
-aeImportExport._sanitize = function (aStr)
+aeImportExport._escapeHTML = function (aStr)
 {
   let rv = aStr.replace(/</g, "&lt;");
   rv = rv.replace(/>/g, "&gt;");
