@@ -61,7 +61,7 @@
       </fieldset>
 
       <fieldset id="sync-options">
-	<legend>Sync Clippings</legend>
+	<legend data-i18n="syncClippings"></legend>
 
 	<div class="row browser-style">
 	  <p class="description" style="margin-bottom:0">You can synchronize your clippings with
@@ -72,15 +72,17 @@
 	  app.</p>
 	  <p class="description" style="margin-top:6px"><a id="show-sync-help" href="#">Learn more about Sync Clippings.</a></p>
 
-	  <p id="sync-status">Sync Clippings is turned off.</p>
+	  <p id="sync-status"></p>
         </div>
-        <div class="row browser-style">
-	  <button id="toggle-sync">Turn On Sync</button>
+	<div class="row browser-style">
+	  <button id="sync-settings" data-i18n="syncSettings"></button>
+	  <button id="toggle-sync"></button>
 	</div>
 
       </fieldset>	
     </main>
 
+    <!-- Dialog boxes -->
     <div id="sync-clippings-dlg" class="lightbox">
       <div class="dlg-content">
         <div id="sync-connection-check" class="deck">
@@ -171,9 +173,10 @@
 	Thunderbird 5.6 installed).</p>
 
 	<p>The Sync Clippings helper app needs to be installed on your
-	system. It is available for download from the <a href="http://aecreations.sourceforge.net">AE Creations website</a>. It will be
-	launched automatically when Firefox is started. Note that you don't need
-	to install the Sync Clippings helper app if you won't be using Sync Clippings.</p>
+	system. It is available for download from the <a
+	href="http://aecreations.sourceforge.net">AE Creations
+	website</a>. Once installed, it will be	launched automatically when
+	Firefox is started, and will run in the background.</p>
 	
 	<p>In Firefox, activate Clippings Sync from the the Clippings preferences
 	page by clicking <b>Turn On Sync</b>.  You will be prompted to choose a

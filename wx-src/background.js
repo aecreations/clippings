@@ -185,6 +185,7 @@ async function setDefaultPrefs()
     clippingsMgrStatusBar: false,
     clippingsMgrPlchldrToolbar: false,
     clippingsMgrMinzWhenInactv: undefined,
+    syncClippings: false,
   };
 
   gPrefs = aeClippingsPrefs;
@@ -207,7 +208,22 @@ function init()
     }
     else {
       gPrefs = aPrefs;
-      initHelper();
+
+      // Initialize prefs that were not present in the user's previous version.
+      let newPrefs = {};
+      if (! ("syncClippings" in gPrefs)) {  // 6.1
+        gPrefs.syncClippings = false;
+        newPrefs.syncClippings = false;
+      }
+
+      if (Object.keys(newPrefs).length > 0) {
+        browser.storage.local.set(newPrefs).then(() => {
+          initHelper();
+        });
+      }
+      else {
+        initHelper();
+      }
     }
   });
 }

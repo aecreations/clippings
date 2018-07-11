@@ -54,9 +54,30 @@ function init()
       setPref({ checkSpelling: aEvent.target.checked });
     });
 
-    $("#toggle-sync").click(aEvent => {
+    if (aPrefs.syncClippings) {
+      $("#sync-settings").show();
+      $("#sync-status").text(chrome.i18n.getMessage("syncStatusOn"));
+      $("#toggle-sync").text(chrome.i18n.getMessage("syncTurnOff"));
+    }
+    else {
+      $("#sync-settings").hide();
+      $("#sync-status").text(chrome.i18n.getMessage("syncStatusOff"));
+      $("#toggle-sync").text(chrome.i18n.getMessage("syncTurnOn"));
+    }
+
+    // Initialize modal dialogs.
+
+    $("#sync-settings").click(aEvent => {
       gDialogs.syncClippings.showModal();
-      //gDialogs.turnOffSync.showModal();
+    });
+    
+    $("#toggle-sync").click(aEvent => {
+      if (aPrefs.syncClippings) {
+        gDialogs.turnOffSync.showModal();
+      }
+      else {
+        gDialogs.syncClippings.showModal();
+      }
     });
 
     $("#show-sync-help").click(aEvent => {
@@ -98,6 +119,8 @@ function initDialogs()
     let that = gDialogs.syncClippings;
 
     // TO DO: Perform dialog actions.
+
+    setPref({ syncClippings: true });
     
     that.close();
   };
@@ -106,7 +129,12 @@ function initDialogs()
   gDialogs.turnOffSync.onAccept = () => {
     let that = gDialogs.turnOffSync;
 
-    // TO DO: Turn off Sync Clippings.
+    setPref({ syncClippings: false });
+    
+    // Update extension prefs UI to turn off Sync Clippings.
+    $("#sync-settings").hide();
+    $("#toggle-sync").text(chrome.i18n.getMessage("syncTurnOn"));
+    $("#sync-status").text(chrome.i18n.getMessage("syncStatusOff"));
 
     that.close();
   };
