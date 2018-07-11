@@ -939,6 +939,30 @@
     "message": "Check spelling"
   },
 
+  "syncClippings": {
+    "message": "Sync Clippings"
+  },
+
+  "syncStatusOn": {
+    "message": "Sync Clippings is turned on."
+  },
+
+  "syncStatusOff": {
+    "message": "Sync Clippings is turned off."
+  },
+
+  "syncSettings": {
+    "message": "Settings..."
+  },
+
+  "syncTurnOn": {
+    "message": "Turn On Sync"
+  },
+
+  "syncTurnOff": {
+    "message": "Turn Off Sync"
+  },
+
   "keyAlt": {
     "message": "ALT"
   },
