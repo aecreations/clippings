@@ -60,7 +60,7 @@ label {
 button {
     min-width: 88px;
     height: 32px;
-    padding: 0 20px 0;
+    padding: 0 12px 0;
     outline: unset;
     border-radius: 2px;
     box-shadow: 0 0 0 0 transparent;
@@ -150,6 +150,10 @@ button.default:active {
     margin-bottom: 6px;
 }
 
+#sync-settings {
+    margin-right: 16px;
+}
+
 .lightbox {
     top: 64px;
     padding-left: 28px;
@@ -179,8 +183,7 @@ button.default:active {
 }
 
 .lightbox > .dlg-btns > button {
-    padding-left: 24px;
-    padding-right: 24px;
+    padding: 0 24px 0;
     border-radius: 2px;
     font-size: 15px !important;
 }
@@ -308,11 +311,11 @@ button.default:active {
 
 #sync-clippings-help-dlg {
     --width: 600px;
-    --height: 496px;
+    --height: 466px;
 }
 
 #sync-clippings-help-dlg .dlg-content {
-    max-height: 440px;
+    max-height: 410px;
     overflow-y: auto;
 }
 
