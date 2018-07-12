@@ -156,18 +156,50 @@ let gIsInitialized = false;
 browser.runtime.onInstalled.addListener(aDetails => {
   if (aDetails.reason == "install") {
     log("Clippings/wx: It appears that the extension is newly installed.  Welcome to Clippings 6!");
+
+    // Check if Clippings was installed previously.
+    browser.storage.local.get().then(aPrefs => {
+      if (aPrefs.htmlPaste === undefined) {
+        log("Clippings/wx: No user preferences were previously set.  Setting default user preferences.");
+        setDefaultPrefs().then(() => {
+          init();
+        });
+      }
+      else {
+        log("Clippings/wx: Detecting that Clippings was installed previously.");
+        gPrefs = aPrefs;
+        init();
+      }
+    });
   }
   else if (aDetails.reason == "upgrade") {
     let oldVer = aDetails.previousVersion;
     let currVer = chrome.runtime.getManifest().version;
     log(`Clippings/wx: Upgrading from version ${oldVer} to ${currVer}`);
+
+    browser.storage.local.get().then(aPrefs => {
+      gPrefs = aPrefs;
+      
+      if (versionCompare(oldVer, "6.1") <= 0) {
+        log("Clippings/wx: Upgrade to version 6.1 detected. Initializing new user preferences.");
+        let newPrefs = {
+          syncClippings: false,
+        };
+        
+        browser.storage.local.set(newPrefs).then(() => {
+          for (let pref in newPrefs) {
+            gPrefs.pref = newPrefs.pref;
+          }
+          init();
+        });
+      }
+      else {
+        init();
+      }
+    });
   }
 });
 
-
-//
-// Browser window and Clippings menu initialization
-//
 
 async function setDefaultPrefs()
 {
@@ -193,22 +225,28 @@ async function setDefaultPrefs()
 }
 
 
-function init()
-{
-  if (gIsInitialized) {
-    return;
-  }
+//
+// Browser window and Clippings menu initialization
+//
 
+browser.runtime.onStartup.addListener(() => {
+  log("Clippings/wx: Initializing Clippings during browser startup.");
+  
   browser.storage.local.get().then(aPrefs => {
     if (aPrefs.htmlPaste === undefined) {
+      // NOTE: Should never reach here anymore.
       log("Clippings/wx: No user preferences were previously set.  Setting default user preferences.");
       setDefaultPrefs().then(() => {
-        initHelper();
+        init();
       });
     }
     else {
+      console.log("Clippings/wx: Successfully retrieved user preferences:");
+      console.log(aPrefs);
+      
       gPrefs = aPrefs;
 
+/**
       // Initialize prefs that were not present in the user's previous version.
       let newPrefs = {};
       if (! ("syncClippings" in gPrefs)) {  // 6.1
@@ -218,18 +256,20 @@ function init()
 
       if (Object.keys(newPrefs).length > 0) {
         browser.storage.local.set(newPrefs).then(() => {
-          initHelper();
+          init();
         });
       }
       else {
-        initHelper();
+        init();
       }
+**/
+      init();
     }
   });
-}
+});
 
 
-function initHelper()
+function init()
 {
   log("Clippings/wx: Initializing browser integration...");
   
@@ -1073,6 +1113,16 @@ function pasteProcessedClipping(aClippingContent, aActiveTabID)
 }
 
 
+function onUnload(aEvent)
+{
+  gClippingsListeners.remove(gClippingsListener);
+}
+
+
+//
+// Utility functions
+//
+
 function getClippingsDB()
 {
   return gClippingsDB;
@@ -1146,11 +1196,61 @@ function alertEx(aMessageID)
 }
 
 
-function onUnload(aEvent)
+// Compares two software version numbers (e.g. "1.7.1" or "1.2b").
+// Return value:
+// - 0 if the versions are equal
+// - a negative integer iff v1 < v2
+// - a positive integer iff v1 > v2
+// - NaN if either version string is in the wrong format
+//
+// Source: <https://gist.github.com/pc035860/ccb58a02f5085db0c97d>
+function versionCompare(v1, v2, options)
 {
-  gClippingsListeners.remove(gClippingsListener);
-}
+  var lexicographical = options && options.lexicographical,
+      zeroExtend = options && options.zeroExtend,
+      v1parts = v1.split('.'),
+      v2parts = v2.split('.');
 
+  function isValidPart(x) {
+    return (lexicographical ? /^\d+[A-Za-z]*$/ : /^\d+$/).test(x);
+  }
+
+  if (!v1parts.every(isValidPart) || !v2parts.every(isValidPart)) {
+    return NaN;
+  }
+
+  if (zeroExtend) {
+    while (v1parts.length < v2parts.length) v1parts.push("0");
+    while (v2parts.length < v1parts.length) v2parts.push("0");
+  }
+
+  if (!lexicographical) {
+    v1parts = v1parts.map(Number);
+    v2parts = v2parts.map(Number);
+  }
+
+  for (var i = 0; i < v1parts.length; ++i) {
+    if (v2parts.length == i) {
+      return 1;
+    }
+
+    if (v1parts[i] == v2parts[i]) {
+      continue;
+    }
+    else if (v1parts[i] > v2parts[i]) {
+      return 1;
+    }
+    else {
+      return -1;
+    }
+  }
+
+  if (v1parts.length != v2parts.length) {
+    return -1;
+  }
+
+  return 0;
+}
 
 //
 // Click event listener for the context menu items
@@ -1238,8 +1338,6 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
     break;
   }
 });
-
-init();
 
 
 //
