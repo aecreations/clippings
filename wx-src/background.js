@@ -172,7 +172,7 @@ browser.runtime.onInstalled.addListener(aDetails => {
       }
     });
   }
-  else if (aDetails.reason == "upgrade") {
+  else if (aDetails.reason == "update") {
     let oldVer = aDetails.previousVersion;
     let currVer = chrome.runtime.getManifest().version;
     log(`Clippings/wx: Upgrading from version ${oldVer} to ${currVer}`);
