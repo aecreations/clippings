@@ -233,38 +233,14 @@ browser.runtime.onStartup.addListener(() => {
   log("Clippings/wx: Initializing Clippings during browser startup.");
   
   browser.storage.local.get().then(aPrefs => {
-    if (aPrefs.htmlPaste === undefined) {
-      // NOTE: Should never reach here anymore.
-      log("Clippings/wx: No user preferences were previously set.  Setting default user preferences.");
-      setDefaultPrefs().then(() => {
-        init();
-      });
-    }
-    else {
-      console.log("Clippings/wx: Successfully retrieved user preferences:");
-      console.log(aPrefs);
-      
-      gPrefs = aPrefs;
+    // TEMPORARY
+    console.log("Clippings/wx: Successfully retrieved user preferences:");
+    console.log(aPrefs);
+    // END TEMPORARY
+    
+    gPrefs = aPrefs;
 
-/**
-      // Initialize prefs that were not present in the user's previous version.
-      let newPrefs = {};
-      if (! ("syncClippings" in gPrefs)) {  // 6.1
-        gPrefs.syncClippings = false;
-        newPrefs.syncClippings = false;
-      }
-
-      if (Object.keys(newPrefs).length > 0) {
-        browser.storage.local.set(newPrefs).then(() => {
-          init();
-        });
-      }
-      else {
-        init();
-      }
-**/
-      init();
-    }
+    init();
   });
 });
 
