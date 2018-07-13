@@ -157,19 +157,10 @@ browser.runtime.onInstalled.addListener(aDetails => {
   if (aDetails.reason == "install") {
     log("Clippings/wx: It appears that the extension is newly installed.  Welcome to Clippings 6!");
 
-    // Check if Clippings was installed previously.
-    browser.storage.local.get().then(aPrefs => {
-      if (aPrefs.htmlPaste === undefined) {
-        log("Clippings/wx: No user preferences were previously set.  Setting default user preferences.");
-        setDefaultPrefs().then(() => {
-          init();
-        });
-      }
-      else {
-        log("Clippings/wx: Detecting that Clippings was installed previously.");
-        gPrefs = aPrefs;
-        init();
-      }
+    // We can't detect if the previous install is the same version, so always
+    // initialize user prefs with default values.
+    setDefaultPrefs().then(() => {
+      init();
     });
   }
   else if (aDetails.reason == "update") {
@@ -180,16 +171,9 @@ browser.runtime.onInstalled.addListener(aDetails => {
     browser.storage.local.get().then(aPrefs => {
       gPrefs = aPrefs;
       
-      if (versionCompare(oldVer, "6.1") <= 0) {
+      if (versionCompare(oldVer, "6.1", { lexicographical: true }) <= 0) {
         log("Clippings/wx: Upgrade to version 6.1 detected. Initializing new user preferences.");
-        let newPrefs = {
-          syncClippings: false,
-        };
-        
-        browser.storage.local.set(newPrefs).then(() => {
-          for (let pref in newPrefs) {
-            gPrefs.pref = newPrefs.pref;
-          }
+        setNewPrefs().then(() => {
           init();
         });
       }
@@ -223,6 +207,21 @@ async function setDefaultPrefs()
   gPrefs = aeClippingsPrefs;
   await browser.storage.local.set(aeClippingsPrefs);
 }
+
+
+async function setNewPrefs()
+{
+  let newPrefs = {
+    syncClippings: false,
+  };
+  
+  for (let pref in newPrefs) {
+    gPrefs.pref = newPrefs.pref;
+  }
+
+  await browser.storage.local.set(newPrefs);
+}
+
 
 
 //
