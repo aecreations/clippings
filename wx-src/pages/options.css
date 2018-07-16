@@ -194,7 +194,7 @@ button.default:active {
     border-right: 1px solid transparent;
     border-bottom: 1px solid #b1b1b1;
     background-color: -moz-Field;
-    font-size: 13px;
+    font-size: 15px;
 }
 
 .lightbox input[type="text"][disabled],
@@ -202,6 +202,16 @@ button.default:active {
 .lightbox input[type="text"][readonly],
 .lightbox input[type="text"][readonly]:hover{
     border-bottom: 1px dotted;
+}
+
+.lightbox input[type="text"]:active {
+    border: 1px solid #0996f8;
+}
+
+.lightbox input[type="text"]:focus,
+.lightbox input[type="text"]:focus:hover {
+    border-color: #0996f8;
+    box-shadow: 0 0 0 2px rgba(97, 181, 255, 0.75);
 }
 
 .lightbox .row {

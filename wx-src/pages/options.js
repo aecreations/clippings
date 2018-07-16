@@ -105,14 +105,12 @@ function initDialogs()
     $(deck[1]).hide();
     $(deck[2]).hide();
     $(deck[3]).hide();
-    $(deck[4]).hide();
 
     // TO DO:
     // Connect to the Sync Clippings native app.
     // If connection is unsuccessful, show error message in deck[1].
     // If connection is successful, then retrieve the current sync location
     // and then switch to deck[3] and populate the sync file location.
-    // If the sync file location is NOT set, then switch to deck[4].
     // Any errors reported from helper app should be displayed in deck[2].
   };
   gDialogs.syncClippings.onAccept = () => {
@@ -141,7 +139,8 @@ function initDialogs()
   
   gDialogs.syncClippingsHelp = new aeDialog("#sync-clippings-help-dlg");
 
-  // Sync Clippings dialog once-only initialization.
+  // TO DO: Repurpose the code below for showing the OK and Cancel dialog buttons.
+  // The rest of it can be removed.
   $("#sync-clippings-dlg #change-sync-location").click(aEvent => {
     let deck = $("#sync-clippings-dlg > .dlg-content > .deck");
     $(deck[3]).hide();
@@ -149,6 +148,7 @@ function initDialogs()
     $("#sync-clippings-dlg .dlg-accept").show();
     $("#sync-clippings-dlg .dlg-cancel").text(chrome.i18n.getMessage("btnCancel"));
   });
+  // END TO DO
 }
 
 

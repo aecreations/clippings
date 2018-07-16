@@ -112,27 +112,14 @@
  	    <div class="label">Sync file location:</div>
           </div>
 	  <div class="row">
-  	    <input type="text" id="sync-fldr-curr-location" readonly="true" style="width:100%" value=""/>
+  	    <input type="text" id="sync-fldr-curr-location" style="width:100%" value=""/>
           </div>
 	  <div class="row">
 	    <p class="description">Your Sync Clippings data is stored in this file
-      location. To change it, click Change Sync Location.</p>
+      location.  If you are syncing with Thunderbird and want to change the
+    sync file location, you must also change the data source location in
+    Clippings preferences in Thunderbird to match the new sync file location.</p>
           </div>
-	  <div class="row border-bottom">
-	    <button id="change-sync-location">Change Sync Location</button>
-	  </div>
-	</div>
-	<div id="sync-folder-location-change" class="deck">
-	  <div class="row">
- 	    <div class="label">Sync file location:</div>
-	  </div>
-	  <div class="row">
-	    <input type="text" id="sync-fldr-new-location" readonly="true"/>
-	    <label id="sync-fldr-new-location-btn" for="sync-fldr-new-location-upload" data-i18n="btnBrowse"></label>
-	    <input type="file" id="sync-fldr-new-location-upload" accept=".json"/>
-	  </div>
-	  <p class="description">Click Browse, then select the file location on
-      your system where you want the Sync Clippings data to be stored.</p>
 	</div>
       </div>
       <div class="dlg-btns">
