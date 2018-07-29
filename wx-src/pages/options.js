@@ -106,15 +106,16 @@ function initDialogs()
     $(deck[3]).hide();
 
     console.log("Clippings/wx::options.js: Sending message 'get-app-version' to the syncClippings native app...");
-    let msg = '{ "msgID": "get-app-version" }';
+    let msg = { msgID: "get-app-version" };
     let sendNativeMsg = browser.runtime.sendNativeMessage("syncClippings", msg);
     sendNativeMsg.then(aResp => {
       console.log("Clippings/wx::options.js: Response received from syncClippings native app:");
       console.log(aResp);
 
-      // TO DO:
-      // If connection is successful, then retrieve the current sync location
-      // and then switch to deck[3] and populate the sync file location.
+      $(deck[0]).hide();
+      $(deck[3]).show();
+      // TO DO: Populate the sync file location.
+      
     }).catch(aErr => {
       console.error("Clippings/wx::options.js: Error returned from syncClippings native app: " + aErr);
 
