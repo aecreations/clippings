@@ -97,7 +97,8 @@ function initDialogs()
   gDialogs.syncClippings.onInit = () => {
     $("#sync-clippings-dlg .dlg-accept").hide();
     $("#sync-clippings-dlg .dlg-cancel").text(chrome.i18n.getMessage("btnClose"));
-
+    $("#sync-err-detail").text("");
+    
     let deck = $("#sync-clippings-dlg > .dlg-content > .deck");
     $(deck[0]).show();
     $(deck[1]).hide();
@@ -105,20 +106,28 @@ function initDialogs()
     $(deck[3]).hide();
 
     console.log("Clippings/wx::options.js: Sending message 'get-app-version' to the syncClippings native app...");
-    let sendNativeMsg = browser.runtime.sendNativeMessage("syncClippings", "testMsg");
+    let msg = '{ "msgID": "get-app-version" }';
+    let sendNativeMsg = browser.runtime.sendNativeMessage("syncClippings", msg);
     sendNativeMsg.then(aResp => {
       console.log("Clippings/wx::options.js: Response received from syncClippings native app:");
       console.log(aResp);
-    }, aErr => {
-      console.error("Clippings/wx::options.js: Error returned from syncClippings native app: " + aErr);
-    });
 
-    // TO DO:
-    // Connect to the Sync Clippings native app.
-    // If connection is unsuccessful, show error message in deck[1].
-    // If connection is successful, then retrieve the current sync location
-    // and then switch to deck[3] and populate the sync file location.
-    // Any errors reported from helper app should be displayed in deck[2].
+      // TO DO:
+      // If connection is successful, then retrieve the current sync location
+      // and then switch to deck[3] and populate the sync file location.
+    }).catch(aErr => {
+      console.error("Clippings/wx::options.js: Error returned from syncClippings native app: " + aErr);
+
+      $(deck[0]).hide();
+      if (aErr == "Error: Attempt to postMessage on disconnected port") {
+        // This would occur if Sync Clippings helper app won't start.
+        $(deck[1]).show();
+      }
+      else {
+        $(deck[2]).show();
+        $("#sync-err-detail").text(aErr);
+      }
+    });
   };
   gDialogs.syncClippings.onAccept = () => {
     let that = gDialogs.syncClippings;
