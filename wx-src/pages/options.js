@@ -104,15 +104,30 @@ function initDialogs()
     $(deck[2]).hide();
     $(deck[3]).hide();
 
+    // TEMPORARY
+    function onResponse(response) {
+      console.log(`Received response: "${response}"`);
+    }
+
+    function onError(error) {
+      console.log(`Error: ${error}`);
+    }
+    
+    console.log("Clippings/wx::options.js: Sending 'testMsg'...");
+    var sending = browser.runtime.sendNativeMessage("syncClippings", "testMsg");
+    sending.then(onResponse, onError);
+    // END TEMPORARY
+    
+/***
     console.log("Clippings/wx::options.js: Sending message 'get-app-version' to the syncClippings native app...");
-    let sendNativeMsg = browser.runtime.sendNativeMessage("syncClippings", { msgID: "get-app-version" });
+    let sendNativeMsg = browser.runtime.sendNativeMessage("syncClippings", "testMsg");
     sendNativeMsg.then(aResp => {
       console.log("Clippings/wx::options.js: Response received from syncClippings native app:");
       console.log(aResp);
     }, aErr => {
       console.error("Clippings/wx::options.js: Error returned from syncClippings native app: " + aErr);
     });
-
+***/
     // TO DO:
     // Connect to the Sync Clippings native app.
     // If connection is unsuccessful, show error message in deck[1].
