@@ -65,8 +65,6 @@ function init()
       $("#toggle-sync").text(chrome.i18n.getMessage("syncTurnOn"));
     }
 
-    // Initialize modal dialogs.
-
     $("#sync-settings").click(aEvent => {
       gDialogs.syncClippings.showModal();
     });
@@ -105,6 +103,15 @@ function initDialogs()
     $(deck[1]).hide();
     $(deck[2]).hide();
     $(deck[3]).hide();
+
+    console.log("Clippings/wx::options.js: Sending message 'get-app-version' to the syncClippings native app...");
+    let sendNativeMsg = browser.runtime.sendNativeMessage("syncClippings", { msgID: "get-app-version" });
+    sendNativeMsg.then(aResp => {
+      console.log("Clippings/wx::options.js: Response received from syncClippings native app:");
+      console.log(aResp);
+    }, aErr => {
+      console.error("Clippings/wx::options.js: Error returned from syncClippings native app: " + aErr);
+    });
 
     // TO DO:
     // Connect to the Sync Clippings native app.
