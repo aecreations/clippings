@@ -22,6 +22,7 @@
 	"contextMenus",
 	"downloads",
 	"history",
+        "nativeMessaging",
 	"storage",
 	"tabs",
 	"unlimitedStorage"
