@@ -321,11 +321,11 @@ button.default:active {
 
 #sync-clippings-help-dlg {
     --width: 600px;
-    --height: 466px;
+    --height: 496px;
 }
 
 #sync-clippings-help-dlg .dlg-content {
-    max-height: 410px;
+    max-height: 416px;
     overflow-y: auto;
 }
 
