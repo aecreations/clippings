@@ -28,7 +28,18 @@ function init()
   $("#enable-shortcut-key-label").text(chrome.i18n.getMessage("prefsShortcutMode", keybPasteKeys));
 
   initDialogs();
-  
+
+  $("#toggle-sync").click(aEvent => {
+    browser.storage.local.get().then(aPrefs => {
+      if (aPrefs.syncClippings) {
+        gDialogs.turnOffSync.showModal();
+      }
+      else {
+        gDialogs.syncClippings.showModal();
+      }
+    });
+  });
+
   browser.storage.local.get().then(aPrefs => {
     $("#html-paste-options").val(aPrefs.htmlPaste).change(aEvent => {
       setPref({ htmlPaste: aEvent.target.value });
@@ -69,15 +80,6 @@ function init()
       gDialogs.syncClippings.showModal();
     });
     
-    $("#toggle-sync").click(aEvent => {
-      if (aPrefs.syncClippings) {
-        gDialogs.turnOffSync.showModal();
-      }
-      else {
-        gDialogs.syncClippings.showModal();
-      }
-    });
-
     $("#show-sync-help").click(aEvent => {
       gDialogs.syncClippingsHelp.showModal();
     });
@@ -105,16 +107,22 @@ function initDialogs()
     $(deck[2]).hide();
     $(deck[3]).hide();
 
-    console.log("Clippings/wx::options.js: Sending message 'get-app-version' to the syncClippings native app...");
     let msg = { msgID: "get-app-version" };
-    let sendNativeMsg = browser.runtime.sendNativeMessage("syncClippings", msg);
+    let sendNativeMsg = browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
     sendNativeMsg.then(aResp => {
-      console.log("Clippings/wx::options.js: Response received from syncClippings native app:");
-      console.log(aResp);
+      console.info("Sync Clippings helper app version: " + aResp.appVersion);
 
       $(deck[0]).hide();
       $(deck[3]).show();
-      // TO DO: Populate the sync file location.
+      $("#sync-clippings-dlg .dlg-accept").show();
+      $("#sync-clippings-dlg .dlg-cancel").text(chrome.i18n.getMessage("btnCancel"));
+
+      let msg = { msgID: "get-sync-file-path" };
+      return browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
+      
+    }).then(aResp => {
+      // TO DO: Escape backslashes in file paths.
+      $("#sync-fldr-curr-location").val(aResp.syncFilePath).focus().select();
       
     }).catch(aErr => {
       console.error("Clippings/wx::options.js: Error returned from syncClippings native app: " + aErr);
@@ -133,11 +141,36 @@ function initDialogs()
   gDialogs.syncClippings.onAccept = () => {
     let that = gDialogs.syncClippings;
 
-    // TO DO: Perform dialog actions.
+    let msg = {
+      msgID: "set-sync-file-path",
+      filePath: $("#sync-fldr-curr-location").val()
+    };
+    log("Sending message 'set-sync-file-path' with params:");
+    log(msg);
 
-    setPref({ syncClippings: true });
-    
-    that.close();
+    let setSyncFilePath = browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
+    setSyncFilePath.then(aResp => {
+      log("Received response to 'set-sync-file-path':");
+      log(aResp);
+
+      if (aResp.status == "ok") {
+        setPref({ syncClippings: true });
+      }
+      else {
+        window.alert(`The Sync Clippings helper app responded with an error.\n\nStatus: ${aResp.status}\nDetails: ${aResp.details}`);
+      }
+
+      setPref({ syncClippings: true });
+
+      $("#sync-settings").show();
+      $("#toggle-sync").text(chrome.i18n.getMessage("syncTurnOff"));
+      $("#sync-status").text(chrome.i18n.getMessage("syncStatusOn"));
+      
+      that.close();
+      
+    }).catch(aErr => {
+      console.error(aErr);
+    });
   };
 
   gDialogs.turnOffSync = new aeDialog("#turn-off-sync-clippings-dlg");
@@ -155,17 +188,6 @@ function initDialogs()
   };
   
   gDialogs.syncClippingsHelp = new aeDialog("#sync-clippings-help-dlg");
-
-  // TO DO: Repurpose the code below for showing the OK and Cancel dialog buttons.
-  // The rest of it can be removed.
-  $("#sync-clippings-dlg #change-sync-location").click(aEvent => {
-    let deck = $("#sync-clippings-dlg > .dlg-content > .deck");
-    $(deck[3]).hide();
-    $(deck[4]).fadeIn("slow", "linear");
-    $("#sync-clippings-dlg .dlg-accept").show();
-    $("#sync-clippings-dlg .dlg-cancel").text(chrome.i18n.getMessage("btnCancel"));
-  });
-  // END TO DO
 }
 
 
@@ -175,3 +197,8 @@ $(window).on("contextmenu", aEvent => {
   }
 });
 
+
+function log(aMessage)
+{
+  if (aeConst.DEBUG) { console.log(aMessage); }
+}
