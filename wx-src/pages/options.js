@@ -132,6 +132,10 @@ function initDialogs()
         // This would occur if Sync Clippings helper app won't start.
         $(deck[1]).show();
       }
+      else if (aErr == "Error: undefined") {
+        $(deck[2]).show();
+        $("#sync-err-detail").text("An unknown error was returned. Make sure that the Sync Clippings app is running using Python 3.");
+      }
       else {
         $(deck[2]).show();
         $("#sync-err-detail").text(aErr);
