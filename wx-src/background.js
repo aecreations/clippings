@@ -15,6 +15,7 @@ let gHostAppName = null;
 let gAutoIncrPlchldrs = null;
 let gClippingMenuItemIDMap = {};
 let gFolderMenuItemIDMap = {};
+let gSyncFldrID = null;
 
 let gClippingsListeners = {
   ORIGIN_CLIPPINGS_MGR: 1,
@@ -202,6 +203,7 @@ async function setDefaultPrefs()
     clippingsMgrPlchldrToolbar: false,
     clippingsMgrMinzWhenInactv: undefined,
     syncClippings: false,
+    syncFolderID: null,
   };
 
   gPrefs = aeClippingsPrefs;
@@ -213,6 +215,7 @@ async function setNewPrefs()
 {
   let newPrefs = {
     syncClippings: false,
+    syncFolderID: null,
   };
   
   for (let pref in newPrefs) {
@@ -280,6 +283,7 @@ function init()
   initMessageListeners();
 
   if (gPrefs.syncClippings) {
+    gSyncFldrID = gPrefs.syncFolderID;
     refreshSyncedClippings();
   }
   
@@ -433,31 +437,30 @@ async function enableSyncClippings(aIsEnabled)
   if (aIsEnabled) {
     log("Clippings/wx: enableSyncClippings(): Turning ON");
 
-    let folder = await gClippingsDB.folders.get(aeConst.SYNC_FLDR_ID);
-
-    if (folder === undefined) {
+    if (gSyncFldrID === null) {
       log("Clippings/wx: enableSyncClippings(): Creating the Synced Clippings folder."); 
       let syncFldr = {
         name: chrome.i18n.getMessage("syncFldrName"),
         parentFolderID: aeConst.ROOT_FOLDER_ID,
         displayOrder: 0,
       };
-      await gClippingsDB.folders.add(syncFldr, aeConst.SYNC_FLDR_ID);
+      try {
+        gSyncFldrID = await gClippingsDB.folders.add(syncFldr);
+      }
+      catch (e) {
+        console.error("Clippings/wx: enableSyncClippings(): Failed to create the Synced Clipping folder: " + e);
+      }
+
+      browser.storage.local.set({ syncFolderID: gSyncFldrID }).then(() => {
+        log("Clippings/wx: enableSyncClippings(): Synced Clippings folder ID: " + gSyncFldrID);
+      });
     }
   }
   else {
     log("Clippings/wx: enableSyncClippings(): Turning OFF");
-
-    // TO DO: Clone the Synced Clippings folder and move all the items to it.
-    // Then delete the original Synced Clippings folder.
-/***
-    let syncFldrClone = {
-      name: "Copy of Synced Clippings", //chrome.i18n.getMessage("syncFldrName"),
-      parentFolderID: aeConst.ROOT_FOLDER_ID,
-      displayOrder: 0,
-    };
-    let clonedFldrID = await gClippingsDB.folders.add(syncFldrClone);
-***/
+    browser.storage.local.set({ syncFolderID: null }).then(() => {
+      gSyncFldrID = null;
+    });
   }
 }
 
@@ -473,37 +476,42 @@ function refreshSyncedClippings()
     console.log("Clippings/wx: refreshSyncedClippings(): Response data from the native app:");
     console.log(aResp);
     
-    gClippingsDB.folders.get(aeConst.SYNC_FLDR_ID).then(aFldr => {
-      if (aFldr === undefined) {
-        log("Clippings/wx: The Synced Clippings folder is missing. Creating it...");
-        let syncFldr = {
-          name: chrome.i18n.getMessage("syncFldrName"),
-          parentFolderID: aeConst.ROOT_FOLDER_ID,
-          displayOrder: 0,
-        };
-        
-        return gClippingsDB.folders.add(syncFldr, aeConst.SYNC_FLDR_ID);
-      }
-
-      log("Clippings/wx: The Synced Clippings folder exists.");
-      return aeConst.SYNC_FLDR_ID;
-
-    }).then(aSyncFldrID => {
-      console.log("Clippings/wx: Purging existing items in the Synced Clippings folder...");
-      return purgeFolderItems(aeConst.SYNC_FLDR_ID);
-
-    }).then(() => {
-      log("Clippings/wx: Importing clippings data from sync file...");
-
-      // Method aeImportExport.importFromJSON() is asynchronous, so the import
-      // may not yet be finished when this function has finished executing!
-      aeImportExport.importFromJSON(aResp.syncedClippings, false, false, aeConst.SYNC_FLDR_ID);
+    if (gSyncFldrID === null) {
+      log("Clippings/wx: The Synced Clippings folder is missing. Creating it...");
+      let syncFldr = {
+        name: chrome.i18n.getMessage("syncFldrName"),
+        parentFolderID: aeConst.ROOT_FOLDER_ID,
+        displayOrder: 0,
+      };
       
-    }).catch(aErr => {
-      console.error("Clippings/wx: refreshSyncedClippings(): Error retrieving synced clippings data: " + aErr);
-      // TO DO: Show sync error in the "Synced Clippings" submenu in the Clippings context menu.
-      // Also, detect if error was because the sync folder location wasn't set.
-    });
+      return gClippingsDB.folders.add(syncFldr);
+    }
+
+    log("Clippings/wx: Synced Clippings folder ID: " + gSyncFldrID);
+    return gSyncFldrID;
+
+  }).then(aSyncFldrID => {
+    if (gSyncFldrID === null) {
+      gSyncFldrID = aSyncFldrID;
+      log("Clippings/wx: Synced Clippings folder ID: " + gSyncFldrID);
+      return browser.storage.local.set({ syncFolderID: gSyncFldrID });
+    }
+      
+    console.log("Clippings/wx: Purging existing items in the Synced Clippings folder...");
+    return purgeFolderItems(gSyncFldrID);
+
+  }).then(() => {
+    log("Clippings/wx: Importing clippings data from sync file...");
+
+    // Method aeImportExport.importFromJSON() is asynchronous, so the import
+    // may not yet be finished when this function has finished executing!
+    aeImportExport.importFromJSON(aResp.syncedClippings, false, false, gSyncFldrID);
+    
+  }).catch(aErr => {
+    console.error("Clippings/wx: refreshSyncedClippings(): Error refreshing synced clippings data: " + aErr);
+    // TO DO: Show sync error in the "Synced Clippings" submenu in the
+    // Clippings context menu.
+    // Also, detect if error was because the sync folder location wasn't set.
   });
 }
 
@@ -513,7 +521,7 @@ function purgeFolderItems(aFolderID)
   return new Promise((aFnResolve, aFnReject) => {
     gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
       gClippingsDB.folders.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
-        purgeDeletedItems(aItem.id).then(() => {});
+        purgeFolderItems(aItem.id).then(() => {});
 
       }).then(() => {
         if (aFolderID != aeConst.DELETED_ITEMS_FLDR_ID) {

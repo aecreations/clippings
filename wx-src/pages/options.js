@@ -160,6 +160,9 @@ function initDialogs()
       if (aResp.status == "ok") {
         gClippings.enableSyncClippings(true).then(() => {
           setPref({ syncClippings: true });
+
+          // TO DO: Call `gClippings.refreshSyncedClippings()`.
+
           $("#sync-settings").show();
           $("#toggle-sync").text(chrome.i18n.getMessage("syncTurnOff"));
           $("#sync-status").text(chrome.i18n.getMessage("syncStatusOn"));

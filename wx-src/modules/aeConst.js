@@ -33,7 +33,6 @@ let aeConst = {
   // Folder IDs
   ROOT_FOLDER_ID: 0,
   DELETED_ITEMS_FLDR_ID: -1,
-  SYNC_FLDR_ID: -2,
 
   // Export to file
   CLIPPINGS_EXPORT_FILENAME: "clippings.json",
