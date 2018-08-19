@@ -232,10 +232,8 @@ browser.runtime.onStartup.addListener(() => {
   log("Clippings/wx: Initializing Clippings during browser startup.");
   
   browser.storage.local.get().then(aPrefs => {
-    // TEMPORARY
-    console.log("Clippings/wx: Successfully retrieved user preferences:");
-    console.log(aPrefs);
-    // END TEMPORARY
+    log("Clippings/wx: Successfully retrieved user preferences:");
+    log(aPrefs);
     
     gPrefs = aPrefs;
 
@@ -281,6 +279,10 @@ function init()
   window.addEventListener("unload", onUnload, false);
   initMessageListeners();
 
+  if (gPrefs.syncClippings) {
+    refreshSyncedClippings();
+  }
+  
   aeClippingSubst.init(navigator.userAgent, gPrefs.autoIncrPlcHldrStartVal);
   gAutoIncrPlchldrs = new Set();
 
@@ -295,8 +297,11 @@ function init()
       }
     }
   });
-  
-  buildContextMenu();
+
+  // HACK!!
+  // Delay building the Clippings context menu, due to `refreshSyncedClippings()`
+  // being an asynchronous function.
+  window.setTimeout(buildContextMenu, 1000);
 
   chrome.commands.onCommand.addListener(aCmdName => {
     info(`Clippings/wx: Command "${aCmdName}" invoked!`);
@@ -416,11 +421,119 @@ function initClippingsDB()
 }
 
 
-
 async function isStoragePersisted()
 {
   return await navigator.storage && navigator.storage.persisted &&
     navigator.storage.persisted();
+}
+
+
+async function enableSyncClippings(aIsEnabled)
+{
+  if (aIsEnabled) {
+    log("Clippings/wx: enableSyncClippings(): Turning ON");
+
+    let folder = await gClippingsDB.folders.get(aeConst.SYNC_FLDR_ID);
+
+    if (folder === undefined) {
+      log("Clippings/wx: enableSyncClippings(): Creating the Synced Clippings folder."); 
+      let syncFldr = {
+        name: chrome.i18n.getMessage("syncFldrName"),
+        parentFolderID: aeConst.ROOT_FOLDER_ID,
+        displayOrder: 0,
+      };
+      await gClippingsDB.folders.add(syncFldr, aeConst.SYNC_FLDR_ID);
+    }
+  }
+  else {
+    log("Clippings/wx: enableSyncClippings(): Turning OFF");
+
+    // TO DO: Clone the Synced Clippings folder and move all the items to it.
+    // Then delete the original Synced Clippings folder.
+/***
+    let syncFldrClone = {
+      name: "Copy of Synced Clippings", //chrome.i18n.getMessage("syncFldrName"),
+      parentFolderID: aeConst.ROOT_FOLDER_ID,
+      displayOrder: 0,
+    };
+    let clonedFldrID = await gClippingsDB.folders.add(syncFldrClone);
+***/
+  }
+}
+
+
+function refreshSyncedClippings()
+{
+  log("Clippings/wx: refreshSyncedClippings(): Retrieving synced clippings from the Sync Clippings helper app...");
+  
+  let msg = { msgID: "get-synced-clippings" };
+  let getSyncedClippings = browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
+
+  getSyncedClippings.then(aResp => {
+    console.log("Clippings/wx: refreshSyncedClippings(): Response data from the native app:");
+    console.log(aResp);
+    
+    gClippingsDB.folders.get(aeConst.SYNC_FLDR_ID).then(aFldr => {
+      if (aFldr === undefined) {
+        log("Clippings/wx: The Synced Clippings folder is missing. Creating it...");
+        let syncFldr = {
+          name: chrome.i18n.getMessage("syncFldrName"),
+          parentFolderID: aeConst.ROOT_FOLDER_ID,
+          displayOrder: 0,
+        };
+        
+        return gClippingsDB.folders.add(syncFldr, aeConst.SYNC_FLDR_ID);
+      }
+
+      log("Clippings/wx: The Synced Clippings folder exists.");
+      return aeConst.SYNC_FLDR_ID;
+
+    }).then(aSyncFldrID => {
+      console.log("Clippings/wx: Purging existing items in the Synced Clippings folder...");
+      return purgeFolderItems(aeConst.SYNC_FLDR_ID);
+
+    }).then(() => {
+      log("Clippings/wx: Importing clippings data from sync file...");
+
+      // Method aeImportExport.importFromJSON() is asynchronous, so the import
+      // may not yet be finished when this function has finished executing!
+      aeImportExport.importFromJSON(aResp.syncedClippings, false, false, aeConst.SYNC_FLDR_ID);
+      
+    }).catch(aErr => {
+      console.error("Clippings/wx: refreshSyncedClippings(): Error retrieving synced clippings data: " + aErr);
+      // TO DO: Show sync error in the "Synced Clippings" submenu in the Clippings context menu.
+      // Also, detect if error was because the sync folder location wasn't set.
+    });
+  });
+}
+
+
+function purgeFolderItems(aFolderID)
+{
+  return new Promise((aFnResolve, aFnReject) => {
+    gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
+      gClippingsDB.folders.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
+        purgeDeletedItems(aItem.id).then(() => {});
+
+      }).then(() => {
+        if (aFolderID != aeConst.DELETED_ITEMS_FLDR_ID) {
+          console.log("Clippings/wx: purgeFolderItems(): Deleting folder: " + aFolderID);
+          return gClippingsDB.folders.delete(aFolderID);
+        }
+        return null;
+        
+      }).then(() => {
+        return gClippingsDB.clippings.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
+          console.log("Clippings/wx: purgeFolderItems(): Deleting clipping: " + aItem.id);
+          gClippingsDB.clippings.delete(aItem.id);
+        });
+      }).then(() => {
+        aFnResolve();
+      });
+    }).catch(aErr => {
+      aFnReject(aErr);
+    });
+  });
 }
 
 

@@ -134,7 +134,7 @@ function initDialogs()
       }
       else if (aErr == "Error: undefined") {
         $(deck[2]).show();
-        $("#sync-err-detail").text("An unknown error was returned. Make sure that the Sync Clippings app is running using Python 3.");
+        $("#sync-err-detail").text("An unknown error was returned. Make sure that the Sync Clippings native app is running using Python 3.");
       }
       else {
         $(deck[2]).show();
@@ -158,20 +158,19 @@ function initDialogs()
       log(aResp);
 
       if (aResp.status == "ok") {
-        setPref({ syncClippings: true });
+        gClippings.enableSyncClippings(true).then(() => {
+          setPref({ syncClippings: true });
+          $("#sync-settings").show();
+          $("#toggle-sync").text(chrome.i18n.getMessage("syncTurnOff"));
+          $("#sync-status").text(chrome.i18n.getMessage("syncStatusOn"));
+
+          that.close();
+        });
       }
       else {
         window.alert(`The Sync Clippings helper app responded with an error.\n\nStatus: ${aResp.status}\nDetails: ${aResp.details}`);
-      }
-
-      setPref({ syncClippings: true });
-
-      $("#sync-settings").show();
-      $("#toggle-sync").text(chrome.i18n.getMessage("syncTurnOff"));
-      $("#sync-status").text(chrome.i18n.getMessage("syncStatusOn"));
-      
-      that.close();
-      
+        that.close();
+      }     
     }).catch(aErr => {
       console.error(aErr);
     });
@@ -181,14 +180,14 @@ function initDialogs()
   gDialogs.turnOffSync.onAccept = () => {
     let that = gDialogs.turnOffSync;
 
-    setPref({ syncClippings: false });
-    
-    // Update extension prefs UI to turn off Sync Clippings.
-    $("#sync-settings").hide();
-    $("#toggle-sync").text(chrome.i18n.getMessage("syncTurnOn"));
-    $("#sync-status").text(chrome.i18n.getMessage("syncStatusOff"));
+    gClippings.enableSyncClippings(false).then(() => {
+      setPref({ syncClippings: false });
+      $("#sync-settings").hide();
+      $("#toggle-sync").text(chrome.i18n.getMessage("syncTurnOn"));
+      $("#sync-status").text(chrome.i18n.getMessage("syncStatusOff"));
 
-    that.close();
+      that.close();
+    });
   };
   
   gDialogs.syncClippingsHelp = new aeDialog("#sync-clippings-help-dlg");

@@ -939,6 +939,10 @@
     "message": "Check spelling"
   },
 
+  "syncFldrName": {
+    "message": "Synced Clippings"
+  },
+  
   "syncClippings": {
     "message": "Sync Clippings"
   },
