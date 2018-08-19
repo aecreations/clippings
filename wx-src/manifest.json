@@ -35,6 +35,7 @@
 	    "modules/aeConst.js",
 	    "modules/aeMsgBox.js",
 	    "modules/aeClippingSubst.js",
+            "modules/aeImportExport.js",
 	    "background.js"
 	]
     },
