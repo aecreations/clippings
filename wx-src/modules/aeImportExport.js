@@ -44,10 +44,14 @@ aeImportExport.setL10nStrings = function (aStrings)
 };
 
 
-aeImportExport.importFromJSON = function (aImportRawJSON, aReplaceShortcutKeys, aAppendItems)
+aeImportExport.importFromJSON = function (aImportRawJSON, aReplaceShortcutKeys, aAppendItems, aDestFolderID)
 {
   if (! this._db) {
     throw new Error("aeImportExport: Database not initialized!");
+  }
+
+  if (! aDestFolderID) {
+    aDestFolderID = this.ROOT_FOLDER_ID;
   }
 
   let importData;
@@ -66,7 +70,7 @@ aeImportExport.importFromJSON = function (aImportRawJSON, aReplaceShortcutKeys, 
   this._getShortcutKeysToClippingIDs().then(aShortcutKeyLookup => {
     this._log("Starting JSON import...");
     try {
-      this._importFromJSONHelper(this.ROOT_FOLDER_ID, importData.userClippingsRoot, aReplaceShortcutKeys, aShortcutKeyLookup, aAppendItems);
+      this._importFromJSONHelper(aDestFolderID, importData.userClippingsRoot, aReplaceShortcutKeys, aShortcutKeyLookup, aAppendItems);
     }
     catch (e) {
       console.error("Import of JSON data failed!");
