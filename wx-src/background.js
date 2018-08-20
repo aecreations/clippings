@@ -451,20 +451,21 @@ async function enableSyncClippings(aIsEnabled)
         console.error("Clippings/wx: enableSyncClippings(): Failed to create the Synced Clipping folder: " + e);
       }
 
-      browser.storage.local.set({ syncFolderID: gSyncFldrID }).then(() => {
-        log("Clippings/wx: enableSyncClippings(): Synced Clippings folder ID: " + gSyncFldrID);
-      });
+      await browser.storage.local.set({ syncFolderID: gSyncFldrID });
+      log("Clippings/wx: enableSyncClippings(): Synced Clippings folder ID: " + gSyncFldrID);
     }
   }
   else {
     log("Clippings/wx: enableSyncClippings(): Turning OFF");
-    browser.storage.local.set({ syncFolderID: null }).then(() => {
-      gSyncFldrID = null;
-    });
+    await browser.storage.local.set({ syncFolderID: null });
+    gSyncFldrID = null;
   }
 }
 
 
+// TO DO: Make this an asynchronous function.
+// This can only be done after converting aeImportExport.importFromJSON()
+// to an asynchronous method.
 function refreshSyncedClippings()
 {
   log("Clippings/wx: refreshSyncedClippings(): Retrieving synced clippings from the Sync Clippings helper app...");
@@ -487,7 +488,7 @@ function refreshSyncedClippings()
       return gClippingsDB.folders.add(syncFldr);
     }
 
-    log("Clippings/wx: Synced Clippings folder ID: " + gSyncFldrID);
+    log("Clippings/wx: refreshSyncedClippings(): Synced Clippings folder ID: " + gSyncFldrID);
     return gSyncFldrID;
 
   }).then(aSyncFldrID => {
@@ -498,7 +499,7 @@ function refreshSyncedClippings()
     }
       
     console.log("Clippings/wx: Purging existing items in the Synced Clippings folder...");
-    return purgeFolderItems(gSyncFldrID);
+    return purgeFolderItems(gSyncFldrID, true);
 
   }).then(() => {
     log("Clippings/wx: Importing clippings data from sync file...");
@@ -516,15 +517,15 @@ function refreshSyncedClippings()
 }
 
 
-function purgeFolderItems(aFolderID)
+function purgeFolderItems(aFolderID, aKeepFolder)
 {
   return new Promise((aFnResolve, aFnReject) => {
     gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
       gClippingsDB.folders.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
-        purgeFolderItems(aItem.id).then(() => {});
+        purgeFolderItems(aItem.id, false).then(() => {});
 
       }).then(() => {
-        if (aFolderID != aeConst.DELETED_ITEMS_FLDR_ID) {
+        if (!aKeepFolder && aFolderID != aeConst.DELETED_ITEMS_FLDR_ID) {
           console.log("Clippings/wx: purgeFolderItems(): Deleting folder: " + aFolderID);
           return gClippingsDB.folders.delete(aFolderID);
         }
