@@ -120,8 +120,7 @@ function initDialogs()
       let msg = { msgID: "get-sync-file-path" };
       return browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
       
-    }).then(aResp => {
-      // TO DO: Escape backslashes in file paths.
+    }).then(aResp => {     
       $("#sync-fldr-curr-location").val(aResp.syncFilePath).focus().select();
       
     }).catch(aErr => {
