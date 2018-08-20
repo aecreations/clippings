@@ -472,10 +472,15 @@ function refreshSyncedClippings()
   
   let msg = { msgID: "get-synced-clippings" };
   let getSyncedClippings = browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
+  let syncJSONData = "";
 
   getSyncedClippings.then(aResp => {
-    console.log("Clippings/wx: refreshSyncedClippings(): Response data from the native app:");
-    console.log(aResp);
+    if (aResp) {
+      syncJSONData = aResp;
+    }
+    else {
+      throw new Error("Clippings/wx: refreshSyncedClippings(): Response data from native app is invalid");
+    }
     
     if (gSyncFldrID === null) {
       log("Clippings/wx: The Synced Clippings folder is missing. Creating it...");
@@ -506,10 +511,11 @@ function refreshSyncedClippings()
 
     // Method aeImportExport.importFromJSON() is asynchronous, so the import
     // may not yet be finished when this function has finished executing!
-    aeImportExport.importFromJSON(aResp.syncedClippings, false, false, gSyncFldrID);
+    aeImportExport.setDatabase(gClippingsDB);
+    aeImportExport.importFromJSON(syncJSONData, false, false, gSyncFldrID);
     
   }).catch(aErr => {
-    console.error("Clippings/wx: refreshSyncedClippings(): Error refreshing synced clippings data: " + aErr);
+    console.error("Clippings/wx: refreshSyncedClippings(): " + aErr);
     // TO DO: Show sync error in the "Synced Clippings" submenu in the
     // Clippings context menu.
     // Also, detect if error was because the sync folder location wasn't set.
