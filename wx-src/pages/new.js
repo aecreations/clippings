@@ -468,7 +468,7 @@ function accept(aEvent)
       if (aSyncData) {
         let msg = {
           msgID: "set-synced-clippings",
-          syncData: aSyncData,
+          syncData: aSyncData.userClippingsRoot,
         };
 
         log("Clippings/wx::new.js: accept(): Sending message 'set-synced-clippings' to the Sync Clippings helper app.  Message data:");
