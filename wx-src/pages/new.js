@@ -474,7 +474,7 @@ function accept(aEvent)
         log("Clippings/wx::new.js: accept(): Sending message 'set-synced-clippings' to the Sync Clippings helper app.  Message data:");
         log(msg);
 
-        return browser.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
+        return browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
       }
       return null;
 
