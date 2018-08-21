@@ -1271,6 +1271,13 @@ function getPrefs()
   return gPrefs;
 }
 
+
+function getSyncFolderID()
+{
+  return gSyncFldrID;
+}
+
+
 function isGoogleChrome()
 {
   return (! ("browser" in window));
