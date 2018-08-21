@@ -454,7 +454,36 @@ function accept(aEvent)
         sourceURL: ($("#save-source-url")[0].checked ? gSrcURL : "")
       });
 
-    }).then(aID => {
+    }).then(aNewClippingID => {
+      let prefs = gClippings.getPrefs();
+      if (prefs.syncClippings) {
+        let syncFldrID = gClippings.getSyncFolderID();
+        aeImportExport.setDatabase(gClippingsDB);
+        
+        return aeImportExport.exportToJSON(true, true, syncFldrID);
+      }
+      return null;
+
+    }).then(aSyncData => {
+      if (aSyncData) {
+        let msg = {
+          msgID: "set-synced-clippings",
+          syncData: aSyncData,
+        };
+
+        log("Clippings/wx::new.js: accept(): Sending message 'set-synced-clippings' to the Sync Clippings helper app.  Message data:");
+        log(msg);
+
+        return browser.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
+      }
+      return null;
+
+    }).then(aMsgResult => {
+      if (aMsgResult) {
+        log("Clippings/wx::new.js: accept(): Response from the Sync Clippings helper app:");
+        log(aMsgResult);
+      }
+      
       closeDlg();
 
     }).catch("OpenFailedError", aErr => {
@@ -468,6 +497,7 @@ function accept(aEvent)
       errorMsgBox.showModal();
 
     }).catch(aErr => {
+      console.error("Clippings/wx::new.js: accept(): " + aErr);     
       errorMsgBox.onInit = () => {
         let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
         errMsgElt.text(`Error creating clipping: ${aErr}`);
@@ -488,4 +518,10 @@ function closeDlg()
 {
   browser.runtime.sendMessage({ msgID: "close-new-clipping-dlg" });
   chrome.windows.remove(chrome.windows.WINDOW_ID_CURRENT);
+}
+
+
+function log(aMessage)
+{
+  if (aeConst.DEBUG) { console.log(aMessage); }
 }
