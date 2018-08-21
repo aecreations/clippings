@@ -8,6 +8,7 @@ let aeImportExport = {
   DEBUG: false,
 
   CLIPPINGS_JSON_VER: "6.0",
+  CLIPPINGS_JSON_CREATED_BY: "Clippings/wx",
   ROOT_FOLDER_ID: 0,
 
   HTML_EXPORT_PAGE_TITLE: "Clippings",
@@ -152,16 +153,20 @@ aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems
 };
 
 
-aeImportExport.exportToJSON = function (aIncludeSrcURLs, aDontStringify)
+aeImportExport.exportToJSON = function (aIncludeSrcURLs, aDontStringify, aFolderID)
 {
   let expData = {
     version: this.CLIPPINGS_JSON_VER,
-    createdBy: "Clippings/wx",
+    createdBy: this.CLIPPINGS_JSON_CREATED_BY,
     userClippingsRoot: []
   };
 
+  if (! aFolderID) {
+    aFolderID = this.ROOT_FOLDER_ID;
+  }
+
   return new Promise((aFnResolve, aFnReject) => {
-    this._exportToJSONHelper(this.ROOT_FOLDER_ID, aIncludeSrcURLs).then(aExpItems => {
+    this._exportToJSONHelper(aFolderID, aIncludeSrcURLs).then(aExpItems => {
       expData.userClippingsRoot = aExpItems;
 
       if (aDontStringify) {
