@@ -94,6 +94,10 @@ let gClippingsListener = {
       children: []
     };
 
+    if (aID == gClippings.getSyncFolderID()) {
+      newNodeData.extraClasses = "ae-synced-clippings-fldr";
+    }
+
     let newNode = null;
     
     if (selectedNode) {
@@ -2937,6 +2941,10 @@ function buildClippingsTreeHelper(aFolderID)
           key: aItem.id + "F",
           title: sanitizeTreeNodeTitle(DEBUG_TREE ? `${aItem.name} [key=${aItem.id}F]` : aItem.name),
           folder: true
+        }
+
+        if (aItem.id == gClippings.getSyncFolderID()) {
+          folderNode.extraClasses = "ae-synced-clippings-fldr";
         }
 
         if (aItem.displayOrder === undefined) {

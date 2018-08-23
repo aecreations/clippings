@@ -681,10 +681,14 @@ function getContextMenuData(aFolderID)
         let submenuItemData = {
           id: fldrMenuItemID,
           title: aItem.name,
-          icons: {
-            16: "img/folder.svg"
-          },
         };
+
+        // Submenu icon
+        let iconPath = "img/folder.svg";
+        if (aItem.id == gSyncFldrID) {
+          iconPath = "img/synced-clippings.svg";
+        }
+        submenuItemData.icons = { 16: iconPath };
 
         if (aItem.displayOrder === undefined) {
           submenuItemData.displayOrder = 0;

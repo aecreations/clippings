@@ -304,6 +304,10 @@ input[type="search"]::placeholder {
     background-color: #fbfbfb;
 }
 
+#clippings-tree .ae-synced-clippings-fldr > .fancytree-icon {
+    background-image: url("../img/synced-clippings.svg");
+}
+
 ul.fancytree-container {
     border: none;
 }
