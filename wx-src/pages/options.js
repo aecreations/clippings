@@ -117,7 +117,7 @@ function initDialogs()
       $("#sync-clippings-dlg .dlg-accept").show();
       $("#sync-clippings-dlg .dlg-cancel").text(chrome.i18n.getMessage("btnCancel"));
 
-      let msg = { msgID: "get-sync-file-path" };
+      let msg = { msgID: "get-sync-dir" };
       return browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
       
     }).then(aResp => {     
@@ -145,15 +145,15 @@ function initDialogs()
     let that = gDialogs.syncClippings;
 
     let msg = {
-      msgID: "set-sync-file-path",
+      msgID: "set-sync-dir",
       filePath: $("#sync-fldr-curr-location").val()
     };
-    log("Sending message 'set-sync-file-path' with params:");
+    log("Sending message 'set-sync-dir' with params:");
     log(msg);
 
     let setSyncFilePath = browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
     setSyncFilePath.then(aResp => {
-      log("Received response to 'set-sync-file-path':");
+      log("Received response to 'set-sync-dir':");
       log(aResp);
 
       if (aResp.status == "ok") {
