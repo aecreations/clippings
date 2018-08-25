@@ -19,6 +19,7 @@ let gDialogs = {};
 let gOpenerWndID;
 let gIsMaximized;
 let gSuppressAutoMinzWnd;
+let gSyncFolderID;
 
 
 // DOM utility
@@ -1258,8 +1259,7 @@ let gCmd = {
   backup: function ()
   {
     const INCLUDE_SRC_URLS = true;
-    
-    aeImportExport.setDatabase(gClippingsDB);
+
     setStatusBarMsg(chrome.i18n.getMessage("statusSavingBkup"));
 
     let blobData;
@@ -1433,6 +1433,8 @@ $(document).ready(() => {
     return;
   }
 
+  aeImportExport.setDatabase(gClippingsDB);
+
   chrome.runtime.getPlatformInfo(aInfo => {
     gOS = aInfo.os;
 
@@ -1456,6 +1458,9 @@ $(document).ready(() => {
   gClippingsListener.origin = clippingsListeners.ORIGIN_CLIPPINGS_MGR;
   clippingsListeners.add(gClippingsListener);
 
+  let prefs = gClippings.getPrefs();
+  gSyncFolderID = prefs.syncFolderID;
+  
   initToolbar();
   initInstantEditing();
   gShortcutKey.init();
@@ -1488,7 +1493,25 @@ $(window).on("beforeunload", () => {
   let clippingsListeners = gClippings.getClippingsListeners();
   clippingsListeners.remove(gClippingsListener);
   
-  gClippings.purgeFolderItems(aeConst.DELETED_ITEMS_FLDR_ID);
+  if (gSyncFolderID === null) {
+    gClippings.purgeFolderItems(aeConst.DELETED_ITEMS_FLDR_ID);
+  }
+  else {
+    // Synchronize the items in the Synced Clippings folder with other apps.
+    aeImportExport.exportToJSON(true, true, gSyncFolderID).then(aSyncData => {
+      let msg = {
+        msgID: "set-synced-clippings",
+        syncData: aSyncData.userClippingsRoot,
+      };
+      return browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
+
+    }).then(aMsgResult => {
+      gClippings.purgeFolderItems(aeConst.DELETED_ITEMS_FLDR_ID);
+
+    }).catch(aErr => {
+      console.error("Clippings/wx::clippingMgr.js: $(window).on('beforeunload'): " + aErr);
+    });
+  }
 });
 
 
@@ -2043,8 +2066,6 @@ function initDialogs()
   const isMacOS = gClippings.getOS() == "mac";
 
   initIntroBannerAndHelpDlg();
-  
-  aeImportExport.setDatabase(gClippingsDB);
 
   gDialogs.shctKeyConflict = new aeDialog("#shortcut-key-conflict-msgbox");
   gDialogs.shctKeyConflict.onAccept = aEvent => {
