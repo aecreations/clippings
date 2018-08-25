@@ -1488,7 +1488,7 @@ $(window).on("beforeunload", () => {
   let clippingsListeners = gClippings.getClippingsListeners();
   clippingsListeners.remove(gClippingsListener);
   
-  purgeDeletedItems(aeConst.DELETED_ITEMS_FLDR_ID);
+  gClippings.purgeFolderItems(aeConst.DELETED_ITEMS_FLDR_ID);
 });
 
 
@@ -3253,26 +3253,6 @@ function setStatusBarMsg(aMessage)
 
   let tree = getClippingsTree();
   $("#status-bar-msg").text(chrome.i18n.getMessage("clipMgrStatusBar", tree.count()));
-}
-
-
-function purgeDeletedItems(aFolderID)
-{
-  gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
-    gClippingsDB.folders.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
-      purgeDeletedItems(aItem.id);
-    }).then(() => {
-      if (aFolderID != aeConst.DELETED_ITEMS_FLDR_ID) {
-        gClippingsDB.folders.delete(aFolderID);
-      }
-
-      gClippingsDB.clippings.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
-        gClippingsDB.clippings.delete(aItem.id);
-      });
-    });
-  }).catch(aErr => {
-    console.error(aErr);
-  });
 }
 
 
