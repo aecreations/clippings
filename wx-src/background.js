@@ -62,13 +62,8 @@ let gClippingsListener = {
     }
   },
 
-  clippingDeleted: function (aID, aOldData) {
-    removeContextMenuForClipping(aID);
-  },
-
-  folderDeleted: function (aID, aOldData) {
-    removeContextMenuForFolder(aID);
-  },
+  clippingDeleted: function (aID, aOldData) {},
+  folderDeleted: function (aID, aOldData) {},
 
   afterBatchChanges: function () {
     rebuildContextMenu();
