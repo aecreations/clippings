@@ -772,6 +772,7 @@ let gCmd = {
       let folderID = parseInt(selectedNode.key);
       if (folderID == gClippings.getSyncFolderID()) {
         window.alert(chrome.i18n.getMessage("moveSyncFldr"));
+        return;
       }
     }
 
