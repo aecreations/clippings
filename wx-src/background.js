@@ -637,10 +637,6 @@ function initMessageListeners()
       }
       else if (aRequest.msgID == "close-clippings-mgr-wnd") {
         gWndIDs.clippingsMgr = null;
-
-        if (gPrefs.syncClippings) {
-          pushSyncFolderUpdates();
-        }
       }
       else if (aRequest.msgID == "close-keybd-paste-dlg") {
         gWndIDs.keyboardPaste = null;

@@ -1309,6 +1309,11 @@ let gCmd = {
     gDialogs.exportToFile.showModal();
   },
 
+  pushSyncFolderUpdates: function ()
+  {
+    gClippings.pushSyncFolderUpdates();
+  },
+  
   removeAllSrcURLs: function ()
   {
     gDialogs.removeAllSrcURLs.showModal();
@@ -2778,6 +2783,10 @@ function buildClippingsTree()
         }
         
         switch (aItemKey) {
+        case "pushSyncFolderUpdates":
+          gCmd.pushSyncFolderUpdates();
+          break;
+          
         case "moveOrCopy":
           gCmd.moveClippingOrFolder();
           break;
@@ -2825,6 +2834,21 @@ function buildClippingsTree()
       },
       
       items: {
+        pushSyncFolderUpdates: {
+          name: "Push Updates",
+          className: "ae-menuitem",
+          visible: function (aItemKey, aOpt) {
+            let tree = getClippingsTree();
+            let selectedNode = tree.activeNode;
+            
+            if (!selectedNode || !selectedNode.isFolder()) {
+              return false;
+            }
+
+            let folderID = parseInt(selectedNode.key);
+            return (folderID == gClippings.getSyncFolderID());
+          }
+        },
         moveOrCopy: {
           name: chrome.i18n.getMessage("mnuMoveOrCopy"),
           className: "ae-menuitem"
