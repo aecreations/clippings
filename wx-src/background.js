@@ -518,26 +518,25 @@ function refreshSyncedClippings()
 }
 
 
-function pushSyncFolderUpdates()
+async function pushSyncFolderUpdates()
 {
-  aeImportExport.exportToJSON(true, true, gSyncFldrID).then(aSyncData => {
-    let msg = {
-      msgID: "set-synced-clippings",
-      syncData: aSyncData.userClippingsRoot,
-    };
+  if (!gPrefs.syncClippings || gSyncFldrID === null) {
+    throw new Error("Sync Clippings is not turned on!");
+  }
+  
+  let syncData = await aeImportExport.exportToJSON(true, true, gSyncFldrID);
+  let msg = {
+    msgID: "set-synced-clippings",
+    syncData: syncData.userClippingsRoot,
+  };
 
-    log("Clippings/wx: pushSyncFolderUpdates(): Pushing Synced Clippings folder updates to the Sync Clippings helper app. Message data:");
-    log(msg);
+  log("Clippings/wx: pushSyncFolderUpdates(): Pushing Synced Clippings folder updates to the Sync Clippings helper app. Message data:");
+  log(msg);
 
-    return browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
+  let msgResult = await browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
 
-  }).then(aMsgResult => {
-    log("Clippings/wx: pushSyncFolderUpdates(): Response from native app:");
-    log(aMsgResult);
-
-  }).catch(aErr => {
-    console.error("Clippings/wx: pushSyncFolderUpdates(): " + aErr);
-  });
+  log("Clippings/wx: pushSyncFolderUpdates(): Response from native app:");
+  log(msgResult);
 }
 
 

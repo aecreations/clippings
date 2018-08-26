@@ -1311,7 +1311,9 @@ let gCmd = {
 
   pushSyncFolderUpdates: function ()
   {
-    gClippings.pushSyncFolderUpdates();
+    gClippings.pushSyncFolderUpdates().then(() => {
+      window.alert("Pushed Sync Clippings folder items.");
+    });
   },
   
   removeAllSrcURLs: function ()
