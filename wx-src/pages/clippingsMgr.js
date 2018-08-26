@@ -1493,25 +1493,9 @@ $(window).on("beforeunload", () => {
   let clippingsListeners = gClippings.getClippingsListeners();
   clippingsListeners.remove(gClippingsListener);
   
-  if (gSyncFolderID === null) {
-    gClippings.purgeFolderItems(aeConst.DELETED_ITEMS_FLDR_ID);
-  }
-  else {
-    // Synchronize the items in the Synced Clippings folder with other apps.
-    aeImportExport.exportToJSON(true, true, gSyncFolderID).then(aSyncData => {
-      let msg = {
-        msgID: "set-synced-clippings",
-        syncData: aSyncData.userClippingsRoot,
-      };
-      return browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
-
-    }).then(aMsgResult => {
-      gClippings.purgeFolderItems(aeConst.DELETED_ITEMS_FLDR_ID);
-
-    }).catch(aErr => {
-      console.error("Clippings/wx::clippingMgr.js: $(window).on('beforeunload'): " + aErr);
-    });
-  }
+  gClippings.purgeFolderItems(aeConst.DELETED_ITEMS_FLDR_ID).catch(aErr => {
+    console.error("Clippings/wx::clippingsMgr.js: $(window).on('beforeunload'): " + aErr);
+  });
 });
 
 

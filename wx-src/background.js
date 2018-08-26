@@ -518,6 +518,29 @@ function refreshSyncedClippings()
 }
 
 
+function pushSyncFolderUpdates()
+{
+  aeImportExport.exportToJSON(true, true, gSyncFolderID).then(aSyncData => {
+    let msg = {
+      msgID: "set-synced-clippings",
+      syncData: aSyncData.userClippingsRoot,
+    };
+
+    log("Clippings/wx: pushSyncFolderUpdates(): Pushing Synced Clippings folder updates to the Sync Clippings helper app. Message data:");
+    log(msg);
+
+    return browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
+
+  }).then(aMsgResult => {
+    log("Clippings/wx: pushSyncFolderUpdates(): Response from native app:");
+    log(aMsgResult);
+
+  }).catch(aErr => {
+    console.error("Clippings/wx: pushSyncFolderUpdates(): " + aErr);
+  });
+}
+
+
 function purgeFolderItems(aFolderID, aKeepFolder)
 {
   return new Promise((aFnResolve, aFnReject) => {
@@ -614,6 +637,10 @@ function initMessageListeners()
       }
       else if (aRequest.msgID == "close-clippings-mgr-wnd") {
         gWndIDs.clippingsMgr = null;
+
+        if (gPrefs.syncClippings) {
+          pushSyncFolderUpdates();
+        }
       }
       else if (aRequest.msgID == "close-keybd-paste-dlg") {
         gWndIDs.keyboardPaste = null;
