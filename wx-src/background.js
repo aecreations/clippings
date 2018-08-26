@@ -520,7 +520,7 @@ function refreshSyncedClippings()
 
 function pushSyncFolderUpdates()
 {
-  aeImportExport.exportToJSON(true, true, gSyncFolderID).then(aSyncData => {
+  aeImportExport.exportToJSON(true, true, gSyncFldrID).then(aSyncData => {
     let msg = {
       msgID: "set-synced-clippings",
       syncData: aSyncData.userClippingsRoot,
