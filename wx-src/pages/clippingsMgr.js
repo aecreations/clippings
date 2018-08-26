@@ -770,7 +770,7 @@ let gCmd = {
     let selectedNode = tree.activeNode;
     if (selectedNode && selectedNode.isFolder()) {
       let folderID = parseInt(selectedNode.key);
-      if (folderID == gClippings().getSyncFolderID()) {
+      if (folderID == gClippings.getSyncFolderID()) {
         window.alert(chrome.i18n.getMessage("moveSyncFldr"));
       }
     }
