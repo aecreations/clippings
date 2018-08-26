@@ -179,7 +179,7 @@ aeImportExport.exportToJSON = function (aIncludeSrcURLs, aDontStringify, aFolder
       aFnReject(aErr);
     });
   });
-}
+};
 
 
 aeImportExport._exportToJSONHelper = function (aFolderID, aIncludeSrcURLs)
