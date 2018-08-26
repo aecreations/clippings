@@ -766,6 +766,15 @@ let gCmd = {
       return;
     }
 
+    let tree = getClippingsTree();
+    let selectedNode = tree.activeNode;
+    if (selectedNode && selectedNode.isFolder()) {
+      let folderID = parseInt(selectedNode.key);
+      if (folderID == gClippings().getSyncFolderID()) {
+        window.alert(chrome.i18n.getMessage("moveSyncFldr"));
+      }
+    }
+
     gDialogs.moveTo.showModal();
   },
   
@@ -785,6 +794,11 @@ let gCmd = {
     let parentFolderID = this._getParentFldrIDOfTreeNode(selectedNode);
     
     if (selectedNode.isFolder()) {
+      if (id == gClippings.getSyncFolderID()) {
+        window.alert(chrome.i18n.getMessage("deleteSyncFldr"));
+        return;
+      }
+      
       gClippingsDB.folders.update(id, { parentFolderID: aeConst.DELETED_ITEMS_FLDR_ID }).then(aNumUpd => {
         if (aDestUndoStack == this.UNDO_STACK) {
           this.undoStack.push({
@@ -1312,7 +1326,8 @@ let gCmd = {
   pushSyncFolderUpdates: function ()
   {
     gClippings.pushSyncFolderUpdates().then(() => {
-      window.alert("Pushed Sync Clippings folder items.");
+      // TO DO: Put this in a popup.
+      window.alert(chrome.i18n.getMessage("syncPushAck"));
     });
   },
   
@@ -2837,7 +2852,7 @@ function buildClippingsTree()
       
       items: {
         pushSyncFolderUpdates: {
-          name: "Push Updates",
+          name: chrome.i18n.getMessage("mnuPushSyncFldr"),
           className: "ae-menuitem",
           visible: function (aItemKey, aOpt) {
             let tree = getClippingsTree();
@@ -2853,7 +2868,18 @@ function buildClippingsTree()
         },
         moveOrCopy: {
           name: chrome.i18n.getMessage("mnuMoveOrCopy"),
-          className: "ae-menuitem"
+          className: "ae-menuitem",
+          disabled: function (aKey, aOpt) {
+            let tree = getClippingsTree();
+            let selectedNode = tree.activeNode;
+
+            if (! selectedNode) {
+              return false;
+            }
+
+            let folderID = parseInt(selectedNode.key);
+            return (folderID == gClippings.getSyncFolderID());
+          }
         },
         gotoSrcURL: {
           name: chrome.i18n.getMessage("mnuGoToSrcURL"),
@@ -2950,7 +2976,18 @@ function buildClippingsTree()
         separator0: "--------",
         deleteItem: {
           name: chrome.i18n.getMessage("tbDelete"),
-          className: "ae-menuitem"
+          className: "ae-menuitem",
+          disabled: function (aKey, aOpt) {
+            let tree = getClippingsTree();
+            let selectedNode = tree.activeNode;
+
+            if (! selectedNode) {
+              return false;
+            }
+
+            let folderID = parseInt(selectedNode.key);
+            return (folderID == gClippings.getSyncFolderID());
+          }
         }
       }
     });

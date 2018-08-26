@@ -558,6 +558,10 @@
     "message": "Export..."
   },
 
+  "mnuPushSyncFldr": {
+    "message": "Push Updates"
+  },
+
   "mnuRemoveAllSrcURLs": {
     "message": "Remove Source Web Addresses..."
   },
@@ -965,6 +969,18 @@
 
   "syncTurnOff": {
     "message": "Turn Off Sync"
+  },
+
+  "syncPushAck": {
+    "message": "Pushed updates to Synced Clippings folder."
+  },
+
+  "deleteSyncFldr": {
+    "message": "The Synced Clippings folder cannot be deleted, because Sync Clippings is turned on."
+  },
+
+  "moveSyncFldr": {
+    "message": "The Synced Clippings folder cannot be moved."
   },
 
   "keyAlt": {
