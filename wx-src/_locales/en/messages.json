@@ -924,7 +924,7 @@
   },
 
   "prefsShortcutMode": {
-    "message": "Activate shortcut key mode using $1"
+    "message": "Activate shortcut key mode by pressing these keys:"
   },
 
   "prefsDefaultNumPlchldrStart": {

@@ -20,13 +20,14 @@ $(() => {
 function init()
 {
   let os = gClippings.getOS();
-  let keybPasteKeys = aeConst.SHORTCUT_KEY_PREFIX;
-  
-  if (os == "mac") {
-    keybPasteKeys = aeConst.SHORTCUT_KEY_PREFIX_MAC;
-  }
-  $("#enable-shortcut-key-label").text(chrome.i18n.getMessage("prefsShortcutMode", keybPasteKeys));
 
+  if (os == "mac") {
+    $("#shortcut-key-prefix-modifiers").text("\u21e7\u2318");
+  }
+  else {
+    $("#shortcut-key-prefix-modifiers").text("ALT + SHIFT +");
+  }
+  
   initDialogs();
 
   $("#toggle-sync").click(aEvent => {
@@ -51,6 +52,31 @@ function init()
 
     $("#enable-shortcut-key").attr("checked", aPrefs.keyboardPaste).click(aEvent => {
       setPref({ keyboardPaste: aEvent.target.checked })
+    });
+
+    let currShortcut = "";
+    if (aPrefs.pasteShortcutKeyPrefix) {
+      currShortcut = aPrefs.pasteShortcutKeyPrefix;
+    }
+    else {
+      let extManifest = chrome.runtime.getManifest();
+      let suggKey = extManifest.commands["ae-clippings-paste-clipping"]["suggested_key"];
+
+      if (os == "mac") {
+        currShortcut = suggKey["mac"];
+      }
+      else {
+        currShortcut = suggKey["default"];
+      }
+    }
+    
+    $("#shortcut-key-selector").val(currShortcut.split("+")[2]).change(aEvent => {
+      let modifierKeys = os == "mac" ? "Command+Shift" : "Alt+Shift"
+      setPref({ pasteShortcutKeyPrefix: `${modifierKeys}+${aEvent.target.value}` });
+      browser.commands.update({
+        name: "ae-clippings-paste-clipping",
+        shortcut: `${modifierKeys}+${aEvent.target.value}`,
+      });
     });
     
     $("#auto-inc-plchldrs-start-val").val(aPrefs.autoIncrPlcHldrStartVal).click(aEvent => {

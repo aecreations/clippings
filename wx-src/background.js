@@ -199,6 +199,7 @@ async function setDefaultPrefs()
     clippingsMgrMinzWhenInactv: undefined,
     syncClippings: false,
     syncFolderID: null,
+    pasteShortcutKeyPrefix: "",
   };
 
   gPrefs = aeClippingsPrefs;
@@ -211,6 +212,7 @@ async function setNewPrefs()
   let newPrefs = {
     syncClippings: false,
     syncFolderID: null,
+    pasteShortcutKeyPrefix: "",
   };
   
   for (let pref in newPrefs) {
@@ -294,6 +296,9 @@ function init()
       if (pref == "autoIncrPlcHldrStartVal") {
         aeClippingSubst.setAutoIncrementStartValue(aChanges[pref].newValue);
       }
+      else if (gPrefs.pasteShortcutKeyPrefix) {
+        setShortcutKeyPrefix(gPrefs.pasteShortcutKeyPrefix);
+      }
     }
   });
 
@@ -309,6 +314,10 @@ function init()
       openKeyboardPasteDlg();
     }
   });
+
+  if (gPrefs.pasteShortcutKeyPrefix) {
+    setShortcutKeyPrefix(gPrefs.pasteShortcutKeyPrefix);
+  }
 
   if (gPrefs.showWelcome) {
     openWelcomePage();
@@ -673,6 +682,15 @@ function initMessageListeners()
       }
     });
   }
+}
+
+
+async function setShortcutKeyPrefix(aShortcutKeyPrefix)
+{
+  await browser.commands.update({
+    name: "ae-clippings-paste-clipping",
+    shortcut: aShortcutKeyPrefix,
+  });
 }
 
 
