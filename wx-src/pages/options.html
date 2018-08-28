@@ -80,6 +80,9 @@
 	      <option value="Period">.</option>
 	    </select>
           </div>
+	  <div class="indent">
+	    <p id="shortcut-key-note" class="note"></p>
+	  </div>
 
 	  <div class="row">
 	    <label for="auto-inc-plchldrs-start-val" data-i18n="prefsDefaultNumPlchldrStart"></label>
@@ -109,7 +112,7 @@
 	  Thunderbird or other Firefox installations by putting the
 	  clippings you want to share into a special "Synced Clippings"
 	  folder.  The synchronized clippings will be saved in a file on your
-	  system.  Requires the <a href="http://aecreations.sourceforge.net/clippings/sync.php">Sync Clippings</a> helper
+	  system.  Requires the <a href="http://aecreations.sourceforge.net/clippings/sync.php" target="wndClippingsExt">Sync Clippings</a> helper
 	  app.</p>
 	  <p class="description" style="margin-top:6px"><a id="show-sync-help" href="#">Learn more about Sync Clippings.</a></p>
 
@@ -218,6 +221,7 @@
     <div id="lightbox-bkgrd-ovl" class="lightbox-bkgrd"></div>
     
     <script src="../lib/jquery.js"></script>
+    <script src="../lib/purify.min.js"></script>
     <script src="../lib/i18n.js"></script>
     <script src="../modules/aeConst.js"></script>
     <script src="../modules/aeDialog.js"></script>

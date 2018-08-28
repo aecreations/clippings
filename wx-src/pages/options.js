@@ -27,7 +27,10 @@ function init()
   else {
     $("#shortcut-key-prefix-modifiers").text("ALT + SHIFT +");
   }
-  
+
+  let shortcutKeyNoteHTML = DOMPurify.sanitize(chrome.i18n.getMessage("prefsShortcutKeyNote"), { SAFE_FOR_JQUERY: true });
+  $("#shortcut-key-note").html(shortcutKeyNoteHTML);
+
   initDialogs();
 
   $("#toggle-sync").click(aEvent => {

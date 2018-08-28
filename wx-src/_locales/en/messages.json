@@ -927,6 +927,10 @@
     "message": "Activate shortcut key mode by pressing these keys:"
   },
 
+  "prefsShortcutKeyNote": {
+    "message": "Some of the available shortcut keys may already be assigned to <a href=\"https://support.mozilla.org/en-US/kb/keyboard-shortcuts-perform-firefox-tasks-quickly\">Firefox commands</a>."
+  },
+
   "prefsDefaultNumPlchldrStart": {
     "message": "Default starting value for auto-incrementing placeholders:"
   },
