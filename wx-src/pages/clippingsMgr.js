@@ -20,6 +20,7 @@ let gOpenerWndID;
 let gIsMaximized;
 let gSuppressAutoMinzWnd;
 let gSyncFolderID;
+let gSyncItemIDsLookup;
 
 
 // DOM utility
@@ -576,7 +577,10 @@ let gShortcutKey = {
       }
 
       let clippingID = parseInt(selectedNode.key);
-      gClippingsDB.clippings.update(clippingID, { shortcutKey });
+      gClippingsDB.clippings.update(clippingID, { shortcutKey }).then(aNumUpd => {
+        // TO DO: If descendant of Synced Clippings folder,
+        // add to synced items ID lookup list.
+      });
     }).catch (aErr => {
       console.error(aErr);
     });
@@ -718,6 +722,9 @@ let gCmd = {
           itemType: this.ITEMTYPE_CLIPPING
         });
       }
+
+      // TO DO: If descendant of Synced Clippings folder, add to synced items ID
+      // lookup list.
     });
   },
 
@@ -757,6 +764,9 @@ let gCmd = {
           itemType: this.ITEMTYPE_FOLDER
         });
       }
+
+      // TO DO: If descendant of Synced Clippings folder, add to synced items ID
+      // lookup list.
     });
   },
 
@@ -771,6 +781,7 @@ let gCmd = {
     if (selectedNode && selectedNode.isFolder()) {
       let folderID = parseInt(selectedNode.key);
       if (folderID == gClippings.getSyncFolderID()) {
+        // TO DO: Put this in a popup.
         window.alert(chrome.i18n.getMessage("moveSyncFldr"));
         return;
       }
@@ -796,6 +807,7 @@ let gCmd = {
     
     if (selectedNode.isFolder()) {
       if (id == gClippings.getSyncFolderID()) {
+        // TO DO: Put this in a popup.
         window.alert(chrome.i18n.getMessage("deleteSyncFldr"));
         return;
       }
@@ -809,6 +821,9 @@ let gCmd = {
             parentFolderID
           });
         }
+
+        // TO DO: If descendant of Synced Clippings folder, add to synced items ID
+        // lookup list.
       });
     }
     else {
@@ -824,6 +839,9 @@ let gCmd = {
             parentFolderID
           });
         }
+
+        // TO DO: If descendant of Synced Clippings folder, add to synced items ID
+        // lookup list.
       });
     }
   },
@@ -850,6 +868,9 @@ let gCmd = {
           newParentFldrID: aNewParentFldrID
         });
       }
+
+      // TO DO: If descendant of Synced Clippings folder, add to synced items ID
+      // lookup list.
     }).catch(aErr => { console.error(aErr) });
   },
 
@@ -874,6 +895,9 @@ let gCmd = {
           itemType: this.ITEMTYPE_CLIPPING
         });
       }
+
+      // TO DO: If descendant of Synced Clippings folder, add to synced items ID
+      // lookup list.
     }).catch(aErr => {
       console.error(aErr);
     });
@@ -900,6 +924,9 @@ let gCmd = {
           newParentFldrID: aNewParentFldrID
         });
       }
+
+      // TO DO: If descendant of Synced Clippings folder, add to synced items ID
+      // lookup list.
     }).catch(aErr => { console.error(aErr) });
   },
 
@@ -920,6 +947,9 @@ let gCmd = {
           itemType: this.ITEMTYPE_FOLDER
         });
       }
+
+      // TO DO: If descendant of Synced Clippings folder, add to synced items ID
+      // lookup list.
     }).catch(aErr => {
       console.error("Clippings/wx::clippingsMgr.js: gCmd.copyFolderIntrl(): " + aErr);
       window.alert("Error copying folder: " + aErr);
@@ -949,6 +979,10 @@ let gCmd = {
             itemType: this.ITEMTYPE_FOLDER
           });
         }
+
+        // TO DO: If descendant of Synced Clippings folder, add to synced items ID
+        // lookup list.
+        
         aFnResolve();
 
       }).catch(aErr => {
@@ -981,6 +1015,9 @@ let gCmd = {
             itemType: this.ITEMTYPE_CLIPPING
           });
         }
+
+        // TO DO: If descendant of Synced Clippings folder, add to synced items ID
+        // lookup list.
         aFnResolve();
 
       }).catch(aErr => {
@@ -1013,6 +1050,9 @@ let gCmd = {
             itemType: this.ITEMTYPE_CLIPPING
           });
         }
+
+        // TO DO: If descendant of Synced Clippings folder, add to synced items ID
+        // lookup list.
         aFnResolve();
         
       }).catch(aErr => {
@@ -1054,6 +1094,9 @@ let gCmd = {
           oldLabel
         });
       }
+
+      // TO DO: If descendant of Synced Clippings folder, add to synced items ID
+      // lookup list.
     }).catch(aErr => {
       console.error("Clippings/wx::clippingsMgr.js: gCmd.setLabel(): " + aErr);
     });
@@ -1492,6 +1535,7 @@ $(document).ready(() => {
   initDialogs();
   buildClippingsTree();
   initTreeSplitter();
+  initSyncItemsIDLookupList();
   
   chrome.history.deleteUrl({ url: window.location.href });
 
@@ -3058,7 +3102,55 @@ function buildClippingsTreeHelper(aFolderID)
         aFnResolve(rv);
       });
     }).catch(aErr => {
-      console.error("Clippings/wx::clippingsMgr.js::buildClippingsTreeHelperEx(): %s", aErr.message);
+      console.error("Clippings/wx::clippingsMgr.js: buildClippingsTreeHelperEx(): %s", aErr.message);
+      aFnReject(aErr);
+    });
+  });
+}
+
+
+function initSyncItemsIDLookupList()
+{
+  function initSyncItemsIDLookupListHelper(aFolderID)
+  {
+    return new Promise((aFnResolve, aFnReject) => {
+      gClippingsDB.transaction("r", gClippingsDB.clippings, gClippingsDB.folders, () => {
+        gClippingsDB.folders.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
+          gSyncItemIDsLookup[aItem.id] = 1;
+          initSyncItemsIDLookupListHelper(aItem.id);
+          
+        }).then(() => {
+          return gClippingsDB.clippings.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
+            gSyncItemIDsLookup[aItem.id] = 1;
+          });
+
+        }).then(() => {
+          aFnResolve(rv);
+        });
+      }).catch(aErr => {
+        aFnReject(aErr);
+      });
+    });    
+  }
+  // END nested helper function
+
+  return new Promise((aFnResolve, aFnReject) => {
+    let prefs = gClippings.getPrefs();
+    if (! prefs.syncClippings) {
+      aFnResolve();
+    }
+
+    // Include the ID of the root Synced Clippings folder.
+    gSyncItemIDsLookup[prefs.syncFolderID] = 1;
+
+    initSyncItemsIDLookupListHelper(prefs.syncFolderID).then(() => {
+      // TEMPORARY
+      console.log("Clippings/wx::clippingsMgr.js: initSyncItemsIDLookupList():");
+      console.log(gSyncItemIDsLookup);
+      // END TEMPORARY
+      
+      aFnResolve();
+    }).catch(aErr => {
       aFnReject(aErr);
     });
   });
