@@ -83,6 +83,163 @@ aeImportExport.importFromJSON = function (aImportRawJSON, aReplaceShortcutKeys, 
 };
 
 
+// Asynchronous version of `importFromJSON()`. Returns an array of IDs of
+// imported clippings and folders.
+aeImportExport.importFromJSONEx = function (aImportRawJSON, aReplaceShortcutKeys, aAppendItems, aDestFolderID)
+{
+  let rv = [];
+  
+  if (! this._db) {
+    throw new Error("aeImportExport: Database not initialized!");
+  }
+
+  if (! aDestFolderID) {
+    aDestFolderID = this.ROOT_FOLDER_ID;
+  }
+
+  let importData;
+
+  try {
+    importData = JSON.parse(aImportRawJSON);
+  }
+  catch (e) {
+    // SyntaxError - Raw JSON data is invalid.
+    throw e;
+  }
+
+  return new Promise((aFnResolve, aFnReject) => {
+    this._getShortcutKeysToClippingIDs().then(aShortcutKeyLookup => {
+      this._log("aeImportExport: Starting asynchronous JSON import...");
+
+      return this._importFromJSONHelperAsync(aDestFolderID, importData.userClippingsRoot, aReplaceShortcutKeys, aShortcutKeyLookup, aAppendItems, aDestFolderID);
+
+    }).then(aImportedItemIDs => {
+      this._log("Asynchronous import completed!");
+      rv = aImportedItemIDs;
+      aFnResolve(rv);
+      
+    }).catch(aErr => {
+      aFnReject(aErr);
+    });
+  });
+};
+
+
+aeImportExport._importFromJSONHelperAsync = function (aParentFolderID, aImportedItems, aReplaceShortcutKeys, aShortcutKeys, aAppendItems)
+{
+  const DISPORD_LAST = 999999999;
+  let rv = {
+    clippings: [],
+    folders: [],
+  };
+  
+  return new Promise((aFnResolve, aFnReject) => {
+    this._db.transaction("rw", this._db.clippings, this._db.folders, () => {
+      let clippings = [];
+      let clippingsWithKeyConflicts = [];
+
+      for (let item of aImportedItems) {
+        if ("children" in item) {
+          let folder = {
+            name: item.name,
+            parentFolderID: aParentFolderID
+          };
+
+          if (aAppendItems) {
+            folder.displayOrder = DISPORD_LAST;
+          }
+
+          this._db.folders.add(folder).then(aNewFolderID => {
+            rv.folders.push(aNewFolderID);
+            console.log("aeImportExport: After adding a new folder (aNewFolderID=%s):", aNewFolderID);
+            console.log(rv);
+            return this._importFromJSONHelperAsync(aNewFolderID, item.children, aReplaceShortcutKeys, aShortcutKeys, aAppendItems);
+            
+          }).then(aNewItems => {
+            rv.clippings.concat(aNewItems.clippings);
+            rv.folders.concat(aNewItems.folders);
+            console.log("aeImportExport: After recursive call to helper:");
+            console.log(rv);
+          });
+        }
+        else {
+          let clipping = {};
+          let shortcutKey = "";
+
+          if (aShortcutKeys[item.shortcutKey]) {
+            if (aReplaceShortcutKeys) {
+              shortcutKey = item.shortcutKey;
+              clippingsWithKeyConflicts.push(aShortcutKeys[item.shortcutKey]);
+            }
+            else {
+              shortcutKey = "";
+            }
+          }
+          else {
+            shortcutKey = item.shortcutKey;
+          }
+          
+          clipping = {
+            name: item.name,
+            content: item.content,
+            shortcutKey,
+            sourceURL: item.sourceURL,
+            label: ("label" in item ? item.label : ""),
+            parentFolderID: aParentFolderID
+          };
+
+          if (aAppendItems) {
+            clipping.displayOrder = DISPORD_LAST;
+          }
+
+          clippings.push(clipping);
+        }
+      }
+
+      let addClippingProms = [];
+      for (let clipping of clippings) {
+        let addClipping = this._db.clippings.add(clipping);
+        addClippingProms.push(addClipping);
+      }
+
+      Promise.all(addClippingProms).then(aNewClippingIDs => {
+        console.log("aeImportExport: New clipping IDs, after all promises resolved:");
+        console.log(aNewClippingIDs);
+        
+        rv.clippings.concat(aNewClippingIDs);
+        
+        console.log("After concatenating new clippings:");
+        console.log(rv);
+        aFnResolve(rv);
+      });
+/***
+      let addFldrProms = [];
+      let fldrItems = [];
+      for (let i = 0; i < importedFolders.length; i++) {
+        let addFolder = this._db.folders.add(importedFolders[i]);
+        addFldrProms.push(addFolder);
+        fldrItems.push(importedFolders[i].children);  // WRONG!!!
+      }
+
+      Promise.all(addFldrProms).then(aNewFolderIDs => {
+        let importFromJSONRecProms = [];
+        for (let i = 0; i < aNewFolderIDs.length; i++) {
+          let importFromJSONRec = this._importFromJSONHelperAsync(aNewFolderIDs[i], fldrItems[i], aReplaceShortcutKeys, aShortcutKeys, aAppendItems);
+          importFromJSONRecProms.push(importFromJSONRec);
+        }
+        return Promise.all(importFromJSONRecProms);
+
+      }).then(aImportedItemIDs => {
+      });
+***/    
+    }).catch(aErr => {
+      console.error("aeImportExport._importFromJSONHelperAsync(): " + aErr);
+      aFnReject(aErr);
+    });
+  });
+};
+
+
 aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems, aReplaceShortcutKeys, aShortcutKeys, aAppendItems)
 {
   this._db.transaction("rw", this._db.clippings, this._db.folders, () => {
