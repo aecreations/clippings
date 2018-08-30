@@ -724,7 +724,6 @@ let gCmd = {
       }
 
       if (gSyncItemIDsLookup[parentFolderID + "F"]) {
-        console.log(`Clippings/wx::clippingsMgr.js: Detected new clipping (id=${aNewClippingID}) created under a synced folder!`);
         gSyncItemIDsLookup[aNewClippingID + "C"] = 1;
         gClippings.pushSyncFolderUpdates();
       }
@@ -772,7 +771,6 @@ let gCmd = {
       // Clippings Manager.
       
       if (gSyncItemIDsLookup[parentFolderID + "F"]) {
-        console.log(`Clippings/wx::clippingsMgr.js: Detected new folder (id=${aNewFolderID}) created under a synced folder!`);
         gSyncItemIDsLookup[aNewFolderID + "F"] = 1;
         gClippings.pushSyncFolderUpdates();
       }
@@ -831,8 +829,11 @@ let gCmd = {
           });
         }
 
-        // TO DO: If descendant of Synced Clippings folder, add to synced items ID
-        // lookup list.
+        if (gSyncItemIDsLookup[parentFolderID + "F"]) {
+          gClippings.pushSyncFolderUpdates().then(() => {
+            delete gSyncItemIDsLookup[id + "F"];
+          });
+        }
       });
     }
     else {
@@ -849,8 +850,11 @@ let gCmd = {
           });
         }
 
-        // TO DO: If descendant of Synced Clippings folder, add to synced items ID
-        // lookup list.
+        if (gSyncItemIDsLookup[parentFolderID + "F"]) {
+          gClippings.pushSyncFolderUpdates().then(() => {
+            delete gSyncItemIDsLookup[id + "C"];
+          });
+        }
       });
     }
   },
@@ -862,7 +866,7 @@ let gCmd = {
       unsetEmptyClippingsState();
     }
 
-    let id, oldParentFldrID;
+    let oldParentFldrID;
     
     gClippingsDB.clippings.get(aClippingID).then(aClipping => {
       oldParentFldrID = aClipping.parentFolderID;
@@ -878,8 +882,15 @@ let gCmd = {
         });
       }
 
-      // TO DO: If descendant of Synced Clippings folder, add to synced items ID
-      // lookup list.
+      if (gSyncItemIDsLookup[aNewParentFldrID + "F"] || gSyncItemIDsLookup[oldParentFldrID + "F"]) {
+        gClippings.pushSyncFolderUpdates().then(() => {
+          // Remove clipping from synced items lookup array if it was moved out
+          // of a synced folder.
+          if (gSyncItemIDsLookup[aClippingID + "C"] && !gSyncItemIDsLookup[aNewParentFldrID + "F"]) {
+            delete gSyncItemIDsLookup[aClippingID + "C"];
+          }
+        });
+      }
     }).catch(aErr => { console.error(aErr) });
   },
 
@@ -905,8 +916,11 @@ let gCmd = {
         });
       }
 
-      // TO DO: If descendant of Synced Clippings folder, add to synced items ID
-      // lookup list.
+      if (gSyncItemIDsLookup[aDestFldrID + "F"]) {
+        gClippings.pushSyncFolderUpdates().then(() => {
+          gSyncItemIDsLookup[aClippingID + "C"] = 1;
+        });
+      }
     }).catch(aErr => {
       console.error(aErr);
     });
@@ -934,8 +948,13 @@ let gCmd = {
         });
       }
 
-      // TO DO: If descendant of Synced Clippings folder, add to synced items ID
-      // lookup list.
+      if (gSyncItemIDsLookup[aNewParentFldrID + "F"] || gSyncItemIDsLookup[oldParentFldrID + "F"]) {
+        gClippings.pushSyncFolderUpdates().then(() => {
+          if (gSyncItemIDsLookup[id + "F"] && !gSyncItemIDsLookup[aNewParentFldrID + "F"]) {
+            delete gSyncItemIDsLookup[id + "F"];
+          }
+        });
+      }
     }).catch(aErr => { console.error(aErr) });
   },
 
@@ -957,8 +976,11 @@ let gCmd = {
         });
       }
 
-      // TO DO: If descendant of Synced Clippings folder, add to synced items ID
-      // lookup list.
+      if (gSyncItemIDsLookup[aDestFldrID + "F"]) {
+        gClippings.pushSyncFolderUpdates().then(() => {
+          gSyncItemIDsLookup[aFolderID + "F"] = 1;
+        });
+      }
     }).catch(aErr => {
       console.error("Clippings/wx::clippingsMgr.js: gCmd.copyFolderIntrl(): " + aErr);
       window.alert("Error copying folder: " + aErr);
@@ -989,11 +1011,14 @@ let gCmd = {
           });
         }
 
-        // TO DO: If descendant of Synced Clippings folder, add to synced items ID
-        // lookup list.
-        
-        aFnResolve();
-
+        if (gSyncItemIDsLookup[aFolderID + "F"]) {
+          gClippings.pushSyncFolderUpdates().then(() => {
+            aFnResolve();
+          });
+        }
+        else {
+          aFnResolve();
+        }
       }).catch(aErr => {
         console.error("Clippings/wx::clippingsMgr.js: gCmd.editFolderNameIntrl(): " + aErr);
         aFnReject(aErr);
@@ -1025,10 +1050,14 @@ let gCmd = {
           });
         }
 
-        // TO DO: If descendant of Synced Clippings folder, add to synced items ID
-        // lookup list.
-        aFnResolve();
-
+        if (gSyncItemIDsLookup[aClippingID + "C"]) {
+          gClippings.pushSyncFolderUpdates().then(() => {
+            aFnResolve();
+          });
+        }
+        else {
+          aFnResolve();
+        }
       }).catch(aErr => {
         console.error("Clippings/wx::clippingsMgr.js: gCmd.editClippingNameIntrl(): " + aErr);
         aFnReject(aErr);
@@ -1060,10 +1089,14 @@ let gCmd = {
           });
         }
 
-        // TO DO: If descendant of Synced Clippings folder, add to synced items ID
-        // lookup list.
-        aFnResolve();
-        
+        if (gSyncItemIDsLookup[aClippingID + "C"]) {
+          gClippings.pushSyncFolderUpdates().then(() => {
+            aFnResolve();
+          });
+        }
+        else {
+          aFnResolve();
+        }
       }).catch(aErr => {
         console.error("Clippings/wx::clippingsMgr.js: gCmd.editClippingContentIntrl(): " + aErr);
         aFnReject(aErr);
@@ -1104,8 +1137,9 @@ let gCmd = {
         });
       }
 
-      // TO DO: If descendant of Synced Clippings folder, add to synced items ID
-      // lookup list.
+      if (gSyncItemIDsLookup[aClippingID + "C"]) {
+        gClippings.pushSyncFolderUpdates();
+      }
     }).catch(aErr => {
       console.error("Clippings/wx::clippingsMgr.js: gCmd.setLabel(): " + aErr);
     });
@@ -1142,7 +1176,7 @@ let gCmd = {
         }
       }
 
-      Promise.all(seqUpdates).then(numUpd => {
+      Promise.all(seqUpdates).then(aNumUpd => {
         log("Clippings/wx::clippingsMgr.js: gCmd.updateDisplayOrder(): Display order updates for each folder item is completed");
 
         if (aDestUndoStack == this.UNDO_STACK) {
