@@ -950,8 +950,8 @@ let gCmd = {
 
       if (gSyncItemIDsLookup[aNewParentFldrID + "F"] || gSyncItemIDsLookup[oldParentFldrID + "F"]) {
         gClippings.pushSyncFolderUpdates().then(() => {
-          if (gSyncItemIDsLookup[id + "F"] && !gSyncItemIDsLookup[aNewParentFldrID + "F"]) {
-            delete gSyncItemIDsLookup[id + "F"];
+          if (gSyncItemIDsLookup[aFolderID + "F"] && !gSyncItemIDsLookup[aNewParentFldrID + "F"]) {
+            delete gSyncItemIDsLookup[aFolderID + "F"];
           }
         });
       }
