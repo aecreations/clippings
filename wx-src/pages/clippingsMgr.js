@@ -20,7 +20,7 @@ let gOpenerWndID;
 let gIsMaximized;
 let gSuppressAutoMinzWnd;
 let gSyncFolderID;
-let gSyncItemIDsLookup;
+let gSyncItemIDsLookup = {};
 
 
 // DOM utility
@@ -723,8 +723,11 @@ let gCmd = {
         });
       }
 
-      // TO DO: If descendant of Synced Clippings folder, add to synced items ID
-      // lookup list.
+      if (gSyncItemIDsLookup[parentFolderID + "F"]) {
+        console.log(`Clippings/wx::clippingsMgr.js: Detected new clipping (id=${aNewClippingID}) created under a synced folder!`);
+        gSyncItemIDsLookup[aNewClippingID + "C"] = 1;
+        gClippings.pushSyncFolderUpdates();
+      }
     });
   },
 
@@ -765,8 +768,14 @@ let gCmd = {
         });
       }
 
-      // TO DO: If descendant of Synced Clippings folder, add to synced items ID
-      // lookup list.
+      // TO DO: Detect creation of Synced Clippings folder outside
+      // Clippings Manager.
+      
+      if (gSyncItemIDsLookup[parentFolderID + "F"]) {
+        console.log(`Clippings/wx::clippingsMgr.js: Detected new folder (id=${aNewFolderID}) created under a synced folder!`);
+        gSyncItemIDsLookup[aNewFolderID + "F"] = 1;
+        gClippings.pushSyncFolderUpdates();
+      }
     });
   },
 
@@ -3116,16 +3125,16 @@ function initSyncItemsIDLookupList()
     return new Promise((aFnResolve, aFnReject) => {
       gClippingsDB.transaction("r", gClippingsDB.clippings, gClippingsDB.folders, () => {
         gClippingsDB.folders.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
-          gSyncItemIDsLookup[aItem.id] = 1;
+          gSyncItemIDsLookup[aItem.id + "F"] = 1;
           initSyncItemsIDLookupListHelper(aItem.id);
           
         }).then(() => {
           return gClippingsDB.clippings.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
-            gSyncItemIDsLookup[aItem.id] = 1;
+            gSyncItemIDsLookup[aItem.id + "C"] = 1;
           });
 
         }).then(() => {
-          aFnResolve(rv);
+          aFnResolve();
         });
       }).catch(aErr => {
         aFnReject(aErr);
@@ -3141,14 +3150,9 @@ function initSyncItemsIDLookupList()
     }
 
     // Include the ID of the root Synced Clippings folder.
-    gSyncItemIDsLookup[prefs.syncFolderID] = 1;
+    gSyncItemIDsLookup[prefs.syncFolderID + "F"] = 1;
 
     initSyncItemsIDLookupListHelper(prefs.syncFolderID).then(() => {
-      // TEMPORARY
-      console.log("Clippings/wx::clippingsMgr.js: initSyncItemsIDLookupList():");
-      console.log(gSyncItemIDsLookup);
-      // END TEMPORARY
-      
       aFnResolve();
     }).catch(aErr => {
       aFnReject(aErr);
