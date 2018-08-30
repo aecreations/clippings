@@ -2823,16 +2823,24 @@ function buildClippingsTree()
 
             let oldParentID;
             if (aData.otherNode.getParent().isRootNode()) {
-              oldParentID = 0;
+              oldParentID = aeConst.ROOT_FOLDER_ID;
             }
             else {
               oldParentID = parseInt(aData.otherNode.getParent().key);
             }
 
+            let id = parseInt(aData.otherNode.key);
+            let prefs = gClippings.getPrefs();
+
+            if (prefs.syncClippings && id == prefs.syncFolderID
+                && newParentID != aeConst.ROOT_FOLDER_ID) {
+              warn("The Synced Clippings folder cannot be moved.");
+              return;
+            }
+
             aData.otherNode.moveTo(aNode, aData.hitMode);
             gClippingsTreeDnD = true;
             
-            let id = parseInt(aData.otherNode.key);
             log(`Clippings/wx::clippingsMgr.js::#clippings-tree.dnd5.dragDrop(): ID of moved clipping or folder: ${id}\nID of old parent folder: ${oldParentID}\nID of new parent folder: ${newParentID}`);
 
             if (newParentID == oldParentID) {
