@@ -20,7 +20,7 @@ let gOpenerWndID;
 let gIsMaximized;
 let gSuppressAutoMinzWnd;
 let gSyncFolderID;
-let gSyncItemIDsLookup = {};
+let gSyncedItemsIDs = {};
 
 
 // DOM utility
@@ -489,7 +489,7 @@ let gSrcURLBar = {
       }
       this._dismissSrcURLEditMode();
 
-      if (updatedURL && gSyncItemIDsLookup[clippingID + "C"]) {
+      if (updatedURL && gSyncedItemsIDs[clippingID + "C"]) {
         gClippings.pushSyncFolderUpdates();
       }
     });
@@ -582,7 +582,7 @@ let gShortcutKey = {
 
       let clippingID = parseInt(selectedNode.key);
       gClippingsDB.clippings.update(clippingID, { shortcutKey }).then(aNumUpd => {
-        if (gSyncItemIDsLookup[clippingID + "C"]) {
+        if (gSyncedItemsIDs[clippingID + "C"]) {
           gClippings.pushSyncFolderUpdates();
         }
       });
@@ -728,8 +728,8 @@ let gCmd = {
         });
       }
 
-      if (gSyncItemIDsLookup[parentFolderID + "F"]) {
-        gSyncItemIDsLookup[aNewClippingID + "C"] = 1;
+      if (gSyncedItemsIDs[parentFolderID + "F"]) {
+        gSyncedItemsIDs[aNewClippingID + "C"] = 1;
         gClippings.pushSyncFolderUpdates();
       }
     });
@@ -772,11 +772,8 @@ let gCmd = {
         });
       }
 
-      // TO DO: Detect creation of Synced Clippings folder outside
-      // Clippings Manager.
-      
-      if (gSyncItemIDsLookup[parentFolderID + "F"]) {
-        gSyncItemIDsLookup[aNewFolderID + "F"] = 1;
+      if (gSyncedItemsIDs[parentFolderID + "F"]) {
+        gSyncedItemsIDs[aNewFolderID + "F"] = 1;
         gClippings.pushSyncFolderUpdates();
       }
     });
@@ -834,9 +831,9 @@ let gCmd = {
           });
         }
 
-        if (gSyncItemIDsLookup[parentFolderID + "F"]) {
+        if (gSyncedItemsIDs[parentFolderID + "F"]) {
           gClippings.pushSyncFolderUpdates().then(() => {
-            delete gSyncItemIDsLookup[id + "F"];
+            delete gSyncedItemsIDs[id + "F"];
           });
         }
       });
@@ -855,9 +852,9 @@ let gCmd = {
           });
         }
 
-        if (gSyncItemIDsLookup[parentFolderID + "F"]) {
+        if (gSyncedItemsIDs[parentFolderID + "F"]) {
           gClippings.pushSyncFolderUpdates().then(() => {
-            delete gSyncItemIDsLookup[id + "C"];
+            delete gSyncedItemsIDs[id + "C"];
           });
         }
       });
@@ -887,12 +884,12 @@ let gCmd = {
         });
       }
 
-      if (gSyncItemIDsLookup[aNewParentFldrID + "F"] || gSyncItemIDsLookup[oldParentFldrID + "F"]) {
+      if (gSyncedItemsIDs[aNewParentFldrID + "F"] || gSyncedItemsIDs[oldParentFldrID + "F"]) {
         gClippings.pushSyncFolderUpdates().then(() => {
           // Remove clipping from synced items lookup array if it was moved out
           // of a synced folder.
-          if (gSyncItemIDsLookup[aClippingID + "C"] && !gSyncItemIDsLookup[aNewParentFldrID + "F"]) {
-            delete gSyncItemIDsLookup[aClippingID + "C"];
+          if (gSyncedItemsIDs[aClippingID + "C"] && !gSyncedItemsIDs[aNewParentFldrID + "F"]) {
+            delete gSyncedItemsIDs[aClippingID + "C"];
           }
         });
       }
@@ -921,9 +918,9 @@ let gCmd = {
         });
       }
 
-      if (gSyncItemIDsLookup[aDestFldrID + "F"]) {
+      if (gSyncedItemsIDs[aDestFldrID + "F"]) {
         gClippings.pushSyncFolderUpdates().then(() => {
-          gSyncItemIDsLookup[aClippingID + "C"] = 1;
+          gSyncedItemsIDs[aClippingID + "C"] = 1;
         });
       }
     }).catch(aErr => {
@@ -953,10 +950,10 @@ let gCmd = {
         });
       }
 
-      if (gSyncItemIDsLookup[aNewParentFldrID + "F"] || gSyncItemIDsLookup[oldParentFldrID + "F"]) {
+      if (gSyncedItemsIDs[aNewParentFldrID + "F"] || gSyncedItemsIDs[oldParentFldrID + "F"]) {
         gClippings.pushSyncFolderUpdates().then(() => {
-          if (gSyncItemIDsLookup[aFolderID + "F"] && !gSyncItemIDsLookup[aNewParentFldrID + "F"]) {
-            delete gSyncItemIDsLookup[aFolderID + "F"];
+          if (gSyncedItemsIDs[aFolderID + "F"] && !gSyncedItemsIDs[aNewParentFldrID + "F"]) {
+            delete gSyncedItemsIDs[aFolderID + "F"];
           }
         });
       }
@@ -981,9 +978,9 @@ let gCmd = {
         });
       }
 
-      if (gSyncItemIDsLookup[aDestFldrID + "F"]) {
+      if (gSyncedItemsIDs[aDestFldrID + "F"]) {
         gClippings.pushSyncFolderUpdates().then(() => {
-          gSyncItemIDsLookup[aFolderID + "F"] = 1;
+          gSyncedItemsIDs[aFolderID + "F"] = 1;
         });
       }
     }).catch(aErr => {
@@ -1016,7 +1013,7 @@ let gCmd = {
           });
         }
 
-        if (gSyncItemIDsLookup[aFolderID + "F"]) {
+        if (gSyncedItemsIDs[aFolderID + "F"]) {
           gClippings.pushSyncFolderUpdates().then(() => {
             aFnResolve();
           });
@@ -1055,7 +1052,7 @@ let gCmd = {
           });
         }
 
-        if (gSyncItemIDsLookup[aClippingID + "C"]) {
+        if (gSyncedItemsIDs[aClippingID + "C"]) {
           gClippings.pushSyncFolderUpdates().then(() => {
             aFnResolve();
           });
@@ -1094,7 +1091,7 @@ let gCmd = {
           });
         }
 
-        if (gSyncItemIDsLookup[aClippingID + "C"]) {
+        if (gSyncedItemsIDs[aClippingID + "C"]) {
           gClippings.pushSyncFolderUpdates().then(() => {
             aFnResolve();
           });
@@ -1142,7 +1139,7 @@ let gCmd = {
         });
       }
 
-      if (gSyncItemIDsLookup[aClippingID + "C"]) {
+      if (gSyncedItemsIDs[aClippingID + "C"]) {
         gClippings.pushSyncFolderUpdates();
       }
     }).catch(aErr => {
@@ -3164,12 +3161,12 @@ function initSyncItemsIDLookupList()
     return new Promise((aFnResolve, aFnReject) => {
       gClippingsDB.transaction("r", gClippingsDB.clippings, gClippingsDB.folders, () => {
         gClippingsDB.folders.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
-          gSyncItemIDsLookup[aItem.id + "F"] = 1;
+          gSyncedItemsIDs[aItem.id + "F"] = 1;
           initSyncItemsIDLookupListHelper(aItem.id);
           
         }).then(() => {
           return gClippingsDB.clippings.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
-            gSyncItemIDsLookup[aItem.id + "C"] = 1;
+            gSyncedItemsIDs[aItem.id + "C"] = 1;
           });
 
         }).then(() => {
@@ -3189,7 +3186,7 @@ function initSyncItemsIDLookupList()
     }
 
     // Include the ID of the root Synced Clippings folder.
-    gSyncItemIDsLookup[prefs.syncFolderID + "F"] = 1;
+    gSyncedItemsIDs[prefs.syncFolderID + "F"] = 1;
 
     initSyncItemsIDLookupListHelper(prefs.syncFolderID).then(() => {
       aFnResolve();
