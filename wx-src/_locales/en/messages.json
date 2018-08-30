@@ -729,6 +729,10 @@
     "message": "Clippings export to \"$1\" is successfully completed."
   },
 
+  "clipMgrBackupConfirm": {
+    "message": "Backup to \"$1\" is successfully completed."
+  },
+
   "clipMgrWarnRemoveSrcURLs": {
     "message": "All source web page addresses of your clippings will be removed.  Do you want to continue?"
   },

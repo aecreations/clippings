@@ -1375,9 +1375,21 @@ let gCmd = {
         url: URL.createObjectURL(blobData),
         filename: aeConst.CLIPPINGS_BACKUP_FILENAME,
         saveAs: true
+
       }).then(aDownldItemID => {
         setStatusBarMsg(chrome.i18n.getMessage("statusSavingBkupDone"));
         gSuppressAutoMinzWnd = false;
+
+        return browser.downloads.search({ id: aDownldItemID });
+
+      }).then(aDownldItems => {
+
+        if (aDownldItems && aDownldItems.length > 0) {
+          let backupFilePath = aDownldItems[0].filename;
+          gDialogs.backupConfirmMsgBox.setMessage(chrome.i18n.getMessage("clipMgrBackupConfirm", backupFilePath));
+          gDialogs.backupConfirmMsgBox.showModal();
+        }
+
       }).catch(aErr => {
         if (aErr.fileName == "undefined") {
           setStatusBarMsg();
@@ -2549,7 +2561,7 @@ function initDialogs()
   };
 
   gDialogs.importConfirmMsgBox = new aeDialog("#import-confirm-msgbox");
-  gDialogs.importConfirmMsgBox.setMessage = (aMessage) => {
+  gDialogs.importConfirmMsgBox.setMessage = aMessage => {
     $("#import-confirm-msgbox > .msgbox-content").text(aMessage);
   };
   gDialogs.importConfirmMsgBox.onAfterAccept = () => {
@@ -2557,8 +2569,13 @@ function initDialogs()
   };
 
   gDialogs.exportConfirmMsgBox = new aeDialog("#export-confirm-msgbox");
-  gDialogs.exportConfirmMsgBox.setMessage = (aMessage) => {
+  gDialogs.exportConfirmMsgBox.setMessage = aMessage => {
     $("#export-confirm-msgbox > .msgbox-content").text(aMessage);
+  };
+
+  gDialogs.backupConfirmMsgBox = new aeDialog("#backup-confirm-msgbox");
+  gDialogs.backupConfirmMsgBox.setMessage = aMessage => {
+    $("#backup-confirm-msgbox > .msgbox-content").text(aMessage);
   };
   
   gDialogs.removeAllSrcURLs = new aeDialog("#remove-all-source-urls-dlg");

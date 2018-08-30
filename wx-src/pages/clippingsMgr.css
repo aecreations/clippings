@@ -711,6 +711,7 @@ ul.fancytree-container {
 #remove-all-source-urls-dlg,
 #import-confirm-msgbox,
 #export-confirm-msgbox,
+#backup-confirm-msgbox,
 #mini-help-dlg,
 #generic-msg-box {
     top: 64px;
@@ -940,7 +941,8 @@ ul.fancytree-container {
 }
 
 #import-confirm-msgbox > .msgbox-icon,
-#export-confirm-msgbox > .msgbox-icon {
+#export-confirm-msgbox > .msgbox-icon,
+#backup-confirm-msgbox > .msgbox-icon {
     margin-top: 8px;
 }
 
