@@ -21,6 +21,7 @@ let gIsMaximized;
 let gSuppressAutoMinzWnd;
 let gSyncFolderID;
 let gSyncedItemsIDs = {};
+let gIsBackupMode = false;
 
 
 // DOM utility
@@ -1569,6 +1570,8 @@ $(document).ready(() => {
 
   let wndURL = new URL(window.location.href);
   gOpenerWndID = Number(wndURL.searchParams.get("openerWndID"));
+  gIsBackupMode = wndURL.searchParams.get("backupMode") || false;
+  
   gIsMaximized = false;
 
   if (DEBUG_WND_ACTIONS) {
@@ -1593,9 +1596,13 @@ $(document).ready(() => {
   buildClippingsTree();
   initTreeSplitter();
   initSyncItemsIDLookupList();
-  
+
   chrome.history.deleteUrl({ url: window.location.href });
 
+  if (gIsBackupMode) {
+    gCmd.backup();
+  }
+  
   // Fix for Fx57 bug where bundled page loaded using
   // browser.windows.create won't show contents unless resized.
   // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1402110>
@@ -2576,6 +2583,11 @@ function initDialogs()
   gDialogs.backupConfirmMsgBox = new aeDialog("#backup-confirm-msgbox");
   gDialogs.backupConfirmMsgBox.setMessage = aMessage => {
     $("#backup-confirm-msgbox > .msgbox-content").text(aMessage);
+  };
+  gDialogs.backupConfirmMsgBox.onAfterAccept = () => {
+    if (gIsBackupMode) {
+      closeWnd();
+    }
   };
   
   gDialogs.removeAllSrcURLs = new aeDialog("#remove-all-source-urls-dlg");

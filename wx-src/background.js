@@ -1084,12 +1084,16 @@ function createClippingNameFromText(aText)
 }
 
 
-function openClippingsManager()
+function openClippingsManager(aBackupMode)
 {
   let clippingsMgrURL = chrome.runtime.getURL("pages/clippingsMgr.html");
 
   chrome.windows.getCurrent(aBrwsWnd => {
     clippingsMgrURL += "?openerWndID=" + aBrwsWnd.id;
+
+    if (aBackupMode) {
+      clippingsMgrURL += "&backupMode=1";
+    }
     
     function openClippingsMgrHelper()
     {
@@ -1593,9 +1597,8 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
 
 browser.notifications.onClicked.addListener(aNotifID => {
   if (aNotifID == aeConst.NOTIFY_BACKUP_REMIND_ID) {
-    // TO DO: Open Clippings Manager and automatically trigger Tools -> Backup command.
-    
-    openClippingsManager();  // TEMPORARY
+    // Open Clippings Manager in backup mode.
+    openClippingsManager(true);
   }
   else if (aNotifID == aeConst.NOTIFY_BACKUP_REMIND_FIRSTRUN_ID) {
     // TO DO: Open first-time backup dialog box.
