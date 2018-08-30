@@ -947,6 +947,18 @@
     "message": "Check spelling"
   },
 
+  "backupNotifyTitle": {
+    "message": "Backup Your Clippings"
+  },
+
+  "backupNotifyMsg": {
+    "message": "Keep your clippings safe by doing regular backups. Click here to back up your clippings now."
+  },
+
+  "backupNotifyFirstMsg": {
+    "message": "Keep your clippings safe by doing regular backups. Click here to back up your clippings and set up backup reminders."
+  },
+
   "syncFldrName": {
     "message": "Synced Clippings"
   },

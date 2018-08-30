@@ -40,4 +40,17 @@ let aeConst = {
   HTML_EXPORT_SHORTCUTS_FILENAME: "clippings-shortcuts.html",
   CSV_EXPORT_FILENAME: "clippings.csv",
   CLIPPINGS_BACKUP_FILENAME: "clippings-backup.json",
+
+  // Backup reminder frequency
+  BACKUP_REMIND_NEVER: 0,
+  BACKUP_REMIND_DAILY: 1,
+  BACKUP_REMIND_WEEKLY: 2,
+  BACKUP_REMIND_MONTHLY: 3,
+  BACKUP_REMIND_TEST: 4,
+  BACKUP_REMINDER_DELAY_MS: 300000,      // 5 minutes
+  BACKUP_REMINDER_INTERVAL_MS: 86400000, // 24 hours
+
+  // Backup notification IDs
+  NOTIFY_BACKUP_REMIND_FIRSTRUN_ID: "ae-clippings-notify-backup-reminder-firstrun",
+  NOTIFY_BACKUP_REMIND_ID: "ae-clippings-notify-backup-reminder",
 };

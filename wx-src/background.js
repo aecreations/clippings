@@ -16,6 +16,7 @@ let gAutoIncrPlchldrs = null;
 let gClippingMenuItemIDMap = {};
 let gFolderMenuItemIDMap = {};
 let gSyncFldrID = null;
+let gBackupRemIntervalID = null;
 
 let gClippingsListeners = {
   ORIGIN_CLIPPINGS_MGR: 1,
@@ -200,7 +201,14 @@ async function setDefaultPrefs()
     syncClippings: false,
     syncFolderID: null,
     pasteShortcutKeyPrefix: "",
+    lastBackupRemDate: null,
+    backupRemFirstRun: true,
+    backupRemFrequency: aeConst.BACKUP_REMIND_DAILY,
   };
+
+  if (aeConst.DEBUG) {
+    aeClippingsPrefs.backupRemFrequency = aeConst.BACKUP_REMIND_TEST;
+  }
 
   gPrefs = aeClippingsPrefs;
   await browser.storage.local.set(aeClippingsPrefs);
@@ -213,6 +221,9 @@ async function setNewPrefs()
     syncClippings: false,
     syncFolderID: null,
     pasteShortcutKeyPrefix: "",
+    lastBackupRemDate: null,
+    backupRemFirstRun: true,
+    backupRemFrequency: aeConst.BACKUP_REMIND_DAILY,
   };
   
   for (let pref in newPrefs) {
@@ -318,6 +329,15 @@ function init()
   if (gPrefs.pasteShortcutKeyPrefix) {
     setShortcutKeyPrefix(gPrefs.pasteShortcutKeyPrefix);
   }
+
+  if (gPrefs.backupRemFirstRun) {
+    browser.storage.local.set({
+      lastBackupRemDate: new Date().toString(),
+    });
+  }
+
+  // Check in 5 minutes whether to show backup reminder notification.
+  window.setTimeout(showBackupNotification, aeConst.BACKUP_REMINDER_DELAY_MS);
 
   if (gPrefs.showWelcome) {
     openWelcomePage();
@@ -954,6 +974,84 @@ function resetAutoIncrPlaceholder(aPlaceholder)
 }
 
 
+function showBackupNotification()
+{
+  if (gPrefs.backupRemFrequency == aeConst.BACKUP_REMIND_NEVER) {
+    return;
+  }
+
+  let today = new Date();
+  let lastBackupRemDate = new Date(gPrefs.lastBackupRemDate);
+  let diff = new DateDiff(today, lastBackupRemDate);
+  let numDays = 0;
+  let numMins = 0;  // For testing only.
+
+  switch (gPrefs.backupRemFrequency) {
+  case aeConst.BACKUP_REMIND_DAILY:
+    numDays = 1;
+    break;
+
+  case aeConst.BACKUP_REMIND_WEEKLY:
+    numDays = 7;
+    break;
+
+  case aeConst.BACKUP_REMIND_MONTHLY:
+    numDays = 30;
+    break;
+
+  default:
+    if (aeConst.DEBUG) {
+      numMins = 3;
+    }
+    break;
+  }
+
+  if ((aeConst.DEBUG && diff.minutes >= numMins) || (!aeConst.DEBUG && diff.days >= numDays)) {
+    if (gPrefs.backupRemFirstRun) {
+      console.info("Clippings/wx: showBackupNotification(): Showing first-time backup reminder.");
+
+      browser.notifications.create(aeConst.NOTIFY_BACKUP_REMIND_FIRSTRUN_ID, {
+        type: "basic",
+        title: chrome.i18n.getMessage("backupNotifyTitle"),
+        message: chrome.i18n.getMessage("backupNotifyFirstMsg"),
+
+      }).then(aNotifID => {
+        browser.storage.local.set({
+          backupRemFirstRun: false,
+          backupRemFrequency: aeConst.BACKUP_REMIND_NEVER,
+          lastBackupRemDate: new Date().toString(),
+        });
+      });
+    }
+    else {
+      console.info("Clippings/wx: showBackupNotification(): Last backup reminder: " + gPrefs.lastBackupRemDate);
+
+      browser.notifications.create(aeConst.NOTIFY_BACKUP_REMIND_ID, {
+        type: "basic",
+        title: chrome.i18n.getMessage("backupNotifyTitle"),
+        message: chrome.i18n.getMessage("backupNotifyMsg"),
+
+      }).then(aNotifID => {
+        setBackupNotificationInterval();
+        browser.storage.local.set({ lastBackupRemDate: new Date().toString() });
+      });
+    }
+  }
+}   
+
+
+function setBackupNotificationInterval()
+{
+  gBackupRemIntervalID = window.setInterval(showBackupNotification, aeConst.BACKUP_REMINDER_INTERVAL_MS);
+}
+
+
+function clearBackupNotificationInterval()
+{
+  window.clearInterval(gBackupRemIntervalID);
+}
+
+
 function openWelcomePage()
 {
   let url = browser.runtime.getURL("pages/welcome.html");
@@ -1488,6 +1586,24 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
   }
 });
 
+
+//
+// Click event listener for backup reminder notifications
+//
+
+browser.notifications.onClicked.addListener(aNotifID => {
+  if (aNotifID == aeConst.NOTIFY_BACKUP_REMIND_ID) {
+    // TO DO: Open Clippings Manager and automatically trigger Tools -> Backup command.
+    
+    openClippingsManager();  // TEMPORARY
+  }
+  else if (aNotifID == aeConst.NOTIFY_BACKUP_REMIND_FIRSTRUN_ID) {
+    // TO DO: Open first-time backup dialog box.
+    
+    openClippingsManager();  // TEMPORARY
+  }
+});
+  
 
 //
 // Error reporting and debugging output
