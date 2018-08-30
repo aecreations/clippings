@@ -471,9 +471,9 @@ let gSrcURLBar = {
     }
     
     let tree = getClippingsTree();
-    let id = parseInt(tree.activeNode.key);
+    let clippingID = parseInt(tree.activeNode.key);
     
-    gClippingsDB.clippings.update(id, {
+    gClippingsDB.clippings.update(clippingID, {
       sourceURL: updatedURL
     }).then(aNumUpdated => {
       if ($("#clipping-src-url > a").length == 0) {
@@ -488,6 +488,10 @@ let gSrcURLBar = {
         }
       }
       this._dismissSrcURLEditMode();
+
+      if (updatedURL && gSyncItemIDsLookup[clippingID + "C"]) {
+        gClippings.pushSyncFolderUpdates();
+      }
     });
   },
 
@@ -578,8 +582,9 @@ let gShortcutKey = {
 
       let clippingID = parseInt(selectedNode.key);
       gClippingsDB.clippings.update(clippingID, { shortcutKey }).then(aNumUpd => {
-        // TO DO: If descendant of Synced Clippings folder,
-        // add to synced items ID lookup list.
+        if (gSyncItemIDsLookup[clippingID + "C"]) {
+          gClippings.pushSyncFolderUpdates();
+        }
       });
     }).catch (aErr => {
       console.error(aErr);
