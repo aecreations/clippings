@@ -539,7 +539,7 @@ async function pushSyncFolderUpdates()
     syncData: syncData.userClippingsRoot,
   };
 
-  log("Clippings/wx: pushSyncFolderUpdates(): Pushing Synced Clippings folder updates to the Sync Clippings helper app. Message data:");
+  info("Clippings/wx: pushSyncFolderUpdates(): Pushing Synced Clippings folder updates to the Sync Clippings helper app. Message data:");
   log(msg);
 
   let msgResult = await browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
