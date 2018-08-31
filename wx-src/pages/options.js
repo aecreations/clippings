@@ -1,4 +1,3 @@
-/* -*- mode: javascript; tab-width: 8; indent-tabs-mode: nil; js-indent-level: 2 -*- */
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -25,7 +24,9 @@ function init()
     $("#shortcut-key-prefix-modifiers").text("\u21e7\u2318");
   }
   else {
-    $("#shortcut-key-prefix-modifiers").text("ALT + SHIFT +");
+    let keyAlt = chrome.i18n.getMessage("keyAlt");
+    let keyShift = chrome.i18n.getMessage("keyShift");
+    $("#shortcut-key-prefix-modifiers").text(`${keyAlt} + ${keyShift} + `);
   }
 
   let shortcutKeyNoteHTML = DOMPurify.sanitize(chrome.i18n.getMessage("prefsShortcutKeyNote"), { SAFE_FOR_JQUERY: true });
@@ -92,6 +93,19 @@ function init()
 
     $("#check-spelling").attr("checked", aPrefs.checkSpelling).click(aEvent => {
       setPref({ checkSpelling: aEvent.target.checked });
+    });
+
+    $("#backup-reminder-freq").val(aPrefs.backupRemFrequency).change(aEvent => {
+      setPref({
+        backupRemFrequency: Number(aEvent.target.value),
+        backupRemFirstRun: false,
+        lastBackupRemDate: new Date().toString(),
+      });
+
+      gClippings.clearBackupNotificationInterval();
+      if (aEvent.target.value != aeConst.BACKUP_REMIND_NEVER) {
+        gClippings.setBackupNotificationInterval();
+      }
     });
 
     if (aPrefs.syncClippings) {

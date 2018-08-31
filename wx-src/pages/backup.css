@@ -1,0 +1,49 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+body {
+    font-size: 13px;
+}
+
+h3 {
+    font-size: 15px;
+    font-weight: 600;
+    margin: 0;
+}
+
+fieldset {
+    margin-top: 18px;
+    margin-left: 0;
+}
+
+fieldset > legend {
+    font-size: 15px;
+}
+
+select.browser-style {
+    font-size: unset;
+}
+
+.centered-row {
+    width: 100%;
+    text-align: center;
+}
+
+.hint, .note {
+    font-size: 11.5px;
+}
+
+#backup-now {
+    min-width: 132px;
+    height: 48px;
+    padding-left: 16px;
+    padding-right: 16px;
+    font-size: 15px !important;
+    font-weight: 400;
+}
+
+#dlg-buttons {
+    right: 16px;
+}

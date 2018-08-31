@@ -52,8 +52,8 @@
     "message": "No"
   },
 
-  "btnFinish": {
-    "message": "Finish"
+  "btnDone": {
+    "message": "Done"
   },
 
   "btnBrowse": {
@@ -951,6 +951,30 @@
     "message": "Check spelling"
   },
 
+  "prefsHdgBackupRem": {
+    "message": "Backup Reminder"
+  },
+
+  "backupRemFreq": {
+    "message": "Show backup reminder notification:"
+  },
+
+  "backupRemFreqNever": {
+    "message": "Never"
+  },
+
+  "backupRemFreqDaily": {
+    "message": "Daily"
+  },
+
+  "backupRemFreqWeekly": {
+    "message": "Weekly"
+  },
+
+  "backupRemFreqMonthly": {
+    "message": "Monthly"
+  },
+  
   "backupNotifyTitle": {
     "message": "Backup Your Clippings"
   },
@@ -961,6 +985,26 @@
 
   "backupNotifyFirstMsg": {
     "message": "Keep your clippings safe by doing regular backups. Click here to back up your clippings and set up backup reminders."
+  },
+
+  "backupFirstDesc": {
+    "message": "Keep your clippings safe by doing regular backups. Take a moment to backup your clippings by clicking Backup Now."
+  },
+
+  "backupNow": {
+    "message": "Backup Now"
+  },
+
+  "backupHint": {
+    "message": "You can also backup your clippings anytime from Clippings Manager. Just open Clippings Manager, and then select Tools \u2192 Backup."
+  },
+
+  "backupPrefsHdg": {
+    "message": "Set Backup Reminder"
+  },
+  
+  "backupPrefsHint": {
+    "message": "This setting can also be changed in Clippings preferences."
   },
 
   "syncFldrName": {

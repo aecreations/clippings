@@ -35,11 +35,11 @@
 	    <label for="html-auto-line-break" data-i18n="cbAutoLineBreak"></label>
 	    <p class="note" data-i18n="htmlPasteDesc"></p>
           </div>
-	  <div class="row browser-style">
+	  <div class="row browser-style" style="margin-bottom:0">
 	    <input type="checkbox" id="enable-shortcut-key"/>
 	    <label id="enable-shortcut-key-label" for="enable-shortcut-key" data-i18n="prefsShortcutMode"></label>
 	    <label id="shortcut-key-prefix-modifiers"></label>
-	    <select id="shortcut-key-selector">
+	    <select id="shortcut-key-selector" class="browser-style">
 	      <option value="A">A</option>
 	      <option value="B">B</option>
 	      <option value="C">C</option>
@@ -81,7 +81,7 @@
 	    </select>
           </div>
 	  <div class="indent">
-	    <p id="shortcut-key-note" class="note"></p>
+	    <p id="shortcut-key-note" class="note" style="margin-top:0"></p>
 	  </div>
 
 	  <div class="row">
@@ -102,6 +102,20 @@
 	  <input type="checkbox" id="check-spelling"/>
 	  <label for="check-spelling" data-i18n="cbCheckSpelling"></label>
 	</div>
+      </fieldset>
+
+      <fieldset id="backup-reminder">
+        <legend data-i18n="prefsHdgBackupRem"></legend>
+        <div class="row browser-style">
+          <label for="backup-reminder-freq" data-i18n="backupRemFreq"></label>
+          <select id="backup-reminder-freq" class="browser-style">
+            <option value="0" data-i18n="backupRemFreqNever"></option>
+            <option value="1" data-i18n="backupRemFreqDaily"></option>
+            <option value="2" data-i18n="backupRemFreqWeekly"></option>
+            <option value="3" data-i18n="backupRemFreqMonthly"></option>
+	    <option value="4">DEBUG</option>
+          </select>
+        </div>
       </fieldset>
 
       <fieldset id="sync-options">

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Clippings</title>
+
+    <link rel="stylesheet" href="chrome://browser/content/extension.css"/>
+    <link rel="stylesheet" href="../style/dialog.css"/>
+    <link rel="stylesheet" href="backup.css"/>
+  </head>
+
+  <body>
+    <div id="content" class="browser-style">
+      <h3 data-i18n="backupNotifyTitle"></h3>
+      
+      <p class="desc" data-i18n="backupFirstDesc"></p>
+
+      <div class="centered-row">
+        <button id="backup-now" class="browser-style default" data-i18n="backupNow"></button>
+      </div>
+
+      <p class="hint" data-i18n="backupHint" data-i18n="backupHint"></p>
+
+      <fieldset>
+        <legend data-i18n="backupPrefsHdg"></legend>
+
+        <div class="row" style="margin-top:8px">
+	  <label for="backup-reminder-freq" data-i18n="backupRemFreq"></label>
+	  <select id="backup-reminder-freq" class="browser-style">
+	    <option value="0" data-i18n="backupRemFreqNever"></option>
+	    <option value="1" data-i18n="backupRemFreqDaily"></option>
+	    <option value="2" data-i18n="backupRemFreqWeekly" selected></option>
+	    <option value="3" data-i18n="backupRemFreqMonthly"></option>
+	  </select>
+	</div>
+
+	<p class="hint" data-i18n="backupPrefsHint"></p>
+
+      </fieldset>
+
+      <div id="dlg-buttons">
+        <button id="btn-close" class="browser-style" data-i18n="btnDone"></button>
+      </div>
+    </div>
+
+    <script src="../lib/jquery.js"></script>
+    <script src="../lib/i18n.js"></script>
+    <script src="../modules/aeConst.js"></script>
+    <script src="../modules/aeDialog.js"></script>
+    <script src="../modules/aeImportExport.js"></script>
+    <script src="backup.js"></script>
+      
+  </body>
+</html>
