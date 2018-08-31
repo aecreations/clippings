@@ -121,7 +121,7 @@ ul.fancytree-container {
 
 #clipping-options-groupbox > legend {
     padding-left: 8px;
-    margin-left: 18px;
+    margin-left: 16px;
 }
 
 #clipping-options {
@@ -134,7 +134,7 @@ ul.fancytree-container {
 #btn-expand-options {
     position: relative;
     top: -24px;
-    left: -8px;
+    left: -10px;
     float: left;
 
     min-width: 26px;

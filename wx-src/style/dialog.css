@@ -29,7 +29,7 @@ fieldset {
 fieldset > legend {
     padding-left: 0px;
     padding-right: 8px;
-    margin-left: -8px;
+    margin-left: -10px;
 }
 
 .hbox, .vbox {
