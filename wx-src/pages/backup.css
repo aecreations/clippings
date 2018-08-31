@@ -46,4 +46,5 @@ select.browser-style {
 
 #dlg-buttons {
     right: 16px;
+    z-index: 1;
 }
