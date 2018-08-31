@@ -203,7 +203,7 @@ async function setDefaultPrefs()
     pasteShortcutKeyPrefix: "",
     lastBackupRemDate: null,
     backupRemFirstRun: true,
-    backupRemFrequency: aeConst.BACKUP_REMIND_DAILY,
+    backupRemFrequency: aeConst.BACKUP_REMIND_WEEKLY,
   };
 
   if (aeConst.DEBUG) {
@@ -223,7 +223,7 @@ async function setNewPrefs()
     pasteShortcutKeyPrefix: "",
     lastBackupRemDate: null,
     backupRemFirstRun: true,
-    backupRemFrequency: aeConst.BACKUP_REMIND_DAILY,
+    backupRemFrequency: aeConst.BACKUP_REMIND_WEEKLY,
   };
   
   for (let pref in newPrefs) {
@@ -1008,7 +1008,7 @@ function showBackupNotification()
 
   if ((aeConst.DEBUG && diff.minutes >= numMins) || (!aeConst.DEBUG && diff.days >= numDays)) {
     if (gPrefs.backupRemFirstRun) {
-      console.info("Clippings/wx: showBackupNotification(): Showing first-time backup reminder.");
+      info("Clippings/wx: showBackupNotification(): Showing first-time backup reminder.");
 
       browser.notifications.create(aeConst.NOTIFY_BACKUP_REMIND_FIRSTRUN_ID, {
         type: "basic",
@@ -1018,13 +1018,13 @@ function showBackupNotification()
       }).then(aNotifID => {
         browser.storage.local.set({
           backupRemFirstRun: false,
-          backupRemFrequency: aeConst.BACKUP_REMIND_NEVER,
+          backupRemFrequency: aeConst.BACKUP_REMIND_WEEKLY,
           lastBackupRemDate: new Date().toString(),
         });
       });
     }
     else {
-      console.info("Clippings/wx: showBackupNotification(): Last backup reminder: " + gPrefs.lastBackupRemDate);
+      info("Clippings/wx: showBackupNotification(): Last backup reminder: " + gPrefs.lastBackupRemDate);
 
       browser.notifications.create(aeConst.NOTIFY_BACKUP_REMIND_ID, {
         type: "basic",
@@ -1032,23 +1032,31 @@ function showBackupNotification()
         message: chrome.i18n.getMessage("backupNotifyMsg"),
 
       }).then(aNotifID => {
+        clearBackupNotificationInterval();
         setBackupNotificationInterval();
         browser.storage.local.set({ lastBackupRemDate: new Date().toString() });
       });
     }
+  }
+  else {
+    clearBackupNotificationInterval();
+    setBackupNotificationInterval();
   }
 }   
 
 
 function setBackupNotificationInterval()
 {
+  log("Clippings/wx: Setting backup notification interval (every 24 hours).");
   gBackupRemIntervalID = window.setInterval(showBackupNotification, aeConst.BACKUP_REMINDER_INTERVAL_MS);
 }
 
 
 function clearBackupNotificationInterval()
 {
-  window.clearInterval(gBackupRemIntervalID);
+  if (gBackupRemIntervalID) {
+    window.clearInterval(gBackupRemIntervalID);
+  }
 }
 
 
@@ -1168,6 +1176,13 @@ function openPlaceholderPromptDlg()
 
   let url = browser.runtime.getURL("pages/placeholderPrompt.html");
   openDlgWnd(url, "placeholderPrmt", { type: "detached_panel", width: 500, height: 180 });
+}
+
+
+function openBackupDlg()
+{
+  let url = browser.runtime.getURL("pages/backup.html");
+  openDlgWnd(url, "backupFirstRun", { type: "detached_panel", width: 500, height: 386 });
 }
 
 
@@ -1601,9 +1616,7 @@ browser.notifications.onClicked.addListener(aNotifID => {
     openClippingsManager(true);
   }
   else if (aNotifID == aeConst.NOTIFY_BACKUP_REMIND_FIRSTRUN_ID) {
-    // TO DO: Open first-time backup dialog box.
-    
-    openClippingsManager();  // TEMPORARY
+    openBackupDlg();
   }
 });
   
