@@ -4,7 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
-const DEBUG_TREE = true;
+const DEBUG_TREE = false;
 const DEBUG_WND_ACTIONS = false;
 const ENABLE_PASTE_CLIPPING = false;
 const NEW_CLIPPING_FROM_CLIPBOARD = "New Clipping From Clipboard";
@@ -956,11 +956,6 @@ let gCmd = {
           newParentFldrID: aNewParentFldrID
         });
       }
-
-      console.log("Clippings/wx::clippingsMgr.js: Synced items lookup table:");
-      console.log(gSyncedItemsIDs);
-      console.log(`Folder ID of folder being moved: ${aFolderID}`);
-      console.log(`Old parent folder ID: ${oldParentFldrID}; new parent folder ID: ${aNewParentFolderID}`)
 
       if (gSyncedItemsIDs[aNewParentFldrID + "F"] || gSyncedItemsIDs[oldParentFldrID + "F"]) {
         gClippings.pushSyncFolderUpdates().then(() => {
