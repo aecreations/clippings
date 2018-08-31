@@ -4,7 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
-const DEBUG_TREE = false;
+const DEBUG_TREE = true;
 const DEBUG_WND_ACTIONS = false;
 const ENABLE_PASTE_CLIPPING = false;
 const NEW_CLIPPING_FROM_CLIPBOARD = "New Clipping From Clipboard";
@@ -892,6 +892,12 @@ let gCmd = {
           if (gSyncedItemsIDs[aClippingID + "C"] && !gSyncedItemsIDs[aNewParentFldrID + "F"]) {
             delete gSyncedItemsIDs[aClippingID + "C"];
           }
+
+          // Add clipping to synced items lookup array if moved to a synced
+          // folder.
+          if (gSyncedItemsIDs[aNewParentFldrID + "F"]) {
+            gSyncedItemsIDs[aClippingID + "C"] = 1;
+          }
         });
       }
     }).catch(aErr => { console.error(aErr) });
@@ -951,12 +957,21 @@ let gCmd = {
         });
       }
 
+      console.log("Clippings/wx::clippingsMgr.js: Synced items lookup table:");
+      console.log(gSyncedItemsIDs);
+      console.log(`Folder ID of folder being moved: ${aFolderID}`);
+      console.log(`Old parent folder ID: ${oldParentFldrID}; new parent folder ID: ${aNewParentFolderID}`)
+
       if (gSyncedItemsIDs[aNewParentFldrID + "F"] || gSyncedItemsIDs[oldParentFldrID + "F"]) {
         gClippings.pushSyncFolderUpdates().then(() => {
           if (gSyncedItemsIDs[aFolderID + "F"] && !gSyncedItemsIDs[aNewParentFldrID + "F"]) {
             delete gSyncedItemsIDs[aFolderID + "F"];
           }
         });
+
+        if (gSyncedItemsIDs[aNewParentFldrID + "F"]) {
+          gSyncedItemsIDs[aFolderID + "F"] = 1;
+        }
       }
     }).catch(aErr => { console.error(aErr) });
   },
