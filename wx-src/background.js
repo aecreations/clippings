@@ -1056,6 +1056,7 @@ function clearBackupNotificationInterval()
 {
   if (gBackupRemIntervalID) {
     window.clearInterval(gBackupRemIntervalID);
+    gBackupRemIntervalID = null;
   }
 }
 
