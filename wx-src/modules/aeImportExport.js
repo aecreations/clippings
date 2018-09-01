@@ -188,8 +188,8 @@ aeImportExport._exportToJSONHelper = function (aFolderID, aIncludeSrcURLs, aExcl
   return new Promise((aFnResolve, aFnReject) => {
     this._db.transaction("r", this._db.clippings, this._db.folders, () => {
       this._db.folders.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
-        if (aExcludeFolderID !== undefined && aFolderID == aExcludeFolderID) {
-          return null;
+        if (aExcludeFolderID !== undefined && aItem.id == aExcludeFolderID) {
+          return;
         }
         
         let folder = {
@@ -197,7 +197,7 @@ aeImportExport._exportToJSONHelper = function (aFolderID, aIncludeSrcURLs, aExcl
           children: []
         };
 
-        this._exportToJSONHelper(aItem.id, aIncludeSrcURLs).then(aChildItems => {
+        this._exportToJSONHelper(aItem.id, aIncludeSrcURLs, aExcludeFolderID).then(aChildItems => {
           folder.children = aChildItems;
           rv.push(folder);
         });
