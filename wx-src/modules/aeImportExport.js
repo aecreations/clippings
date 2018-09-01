@@ -1,4 +1,3 @@
-/* -*- mode: javascript; tab-width: 8; indent-tabs-mode: nil; js-indent-level: 2 -*- */
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -153,7 +152,7 @@ aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems
 };
 
 
-aeImportExport.exportToJSON = function (aIncludeSrcURLs, aDontStringify, aFolderID)
+aeImportExport.exportToJSON = function (aIncludeSrcURLs, aDontStringify, aFolderID, aExcludeFolderID)
 {
   let expData = {
     version: this.CLIPPINGS_JSON_VER,
@@ -166,7 +165,7 @@ aeImportExport.exportToJSON = function (aIncludeSrcURLs, aDontStringify, aFolder
   }
 
   return new Promise((aFnResolve, aFnReject) => {
-    this._exportToJSONHelper(aFolderID, aIncludeSrcURLs).then(aExpItems => {
+    this._exportToJSONHelper(aFolderID, aIncludeSrcURLs, aExcludeFolderID).then(aExpItems => {
       expData.userClippingsRoot = aExpItems;
 
       if (aDontStringify) {
@@ -182,13 +181,17 @@ aeImportExport.exportToJSON = function (aIncludeSrcURLs, aDontStringify, aFolder
 };
 
 
-aeImportExport._exportToJSONHelper = function (aFolderID, aIncludeSrcURLs)
+aeImportExport._exportToJSONHelper = function (aFolderID, aIncludeSrcURLs, aExcludeFolderID)
 {
   let rv = [];
   
   return new Promise((aFnResolve, aFnReject) => {
     this._db.transaction("r", this._db.clippings, this._db.folders, () => {
       this._db.folders.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
+        if (aExcludeFolderID !== undefined && aFolderID == aExcludeFolderID) {
+          return null;
+        }
+        
         let folder = {
           name: aItem.name,
           children: []
@@ -271,7 +274,7 @@ aeImportExport.exportToHTML = async function ()
 };
 
 
-aeImportExport.exportToCSV = async function ()
+aeImportExport.exportToCSV = async function (aExcludeFolderID)
 {
   function exportToCSVHelper(aFldrItems, aCSVData)
   {
@@ -294,7 +297,7 @@ aeImportExport.exportToCSV = async function ()
 
   let expData;
   try {
-    expData = await this.exportToJSON(false, true);
+    expData = await this.exportToJSON(false, true, this.ROOT_FOLDER_ID, aExcludeFolderID);
   }
   catch (e) {
     console.error("aeImportExport.exportToCSV(): " + e);

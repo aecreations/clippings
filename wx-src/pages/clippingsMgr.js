@@ -1376,8 +1376,14 @@ let gCmd = {
 
     setStatusBarMsg(chrome.i18n.getMessage("statusSavingBkup"));
 
+    let excludeSyncFldrID = null;
+    let prefs = gClippings.getPrefs();
+    if (prefs.syncClippings) {
+      excludeSyncFldrID = prefs.syncFolderID;
+    }
+
     let blobData;
-    aeImportExport.exportToJSON(INCLUDE_SRC_URLS).then(aJSONData => {
+    aeImportExport.exportToJSON(INCLUDE_SRC_URLS, false, aeConst.ROOT_FOLDER_ID, excludeSyncFldrID).then(aJSONData => {
       blobData = new Blob([aJSONData], { type: "application/json;charset=utf-8"});
 
       gSuppressAutoMinzWnd = true;
@@ -2537,6 +2543,12 @@ function initDialogs()
         }
       });
     }
+
+    let excludeSyncFldrID = null;
+    let prefs = gClippings.getPrefs();
+    if (prefs.syncClippings) {
+      excludeSyncFldrID = prefs.syncFolderID;
+    }
     
     let selectedFmtIdx = $("#export-format-list")[0].selectedIndex;
     setStatusBarMsg(chrome.i18n.getMessage("statusExportStart"));
@@ -2544,7 +2556,7 @@ function initDialogs()
     if (selectedFmtIdx == gDialogs.exportToFile.FMT_CLIPPINGS_WX) {
       let inclSrcURLs = $("#include-src-urls").prop("checked");
 
-      aeImportExport.exportToJSON(inclSrcURLs).then(aJSONData => {
+      aeImportExport.exportToJSON(inclSrcURLs, false, aeConst.ROOT_FOLDER_ID, excludeSyncFldrID).then(aJSONData => {
         let blobData = new Blob([aJSONData], { type: "application/json;charset=utf-8"});
 
         saveToFile(blobData, aeConst.CLIPPINGS_EXPORT_FILENAME);
@@ -2565,7 +2577,7 @@ function initDialogs()
       });
     }
     else if (selectedFmtIdx == gDialogs.exportToFile.FMT_CSV) {
-      aeImportExport.exportToCSV().then(aCSVData => {
+      aeImportExport.exportToCSV(excludeSyncFldrID).then(aCSVData => {
         let blobData = new Blob([aCSVData], { type: "text/csv;charset=utf-8" });
         saveToFile(blobData, aeConst.CSV_EXPORT_FILENAME);
 
