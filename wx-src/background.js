@@ -227,7 +227,7 @@ async function setNewPrefs()
   };
   
   for (let pref in newPrefs) {
-    gPrefs.pref = newPrefs.pref;
+    gPrefs[pref] = newPrefs[pref];
   }
 
   await browser.storage.local.set(newPrefs);
