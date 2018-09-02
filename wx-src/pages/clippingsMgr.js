@@ -3426,6 +3426,15 @@ function updateDisplay(aEvent, aData)
       shortcutKeyMenu.selectedIndex = 0;
 
       $("#item-properties").addClass("folder-only");
+
+      let prefs = gClippings.getPrefs();
+      if (prefs.syncClippings && selectedItemID == gClippings.getSyncFolderID()) {
+        // Prevent renaming of the Synced Clippings folder.
+        $("#clipping-name").attr("disabled", "true");
+      }
+      else {
+        $("#clipping-name").removeAttr("disabled");
+      }
     });
   }
   else {
