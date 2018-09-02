@@ -951,10 +951,6 @@
     "message": "Check spelling"
   },
 
-  "prefsHdgBackupRem": {
-    "message": "Backup Reminder"
-  },
-
   "backupRemFreq": {
     "message": "Show backup reminder notification:"
   },
