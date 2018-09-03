@@ -53,4 +53,8 @@ let aeConst = {
   // Backup notification IDs
   NOTIFY_BACKUP_REMIND_FIRSTRUN_ID: "ae-clippings-notify-backup-reminder-firstrun",
   NOTIFY_BACKUP_REMIND_ID: "ae-clippings-notify-backup-reminder",
+
+  // Errors returned by the native messaging app
+  SYNC_ERROR_UNKNOWN: "Error: undefined",
+  SYNC_ERROR_CONXN_FAILED: "Error: Attempt to postMessage on disconnected port",
 };
