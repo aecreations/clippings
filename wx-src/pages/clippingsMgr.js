@@ -3439,6 +3439,7 @@ function updateDisplay(aEvent, aData)
   }
   else {
     $("#item-properties").removeClass("folder-only");
+    $("#clipping-name").removeAttr("disabled");
     
     gClippingsDB.clippings.get(selectedItemID).then(aResult => {
       $("#clipping-name").val(aResult.name);
