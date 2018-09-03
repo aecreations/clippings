@@ -1046,6 +1046,14 @@
   "syncPushFailed": {
     "message": "Unable to push changes to the Synced Clippings folder, because the connection to the Sync Clippings helper app has failed. To fix this, reinstall the Sync Clippings helper app."
   },
+
+  "syncStartupFailedHdg": {
+    "message": "Sync Clippings Error"
+  },
+  
+  "syncStartupFailed": {
+    "message": "Unable to retrieve your synced clippings, because the connection to the Sync Clippings helper app failed. To fix this, reinstall the Sync Clippings helper app."
+  },
   
   "keyAlt": {
     "message": "ALT"

@@ -540,9 +540,7 @@ function refreshSyncedClippings()
     
   }).catch(aErr => {
     console.error("Clippings/wx: refreshSyncedClippings(): " + aErr);
-    // TO DO: Show sync error in the "Synced Clippings" submenu in the
-    // Clippings context menu.
-    // Also, detect if error was because the sync folder location wasn't set.
+    showSyncErrorNotification();
   });
 }
 
@@ -1383,6 +1381,17 @@ function pasteProcessedClipping(aClippingContent, aActiveTabID)
 function onUnload(aEvent)
 {
   gClippingsListeners.remove(gClippingsListener);
+}
+
+
+function showSyncErrorNotification()
+{
+  browser.notifications.create(aeConst.NOTIFY_SYNC_ERROR_ID, {
+    type: "basic",
+    title: chrome.i18n.getMessage("syncStartupFailedHdg"),
+    message: chrome.i18n.getMessage("syncStartupFailed"),
+    icon: "img/error.svg",
+  });
 }
 
 

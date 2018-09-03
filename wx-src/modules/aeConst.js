@@ -50,9 +50,10 @@ let aeConst = {
   BACKUP_REMINDER_DELAY_MS: 300000,      // 5 minutes
   BACKUP_REMINDER_INTERVAL_MS: 86400000, // 24 hours
 
-  // Backup notification IDs
+  // Notification IDs
   NOTIFY_BACKUP_REMIND_FIRSTRUN_ID: "ae-clippings-notify-backup-reminder-firstrun",
   NOTIFY_BACKUP_REMIND_ID: "ae-clippings-notify-backup-reminder",
+  NOTIFY_SYNC_ERROR_ID: "ae-clippings-sync-error",
 
   // Errors returned by the native messaging app
   SYNC_ERROR_UNKNOWN: "Error: undefined",
