@@ -1052,7 +1052,7 @@
   },
   
   "syncStartupFailed": {
-    "message": "Unable to retrieve your synced clippings, because the connection to the Sync Clippings helper app failed. To fix this, reinstall the Sync Clippings helper app."
+    "message": "Unable to update your synced clippings, because the connection to the Sync Clippings helper app has failed. To fix this, reinstall the Sync Clippings helper app."
   },
   
   "keyAlt": {
