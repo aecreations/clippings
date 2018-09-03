@@ -1392,7 +1392,7 @@ function showSyncErrorNotification()
     type: "basic",
     title: chrome.i18n.getMessage("syncStartupFailedHdg"),
     message: chrome.i18n.getMessage("syncStartupFailed"),
-    icon: "img/error.svg",
+    iconUrl: "img/error.svg",
   });
 }
 
