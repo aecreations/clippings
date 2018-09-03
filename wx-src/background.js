@@ -540,7 +540,9 @@ function refreshSyncedClippings()
     
   }).catch(aErr => {
     console.error("Clippings/wx: refreshSyncedClippings(): " + aErr);
-    showSyncErrorNotification();
+    if (aErr == aeConst.SYNC_ERROR_CONXN_FAILED) {
+      showSyncErrorNotification();
+    }
   });
 }
 
