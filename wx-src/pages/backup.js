@@ -15,6 +15,11 @@ $(() => {
     throw new Error("Clippings/wx::backup.js: Failed to retrieve parent browser window!");
   }
 
+  // Reset backup notification interval timer so that it fires 24 hours after
+  // displaying this first-time backup dialog.
+  gClippings.clearBackupNotificationInterval();
+  gClippings.setBackupNotificationInterval();
+
   $("#backup-now").click(aEvent => {
     gClippings.openClippingsManager(true);
   });
