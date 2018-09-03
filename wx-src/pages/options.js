@@ -170,13 +170,13 @@ function initDialogs()
       console.error("Clippings/wx::options.js: Error returned from syncClippings native app: " + aErr);
 
       $(deck[0]).hide();
-      if (aErr == "Error: Attempt to postMessage on disconnected port") {
+      if (aErr == aeConst.SYNC_ERROR_CONXN_FAILED) {
         // This would occur if Sync Clippings helper app won't start.
         $(deck[1]).show();
       }
-      else if (aErr == "Error: undefined") {
+      else if (aErr == aeConst.SYNC_ERROR_UNKNOWN) {
         $(deck[2]).show();
-        $("#sync-err-detail").text("An unknown error was returned. Make sure that the Sync Clippings native app is running using Python 3.");
+        $("#sync-err-detail").text("Sorry, an error has occurred.");
       }
       else {
         $(deck[2]).show();
