@@ -1,8 +1,6 @@
-/* -*- mode: javascript; tab-width: 8; indent-tabs-mode: nil; js-indent-level: 2 -*- */
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 
 const DEBUG_TREE = false;
 const DEBUG_WND_ACTIONS = false;
@@ -22,6 +20,7 @@ let gSuppressAutoMinzWnd;
 let gSyncFolderID;
 let gSyncedItemsIDs = {};
 let gIsBackupMode = false;
+let gErrorPushSyncItems = false;
 
 
 // DOM utility
@@ -491,7 +490,7 @@ let gSrcURLBar = {
       this._dismissSrcURLEditMode();
 
       if (updatedURL && gSyncedItemsIDs[clippingID + "C"]) {
-        gClippings.pushSyncFolderUpdates();
+        gClippings.pushSyncFolderUpdates().catch(handlePushSyncItemsError);
       }
     });
   },
@@ -584,7 +583,7 @@ let gShortcutKey = {
       let clippingID = parseInt(selectedNode.key);
       gClippingsDB.clippings.update(clippingID, { shortcutKey }).then(aNumUpd => {
         if (gSyncedItemsIDs[clippingID + "C"]) {
-          gClippings.pushSyncFolderUpdates();
+          gClippings.pushSyncFolderUpdates().catch(handlePushSyncItemsError);
         }
       });
     }).catch (aErr => {
@@ -731,7 +730,7 @@ let gCmd = {
 
       if (gSyncedItemsIDs[parentFolderID + "F"]) {
         gSyncedItemsIDs[aNewClippingID + "C"] = 1;
-        gClippings.pushSyncFolderUpdates();
+        gClippings.pushSyncFolderUpdates().catch(handlePushSyncItemsError);
       }
     });
   },
@@ -775,7 +774,7 @@ let gCmd = {
 
       if (gSyncedItemsIDs[parentFolderID + "F"]) {
         gSyncedItemsIDs[aNewFolderID + "F"] = 1;
-        gClippings.pushSyncFolderUpdates();
+        gClippings.pushSyncFolderUpdates().catch(handlePushSyncItemsError);
       }
     });
   },
@@ -835,7 +834,7 @@ let gCmd = {
         if (gSyncedItemsIDs[parentFolderID + "F"]) {
           gClippings.pushSyncFolderUpdates().then(() => {
             delete gSyncedItemsIDs[id + "F"];
-          });
+          }).catch(handlePushSyncItemsError);
         }
       });
     }
@@ -856,7 +855,7 @@ let gCmd = {
         if (gSyncedItemsIDs[parentFolderID + "F"]) {
           gClippings.pushSyncFolderUpdates().then(() => {
             delete gSyncedItemsIDs[id + "C"];
-          });
+          }).catch(handlePushSyncItemsError);
         }
       });
     }
@@ -898,7 +897,7 @@ let gCmd = {
           if (gSyncedItemsIDs[aNewParentFldrID + "F"]) {
             gSyncedItemsIDs[aClippingID + "C"] = 1;
           }
-        });
+        }).catch(handlePushSyncItemsError);
       }
     }).catch(aErr => { console.error(aErr) });
   },
@@ -928,7 +927,7 @@ let gCmd = {
       if (gSyncedItemsIDs[aDestFldrID + "F"]) {
         gClippings.pushSyncFolderUpdates().then(() => {
           gSyncedItemsIDs[aClippingID + "C"] = 1;
-        });
+        }).catch(handlePushSyncItemsError);
       }
     }).catch(aErr => {
       console.error(aErr);
@@ -962,7 +961,7 @@ let gCmd = {
           if (gSyncedItemsIDs[aFolderID + "F"] && !gSyncedItemsIDs[aNewParentFldrID + "F"]) {
             delete gSyncedItemsIDs[aFolderID + "F"];
           }
-        });
+        }).catch(handlePushSyncItemsError);
 
         if (gSyncedItemsIDs[aNewParentFldrID + "F"]) {
           gSyncedItemsIDs[aFolderID + "F"] = 1;
@@ -992,7 +991,7 @@ let gCmd = {
       if (gSyncedItemsIDs[aDestFldrID + "F"]) {
         gClippings.pushSyncFolderUpdates().then(() => {
           gSyncedItemsIDs[aFolderID + "F"] = 1;
-        });
+        }).catch(handlePushSyncItemsError);
       }
     }).catch(aErr => {
       console.error("Clippings/wx::clippingsMgr.js: gCmd.copyFolderIntrl(): " + aErr);
@@ -1027,6 +1026,8 @@ let gCmd = {
         if (gSyncedItemsIDs[aFolderID + "F"]) {
           gClippings.pushSyncFolderUpdates().then(() => {
             aFnResolve();
+          }).catch(aErr => {
+            handlePushSyncItemsError(aErr);
           });
         }
         else {
@@ -1066,6 +1067,8 @@ let gCmd = {
         if (gSyncedItemsIDs[aClippingID + "C"]) {
           gClippings.pushSyncFolderUpdates().then(() => {
             aFnResolve();
+          }).catch(aErr => {
+            handlePushSyncItemsError(aErr);
           });
         }
         else {
@@ -1105,6 +1108,8 @@ let gCmd = {
         if (gSyncedItemsIDs[aClippingID + "C"]) {
           gClippings.pushSyncFolderUpdates().then(() => {
             aFnResolve();
+          }).catch(aErr => {
+            handlePushSyncItemsError(aErr);
           });
         }
         else {
@@ -1151,9 +1156,10 @@ let gCmd = {
       }
 
       if (gSyncedItemsIDs[aClippingID + "C"]) {
-        gClippings.pushSyncFolderUpdates();
+        return gClippings.pushSyncFolderUpdates();
       }
     }).catch(aErr => {
+      handlePushSyncItemsError(aErr);
       console.error("Clippings/wx::clippingsMgr.js: gCmd.setLabel(): " + aErr);
     });
   },
@@ -1446,7 +1452,7 @@ let gCmd = {
     gClippings.pushSyncFolderUpdates().then(() => {
       // TO DO: Put this in a popup.
       window.alert(chrome.i18n.getMessage("syncPushAck"));
-    });
+    }).catch(handlePushSyncItemsError);
   },
   
   removeAllSrcURLs: function ()
@@ -3577,6 +3583,16 @@ function getErrStr(aErr)
   }
 
   return rv;
+}
+
+
+function handlePushSyncItemsError(aError)
+{
+  if (aError == aeConst.SYNC_ERROR_CONXN_FAILED && !gErrorPushSyncItems) {
+    // TO DO: Put this in a popup.
+    window.alert(chrome.i18n.getMessage("syncPushFailed"));
+    gErrorPushSyncItems = true;
+  }
 }
 
 

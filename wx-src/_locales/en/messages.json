@@ -1043,6 +1043,10 @@
     "message": "The Synced Clippings folder cannot be moved."
   },
 
+  "syncPushFailed": {
+    "message": "Unable to push changes to the Synced Clippings folder, because the connection to the Sync Clippings helper app has failed. To fix this, reinstall the Sync Clippings helper app."
+  },
+  
   "keyAlt": {
     "message": "ALT"
   },

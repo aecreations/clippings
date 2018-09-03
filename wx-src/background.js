@@ -562,7 +562,14 @@ async function pushSyncFolderUpdates()
   info("Clippings/wx: pushSyncFolderUpdates(): Pushing Synced Clippings folder updates to the Sync Clippings helper app. Message data:");
   log(msg);
 
-  let msgResult = await browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
+  let msgResult;
+  try {
+    msgResult = await browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
+  }
+  catch (e) {
+    console.error("Clippings/wx: pushSyncFolderUpdates(): " + e);
+    throw e;
+  }
 
   log("Clippings/wx: pushSyncFolderUpdates(): Response from native app:");
   log(msgResult);

@@ -500,7 +500,17 @@ function accept(aEvent)
       console.error("Clippings/wx::new.js: accept(): " + aErr);     
       errorMsgBox.onInit = () => {
         let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
-        errMsgElt.text(`Error creating clipping: ${aErr}`);
+        let errText = `Error creating clipping: ${aErr}`;
+
+        if (aErr == aeConst.SYNC_ERROR_CONXN_FAILED) {
+          errText = chrome.i18n.getMessage("syncPushFailed");
+          errorMsgBox.onAfterAccept = () => {
+            // Despite the native app connection error, the new clipping was
+            // successfully created, so just close the main dialog.
+            closeDlg();
+          };
+        }
+        errMsgElt.text(errText);
       };
       errorMsgBox.showModal();
     });
