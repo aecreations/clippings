@@ -682,9 +682,6 @@
   "htmlPasteDesc": {
     "message": "Einen als HTML formatierten Textbaustein immer als reinen Text einfügen, wenn er in eine reine Textbox eingefügt wird oder der Textbaustein einschränkende Tags wie z. B. <script>, <applet>, <object>, <iframe> usw. enthält."
   },
-  "prefsShortcutMode": {
-    "message": "Aktivieren sie den Tastaturkürzelmodus mit $1"
-  },
   "prefsDefaultNumPlchldrStart": {
     "message": "Standardstartwert für die automatische Erhöhung von Platzhaltern:"
   },

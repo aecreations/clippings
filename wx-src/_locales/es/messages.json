@@ -682,9 +682,6 @@
   "htmlPasteDesc": {
     "message": "Un recorte con formato HTML siempre se pegará como texto sin formato si se pega en un cuadro de texto simple o si el recorte contiene etiquetas restringidos tales como <script>, <applet>, <object>, <iframe>, etcetera."
   },
-  "prefsShortcutMode": {
-    "message": "Activar el modo de acceso directo con $1"
-  },
   "prefsDefaultNumPlchldrStart": {
     "message": "Valor inicial para marcadores autoincrementales:"
   },
