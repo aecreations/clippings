@@ -1061,6 +1061,7 @@ function showBackupNotification()
         type: "basic",
         title: chrome.i18n.getMessage("backupNotifyTitle"),
         message: chrome.i18n.getMessage("backupNotifyFirstMsg"),
+        iconUrl: "img/icon.svg",
 
       }).then(aNotifID => {
         browser.storage.local.set({
@@ -1077,6 +1078,7 @@ function showBackupNotification()
         type: "basic",
         title: chrome.i18n.getMessage("backupNotifyTitle"),
         message: chrome.i18n.getMessage("backupNotifyMsg"),
+        iconUrl: "img/icon.svg",
 
       }).then(aNotifID => {
         clearBackupNotificationInterval();
