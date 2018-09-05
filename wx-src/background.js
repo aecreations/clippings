@@ -734,7 +734,7 @@ function getShortcutKeyPrefixStr()
     let suggKey = extManifest.commands["ae-clippings-paste-clipping"]["suggested_key"];
     let defaultPasteKey = "";
 
-    if (gClippings.getOS() == "mac") {
+    if (getOS() == "mac") {
       defaultPasteKey = suggKey["mac"];
     }
     else {
