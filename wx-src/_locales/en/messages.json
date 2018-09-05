@@ -449,6 +449,10 @@
     "message": "To paste a clipping into a web page textbox in Firefox, press ALT+SHIFT+Y (Command+Shift+Y on macOS), then the shortcut key."
   },
 
+  "expHTMLShctKeyCustNote": {
+    "message": "NOTE: The shortcut key prefix (default keys ALT+SHIFT+Y or Command+Shift+Y) may be different depending on your Clippings settings."
+  },
+
   "expHTMLShctKeyCol": {
     "message": "Shortcut Key"
   },

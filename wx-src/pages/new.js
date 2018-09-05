@@ -390,11 +390,8 @@ function initShortcutKeyMenu()
     }
   });
 
-  let keybPasteKey = `${chrome.i18n.getMessage("keyAlt")}+${chrome.i18n.getMessage("keyShift")}+Y`;
-  if (gClippings.getOS() == "mac") {
-    keybPasteKey = aeConst.SHORTCUT_KEY_PREFIX_MAC;
-  }
-  let tooltip = chrome.i18n.getMessage("shortcutKeyHint", keybPasteKey);
+  let keybPasteKeys = gClippings.getShortcutKeyPrefixStr();
+  let tooltip = chrome.i18n.getMessage("shortcutKeyHint", keybPasteKeys);
   $("#shct-key-tooltip").attr("title", tooltip);
 }
 

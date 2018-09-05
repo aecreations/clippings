@@ -21,6 +21,7 @@ let aeImportExport = {
   _shctTitle: "Clippings Shortcuts",
   _hostAppStr: "Clippings/wx on Firefox Quantum",
   _shctKeyInstrxns: "To paste, press ALT+SHIFT+Y (Command+Shift+Y on Mac), then the shortcut key.",
+  _shctKeyCustNote: "",
   _shctKeyColHdr: "Shortcut Key",
   _clipNameColHdr: "Clipping Name",
 };
@@ -39,6 +40,7 @@ aeImportExport.setL10nStrings = function (aStrings)
   this._shctTitle = aStrings.shctTitle;
   this._hostAppInfo = aStrings.hostAppInfo;
   this._shctKeyInstrxns = aStrings.shctKeyInstrxns;
+  this._shctKeyCustNote = aStrings.shctKeyCustNote;
   this._shctKeyColHdr = aStrings.shctKeyColHdr;
   this._clipNameColHdr = aStrings.clippingNameColHdr;
 };
@@ -429,7 +431,8 @@ aeImportExport.getShortcutKeyListHTML = function (aIsFullHTMLDoc)
 <body>
 <h1>${this._shctTitle}</h1>
 <p class="app-info" style="font-size:small">${this._hostAppInfo}</p>
-<p>${this._shctKeyInstrxns}</p>
+<p>${this._shctKeyInstrxns}
+<em>${this._shctKeyCustNote}</em></p>
 <table border="2">`;
   }
   else {

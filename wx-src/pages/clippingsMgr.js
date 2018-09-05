@@ -2219,11 +2219,9 @@ function initDialogs()
   gDialogs.shortcutList.isInitialized = false;
   gDialogs.shortcutList.onInit = () => {
     let that = gDialogs.shortcutList;
+
     if (! that.isInitialized) {
-      let shctPrefixKey = `${chrome.i18n.getMessage("keyAlt")}+${chrome.i18n.getMessage("keyShift")}+Y`;
-      if (isMacOS) {
-        shctPrefixKey = aeConst.SHORTCUT_KEY_PREFIX_MAC;
-      }
+      let shctPrefixKey = gClippings.getShortcutKeyPrefixStr();
       $("#shortcut-instrxns").text(chrome.i18n.getMessage("clipMgrShortcutHelpInstrxn", shctPrefixKey));
       let extVer = chrome.runtime.getManifest().version;
       
@@ -2231,6 +2229,7 @@ function initDialogs()
         shctTitle: chrome.i18n.getMessage("expHTMLTitle"),
         hostAppInfo: chrome.i18n.getMessage("expHTMLHostAppInfo", [extVer, gClippings.getHostAppName()]),
         shctKeyInstrxns: chrome.i18n.getMessage("expHTMLShctKeyInstrxn"),
+	shctKeyCustNote: chrome.i18n.getMessage("expHTMLShctKeyCustNote"),
         shctKeyColHdr: chrome.i18n.getMessage("expHTMLShctKeyCol"),
         clippingNameColHdr: chrome.i18n.getMessage("expHTMLClipNameCol"),
       });

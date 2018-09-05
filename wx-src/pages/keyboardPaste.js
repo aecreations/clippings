@@ -304,6 +304,7 @@ $(document).ready(() => {
     shctTitle: chrome.i18n.getMessage("expHTMLTitle"),
     hostAppInfo: chrome.i18n.getMessage("expHTMLHostAppInfo", [extVer, gClippings.getHostAppName()]),
     shctKeyInstrxns: chrome.i18n.getMessage("expHTMLShctKeyInstrxn"),
+    shctKeyCustNote: chrome.i18n.getMessage("expHTMLShctKeyCustNote"),
     shctKeyColHdr: chrome.i18n.getMessage("expHTMLShctKeyCol"),
     clippingNameColHdr: chrome.i18n.getMessage("expHTMLClipNameCol"),
   });

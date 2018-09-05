@@ -721,6 +721,46 @@ async function setShortcutKeyPrefix(aShortcutKeyPrefix)
 }
 
 
+function getShortcutKeyPrefixStr()
+{
+  let rv = "";
+  let keybPasteKey = "";
+  
+  if (gPrefs.pasteShortcutKeyPrefix) {
+    keybPasteKey = gPrefs.pasteShortcutKeyPrefix.split("+")[2];
+  }
+  else {
+    let extManifest = chrome.runtime.getManifest();
+    let suggKey = extManifest.commands["ae-clippings-paste-clipping"]["suggested_key"];
+    let defaultPasteKey = "";
+
+    if (gClippings.getOS() == "mac") {
+      defaultPasteKey = suggKey["mac"];
+    }
+    else {
+      defaultPasteKey = suggKey["default"];
+    }
+    keybPasteKey = defaultPasteKey.split("+")[2];
+  }
+
+  if (keybPasteKey == "Period") {
+    keybPasteKey = ".";
+  }
+  else if (keybPasteKey == "Comma") {
+    keybPasteKey = ",";
+  }
+  
+  if (gOS == "mac") {
+    rv = `\u21e7\u2318${keybPasteKey}`;
+  }
+  else {
+    rv = `${chrome.i18n.getMessage("keyAlt")}+${chrome.i18n.getMessage("keyShift")}+${keybPasteKey}`;
+  }
+
+  return rv;
+}
+
+
 function getContextMenuData(aFolderID)
 {
   function fnSortMenuItems(aItem1, aItem2)
