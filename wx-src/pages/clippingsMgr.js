@@ -1450,8 +1450,7 @@ let gCmd = {
   pushSyncFolderUpdates: function ()
   {
     gClippings.pushSyncFolderUpdates().then(() => {
-      // TO DO: Put this in a popup.
-      window.alert(chrome.i18n.getMessage("syncPushAck"));
+      info("Clippings/wx::clippingsMgr.js: gCmd.pushSyncFolderUpdates(): Pushed updated items in the Synced Clippings folder.")
     }).catch(handlePushSyncItemsError);
   },
   
@@ -2954,10 +2953,6 @@ function buildClippingsTree()
         }
         
         switch (aItemKey) {
-        case "pushSyncFolderUpdates":
-          gCmd.pushSyncFolderUpdates();
-          break;
-          
         case "moveOrCopy":
           gCmd.moveClippingOrFolder();
           break;
@@ -3005,8 +3000,9 @@ function buildClippingsTree()
       },
       
       items: {
-        pushSyncFolderUpdates: {
-          name: chrome.i18n.getMessage("mnuPushSyncFldr"),
+	/***
+        refreshSyncFolder: {
+          name: chrome.i18n.getMessage("mnuRefreshSyncFldr"),
           className: "ae-menuitem",
           visible: function (aItemKey, aOpt) {
             let tree = getClippingsTree();
@@ -3020,6 +3016,7 @@ function buildClippingsTree()
             return (folderID == gClippings.getSyncFolderID());
           }
         },
+	***/
         moveOrCopy: {
           name: chrome.i18n.getMessage("mnuMoveOrCopy"),
           className: "ae-menuitem",

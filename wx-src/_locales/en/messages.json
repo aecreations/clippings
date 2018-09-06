@@ -562,8 +562,8 @@
     "message": "Export..."
   },
 
-  "mnuPushSyncFldr": {
-    "message": "Push Updates"
+  "mnuRefreshSyncFldr": {
+    "message": "Reload"
   },
 
   "mnuRemoveAllSrcURLs": {
@@ -1089,10 +1089,6 @@
 
   "errSync": {
     "message": "An error has occurred with the Sync Clippings helper app."
-  },
-
-  "syncPushAck": {
-    "message": "Pushed updates to Synced Clippings folder."
   },
 
   "syncReloadAck": {
