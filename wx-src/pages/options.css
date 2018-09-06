@@ -125,6 +125,11 @@ button.default:active {
     font-size: 13px;
 }
 
+.example {
+    font-size: 11px;
+    color: #737373;
+}
+
 .browser-style > input[type="checkbox"] + label::before {
     width: 14px;
     height: 14px;
@@ -175,6 +180,10 @@ button.default:active {
 .lightbox .dlg-subhead {
     font-size: 15px;
     font-weight: bold;
+}
+
+.lightbox .dlg-subhead:first-of-type {
+    margin-top: 6px;
 }
 
 .lightbox > .dlg-btns {
