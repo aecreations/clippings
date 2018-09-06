@@ -1015,6 +1015,18 @@
     "message": "Sync Clippings"
   },
 
+  "syncIntro": {
+    "message": "You can synchronize your clippings with Thunderbird or other Firefox installations by putting the clippings you want to share into a special \u201cSynced Clippings\u201d folder.  The synchronized clippings will be saved in a file on your system.  Requires the <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" target=\"wndClippingsExt\">Sync Clippings</a> helper app."
+  },
+
+  "syncLearnMore": {
+    "message": "Learn more about Sync Clippings."
+  },
+
+  "syncHelp": {
+    "message": "<p class=\"dlg-subhead\">Sync Clippings</p><p>You can synchronize your clippings with Thunderbird or other Firefox installations by putting the clippings you want to share into a special \u201cSynced Clippings\u201d folder.  These clippings will appear in the Synced Clippings folder in those applications. You can choose which clippings you want to sync by moving or copying them into the Synced Clippings folder in Clippings Manager.</p><p>The Synced Clippings folder will be automatically created once Sync Clippings is set up.</p><p class=\"dlg-subhead\">Setting Up</p><p>Sync Clippings needs to be turned on in the applications you want to synchronize your clippings with. Sync Clippings is supported on Firefox 60 and newer, and Thunderbird 60 and newer (with Clippings for Thunderbird 5.6 or newer installed).</p><p>In addition, the Sync Clippings helper app needs to be installed on your system to keep your Synced Clippings folder contents up to date. It is available for download from the <a href=\"http:\/\/aecreations.sourceforge.net/clippings/sync.php\">AE Creations website</a>. Once installed, it will be launched automatically when Firefox is started, and will run in the background.</p><p>In Firefox, activate Sync Clippings from the Clippings preferences page by clicking <b>Turn On Sync</b>.  You will be prompted to choose a file location on your system where the synced clippings data will be saved, if this was not set already.</p>"
+  },
+
   "syncStatusOn": {
     "message": "Sync Clippings is turned on."
   },
@@ -1035,8 +1047,56 @@
     "message": "Turn Off Sync"
   },
 
+  "syncTurnOffConf": {
+    "message": "Are you sure you want to turn off Sync Clippings?"
+  },
+
+  "syncConnect": {
+    "message": "Connecting to the Sync Clippings helper app..."
+  },
+
+  "syncFileDir": {
+    "message": "Sync file location:"
+  },
+
+  "syncFileDirExample": {
+    "message": "Example:"
+  },
+
+  "syncFileDirExWin": {
+    "message": "C:\\Users\\YourName\\Documents\\Synced Clippings"
+  },
+
+  "syncFileDirExMac": {
+    "message": "/Users/YourName/Documents/Synced Clippings"
+  },
+
+  "syncFileDirExLinux": {
+    "message": "/home/YourName/synced-clippings"
+  },
+
+  "syncFileDirDesc": {
+    "message": "Your Sync Clippings data will be stored in this file location.  If you are synchronizing with Thunderbird and want to change the sync file location, you must also change the sync file location in Clippings preferences in Thunderbird to match the new sync file location."
+  },
+
+  "errSyncConxn": {
+    "message": "Unable to connect to the Sync Clippings helper app. Make sure that the app is installed."
+  },
+
+  "errSyncConxnDetail": {
+    "message": "The Sync Clippings helper app is needed to sync your clippings. You can download it from the <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\">AE Creations website</a>."
+  },
+
+  "errSync": {
+    "message": "An error has occurred with the Sync Clippings helper app."
+  },
+
   "syncPushAck": {
     "message": "Pushed updates to Synced Clippings folder."
+  },
+
+  "syncReloadAck": {
+    "message": "Finished reloading the Synced Clippings folder."
   },
 
   "deleteSyncFldr": {

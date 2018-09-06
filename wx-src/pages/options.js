@@ -6,6 +6,13 @@ let gClippings;
 let gDialogs = {};
 
 
+// DOM utility
+function sanitizeHTML(aHTMLStr)
+{
+  return DOMPurify.sanitize(aHTMLStr, { SAFE_FOR_JQUERY: true });
+}
+
+
 // Options page initialization
 $(() => {
   chrome.runtime.getBackgroundPage(aBkgrdWnd => {
@@ -29,8 +36,8 @@ function init()
     $("#shortcut-key-prefix-modifiers").text(`${keyAlt} + ${keyShift} + `);
   }
 
-  let shortcutKeyNoteHTML = DOMPurify.sanitize(chrome.i18n.getMessage("prefsShortcutKeyNote"), { SAFE_FOR_JQUERY: true });
-  $("#shortcut-key-note").html(shortcutKeyNoteHTML);
+  $("#shortcut-key-note").html(sanitizeHTML(chrome.i18n.getMessage("prefsShortcutKeyNote")));
+  $("#sync-intro").html(sanitizeHTML(chrome.i18n.getMessage("syncIntro")));
 
   initDialogs();
 
@@ -221,6 +228,19 @@ function initDialogs()
     });
   };
 
+  // Dialog UI strings
+  let os = gClippings.getOS();
+  if (os == "win") {
+    $("#example-sync-path").text(chrome.i18n.getMessage("syncFileDirExWin"));
+  }
+  else if (os == "mac") {
+    $("#example-sync-path").text(chrome.i18n.getMessage("syncFileDirExMac"));
+  }
+  else {
+    $("#example-sync-path").text(chrome.i18n.getMessage("syncFileDirExLinux"));
+  }
+  $("#sync-conxn-error-detail").html(sanitizeHTML(chrome.i18n.getMessage("errSyncConxnDetail")));
+
   gDialogs.turnOffSync = new aeDialog("#turn-off-sync-clippings-dlg");
   gDialogs.turnOffSync.onAccept = () => {
     let that = gDialogs.turnOffSync;
@@ -239,11 +259,13 @@ function initDialogs()
 
   // Adjust height of Sync Clippings help dialog on standard resolution
   // displays on Windows.
-  let os = gClippings.getOS();
   if (os == "win" && window.devicePixelRatio == 1) {
     $("#sync-clippings-help-dlg").css("height", "532px");
     $("#sync-clippings-help-dlg > .dlg-content").css("max-height", "450px");
   }
+
+  // Sync Clippings help dialog content.
+  $("#sync-clippings-help-dlg > .dlg-content").html(sanitizeHTML(chrome.i18n.getMessage("syncHelp")));
 }
 
 

@@ -119,13 +119,8 @@
 	<legend data-i18n="syncClippings"></legend>
 
 	<div class="row browser-style">
-	  <p class="description" style="margin-bottom:0">You can synchronize your clippings with
-	  Thunderbird or other Firefox installations by putting the
-	  clippings you want to share into a special "Synced Clippings"
-	  folder.  The synchronized clippings will be saved in a file on your
-	  system.  Requires the <a href="http://aecreations.sourceforge.net/clippings/sync.php" target="wndClippingsExt">Sync Clippings</a> helper
-	  app.</p>
-	  <p class="description" style="margin-top:6px"><a id="show-sync-help" href="#">Learn more about Sync Clippings.</a></p>
+	  <p id="sync-intro" class="description" style="margin-bottom:0"></p>
+	  <p class="description" style="margin-top:6px"><a id="show-sync-help" href="#"><span data-i18n="syncLearnMore"></span></a></p>
 
 	  <p id="sync-status"></p>
         </div>
@@ -141,38 +136,33 @@
     <div id="sync-clippings-dlg" class="lightbox">
       <div class="dlg-content">
         <div id="sync-connection-check" class="deck">
-	  <p class="label">Connecting to the Sync Clippings helper app...<p>
+	  <p class="label" data-i18n="syncConnect"><p>
 	  <progress style="width:100%"></progress>
 	</div>
 	<div id="sync-cxn-error" class="deck">
           <div class="msgbox-icon"></div>
           <div class="dlg-content">
-	    <div class="error-msg">Unable to connect to the Sync Clippings helper
-	      app. Make sure that the app is installed.</div>
-            <p class="label">The Sync Clippings helper app is needed to sync
-      your clippings. You can download it from the <a href="http://aecreations.sourceforge.net/clippings/sync.php">AE Creations website</a>.</p>
+	    <div class="error-msg" data-i18n="errSyncConxn"></div>
+            <p id="sync-conxn-error-detail" class="label"></p>
           </div>
         </div>
 	<div id="generic-error" class="deck">
 	  <div class="msgbox-icon"></div>
           <div class="dlg-content">
-	    <div class="error-msg">An error has occurred with the Sync
-      Clippings helper app.</div>
+	    <div class="error-msg" data-i18n="errSync"></div>
 	    <textarea id="sync-err-detail"></textarea>
 	  </div>
         </div>
 	<div id="sync-folder-location" class="deck">
 	  <div class="row">
- 	    <div class="label">Sync file location:</div>
+ 	    <div class="label" data-i18n="syncFileDir"></div>
           </div>
-	  <div class="row">
+	  <div class="row" style="margin-bottom:4px">
   	    <input type="text" id="sync-fldr-curr-location" style="width:100%" value=""/>
           </div>
 	  <div class="row">
-	    <p class="description">Your Sync Clippings data will be stored in this file
-      location.  If you are synchronizing with Thunderbird and want to change the
-    sync file location, you must also change the sync file location in
-    Clippings preferences in Thunderbird to match the new sync file location.</p>
+	    <div class="example"><label data-i18n="syncFileDirExample"></label><span id="example-sync-path"></span></div>
+	    <p class="description" data-i18n="syncFileDirDesc"></p>
           </div>
 	</div>
       </div>
@@ -185,7 +175,7 @@
     <div id="turn-off-sync-clippings-dlg" class="lightbox">
       <div class="msgbox-icon"></div>
       <div class="dlg-content">
-	<p class="label">Are you sure you want to turn off Sync Clippings?</p>
+	<p class="label" data-i18n="syncTurnOffConf"></p>
       </div>
       <div class="dlg-btns">
 	<button class="dlg-accept" data-i18n="btnYes"></button>
@@ -194,37 +184,7 @@
     </div>
 
     <div id="sync-clippings-help-dlg" class="lightbox">
-      <div class="dlg-content">
-        <p class="dlg-subhead" style="margin-top:6px">Sync Clippings</p>
-	<p>You can synchronize your clippings with
-	  Thunderbird or other Firefox installations by putting the
-	  clippings you want to share into a special "Synced Clippings"
-	folder.  These clippings will appear in the Synced Clippings folder in
-     those applications. You can choose which clippings you want to sync by
-      moving or copying them into the Synced Clippings folder in Clippings
-	Manager.</p>
-
-	<p>The Synced Clippings folder will be automatically created
-	once Sync Clippings is set up.</p>
-
-	<p class="dlg-subhead">Setting Up</p>
-	<p>Sync Clippings needs to be turned on in the applications you
-	want to synchronize your clippings with. Sync Clippings is supported on
-	Firefox 60 and newer, and Thunderbird 60 and newer (with Clippings for
-	Thunderbird 5.6 installed).</p>
-
-	<p>In addition, the Sync Clippings helper app needs to be installed on
-	your system to keep your Synced Clippings folder contents up to date. It
-	is available for download from the <a href="http://aecreations.sourceforge.net/clippings/sync.php">AE Creations
-	website</a>. Once installed, it will be launched automatically when
-	Firefox is started, and will run in the background.</p>
-	
-	<p>In Firefox, activate Sync Clippings from the Clippings preferences
-	page by clicking <b>Turn On Sync</b>.  You will be prompted to choose a
-	file location on your system where the synced clippings data will be
-	saved, if this was not set already.</p>
-
-      </div>
+      <div class="dlg-content"></div>
       <div class="dlg-btns">
 	<button class="dlg-accept default" data-i18n="btnOK"></button>
       </div>
