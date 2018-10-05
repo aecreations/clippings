@@ -4,6 +4,7 @@
 
 
 body {
+    overflow: hidden;
     margin: 16px;
     font-size: 11px;
 }
