@@ -66,7 +66,7 @@ let gClippingsListener = {
   clippingDeleted: function (aID, aOldData) {},
   folderDeleted: function (aID, aOldData) {},
 
-  afterBatchChanges: function () {
+  afterBatchChanges: function (aDBChanges) {
     rebuildContextMenu();
   }
 };
@@ -366,8 +366,6 @@ function initClippingsDB()
   });
   
   gClippingsDB.on("changes", aChanges => {
-    const CREATED = 1, UPDATED = 2, DELETED = 3;
-
     let clippingsListeners = gClippingsListeners.get();
 
     if (aChanges.length > 1) {
@@ -384,9 +382,9 @@ function initClippingsDB()
       if (isDisplayOrderOnlyChanged) {
         return;
       }
-
+      
       info("Clippings/wx: Multiple DB changes detected. Calling afterBatchChanges() on all Clippings listeners.");
-      clippingsListeners.forEach(aListener => { aListener.afterBatchChanges() });
+      clippingsListeners.forEach(aListener => { aListener.afterBatchChanges(aChanges) });
       return;
     }
 
@@ -394,7 +392,7 @@ function initClippingsDB()
     
     aChanges.forEach(aChange => {
       switch (aChange.type) {
-      case CREATED:
+      case aeConst.DB_CREATED:
         info("Clippings/wx: Database observer detected CREATED event");
         if (aChange.table == "clippings") {
           clippingsListeners.forEach(aListener => { aListener.newClippingCreated(aChange.key, aChange.obj) });
@@ -404,7 +402,7 @@ function initClippingsDB()
         }
         break;
         
-      case UPDATED:
+      case aeConst.DB_UPDATED:
         info("Clippings/wx: Database observer detected UPDATED event");
 
         // Don't do anything if only the displayOrder was changed.
@@ -420,7 +418,7 @@ function initClippingsDB()
         }
         break;
         
-      case DELETED:
+      case aeConst.DB_DELETED:
         info("Clippings/wx: Database observer detected DELETED event");
         if (aChange.table == "clippings") {
           clippingsListeners.forEach(aListener => { aListener.clippingDeleted(aChange.key, aChange.oldObj) });
