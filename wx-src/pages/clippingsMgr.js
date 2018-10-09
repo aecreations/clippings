@@ -32,7 +32,7 @@ function sanitizeHTML(aHTMLStr)
 let gClippingsListener = {
   origin: null,
   
-  newClippingCreated: function (aID, aData)
+  newClippingCreated: function (aID, aData, aDontSelect)
   {
     if (gIsClippingsTreeEmpty) {
       unsetEmptyClippingsState();
@@ -64,8 +64,12 @@ let gClippingsListener = {
     if (aData.label) {
       newNode.addClass(`ae-clipping-label-${aData.label}`);
     }
-    
-    newNode.makeVisible().done(() => {
+
+    if (aDontSelect) {
+      return;
+    }
+
+    newNode.makeVisible().done(() => {     
       newNode.setActive();
       $("#clipping-name").val(aData.name);
       $("#clipping-text").val("");
@@ -79,7 +83,7 @@ let gClippingsListener = {
     });
   },
 
-  newFolderCreated: function (aID, aData)
+  newFolderCreated: function (aID, aData, aDontSelect)
   {
     if (gIsClippingsTreeEmpty) {
       unsetEmptyClippingsState();
@@ -108,6 +112,10 @@ let gClippingsListener = {
     else {
       // No clippings or folders.
       newNode = tree.rootNode.addNode(newNodeData);
+    }
+
+    if (aDontSelect) {
+      return;
     }
 
     newNode.makeVisible().done(() => {
@@ -230,9 +238,34 @@ let gClippingsListener = {
 
   folderDeleted: function (aID, aOldData) {},
 
-  afterBatchChanges: function ()
+  afterBatchChanges: function (aDBChanges)
   {
     info("Clippings/wx::clippingsMgr.js: gClippingsListener.afterBatchChanges()");
+
+    let recentActionInfo = gCmd.getRecentActionInfo();
+    if (! recentActionInfo) {
+      return;
+    }
+
+    if (recentActionInfo.action == gCmd.ACTION_COPYTOFOLDER) {
+      for (let i = 0; i < aDBChanges.length; i++) {
+	let dbChange = aDBChanges[i];
+	if (dbChange.table == "folders" && dbChange.type == aeConst.DB_CREATED) {
+	  let suppressFldrSelect = true;
+	  if (dbChange.key == recentActionInfo.id) {
+	    suppressFldrSelect = false;
+	  }
+	  this.newFolderCreated(dbChange.key, dbChange.obj, suppressFldrSelect);
+	}
+      }
+
+      for (let i = 0; i < aDBChanges.length; i++) {
+	let dbChange = aDBChanges[i];
+	if (dbChange.table == "clippings" && dbChange.type == aeConst.DB_CREATED) {
+	  this.newClippingCreated(dbChange.key, dbChange.obj, true);
+	}
+      }
+    }
   },
 
   // Helper methods
@@ -649,18 +682,38 @@ let gCmd = {
     length: 0,
     _stack: [],
 
-    push: function (aState) {
+    push(aState) {
       this._stack.push(aState);
       this.length++;
     },
 
-    pop: function () {
+    pop() {
       var rv = this._stack.pop();
       this.length--;
+      return rv;
+    },
+
+    getLastItem() {
+      let rv = null;
+      
+      if (this.length > 0) {
+	rv = this._stack[this.length - 1];
+      }
       return rv;
     }
   },
 
+  getRecentActionInfo()
+  {
+    let rv = null;
+    let recentAction = this.undoStack.getLastItem();
+
+    if (recentAction) {
+      rv = recentAction;
+    }
+    
+    return rv;
+  },
   
   newClipping: function (aDestUndoStack, aIsFromClipboard)
   {
@@ -861,18 +914,22 @@ let gCmd = {
 
   copyFolderIntrl: function (aFolderID, aDestFldrID, aDestUndoStack)
   {
+    let newFldrID = null;
+    
     gClippingsDB.folders.get(aFolderID).then(aFolder => {
       return gClippingsDB.folders.add({
         name: aFolder.name,
         parentFolderID: aDestFldrID,
       });
     }).then(aNewFolderID => {
-      this._copyFolderHelper(aFolderID, aNewFolderID);
+      newFldrID = aNewFolderID;
+      return this._copyFolderHelper(aFolderID, aNewFolderID);
       
+    }).then(() => {
       if (aDestUndoStack == this.UNDO_STACK) {
         this.undoStack.push({
           action: this.ACTION_COPYTOFOLDER,
-          id: aNewFolderID,
+          id: newFldrID,
           itemType: this.ITEMTYPE_FOLDER
         });
       }
@@ -1311,29 +1368,34 @@ let gCmd = {
 
   _copyFolderHelper: function (aSrcFldrID, aTargFldrID)
   {
-    gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
-      gClippingsDB.folders.where("parentFolderID").equals(aSrcFldrID).each((aItem, aCursor) => {
-        gClippingsDB.folders.add({
-          name: aItem.name,
-          parentFolderID: aTargFldrID,
-        }).then(aNewSubFldrID => {
-          this._copyFolderHelper(aItem.id, aNewSubFldrID);
-        });
-
-      }).then(() => {
-        return gClippingsDB.clippings.where("parentFolderID").equals(aSrcFldrID).each((aItem, aCursor) => {
-          gClippingsDB.clippings.add({
+    return new Promise((aFnResolve, aFnReject) => {
+      gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
+	gClippingsDB.folders.where("parentFolderID").equals(aSrcFldrID).each((aItem, aCursor) => {
+          gClippingsDB.folders.add({
             name: aItem.name,
-            content: aItem.content,
-            shortcutKey: "",
-            sourceURL: aItem.sourceURL,
-            label: aItem.label,
-            parentFolderID: aTargFldrID
+            parentFolderID: aTargFldrID,
+          }).then(aNewSubFldrID => {
+            this._copyFolderHelper(aItem.id, aNewSubFldrID);
           });
-        });
+
+	}).then(() => {
+          return gClippingsDB.clippings.where("parentFolderID").equals(aSrcFldrID).each((aItem, aCursor) => {
+            gClippingsDB.clippings.add({
+              name: aItem.name,
+              content: aItem.content,
+              shortcutKey: "",
+              sourceURL: aItem.sourceURL,
+              label: aItem.label,
+              parentFolderID: aTargFldrID
+            });
+          });
+	}).then(() => {
+	  aFnResolve();
+	});
+      }).catch(aErr => {
+	console.error("Clippings/wx::clippingsMgr.js: gCmd._copyFolderHelper(): " + aErr);
+	aFnReject(aErr);
       });
-    }).catch(aErr => {
-      console.error("Clippings/wx::clippingsMgr.js: gCmd._copyFolderHelper(): " + aErr);
     });
   }
 };
