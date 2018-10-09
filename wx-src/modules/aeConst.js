@@ -26,14 +26,15 @@ let aeConst = {
   PASTEACTION_SHORTCUT_KEY:   1,
   PASTEACTION_SEARCH_CLIPPING: 2,
 
-  // Shortcut key prefix
-  SHORTCUT_KEY_PREFIX: "ALT+SHIFT+Y",
-  SHORTCUT_KEY_PREFIX_MAC: "\u21e7\u2318Y",
-
   // Folder IDs
   ROOT_FOLDER_ID: 0,
   DELETED_ITEMS_FLDR_ID: -1,
 
+  // IndexedDB database change types
+  DB_CREATED: 1,
+  DB_UPDATED: 2,
+  DB_DELETED: 3,
+  
   // Export to file
   CLIPPINGS_EXPORT_FILENAME: "clippings.json",
   HTML_EXPORT_FILENAME: "clippings.html",
