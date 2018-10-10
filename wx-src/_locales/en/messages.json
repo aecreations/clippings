@@ -562,7 +562,7 @@
     "message": "Export..."
   },
 
-  "mnuRefreshSyncFldr": {
+  "mnuReloadSyncFldr": {
     "message": "Reload"
   },
 
@@ -1092,7 +1092,7 @@
   },
 
   "syncReloadAck": {
-    "message": "Finished reloading the Synced Clippings folder."
+    "message": "Updating the Synced Clippings folder. Click Reload to continue."
   },
 
   "deleteSyncFldr": {

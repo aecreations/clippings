@@ -1504,11 +1504,11 @@ let gCmd = {
     gDialogs.exportToFile.showModal();
   },
 
-  pushSyncFolderUpdates: function ()
+  reloadSyncFolder: function ()
   {
-    gClippings.pushSyncFolderUpdates().then(() => {
-      info("Clippings/wx::clippingsMgr.js: gCmd.pushSyncFolderUpdates(): Pushed updated items in the Synced Clippings folder.")
-    }).catch(handlePushSyncItemsError);
+    gClippings.refreshSyncedClippings();
+
+    gDialogs.reloadSyncFolder.showModal();
   },
   
   removeAllSrcURLs: function ()
@@ -2692,6 +2692,11 @@ function initDialogs()
     getClippingsTree().reactivate(true);
   };
 
+  gDialogs.reloadSyncFolder = new aeDialog("#reload-sync-fldr-msgbox");
+  gDialogs.reloadSyncFolder.onAfterAccept = () => {
+    window.location.reload();
+  };
+
   gDialogs.moveTo = new aeDialog("#move-dlg");
   gDialogs.moveTo.isInitialized = false;
   gDialogs.moveTo.fldrTree = null;
@@ -3015,6 +3020,10 @@ function buildClippingsTree()
         }
         
         switch (aItemKey) {
+	case "reloadSyncFolder":
+	  gCmd.reloadSyncFolder();
+	  break;
+	  
         case "moveOrCopy":
           gCmd.moveClippingOrFolder();
           break;
@@ -3062,9 +3071,8 @@ function buildClippingsTree()
       },
       
       items: {
-	/***
-        refreshSyncFolder: {
-          name: chrome.i18n.getMessage("mnuRefreshSyncFldr"),
+        reloadSyncFolder: {
+          name: chrome.i18n.getMessage("mnuReloadSyncFldr"),
           className: "ae-menuitem",
           visible: function (aItemKey, aOpt) {
             let tree = getClippingsTree();
@@ -3078,7 +3086,7 @@ function buildClippingsTree()
             return (folderID == gClippings.getSyncFolderID());
           }
         },
-	***/
+
         moveOrCopy: {
           name: chrome.i18n.getMessage("mnuMoveOrCopy"),
           className: "ae-menuitem",
