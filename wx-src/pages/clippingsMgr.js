@@ -254,12 +254,11 @@ let gClippingsListener = {
   {
     info("Clippings/wx::clippingsMgr.js: gClippingsListener.afterBatchChanges()");
 
-    let recentActionInfo = gCmd.getRecentActionInfo();
-    if (! recentActionInfo) {
-      return;
-    }
-
-    if (recentActionInfo.action == gCmd.ACTION_COPYTOFOLDER) {
+    if (gCmd.recentAction == gCmd.ACTION_COPYTOFOLDER) {
+      info("Recent action: copy to folder");
+      
+      let recentActionInfo = gCmd.getRecentActionInfo();
+      
       for (let i = 0; i < aDBChanges.length; i++) {
 	let dbChange = aDBChanges[i];
 	if (dbChange.table == "folders" && dbChange.type == aeConst.DB_CREATED) {
@@ -675,7 +674,7 @@ let gClippingLabelPicker = {
 
 // Clippings Manager commands
 let gCmd = {
-  // Flags for undoStack actions
+  // IDs of undoStack actions
   ACTION_EDITNAME: 1,
   ACTION_EDITCONTENT: 2,
   ACTION_DELETECLIPPING: 3,
@@ -688,6 +687,13 @@ let gCmd = {
   ACTION_DELETEEMPTYFOLDER: 10,
   ACTION_SETSHORTCUTKEY: 11,
   ACTION_SETLABEL: 12,
+  ACTION_SET_SRC_URL: 13,
+  ACTION_REMOVE_ALL_SRC_URLS: 14,
+  ACTION_BACKUP: 15,
+  ACTION_RESTORE_BACKUP: 16,
+  ACTION_IMPORT: 17,
+  ACTION_EXPORT: 18,
+  ACTION_RELOAD_SYNC_FLDR: 19,
 
   // flags for aDestUndoStack parameter of functions for reversible actions
   UNDO_STACK: 1,
@@ -697,6 +703,10 @@ let gCmd = {
   // ID in the database.
   ITEMTYPE_CLIPPING: 1,
   ITEMTYPE_FOLDER: 2,
+
+  // Keep track of the most recent action. Required for the `onBatchChanges`
+  // database event handler.
+  _recentAction: null,
 
   undoStack: {
     length: 0,
@@ -721,6 +731,16 @@ let gCmd = {
       }
       return rv;
     }
+  },
+
+  get recentAction()
+  {
+    return this._recentAction;
+  },
+
+  set recentAction(aActionID)
+  {
+    return (this._recentAction = aActionID);
   },
 
   getRecentActionInfo()
@@ -762,6 +782,8 @@ let gCmd = {
       name = NEW_CLIPPING_FROM_CLIPBOARD;
     }
 
+    this.recentAction = this.ACTION_CREATENEW;
+      
     let createClipping = gClippingsDB.clippings.add({
       name,
       content: "",
@@ -809,7 +831,9 @@ let gCmd = {
         displayOrder = parentFldrChildNodes.length;
       }
     }
-    
+
+    this.recentAction = this.ACTION_CREATENEWFOLDER;
+
     let createFolder = gClippingsDB.folders.add({
       name: chrome.i18n.getMessage("newFolder"),
       parentFolderID,
@@ -874,6 +898,8 @@ let gCmd = {
         return;
       }
       
+      this.recentAction = this.ACTION_DELETEFOLDER;
+
       gClippingsDB.folders.update(id, { parentFolderID: aeConst.DELETED_ITEMS_FLDR_ID }).then(aNumUpd => {
         if (aDestUndoStack == this.UNDO_STACK) {
           this.undoStack.push({
@@ -892,6 +918,8 @@ let gCmd = {
       });
     }
     else {
+      this.recentAction = this.ACTION_DELETECLIPPING;
+
       gClippingsDB.clippings.update(id, {
         parentFolderID: aeConst.DELETED_ITEMS_FLDR_ID,
         shortcutKey: ""
@@ -922,7 +950,8 @@ let gCmd = {
     }
 
     let oldParentFldrID;
-    
+    this.recentAction = this.ACTION_MOVETOFOLDER;
+          
     gClippingsDB.clippings.get(aClippingID).then(aClipping => {
       oldParentFldrID = aClipping.parentFolderID;
       return gClippingsDB.clippings.update(aClippingID, { parentFolderID: aNewParentFldrID });
@@ -957,6 +986,8 @@ let gCmd = {
 
   copyClippingIntrl: function (aClippingID, aDestFldrID, aDestUndoStack)
   {
+    this.recentAction = this.ACTION_COPYTOFOLDER;
+
     gClippingsDB.clippings.get(aClippingID).then(aClipping => {
       let clippingCpy = {
         name: aClipping.name,
@@ -994,6 +1025,7 @@ let gCmd = {
     }
 
     let oldParentFldrID;
+    this.recentAction = this.ACTION_MOVETOFOLDER;
     
     gClippingsDB.folders.get(aFolderID).then(aFolder => {
       oldParentFldrID = aFolder.parentFolderID;
@@ -1027,6 +1059,8 @@ let gCmd = {
   {
     let newFldrID = null;
     
+    this.recentAction = this.ACTION_COPYTOFOLDER;
+      
     gClippingsDB.folders.get(aFolderID).then(aFolder => {
       return gClippingsDB.folders.add({
         name: aFolder.name,
@@ -1058,6 +1092,8 @@ let gCmd = {
   
   editFolderNameIntrl: function (aFolderID, aName, aDestUndoStack)
   {
+    let that = this;
+    
     return new Promise((aFnResolve, aFnReject) => {
       let oldName = "";
       
@@ -1067,16 +1103,18 @@ let gCmd = {
         if (aName == oldName) {
           return 0;
         }
+
+	that.recentAction = that.ACTION_EDITNAME;
         return gClippingsDB.folders.update(aFolderID, { name: aName });
 
       }).then(aNumUpd => {
-        if (aNumUpd && aDestUndoStack == this.UNDO_STACK) {
-          this.undoStack.push({
-            action: this.ACTION_EDITNAME,
+        if (aNumUpd && aDestUndoStack == that.UNDO_STACK) {
+          that.undoStack.push({
+            action: that.ACTION_EDITNAME,
             id: aFolderID,
             name: aName,
             oldName,
-            itemType: this.ITEMTYPE_FOLDER
+            itemType: that.ITEMTYPE_FOLDER
           });
         }
 
@@ -1099,6 +1137,8 @@ let gCmd = {
 
   editClippingNameIntrl: function (aClippingID, aName, aDestUndoStack)
   {
+    let that = this;
+    
     return new Promise((aFnResolve, aFnReject) => {
       let oldName = "";
       
@@ -1108,16 +1148,18 @@ let gCmd = {
         if (aName == oldName) {
           return 0;
         }
+
+	that.recentAction = that.ACTION_EDITNAME;
         return gClippingsDB.clippings.update(aClippingID, { name: aName });
 
       }).then(aNumUpd => {
-        if (aNumUpd && aDestUndoStack == this.UNDO_STACK) {
-          this.undoStack.push({
-            action: this.ACTION_EDITNAME,
+        if (aNumUpd && aDestUndoStack == that.UNDO_STACK) {
+          that.undoStack.push({
+            action: that.ACTION_EDITNAME,
             id: aClippingID,
             name: aName,
             oldName,
-            itemType: this.ITEMTYPE_CLIPPING
+            itemType: that.ITEMTYPE_CLIPPING
           });
         }
 
@@ -1140,6 +1182,8 @@ let gCmd = {
 
   editClippingContentIntrl: function (aClippingID, aContent, aDestUndoStack)
   {
+    let that = this;
+    
     return new Promise((aFnResolve, aFnReject) => {
       let oldContent = "";
       
@@ -1149,16 +1193,18 @@ let gCmd = {
         if (aContent == oldContent) {
           return 0;
         }
+
+	that.recentAction = that.ACTION_EDITCONTENT;
         return gClippingsDB.clippings.update(aClippingID, { content: aContent });
 
       }).then(aNumUpd => {
-        if (aNumUpd && aDestUndoStack == this.UNDO_STACK) {
-          this.undoStack.push({
-            action: this.ACTION_EDITCONTENT,
+        if (aNumUpd && aDestUndoStack == that.UNDO_STACK) {
+          that.undoStack.push({
+            action: that.ACTION_EDITCONTENT,
             id: aClippingID,
             content: aContent,
             oldContent,
-            itemType: this.ITEMTYPE_CLIPPING
+            itemType: that.ITEMTYPE_CLIPPING
           });
         }
 
@@ -1184,6 +1230,8 @@ let gCmd = {
     let selectedNode = getClippingsTree().activateKey(aClippingID + "C");
     let oldLabel;
 
+    this.recentAction = this.ACTION_SETLABEL;      
+
     gClippingsDB.clippings.get(aClippingID).then(aResult => {
       oldLabel = aResult.label;
       return gClippingsDB.clippings.update(aClippingID, { label: aLabel });
@@ -1202,7 +1250,7 @@ let gCmd = {
       }
 
       gClippingLabelPicker.selectedLabel = aLabel;
-      
+
       if (aDestUndoStack == this.UNDO_STACK) {
         this.undoStack.push({
           action: this.ACTION_SETLABEL,
@@ -1234,6 +1282,7 @@ let gCmd = {
     }
 
     let childNodes = folderNode.getChildren();
+    this.recentAction = this.ACTION_CHANGEPOSITION;
 
     gClippingsDB.transaction("rw", gClippingsDB.folders, gClippingsDB.clippings, () => {
       let seqUpdates = [];
@@ -1437,6 +1486,7 @@ let gCmd = {
   {
     const INCLUDE_SRC_URLS = true;
 
+    this.recentAction = this.ACTION_BACKUP;
     setStatusBarMsg(chrome.i18n.getMessage("statusSavingBkup"));
 
     let excludeSyncFldrID = null;
@@ -1506,8 +1556,8 @@ let gCmd = {
 
   reloadSyncFolder: function ()
   {
+    this.recentAction = this.ACTION_RELOAD_SYNC_FLDR;   
     gClippings.refreshSyncedClippings();
-
     gDialogs.reloadSyncFolder.showModal();
   },
   
@@ -2525,6 +2575,8 @@ function initDialogs()
       gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
         log("Clippings/wx::clippingsMgr.js: gDialogs.importFromFile.onAccept(): Starting restore from backup file.\nDeleting all clippings and folders");
         
+	gCmd.recentAction = gCmd.ACTION_RESTORE_BACKUP;
+
         gClippingsDB.clippings.clear().then(() => {
           return gClippingsDB.folders.clear();
         }).then(() => {
@@ -2537,6 +2589,7 @@ function initDialogs()
     }
     else {
       info("Clippings/wx::clippingsMgr.js: Import dialog mode: Import File");
+      gCmd.recentAction = gCmd.ACTION_IMPORT;
       importFile(true);
     }
   };
@@ -2626,6 +2679,8 @@ function initDialogs()
         let blobData = new Blob([aJSONData], { type: "application/json;charset=utf-8"});
 
         saveToFile(blobData, aeConst.CLIPPINGS_EXPORT_FILENAME);
+	gCmd.recentAction = gCmd.ACTION_EXPORT;
+	
       }).catch(aErr => {
         window.alert("Sorry, an error occurred while exporting to Clippings 6 format.\n\nDetails:\n" + getErrStr(aErr));
         setStatusBarMsg(chrome.i18n.getMessage("statusExportFailed"));
@@ -2636,6 +2691,8 @@ function initDialogs()
       aeImportExport.exportToHTML().then(aHTMLData => {
         let blobData = new Blob([aHTMLData], { type: "text/html;charset=utf-8"});
         saveToFile(blobData, aeConst.HTML_EXPORT_FILENAME);
+	gCmd.recentAction = gCmd.ACTION_EXPORT;
+	
       }).catch(aErr => {
         window.alert("Sorry, an error occurred while exporting to HTML Document format.\n\nDetails:\n" + getErrStr(aErr));
         setStatusBarMsg(chrome.i18n.getMessage("statusExportFailed"));
@@ -2646,6 +2703,7 @@ function initDialogs()
       aeImportExport.exportToCSV(excludeSyncFldrID).then(aCSVData => {
         let blobData = new Blob([aCSVData], { type: "text/csv;charset=utf-8" });
         saveToFile(blobData, aeConst.CSV_EXPORT_FILENAME);
+	gCmd.recentAction = gCmd.ACTION_EXPORT;
 
       }).catch(aErr => {
         window.alert("Sorry, an error occurred while exporting to CSV format.\n\nDetails:\n" + getErrStr(aErr));
@@ -2681,6 +2739,8 @@ function initDialogs()
   gDialogs.removeAllSrcURLs = new aeDialog("#remove-all-source-urls-dlg");
   $("#remove-all-source-urls-dlg > .dlg-btns > .dlg-btn-yes").click(aEvent => {
     gDialogs.removeAllSrcURLs.close();
+    gCmd.recentAction = gCmd.ACTION_REMOVE_ALL_SRC_URLS;
+    
     gClippingsDB.clippings.toCollection().modify({ sourceURL: "" }).then(aNumUpd => {
       gDialogs.removeAllSrcURLsConfirm.openPopup();
     });
