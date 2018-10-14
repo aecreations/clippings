@@ -129,6 +129,17 @@ function init()
     $("#sync-settings").click(aEvent => {
       gDialogs.syncClippings.showModal();
     });
+
+    $("#browse-sync-fldr").click(aEvent => {
+      let msg = { msgID: "sync-dir-folder-picker" };
+      let sendNativeMsg = browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
+
+      sendNativeMsg.then(aResp => {
+	$("#sync-fldr-curr-location").val(aResp.syncFilePath);
+      }).catch(aErr => {
+	window.alert("The Sync Clippings helper app responded with an error.\n\nDetails:\n" + aErr);
+      });
+    });
     
     $("#show-sync-help").click(aEvent => {
       gDialogs.syncClippingsHelp.showModal();
