@@ -269,10 +269,24 @@ button.default:active {
     resize: unset;
 }
 
-#sync-clippings-dlg #sync-fldr-new-location {
-    /* TO DO: Use CSS flexbox to arrange textbox and Browse button. */
-    width: 310px;
-    height: 24px;
+#sync-clippings-dlg #sync-fldr-picker-label {
+    margin-bottom: 2px;
+}
+
+#sync-clippings-dlg #sync-fldr-picker {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+
+    margin-top: 0;
+    margin-bottom: 4px;
+}
+
+#sync-clippings-dlg #sync-fldr-picker #sync-fldr-curr-location {
+    order: 1;
+    flex: 1 1 auto;
+    margin-right: 12px;
+/***
     border: 0;
     padding-left: 8px;
     padding-right: 8px;
@@ -283,34 +297,12 @@ button.default:active {
     background-image: url("../img/tbd-edge-l.svg"), url("../img/tbd-bg.svg"), url("../img/tbd-edge-r.svg");
     background-position: left, center, right;
     background-repeat: no-repeat, repeat-x, no-repeat;
+***/
 }
 
-#sync-clippings-dlg #sync-fldr-new-location-btn {
-    height: 22px;
-    padding: 3px 16px 3px 16px;
-    border: 1px solid rgba(12, 12, 13, 0.1) !important;
-    background-color: rgba(12, 12, 13, 0.1);
-    border-radius: 2px;
-    box-shadow: 0 0 0 0 transparent;
-    font-size: 13px;
-    
-    transition-duration: 250ms;
-    transition-property: box-shadow, border;
-}
-
-#sync-clippings-dlg #sync-fldr-new-location-btn:hover {
-    background-color: rgba(12, 12, 13, 0.2);
-    border: 1px solid rgba(12, 12, 13, 0.2) !important;
-}
-
-#sync-clippings-dlg #sync-fldr-new-location-btn:active {
-    background-color: rgba(12, 12, 13, 0.3);
-    border: 1px solid rgba(12, 12, 13, 0.3) !important;
-}
-
-#sync-clippings-dlg #sync-fldr-new-location-upload {
-    opacity: 0;
-    width: 4px;
+#sync-clippings-dlg #sync-fldr-picker #browse-sync-fldr {
+    order: 2;
+    flex: 0 1 auto;
 }
 
 #turn-off-sync-clippings-dlg {

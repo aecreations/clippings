@@ -135,7 +135,9 @@ function init()
       let sendNativeMsg = browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
 
       sendNativeMsg.then(aResp => {
-	$("#sync-fldr-curr-location").val(aResp.syncFilePath);
+	if (aResp.syncFilePath) {
+	  $("#sync-fldr-curr-location").val(aResp.syncFilePath);
+	}
       }).catch(aErr => {
 	window.alert("The Sync Clippings helper app responded with an error.\n\nDetails:\n" + aErr);
       });
