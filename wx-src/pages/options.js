@@ -243,15 +243,6 @@ function initDialogs()
 
   // Dialog UI strings
   let os = gClippings.getOS();
-  if (os == "win") {
-    $("#example-sync-path").text(chrome.i18n.getMessage("syncFileDirExWin"));
-  }
-  else if (os == "mac") {
-    $("#example-sync-path").text(chrome.i18n.getMessage("syncFileDirExMac"));
-  }
-  else {
-    $("#example-sync-path").text(chrome.i18n.getMessage("syncFileDirExLinux"));
-  }
   $("#sync-conxn-error-detail").html(sanitizeHTML(chrome.i18n.getMessage("errSyncConxnDetail")));
 
   gDialogs.turnOffSync = new aeDialog("#turn-off-sync-clippings-dlg");
