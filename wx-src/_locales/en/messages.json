@@ -1059,22 +1059,6 @@
     "message": "Sync file location:"
   },
 
-  "syncFileDirExample": {
-    "message": "Example:"
-  },
-
-  "syncFileDirExWin": {
-    "message": "C:\\Users\\YourName\\Documents\\Synced Clippings"
-  },
-
-  "syncFileDirExMac": {
-    "message": "/Users/YourName/Documents/Synced Clippings"
-  },
-
-  "syncFileDirExLinux": {
-    "message": "/home/YourName/synced-clippings"
-  },
-
   "syncFileDirDesc": {
     "message": "Your Sync Clippings data will be stored in this file location.  If you are synchronizing with Thunderbird and want to change the sync file location, you must also change the sync file location in Clippings preferences in Thunderbird to match."
   },
