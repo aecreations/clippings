@@ -1080,11 +1080,11 @@
   },
 
   "deleteSyncFldr": {
-    "message": "The Synced Clippings folder cannot be deleted, because Sync Clippings is turned on."
+    "message": "Can't delete the Synced Clippings folder."
   },
 
   "moveSyncFldr": {
-    "message": "The Synced Clippings folder cannot be moved."
+    "message": "Can't move the Synced Clippings folder."
   },
 
   "syncPushFailed": {
