@@ -712,6 +712,7 @@ ul.fancytree-container {
 #import-confirm-msgbox,
 #export-confirm-msgbox,
 #backup-confirm-msgbox,
+#reload-sync-fldr-msgbox,
 #mini-help-dlg,
 #generic-msg-box {
     top: 64px;
@@ -948,6 +949,10 @@ ul.fancytree-container {
 
 #import-confirm-msgbox {
     --width: 400px;
+}
+
+#reload-sync-fldr-msgbox {
+    --width: 430px;
 }
 
 #move-dlg {
