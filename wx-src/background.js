@@ -34,7 +34,7 @@ let gClippingsListeners = {
     this._listeners = this._listeners.filter(aListener => aListener != aTargetListener);
   },
 
-  get: function () {
+  getListeners() {
     return this._listeners;
   }
 };
@@ -70,7 +70,36 @@ let gClippingsListener = {
     rebuildContextMenu();
   }
 };
-  
+
+let gSyncClippingsListeners = {
+  _listeners: [],
+
+  add(aNewListener) {
+    this._listeners.push(aNewListener)
+  },
+
+  remove(aTargetListener) {
+    this._listeners = this._listeners.filter(aListener => aListener != aTargetListener);
+  },
+
+  getListeners() {
+    return this._listeners;
+  },
+};
+
+let gSyncClippingsListener = {
+  onActivate(aSyncFolderID) {
+    // No need to do anything here. The Clippings context menu is automatically
+    // rebuilt when the Sync Clippings data is imported, which occurs after
+    // turning on Sync Clippings from extension preferences.
+  },
+
+  onDeactivate(aOldSyncFolderID) {
+    log("Clippings/wx: gSyncClippingsListener.onDeactivate()");
+    rebuildContextMenu();
+  },
+};
+
 let gNewClipping = {
   _name: null,
   _content: null,
@@ -286,6 +315,7 @@ function init()
 
   gClippingsListener.origin = gClippingsListeners.ORIGIN_HOSTAPP;
   gClippingsListeners.add(gClippingsListener);
+  gSyncClippingsListeners.add(gSyncClippingsListener);
   
   window.addEventListener("unload", onUnload, false);
   initMessageListeners();
@@ -366,7 +396,7 @@ function initClippingsDB()
   });
   
   gClippingsDB.on("changes", aChanges => {
-    let clippingsListeners = gClippingsListeners.get();
+    let clippingsListeners = gClippingsListeners.getListeners();
 
     if (aChanges.length > 1) {
       // Don't do anything if only displayOrder was changed.
@@ -475,12 +505,16 @@ async function enableSyncClippings(aIsEnabled)
 
       await browser.storage.local.set({ syncFolderID: gSyncFldrID });
       log("Clippings/wx: enableSyncClippings(): Synced Clippings folder ID: " + gSyncFldrID);
+      return gSyncFldrID;
     }
   }
   else {
     log("Clippings/wx: enableSyncClippings(): Turning OFF");
+    let oldSyncFldrID = gSyncFldrID;
+    
     await browser.storage.local.set({ syncFolderID: null });
     gSyncFldrID = null;
+    return oldSyncFldrID;
   }
 }
 
@@ -1480,6 +1514,10 @@ function getClippingsListeners()
   return gClippingsListeners;
 }
 
+function getSyncClippingsListeners()
+{
+  return gSyncClippingsListeners;
+}
 
 function getPrefs()
 {

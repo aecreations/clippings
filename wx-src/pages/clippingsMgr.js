@@ -356,6 +356,26 @@ let gClippingsListener = {
   }
 };
 
+let gSyncClippingsListener = {
+  onActivate(aSyncFolderID)
+  {
+    log("Clippings/wx::clippingsMgr.js::gSyncClippingsListener.onActivate()");
+    gCmd.reloadSyncFolder();
+  },
+  
+  onDeactivate(aOldSyncFolderID)
+  {
+    log("Clippings/wx::clippingsMgr.js::gSyncClippingsListener.onDeactivate()");
+    gSyncedItemsIDs = {};
+
+    let clippingsTree = getClippingsTree();
+    let syncFldrTreeNode = clippingsTree.getNodeByKey(aOldSyncFolderID + "C");
+
+    // This doesn't seem to do anything (i.e., change the folder icon)
+    syncFldrTreeNode.removeClass("ae-synced-clippings-fldr");
+  },
+};
+
 
 // Search box
 let gSearchBox = {
@@ -1284,40 +1304,45 @@ let gCmd = {
     let childNodes = folderNode.getChildren();
     this.recentAction = this.ACTION_CHANGEPOSITION;
 
-    gClippingsDB.transaction("rw", gClippingsDB.folders, gClippingsDB.clippings, () => {
-      let seqUpdates = [];
-      
-      for (let i = 0; i < childNodes.length; i++) {
-        let key = childNodes[i].key;
-        let suffix = key.substring(key.length - 1);
+    return new Promise((aFnResolve, aFnReject) => {
+      gClippingsDB.transaction("rw", gClippingsDB.folders, gClippingsDB.clippings, () => {
+	let seqUpdates = [];
+	
+	for (let i = 0; i < childNodes.length; i++) {
+          let key = childNodes[i].key;
+          let suffix = key.substring(key.length - 1);
 
-        if (suffix == "F") {
-          let fldrSeqUpd = gClippingsDB.folders.update(parseInt(childNodes[i].key), { displayOrder: i });
-          seqUpdates.push(fldrSeqUpd);
-        }
-        else if (suffix == "C") {
-          let clipSeqUpd = gClippingsDB.clippings.update(parseInt(childNodes[i].key), { displayOrder: i });
-          seqUpdates.push(clipSeqUpd);
-        }
-      }
+          if (suffix == "F") {
+            let fldrSeqUpd = gClippingsDB.folders.update(parseInt(childNodes[i].key), { displayOrder: i });
+            seqUpdates.push(fldrSeqUpd);
+          }
+          else if (suffix == "C") {
+            let clipSeqUpd = gClippingsDB.clippings.update(parseInt(childNodes[i].key), { displayOrder: i });
+            seqUpdates.push(clipSeqUpd);
+          }
+	}
 
-      Promise.all(seqUpdates).then(aNumUpd => {
-        log("Clippings/wx::clippingsMgr.js: gCmd.updateDisplayOrder(): Display order updates for each folder item is completed");
+	Promise.all(seqUpdates).then(aNumUpd => {
+          log("Clippings/wx::clippingsMgr.js: gCmd.updateDisplayOrder(): Display order updates for each folder item is completed");
 
-        if (aDestUndoStack == this.UNDO_STACK) {
-          this.undoStack.push({
-            action: this.ACTION_CHANGEPOSITION,
-            folderID: aFolderID,
-            // TO DO: Add other undo info ...
-          });
-        }
+          if (aDestUndoStack == this.UNDO_STACK) {
+            this.undoStack.push({
+              action: this.ACTION_CHANGEPOSITION,
+              folderID: aFolderID,
+              // TO DO: Add other undo info ...
+            });
+          }
 
-        if (! aSuppressClippingsMenuRebuild) {
-          gClippings.rebuildContextMenu();
-        }
+          if (! aSuppressClippingsMenuRebuild) {
+            gClippings.rebuildContextMenu();
+          }
+
+	  aFnResolve();
+	});
+      }).catch(aErr => {
+	console.error("Clippings/wx::clippingsMgr.js::gCmd.updateDisplayOrder(): %s", aErr.message);
+	aFnReject(aErr);
       });
-    }).catch(aErr => {
-      console.error("Clippings/wx::clippingsMgr.js::gCmd.updateDisplayOrder(): %s", aErr.message);
     });
   },
 
@@ -1719,6 +1744,9 @@ $(document).ready(() => {
 
   let prefs = gClippings.getPrefs();
   gSyncFolderID = prefs.syncFolderID;
+
+  let syncClippingsListeners = gClippings.getSyncClippingsListeners();
+  syncClippingsListeners.add(gSyncClippingsListener);
   
   initToolbar();
   initInstantEditing();
@@ -1756,6 +1784,9 @@ $(window).on("beforeunload", () => {
 
   let clippingsListeners = gClippings.getClippingsListeners();
   clippingsListeners.remove(gClippingsListener);
+
+  let syncClippingsListeners = gClippings.getSyncClippingsListeners();
+  syncClippingsListeners.remove(gSyncClippingsListener);
   
   gClippings.purgeFolderItems(aeConst.DELETED_ITEMS_FLDR_ID).catch(aErr => {
     console.error("Clippings/wx::clippingsMgr.js: $(window).on('beforeunload'): " + aErr);
@@ -3034,7 +3065,9 @@ function buildClippingsTree()
               }
             }           
 
-            gCmd.updateDisplayOrder(newParentID, false);
+            gCmd.updateDisplayOrder(newParentID, false).then(() => {
+	      aNode.setExpanded();
+	    });
           }
           else {
             // Drop a non-node
@@ -3042,8 +3075,10 @@ function buildClippingsTree()
             parentNode.addNode({ title: dndData }, aData.hitMode);
 
             // TO DO: Create the clipping in the database.
+	    console.log("Clippings/wx::clippingsMgr.js::#clippings-tree.dnd5.dragDrop(): Non-node was dropped into tree. Detected text content: \n" + dndData);
+	    
+            aNode.setExpanded();
           }
-          aNode.setExpanded();
         }
       },
 
