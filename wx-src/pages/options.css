@@ -127,7 +127,6 @@ button.default:active {
 
 .example {
     font-size: 11px;
-    color: #737373;
 }
 
 .browser-style > input[type="checkbox"] + label::before {
