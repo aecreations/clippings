@@ -1,3 +1,4 @@
+/* -*- mode: javascript; tab-width: 8; indent-tabs-mode: nil; js-indent-level: 2 -*- */
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -130,7 +131,7 @@ function init()
     $("#sync-settings").click(aEvent => {
       gDialogs.syncClippings.showModal();
     });
-
+/***
     $("#browse-sync-fldr").click(aEvent => {
       let msg = { msgID: "sync-dir-folder-picker" };
       let sendNativeMsg = browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
@@ -143,7 +144,7 @@ function init()
 	window.alert("The Sync Clippings helper app responded with an error.\n\nDetails:\n" + aErr);
       });
     });
-    
+***/    
     $("#show-sync-help").click(aEvent => {
       gDialogs.syncClippingsHelp.showModal();
     });
