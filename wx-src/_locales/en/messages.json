@@ -1080,11 +1080,11 @@
   },
 
   "deleteSyncFldr": {
-    "message": "Can't delete the Synced Clippings folder."
+    "message": "Cannot delete the Synced Clippings folder, because Sync Clippings is turned on."
   },
 
   "moveSyncFldr": {
-    "message": "Can't move the Synced Clippings folder."
+    "message": "Cannot move the Synced Clippings folder."
   },
 
   "syncPushFailed": {
@@ -1096,7 +1096,7 @@
   },
   
   "syncStartupFailed": {
-    "message": "Unable to update your synced clippings, because the connection to the Sync Clippings helper app has failed. To fix this, reinstall the Sync Clippings helper app."
+    "message": "The Sync Clippings helper app was not found. To fix this, reinstall the Sync Clippings helper app."
   },
   
   "keyAlt": {
