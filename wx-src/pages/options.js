@@ -7,6 +7,7 @@ let gClippings;
 let gDialogs = {};
 let gIsActivatingSyncClippings = false;
 
+
 // DOM utility
 function sanitizeHTML(aHTMLStr)
 {
@@ -141,7 +142,7 @@ function init()
 	  $("#sync-fldr-curr-location").val(aResp.syncFilePath);
 	}
       }).catch(aErr => {
-	window.alert("The Sync Clippings helper app responded with an error.\n\nDetails:\n" + aErr);
+	window.alert("The Sync Clippings helper app responded with an error.\n\n" + aErr);
       });
     });
 ***/    
@@ -198,7 +199,7 @@ function initDialogs()
       }
       else if (aErr == aeConst.SYNC_ERROR_UNKNOWN) {
         $(deck[2]).show();
-        $("#sync-err-detail").text("Sorry, an error has occurred.");
+        $("#sync-err-detail").text("Sorry, no further information on this error is available.");
       }
       else {
         $(deck[2]).show();
@@ -209,9 +210,10 @@ function initDialogs()
   gDialogs.syncClippings.onAccept = () => {
     let that = gDialogs.syncClippings;
 
+    let syncFldrPath = $("#sync-fldr-curr-location").val();
     let msg = {
       msgID: "set-sync-dir",
-      filePath: $("#sync-fldr-curr-location").val()
+      filePath: syncFldrPath
     };
     log("Sending message 'set-sync-dir' with params:");
     log(msg);
@@ -224,20 +226,23 @@ function initDialogs()
       if (aResp.status == "ok") {
         gClippings.enableSyncClippings(true).then(aSyncFldrID => {
 	  if (gIsActivatingSyncClippings) {
+            // Don't do the following if Sync Clippings was already turned on
+            // and no changes to settings were made.
             setPref({ syncClippings: true });
             $("#sync-settings").show();
             $("#toggle-sync").text(chrome.i18n.getMessage("syncTurnOff"));
             $("#sync-status").text(chrome.i18n.getMessage("syncStatusOn"));
+
 	    gIsActivatingSyncClippings = false;
 	  }
-	  
-          gClippings.refreshSyncedClippings();  // Asynchronous function.
 
+          gClippings.refreshSyncedClippings();  // Asynchronous function.
+          
 	  let syncClippingsListeners = gClippings.getSyncClippingsListeners().getListeners();
 	  for (let listener of syncClippingsListeners) {
 	    listener.onActivate(aSyncFldrID);
 	  }
-
+	  
 	  that.close();
         });
       }
