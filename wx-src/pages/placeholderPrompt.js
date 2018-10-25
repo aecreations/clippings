@@ -96,7 +96,12 @@ $(() => {
             }
           }
           $("#plchldr-table").fadeIn("fast");
-          $(".ph-input")[0].select().focus();
+
+          let firstInputElt = $(".ph-input")[0];
+          if (firstInputElt.nodeName == "input") {
+            firstInputElt.select();
+          }
+          firstInputElt.focus();
         });
       }
     });
