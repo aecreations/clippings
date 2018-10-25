@@ -1433,7 +1433,7 @@ function pasteClipping(aClippingInfo, aExternalRequest)
         return;
       }
     }
-    
+
     pasteProcessedClipping(processedCtnt, activeTabID);
   });
 }
@@ -1448,9 +1448,19 @@ function pasteProcessedClipping(aClippingContent, aActiveTabID)
     autoLineBreak: gPrefs.autoLineBreak
   };
 
-  log("Clippings/wx: Extension sending message \"paste-clipping\" to content script");
+  log(`Clippings/wx: Extension sending message "paste-clipping" to content script (active tab ID = ${aActiveTabID})`);
   
-  chrome.tabs.sendMessage(aActiveTabID, msgParams, null);
+  if (isGoogleChrome()) {
+    chrome.tabs.sendMessage(aActiveTabID, msgParams, null);
+  }
+  else {
+    // Firefox
+    browser.tabs.sendMessage(aActiveTabID, msgParams).then(aResult => {
+      // If successful, aResult should be true.
+    }).catch(aErr => {
+      console.error("Clippings/wx: pasteProcessedClipping(): Failed to paste clipping with placeholders: " + aErr);
+    });
+  }
 }
 
 
