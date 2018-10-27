@@ -1338,6 +1338,12 @@ let gCmd = {
             gClippings.rebuildContextMenu();
           }
 
+          if (aFolderID == gClippings.getSyncFolderID() || gSyncedItemsIDs[aFolderID + "F"] !== undefined) {
+            gClippings.pushSyncFolderUpdates().then(() => {
+              log("Clippings/wx::clippingsMgr.js::gCmd.updateDisplayOrder(): Saved the display order for synced items.");
+            });
+          }
+
 	  aFnResolve();
 	});
       }).catch(aErr => {

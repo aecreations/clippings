@@ -7,6 +7,7 @@ let aeImportExport = {
   DEBUG: false,
 
   CLIPPINGS_JSON_VER: "6.0",
+  CLIPPINGS_JSON_VER_WITH_SEQ: "6.1",
   CLIPPINGS_JSON_CREATED_BY: "Clippings/wx",
   ROOT_FOLDER_ID: 0,
 
@@ -101,6 +102,11 @@ aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems
           // Make imported items appear last.
           folder.displayOrder = 9999999;
         }
+	else {
+	  if (item.seq !== undefined) {
+	    folder.displayOrder = item.seq;
+	  }
+	}
         
         this._db.folders.add(folder).then(aNewFolderID => {
           this._importFromJSONHelper(aNewFolderID, item.children, aReplaceShortcutKeys, aShortcutKeys, aAppendItems);
@@ -135,6 +141,11 @@ aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems
         if (aAppendItems) {
           clipping.displayOrder = 9999999;
         }
+	else {
+	  if (item.seq !== undefined) {
+	    clipping.displayOrder = item.seq;
+	  }
+	}
 
         importedClippings.push(clipping);
       }
@@ -154,7 +165,7 @@ aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems
 };
 
 
-aeImportExport.exportToJSON = function (aIncludeSrcURLs, aDontStringify, aFolderID, aExcludeFolderID)
+aeImportExport.exportToJSON = function (aIncludeSrcURLs, aDontStringify, aFolderID, aExcludeFolderID, aIncludeDisplayOrder)
 {
   let expData = {
     version: this.CLIPPINGS_JSON_VER,
@@ -162,12 +173,16 @@ aeImportExport.exportToJSON = function (aIncludeSrcURLs, aDontStringify, aFolder
     userClippingsRoot: []
   };
 
+  if (aIncludeDisplayOrder) {
+    expData.version = this.CLIPPINGS_JSON_VER_WITH_SEQ;
+  }
+
   if (! aFolderID) {
     aFolderID = this.ROOT_FOLDER_ID;
   }
 
   return new Promise((aFnResolve, aFnReject) => {
-    this._exportToJSONHelper(aFolderID, aIncludeSrcURLs, aExcludeFolderID).then(aExpItems => {
+    this._exportToJSONHelper(aFolderID, aIncludeSrcURLs, aExcludeFolderID, aIncludeDisplayOrder).then(aExpItems => {
       expData.userClippingsRoot = aExpItems;
 
       if (aDontStringify) {
@@ -183,7 +198,7 @@ aeImportExport.exportToJSON = function (aIncludeSrcURLs, aDontStringify, aFolder
 };
 
 
-aeImportExport._exportToJSONHelper = function (aFolderID, aIncludeSrcURLs, aExcludeFolderID)
+aeImportExport._exportToJSONHelper = function (aFolderID, aIncludeSrcURLs, aExcludeFolderID, aIncludeDisplayOrder)
 {
   let rv = [];
   
@@ -199,7 +214,11 @@ aeImportExport._exportToJSONHelper = function (aFolderID, aIncludeSrcURLs, aExcl
           children: []
         };
 
-        this._exportToJSONHelper(aItem.id, aIncludeSrcURLs, aExcludeFolderID).then(aChildItems => {
+	if (aIncludeDisplayOrder) {
+	  folder.seq = aItem.displayOrder || 0;
+	}
+
+        this._exportToJSONHelper(aItem.id, aIncludeSrcURLs, aExcludeFolderID, aIncludeDisplayOrder).then(aChildItems => {
           folder.children = aChildItems;
           rv.push(folder);
         });
@@ -212,6 +231,11 @@ aeImportExport._exportToJSONHelper = function (aFolderID, aIncludeSrcURLs, aExcl
             sourceURL: (aIncludeSrcURLs ? aItem.sourceURL : ""),
             label: aItem.label,
           };
+
+	  if (aIncludeDisplayOrder) {
+	    clipping.seq = aItem.displayOrder || 0;
+	  }
+	  
           rv.push(clipping);
         });
       }).then(() => {

@@ -457,7 +457,7 @@ function accept(aEvent)
         let syncFldrID = gClippings.getSyncFolderID();
         aeImportExport.setDatabase(gClippingsDB);
         
-        return aeImportExport.exportToJSON(true, true, syncFldrID);
+        return aeImportExport.exportToJSON(true, true, syncFldrID, false, true);
       }
       return null;
 

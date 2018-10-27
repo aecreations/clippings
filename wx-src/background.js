@@ -585,7 +585,7 @@ async function pushSyncFolderUpdates()
     throw new Error("Sync Clippings is not turned on!");
   }
   
-  let syncData = await aeImportExport.exportToJSON(true, true, gSyncFldrID);
+  let syncData = await aeImportExport.exportToJSON(true, true, gSyncFldrID, false, true);
   let msg = {
     msgID: "set-synced-clippings",
     syncData: syncData.userClippingsRoot,
