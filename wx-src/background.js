@@ -559,7 +559,7 @@ function refreshSyncedClippings()
       return browser.storage.local.set({ syncFolderID: gSyncFldrID });
     }
       
-    console.log("Clippings/wx: Purging existing items in the Synced Clippings folder...");
+    log("Clippings/wx: Purging existing items in the Synced Clippings folder...");
     return purgeFolderItems(gSyncFldrID, true);
 
   }).then(() => {
@@ -617,14 +617,14 @@ function purgeFolderItems(aFolderID, aKeepFolder)
 
       }).then(() => {
         if (!aKeepFolder && aFolderID != aeConst.DELETED_ITEMS_FLDR_ID) {
-          console.log("Clippings/wx: purgeFolderItems(): Deleting folder: " + aFolderID);
+          log("Clippings/wx: purgeFolderItems(): Deleting folder: " + aFolderID);
           return gClippingsDB.folders.delete(aFolderID);
         }
         return null;
         
       }).then(() => {
         return gClippingsDB.clippings.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
-          console.log("Clippings/wx: purgeFolderItems(): Deleting clipping: " + aItem.id);
+          log("Clippings/wx: purgeFolderItems(): Deleting clipping: " + aItem.id);
           gClippingsDB.clippings.delete(aItem.id);
         });
       }).then(() => {
@@ -723,10 +723,12 @@ function initMessageListeners()
       }
       else if (aRequest.msgID == "paste-clipping-with-plchldrs") {
         let content = aRequest.processedContent;
+        let tabQuery = { active: true, currentWindow: true };
 
-        chrome.tabs.query({ active: true, currentWindow: true }, aTabs => {
+        browser.tabs.query(tabQuery).then(aTabs => {
           if (! aTabs[0]) {
-            // This should never happen...
+            // This could happen if the browser tab was closed while the
+            // placeholder prompt dialog was open.
             alertEx(aeMsgBox.MSG_NO_ACTIVE_BROWSER_TAB);
             return;
           }
@@ -734,6 +736,8 @@ function initMessageListeners()
           let activeTabID = aTabs[0].id;
           pasteProcessedClipping(content, activeTabID);
           
+        }).catch(aErr => {
+          console.error("Failed to query tabs: " + aErr);
         });
       }
       else if (aRequest.msgID == "close-placeholder-prmt-dlg") {
@@ -1412,6 +1416,8 @@ function pasteClipping(aClippingInfo, aExternalRequest)
 
     let activeTabID = aTabs[0].id;
     let processedCtnt = "";
+
+    log("Clippings/wx: pasteClipping(): Active tab ID: " + activeTabID);
 
     if (aeClippingSubst.hasNoSubstFlag(aClippingInfo.name)) {
       processedCtnt = aClippingInfo.text;
