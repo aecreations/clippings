@@ -319,12 +319,12 @@ $(document).ready(() => {
     
     if (gPasteMode == aeConst.PASTEACTION_SHORTCUT_KEY) {
       $(".deck > #search-by-name").hide();
-      $(".deck > #paste-by-shortcut-key").fadeIn("fast");
+      $(".deck > #paste-by-shortcut-key").show();
     }
     else {
       $(".deck > #paste-by-shortcut-key").hide();
       chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, { height: WNDH_SEARCH_CLIPPING }, aWnd => {
-        $(".deck > #search-by-name").fadeIn("fast");
+        $(".deck > #search-by-name").show();
         $("#clipping-search").focus();
       });
     }
