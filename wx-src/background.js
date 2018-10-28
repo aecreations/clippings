@@ -236,10 +236,6 @@ async function setDefaultPrefs()
     backupRemFrequency: aeConst.BACKUP_REMIND_WEEKLY,
   };
 
-  if (aeConst.DEBUG) {
-    aeClippingsPrefs.backupRemFrequency = aeConst.BACKUP_REMIND_TEST;
-  }
-
   gPrefs = aeClippingsPrefs;
   await browser.storage.local.set(aeClippingsPrefs);
 }
@@ -1078,29 +1074,23 @@ function showBackupNotification()
   let lastBackupRemDate = new Date(gPrefs.lastBackupRemDate);
   let diff = new DateDiff(today, lastBackupRemDate);
   let numDays = 0;
-  let numMins = 0;  // For testing only.
 
   switch (gPrefs.backupRemFrequency) {
   case aeConst.BACKUP_REMIND_DAILY:
     numDays = 1;
     break;
 
-  case aeConst.BACKUP_REMIND_WEEKLY:
-    numDays = 7;
-    break;
-
   case aeConst.BACKUP_REMIND_MONTHLY:
     numDays = 30;
     break;
 
+  case aeConst.BACKUP_REMIND_WEEKLY:
   default:
-    if (aeConst.DEBUG) {
-      numMins = 3;
-    }
+    numDays = 7;
     break;
   }
 
-  if ((aeConst.DEBUG && diff.minutes >= numMins) || (!aeConst.DEBUG && diff.days >= numDays)) {
+  if (diff.days >= numDays) {
     if (gPrefs.backupRemFirstRun) {
       info("Clippings/wx: showBackupNotification(): Showing first-time backup reminder.");
 
