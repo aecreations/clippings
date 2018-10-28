@@ -17,6 +17,7 @@ let gClippingMenuItemIDMap = {};
 let gFolderMenuItemIDMap = {};
 let gSyncFldrID = null;
 let gBackupRemIntervalID = null;
+let gPasteClippingTargetTabID = null;
 
 let gClippingsListeners = {
   ORIGIN_CLIPPINGS_MGR: 1,
@@ -352,7 +353,12 @@ function init()
     info(`Clippings/wx: Command "${aCmdName}" invoked!`);
 
     if (aCmdName == "ae-clippings-paste-clipping" && gPrefs.keyboardPaste) {
-      openKeyboardPasteDlg();
+      browser.tabs.query({ active: true, currentWindow: true }).then(aTabs => {
+        let activeTabID = aTabs[0].id;
+        gPasteClippingTargetTabID = activeTabID;
+        log(`Clippings/wx: Active tab ID: ${activeTabID} - opening keyboard paste dialog.`);
+        openKeyboardPasteDlg();
+      });
     }
   });
 
@@ -717,6 +723,7 @@ function initMessageListeners()
         log(`Clippings/wx: Key '${shortcutKey}' was pressed.`);
         pasteClippingByShortcutKey(shortcutKey);
       }
+
       else if (aRequest.msgID == "paste-clipping-by-name") {
         let externReq = aRequest.fromClippingsMgr;
         pasteClippingByID(aRequest.clippingID, externReq);
@@ -734,6 +741,10 @@ function initMessageListeners()
           }
 
           let activeTabID = aTabs[0].id;
+          if (activeTabID != gPasteClippingTargetTabID) {
+            warn(`Clippings/wx: Detected mismatch between currently-active browser tab ID and what it was when invoking clipping paste.\nPrevious active tab ID = ${gPasteClippingTargetTabID}, active tab ID = ${activeTabID}`);
+            activeTabID = gPasteClippingTargetTabID;
+          }
           pasteProcessedClipping(content, activeTabID);
           
         }).catch(aErr => {
@@ -1419,6 +1430,16 @@ function pasteClipping(aClippingInfo, aExternalRequest)
 
     log("Clippings/wx: pasteClipping(): Active tab ID: " + activeTabID);
 
+    if (gPasteClippingTargetTabID === null) {
+      gPasteClippingTargetTabID = activeTabID;
+    }
+    else {
+      if (activeTabID != gPasteClippingTargetTabID) {
+        warn(`Clippings/wx: pasteClipping(): Detected mismatch between active tab ID and what it was before the keyboard paste dialog.\nPrevious active tab ID = ${gPasteClippingTargetTabID}, current active tab ID = ${activeTabID}`);
+        activeTabID = gPasteClippingTargetTabID;
+      }
+    }
+
     if (aeClippingSubst.hasNoSubstFlag(aClippingInfo.name)) {
       processedCtnt = aClippingInfo.text;
     }
@@ -1435,6 +1456,7 @@ function pasteClipping(aClippingInfo, aExternalRequest)
       if (plchldrs.length > 0) {
         let plchldrsWithDefaultVals = aeClippingSubst.getCustomPlaceholderDefaultVals(processedCtnt, aClippingInfo);
         gPlaceholders.set(plchldrs, plchldrsWithDefaultVals, processedCtnt);
+        
         openPlaceholderPromptDlg();
         return;
       }
@@ -1465,6 +1487,8 @@ function pasteProcessedClipping(aClippingContent, aActiveTabID)
       // If successful, aResult should be true.
     }).catch(aErr => {
       console.error("Clippings/wx: pasteProcessedClipping(): Failed to paste clipping with placeholders: " + aErr);
+    }).finally(() => {
+      gPasteClippingTargetTabID = null;
     });
   }
 }
