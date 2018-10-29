@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const DEBUG_TREE = false;
+const DEBUG_TREE = true;
 const DEBUG_WND_ACTIONS = false;
 const ENABLE_PASTE_CLIPPING = false;
 const NEW_CLIPPING_FROM_CLIPBOARD = "New Clipping From Clipboard";
@@ -13,7 +13,6 @@ let gClippingsDB;
 let gClippings;
 let gIsClippingsTreeEmpty;
 let gIsReloading = false;
-let gClippingsTreeDnD = false;
 let gDialogs = {};
 let gOpenerWndID;
 let gIsMaximized;
@@ -137,20 +136,14 @@ let gClippingsListener = {
     let tree = getClippingsTree();
 
     if (aData.parentFolderID != aOldData.parentFolderID) {
+      let parentFldrID = aOldData.parentFolderID;
+
       if (this._isFlaggedForDelete(aData)) {
-        let parentFldrID = aOldData.parentFolderID;
-        
         this._removeClippingsTreeNode(aID + "C");
         gCmd.updateDisplayOrder(parentFldrID, null, null, true);
       }
       else {
-        if (gClippingsTreeDnD) {
-          // Avoid handling moved clipping twice.
-          gClippingsTreeDnD = false;
-          return;
-        }
-        
-        log("Clippings/wx::clippingsMgr.js::gClippingsListener.clippingChanged: Handling clipping move");
+        log("Clippings/wx::clippingsMgr.js::gClippingsListener.clippingChanged(): Handling clipping move");
         let changedNode = tree.getNodeByKey(aID + "C");
         if (changedNode) {
           let targParentNode;
@@ -162,6 +155,12 @@ let gClippingsListener = {
           }
           
           changedNode.moveTo(targParentNode, "child");
+
+          log("Clippings/wx::clippingsMgr.js: gCmd.clippingChanged(): Updating display order of changed clipping");
+          let oldParentFldrID = aData.parentFolderID;
+          gCmd.updateDisplayOrder(parentFldrID, null, null, true).then(() => {
+            gCmd.updateDisplayOrder(oldParentFldrID, null, null, true);
+          });
         }
         else {
           // Undoing delete.
@@ -177,6 +176,9 @@ let gClippingsListener = {
             let parentNode = tree.getNodeByKey(aData.parentFolderID + "F");
             changedNode = parentNode.addNode(newNodeData);
           }
+
+          log("Clippings/wx::clippingsMgr.js: gCmd.clippingChanged(): Updating display order after undoing clipping deletion");
+          gCmd.updateDisplayOrder(parentFldrID, null, null, true);
         }
 
         changedNode.makeVisible().then(() => { changedNode.setActive() });
@@ -193,19 +195,13 @@ let gClippingsListener = {
     let tree = getClippingsTree();
 
     if (aData.parentFolderID != aOldData.parentFolderID) {
+      let parentFldrID = aOldData.parentFolderID;
+
       if (this._isFlaggedForDelete(aData)) {
-        let parentFldrID = aOldData.parentFolderID;
-        
         this._removeClippingsTreeNode(aID + "F");
         gCmd.updateDisplayOrder(parentFldrID, null, null, true);
       }
       else {
-        if (gClippingsTreeDnD) {
-          // Avoid handling moved folder twice.
-          gClippingsTreeDnD = false;
-          return;
-        }
-        
         log("Clippings/wx::clippingsMgr.js::gClippingsListener.folderChanged: Handling folder move");
         let changedNode = tree.getNodeByKey(aID + "F");
         if (changedNode) {
@@ -218,6 +214,12 @@ let gClippingsListener = {
           }
           
           changedNode.moveTo(targParentNode, "child");
+
+          log("Clippings/wx::clippingsMgr.js: gCmd.folderChanged(): Updating display order of changed folder");
+          let oldParentFldrID = aData.parentFolderID;
+          gCmd.updateDisplayOrder(parentFldrID, null, null, true).then(() => {
+            gCmd.updateDisplayOrder(oldParentFldrID, null, null, true);
+          });
         }
         else {
           // Undoing delete.
@@ -236,7 +238,10 @@ let gClippingsListener = {
             changedNode = parentNode.addNode(newNodeData);
           }
 
-          this._buildChildNodes(changedNode);
+          log("Clippings/wx::clippingsMgr.js: gCmd.folderChanged(): Updating display order after undoing folder deletion");
+          gCmd.updateDisplayOrder(parentFldrID, null, null, true).then(() => {
+            this._buildChildNodes(changedNode);
+          });
         }
         changedNode.makeVisible().then(() => { changedNode.setActive() });
       }
@@ -294,13 +299,18 @@ let gClippingsListener = {
           children: []
         });
         this._buildChildNodes(newFldrNode);
+
       }).then(() => {
-        gClippingsDB.clippings.where("parentFolderID").equals(id).each((aItem, aCursor) => {
+        return gClippingsDB.clippings.where("parentFolderID").equals(id).each((aItem, aCursor) => {
           aFolderNode.addChildren({
             key: aItem.id + "C",
             title: sanitizeTreeNodeTitle(DEBUG_TREE ? `${aItem.name} [key=${aID}C]` : aItem.name)
           });
         });
+
+      }).then(() => {
+        log(`Clippings/wx::clippingsMgr.js::gClippingsListener._buildChildNodes(): Updating display order for child folder '${aFolderNode.title}' (key = ${aFolderNode.key})`);
+        gCmd.updateDisplayOrder(id, null, null, true);
       });
     }).catch(aErr => {
       console.error("Clippings/wx::clippingsMgr.js::gClippingsListener._buildChildNodes(): " + aErr);
@@ -3056,7 +3066,6 @@ function buildClippingsTree()
             }
 
             aData.otherNode.moveTo(aNode, aData.hitMode);
-            gClippingsTreeDnD = true;
             
             log(`Clippings/wx::clippingsMgr.js::#clippings-tree.dnd5.dragDrop(): ID of moved clipping or folder: ${id}\nID of old parent folder: ${oldParentID}\nID of new parent folder: ${newParentID}`);
 
@@ -3072,7 +3081,10 @@ function buildClippingsTree()
               }
             }           
 
-            gCmd.updateDisplayOrder(newParentID, false).then(() => {
+            log("Clippings/wx::clippingsMgr.js::#clippings-tree.dnd5.dragDrop(): Updating display order");
+            gCmd.updateDisplayOrder(oldParentID, null, null, true).then(() => {
+              return gCmd.updateDisplayOrder(newParentID, null, null, false);
+            }).then(() => {
 	      aNode.setExpanded();
 	    });
           }
