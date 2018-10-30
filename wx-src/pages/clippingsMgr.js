@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const DEBUG_TREE = true;
+const DEBUG_TREE = false;
 const DEBUG_WND_ACTIONS = false;
 const ENABLE_PASTE_CLIPPING = false;
 const NEW_CLIPPING_FROM_CLIPBOARD = "New Clipping From Clipboard";
