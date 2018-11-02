@@ -1,7 +1,7 @@
 {
   "extName": {
     "message": "Clippings",
-    "description": "Name of the extension"
+    "description": "Name of the extension - do NOT translate"
   },
 
   "extDesc": {
@@ -93,7 +93,8 @@
   },
 
   "none": {
-    "message": "None"
+    "message": "None",
+    "description": "Denotes that there is no shortcut key, label or source web address (URL)."
   },
 
   "newClipping": {
@@ -424,7 +425,8 @@
   },
 
   "numMatches": {
-    "message": "$1 matches"
+    "message": "$1 matches",
+    "description": "Status bar message in Clippings Manager showing the number of matches for the search query."
   },
 
   "insClipping": {
@@ -523,15 +525,18 @@
   },
 
   "tbPlchldrPresets": {
-    "message": "Presets"
+    "message": "Presets",
+    "description": "Clippings Manager - Placeholder Toolbar button"
   },
 
   "tbPlchldrCustom": {
-    "message": "Custom"
+    "message": "Custom",
+    "description": "Clippings Manager - Placeholder Toolbar button"
   },
 
   "tbPlchldrNumeric": {
-    "message": "Numeric"
+    "message": "Numeric",
+    "description": "Clippings Manager - Placeholder Toolbar button"
   },
 
   "labelSrcURL": {
@@ -694,7 +699,8 @@
   },
 
   "clipMgrStatusBar": {
-    "message": "$1 items"
+    "message": "$1 items",
+    "description": "Status bar text in Clippings Manager, counting the number of clippings and folders"
   },
 
   "clipMgrRemoveSrcURLsConfirm": {
@@ -1008,11 +1014,13 @@
   },
 
   "syncFldrName": {
-    "message": "Synced Clippings"
+    "message": "Synced Clippings",
+    "description": "The name of the folder containing the user's synchronized clippings."
   },
   
   "syncClippings": {
-    "message": "Sync Clippings"
+    "message": "Sync Clippings",
+    "description": "The name of the feature for synchronizing clippings between applications or computers."
   },
 
   "syncIntro": {
@@ -1064,15 +1072,18 @@
   },
 
   "syncFileDirExWin": {
-    "message": "C:\\Users\\YourName\\Documents\\Synced Clippings"
+    "message": "C:\\Users\\YourName\\Documents\\Synced Clippings",
+    "description": "Example folder path on Windows."
   },
 
   "syncFileDirExMac": {
-    "message": "/Users/YourName/Documents/Synced Clippings"
+    "message": "/Users/YourName/Documents/Synced Clippings",
+    "description": "Example folder path on macOS."
   },
 
   "syncFileDirExLinux": {
-    "message": "/home/YourName/synced-clippings"
+    "message": "/home/YourName/synced-clippings",
+    "description": "Example folder path on Linux."
   },
 
   "syncFileDirDesc": {
