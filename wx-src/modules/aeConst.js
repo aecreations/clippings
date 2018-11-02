@@ -31,6 +31,11 @@ let aeConst = {
   ROOT_FOLDER_ID: 0,
   DELETED_ITEMS_FLDR_ID: -1,
 
+  // IndexedDB database change types
+  DB_CREATED: 1,
+  DB_UPDATED: 2,
+  DB_DELETED: 3,
+
   // Export to file
   CLIPPINGS_EXPORT_FILENAME: "clippings.json",
   HTML_EXPORT_FILENAME: "clippings.html",
