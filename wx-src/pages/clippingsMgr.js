@@ -673,7 +673,6 @@ let gCmd = {
   ACTION_RESTORE_BACKUP: 16,
   ACTION_IMPORT: 17,
   ACTION_EXPORT: 18,
-  ACTION_RELOAD_SYNC_FLDR: 19,
 
   // flags for aDestUndoStack parameter of functions for reversible actions
   UNDO_STACK: 1,
