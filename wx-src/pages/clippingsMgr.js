@@ -386,6 +386,9 @@ let gSyncClippingsListener = {
     // This doesn't seem to do anything (i.e., change the folder icon)
     syncFldrTreeNode.removeClass("ae-synced-clippings-fldr");
   },
+
+  onReloadStart() {},
+  onReloadFinish() {},
 };
 
 

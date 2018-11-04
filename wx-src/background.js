@@ -18,6 +18,7 @@ let gFolderMenuItemIDMap = {};
 let gSyncFldrID = null;
 let gBackupRemIntervalID = null;
 let gPasteClippingTargetTabID = null;
+let gIsReloadingSyncFldr = false;
 
 let gClippingsListeners = {
   ORIGIN_CLIPPINGS_MGR: 1,
@@ -44,10 +45,20 @@ let gClippingsListener = {
   origin: null,
   
   newClippingCreated: function (aID, aData) {
+    if (gIsReloadingSyncFldr) {
+      log("Clippings/wx: gClippingsListener.newClippingCreated(): The Synced Clippings folder is being reloaded. Ignoring DB changes.");
+      return;
+    }
+
     rebuildContextMenu();
   },
 
   newFolderCreated: function (aID, aData) {
+    if (gIsReloadingSyncFldr) {
+      log("Clippings/wx: gClippingsListener.newFolderCreated(): The Synced Clippings folder is being reloaded. Ignoring DB changes.");
+      return;
+    }
+
     rebuildContextMenu();
   },
 
@@ -68,6 +79,11 @@ let gClippingsListener = {
   folderDeleted: function (aID, aOldData) {},
 
   afterBatchChanges: function (aDBChanges) {
+    if (gIsReloadingSyncFldr) {
+      log("Clippings/wx: gClippingsListener.afterBatchChanges(): The Synced Clippings folder is being reloaded. Ignoring DB changes.");
+      return;
+    }
+      
     rebuildContextMenu();
   }
 };
@@ -97,6 +113,17 @@ let gSyncClippingsListener = {
 
   onDeactivate(aOldSyncFolderID) {
     log("Clippings/wx: gSyncClippingsListener.onDeactivate()");
+    rebuildContextMenu();
+  },
+
+  onReloadStart() {
+    console.log("Clippings/wx: gSyncClippingsListeners.onReloadStart()");
+    gIsReloadingSyncFldr = true;
+  },
+  
+  onReloadFinish() {
+    console.log("Clippings/wx: gSyncClippingsListeners.onReloadFinish(): Rebuilding Clippings menu");
+    gIsReloadingSyncFldr = false;
     rebuildContextMenu();
   },
 };
@@ -234,6 +261,7 @@ async function setDefaultPrefs()
     lastBackupRemDate: null,
     backupRemFirstRun: true,
     backupRemFrequency: aeConst.BACKUP_REMIND_WEEKLY,
+    afterSyncFldrReloadDelay: 3000,
   };
 
   gPrefs = aeClippingsPrefs;
@@ -250,6 +278,7 @@ async function setNewPrefs()
     lastBackupRemDate: null,
     backupRemFirstRun: true,
     backupRemFrequency: aeConst.BACKUP_REMIND_WEEKLY,
+    afterSyncFldrReloadDelay: 3000,
   };
   
   for (let pref in newPrefs) {
@@ -406,7 +435,8 @@ function initClippingsDB()
       for (let i = 0; i < aChanges.length; i++) {
         let pptyChanges = aChanges[i].mods;
 
-        if (pptyChanges !== undefined && ("displayOrder" in pptyChanges) && Object.keys(pptyChanges).length == 1) {
+        if (pptyChanges !== undefined && ("displayOrder" in pptyChanges)
+            && Object.keys(pptyChanges).length == 1) {
           isDisplayOrderOnlyChanged = true;
         }
       }
@@ -414,8 +444,9 @@ function initClippingsDB()
       if (isDisplayOrderOnlyChanged) {
         return;
       }
+
+      info(`Clippings/wx: There are ${aChanges.length} DB changes detected. Calling afterBatchChanges() on all Clippings listeners.`);
       
-      info("Clippings/wx: Multiple DB changes detected. Calling afterBatchChanges() on all Clippings listeners.");
       clippingsListeners.forEach(aListener => { aListener.afterBatchChanges(aChanges) });
       return;
     }
@@ -426,11 +457,16 @@ function initClippingsDB()
       switch (aChange.type) {
       case aeConst.DB_CREATED:
         info("Clippings/wx: Database observer detected CREATED event");
+        
         if (aChange.table == "clippings") {
-          clippingsListeners.forEach(aListener => { aListener.newClippingCreated(aChange.key, aChange.obj) });
+          clippingsListeners.forEach(aListener => {
+            aListener.newClippingCreated(aChange.key, aChange.obj);
+          });
         }
         else if (aChange.table == "folders") {
-          clippingsListeners.forEach(aListener => { aListener.newFolderCreated(aChange.key, aChange.obj) });
+          clippingsListeners.forEach(aListener => {
+            aListener.newFolderCreated(aChange.key, aChange.obj);
+          });
         }
         break;
         
@@ -438,25 +474,34 @@ function initClippingsDB()
         info("Clippings/wx: Database observer detected UPDATED event");
 
         // Don't do anything if only the displayOrder was changed.
-        if (aChange.mods !== undefined && ("displayOrder" in aChange.mods) && Object.keys(aChange.mods).length == 1) {
+        if (aChange.mods !== undefined && ("displayOrder" in aChange.mods)
+            && Object.keys(aChange.mods).length == 1) {
           break;
         }
 
         if (aChange.table == "clippings") {
-          clippingsListeners.forEach(aListener => { aListener.clippingChanged(aChange.key, aChange.obj, aChange.oldObj) });
+          clippingsListeners.forEach(aListener => {
+            aListener.clippingChanged(aChange.key, aChange.obj, aChange.oldObj);
+          });
         }
         else if (aChange.table == "folders") {
-          clippingsListeners.forEach(aListener => { aListener.folderChanged(aChange.key, aChange.obj, aChange.oldObj) });
+          clippingsListeners.forEach(aListener => {
+            aListener.folderChanged(aChange.key, aChange.obj, aChange.oldObj);
+          });
         }
         break;
         
       case aeConst.DB_DELETED:
         info("Clippings/wx: Database observer detected DELETED event");
         if (aChange.table == "clippings") {
-          clippingsListeners.forEach(aListener => { aListener.clippingDeleted(aChange.key, aChange.oldObj) });
+          clippingsListeners.forEach(aListener => {
+            aListener.clippingDeleted(aChange.key, aChange.oldObj);
+          });
         }
         else if (aChange.table == "folders") {
-          clippingsListeners.forEach(aListener => { aListener.folderDeleted(aChange.key, aChange.oldObj) });
+          clippingsListeners.forEach(aListener => {
+            aListener.folderDeleted(aChange.key, aChange.oldObj);
+          });
         }
         break;
         
@@ -527,7 +572,7 @@ async function enableSyncClippings(aIsEnabled)
 function refreshSyncedClippings()
 {
   log("Clippings/wx: refreshSyncedClippings(): Retrieving synced clippings from the Sync Clippings helper app...");
-  
+
   let msg = { msgID: "get-synced-clippings" };
   let getSyncedClippings = browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
   let syncJSONData = "";
@@ -561,6 +606,8 @@ function refreshSyncedClippings()
       return browser.storage.local.set({ syncFolderID: gSyncFldrID });
     }
       
+    gSyncClippingsListeners.getListeners().forEach(aListener => { aListener.onReloadStart() });
+
     log("Clippings/wx: Purging existing items in the Synced Clippings folder...");
     return purgeFolderItems(gSyncFldrID, true);
 
@@ -571,6 +618,10 @@ function refreshSyncedClippings()
     // may not yet be finished when this function has finished executing!
     aeImportExport.setDatabase(gClippingsDB);
     aeImportExport.importFromJSON(syncJSONData, false, false, gSyncFldrID);
+
+    window.setTimeout(function () {
+      gSyncClippingsListeners.getListeners().forEach(aListener => { aListener.onReloadFinish() });
+    }, gPrefs.afterSyncFldrReloadDelay);
     
   }).catch(aErr => {
     console.error("Clippings/wx: refreshSyncedClippings(): " + aErr);
