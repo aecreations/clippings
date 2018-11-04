@@ -136,11 +136,12 @@ let gClippingsListener = {
     let tree = getClippingsTree();
 
     if (aData.parentFolderID != aOldData.parentFolderID) {
-      let parentFldrID = aOldData.parentFolderID;
+      let oldParentFldrID = aOldData.parentFolderID;
+      let newParentFldrID = aData.parentFolderID;
 
       if (this._isFlaggedForDelete(aData)) {
         this._removeClippingsTreeNode(aID + "C");
-        gCmd.updateDisplayOrder(parentFldrID, null, null, true);
+        gCmd.updateDisplayOrder(oldParentFldrID, null, null, true);
       }
       else {
         log("Clippings/wx::clippingsMgr.js::gClippingsListener.clippingChanged(): Handling clipping move");
@@ -157,9 +158,8 @@ let gClippingsListener = {
           changedNode.moveTo(targParentNode, "child");
 
           log("Clippings/wx::clippingsMgr.js: gCmd.clippingChanged(): Updating display order of changed clipping");
-          let oldParentFldrID = aData.parentFolderID;
-          gCmd.updateDisplayOrder(parentFldrID, null, null, true).then(() => {
-            gCmd.updateDisplayOrder(oldParentFldrID, null, null, true);
+          gCmd.updateDisplayOrder(oldParentFldrID, null, null, true).then(() => {
+            gCmd.updateDisplayOrder(newParentFldrID, null, null, true);
           });
         }
         else {
@@ -177,8 +177,8 @@ let gClippingsListener = {
             changedNode = parentNode.addNode(newNodeData);
           }
 
-          log("Clippings/wx::clippingsMgr.js: gCmd.clippingChanged(): Updating display order after undoing clipping deletion");
-          gCmd.updateDisplayOrder(parentFldrID, null, null, true);
+          log(`Clippings/wx::clippingsMgr.js: gCmd.clippingChanged(): Updating display order of items under folder (ID = ${newParentFldrID}) after undoing clipping deletion`);
+          gCmd.updateDisplayOrder(newParentFldrID, null, null, true);
         }
 
         changedNode.makeVisible().then(() => { changedNode.setActive() });
@@ -195,11 +195,12 @@ let gClippingsListener = {
     let tree = getClippingsTree();
 
     if (aData.parentFolderID != aOldData.parentFolderID) {
-      let parentFldrID = aOldData.parentFolderID;
+      let oldParentFldrID = aOldData.parentFolderID;
+      let newParentFldrID = aData.parentFolderID;
 
       if (this._isFlaggedForDelete(aData)) {
         this._removeClippingsTreeNode(aID + "F");
-        gCmd.updateDisplayOrder(parentFldrID, null, null, true);
+        gCmd.updateDisplayOrder(oldParentFldrID, null, null, true);
       }
       else {
         log("Clippings/wx::clippingsMgr.js::gClippingsListener.folderChanged: Handling folder move");
@@ -216,9 +217,9 @@ let gClippingsListener = {
           changedNode.moveTo(targParentNode, "child");
 
           log("Clippings/wx::clippingsMgr.js: gCmd.folderChanged(): Updating display order of changed folder");
-          let oldParentFldrID = aData.parentFolderID;
-          gCmd.updateDisplayOrder(parentFldrID, null, null, true).then(() => {
-            gCmd.updateDisplayOrder(oldParentFldrID, null, null, true);
+          let newParentFldrID = aData.parentFolderID;
+          gCmd.updateDisplayOrder(oldParentFldrID, null, null, true).then(() => {
+            gCmd.updateDisplayOrder(newParentFldrID, null, null, true);
           });
         }
         else {
@@ -239,7 +240,7 @@ let gClippingsListener = {
           }
 
           log("Clippings/wx::clippingsMgr.js: gCmd.folderChanged(): Updating display order after undoing folder deletion");
-          gCmd.updateDisplayOrder(parentFldrID, null, null, true).then(() => {
+          gCmd.updateDisplayOrder(newParentFldrID, null, null, true).then(() => {
             this._buildChildNodes(changedNode);
           });
         }
@@ -290,7 +291,7 @@ let gClippingsListener = {
   {
     let id = parseInt(aFolderNode.key);
     
-    gClippingsDB.transaction("r", gClippingsDB.clippings, gClippingsDB.folders, () => {
+    gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
       gClippingsDB.folders.where("parentFolderID").equals(id).each((aItem, aCursor) => {
         let newFldrNode = aFolderNode.addChildren({
           key: aItem.id + "F",
@@ -1313,6 +1314,10 @@ let gCmd = {
     }
 
     let childNodes = folderNode.getChildren();
+    if (! childNodes) {  // Empty folder.
+      return;
+    }
+    
     this.recentAction = this.ACTION_CHANGEPOSITION;
 
     return new Promise((aFnResolve, aFnReject) => {
@@ -1334,7 +1339,7 @@ let gCmd = {
 	}
 
 	Promise.all(seqUpdates).then(aNumUpd => {
-          log("Clippings/wx::clippingsMgr.js: gCmd.updateDisplayOrder(): Display order updates for each folder item is completed");
+          log(`Clippings/wx::clippingsMgr.js: gCmd.updateDisplayOrder(): Display order updates for each folder item is completed (folder ID = ${aFolderID})`);
 
           if (aDestUndoStack == this.UNDO_STACK) {
             this.undoStack.push({
