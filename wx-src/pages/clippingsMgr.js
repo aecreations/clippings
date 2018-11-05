@@ -715,8 +715,7 @@ let gReloadSyncFldrBtn = {
       return;
     }
 
-    let syncFldrSpan = this._getSyncFldrSpan();
-    let syncFldrSpanElt = syncFldrSpan[0];
+    let syncFldrSpanElt = this._getSyncFldrSpan()[0];
     let reloadBtn = document.createElement("span");
     reloadBtn.id = "reload-sync-fldr-btn";
     reloadBtn.title = chrome.i18n.getMessage("btnReload");
