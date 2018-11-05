@@ -380,9 +380,10 @@ let gSyncClippingsListener = {
     log(`Clippings/wx::clippingsMgr.js::gSyncClippingsListener.onDeactivate(): ID of old sync folder: ${aOldSyncFolderID}`);
     gSyncedItemsIDs = {};
 
+    gReloadSyncFldrBtn.hide();
+    
     let clippingsTree = getClippingsTree();
     let syncFldrTreeNode = clippingsTree.getNodeByKey(aOldSyncFolderID + "F");
-
     syncFldrTreeNode.removeClass("ae-synced-clippings-fldr");
   },
 
@@ -703,6 +704,43 @@ let gClippingLabelPicker = {
     });
     this._labelPicker.val(aLabel);
   }
+};
+
+// Reload button for the Synced Clippings folder.
+let gReloadSyncFldrBtn = {
+  show()
+  {
+    let syncFldrID = gClippings.getSyncFolderID();
+    if (syncFldrID === null) {
+      return;
+    }
+
+    let syncFldrSpan = this._getSyncFldrSpan();
+    let syncFldrSpanElt = syncFldrSpan[0];
+    let reloadBtn = document.createElement("span");
+    reloadBtn.id = "reload-sync-fldr-btn";
+    reloadBtn.title = chrome.i18n.getMessage("btnReload");
+    reloadBtn.addEventListener("click", aEvent => { gCmd.reloadSyncFolder() });
+    
+    syncFldrSpanElt.appendChild(reloadBtn);
+  },
+
+  hide()
+  {
+    let syncFldrSpan = this._getSyncFldrSpan();
+    if (! syncFldrSpan) {
+      console.error("Clippings/wx::clippingsMgr.js: gReloadSyncFldrBtn.hide(): Failed to retrieve the Fancytree <span> element for the Synced Clippings folder!");
+      return;
+    }
+
+    let syncFldrSpanElt = syncFldrSpan[0];
+    let reloadBtnElt = document.getElementById("reload-sync-fldr-btn");
+    syncFldrSpanElt.removeChild(reloadBtnElt);
+  },
+
+  _getSyncFldrSpan() {
+    return $("#clippings-tree > ul.ui-fancytree > li > span.ae-synced-clippings-fldr");
+  },
 };
 
 
@@ -3333,6 +3371,11 @@ function buildClippingsTree()
         }
       }
     });
+
+    if (gClippings.getPrefs().syncClippings) {
+      gReloadSyncFldrBtn.show();
+    }
+    
   }).catch(aErr => {
     console.error("Clippings/wx::buildContextMenu(): %s", aErr.message);
     showInitError();
