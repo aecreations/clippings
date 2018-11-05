@@ -512,22 +512,6 @@ function initClippingsDB()
   });
 
   gClippingsDB.open().catch(aErr => { onError(aErr) });
-
-  isStoragePersisted().then(async aIsPersisted => {
-    if (aIsPersisted) {
-      info("Clippings/wx: Storage is successfully persisted.");
-    }
-    else {
-      warn("Clippings/wx: Storage is NOT persisted. This may happen if Clippings is installed as a temporary add-on.");
-    }
-  });
-}
-
-
-async function isStoragePersisted()
-{
-  return await navigator.storage && navigator.storage.persisted &&
-    navigator.storage.persisted();
 }
 
 
