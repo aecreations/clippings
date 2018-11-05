@@ -377,13 +377,12 @@ let gSyncClippingsListener = {
   
   onDeactivate(aOldSyncFolderID)
   {
-    log("Clippings/wx::clippingsMgr.js::gSyncClippingsListener.onDeactivate()");
+    log(`Clippings/wx::clippingsMgr.js::gSyncClippingsListener.onDeactivate(): ID of old sync folder: ${aOldSyncFolderID}`);
     gSyncedItemsIDs = {};
 
     let clippingsTree = getClippingsTree();
-    let syncFldrTreeNode = clippingsTree.getNodeByKey(aOldSyncFolderID + "C");
+    let syncFldrTreeNode = clippingsTree.getNodeByKey(aOldSyncFolderID + "F");
 
-    // This doesn't seem to do anything (i.e., change the folder icon)
     syncFldrTreeNode.removeClass("ae-synced-clippings-fldr");
   },
 
