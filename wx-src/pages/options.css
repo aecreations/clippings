@@ -309,6 +309,22 @@ button.default:active {
     background-size: contain;
 }
 
+#turn-off-sync-clippings-confirm-dlg {
+    top: 160px;
+    --width: 450px;
+    --height: 170px;
+}
+
+#turn-off-sync-clippings-confirm-dlg .info-icon {
+    float: left;
+    width: 48px;
+    height: 48px;
+    margin-top: 8px;
+    margin-right: 12px;
+    background-image: url("../img/info.svg");
+    background-size: contain;
+}
+
 #sync-clippings-help-dlg {
     --width: 600px;
     --height: 508px;

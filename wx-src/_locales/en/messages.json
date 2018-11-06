@@ -1059,6 +1059,14 @@
     "message": "Are you sure you want to turn off Sync Clippings?"
   },
 
+  "syncTurnOffAck": {
+    "message": "Sync Clippings is turned off."
+  },
+
+  "syncTurnOffRmFldr": {
+    "message": "Remove the Synced Clippings folder from the Clippings menu and Clippings Manager"
+  },
+
   "syncConnect": {
     "message": "Connecting to the Sync Clippings helper app..."
   },

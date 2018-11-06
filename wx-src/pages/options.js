@@ -276,6 +276,7 @@ function initDialogs()
   gDialogs.turnOffSync = new aeDialog("#turn-off-sync-clippings-dlg");
   gDialogs.turnOffSync.onAccept = () => {
     let that = gDialogs.turnOffSync;
+    that.close();
 
     gClippings.enableSyncClippings(false).then(aOldSyncFldrID => {
       setPref({ syncClippings: false });
@@ -288,8 +289,13 @@ function initDialogs()
 	listener.onDeactivate(aOldSyncFldrID);
       }
 
-      that.close();
+      gDialogs.turnOffSyncAck.showModal();
     });
+  };
+
+  gDialogs.turnOffSyncAck = new aeDialog("#turn-off-sync-clippings-confirm-dlg");
+  gDialogs.turnOffSyncAck.onAfterAccept = () => {
+    // TO DO: If the checkbox is ticked, then delete the Synced Clippings folder.
   };
   
   gDialogs.syncClippingsHelp = new aeDialog("#sync-clippings-help-dlg");
