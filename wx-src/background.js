@@ -15,6 +15,7 @@ let gHostAppName = null;
 let gAutoIncrPlchldrs = null;
 let gClippingMenuItemIDMap = {};
 let gFolderMenuItemIDMap = {};
+let gPasteClippingTargetTabID = null;
 
 let gClippingsListeners = {
   ORIGIN_CLIPPINGS_MGR: 1,
@@ -69,7 +70,7 @@ let gClippingsListener = {
     removeContextMenuForFolder(aID);
   },
 
-  afterBatchChanges: function () {
+  afterBatchChanges: function (aDBChanges) {
     rebuildContextMenu();
   }
 };
@@ -270,7 +271,12 @@ function initHelper()
     info(`Clippings/wx: Command "${aCmdName}" invoked!`);
 
     if (aCmdName == "ae-clippings-paste-clipping" && gPrefs.keyboardPaste) {
-      openKeyboardPasteDlg();
+      browser.tabs.query({ active: true, currentWindow: true }).then(aTabs => {
+        let activeTabID = aTabs[0].id;
+        gPasteClippingTargetTabID = activeTabID;
+        log(`Clippings/wx: Active tab ID: ${activeTabID} - opening keyboard paste dialog.`);
+        openKeyboardPasteDlg();
+      });
     }
   });
 
@@ -301,13 +307,11 @@ function initClippingsDB()
   });
   
   gClippingsDB.on("changes", aChanges => {
-    const CREATED = 1, UPDATED = 2, DELETED = 3;
-
     let clippingsListeners = gClippingsListeners.get();
 
     if (aChanges.length > 1) {
       info("Clippings/wx: Multiple DB changes detected. Calling afterBatchChanges() on all Clippings listeners.");
-      clippingsListeners.forEach(aListener => { aListener.afterBatchChanges() });
+      clippingsListeners.forEach(aListener => { aListener.afterBatchChanges(aChanges) });
       return;
     }
 
@@ -315,7 +319,7 @@ function initClippingsDB()
     
     aChanges.forEach(aChange => {
       switch (aChange.type) {
-      case CREATED:
+      case aeConst.DB_CREATED:
         info("Clippings/wx: Database observer detected CREATED event");
         if (aChange.table == "clippings") {
           clippingsListeners.forEach(aListener => { aListener.newClippingCreated(aChange.key, aChange.obj) });
@@ -325,7 +329,7 @@ function initClippingsDB()
         }
         break;
         
-      case UPDATED:
+      case aeConst.DB_UPDATED:
         info("Clippings/wx: Database observer detected UPDATED event");
 
         if (aChange.table == "clippings") {
@@ -336,7 +340,7 @@ function initClippingsDB()
         }
         break;
         
-      case DELETED:
+      case aeConst.DB_DELETED:
         info("Clippings/wx: Database observer detected DELETED event");
         if (aChange.table == "clippings") {
           clippingsListeners.forEach(aListener => { aListener.clippingDeleted(aChange.key, aChange.oldObj) });
@@ -453,6 +457,7 @@ function initMessageListeners()
         log(`Clippings/wx: Key '${shortcutKey}' was pressed.`);
         pasteClippingByShortcutKey(shortcutKey);
       }
+
       else if (aRequest.msgID == "paste-clipping-by-name") {
         let externReq = aRequest.fromClippingsMgr;
         pasteClippingByID(aRequest.clippingID, externReq);
@@ -468,6 +473,10 @@ function initMessageListeners()
           }
 
           let activeTabID = aTabs[0].id;
+          if (activeTabID != gPasteClippingTargetTabID) {
+            warn(`Clippings/wx: Detected mismatch between currently-active browser tab ID and what it was when invoking clipping paste.\nPrevious active tab ID = ${gPasteClippingTargetTabID}, active tab ID = ${activeTabID}`);
+            activeTabID = gPasteClippingTargetTabID;
+          }
           pasteProcessedClipping(content, activeTabID);
           
         });
@@ -948,6 +957,18 @@ function pasteClipping(aClippingInfo, aExternalRequest)
     let activeTabID = aTabs[0].id;
     let processedCtnt = "";
 
+    log("Clippings/wx: pasteClipping(): Active tab ID: " + activeTabID);
+
+    if (gPasteClippingTargetTabID === null) {
+      gPasteClippingTargetTabID = activeTabID;
+    }
+    else {
+      if (activeTabID != gPasteClippingTargetTabID) {
+        warn(`Clippings/wx: pasteClipping(): Detected mismatch between active tab ID and what it was before the keyboard paste dialog.\nPrevious active tab ID = ${gPasteClippingTargetTabID}, current active tab ID = ${activeTabID}`);
+        activeTabID = gPasteClippingTargetTabID;
+      }
+    }
+
     if (aeClippingSubst.hasNoSubstFlag(aClippingInfo.name)) {
       processedCtnt = aClippingInfo.text;
     }
@@ -964,6 +985,7 @@ function pasteClipping(aClippingInfo, aExternalRequest)
       if (plchldrs.length > 0) {
         let plchldrsWithDefaultVals = aeClippingSubst.getCustomPlaceholderDefaultVals(processedCtnt, aClippingInfo);
         gPlaceholders.set(plchldrs, plchldrsWithDefaultVals, processedCtnt);
+        
         openPlaceholderPromptDlg();
         return;
       }
@@ -985,7 +1007,25 @@ function pasteProcessedClipping(aClippingContent, aActiveTabID)
 
   log("Clippings/wx: Extension sending message \"paste-clipping\" to content script");
   
-  chrome.tabs.sendMessage(aActiveTabID, msgParams, null);
+  if (isGoogleChrome()) {
+    chrome.tabs.sendMessage(aActiveTabID, msgParams, null);
+  }
+  else {
+    // Firefox
+    browser.tabs.sendMessage(aActiveTabID, msgParams).then(aResult => {
+      // If successful, aResult should be true.
+    }).catch(aErr => {
+      console.error("Clippings/wx: pasteProcessedClipping(): Failed to paste clipping with placeholders: " + aErr);
+    }).finally(() => {
+      gPasteClippingTargetTabID = null;
+    });
+  }
+}
+
+
+function onUnload(aEvent)
+{
+  gClippingsListeners.remove(gClippingsListener);
 }
 
 
