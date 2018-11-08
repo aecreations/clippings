@@ -369,6 +369,8 @@ let gClippingsListener = {
 };
 
 let gSyncClippingsListener = {
+  _oldSyncFldrID: null,
+  
   onActivate(aSyncFolderID)
   {
     log("Clippings/wx::clippingsMgr.js::gSyncClippingsListener.onActivate()");
@@ -378,6 +380,7 @@ let gSyncClippingsListener = {
   onDeactivate(aOldSyncFolderID)
   {
     log(`Clippings/wx::clippingsMgr.js::gSyncClippingsListener.onDeactivate(): ID of old sync folder: ${aOldSyncFolderID}`);
+    this._oldSyncFldrID = aOldSyncFolderID;
     gSyncedItemsIDs = {};
 
     gReloadSyncFldrBtn.hide();
@@ -385,6 +388,23 @@ let gSyncClippingsListener = {
     let clippingsTree = getClippingsTree();
     let syncFldrTreeNode = clippingsTree.getNodeByKey(aOldSyncFolderID + "F");
     syncFldrTreeNode.removeClass("ae-synced-clippings-fldr");
+  },
+
+  onAfterDeactivate(aRemoveSyncFolder)
+  {
+    log("Clippings/wx::clippingsMgr.js: gSyncClippingsListener.onAfterDeactivate(): Remove Synced Clippings folder: " + aRemoveSyncFolder)
+
+    if (aRemoveSyncFolder) {
+      let clippingsTree = getClippingsTree();
+      let syncFldrTreeNode = clippingsTree.getNodeByKey(this._oldSyncFldrID + "F");
+      syncFldrTreeNode.remove();
+      this._oldSyncFldrID = null;
+
+      setStatusBarMsg();
+      
+      // TO DO: If there are no longer any clippings and folders, then show the
+      // empty clippings UI.
+    }
   },
 
   onReloadStart() {},

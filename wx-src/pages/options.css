@@ -309,13 +309,13 @@ button.default:active {
     background-size: contain;
 }
 
-#turn-off-sync-clippings-confirm-dlg {
+#turn-off-sync-clippings-ack-dlg {
     top: 160px;
-    --width: 450px;
-    --height: 170px;
+    --width: 646px;
+    --height: 176px;
 }
 
-#turn-off-sync-clippings-confirm-dlg .info-icon {
+#turn-off-sync-clippings-ack-dlg .info-icon {
     float: left;
     width: 48px;
     height: 48px;
@@ -323,6 +323,10 @@ button.default:active {
     margin-right: 12px;
     background-image: url("../img/info.svg");
     background-size: contain;
+}
+
+#turn-off-sync-clippings-ack-dlg .dlg-content > #delete-sync-fldr + label {
+    font-size: 13px;
 }
 
 #sync-clippings-help-dlg {

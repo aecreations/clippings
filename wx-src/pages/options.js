@@ -293,9 +293,17 @@ function initDialogs()
     });
   };
 
-  gDialogs.turnOffSyncAck = new aeDialog("#turn-off-sync-clippings-confirm-dlg");
+  gDialogs.turnOffSyncAck = new aeDialog("#turn-off-sync-clippings-ack-dlg");
+  gDialogs.turnOffSyncAck.onInit = () => {
+    $("#delete-sync-fldr").prop("checked", true);
+  };
   gDialogs.turnOffSyncAck.onAfterAccept = () => {
-    // TO DO: If the checkbox is ticked, then delete the Synced Clippings folder.
+    let removeSyncFldr = $("#delete-sync-fldr").prop("checked");
+    let syncClippingsListeners = gClippings.getSyncClippingsListeners().getListeners();
+
+    for (let listener of syncClippingsListeners) {
+      listener.onAfterDeactivate(removeSyncFldr);
+    }
   };
   
   gDialogs.syncClippingsHelp = new aeDialog("#sync-clippings-help-dlg");

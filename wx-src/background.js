@@ -105,24 +105,45 @@ let gSyncClippingsListeners = {
 };
 
 let gSyncClippingsListener = {
-  onActivate(aSyncFolderID) {
+  _oldSyncFldrID: null,
+  
+  onActivate(aSyncFolderID)
+  {
     // No need to do anything here. The Clippings context menu is automatically
     // rebuilt when the Sync Clippings data is imported, which occurs after
     // turning on Sync Clippings from extension preferences.
   },
 
-  onDeactivate(aOldSyncFolderID) {
+  onDeactivate(aOldSyncFolderID)
+  {
     log("Clippings/wx: gSyncClippingsListener.onDeactivate()");
+    this._oldSyncFldrID = aOldSyncFolderID;
     rebuildContextMenu();
   },
 
-  onReloadStart() {
-    console.log("Clippings/wx: gSyncClippingsListeners.onReloadStart()");
+  onAfterDeactivate(aRemoveSyncFolder)
+  {
+    log("Clippings/wx: gSyncClippingsListeners.onAfterDeactivate(): Remove Synced Clippings folder: " + aRemoveSyncFolder);
+
+    let that = this;
+
+    if (aRemoveSyncFolder) {
+      log(`Removing old Synced Clippings folder (ID = ${that._oldSyncFldrID})`);
+      purgeFolderItems(this._oldSyncFldrID, false).then(() => {
+        that._oldSyncFldrID = null;
+      });
+    }
+  },
+
+  onReloadStart()
+  {
+    log("Clippings/wx: gSyncClippingsListeners.onReloadStart()");
     gIsReloadingSyncFldr = true;
   },
   
-  onReloadFinish() {
-    console.log("Clippings/wx: gSyncClippingsListeners.onReloadFinish(): Rebuilding Clippings menu");
+  onReloadFinish()
+  {
+    log("Clippings/wx: gSyncClippingsListeners.onReloadFinish(): Rebuilding Clippings menu");
     gIsReloadingSyncFldr = false;
     rebuildContextMenu();
   },
