@@ -961,24 +961,29 @@
     "message": "Check spelling"
   },
 
-  "backupRemFreq": {
-    "message": "Show backup reminder notification:"
+  "backupRemind": {
+    "message": "Show backup reminder every",
+    "description": "Label for checkbox option for setting backup notification, appears after checkbox and before the reminder frequency drop-down menu"
   },
 
-  "backupRemFreqNever": {
-    "message": "Never"
+  "backupRemDays": {
+    "message": "days",
+    "description": "Label appearing after the drop-down menu for backup reminder frequency"
   },
 
   "backupRemFreqDaily": {
-    "message": "Daily"
+    "message": "1",
+    "description": "Number of days between backup reminders: once a day"
   },
 
   "backupRemFreqWeekly": {
-    "message": "Weekly"
+    "message": "7",
+    "description": "Number of days between backup reminders: once a week (every 7 days)"
   },
 
   "backupRemFreqMonthly": {
-    "message": "Monthly"
+    "message": "30",
+    "description": "Number of days between backup reminders: once a month (every 30 days)"
   },
   
   "backupNotifyTitle": {

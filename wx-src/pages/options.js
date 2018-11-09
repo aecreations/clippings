@@ -105,7 +105,32 @@ function init()
       setPref({ checkSpelling: aEvent.target.checked });
     });
 
-    $("#backup-reminder-freq").val(aPrefs.backupRemFrequency).change(aEvent => {
+    $("#backup-reminder").prop("checked", (aPrefs.backupRemFrequency != aeConst.BACKUP_REMIND_NEVER)).click(aEvent => {
+      if (aEvent.target.checked) {
+        $("#backup-reminder-freq").prop("disabled", false);
+        setPref({
+          backupRemFrequency: Number($("#backup-reminder-freq").val()),
+          backupRemFirstRun: false,
+          lastBackupRemDate: new Date().toString(),
+        });
+      }
+      else {
+        $("#backup-reminder-freq").prop("disabled", true);
+        setPref({ backupRemFrequency: aeConst.BACKUP_REMIND_NEVER });
+      }
+
+      gClippings.clearBackupNotificationInterval();
+    });
+
+    if (aPrefs.backupRemFrequency == aeConst.BACKUP_REMIND_NEVER) {
+      // Set to default interval.
+      $("#backup-reminder-freq").val(aeConst.BACKUP_REMIND_WEEKLY);
+    }
+    else {
+      $("#backup-reminder-freq").val(aPrefs.backupRemFrequency);
+    }
+    
+    $("#backup-reminder-freq").change(aEvent => {
       setPref({
         backupRemFrequency: Number(aEvent.target.value),
         backupRemFirstRun: false,
@@ -113,9 +138,6 @@ function init()
       });
 
       gClippings.clearBackupNotificationInterval();
-      if (aEvent.target.value != aeConst.BACKUP_REMIND_NEVER) {
-        gClippings.setBackupNotificationInterval();
-      }
     });
 
     if (aPrefs.syncClippings) {
