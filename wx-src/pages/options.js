@@ -55,6 +55,11 @@ function init()
     });
   });
 
+  $(".hyperlink").click(aEvent => {
+    aEvent.preventDefault();
+    gotoURL(aEvent.target.href);
+  });
+
   browser.storage.local.get().then(aPrefs => {
     $("#html-paste-options").val(aPrefs.htmlPaste).change(aEvent => {
       setPref({ htmlPaste: aEvent.target.value });
@@ -167,7 +172,8 @@ function init()
 	window.alert("The Sync Clippings helper app responded with an error.\n\n" + aErr);
       });
     });
-***/    
+***/
+    
     $("#show-sync-help").click(aEvent => {
       gDialogs.syncClippingsHelp.showModal();
     });
@@ -347,6 +353,19 @@ $(window).on("contextmenu", aEvent => {
     aEvent.preventDefault();
   }
 });
+
+
+function gotoURL(aURL)
+{
+  // TO DO: Open the URL in a new browser tab.
+  // TEMPORARY
+  browser.windows.create({
+    url: aURL,
+    type: "normal",
+    state: "normal",
+  });
+  // END TEMPORARY
+}
 
 
 function log(aMessage)
