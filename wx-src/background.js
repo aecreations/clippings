@@ -1136,6 +1136,22 @@ function showBackupNotification()
     numDays = 1;
     break;
 
+  case aeConst.BACKUP_REMIND_TWODAYS:
+    numDays = 2;
+    break;
+
+  case aeConst.BACKUP_REMIND_THREEDAYS:
+    numDays = 3;
+    break;
+
+  case aeConst.BACKUP_REMIND_FIVEDAYS:
+    numDays = 5;
+    break;
+
+  case aeConst.BACKUP_REMIND_TWOWEEKS:
+    numDays = 14;
+    break;
+
   case aeConst.BACKUP_REMIND_MONTHLY:
     numDays = 30;
     break;

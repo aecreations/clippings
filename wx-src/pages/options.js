@@ -124,7 +124,7 @@ function init()
 
     if (aPrefs.backupRemFrequency == aeConst.BACKUP_REMIND_NEVER) {
       // Set to default interval.
-      $("#backup-reminder-freq").val(aeConst.BACKUP_REMIND_WEEKLY);
+      $("#backup-reminder-freq").val(aeConst.BACKUP_REMIND_WEEKLY).prop("disabled", true);
     }
     else {
       $("#backup-reminder-freq").val(aPrefs.backupRemFrequency);

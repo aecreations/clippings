@@ -976,9 +976,29 @@
     "description": "Number of days between backup reminders: once a day"
   },
 
+  "backupRemFreqTwoDays": {
+    "message": "2",
+    "description": "Number of days between backup reminders: once every 2 days"
+  },
+
+  "backupRemFreqThreeDays": {
+    "message": "3",
+    "description": "Number of days between backup reminders: once every 3 days"
+  },
+
+  "backupRemFreqFiveDays": {
+    "message": "5",
+    "description": "Number of days between backup reminders: once every 5 days"
+  },
+
   "backupRemFreqWeekly": {
     "message": "7",
     "description": "Number of days between backup reminders: once a week (every 7 days)"
+  },
+
+  "backupRemFreqTwoWeeks": {
+    "message": "14",
+    "description": "Number of days between backup reminders: once every 2 weeks (every 14 days)"
   },
 
   "backupRemFreqMonthly": {
