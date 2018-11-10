@@ -14,8 +14,11 @@
 
   <body>
     <main id="ae-clippings-preferences">
-      <img id="addon-icon" src="../img/icon.svg"/>
-      <h2 data-i18n="prefsTitle"></h2>
+      <div id="pref-pg-hdr">
+        <img id="addon-icon" src="../img/icon.svg"/>
+        <h2 data-i18n="prefsTitle"></h2>
+	<div id="about-btn" data-i18n="aboutBtn"></div>
+      </div>
 
       <div class="pref-section-content">
         <fieldset id="paste-options">
@@ -136,7 +139,7 @@
       <div class="dlg-content">
         <div id="sync-connection-check" class="deck">
 	  <p class="label" data-i18n="syncConnect"><p>
-	  <progress style="width:100%"></progress>
+	  <progress></progress>
 	</div>
 	<div id="sync-cxn-error" class="deck">
           <div class="msgbox-icon"></div>
@@ -199,6 +202,41 @@
 
     <div id="sync-clippings-help-dlg" class="lightbox">
       <div class="dlg-content"></div>
+      <div class="dlg-btns">
+	<button class="dlg-accept default" data-i18n="btnOK"></button>
+      </div>
+    </div>
+
+    <div id="about-dlg" class="lightbox">
+      <div class="dlg-content">
+        <div id="ext-icon"></div>
+	<div id="ext-info">
+          <label id="ext-name" class="about-content-row"></label>
+	  <label id="ext-ver" class="about-content-row"></label>
+	</div>
+	<label id="ext-desc" class="about-content-row"></label>
+	<hr/>
+	<div id="credits">
+	  <label id="ext-author" data-i18n="aboutAuthor"></label>
+	  <a href="http://aecreations.sourceforge.net/clippings/index.php" class="hyperlink" data-i18n="aboutHomePgLink"></a>
+	  <label id="translations-ack" class="about-content-row" data-i18n="aboutTrans"></label>
+	</div>
+	<hr/>
+	<div id="diag-info">
+	  <div class="deck">
+	    <div id="sync-diag-loading" class="deck-content">
+	      <progress></progress>
+	    </div>
+	    <div id="sync-diag" class="deck-content">
+	      <label id="sync-ver-label" data-i18n="aboutSyncVerLabel"></label>
+	      <span id="sync-ver"></span>
+	      <div id="sync-diag-detail" class="about-content-row">
+		<label data-i18n="aboutSyncFileSize"></label> <span id="sync-file-size"></span>
+	      </div>
+	    </div>
+	  </div>  <!-- /.deck -->
+	</div>
+      </div>
       <div class="dlg-btns">
 	<button class="dlg-accept default" data-i18n="btnOK"></button>
       </div>

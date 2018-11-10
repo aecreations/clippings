@@ -6,6 +6,7 @@
 let gClippings;
 let gDialogs = {};
 let gIsActivatingSyncClippings = false;
+let gExtInfo = null;
 
 
 // DOM utility
@@ -60,6 +61,10 @@ function init()
     gotoURL(aEvent.target.href);
   });
 
+  $("#about-btn").click(aEvent => {
+    gDialogs.about.showModal();
+  });
+  
   browser.storage.local.get().then(aPrefs => {
     $("#html-paste-options").val(aPrefs.htmlPaste).change(aEvent => {
       setPref({ htmlPaste: aEvent.target.value });
@@ -332,6 +337,59 @@ function initDialogs()
     for (let listener of syncClippingsListeners) {
       listener.onAfterDeactivate(removeSyncFldr);
     }
+  };
+
+  gDialogs.about = new aeDialog("#about-dlg");
+  gDialogs.about.onInit = () => {
+    let diagDeck = $("#about-dlg > .dlg-content #diag-info .deck");
+    diagDeck.children("#sync-diag-loading").show();
+    diagDeck.children("#sync-diag").hide();
+    $("#about-dlg > .dlg-content #diag-info #sync-diag-detail").hide();
+
+    if (! gExtInfo) {
+      let extManifest = chrome.runtime.getManifest();
+      gExtInfo = {
+        name: extManifest.name,
+        version: extManifest.version,
+        description: extManifest.description,
+      };
+    }
+
+    $("#about-dlg > .dlg-content #ext-name").text(gExtInfo.name);
+    $("#about-dlg > .dlg-content #ext-ver").text(gExtInfo.version);
+    $("#about-dlg > .dlg-content #ext-desc").text(gExtInfo.description);
+  };
+  gDialogs.about.onShow = () => {
+    let msg = { msgID: "get-app-version" };
+    let sendNativeMsg = browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
+    sendNativeMsg.then(aResp => {
+      $("#about-dlg > .dlg-content #diag-info #sync-ver").text(aResp.appVersion);     
+
+      let msg = { msgID: "get-sync-file-info" };
+      return browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
+
+    }).then(aResp => {
+      let syncFileSize;
+      if (aResp.fileSizeKB == "") {
+        // Sync Clippings is turned on, but sync file is not yet created.
+        syncFileSize = "-";
+      }
+      else {
+        syncFileSize = `${aResp.fileSizeKB} KiB`;
+      }
+      
+      $("#about-dlg > .dlg-content #diag-info #sync-file-size").text(syncFileSize);
+      $("#about-dlg > .dlg-content #diag-info #sync-diag-detail").show();
+
+    }).catch(aErr => {
+      // Native app is not installed.
+      $("#about-dlg > .dlg-content #diag-info #sync-ver").text(chrome.i18n.getMessage("noSyncHelperApp"));
+      
+    }).finally(() => {
+      let diagDeck = $("#about-dlg > .dlg-content #diag-info .deck");
+      diagDeck.children("#sync-diag-loading").hide();
+      diagDeck.children("#sync-diag").show();
+    });
   };
   
   gDialogs.syncClippingsHelp = new aeDialog("#sync-clippings-help-dlg");

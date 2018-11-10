@@ -942,7 +942,7 @@
   },
 
   "prefsShortcutKeyNote": {
-    "message": "Some of the available shortcut keys may already be assigned to <a href=\"https://support.mozilla.org/en-US/kb/keyboard-shortcuts-perform-firefox-tasks-quickly\" class=\"hyperlink\">Firefox commands</a>."
+    "message": "Some of the available shortcut keys may already be assigned to <a href=\"https://support.mozilla.org/en-US/kb/keyboard-shortcuts-perform-firefox-tasks-quickly\" class=\"hyperlink\">Firefox commands</a> or other add-ons."
   },
 
   "prefsDefaultNumPlchldrStart": {
@@ -1157,6 +1157,35 @@
   
   "syncStartupFailed": {
     "message": "Failed to connect to the Sync Clippings helper app. To fix this, reinstall the Sync Clippings helper app."
+  },
+
+  "aboutBtn": {
+    "message": "About..."
+  },
+
+  "aboutAuthor": {
+    "message": "Created by AE Creations."
+  },
+  
+  "aboutHomePgLink": {
+    "message": "Visit home page"
+  },
+
+  "aboutTrans": {
+    "message": "Localizations contributed by Crowdin translators."
+  },
+
+  "aboutSyncVerLabel": {
+    "message": "Sync Clippings helper app version:"
+  },
+
+  "noSyncHelperApp": {
+    "message": "Not installed",
+    "description": "Appears when the Sync Clippings helper app is not detected on the system"
+  },
+
+  "aboutSyncFileSize": {
+    "message": "Sync file size:"
   },
   
   "keyAlt": {

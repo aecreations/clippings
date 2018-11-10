@@ -101,6 +101,10 @@ button.default:active {
     border: 1px solid #002275;
 }
 
+progress {
+    width: 100%;
+}
+
 .row {
     margin-top: 6px;
     margin-bottom: 10px;
@@ -156,6 +160,26 @@ button.default:active {
 
 #sync-settings {
     margin-right: 16px;
+}
+
+#about-btn {
+    float: right;
+    font-size: 11px;
+    border: 1px solid #ededf0;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-weight: 400;
+    background-color: #f9f9fa;
+}
+
+#about-btn:hover {
+    border: 1px solid #b1b1b1;
+    background-color: #ededf0;
+}
+
+#about-btn:active {   
+    border: 1px solid #b1b1b3;
+    background-color: #d7d7db;
 }
 
 .lightbox {
@@ -339,3 +363,63 @@ button.default:active {
     overflow-y: auto;
 }
 
+#about-dlg {
+    top: 72px;
+    --width: 410px;
+    --height: 290px;
+}
+
+#about-dlg #ext-icon {
+    float: left;
+    width: 48px;
+    height: 48px;
+    margin-top: 8px;
+    margin-right: 12px;
+    background-image: url("../img/icon.svg");
+    background-size: contain;
+}
+
+#about-dlg > .dlg-content {
+    font-size: 12px;
+}
+
+#about-dlg .about-content-row {
+    display: block;
+}
+
+#about-dlg hr {
+    margin-top: 12px;
+    margin-bottom: 12px;
+    border-top: 1px solid #b1b1b3;
+    color: #b1b1b3;
+}
+
+#about-dlg #ext-info {
+    padding-top: 12px;
+}
+
+#about-dlg #ext-name {
+    font-size: 17px;
+    font-weight: 600;
+}
+
+#about-dlg #ext-ver {
+    font-size: 11px;
+}
+
+#about-dlg #ext-desc {
+    clear: left;
+    padding-top: 12px;
+}
+
+#about-dlg #credits .about-content-row {
+    line-height: 24px;
+}
+
+#about-dlg #diag-info .about-content-row {
+    line-height: 18px;
+}
+
+#about-dlg #diag-info {
+    font-size: 11px;
+}
