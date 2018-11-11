@@ -345,6 +345,7 @@ function initDialogs()
     diagDeck.children("#sync-diag-loading").show();
     diagDeck.children("#sync-diag").hide();
     $("#about-dlg > .dlg-content #diag-info #sync-diag-detail").hide();
+    $("#about-dlg > .dlg-content #diag-info #sync-file-size").text("");
 
     if (! gExtInfo) {
       let extManifest = chrome.runtime.getManifest();
@@ -364,25 +365,41 @@ function initDialogs()
     let sendNativeMsg = browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
     sendNativeMsg.then(aResp => {
       $("#about-dlg > .dlg-content #diag-info #sync-ver").text(aResp.appVersion);     
+      return browser.storage.local.get();
 
-      let msg = { msgID: "get-sync-file-info" };
-      return browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
-
-    }).then(aResp => {
-      let syncFileSize;
-      if (aResp.fileSizeKB == "") {
-        // Sync Clippings is turned on, but sync file is not yet created.
-        syncFileSize = "-";
+    }).then(aPrefs => {
+      if (aPrefs.syncClippings) {
+        let msg = { msgID: "get-sync-file-info" };
+        return browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
       }
       else {
-        syncFileSize = `${aResp.fileSizeKB} KiB`;
+        return null;
+      }
+    }).then(aResp => {
+      if (aResp) {
+        let syncFileSize;
+        if (aResp.fileSizeKB == "") {
+          // Sync Clippings is turned on, but sync file is not yet created.
+          syncFileSize = "-";
+        }
+        else {
+          syncFileSize = `${aResp.fileSizeKB} KiB`;
+        }
+        $("#about-dlg > .dlg-content #diag-info #about-sync-status").hide();
+        $("#about-dlg > .dlg-content #diag-info #sync-file-size-label").show();
+        $("#about-dlg > .dlg-content #diag-info #sync-file-size").text(syncFileSize);
+      }
+      else {
+        // Sync Clippings is inactive.
+        $("#about-dlg > .dlg-content #diag-info #sync-file-size-label").hide();
+        $("#about-dlg > .dlg-content #diag-info #about-sync-status").text(chrome.i18n.getMessage("syncStatusOff")).show();
       }
       
-      $("#about-dlg > .dlg-content #diag-info #sync-file-size").text(syncFileSize);
       $("#about-dlg > .dlg-content #diag-info #sync-diag-detail").show();
 
     }).catch(aErr => {
       // Native app is not installed.
+      log("Clippings/wx: About dialog: Error returned from native app: " + aErr);
       $("#about-dlg > .dlg-content #diag-info #sync-ver").text(chrome.i18n.getMessage("noSyncHelperApp"));
       
     }).finally(() => {
