@@ -335,7 +335,7 @@ progress {
 
 #turn-off-sync-clippings-ack-dlg {
     top: 160px;
-    --width: 646px;
+    --width: 618px;
     --height: 176px;
 }
 
@@ -366,7 +366,7 @@ progress {
 #about-dlg {
     top: 72px;
     --width: 410px;
-    --height: 290px;
+    --height: 286px;
 }
 
 #about-dlg #ext-icon {
@@ -410,6 +410,7 @@ progress {
 #about-dlg #ext-desc {
     clear: left;
     padding-top: 12px;
+    font-size: 13px;
 }
 
 #about-dlg #credits .about-content-row {
