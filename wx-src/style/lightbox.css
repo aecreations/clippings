@@ -10,7 +10,7 @@
 
 .lightbox-bkgrd {
     display: none;
-    position: absolute;
+    position: fixed;
     top: 0%;
     left: 0%;
     width: 100%;
@@ -25,7 +25,7 @@
     --default-height: 130px;
     
     display: none;
-    position: absolute;
+    position: fixed;
 
     /* Default dimensions */
     width: var(--width, var(--default-width));
@@ -45,7 +45,7 @@
 
 .panel-bkgrd {
     display: none;
-    position: absolute;
+    position: fixed;
     top: 0%;
     left: 0%;
     width: 100%;
