@@ -411,13 +411,6 @@ function initDialogs()
   
   gDialogs.syncClippingsHelp = new aeDialog("#sync-clippings-help-dlg");
 
-  // Adjust height of Sync Clippings help dialog on standard resolution
-  // displays on Windows.
-  if (os == "win" && window.devicePixelRatio == 1) {
-    $("#sync-clippings-help-dlg").css("height", "532px");
-    $("#sync-clippings-help-dlg > .dlg-content").css("max-height", "450px");
-  }
-
   // Sync Clippings help dialog content.
   $("#sync-clippings-help-dlg > .dlg-content").html(sanitizeHTML(chrome.i18n.getMessage("syncHelp")));
 }
