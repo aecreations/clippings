@@ -1163,6 +1163,11 @@
     "message": "About..."
   },
 
+  "aboutExtVer": {
+    "message": "version $1",
+    "description": "Extension version number"
+  },
+
   "aboutAuthor": {
     "message": "Created by AE Creations."
   },
