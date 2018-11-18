@@ -1372,14 +1372,15 @@ let gCmd = {
       folderNode = tree.getNodeByKey(aFolderID + "F");
     }
 
-    let childNodes = folderNode.getChildren();
-    if (! childNodes) {  // Empty folder.
-      return;
-    }
-    
-    this.recentAction = this.ACTION_CHANGEPOSITION;
-
     return new Promise((aFnResolve, aFnReject) => {
+      let childNodes = folderNode.getChildren();
+      if (! childNodes) {  // Empty folder.
+        aFnResolve();
+        return;
+      }
+    
+      this.recentAction = this.ACTION_CHANGEPOSITION;
+
       gClippingsDB.transaction("rw", gClippingsDB.folders, gClippingsDB.clippings, () => {
 	let seqUpdates = [];
 	
