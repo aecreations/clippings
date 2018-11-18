@@ -355,11 +355,11 @@ progress {
 
 #sync-clippings-help-dlg {
     --width: 600px;
-    --height: 480px;
+    --height: 488px;
 }
 
 #sync-clippings-help-dlg .dlg-content {
-    max-height: 428px;
+    max-height: 406px;
     overflow-y: auto;
 }
 
@@ -405,6 +405,7 @@ progress {
 
 #about-dlg #ext-ver {
     font-size: 11px;
+    line-height: 1.5;
 }
 
 #about-dlg #ext-desc {
