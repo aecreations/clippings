@@ -357,7 +357,7 @@ function initDialogs()
     }
 
     $("#about-dlg > .dlg-content #ext-name").text(gExtInfo.name);
-    $("#about-dlg > .dlg-content #ext-ver").text(gExtInfo.version);
+    $("#about-dlg > .dlg-content #ext-ver").text(chrome.i18n.getMessage("aboutExtVer", gExtInfo.version));
     $("#about-dlg > .dlg-content #ext-desc").text(gExtInfo.description);
   };
   gDialogs.about.onShow = () => {
@@ -411,6 +411,13 @@ function initDialogs()
   
   gDialogs.syncClippingsHelp = new aeDialog("#sync-clippings-help-dlg");
 
+  // Adjust height of Sync Clippings help dialog on standard resolution
+  // displays on Windows.
+  if (os == "win" && window.devicePixelRatio == 1) {
+    $("#sync-clippings-help-dlg").css("height", "510px");
+    $("#sync-clippings-help-dlg > .dlg-content").css("max-height", "430px");
+  }
+  
   // Sync Clippings help dialog content.
   $("#sync-clippings-help-dlg > .dlg-content").html(sanitizeHTML(chrome.i18n.getMessage("syncHelp")));
 }
