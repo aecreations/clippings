@@ -54,7 +54,7 @@ let gClippingsListener = {
   },
 
   newFolderCreated: function (aID, aData) {
-    if (gIsReloadingSyncFldr) {
+    if (gIsReloadingSyncFldr || "isSync" in aData) {
       log("Clippings/wx: gClippingsListener.newFolderCreated(): The Synced Clippings folder is being reloaded. Ignoring DB changes.");
       return;
     }
@@ -67,6 +67,11 @@ let gClippingsListener = {
   },
 
   folderChanged: function (aID, aData, aOldData) {
+    if ("isSync" in aOldData) {
+      log("Clippings/wx: gClippingsListener.folderChanged(): The Synced Clippings folder is being converted to a normal folder. Ignoring DB changes.");
+      return;
+    }
+    
     if (aData.parentFolderID == aOldData.parentFolderID) {
       updateContextMenuForFolder(aID);
     }
@@ -331,19 +336,19 @@ browser.runtime.onStartup.addListener(() => {
 
 function init()
 {
-  log("Clippings/wx: Initializing browser integration...");
+  log("Clippings/wx: Initializing integration with host app...");
   
   initClippingsDB();
   
   if (! ("browser" in window)) {
     gHostAppName = "Google Chrome";
-    log("Clippings/wx: Browser: Google Chrome");
+    log("Clippings/wx: Host app: Google Chrome");
   }
   else {
     let getBrowserInfo = browser.runtime.getBrowserInfo();
     getBrowserInfo.then(aBrwsInfo => {
       gHostAppName = `${aBrwsInfo.name} ${aBrwsInfo.version}`;
-      log(`Clippings/wx: Browser: ${aBrwsInfo.name} (version ${aBrwsInfo.version})`);
+      log(`Clippings/wx: Host app: ${aBrwsInfo.name} (version ${aBrwsInfo.version})`);
     });
   }
 
@@ -369,7 +374,13 @@ function init()
 
   if (gPrefs.syncClippings) {
     gSyncFldrID = gPrefs.syncFolderID;
+
+    // The context menu will be built when refreshing the sync data, via the
+    // onReloadFinish event handler of the Sync Clippings listener.
     refreshSyncedClippings();
+  }
+  else {
+    buildContextMenu();
   }
   
   aeClippingSubst.init(navigator.userAgent, gPrefs.autoIncrPlcHldrStartVal);
@@ -389,11 +400,6 @@ function init()
       }
     }
   });
-
-  // HACK!!
-  // Delay building the Clippings context menu, due to `refreshSyncedClippings()`
-  // being an asynchronous function.
-  window.setTimeout(buildContextMenu, 1000);
 
   chrome.commands.onCommand.addListener(aCmdName => {
     info(`Clippings/wx: Command "${aCmdName}" invoked!`);
@@ -547,6 +553,7 @@ async function enableSyncClippings(aIsEnabled)
         name: chrome.i18n.getMessage("syncFldrName"),
         parentFolderID: aeConst.ROOT_FOLDER_ID,
         displayOrder: 0,
+        isSync: true,
       };
       try {
         gSyncFldrID = await gClippingsDB.folders.add(syncFldr);
@@ -563,7 +570,8 @@ async function enableSyncClippings(aIsEnabled)
   else {
     log("Clippings/wx: enableSyncClippings(): Turning OFF");
     let oldSyncFldrID = gSyncFldrID;
-    
+
+    let numUpd = await gClippingsDB.folders.update(gSyncFldrID, { isSync: undefined });
     await browser.storage.local.set({ syncFolderID: null });
     gSyncFldrID = null;
     return oldSyncFldrID;
@@ -949,6 +957,8 @@ function getContextMenuData(aFolderID)
 
 function buildContextMenu()
 {
+  log("Clippings/wx: buildContextMenu()");
+  
   // Context menu for browser action button.
   chrome.contextMenus.create({
     id: "ae-clippings-reset-autoincr-plchldrs",
@@ -1070,6 +1080,7 @@ function removeContextMenuForFolder(aRemovedFolderID)
 
 function rebuildContextMenu()
 {
+  log("Clippings/wx: rebuildContextMenu(): Removing all Clippings context menu items and rebuilding the menu...");
   chrome.contextMenus.removeAll(() => {
     gClippingMenuItemIDMap = {};
     gFolderMenuItemIDMap = {};
