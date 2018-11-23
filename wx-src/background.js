@@ -27,6 +27,7 @@ let gClippingsListeners = {
   ORIGIN_WELCOME_PG: 4,
 
   _listeners: [],
+  _isImporting: false,
 
   add: function (aNewListener) {
     this._listeners.push(aNewListener);
@@ -88,9 +89,31 @@ let gClippingsListener = {
       log("Clippings/wx: gClippingsListener.afterBatchChanges(): The Synced Clippings folder is being reloaded. Ignoring DB changes.");
       return;
     }
+
+    if (this._isImporting) {
+      log("Clippings/wx: gClippingsListener.afterBatchChanges(): Import in progress. Ignoring DB changes.")
+      return;
+    }
       
     rebuildContextMenu();
-  }
+  },
+
+  importStarted: function ()
+  {
+    log("Clippings/wx: gClippingsListener.importStarted()");
+    this._isImporting = true;
+  },
+
+  importFinished: function (aIsSuccess)
+  {
+    log("Clippings/wx: gClippingsListener.importFinished()");
+    this._isImporting = false;
+
+    if (aIsSuccess) {
+      log("Import was successful - proceeding to rebuild Clippings menu.");
+      rebuildContextMenu();
+    }
+  },
 };
 
 let gSyncClippingsListeners = {
