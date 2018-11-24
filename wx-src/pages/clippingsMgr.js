@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const DEBUG_TREE = false;
+const DEBUG_TREE = true;
 const DEBUG_WND_ACTIONS = false;
 const ENABLE_PASTE_CLIPPING = false;
 const NEW_CLIPPING_FROM_CLIPBOARD = "New Clipping From Clipboard";
@@ -21,6 +21,7 @@ let gSyncFolderID;
 let gSyncedItemsIDs = {};
 let gIsBackupMode = false;
 let gErrorPushSyncItems = false;
+let gReorderedTreeNodeNextSibling = null;
 
 
 // DOM utility
@@ -1405,11 +1406,7 @@ let gCmd = {
           log(`Clippings/wx::clippingsMgr.js: gCmd.updateDisplayOrder(): Display order updates for each folder item is completed (folder ID = ${aFolderID})`);
 
           if (aDestUndoStack == this.UNDO_STACK) {
-            this.undoStack.push({
-              action: this.ACTION_CHANGEPOSITION,
-              folderID: aFolderID,
-              // TO DO: Add other undo info ...
-            });
+            this.undoStack.push(aUndoInfo);
           }
 
           if (! aSuppressClippingsMenuRebuild) {
@@ -1737,6 +1734,32 @@ let gCmd = {
     }
     else if (undo.action == this.ACTION_SETLABEL) {
       this.setLabelIntrl(undo.id, undo.oldLabel);
+    }
+    else if (undo.action == this.ACTION_CHANGEPOSITION) {
+      let tree = getClippingsTree();
+      let itemNode = tree.getNodeByKey(undo.nodeKey);
+      let parentFldrID = undo.parentFolderID;
+      
+      if (undo.nextSiblingNodeKey) {
+        let nextSiblingNode = tree.getNodeByKey(undo.nextSiblingNodeKey);       
+        log(`Clippings/wx::clippingsMgr.js: gCmd.undo(): Reordering the tree node (key=${itemNode.key}), placing it before sibling node (key=${undo.nextSiblingNodeKey})`);
+        itemNode.moveTo(nextSiblingNode, "before");
+      }
+      else {
+        if (parentFldrID == aeConst.ROOT_FOLDER_ID) {
+          let rootFldrNode = tree.rootNode;
+          log(`Clippings/wx::clippingsMgr.js: gCmd.undo(): Moving the tree node (key=${itemNode.key}) back to be the last node of the root folder.`);
+          itemNode.moveTo(rootFldrNode, "child");
+        }
+        else {
+          let parentFldrNodeKey = parentFldrID + "F";
+          log(`Clippings/wx::clippingsMgr.js: gCmd.undo(): Moving the tree node (key=${itemNode.key}) back to be the last node of its parent (key=${parentFldrNodeKey}).`);
+          let parentFldrNode = tree.getNodeByKey(parentFldrID + "F");
+          itemNode.moveTo(parentFldrNode, "child");
+        }
+      }
+
+      this.updateDisplayOrder(parentFldrID);
     }
   },
   
@@ -3109,7 +3132,12 @@ function buildClippingsTree()
         scroll: true,
 
         dragStart: function (aNode, aData) {
+          gReorderedTreeNodeNextSibling = aNode.getNextSibling();
           return true;
+        },
+
+        dragEnd: function (aNode, aData) {
+          gReorderedTreeNodeNextSibling = null;
         },
 
         dragEnter: function (aNode, aData) {
@@ -3161,8 +3189,11 @@ function buildClippingsTree()
             
             log(`Clippings/wx::clippingsMgr.js::#clippings-tree.dnd5.dragDrop(): ID of moved clipping or folder: ${id}\nID of old parent folder: ${oldParentID}\nID of new parent folder: ${newParentID}`);
 
+            let isReordering = false;
+
             if (newParentID == oldParentID) {
-              log(`It appears that the node (key = ${aNode.key}) was just reordered, as it was moved within the same folder. Rebuilding Clippings context menu.`);
+              log(`It appears that the node (key = ${aData.otherNode.key}) was just reordered, as it was moved within the same folder. Rebuilding Clippings context menu.`);
+              isReordering = true;
             }
             else {
               if (aData.otherNode.isFolder()) {
@@ -3174,7 +3205,29 @@ function buildClippingsTree()
             }           
 
             log("Clippings/wx::clippingsMgr.js::#clippings-tree.dnd5.dragDrop(): Updating display order");
-            gCmd.updateDisplayOrder(oldParentID, null, null, true).then(() => {
+            let destUndoStack = null;
+            let undoInfo = null;
+            
+            if (isReordering) {
+              let nextSiblingNode = gReorderedTreeNodeNextSibling;
+              destUndoStack = gCmd.UNDO_STACK;
+              
+              undoInfo = {
+                action: gCmd.ACTION_CHANGEPOSITION,
+                id: parseInt(aData.otherNode.key),
+                nodeKey: aData.otherNode.key,
+                parentFolderID: newParentID,
+                itemType: (aNode.folder ? gCmd.ITEMTYPE_FOLDER : gCmd.ITEMTYPE_CLIPPING),
+                nextSiblingNodeKey: (nextSiblingNode ? nextSiblingNode.key : null),
+              };
+              console.log("Clippings/wx::clippingsMgr.js: Saving undo info for clipping/folder reordering:");
+              console.log(undoInfo);
+            }
+            
+            gCmd.updateDisplayOrder(oldParentID, destUndoStack, undoInfo, !isReordering).then(() => {
+              if (isReordering) {
+                return;
+              }
               return gCmd.updateDisplayOrder(newParentID, null, null, false);
             }).then(() => {
 	      aNode.setExpanded();
