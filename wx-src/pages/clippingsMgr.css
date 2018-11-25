@@ -996,6 +996,10 @@ ul.fancytree-container {
     overflow: auto;
 }
 
+#move-dlg #move-to-fldr-tree .ae-synced-clippings-fldr > .fancytree-icon {
+    background-image: url("../img/synced-clippings.svg");
+}
+
 #move-dlg #move-error {
     margin: 4px 0 4px 0;
     color: red;

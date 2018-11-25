@@ -47,14 +47,14 @@ textarea {
     background-repeat: no-repeat;
 }
 
-.folder-picker-menubtn:hover {
-    background-color: #ebebeb;
+.folder-picker-menubtn[syncfldr] {
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICA8cGF0aCBkPSJNOCwxMkwzLDcsNCw2bDQsNCw0LTQsMSwxWiIgZmlsbD0iIzZBNkE2QSIgLz4KPC9zdmc+Cg=="), url("../img/synced-clippings.svg");
+    background-position: calc(100% - 4px) center, 8px;
+    background-repeat: no-repeat;
 }
 
-.folder-picker-menubtn[value="0"],
-{
-    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICA8cGF0aCBkPSJNOCwxMkwzLDcsNCw2bDQsNCw0LTQsMSwxWiIgZmlsbD0iIzZBNkE2QSIgLz4KPC9zdmc+Cg=="), url("../img/clippings-root.svg");
-    background-position: calc(100% - 4px) center, 8px;
+.folder-picker-menubtn:hover {
+    background-color: #ebebeb;
 }
 
 .folder-picker-menubtn:hover:active {
@@ -99,6 +99,10 @@ textarea {
 .folder-tree {
     height: 100%;
     overflow: auto;
+}
+
+.folder-tree .ae-synced-clippings-fldr > .fancytree-icon {
+    background-image: url("../img/synced-clippings.svg");
 }
 
 ul.fancytree-container {

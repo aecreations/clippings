@@ -223,12 +223,28 @@ function initDialogs()
 
     that.fldrTree.onSelectFolder = aFolderData => {
       that.selectedFldrNode = aFolderData.node;
-      fldrPickerMnuBtn.val(aFolderData.node.key).text(aFolderData.node.title);
+
+      let fldrID = aFolderData.node.key;
+      fldrPickerMnuBtn.val(fldrID).text(aFolderData.node.title);
+
+      if (fldrID == gClippings.getSyncFolderID()) {
+        fldrPickerMnuBtn.attr("syncfldr", "true");
+      }
+      else {
+        fldrPickerMnuBtn.removeAttr("syncfldr");
+      }
+      
       fldrPickerPopup.css({ visibility: "hidden" });
       $("#new-folder-dlg-fldr-tree-popup-bkgrd-ovl").hide();
     };
 
     fldrPickerMnuBtn.val(selectedFldrID).text(selectedFldrName);
+    if (selectedFldrID == gClippings.getSyncFolderID()) {
+      fldrPickerMnuBtn.attr("syncfldr", "true");
+    }
+    else {
+      fldrPickerMnuBtn.removeAttr("syncfldr");
+    }
 
     if (that.firstInit) {
       fldrPickerMnuBtn.click(aEvent => {
@@ -312,7 +328,7 @@ function initDialogs()
         let newFldrNode = parentNode.addNode(newFldrNodeData);
         newFldrNode.setActive();
         
-        $("#new-clipping-fldr-picker-menubtn").text(newFldrName).val(aFldrID);
+        $("#new-clipping-fldr-picker-menubtn").text(newFldrName).val(aFldrID);       
         gParentFolderID = aFldrID;
         
         that.resetTree();
@@ -368,7 +384,17 @@ function initFolderPicker()
 function selectFolder(aFolderData)
 {
   gParentFolderID = Number(aFolderData.node.key);
-  $("#new-clipping-fldr-picker-menubtn").text(aFolderData.node.title).val(gParentFolderID);
+  
+  let fldrPickerMenuBtn = $("#new-clipping-fldr-picker-menubtn");
+  fldrPickerMenuBtn.text(aFolderData.node.title).val(gParentFolderID);
+
+  if (gParentFolderID == gClippings.getSyncFolderID()) {
+    fldrPickerMenuBtn.attr("syncfldr", "true");
+  }
+  else {
+    fldrPickerMenuBtn.removeAttr("syncfldr");
+  }
+  
   $("#new-clipping-fldr-tree-popup").css({ visibility: "hidden" });
   $(".popup-bkgrd").hide();
 }
