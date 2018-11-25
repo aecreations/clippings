@@ -26,11 +26,15 @@ class aeFolderPicker
 	folder: true
       };
 
-      if (aItem.displayOrder === undefined) {
-        folderNode.displayOrder = 0;
+      if ("isSync" in aItem) {
+        folderNode.extraClasses = "ae-synced-clippings-fldr";
+      }
+
+      if ("displayOrder" in aItem)  {
+        folderNode.displayOrder = aItem.displayOrder;
       }
       else {
-        folderNode.displayOrder = aItem.displayOrder;
+        folderNode.displayOrder = 0;
       }
 
       this._buildFolderTree(aItem).then(aChildItems => {
@@ -88,7 +92,7 @@ class aeFolderPicker
     let rv = [];
     let folderID = aFolderData.id;
 
-    return new Promise((aFnAccept, aFnReject) => {
+    return new Promise((aFnResolve, aFnReject) => {
       that._db.folders.where("parentFolderID").equals(folderID).each((aItem, aCursor) => {
         let folderNode = {
 	  key: aItem.id,
@@ -96,11 +100,11 @@ class aeFolderPicker
 	  folder: true
         };
 
-        if (aItem.displayOrder === undefined) {
-          folderNode.displayOrder = 0;
+        if ("displayOrder" in aItem) {
+          folderNode.displayOrder = aItem.displayOrder;
         }
         else {
-          folderNode.displayOrder = aItem.displayOrder;
+          folderNode.displayOrder = 0;
         }
 
         that._buildFolderTree(aItem).then(aChildItems => {
@@ -109,14 +113,14 @@ class aeFolderPicker
         });
       }).then(() => {
         rv.sort((aItem1, aItem2) => { return that._sort(aItem1, aItem2) });
-        aFnAccept(rv);
+        aFnResolve(rv);
       });
     });
   }
 
   _sort(aTreeNode1, aTreeNode2) {
     let rv = 0;
-    if (aTreeNode1.displayOrder !== undefined && aTreeNode2.displayOrder !== undefined) {
+    if ("displayOrder" in aTreeNode1 && "displayOrder" in aTreeNode2) {
       rv = aTreeNode1.displayOrder - aTreeNode2.displayOrder;
     }
     return rv; 
