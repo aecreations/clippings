@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const DEBUG_TREE = true;
+const DEBUG_TREE = false;
 const DEBUG_WND_ACTIONS = false;
 const ENABLE_PASTE_CLIPPING = false;
 const NEW_CLIPPING_FROM_CLIPBOARD = "New Clipping From Clipboard";
@@ -288,7 +288,7 @@ let gClippingsListener = {
   },
 
   importStarted: function () {},
-  importFinished: function () {},
+  importFinished: function (aIsSuccess) {},
 
   // Helper methods
   _buildChildNodes: function (aFolderNode)
@@ -1391,13 +1391,14 @@ let gCmd = {
 	for (let i = 0; i < childNodes.length; i++) {
           let key = childNodes[i].key;
           let suffix = key.substring(key.length - 1);
+          let seq = (aFolderID == aeConst.ROOT_FOLDER_ID ? (i + 1) : i);
 
           if (suffix == "F") {
-            let fldrSeqUpd = gClippingsDB.folders.update(parseInt(childNodes[i].key), { displayOrder: i });
+            let fldrSeqUpd = gClippingsDB.folders.update(parseInt(childNodes[i].key), { displayOrder: seq });
             seqUpdates.push(fldrSeqUpd);
           }
           else if (suffix == "C") {
-            let clipSeqUpd = gClippingsDB.clippings.update(parseInt(childNodes[i].key), { displayOrder: i });
+            let clipSeqUpd = gClippingsDB.clippings.update(parseInt(childNodes[i].key), { displayOrder: seq });
             seqUpdates.push(clipSeqUpd);
           }
 	}

@@ -27,7 +27,6 @@ let gClippingsListeners = {
   ORIGIN_WELCOME_PG: 4,
 
   _listeners: [],
-  _isImporting: false,
 
   add: function (aNewListener) {
     this._listeners.push(aNewListener);
@@ -37,12 +36,13 @@ let gClippingsListeners = {
     this._listeners = this._listeners.filter(aListener => aListener != aTargetListener);
   },
 
-  getListeners() {
+  getListeners: function () {
     return this._listeners;
   }
 };
 
 let gClippingsListener = {
+  _isImporting: false,
   origin: null,
   
   newClippingCreated: function (aID, aData) {
@@ -94,7 +94,7 @@ let gClippingsListener = {
       log("Clippings/wx: gClippingsListener.afterBatchChanges(): Import in progress. Ignoring DB changes.")
       return;
     }
-      
+
     rebuildContextMenu();
   },
 
@@ -250,6 +250,7 @@ let gWndIDs = {
 
 let gPrefs = null;
 let gIsInitialized = false;
+let gSetDisplayOrderOnRootItems = false;
 
 
 //
@@ -277,6 +278,7 @@ browser.runtime.onInstalled.addListener(aDetails => {
       if (versionCompare(oldVer, "6.1", { lexicographical: true }) <= 0) {
         log("Clippings/wx: Upgrade to version 6.1 detected. Initializing new user preferences.");
         setNewPrefs().then(() => {
+          gSetDisplayOrderOnRootItems = true;
           init();
         });
       }
@@ -455,8 +457,16 @@ function init()
     browser.storage.local.set({ showWelcome: false });
   }
 
-  gIsInitialized = true;
-  log("Clippings/wx: Initialization complete.");
+  if (gSetDisplayOrderOnRootItems) {
+    setDisplayOrderOnRootItems().then(() => {
+      gIsInitialized = true;
+      log("Clippings/wx: Display order on root folder items have been set.\nClippings initialization complete.");
+    });
+  }
+  else {
+    gIsInitialized = true;
+    log("Clippings/wx: Initialization complete.");   
+  }
 }
 
 
@@ -562,6 +572,34 @@ function initClippingsDB()
   });
 
   gClippingsDB.open().catch(aErr => { onError(aErr) });
+}
+
+
+function setDisplayOrderOnRootItems()
+{
+  return new Promise((aFnResolve, aFnReject) => {
+    let seq = 1;
+
+    gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
+      gClippingsDB.folders.where("parentFolderID").equals(aeConst.ROOT_FOLDER_ID).each((aItem, aCursor) => {
+        log(`Clippings/wx: setDisplayOrderOnRootItems(): Folder "${aItem.name}" (id=${aItem.id}): display order = ${seq}`);
+        let numUpd = gClippingsDB.folders.update(aItem.id, { displayOrder: seq++ });
+
+      }).then(() => {
+        return gClippingsDB.clippings.where("parentFolderID").equals(aeConst.ROOT_FOLDER_ID).each((aItem, aCursor) => {
+          log(`Clippings/wx: setDisplayOrderOnRootItems(): Clipping "${aItem.name}" (id=${aItem.id}): display order = ${seq}`);
+          let numUpd = gClippingsDB.clippings.update(aItem.id, { displayOrder: seq++ });
+        });
+
+      }).then(() => {
+        aFnResolve();
+      });     
+
+    }).catch(aErr => {
+      console.error("Clippings/wx: setDisplayOrderOnRootItems(): " + aErr);
+      aFnReject(aErr);
+    });
+  }); 
 }
 
 
