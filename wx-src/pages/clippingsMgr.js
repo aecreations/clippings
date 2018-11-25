@@ -962,8 +962,7 @@ let gCmd = {
     if (selectedNode && selectedNode.isFolder()) {
       let folderID = parseInt(selectedNode.key);
       if (folderID == gClippings.getSyncFolderID()) {
-        // TO DO: Put this in a popup.
-        window.alert(chrome.i18n.getMessage("moveSyncFldr"));
+        window.setTimeout(() => {gDialogs.moveSyncFldr.openPopup()});
         return;
       }
     }
@@ -988,8 +987,7 @@ let gCmd = {
     
     if (selectedNode.isFolder()) {
       if (id == gClippings.getSyncFolderID()) {
-        // TO DO: Put this in a popup.
-        window.alert(chrome.i18n.getMessage("deleteSyncFldr"));
+        window.setTimeout(() => {gDialogs.deleteSyncFldr.openPopup()}, 100);
         return;
       }
       
@@ -2728,7 +2726,7 @@ function initDialogs()
           }
 
           let fldrID = aItem.id + "F";         
-          if ( !(fldrID in gSyncedItemsIDs)) {
+          if (! (fldrID in gSyncedItemsIDs)) {
             gClippingsDB.folders.delete(parseInt(fldrID));
           }
         }).then(() => {
@@ -3065,6 +3063,9 @@ function initDialogs()
     that.resetTree();
     that.close();
   };
+
+  gDialogs.moveSyncFldr = new aeDialog("#move-sync-fldr-msgbar");
+  gDialogs.deleteSyncFldr = new aeDialog("#delete-sync-fldr-msgbar");
 
   gDialogs.miniHelp = new aeDialog("#mini-help-dlg");
   if (! isMacOS) {
