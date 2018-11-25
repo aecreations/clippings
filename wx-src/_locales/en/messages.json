@@ -1176,6 +1176,10 @@
     "message": "Visit home page"
   },
 
+  "aboutLicLink": {
+    "message": "License information"
+  },
+
   "aboutTrans": {
     "message": "Localizations contributed by Crowdin translators."
   },
