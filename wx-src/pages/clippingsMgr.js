@@ -3129,6 +3129,7 @@ function buildClippingsTree()
       },
 
       dnd5: {
+        autoExpandMS: 1000,
         preventRecursiveMoves: true,
         preventVoidMoves: true,
         scroll: true,
@@ -3232,7 +3233,9 @@ function buildClippingsTree()
               }
               return gCmd.updateDisplayOrder(newParentID, null, null, false);
             }).then(() => {
-	      aNode.setExpanded();
+	      if (newParentID != oldParentID) {
+                aNode.setExpanded();
+              }
 	    });
           }
           else {
