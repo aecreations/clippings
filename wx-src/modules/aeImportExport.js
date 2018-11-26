@@ -103,7 +103,7 @@ aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems
           folder.displayOrder = 9999999;
         }
 	else {
-	  if (item.seq !== undefined) {
+	  if ("seq" in item) {
 	    folder.displayOrder = item.seq;
 	  }
 	}
@@ -142,7 +142,7 @@ aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems
           clipping.displayOrder = 9999999;
         }
 	else {
-	  if (item.seq !== undefined) {
+	  if ("seq" in item) {
 	    clipping.displayOrder = item.seq;
 	  }
 	}
