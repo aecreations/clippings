@@ -934,7 +934,7 @@ function getContextMenuData(aFolderID)
   function fnSortMenuItems(aItem1, aItem2)
   {
     let rv = 0;
-    if (aItem1.displayOrder !== undefined && aItem2.displayOrder !== undefined) {
+    if ("displayOrder" in aItem1 && "displayOrder" in aItem2) {
       rv = aItem1.displayOrder - aItem2.displayOrder;
     }
     return rv;    
