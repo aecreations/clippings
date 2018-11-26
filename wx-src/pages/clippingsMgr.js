@@ -905,6 +905,43 @@ let gCmd = {
     });
   },
 
+  newClippingWithContent: function (aParentFolderID, aName, aContent, aDestUndoStack)
+  {
+    if (gIsClippingsTreeEmpty) {
+      unsetEmptyClippingsState();
+    }
+    
+    let tree = getClippingsTree();
+    let parentFldrID = aParentFolderID;
+
+    this.recentAction = this.ACTION_CREATENEW;
+
+    let createClipping = gClippingsDB.clippings.add({
+      name: aName,
+      content: aContent,
+      shortcutKey: "",
+      parentFolderID: aParentFolderID,
+      label: "",
+      sourceURL: "",
+      displayOrder: 999999,
+    });
+
+    createClipping.then(aNewClippingID => {
+      if (aDestUndoStack == this.UNDO_STACK) {
+        this.undoStack.push({
+          action: this.ACTION_CREATENEW,
+          id: aNewClippingID,
+          itemType: this.ITEMTYPE_CLIPPING
+        });
+      }
+
+      if (gSyncedItemsIDs[parentFldrID + "F"]) {
+        gSyncedItemsIDs[aNewClippingID + "C"] = 1;
+        gClippings.pushSyncFolderUpdates().catch(handlePushSyncItemsError);
+      }
+    });
+  },
+
   newFolder: function (aDestUndoStack)
   {
     if (gIsClippingsTreeEmpty) {
@@ -3155,13 +3192,18 @@ function buildClippingsTree()
         },
 
         dragDrop: function (aNode, aData) {
-          if (aData.otherNode) {
-            // Prevent dropping a node into a non-folder node.
-            if (!aNode.isFolder() && aData.hitMode == "over") {
-              return;
-            }
+          if (gIsClippingsTreeEmpty) {
+            return;
+          }
 
-            let parentNode = aNode.getParent();
+          // Prevent dropping into a non-folder node.
+          if (!aNode.isFolder() && aData.hitMode == "over") {
+            return;
+          }
+
+          let parentNode = aNode.getParent();
+          
+          if (aData.otherNode) {
             let newParentID = aeConst.ROOT_FOLDER_ID;
 
             if (aNode.isFolder() && aData.hitMode == "over") {
@@ -3239,14 +3281,34 @@ function buildClippingsTree()
 	    });
           }
           else {
-            // Drop a non-node
+            // Dropping a non-node.
             let dndData = aData.dataTransfer.getData("text");
-            parentNode.addNode({ title: dndData }, aData.hitMode);
 
-            // TO DO: Create the clipping in the database.
-	    console.log("Clippings/wx::clippingsMgr.js::#clippings-tree.dnd5.dragDrop(): Non-node was dropped into tree. Detected text content: \n" + dndData);
+            if (! dndData) {
+              log("Clippings/wx::clippingsMgr.js: #clippings-tree.dnd5.dragDrop(): Non-node was dropped into tree.  Unable to process its data; ignoring.");
+              return;
+            }
+            
+            log("Clippings/wx::clippingsMgr.js: #clippings-tree.dnd5.dragDrop(): Non-node was dropped into tree.  Textual content detected.");
+            
+            aData.dataTransfer.effect = "copy";
+
+            let parentID = aeConst.ROOT_FOLDER_ID;
+            if (aNode.isFolder() && aData.hitMode == "over") {
+              parentID = parseInt(aNode.key);
+            }
+            else {
+              parentID = parentNode.isRootNode() ? aeConst.ROOT_FOLDER_ID : parseInt(parentNode.key);
+            }
+
+            let clipName = gClippings.createClippingNameFromText(dndData);
+            let clipContent = dndData;
+
+            gCmd.newClippingWithContent(parentID, clipName, clipContent, gCmd.UNDO_STACK);
 	    
-            aNode.setExpanded();
+            if (aNode.isFolder()) {
+              aNode.setExpanded();
+            }
           }
         }
       },
