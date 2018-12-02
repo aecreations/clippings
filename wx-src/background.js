@@ -402,7 +402,7 @@ function init()
 
     // The context menu will be built when refreshing the sync data, via the
     // onReloadFinish event handler of the Sync Clippings listener.
-    refreshSyncedClippings();
+    refreshSyncedClippings(true);
   }
   else {
     buildContextMenu();
@@ -643,7 +643,7 @@ async function enableSyncClippings(aIsEnabled)
 // TO DO: Make this an asynchronous function.
 // This can only be done after converting aeImportExport.importFromJSON()
 // to an asynchronous method.
-function refreshSyncedClippings()
+function refreshSyncedClippings(aIsInitHostApp)
 {
   log("Clippings/wx: refreshSyncedClippings(): Retrieving synced clippings from the Sync Clippings helper app...");
 
@@ -701,6 +701,11 @@ function refreshSyncedClippings()
     console.error("Clippings/wx: refreshSyncedClippings(): " + aErr);
     if (aErr == aeConst.SYNC_ERROR_CONXN_FAILED) {
       showSyncErrorNotification();
+    }
+
+    // Sync errors should not prevent building the Clippings menu on startup.
+    if (aIsInitHostApp) {
+      buildContextMenu();
     }
   });
 }
