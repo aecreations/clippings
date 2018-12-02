@@ -425,14 +425,7 @@ $(window).on("contextmenu", aEvent => {
 
 function gotoURL(aURL)
 {
-  // TO DO: Open the URL in a new browser tab.
-  // TEMPORARY
-  browser.windows.create({
-    url: aURL,
-    type: "normal",
-    state: "normal",
-  });
-  // END TEMPORARY
+  chrome.tabs.create({ url: aURL });
 }
 
 
