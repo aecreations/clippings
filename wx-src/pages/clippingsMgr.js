@@ -2279,7 +2279,10 @@ function initToolbar()
       },
       backup: {
         name: chrome.i18n.getMessage("mnuBackup"),
-        className: "ae-menuitem"
+        className: "ae-menuitem",
+        disabled: function (aKey, aOpt) {
+          return (gIsClippingsTreeEmpty);
+        }
       },
       restoreFromBackup: {
         name: chrome.i18n.getMessage("mnuRestoreFromBackup"),
@@ -2292,7 +2295,10 @@ function initToolbar()
       },
       exportToFile: {
         name: chrome.i18n.getMessage("mnuExport"),
-        className: "ae-menuitem"
+        className: "ae-menuitem",
+        disabled: function (aKey, aOpt) {
+          return (gIsClippingsTreeEmpty);
+        }
       },
       separator2: "--------",
       removeAllSrcURLs: {
