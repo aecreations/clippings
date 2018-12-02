@@ -268,8 +268,15 @@ progress {
     height: 48px;
     margin-top: 4px;
     margin-right: 12px;
-    background-image: url("../img/error.svg");
     background-size: contain;
+}
+
+#sync-clippings-dlg #sync-cxn-error .msgbox-icon {
+    background-image: url("chrome://global/skin/icons/warning-64.png");
+}
+
+#sync-clippings-dlg #generic-error .msgbox-icon {
+    background-image: url("../img/error.svg");
 }
 
 #sync-clippings-dlg #sync-cxn-error .error-msg,
@@ -280,6 +287,14 @@ progress {
     padding: 12px;
     border-radius: 4px;
     font-weight: bold;
+}
+
+#sync-clippings-dlg #sync-cxn-error .error-msg {
+    background-color: #fbfb77;
+}
+
+#sync-clippings-dlg #generic-error .error-msg {
+    background-color: #ffd2d2;
 }
 
 #sync-clippings-dlg #generic-error #sync-err-detail {
