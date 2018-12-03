@@ -332,6 +332,11 @@ input[type="search"]::placeholder {
     background-color: #ebebeb;
 }
 
+#reload-sync-fldr-btn:active {
+    border: 1px solid #b1b1b1;
+    background-color: #d7d7db;
+}
+
 ul.fancytree-container {
     border: none;
 }
