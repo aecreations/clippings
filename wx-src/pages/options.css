@@ -215,6 +215,8 @@ progress {
 }
 
 .lightbox > .dlg-btns > button {
+    min-width: 132px;
+    height: 32px;
     padding: 0 24px 0;
     border-radius: 2px;
     font-size: 15px !important;
