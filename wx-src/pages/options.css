@@ -153,6 +153,23 @@ progress {
     font-size: 15px;
 }
 
+.sync-status-on {
+    color: #003706;
+}
+
+.sync-status-on::after {
+    content: " ";
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    margin-left: 6px;
+    background-image: url("../img/success.svg");
+    background-size: 18px 18px;
+    background-repeat: no-repeat;
+    vertical-align: text-bottom;
+    color: #006504;
+}
+
 #sync-options .description {
     margin-top: 0;
     margin-bottom: 6px;
@@ -198,6 +215,10 @@ progress {
 
 .lightbox .label {
     font-size: 15px;
+}
+
+.lightbox input[type="text"] {
+    font: caption;
 }
 
 .lightbox .dlg-subhead {
