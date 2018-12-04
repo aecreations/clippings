@@ -2504,7 +2504,7 @@ function initDialogs()
     $("#clipping-key")[0].selectedIndex = gShortcutKey.getPrevSelectedIndex();
   };
 
-  gDialogs.clippingMissingSrcURL = new aeDialog("#clipping-missing-src-url-msgbox");
+  gDialogs.clippingMissingSrcURL = new aeDialog("#clipping-missing-src-url-msgbar");
   gDialogs.noUndoNotify = new aeDialog("#no-undo-msgbar");
 
   gDialogs.shortcutList = new aeDialog("#shortcut-list-dlg");
@@ -3375,7 +3375,7 @@ function buildClippingsTree()
           gClippingsDB.clippings.get(clippingID).then(aClipping => {
             let srcURL = aClipping.sourceURL;
             if (srcURL == "") {
-              gDialogs.clippingMissingSrcURL.showModal();
+              gDialogs.clippingMissingSrcURL.openPopup();
               return;
             }
             gCmd.gotoURL(srcURL);
