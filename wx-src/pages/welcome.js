@@ -39,7 +39,9 @@ let gClippingsListener = {
   clippingChanged: function (aID, aData, aOldData) {},
   folderChanged: function (aID, aData, aOldData) {},
   clippingDeleted: function (aID, aOldData) {},
-  folderDeleted: function (aID, aOldData) {}
+  folderDeleted: function (aID, aOldData) {},
+  importStarted: function () {},
+  importFinished: function (aIsSuccess) {},
 };
 
 
