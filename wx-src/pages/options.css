@@ -404,7 +404,7 @@ progress {
 #about-dlg {
     top: 72px;
     --width: 410px;
-    --height: 296px;
+    --height: 300px;
 }
 
 #about-dlg #ext-icon {
@@ -462,4 +462,9 @@ progress {
 
 #about-dlg #diag-info {
     font-size: 11px;
+}
+
+#about-dlg #sync-diag-loading > img {
+    width: 16px;
+    height: 16px;
 }

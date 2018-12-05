@@ -822,6 +822,10 @@ ul.fancytree-container {
 #shortcut-list-content table > thead > tr > th {
     padding: 3px 4px 3px 4px;
     font-weight: normal;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 90px;
 }
 
 #shortcut-list-content table > thead > tr > th:nth-child(1) {
@@ -859,7 +863,7 @@ ul.fancytree-container {
 
 #import-dlg {
     --width: 395px;
-    --height: 178px;
+    --height: 200px;
     top: 40px;
 }
 
@@ -932,6 +936,7 @@ ul.fancytree-container {
     padding: 8px;
     background-color: #fbfb77;
     border-radius: 4px;
+    min-height: 60px;
 }
 
 #import-dlg progress {

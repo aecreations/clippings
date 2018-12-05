@@ -139,6 +139,7 @@ button.btn-puffy {
 
 .welcome-action-card > p {
     margin-left: 0;
+    min-height: 56px;
 }
 
 .welcome-action-card > .card-btns {
