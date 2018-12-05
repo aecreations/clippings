@@ -152,7 +152,7 @@ function init()
 
     if (aPrefs.syncClippings) {
       $("#sync-settings").show();
-      $("#sync-status").text(chrome.i18n.getMessage("syncStatusOn"));
+      $("#sync-status").addClass("sync-status-on").text(chrome.i18n.getMessage("syncStatusOn"));
       $("#toggle-sync").text(chrome.i18n.getMessage("syncTurnOff"));
     }
     else {
@@ -269,7 +269,7 @@ function initDialogs()
             setPref({ syncClippings: true });
             $("#sync-settings").show();
             $("#toggle-sync").text(chrome.i18n.getMessage("syncTurnOff"));
-            $("#sync-status").text(chrome.i18n.getMessage("syncStatusOn"));
+            $("#sync-status").addClass("sync-status-on").text(chrome.i18n.getMessage("syncStatusOn"));
 
 	    gIsActivatingSyncClippings = false;
 	  }
@@ -315,7 +315,7 @@ function initDialogs()
       setPref({ syncClippings: false });
       $("#sync-settings").hide();
       $("#toggle-sync").text(chrome.i18n.getMessage("syncTurnOn"));
-      $("#sync-status").text(chrome.i18n.getMessage("syncStatusOff"));
+      $("#sync-status").removeClass("sync-status-on").text(chrome.i18n.getMessage("syncStatusOff"));
 
       let syncClippingsListeners = gClippings.getSyncClippingsListeners().getListeners();
       for (let listener of syncClippingsListeners) {
