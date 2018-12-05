@@ -3271,8 +3271,8 @@ function buildClippingsTree()
                 itemType: (aNode.folder ? gCmd.ITEMTYPE_FOLDER : gCmd.ITEMTYPE_CLIPPING),
                 nextSiblingNodeKey: (nextSiblingNode ? nextSiblingNode.key : null),
               };
-              console.log("Clippings/wx::clippingsMgr.js: Saving undo info for clipping/folder reordering:");
-              console.log(undoInfo);
+              log("Clippings/wx::clippingsMgr.js: Saving undo info for clipping/folder reordering:");
+              log(undoInfo);
             }
             
             gCmd.updateDisplayOrder(oldParentID, destUndoStack, undoInfo, !isReordering).then(() => {
