@@ -64,12 +64,15 @@ let gClippingsListener = {
   },
 
   clippingChanged: function (aID, aData, aOldData) {
+    log("Clippings/wx: gClippingsListener.clippingChanged()");
     rebuildContextMenu();
   },
 
   folderChanged: function (aID, aData, aOldData) {
+    log("Clippings/wx: gClippingsListener.folderChanged()");
+
     if ("isSync" in aOldData) {
-      log("Clippings/wx: gClippingsListener.folderChanged(): The Synced Clippings folder is being converted to a normal folder. Ignoring DB changes.");
+      log("- The Synced Clippings folder is being converted to a normal folder. Ignoring DB changes.");
       return;
     }
     
@@ -146,7 +149,10 @@ let gSyncClippingsListener = {
   {
     log("Clippings/wx: gSyncClippingsListener.onDeactivate()");
     this._oldSyncFldrID = aOldSyncFolderID;
-    rebuildContextMenu();
+    
+    // TO DO: Instead of rebuilding the entire menu, just change the icon on the
+    // "Synced Clippings" folder to be a normal folder icon.
+    //rebuildContextMenu();
   },
 
   onAfterDeactivate(aRemoveSyncFolder)
