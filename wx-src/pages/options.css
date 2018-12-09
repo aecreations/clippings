@@ -379,10 +379,11 @@ progress {
 
 #turn-off-sync-clippings-ack-dlg .info-icon {
     float: left;
-    width: 48px;
-    height: 48px;
+    width: 42px;
+    height: 42px;
     margin-top: 8px;
     margin-right: 12px;
+    margin-bottom: 24px;
     background-image: url("../img/info.svg");
     background-size: contain;
 }
