@@ -1,4 +1,3 @@
-/* -*- mode: javascript; tab-width: 8; indent-tabs-mode: nil; js-indent-level: 2 -*- */
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -8,6 +7,8 @@ let aeImportExport = {
   DEBUG: false,
 
   CLIPPINGS_JSON_VER: "6.0",
+  CLIPPINGS_JSON_VER_WITH_SEQ: "6.1",
+  CLIPPINGS_JSON_CREATED_BY: "Clippings/wx",
   ROOT_FOLDER_ID: 0,
 
   HTML_EXPORT_PAGE_TITLE: "Clippings",
@@ -21,6 +22,7 @@ let aeImportExport = {
   _shctTitle: "Clippings Shortcuts",
   _hostAppStr: "Clippings/wx on Firefox Quantum",
   _shctKeyInstrxns: "To paste, press ALT+SHIFT+Y (Command+Shift+Y on Mac), then the shortcut key.",
+  _shctKeyCustNote: "",
   _shctKeyColHdr: "Shortcut Key",
   _clipNameColHdr: "Clipping Name",
 };
@@ -39,15 +41,20 @@ aeImportExport.setL10nStrings = function (aStrings)
   this._shctTitle = aStrings.shctTitle;
   this._hostAppInfo = aStrings.hostAppInfo;
   this._shctKeyInstrxns = aStrings.shctKeyInstrxns;
+  this._shctKeyCustNote = aStrings.shctKeyCustNote;
   this._shctKeyColHdr = aStrings.shctKeyColHdr;
   this._clipNameColHdr = aStrings.clippingNameColHdr;
 };
 
 
-aeImportExport.importFromJSON = function (aImportRawJSON, aReplaceShortcutKeys)
+aeImportExport.importFromJSON = function (aImportRawJSON, aReplaceShortcutKeys, aAppendItems, aDestFolderID)
 {
   if (! this._db) {
     throw new Error("aeImportExport: Database not initialized!");
+  }
+
+  if (! aDestFolderID) {
+    aDestFolderID = this.ROOT_FOLDER_ID;
   }
 
   let importData;
@@ -66,7 +73,7 @@ aeImportExport.importFromJSON = function (aImportRawJSON, aReplaceShortcutKeys)
   this._getShortcutKeysToClippingIDs().then(aShortcutKeyLookup => {
     this._log("Starting JSON import...");
     try {
-      this._importFromJSONHelper(this.ROOT_FOLDER_ID, importData.userClippingsRoot, aReplaceShortcutKeys, aShortcutKeyLookup);
+      this._importFromJSONHelper(aDestFolderID, importData.userClippingsRoot, aReplaceShortcutKeys, aShortcutKeyLookup, aAppendItems);
     }
     catch (e) {
       console.error("Import of JSON data failed!");
@@ -78,7 +85,7 @@ aeImportExport.importFromJSON = function (aImportRawJSON, aReplaceShortcutKeys)
 };
 
 
-aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems, aReplaceShortcutKeys, aShortcutKeys)
+aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems, aReplaceShortcutKeys, aShortcutKeys, aAppendItems)
 {
   this._db.transaction("rw", this._db.clippings, this._db.folders, () => {
     let importedClippings = [];
@@ -86,20 +93,23 @@ aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems
 
     for (let item of aImportedItems) {
       if ("children" in item) {
-        let folder = {};
-        try {
-          folder = {
-            name: item.name,
-            parentFolderID: aParentFolderID
-          };
+        let folder = {
+          name: item.name,
+          parentFolderID: aParentFolderID
+        };
+
+        if (aAppendItems) {
+          // Make imported items appear last.
+          folder.displayOrder = 9999999;
         }
-        catch (e) {
-          console.error(e);
-          throw e;
-        }
+	else {
+	  if ("seq" in item) {
+	    folder.displayOrder = item.seq;
+	  }
+	}
         
         this._db.folders.add(folder).then(aNewFolderID => {
-          this._importFromJSONHelper(aNewFolderID, item.children, aReplaceShortcutKeys, aShortcutKeys);
+          this._importFromJSONHelper(aNewFolderID, item.children, aReplaceShortcutKeys, aShortcutKeys, aAppendItems);
         });
       }
       else {
@@ -128,6 +138,15 @@ aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems
           parentFolderID: aParentFolderID
         };
 
+        if (aAppendItems) {
+          clipping.displayOrder = 9999999;
+        }
+	else {
+	  if ("seq" in item) {
+	    clipping.displayOrder = item.seq;
+	  }
+	}
+
         importedClippings.push(clipping);
       }
     }
@@ -146,16 +165,24 @@ aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems
 };
 
 
-aeImportExport.exportToJSON = function (aIncludeSrcURLs, aDontStringify)
+aeImportExport.exportToJSON = function (aIncludeSrcURLs, aDontStringify, aFolderID, aExcludeFolderID, aIncludeDisplayOrder)
 {
   let expData = {
     version: this.CLIPPINGS_JSON_VER,
-    createdBy: "Clippings/wx",
+    createdBy: this.CLIPPINGS_JSON_CREATED_BY,
     userClippingsRoot: []
   };
 
+  if (aIncludeDisplayOrder) {
+    expData.version = this.CLIPPINGS_JSON_VER_WITH_SEQ;
+  }
+
+  if (! aFolderID) {
+    aFolderID = this.ROOT_FOLDER_ID;
+  }
+
   return new Promise((aFnResolve, aFnReject) => {
-    this._exportToJSONHelper(this.ROOT_FOLDER_ID, aIncludeSrcURLs).then(aExpItems => {
+    this._exportToJSONHelper(aFolderID, aIncludeSrcURLs, aExcludeFolderID, aIncludeDisplayOrder).then(aExpItems => {
       expData.userClippingsRoot = aExpItems;
 
       if (aDontStringify) {
@@ -168,22 +195,30 @@ aeImportExport.exportToJSON = function (aIncludeSrcURLs, aDontStringify)
       aFnReject(aErr);
     });
   });
-}
+};
 
 
-aeImportExport._exportToJSONHelper = function (aFolderID, aIncludeSrcURLs)
+aeImportExport._exportToJSONHelper = function (aFolderID, aIncludeSrcURLs, aExcludeFolderID, aIncludeDisplayOrder)
 {
   let rv = [];
   
   return new Promise((aFnResolve, aFnReject) => {
     this._db.transaction("r", this._db.clippings, this._db.folders, () => {
       this._db.folders.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
+        if (aExcludeFolderID !== undefined && aItem.id == aExcludeFolderID) {
+          return;
+        }
+        
         let folder = {
           name: aItem.name,
           children: []
         };
 
-        this._exportToJSONHelper(aItem.id, aIncludeSrcURLs).then(aChildItems => {
+	if (aIncludeDisplayOrder) {
+	  folder.seq = aItem.displayOrder || 0;
+	}
+
+        this._exportToJSONHelper(aItem.id, aIncludeSrcURLs, aExcludeFolderID, aIncludeDisplayOrder).then(aChildItems => {
           folder.children = aChildItems;
           rv.push(folder);
         });
@@ -196,6 +231,11 @@ aeImportExport._exportToJSONHelper = function (aFolderID, aIncludeSrcURLs)
             sourceURL: (aIncludeSrcURLs ? aItem.sourceURL : ""),
             label: aItem.label,
           };
+
+	  if (aIncludeDisplayOrder) {
+	    clipping.seq = aItem.displayOrder || 0;
+	  }
+	  
           rv.push(clipping);
         });
       }).then(() => {
@@ -218,16 +258,16 @@ aeImportExport.exportToHTML = async function ()
     
     for (let item of aFldrItems) {
       if (item.children) {
-        let name = that._sanitize(item.name);
+        let name = that._escapeHTML(item.name);
         let dt = `<dt class="folder"><h2>${name}</h2></dt>`;
         let dd = "<dd>" + exportToHTMLHelper(item.children);
         dd += "</dd>";
         rv += dt + dd;
       }
       else {
-        let name = that._sanitize(item.name);
+        let name = that._escapeHTML(item.name);
         let dt = `<dt class="clipping"><h3>${name}</h3></dt>`;
-        let text = that._sanitize(item.content);
+        let text = that._escapeHTML(item.content);
         text = text.replace(/\n/g, "<br>");
         let dd = `<dd>${text}</dd>`;
         rv += dt + dd;
@@ -260,7 +300,45 @@ aeImportExport.exportToHTML = async function ()
 };
 
 
-aeImportExport.importFromRDF = function (aRDFRawData, aReplaceShortcutKeys)
+aeImportExport.exportToCSV = async function (aExcludeFolderID)
+{
+  function exportToCSVHelper(aFldrItems, aCSVData)
+  {
+    let that = aeImportExport;
+
+    for (let item of aFldrItems) {
+      if (item.children) {
+        exportToCSVHelper(item.children, aCSVData);
+      }
+      else {
+        let name = item.name;
+        let content = item.content;
+        content = content.replace(/\"/g, '""');
+        aCSVData.push(`"${name}","${content}"`);
+      }
+    }
+  }
+
+  let rv = "";
+
+  let expData;
+  try {
+    expData = await this.exportToJSON(false, true, this.ROOT_FOLDER_ID, aExcludeFolderID);
+  }
+  catch (e) {
+    console.error("aeImportExport.exportToCSV(): " + e);
+    throw e;
+  }
+
+  let csvData = [];
+  exportToCSVHelper(expData.userClippingsRoot, csvData);
+  rv = csvData.join("\r\n");
+
+  return rv;
+};
+
+
+aeImportExport.importFromRDF = function (aRDFRawData, aReplaceShortcutKeys, aAppendItems)
 {
   this._log(`aeImportExport.importFromRDF(): Reading raw RDF data (size: ${aRDFRawData.length} bytes)`);
 
@@ -281,7 +359,7 @@ aeImportExport.importFromRDF = function (aRDFRawData, aReplaceShortcutKeys)
   jsonData.userClippingsRoot = this._importFromRDFHelper(dataSrc, rootFolderNode);
 
   this._getShortcutKeysToClippingIDs().then(aShortcutKeyLookup => {
-    this._importFromJSONHelper(this.ROOT_FOLDER_ID, jsonData.userClippingsRoot, aReplaceShortcutKeys, aShortcutKeyLookup);
+    this._importFromJSONHelper(this.ROOT_FOLDER_ID, jsonData.userClippingsRoot, aReplaceShortcutKeys, aShortcutKeyLookup, aAppendItems);
   });
 };
 
@@ -377,7 +455,8 @@ aeImportExport.getShortcutKeyListHTML = function (aIsFullHTMLDoc)
 <body>
 <h1>${this._shctTitle}</h1>
 <p class="app-info" style="font-size:small">${this._hostAppInfo}</p>
-<p>${this._shctKeyInstrxns}</p>
+<p>${this._shctKeyInstrxns}
+<em>${this._shctKeyCustNote}</em></p>
 <table border="2">`;
   }
   else {
@@ -440,7 +519,7 @@ aeImportExport._getShortcutKeyMap = async function ()
 };
 
 
-aeImportExport._sanitize = function (aStr)
+aeImportExport._escapeHTML = function (aStr)
 {
   let rv = aStr.replace(/</g, "&lt;");
   rv = rv.replace(/>/g, "&gt;");

@@ -2,24 +2,30 @@ LICENSES
 ========
 
 Most of the source code for Clippings is made available under the Mozilla
-Public License 2.0 (MPL). The remainder of the software which is not under the
-MPL is available under one of a variety of other free and open source
-licenses. Those that require reproduction of the license text in the
-distribution are given below.
+Public License 2.0 (MPL).  The remainder of the software which is not under the
+MPL is available under one of a variety of other free and open source licenses.
+Those that require reproduction of the license text in the distribution are
+given below.
 
 - Mozilla Public License 2.0
 
 - Apache License 2.0
 
-- MIT License
+- Fancytree License
+
+- jQuery License
+
+- jQuery contextMenu License
+
+- rdflib.js License
 
 				    *  *  *
 
-The Mozilla Public License (MPL) version 2.0 applies to Clippings and DOMPurify.
-
-
 Mozilla Public License Version 2.0
 ==================================
+
+The Mozilla Public License (MPL) version 2.0 applies to Clippings and DOMPurify.  
+
 
 1. Definitions
 --------------
@@ -600,8 +606,8 @@ TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
 
 				    *  *  *
 
-MIT License
-===========  For Fancytree
+Fancytree License
+=================  MIT License
 
 This license applies to Fancytree.
 
@@ -628,8 +634,8 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 				    *  *  *
-MIT License
-===========  For jQuery
+jQuery License
+==============  MIT License
 
 This license applies to jQuery.
 
@@ -665,8 +671,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 				    *  *  *
 				    
-MIT License
-===========  For jQuery contextMenu
+jQuery contextMenu License
+==========================  MIT License
 
 This license applies to jQuery contextMenu.
 
@@ -694,8 +700,8 @@ THE SOFTWARE.
 
 				    *  *  *
 
-MIT License
-===========  For rdflib.js
+rdflib.js License
+=================  MIT License
 
 This license applies to rdflib.js.
 

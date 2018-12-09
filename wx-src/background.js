@@ -15,7 +15,10 @@ let gHostAppName = null;
 let gAutoIncrPlchldrs = null;
 let gClippingMenuItemIDMap = {};
 let gFolderMenuItemIDMap = {};
+let gSyncFldrID = null;
+let gBackupRemIntervalID = null;
 let gPasteClippingTargetTabID = null;
+let gIsReloadingSyncFldr = false;
 
 let gClippingsListeners = {
   ORIGIN_CLIPPINGS_MGR: 1,
@@ -33,27 +36,46 @@ let gClippingsListeners = {
     this._listeners = this._listeners.filter(aListener => aListener != aTargetListener);
   },
 
-  get: function () {
+  getListeners: function () {
     return this._listeners;
   }
 };
 
 let gClippingsListener = {
+  _isImporting: false,
   origin: null,
   
   newClippingCreated: function (aID, aData) {
+    if (gIsReloadingSyncFldr) {
+      log("Clippings/wx: gClippingsListener.newClippingCreated(): The Synced Clippings folder is being reloaded. Ignoring DB changes.");
+      return;
+    }
+
     rebuildContextMenu();
   },
 
   newFolderCreated: function (aID, aData) {
+    if (gIsReloadingSyncFldr || "isSync" in aData) {
+      log("Clippings/wx: gClippingsListener.newFolderCreated(): The Synced Clippings folder is being reloaded. Ignoring DB changes.");
+      return;
+    }
+
     rebuildContextMenu();
   },
 
   clippingChanged: function (aID, aData, aOldData) {
+    log("Clippings/wx: gClippingsListener.clippingChanged()");
     rebuildContextMenu();
   },
 
   folderChanged: function (aID, aData, aOldData) {
+    log("Clippings/wx: gClippingsListener.folderChanged()");
+
+    if ("isSync" in aOldData) {
+      log("- The Synced Clippings folder is being converted to a normal folder. Ignoring DB changes.");
+      return;
+    }
+    
     if (aData.parentFolderID == aOldData.parentFolderID) {
       updateContextMenuForFolder(aID);
     }
@@ -62,19 +84,105 @@ let gClippingsListener = {
     }
   },
 
-  clippingDeleted: function (aID, aOldData) {
-    removeContextMenuForClipping(aID);
-  },
-
-  folderDeleted: function (aID, aOldData) {
-    removeContextMenuForFolder(aID);
-  },
+  clippingDeleted: function (aID, aOldData) {},
+  folderDeleted: function (aID, aOldData) {},
 
   afterBatchChanges: function (aDBChanges) {
+    if (gIsReloadingSyncFldr) {
+      log("Clippings/wx: gClippingsListener.afterBatchChanges(): The Synced Clippings folder is being reloaded. Ignoring DB changes.");
+      return;
+    }
+
+    if (this._isImporting) {
+      log("Clippings/wx: gClippingsListener.afterBatchChanges(): Import in progress. Ignoring DB changes.")
+      return;
+    }
+
     rebuildContextMenu();
-  }
+  },
+
+  importStarted: function ()
+  {
+    log("Clippings/wx: gClippingsListener.importStarted()");
+    this._isImporting = true;
+  },
+
+  importFinished: function (aIsSuccess)
+  {
+    log("Clippings/wx: gClippingsListener.importFinished()");
+    this._isImporting = false;
+
+    if (aIsSuccess) {
+      log("Import was successful - proceeding to rebuild Clippings menu.");
+      rebuildContextMenu();
+    }
+  },
 };
+
+let gSyncClippingsListeners = {
+  _listeners: [],
+
+  add(aNewListener) {
+    this._listeners.push(aNewListener)
+  },
+
+  remove(aTargetListener) {
+    this._listeners = this._listeners.filter(aListener => aListener != aTargetListener);
+  },
+
+  getListeners() {
+    return this._listeners;
+  },
+};
+
+let gSyncClippingsListener = {
+  _oldSyncFldrID: null,
   
+  onActivate(aSyncFolderID)
+  {
+    // No need to do anything here. The Clippings context menu is automatically
+    // rebuilt when the Sync Clippings data is imported, which occurs after
+    // turning on Sync Clippings from extension preferences.
+  },
+
+  onDeactivate(aOldSyncFolderID)
+  {
+    log("Clippings/wx: gSyncClippingsListener.onDeactivate()");
+    this._oldSyncFldrID = aOldSyncFolderID;
+    
+    // TO DO: Instead of rebuilding the entire menu, just change the icon on the
+    // "Synced Clippings" folder to be a normal folder icon.
+    //rebuildContextMenu();
+  },
+
+  onAfterDeactivate(aRemoveSyncFolder)
+  {
+    log("Clippings/wx: gSyncClippingsListeners.onAfterDeactivate(): Remove Synced Clippings folder: " + aRemoveSyncFolder);
+
+    let that = this;
+
+    if (aRemoveSyncFolder) {
+      log(`Removing old Synced Clippings folder (ID = ${that._oldSyncFldrID})`);
+      purgeFolderItems(this._oldSyncFldrID, false).then(() => {
+        that._oldSyncFldrID = null;
+      });
+    }
+  },
+
+  onReloadStart()
+  {
+    log("Clippings/wx: gSyncClippingsListeners.onReloadStart()");
+    gIsReloadingSyncFldr = true;
+  },
+  
+  onReloadFinish()
+  {
+    log("Clippings/wx: gSyncClippingsListeners.onReloadFinish(): Rebuilding Clippings menu");
+    gIsReloadingSyncFldr = false;
+    rebuildContextMenu();
+  },
+};
+
 let gNewClipping = {
   _name: null,
   _content: null,
@@ -148,6 +256,7 @@ let gWndIDs = {
 
 let gPrefs = null;
 let gIsInitialized = false;
+let gSetDisplayOrderOnRootItems = false;
 
 
 //
@@ -156,18 +265,36 @@ let gIsInitialized = false;
 
 browser.runtime.onInstalled.addListener(aDetails => {
   if (aDetails.reason == "install") {
-    log("Clippings/wx: It appears that the extension was newly installed.  Welcome to Clippings 6!");
+    log("Clippings/wx: It appears that the extension is newly installed.  Welcome to Clippings 6!");
+
+    // We can't detect if the previous install is the same version, so always
+    // initialize user prefs with default values.
+    setDefaultPrefs().then(() => {
+      init();
+    });
   }
-  else if (aDetails.reason == "upgrade") {
+  else if (aDetails.reason == "update") {
     let oldVer = aDetails.previousVersion;
-    log("Clippings/wx: Upgrading from version " + oldVer);
+    let currVer = chrome.runtime.getManifest().version;
+    log(`Clippings/wx: Upgrading from version ${oldVer} to ${currVer}`);
+
+    browser.storage.local.get().then(aPrefs => {
+      gPrefs = aPrefs;
+      
+      if (versionCompare(oldVer, "6.1", { lexicographical: true }) <= 0) {
+        log("Clippings/wx: Upgrade to version 6.1 detected. Initializing new user preferences.");
+        setNewPrefs().then(() => {
+          gSetDisplayOrderOnRootItems = true;
+          init();
+        });
+      }
+      else {
+        init();
+      }
+    });
   }
 });
 
-
-//
-// Browser window and Clippings menu initialization
-//
 
 async function setDefaultPrefs()
 {
@@ -185,6 +312,13 @@ async function setDefaultPrefs()
     clippingsMgrStatusBar: false,
     clippingsMgrPlchldrToolbar: false,
     clippingsMgrMinzWhenInactv: undefined,
+    syncClippings: false,
+    syncFolderID: null,
+    pasteShortcutKeyPrefix: "",
+    lastBackupRemDate: null,
+    backupRemFirstRun: true,
+    backupRemFrequency: aeConst.BACKUP_REMIND_WEEKLY,
+    afterSyncFldrReloadDelay: 3000,
   };
 
   gPrefs = aeClippingsPrefs;
@@ -192,42 +326,60 @@ async function setDefaultPrefs()
 }
 
 
-function init()
+async function setNewPrefs()
 {
-  if (gIsInitialized) {
-    return;
+  let newPrefs = {
+    syncClippings: false,
+    syncFolderID: null,
+    pasteShortcutKeyPrefix: "",
+    lastBackupRemDate: null,
+    backupRemFirstRun: true,
+    backupRemFrequency: aeConst.BACKUP_REMIND_WEEKLY,
+    afterSyncFldrReloadDelay: 3000,
+  };
+  
+  for (let pref in newPrefs) {
+    gPrefs[pref] = newPrefs[pref];
   }
 
-  browser.storage.local.get().then(aPrefs => {
-    if (aPrefs.htmlPaste === undefined) {
-      log("Clippings/wx: No user preferences were previously set.  Setting default user preferences.");
-      setDefaultPrefs().then(() => {
-        initHelper();
-      });
-    }
-    else {
-      gPrefs = aPrefs;
-      initHelper();
-    }
-  });
+  await browser.storage.local.set(newPrefs);
 }
 
 
-function initHelper()
+
+//
+// Browser window and Clippings menu initialization
+//
+
+browser.runtime.onStartup.addListener(() => {
+  log("Clippings/wx: Initializing Clippings during browser startup.");
+  
+  browser.storage.local.get().then(aPrefs => {
+    log("Clippings/wx: Successfully retrieved user preferences:");
+    log(aPrefs);
+    
+    gPrefs = aPrefs;
+
+    init();
+  });
+});
+
+
+function init()
 {
-  log("Clippings/wx: Initializing browser integration...");
+  log("Clippings/wx: Initializing integration with host app...");
   
   initClippingsDB();
   
   if (! ("browser" in window)) {
     gHostAppName = "Google Chrome";
-    log("Clippings/wx: Browser: Google Chrome");
+    log("Clippings/wx: Host app: Google Chrome");
   }
   else {
     let getBrowserInfo = browser.runtime.getBrowserInfo();
     getBrowserInfo.then(aBrwsInfo => {
       gHostAppName = `${aBrwsInfo.name} ${aBrwsInfo.version}`;
-      log(`Clippings/wx: Browser: ${aBrwsInfo.name} (version ${aBrwsInfo.version})`);
+      log(`Clippings/wx: Host app: ${aBrwsInfo.name} (version ${aBrwsInfo.version})`);
     });
   }
 
@@ -246,10 +398,22 @@ function initHelper()
 
   gClippingsListener.origin = gClippingsListeners.ORIGIN_HOSTAPP;
   gClippingsListeners.add(gClippingsListener);
+  gSyncClippingsListeners.add(gSyncClippingsListener);
   
   window.addEventListener("unload", onUnload, false);
   initMessageListeners();
 
+  if (gPrefs.syncClippings) {
+    gSyncFldrID = gPrefs.syncFolderID;
+
+    // The context menu will be built when refreshing the sync data, via the
+    // onReloadFinish event handler of the Sync Clippings listener.
+    refreshSyncedClippings(true);
+  }
+  else {
+    buildContextMenu();
+  }
+  
   aeClippingSubst.init(navigator.userAgent, gPrefs.autoIncrPlcHldrStartVal);
   gAutoIncrPlchldrs = new Set();
 
@@ -262,10 +426,11 @@ function initHelper()
       if (pref == "autoIncrPlcHldrStartVal") {
         aeClippingSubst.setAutoIncrementStartValue(aChanges[pref].newValue);
       }
+      else if (gPrefs.pasteShortcutKeyPrefix) {
+        setShortcutKeyPrefix(gPrefs.pasteShortcutKeyPrefix);
+      }
     }
   });
-  
-  buildContextMenu();
 
   chrome.commands.onCommand.addListener(aCmdName => {
     info(`Clippings/wx: Command "${aCmdName}" invoked!`);
@@ -280,13 +445,34 @@ function initHelper()
     }
   });
 
+  if (gPrefs.pasteShortcutKeyPrefix) {
+    setShortcutKeyPrefix(gPrefs.pasteShortcutKeyPrefix);
+  }
+
+  if (gPrefs.backupRemFirstRun) {
+    browser.storage.local.set({
+      lastBackupRemDate: new Date().toString(),
+    });
+  }
+
+  // Check in 5 minutes whether to show backup reminder notification.
+  window.setTimeout(showBackupNotification, aeConst.BACKUP_REMINDER_DELAY_MS);
+
   if (gPrefs.showWelcome) {
     openWelcomePage();
     browser.storage.local.set({ showWelcome: false });
   }
 
-  gIsInitialized = true;
-  log("Clippings/wx: Initialization complete.");
+  if (gSetDisplayOrderOnRootItems) {
+    setDisplayOrderOnRootItems().then(() => {
+      gIsInitialized = true;
+      log("Clippings/wx: Display order on root folder items have been set.\nClippings initialization complete.");
+    });
+  }
+  else {
+    gIsInitialized = true;
+    log("Clippings/wx: Initialization complete.");   
+  }
 }
 
 
@@ -307,10 +493,26 @@ function initClippingsDB()
   });
   
   gClippingsDB.on("changes", aChanges => {
-    let clippingsListeners = gClippingsListeners.get();
+    let clippingsListeners = gClippingsListeners.getListeners();
 
     if (aChanges.length > 1) {
-      info("Clippings/wx: Multiple DB changes detected. Calling afterBatchChanges() on all Clippings listeners.");
+      // Don't do anything if only displayOrder was changed.
+      let isDisplayOrderOnlyChanged = false;
+      for (let i = 0; i < aChanges.length; i++) {
+        let pptyChanges = aChanges[i].mods;
+
+        if (pptyChanges !== undefined && ("displayOrder" in pptyChanges)
+            && Object.keys(pptyChanges).length == 1) {
+          isDisplayOrderOnlyChanged = true;
+        }
+      }
+
+      if (isDisplayOrderOnlyChanged) {
+        return;
+      }
+
+      info(`Clippings/wx: There are ${aChanges.length} DB changes detected. Calling afterBatchChanges() on all Clippings listeners.`);
+      
       clippingsListeners.forEach(aListener => { aListener.afterBatchChanges(aChanges) });
       return;
     }
@@ -321,32 +523,51 @@ function initClippingsDB()
       switch (aChange.type) {
       case aeConst.DB_CREATED:
         info("Clippings/wx: Database observer detected CREATED event");
+        
         if (aChange.table == "clippings") {
-          clippingsListeners.forEach(aListener => { aListener.newClippingCreated(aChange.key, aChange.obj) });
+          clippingsListeners.forEach(aListener => {
+            aListener.newClippingCreated(aChange.key, aChange.obj);
+          });
         }
         else if (aChange.table == "folders") {
-          clippingsListeners.forEach(aListener => { aListener.newFolderCreated(aChange.key, aChange.obj) });
+          clippingsListeners.forEach(aListener => {
+            aListener.newFolderCreated(aChange.key, aChange.obj);
+          });
         }
         break;
         
       case aeConst.DB_UPDATED:
         info("Clippings/wx: Database observer detected UPDATED event");
 
+        // Don't do anything if only the displayOrder was changed.
+        if (aChange.mods !== undefined && ("displayOrder" in aChange.mods)
+            && Object.keys(aChange.mods).length == 1) {
+          break;
+        }
+
         if (aChange.table == "clippings") {
-          clippingsListeners.forEach(aListener => { aListener.clippingChanged(aChange.key, aChange.obj, aChange.oldObj) });
+          clippingsListeners.forEach(aListener => {
+            aListener.clippingChanged(aChange.key, aChange.obj, aChange.oldObj);
+          });
         }
         else if (aChange.table == "folders") {
-          clippingsListeners.forEach(aListener => { aListener.folderChanged(aChange.key, aChange.obj, aChange.oldObj) });
+          clippingsListeners.forEach(aListener => {
+            aListener.folderChanged(aChange.key, aChange.obj, aChange.oldObj);
+          });
         }
         break;
         
       case aeConst.DB_DELETED:
         info("Clippings/wx: Database observer detected DELETED event");
         if (aChange.table == "clippings") {
-          clippingsListeners.forEach(aListener => { aListener.clippingDeleted(aChange.key, aChange.oldObj) });
+          clippingsListeners.forEach(aListener => {
+            aListener.clippingDeleted(aChange.key, aChange.oldObj);
+          });
         }
         else if (aChange.table == "folders") {
-          clippingsListeners.forEach(aListener => { aListener.folderDeleted(aChange.key, aChange.oldObj) });
+          clippingsListeners.forEach(aListener => {
+            aListener.folderDeleted(aChange.key, aChange.oldObj);
+          });
         }
         break;
         
@@ -357,23 +578,200 @@ function initClippingsDB()
   });
 
   gClippingsDB.open().catch(aErr => { onError(aErr) });
+}
 
-  isStoragePersisted().then(async aIsPersisted => {
-    if (aIsPersisted) {
-      info("Clippings/wx: Storage is successfully persisted.");
+
+function setDisplayOrderOnRootItems()
+{
+  return new Promise((aFnResolve, aFnReject) => {
+    let seq = 1;
+
+    gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
+      gClippingsDB.folders.where("parentFolderID").equals(aeConst.ROOT_FOLDER_ID).each((aItem, aCursor) => {
+        log(`Clippings/wx: setDisplayOrderOnRootItems(): Folder "${aItem.name}" (id=${aItem.id}): display order = ${seq}`);
+        let numUpd = gClippingsDB.folders.update(aItem.id, { displayOrder: seq++ });
+
+      }).then(() => {
+        return gClippingsDB.clippings.where("parentFolderID").equals(aeConst.ROOT_FOLDER_ID).each((aItem, aCursor) => {
+          log(`Clippings/wx: setDisplayOrderOnRootItems(): Clipping "${aItem.name}" (id=${aItem.id}): display order = ${seq}`);
+          let numUpd = gClippingsDB.clippings.update(aItem.id, { displayOrder: seq++ });
+        });
+
+      }).then(() => {
+        aFnResolve();
+      });     
+
+    }).catch(aErr => {
+      console.error("Clippings/wx: setDisplayOrderOnRootItems(): " + aErr);
+      aFnReject(aErr);
+    });
+  }); 
+}
+
+
+async function enableSyncClippings(aIsEnabled)
+{
+  if (aIsEnabled) {
+    log("Clippings/wx: enableSyncClippings(): Turning ON");
+
+    if (gSyncFldrID === null) {
+      log("Clippings/wx: enableSyncClippings(): Creating the Synced Clippings folder."); 
+      let syncFldr = {
+        name: chrome.i18n.getMessage("syncFldrName"),
+        parentFolderID: aeConst.ROOT_FOLDER_ID,
+        displayOrder: 0,
+        isSync: true,
+      };
+      try {
+        gSyncFldrID = await gClippingsDB.folders.add(syncFldr);
+      }
+      catch (e) {
+        console.error("Clippings/wx: enableSyncClippings(): Failed to create the Synced Clipping folder: " + e);
+      }
+
+      await browser.storage.local.set({ syncFolderID: gSyncFldrID });
+      log("Clippings/wx: enableSyncClippings(): Synced Clippings folder ID: " + gSyncFldrID);
+      return gSyncFldrID;
+    }
+  }
+  else {
+    log("Clippings/wx: enableSyncClippings(): Turning OFF");
+    let oldSyncFldrID = gSyncFldrID;
+
+    let numUpd = await gClippingsDB.folders.update(gSyncFldrID, { isSync: undefined });
+    await browser.storage.local.set({ syncFolderID: null });
+    gSyncFldrID = null;
+    return oldSyncFldrID;
+  }
+}
+
+
+// TO DO: Make this an asynchronous function.
+// This can only be done after converting aeImportExport.importFromJSON()
+// to an asynchronous method.
+function refreshSyncedClippings(aIsInitHostApp)
+{
+  log("Clippings/wx: refreshSyncedClippings(): Retrieving synced clippings from the Sync Clippings helper app...");
+
+  let msg = { msgID: "get-synced-clippings" };
+  let getSyncedClippings = browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
+  let syncJSONData = "";
+
+  getSyncedClippings.then(aResp => {
+    if (aResp) {
+      syncJSONData = aResp;
     }
     else {
-      warn("Clippings/wx: Storage is NOT persisted. This may happen if Clippings is installed as a temporary add-on.");
+      throw new Error("Clippings/wx: refreshSyncedClippings(): Response data from native app is invalid");
+    }
+    
+    if (gSyncFldrID === null) {
+      log("Clippings/wx: The Synced Clippings folder is missing. Creating it...");
+      let syncFldr = {
+        name: chrome.i18n.getMessage("syncFldrName"),
+        parentFolderID: aeConst.ROOT_FOLDER_ID,
+        displayOrder: 0,
+      };
+      
+      return gClippingsDB.folders.add(syncFldr);
+    }
+
+    log("Clippings/wx: refreshSyncedClippings(): Synced Clippings folder ID: " + gSyncFldrID);
+    return gSyncFldrID;
+
+  }).then(aSyncFldrID => {
+    if (gSyncFldrID === null) {
+      gSyncFldrID = aSyncFldrID;
+      log("Clippings/wx: Synced Clippings folder ID: " + gSyncFldrID);
+      return browser.storage.local.set({ syncFolderID: gSyncFldrID });
+    }
+      
+    gSyncClippingsListeners.getListeners().forEach(aListener => { aListener.onReloadStart() });
+
+    log("Clippings/wx: Purging existing items in the Synced Clippings folder...");
+    return purgeFolderItems(gSyncFldrID, true);
+
+  }).then(() => {
+    log("Clippings/wx: Importing clippings data from sync file...");
+
+    // Method aeImportExport.importFromJSON() is asynchronous, so the import
+    // may not yet be finished when this function has finished executing!
+    aeImportExport.setDatabase(gClippingsDB);
+    aeImportExport.importFromJSON(syncJSONData, false, false, gSyncFldrID);
+
+    window.setTimeout(function () {
+      gSyncClippingsListeners.getListeners().forEach(aListener => { aListener.onReloadFinish() });
+    }, gPrefs.afterSyncFldrReloadDelay);
+    
+  }).catch(aErr => {
+    console.error("Clippings/wx: refreshSyncedClippings(): " + aErr);
+    if (aErr == aeConst.SYNC_ERROR_CONXN_FAILED) {
+      showSyncErrorNotification();
+    }
+
+    // Sync errors should not prevent building the Clippings menu on startup.
+    if (aIsInitHostApp) {
+      buildContextMenu();
     }
   });
 }
 
 
-
-async function isStoragePersisted()
+async function pushSyncFolderUpdates()
 {
-  return await navigator.storage && navigator.storage.persisted &&
-    navigator.storage.persisted();
+  if (!gPrefs.syncClippings || gSyncFldrID === null) {
+    throw new Error("Sync Clippings is not turned on!");
+  }
+  
+  let syncData = await aeImportExport.exportToJSON(true, true, gSyncFldrID, false, true);
+  let msg = {
+    msgID: "set-synced-clippings",
+    syncData: syncData.userClippingsRoot,
+  };
+
+  info("Clippings/wx: pushSyncFolderUpdates(): Pushing Synced Clippings folder updates to the Sync Clippings helper app. Message data:");
+  log(msg);
+
+  let msgResult;
+  try {
+    msgResult = await browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
+  }
+  catch (e) {
+    console.error("Clippings/wx: pushSyncFolderUpdates(): " + e);
+    throw e;
+  }
+
+  log("Clippings/wx: pushSyncFolderUpdates(): Response from native app:");
+  log(msgResult);
+}
+
+
+function purgeFolderItems(aFolderID, aKeepFolder)
+{
+  return new Promise((aFnResolve, aFnReject) => {
+    gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
+      gClippingsDB.folders.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
+        purgeFolderItems(aItem.id, false).then(() => {});
+
+      }).then(() => {
+        if (!aKeepFolder && aFolderID != aeConst.DELETED_ITEMS_FLDR_ID) {
+          log("Clippings/wx: purgeFolderItems(): Deleting folder: " + aFolderID);
+          return gClippingsDB.folders.delete(aFolderID);
+        }
+        return null;
+        
+      }).then(() => {
+        return gClippingsDB.clippings.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
+          log("Clippings/wx: purgeFolderItems(): Deleting clipping: " + aItem.id);
+          gClippingsDB.clippings.delete(aItem.id);
+        });
+      }).then(() => {
+        aFnResolve();
+      });
+    }).catch(aErr => {
+      aFnReject(aErr);
+    });
+  });
 }
 
 
@@ -464,10 +862,12 @@ function initMessageListeners()
       }
       else if (aRequest.msgID == "paste-clipping-with-plchldrs") {
         let content = aRequest.processedContent;
+        let tabQuery = { active: true, currentWindow: true };
 
-        chrome.tabs.query({ active: true, currentWindow: true }, aTabs => {
+        browser.tabs.query(tabQuery).then(aTabs => {
           if (! aTabs[0]) {
-            // This should never happen...
+            // This could happen if the browser tab was closed while the
+            // placeholder prompt dialog was open.
             alertEx(aeMsgBox.MSG_NO_ACTIVE_BROWSER_TAB);
             return;
           }
@@ -479,6 +879,8 @@ function initMessageListeners()
           }
           pasteProcessedClipping(content, activeTabID);
           
+        }).catch(aErr => {
+          console.error("Failed to query tabs: " + aErr);
         });
       }
       else if (aRequest.msgID == "close-placeholder-prmt-dlg") {
@@ -489,8 +891,146 @@ function initMessageListeners()
 }
 
 
+async function setShortcutKeyPrefix(aShortcutKeyPrefix)
+{
+  await browser.commands.update({
+    name: "ae-clippings-paste-clipping",
+    shortcut: aShortcutKeyPrefix,
+  });
+}
+
+
+function getShortcutKeyPrefixStr()
+{
+  let rv = "";
+  let keybPasteKey = "";
+  
+  if (gPrefs.pasteShortcutKeyPrefix) {
+    keybPasteKey = gPrefs.pasteShortcutKeyPrefix.split("+")[2];
+  }
+  else {
+    let extManifest = chrome.runtime.getManifest();
+    let suggKey = extManifest.commands["ae-clippings-paste-clipping"]["suggested_key"];
+    let defaultPasteKey = "";
+
+    if (gOS == "mac") {
+      defaultPasteKey = suggKey["mac"];
+    }
+    else {
+      defaultPasteKey = suggKey["default"];
+    }
+    keybPasteKey = defaultPasteKey.split("+")[2];
+  }
+
+  if (keybPasteKey == "Period") {
+    keybPasteKey = ".";
+  }
+  else if (keybPasteKey == "Comma") {
+    keybPasteKey = ",";
+  }
+  
+  if (gOS == "mac") {
+    rv = `\u21e7\u2318${keybPasteKey}`;
+  }
+  else {
+    rv = `${chrome.i18n.getMessage("keyAlt")}+${chrome.i18n.getMessage("keyShift")}+${keybPasteKey}`;
+  }
+
+  return rv;
+}
+
+
+function getContextMenuData(aFolderID)
+{
+  function fnSortMenuItems(aItem1, aItem2)
+  {
+    let rv = 0;
+    if ("displayOrder" in aItem1 && "displayOrder" in aItem2) {
+      rv = aItem1.displayOrder - aItem2.displayOrder;
+    }
+    return rv;    
+  }
+  
+  let rv = [];
+
+  return new Promise((aFnResolve, aFnReject) => {
+    gClippingsDB.transaction("r", gClippingsDB.folders, gClippingsDB.clippings, () => {
+      gClippingsDB.folders.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
+        let fldrMenuItemID = "ae-clippings-folder-" + aItem.id + "_" + Date.now();
+        gFolderMenuItemIDMap[aItem.id] = fldrMenuItemID;
+
+        let submenuItemData = {
+          id: fldrMenuItemID,
+          title: aItem.name,
+        };
+
+        // Submenu icon
+        let iconPath = "img/folder.svg";
+        if (aItem.id == gSyncFldrID) {
+          iconPath = "img/synced-clippings.svg";
+        }
+        submenuItemData.icons = { 16: iconPath };
+
+        if (aItem.displayOrder === undefined) {
+          submenuItemData.displayOrder = 0;
+        }
+        else {
+          submenuItemData.displayOrder = aItem.displayOrder;
+        }
+
+        if (aFolderID != aeConst.ROOT_FOLDER_ID) {
+          let parentFldrMenuItemID = gFolderMenuItemIDMap[aFolderID];
+          submenuItemData.parentId = parentFldrMenuItemID;
+        }
+
+        getContextMenuData(aItem.id).then(aSubmenuData => {
+          aSubmenuData.sort(fnSortMenuItems);
+          submenuItemData.submenuItems = aSubmenuData;
+          rv.push(submenuItemData);
+        });
+
+      }).then(() => {
+        return gClippingsDB.clippings.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
+          let menuItemID = "ae-clippings-clipping-" + aItem.id + "_" + Date.now();
+          gClippingMenuItemIDMap[aItem.id] = menuItemID;
+
+          let menuItemData = {
+            id: menuItemID,
+            title: aItem.name,
+            icons: {
+              16: "img/" + (aItem.label ? `clipping-${aItem.label}.svg` : "clipping.svg")
+            },
+          };
+
+          if (aItem.displayOrder === undefined) {
+            menuItemData.displayOrder = 0;
+          }
+          else {
+            menuItemData.displayOrder = aItem.displayOrder;
+          }
+          
+          if (aFolderID != aeConst.ROOT_FOLDER_ID) {
+            let fldrMenuItemID = gFolderMenuItemIDMap[aFolderID];
+            menuItemData.parentId = fldrMenuItemID;
+          }
+
+          rv.push(menuItemData);
+        });
+      }).then(() => {
+        rv.sort(fnSortMenuItems);
+        aFnResolve(rv);
+      });
+    }).catch(aErr => {
+      aFnReject(aErr);
+    });
+  });
+}
+
+
 function buildContextMenu()
 {
+  log("Clippings/wx: buildContextMenu()");
+  
   // Context menu for browser action button.
   chrome.contextMenus.create({
     id: "ae-clippings-reset-autoincr-plchldrs",
@@ -515,82 +1055,47 @@ function buildContextMenu()
     documentUrlPatterns: ["<all_urls>"]
   });
 
-  chrome.contextMenus.create({
-    type: "separator",
-    contexts: ["editable"],
-    documentUrlPatterns: ["<all_urls>"]
-  });
-
-  gClippingsDB.transaction("r", gClippingsDB.folders, gClippingsDB.clippings, () => {
-    let populateFolders = gClippingsDB.folders.where("parentFolderID").equals(aeConst.ROOT_FOLDER_ID).each((aItem, aCursor) => {
-      buildContextSubmenu(aeConst.ROOT_FOLDER_ID, aItem);
-    });
-
-    populateFolders.then(() => {
-      gClippingsDB.clippings.where("parentFolderID").equals(aeConst.ROOT_FOLDER_ID).each((aItem, aCursor) => {
-        let menuItemID = "ae-clippings-clipping-" + aItem.id + "_" + Date.now();
-        gClippingMenuItemIDMap[aItem.id] = menuItemID;
-        
-        chrome.contextMenus.create({
-          id: menuItemID,
-          title: aItem.name,
-          icons: {
-            16: "img/" + (aItem.label ? `clipping-${aItem.label}.svg` : "clipping.svg")
-          },
-          contexts: ["editable"],
-          documentUrlPatterns: ["<all_urls>"]
-        });
+  getContextMenuData(aeConst.ROOT_FOLDER_ID).then(aMenuData => {
+    if (aeConst.DEBUG) {
+      console.log("buildContextMenu(): Menu data: ");
+      console.log(aMenuData);
+    }
+    
+    if (aMenuData.length > 0) {
+      chrome.contextMenus.create({
+        type: "separator",
+        contexts: ["editable"],
+        documentUrlPatterns: ["<all_urls>"]
       });
-    });
+
+      buildContextMenuHelper(aMenuData);
+    }
   }).catch(aErr => { onError(aErr) });
 }
 
 
-function buildContextSubmenu(aParentFolderMenuID, aFolderData)
+function buildContextMenuHelper(aMenuData)
 {
-  let folderID = aFolderData.id;
-  let fldrMenuItemID = "ae-clippings-folder-" + folderID + "_" + Date.now();
-  gFolderMenuItemIDMap[folderID] = fldrMenuItemID;
+  for (let i = 0; i < aMenuData.length; i++) {
+    let menuData = aMenuData[i];
+    let menuItem = {
+      id: menuData.id,
+      title: menuData.title,
+      icons: menuData.icons,
+      contexts: ["editable"],
+      documentUrlPatterns: ["<all_urls>"]
+    };
 
-  let cxtSubmenuData = {
-    id: fldrMenuItemID,
-    title: aFolderData.name,
-    icons: {
-      16: "img/folder.svg"
-    },
-    contexts: ["editable"],
-    documentUrlPatterns: ["<all_urls>"]
-  };
+    if (menuData.parentId !== undefined && menuData.parentId != aeConst.ROOT_FOLDER_ID) {
+      menuItem.parentId = menuData.parentId;
+    }
 
-  if (aParentFolderMenuID != aeConst.ROOT_FOLDER_ID) {
-    cxtSubmenuData.parentId = aParentFolderMenuID;
+    chrome.contextMenus.create(menuItem);
+    
+    if (menuData.submenuItems) {
+      buildContextMenuHelper(menuData.submenuItems);
+    }
   }
-  
-  let cxtSubmenuID = chrome.contextMenus.create(cxtSubmenuData);
-
-  gClippingsDB.transaction("r", gClippingsDB.folders, gClippingsDB.clippings, () => {
-    let populateSubfolders = gClippingsDB.folders.where("parentFolderID").equals(folderID).each((aItem, aCursor) => {
-      buildContextSubmenu(cxtSubmenuID, aItem);
-    });
-
-    populateSubfolders.then(() => {
-      gClippingsDB.clippings.where("parentFolderID").equals(folderID).each((aItem, aCursor) => {
-        let menuItemID = "ae-clippings-clipping-" + aItem.id + "_" + Date.now();
-        gClippingMenuItemIDMap[aItem.id] = menuItemID;
-        
-        chrome.contextMenus.create({
-          id: menuItemID,
-          title: aItem.name,
-          icons: {
-            16: "img/" + (aItem.label ? `clipping-${aItem.label}.svg` : "clipping.svg")
-          },
-          parentId: cxtSubmenuID,
-          contexts: ["editable"],
-          documentUrlPatterns: ["<all_urls>"]
-        });
-      });
-    });
-  }).catch(aErr => { onError(aErr) });
 }
 
 
@@ -647,6 +1152,7 @@ function removeContextMenuForFolder(aRemovedFolderID)
 
 function rebuildContextMenu()
 {
+  log("Clippings/wx: rebuildContextMenu(): Removing all Clippings context menu items and rebuilding the menu...");
   chrome.contextMenus.removeAll(() => {
     gClippingMenuItemIDMap = {};
     gFolderMenuItemIDMap = {};
@@ -697,6 +1203,105 @@ function resetAutoIncrPlaceholder(aPlaceholder)
 }
 
 
+function showBackupNotification()
+{
+  if (gPrefs.backupRemFrequency == aeConst.BACKUP_REMIND_NEVER) {
+    return;
+  }
+
+  let today = new Date();
+  let lastBackupRemDate = new Date(gPrefs.lastBackupRemDate);
+  let diff = new DateDiff(today, lastBackupRemDate);
+  let numDays = 0;
+
+  switch (gPrefs.backupRemFrequency) {
+  case aeConst.BACKUP_REMIND_DAILY:
+    numDays = 1;
+    break;
+
+  case aeConst.BACKUP_REMIND_TWODAYS:
+    numDays = 2;
+    break;
+
+  case aeConst.BACKUP_REMIND_THREEDAYS:
+    numDays = 3;
+    break;
+
+  case aeConst.BACKUP_REMIND_FIVEDAYS:
+    numDays = 5;
+    break;
+
+  case aeConst.BACKUP_REMIND_TWOWEEKS:
+    numDays = 14;
+    break;
+
+  case aeConst.BACKUP_REMIND_MONTHLY:
+    numDays = 30;
+    break;
+
+  case aeConst.BACKUP_REMIND_WEEKLY:
+  default:
+    numDays = 7;
+    break;
+  }
+
+  if (diff.days >= numDays) {
+    if (gPrefs.backupRemFirstRun) {
+      info("Clippings/wx: showBackupNotification(): Showing first-time backup reminder.");
+
+      browser.notifications.create(aeConst.NOTIFY_BACKUP_REMIND_FIRSTRUN_ID, {
+        type: "basic",
+        title: chrome.i18n.getMessage("backupNotifyTitle"),
+        message: chrome.i18n.getMessage("backupNotifyFirstMsg"),
+        iconUrl: "img/icon.svg",
+
+      }).then(aNotifID => {
+        browser.storage.local.set({
+          backupRemFirstRun: false,
+          backupRemFrequency: aeConst.BACKUP_REMIND_WEEKLY,
+          lastBackupRemDate: new Date().toString(),
+        });
+      });
+    }
+    else {
+      info("Clippings/wx: showBackupNotification(): Last backup reminder: " + gPrefs.lastBackupRemDate);
+
+      browser.notifications.create(aeConst.NOTIFY_BACKUP_REMIND_ID, {
+        type: "basic",
+        title: chrome.i18n.getMessage("backupNotifyTitle"),
+        message: chrome.i18n.getMessage("backupNotifyMsg"),
+        iconUrl: "img/icon.svg",
+
+      }).then(aNotifID => {
+        clearBackupNotificationInterval();
+        setBackupNotificationInterval();
+        browser.storage.local.set({ lastBackupRemDate: new Date().toString() });
+      });
+    }
+  }
+  else {
+    clearBackupNotificationInterval();
+    setBackupNotificationInterval();
+  }
+}   
+
+
+function setBackupNotificationInterval()
+{
+  log("Clippings/wx: Setting backup notification interval (every 24 hours).");
+  gBackupRemIntervalID = window.setInterval(showBackupNotification, aeConst.BACKUP_REMINDER_INTERVAL_MS);
+}
+
+
+function clearBackupNotificationInterval()
+{
+  if (gBackupRemIntervalID) {
+    window.clearInterval(gBackupRemIntervalID);
+    gBackupRemIntervalID = null;
+  }
+}
+
+
 function openWelcomePage()
 {
   let url = browser.runtime.getURL("pages/welcome.html");
@@ -729,12 +1334,16 @@ function createClippingNameFromText(aText)
 }
 
 
-function openClippingsManager()
+function openClippingsManager(aBackupMode)
 {
   let clippingsMgrURL = chrome.runtime.getURL("pages/clippingsMgr.html");
 
   chrome.windows.getCurrent(aBrwsWnd => {
     clippingsMgrURL += "?openerWndID=" + aBrwsWnd.id;
+
+    if (aBackupMode) {
+      clippingsMgrURL += "&backupMode=1";
+    }
     
     function openClippingsMgrHelper()
     {
@@ -809,6 +1418,13 @@ function openPlaceholderPromptDlg()
 
   let url = browser.runtime.getURL("pages/placeholderPrompt.html");
   openDlgWnd(url, "placeholderPrmt", { type: "detached_panel", width: 500, height: 180 });
+}
+
+
+function openBackupDlg()
+{
+  let url = browser.runtime.getURL("pages/backup.html");
+  openDlgWnd(url, "backupFirstRun", { type: "detached_panel", width: 500, height: 390 });
 }
 
 
@@ -990,7 +1606,7 @@ function pasteClipping(aClippingInfo, aExternalRequest)
         return;
       }
     }
-    
+
     pasteProcessedClipping(processedCtnt, activeTabID);
   });
 }
@@ -1005,7 +1621,7 @@ function pasteProcessedClipping(aClippingContent, aActiveTabID)
     autoLineBreak: gPrefs.autoLineBreak
   };
 
-  log("Clippings/wx: Extension sending message \"paste-clipping\" to content script");
+  log(`Clippings/wx: Extension sending message "paste-clipping" to content script (active tab ID = ${aActiveTabID})`);
   
   if (isGoogleChrome()) {
     chrome.tabs.sendMessage(aActiveTabID, msgParams, null);
@@ -1028,6 +1644,21 @@ function onUnload(aEvent)
   gClippingsListeners.remove(gClippingsListener);
 }
 
+
+function showSyncErrorNotification()
+{
+  browser.notifications.create(aeConst.NOTIFY_SYNC_ERROR_ID, {
+    type: "basic",
+    title: chrome.i18n.getMessage("syncStartupFailedHdg"),
+    message: chrome.i18n.getMessage("syncStartupFailed"),
+    iconUrl: "img/error.svg",
+  });
+}
+
+
+//
+// Utility functions
+//
 
 function getClippingsDB()
 {
@@ -1068,11 +1699,22 @@ function getClippingsListeners()
   return gClippingsListeners;
 }
 
+function getSyncClippingsListeners()
+{
+  return gSyncClippingsListeners;
+}
 
 function getPrefs()
 {
   return gPrefs;
 }
+
+
+function getSyncFolderID()
+{
+  return gSyncFldrID;
+}
+
 
 function isGoogleChrome()
 {
@@ -1102,11 +1744,61 @@ function alertEx(aMessageID)
 }
 
 
-function onUnload(aEvent)
+// Compares two software version numbers (e.g. "1.7.1" or "1.2b").
+// Return value:
+// - 0 if the versions are equal
+// - a negative integer iff v1 < v2
+// - a positive integer iff v1 > v2
+// - NaN if either version string is in the wrong format
+//
+// Source: <https://gist.github.com/pc035860/ccb58a02f5085db0c97d>
+function versionCompare(v1, v2, options)
 {
-  gClippingsListeners.remove(gClippingsListener);
-}
+  var lexicographical = options && options.lexicographical,
+      zeroExtend = options && options.zeroExtend,
+      v1parts = v1.split('.'),
+      v2parts = v2.split('.');
 
+  function isValidPart(x) {
+    return (lexicographical ? /^\d+[A-Za-z]*$/ : /^\d+$/).test(x);
+  }
+
+  if (!v1parts.every(isValidPart) || !v2parts.every(isValidPart)) {
+    return NaN;
+  }
+
+  if (zeroExtend) {
+    while (v1parts.length < v2parts.length) v1parts.push("0");
+    while (v2parts.length < v1parts.length) v2parts.push("0");
+  }
+
+  if (!lexicographical) {
+    v1parts = v1parts.map(Number);
+    v2parts = v2parts.map(Number);
+  }
+
+  for (var i = 0; i < v1parts.length; ++i) {
+    if (v2parts.length == i) {
+      return 1;
+    }
+
+    if (v1parts[i] == v2parts[i]) {
+      continue;
+    }
+    else if (v1parts[i] > v2parts[i]) {
+      return 1;
+    }
+    else {
+      return -1;
+    }
+  }
+
+  if (v1parts.length != v2parts.length) {
+    return -1;
+  }
+
+  return 0;
+}
 
 //
 // Click event listener for the context menu items
@@ -1195,8 +1887,21 @@ chrome.contextMenus.onClicked.addListener((aInfo, aTab) => {
   }
 });
 
-init();
 
+//
+// Click event listener for backup reminder notifications
+//
+
+browser.notifications.onClicked.addListener(aNotifID => {
+  if (aNotifID == aeConst.NOTIFY_BACKUP_REMIND_ID) {
+    // Open Clippings Manager in backup mode.
+    openClippingsManager(true);
+  }
+  else if (aNotifID == aeConst.NOTIFY_BACKUP_REMIND_FIRSTRUN_ID) {
+    openBackupDlg();
+  }
+});
+  
 
 //
 // Error reporting and debugging output

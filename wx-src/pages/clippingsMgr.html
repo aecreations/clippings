@@ -9,7 +9,7 @@
     <title data-i18n="clippingsMgrWndTitle"></title>
 
     <link rel="stylesheet" href="chrome://browser/content/extension.css"/>
-    <link rel="stylesheet" href="../lib/fancytree/skin/ui.fancytree.min.css"/>
+    <link rel="stylesheet" href="../lib/fancytree/skin-win8/ui.fancytree.min.css"/>
     <link rel="stylesheet" href="../style/clippingTree.css"/>
     <link rel="stylesheet" href="../lib/contextMenu/jquery.contextMenu.css"/>
     <link rel="stylesheet" href="../style/lightbox.css"/>
@@ -159,7 +159,25 @@
       <div class="msgbar-content" data-i18n="clipMgrNoUndo"></div>
       <div class="msgbar-dismiss dlg-accept"></div>
     </div>
-    
+
+    <div id="move-sync-fldr-msgbar" class="msgbar panel">
+      <div class="msgbar-icon"></div>
+      <div class="msgbar-content" data-i18n="moveSyncFldr"></div>
+      <div class="msgbar-dismiss dlg-accept"></div>
+    </div>
+
+    <div id="delete-sync-fldr-msgbar" class="msgbar panel">
+      <div class="msgbar-icon"></div>
+      <div class="msgbar-content" data-i18n="deleteSyncFldr"></div>
+      <div class="msgbar-dismiss dlg-accept"></div>
+    </div>
+
+    <div id="clipping-missing-src-url-msgbar" class="msgbar panel">
+      <div class="msgbar-icon"></div>
+      <div class="msgbar-content" data-i18n="clipMgrNoSrcURL"></div>
+      <div class="msgbar-dismiss dlg-accept"></div>
+    </div>
+
     <!-- Dialog boxes -->
     <div id="lightbox-bkgrd-ovl" class="lightbox-bkgrd"></div>
     <div id="shortcut-list-dlg" class="lightbox">
@@ -215,14 +233,6 @@
       </div>
     </div>
 
-    <div id="clipping-missing-src-url-msgbox" class="lightbox">
-      <div class="msgbox-icon"></div>
-      <p data-i18n="clipMgrNoSrcURL"></p>
-      <div class="dlg-btns">
-	<button class="dlg-accept browser-style default" data-i18n="btnOK"></button>
-      </div>
-    </div>
-
     <div id="import-dlg" class="lightbox">
       <div class="dlg-content browser-style">
         <label id="import-clippings-label" data-i18n="labelSelImportFile"></label>
@@ -265,6 +275,7 @@
 	<select id="export-format-list" size="3">
 	  <option value="0" data-i18n="expFmtClippings6"></option>
 	  <option value="1" data-i18n="expFmtHTMLDoc"></option>
+	  <option value="2" data-i18n="expFmtCSV"></option>
 	</select>
 	<fieldset>
 	  <legend data-i18n="expFmtDescHdg"></legend>
@@ -287,6 +298,22 @@
       </div>
     </div>
 
+    <div id="backup-confirm-msgbox" class="lightbox">
+      <div class="msgbox-icon"></div>
+      <p class="msgbox-content"></p>
+      <div class="dlg-btns">
+	<button class="dlg-accept browser-style default" data-i18n="btnOK"></button>
+      </div>
+    </div>
+
+    <div id="reload-sync-fldr-msgbox" class="lightbox">
+      <div class="msgbox-icon"></div>
+      <p class="msgbox-content" data-i18n="syncReloadAck"></p>
+      <div class="dlg-btns">
+	<button class="dlg-accept browser-style default" data-i18n="btnReload"></button>
+      </div>
+    </div>
+
     <div id="remove-all-source-urls-dlg" class="lightbox">
       <div class="dlg-content browser-style">
 	<div class="msgbox-icon"></div>
@@ -301,7 +328,7 @@
 
     <div id="move-dlg" class="lightbox">
       <div class="dlg-content browser-style">
-	<label id="move-to-label" for="move-to-fldr-tree" data-i18n="labelMoveTo"></label>
+	<label id="move-to-label" for="move-to-fldr-tree"></label>
 	<div id="move-to-fldr-tree"></div>
 	
 	<input type="checkbox" id="copy-instead-of-move"/>

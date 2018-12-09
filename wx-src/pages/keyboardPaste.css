@@ -136,6 +136,10 @@ body {
 #shortcut-list-content table > thead > tr > th {
     padding: 3px 4px 3px 4px;
     font-weight: normal;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 90px;
 }
 
 #shortcut-list-content table > thead > tr > th:nth-child(1) {

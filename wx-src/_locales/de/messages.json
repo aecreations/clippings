@@ -1,7 +1,7 @@
 {
   "extName": {
     "message": "Clippings",
-    "description": "Name of the extension"
+    "description": "Name of the extension - do NOT translate"
   },
   "extDesc": {
     "message": "Häufig eingegebenen Text für später speichern.",
@@ -40,8 +40,8 @@
   "btnNo": {
     "message": "Nein"
   },
-  "btnFinish": {
-    "message": "Beenden"
+  "btnDone": {
+    "message": "Fertig"
   },
   "btnBrowse": {
     "message": "Durchsuchen..."
@@ -71,7 +71,8 @@
     "message": "Keine Hilfe verfügbar (lass mich also in Ruhe)."
   },
   "none": {
-    "message": "Keins"
+    "message": "Keins",
+    "description": "Denotes that there is no shortcut key, label or source web address (URL)."
   },
   "newClipping": {
     "message": "Neuer Textbaustein"
@@ -322,7 +323,8 @@
     "message": "Clipping nach Namen suchen:"
   },
   "numMatches": {
-    "message": "1 Treffer"
+    "message": "$1 Treffer",
+    "description": "Status bar message in Clippings Manager showing the number of matches for the search query."
   },
   "insClipping": {
     "message": "Clipping einfügen"
@@ -340,6 +342,9 @@
   },
   "expHTMLShctKeyInstrxn": {
     "message": "Um ein Clipping in ein Webseiten-Textfeld in Firefox einzufügen, drücken Sie ALT+UMSCH+Y (CMD+UMSCH+Y auf MacOS) und danach das Tastenkürzel."
+  },
+  "expHTMLShctKeyCustNote": {
+    "message": "HINWEIS: Die Befehlstaste für Ihre Tastenkombinationen (Standardkombinationen wie ALT+SHIFT+Y oder STRG+SHIFT+Y) kann je nach Ihren Clippings-Einstellungen abweichen."
   },
   "expHTMLShctKeyCol": {
     "message": "Tastenkombination"
@@ -395,13 +400,16 @@
     "description": "Clippings Manager - Placeholder Toolbar"
   },
   "tbPlchldrPresets": {
-    "message": "Voreinstellungen"
+    "message": "Voreinstellungen",
+    "description": "Clippings Manager - Placeholder Toolbar button"
   },
   "tbPlchldrCustom": {
-    "message": "Benutzerdefiniert"
+    "message": "Benutzerdefiniert",
+    "description": "Clippings Manager - Placeholder Toolbar button"
   },
   "tbPlchldrNumeric": {
-    "message": "Numerisch"
+    "message": "Numerisch",
+    "description": "Clippings Manager - Placeholder Toolbar button"
   },
   "labelSrcURL": {
     "message": "Quelladresse:"
@@ -423,6 +431,9 @@
   },
   "mnuExport": {
     "message": "Exportieren..."
+  },
+  "mnuReloadSyncFldr": {
+    "message": "Neu laden"
   },
   "mnuRemoveAllSrcURLs": {
     "message": "Webseiten-Quelladressen entfernen..."
@@ -524,7 +535,8 @@
     "description": "Clippings Manager intro - key binding description"
   },
   "clipMgrStatusBar": {
-    "message": "$1 Einträge"
+    "message": "$1 Einträge",
+    "description": "Status bar text in Clippings Manager, counting the number of clippings and folders"
   },
   "clipMgrRemoveSrcURLsConfirm": {
     "message": "Adressen der Quell-Webseiten wurden aus Ihren Textbausteins entfernt."
@@ -552,6 +564,9 @@
   },
   "clipMgrExportConfirm": {
     "message": "Der Export von Textbausteinen nach \"$1\" ist erfolgreich abgeschlossen."
+  },
+  "clipMgrBackupConfirm": {
+    "message": "Sicherung nach \"$1\" ist erfolgreich abgeschlossen."
   },
   "clipMgrWarnRemoveSrcURLs": {
     "message": "Alle Quell-Webseiten-Adressen Ihrer Textbausteine werden entfernt. Möchten Sie fortfahren?"
@@ -625,6 +640,12 @@
   "expFmtHTMLDocDesc": {
     "message": "Exportiert Ihre Clippings-Daten als HTML-Dokument für den Druck oder die Anzeige in einem Webbrowser."
   },
+  "expFmtCSV": {
+    "message": "CSV-Datei"
+  },
+  "expFmtCSVDesc": {
+    "message": "Verwenden Sie eine Datei im CSV-Format, um Daten von Clippings mit anderen Anwendungen auszutauschen."
+  },
   "cbExpInclSrcURLs": {
     "message": "Adressen von Quell-Webseiten der Textbausteine einbeziehen"
   },
@@ -658,6 +679,14 @@
   "cbCreateCopy": {
     "message": "Kopie erstellen"
   },
+  "errMoveToSameParent": {
+    "message": "Das Element ist im ausgewählten Ordner bereits vorhanden.",
+    "description": "Error message when attempting to move clipping\/folder to the same parent folder"
+  },
+  "errMoveToSubfldr": {
+    "message": "Das Verschieben oder Kopieren in den ausgewählten Ordner ist nicht möglich.",
+    "description": "Error message when attempting to move or copy a folder into a subfolder of itself"
+  },
   "btnMove": {
     "message": "Verschieben"
   },
@@ -686,7 +715,10 @@
     "message": "Einen als HTML formatierten Textbaustein immer als reinen Text einfügen, wenn er in eine reine Textbox eingefügt wird oder der Textbaustein einschränkende Tags wie z. B. <script>, <applet>, <object>, <iframe> usw. enthält."
   },
   "prefsShortcutMode": {
-    "message": "Aktivieren sie den Tastaturkürzelmodus mit $1"
+    "message": "Aktivieren sie den Tastenkürzel-Modus, indem sie diese Tasten drücken:"
+  },
+  "prefsShortcutKeyNote": {
+    "message": "Einige der verfügbaren Tastenkürzel können bereits <a href=\"https:\/\/support.mozilla.org\/en-US\/kb\/keyboard-shortcuts-perform-firefox-tasks-quickly\" class=\"hyperlink\">Firefox-Befehlen<\/a> oder anderen Add-ons zugeordnet sein."
   },
   "prefsDefaultNumPlchldrStart": {
     "message": "Standardstartwert für die automatische Erhöhung von Platzhaltern:"
@@ -698,25 +730,201 @@
     "message": "Adresse der Quell-Webseite immer speichern"
   },
   "cbCheckSpelling": {
-    "message": "Rechtsschreibprüfung"
+    "message": "Rechtschreibprüfung"
   },
-
+  "backupRemind": {
+    "message": "Sicherungserinnerung zeigen alle",
+    "description": "Label for checkbox option for setting backup notification, appears after checkbox and before the reminder frequency drop-down menu"
+  },
+  "backupRemDays": {
+    "message": "Tage",
+    "description": "Label appearing after the drop-down menu for backup reminder frequency"
+  },
+  "backupRemFreqDaily": {
+    "message": "1",
+    "description": "Number of days between backup reminders: once a day"
+  },
+  "backupRemFreqTwoDays": {
+    "message": "2",
+    "description": "Number of days between backup reminders: once every 2 days"
+  },
+  "backupRemFreqThreeDays": {
+    "message": "3",
+    "description": "Number of days between backup reminders: once every 3 days"
+  },
+  "backupRemFreqFiveDays": {
+    "message": "5",
+    "description": "Number of days between backup reminders: once every 5 days"
+  },
+  "backupRemFreqWeekly": {
+    "message": "7",
+    "description": "Number of days between backup reminders: once a week (every 7 days)"
+  },
+  "backupRemFreqTwoWeeks": {
+    "message": "14",
+    "description": "Number of days between backup reminders: once every 2 weeks (every 14 days)"
+  },
+  "backupRemFreqMonthly": {
+    "message": "30",
+    "description": "Number of days between backup reminders: once a month (every 30 days)"
+  },
+  "backupNotifyTitle": {
+    "message": "Ihre Textbausteine sichern"
+  },
+  "backupNotifyMsg": {
+    "message": "Es ist an der Zeit, Ihre Textbausteine zu sichern. Klicken Sie hier, um Ihre Textbausteine jetzt zu sichern."
+  },
+  "backupNotifyFirstMsg": {
+    "message": "Sichern Sie regelmäßige Ihre Textbausteine. Klicken sie hier, um Ihre Textbausteine zu sichern und eine Erinnerung für die Sicherung einzustellen."
+  },
+  "backupFirstDesc": {
+    "message": "Sichern Sie regelmäßige Ihre Textbausteine. Nehmen Sie sich einen Augenblick Zeit, um Ihre Textbausteine zu sichern, indem Sie auf \"Jetzt sichern\" klicken."
+  },
+  "backupNow": {
+    "message": "Jetzt sichern"
+  },
+  "backupHint": {
+    "message": "Sie können Ihre Textbausteine jederzeit aus dem Textbaustein-Manager heraus sichern. Öffnen Sie den Textbaustein-Manager und wählen Sie dann Extras → Sichern."
+  },
+  "backupPrefsHdg": {
+    "message": "Erinnerung für die Sicherung festlegen"
+  },
+  "backupPrefsHint": {
+    "message": "Dies kann auch in den Clippings-Einstellungen geändert werden."
+  },
+  "syncFldrName": {
+    "message": "Synchronisierte Textbausteine",
+    "description": "The name of the folder containing the user's synchronized clippings."
+  },
+  "syncClippings": {
+    "message": "Textbausteine synchronisieren",
+    "description": "The name of the feature for synchronizing clippings between applications or computers."
+  },
+  "syncIntro": {
+    "message": "Sie können Ihre Textbausteine mit Thunderbird oder anderen Firefox Installationen oder Profilen synchronisieren, indem diese in einem Ordner “Synced Clippings” ablegen. Die synchronisierten Textbausteine werden in einer Datei auf Ihrem Rechner gespeichert. Dies erfordert das <a href=\"http:\/\/aecreations.sourceforge.net\/clippings\/sync.php\" class=\"hyperlink\">Clippings Synchronisierungs-Hilfs-Programm<\/a>."
+  },
+  "syncLearnMore": {
+    "message": "Erfahren Sie mehr über die Synchronisierung von Textbausteinen."
+  },
+  "syncHelp": {
+    "message": "<p class=\"dlg-subhead\">Textbausteine synchronisieren<\/p><p>Damit können Sie eine Auswahl Ihrer Textbausteine zwischen Firefox und Thunderbird synchronisieren, damit sie in beiden Programmen zur Verfügung stehen. Sie können auswählen, welche Textbausteine synchronisiert werden indem Sie diese in einen speziellen Ordner “Synced Clippings” anlegen, oder indem Sie sie im Textbaustein-Manager in diesen Ordner verschieben.<\/p><p>Dieser Synchronisierungs-Ordner wird automatisch erstellt, wenn \"Textbausteine synchronisieren\" eingerichtet wurde.<\/p><p class=\"dlg-subhead\">Einrichtung<\/p><p> Die Option \"Textbausteine synchronisieren\" muss in allen Anwendungen eingeschaltet werden, die synchronisiert werden sollen. Unterstützt wird Firefox und Thunderbird jeweils ab Version 60 (mit Clippings für Thunderbird Version 5.6 oder neuer).<\/p><p> Außerdem muss das Clippings Synchronisierungs-Hilfs-Programm installiert sein, damit der Inhalt des Austauschordners synchronisiert bleibt. Das Programm kann von der <a href=\"http:\/\/aecreations.sourceforge.net\/clippings\/sync.php\" class=\"hyperlink\">AE Creations Website<\/a> heruntergeladen werden. Einmal installiert wird es automatisch mit Firefox gestartet und bleibt im Hintergrund.<\/p><p>In Firefox wird wird die Synchronisierung in den Clippings Einstellungen aktiviert mit der Option <b>Synchronisierung einschalten<\/b>. Falls noch nicht geschehen, können Sie dann einen Dateispeicherort auswählen, wo die Synchronisierungsdaten gespeichert werden.<\/p>"
+  },
+  "syncStatusOn": {
+    "message": "Die Synchronisierung von Textbausteinen ist aktiviert."
+  },
+  "syncStatusOff": {
+    "message": "Die Synchronisierung von Textbausteinen ist deaktiviert."
+  },
+  "syncSettings": {
+    "message": "Einstellungen..."
+  },
+  "syncTurnOn": {
+    "message": "Synchronisierung einschalten"
+  },
+  "syncTurnOff": {
+    "message": "Synchronisierung ausschalten"
+  },
+  "syncTurnOffConf": {
+    "message": "Wollen Sie die Synchronisierung von Textbausteinen wirklich ausschalten?"
+  },
+  "syncTurnOffAck": {
+    "message": "Die Synchronisierung von Textbausteinen ist ausgeschaltet."
+  },
+  "syncTurnOffRmFldr": {
+    "message": "Entferne den Synchronisierung-Ordner vom Clippings-Menü und vom Textbaustein-Manager"
+  },
+  "syncConnect": {
+    "message": "Verbinde zum Clippings Synchronisierungs-Hilfs-Programm..."
+  },
+  "syncFileDir": {
+    "message": "Pfad der Synchronisierungsdatei:"
+  },
+  "syncFileDirExample": {
+    "message": "Beispiel:"
+  },
+  "syncFileDirExWin": {
+    "message": "C:\\Users\\IhrName\\Documents\\Synced Clippings",
+    "description": "Example folder path on Windows."
+  },
+  "syncFileDirExMac": {
+    "message": "\/Users\/IhrName\/Documents\/Synced Clippings",
+    "description": "Example folder path on macOS."
+  },
+  "syncFileDirExLinux": {
+    "message": "\/home\/IhrName\/synced-clippings",
+    "description": "Example folder path on Linux."
+  },
+  "syncFileDirDesc": {
+    "message": "Ihre Textbausteine sind an diesem Dateispeicherort gespeichert. Wenn Sie mit Thunderbird synchronisieren und den Dateispeicherort ändern wollen, müssen Sie auch in Thunderbird den Ort in den Clippings Einstellungen passend ändern."
+  },
+  "errSyncConxn": {
+    "message": "Keine Verbindung zum Clippings Synchronisierungs-Hilfs-Programm möglich. Stellen Sie sicher, dass es installiert ist."
+  },
+  "errSyncConxnDetail": {
+    "message": "Um die Textbausteine zu synchronisieren, wird das Clippings Synchronisierungs-Hilfs-Programm gebraucht, die Sie von der <a href=\"http:\/\/aecreations.sourceforge.net\/clippings\/sync.php\" class=\"hyperlink\">AE Creations Website<\/a> herunterladen können."
+  },
+  "errSync": {
+    "message": "In Zusammenhang mit der Hilfsanwendung Sync Clippings ist ein Fehler aufgetreten."
+  },
+  "syncReloadAck": {
+    "message": "Der Ordner für synchronisierte Textbausteine wird aktualisiert. Klicken Sie auf Neu laden, um fortzufahren."
+  },
+  "deleteSyncFldr": {
+    "message": "Der Ordner für synchronisierte Textbausteine kann nicht gelöscht werden, da die Synchronisierung von Textbausteinen aktiviert ist."
+  },
+  "moveSyncFldr": {
+    "message": "Der Ordner für synchronisierte Textbausteine kann nicht verschoben werden."
+  },
+  "syncPushFailed": {
+    "message": "Änderungen können nicht im Ordner \"Synced Clippings\" abgelegt werden, weil die Verbindung zum Clippings Synchronisierungs-Hilfs-Programm fehlgeschlagen ist. Zur Fehlerbehebung das Clippings Synchronisierungs-Hilfs-Programm neu installieren."
+  },
+  "syncStartupFailedHdg": {
+    "message": "Fehler bei der Synchronisierung von Textbausteinen"
+  },
+  "syncStartupFailed": {
+    "message": "Verbindung zum Clippings Synchronisierungs-Hilfs-Programm ist gescheitert. Zur Fehlerbehebung das Clippings Synchronisierungs-Hilfs-Programm neu installieren."
+  },
+  "aboutBtn": {
+    "message": "Über..."
+  },
+  "aboutExtVer": {
+    "message": "Version $1",
+    "description": "Extension version number"
+  },
+  "aboutAuthor": {
+    "message": "Entwickelt von AE Creations."
+  },
+  "aboutHomePgLink": {
+    "message": "Startseite besuchen"
+  },
+  "aboutLicLink": {
+    "message": "Lizenzinformationen"
+  },
+  "aboutTrans": {
+    "message": "Übersetzungen von Crowdin-Übersetzern."
+  },
+  "aboutSyncVerLabel": {
+    "message": "Version der Hilfsanwendung Sync Clippings:"
+  },
+  "noSyncHelperApp": {
+    "message": "Nicht installiert",
+    "description": "Appears when the Sync Clippings helper app is not detected on the system"
+  },
+  "aboutSyncFileSize": {
+    "message": "Größe der Synchronisationsdatei:"
+  },
   "keyAlt": {
     "message": "Alt"
   },
-  
   "keyCtrl": {
     "message": "Strg"
   },
-
   "keyShift": {
     "message": "Umsch"
   },
-
   "keyDel": {
     "message": "Entf"
   },
-
   "keyEsc": {
     "message": "Esc"
   }

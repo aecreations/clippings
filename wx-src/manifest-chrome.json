@@ -2,8 +2,8 @@
     "manifest_version": 2,
     "name": "__MSG_extName__",
     "description": "__MSG_extDesc__",
-    "version": "6.0.7",
-    "version_name": "6.0.7",
+    "version": "6.1",
+    "version_name": "6.1",
     "homepage_url": "http://aecreations.sourceforge.net/clippings/index.php",
     "author": "AE Creations",
   
@@ -17,6 +17,7 @@
 	"contextMenus",
 	"downloads",
 	"history",
+        "notifications",
 	"storage",
 	"tabs"
 	"unlimitedStorage",
@@ -24,11 +25,13 @@
       
     "background": {
 	"scripts": [
-	    "lib/dexie/dexie.js",
-	    "lib/dexie/dexie-observable.js",
+	    "lib/dexie/dexie.min.js",
+	    "lib/dexie/dexie-observable.min.js",
+            "lib/datediff.js",
 	    "modules/aeConst.js",
 	    "modules/aeMsgBox.js",
-	    "modules/aeClippingSubst.js",
+            "modules/aeClippingSubst.js",
+            "modules/aeImportExport.js",
 	    "background.js"
 	]
     },

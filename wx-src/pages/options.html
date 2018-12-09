@@ -7,13 +7,18 @@
   <head>
     <meta charset="utf-8">
     <title data-i18n="prefsTitle"></title>
+
+    <link rel="stylesheet" href="../style/lightbox.css"/>
     <link rel="stylesheet" href="options.css"/>
   </head>
 
   <body>
     <main id="ae-clippings-preferences">
-      <img id="addon-icon" src="../img/icon.svg"/>
-      <h2 data-i18n="prefsTitle"></h2>
+      <div id="pref-pg-hdr">
+        <img id="addon-icon" src="../img/icon.svg"/>
+        <h2 data-i18n="prefsTitle"></h2>
+	<div id="about-btn" data-i18n="aboutBtn"></div>
+      </div>
 
       <div class="pref-section-content">
         <fieldset id="paste-options">
@@ -29,14 +34,56 @@
 	  </div>
 	  
 	  <div class="indent browser-style">
-	    <input type="checkbox" id="html-auto-line-break"/>
-	    <label for="html-auto-line-break" data-i18n="cbAutoLineBreak"></label>
-	    <p class="description" data-i18n="htmlPasteDesc"></p>
+	    <input type="checkbox" id="html-auto-line-break"/><label for="html-auto-line-break" data-i18n="cbAutoLineBreak"></label>
+	    <p class="note" data-i18n="htmlPasteDesc"></p>
           </div>
-	  <div class="row browser-style">
-	    <input type="checkbox" id="enable-shortcut-key"/>
-	    <label id="enable-shortcut-key-label" for="enable-shortcut-key"></label>
+	  <div class="row browser-style" style="margin-bottom:0">
+	    <input type="checkbox" id="enable-shortcut-key"/><label id="enable-shortcut-key-label" for="enable-shortcut-key" data-i18n="prefsShortcutMode"></label>
+	    <label id="shortcut-key-prefix-modifiers"></label>
+	    <select id="shortcut-key-selector" class="browser-style">
+	      <option value="A">A</option>
+	      <option value="B">B</option>
+	      <option value="C">C</option>
+	      <option value="D">D</option>
+	      <option value="E">E</option>
+	      <option value="F">F</option>
+	      <option value="G">G</option>
+	      <option value="H">H</option>
+	      <option value="I">I</option>
+	      <option value="J">J</option>
+	      <option value="K">K</option>
+	      <option value="L">L</option>
+	      <option value="M">M</option>
+	      <option value="N">N</option>
+	      <option value="O">O</option>
+	      <option value="P">P</option>
+	      <option value="Q">Q</option>
+	      <option value="R">R</option>
+	      <option value="S">S</option>
+	      <option value="T">T</option>
+	      <option value="U">U</option>
+	      <option value="V">V</option>
+	      <option value="W">W</option>
+	      <option value="X">X</option>
+	      <option value="Y">Y</option>
+	      <option value="X">Z</option>
+	      <option value="1">1</option>
+	      <option value="2">2</option>
+	      <option value="3">3</option>
+	      <option value="4">4</option>
+	      <option value="5">5</option>
+	      <option value="6">6</option>
+	      <option value="7">7</option>
+	      <option value="8">8</option>
+	      <option value="9">9</option>
+	      <option value="0">0</option>
+	      <option value="Comma">,</option>
+	      <option value="Period">.</option>
+	    </select>
           </div>
+	  <div class="indent">
+	    <p id="shortcut-key-note" class="note" style="margin-top:0"></p>
+	  </div>
 
 	  <div class="row">
 	    <label for="auto-inc-plchldrs-start-val" data-i18n="prefsDefaultNumPlchldrStart"></label>
@@ -49,19 +96,159 @@
 	<legend data-i18n="prefsHdgGeneralOptions"></legend>
 
 	<div class="row browser-style">
-	  <input type="checkbox" id="always-save-src-url"/>
-	  <label for="always-save-src-url" data-i18n="cbAlwaysSaveSrcURL"></label>
+	  <input type="checkbox" id="always-save-src-url"/><label for="always-save-src-url" data-i18n="cbAlwaysSaveSrcURL"></label>
         </div>
 	<div class="row browser-style">
-	  <input type="checkbox" id="check-spelling"/>
-	  <label for="check-spelling" data-i18n="cbCheckSpelling"></label>
+	  <input type="checkbox" id="check-spelling"/><label for="check-spelling" data-i18n="cbCheckSpelling"></label>
 	</div>
+
+	<div class="row browser-style">
+	  <input type="checkbox" id="backup-reminder"/><label for="backup-reminder" data-i18n="backupRemind"></label>
+          <select id="backup-reminder-freq" class="browser-style">
+	    <option value="1" data-i18n="backupRemFreqDaily"></option>
+	    <option value="5" data-i18n="backupRemFreqTwoDays"></option>
+	    <option value="6" data-i18n="backupRemFreqThreeDays"></option>
+	    <option value="7" data-i18n="backupRemFreqFiveDays"></option>
+            <option value="2" data-i18n="backupRemFreqWeekly"></option>
+	    <option value="4" data-i18n="backupRemFreqTwoWeeks"></option>
+            <option value="3" data-i18n="backupRemFreqMonthly"></option>
+	  </select>
+	  <label for="backup-reminder-freq" data-i18n="backupRemDays"></label>
+        </div>
       </fieldset>
+
+      <fieldset id="sync-options">
+	<legend data-i18n="syncClippings"></legend>
+
+	<div class="row browser-style">
+	  <p id="sync-intro" class="description" style="margin-bottom:0"></p>
+	  <p class="description" style="margin-top:6px"><a id="show-sync-help" href="#"><span data-i18n="syncLearnMore"></span></a></p>
+
+	  <p id="sync-status"></p>
+        </div>
+	<div class="row browser-style">
+	  <button id="sync-settings" data-i18n="syncSettings"></button>
+	  <button id="toggle-sync"></button>
+	</div>
+
+      </fieldset>	
     </main>
 
+    <!-- Dialog boxes -->
+    <div id="sync-clippings-dlg" class="lightbox">
+      <div class="dlg-content">
+        <div id="sync-connection-check" class="deck">
+	  <p class="label" data-i18n="syncConnect"><p>
+	  <progress></progress>
+	</div>
+	<div id="sync-cxn-error" class="deck">
+          <div class="msgbox-icon"></div>
+          <div class="dlg-content">
+	    <div class="error-msg" data-i18n="errSyncConxn"></div>
+            <p id="sync-conxn-error-detail" class="label"></p>
+          </div>
+        </div>
+	<div id="generic-error" class="deck">
+	  <div class="msgbox-icon"></div>
+          <div class="dlg-content">
+	    <div class="error-msg" data-i18n="errSync"></div>
+	    <textarea id="sync-err-detail"></textarea>
+	  </div>
+        </div>
+	<div id="sync-folder-location" class="deck">
+	  <div id="sync-fldr-picker-label" class="row">
+ 	    <div class="label" data-i18n="syncFileDir"></div>
+          </div>
+	  <div id="sync-fldr-picker" class="row">
+  	    <input type="text" id="sync-fldr-curr-location" required value=""/>
+<!--
+	    <button id="browse-sync-fldr" data-i18n="btnBrowse"></button>
+-->
+          </div>
+	  <div class="row">
+	  <div class="example"><label data-i18n="syncFileDirExample"></label><span id="example-sync-path"></span></div>
+	    <p class="description" data-i18n="syncFileDirDesc"></p>
+          </div>
+	</div>
+      </div>
+      <div class="dlg-btns">
+	<button class="dlg-accept default" data-i18n="btnOK"></button>
+	<button class="dlg-cancel" data-i18n="btnCancel"></button>
+      </div>
+    </div>
+
+    <div id="turn-off-sync-clippings-dlg" class="lightbox">
+      <div class="msgbox-icon"></div>
+      <div class="dlg-content">
+	<p class="label" data-i18n="syncTurnOffConf"></p>
+      </div>
+      <div class="dlg-btns">
+	<button class="dlg-accept" data-i18n="btnYes"></button>
+	<button class="dlg-cancel default" data-i18n="btnNo"></button>
+      </div>
+    </div>
+
+    <div id="turn-off-sync-clippings-ack-dlg" class="lightbox">
+      <div class="info-icon"></div>
+      <div class="dlg-content browser-style">
+	<p class="label" data-i18n="syncTurnOffAck"></p>
+	<input type="checkbox" id="delete-sync-fldr" checked/><label for="delete-sync-fldr" data-i18n="syncTurnOffRmFldr"></label>
+      </div>
+      <div class="dlg-btns">
+        <button class="dlg-accept default" data-i18n="btnOK"></button>
+      </div>
+    </div>
+
+    <div id="sync-clippings-help-dlg" class="lightbox">
+      <div class="dlg-content"></div>
+      <div class="dlg-btns">
+	<button class="dlg-accept default" data-i18n="btnOK"></button>
+      </div>
+    </div>
+
+    <div id="about-dlg" class="lightbox">
+      <div class="dlg-content">
+        <div id="ext-icon"></div>
+	<div id="ext-info">
+          <label id="ext-name" class="about-content-row"></label>
+	  <label id="ext-ver" class="about-content-row"></label>
+	</div>
+	<label id="ext-desc" class="about-content-row"></label>
+	<hr/>
+	<div id="credits">
+	  <label id="ext-author" data-i18n="aboutAuthor"></label>
+	  <a href="http://aecreations.sourceforge.net/clippings/index.php" class="hyperlink" data-i18n="aboutHomePgLink"></a>
+	  <label id="translations-ack" class="about-content-row" data-i18n="aboutTrans"></label>
+	  <a href="../LICENSE.txt" class="hyperlink" data-i18n="aboutLicLink"></a>
+	</div>
+	<hr/>
+	<div id="diag-info">
+	  <div class="deck">
+	    <div id="sync-diag-loading" class="deck-content">
+	      <img src="../img/throbber.gif"/>
+	    </div>
+	    <div id="sync-diag" class="deck-content">
+	      <label id="sync-ver-label" data-i18n="aboutSyncVerLabel"></label>
+	      <span id="sync-ver"></span>
+	      <div id="sync-diag-detail" class="about-content-row">
+		<label id="about-sync-status"></label>
+		<label id="sync-file-size-label" data-i18n="aboutSyncFileSize"></label> <span id="sync-file-size"></span>
+	      </div>
+	    </div>
+	  </div>  <!-- /.deck -->
+	</div>
+      </div>
+      <div class="dlg-btns">
+	<button class="dlg-accept default" data-i18n="btnOK"></button>
+      </div>
+    </div>
+    <div id="lightbox-bkgrd-ovl" class="lightbox-bkgrd"></div>
+    
     <script src="../lib/jquery.js"></script>
+    <script src="../lib/purify.min.js"></script>
     <script src="../lib/i18n.js"></script>
     <script src="../modules/aeConst.js"></script>
+    <script src="../modules/aeDialog.js"></script>
     <script src="options.js"></script>
 
   </body>

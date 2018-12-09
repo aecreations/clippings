@@ -1,7 +1,7 @@
 {
   "extName": {
     "message": "Clippings",
-    "description": "Name of the extension"
+    "description": "Name of the extension - do NOT translate"
   },
 
   "extDesc": {
@@ -52,8 +52,8 @@
     "message": "No"
   },
 
-  "btnFinish": {
-    "message": "Finish"
+  "btnDone": {
+    "message": "Done"
   },
 
   "btnBrowse": {
@@ -93,7 +93,8 @@
   },
 
   "none": {
-    "message": "None"
+    "message": "None",
+    "description": "Denotes that there is no shortcut key, label or source web address (URL)."
   },
 
   "newClipping": {
@@ -424,7 +425,8 @@
   },
 
   "numMatches": {
-    "message": "$1 matches"
+    "message": "$1 matches",
+    "description": "Status bar message in Clippings Manager showing the number of matches for the search query."
   },
 
   "insClipping": {
@@ -447,6 +449,10 @@
 
   "expHTMLShctKeyInstrxn": {
     "message": "To paste a clipping into a web page textbox in Firefox, press ALT+SHIFT+Y (Command+Shift+Y on macOS), then the shortcut key."
+  },
+
+  "expHTMLShctKeyCustNote": {
+    "message": "NOTE: The shortcut key prefix (default keys ALT+SHIFT+Y or Command+Shift+Y) may be different depending on your Clippings settings."
   },
 
   "expHTMLShctKeyCol": {
@@ -519,15 +525,18 @@
   },
 
   "tbPlchldrPresets": {
-    "message": "Presets"
+    "message": "Presets",
+    "description": "Clippings Manager - Placeholder Toolbar button"
   },
 
   "tbPlchldrCustom": {
-    "message": "Custom"
+    "message": "Custom",
+    "description": "Clippings Manager - Placeholder Toolbar button"
   },
 
   "tbPlchldrNumeric": {
-    "message": "Numeric"
+    "message": "Numeric",
+    "description": "Clippings Manager - Placeholder Toolbar button"
   },
 
   "labelSrcURL": {
@@ -556,6 +565,10 @@
 
   "mnuExport": {
     "message": "Export..."
+  },
+
+  "mnuReloadSyncFldr": {
+    "message": "Reload"
   },
 
   "mnuRemoveAllSrcURLs": {
@@ -686,7 +699,8 @@
   },
 
   "clipMgrStatusBar": {
-    "message": "$1 items"
+    "message": "$1 items",
+    "description": "Status bar text in Clippings Manager, counting the number of clippings and folders"
   },
 
   "clipMgrRemoveSrcURLsConfirm": {
@@ -723,6 +737,10 @@
 
   "clipMgrExportConfirm": {
     "message": "Clippings export to \"$1\" is successfully completed."
+  },
+
+  "clipMgrBackupConfirm": {
+    "message": "Backup to \"$1\" is successfully completed."
   },
 
   "clipMgrWarnRemoveSrcURLs": {
@@ -821,6 +839,14 @@
     "message": "Exports your Clippings data as an HTML document for printing or display in a web browser."
   },
 
+  "expFmtCSV": {
+    "message": "CSV File"
+  },
+
+  "expFmtCSVDesc": {
+    "message": "Use the Comma-Separated Values (CSV) format to exchange Clippings data with other applications. Only clipping names and content are exported."
+  },
+
   "cbExpInclSrcURLs": {
     "message": "Include source web page addresses of clippings"
   },
@@ -912,7 +938,11 @@
   },
 
   "prefsShortcutMode": {
-    "message": "Activate shortcut key mode using $1"
+    "message": "Activate shortcut key mode by pressing these keys:"
+  },
+
+  "prefsShortcutKeyNote": {
+    "message": "Some of the available shortcut keys may already be assigned to <a href=\"https://support.mozilla.org/en-US/kb/keyboard-shortcuts-perform-firefox-tasks-quickly\" class=\"hyperlink\">Firefox commands</a> or other add-ons."
   },
 
   "prefsDefaultNumPlchldrStart": {
@@ -931,6 +961,242 @@
     "message": "Check spelling"
   },
 
+  "backupRemind": {
+    "message": "Show backup reminder every",
+    "description": "Label for checkbox option for setting backup notification, appears after checkbox and before the reminder frequency drop-down menu"
+  },
+
+  "backupRemDays": {
+    "message": "days",
+    "description": "Label appearing after the drop-down menu for backup reminder frequency"
+  },
+
+  "backupRemFreqDaily": {
+    "message": "1",
+    "description": "Number of days between backup reminders: once a day"
+  },
+
+  "backupRemFreqTwoDays": {
+    "message": "2",
+    "description": "Number of days between backup reminders: once every 2 days"
+  },
+
+  "backupRemFreqThreeDays": {
+    "message": "3",
+    "description": "Number of days between backup reminders: once every 3 days"
+  },
+
+  "backupRemFreqFiveDays": {
+    "message": "5",
+    "description": "Number of days between backup reminders: once every 5 days"
+  },
+
+  "backupRemFreqWeekly": {
+    "message": "7",
+    "description": "Number of days between backup reminders: once a week (every 7 days)"
+  },
+
+  "backupRemFreqTwoWeeks": {
+    "message": "14",
+    "description": "Number of days between backup reminders: once every 2 weeks (every 14 days)"
+  },
+
+  "backupRemFreqMonthly": {
+    "message": "30",
+    "description": "Number of days between backup reminders: once a month (every 30 days)"
+  },
+  
+  "backupNotifyTitle": {
+    "message": "Backup Your Clippings"
+  },
+
+  "backupNotifyMsg": {
+    "message": "It's time to back up your clippings. Click here to back up your clippings now."
+  },
+
+  "backupNotifyFirstMsg": {
+    "message": "Keep your clippings safe by doing regular backups. Click here to back up your clippings and set up backup reminders."
+  },
+
+  "backupFirstDesc": {
+    "message": "Keep your clippings safe by doing regular backups. Take a moment to backup your clippings by clicking Backup Now."
+  },
+
+  "backupNow": {
+    "message": "Backup Now"
+  },
+
+  "backupHint": {
+    "message": "You can also backup your clippings anytime from Clippings Manager. Just open Clippings Manager, and then select Tools \u2192 Backup."
+  },
+
+  "backupPrefsHdg": {
+    "message": "Set Backup Reminder"
+  },
+  
+  "backupPrefsHint": {
+    "message": "This setting can also be changed in Clippings preferences."
+  },
+
+  "syncFldrName": {
+    "message": "Synced Clippings",
+    "description": "The name of the folder containing the user's synchronized clippings."
+  },
+  
+  "syncClippings": {
+    "message": "Sync Clippings",
+    "description": "The name of the feature for synchronizing clippings between applications or computers."
+  },
+
+  "syncIntro": {
+    "message": "You can synchronize your clippings with Thunderbird or other Firefox installations by putting the clippings you want to share into a special \u201cSynced Clippings\u201d folder.  The synchronized clippings will be saved in a file on your system.  Requires the <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">Sync Clippings</a> helper app."
+  },
+
+  "syncLearnMore": {
+    "message": "Learn more about Sync Clippings."
+  },
+
+  "syncHelp": {
+    "message": "<p class=\"dlg-subhead\">Sync Clippings</p><p>Sync Clippings lets you synchronize a subset of your clippings between Firefox and Thunderbird, so that they appear in both applications. You can choose which clippings you want to sync by creating them in a special \u201cSynced Clippings\u201d folder from the New Clipping dialog, or by moving them into the same folder in Clippings Manager.</p><p>The Synced Clippings folder will be automatically created once Sync Clippings is set up.</p><p class=\"dlg-subhead\">Setting Up</p><p>Sync Clippings needs to be turned on in the applications you want to synchronize your clippings with. Sync Clippings is supported on Firefox 60 and newer, and Thunderbird 60 and newer (with Clippings for Thunderbird 5.6 or newer installed).</p><p>In addition, the Sync Clippings helper app needs to be installed on your system to keep your Synced Clippings folder contents up to date. It is available for download from the <a href=\"http:\/\/aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">AE Creations website</a>. Once installed, it will be launched automatically when Firefox is started, and will run in the background.</p><p>In Firefox, activate Sync Clippings from the Clippings preferences page by clicking <b>Turn On Sync</b>.  You will be prompted to choose a file location on your system where the synced clippings data will be saved to, if this was not set already.</p>"
+  },
+
+  "syncStatusOn": {
+    "message": "Sync Clippings is turned on."
+  },
+
+  "syncStatusOff": {
+    "message": "Sync Clippings is turned off."
+  },
+
+  "syncSettings": {
+    "message": "Settings..."
+  },
+
+  "syncTurnOn": {
+    "message": "Turn On Sync"
+  },
+
+  "syncTurnOff": {
+    "message": "Turn Off Sync"
+  },
+
+  "syncTurnOffConf": {
+    "message": "Are you sure you want to turn off Sync Clippings?"
+  },
+
+  "syncTurnOffAck": {
+    "message": "Sync Clippings is turned off."
+  },
+
+  "syncTurnOffRmFldr": {
+    "message": "Remove Synced Clippings folder from Clippings menu and Clippings Manager"
+  },
+
+  "syncConnect": {
+    "message": "Connecting to the Sync Clippings helper app..."
+  },
+
+  "syncFileDir": {
+    "message": "Sync file location:"
+  },
+
+  "syncFileDirExample": {
+    "message": "Example:"
+  },
+
+  "syncFileDirExWin": {
+    "message": "C:\\Users\\YourName\\Documents\\Synced Clippings",
+    "description": "Example folder path on Windows."
+  },
+
+  "syncFileDirExMac": {
+    "message": "/Users/YourName/Documents/Synced Clippings",
+    "description": "Example folder path on macOS."
+  },
+
+  "syncFileDirExLinux": {
+    "message": "/home/YourName/synced-clippings",
+    "description": "Example folder path on Linux."
+  },
+
+  "syncFileDirDesc": {
+    "message": "Your Sync Clippings data is stored in this file location.  If you are synchronizing with Thunderbird and want to change the sync file location, you must also change the sync file location in Clippings preferences in Thunderbird to match."
+  },
+
+  "errSyncConxn": {
+    "message": "Unable to connect to the Sync Clippings helper app. Make sure that the app is installed."
+  },
+
+  "errSyncConxnDetail": {
+    "message": "The Sync Clippings helper app is needed to sync your clippings. You can download it from the <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">AE Creations website</a>."
+  },
+
+  "errSync": {
+    "message": "An error has occurred with the Sync Clippings helper app."
+  },
+
+  "syncReloadAck": {
+    "message": "Updating the Synced Clippings folder. Click Reload to continue."
+  },
+
+  "deleteSyncFldr": {
+    "message": "Cannot delete the Synced Clippings folder, because Sync Clippings is turned on."
+  },
+
+  "moveSyncFldr": {
+    "message": "Cannot move the Synced Clippings folder."
+  },
+
+  "syncPushFailed": {
+    "message": "Unable to push changes to the Synced Clippings folder, because the connection to the Sync Clippings helper app has failed. To fix this, reinstall the Sync Clippings helper app."
+  },
+
+  "syncStartupFailedHdg": {
+    "message": "Sync Clippings Error"
+  },
+  
+  "syncStartupFailed": {
+    "message": "Failed to connect to the Sync Clippings helper app. To fix this, reinstall the Sync Clippings helper app."
+  },
+
+  "aboutBtn": {
+    "message": "About..."
+  },
+
+  "aboutExtVer": {
+    "message": "version $1",
+    "description": "Extension version number"
+  },
+
+  "aboutAuthor": {
+    "message": "Created by AE Creations."
+  },
+  
+  "aboutHomePgLink": {
+    "message": "Visit home page"
+  },
+
+  "aboutLicLink": {
+    "message": "License information"
+  },
+
+  "aboutTrans": {
+    "message": "Localizations contributed by Crowdin translators."
+  },
+
+  "aboutSyncVerLabel": {
+    "message": "Sync Clippings helper app version:"
+  },
+
+  "noSyncHelperApp": {
+    "message": "Not installed",
+    "description": "Appears when the Sync Clippings helper app is not detected on the system"
+  },
+
+  "aboutSyncFileSize": {
+    "message": "Sync file size:"
+  },
+  
   "keyAlt": {
     "message": "ALT"
   },

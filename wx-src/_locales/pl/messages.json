@@ -40,9 +40,6 @@
   "btnNo": {
     "message": "Nie"
   },
-  "btnFinish": {
-    "message": "Zakończ"
-  },
   "btnBrowse": {
     "message": "Przeglądaj..."
   },
@@ -684,9 +681,6 @@
   },
   "htmlPasteDesc": {
     "message": "Wycinek w formacie HTML będzie zawsze wklejane jako zwykły tekst, jeśli zostanie wklejone do zwykłego pola tekstowego lub jeśli wycinek zawiera ograniczone tagi, takie jak <script>, <applet>, <object>, <iframe>, itp."
-  },
-  "prefsShortcutMode": {
-    "message": "Aktywuj tryb skrótów klawiaturowych używając $1"
   },
   "prefsDefaultNumPlchldrStart": {
     "message": "Domyślna wartość początkowa dla automatycznie powiększających się symboli zastępczych:"

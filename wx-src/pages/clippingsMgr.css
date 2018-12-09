@@ -304,6 +304,39 @@ input[type="search"]::placeholder {
     background-color: #fbfbfb;
 }
 
+#clippings-tree .ae-synced-clippings-fldr > .fancytree-icon {
+    background-image: url("../img/synced-clippings.svg");
+}
+
+#reload-sync-fldr-btn {
+    display: inline-block;
+
+    position: relative;
+    top: 0px;
+    left: 4px;
+    width: 24px;
+    height: 20px;
+
+    border: 1px solid #ddd;
+    border-radius: 3px;
+
+    background-color: #fbfbfb;
+    background-image: url("../img/reload.svg");
+    background-size: 14px 14px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#reload-sync-fldr-btn:hover {
+    border: 1px solid #b1b1b1;
+    background-color: #ebebeb;
+}
+
+#reload-sync-fldr-btn:active {
+    border: 1px solid #b1b1b1;
+    background-color: #d7d7db;
+}
+
 ul.fancytree-container {
     border: none;
 }
@@ -679,7 +712,7 @@ ul.fancytree-container {
 .lightbox fieldset > legend {
     padding-left: 0px;
     padding-right: 8px;
-    margin-left: -8px;
+    margin-left: -10px;
 }
 
 .lightbox select {
@@ -707,6 +740,8 @@ ul.fancytree-container {
 #remove-all-source-urls-dlg,
 #import-confirm-msgbox,
 #export-confirm-msgbox,
+#backup-confirm-msgbox,
+#reload-sync-fldr-msgbox,
 #mini-help-dlg,
 #generic-msg-box {
     top: 64px;
@@ -787,6 +822,10 @@ ul.fancytree-container {
 #shortcut-list-content table > thead > tr > th {
     padding: 3px 4px 3px 4px;
     font-weight: normal;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 90px;
 }
 
 #shortcut-list-content table > thead > tr > th:nth-child(1) {
@@ -824,7 +863,7 @@ ul.fancytree-container {
 
 #import-dlg {
     --width: 395px;
-    --height: 178px;
+    --height: 200px;
     top: 40px;
 }
 
@@ -897,6 +936,7 @@ ul.fancytree-container {
     padding: 8px;
     background-color: #fbfb77;
     border-radius: 4px;
+    min-height: 60px;
 }
 
 #import-dlg progress {
@@ -936,12 +976,17 @@ ul.fancytree-container {
 }
 
 #import-confirm-msgbox > .msgbox-icon,
-#export-confirm-msgbox > .msgbox-icon {
+#export-confirm-msgbox > .msgbox-icon,
+#backup-confirm-msgbox > .msgbox-icon {
     margin-top: 8px;
 }
 
 #import-confirm-msgbox {
     --width: 400px;
+}
+
+#reload-sync-fldr-msgbox {
+    --width: 430px;
 }
 
 #move-dlg {
@@ -959,6 +1004,10 @@ ul.fancytree-container {
 #move-dlg #move-to-fldr-tree > .fancytree-container {
     height: 154px;
     overflow: auto;
+}
+
+#move-dlg #move-to-fldr-tree .ae-synced-clippings-fldr > .fancytree-icon {
+    background-image: url("../img/synced-clippings.svg");
 }
 
 #move-dlg #move-error {

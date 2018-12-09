@@ -14,6 +14,9 @@ let aeConst = {
   HOSTAPP_FX_GUID: "{ec8030f7-c20a-464f-9b0e-13a3a9e97384}",
   HOSTAPP_TB_GUID: "{3550f703-e582-4d05-9a08-453d09bdfdc6}",
 
+  // Native messaging helper app
+  SYNC_CLIPPINGS_APP_NAME: "syncClippings",
+  
   // Constants for HTML paste options
   HTMLPASTE_ASK_THE_USER: 0,
   HTMLPASTE_AS_FORMATTED: 1,
@@ -22,10 +25,6 @@ let aeConst = {
   // Keyboard pasting mode
   PASTEACTION_SHORTCUT_KEY:   1,
   PASTEACTION_SEARCH_CLIPPING: 2,
-
-  // Shortcut key prefix
-  SHORTCUT_KEY_PREFIX: "ALT+SHIFT+Y",
-  SHORTCUT_KEY_PREFIX_MAC: "\u21e7\u2318Y",
 
   // Folder IDs
   ROOT_FOLDER_ID: 0,
@@ -40,5 +39,27 @@ let aeConst = {
   CLIPPINGS_EXPORT_FILENAME: "clippings.json",
   HTML_EXPORT_FILENAME: "clippings.html",
   HTML_EXPORT_SHORTCUTS_FILENAME: "clippings-shortcuts.html",
+  CSV_EXPORT_FILENAME: "clippings.csv",
   CLIPPINGS_BACKUP_FILENAME: "clippings-backup.json",
+
+  // Backup reminder frequency
+  BACKUP_REMIND_NEVER: 0,
+  BACKUP_REMIND_DAILY: 1,
+  BACKUP_REMIND_WEEKLY: 2,
+  BACKUP_REMIND_MONTHLY: 3,
+  BACKUP_REMIND_TWOWEEKS: 4,
+  BACKUP_REMIND_TWODAYS: 5,
+  BACKUP_REMIND_THREEDAYS: 6,
+  BACKUP_REMIND_FIVEDAYS: 7,
+  BACKUP_REMINDER_DELAY_MS: 300000,      // 5 minutes
+  BACKUP_REMINDER_INTERVAL_MS: 86400000, // 24 hours
+
+  // Notification IDs
+  NOTIFY_BACKUP_REMIND_FIRSTRUN_ID: "ae-clippings-notify-backup-reminder-firstrun",
+  NOTIFY_BACKUP_REMIND_ID: "ae-clippings-notify-backup-reminder",
+  NOTIFY_SYNC_ERROR_ID: "ae-clippings-sync-error",
+
+  // Errors returned by the native messaging app
+  SYNC_ERROR_UNKNOWN: "Error: undefined",
+  SYNC_ERROR_CONXN_FAILED: "Error: Attempt to postMessage on disconnected port",
 };

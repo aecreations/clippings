@@ -193,8 +193,8 @@ function initDialogs()
   gNewFolderDlg.fldrTree = null;
   gNewFolderDlg.selectedFldrNode = null;
 
-  let that = gNewFolderDlg;
   gNewFolderDlg.resetTree = function () {
+    let that = gNewFolderDlg;
     let fldrTree = that.fldrTree.getTree();
     fldrTree.clear();
     that.fldrTree = null;
@@ -208,6 +208,7 @@ function initDialogs()
   };
   
   gNewFolderDlg.onInit = () => {
+    let that = gNewFolderDlg;
     let parentDlgFldrPickerMnuBtn = $("#new-clipping-fldr-picker-menubtn");
     let fldrPickerMnuBtn = $("#new-folder-dlg-fldr-picker-mnubtn");
     let fldrPickerPopup = $("#new-folder-dlg-fldr-tree-popup");
@@ -222,12 +223,28 @@ function initDialogs()
 
     that.fldrTree.onSelectFolder = aFolderData => {
       that.selectedFldrNode = aFolderData.node;
-      fldrPickerMnuBtn.val(aFolderData.node.key).text(aFolderData.node.title);
+
+      let fldrID = aFolderData.node.key;
+      fldrPickerMnuBtn.val(fldrID).text(aFolderData.node.title);
+
+      if (fldrID == gClippings.getSyncFolderID()) {
+        fldrPickerMnuBtn.attr("syncfldr", "true");
+      }
+      else {
+        fldrPickerMnuBtn.removeAttr("syncfldr");
+      }
+      
       fldrPickerPopup.css({ visibility: "hidden" });
       $("#new-folder-dlg-fldr-tree-popup-bkgrd-ovl").hide();
     };
 
     fldrPickerMnuBtn.val(selectedFldrID).text(selectedFldrName);
+    if (selectedFldrID == gClippings.getSyncFolderID()) {
+      fldrPickerMnuBtn.attr("syncfldr", "true");
+    }
+    else {
+      fldrPickerMnuBtn.removeAttr("syncfldr");
+    }
 
     if (that.firstInit) {
       fldrPickerMnuBtn.click(aEvent => {
@@ -258,6 +275,7 @@ function initDialogs()
   };
   
   gNewFolderDlg.onAccept = aEvent => {
+    let that = gNewFolderDlg;
     let newFldrDlgTree = that.fldrTree.getTree();
     let parentFldrID = aeConst.ROOT_FOLDER_ID;
 
@@ -271,38 +289,53 @@ function initDialogs()
 
     console.log("Clippings/wx::new.js: gNewFolderDlg.onAccept(): parentFldrID = " + parentFldrID);
 
-    gClippingsDB.folders.add({
-      name: $("#new-fldr-name").val(),
-      parentFolderID: parentFldrID
-    }).then(aFldrID => {
-      let newFldrName = $("#new-fldr-name").val();
+    let numItemsInParent = 0;  // For calculating display order of new folder.
+
+    gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
+      gClippingsDB.folders.where("parentFolderID").equals(parentFldrID).count().then(aNumFldrs => {
+        numItemsInParent += aNumFldrs;
+        return gClippingsDB.clippings.where("parentFolderID").equals(parentFldrID).count();
+        
+      }).then(aNumClippings => {
+        numItemsInParent += aNumClippings;
+
+        return gClippingsDB.folders.add({
+          name: $("#new-fldr-name").val(),
+          parentFolderID: parentFldrID,
+          displayOrder: numItemsInParent,
+        });
+      }).then(aFldrID => {
+        let newFldrName = $("#new-fldr-name").val();
       
-      // Update the folder tree in the main dialog.
-      let newFldrNodeData = {
-        key: aFldrID,
-        title: newFldrName,
-        folder: true,
-        children: []
-      };
-
-      let mainFldrTree = gFolderPickerPopup.getTree();
-      let parentNode;
-
-      if (parentFldrID == aeConst.ROOT_FOLDER_ID) {
-        parentNode = mainFldrTree.rootNode.getFirstChild();
-      }
-      else {
-        parentNode = mainFldrTree.getNodeByKey(Number(parentFldrID).toString());
-      }
-
-      let newFldrNode = parentNode.addNode(newFldrNodeData);
-      newFldrNode.setActive();
-
-      $("#new-clipping-fldr-picker-menubtn").text(newFldrName).val(aFldrID);
-      gParentFolderID = aFldrID;
-
-      that.resetTree();
-      that.close();
+        // Update the folder tree in the main dialog.
+        let newFldrNodeData = {
+          key: aFldrID,
+          title: newFldrName,
+          folder: true,
+          children: []
+        };
+        
+        let mainFldrTree = gFolderPickerPopup.getTree();
+        let parentNode;
+        
+        if (parentFldrID == aeConst.ROOT_FOLDER_ID) {
+          parentNode = mainFldrTree.rootNode.getFirstChild();
+        }
+        else {
+          parentNode = mainFldrTree.getNodeByKey(Number(parentFldrID).toString());
+        }
+        
+        let newFldrNode = parentNode.addNode(newFldrNodeData);
+        newFldrNode.setActive();
+        
+        $("#new-clipping-fldr-picker-menubtn").text(newFldrName).val(aFldrID);       
+        gParentFolderID = aFldrID;
+        
+        that.resetTree();
+        that.close();
+      });
+    }).catch(aErr => {
+      window.alert(aErr);
     });
   };
 }
@@ -351,7 +384,17 @@ function initFolderPicker()
 function selectFolder(aFolderData)
 {
   gParentFolderID = Number(aFolderData.node.key);
-  $("#new-clipping-fldr-picker-menubtn").text(aFolderData.node.title).val(gParentFolderID);
+  
+  let fldrPickerMenuBtn = $("#new-clipping-fldr-picker-menubtn");
+  fldrPickerMenuBtn.text(aFolderData.node.title).val(gParentFolderID);
+
+  if (gParentFolderID == gClippings.getSyncFolderID()) {
+    fldrPickerMenuBtn.attr("syncfldr", "true");
+  }
+  else {
+    fldrPickerMenuBtn.removeAttr("syncfldr");
+  }
+  
   $("#new-clipping-fldr-tree-popup").css({ visibility: "hidden" });
   $(".popup-bkgrd").hide();
 }
@@ -373,11 +416,8 @@ function initShortcutKeyMenu()
     }
   });
 
-  let keybPasteKey = `${chrome.i18n.getMessage("keyAlt")}+${chrome.i18n.getMessage("keyShift")}+Y`;
-  if (gClippings.getOS() == "mac") {
-    keybPasteKey = aeConst.SHORTCUT_KEY_PREFIX_MAC;
-  }
-  let tooltip = chrome.i18n.getMessage("shortcutKeyHint", keybPasteKey);
+  let keybPasteKeys = gClippings.getShortcutKeyPrefixStr();
+  let tooltip = chrome.i18n.getMessage("shortcutKeyHint", keybPasteKeys);
   $("#shct-key-tooltip").attr("title", tooltip);
 }
 
@@ -417,34 +457,86 @@ function accept(aEvent)
   let label = labelPicker.val() ? labelPicker.val() : "";
 
   let errorMsgBox = new aeDialog("#create-clipping-error-msgbox");
+  let numItemsInParent = 0;  // For calculating display order of new clipping.
 
-  gClippingsDB.clippings.add({
-    name: $("#clipping-name").val(),
-    content: $("#clipping-text").val(),
-    shortcutKey: shortcutKey,
-    parentFolderID: gParentFolderID,
-    label,
-    sourceURL: ($("#save-source-url")[0].checked ? gSrcURL : "")
+  gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
+    gClippingsDB.folders.where("parentFolderID").equals(gParentFolderID).count().then(aNumFldrs => {
+      numItemsInParent += aNumFldrs;
+      return gClippingsDB.clippings.where("parentFolderID").equals(gParentFolderID).count();
 
-  }).then(aID => {
-    closeDlg();
+    }).then(aNumClippings => {
+      numItemsInParent += aNumClippings;
+    
+      return gClippingsDB.clippings.add({
+        name: $("#clipping-name").val(),
+        content: $("#clipping-text").val(),
+        shortcutKey: shortcutKey,
+        parentFolderID: gParentFolderID,
+        label,
+        displayOrder: numItemsInParent,
+        sourceURL: ($("#save-source-url")[0].checked ? gSrcURL : "")
+      });
 
-  }).catch("OpenFailedError", aErr => {
-    // OpenFailedError exception thrown if Firefox is set to "Never remember
-    // history."
-    errorMsgBox.onInit = () => {
-      console.error(`Error creating clipping: ${aErr}`);
-      let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
-      errMsgElt.text(chrome.i18n.getMessage("saveClippingError"));
-    };
-    errorMsgBox.showModal();
+    }).then(aNewClippingID => {
+      let prefs = gClippings.getPrefs();
+      if (prefs.syncClippings) {
+        let syncFldrID = gClippings.getSyncFolderID();
+        aeImportExport.setDatabase(gClippingsDB);
+        
+        return aeImportExport.exportToJSON(true, true, syncFldrID, false, true);
+      }
+      return null;
 
-  }).catch(aErr => {
-    errorMsgBox.onInit = () => {
-      let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
-      errMsgElt.text(`Error creating clipping: ${aErr}`);
-    };
-    errorMsgBox.showModal();
+    }).then(aSyncData => {
+      if (aSyncData) {
+        let msg = {
+          msgID: "set-synced-clippings",
+          syncData: aSyncData.userClippingsRoot,
+        };
+
+        log("Clippings/wx::new.js: accept(): Sending message 'set-synced-clippings' to the Sync Clippings helper app.  Message data:");
+        log(msg);
+
+        return browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
+      }
+      return null;
+
+    }).then(aMsgResult => {
+      if (aMsgResult) {
+        log("Clippings/wx::new.js: accept(): Response from the Sync Clippings helper app:");
+        log(aMsgResult);
+      }
+      
+      closeDlg();
+
+    }).catch("OpenFailedError", aErr => {
+      // OpenFailedError exception thrown if Firefox is set to "Never remember
+      // history."
+      errorMsgBox.onInit = () => {
+        console.error(`Error creating clipping: ${aErr}`);
+        let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
+        errMsgElt.text(chrome.i18n.getMessage("saveClippingError"));
+      };
+      errorMsgBox.showModal();
+
+    }).catch(aErr => {
+      console.error("Clippings/wx::new.js: accept(): " + aErr);     
+      errorMsgBox.onInit = () => {
+        let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
+        let errText = `Error creating clipping: ${aErr}`;
+
+        if (aErr == aeConst.SYNC_ERROR_CONXN_FAILED) {
+          errText = chrome.i18n.getMessage("syncPushFailed");
+          errorMsgBox.onAfterAccept = () => {
+            // Despite the native app connection error, the new clipping was
+            // successfully created, so just close the main dialog.
+            closeDlg();
+          };
+        }
+        errMsgElt.text(errText);
+      };
+      errorMsgBox.showModal();
+    });
   });
 }
 
@@ -459,4 +551,10 @@ function closeDlg()
 {
   browser.runtime.sendMessage({ msgID: "close-new-clipping-dlg" });
   chrome.windows.remove(chrome.windows.WINDOW_ID_CURRENT);
+}
+
+
+function log(aMessage)
+{
+  if (aeConst.DEBUG) { console.log(aMessage); }
 }
