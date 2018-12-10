@@ -2492,7 +2492,10 @@ function initIntroBannerAndHelpDlg()
 
 function initDialogs()
 {
-  const isMacOS = gClippings.getOS() == "mac";
+  let osName = gClippings.getOS();
+  $(".msgbox-icon").attr("os", osName);
+
+  const isMacOS = osName == "mac";
 
   initIntroBannerAndHelpDlg();
 

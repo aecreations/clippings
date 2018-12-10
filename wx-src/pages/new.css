@@ -215,6 +215,10 @@ ul.fancytree-container {
     background-size: contain;
 }
 
+#create-clipping-error-msgbox .msgbox-error-icon[os="win"] {
+    background-image: url("../img/warning-64.png");
+}
+
 #create-clipping-error-msgbox .msgbox-error-msg {
     margin-left: 44px;
     color: red;

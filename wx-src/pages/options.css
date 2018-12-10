@@ -298,6 +298,10 @@ progress {
     background-image: url("chrome://global/skin/icons/warning-64.png");
 }
 
+#sync-clippings-dlg #sync-cxn-error .msgbox-icon[os="win"] {
+    background-image: url("../img/warning-64.png");
+}
+
 #sync-clippings-dlg #generic-error .msgbox-icon {
     background-image: url("../img/error.svg");
 }
@@ -469,3 +473,4 @@ progress {
     width: 16px;
     height: 16px;
 }
+

@@ -194,6 +194,9 @@ function setPref(aPref)
 
 function initDialogs()
 {
+  let osName = gClippings.getOS();
+  $(".msgbox-icon").attr("os", osName);
+  
   gDialogs.syncClippings = new aeDialog("#sync-clippings-dlg");
   gDialogs.syncClippings.onInit = () => {
     $("#sync-clippings-dlg .dlg-accept").hide();
