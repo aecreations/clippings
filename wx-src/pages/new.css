@@ -18,6 +18,10 @@ input[type="text"], textarea {
     margin-top: 4px;
 }
 
+input[type="checkbox"] + label {
+    vertical-align: -0.3em
+}
+
 textarea {
     resize: none;
 }

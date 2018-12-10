@@ -57,6 +57,10 @@ label {
     margin-right: 4px;
 }
 
+input[type="checkbox"] + label {
+    vertical-align: middle;
+}
+
 button {
     min-width: 88px;
     height: 32px;
@@ -147,6 +151,15 @@ progress {
 
 #auto-inc-plchldrs-start-val {
     width: 64px;
+}
+
+#backup-reminder-freq {
+    vertical-align: -moz-middle-with-baseline;
+}
+
+#backup-reminder-freq + label {
+    margin-left: 4px;
+    vertical-align: middle;
 }
 
 #sync-status {
@@ -383,8 +396,8 @@ progress {
 
 #turn-off-sync-clippings-ack-dlg .info-icon {
     float: left;
-    width: 42px;
-    height: 42px;
+    width: 40px;
+    height: 40px;
     margin-top: 8px;
     margin-right: 12px;
     margin-bottom: 24px;
@@ -394,6 +407,7 @@ progress {
 
 #turn-off-sync-clippings-ack-dlg .dlg-content > #delete-sync-fldr + label {
     font-size: 13px;
+    vertical-align: unset;
 }
 
 #sync-clippings-help-dlg {
