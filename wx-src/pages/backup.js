@@ -1,3 +1,4 @@
+/* -*- mode: javascript; tab-width: 8; indent-tabs-mode: nil; js-indent-level: 2 -*- */
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -7,7 +8,7 @@ let gClippings;
 
 // Dialog initialization
 $(() => {
-  chrome.history.deleteUrl({ url: window.location.href });
+  browser.history.deleteUrl({ url: window.location.href });
 
   gClippings = chrome.extension.getBackgroundPage();
 
@@ -27,7 +28,41 @@ $(() => {
   $("#btn-close").click(aEvent => { closeDlg() });
 
   browser.storage.local.get().then(aPrefs => {
-    $("#backup-reminder-freq").val(aPrefs.backupRemFrequency).change(aEvent => {
+    $("#backup-reminder").prop("checked", (aPrefs.backupRemFrequency != aeConst.BACKUP_REMIND_NEVER)).click(aEvent => {
+      let setPref;
+      
+      if (aEvent.target.checked) {
+        $("#backup-reminder-freq").prop("disabled", false);
+        setPref = browser.storage.local.set({
+          backupRemFrequency: Number($("#backup-reminder-freq").val()),
+          backupRemFirstRun: false,
+          lastBackupRemDate: new Date().toString(),
+        });
+      }
+      else {
+        $("#backup-reminder-freq").prop("disabled", true);
+        setPref = browser.storage.local.set({
+	  backupRemFrequency: aeConst.BACKUP_REMIND_NEVER,
+	});
+      }
+
+      setPref.then(() => {
+	gClippings.clearBackupNotificationInterval();
+	if (aEvent.target.checked) {
+	  gClippings.setBackupNotificationInterval();
+	}
+      });
+    });
+
+    if (aPrefs.backupRemFrequency == aeConst.BACKUP_REMIND_NEVER) {
+      // Set to default interval.
+      $("#backup-reminder-freq").val(aeConst.BACKUP_REMIND_WEEKLY).prop("disabled", true);
+    }
+    else {
+      $("#backup-reminder-freq").val(aPrefs.backupRemFrequency);
+    }
+
+    $("#backup-reminder-freq").change(aEvent => {
       browser.storage.local.set({
         backupRemFrequency: Number(aEvent.target.value),
         backupRemFirstRun: false,
@@ -35,9 +70,7 @@ $(() => {
 
       }).then(() => {
 	gClippings.clearBackupNotificationInterval();
-	if (aEvent.target.value != aeConst.BACKUP_REMIND_NEVER) {
-          gClippings.setBackupNotificationInterval();
-	}
+        gClippings.setBackupNotificationInterval();
       });
     });
 
