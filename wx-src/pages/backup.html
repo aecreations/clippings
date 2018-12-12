@@ -28,14 +28,18 @@
       <fieldset>
         <legend data-i18n="backupPrefsHdg"></legend>
 
-        <div class="row" style="margin-top:8px">
-	  <label for="backup-reminder-freq" data-i18n="backupRemFreq"></label>
+        <div class="row browser-style" style="margin-top:8px">
+	  <input type="checkbox" id="backup-reminder"/><label for="backup-reminder" data-i18n="backupRemind"></label>
 	  <select id="backup-reminder-freq" class="browser-style">
-	    <option value="0" data-i18n="backupRemFreqNever"></option>
 	    <option value="1" data-i18n="backupRemFreqDaily"></option>
-	    <option value="2" data-i18n="backupRemFreqWeekly" selected></option>
-	    <option value="3" data-i18n="backupRemFreqMonthly"></option>
+	    <option value="5" data-i18n="backupRemFreqTwoDays"></option>
+	    <option value="6" data-i18n="backupRemFreqThreeDays"></option>
+	    <option value="7" data-i18n="backupRemFreqFiveDays"></option>
+            <option value="2" data-i18n="backupRemFreqWeekly"></option>
+	    <option value="4" data-i18n="backupRemFreqTwoWeeks"></option>
+            <option value="3" data-i18n="backupRemFreqMonthly"></option>
 	  </select>
+          <label for="backup-reminder-freq" data-i18n="backupRemDays"></label>
 	</div>
 
 	<p class="hint" data-i18n="backupPrefsHint" style="margin-top:2px"></p>

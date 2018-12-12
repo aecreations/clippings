@@ -57,6 +57,10 @@ label {
     margin-right: 4px;
 }
 
+input[type="checkbox"] + label {
+    vertical-align: middle;
+}
+
 button {
     min-width: 88px;
     height: 32px;
@@ -106,8 +110,8 @@ progress {
 }
 
 .row {
-    margin-top: 6px;
-    margin-bottom: 10px;
+    margin-top: 4px;
+    margin-bottom: 2px;
     margin-left: 4px;
 }
 
@@ -147,6 +151,15 @@ progress {
 
 #auto-inc-plchldrs-start-val {
     width: 64px;
+}
+
+#backup-reminder-freq {
+    vertical-align: -moz-middle-with-baseline;
+}
+
+#backup-reminder-freq + label {
+    margin-left: 4px;
+    vertical-align: middle;
 }
 
 #sync-status {
@@ -298,6 +311,10 @@ progress {
     background-image: url("chrome://global/skin/icons/warning-64.png");
 }
 
+#sync-clippings-dlg #sync-cxn-error .msgbox-icon[os="win"] {
+    background-image: url("../img/warning-64.png");
+}
+
 #sync-clippings-dlg #generic-error .msgbox-icon {
     background-image: url("../img/error.svg");
 }
@@ -379,8 +396,8 @@ progress {
 
 #turn-off-sync-clippings-ack-dlg .info-icon {
     float: left;
-    width: 42px;
-    height: 42px;
+    width: 40px;
+    height: 40px;
     margin-top: 8px;
     margin-right: 12px;
     margin-bottom: 24px;
@@ -390,6 +407,7 @@ progress {
 
 #turn-off-sync-clippings-ack-dlg .dlg-content > #delete-sync-fldr + label {
     font-size: 13px;
+    vertical-align: unset;
 }
 
 #sync-clippings-help-dlg {
@@ -469,3 +487,4 @@ progress {
     width: 16px;
     height: 16px;
 }
+

@@ -400,6 +400,10 @@ let gSyncClippingsListener = {
 
     if (aRemoveSyncFolder) {
       let clippingsTree = getClippingsTree();
+
+      // TO DO: This won't work if Clippings Manager was opened right after
+      // turning off Sync Clippings, but before selecting the option to remove
+      // the Synced Clippings folder, from the Clippings preferences page.
       let syncFldrTreeNode = clippingsTree.getNodeByKey(this._oldSyncFldrID + "F");
       syncFldrTreeNode.remove();
       this._oldSyncFldrID = null;
@@ -2492,7 +2496,10 @@ function initIntroBannerAndHelpDlg()
 
 function initDialogs()
 {
-  const isMacOS = gClippings.getOS() == "mac";
+  let osName = gClippings.getOS();
+  $(".msgbox-icon").attr("os", osName);
+
+  const isMacOS = osName == "mac";
 
   initIntroBannerAndHelpDlg();
 

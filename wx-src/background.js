@@ -150,9 +150,17 @@ let gSyncClippingsListener = {
     log("Clippings/wx: gSyncClippingsListener.onDeactivate()");
     this._oldSyncFldrID = aOldSyncFolderID;
     
-    // TO DO: Instead of rebuilding the entire menu, just change the icon on the
-    // "Synced Clippings" folder to be a normal folder icon.
-    //rebuildContextMenu();
+    let syncFldrMenuID = gFolderMenuItemIDMap[aOldSyncFolderID];
+
+    try {
+      // Change the icon on the "Synced Clippings" folder to be a normal
+      // folder icon.
+      chrome.contextMenus.update(syncFldrMenuID, { icons: { 16: "img/folder.svg" }});
+    }
+    catch (e) {
+      // Error returned if on Firefox 63 or older.
+      // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1414566>
+    }
   },
 
   onAfterDeactivate(aRemoveSyncFolder)

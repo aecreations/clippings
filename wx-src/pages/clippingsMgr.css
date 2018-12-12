@@ -71,6 +71,10 @@ input[type="search"]::placeholder {
     font-style: italic;
 }
 
+input[type="checkbox"] + label {
+    vertical-align: -0.3em;
+}
+
 .hbox, .vbox {
     display: flex;
     justify-content: flex-start;
@@ -697,6 +701,10 @@ ul.fancytree-container {
     background-size: contain;
 }
 
+.lightbox .msgbox-icon[os="win"] {
+    background-image: url("../img/warning-64.png");
+}
+
 .lightbox .browser-style input[type="checkbox"] + label::before {
     width: 14px;
     height: 14px;
@@ -923,16 +931,16 @@ ul.fancytree-container {
 
 #import-dlg #restore-backup-warning > .warning-icon {
     float: left;
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
     margin-top: 4px;
-    background-image: url("chrome://global/skin/icons/warning-64.png");
+    background-image: url("chrome://global/skin/icons/warning-large.png");
     background-repeat: no-repeat;
     background-size: contain;
 }
 
 #import-dlg #restore-backup-warning > p {
-    margin: 0px 0px 0px 24px;
+    margin: 0px 0px 0px 28px;
     padding: 8px;
     background-color: #fbfb77;
     border-radius: 4px;

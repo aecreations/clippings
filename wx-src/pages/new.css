@@ -18,6 +18,10 @@ input[type="text"], textarea {
     margin-top: 4px;
 }
 
+input[type="checkbox"] + label {
+    vertical-align: -0.3em
+}
+
 textarea {
     resize: none;
 }
@@ -213,6 +217,10 @@ ul.fancytree-container {
     margin-right: 12px;
     background-image: url("chrome://global/skin/icons/warning-64.png");
     background-size: contain;
+}
+
+#create-clipping-error-msgbox .msgbox-error-icon[os="win"] {
+    background-image: url("../img/warning-64.png");
 }
 
 #create-clipping-error-msgbox .msgbox-error-msg {

@@ -188,6 +188,9 @@ function showInitError()
 
 function initDialogs()
 {
+  let osName = gClippings.getOS();
+  $(".msgbox-error-icon").attr("os", osName);
+  
   gNewFolderDlg = new aeDialog("#new-folder-dlg");
   gNewFolderDlg.firstInit = true;
   gNewFolderDlg.fldrTree = null;

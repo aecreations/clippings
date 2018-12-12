@@ -22,6 +22,10 @@ fieldset > legend {
     font-size: 15px;
 }
 
+input[type="checkbox"] + label {
+    vertical-align: middle;
+}
+
 select.browser-style {
     font-size: unset;
 }
@@ -42,6 +46,19 @@ select.browser-style {
     padding-right: 16px;
     font-size: 15px !important;
     font-weight: 400;
+}
+
+#backup-reminder-freq {
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+#backup-reminder-freq {
+    vertical-align: -moz-middle-with-baseline;
+}
+
+#backup-reminder-freq + label {
+    vertical-align: middle;
 }
 
 #dlg-buttons {
