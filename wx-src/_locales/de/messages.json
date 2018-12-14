@@ -623,7 +623,7 @@
     "message": "Fehler beim Lesen der ausgewählten Datei. Die Datei ist möglicherweise keine gültige Clippings-Datei."
   },
   "labelSelExportFmt": {
-    "message": "Wählen sie ein Format zur Speicherung derTextbausteine nach:"
+    "message": "Wählen sie ein Format zur Speicherung der Textbausteine nach:"
   },
   "expFmtDescHdg": {
     "message": "Beschreibung"
