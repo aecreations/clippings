@@ -373,8 +373,6 @@ let gClippingsListener = {
 };
 
 let gSyncClippingsListener = {
-  _oldSyncFldrID: null,
-  
   onActivate(aSyncFolderID)
   {
     log("Clippings/wx::clippingsMgr.js::gSyncClippingsListener.onActivate()");
@@ -384,7 +382,6 @@ let gSyncClippingsListener = {
   onDeactivate(aOldSyncFolderID)
   {
     log(`Clippings/wx::clippingsMgr.js::gSyncClippingsListener.onDeactivate(): ID of old sync folder: ${aOldSyncFolderID}`);
-    this._oldSyncFldrID = aOldSyncFolderID;
     gSyncedItemsIDs = {};
 
     gReloadSyncFldrBtn.hide();
@@ -394,20 +391,15 @@ let gSyncClippingsListener = {
     syncFldrTreeNode.removeClass("ae-synced-clippings-fldr");
   },
 
-  onAfterDeactivate(aRemoveSyncFolder)
+  onAfterDeactivate(aRemoveSyncFolder, aOldSyncFolderID)
   {
-    log("Clippings/wx::clippingsMgr.js: gSyncClippingsListener.onAfterDeactivate(): Remove Synced Clippings folder: " + aRemoveSyncFolder)
+    log(`Clippings/wx::clippingsMgr.js: gSyncClippingsListener.onAfterDeactivate(): Remove Synced Clippings folder = ${aRemoveSyncFolder}; old sync folder ID = ${aOldSyncFolderID}`)
 
     if (aRemoveSyncFolder) {
       let clippingsTree = getClippingsTree();
 
-      // TO DO: This won't work if Clippings Manager was opened right after
-      // turning off Sync Clippings, but before selecting the option to remove
-      // the Synced Clippings folder, from the Clippings preferences page.
-      let syncFldrTreeNode = clippingsTree.getNodeByKey(this._oldSyncFldrID + "F");
+      let syncFldrTreeNode = clippingsTree.getNodeByKey(aOldSyncFolderID + "F");
       syncFldrTreeNode.remove();
-      this._oldSyncFldrID = null;
-
       setStatusBarMsg();
       
       // TO DO: If there are no longer any clippings and folders, then show the

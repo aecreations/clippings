@@ -334,20 +334,23 @@ function initDialogs()
 	listener.onDeactivate(aOldSyncFldrID);
       }
 
+      gDialogs.turnOffSyncAck.oldSyncFldrID = aOldSyncFldrID;
       gDialogs.turnOffSyncAck.showModal();
     });
   };
 
   gDialogs.turnOffSyncAck = new aeDialog("#turn-off-sync-clippings-ack-dlg");
+  gDialogs.turnOffSyncAck.oldSyncFldrID = null;
   gDialogs.turnOffSyncAck.onInit = () => {
     $("#delete-sync-fldr").prop("checked", true);
   };
   gDialogs.turnOffSyncAck.onAfterAccept = () => {
+    let that = gDialogs.turnOffSyncAck;
     let removeSyncFldr = $("#delete-sync-fldr").prop("checked");
     let syncClippingsListeners = gClippings.getSyncClippingsListeners().getListeners();
 
     for (let listener of syncClippingsListeners) {
-      listener.onAfterDeactivate(removeSyncFldr);
+      listener.onAfterDeactivate(removeSyncFldr, that.oldSyncFldrID);
     }
   };
 

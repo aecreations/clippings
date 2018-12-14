@@ -136,8 +136,6 @@ let gSyncClippingsListeners = {
 };
 
 let gSyncClippingsListener = {
-  _oldSyncFldrID: null,
-  
   onActivate(aSyncFolderID)
   {
     // No need to do anything here. The Clippings context menu is automatically
@@ -148,8 +146,6 @@ let gSyncClippingsListener = {
   onDeactivate(aOldSyncFolderID)
   {
     log("Clippings/wx: gSyncClippingsListener.onDeactivate()");
-    this._oldSyncFldrID = aOldSyncFolderID;
-    
     let syncFldrMenuID = gFolderMenuItemIDMap[aOldSyncFolderID];
 
     try {
@@ -163,17 +159,15 @@ let gSyncClippingsListener = {
     }
   },
 
-  onAfterDeactivate(aRemoveSyncFolder)
+  onAfterDeactivate(aRemoveSyncFolder, aOldSyncFolderID)
   {
     log("Clippings/wx: gSyncClippingsListeners.onAfterDeactivate(): Remove Synced Clippings folder: " + aRemoveSyncFolder);
 
     let that = this;
 
     if (aRemoveSyncFolder) {
-      log(`Removing old Synced Clippings folder (ID = ${that._oldSyncFldrID})`);
-      purgeFolderItems(this._oldSyncFldrID, false).then(() => {
-        that._oldSyncFldrID = null;
-      });
+      log(`Removing old Synced Clippings folder (ID = ${aOldSyncFolderID})`);
+      purgeFolderItems(aOldSyncFolderID, false).then(() => {});
     }
   },
 
@@ -1738,7 +1732,7 @@ function alertEx(aMessageID)
     window.alert(message);
   }
   else {
-    console.info("Clippings/wx: " + message);
+    info("Clippings/wx: " + message);
     let url = "pages/msgbox.html?msgid=" + aMessageID;
     
     chrome.windows.create({
