@@ -451,7 +451,7 @@ function init()
     setShortcutKeyPrefix(gPrefs.pasteShortcutKeyPrefix);
   }
 
-  if (gPrefs.backupRemFirstRun) {
+  if (gPrefs.backupRemFirstRun && !gPrefs.lastBackupRemDate) {
     browser.storage.local.set({
       lastBackupRemDate: new Date().toString(),
     });
