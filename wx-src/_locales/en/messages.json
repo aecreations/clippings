@@ -1159,6 +1159,18 @@
     "message": "Failed to connect to the Sync Clippings helper app. To fix this, reinstall the Sync Clippings helper app."
   },
 
+  "syncUpdateTitle": {
+    "message": "New Version of Sync Clippings Helper"
+  },
+
+  "syncUpdateMsg": {
+    "message": "A new version of the Sync Clippings Helper app is available. Click here to go to the download page."
+  },
+
+  "syncUpdateChkOpt": {
+    "message": "Automatically check for updates to Sync Clippings Helper"
+  },
+
   "aboutBtn": {
     "message": "About..."
   },

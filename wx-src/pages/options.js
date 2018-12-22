@@ -225,8 +225,11 @@ function initDialogs()
 
       $(deck[0]).hide();
       $(deck[3]).show();
+      $("#sync-clippings-dlg").css({ height: "280px" });
       $("#sync-clippings-dlg .dlg-accept").show();
       $("#sync-clippings-dlg .dlg-cancel").text(chrome.i18n.getMessage("btnCancel"));
+
+      $("#sync-helper-app-update-check").prop("checked", gClippings.getPrefs().syncHelperCheckUpdates);
 
       let msg = { msgID: "get-sync-dir" };
       return browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
@@ -260,6 +263,8 @@ function initDialogs()
       $("#sync-fldr-curr-location").focus();
       return;
     }
+
+    setPref({ syncHelperCheckUpdates: $("#sync-helper-app-update-check").prop("checked") });
 
     let msg = {
       msgID: "set-sync-dir",
@@ -304,13 +309,15 @@ function initDialogs()
       console.error(aErr);
     });
   };
+  gDialogs.syncClippings.onUnload = () => {
+    $("#sync-clippings-dlg").css({ height: "256px" });
+  }
 
   // Dialog UI strings
-  let os = gClippings.getOS();
-  if (os == "win") {
+  if (osName == "win") {
     $("#example-sync-path").text(chrome.i18n.getMessage("syncFileDirExWin"));
   }
-  else if (os == "mac") {
+  else if (osName == "mac") {
     $("#example-sync-path").text(chrome.i18n.getMessage("syncFileDirExMac"));
   }
   else {

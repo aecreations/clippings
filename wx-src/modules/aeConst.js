@@ -5,7 +5,7 @@
 
 
 let aeConst = {
-  DEBUG: false,
+  DEBUG: true,
   
   // Extension GUID
   EXTENSION_ID: "{91aa5abe-9de4-4347-b7b5-322c38dd9271}",
@@ -54,10 +54,16 @@ let aeConst = {
   BACKUP_REMINDER_DELAY_MS: 300000,      // 5 minutes
   BACKUP_REMINDER_INTERVAL_MS: 86400000, // 24 hours
 
+  // Sync Clippings Helper app update checking
+  SYNC_HELPER_CHECK_UPDATE_URL: "https://aecreations.github.io/updates/syncClippings.json",
+  SYNC_HELPER_CHECK_UPDATE_DELAY_MS: 600000,  // 10 minutes
+  SYNC_HELPER_CHECK_UPDATE_FREQ_DAYS: 3,
+
   // Notification IDs
   NOTIFY_BACKUP_REMIND_FIRSTRUN_ID: "ae-clippings-notify-backup-reminder-firstrun",
   NOTIFY_BACKUP_REMIND_ID: "ae-clippings-notify-backup-reminder",
   NOTIFY_SYNC_ERROR_ID: "ae-clippings-sync-error",
+  NOTIFY_SYNC_HELPER_UPDATE: "ae-clippings-sync-helper-update",
 
   // Errors returned by the native messaging app
   SYNC_ERROR_UNKNOWN: "Error: undefined",

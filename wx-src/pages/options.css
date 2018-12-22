@@ -405,6 +405,7 @@ progress {
     background-size: contain;
 }
 
+#sync-clippings-dlg input[type="checkbox"] + label,
 #turn-off-sync-clippings-ack-dlg .dlg-content > #delete-sync-fldr + label {
     font-size: 13px;
     vertical-align: unset;
