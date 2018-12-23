@@ -995,7 +995,7 @@ let gCmd = {
     if (selectedNode && selectedNode.isFolder()) {
       let folderID = parseInt(selectedNode.key);
       if (folderID == gClippings.getSyncFolderID()) {
-        window.setTimeout(() => {gDialogs.moveSyncFldr.openPopup()});
+        window.setTimeout(() => {gDialogs.moveSyncFldr.showModal()});
         return;
       }
     }
@@ -1020,7 +1020,7 @@ let gCmd = {
     
     if (selectedNode.isFolder()) {
       if (id == gClippings.getSyncFolderID()) {
-        window.setTimeout(() => {gDialogs.deleteSyncFldr.openPopup()}, 100);
+        window.setTimeout(() => {gDialogs.deleteSyncFldr.showModal()}, 100);
         return;
       }
       
@@ -3106,8 +3106,8 @@ function initDialogs()
     that.close();
   };
 
-  gDialogs.moveSyncFldr = new aeDialog("#move-sync-fldr-msgbar");
-  gDialogs.deleteSyncFldr = new aeDialog("#delete-sync-fldr-msgbar");
+  gDialogs.moveSyncFldr = new aeDialog("#move-sync-fldr-msgbox");
+  gDialogs.deleteSyncFldr = new aeDialog("#delete-sync-fldr-msgbox");
 
   gDialogs.miniHelp = new aeDialog("#mini-help-dlg");
   if (! isMacOS) {
