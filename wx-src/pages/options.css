@@ -40,11 +40,18 @@ select {
     font-size: 13px !important;
 }
 
+select {
+    margin-bottom: 0 !important;
+    vertical-align: middle;
+}
+
 fieldset {
     border-top: 1px solid #d7d7db;
     border-right: 0;
     border-bottom: 0;
     border-left: 0;
+    padding-top: 4px;
+    padding-bottom: 12px;
 }
 
 legend {
@@ -149,12 +156,16 @@ progress {
     margin-top: 4px;
 }
 
-#auto-inc-plchldrs-start-val {
-    width: 64px;
+#shortcut-key-prefix-modifiers {
+    vertical-align: middle;
 }
 
-#backup-reminder-freq {
-    vertical-align: -moz-middle-with-baseline;
+#shortcut-key-note {
+    margin-top: 4px;
+}
+
+#auto-inc-plchldrs-start-val {
+    width: 64px;
 }
 
 #backup-reminder-freq + label {
