@@ -284,17 +284,19 @@ browser.runtime.onInstalled.addListener(aDetails => {
     browser.storage.local.get().then(aPrefs => {
       gPrefs = aPrefs;
 
-      // TO DO: The following WILL NOT WORK if user skips versions when upgrading;
-      // e.g. 6.0.7 -> 6.1.2 (skipping version 6.1)
-      if (versionCompare(oldVer, "6.1", { lexicographical: true }) <= 0) {
+      if (versionCompare(oldVer, "6.1") < 0) {
         log("Clippings/wx: Upgrade to version 6.1 detected. Initializing new user preferences.");
         setSanDiegoPrefs().then(() => {
           gSetDisplayOrderOnRootItems = true;
           init();
         });
       }
-      else if (versionCompare(oldVer, "6.1.2", { lexicographical: true}) <= 0) {
+      else if (versionCompare(oldVer, "6.1.2") < 0) {
         log("Clippings/wx: Upgrade to version 6.1.2 detected. Initializing new user preferences.");
+
+        // TO DO: Check if any 6.1 prefs exist in `gPrefs`.
+        // This would cover users skipping a version when upgrading to 6.1.2.
+
         setBalboaParkPrefs().then(() => {
           init();
         });
@@ -1366,7 +1368,7 @@ function showSyncHelperUpdateNotification()
       throw new Error("Unable to retrieve Sync Clippings Helper update info - network response was not ok");
 
     }).then(aUpdateInfo => {
-      if (version_compare(currVer, aUpdateInfo.latestVersion) < 0) {
+      if (versionCompare(currVer, aUpdateInfo.latestVersion) < 0) {
         info(`Clippings/wx: showSyncHelperUpdateNotification(): Found a newer version of Sync Clippings Helper!  Current version: ${currVer}; new version found: ${aUpdateInfo.latestVersion}\nDisplaying user notification.`);
         
         gSyncClippingsHelperDwnldPgURL = aUpdateInfo.downloadPageURL;
@@ -1833,67 +1835,8 @@ function alertEx(aMessageID)
 }
 
 
-// DEPRECATED - Use `version_compare()` instead.
-// Compares two software version numbers (e.g. "1.7.1" or "1.2b").
-// Return value:
-// - 0 if the versions are equal
-// - a negative integer iff v1 < v2
-// - a positive integer iff v1 > v2
-// - NaN if either version string is in the wrong format
-//
-// Source: <https://gist.github.com/pc035860/ccb58a02f5085db0c97d>
-function versionCompare(v1, v2, options)
-{
-  var lexicographical = options && options.lexicographical,
-      zeroExtend = options && options.zeroExtend,
-      v1parts = v1.split('.'),
-      v2parts = v2.split('.');
-
-  function isValidPart(x) {
-    return (lexicographical ? /^\d+[A-Za-z]*$/ : /^\d+$/).test(x);
-  }
-
-  if (!v1parts.every(isValidPart) || !v2parts.every(isValidPart)) {
-    return NaN;
-  }
-
-  if (zeroExtend) {
-    while (v1parts.length < v2parts.length) v1parts.push("0");
-    while (v2parts.length < v1parts.length) v2parts.push("0");
-  }
-
-  if (!lexicographical) {
-    v1parts = v1parts.map(Number);
-    v2parts = v2parts.map(Number);
-  }
-
-  for (var i = 0; i < v1parts.length; ++i) {
-    if (v2parts.length == i) {
-      return 1;
-    }
-
-    if (v1parts[i] == v2parts[i]) {
-      continue;
-    }
-    else if (v1parts[i] > v2parts[i]) {
-      return 1;
-    }
-    else {
-      return -1;
-    }
-  }
-
-  if (v1parts.length != v2parts.length) {
-    return -1;
-  }
-
-  return 0;
-}
-// END DEPRECATED
-
-
 // Adapted from <https://github.com/hirak/phpjs>
-function version_compare(v1, v2, operator) {
+function versionCompare(v1, v2, operator) {
   var i = 0,
     x = 0,
     compare = 0,
