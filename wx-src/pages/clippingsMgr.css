@@ -893,6 +893,9 @@ ul.fancytree-container {
 #import-dlg #import-clippings-file-path,
 #import-dlg #import-clippings-file-path:hover {
     border-bottom: 1px dotted #b1b1b1;
+    border-top: 1px solid transparent;
+    border-right: 1px solid transparent;
+    border-left: 1px solid transparent;
 }
 
 #import-dlg #import-clippings-file-upload-btn {
