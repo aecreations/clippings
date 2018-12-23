@@ -411,7 +411,7 @@ progress {
     height: 40px;
     margin-top: 8px;
     margin-right: 12px;
-    margin-bottom: 24px;
+    margin-bottom: 32px;
     background-image: url("../img/info.svg");
     background-size: contain;
 }

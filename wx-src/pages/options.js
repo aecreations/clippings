@@ -39,6 +39,12 @@ function init()
     $("#shortcut-key-prefix-modifiers").text(`${keyAlt} + ${keyShift} + `);
   }
 
+  // Fit text on one line for German locale.
+  if (chrome.i18n.getUILanguage() == "de" && os != "mac") {
+    $("#enable-shortcut-key-label").css({ letterSpacing: "-0.25px" });
+    $("#shortcut-key-prefix-modifiers").css({ letterSpacing: "-0.25px" });
+  }
+  
   $("#shortcut-key-note").html(sanitizeHTML(chrome.i18n.getMessage("prefsShortcutKeyNote")));
   $("#sync-intro").html(sanitizeHTML(chrome.i18n.getMessage("syncIntro")));
 
