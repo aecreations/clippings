@@ -259,6 +259,11 @@ function initDialogs()
     let that = gDialogs.syncClippings;
 
     let syncFldrPath = $("#sync-fldr-curr-location").val();
+
+    // Sanitize the sync folder path value.
+    syncFldrPath = syncFldrPath.trim();
+    syncFldrPath = syncFldrPath.replace(/\"/g, "");
+    
     if (! syncFldrPath) {
       $("#sync-fldr-curr-location").focus();
       return;
