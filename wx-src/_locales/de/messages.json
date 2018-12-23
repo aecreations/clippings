@@ -623,7 +623,7 @@
     "message": "Fehler beim Lesen der ausgewählten Datei. Die Datei ist möglicherweise keine gültige Clippings-Datei."
   },
   "labelSelExportFmt": {
-    "message": "Wählen sie ein Format zur Speicherung der Textbausteine nach:"
+    "message": "Wählen sie ein Format zur Speicherung derTextbausteine nach:"
   },
   "expFmtDescHdg": {
     "message": "Beschreibung"
@@ -883,6 +883,15 @@
   },
   "syncStartupFailed": {
     "message": "Verbindung zum Clippings Synchronisierungs-Hilfs-Programm ist gescheitert. Zur Fehlerbehebung das Clippings Synchronisierungs-Hilfs-Programm neu installieren."
+  },
+  "syncUpdateTitle": {
+    "message": "Neue Version von Sync Clippings Helfer"
+  },
+  "syncUpdateMsg": {
+    "message": "Eine neue Version der App Sync Clippings Helfer ist verfügbar. Klicken Sie hier, um zur Downloadseite zu gelangen."
+  },
+  "syncUpdateChkOpt": {
+    "message": "Automatisch nach Updates für Sync Clippings Helfer suchen"
   },
   "aboutBtn": {
     "message": "Über..."
