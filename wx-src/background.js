@@ -67,7 +67,11 @@ let gClippingsListener = {
 
   clippingChanged: function (aID, aData, aOldData) {
     log("Clippings/wx: gClippingsListener.clippingChanged()");
-    rebuildContextMenu();
+
+    if (aData.name != aOldData.name) {
+      // Rebuild the Clippings menu only if the clipping name has changed.
+      rebuildContextMenu();
+    }
   },
 
   folderChanged: function (aID, aData, aOldData) {
