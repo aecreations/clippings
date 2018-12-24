@@ -801,13 +801,13 @@
     "description": "The name of the feature for synchronizing clippings between applications or computers."
   },
   "syncIntro": {
-    "message": "Sie können Ihre Textbausteine mit Thunderbird oder anderen Firefox Installationen oder Profilen synchronisieren, indem diese in einem Ordner “Synced Clippings” ablegen. Die synchronisierten Textbausteine werden in einer Datei auf Ihrem Rechner gespeichert. Dies erfordert das <a href=\"http:\/\/aecreations.sourceforge.net\/clippings\/sync.php\" class=\"hyperlink\">Clippings Synchronisierungs-Hilfs-Programm<\/a>."
+    "message": "Sie können Ihre Textbausteine mit Thunderbird oder anderen Firefox Installationen oder Profilen synchronisieren, indem diese in einem Ordner “Synced Clippings” ablegen. Die synchronisierten Textbausteine werden in einer Datei auf Ihrem Rechner gespeichert. Dies erfordert das <a href=\"http:\/\/aecreations.sourceforge.net\/clippings\/sync.php\" class=\"hyperlink\">Sync Clippings Hilfsprogramm<\/a>."
   },
   "syncLearnMore": {
     "message": "Erfahren Sie mehr über die Synchronisierung von Textbausteinen."
   },
   "syncHelp": {
-    "message": "<p class=\"dlg-subhead\">Textbausteine synchronisieren<\/p><p>Damit können Sie eine Auswahl Ihrer Textbausteine zwischen Firefox und Thunderbird synchronisieren, damit sie in beiden Programmen zur Verfügung stehen. Sie können auswählen, welche Textbausteine synchronisiert werden indem Sie diese in einen speziellen Ordner “Synced Clippings” anlegen, oder indem Sie sie im Textbaustein-Manager in diesen Ordner verschieben.<\/p><p>Dieser Synchronisierungs-Ordner wird automatisch erstellt, wenn \"Textbausteine synchronisieren\" eingerichtet wurde.<\/p><p class=\"dlg-subhead\">Einrichtung<\/p><p> Die Option \"Textbausteine synchronisieren\" muss in allen Anwendungen eingeschaltet werden, die synchronisiert werden sollen. Unterstützt wird Firefox und Thunderbird jeweils ab Version 60 (mit Clippings für Thunderbird Version 5.6 oder neuer).<\/p><p> Außerdem muss das Clippings Synchronisierungs-Hilfs-Programm installiert sein, damit der Inhalt des Austauschordners synchronisiert bleibt. Das Programm kann von der <a href=\"http:\/\/aecreations.sourceforge.net\/clippings\/sync.php\" class=\"hyperlink\">AE Creations Website<\/a> heruntergeladen werden. Einmal installiert wird es automatisch mit Firefox gestartet und bleibt im Hintergrund.<\/p><p>In Firefox wird wird die Synchronisierung in den Clippings Einstellungen aktiviert mit der Option <b>Synchronisierung einschalten<\/b>. Falls noch nicht geschehen, können Sie dann einen Dateispeicherort auswählen, wo die Synchronisierungsdaten gespeichert werden.<\/p>"
+    "message": "<p class=\"dlg-subhead\">Textbausteine synchronisieren<\/p><p>Damit können Sie eine Auswahl Ihrer Textbausteine zwischen Firefox und Thunderbird synchronisieren, damit sie in beiden Programmen zur Verfügung stehen. Sie können auswählen, welche Textbausteine synchronisiert werden indem Sie diese in einen speziellen Ordner “Synced Clippings” anlegen, oder indem Sie sie im Textbaustein-Manager in diesen Ordner verschieben.<\/p><p>Dieser Synchronisierungs-Ordner wird automatisch erstellt, wenn \"Textbausteine synchronisieren\" eingerichtet wurde.<\/p><p class=\"dlg-subhead\">Einrichtung<\/p><p> Die Option \"Textbausteine synchronisieren\" muss in allen Anwendungen eingeschaltet werden, die synchronisiert werden sollen. Unterstützt wird Firefox und Thunderbird jeweils ab Version 60 (mit Clippings für Thunderbird Version 5.6 oder neuer).<\/p><p> Außerdem muss das Sync Clippings Hilfsprogramm installiert sein, damit der Inhalt des Austauschordners synchronisiert bleibt. Das Programm kann von der <a href=\"http:\/\/aecreations.sourceforge.net\/clippings\/sync.php\" class=\"hyperlink\">AE Creations Website<\/a> heruntergeladen werden. Einmal installiert wird es automatisch mit Firefox gestartet und bleibt im Hintergrund.<\/p><p>In Firefox wird wird die Synchronisierung in den Clippings Einstellungen aktiviert mit der Option <b>Synchronisierung einschalten<\/b>. Falls noch nicht geschehen, können Sie dann einen Dateispeicherort auswählen, wo die Synchronisierungsdaten gespeichert werden.<\/p>"
   },
   "syncStatusOn": {
     "message": "Die Synchronisierung von Textbausteinen ist aktiviert."
@@ -834,7 +834,7 @@
     "message": "Entferne den Synchronisierung-Ordner vom Clippings-Menü und vom Textbaustein-Manager"
   },
   "syncConnect": {
-    "message": "Verbinde zum Clippings Synchronisierungs-Hilfs-Programm..."
+    "message": "Verbinde zum Sync Clippings Hilfsprogramm..."
   },
   "syncFileDir": {
     "message": "Pfad der Synchronisierungsdatei:"
@@ -858,13 +858,13 @@
     "message": "Ihre Textbausteine sind an diesem Dateispeicherort gespeichert. Wenn Sie mit Thunderbird synchronisieren und den Dateispeicherort ändern wollen, müssen Sie auch in Thunderbird den Ort in den Clippings Einstellungen passend ändern."
   },
   "errSyncConxn": {
-    "message": "Keine Verbindung zum Clippings Synchronisierungs-Hilfs-Programm möglich. Stellen Sie sicher, dass es installiert ist."
+    "message": "Keine Verbindung zum Sync Clippings Hilfsprogramm möglich. Stellen Sie sicher, dass es installiert ist."
   },
   "errSyncConxnDetail": {
     "message": "Um die Textbausteine zu synchronisieren, wird das Clippings Synchronisierungs-Hilfs-Programm gebraucht, die Sie von der <a href=\"http:\/\/aecreations.sourceforge.net\/clippings\/sync.php\" class=\"hyperlink\">AE Creations Website<\/a> herunterladen können."
   },
   "errSync": {
-    "message": "In Zusammenhang mit der Hilfsanwendung Sync Clippings ist ein Fehler aufgetreten."
+    "message": "Mit dem Sync Clippings Hilfsprogramm ist ein Fehler aufgetreten."
   },
   "syncReloadAck": {
     "message": "Der Ordner für synchronisierte Textbausteine wird aktualisiert. Klicken Sie auf Neu laden, um fortzufahren."
@@ -876,22 +876,22 @@
     "message": "Der Ordner für synchronisierte Textbausteine kann nicht verschoben werden."
   },
   "syncPushFailed": {
-    "message": "Änderungen können nicht im Ordner \"Synced Clippings\" abgelegt werden, weil die Verbindung zum Clippings Synchronisierungs-Hilfs-Programm fehlgeschlagen ist. Zur Fehlerbehebung das Clippings Synchronisierungs-Hilfs-Programm neu installieren."
+    "message": "Änderungen können nicht im Ordner \"Synced Clippings\" abgelegt werden, weil die Verbindung zum Sync Clippings Hilfsprogramm fehlgeschlagen ist. Zur Fehlerbehebung das Sync Clippings Hilfsprogramm neu installieren."
   },
   "syncStartupFailedHdg": {
     "message": "Fehler bei der Synchronisierung von Textbausteinen"
   },
   "syncStartupFailed": {
-    "message": "Verbindung zum Clippings Synchronisierungs-Hilfs-Programm ist gescheitert. Zur Fehlerbehebung das Clippings Synchronisierungs-Hilfs-Programm neu installieren."
+    "message": "Verbindung zum Sync Clippings Hilfsprogramm ist gescheitert. Zur Fehlerbehebung das Sync Clippings Hilfsprogramm neu installieren."
   },
   "syncUpdateTitle": {
-    "message": "Neue Version von Sync Clippings Helfer"
+    "message": "Neue Version des Sync Clippings Hilfsprogramms"
   },
   "syncUpdateMsg": {
-    "message": "Eine neue Version der App Sync Clippings Helfer ist verfügbar. Klicken Sie hier, um zur Downloadseite zu gelangen."
+    "message": "Eine neue Version des Sync Clippings Hilfsprogramms ist verfügbar. Klicken Sie hier, um zur Downloadseite zu gelangen."
   },
   "syncUpdateChkOpt": {
-    "message": "Automatisch nach Updates für Sync Clippings Helfer suchen"
+    "message": "Automatisch nach Updates für das Sync Clippings Hilfsprogramm suchen"
   },
   "aboutBtn": {
     "message": "Über..."
@@ -913,7 +913,7 @@
     "message": "Übersetzungen von Crowdin-Übersetzern."
   },
   "aboutSyncVerLabel": {
-    "message": "Version der Hilfsanwendung Sync Clippings:"
+    "message": "Version des Sync Clippings Hilfsprogramms:"
   },
   "noSyncHelperApp": {
     "message": "Nicht installiert",
