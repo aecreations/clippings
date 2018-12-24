@@ -20,6 +20,7 @@ let gBackupRemIntervalID = null;
 let gPasteClippingTargetTabID = null;
 let gIsReloadingSyncFldr = false;
 let gSyncClippingsHelperDwnldPgURL;
+let gForceShowFirstTimeBkupNotif = false;
 
 let gClippingsListeners = {
   ORIGIN_CLIPPINGS_MGR: 1,
@@ -287,6 +288,7 @@ browser.runtime.onInstalled.addListener(aDetails => {
       if (versionCompare(oldVer, "6.1.1") == 0) {
         log("Clippings/wx: Upgrade from version 6.1.1 detected. Initializing 6.1.2 preferences.");
         setBalboaParkPrefs().then(() => {
+          gForceShowFirstTimeBkupNotif = true;
           init();
         });
       }
@@ -1291,7 +1293,7 @@ function showBackupNotification()
     break;
   }
 
-  if (diff.days >= numDays) {
+  if (diff.days >= numDays || gForceShowFirstTimeBkupNotif) {
     if (gPrefs.backupRemFirstRun) {
       info("Clippings/wx: showBackupNotification(): Showing first-time backup reminder.");
 
@@ -1307,6 +1309,11 @@ function showBackupNotification()
           backupRemFrequency: aeConst.BACKUP_REMIND_WEEKLY,
           lastBackupRemDate: new Date().toString(),
         });
+
+        if (gForceShowFirstTimeBkupNotif) {
+          setBackupNotificationInterval();
+          gForceShowFirstTimeBkupNotif = false;
+        }
       });
     }
     else {
