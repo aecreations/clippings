@@ -284,19 +284,28 @@ browser.runtime.onInstalled.addListener(aDetails => {
     browser.storage.local.get().then(aPrefs => {
       gPrefs = aPrefs;
 
-      if (versionCompare(oldVer, "6.1") < 0) {
-        log("Clippings/wx: Upgrade to version 6.1 detected. Initializing new user preferences.");
-        setSanDiegoPrefs().then(() => {
-          gSetDisplayOrderOnRootItems = true;
+      if (versionCompare(oldVer, "6.1.1") == 0) {
+        log("Clippings/wx: Upgrade from version 6.1.1 detected. Initializing 6.1.2 preferences.");
+        setBalboaParkPrefs().then(() => {
           init();
         });
       }
-      else if (versionCompare(oldVer, "6.1.2") < 0) {
-        log("Clippings/wx: Upgrade to version 6.1.2 detected. Initializing new user preferences.");
+      else if (versionCompare(oldVer, "6.1.1") < 0) {
+        log("Clippings/wx: Upgrade from a version older than 6.1.1 detected.");
 
-        // TO DO: Check if any 6.1 prefs exist in `gPrefs`.
-        // This would cover users skipping a version when upgrading to 6.1.2.
+        if (! ("syncClippings" in gPrefs)) {
+          log("Upgrade to version 6.1 was skipped. Initializing prefs from that release first.");
+          setSanDiegoPrefs().then(() => {
+            gSetDisplayOrderOnRootItems = true;
+            log("Finished initializing 6.1 prefs. Now initializing 6.1.2 prefs.");
+            return setBalboaParkPrefs();
+          }).then(() => {
+            init();
+          });
+          return;
+        }
 
+        log("Initializing 6.1.2 user preferences.");
         setBalboaParkPrefs().then(() => {
           init();
         });
