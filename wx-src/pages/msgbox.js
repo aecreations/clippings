@@ -12,6 +12,11 @@ function init()
 
   chrome.history.deleteUrl({ url: url.href });
 
+  let msgIcon = document.getElementById("msgbox-icon");
+  if (navigator.platform == "Win32" || navigator.platform == "Win64") {
+    msgIcon.setAttribute("os", "win");
+  }
+
   window.addEventListener("keypress", aEvent => {
     if (aEvent.key == "Enter" || aEvent.key == "Escape") {
       dismiss();

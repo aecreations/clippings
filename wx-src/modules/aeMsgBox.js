@@ -14,9 +14,3 @@ let aeMsgBox = {
   MSG_RETRY_PAGE_BUSY: "msgRetryPgBusy",
   MSG_RETRY_PAGE_NOT_LOADED: "msgRetryPgNotLoaded",
 };
-
-let msgIcon = document.getElementById("msgbox-icon");
-
-if (navigator.platform == "Win32" || navigator.platform == "Win64") {
-  msgIcon.setAttribute("os", "win");
-}

@@ -884,6 +884,15 @@
   "syncStartupFailed": {
     "message": "Impossible de se connecter à l’application d’assistance de Sync coupures. Pour résoudre ce problème, réinstallez l’application d’assistance de Sync coupures."
   },
+  "syncUpdateTitle": {
+    "message": "Nouvelle Version de Sync Clippings Helper"
+  },
+  "syncUpdateMsg": {
+    "message": "Une nouvelle version de l’app Sync Clippings Helper est disponible. Cliquez ici pour aller à la page de téléchargement."
+  },
+  "syncUpdateChkOpt": {
+    "message": "Vérifier automatiquement les mises à jour de Sync Clippings Helper"
+  },
   "aboutBtn": {
     "message": "A propos ..."
   },
