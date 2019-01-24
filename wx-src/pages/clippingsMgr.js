@@ -1935,7 +1935,7 @@ $(window).on("beforeunload", () => {
 
 
 // Keyboard event handler
-$(document).keypress(aEvent => {
+$(document).keydown(aEvent => {
   if (! gClippings) {
     // Clippings Manager initialization failed.
     return;

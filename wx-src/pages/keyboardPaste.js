@@ -342,7 +342,7 @@ $(document).ready(() => {
 });
 
 
-$(window).keypress(aEvent => {
+$(window).keydown(aEvent => {
   const isMacOS = gClippings.getOS() == "mac";
 
   function isAccelKeyPressed()

@@ -17,17 +17,15 @@ function init()
     msgIcon.setAttribute("os", "win");
   }
 
-  window.addEventListener("keypress", aEvent => {
+  window.addEventListener("keydown", aEvent => {
     if (aEvent.key == "Enter" || aEvent.key == "Escape") {
       dismiss();
     }
     else if (aEvent.key == "/") {
-      // Suppress quick find in page.
-      aEvent.preventDefault();
+      aEvent.preventDefault();  // Suppress quick find in page.
     }
     else if (aEvent.key == "F5") {
-      // Suppress browser reload.
-      aEvent.preventDefault();
+      aEvent.preventDefault();  // Suppress browser reload.
     }
   });
 
