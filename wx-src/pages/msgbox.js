@@ -16,6 +16,9 @@ function init()
   if (navigator.platform == "Win32" || navigator.platform == "Win64") {
     msgIcon.setAttribute("os", "win");
   }
+  else if (navigator.platform == "MacIntel") {
+    msgIcon.setAttribute("os", "mac");
+  }
 
   window.addEventListener("keydown", aEvent => {
     if (aEvent.key == "Enter" || aEvent.key == "Escape") {

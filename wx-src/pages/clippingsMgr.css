@@ -697,12 +697,12 @@ ul.fancytree-container {
     height: 32px;
     margin-top: 0;
     margin-right: 12px;
-    background-image: url("chrome://global/skin/icons/warning-64.png");
+    background-image: url("../img/warning-64.png");
     background-size: contain;
 }
 
-.lightbox .msgbox-icon[os="win"] {
-    background-image: url("../img/warning-64.png");
+.lightbox .msgbox-icon[os="mac"] {
+    background-image: url("chrome://global/skin/icons/warning-64.png");
 }
 
 .lightbox .browser-style input[type="checkbox"] + label::before {
@@ -939,9 +939,13 @@ ul.fancytree-container {
     width: 22px;
     height: 22px;
     margin-top: 4px;
-    background-image: url("chrome://global/skin/icons/warning-large.png");
+    background-image: url("../img/warning-64.png");
     background-repeat: no-repeat;
     background-size: contain;
+}
+
+#import-dlg #restore-backup-warning > .warning-icon[os="mac"] {
+    background-image: url("chrome://global/skin/icons/warning-64.png");
 }
 
 #import-dlg #restore-backup-warning > p {
