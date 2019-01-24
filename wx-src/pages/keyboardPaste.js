@@ -416,7 +416,7 @@ $(window).keydown(aEvent => {
       });
     }
   }
-  else if (aEvent.key == "/") {
+  else if (aEvent.key == "/" || aEvent.key == "'") {
     if (! isTextboxFocused(aEvent)) {
       aEvent.preventDefault();
     }

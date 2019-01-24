@@ -21,7 +21,7 @@ function init()
     if (aEvent.key == "Enter" || aEvent.key == "Escape") {
       dismiss();
     }
-    else if (aEvent.key == "/") {
+    else if (aEvent.key == "/" || aEvent.key == "'") {
       aEvent.preventDefault();  // Suppress quick find in page.
     }
     else if (aEvent.key == "F5") {
