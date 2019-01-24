@@ -71,6 +71,50 @@ function init()
     gDialogs.about.showModal();
   });
   
+  // Handling keyboard events in open modal dialogs.
+  $(window).keydown(aEvent => {
+    function isAccelKeyPressed()
+    {
+      let rv;
+      if (os == "mac") {
+        rv = aEvent.metaKey;
+      }
+      else {
+        rv = aEvent.ctrlKey;
+      }
+      
+      return rv;
+    }
+
+    function isTextboxFocused(aEvent)
+    {
+      return (aEvent.target.tagName == "INPUT" || aEvent.target.tagName == "TEXTAREA");
+    }
+
+    if (aEvent.key == "Enter" && aeDialog.isOpen()) {
+        aeDialog.acceptDlgs();
+    }
+    else if (aEvent.key == "Escape" && aeDialog.isOpen()) {
+        aeDialog.cancelDlgs();
+    }
+    else if (aEvent.key == "/" || aEvent.key == "'") {
+      if (! isTextboxFocused(aEvent)) {
+        aEvent.preventDefault();  // Suppress quick find in page.
+      }
+    }
+    else if (aEvent.key == "F5") {
+      aEvent.preventDefault();  // Suppress browser reload.
+    }
+    else {
+      // Ignore standard browser shortcut keys.
+      let key = aEvent.key.toUpperCase();
+      if (isAccelKeyPressed() && (key == "D" || key == "F" || key == "N" || key == "P"
+                                  || key == "R" || key == "S" || key == "U")) {
+        aEvent.preventDefault();
+      }
+    }
+  });
+
   browser.storage.local.get().then(aPrefs => {
     $("#html-paste-options").val(aPrefs.htmlPaste).change(aEvent => {
       setPref({ htmlPaste: aEvent.target.value });
