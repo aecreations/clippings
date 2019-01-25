@@ -2490,6 +2490,7 @@ function initDialogs()
 {
   let osName = gClippings.getOS();
   $(".msgbox-icon").attr("os", osName);
+  $("#import-dlg #restore-backup-warning > .warning-icon").attr("os", osName);
 
   const isMacOS = osName == "mac";
 
