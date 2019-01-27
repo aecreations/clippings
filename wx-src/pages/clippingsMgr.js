@@ -2812,6 +2812,11 @@ function initDialogs()
 
     that.inclSrcURLs = true;
     gSuppressAutoMinzWnd = true;
+
+    // Fit text on one line for German locale.
+    if (chrome.i18n.getUILanguage() == "de") {
+      $("#include-src-urls").css({ letter-spacing: -0.4px });
+    }
     
     $("#export-format-list").change(aEvent => {
       let selectedFmtIdx = aEvent.target.selectedIndex;
