@@ -219,10 +219,12 @@
 	<label id="ext-desc" class="about-content-row"></label>
 	<hr/>
 	<div id="credits">
-	  <label id="ext-author" data-i18n="aboutAuthor"></label>
-	  <a href="http://aecreations.sourceforge.net/clippings/index.php" class="hyperlink" data-i18n="aboutHomePgLink"></a>
+	  <div class="about-content-row">
+	    <label id="ext-author" data-i18n="aboutAuthor"></label>
+	    <a href="http://aecreations.sourceforge.net/clippings/index.php" class="hyperlink" data-i18n="aboutHomePgLink"></a>
+	  </div>
 	  <label id="translations-ack" class="about-content-row" data-i18n="aboutTrans"></label>
-	  <a href="../LICENSE.txt" class="hyperlink" data-i18n="aboutLicLink"></a>
+	  <label class="about-content-row"><a href="../LICENSE.txt" class="hyperlink" data-i18n="aboutLicLink"></a></label>
 	</div>
 	<hr/>
 	<div id="diag-info">
@@ -231,8 +233,10 @@
 	      <img src="../img/throbber.gif"/>
 	    </div>
 	    <div id="sync-diag" class="deck-content">
-	      <label id="sync-ver-label" data-i18n="aboutSyncVerLabel"></label>
-	      <span id="sync-ver"></span>
+              <div class="about-content-row">
+	        <label id="sync-ver-label" data-i18n="aboutSyncVerLabel"></label>
+	        <span id="sync-ver"></span>
+              </div>
 	      <div id="sync-diag-detail" class="about-content-row">
 		<label id="about-sync-status"></label>
 		<label id="sync-file-size-label" data-i18n="aboutSyncFileSize"></label> <span id="sync-file-size"></span>

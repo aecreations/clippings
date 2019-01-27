@@ -116,6 +116,20 @@ progress {
     width: 100%;
 }
 
+a {
+    color: #0060df;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+a:active {
+    color: #003eaa;
+    text-decoration: underline;
+}
+
 .row {
     margin-top: 4px;
     margin-bottom: 2px;
@@ -435,7 +449,7 @@ progress {
 #about-dlg {
     top: 72px;
     --width: 410px;
-    --height: 300px;
+    --height: 298px;
 }
 
 #about-dlg #ext-icon {
@@ -457,8 +471,8 @@ progress {
 }
 
 #about-dlg hr {
-    margin-top: 12px;
-    margin-bottom: 12px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     border-top: 1px solid #b1b1b3;
     color: #b1b1b3;
 }
@@ -483,6 +497,10 @@ progress {
     font-size: 13px;
 }
 
+#about-dlg #credits label {
+    line-height: 18px;
+}
+/**
 #about-dlg #credits .about-content-row {
     line-height: 24px;
 }
@@ -490,7 +508,7 @@ progress {
 #about-dlg #diag-info .about-content-row {
     line-height: 18px;
 }
-
+**/
 #about-dlg #diag-info {
     font-size: 11px;
 }
@@ -500,3 +518,6 @@ progress {
     height: 16px;
 }
 
+#about-dlg #diag-info label {
+    line-height: 16px;
+}
