@@ -408,6 +408,11 @@ function initDialogs()
   gDialogs.turnOffSyncAck = new aeDialog("#turn-off-sync-clippings-ack-dlg");
   gDialogs.turnOffSyncAck.oldSyncFldrID = null;
   gDialogs.turnOffSyncAck.onInit = () => {
+    // Fit text on one line for French locale.
+    if (chrome.i18n.getUILanguage() == "fr") {
+      $("#delete-sync-fldr + label").css({ letterSpacing: "-0.3px" });
+    }
+
     $("#delete-sync-fldr").prop("checked", true);
   };
   gDialogs.turnOffSyncAck.onAfterAccept = () => {
