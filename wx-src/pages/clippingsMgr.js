@@ -2815,7 +2815,7 @@ function initDialogs()
 
     // Fit text on one line for German locale.
     if (chrome.i18n.getUILanguage() == "de") {
-      $("#include-src-urls").css({ letter-spacing: -0.4px });
+      $("#include-src-urls").css({ letterSpacing: "-0.4px" });
     }
     
     $("#export-format-list").change(aEvent => {
