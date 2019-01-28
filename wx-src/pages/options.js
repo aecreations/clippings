@@ -282,7 +282,7 @@ function initDialogs()
       $("#sync-helper-app-update-check").prop("checked", gClippings.getPrefs().syncHelperCheckUpdates);
       // Fit text on one line for German locale.
       if (chrome.i18n.getUILanguage() == "de") {
-        $("#sync-helper-app-update-check").css({ letterSpacing: "-0.5px" });
+        $("#sync-helper-app-update-check + label").css({ letterSpacing: "-0.5px" });
       }
 
       let msg = { msgID: "get-sync-dir" };
