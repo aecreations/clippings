@@ -279,7 +279,11 @@ function initDialogs()
       $("#sync-clippings-dlg .dlg-accept").show();
       $("#sync-clippings-dlg .dlg-cancel").text(chrome.i18n.getMessage("btnCancel"));
 
-      $("#sync-helper-app-update-check").prop("checked", gClippings.getPrefs().syncHelperCheckUpdates);
+      $("#sync-helper-app-update-check").Prop("checked", gClippings.getPrefs().syncHelperCheckUpdates);
+      // Fit text on one line for German locale.
+      if (chrome.i18n.getUILanguage() == "de") {
+        $("#sync-helper-app-update-check").css({ letterSpacing: "-0.5px" });
+      }
 
       let msg = { msgID: "get-sync-dir" };
       return browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
