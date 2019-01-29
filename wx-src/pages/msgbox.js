@@ -16,18 +16,19 @@ function init()
   if (navigator.platform == "Win32" || navigator.platform == "Win64") {
     msgIcon.setAttribute("os", "win");
   }
+  else if (navigator.platform == "MacIntel") {
+    msgIcon.setAttribute("os", "mac");
+  }
 
-  window.addEventListener("keypress", aEvent => {
+  window.addEventListener("keydown", aEvent => {
     if (aEvent.key == "Enter" || aEvent.key == "Escape") {
       dismiss();
     }
-    else if (aEvent.key == "/") {
-      // Suppress quick find in page.
-      aEvent.preventDefault();
+    else if (aEvent.key == "/" || aEvent.key == "'") {
+      aEvent.preventDefault();  // Suppress quick find in page.
     }
     else if (aEvent.key == "F5") {
-      // Suppress browser reload.
-      aEvent.preventDefault();
+      aEvent.preventDefault();  // Suppress browser reload.
     }
   });
 

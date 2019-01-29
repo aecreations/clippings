@@ -1935,7 +1935,7 @@ $(window).on("beforeunload", () => {
 
 
 // Keyboard event handler
-$(document).keypress(aEvent => {
+$(document).keydown(aEvent => {
   if (! gClippings) {
     // Clippings Manager initialization failed.
     return;
@@ -1991,7 +1991,7 @@ $(document).keypress(aEvent => {
       gCmd.deleteClippingOrFolder(gCmd.UNDO_STACK);
     }
   }
-  else if (aEvent.key == "/") {
+  else if (aEvent.key == "/" || aEvent.key == "'") {
     if (! isTextboxFocused(aEvent)) {
       aEvent.preventDefault();
     }
@@ -2490,6 +2490,7 @@ function initDialogs()
 {
   let osName = gClippings.getOS();
   $(".msgbox-icon").attr("os", osName);
+  $("#import-dlg #restore-backup-warning > .warning-icon").attr("os", osName);
 
   const isMacOS = osName == "mac";
 
@@ -2799,22 +2800,30 @@ function initDialogs()
   gDialogs.exportToFile.FMT_CLIPPINGS_WX = 0;
   gDialogs.exportToFile.FMT_HTML = 1;
   gDialogs.exportToFile.FMT_CSV = 2;
+  gDialogs.exportToFile.inclSrcURLs = false;
   
   gDialogs.exportToFile.onInit = () => {
+    let that = gDialogs.exportToFile;
     let fmtDesc = [
       chrome.i18n.getMessage("expFmtClippings6Desc"), // Clippings 6
       chrome.i18n.getMessage("expFmtHTMLDocDesc"),    // HTML Document
       chrome.i18n.getMessage("expFmtCSVDesc"),        // CSV File
     ];
 
+    that.inclSrcURLs = true;
     gSuppressAutoMinzWnd = true;
+
+    // Fit text on one line for German locale.
+    if (chrome.i18n.getUILanguage() == "de") {
+      $("#include-src-urls + label").css({ letterSpacing: "-0.4px" });
+    }
     
     $("#export-format-list").change(aEvent => {
       let selectedFmtIdx = aEvent.target.selectedIndex;
       $("#format-description").text(fmtDesc[selectedFmtIdx]);
 
       if (selectedFmtIdx == gDialogs.exportToFile.FMT_CLIPPINGS_WX) {
-        $("#include-src-urls").removeAttr("disabled");
+        $("#include-src-urls").removeAttr("disabled").prop("checked", that.inclSrcURLs);
       }
       else if (selectedFmtIdx == gDialogs.exportToFile.FMT_HTML
               || selectedFmtIdx == gDialogs.exportToFile.FMT_CSV) {
@@ -2822,9 +2831,13 @@ function initDialogs()
       }
     });
 
+    $("#include-src-urls").click(aEvent => {
+      that.inclSrcURLs = aEvent.target.checked;
+    });
+
     $("#export-format-list")[0].selectedIndex = gDialogs.exportToFile.FMT_CLIPPINGS_WX;
     $("#format-description").text(fmtDesc[gDialogs.exportToFile.FMT_CLIPPINGS_WX]);
-    $("#include-src-urls").prop("checked", true);
+    $("#include-src-urls").prop("checked", that.inclSrcURLs);
   };
 
   gDialogs.exportToFile.onShow = () => {

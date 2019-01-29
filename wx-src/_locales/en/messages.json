@@ -57,7 +57,7 @@
   },
 
   "btnBrowse": {
-    "message": "Browse..."
+    "message": "Browse…"
   },
 
   "msgUnavail": {
@@ -147,7 +147,7 @@
   },
   
   "cxtMenuNew": {
-    "message": "New...",
+    "message": "New…",
     "description": "Clippings context menu"
   },
 
@@ -552,19 +552,19 @@
   },
 
   "mnuBackup": {
-    "message": "Backup..."
+    "message": "Backup…"
   },
 
   "mnuRestoreFromBackup": {
-    "message": "Restore From Backup..."
+    "message": "Restore From Backup…"
   },
 
   "mnuImport": {
-    "message": "Import..."
+    "message": "Import…"
   },
 
   "mnuExport": {
-    "message": "Export..."
+    "message": "Export…"
   },
 
   "mnuReloadSyncFldr": {
@@ -572,7 +572,7 @@
   },
 
   "mnuRemoveAllSrcURLs": {
-    "message": "Remove Source Web Addresses..."
+    "message": "Remove Source Web Addresses…"
   },
 
   "mnuShowHide": {
@@ -600,11 +600,11 @@
   },
 
   "mnuShowExtPrefs": {
-    "message": "Options..."
+    "message": "Options…"
   },
 
   "mnuMoveOrCopy": {
-    "message": "Move or Copy..."
+    "message": "Move or Copy…"
   },
 
   "mnuEditLabel": {
@@ -1069,7 +1069,7 @@
   },
 
   "syncSettings": {
-    "message": "Settings..."
+    "message": "Settings…"
   },
 
   "syncTurnOn": {
@@ -1172,7 +1172,7 @@
   },
 
   "aboutBtn": {
-    "message": "About..."
+    "message": "About…"
   },
 
   "aboutExtVer": {

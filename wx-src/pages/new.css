@@ -215,12 +215,12 @@ ul.fancytree-container {
     height: 32px;
     margin-top: 0;
     margin-right: 12px;
-    background-image: url("chrome://global/skin/icons/warning-64.png");
+    background-image: url("../img/warning-64.png");
     background-size: contain;
 }
 
-#create-clipping-error-msgbox .msgbox-error-icon[os="win"] {
-    background-image: url("../img/warning-64.png");
+#create-clipping-error-msgbox .msgbox-error-icon[os="mac"] {
+    background-image: url("chrome://global/skin/icons/warning-64.png");
 }
 
 #create-clipping-error-msgbox .msgbox-error-msg {

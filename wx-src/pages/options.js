@@ -71,6 +71,50 @@ function init()
     gDialogs.about.showModal();
   });
   
+  // Handling keyboard events in open modal dialogs.
+  $(window).keydown(aEvent => {
+    function isAccelKeyPressed()
+    {
+      let rv;
+      if (os == "mac") {
+        rv = aEvent.metaKey;
+      }
+      else {
+        rv = aEvent.ctrlKey;
+      }
+      
+      return rv;
+    }
+
+    function isTextboxFocused(aEvent)
+    {
+      return (aEvent.target.tagName == "INPUT" || aEvent.target.tagName == "TEXTAREA");
+    }
+
+    if (aEvent.key == "Enter" && aeDialog.isOpen()) {
+        aeDialog.acceptDlgs();
+    }
+    else if (aEvent.key == "Escape" && aeDialog.isOpen()) {
+        aeDialog.cancelDlgs();
+    }
+    else if (aEvent.key == "/" || aEvent.key == "'") {
+      if (! isTextboxFocused(aEvent)) {
+        aEvent.preventDefault();  // Suppress quick find in page.
+      }
+    }
+    else if (aEvent.key == "F5") {
+      aEvent.preventDefault();  // Suppress browser reload.
+    }
+    else {
+      // Ignore standard browser shortcut keys.
+      let key = aEvent.key.toUpperCase();
+      if (isAccelKeyPressed() && (key == "D" || key == "F" || key == "N" || key == "P"
+                                  || key == "R" || key == "S" || key == "U")) {
+        aEvent.preventDefault();
+      }
+    }
+  });
+
   browser.storage.local.get().then(aPrefs => {
     $("#html-paste-options").val(aPrefs.htmlPaste).change(aEvent => {
       setPref({ htmlPaste: aEvent.target.value });
@@ -236,6 +280,10 @@ function initDialogs()
       $("#sync-clippings-dlg .dlg-cancel").text(chrome.i18n.getMessage("btnCancel"));
 
       $("#sync-helper-app-update-check").prop("checked", gClippings.getPrefs().syncHelperCheckUpdates);
+      // Fit text on one line for German locale.
+      if (chrome.i18n.getUILanguage() == "de") {
+        $("#sync-helper-app-update-check + label").css({ letterSpacing: "-0.5px" });
+      }
 
       let msg = { msgID: "get-sync-dir" };
       return browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
@@ -360,6 +408,11 @@ function initDialogs()
   gDialogs.turnOffSyncAck = new aeDialog("#turn-off-sync-clippings-ack-dlg");
   gDialogs.turnOffSyncAck.oldSyncFldrID = null;
   gDialogs.turnOffSyncAck.onInit = () => {
+    // Fit text on one line for French locale.
+    if (chrome.i18n.getUILanguage() == "fr") {
+      $("#delete-sync-fldr + label").css({ letterSpacing: "-0.3px" });
+    }
+
     $("#delete-sync-fldr").prop("checked", true);
   };
   gDialogs.turnOffSyncAck.onAfterAccept = () => {

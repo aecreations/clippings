@@ -107,7 +107,7 @@ function initHelper()
 }
 
 
-$(window).keypress(aEvent => {
+$(window).keydown(aEvent => {
   const isMacOS = gClippings.getOS() == "mac";
 
   function isAccelKeyPressed()
@@ -137,7 +137,7 @@ $(window).keypress(aEvent => {
     }
     cancel(aEvent);
   }
-  else if (aEvent.key == "/") {
+  else if (aEvent.key == "/" || aEvent.key == "'") {
     if (! isTextboxFocused(aEvent)) {
       aEvent.preventDefault();
     }

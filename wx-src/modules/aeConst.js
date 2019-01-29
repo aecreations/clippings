@@ -57,7 +57,7 @@ let aeConst = {
   // Sync Clippings Helper app update checking
   SYNC_HELPER_CHECK_UPDATE_URL: "https://aecreations.github.io/updates/syncClippings.json",
   SYNC_HELPER_CHECK_UPDATE_DELAY_MS: 600000,  // 10 minutes
-  SYNC_HELPER_CHECK_UPDATE_FREQ_DAYS: 3,
+  SYNC_HELPER_CHECK_UPDATE_FREQ_DAYS: 2,
 
   // Notification IDs
   NOTIFY_BACKUP_REMIND_FIRSTRUN_ID: "ae-clippings-notify-backup-reminder-firstrun",
