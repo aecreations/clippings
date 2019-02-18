@@ -31,7 +31,7 @@ let gAutocompleteMenu = {
     this._popupElt = $("#search-results-popup");
     this._listboxElt = $("#search-results-listbox");
 
-    this._textboxElt.on("keypress", aEvent => {
+    this._textboxElt.on("keydown", aEvent => {
       let searchText = aEvent.target.value;
 
       if (aEvent.key == "ArrowDown" || aEvent.key == "Down") {
