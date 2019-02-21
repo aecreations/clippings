@@ -218,6 +218,8 @@ a:active {
 }
 
 #about-btn {
+    min-width: unset;
+    height: unset;
     float: right;
     font-size: 11px;
     border: 1px solid #ededf0;

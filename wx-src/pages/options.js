@@ -92,10 +92,14 @@ function init()
     }
 
     if (aEvent.key == "Enter" && aeDialog.isOpen()) {
-        aeDialog.acceptDlgs();
+      aeDialog.acceptDlgs();
+
+      // Don't trigger any further actions that would have occurred if the
+      // ENTER key was pressed.
+      aEvent.preventDefault();
     }
     else if (aEvent.key == "Escape" && aeDialog.isOpen()) {
-        aeDialog.cancelDlgs();
+      aeDialog.cancelDlgs();
     }
     else if (aEvent.key == "/" || aEvent.key == "'") {
       if (! isTextboxFocused(aEvent)) {
@@ -385,7 +389,7 @@ function initDialogs()
   $("#sync-conxn-error-detail").html(sanitizeHTML(chrome.i18n.getMessage("errSyncConxnDetail")));
 
   gDialogs.turnOffSync = new aeDialog("#turn-off-sync-clippings-dlg");
-  gDialogs.turnOffSync.onAccept = () => {
+  $("#turn-off-sync-clippings-dlg > .dlg-btns > .dlg-btn-yes").click(aEvent => {
     let that = gDialogs.turnOffSync;
     that.close();
 
@@ -403,7 +407,7 @@ function initDialogs()
       gDialogs.turnOffSyncAck.oldSyncFldrID = aOldSyncFldrID;
       gDialogs.turnOffSyncAck.showModal();
     });
-  };
+  });
 
   gDialogs.turnOffSyncAck = new aeDialog("#turn-off-sync-clippings-ack-dlg");
   gDialogs.turnOffSyncAck.oldSyncFldrID = null;

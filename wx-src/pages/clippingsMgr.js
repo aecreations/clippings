@@ -2573,7 +2573,7 @@ function initDialogs()
 
     if (! that.isInitialized) {
       $("#custom-plchldr-name").prop("placeholder", chrome.i18n.getMessage("placeholderNameHint"));
-      $("#custom-plchldr-name").on("keypress", aEvent => {
+      $("#custom-plchldr-name").on("keydown", aEvent => {
         if ($(aEvent.target).hasClass("input-error")) {
           $(aEvent.target).removeClass("input-error");
         }
@@ -2622,7 +2622,7 @@ function initDialogs()
     let that = gDialogs.insAutoIncrPlchldr;
     if (! that.isInitialized) {
       $("#numeric-plchldr-name").prop("placeholder", chrome.i18n.getMessage("placeholderNameHint"));
-      $("#numeric-plchldr-name").on("keypress", aEvent => {
+      $("#numeric-plchldr-name").on("keydown", aEvent => {
         if ($(aEvent.target).hasClass("input-error")) {
           $(aEvent.target).removeClass("input-error");
         }
