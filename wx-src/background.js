@@ -952,42 +952,81 @@ async function setShortcutKeyPrefix(aShortcutKeyPrefix)
 }
 
 
-function getShortcutKeyPrefixStr()
+async function getShortcutKeyPrefixStr()
 {
   let rv = "";
-  let keybPasteKey = "";
-  
-  if (gPrefs.pasteShortcutKeyPrefix) {
-    keybPasteKey = gPrefs.pasteShortcutKeyPrefix.split("+")[2];
-  }
-  else {
-    let extManifest = chrome.runtime.getManifest();
-    let suggKey = extManifest.commands["ae-clippings-paste-clipping"]["suggested_key"];
-    let defaultPasteKey = "";
+  let isMacOS = getOS() == "mac";
+  let cmds = await browser.commands.getAll();
 
-    if (gOS == "mac") {
-      defaultPasteKey = suggKey["mac"];
+  console.log("Clippings/wx: getShortcutKeyPrefixStr(): Commands:");
+  console.log(cmds);
+
+  let shct = cmds[0].shortcut;
+  let keybPasteKey = shct.substring(shct.lastIndexOf("+") + 1);
+  let keybPasteMods = shct.substring(0, shct.lastIndexOf("+"));
+
+  let keys = [
+    "Home", "End", "PageUp", "PageDown", "Space", "Insert", "Delete",
+    "Up", "Down", "Left", "Right"
+  ];
+  let localizedKey = "";
+
+  if (keys.includes(keybPasteKey)) {
+    if (keybPasteKey == "Delete" && isMacOS) {
+      localizedKey = browser.i18n.getMessage("keyMacDel");
     }
     else {
-      defaultPasteKey = suggKey["default"];
+      localizedKey = browser.i18n.getMessage(`key${keybPasteKey}`);
     }
-    keybPasteKey = defaultPasteKey.split("+")[2];
-  }
-
-  if (keybPasteKey == "Period") {
-    keybPasteKey = ".";
-  }
-  else if (keybPasteKey == "Comma") {
-    keybPasteKey = ",";
-  }
-  
-  if (gOS == "mac") {
-    rv = `\u21e7\u2318${keybPasteKey}`;
   }
   else {
-    rv = `${chrome.i18n.getMessage("keyAlt")}+${chrome.i18n.getMessage("keyShift")}+${keybPasteKey}`;
+    if (keybPasteKey == "Period") {
+      localizedKey = ".";
+    }
+    else if (keybPasteKey == "Comma") {
+      localizedKey = ",";
+    }
+    else {
+      localizedKey = keybPasteKey;
+    }
   }
 
+  let modifiers = keybPasteMods.split("+");
+
+  // On macOS, always put the primary modifier key (e.g. Command) at the end.
+  if (isMacOS && modifiers.length > 1 && modifiers[1] == "Shift") {
+    let modPrimary = modifiers.shift();
+    modifiers.push(modPrimary);
+  }
+  
+  let localizedMods = "";
+
+  for (let i = 0; i < modifiers.length; i++) {
+    let modifier = modifiers[i];
+    let localzMod;
+    
+    if (isMacOS) {
+      if (modifier == "Alt") {
+        localzMod = browser.i18n.getMessage("keyOption");
+      }
+      else if (modifier == "Ctrl") {
+        localzMod = browser.i18n.getMessage("keyCommand");
+      }
+      else if (modifier == "Shift") {
+        localzMod = browser.i18n.getMessage("keyMacShift");
+      }
+      else {
+        localzMod = browser.i18n.getMessage(`key${modifier}`);
+      }
+    }
+    else {
+      localzMod = browser.i18n.getMessage(`key${modifier}`);
+      localzMod += "+";
+    }
+    localizedMods += localzMod;
+  }
+
+  rv = `${localizedMods}${localizedKey}`;
   return rv;
 }
 

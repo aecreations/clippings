@@ -2512,48 +2512,50 @@ function initDialogs()
   gDialogs.shortcutList.onInit = () => {
     let that = gDialogs.shortcutList;
 
-    if (! that.isInitialized) {
-      let shctPrefixKey = gClippings.getShortcutKeyPrefixStr();
-      $("#shortcut-instrxns").text(chrome.i18n.getMessage("clipMgrShortcutHelpInstrxn", shctPrefixKey));
-      let extVer = chrome.runtime.getManifest().version;
-      
-      aeImportExport.setL10nStrings({
-        shctTitle: chrome.i18n.getMessage("expHTMLTitle"),
-        hostAppInfo: chrome.i18n.getMessage("expHTMLHostAppInfo", [extVer, gClippings.getHostAppName()]),
-        shctKeyInstrxns: chrome.i18n.getMessage("expHTMLShctKeyInstrxn"),
-	shctKeyCustNote: chrome.i18n.getMessage("expHTMLShctKeyCustNote"),
-        shctKeyColHdr: chrome.i18n.getMessage("expHTMLShctKeyCol"),
-        clippingNameColHdr: chrome.i18n.getMessage("expHTMLClipNameCol"),
-      });
-
-      $("#export-shct-list").click(aEvent => {
-        aeImportExport.getShortcutKeyListHTML(true).then(aHTMLData => {
-          let blobData = new Blob([aHTMLData], { type: "text/html;charset=utf-8"});
-          let downldOpts = {
-            url: URL.createObjectURL(blobData),
-            filename: aeConst.HTML_EXPORT_SHORTCUTS_FILENAME,
-            saveAs: true,
-          };
-          return browser.downloads.download(downldOpts);
-
-        }).catch(aErr => {
-          if (aErr.fileName == "undefined") {
-            // User cancel
-          }
-          else {
-            console.error(aErr);
-            window.alert("Sorry, an error occurred while creating the export file.\n\nDetails:\n" + getErrStr(aErr));
-          }
+    gClippings.getShortcutKeyPrefixStr().then(aKeybPasteKeys => {
+      if (! that.isInitialized) {
+        let shctPrefixKey = 0;
+        $("#shortcut-instrxns").text(chrome.i18n.getMessage("clipMgrShortcutHelpInstrxn", aKeybPasteKeys));
+        let extVer = chrome.runtime.getManifest().version;
+        
+        aeImportExport.setL10nStrings({
+          shctTitle: chrome.i18n.getMessage("expHTMLTitle"),
+          hostAppInfo: chrome.i18n.getMessage("expHTMLHostAppInfo", [extVer, gClippings.getHostAppName()]),
+          shctKeyInstrxns: chrome.i18n.getMessage("expHTMLShctKeyInstrxn"),
+	  shctKeyCustNote: chrome.i18n.getMessage("expHTMLShctKeyCustNote"),
+          shctKeyColHdr: chrome.i18n.getMessage("expHTMLShctKeyCol"),
+          clippingNameColHdr: chrome.i18n.getMessage("expHTMLClipNameCol"),
         });
-      });
-      
-      that.isInitialized = true;
-    }
 
-    aeImportExport.getShortcutKeyListHTML(false).then(aShctListHTML => {
-      $("#shortcut-list-content").append(sanitizeHTML(aShctListHTML));
-    }).catch(aErr => {
-      console.error("Clippings/wx::clippingsMgr.js: gDialogs.shortcutList.onInit(): " + aErr);
+        $("#export-shct-list").click(aEvent => {
+          aeImportExport.getShortcutKeyListHTML(true).then(aHTMLData => {
+            let blobData = new Blob([aHTMLData], { type: "text/html;charset=utf-8"});
+            let downldOpts = {
+              url: URL.createObjectURL(blobData),
+              filename: aeConst.HTML_EXPORT_SHORTCUTS_FILENAME,
+              saveAs: true,
+            };
+            return browser.downloads.download(downldOpts);
+
+          }).catch(aErr => {
+            if (aErr.fileName == "undefined") {
+              // User cancel
+            }
+            else {
+              console.error(aErr);
+              window.alert("Sorry, an error occurred while creating the export file.\n\nDetails:\n" + getErrStr(aErr));
+            }
+          });
+        });
+        
+        that.isInitialized = true;
+      }
+
+      aeImportExport.getShortcutKeyListHTML(false).then(aShctListHTML => {
+        $("#shortcut-list-content").append(sanitizeHTML(aShctListHTML));
+      }).catch(aErr => {
+        console.error("Clippings/wx::clippingsMgr.js: gDialogs.shortcutList.onInit(): " + aErr);
+      });
     });
   };
   gDialogs.shortcutList.onUnload = () => {

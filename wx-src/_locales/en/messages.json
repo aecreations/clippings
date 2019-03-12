@@ -15,8 +15,8 @@
   },
 
   "cmdDesc": {
-    "message": "Paste a clipping using its shortcut key",
-    "description": "Shortcut key command description"
+    "message": "Paste clipping by key",
+    "description": "Keyboard shortcut description in Manage Extension Shortcuts"
   },
 
   "hostAppFx": {
@@ -945,6 +945,10 @@
     "message": "Some of the available shortcut keys may already be assigned to <a href=\"https://support.mozilla.org/en-US/kb/keyboard-shortcuts-perform-firefox-tasks-quickly\" class=\"hyperlink\">Firefox commands</a> or other add-ons."
   },
 
+  "prefsOutsideShct": {
+    "message": "To change the keyboard shortcut, go to Manage Extension Shortcuts in Add-ons Manager."
+  },
+
   "prefsDefaultNumPlchldrStart": {
     "message": "Default starting value for auto-incrementing placeholders:"
   },
@@ -1212,20 +1216,80 @@
   "keyAlt": {
     "message": "ALT"
   },
+
+  "keyOption": {
+    "message": "\u2325"
+  },
   
   "keyCtrl": {
     "message": "CTRL"
+  },
+
+  "keyMacCtrl": {
+    "message": "\u2303"
+  },
+
+  "keyCommand": {
+    "message": "\u2318"
   },
 
   "keyShift": {
     "message": "SHIFT"
   },
 
+  "keyMacShift": {
+    "message": "\u21e7"
+  },
+
   "keyDel": {
     "message": "DEL"
   },
 
+  "keyMacDel": {
+    "message": "Delete \u2326"
+  },
+
   "keyEsc": {
     "message": "ESC"
+  },
+
+  "keySpace": {
+    "message": "Space"
+  },
+
+  "keyPageUp": {
+    "message": "Page Up"
+  },
+
+  "keyPageDown": {
+    "message": "Page Down"
+  },
+
+  "keyHome": {
+    "message": "Home"
+  },
+
+  "keyEnd": {
+    "message": "End"
+  },
+
+  "keyLeft": {
+    "message": "Left"
+  },
+
+  "keyRight": {
+    "message": "Right"
+  },
+
+  "keyUp": {
+    "message": "Up"
+  },
+
+  "keyDown": {
+    "message": "Down"
+  },
+
+  "keyIns": {
+    "message": "Insert"
   }
 }

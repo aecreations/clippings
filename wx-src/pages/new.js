@@ -419,9 +419,10 @@ function initShortcutKeyMenu()
     }
   });
 
-  let keybPasteKeys = gClippings.getShortcutKeyPrefixStr();
-  let tooltip = chrome.i18n.getMessage("shortcutKeyHint", keybPasteKeys);
-  $("#shct-key-tooltip").attr("title", tooltip);
+  gClippings.getShortcutKeyPrefixStr().then(aKeybPasteKeys => {
+    let tooltip = chrome.i18n.getMessage("shortcutKeyHint", aKeybPasteKeys);
+    $("#shct-key-tooltip").attr("title", tooltip);
+  });
 }
 
 
