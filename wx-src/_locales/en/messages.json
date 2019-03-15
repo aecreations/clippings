@@ -942,7 +942,7 @@
   },
 
   "prefsShortcutKeyNote": {
-    "message": "Some of the available shortcut keys may already be assigned to <a href=\"https://support.mozilla.org/en-US/kb/keyboard-shortcuts-perform-firefox-tasks-quickly\" class=\"hyperlink\">Firefox commands</a> or other add-ons."
+    "message": "Some of the available keyboard shortcuts may already be assigned to <a href=\"https://support.mozilla.org/en-US/kb/keyboard-shortcuts-perform-firefox-tasks-quickly\" class=\"hyperlink\">Firefox commands</a> or other add-ons."
   },
 
   "prefsOutsideShct": {
