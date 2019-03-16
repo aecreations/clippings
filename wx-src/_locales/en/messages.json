@@ -1214,7 +1214,7 @@
   },
   
   "keyAlt": {
-    "message": "ALT"
+    "message": "Alt"
   },
 
   "keyOption": {
@@ -1222,7 +1222,7 @@
   },
   
   "keyCtrl": {
-    "message": "CTRL"
+    "message": "Ctrl"
   },
 
   "keyMacCtrl": {
@@ -1234,7 +1234,7 @@
   },
 
   "keyShift": {
-    "message": "SHIFT"
+    "message": "Shift"
   },
 
   "keyMacShift": {
@@ -1242,7 +1242,7 @@
   },
 
   "keyDel": {
-    "message": "DEL"
+    "message": "Delete"
   },
 
   "keyMacDel": {
@@ -1250,7 +1250,7 @@
   },
 
   "keyEsc": {
-    "message": "ESC"
+    "message": "Escape"
   },
 
   "keySpace": {
