@@ -1242,7 +1242,7 @@
   },
 
   "keyDel": {
-    "message": "Delete"
+    "message": "Del"
   },
 
   "keyMacDel": {
@@ -1250,7 +1250,7 @@
   },
 
   "keyEsc": {
-    "message": "Escape"
+    "message": "Esc"
   },
 
   "keySpace": {
