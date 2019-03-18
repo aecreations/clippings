@@ -1,0 +1,988 @@
+{
+  "extName": {
+    "message": "Clippings",
+    "description": "Name of the extension - do NOT translate"
+  },
+  "extDesc": {
+    "message": "Salve textos inseridos frequentemente para colar posteriormente.",
+    "description": "Description of the extension"
+  },
+  "browserActionTitle": {
+    "message": "Recortes",
+    "description": "Toolbar button label"
+  },
+  "cmdDesc": {
+    "message": "Colar Clipping com tecla",
+    "description": "Keyboard shortcut description in Manage Extension Shortcuts"
+  },
+  "hostAppFx": {
+    "message": "Firefox"
+  },
+  "hostAppTb": {
+    "message": "Thunderbird"
+  },
+  "hostAppAll": {
+    "message": "Firefox ou Thunderbird"
+  },
+  "btnOK": {
+    "message": "OK"
+  },
+  "btnCancel": {
+    "message": "Cancelar"
+  },
+  "btnClose": {
+    "message": "Fechar",
+    "description": "Dialog action button"
+  },
+  "btnYes": {
+    "message": "Sim"
+  },
+  "btnNo": {
+    "message": "Não"
+  },
+  "btnDone": {
+    "message": "Concluído"
+  },
+  "btnBrowse": {
+    "message": "Explorar..."
+  },
+  "msgUnavail": {
+    "message": "A ação selecionada não está disponível agora."
+  },
+  "msgNoTextSel": {
+    "message": "Não há texto selecionado. Por favor marque o texto primeiro."
+  },
+  "msgBrwsWndNotFocused": {
+    "message": "Por favor retorne à janela do navegador e tente novamente."
+  },
+  "msgClpgNotFound": {
+    "message": "Não foi possível encontrar o recorte selecionado!"
+  },
+  "msgNoActvBrwsTab": {
+    "message": "Não foi possível copiar o recorte pois não há aba ativa do navegador."
+  },
+  "msgRetryPgBusy": {
+    "message": "Esta página está carregando. Espere-a terminar, e tente novamente."
+  },
+  "msgRetryPgNotLoaded": {
+    "message": "Incapaz de reencontrar tal texto. Atualize a página, e tente novamente."
+  },
+  "msgUnknown": {
+    "message": "Nenhima ajuda possível (deixe para lá)."
+  },
+  "none": {
+    "message": "Nenhum",
+    "description": "Denotes that there is no shortcut key, label or source web address (URL)."
+  },
+  "newClipping": {
+    "message": "Novo Recorte"
+  },
+  "newFolder": {
+    "message": "Nova Pasta"
+  },
+  "untitledClipping": {
+    "message": "Recorte sem título"
+  },
+  "untitledFolder": {
+    "message": "Arquivo sem nome"
+  },
+  "rootFldrName": {
+    "message": "Recortes",
+    "description": "Name of root folder"
+  },
+  "labelRed": {
+    "message": "Vermelho"
+  },
+  "labelOrange": {
+    "message": "Laranja"
+  },
+  "labelYellow": {
+    "message": "Amarelo"
+  },
+  "labelGreen": {
+    "message": "Verde"
+  },
+  "labelBlue": {
+    "message": "Azul"
+  },
+  "labelPurple": {
+    "message": "Roxo"
+  },
+  "labelGrey": {
+    "message": "Cinza"
+  },
+  "cxtMenuNew": {
+    "message": "Novo...",
+    "description": "Clippings context menu"
+  },
+  "cxtMenuOpenClippingsMgr": {
+    "message": "Organizar Clippings",
+    "description": "Clippings context menu"
+  },
+  "baMenuResetAutoIncrPlaceholders": {
+    "message": "Reiniciar Auto-upgrades de variáveis",
+    "description": "Clippings browser action submenu"
+  },
+  "welcomePageTitle": {
+    "message": "Bem vindo ao Clippings 6",
+    "description": "Welcome to Clippings (post-installation) page title"
+  },
+  "welcInstallSuccessHdg": {
+    "message": "Bem vindo ao Clippings 6!"
+  },
+  "welcInstallSuccessSubh": {
+    "message": "Instalação concluída com sucesso."
+  },
+  "welcCurrUsrHdg": {
+    "message": "Usuários Atuais"
+  },
+  "welcCurrUsrDesc": {
+    "message": "Traga seus Clippings vindos de uma versão prévia do Clippings."
+  },
+  "welcCurrUsrCTA": {
+    "message": "Importar meus Clippings"
+  },
+  "welcNewUsrHdg": {
+    "message": "Novos usuários"
+  },
+  "welcNewUsrDesc": {
+    "message": "Aprenda as funcionalidades mais importantes do Clippings em poucos minutos."
+  },
+  "welcNewUsrCTA": {
+    "message": "Guia para início rápido"
+  },
+  "closeWelcomePg": {
+    "message": "Feche esta página"
+  },
+  "welcImportHdg": {
+    "message": "Importar arquivo de Backup do Clippings"
+  },
+  "welcImportDesc": {
+    "message": "Para iniciar, clique em Procurar, então localize o arquivo de Backup em seu sistema."
+  },
+  "welcSkipImport": {
+    "message": "Pular etapa de carregar arquivos"
+  },
+  "welcNoBackupExpand": {
+    "message": "O que você fará caso não tenha criado um backup"
+  },
+  "welcNoBackupSubh": {
+    "message": "Se você não salvou seus arquivos de recortes, siga esses passos:"
+  },
+  "welcFileMgrWindows": {
+    "message": "Windows Explorer",
+    "description": "File manager application on Windows, for locating Clippings backup folder"
+  },
+  "welcFileMgrMac": {
+    "message": "Finder",
+    "description": "File manager application on macOS, for locating Clippings backup folder"
+  },
+  "welcFileMgrGeneric": {
+    "message": "o gerenciador de arquivos no seu sistema"
+  },
+  "welcShowBkupFileNote": {
+    "message": " (Talvez você precise usar a linha de comando para ver esta pasta)",
+    "description": "Note to Linux and macOS users about showing hidden backup folder."
+  },
+  "welcNoBackupInstrxnStep1": {
+    "message": "Use $1 para achar a fonte de dados do Clippings. Dependendo de suas configurações prévias, pode estar em seu arquivo pessoal do Firefox, ou outra pasta localizada em outro lugar."
+  },
+  "welcNoBackupInstrxnStep2": {
+    "message": "Abra a pasta de origem e localize a pasta de Backup. O nome deve ser alterado para \"clippings-backup\" ou \".clipbak\". $1"
+  },
+  "welcNoBackupInstrxnStep3": {
+    "message": "Abra a pasta de backups do Clippings e localize o arquivo mais recente. Copie este para a área de trabalho ou a pasta de documentos."
+  },
+  "welcNoBackupInstrxnStep4": {
+    "message": "Clique em Procurar, e depois selecione o arquivo de backup."
+  },
+  "welcReadyImport": {
+    "message": "Quando estiver pronto, clique em Importar para restaurar os dados para o Clippings 6."
+  },
+  "welcImportBtn": {
+    "message": "Importar"
+  },
+  "welcBack": {
+    "message": "Voltar à tela inicial"
+  },
+  "welcImportStatus": {
+    "message": "Importando Clippings..."
+  },
+  "welcImportStatusDone": {
+    "message": "Importando clippings... pronto!"
+  },
+  "welcImportCount": {
+    "message": "$1 itens importados."
+  },
+  "welcImportConfirmDone": {
+    "message": "Seus clippings foram importados com sucesso. Clippings está agora pronto para ser usado."
+  },
+  "welcShctKeyNote": {
+    "message": "A tecla de \"colar\" <strong>mudou<\/strong> na versão 6. Para colar um Clipping usando sua tecla de atalho ou para pesquisar por nome, pressione <span id=\"keybd-paste-key\">$1<\/span>."
+  },
+  "welcOpenClipMgr": {
+    "message": "Abrir gerenciador de Clippings"
+  },
+  "welcImportError": {
+    "message": "Erro ao ler o arquivo selecionado.  O arquivo não pode ser um arquivo Clippings válido."
+  },
+  "welcImportRetry": {
+    "message": "Clique em tentar novamente para voltar e selecionar outro arquivo de backup."
+  },
+  "welcImportRetryBtn": {
+    "message": "Tente novamente"
+  },
+  "welcLeaveConfirm": {
+    "message": "Tem certeza que quer sair da página de boas vindas do Clipping?"
+  },
+  "welcCancelDlg": {
+    "message": "Voltar"
+  },
+  "welcImportLater": {
+    "message": "Você pode importar seu backup depois abrir o Gerenciador de recortes e selecionando Ferramentas → importar."
+  },
+  "welcCantImportHdg": {
+    "message": "O Clipping não pode importar o arquivo de backup, porque o banco de dados não está acessível."
+  },
+  "welcCantImportCause": {
+    "message": "Isso pode acontecer se as configurações de privacidade no Firefox são demasiado restritivas (por exemplo, ativar o modo de navegação privada).  Essas configurações podem interferir com WebExtensions como o Clippings."
+  },
+  "welcCantImportFix": {
+    "message": "Certifique-se de que as configurações de privacidade do navegador estão em seus padrões, em seguida, reinicie o Firefox e tente novamente. Se isso não corrigir o problema, siga estas etapas:"
+  },
+  "welcCantImportFixStep1": {
+    "message": "Abra o menu Firefox e selecione ajuda → informações de solução de problemas."
+  },
+  "welcCantImportFixStep2": {
+    "message": "Clique em atualizar o Firefox e, em seguida, siga as instruções. O Firefox irá reiniciar."
+  },
+  "welcCantImportFixStep3": {
+    "message": "Reinstale o Clippings, e tente importar o arquivo de backup novamente."
+  },
+  "newClippingDlgTitle": {
+    "message": "Novo Clipping",
+    "description": "New Clipping dialog"
+  },
+  "labelName": {
+    "message": "Nome:"
+  },
+  "labelContent": {
+    "message": "Texto:"
+  },
+  "labelCreateInFldr": {
+    "message": "Criado em:"
+  },
+  "btnNewFolder": {
+    "message": "Nova Pasta"
+  },
+  "labelCreateClippingOptions": {
+    "message": "Opções",
+    "description": "Button to expand clipping options (source URL, label) in New Clipping dialog"
+  },
+  "labelSaveSrcURL": {
+    "message": "Salvar o endereço do site de origem"
+  },
+  "labelShortcutKey": {
+    "message": "Tecla de atalho:"
+  },
+  "labelLabel": {
+    "message": "Etiqueta:",
+    "description": "Label for the Clipping label menu"
+  },
+  "labelNewFldrName": {
+    "message": "Novo nome da pasta:"
+  },
+  "labelCreateAsSubfOf": {
+    "message": "Crie como uma subpasta de:"
+  },
+  "shortcutKeyHint": {
+    "message": "Para colar esse Clipping em um campo de texto no Firefox, pressione $1 seguido da tecla de atalho."
+  },
+  "shortcutKeyAssigned": {
+    "message": "'$1' já está atribuída"
+  },
+  "initError": {
+    "message": "O Clippings não funciona quando as configurações de privacidade no Firefox são demasiado restritivas, tais como ativar o modo de navegação privada. Tente alterar essas configurações para seus padrões, em seguida, reinicie o Firefox e tente novamente."
+  },
+  "saveClippingError": {
+    "message": "Não é possível salvar o novo Clipping.  Verifique se as configurações de privacidade no Firefox não estão demasiado restritivas (como ativar o modo de navegação privada), em seguida, reinicie o Firefox e tente novamente."
+  },
+  "shortcutKeyDesc": {
+    "message": "Pressione a tecla de atalho do Clipping que você quer colar."
+  },
+  "keybPasteDlgF1": {
+    "message": "F1 = lista de atalhos"
+  },
+  "keybPasteDlgTab": {
+    "message": "TAB = pesquisar Clipping por nome"
+  },
+  "keybPasteDlgTabShctMode": {
+    "message": "TAB = modo de atalhos"
+  },
+  "srchByNameDesc": {
+    "message": "Procure o Clipping por nome:"
+  },
+  "numMatches": {
+    "message": "$1 resultados",
+    "description": "Status bar message in Clippings Manager showing the number of matches for the search query."
+  },
+  "insClipping": {
+    "message": "Inserir Clipping"
+  },
+  "exportHTML": {
+    "message": "Exportar para HTML"
+  },
+  "expHTMLTitle": {
+    "message": "Teclas de atalho do Clipping",
+    "description": "HTML export of shortcut key list - page title"
+  },
+  "expHTMLHostAppInfo": {
+    "message": "Clippings $1 em $2",
+    "description": "Clippings <extVersion> on Firefox <fxVersion>"
+  },
+  "expHTMLShctKeyInstrxn": {
+    "message": "Para colar um Clipping em uma página da web \/ campo de texto no Firefox, pressione ALT + SHIFT + Y (Comando + Shift + Y no macOS), seguida da tecla de atalho."
+  },
+  "expHTMLShctKeyCustNote": {
+    "message": "Nota: O atalho de teclado (o Default é ALT + SHIFT + Y ou Command + Shift + Y) podem ser diferentes dependendo de suas configurações no Clippings."
+  },
+  "expHTMLShctKeyCol": {
+    "message": "Tecla de atalho"
+  },
+  "expHTMLClipNameCol": {
+    "message": "Nome do Clipping"
+  },
+  "plchldrPromptSingleDesc": {
+    "message": "Insira o valor para \"$1\":",
+    "description": "Placeholder prompt dialog - single placeholder"
+  },
+  "plchldrPromptMultiDesc": {
+    "message": "Insira os valores para os seguintes espaços reservados.",
+    "description": "Placeholder prompt dialog - multiple placeholders"
+  },
+  "clippingsMgrWndTitle": {
+    "message": "Abrir gerenciador de Clippings",
+    "description": "Clippings Manager window title"
+  },
+  "tbNewClipping": {
+    "message": "Novo Clipping"
+  },
+  "tbNewFolder": {
+    "message": "Nova Pasta"
+  },
+  "tbMoveOrCopy": {
+    "message": "Mover ou Copiar"
+  },
+  "tbDelete": {
+    "message": "Excluir"
+  },
+  "tbUndo": {
+    "message": "Desfazer"
+  },
+  "tbTools": {
+    "message": "Ferramentas"
+  },
+  "clipMgrSrchBarHint": {
+    "message": "Encontrar Clippings e pastas",
+    "description": "Clippings Manager search bar hint text"
+  },
+  "clipMgrIntroHdg": {
+    "message": "Bem vindo ao Clippings 6"
+  },
+  "clipMgrIntroDesc": {
+    "message": "Utilize o gerenciador de Clippings para editar, renomear ou excluir Clippings e organizar os Clippings em pastas."
+  },
+  "clipMgrIntroKeybHdg": {
+    "message": "Atalhos de Teclado"
+  },
+  "labelInsPlchldr": {
+    "message": "Inserir Placeholder:",
+    "description": "Clippings Manager - Placeholder Toolbar"
+  },
+  "tbPlchldrPresets": {
+    "message": "Predefinições",
+    "description": "Clippings Manager - Placeholder Toolbar button"
+  },
+  "tbPlchldrCustom": {
+    "message": "Personalizado",
+    "description": "Clippings Manager - Placeholder Toolbar button"
+  },
+  "tbPlchldrNumeric": {
+    "message": "Numérico",
+    "description": "Clippings Manager - Placeholder Toolbar button"
+  },
+  "labelSrcURL": {
+    "message": "Endereço de Origem:"
+  },
+  "btnEditSrcURL": {
+    "message": "Editar"
+  },
+  "mnuNewFromClipbd": {
+    "message": "Importar da Área de Transferência"
+  },
+  "mnuBackup": {
+    "message": "Cópia de segurança..."
+  },
+  "mnuRestoreFromBackup": {
+    "message": "Restaurar do backup..."
+  },
+  "mnuImport": {
+    "message": "Importar..."
+  },
+  "mnuExport": {
+    "message": "Exportar..."
+  },
+  "mnuReloadSyncFldr": {
+    "message": "Recarregar"
+  },
+  "mnuRemoveAllSrcURLs": {
+    "message": "Remover Endereços da Web da Fonte..."
+  },
+  "mnuShowHide": {
+    "message": "Exibir\/Ocultar"
+  },
+  "mnuShowHideDetails": {
+    "message": "Detalhes"
+  },
+  "mnuShowHidePlchldrBar": {
+    "message": "Barra de Ferramentas do Placeholder"
+  },
+  "mnuShowHideStatusBar": {
+    "message": "Barra de Status"
+  },
+  "mnuMaximize": {
+    "message": "Maximizar"
+  },
+  "mnuMinimizeWhenInactive": {
+    "message": "Minimizar quando inativo"
+  },
+  "mnuShowExtPrefs": {
+    "message": "Opções..."
+  },
+  "mnuMoveOrCopy": {
+    "message": "Mover ou Copiar..."
+  },
+  "mnuEditLabel": {
+    "message": "Etiqueta"
+  },
+  "mnuGoToSrcURL": {
+    "message": "Ir para página da Web de origem"
+  },
+  "mnuPlchldrDate": {
+    "message": "Data",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "mnuPlchldrTime": {
+    "message": "Hora",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "mnuPlchldrAppName": {
+    "message": "Nome do Aplicativo",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "mnuPlchldrUsrAgent": {
+    "message": "Usuário",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "mnuPlchldrClipName": {
+    "message": "Nome do Clipping",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "mnuPlchldrFldrName": {
+    "message": "Pasta Principal",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "clipMgrNameHint": {
+    "message": "Nome do Clipping",
+    "description": "Clippings Manager - clipping name textbox hint text"
+  },
+  "clipMgrContentHint": {
+    "message": "Digite o texto do Clipping",
+    "description": "Clippings Manager - clipping content textarea hint text"
+  },
+  "clipMgrShortcutHelpHint": {
+    "message": "Ajuda sobre stalhos"
+  },
+  "clipMgrNoItems": {
+    "message": "Nenhum Clipping encontrado."
+  },
+  "clipMgrIntroCmdDel": {
+    "message": "Excluir o Clipping selecionado ou pasta",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdClearSrchBar": {
+    "message": "Limpar campo de busca",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdSrch": {
+    "message": "Encontrar Clippings e pastas",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdClose": {
+    "message": "Fechar o gerenciador de Clippings",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdUndo": {
+    "message": "Desfazer",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdShowIntro": {
+    "message": "Mostrar intro do gerenciador de Clippings",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdMaximize": {
+    "message": "Maximizar janela",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrStatusBar": {
+    "message": "$1 itens",
+    "description": "Status bar text in Clippings Manager, counting the number of clippings and folders"
+  },
+  "clipMgrRemoveSrcURLsConfirm": {
+    "message": "Removidos endereços de páginas da Web de origem de seus Clippings."
+  },
+  "clipMgrNoUndo": {
+    "message": "Nada para desfazer"
+  },
+  "clipMgrShortcutKeyHelpHdg": {
+    "message": "Teclas de atalho do Clipping"
+  },
+  "clipMgrShortcutHelpInstrxn": {
+    "message": "Para colar um clipping da lista abaixo em uma caixa de texto de página web no Firefox, pressione $1, e então a tecla de atalho."
+  },
+  "clipMgrShortcutKeyAssigned": {
+    "message": "A Atalho de Teclado selecionado já está atribuído a outro Clipping.  Por favor, selecione um Atalho de Teclado diferente."
+  },
+  "clipMgrNoSrcURL": {
+    "message": "O Clipping selecionado não tem um endereço de página web de origem."
+  },
+  "clipMgrImportConfirm": {
+    "message": "Importação de \"$1\" foi concluída com sucesso."
+  },
+  "btnReload": {
+    "message": "Recarregar"
+  },
+  "clipMgrExportConfirm": {
+    "message": "Exportação de Clippings para \"$1\" foi concluída com sucesso."
+  },
+  "clipMgrBackupConfirm": {
+    "message": "Backup para \"$1\" foi concluído com sucesso."
+  },
+  "clipMgrWarnRemoveSrcURLs": {
+    "message": "Todos os endereços da página web de origem dos seus clippings serão removidos.  Deseja continuar?"
+  },
+  "placeholderNameHint": {
+    "message": "Letras, números, sem espaços"
+  },
+  "labelCustPlchldrName": {
+    "message": "Nome do Placeholder personalizado:"
+  },
+  "labelNumPlchldrName": {
+    "message": "Nome do Placeholder numérico:"
+  },
+  "labelCustPlchldrVal": {
+    "message": "Valor padrão (opcional):"
+  },
+  "custPlchldrValDesc": {
+    "message": "Separar múltiplos valores padrão com com o caracter “|\". Exemplo: red|green|blue"
+  },
+  "numPlchldrDesc": {
+    "message": "Cada vez que o Clipping for colado, o valor deste Placeholder será incrementado por 1, até que o Placeholder seja resetado no botão \"Clippings\" do menu de contexto."
+  },
+  "labelSelImportFile": {
+    "message": "Selecione o arquivo a ser importado:"
+  },
+  "labelSelBkupFile": {
+    "message": "Selecionar arquivo de backup:"
+  },
+  "statusSavingBkup": {
+    "message": "Salvando arquivo de backup..."
+  },
+  "statusSavingBkupDone": {
+    "message": "Salvando arquivo de backup... pronto"
+  },
+  "statusSavingBkupFailed": {
+    "message": "O backup falhou."
+  },
+  "backupError": {
+    "message": "Lamentamos, mas ocorreu um erro enquanto o arquivo de backup estava sendo criado.\n\nDetalhes:\n$1"
+  },
+  "cbImportReplcShctKeys": {
+    "message": "Alterar teclas de atalho"
+  },
+  "warnBackupOverwrite": {
+    "message": "Restaurar de um arquivo de backup substituirá todos os Clippings atuais. Esta ação não pode ser desfeita."
+  },
+  "btnImport": {
+    "message": "Importar"
+  },
+  "btnRestoreBkup": {
+    "message": "Restaurar Backup"
+  },
+  "importError": {
+    "message": "Erro ao ler o arquivo selecionado. O arquivo não pode ser um arquivo Clippings."
+  },
+  "labelSelExportFmt": {
+    "message": "Selecione um formato para exportar os Clippings:"
+  },
+  "expFmtDescHdg": {
+    "message": "Descrição"
+  },
+  "expFmtClippings6": {
+    "message": "Clippings 6"
+  },
+  "expFmtClippings6Desc": {
+    "message": "O formato padrão para backup e troca de dados do Clipping com outros utilizadores ou vários computadores.  Requer que o Clippings 5.5 ou mais recente esteja instalado."
+  },
+  "expFmtHTMLDoc": {
+    "message": "Documento HTML"
+  },
+  "expFmtHTMLDocDesc": {
+    "message": "Exporte seus dados do Clippings como um documento HTML para impressão ou exibição em um navegador web."
+  },
+  "expFmtCSV": {
+    "message": "Arquivo CSV"
+  },
+  "expFmtCSVDesc": {
+    "message": "Use o formato Valores Separados por Vírgula (CSV) para trocar dados do Clippings com outros aplicativos. Somente nomes e conteúdos do Clippings são exportados."
+  },
+  "cbExpInclSrcURLs": {
+    "message": "Incluir o endereço do site de origem"
+  },
+  "btnExport": {
+    "message": "Exportar"
+  },
+  "statusExportStart": {
+    "message": "Exportando..."
+  },
+  "statusExportDone": {
+    "message": "Exportando... pronto"
+  },
+  "statusExportFailed": {
+    "message": "Falha na exportação."
+  },
+  "exportError": {
+    "message": "Erro ao exportar dados do Clippings.\n\nDetalhes:\n$1"
+  },
+  "labelMoveClipping": {
+    "message": "Mover Clipping para:"
+  },
+  "labelMoveFolder": {
+    "message": "Mover pasta para:"
+  },
+  "labelCopyClipping": {
+    "message": "Copiar Clipping para:"
+  },
+  "labelCopyFolder": {
+    "message": "Copiar pasta para:"
+  },
+  "cbCreateCopy": {
+    "message": "Criar uma cópia"
+  },
+  "errMoveToSameParent": {
+    "message": "O item já existe na pasta selecionada.",
+    "description": "Error message when attempting to move clipping\/folder to the same parent folder"
+  },
+  "errMoveToSubfldr": {
+    "message": "Não é possível mover ou copiar para a pasta selecionada.",
+    "description": "Error message when attempting to move or copy a folder into a subfolder of itself"
+  },
+  "btnMove": {
+    "message": "Mover"
+  },
+  "btnCopy": {
+    "message": "Copiar"
+  },
+  "prefsTitle": {
+    "message": "Opções"
+  },
+  "prefsHdgPasteOptions": {
+    "message": "Opções de colar"
+  },
+  "labelPasteOptions": {
+    "message": "Ao colar um clipping Formatado em HTML em uma caixa de edição de Text Rich:"
+  },
+  "pasteOptFormatted": {
+    "message": "Colar como texto formatado"
+  },
+  "pasteOptRawHTML": {
+    "message": "Colar como texto, preservando as HTML tags"
+  },
+  "cbAutoLineBreak": {
+    "message": "Quebrar linhas automaticamente a menos que existam tags <p> or <br>"
+  },
+  "htmlPasteDesc": {
+    "message": "Um clipping com Formato HTML será sempre colado como Texto Puro quando for colado em uma caixa de Texto Puro, ou se o clipping contiver tags restritas como <script>, <applet>, <object>, <iframe>, etc."
+  },
+  "prefsShortcutMode": {
+    "message": "Ative o modo Teclas de Atalho pressionando estas teclas:"
+  },
+  "prefsShortcutKeyNote": {
+    "message": "Algumas das Teclas de Atalho disponíveis podem já estar atribuídas a <a href=\"https:\/\/support.mozilla.org\/en-US\/kb\/keyboard-shortcuts-perform-firefox-tasks-quickly\" class=\"hyperlink\">Comandos do Firefox<\/a> ou a outros Complementos."
+  },
+  "prefsOutsideShct": {
+    "message": "Para alterar atalhos de teclado, vá para Gerenciar Atalhos da Extensão no Gerenciador de Complementos."
+  },
+  "prefsDefaultNumPlchldrStart": {
+    "message": "Valor de início padrão para os Placeholders com incremento automático:"
+  },
+  "prefsHdgGeneralOptions": {
+    "message": "Opções gerais"
+  },
+  "cbAlwaysSaveSrcURL": {
+    "message": "Sempre salvar o endereço do site de origem"
+  },
+  "cbCheckSpelling": {
+    "message": "Verificar ortografia"
+  },
+  "backupRemind": {
+    "message": "Mostrar lembrete de backup a cada",
+    "description": "Label for checkbox option for setting backup notification, appears after checkbox and before the reminder frequency drop-down menu"
+  },
+  "backupRemDays": {
+    "message": "dias",
+    "description": "Label appearing after the drop-down menu for backup reminder frequency"
+  },
+  "backupRemFreqDaily": {
+    "message": "1",
+    "description": "Number of days between backup reminders: once a day"
+  },
+  "backupRemFreqTwoDays": {
+    "message": "2",
+    "description": "Number of days between backup reminders: once every 2 days"
+  },
+  "backupRemFreqThreeDays": {
+    "message": "3",
+    "description": "Number of days between backup reminders: once every 3 days"
+  },
+  "backupRemFreqFiveDays": {
+    "message": "5",
+    "description": "Number of days between backup reminders: once every 5 days"
+  },
+  "backupRemFreqWeekly": {
+    "message": "7",
+    "description": "Number of days between backup reminders: once a week (every 7 days)"
+  },
+  "backupRemFreqTwoWeeks": {
+    "message": "14",
+    "description": "Number of days between backup reminders: once every 2 weeks (every 14 days)"
+  },
+  "backupRemFreqMonthly": {
+    "message": "30",
+    "description": "Number of days between backup reminders: once a month (every 30 days)"
+  },
+  "backupNotifyTitle": {
+    "message": "Fazer Backup de seus Clippings"
+  },
+  "backupNotifyMsg": {
+    "message": "É hora de fazer backup de seus clippings. Clique aqui para fazer backup de seus clippings agora."
+  },
+  "backupNotifyFirstMsg": {
+    "message": "Mantenha seus clippings seguros fazendo backups regulares. Clique aqui para fazer backup de seus clippings e configurar Lembretes de Backup."
+  },
+  "backupFirstDesc": {
+    "message": "Mantenha seus clippings seguros fazendo backups regulares. Aproveite agora para fazer backup de seus clippings clicando em Backup Já."
+  },
+  "backupNow": {
+    "message": "Backup Já"
+  },
+  "backupHint": {
+    "message": "Você também pode fazer backup de seus clippings a qualquer momento usando o Gerenciador de Clippings. Basta abrir o Gerenciador de Clippings e selecionar Ferramentas → Backup."
+  },
+  "backupPrefsHdg": {
+    "message": "Configurar Lembrete de Backup"
+  },
+  "backupPrefsHint": {
+    "message": "Esta configuração também pode ser alterada em Preferências do Clippings."
+  },
+  "syncFldrName": {
+    "message": "Clippings Sincronizados",
+    "description": "The name of the folder containing the user's synchronized clippings."
+  },
+  "syncClippings": {
+    "message": "Sincronizar Clippings",
+    "description": "The name of the feature for synchronizing clippings between applications or computers."
+  },
+  "syncIntro": {
+    "message": "Você pode sincronizar o seu Clippings com o Thunderbird ou outras instalações do Firefox, colocando os clippings que você deseja compartilhar numa pasta especial \"Clippings Sincronizados\". Os clippings sincronizados serão salvos em um arquivo no seu sistema.  Requer o app de ajuda <a href=\"http:\/\/aecreations.sourceforge.net\/clippings\/sync.php\" class=\"hyperlink\">Sincronizar Clippings<\/a>."
+  },
+  "syncLearnMore": {
+    "message": "Saiba mais sobre o Sync Clippings."
+  },
+  "syncHelp": {
+    "message": "<p class=\"dlg-subhead\">Sync Clippings<\/p><p>Sync Clippings permite que você sincronize entre o Firefox e o Thunderbird um subconjunto de seus clippings para que apareçam em ambos. Você pode definir quais clippings deseja sincronizar colocando-os numa pasta especial \"Clippings Sincronizados\". Esta pasta pode ser criada na caixa de diálogo Novo Clipping quando estiver criando um novo. Também pode mover clippings para esta mesma pasta no Gerenciador de Clippings.<\/p><p>A pasta Clippings Sincronizados será criada automaticamente quando Sync Clippings for configurado.<\/p><p class=\"dlg-subhead\">Configuração<\/p><p>Sync Clippings precisa ser ativado nos aplicativos que você deseja sincronizar seus clippings. Sync Clippings é suportado pelo Firefox 60 ou mais recente e pelo Thunderbird 60 ou mais recente (com Clippings para Thunderbird 5.6 ou mais recente instalado).<\/p><p>Além disso, o app Ajuda do Sync Clippings precisa estar instalado no seu sistema para manter atualizado o conteúdo da pasta Clippings Sincronizados. O app está disponível para download no site <a href=\"http:\/\/aecreations.sourceforge.net\/clippings\/sync.php\" class=\"hyperlink\">AE Creations<\/a>. Uma vez instalado, será executado automaticamente em segundo plano quando o Firefox for iniciado.<\/p><p>No Firefox, ative o Sync Clippings nas preferências do Clippings clicando em <b>Ativar Sincronização<\/b>.  Se já não foi definido, será solicitada a definição da pasta em seu sistema onde os dados dos clippings sincronizados serão salvos.<\/p>"
+  },
+  "syncStatusOn": {
+    "message": "Sync Clippings está ativado."
+  },
+  "syncStatusOff": {
+    "message": "Sync Clippings está desativado."
+  },
+  "syncSettings": {
+    "message": "Configurações..."
+  },
+  "syncTurnOn": {
+    "message": "Ativar Sincronização"
+  },
+  "syncTurnOff": {
+    "message": "Desativar Sincronização"
+  },
+  "syncTurnOffConf": {
+    "message": "Tem certeza que deseja desativar Sync Clippings?"
+  },
+  "syncTurnOffAck": {
+    "message": "Sync Clippings está desativado."
+  },
+  "syncTurnOffRmFldr": {
+    "message": "Remover pasta Clippings Sincronizados do menu do Clippings e do Gerenciador de Clippings"
+  },
+  "syncConnect": {
+    "message": "Conectando-se ao app de ajuda do Sync Clippings..."
+  },
+  "syncFileDir": {
+    "message": "Localização dos arquivos para Sincronizar:"
+  },
+  "syncFileDirExample": {
+    "message": "Exemplo:"
+  },
+  "syncFileDirExWin": {
+    "message": "C:\\Users\\SeuNome\\Documents\\Clippings Sincronizados",
+    "description": "Example folder path on Windows."
+  },
+  "syncFileDirExMac": {
+    "message": "\/Users\/SeuNome\/Documents\/Clippings Sincronizados",
+    "description": "Example folder path on macOS."
+  },
+  "syncFileDirExLinux": {
+    "message": "\/home\/SeuNome\/clippings-sincronizados",
+    "description": "Example folder path on Linux."
+  },
+  "syncFileDirDesc": {
+    "message": "Seus dados do Sync Clippings são armazenados nesta pasta. Se você está sincronizando com o Thunderbird e deseja alterar o local de sincronização de arquivo, você também deve alterar o local de sincronização de arquivo nas preferências de Clippings do Thunderbird para corresponder."
+  },
+  "errSyncConxn": {
+    "message": "Não foi possível conectar-se ao app de ajuda de Clippings Sync. Certifique-se de que o app está instalado."
+  },
+  "errSyncConxnDetail": {
+    "message": "O app de ajuda do Clippings Sync é necessário para sincronizar seus clippings. Você pode baixá-lo no site da <a href=\"http:\/\/aecreations.sourceforge.net\/clippings\/sync.php\" class=\"hyperlink\">AE Creations<\/a>."
+  },
+  "errSync": {
+    "message": "Ocorreu um erro com o app de ajuda do Sync Clippings."
+  },
+  "syncReloadAck": {
+    "message": "Atualizando a pasta de Clippings Sincronizados. Clique em Recarregar para continuar."
+  },
+  "deleteSyncFldr": {
+    "message": "Não é possível deletar a pasta Clippings Sincronizados, porque Sync Clippings está ativado."
+  },
+  "moveSyncFldr": {
+    "message": "Não é possível mover a pasta Clippings Sincronizados."
+  },
+  "syncPushFailed": {
+    "message": "Não é possível enviar alterações para a pasta Clippings Sincronizados, porque a conexão com o app de ajuda do Sync Clippings falhou. Para corrigir, reinstale o app de ajuda de Sync Clippings."
+  },
+  "syncStartupFailedHdg": {
+    "message": "Erro em Sync Clippings"
+  },
+  "syncStartupFailed": {
+    "message": "Falha ao conectar-se ao app de ajuda do Sync Clippings. Para corrigir, reinstale o app de ajuda de Sync Clippings."
+  },
+  "syncUpdateTitle": {
+    "message": "Nova versão da Ajuda do Sync Clippings"
+  },
+  "syncUpdateMsg": {
+    "message": "Uma nova versão do app de ajuda do Sync Clippings está disponível. Clique aqui para ir para a página de download."
+  },
+  "syncUpdateChkOpt": {
+    "message": "Verificar automaticamente atualizações do Helper do Sync Clippings"
+  },
+  "aboutBtn": {
+    "message": "Sobre..."
+  },
+  "aboutExtVer": {
+    "message": "versão $1",
+    "description": "Extension version number"
+  },
+  "aboutAuthor": {
+    "message": "Criado por AE Creations."
+  },
+  "aboutHomePgLink": {
+    "message": "Visite nosso Site"
+  },
+  "aboutLicLink": {
+    "message": "Informação da licença"
+  },
+  "aboutTrans": {
+    "message": "Localizações efetuadas por tradutores Crowdin."
+  },
+  "aboutSyncVerLabel": {
+    "message": "Versão do app de ajuda do Sync Clippings:"
+  },
+  "noSyncHelperApp": {
+    "message": "Não instalado",
+    "description": "Appears when the Sync Clippings helper app is not detected on the system"
+  },
+  "aboutSyncFileSize": {
+    "message": "Tamanho do arquivo de sincronização:"
+  },
+  "keyAlt": {
+    "message": "ALT"
+  },
+  "keyOption": {
+    "message": "⌥"
+  },
+  "keyCtrl": {
+    "message": "CTRL"
+  },
+  "keyMacCtrl": {
+    "message": "⌃"
+  },
+  "keyCommand": {
+    "message": "⌘"
+  },
+  "keyShift": {
+    "message": "SHIFT"
+  },
+  "keyMacShift": {
+    "message": "⇧"
+  },
+  "keyDel": {
+    "message": "DEL"
+  },
+  "keyMacDel": {
+    "message": "Excluir ⌦"
+  },
+  "keyEsc": {
+    "message": "ESC"
+  },
+  "keySpace": {
+    "message": "Espaço"
+  },
+  "keyPageUp": {
+    "message": "Página Acima"
+  },
+  "keyPageDown": {
+    "message": "Página Abaixo"
+  },
+  "keyHome": {
+    "message": "Página Inicial"
+  },
+  "keyEnd": {
+    "message": "Final"
+  },
+  "keyLeft": {
+    "message": "Esquerda"
+  },
+  "keyRight": {
+    "message": "Direita"
+  },
+  "keyUp": {
+    "message": "Para Cima"
+  },
+  "keyDown": {
+    "message": "Para Baixo"
+  },
+  "keyIns": {
+    "message": "Inserir"
+  }
+}
