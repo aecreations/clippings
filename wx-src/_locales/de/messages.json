@@ -12,8 +12,8 @@
     "description": "Toolbar button label"
   },
   "cmdDesc": {
-    "message": "Textbaustein mit Hilfe einer Tastenkürzels einfügen",
-    "description": "Shortcut key command description"
+    "message": "Textbaustein mit Taste einfügen",
+    "description": "Keyboard shortcut description in Manage Extension Shortcuts"
   },
   "hostAppFx": {
     "message": "Firefox"
@@ -720,6 +720,9 @@
   "prefsShortcutKeyNote": {
     "message": "Einige der verfügbaren Tastenkürzel können bereits <a href=\"https:\/\/support.mozilla.org\/en-US\/kb\/keyboard-shortcuts-perform-firefox-tasks-quickly\" class=\"hyperlink\">Firefox-Befehlen<\/a> oder anderen Add-ons zugeordnet sein."
   },
+  "prefsOutsideShct": {
+    "message": "Gehen Sie zu „Tastenkombinationen für Erweiterungen verwalten“ im Add-ons-Manager, um die Tastenkombination zu ändern."
+  },
   "prefsDefaultNumPlchldrStart": {
     "message": "Standardstartwert für die automatische Erhöhung von Platzhaltern:"
   },
@@ -925,16 +928,61 @@
   "keyAlt": {
     "message": "Alt"
   },
+  "keyOption": {
+    "message": "⌥"
+  },
   "keyCtrl": {
     "message": "Strg"
+  },
+  "keyMacCtrl": {
+    "message": "⌃"
+  },
+  "keyCommand": {
+    "message": "⌘"
   },
   "keyShift": {
     "message": "Umsch"
   },
+  "keyMacShift": {
+    "message": "⇧"
+  },
   "keyDel": {
     "message": "Entf"
   },
+  "keyMacDel": {
+    "message": "Löschen ⌦"
+  },
   "keyEsc": {
     "message": "Esc"
+  },
+  "keySpace": {
+    "message": "Leertaste"
+  },
+  "keyPageUp": {
+    "message": "Bild hoch"
+  },
+  "keyPageDown": {
+    "message": "Bild runter"
+  },
+  "keyHome": {
+    "message": "Pos1"
+  },
+  "keyEnd": {
+    "message": "Ende"
+  },
+  "keyLeft": {
+    "message": "Links"
+  },
+  "keyRight": {
+    "message": "Rechts"
+  },
+  "keyUp": {
+    "message": "Hoch"
+  },
+  "keyDown": {
+    "message": "Runter"
+  },
+  "keyIns": {
+    "message": "Einfg"
   }
 }

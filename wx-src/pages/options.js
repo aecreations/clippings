@@ -45,7 +45,6 @@ function init()
     $("#shortcut-key-prefix-modifiers").css({ letterSpacing: "-0.25px" });
   }
   
-  $("#shortcut-key-note").html(sanitizeHTML(chrome.i18n.getMessage("prefsShortcutKeyNote")));
   $("#sync-intro").html(sanitizeHTML(chrome.i18n.getMessage("syncIntro")));
 
   initDialogs();
@@ -132,31 +131,6 @@ function init()
       setPref({ keyboardPaste: aEvent.target.checked })
     });
 
-    let currShortcut = "";
-    if (aPrefs.pasteShortcutKeyPrefix) {
-      currShortcut = aPrefs.pasteShortcutKeyPrefix;
-    }
-    else {
-      let extManifest = chrome.runtime.getManifest();
-      let suggKey = extManifest.commands["ae-clippings-paste-clipping"]["suggested_key"];
-
-      if (os == "mac") {
-        currShortcut = suggKey["mac"];
-      }
-      else {
-        currShortcut = suggKey["default"];
-      }
-    }
-    
-    $("#shortcut-key-selector").val(currShortcut.split("+")[2]).change(aEvent => {
-      let modifierKeys = os == "mac" ? "Command+Shift" : "Alt+Shift"
-      setPref({ pasteShortcutKeyPrefix: `${modifierKeys}+${aEvent.target.value}` });
-      browser.commands.update({
-        name: "ae-clippings-paste-clipping",
-        shortcut: `${modifierKeys}+${aEvent.target.value}`,
-      });
-    });
-    
     $("#auto-inc-plchldrs-start-val").val(aPrefs.autoIncrPlcHldrStartVal).click(aEvent => {
       setPref({ autoIncrPlcHldrStartVal: aEvent.target.valueAsNumber });
     });
@@ -244,6 +218,74 @@ function init()
     
     $("#show-sync-help").click(aEvent => {
       gDialogs.syncClippingsHelp.showModal();
+    });
+
+    return browser.commands.getAll();
+
+  }).then(aCmds => {
+    let keybShct = aCmds[0].shortcut;
+    let shctArr = keybShct.split("+");
+    let key, keyModifiers = "";
+    let isSupportedKey = false;
+    let isSupportedKeyMod = false;
+
+    if (shctArr.length > 1) {
+      keyModifiers = keybShct.substring(0, keybShct.lastIndexOf("+"));
+    }
+    key = shctArr[shctArr.length - 1];
+
+    if (os == "mac") {
+      if (keyModifiers == "Command+Shift") {
+        isSupportedKeyMod = true;
+      }
+    }
+    else {
+      if (keyModifiers == "Alt+Shift") {
+        isSupportedKeyMod = true;
+      }
+    }
+
+    let keySelectElt = $("#shortcut-key-selector")[0];
+    let allKeys = keySelectElt.options;
+    
+    for (let i = 0; i < allKeys.length; i++) {
+      if (allKeys[i].value == key) {
+        keySelectElt.selectedIndex = i;
+        isSupportedKey = true;
+        break;
+      }
+    }
+
+    if (!isSupportedKey || !isSupportedKeyMod) {
+      // When the keyboard shortcut is not any of the combinations that can be
+      // set from the extension preferences page, it may have been set from
+      // Manage Extension Shortcuts in Add-ons Manager (Firefox 66+).
+      $("#shortcut-key-note").text(chrome.i18n.getMessage("prefsOutsideShct"));
+
+      gClippings.getShortcutKeyPrefixStr().then(aKeybPasteKeys => {
+        $("#shortcut-key-prefix-modifiers").text(aKeybPasteKeys);
+      });
+      return;
+    }
+    
+    $("#shortcut-key-note").html(sanitizeHTML(chrome.i18n.getMessage("prefsShortcutKeyNote")));
+    keySelectElt.style.display = "inline-block";
+
+    $(keySelectElt).change(aEvent => {
+      let modifierKeys = os == "mac" ? "Command+Shift" : "Alt+Shift"
+      let keybShct = `${modifierKeys}+${aEvent.target.value}`;
+
+      if (gClippings.isDirectSetKeyboardShortcut()) {        
+        log("Clippings/wx::options.js: Keyboard shortcut changed. Updating command with new keyboard shortcut: " + keybShct);
+        
+        browser.commands.update({
+          name: aeConst.CMD_CLIPPINGS_KEYBOARD_PASTE,
+          shortcut: keybShct,
+        });
+      }
+      else {
+        setPref({ pasteShortcutKeyPrefix: keybShct });
+      }
     });
   });
 }

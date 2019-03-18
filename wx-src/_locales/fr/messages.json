@@ -12,8 +12,8 @@
     "description": "Toolbar button label"
   },
   "cmdDesc": {
-    "message": "Coller un clip en utilisant son raccourci clavier",
-    "description": "Shortcut key command description"
+    "message": "Coller le clipping par clé",
+    "description": "Keyboard shortcut description in Manage Extension Shortcuts"
   },
   "hostAppFx": {
     "message": "Firefox"
@@ -720,6 +720,9 @@
   "prefsShortcutKeyNote": {
     "message": "Certaines des touches de raccourci disponibles peuvent déjà être confiées au <a href=\"https:\/\/support.mozilla.org\/en-US\/kb\/keyboard-shortcuts-perform-firefox-tasks-quickly\" class=\"hyperlink\">Firefox commandes<\/a> ou autres Add-ons."
   },
+  "prefsOutsideShct": {
+    "message": "Pour la touche de raccourci, allez dans Gérer les raccourcis dans le gestionnaire des Suppléments."
+  },
   "prefsDefaultNumPlchldrStart": {
     "message": "Valeur par défaut, pour les paramètres à incrémentation automatique :"
   },
@@ -925,16 +928,61 @@
   "keyAlt": {
     "message": "ALT"
   },
+  "keyOption": {
+    "message": "⌥"
+  },
   "keyCtrl": {
     "message": "CTRL"
+  },
+  "keyMacCtrl": {
+    "message": "⌃"
+  },
+  "keyCommand": {
+    "message": "⌘"
   },
   "keyShift": {
     "message": "MAJ"
   },
+  "keyMacShift": {
+    "message": "⇧"
+  },
   "keyDel": {
     "message": "SUPPR"
   },
+  "keyMacDel": {
+    "message": "Supprimer ⌦"
+  },
   "keyEsc": {
     "message": "ECHAP"
+  },
+  "keySpace": {
+    "message": "Espace"
+  },
+  "keyPageUp": {
+    "message": "Haut de la page"
+  },
+  "keyPageDown": {
+    "message": "Bas de la page"
+  },
+  "keyHome": {
+    "message": "Accueil"
+  },
+  "keyEnd": {
+    "message": "Fin"
+  },
+  "keyLeft": {
+    "message": "Gauche"
+  },
+  "keyRight": {
+    "message": "Droite"
+  },
+  "keyUp": {
+    "message": "Haut"
+  },
+  "keyDown": {
+    "message": "Bas"
+  },
+  "keyIns": {
+    "message": "Insérer"
   }
 }
