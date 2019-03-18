@@ -224,9 +224,6 @@ function init()
     return browser.commands.getAll();
 
   }).then(aCmds => {
-    console.log("Clippings/wx::options.js: Clippings commands:");
-    console.log(aCmds);
-    
     let keybShct = aCmds[0].shortcut;
     let shctArr = keybShct.split("+");
     let key, keyModifiers = "";
@@ -275,11 +272,19 @@ function init()
     
     $(keySelectElt).change(aEvent => {
       let modifierKeys = os == "mac" ? "Command+Shift" : "Alt+Shift"
-      setPref({ pasteShortcutKeyPrefix: `${modifierKeys}+${aEvent.target.value}` });
-      browser.commands.update({
-        name: "ae-clippings-paste-clipping",
-        shortcut: `${modifierKeys}+${aEvent.target.value}`,
-      });
+      let keybShct = `${modifierKeys}+${aEvent.target.value}`;
+
+      if (gClippings.isDirectSetKeyboardShortcut()) {        
+        log("Clippings/wx::options.js: Keyboard shortcut changed. Updating command with new keyboard shortcut: " + keybShct);
+        
+        browser.commands.update({
+          name: aeConst.CMD_CLIPPINGS_KEYBOARD_PASTE,
+          shortcut: keybShct,
+        });
+      }
+      else {
+        setPref({ pasteShortcutKeyPrefix: keybShct });
+      }
     });
   });
 }

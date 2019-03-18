@@ -12,6 +12,7 @@ const PASTE_ACTION_SEARCH_CLIPPING = 2;
 let gClippingsDB = null;
 let gOS = null;
 let gHostAppName = null;
+let gHostAppVer;
 let gAutoIncrPlchldrs = null;
 let gClippingMenuItemIDMap = {};
 let gFolderMenuItemIDMap = {};
@@ -417,114 +418,112 @@ function init()
   log("Clippings/wx: Initializing integration with host app...");
   
   initClippingsDB();
-  
-  if (! ("browser" in window)) {
-    gHostAppName = "Google Chrome";
-    log("Clippings/wx: Host app: Google Chrome");
-  }
-  else {
-    let getBrowserInfo = browser.runtime.getBrowserInfo();
-    getBrowserInfo.then(aBrwsInfo => {
-      gHostAppName = `${aBrwsInfo.name} ${aBrwsInfo.version}`;
-      log(`Clippings/wx: Host app: ${aBrwsInfo.name} (version ${aBrwsInfo.version})`);
-    });
-  }
 
-  chrome.runtime.getPlatformInfo(aInfo => {
-    log("Clippings/wx: OS: " + aInfo.os);
-    gOS = aInfo.os;
+  let getBrwsInfo = browser.runtime.getBrowserInfo();
+  let getPlatInfo = browser.runtime.getPlatformInfo();
+
+  Promise.all([getBrwsInfo, getPlatInfo]).then(aResults => {
+    let brws = aResults[0];
+    let platform = aResults[1];
+    
+    gHostAppName = brws.name;
+    gHostAppVer = brws.version;
+    log(`Clippings/wx: Host app: ${gHostAppName} (version ${gHostAppVer})`);
+
+    gOS = platform.os;
+    log("Clippings/wx: OS: " + gOS);
 
     if (gPrefs.clippingsMgrMinzWhenInactv === undefined) {
       gPrefs.clippingsMgrMinzWhenInactv = (gOS == "linux");
     }
-  });
 
-  chrome.browserAction.onClicked.addListener(aTab => {
-    openClippingsManager();
-  });
+    chrome.browserAction.onClicked.addListener(aTab => {
+      openClippingsManager();
+    });
 
-  gClippingsListener.origin = gClippingsListeners.ORIGIN_HOSTAPP;
-  gClippingsListeners.add(gClippingsListener);
-  gSyncClippingsListeners.add(gSyncClippingsListener);
-  
-  window.addEventListener("unload", onUnload, false);
-  initMessageListeners();
+    gClippingsListener.origin = gClippingsListeners.ORIGIN_HOSTAPP;
+    gClippingsListeners.add(gClippingsListener);
+    gSyncClippingsListeners.add(gSyncClippingsListener);
+    
+    window.addEventListener("unload", onUnload, false);
+    initMessageListeners();
 
-  if (gPrefs.syncClippings) {
-    gSyncFldrID = gPrefs.syncFolderID;
+    if (gPrefs.syncClippings) {
+      gSyncFldrID = gPrefs.syncFolderID;
 
-    // The context menu will be built when refreshing the sync data, via the
-    // onReloadFinish event handler of the Sync Clippings listener.
-    refreshSyncedClippings(true);
-  }
-  else {
-    buildContextMenu();
-  }
-  
-  aeClippingSubst.init(navigator.userAgent, gPrefs.autoIncrPlcHldrStartVal);
-  gAutoIncrPlchldrs = new Set();
-
-  browser.storage.onChanged.addListener((aChanges, aAreaName) => {
-    let changedPrefs = Object.keys(aChanges);
-
-    for (let pref of changedPrefs) {
-      gPrefs[pref] = aChanges[pref].newValue;
-
-      if (pref == "autoIncrPlcHldrStartVal") {
-        aeClippingSubst.setAutoIncrementStartValue(aChanges[pref].newValue);
-      }
-      else if (gPrefs.pasteShortcutKeyPrefix) {
-        setShortcutKeyPrefix(gPrefs.pasteShortcutKeyPrefix);
-      }
+      // The context menu will be built when refreshing the sync data, via the
+      // onReloadFinish event handler of the Sync Clippings listener.
+      refreshSyncedClippings(true);
     }
-  });
+    else {
+      buildContextMenu();
+    }
+    
+    aeClippingSubst.init(navigator.userAgent, gPrefs.autoIncrPlcHldrStartVal);
+    gAutoIncrPlchldrs = new Set();
 
-  chrome.commands.onCommand.addListener(aCmdName => {
-    info(`Clippings/wx: Command "${aCmdName}" invoked!`);
+    browser.storage.onChanged.addListener((aChanges, aAreaName) => {
+      let changedPrefs = Object.keys(aChanges);
 
-    if (aCmdName == "ae-clippings-paste-clipping" && gPrefs.keyboardPaste) {
-      browser.tabs.query({ active: true, currentWindow: true }).then(aTabs => {
-        let activeTabID = aTabs[0].id;
-        gPasteClippingTargetTabID = activeTabID;
-        log(`Clippings/wx: Active tab ID: ${activeTabID} - opening keyboard paste dialog.`);
-        openKeyboardPasteDlg();
+      for (let pref of changedPrefs) {
+        gPrefs[pref] = aChanges[pref].newValue;
+
+        if (pref == "autoIncrPlcHldrStartVal") {
+          aeClippingSubst.setAutoIncrementStartValue(aChanges[pref].newValue);
+        }
+        else if (gPrefs.pasteShortcutKeyPrefix && !isDirectSetKeyboardShortcut()) {
+          setShortcutKeyPrefix(gPrefs.pasteShortcutKeyPrefix);
+        }
+      }
+    });
+
+    chrome.commands.onCommand.addListener(aCmdName => {
+      info(`Clippings/wx: Command "${aCmdName}" invoked!`);
+
+      if (aCmdName == aeConst.CMD_CLIPPINGS_KEYBOARD_PASTE && gPrefs.keyboardPaste) {
+        browser.tabs.query({ active: true, currentWindow: true }).then(aTabs => {
+          let activeTabID = aTabs[0].id;
+          gPasteClippingTargetTabID = activeTabID;
+          log(`Clippings/wx: Active tab ID: ${activeTabID} - opening keyboard paste dialog.`);
+          openKeyboardPasteDlg();
+        });
+      }
+    });
+
+    if (gPrefs.pasteShortcutKeyPrefix && !isDirectSetKeyboardShortcut()) {
+      setShortcutKeyPrefix(gPrefs.pasteShortcutKeyPrefix);
+    }
+
+    if (gPrefs.backupRemFirstRun && !gPrefs.lastBackupRemDate) {
+      browser.storage.local.set({
+        lastBackupRemDate: new Date().toString(),
       });
     }
-  });
 
-  if (gPrefs.pasteShortcutKeyPrefix) {
-    setShortcutKeyPrefix(gPrefs.pasteShortcutKeyPrefix);
-  }
+    // Check in 5 minutes whether to show backup reminder notification.
+    window.setTimeout(showBackupNotification, aeConst.BACKUP_REMINDER_DELAY_MS);
 
-  if (gPrefs.backupRemFirstRun && !gPrefs.lastBackupRemDate) {
-    browser.storage.local.set({
-      lastBackupRemDate: new Date().toString(),
-    });
-  }
+    if (gPrefs.syncClippings && gPrefs.syncHelperCheckUpdates) {
+      // Check for updates to Sync Clippings Helper native app in 10 minutes.
+      window.setTimeout(showSyncHelperUpdateNotification, aeConst.SYNC_HELPER_CHECK_UPDATE_DELAY_MS);
+    }
 
-  // Check in 5 minutes whether to show backup reminder notification.
-  window.setTimeout(showBackupNotification, aeConst.BACKUP_REMINDER_DELAY_MS);
+    if (gPrefs.showWelcome) {
+      openWelcomePage();
+      browser.storage.local.set({ showWelcome: false });
+    }
 
-  if (gPrefs.syncClippings && gPrefs.syncHelperCheckUpdates) {
-    // Check for updates to Sync Clippings Helper native app in 10 minutes.
-    window.setTimeout(showSyncHelperUpdateNotification, aeConst.SYNC_HELPER_CHECK_UPDATE_DELAY_MS);
-  }
-
-  if (gPrefs.showWelcome) {
-    openWelcomePage();
-    browser.storage.local.set({ showWelcome: false });
-  }
-
-  if (gSetDisplayOrderOnRootItems) {
-    setDisplayOrderOnRootItems().then(() => {
+    if (gSetDisplayOrderOnRootItems) {
+      setDisplayOrderOnRootItems().then(() => {
+        gIsInitialized = true;
+        log("Clippings/wx: Display order on root folder items have been set.\nClippings initialization complete.");
+      });
+    }
+    else {
       gIsInitialized = true;
-      log("Clippings/wx: Display order on root folder items have been set.\nClippings initialization complete.");
-    });
-  }
-  else {
-    gIsInitialized = true;
-    log("Clippings/wx: Initialization complete.");   
-  }
+      log("Clippings/wx: Initialization complete.");   
+    }
+  });
 }
 
 
@@ -946,7 +945,7 @@ function initMessageListeners()
 async function setShortcutKeyPrefix(aShortcutKeyPrefix)
 {
   await browser.commands.update({
-    name: "ae-clippings-paste-clipping",
+    name: aeConst.CMD_CLIPPINGS_KEYBOARD_PASTE,
     shortcut: aShortcutKeyPrefix,
   });
 }
@@ -1786,6 +1785,12 @@ function pasteProcessedClipping(aClippingContent, aActiveTabID)
       gPasteClippingTargetTabID = null;
     });
   }
+}
+
+
+function isDirectSetKeyboardShortcut()
+{
+  return (versionCompare(gHostAppVer, "66.0") >= 0);
 }
 
 
