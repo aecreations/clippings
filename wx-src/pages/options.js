@@ -45,7 +45,6 @@ function init()
     $("#shortcut-key-prefix-modifiers").css({ letterSpacing: "-0.25px" });
   }
   
-  $("#shortcut-key-note").html(sanitizeHTML(chrome.i18n.getMessage("prefsShortcutKeyNote")));
   $("#sync-intro").html(sanitizeHTML(chrome.i18n.getMessage("syncIntro")));
 
   initDialogs();
@@ -261,7 +260,6 @@ function init()
       // When the keyboard shortcut is not any of the combinations that can be
       // set from the extension preferences page, it may have been set from
       // Manage Extension Shortcuts in Add-ons Manager (Firefox 66+).
-      $(keySelectElt).hide();
       $("#shortcut-key-note").text(chrome.i18n.getMessage("prefsOutsideShct"));
 
       gClippings.getShortcutKeyPrefixStr().then(aKeybPasteKeys => {
@@ -270,6 +268,9 @@ function init()
       return;
     }
     
+    $("#shortcut-key-note").html(sanitizeHTML(chrome.i18n.getMessage("prefsShortcutKeyNote")));
+    keySelectElt.style.display = "inline-block";
+
     $(keySelectElt).change(aEvent => {
       let modifierKeys = os == "mac" ? "Command+Shift" : "Alt+Shift"
       let keybShct = `${modifierKeys}+${aEvent.target.value}`;
