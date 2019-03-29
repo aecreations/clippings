@@ -1777,13 +1777,15 @@ function pasteProcessedClipping(aClippingContent, aActiveTabID)
   }
   else {
     // Firefox
-    browser.tabs.sendMessage(aActiveTabID, msgParams).then(aResult => {
-      // If successful, aResult should be true.
-    }).catch(aErr => {
-      console.error("Clippings/wx: pasteProcessedClipping(): Failed to paste clipping with placeholders: " + aErr);
-    }).finally(() => {
-      gPasteClippingTargetTabID = null;
-    });
+    window.setTimeout(function () {
+      browser.tabs.sendMessage(aActiveTabID, msgParams).then(aResult => {
+        // If successful, aResult should be true.
+      }).catch(aErr => {
+        console.error("Clippings/wx: pasteProcessedClipping(): Failed to paste clipping: " + aErr);
+      }).finally(() => {
+        gPasteClippingTargetTabID = null;
+      });
+    }, 150);    
   }
 }
 

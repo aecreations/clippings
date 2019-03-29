@@ -436,6 +436,10 @@ a:active {
     background-size: contain;
 }
 
+#turn-off-sync-clippings-ack-dlg #delete-sync-fldr {
+    margin-left: 0;
+}
+
 #sync-clippings-dlg input[type="checkbox"] + label,
 #turn-off-sync-clippings-ack-dlg .dlg-content > #delete-sync-fldr + label {
     font-size: 13px;
