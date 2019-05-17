@@ -10,6 +10,7 @@ let aeImportExport = {
   CLIPPINGS_JSON_VER_WITH_SEQ: "6.1",
   CLIPPINGS_JSON_CREATED_BY: "Clippings/wx",
   ROOT_FOLDER_ID: 0,
+  LAST_SEQ_VALUE: 9999999,
 
   HTML_EXPORT_PAGE_TITLE: "Clippings",
   
@@ -99,8 +100,16 @@ aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems
         };
 
         if (aAppendItems) {
-          // Make imported items appear last.
-          folder.displayOrder = 9999999;
+	  // Append items to root folder, but preserve sort order relative to
+	  // the other imported items.
+	  let seq = ("seq" in item) ? item.seq : 0;
+
+	  if (aParentFolderID == this.ROOT_FOLDER_ID) {
+            folder.displayOrder = this.LAST_SEQ_VALUE + seq;
+	  }
+	  else {
+	    folder.displayOrder = seq;
+	  }
         }
 	else {
 	  if ("seq" in item) {
@@ -139,7 +148,16 @@ aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems
         };
 
         if (aAppendItems) {
-          clipping.displayOrder = 9999999;
+	  // Append items to root folder, but preserve sort order relative to
+	  // the other imported items.
+	  let seq = ("seq" in item) ? item.seq : 0;
+
+	  if (aParentFolderID == this.ROOT_FOLDER_ID) {
+            clipping.displayOrder = this.LAST_SEQ_VALUE + seq;
+	  }
+	  else {
+	    clipping.displayOrder = seq;
+	  }
         }
 	else {
 	  if ("seq" in item) {
