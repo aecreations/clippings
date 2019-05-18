@@ -2121,6 +2121,15 @@ browser.notifications.onClicked.addListener(aNotifID => {
   
 
 //
+// Catch any unhandled promise rejections from 3rd-party libs
+//
+
+window.addEventListener("unhandledrejection", aEvent => {
+  aEvent.preventDefault();
+});
+
+
+//
 // Error reporting and debugging output
 //
 
