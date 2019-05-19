@@ -8,6 +8,8 @@ const WNDH_PLCHLDR_MULTI = 284;
 const WNDH_PLCHLDR_MULTI_SHORT = 240;
 const DLG_HEIGHT_ADJ_WINDOWS = 20;
 
+const REGEXP_CUSTOM_PLACEHOLDER = /\$\[([\w\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)(\{([\w \-\.\?_\/\(\)!@#%&;:,'"$£¥€*¡¢\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF\|])+\})?\]/m;
+
 let gClippings = null;
 let gPlaceholders = null;
 let gPlaceholdersWithDefaultVals = null;
@@ -154,41 +156,70 @@ $(window).on("contextmenu", aEvent => {
 
 function accept(aEvent)
 {
-  function getPlchldrRegExp(aPlaceholder)
+  let replcIdx = -1;
+  
+  // Remember the value of the same placeholder that was filled in previously.
+  let knownTags = {};
+
+  function fnReplaceSingle(aMatch, aP1, aP2, aP3, aOffset, aString)
+  {
+    let rv = "";
+    let varName = aP1;
+
+    if (varName in knownTags) {
+      return knownTags[varName];
+    }
+
+    let inputElt = document.getElementById("single-prmt-input");
+    if (inputElt.tagName == "INPUT") {
+      rv = inputElt.value;
+    }
+    else if (inputElt.tagName == "SELECT") {
+      rv = inputElt.options[inputElt.selectedIndex].textContent;
+    }
+
+    knownTags[varName] = rv;
+    return rv;
+  }
+
+  function fnReplaceMulti(aMatch, aP1, aP2, aP3, aOffset, aString)
   {
     let rv = "";
 
-    if (aPlaceholder in gPlaceholdersWithDefaultVals) {
-      let subre = gPlaceholdersWithDefaultVals[aPlaceholder].replace(/\|/g, "\\|");
-      rv = aPlaceholder + "\\{" +  subre + "\\}";
+    //console.log("placeholderPrompt.js::fnReplaceMulti(): matched string: " + aMatch + `(length ${aMatch.length} chars)\naP1: ${aP1}; aP2: ${aP2}; aP3: ${aP3}\noffset: ${aOffset}`);
+
+    let varName = aP1;
+
+    if (varName in knownTags) {
+      return knownTags[varName];
     }
-    else {
-      rv = aPlaceholder;
+
+    let inputElt = $(".ph-input")[replcIdx];
+    
+    if (inputElt.tagName == "INPUT") {
+      rv = inputElt.value;
     }
+    else if (inputElt.tagName == "SELECT") {
+      rv = inputElt.options[inputElt.selectedIndex].textContent;
+    }
+
+    knownTags[varName] = rv;
     return rv;
   }
   
   let content = "";
 
   if (gPlaceholders.length == 1) {
-    let plchldr = getPlchldrRegExp(gPlaceholders[0]);
-    
-    content = gClippingContent.replace(
-      new RegExp("\\$\\[" + plchldr + "\\]", "g"),
-      $("#single-prmt-input").val()
-    );
+    content = gClippingContent.replace(REGEXP_CUSTOM_PLACEHOLDER, fnReplaceSingle);
   }
   else {
     content = gClippingContent;
-    for (let i = 0; i < gPlaceholders.length; i++) {
-      let plchldr = getPlchldrRegExp(gPlaceholders[i]);
-
-      content = content.replace(
-        new RegExp("\\$\\[" + plchldr + "\\]", "g"),
-        $(".ph-input")[i].value
-      );
+    for (replcIdx = 0; replcIdx < gPlaceholders.length; replcIdx++) {
+      content = content.replace(REGEXP_CUSTOM_PLACEHOLDER, fnReplaceMulti);
     }
   }
+
+  //console.log("Content:" + content);
   
   chrome.runtime.sendMessage({
     msgID: "paste-clipping-with-plchldrs",

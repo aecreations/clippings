@@ -15,8 +15,10 @@ let aeClippingSubst = {
   // Extended-B, Cyrillic, Hebrew.
   // For normal placeholders, allow {|} chars for optional default values, and
   // within the { and }, allow the same characters as placeholder names, but
-  // including the space, hyphen and period.
-  REGEXP_CUSTOM_PLACEHOLDER: /\$\[([\w\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)(\{([\w \-\.\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF\|])+\})?\]/gm,
+  // including the space, hyphen, period, parentheses, common currency symbols,
+  // and the following special characters: ?_/!@#%&;,:'"
+  REGEXP_CUSTOM_PLACEHOLDER: /\$\[([\w\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)(\{([\w \-\.\?_\/\(\)!@#%&;:,'"$£¥€*¡¢\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF\|])+\})?\]/gm,
+
   REGEXP_AUTO_INCR_PLACEHOLDER: /\#\[([a-zA-Z0-9_\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)\]/gm,
   
   _userAgentStr: null,
