@@ -74,7 +74,10 @@ $(() => {
       }
       else {
         $("#plchldr-multi").show();
+
+        //let plchldrSet = new Set(gPlaceholders);
         let height = gPlaceholders.length == 2 ? WNDH_PLCHLDR_MULTI_SHORT : WNDH_PLCHLDR_MULTI;
+
         if (gClippings.getOS() == "win") {
           height += DLG_HEIGHT_ADJ_WINDOWS;
         }
@@ -157,7 +160,7 @@ $(window).on("contextmenu", aEvent => {
 function accept(aEvent)
 {
   let replcIdx = -1;
-  
+
   // Remember the value of the same placeholder that was filled in previously.
   let knownTags = {};
 
@@ -185,8 +188,6 @@ function accept(aEvent)
   function fnReplaceMulti(aMatch, aP1, aP2, aP3, aOffset, aString)
   {
     let rv = "";
-
-    //console.log("placeholderPrompt.js::fnReplaceMulti(): matched string: " + aMatch + `(length ${aMatch.length} chars)\naP1: ${aP1}; aP2: ${aP2}; aP3: ${aP3}\noffset: ${aOffset}`);
 
     let varName = aP1;
 
@@ -219,14 +220,14 @@ function accept(aEvent)
     }
   }
 
-  //console.log("Content:" + content);
+  console.log("Content:" + content);
   
   chrome.runtime.sendMessage({
     msgID: "paste-clipping-with-plchldrs",
     processedContent: content
   });
   
-  closeDlg();
+  //closeDlg();
 }
 
 
