@@ -13,6 +13,7 @@ const REGEXP_CUSTOM_PLACEHOLDER = /\$\[([\w\u0080-\u00FF\u0100-\u017F\u0180-\u02
 let gClippings = null;
 let gPlaceholders = null;
 let gPlaceholdersWithDefaultVals = null;
+let gSamePlchldrs = {};
 let gClippingContent = null;
 
 
@@ -49,6 +50,23 @@ $(() => {
       gPlaceholdersWithDefaultVals = aResp.placeholdersWithDefaultVals;
       gClippingContent = aResp.content;
 
+      let plchldrCount = {};
+
+      gPlaceholders.forEach(aPlchldr => {
+        if (aPlchldr in plchldrCount) {
+          plchldrCount[aPlchldr]++;
+        }
+        else {
+          plchldrCount[aPlchldr] = 1;
+        }
+      });
+
+      for (let plchldr in plchldrCount) {
+        if (plchldrCount[plchldr] > 1) {
+          gSamePlchldrs[plchldr] = [];
+        }
+      }
+
       if (gPlaceholders.length == 1) {
         let plchldr = gPlaceholders[0];
         $("#plchldr-single").show();
@@ -75,18 +93,24 @@ $(() => {
       else {
         $("#plchldr-multi").show();
 
-        //let plchldrSet = new Set(gPlaceholders);
-        let height = gPlaceholders.length == 2 ? WNDH_PLCHLDR_MULTI_SHORT : WNDH_PLCHLDR_MULTI;
+        let plchldrSet = new Set(gPlaceholders);
+        let height = plchldrSet.size == 2 ? WNDH_PLCHLDR_MULTI_SHORT : WNDH_PLCHLDR_MULTI;
 
         if (gClippings.getOS() == "win") {
           height += DLG_HEIGHT_ADJ_WINDOWS;
         }
         
         chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, { height }, aWnd => {
-          for (let plchldr of gPlaceholders) {
+          for (let i = 0; i < gPlaceholders.length; i++) {
+            let plchldr = gPlaceholders[i];
             let defaultVal = "";
             if (plchldr in gPlaceholdersWithDefaultVals) {
               defaultVal = gPlaceholdersWithDefaultVals[plchldr];
+            }
+
+            let classNames = "ph-row browser-style";
+            if (plchldr in gSamePlchldrs && gSamePlchldrs[plchldr].length > 0) {
+              classNames += " duplicate-plchldr";
             }
 
             if (defaultVal && defaultVal.indexOf("|") != -1) {
@@ -95,10 +119,14 @@ $(() => {
               for (let val of vals) {
                 optionElts += sanitizeHTML(`<option value="${val}">${val}</option>`);
               }
-              $("#plchldr-table").append(sanitizeHTML(`<div class="ph-row browser-style" data-placeholder="${plchldr}"><label class="ph-name">${plchldr}:</label><select class="ph-input browser-style">${optionElts}</select></div>`));
+              $("#plchldr-table").append(sanitizeHTML(`<div class="${classNames}" data-placeholder="${plchldr}"><label class="ph-name">${plchldr}:</label><select class="ph-input browser-style">${optionElts}</select></div>`));
             }
             else {
-              $("#plchldr-table").append(sanitizeHTML(`<div class="ph-row browser-style" data-placeholder="${plchldr}"><label class="ph-name">${plchldr}:</label><input type="text" class="ph-input" value="${defaultVal}"/></div>`));
+              $("#plchldr-table").append(sanitizeHTML(`<div class="${classNames}" data-placeholder="${plchldr}"><label class="ph-name">${plchldr}:</label><input type="text" class="ph-input" value="${defaultVal}"/></div>`));
+            }
+
+            if (plchldr in gSamePlchldrs) {
+              gSamePlchldrs[plchldr].push(i);
             }
           }
           $("#plchldr-table").fadeIn("fast");
@@ -159,20 +187,11 @@ $(window).on("contextmenu", aEvent => {
 
 function accept(aEvent)
 {
-  let replcIdx = -1;
-
-  // Remember the value of the same placeholder that was filled in previously.
-  let knownTags = {};
+  let multiReplcIdx = -1;
 
   function fnReplaceSingle(aMatch, aP1, aP2, aP3, aOffset, aString)
   {
     let rv = "";
-    let varName = aP1;
-
-    if (varName in knownTags) {
-      return knownTags[varName];
-    }
-
     let inputElt = document.getElementById("single-prmt-input");
     if (inputElt.tagName == "INPUT") {
       rv = inputElt.value;
@@ -181,22 +200,13 @@ function accept(aEvent)
       rv = inputElt.options[inputElt.selectedIndex].textContent;
     }
 
-    knownTags[varName] = rv;
     return rv;
   }
 
   function fnReplaceMulti(aMatch, aP1, aP2, aP3, aOffset, aString)
   {
     let rv = "";
-
-    let varName = aP1;
-
-    if (varName in knownTags) {
-      return knownTags[varName];
-    }
-
-    let inputElt = $(".ph-input")[replcIdx];
-    
+    let inputElt = $(".ph-input")[multiReplcIdx];
     if (inputElt.tagName == "INPUT") {
       rv = inputElt.value;
     }
@@ -204,8 +214,30 @@ function accept(aEvent)
       rv = inputElt.options[inputElt.selectedIndex].textContent;
     }
 
-    knownTags[varName] = rv;
     return rv;
+  }
+
+  // Populate hidden duplicate placeholder fields.
+  for (let plchldr in gSamePlchldrs) {
+    let phRows = $(`.ph-row[data-placeholder="${plchldr}"]`);
+    let phInputEltFirst = phRows[0].children[1];
+    let usrSelxn;
+    if (phInputEltFirst.tagName == "INPUT") {
+      usrSelxn = phInputEltFirst.value;
+    }
+    else if (phInputEltFirst.tagName == "SELECT") {
+      usrSelxn = phInputEltFirst.selectedIndex;
+    }
+
+    for (let i = 1; i < phRows.length; i++) {
+      let phInputElt = phRows[i].children[1];
+      if (phInputElt.tagName == "INPUT") {
+        phInputElt.value = usrSelxn;
+      }
+      else if (phInputElt.tagName == "SELECT") {
+        phInputElt.selectedIndex = usrSelxn;
+      }
+    }
   }
   
   let content = "";
@@ -215,13 +247,11 @@ function accept(aEvent)
   }
   else {
     content = gClippingContent;
-    for (replcIdx = 0; replcIdx < gPlaceholders.length; replcIdx++) {
+    for (multiReplcIdx = 0; multiReplcIdx < gPlaceholders.length; multiReplcIdx++) {
       content = content.replace(REGEXP_CUSTOM_PLACEHOLDER, fnReplaceMulti);
     }
   }
 
-  //console.log("Content:" + content);
-  
   chrome.runtime.sendMessage({
     msgID: "paste-clipping-with-plchldrs",
     processedContent: content

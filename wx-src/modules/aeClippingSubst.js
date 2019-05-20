@@ -59,17 +59,17 @@ aeClippingSubst.hasNoSubstFlag = function (aClippingName) {
 aeClippingSubst.getCustomPlaceholders = function (aClippingText)
 {
   let rv = [];
-  let plchldrs = new Set();
+  let plchldrs = [];
 
   let re = this.REGEXP_CUSTOM_PLACEHOLDER;
 
   let result;
   
   while ((result = re.exec(aClippingText)) != null) {
-    plchldrs.add(result[1]);
+    plchldrs.push(result[1]);
   }
 
-  rv = Array.from(plchldrs);
+  rv = plchldrs;
   return rv;
 };
 
