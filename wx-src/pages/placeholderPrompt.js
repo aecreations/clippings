@@ -220,14 +220,14 @@ function accept(aEvent)
     }
   }
 
-  console.log("Content:" + content);
+  //console.log("Content:" + content);
   
   chrome.runtime.sendMessage({
     msgID: "paste-clipping-with-plchldrs",
     processedContent: content
   });
   
-  //closeDlg();
+  closeDlg();
 }
 
 
