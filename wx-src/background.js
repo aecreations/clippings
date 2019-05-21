@@ -914,26 +914,27 @@ function initMessageListeners()
       }
       else if (aRequest.msgID == "paste-clipping-with-plchldrs") {
         let content = aRequest.processedContent;
-        let tabQuery = { active: true, currentWindow: true };
 
-        browser.tabs.query(tabQuery).then(aTabs => {
-          if (! aTabs[0]) {
-            // This could happen if the browser tab was closed while the
-            // placeholder prompt dialog was open.
-            alertEx(aeMsgBox.MSG_NO_ACTIVE_BROWSER_TAB);
-            return;
-          }
+        window.setTimeout(function () {
+          browser.tabs.query({active: true, currentWindow: true}).then(aTabs => {
+            if (! aTabs[0]) {
+              // This could happen if the browser tab was closed while the
+              // placeholder prompt dialog was open.
+              alertEx(aeMsgBox.MSG_NO_ACTIVE_BROWSER_TAB);
+              return;
+            }
 
-          let activeTabID = aTabs[0].id;
-          if (activeTabID != gPasteClippingTargetTabID) {
-            warn(`Clippings/wx: Detected mismatch between currently-active browser tab ID and what it was when invoking clipping paste.\nPrevious active tab ID = ${gPasteClippingTargetTabID}, active tab ID = ${activeTabID}`);
-            activeTabID = gPasteClippingTargetTabID;
-          }
-          pasteProcessedClipping(content, activeTabID);
-          
-        }).catch(aErr => {
-          console.error("Failed to query tabs: " + aErr);
-        });
+            let activeTabID = aTabs[0].id;
+            if (activeTabID != gPasteClippingTargetTabID) {
+              warn(`Clippings/wx: Detected mismatch between currently-active browser tab ID and what it was when invoking clipping paste.\nPrevious active tab ID = ${gPasteClippingTargetTabID}, active tab ID = ${activeTabID}`);
+              activeTabID = gPasteClippingTargetTabID;
+            }
+            pasteProcessedClipping(content, activeTabID);
+            
+          }).catch(aErr => {
+            console.error("Failed to query tabs: " + aErr);
+          });
+        }, 60);
       }
       else if (aRequest.msgID == "close-placeholder-prmt-dlg") {
         gWndIDs.placeholderPrmt = null;
