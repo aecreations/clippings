@@ -1,0 +1,52 @@
+{
+  "version": "6.1",
+  "createdBy": "Clippings/wx",
+  "userClippingsRoot": [
+    {
+      "name": "New demo clippings",
+      "children": [
+        {
+          "name": "Multi-select placehldr w/ default value containing special chars",
+          "content": "$[NAME]\n\n$[PlaceholderWithSpecialChars{Whoa!|This is OK?|Foo/bar _baz_|La-a|Censored profanity: @#%&!|The \"Best\" thing 'ever'|Lotsa Ca$h|£22.00 ea., in GBP|¥99 Japanese Yen|süß (German for «sweet» as in taste)|EUR €99.88|*Hello, world!?*|¡Hola! 89¢ per item}]\n\nTested with love on $[HOSTAPP]",
+          "shortcutKey": "",
+          "sourceURL": "",
+          "label": "",
+          "seq": 0
+        },
+        {
+          "name": "Normal placeholder w/ default value containing special chars",
+          "content": "$[NAME]\nHello, cruel world!\n\n$[PlaceholderWithSpecialChars{Whoa! This is OK? Foo/bar _baz_ La-a is an actual name! Censored profanity: @#%&! The \"Best\" thing 'ever'. Lotsa Ca$h: £22.00 ea. in GBP, ¥99 Japanese Yen... süß (German for «sweet» as in taste) ... EUR €99.88 -- *Hello, world!?*  ¡Hola! 89¢ per item}]\n\nGoodbye, cruel world!",
+          "shortcutKey": "",
+          "sourceURL": "",
+          "label": "",
+          "seq": 2
+        },
+        {
+          "name": "Moment.js test",
+          "content": "Today's date and time, expressed in various formats:\n\nDefault date: $[DATE]\nLong format: $[DATE(MMMM D, YYYY)]\nLong format with abbreviated month: $[DATE(MMM. DD, YYYY)]\nFull format with day of week: $[DATE(dddd, MMMM Do, YYYY)]\nShort American format: $[DATE(MM/DD/YYYY)]\n\nDefault time: $[TIME]\nNorth American time: $[TIME(h:mm A)]\n\nISO date: $[DATE(YYYY-MM-DD)]\nBritish date: $[DATE(D MMMM YYYY)]\n\nMilitary time with seconds: $[DATE(HH:mm:ss)]\n\nDate and time: $[DATE(ddd, MMM DD, YYYY hh:mm a)]\nDate and time as two separate placeholders: $[DATE(dddd, MMMM Do, YYYY)] @ $[TIME(h:mm A)]",
+          "shortcutKey": "",
+          "sourceURL": "",
+          "label": "",
+          "seq": 4
+        },
+        {
+          "name": "Multi-select placehldr w/ default value containing special chars #2",
+          "content": "$[NAME]\n\n$[PlaceholderWithSpecialChars{Whoa!|This is OK?|Foo/bar _baz_|La-a|Censored profanity: @#%&!|The \"Best\" thing 'ever'|Lotsa Ca$h|£22.00 ea., in GBP|¥99 Japanese Yen|süß (German for «sweet» as in taste)|EUR €99.88|*Hello, world!?*|¡Hola! 89¢ per item}]\n\nTested on $[HOSTAPP] $[beta{beta|}]\n$[UA]",
+          "shortcutKey": "",
+          "sourceURL": "",
+          "label": "",
+          "seq": 1
+        },
+        {
+          "name": "Placeholders used multiple times",
+          "content": "$[salutation] $[name],\n\nMy name is $[senderName{Adrianna|Casi|Holly|Jewelya|Poesia|Riley|Taya|Veronica}].  I think you are awesome!  Keep doing what you're doing, $[name]!\n\nHave a nice day, $[name]! :)\n\n$[closing{Yours truly|Best regards|Love}],\n\n$[senderName]",
+          "shortcutKey": "",
+          "sourceURL": "",
+          "label": "",
+          "seq": 3
+        }
+      ],
+      "seq": 1
+    }
+  ]
+}

@@ -68,3 +68,7 @@ select.browser-style:focus:not(:disabled) {
     margin-top: 2px;
     margin-bottom: 0;
 }
+
+.duplicate-plchldr {
+    display: none;
+}

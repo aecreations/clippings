@@ -2739,7 +2739,9 @@ function initDialogs()
           return;
         }
 
-        log("Clippings/wx::clippingsMgr.js: gDialogs.importFromFile.onAccept()::importFile(): Finished importing data.");
+        gClippings.setClippingsMgrRootFldrReseq(true);
+
+        log("Clippings/wx::clippingsMgr.js: gDialogs.importFromFile.onAccept()::importFile(): Importing Clippings data asynchronously.");
         
         $("#import-error").text("").hide();
         $("#import-progress-bar").hide();
@@ -2891,7 +2893,7 @@ function initDialogs()
     if (selectedFmtIdx == gDialogs.exportToFile.FMT_CLIPPINGS_WX) {
       let inclSrcURLs = $("#include-src-urls").prop("checked");
 
-      aeImportExport.exportToJSON(inclSrcURLs, false, aeConst.ROOT_FOLDER_ID, excludeSyncFldrID).then(aJSONData => {
+      aeImportExport.exportToJSON(inclSrcURLs, false, aeConst.ROOT_FOLDER_ID, excludeSyncFldrID, true).then(aJSONData => {
         let blobData = new Blob([aJSONData], { type: "application/json;charset=utf-8"});
 
         saveToFile(blobData, aeConst.CLIPPINGS_EXPORT_FILENAME);
@@ -2936,7 +2938,6 @@ function initDialogs()
   gDialogs.importConfirmMsgBox.onAfterAccept = () => {
     let clippingsListeners = gClippings.getClippingsListeners().getListeners();
     clippingsListeners.forEach(aListener => { aListener.importFinished(true) });
-    
     window.location.reload();
   };
 
@@ -3562,9 +3563,16 @@ function buildClippingsTree()
     if (gClippings.getPrefs().syncClippings) {
       gReloadSyncFldrBtn.show();
     }
+
+    if (gClippings.isClippingsMgrRootFldrReseq()) {
+      // This should only be performed after Clippings Manager is reloaded
+      // following an import.
+      gCmd.updateDisplayOrder(aeConst.ROOT_FOLDER_ID, null, null, true);
+      gClippings.setClippingsMgrRootFldrReseq(false);
+    }
     
   }).catch(aErr => {
-    console.error("Clippings/wx::buildContextMenu(): %s", aErr.message);
+    console.error("clippingsMgr.js::buildClippingsTree(): %s", aErr.message);
     showInitError();
   });
 }
