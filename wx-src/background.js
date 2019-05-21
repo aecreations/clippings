@@ -958,10 +958,6 @@ async function getShortcutKeyPrefixStr()
   let rv = "";
   let isMacOS = getOS() == "mac";
   let cmds = await browser.commands.getAll();
-
-  console.log("Clippings/wx: getShortcutKeyPrefixStr(): Commands:");
-  console.log(cmds);
-
   let shct = cmds[0].shortcut;
   let keybPasteKey = shct.substring(shct.lastIndexOf("+") + 1);
   let keybPasteMods = shct.substring(0, shct.lastIndexOf("+"));
