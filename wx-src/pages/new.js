@@ -290,7 +290,7 @@ function initDialogs()
       parentFldrID = Number($("#new-folder-dlg-fldr-picker-mnubtn").val());
     }
 
-    console.log("Clippings/wx::new.js: gNewFolderDlg.onAccept(): parentFldrID = " + parentFldrID);
+    log("Clippings/wx::new.js: gNewFolderDlg.onAccept(): parentFldrID = " + parentFldrID);
 
     let numItemsInParent = 0;  // For calculating display order of new folder.
 
