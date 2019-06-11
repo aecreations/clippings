@@ -1171,8 +1171,16 @@
     "message": "A new version of the Sync Clippings Helper app is available. Click here to go to the download page."
   },
 
+  "syncOptsHdg": {
+    "message": "Options"
+  },
+
   "syncUpdateChkOpt": {
     "message": "Automatically check for updates to Sync Clippings Helper"
+  },
+
+  "cxtMnuSyncItemsOnly": {
+    "message": "Show only synced items in the Clippings menu"
   },
 
   "aboutBtn": {

@@ -303,6 +303,7 @@ function initDialogs()
   $(".msgbox-icon").attr("os", osName);
   
   gDialogs.syncClippings = new aeDialog("#sync-clippings-dlg");
+  gDialogs.syncClippings.oldShowSyncItemsOpt = null;
   gDialogs.syncClippings.onInit = () => {
     $("#sync-clippings-dlg .dlg-accept").hide();
     $("#sync-clippings-dlg .dlg-cancel").text(chrome.i18n.getMessage("btnClose"));
@@ -321,14 +322,21 @@ function initDialogs()
 
       $(deck[0]).hide();
       $(deck[3]).show();
-      $("#sync-clippings-dlg").css({ height: "280px" });
+      $("#sync-clippings-dlg").css({ height: "336px" });
       $("#sync-clippings-dlg .dlg-accept").show();
       $("#sync-clippings-dlg .dlg-cancel").text(chrome.i18n.getMessage("btnCancel"));
 
-      $("#sync-helper-app-update-check").prop("checked", gClippings.getPrefs().syncHelperCheckUpdates);
+      let prefs = gClippings.getPrefs();
+      
+      $("#sync-helper-app-update-check").prop("checked", prefs.syncHelperCheckUpdates);
+      $("#show-only-sync-items").prop("checked", prefs.cxtMenuSyncItemsOnly);
+
+      gDialogs.syncClippings.oldShowSyncItemsOpt = $("#show-only-sync-items").prop("checked");
+
       // Fit text on one line for German locale.
       if (chrome.i18n.getUILanguage() == "de") {
         $("#sync-helper-app-update-check + label").css({ letterSpacing: "-0.5px" });
+        $("#show-only-sync-items + label").css({ letterSpacing: "-0.5px" });
       }
 
       let msg = { msgID: "get-sync-dir" };
@@ -369,7 +377,12 @@ function initDialogs()
       return;
     }
 
-    setPref({ syncHelperCheckUpdates: $("#sync-helper-app-update-check").prop("checked") });
+    setPref({
+      syncHelperCheckUpdates: $("#sync-helper-app-update-check").prop("checked"),
+      cxtMenuSyncItemsOnly: $("#show-only-sync-items").prop("checked"),
+    });
+
+    let rebuildClippingsMenu = $("#show-only-sync-items").prop("checked") != gDialogs.syncClippings.oldShowSyncItemsOpt;
 
     let msg = {
       msgID: "set-sync-dir",
@@ -396,7 +409,7 @@ function initDialogs()
 	    gIsActivatingSyncClippings = false;
 	  }
 
-          gClippings.refreshSyncedClippings();  // Asynchronous function.
+          gClippings.refreshSyncedClippings(rebuildClippingsMenu);  // Asynchronous function.
           
 	  let syncClippingsListeners = gClippings.getSyncClippingsListeners().getListeners();
 	  for (let listener of syncClippingsListeners) {

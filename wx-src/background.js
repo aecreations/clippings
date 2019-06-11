@@ -154,28 +154,39 @@ let gSyncClippingsListener = {
   onDeactivate(aOldSyncFolderID)
   {
     log("Clippings/wx: gSyncClippingsListener.onDeactivate()");
+
+    if (gPrefs.cxtMenuSyncItemsOnly) {
+      return;
+    }
+    
     let syncFldrMenuID = gFolderMenuItemIDMap[aOldSyncFolderID];
 
-    try {
-      // Change the icon on the "Synced Clippings" folder to be a normal
-      // folder icon.
-      chrome.contextMenus.update(syncFldrMenuID, { icons: { 16: "img/folder.svg" }});
-    }
-    catch (e) {
-      // Error returned if on Firefox 63 or older.
-      // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1414566>
-    }
+    // Change the icon on the "Synced Clippings" folder to be a normal
+    // folder icon.
+    chrome.contextMenus.update(syncFldrMenuID, { icons: { 16: "img/folder.svg" }});
   },
 
   onAfterDeactivate(aRemoveSyncFolder, aOldSyncFolderID)
   {
-    log("Clippings/wx: gSyncClippingsListeners.onAfterDeactivate(): Remove Synced Clippings folder: " + aRemoveSyncFolder);
+    function resetCxtMenuSyncItemsOnlyOpt(aRebuildCxtMenu) {
+      if (gPrefs.cxtMenuSyncItemsOnly) {
+        browser.storage.local.set({ cxtMenuSyncItemsOnly: false });
+      }
+      if (aRebuildCxtMenu) {
+        rebuildContextMenu();
+      }
+    }
 
-    let that = this;
+    log("Clippings/wx: gSyncClippingsListeners.onAfterDeactivate(): Remove Synced Clippings folder: " + aRemoveSyncFolder);
 
     if (aRemoveSyncFolder) {
       log(`Removing old Synced Clippings folder (ID = ${aOldSyncFolderID})`);
-      purgeFolderItems(aOldSyncFolderID, false).then(() => {});
+      purgeFolderItems(aOldSyncFolderID, false).then(() => {
+        resetCxtMenuSyncItemsOnlyOpt();
+      });
+    }
+    else {
+      resetCxtMenuSyncItemsOnlyOpt(true);
     }
   },
 
@@ -344,6 +355,7 @@ async function setDefaultPrefs()
     clippingsMgrMinzWhenInactv: undefined,
     syncClippings: false,
     syncFolderID: null,
+    cxtMenuSyncItemsOnly: false,
     pasteShortcutKeyPrefix: "",
     lastBackupRemDate: null,
     backupRemFirstRun: true,
@@ -385,6 +397,21 @@ async function setBalboaParkPrefs()
   let newPrefs = {
     syncHelperCheckUpdates: true,
     lastSyncHelperUpdChkDate: null,
+  };
+
+  for (let pref in newPrefs) {
+    gPrefs[pref] = newPrefs[pref];
+  }
+
+  await browser.storage.local.set(newPrefs);
+}
+
+
+async function setMalibuPrefs()
+{
+  // Version 6.2
+  let newPrefs = {
+    cxtMenuSyncItemsOnly: false,
   };
 
   for (let pref in newPrefs) {
@@ -701,7 +728,7 @@ async function enableSyncClippings(aIsEnabled)
 // TO DO: Make this an asynchronous function.
 // This can only be done after converting aeImportExport.importFromJSON()
 // to an asynchronous method.
-function refreshSyncedClippings(aIsInitHostApp)
+function refreshSyncedClippings(aRebuildClippingsMenu)
 {
   log("Clippings/wx: refreshSyncedClippings(): Retrieving synced clippings from the Sync Clippings helper app...");
 
@@ -762,7 +789,7 @@ function refreshSyncedClippings(aIsInitHostApp)
     }
 
     // Sync errors should not prevent building the Clippings menu on startup.
-    if (aIsInitHostApp) {
+    if (aRebuildClippingsMenu) {
       buildContextMenu();
     }
   });
@@ -1143,7 +1170,12 @@ function buildContextMenu()
     documentUrlPatterns: ["<all_urls>"]
   });
 
-  getContextMenuData(aeConst.ROOT_FOLDER_ID).then(aMenuData => {
+  let rootFldrID = aeConst.ROOT_FOLDER_ID;
+  if (gPrefs.syncClippings && gPrefs.cxtMenuSyncItemsOnly) {
+    rootFldrID = gSyncFldrID;
+  }
+
+  getContextMenuData(rootFldrID).then(aMenuData => {
     if (aeConst.DEBUG) {
       console.log("buildContextMenu(): Menu data: ");
       console.log(aMenuData);

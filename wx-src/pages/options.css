@@ -328,6 +328,14 @@ a:active {
     --height: 256px;
 }
 
+#sync-clippings-dlg fieldset {
+    margin-left: 0;
+}
+
+#sync-clippings-dlg fieldset legend {
+    padding-left: 0;
+}
+
 #sync-clippings-dlg #sync-cxn-error .msgbox-icon,
 #sync-clippings-dlg #generic-error .msgbox-icon {
     float: left;
