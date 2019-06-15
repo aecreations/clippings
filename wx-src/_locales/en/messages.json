@@ -645,6 +645,11 @@
     "description": "Clippings Manager - preset (built-in) placeholder menu"
   },
 
+  "mnuPlchldrFmtDateTime": {
+    "message": "Formatted Date/Time...",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+
   "clipMgrNameHint": {
     "message": "Clipping Name",
     "description": "Clippings Manager - clipping name textbox hint text"
@@ -769,6 +774,10 @@
 
   "numPlchldrDesc": {
     "message": "Each time the clipping is pasted, the value of this placeholder will automatically increase by one, until the placeholder is reset from the Clippings toolbar button context menu."
+  },
+
+  "dateTimeFmts": {
+    "message": "Available date/time formats:"
   },
 
   "labelSelImportFile": {

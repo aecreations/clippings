@@ -1548,6 +1548,11 @@ let gCmd = {
   {
     gDialogs.insAutoIncrPlchldr.showModal();
   },
+
+  insertFormattedDateTimePlaceholder: function ()
+  {
+    gDialogs.insDateTimePlchldr.showModal();
+  },
   
   showHidePlaceholderToolbar: function ()
   {
@@ -2138,6 +2143,10 @@ function initToolbar()
       case "insParentFolderName":
         insertPlaceholder("$[FOLDER]");
         break;
+
+      case "insFormattedDateTime":
+        gCmd.insertFormattedDateTimePlaceholder();
+        break;
         
       default:
         window.alert("The selected action is not available right now.");
@@ -2174,7 +2183,14 @@ function initToolbar()
       insParentFolderName: {
         name: chrome.i18n.getMessage("mnuPlchldrFldrName"),
         className: "ae-menuitem"
-      }
+      },
+
+      separator1: "--------",
+
+      insFormattedDateTime: {
+        name: chrome.i18n.getMessage("mnuPlchldrFmtDateTime"),
+        className: "ae-menuitem"
+      },
     }
   });
   
@@ -2654,6 +2670,89 @@ function initDialogs()
     contentTextArea.focus();
     insertTextIntoTextbox(contentTextArea, placeholder);
     that.close();
+  };
+
+  gDialogs.insDateTimePlchldr = new aeDialog("#insert-date-time-placeholder-dlg");
+  // TO DO: Handle non-English localizations.
+  gDialogs.insDateTimePlchldr.dateFormats = [
+    "dddd, MMMM Do, YYYY",
+    "MMMM D, YYYY",
+    "MM/DD/YYYY",
+    "YYYY-MM-DD",
+    "D MMMM YYYY",
+    "D.M.YYYY",
+    "DD-MMM-YYYY",
+    "MM/DD/YYYY h:mm A",
+    "ddd, MMM DD, YYYY h:mm:ss A ZZ",
+  ];
+  gDialogs.insDateTimePlchldr.timeFormats = [
+    "h:mm A",
+    "H:mm",
+    "H:mm:ss",
+  ];
+  gDialogs.insDateTimePlchldr.onInit = () => {
+    let that = gDialogs.insDateTimePlchldr;
+    
+    let date = new Date();
+    let dtFmtList = $("#date-time-format-list")[0];
+    let defaultDateFmtOpt = document.createElement("option");
+    defaultDateFmtOpt.setAttribute("value", "DATE");
+    defaultDateFmtOpt.appendChild(document.createTextNode(date.toLocaleDateString()));
+    dtFmtList.appendChild(defaultDateFmtOpt);
+
+    for (let dateFmt of that.dateFormats) {
+      let dateFmtOpt = document.createElement("option");
+      dateFmtOpt.setAttribute("value", dateFmt);
+      let dateFmtOptTxt = document.createTextNode(moment().format(dateFmt));
+      dateFmtOpt.appendChild(dateFmtOptTxt);
+      dtFmtList.appendChild(dateFmtOpt);
+    }
+
+    let defaultTimeFmtOpt = document.createElement("option");
+    defaultTimeFmtOpt.setAttribute("value", "TIME");
+    defaultTimeFmtOpt.appendChild(document.createTextNode(date.toLocaleTimeString()));
+    dtFmtList.appendChild(defaultTimeFmtOpt);
+
+    for (let timeFmt of that.timeFormats) {
+      let timeFmtOpt = document.createElement("option");
+      timeFmtOpt.setAttribute("value", timeFmt);
+      let timeFmtOptTxt = document.createTextNode(moment().format(timeFmt));
+      timeFmtOpt.appendChild(timeFmtOptTxt);
+      dtFmtList.appendChild(timeFmtOpt);
+    }
+  };
+  gDialogs.insDateTimePlchldr.onShow = () => {
+    let fmtList = $("#date-time-format-list")[0];
+    fmtList.focus();
+    fmtList.selectedIndex = 0;
+  };
+  gDialogs.insDateTimePlchldr.onAccept = () => {
+    let that = gDialogs.insDateTimePlchldr;
+
+    let placeholder = "";
+    let dtFmtList = $("#date-time-format-list")[0];
+    let selectedFmt = dtFmtList.options[dtFmtList.selectedIndex].value;
+
+    if (selectedFmt == "DATE" || selectedFmt == "TIME") {
+      placeholder = "$[" + selectedFmt + "]";
+    }
+    else {
+      if (dtFmtList.selectedIndex > that.dateFormats.length) {
+        placeholder = "$[TIME(" + selectedFmt + ")]";
+      }
+      else {
+        placeholder = "$[DATE(" + selectedFmt + ")]";
+      }
+    }
+
+    that.close();
+
+    let contentTextArea = $("#clipping-text");
+    contentTextArea.focus();
+    insertTextIntoTextbox(contentTextArea, placeholder);
+  };
+  gDialogs.insDateTimePlchldr.onUnload = () => {
+    $("#date-time-format-list").empty();
   };
   
   gDialogs.importFromFile = new aeDialog("#import-dlg");

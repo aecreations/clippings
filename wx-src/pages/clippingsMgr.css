@@ -779,6 +779,12 @@ ul.fancytree-container {
     background-color: pink;
 }
 
+#insert-date-time-placeholder-dlg {
+    --width: 300px;
+    --height: 336px;
+    top: 16px;
+}
+
 #clipping-missing-src-url-msgbox {
     --width: 430px;
 }
@@ -974,7 +980,8 @@ ul.fancytree-container {
     top: 22px;
 }
 
-#export-dlg #export-format-list {
+#export-dlg #export-format-list,
+#insert-date-time-placeholder-dlg #date-time-format-list {
     width: 100%;
     margin-top: 4px;
     margin-bottom: 4px;

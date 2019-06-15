@@ -145,6 +145,9 @@ aeClippingSubst.processStdPlaceholders = function (aClippingInfo)
 {
   let rv = "";
   let date = new Date();
+  let hasFmtDateTime = false;
+
+  hasFmtDateTime = (aClippingInfo.text.search(/\$\[DATE\(([AaDdHhKkMmosYLlT ,.:\-\/]+)\)\]/) != -1 || aClippingInfo.text.search(/\$\[TIME\(([AaHhKkmsLT .:]+)\)\]/) != -1);
 
   rv = aClippingInfo.text.replace(/\$\[DATE\]/gm, date.toLocaleDateString());
   rv = rv.replace(/\$\[TIME\]/gm, date.toLocaleTimeString());
@@ -153,7 +156,50 @@ aeClippingSubst.processStdPlaceholders = function (aClippingInfo)
   rv = rv.replace(/\$\[HOSTAPP\]/gm, this._hostAppName);
   rv = rv.replace(/\$\[UA\]/gm, this._userAgentStr);
 
+  if (hasFmtDateTime) {
+    let dtPlaceholders = [];
+    let dtReplaced = [];
+    let plchldrType = [];
+
+    let fmtDateRe = /\$\[DATE\(([AaDdHhKkMmosYLlT ,.:\-\/]+)\)\]/g;
+    let fmtDateResult;
+    while ((fmtDateResult = fmtDateRe.exec(aClippingInfo.text)) != null) {
+      dtPlaceholders.push(fmtDateResult[1]);
+      plchldrType.push("D");
+    }
+
+    let fmtTimeRe = /\$\[TIME\(([AaHhKkmsLT .:]+)\)\]/g;
+    let fmtTimeResult;
+    while ((fmtTimeResult = fmtTimeRe.exec(aClippingInfo.text)) != null) {
+      dtPlaceholders.push(fmtTimeResult[1]);
+      plchldrType.push("T");
+    }
+
+    this._processDateTimePlaceholders(dtPlaceholders, dtReplaced);
+
+    for (let i = 0; i < dtPlaceholders.length; i++) {
+      let suffix = "";
+      if (plchldrType[i] == "D") {
+	suffix = "$[DATE(";
+      }
+      else if (plchldrType[i] == "T"){
+	suffix = "$[TIME(";
+      }
+      let dtPlchldr = suffix + dtPlaceholders[i] + ")]";
+      rv = rv.replace(dtPlchldr, dtReplaced[i]);
+    }
+  }
+
   return rv;
+};
+
+
+aeClippingSubst._processDateTimePlaceholders = function (aPlaceholders, aReplaced)
+{
+  for (let fmt of aPlaceholders) {
+    let dtValue = moment().format(fmt);
+    aReplaced.push(dtValue);
+  }
 };
 
 
