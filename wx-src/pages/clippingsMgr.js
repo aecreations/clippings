@@ -2683,18 +2683,23 @@ function initDialogs()
     "D.M.YYYY",
     "DD-MMM-YYYY",
     "MM/DD/YYYY h:mm A",
-    "ddd, MMM DD, YYYY h:mm:ss A ZZ",
+    "ddd, MMM DD, YYYY hh:mm:ss A ZZ",
   ];
   gDialogs.insDateTimePlchldr.timeFormats = [
     "h:mm A",
-    "H:mm",
-    "H:mm:ss",
+    "HH:mm",
+    "HH:mm:ss",
   ];
   gDialogs.insDateTimePlchldr.onInit = () => {
     let that = gDialogs.insDateTimePlchldr;
+
+    let dtFmtList = $("#date-time-format-list")[0];
+
+    if (gClippings.getOS() != "mac") {
+      dtFmtList.setAttribute("size", "11");
+    }
     
     let date = new Date();
-    let dtFmtList = $("#date-time-format-list")[0];
     let defaultDateFmtOpt = document.createElement("option");
     defaultDateFmtOpt.setAttribute("value", "DATE");
     defaultDateFmtOpt.appendChild(document.createTextNode(date.toLocaleDateString()));
