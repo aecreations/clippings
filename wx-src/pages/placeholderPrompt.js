@@ -94,7 +94,7 @@ $(() => {
         $("#plchldr-multi").show();
 
         let plchldrSet = new Set(gPlaceholders);
-        let height = plchldrSet.size == 2 ? WNDH_PLCHLDR_MULTI_SHORT : WNDH_PLCHLDR_MULTI;
+        let height = plchldrSet.size <= 2 ? WNDH_PLCHLDR_MULTI_SHORT : WNDH_PLCHLDR_MULTI;
 
         if (gClippings.getOS() == "win") {
           height += DLG_HEIGHT_ADJ_WINDOWS;
