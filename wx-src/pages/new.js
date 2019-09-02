@@ -293,6 +293,11 @@ function initDialogs()
     log("Clippings/wx::new.js: gNewFolderDlg.onAccept(): parentFldrID = " + parentFldrID);
 
     let numItemsInParent = 0;  // For calculating display order of new folder.
+    let newFolder = {
+      name: $("#new-fldr-name").val(),
+      parentFolderID: parentFldrID,
+      displayOrder: 0,
+    };
 
     gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
       gClippingsDB.folders.where("parentFolderID").equals(parentFldrID).count().then(aNumFldrs => {
@@ -301,12 +306,9 @@ function initDialogs()
         
       }).then(aNumClippings => {
         numItemsInParent += aNumClippings;
+        newFolder.displayOrder = numItemsInParent;
+        return gClippingsDB.folders.add(newFolder);
 
-        return gClippingsDB.folders.add({
-          name: $("#new-fldr-name").val(),
-          parentFolderID: parentFldrID,
-          displayOrder: numItemsInParent,
-        });
       }).then(aFldrID => {
         let newFldrName = $("#new-fldr-name").val();
       
@@ -335,6 +337,12 @@ function initDialogs()
         gParentFolderID = aFldrID;
         
         that.resetTree();
+
+        let clippingsListeners = gClippings.getClippingsListeners().getListeners();
+        clippingsListeners.forEach(aListener => {
+          aListener.newFolderCreated(aFldrID, newFolder);
+        });
+        
         that.close();
       });
     }).catch(aErr => {
@@ -463,6 +471,16 @@ function accept(aEvent)
   let errorMsgBox = new aeDialog("#create-clipping-error-msgbox");
   let numItemsInParent = 0;  // For calculating display order of new clipping.
 
+  let newClipping = {
+    name: $("#clipping-name").val(),
+    content: $("#clipping-text").val(),
+    shortcutKey: shortcutKey,
+    parentFolderID: gParentFolderID,
+    label,
+    displayOrder: 0,
+    sourceURL: ($("#save-source-url")[0].checked ? gSrcURL : ""),
+  };
+
   gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
     gClippingsDB.folders.where("parentFolderID").equals(gParentFolderID).count().then(aNumFldrs => {
       numItemsInParent += aNumFldrs;
@@ -470,18 +488,15 @@ function accept(aEvent)
 
     }).then(aNumClippings => {
       numItemsInParent += aNumClippings;
-    
-      return gClippingsDB.clippings.add({
-        name: $("#clipping-name").val(),
-        content: $("#clipping-text").val(),
-        shortcutKey: shortcutKey,
-        parentFolderID: gParentFolderID,
-        label,
-        displayOrder: numItemsInParent,
-        sourceURL: ($("#save-source-url")[0].checked ? gSrcURL : "")
-      });
+      newClipping.displayOrder = numItemsInParent;
+      return gClippingsDB.clippings.add(newClipping);
 
     }).then(aNewClippingID => {
+      let clippingsListeners = gClippings.getClippingsListeners().getListeners();
+      clippingsListeners.forEach(aListener => {
+        aListener.newClippingCreated(aNewClippingID, newClipping);
+      });
+      
       let prefs = gClippings.getPrefs();
       if (prefs.syncClippings) {
         let syncFldrID = gClippings.getSyncFolderID();

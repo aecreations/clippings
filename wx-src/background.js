@@ -561,7 +561,7 @@ function initClippingsDB()
   gClippingsDB.version(1).stores({
     clippings: "++id, name, parentFolderID"
   });
-  // Needed to be able to use the Dexie.Observable add-on.
+  // This was needed to use the Dexie.Observable add-on (discontinued as of 6.2)
   gClippingsDB.version(2).stores({});
 
   gClippingsDB.version(3).stores({
@@ -569,91 +569,6 @@ function initClippingsDB()
   });
   gClippingsDB.version(4).stores({
     clippings: "++id, name, parentFolderID, shortcutKey"
-  });
-  
-  gClippingsDB.on("changes", aChanges => {
-    let clippingsListeners = gClippingsListeners.getListeners();
-
-    if (aChanges.length > 1) {
-      // Don't do anything if only displayOrder was changed.
-      let isDisplayOrderOnlyChanged = false;
-      for (let i = 0; i < aChanges.length; i++) {
-        let pptyChanges = aChanges[i].mods;
-
-        if (pptyChanges !== undefined && ("displayOrder" in pptyChanges)
-            && Object.keys(pptyChanges).length == 1) {
-          isDisplayOrderOnlyChanged = true;
-        }
-      }
-
-      if (isDisplayOrderOnlyChanged) {
-        return;
-      }
-
-      info(`Clippings/wx: There are ${aChanges.length} DB changes detected. Calling afterBatchChanges() on all Clippings listeners.`);
-      
-      clippingsListeners.forEach(aListener => { aListener.afterBatchChanges(aChanges) });
-      return;
-    }
-
-    log(`Clippings/wx: Invoking DB listener method on ${clippingsListeners.length} listeners.`);
-    
-    aChanges.forEach(aChange => {
-      switch (aChange.type) {
-      case aeConst.DB_CREATED:
-        info("Clippings/wx: Database observer detected CREATED event");
-        
-        if (aChange.table == "clippings") {
-          clippingsListeners.forEach(aListener => {
-            aListener.newClippingCreated(aChange.key, aChange.obj);
-          });
-        }
-        else if (aChange.table == "folders") {
-          clippingsListeners.forEach(aListener => {
-            aListener.newFolderCreated(aChange.key, aChange.obj);
-          });
-        }
-        break;
-        
-      case aeConst.DB_UPDATED:
-        info("Clippings/wx: Database observer detected UPDATED event");
-
-        // Don't do anything if only the displayOrder was changed.
-        if (aChange.mods !== undefined && ("displayOrder" in aChange.mods)
-            && Object.keys(aChange.mods).length == 1) {
-          break;
-        }
-
-        if (aChange.table == "clippings") {
-          clippingsListeners.forEach(aListener => {
-            aListener.clippingChanged(aChange.key, aChange.obj, aChange.oldObj);
-          });
-        }
-        else if (aChange.table == "folders") {
-          clippingsListeners.forEach(aListener => {
-            aListener.folderChanged(aChange.key, aChange.obj, aChange.oldObj);
-          });
-        }
-        break;
-        
-      case aeConst.DB_DELETED:
-        info("Clippings/wx: Database observer detected DELETED event");
-        if (aChange.table == "clippings") {
-          clippingsListeners.forEach(aListener => {
-            aListener.clippingDeleted(aChange.key, aChange.oldObj);
-          });
-        }
-        else if (aChange.table == "folders") {
-          clippingsListeners.forEach(aListener => {
-            aListener.folderDeleted(aChange.key, aChange.oldObj);
-          });
-        }
-        break;
-        
-      default:
-        break;
-      }
-    });
   });
 
   gClippingsDB.open().catch(aErr => { onError(aErr) });

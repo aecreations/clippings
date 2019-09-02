@@ -31,6 +31,105 @@ function sanitizeHTML(aHTMLStr)
 }
 
 
+// Wrappers to database create/update/delete operations. These also call the
+// Clippings listeners upon completion of the database operations.
+let gClippingsSvc = {
+  async createClipping(aClippingData)
+  {
+    let newClippingID = await gClippingsDB.clippings.add(aClippingData);
+    let clippingsListeners = gClippings.getClippingsListeners().getListeners();
+    clippingsListeners.forEach(aListener => {
+      aListener.newClippingCreated(newClippingID, aClippingData);
+    });
+
+    return newClippingID;
+  },
+
+  async createFolder(aFolderData)
+  {
+    let newFolderID = await gClippingsDB.folders.add(aFolderData);
+    let clippingsListeners = gClippings.getClippingsListeners().getListeners();
+    clippingsListeners.forEach(aListener => {
+      aListener.newFolderCreated(newFolderID, aFolderData);
+    });
+
+    return newFolderID;
+  },
+
+  async updateClipping(aClippingID, aChanges, aOldClipping)
+  {
+    if (! aOldClipping) {
+      aOldClipping = await gClippingsDB.clippings.get(aClippingID);
+    }
+    let numUpd = await gClippingsDB.clippings.update(aClippingID, aChanges);
+
+    let newClipping = {};
+    let keys = Object.keys(aOldClipping);
+    for (let key of keys) {
+      if (key in aChanges) {
+        newClipping[key] = aChanges[key];
+      }
+      else {
+        newClipping[key] = aOldClipping[key];
+      }
+    }        
+
+    let clippingsListeners = gClippings.getClippingsListeners().getListeners();
+    clippingsListeners.forEach(aListener => {
+      aListener.clippingChanged(aClippingID, newClipping, aOldClipping);
+    });
+
+    return numUpd;
+  },
+
+  async updateFolder(aFolderID, aChanges, aOldFolder)
+  {
+    if (! aOldFolder) {
+      aOldFolder = await gClippingsDB.folders.get(aFolderID);
+    } 
+    let numUpd = await gClippingsDB.folders.update(aFolderID, aChanges);
+
+    let newFolder = {};
+    let keys = Object.keys(aOldFolder);
+    for (let key of keys) {
+      if (key in aChanges) {
+        newFolder[key] = aChanges[key];
+      }
+      else {
+        newFolder[key] = aOldFolder[key];
+      }
+    }        
+
+    let clippingsListeners = gClippings.getClippingsListeners().getListeners();
+    clippingsListeners.forEach(aListener => {
+      aListener.folderChanged(aFolderID, newFolder, aOldFolder);
+    });
+
+    return numUpd;
+  },
+
+  async deleteClipping(aClippingID)
+  {
+    await gClippingsDB.clippings.delete(aClippingID);
+
+    let clippingsListeners = gClippings.getClippingsListeners().getListeners();
+    clippingsListeners.forEach(aListener => {
+      aListener.clippingDeleted(aClippingID);    
+    });
+  },
+
+  async deleteFolder(aFolderID)
+  {
+    await gClippingsDB.folders.delete(aFolderID);
+
+    let clippingsListeners = gClippings.getClippingsListeners().getListeners();
+    clippingsListeners.forEach(aListener => {
+      aListener.folderDeleted(aFolderID);
+    });
+  }
+};
+
+
 // Clippings listener object
 let gClippingsListener = {
   origin: null,
@@ -560,7 +659,7 @@ let gSrcURLBar = {
     let tree = getClippingsTree();
     let clippingID = parseInt(tree.activeNode.key);
     
-    gClippingsDB.clippings.update(clippingID, {
+    gClippingsSvc.updateClipping(clippingID, {
       sourceURL: updatedURL
     }).then(aNumUpdated => {
       if ($("#clipping-src-url > a").length == 0) {
@@ -668,7 +767,7 @@ let gShortcutKey = {
       }
 
       let clippingID = parseInt(selectedNode.key);
-      gClippingsDB.clippings.update(clippingID, { shortcutKey }).then(aNumUpd => {
+      gClippingsSvc.updateClipping(clippingID, { shortcutKey }).then(aNumUpd => {
         if (gSyncedItemsIDs[clippingID + "C"]) {
           gClippings.pushSyncFolderUpdates().catch(handlePushSyncItemsError);
         }
@@ -874,18 +973,18 @@ let gCmd = {
     }
 
     this.recentAction = this.ACTION_CREATENEW;
-      
-    let createClipping = gClippingsDB.clippings.add({
+
+    let newClipping = {
       name,
       content: "",
       shortcutKey: "",
       parentFolderID: parentFolderID,
       label: "",
       sourceURL: "",
-      displayOrder
-    });
-
-    createClipping.then(aNewClippingID => {
+      displayOrder,      
+    };
+      
+    gClippingsSvc.createClipping(newClipping).then(aNewClippingID => {
       if (aDestUndoStack == this.UNDO_STACK) {
         this.undoStack.push({
           action: this.ACTION_CREATENEW,
@@ -912,17 +1011,17 @@ let gCmd = {
 
     this.recentAction = this.ACTION_CREATENEW;
 
-    let createClipping = gClippingsDB.clippings.add({
+    let newClipping = {
       name: aName,
       content: aContent,
       shortcutKey: "",
       parentFolderID: aParentFolderID,
       label: "",
       sourceURL: "",
-      displayOrder: 999999,
-    });
+      displayOrder: 999999,      
+    };
 
-    createClipping.then(aNewClippingID => {
+    gClippingsSvc.createClipping(newClipping).then(aNewClippingID => {
       if (aDestUndoStack == this.UNDO_STACK) {
         this.undoStack.push({
           action: this.ACTION_CREATENEW,
@@ -962,13 +1061,13 @@ let gCmd = {
 
     this.recentAction = this.ACTION_CREATENEWFOLDER;
 
-    let createFolder = gClippingsDB.folders.add({
+    let newFolder = {
       name: chrome.i18n.getMessage("newFolder"),
       parentFolderID,
       displayOrder,
-    });
+    };
 
-    createFolder.then(aNewFolderID => {
+    gClippingsSvc.createFolder(newFolder).then(aNewFolderID => {
       if (aDestUndoStack == this.UNDO_STACK) {
         this.undoStack.push({
           action: this.ACTION_CREATENEWFOLDER,
@@ -1026,7 +1125,7 @@ let gCmd = {
       
       this.recentAction = this.ACTION_DELETEFOLDER;
 
-      gClippingsDB.folders.update(id, { parentFolderID: aeConst.DELETED_ITEMS_FLDR_ID }).then(aNumUpd => {
+      gClippingsSvc.updateFolder(id, { parentFolderID: aeConst.DELETED_ITEMS_FLDR_ID }).then(aNumUpd => {
         if (aDestUndoStack == this.UNDO_STACK) {
           this.undoStack.push({
             action: this.ACTION_DELETEFOLDER,
@@ -1046,7 +1145,7 @@ let gCmd = {
     else {
       this.recentAction = this.ACTION_DELETECLIPPING;
 
-      gClippingsDB.clippings.update(id, {
+      gClippingsSvc.updateClipping(id, {
         parentFolderID: aeConst.DELETED_ITEMS_FLDR_ID,
         shortcutKey: ""
       }).then(aNumUpd => {
@@ -1080,7 +1179,7 @@ let gCmd = {
           
     gClippingsDB.clippings.get(aClippingID).then(aClipping => {
       oldParentFldrID = aClipping.parentFolderID;
-      return gClippingsDB.clippings.update(aClippingID, { parentFolderID: aNewParentFldrID });
+      return gClippingsSvc.updateClipping(aClippingID, { parentFolderID: aNewParentFldrID }, aClipping);
     }).then(aNumUpd => {
       if (aDestUndoStack == this.UNDO_STACK) {
         this.undoStack.push({
@@ -1114,8 +1213,10 @@ let gCmd = {
   {
     this.recentAction = this.ACTION_COPYTOFOLDER;
 
+    let clippingCpy = {};
+   
     gClippingsDB.clippings.get(aClippingID).then(aClipping => {
-      let clippingCpy = {
+      clippingCpy = {
         name: aClipping.name,
         content: aClipping.content,
         shortcutKey: "",
@@ -1124,7 +1225,8 @@ let gCmd = {
         sourceURL: aClipping.sourceURL
       };
 
-      return gClippingsDB.clippings.add(clippingCpy);
+      return gClippingsSvc.createClipping(clippingCpy);
+
     }).then(aNewClippingID => {
       if (aDestUndoStack == this.UNDO_STACK) {
         this.undoStack.push({
@@ -1155,7 +1257,7 @@ let gCmd = {
     
     gClippingsDB.folders.get(aFolderID).then(aFolder => {
       oldParentFldrID = aFolder.parentFolderID;
-      return gClippingsDB.folders.update(aFolderID, { parentFolderID: aNewParentFldrID });
+      return gClippingsSvc.updateFolder(aFolderID, { parentFolderID: aNewParentFldrID }, aFolder);
     }).then(aNumUpd => {
       if (aDestUndoStack == this.UNDO_STACK) {
         this.undoStack.push({
@@ -1186,12 +1288,16 @@ let gCmd = {
     let newFldrID = null;
     
     this.recentAction = this.ACTION_COPYTOFOLDER;
+
+    let folderCpy = {};
       
     gClippingsDB.folders.get(aFolderID).then(aFolder => {
-      return gClippingsDB.folders.add({
+      folderCpy = {
         name: aFolder.name,
         parentFolderID: aDestFldrID,
-      });
+      };
+      return gClippingsSvc.createFolder(folderCpy);
+      
     }).then(aNewFolderID => {
       newFldrID = aNewFolderID;
       return this._copyFolderHelper(aFolderID, aNewFolderID);
@@ -1223,15 +1329,15 @@ let gCmd = {
     return new Promise((aFnResolve, aFnReject) => {
       let oldName = "";
       
-      gClippingsDB.folders.get(aFolderID).then(aResult => {
-        oldName = aResult.name;
+      gClippingsDB.folders.get(aFolderID).then(aFolder => {
+        oldName = aFolder.name;
 
         if (aName == oldName) {
           return 0;
         }
 
 	that.recentAction = that.ACTION_EDITNAME;
-        return gClippingsDB.folders.update(aFolderID, { name: aName });
+        return gClippingsSvc.updateFolder(aFolderID, { name: aName }, aFolder);
 
       }).then(aNumUpd => {
         if (aNumUpd && aDestUndoStack == that.UNDO_STACK) {
@@ -1268,15 +1374,15 @@ let gCmd = {
     return new Promise((aFnResolve, aFnReject) => {
       let oldName = "";
       
-      gClippingsDB.clippings.get(aClippingID).then(aResult => {
-        oldName = aResult.name;
+      gClippingsDB.clippings.get(aClippingID).then(aClipping => {
+        oldName = aClipping.name;
 
         if (aName == oldName) {
           return 0;
         }
 
 	that.recentAction = that.ACTION_EDITNAME;
-        return gClippingsDB.clippings.update(aClippingID, { name: aName });
+        return gClippingsSvc.updateClipping(aClippingID, { name: aName }, aClipping);
 
       }).then(aNumUpd => {
         if (aNumUpd && aDestUndoStack == that.UNDO_STACK) {
@@ -1313,15 +1419,15 @@ let gCmd = {
     return new Promise((aFnResolve, aFnReject) => {
       let oldContent = "";
       
-      gClippingsDB.clippings.get(aClippingID).then(aResult => {
-        oldContent = aResult.content;
+      gClippingsDB.clippings.get(aClippingID).then(aClipping => {
+        oldContent = aClipping.content;
 
         if (aContent == oldContent) {
           return 0;
         }
 
 	that.recentAction = that.ACTION_EDITCONTENT;
-        return gClippingsDB.clippings.update(aClippingID, { content: aContent });
+        return gClippingsSvc.updateClipping(aClippingID, { content: aContent }, aClipping);
 
       }).then(aNumUpd => {
         if (aNumUpd && aDestUndoStack == that.UNDO_STACK) {
@@ -1358,9 +1464,9 @@ let gCmd = {
 
     this.recentAction = this.ACTION_SETLABEL;      
 
-    gClippingsDB.clippings.get(aClippingID).then(aResult => {
-      oldLabel = aResult.label;
-      return gClippingsDB.clippings.update(aClippingID, { label: aLabel });
+    gClippingsDB.clippings.get(aClippingID).then(aClipping => {
+      oldLabel = aClipping.label;
+      return gClippingsSvc.updateClipping(aClippingID, { label: aLabel }, aClipping);
 
     }).then(aNumUpd => {
       // Set the icon color on the tree list.
@@ -1425,11 +1531,11 @@ let gCmd = {
           let seq = (aFolderID == aeConst.ROOT_FOLDER_ID ? (i + 1) : i);
 
           if (suffix == "F") {
-            let fldrSeqUpd = gClippingsDB.folders.update(parseInt(childNodes[i].key), { displayOrder: seq });
+            let fldrSeqUpd = gClippingsSvc.updateFolder(parseInt(childNodes[i].key), { displayOrder: seq });
             seqUpdates.push(fldrSeqUpd);
           }
           else if (suffix == "C") {
-            let clipSeqUpd = gClippingsDB.clippings.update(parseInt(childNodes[i].key), { displayOrder: seq });
+            let clipSeqUpd = gClippingsSvc.updateClipping(parseInt(childNodes[i].key), { displayOrder: seq });
             seqUpdates.push(clipSeqUpd);
           }
 	}
@@ -1815,23 +1921,25 @@ let gCmd = {
     return new Promise((aFnResolve, aFnReject) => {
       gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
 	gClippingsDB.folders.where("parentFolderID").equals(aSrcFldrID).each((aItem, aCursor) => {
-          gClippingsDB.folders.add({
+          let folderCpy = {
             name: aItem.name,
             parentFolderID: aTargFldrID,
-          }).then(aNewSubFldrID => {
+          };
+          gClippingsSvc.createFolder(folderCpy).then(aNewSubFldrID => {
             this._copyFolderHelper(aItem.id, aNewSubFldrID);
           });
 
 	}).then(() => {
           return gClippingsDB.clippings.where("parentFolderID").equals(aSrcFldrID).each((aItem, aCursor) => {
-            gClippingsDB.clippings.add({
+            let clippingCpy = {
               name: aItem.name,
               content: aItem.content,
               shortcutKey: "",
               sourceURL: aItem.sourceURL,
               label: aItem.label,
-              parentFolderID: aTargFldrID
-            });
+              parentFolderID: aTargFldrID,
+            };
+            gClippingsSvc.createClipping(clippingCpy);
           });
 	}).then(() => {
 	  aFnResolve();
@@ -2878,13 +2986,13 @@ function initDialogs()
 
           let fldrID = aItem.id + "F";         
           if (! (fldrID in gSyncedItemsIDs)) {
-            gClippingsDB.folders.delete(parseInt(fldrID));
+            gClippingsSvc.deleteFolder(parseInt(fldrID));
           }
         }).then(() => {
           return gClippingsDB.clippings.each((aItem, aCursor) => {
             let clpgID = aItem.id + "C";
             if (! (clpgID in gSyncedItemsIDs)) {
-              gClippingsDB.clippings.delete(parseInt(clpgID));
+              gClippingsSvc.deleteClipping(parseInt(clpgID));
             }
           });
         }).then(() => {
@@ -3906,7 +4014,7 @@ function initShortcutKeyMenu()
       }
 
       let clippingID = parseInt(selectedNode.key);
-      gClippingsDB.clippings.update(clippingID, { shortcutKey });
+      gClippingsSvc.updateClipping(clippingID, { shortcutKey });
     });
   });
 }
