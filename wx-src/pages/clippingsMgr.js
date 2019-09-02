@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const DEBUG_TREE = false;
+const DEBUG_TREE = true;
 const DEBUG_WND_ACTIONS = false;
 const ENABLE_PASTE_CLIPPING = false;
 const NEW_CLIPPING_FROM_CLIPBOARD = "New Clipping From Clipboard";
@@ -132,10 +132,17 @@ let gClippingsSvc = {
 
 // Clippings listener object
 let gClippingsListener = {
+  _isCopying:   false,
+
   origin: null,
+  copiedItems: [],
   
   newClippingCreated: function (aID, aData, aDontSelect)
   {
+    if (this._isCopying) {
+      return;
+    }
+    
     if (gIsClippingsTreeEmpty) {
       unsetEmptyClippingsState();
     }
@@ -187,6 +194,10 @@ let gClippingsListener = {
 
   newFolderCreated: function (aID, aData, aDontSelect)
   {
+    if (this._isCopying) {
+      return;
+    }
+    
     if (gIsClippingsTreeEmpty) {
       unsetEmptyClippingsState();
     }
@@ -354,36 +365,38 @@ let gClippingsListener = {
   },
 
   clippingDeleted: function (aID, aOldData) {},
-
   folderDeleted: function (aID, aOldData) {},
 
-  afterBatchChanges: function (aDBChanges)
+  copyStarted: function ()
   {
-    info("Clippings/wx::clippingsMgr.js: gClippingsListener.afterBatchChanges()");
+    this._isCopying = true;
+  },
 
-    if (gCmd.recentAction == gCmd.ACTION_COPYTOFOLDER) {
-      info("Recent action: copy to folder");
-      
-      let recentActionInfo = gCmd.getRecentActionInfo();
-      
-      for (let i = 0; i < aDBChanges.length; i++) {
-	let dbChange = aDBChanges[i];
-	if (dbChange.table == "folders" && dbChange.type == aeConst.DB_CREATED) {
-	  let suppressFldrSelect = true;
-	  if (dbChange.key == recentActionInfo.id) {
-	    suppressFldrSelect = false;
-	  }
-	  this.newFolderCreated(dbChange.key, dbChange.obj, suppressFldrSelect);
-	}
-      }
-
-      for (let i = 0; i < aDBChanges.length; i++) {
-	let dbChange = aDBChanges[i];
-	if (dbChange.table == "clippings" && dbChange.type == aeConst.DB_CREATED) {
-	  this.newClippingCreated(dbChange.key, dbChange.obj, true);
-	}
+  copyFinished: function (aItemCopyID)
+  {
+    info("Clippings/wx::clippingsMgr.js: gClippingsListener.copyFinished()");
+       
+    this._isCopying = false;
+    
+    for (let i = 0; i < this.copiedItems.length; i++) {
+      let item = this.copiedItems[i];
+      if (item.itemType == gCmd.ITEMTYPE_FOLDER) {
+        let suppressFldrSelect = true;
+        if (item.id == aItemCopyID) {
+          suppressFldrSelect = false;
+        }
+        this.newFolderCreated(item.id, item, suppressFldrSelect);
       }
     }
+
+    for (let i = 0; i < this.copiedItems.length; i++) {
+      let item = this.copiedItems[i];
+      if (item.itemType == gCmd.ITEMTYPE_CLIPPING) {
+        this.newClippingCreated(item.id, item, true);
+      }
+    }
+
+    this.copiedItems = [];
   },
 
   importStarted: function () {},
@@ -1289,6 +1302,11 @@ let gCmd = {
     
     this.recentAction = this.ACTION_COPYTOFOLDER;
 
+    let clippingsListeners = gClippings.getClippingsListeners().getListeners();
+    clippingsListeners.forEach(aListener => {
+      aListener.copyStarted();
+    });
+
     let folderCpy = {};
       
     gClippingsDB.folders.get(aFolderID).then(aFolder => {
@@ -1300,6 +1318,14 @@ let gCmd = {
       
     }).then(aNewFolderID => {
       newFldrID = aNewFolderID;
+
+      gClippingsListener.copiedItems.push({
+        id: newFldrID,
+        itemType: this.ITEMTYPE_FOLDER,
+        name: folderCpy.name,
+        parentFolderID: folderCpy.parentFolderID,
+      });
+
       return this._copyFolderHelper(aFolderID, aNewFolderID);
       
     }).then(() => {
@@ -1316,6 +1342,10 @@ let gCmd = {
           gSyncedItemsIDs[aFolderID + "F"] = 1;
         }).catch(handlePushSyncItemsError);
       }
+
+      clippingsListeners.forEach(aListener => {
+        aListener.copyFinished(newFldrID);
+      });
     }).catch(aErr => {
       console.error("Clippings/wx::clippingsMgr.js: gCmd.copyFolderIntrl(): " + aErr);
       window.alert("Error copying folder: " + aErr);
@@ -1926,6 +1956,12 @@ let gCmd = {
             parentFolderID: aTargFldrID,
           };
           gClippingsSvc.createFolder(folderCpy).then(aNewSubFldrID => {
+            gClippingsListener.copiedItems.push({
+              id: aNewSubFldrID,
+              itemType: gCmd.ITEMTYPE_FOLDER,
+              name: folderCpy.name,
+              parentFolderID: folderCpy.parentFolderID,
+            });
             this._copyFolderHelper(aItem.id, aNewSubFldrID);
           });
 
@@ -1939,7 +1975,15 @@ let gCmd = {
               label: aItem.label,
               parentFolderID: aTargFldrID,
             };
-            gClippingsSvc.createClipping(clippingCpy);
+            gClippingsSvc.createClipping(clippingCpy).then(aNewClippingID => {
+              gClippingsListener.copiedItems.push({
+                id: aNewClippingID,
+                itemType: gCmd.ITEMTYPE_CLIPPING,
+                name: clippingCpy.name,
+                parentFolderID: clippingCpy.parentFolderID,
+                label: clippingCpy.label,
+              });
+            });
           });
 	}).then(() => {
 	  aFnResolve();

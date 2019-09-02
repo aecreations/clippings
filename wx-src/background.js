@@ -47,9 +47,16 @@ let gClippingsListeners = {
 
 let gClippingsListener = {
   _isImporting: false,
+  _isCopying: false,
   origin: null,
   
-  newClippingCreated: function (aID, aData) {
+  newClippingCreated: function (aID, aData)
+  {
+    if (this._isCopying) {
+      log("Clippings/wx: gClippingsListener.newClippingCreated(): Copying in progress; ignoring DB changes.");
+      return;
+    }
+    
     if (gIsReloadingSyncFldr) {
       log("Clippings/wx: gClippingsListener.newClippingCreated(): The Synced Clippings folder is being reloaded. Ignoring DB changes.");
       return;
@@ -58,7 +65,13 @@ let gClippingsListener = {
     rebuildContextMenu();
   },
 
-  newFolderCreated: function (aID, aData) {
+  newFolderCreated: function (aID, aData)
+  {
+    if (this._isCopying) {
+      log("Clippings/wx: gClippingsListener.newFolderCreated(): Copying in progress; ignoring DB changes.");
+      return;
+    }
+
     if (gIsReloadingSyncFldr || "isSync" in aData) {
       log("Clippings/wx: gClippingsListener.newFolderCreated(): The Synced Clippings folder is being reloaded. Ignoring DB changes.");
       return;
@@ -67,7 +80,8 @@ let gClippingsListener = {
     rebuildContextMenu();
   },
 
-  clippingChanged: function (aID, aData, aOldData) {
+  clippingChanged: function (aID, aData, aOldData)
+  {
     log("Clippings/wx: gClippingsListener.clippingChanged()");
 
     if (aData.name != aOldData.name) {
@@ -76,7 +90,8 @@ let gClippingsListener = {
     }
   },
 
-  folderChanged: function (aID, aData, aOldData) {
+  folderChanged: function (aID, aData, aOldData)
+  {
     log("Clippings/wx: gClippingsListener.folderChanged()");
 
     if ("isSync" in aOldData) {
@@ -95,17 +110,14 @@ let gClippingsListener = {
   clippingDeleted: function (aID, aOldData) {},
   folderDeleted: function (aID, aOldData) {},
 
-  afterBatchChanges: function (aDBChanges) {
-    if (gIsReloadingSyncFldr) {
-      log("Clippings/wx: gClippingsListener.afterBatchChanges(): The Synced Clippings folder is being reloaded. Ignoring DB changes.");
-      return;
-    }
-
-    if (this._isImporting) {
-      log("Clippings/wx: gClippingsListener.afterBatchChanges(): Import in progress. Ignoring DB changes.")
-      return;
-    }
-
+  copyStarted: function ()
+  {
+    this._isCopying = true;
+  },
+  
+  copyFinished: function (aItemCopyID)
+  {
+    this._isCopying = false;
     rebuildContextMenu();
   },
 
