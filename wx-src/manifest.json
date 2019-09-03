@@ -32,7 +32,6 @@
     "background": {
 	"scripts": [
 	    "lib/dexie/dexie.min.js",
-	    "lib/dexie/dexie-observable.min.js",
             "lib/datediff.js",
 	    "lib/moment.min.js",
 	    "modules/aeConst.js",
