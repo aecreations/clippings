@@ -66,6 +66,10 @@ $(() => {
   let clippingsListeners = gClippings.getClippingsListeners();
   gClippingsListener.origin = clippingsListeners.ORIGIN_WELCOME_PG;
   clippingsListeners.add(gClippingsListener);
+
+  $("#goto-whatsnew").click(aEvent => {
+    window.location.href = "http://aecreations.sourceforge.net/clippings/whatsnew.php";
+  });
   
   $("#goto-import-bkup").click(aEvent => {
     function initImportPg() {
