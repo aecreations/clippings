@@ -314,36 +314,30 @@ browser.runtime.onInstalled.addListener(aDetails => {
     browser.storage.local.get().then(aPrefs => {
       gPrefs = aPrefs;
 
-      if (versionCompare(oldVer, "6.1.1") == 0) {
-        log("Clippings/wx: Upgrade from version 6.1.1 detected. Initializing 6.1.2 preferences.");
-        setBalboaParkPrefs().then(() => {
-          gForceShowFirstTimeBkupNotif = true;
-          init();
-        });
+      if (! hasSanDiegoPrefs()) {
+        gSetDisplayOrderOnRootItems = true;
+        log("Initializing 6.1 user preferences.");
+        return setSanDiegoPrefs();
       }
-      else if (versionCompare(oldVer, "6.1.1") < 0) {
-        log("Clippings/wx: Upgrade from a version older than 6.1.1 detected.");
+      return null;
 
-        if (! ("syncClippings" in gPrefs)) {
-          log("Upgrade to version 6.1 was skipped. Initializing prefs from that release first.");
-          setSanDiegoPrefs().then(() => {
-            gSetDisplayOrderOnRootItems = true;
-            log("Finished initializing 6.1 prefs. Now initializing 6.1.2 prefs.");
-            return setBalboaParkPrefs();
-          }).then(() => {
-            init();
-          });
-          return;
-        }
-
+    }).then(() => {
+      if (! hasBalboaParkPrefs()) {
+        gForceShowFirstTimeBkupNotif = true;
         log("Initializing 6.1.2 user preferences.");
-        setBalboaParkPrefs().then(() => {
-          init();
-        });
+        return setBalboaParkPrefs();
       }
-      else {
-        init();
+      return null;
+
+    }).then(() => {
+      if (! hasMalibuPrefs()) {
+        log("Initializing 6.2 user preferences.");
+        return setMalibuPrefs();
       }
+      return null;
+      
+    }).then(() => {
+      init();
     });
   }
 });
@@ -382,9 +376,15 @@ async function setDefaultPrefs()
 }
 
 
-async function setSanDiegoPrefs()
+function hasSanDiegoPrefs()
 {
   // Version 6.1
+  return gPrefs.hasOwnProperty("syncClippings");
+}
+
+
+async function setSanDiegoPrefs()
+{
   let newPrefs = {
     syncClippings: false,
     syncFolderID: null,
@@ -403,9 +403,15 @@ async function setSanDiegoPrefs()
 }
 
 
-async function setBalboaParkPrefs()
+function hasBalboaParkPrefs()
 {
   // Version 6.1.2
+  return gPrefs.hasOwnProperty("syncHelperCheckUpdates");
+}
+
+
+async function setBalboaParkPrefs()
+{
   let newPrefs = {
     syncHelperCheckUpdates: true,
     lastSyncHelperUpdChkDate: null,
@@ -419,9 +425,15 @@ async function setBalboaParkPrefs()
 }
 
 
-async function setMalibuPrefs()
+function hasMalibuPrefs()
 {
   // Version 6.2
+  return gPrefs.hasOwnProperty("cxtMenuSyncItemsOnly");
+}
+
+
+async function setMalibuPrefs()
+{
   let newPrefs = {
     cxtMenuSyncItemsOnly: false,
   };
@@ -1258,7 +1270,7 @@ function showBackupNotification()
 
   let today = new Date();
   let lastBackupRemDate = new Date(gPrefs.lastBackupRemDate);
-  let diff = new DateDiff(today, lastBackupRemDate);
+  let diff = Date.diff(today, lastBackupRemDate);
   let numDays = 0;
 
   switch (gPrefs.backupRemFrequency) {
@@ -1364,7 +1376,7 @@ function showSyncHelperUpdateNotification()
   if (gPrefs.lastSyncHelperUpdChkDate) {
     today = new Date();
     lastUpdateCheck = new Date(gPrefs.lastSyncHelperUpdChkDate);
-    diff = new DateDiff(today, lastUpdateCheck);
+    diff = Date.diff(today, lastUpdateCheck);
   }
 
   if (!gPrefs.lastSyncHelperUpdChkDate || diff.days >= aeConst.SYNC_HELPER_CHECK_UPDATE_FREQ_DAYS) {
@@ -1749,7 +1761,9 @@ function pasteProcessedClipping(aClippingContent, aActiveTabID)
 
 function isDirectSetKeyboardShortcut()
 {
-  return (versionCompare(gHostAppVer, "66.0") >= 0);
+  let fxMajorVer = gHostAppVer.split(".")[0];
+  
+  return (fxMajorVer >= 66);
 }
 
 
