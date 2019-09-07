@@ -1270,7 +1270,7 @@ function showBackupNotification()
 
   let today = new Date();
   let lastBackupRemDate = new Date(gPrefs.lastBackupRemDate);
-  let diff = Date.diff(today, lastBackupRemDate);
+  let diff = new aeDateDiff(today, lastBackupRemDate);
   let numDays = 0;
 
   switch (gPrefs.backupRemFrequency) {
@@ -1376,7 +1376,7 @@ function showSyncHelperUpdateNotification()
   if (gPrefs.lastSyncHelperUpdChkDate) {
     today = new Date();
     lastUpdateCheck = new Date(gPrefs.lastSyncHelperUpdChkDate);
-    diff = Date.diff(today, lastUpdateCheck);
+    diff = new aeDateDiff(today, lastUpdateCheck);
   }
 
   if (!gPrefs.lastSyncHelperUpdChkDate || diff.days >= aeConst.SYNC_HELPER_CHECK_UPDATE_FREQ_DAYS) {
