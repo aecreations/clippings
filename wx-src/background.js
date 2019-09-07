@@ -1890,7 +1890,23 @@ function versionCompare(aVer1, aVer2)
     return false;
   }
 
-  return aVer1.localeCompare(aVer2);
+  let v1 = aVer1.split(".");
+  let v2 = aVer2.split(".");
+  const k = Math.min(v1.length, v2.length);
+  
+  for (let i = 0; i < k; ++ i) {
+    v1[i] = parseInt(v1[i], 10);
+    v2[i] = parseInt(v2[i], 10);
+    
+    if (v1[i] > v2[i]) {
+      return 1;
+    }
+    if (v1[i] < v2[i]) {
+      return -1;
+    }
+  }
+  
+  return (v1.length == v2.length ? 0: (v1.length < v2.length ? -1 : 1));
 }
 
 
