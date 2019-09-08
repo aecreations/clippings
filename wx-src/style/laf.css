@@ -1,0 +1,102 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+@import url("chrome://browser/content/extension.css");
+
+a {
+    color: #0060df;
+    text-decoration: none;
+}
+
+a:hover, a:focus {
+    text-decoration: underline;
+}
+
+a:active {
+    color: #003eaa;
+    text-decoration: underline;
+}
+
+button,
+select.browser-style {
+    border: 1px solid rgba(12, 12, 13, 0.1);
+    background-color: rgba(12, 12, 13, 0.1);
+    font: caption;
+}
+
+button {
+    border-radius: 2px;
+    text-align: center;
+}
+
+button[disabled] {
+    opacity: 0.4;
+}
+
+button.default {
+    border: 1px solid #0060df;
+    background-color: #0060df;
+    color: #fff;
+}
+
+button:hover {
+    border: 1px solid rgba(12, 12, 13, 0.2) !important;
+    background-color: rgba(12, 12, 13, 0.2);
+}
+
+select.browser-style:hover {
+    border: 1px solid rgba(12, 12, 13, 0.2) !important;
+    background-color: rgba(12, 12, 13, 0.2) !important;
+}
+
+button.default:hover {
+    border: 1px solid #003eaa;
+    background-color: #003eaa;
+}
+
+button:active {
+    border: 1px solid rgba(12, 12, 13, 0.3) !important;
+    background-color: rgba(12, 12, 13, 0.3);
+}
+
+select.browser-style:active {
+    border: 1px solid rgba(12, 12, 13, 0.3) !important;
+    background-color: rgba(12, 12, 13, 0.3) !important;
+}
+
+button.default:active {
+    border: 1px solid #002275;
+    background-color: #002275;
+}
+
+input[type="text"],
+input[type="password"] {
+    padding-left: 8px;
+    padding-right: 8px;
+    border: 1px solid rgba(12, 12, 13, 0.2);
+    font: caption;
+}
+
+input[type="text"]:hover,
+input[type="password"]:hover {
+    border-color: rgba(12, 12, 13, 0.3);
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-color: #0a84ff;
+    box-shadow: 0 0 0 2px #61b5ffbf;
+    transition-duration: 250ms;
+    transition-property: box-shadow;
+}
+
+input[type="text"]::selection,
+input[type="password"]::selection {
+    background-color: rgba(10, 132, 255, 0.3);
+}
+
+.error {
+    color: #d70022;
+}
