@@ -8,7 +8,15 @@
 :root {
     --toolbar-height: 30px;
     --statusbar-height: 22px;
+    --color-bkgd: white;
+    --color-default-text: black;
 }
+
+@media (prefers-color-scheme: dark) {
+    --color-bkgd: #2a2a2e;
+    --color-default-text: #f9f9fa;
+}
+
 
 html {
     height: 100%;
@@ -18,7 +26,9 @@ body {
     margin: 0;
     height: 100%;
     overflow: hidden;
+    background-color: var(--color-bkgd);
     font-size: 11px;
+    color: var(--color-default-text);
 }
 
 button {

@@ -2,8 +2,30 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-
 @import url("chrome://browser/content/extension.css");
+
+
+:root {
+    --color-btn-bkgd: rgba(12, 12, 13, 0.1);
+    --color-btn-bkgd-hover: rgba(12, 12, 13, 0.2);
+    --color-btn-border: rgba(12, 12, 13, 0.1);
+    --color-btn-text: black;
+    --color-tb-border: rgba(12, 12, 13, 0.2);
+    --color-tb-border-hover: rgba(12, 12, 13, 0.3);
+    --color-tb: black;
+}
+
+@media (prefers-color-scheme: dark) {
+    --color-btn-bkgd: #4a4a4f;
+    --color-btn-bkgd-hover: #737373;
+    --color-btn-border: #4a4a4f;
+    --color-btn-text: #f9f9fa;
+    --color-tb-bkgd: #0c0c0d;
+    --color-tb-border: #4a4a4f;
+    --color-tb-border-hover: #737373;
+    --color-tb: #f9f9fa;
+}
+
 
 a {
     color: #0060df;
@@ -21,9 +43,10 @@ a:active {
 
 button,
 select.browser-style {
-    border: 1px solid rgba(12, 12, 13, 0.1);
-    background-color: rgba(12, 12, 13, 0.1);
+    border: 1px solid var(--color-btn-border);
+    background-color: var(--color-btn-bkgd);
     font: caption;
+    color: var(--color-btn-text);
 }
 
 button {
@@ -42,13 +65,12 @@ button.default {
 }
 
 button:hover {
-    border: 1px solid rgba(12, 12, 13, 0.2) !important;
-    background-color: rgba(12, 12, 13, 0.2);
+    background-color: var(--color-btn-bkgd-hover);
 }
 
 select.browser-style:hover {
-    border: 1px solid rgba(12, 12, 13, 0.2) !important;
-    background-color: rgba(12, 12, 13, 0.2) !important;
+    border: 1px solid var(--color-btn-bkgd-hover) !important;
+    background-color: var(--color-btn-bkgd-hover) !important;
 }
 
 button.default:hover {
@@ -72,20 +94,25 @@ button.default:active {
 }
 
 input[type="text"],
-input[type="password"] {
+input[type="password"],
+textarea {
     padding-left: 8px;
     padding-right: 8px;
-    border: 1px solid rgba(12, 12, 13, 0.2);
+    border: 1px solid var(--color-tb-border);
+    background-color: var(--color-tb-bkgd);
     font: caption;
+    color: var(--color-tb);
 }
 
 input[type="text"]:hover,
-input[type="password"]:hover {
-    border-color: rgba(12, 12, 13, 0.3);
+input[type="password"]:hover,
+textarea:hover {
+    border-color: var(--color-tb-border-hover);
 }
 
 input[type="text"]:focus,
-input[type="password"]:focus {
+input[type="password"]:focus,
+textarea:focus {
     border-color: #0a84ff;
     box-shadow: 0 0 0 2px #61b5ffbf;
     transition-duration: 250ms;
@@ -93,7 +120,8 @@ input[type="password"]:focus {
 }
 
 input[type="text"]::selection,
-input[type="password"]::selection {
+input[type="password"]::selection,
+textarea::selection {
     background-color: rgba(10, 132, 255, 0.3);
 }
 

@@ -8,6 +8,23 @@
  * only-with-css-no-javascript-needed/>
  */
 
+:root {
+    --color-ovl-bkgd: black;
+    --opacity-ovl-bkgd: 0.5;
+    --color-lb-border: #484848;
+    --color-lb-bkgd: white;
+    --color-lb-shadow: #303030cc;
+}
+
+@media (prefers-color-scheme: dark) {
+    --color-ovl-bkgd: black;
+    --opacity-ovl-bkgd: 0.85;
+    --color-lb-border: #2a2a2e;
+    --color-lb-bkgd: #38383d;
+    --color-lb-shadow: #0c0c0d;
+}
+
+
 .lightbox-bkgrd {
     display: none;
     position: fixed;
@@ -15,9 +32,9 @@
     left: 0%;
     width: 100%;
     height: 100%;
-    background-color: black;
+    background-color: var(--color-ovl-bkgd);
     z-index: 1001;
-    opacity: 0.5;
+    opacity: var(--opacity-ovl-bkgd);
 }
 
 .lightbox, .panel {
@@ -34,11 +51,11 @@
     top: calc(calc(100% - var(--height, var(--default-height))) / 2);
     
     padding: 16px;
-    background-color: white;
+    background-color: var(--color-lb-bkgd);
     z-index: 1002;
 
-    border: 1px solid #484848;
-    box-shadow: 0px 0px 8px 2px rgba(48, 48, 48, 0.8);
+    border: 1px solid var(--color-lb-border);
+    box-shadow: 0px 2px 8px 1px var(--color-lb-shadow);
 
     font-size: 11px;
 }

@@ -2,12 +2,45 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-@import url("chrome://browser/content/extension.css");
+@import url("../style/laf.css");
+
+
+:root {
+    --url-bkgd-img: url("../img/bkgrd.png");
+    --color-bkgd: none;
+    --color-main-border: #ddd;
+    --color-main-bkgd: #fefefe;
+    --color-main-border-shadow: #e0e0e0;
+    --color-text-default: black;
+    --color-about-btn-bkgd: #f9f9fa;
+    --color-about-btn-bkgd-hover: #ededf0;
+    --color-about-btn-bkgd-active: #d7d7db;
+    --color-about-btn-border: #ededf0;
+    --color-about-btn-border-hover: #ededf0;
+    --color-about-btn black;
+}
+
+@media (prefers-color-scheme: dark) {
+    --url-bkgd-img: none;
+    --color-bkgd: #1a1a1e;
+    --color-main-border: #0c0c0d;
+    --color-main-bkgd: #2a2a2e;
+    --color-main-border-shadow: #0c0c0d;
+    --color-text-default: #f9f9fa;
+    --color-about-btn-bkgd: #2a2a2e;
+    --color-about-btn-bkgd-hover: #38383d;
+    --color-about-btn-bkgd-active: #4a4a4f;
+    --color-about-btn-border: #4a4a4f;
+    --color-about-btn-border-hover: #b1b1b3;
+    --color-about-btn #f9f9fa;
+}
 
 
 body {
-    background-image: url("../img/bkgrd.png");
+    background-color: var(--color-bkgd);
+    background-image: var(--url-bkgd-img);
     font-size: 13px;
+    color: var(--color-text-default);
 }
 
 #addon-icon {
@@ -29,10 +62,10 @@ main {
     width: 640px;
     margin: 24px auto 24px auto;
     padding: 16px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--color-main-border);
     border-radius: 2px;
-    box-shadow: 0 0 8px 2px #e0e0e0;
-    background-color: #fefefe;
+    box-shadow: 0 0 8px 2px var(--color-main-border-shadow);
+    background-color: var(--color-main-bkgd);
 }
 
 input[type="number"],
@@ -75,8 +108,6 @@ button {
     outline: unset;
     border-radius: 2px;
     box-shadow: 0 0 0 0 transparent;
-    border: 1px solid rgba(12, 12, 13, 0.1) !important;
-    background-color: rgba(12, 12, 13, 0.1);
     font: caption;
     font-size: 15px;
 }
@@ -225,30 +256,29 @@ a:active {
     min-width: unset;
     height: unset;
     float: right;
-    font-size: 11px;
-    border: 1px solid #ededf0;
+    border: 1px solid var(--color-about-btn-border);
     padding: 2px 8px;
+    background-color: var(--color-about-btn-bkgd);
     border-radius: 3px;
+    font-size: 11px;
     font-weight: 400;
-    background-color: #f9f9fa;
+    color: var(--color-about-btn);
 }
 
 #about-btn:hover {
-    border: 1px solid #b1b1b1;
-    background-color: #ededf0;
+    border: 1px solid var(--color-about-btn-border-hover);
+    background-color: var(--color-about-btn-bkgd-hover);
 }
 
 #about-btn:active {   
     border: 1px solid #b1b1b3;
-    background-color: #d7d7db;
+    background-color: var(--color-about-btn-bkgd-active);
 }
 
 .lightbox {
     top: 64px;
     padding-left: 28px;
     padding-right: 28px;
-    border: 1px solid #484848;
-    box-shadow: 0px 0px 8px 2px rgba(48, 48, 48, 0.8);
     border-radius: 4px;
     font-size: 15px;
 }
@@ -288,11 +318,6 @@ a:active {
 }
 
 .lightbox input[type="text"] {
-    border-top: 1px solid transparent;
-    border-left: 1px solid transparent;
-    border-right: 1px solid transparent;
-    border-bottom: 1px solid #b1b1b1;
-    background-color: -moz-Field;
     font-size: 15px;
 }
 
@@ -518,15 +543,7 @@ a:active {
 #about-dlg #credits label {
     line-height: 18px;
 }
-/**
-#about-dlg #credits .about-content-row {
-    line-height: 24px;
-}
 
-#about-dlg #diag-info .about-content-row {
-    line-height: 18px;
-}
-**/
 #about-dlg #diag-info {
     font-size: 11px;
 }

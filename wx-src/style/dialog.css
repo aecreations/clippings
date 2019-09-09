@@ -2,10 +2,25 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+@import url("laf.css");
+
+
+:root {
+    --color-bkgd: white;
+    --color-text-default: black;
+}
+
+@media (prefers-color-scheme: dark) {
+    --color-bkgd: #2a2a2e;
+    --color-text-default: #f9f9fa;
+}
+
 
 body {
     overflow: hidden;
     margin: 16px;
+    background-color: var(--color-bkgd);
+    color: var(--color-text-default);
     font-size: 11px;
 }
 
@@ -46,14 +61,6 @@ fieldset > legend {
     flex-flow: column nowrap;
 }
 
-.browser-style > input[type="text"] {
-    border-top: 1px solid transparent;
-    border-left: 1px solid transparent;
-    border-right: 1px solid transparent;
-    border-bottom: 1px solid #b1b1b1;
-    background-color: -moz-Field;
-}
-
 .browser-style > input[type="text"],
 .browser-style > textarea,
 select.browser-style {
@@ -66,13 +73,7 @@ select.browser-style {
 .browser-style > input[type="text"][readonly]:hover{
     border-bottom: 1px dotted;
 }
-
-.browser-style > input[type="text"]:not(disabled):hover {
-    border-top: 1px solid transparent;
-    border-left: 1px solid transparent;
-    border-right: 1px solid transparent;
-}
-
+/**
 .browser-style > input[type="text"]:active {
     border: 1px solid #0996f8;
 }
@@ -90,7 +91,7 @@ select.browser-style {
 .browser-style > input[type="text"][readonly]:focus:hover {
     box-shadow: 0 0 0 1px rgba(97, 181, 255, 0.75);
 }
-
+**/
 input[type="checkbox"] {
     vertical-align: -2px;
 }
