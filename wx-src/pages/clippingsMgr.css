@@ -13,8 +13,10 @@
 }
 
 @media (prefers-color-scheme: dark) {
-    --color-bkgd: #2a2a2e;
-    --color-default-text: #f9f9fa;
+    :root {
+	--color-bkgd: #2a2a2e;
+	--color-default-text: #f9f9fa;
+    }
 }
 
 
