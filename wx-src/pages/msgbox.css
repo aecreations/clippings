@@ -1,0 +1,71 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+@import url("chrome://browser/content/extension.css");
+
+
+:root {
+    --color-bkgd: white;
+    --color-default-text: black;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+	--color-bkgd: #2a2a2e;
+	--color-default-text: #f9f9fa;
+    }
+}
+
+
+body {
+    margin: 16px;
+    background-color: var(--color-bkgd);
+    color: var(--color-default-text);
+}
+
+button {
+    min-width: 88px;
+    min-height: 28px;
+    font-size: 13px !important;
+    text-align: center !important;
+}
+
+#icon {
+    float: left;
+}
+
+#msgbox-icon {
+    width: 36px;
+    height: 36px;
+    background-image: url("../img/warning-64.png");
+    background-size: contain;
+}
+
+#msgbox-icon[os="mac"] {
+    background-image: url("chrome://global/skin/icons/warning-64.png");
+}
+
+#msgbox-content {
+    margin-left: 44px;
+}
+
+#msgbox-content > p {
+    margin-top: 2px;
+    font-size: 13px;
+}
+
+#msgbox-buttons {
+    clear: both;
+    width: 100%;
+    text-align: right;
+    position: absolute;
+    bottom: 12px;
+    left: 0;
+    padding-right: 12px;
+}
+
+#btn-accept {
+    margin-right: 8px;
+    
+}
