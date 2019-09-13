@@ -337,6 +337,10 @@ browser.runtime.onInstalled.addListener(aDetails => {
       return null;
       
     }).then(() => {
+      if (gPrefs.clippingsMgrDetailsPane) {
+        gPrefs.clippingsMgrAutoShowDetailsPane = false;
+      }
+      
       init();
     });
   }
@@ -355,6 +359,7 @@ async function setDefaultPrefs()
     checkSpelling: true,
     openClippingsMgrInTab: false,
     pastePromptAction: aeConst.PASTEACTION_SHORTCUT_KEY,
+    clippingsMgrAutoShowDetailsPane: true,
     clippingsMgrDetailsPane: false,
     clippingsMgrStatusBar: false,
     clippingsMgrPlchldrToolbar: false,
@@ -436,6 +441,7 @@ async function setMalibuPrefs()
 {
   let newPrefs = {
     cxtMenuSyncItemsOnly: false,
+    clippingsMgrAutoShowDetailsPane: true,
   };
 
   for (let pref in newPrefs) {

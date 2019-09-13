@@ -456,6 +456,14 @@ function initLabelPicker()
 }
 
 
+function isClippingOptionsSet()
+{
+  return ($("#clipping-key")[0].selectedIndex != 0
+          || $("#clipping-label-picker").val() != ""
+          || $("#save-source-url")[0].checked);
+}
+
+
 function accept(aEvent)
 {
   let shortcutKeyMenu = $("#clipping-key")[0];
@@ -525,9 +533,22 @@ function accept(aEvent)
         log("Clippings/wx::new.js: accept(): Response from the Sync Clippings helper app:");
         log(aMsgResult);
       }
-      
-      closeDlg();
 
+      let isClippingsMgrAutoShowDetailsPane = gClippings.getPrefs().clippingsMgrAutoShowDetailsPane;
+      
+      if (isClippingsMgrAutoShowDetailsPane && isClippingOptionsSet()) {
+        browser.storage.local.set({
+          clippingsMgrAutoShowDetailsPane: false,
+          clippingsMgrDetailsPane: true
+          
+        }).then(() => {
+          closeDlg();
+        });
+      }
+      else {
+        closeDlg();
+      }
+      
     }).catch("OpenFailedError", aErr => {
       // OpenFailedError exception thrown if Firefox is set to "Never remember
       // history."
