@@ -6,7 +6,17 @@
 :root {
     --toolbar-height: 30px;
     --col-hdr-height: 20px;
+    --color-main-toolbar-bkgd: linear-gradient(to bottom, #fcfcfc 0%, #dedede 100%);
+    --color-main-toolbar-text: #0c0c0d;
 }
+
+@media (prefers-color-scheme: dark) {
+    :root {
+	--color-main-toolbar-bkgd: #38383d;
+	--color-main-toolbar-text: #f9f9fa;
+    }
+}
+
 
 body {
     overflow: hidden;
@@ -76,9 +86,13 @@ body {
     padding-left: 2px;
     padding-top: 2px;
     padding-bottom: 2px;
-    background: linear-gradient(to bottom, #fcfcfc 0%, #dedede 100%);
-    color: #0c0c0d;
+    background: var(--color-main-toolbar-bkgd);
+    color: var(--color-main-toolbar-text);
     border-bottom: 1px solid silver;
+}
+
+#shortcut-list #shortcut-list-toolbar button {
+    color: var(--color-main-toolbar-text);
 }
 
 #shortcut-list-toolbar #paste-clipping {
@@ -213,7 +227,6 @@ body {
     background-repeat: no-repeat;
     font-size: 13px;
 
-    /* TextExt overrides */
     font: caption;
     font-size: 13px;
 }

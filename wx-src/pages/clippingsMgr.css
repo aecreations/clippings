@@ -9,14 +9,41 @@
 :root {
     --toolbar-height: 30px;
     --statusbar-height: 22px;
+
     --color-bkgd: white;
     --color-default-text: black;
+    --color-main-toolbar-bkgd: linear-gradient(to bottom, #fcfcfc 0%, #dedede 100%);
+    --color-main-toolbar-text: #0c0c0d;
+    --color-plchldr-toolbar-bkgd: #eee;
+    --color-plchldr-toolbar-text: #0c0c0d;
+    --color-toolbar-hover-bkgd: rgba(12, 12, 13, 0.2);
+    --color-toolbar-active-bkgd: rgba(12, 12, 13, 0.3);
+    --color-toolbar-menubtn-open: #d7d7db;
+    --color-details-pane-bkgd: white;
+    --color-details-pane-btn-bkgd: #fbfbfb;
+    --color-details-pane-btn-hover-bkgd: #ebebeb;
+    --color-details-pane-btn-border: 1px solid #b1b1b1;
+    --color-details-pane-btn-text: black;
+    --color-statusbar-bkgd: -moz-dialog;
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
 	--color-bkgd: #2a2a2e;
 	--color-default-text: #f9f9fa;
+	--color-main-toolbar-bkgd: #38383d;
+	--color-main-toolbar-text: #f9f9fa;
+	--color-plchldr-toolbar-bkgd: #38383d;
+	--color-plchldr-toolbar-text: #f9f9fa;
+	--color-toolbar-hover-bkgd: #737373;
+	--color-toolbar-active-bkgd: #b1b1b3;
+	--color-toolbar-menubtn-open: #737373;
+	--color-details-pane-bkgd: ##38383d;
+	--color-details-pane-btn-bkgd: #4a4a4f;
+	--color-details-pane-btn-hover-bkgd: #737373;
+	--color-details-pane-btn-border: 1px solid #737373;
+	--color-details-pane-btn-text: #f9f9fa;
+	--color-statusbar-bkgd: #4a4a4f;
     }
 }
 
@@ -115,24 +142,24 @@ input[type="checkbox"] + label {
     background-position: center;
     background-repeat: no-repeat;
     background-color: transparent;
-    color: #0c0c0d;
+    color: var(--color-main-toolbar-text);
     font: caption;
     font-size: 11px;
 }
 
 .toolbar-button:hover {
     border-radius: 2px;
-    background-color: rgba(12, 12, 13, 0.2);
+    background-color: var(--color-toolbar-hover-bkgd);
 }
 
 .toolbar-button:active {
     border-radius: 2px;
-    background-color: rgba(12, 12, 13, 0.3);
+    background-color: var(--color-toolbar-active-bkgd);
 }
 
 .toolbar-button-menu-open {
     border-radius: 2px 2px 0px 0px;
-    background-color: #d7d7db;
+    background-color: var(--color-toolbar-menubtn-open);
 }
 
 .toolbar-button-labelled {
@@ -161,8 +188,8 @@ input[type="checkbox"] + label {
     padding-left: 2px;
     padding-top: 2px;
     padding-bottom: 2px;
-    background: linear-gradient(to bottom, #fcfcfc 0%, #dedede 100%);
-    color: #0c0c0d;
+    background: var(--color-main-toolbar-bkgd);
+    color: var(--color-main-toolbar-text);
     border-bottom: 1px solid silver;
 }
 
@@ -478,8 +505,8 @@ ul.fancytree-container {
     padding-top: 2px;
     padding-bottom: 2px;
 
-    background-color: #eee;
-    color: #0c0c0d;
+    background-color: var(--color-plchldr-toolbar-bkgd);
+    color: var(--color-plchldr-toolbar-text);
 }
 
 #item-properties > #placeholder-toolbar > button {
@@ -543,7 +570,7 @@ ul.fancytree-container {
     white-space: nowrap;
 
     line-height: 24px;
-    background-color: white;
+    background-color: var(--color-details-pane-bkgd);
 }
 
 #source-url-bar button {
@@ -558,6 +585,16 @@ ul.fancytree-container {
 #source-url-bar > #source-url-deck {
     order: 2;
     flex: 1 1 auto;
+}
+
+#source-url-bar > #source-url-deck button {
+    border: var(--color-details-pane-btn-border);
+    background-color: var(--color-details-pane-btn-bkgd);
+    color: var(--color-details-pane-btn-text);
+}
+
+#source-url-bar > #source-url-deck button:hover {
+    background-color: var(--color-details-pane-btn-hover-bkgd);
 }
 
 #source-url-bar > #source-url-deck > #src-url-normal-mode > #clipping-src-url {
@@ -646,7 +683,7 @@ ul.fancytree-container {
     flex: 0 1 auto;
     margin-bottom: 6px;
     padding: 1px 8px 0px 8px;
-    background-color: white;
+    background-color: var(--color-details-pane-bkgd);
 }
 
 #options-bar > #shortcut-key-select {
@@ -686,7 +723,7 @@ ul.fancytree-container {
     padding-left: 8px;
     
     border-top: 1px solid threedlightshadow;
-    background-color: -moz-dialog;
+    background-color: var(--color-statusbar-bkgd);
     background-image: url("chrome://global/skin/icons/resizer.png");
     background-position: right bottom;
     background-repeat: no-repeat;
