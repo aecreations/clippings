@@ -85,7 +85,7 @@ $(() => {
             for (let val of vals) {
               optionElts += sanitizeHTML(`<option value="${val}">${val}</option>`);
             }
-            $("#single-prmt-input").replaceWith(sanitizeHTML(`<select id="single-prmt-input" class="browser-style">${optionElts}</select>`));
+            $("#single-prmt-input").replaceWith(sanitizeHTML(`<select id="single-prmt-input">${optionElts}</select>`));
             $("#single-prmt-input").focus();
           }
         }
@@ -108,7 +108,7 @@ $(() => {
               defaultVal = gPlaceholdersWithDefaultVals[plchldr];
             }
 
-            let classNames = "ph-row browser-style";
+            let classNames = "ph-row";
             if (plchldr in gSamePlchldrs && gSamePlchldrs[plchldr].length > 0) {
               classNames += " duplicate-plchldr";
             }
