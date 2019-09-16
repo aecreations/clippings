@@ -10,9 +10,10 @@
     --color-btn-bkgd-hover: rgba(12, 12, 13, 0.2);
     --color-btn-border: rgba(12, 12, 13, 0.1);
     --color-btn-text: black;
+    --color-tb-bkgd: -moz-field;
     --color-tb-border: rgba(12, 12, 13, 0.2);
     --color-tb-border-hover: rgba(12, 12, 13, 0.3);
-    --color-tb: black;
+    --color-tb-text: -moz-fieldtext;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -24,7 +25,7 @@
 	--color-tb-bkgd: #0c0c0d;
 	--color-tb-border: #4a4a4f;
 	--color-tb-border-hover: #737373;
-	--color-tb: #f9f9fa;
+	--color-tb-text: #f9f9fa;
     }
 }
 
@@ -103,7 +104,7 @@ textarea {
     border: 1px solid var(--color-tb-border);
     background-color: var(--color-tb-bkgd);
     font: caption;
-    color: var(--color-tb);
+    color: var(--color-tb-text);
 }
 
 input[type="text"]:hover,
