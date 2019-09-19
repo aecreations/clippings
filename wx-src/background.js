@@ -84,8 +84,7 @@ let gClippingsListener = {
   {
     log("Clippings/wx: gClippingsListener.clippingChanged()");
 
-    if (aData.name != aOldData.name) {
-      // Rebuild the Clippings menu only if the clipping name has changed.
+    if (aData.name != aOldData.name || aData.parentFolderID != aOldData.parentFolderID) {
       rebuildContextMenu();
     }
   },
@@ -95,7 +94,7 @@ let gClippingsListener = {
     log("Clippings/wx: gClippingsListener.folderChanged()");
 
     if ("isSync" in aOldData) {
-      log("- The Synced Clippings folder is being converted to a normal folder. Ignoring DB changes.");
+      log("The Synced Clippings folder is being converted to a normal folder. Ignoring DB changes.");
       return;
     }
     
@@ -194,11 +193,11 @@ let gSyncClippingsListener = {
     if (aRemoveSyncFolder) {
       log(`Removing old Synced Clippings folder (ID = ${aOldSyncFolderID})`);
       purgeFolderItems(aOldSyncFolderID, false).then(() => {
-        resetCxtMenuSyncItemsOnlyOpt();
+        resetCxtMenuSyncItemsOnlyOpt(true);
       });
     }
     else {
-      resetCxtMenuSyncItemsOnlyOpt(true);
+      resetCxtMenuSyncItemsOnlyOpt();
     }
   },
 
@@ -1194,7 +1193,9 @@ function updateContextMenuForFolder(aUpdatedFolderID)
   let id = Number(aUpdatedFolderID);
   gClippingsDB.folders.get(id).then(aResult => {
     let menuItemID = gFolderMenuItemIDMap[id];
-    chrome.contextMenus.update(menuItemID, { title: aResult.name });
+    if (menuItemID) {
+      chrome.contextMenus.update(menuItemID, { title: aResult.name });
+    }
   });
 }
 
