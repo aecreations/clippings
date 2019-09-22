@@ -825,8 +825,8 @@ let gClippingLabelPicker = {
     let fgColor = "white";
 
     if (! aLabel) {
-      bgColor = "white";
-      fgColor = "initial";
+      bgColor = "var(--color-btn-bkgd)";
+      fgColor = "var(--color-default-text)";
     }
     else if (aLabel == "yellow") {
       fgColor = "initial";

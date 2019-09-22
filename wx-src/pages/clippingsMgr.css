@@ -21,12 +21,16 @@
     --color-toolbar-active-bkgd: rgba(12, 12, 13, 0.3);
     --color-toolbar-menubtn-open: #d7d7db;
     --color-clippings-tree-bkgd: #fbfbfb;
+    --color-folder-only-bkgd: #f6f6f6;
+    --color-textbox-bkgd: -moz-field;
     --color-details-pane-bkgd: white;
     --color-details-pane-btn-bkgd: #fbfbfb;
     --color-details-pane-btn-hover-bkgd: #ebebeb;
     --color-details-pane-btn-border: 1px solid #b1b1b1;
     --color-details-pane-btn-text: black;
     --color-statusbar-bkgd: -moz-dialog;
+    --color-th-bkgd: #eee;
+    --color-th-border: #d4d4d4;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -42,12 +46,16 @@
 	--color-toolbar-active-bkgd: #b1b1b3;
 	--color-toolbar-menubtn-open: #737373;
 	--color-clippings-tree-bkgd: #0c0c0d;
-	--color-details-pane-bkgd: #38383d;
+	--color-folder-only-bkgd: #2a2a2e;
+	--color-textbox-bkgd: black;
+	--color-details-pane-bkgd: #2a2a2e;
 	--color-details-pane-btn-bkgd: #4a4a4f;
 	--color-details-pane-btn-hover-bkgd: #737373;
 	--color-details-pane-btn-border: 1px solid #737373;
 	--color-details-pane-btn-text: #f9f9fa;
 	--color-statusbar-bkgd: #4a4a4f;
+	--color-th-bkgd: #4a4a4f;
+	--color-th-border: #737373;
     }
 }
 
@@ -78,8 +86,8 @@ input[type="search"],
 textarea,
 select {
     font-size: 11px !important;
-    background-color: -moz-Field;
-    color: -moz-FieldText;
+    background-color: var(--color-textbox-bkgd);
+    color: var(--color-default-text);
 }
 
 .browser-style > input[type="text"],
@@ -477,7 +485,7 @@ ul.fancytree-container {
 }
 
 #item-properties.folder-only {
-    background-color: #f6f6f6;
+    background-color: var(--color-folder-only-bkgd);
 }
 
 #item-properties label {
@@ -496,7 +504,7 @@ ul.fancytree-container {
     border-right: none;
     border-top: none;
     border-bottom: 1px solid #b1b1b1;
-    background-color: -moz-Field;
+    background-color: var(--color-textbox-bkgd);
 }
 
 #item-properties > #clipping-text {
@@ -512,7 +520,7 @@ ul.fancytree-container {
     border-right: none;
     border-top: none;
     border-bottom: 1px solid #b1b1b1;
-    background-color: -moz-Field;
+    background-color: var(--color-textbox-bkgd);
 }
 
 #item-properties > #placeholder-toolbar {
@@ -915,8 +923,9 @@ ul.fancytree-container {
     display: block;
     width: 418px;
     height: 20px;
-    background-color: #eee;
-    border-bottom: 1px solid #d4d4d4;
+    background-color: var(--color-th-bkgd);
+    color: var(--color-default-text);
+    border-bottom: 1px solid var(--color-th-border);
 }
 
 #shortcut-list-content table > thead > tr > th {
@@ -929,7 +938,7 @@ ul.fancytree-container {
 }
 
 #shortcut-list-content table > thead > tr > th:nth-child(1) {
-    border-right: 1px solid #d8d8d8;
+    border-right: 1px solid var(--color-th-border);
 }
 
 #shortcut-list-content table > tbody {
@@ -938,7 +947,7 @@ ul.fancytree-container {
     height: 160px;
     overflow-x: hidden;
     overflow-y: auto;
-    border-bottom: 1px solid #d4d4d4;
+    border-bottom: 1px solid var(--color-th-border);
 }
 
 #shortcut-list-content table > tbody > tr {
