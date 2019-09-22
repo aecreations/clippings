@@ -27,7 +27,7 @@ body {
 button {
     min-width: 88px;
     min-height: 28px;
-    font-size: 13px !important;
+    font-size: 15px !important;
     text-align: center !important;
 }
 
@@ -52,7 +52,7 @@ button {
 
 #msgbox-content > p {
     margin-top: 2px;
-    font-size: 13px;
+    font-size: 15px;
 }
 
 #msgbox-buttons {
