@@ -48,6 +48,7 @@ let gClippingsListeners = {
 let gClippingsListener = {
   _isImporting: false,
   _isCopying: false,
+  _isClippingsMgrDnDInProgress: false,
   origin: null,
   
   newClippingCreated: function (aID, aData)
@@ -82,6 +83,10 @@ let gClippingsListener = {
 
   clippingChanged: function (aID, aData, aOldData)
   {
+    if (this._isClippingsMgrDnDInProgress) {
+      return;
+    }
+    
     log("Clippings/wx: gClippingsListener.clippingChanged()");
 
     if (aData.name != aOldData.name || aData.parentFolderID != aOldData.parentFolderID) {
@@ -91,6 +96,10 @@ let gClippingsListener = {
 
   folderChanged: function (aID, aData, aOldData)
   {
+    if (this._isClippingsMgrDnDInProgress) {
+      return;
+    }
+
     log("Clippings/wx: gClippingsListener.folderChanged()");
 
     if ("isSync" in aOldData) {
@@ -120,6 +129,16 @@ let gClippingsListener = {
     rebuildContextMenu();
   },
 
+  dndMoveStarted: function ()
+  {
+    this._isClippingsMgrDnDInProgress = true;
+  },
+
+  dndMoveFinished: function ()
+  {
+    this._isClippingsMgrDnDInProgress = false;
+  },
+  
   importStarted: function ()
   {
     log("Clippings/wx: gClippingsListener.importStarted()");

@@ -366,7 +366,9 @@ let gClippingsListener = {
 
   clippingDeleted: function (aID, aOldData) {},
   folderDeleted: function (aID, aOldData) {},
-
+  dndMoveStarted: function () {},
+  dndMoveFinished: function () {},
+  
   copyStarted: function ()
   {
     this._isCopying = true;
@@ -3486,8 +3488,9 @@ function buildClippingsTree()
           }
 
           let parentNode = aNode.getParent();
+          let clippingsListeners = gClippings.getClippingsListeners().getListeners();
           
-          if (aData.otherNode) {
+          if (aData.otherNode) {           
             let newParentID = aeConst.ROOT_FOLDER_ID;
 
             if (aNode.isFolder() && aData.hitMode == "over") {
@@ -3514,6 +3517,10 @@ function buildClippingsTree()
               return;
             }
 
+            clippingsListeners.forEach(aListener => {
+              aListener.dndMoveStarted();
+            });
+
             aData.otherNode.moveTo(aNode, aData.hitMode);
             
             log(`Clippings/wx::clippingsMgr.js::#clippings-tree.dnd5.dragDrop(): ID of moved clipping or folder: ${id}\nID of old parent folder: ${oldParentID}\nID of new parent folder: ${newParentID}`);
@@ -3531,7 +3538,7 @@ function buildClippingsTree()
               else {
                 gCmd.moveClippingIntrl(id, newParentID, gCmd.UNDO_STACK);
               }
-            }           
+            }
 
             log("Clippings/wx::clippingsMgr.js::#clippings-tree.dnd5.dragDrop(): Updating display order");
             let destUndoStack = null;
@@ -3555,6 +3562,9 @@ function buildClippingsTree()
             
             gCmd.updateDisplayOrder(oldParentID, destUndoStack, undoInfo, !isReordering).then(() => {
               if (isReordering) {
+                clippingsListeners.forEach(aListener => {
+                  aListener.dndMoveFinished();
+                });
                 return;
               }
               return gCmd.updateDisplayOrder(newParentID, null, null, false);
@@ -3562,6 +3572,10 @@ function buildClippingsTree()
 	      if (newParentID != oldParentID) {
                 aNode.setExpanded();
               }
+
+              clippingsListeners.forEach(aListener => {
+                aListener.dndMoveFinished();
+              });
 	    });
           }
           else {
