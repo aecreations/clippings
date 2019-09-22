@@ -2060,6 +2060,12 @@ $(document).ready(() => {
   if (gIsBackupMode) {
     gCmd.backup();
   }
+  else {
+    if (prefs.syncClippings && prefs.cxtMenuSyncItemsOnly && prefs.clippingsMgrShowSyncItemsOnlyRem) {
+      gDialogs.showOnlySyncedItemsReminder.showModal();
+      chrome.storage.local.set({ clippingsMgrShowSyncItemsOnlyRem: false });
+    }
+  }
   
   // Fix for Fx57 bug where bundled page loaded using
   // browser.windows.create won't show contents unless resized.
@@ -3385,7 +3391,8 @@ function initDialogs()
   if (! isMacOS) {
     $("#mini-help-dlg").css({ height: "310px"})
   }
-  
+
+  gDialogs.showOnlySyncedItemsReminder = new aeDialog("#show-only-synced-items-reminder");
   gDialogs.genericMsgBox = new aeDialog("#generic-msg-box");
 }
 
@@ -3816,8 +3823,14 @@ function buildClippingsTree()
       }
     });
 
-    if (gClippings.getPrefs().syncClippings) {
+    let prefs = gClippings.getPrefs();
+    if (prefs.syncClippings) {
       gReloadSyncFldrBtn.show();
+      $(".ae-synced-clippings-fldr").parent().addClass("ae-synced-clippings");
+
+      if (prefs.cxtMenuSyncItemsOnly) {
+        $("#clippings-tree").addClass("cxt-menu-show-sync-items-only");
+      }
     }
 
     if (gClippings.isClippingsMgrRootFldrReseq()) {

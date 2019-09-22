@@ -519,6 +519,10 @@
     "message": "Keyboard Shortcuts"
   },
 
+  "clipMgrShowOnlySyncItemsRem": {
+    "message": "Clippings will only show synced items in the Clippings menu. You can still add and manage items outside the Synced Clippings folder, but they won't appear in the Clippings menu. This option can be changed in Clippings preferences."
+  },
+
   "labelInsPlchldr": {
     "message": "Insert Placeholder:",
     "description": "Clippings Manager - Placeholder Toolbar"

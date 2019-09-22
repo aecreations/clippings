@@ -366,6 +366,7 @@ async function setDefaultPrefs()
     syncClippings: false,
     syncFolderID: null,
     cxtMenuSyncItemsOnly: false,
+    clippingsMgrShowSyncItemsOnlyRem: true,
     pasteShortcutKeyPrefix: "",
     lastBackupRemDate: null,
     backupRemFirstRun: true,
@@ -440,6 +441,7 @@ async function setMalibuPrefs()
 {
   let newPrefs = {
     cxtMenuSyncItemsOnly: false,
+    clippingsMgrShowSyncItemsOnlyRem: true,
     clippingsMgrAutoShowDetailsPane: true,
   };
 

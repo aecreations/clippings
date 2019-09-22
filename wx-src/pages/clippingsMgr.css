@@ -12,6 +12,7 @@
 
     --color-bkgd: white;
     --color-default-text: black;
+    --color-not-synced-items-text: rgba(0, 0, 0, 0.4);
     --color-main-toolbar-bkgd: linear-gradient(to bottom, #fcfcfc 0%, #dedede 100%);
     --color-main-toolbar-text: #0c0c0d;
     --color-plchldr-toolbar-bkgd: #eee;
@@ -31,6 +32,7 @@
     :root {
 	--color-bkgd: #2a2a2e;
 	--color-default-text: #f9f9fa;
+	--color-not-synced-items-text: rgba(0, 0, 0, 0.4);
 	--color-main-toolbar-bkgd: #38383d;
 	--color-main-toolbar-text: #f9f9fa;
 	--color-plchldr-toolbar-bkgd: #38383d;
@@ -379,6 +381,25 @@ input[type="checkbox"] + label {
 #reload-sync-fldr-btn:active {
     border: 1px solid #b1b1b1;
     background-color: #d7d7db;
+}
+
+/* If user has set the option to only show synced items in the Clippings menu,
+ * then grey out all tree node labels and icons except for the Synced Clippings
+ * folder and its children. */
+#clippings-tree.cxt-menu-show-sync-items-only .fancytree-title {
+    color: var(--color-not-synced-items-text);
+}
+
+#clippings-tree.cxt-menu-show-sync-items-only .fancytree-icon {
+    opacity: 0.4;
+}
+
+#clippings-tree.cxt-menu-show-sync-items-only .ae-synced-clippings .fancytree-title {
+    color: var(--color-text-default);
+}
+
+#clippings-tree.cxt-menu-show-sync-items-only .ae-synced-clippings .fancytree-icon {
+    opacity: unset;
 }
 
 ul.fancytree-container {
@@ -745,13 +766,22 @@ ul.fancytree-container {
     border-radius: 2px;
 }
 
-.lightbox .msgbox-icon {
+.lightbox .msgbox-icon,
+.lightbox .msgbox-info-icon {
     float: left;
     width: 32px;
     height: 32px;
     margin-top: 0;
     margin-right: 12px;
+}
+
+.lightbox .msgbox-icon {
     background-image: url("../img/warning-64.png");
+    background-size: contain;
+}
+
+.lightbox .msgbox-info-icon {
+    background-image: url("../img/info.svg");
     background-size: contain;
 }
 
@@ -807,6 +837,7 @@ ul.fancytree-container {
 #move-sync-fldr-msgbox,
 #delete-sync-fldr-msgbox,
 #mini-help-dlg,
+#show-only-synced-items-reminder,
 #generic-msg-box {
     top: 64px;
 }
@@ -1126,6 +1157,10 @@ ul.fancytree-container {
     margin-top: 0;
     font-size: 12px;
     font-weight: bold;
+}
+
+#show-only-synced-items-reminder {
+    --height: 140px;
 }
 
 #generic-msg-box {

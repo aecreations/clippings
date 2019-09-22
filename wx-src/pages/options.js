@@ -401,7 +401,10 @@ function initDialogs()
 	  if (gIsActivatingSyncClippings) {
             // Don't do the following if Sync Clippings was already turned on
             // and no changes to settings were made.
-            setPref({ syncClippings: true });
+            setPref({
+              syncClippings: true,
+              clippingsMgrShowSyncItemsOnlyRem: true,
+            });
             $("#sync-settings").show();
             $("#toggle-sync").text(chrome.i18n.getMessage("syncTurnOff"));
             $("#sync-status").addClass("sync-status-on").text(chrome.i18n.getMessage("syncStatusOn"));
