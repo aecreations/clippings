@@ -3,16 +3,61 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
+:root {
+    --color-clippings-tree-bkgd: #fbfbfb;
+    --color-default-text: black;
+    --color-active-node: #eff9fe;
+    --color-active-border: #70c0e7;
+    --color-focused-node: #cbe8f6;
+    --color-focused-border: #26a0da;
+    --color-selected-node: #f7f7f7;
+    --color-selected-border: #dedede;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+	--color-clippings-tree-bkgd: #0c0c0d;
+	--color-default-text: #f9f9fa;
+	--color-focused-node: #0a84ff;
+	--color-focused-border: #0060df;
+	--color-active-node: #003eaa;
+	--color-active-border: #002275;
+	--color-selected-node: #4a4a4f;
+	--color-selected-border: #38383d;
+    }
+}
+
+
 /* Fancytree style overrides */
 ul.fancytree-container {
     font: caption;
     font-size: 11px;
+    background-color: var(--color-clippings-tree-bkgd);
 }
 
 span.fancytree-title {
     cursor: default;
     padding: 1px 3px 0 3px;
+    color: var(--color-default-text);
 }
+
+.fancytree-plain span.fancytree-active span.fancytree-title,
+.fancytree-plain span.fancytree-selected span.fancytree-title {
+  background-color: var(--color-selected-node);
+  border-color: var(--color-selected-border);
+}
+
+.fancytree-plain span.fancytree-node:hover span.fancytree-title {
+  background-color: var(--color-active-node);
+  border-color: var(--color-active-border);
+}
+
+.fancytree-plain.fancytree-container.fancytree-treefocus span.fancytree-active span.fancytree-title,
+.fancytree-plain.fancytree-container.fancytree-treefocus span.fancytree-selected span.fancytree-title {
+  background-color: var(--color-focused-node);
+  border-color: var(--color-focused-border);
+}
+
 
 /* Tree icons for clippings and folders */
 .ui-fancytree .fancytree-node > .fancytree-icon {
@@ -91,4 +136,3 @@ span.fancytree-title {
 .fancytree-ico-c span.fancytree-icon:hover {
     background-position: unset;
 }
-

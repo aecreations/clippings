@@ -20,6 +20,7 @@
     --color-toolbar-hover-bkgd: rgba(12, 12, 13, 0.2);
     --color-toolbar-active-bkgd: rgba(12, 12, 13, 0.3);
     --color-toolbar-menubtn-open: #d7d7db;
+    --color-clippings-tree-bkgd: #fbfbfb;
     --color-details-pane-bkgd: white;
     --color-details-pane-btn-bkgd: #fbfbfb;
     --color-details-pane-btn-hover-bkgd: #ebebeb;
@@ -40,7 +41,8 @@
 	--color-toolbar-hover-bkgd: #737373;
 	--color-toolbar-active-bkgd: #b1b1b3;
 	--color-toolbar-menubtn-open: #737373;
-	--color-details-pane-bkgd: ##38383d;
+	--color-clippings-tree-bkgd: #0c0c0d;
+	--color-details-pane-bkgd: #38383d;
 	--color-details-pane-btn-bkgd: #4a4a4f;
 	--color-details-pane-btn-hover-bkgd: #737373;
 	--color-details-pane-btn-border: 1px solid #737373;
@@ -343,11 +345,8 @@ input[type="checkbox"] + label {
     min-width: 128px;
     overflow: auto;
     border-right: 1px solid transparent;
-    background-color: #fbfbfb;
-}
-
-#clippings-tree > .ui-fancytree {
-    background-color: #fbfbfb;
+    color: var(--color-default-text);
+    background-color: var(--color-clippings-tree-bkgd);
 }
 
 #clippings-tree .ae-synced-clippings-fldr > .fancytree-icon {
