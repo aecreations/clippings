@@ -6,14 +6,55 @@
 :root {
     --toolbar-height: 30px;
     --col-hdr-height: 20px;
+
+    --color-default-text: #0c0c0d;
     --color-main-toolbar-bkgd: linear-gradient(to bottom, #fcfcfc 0%, #dedede 100%);
     --color-main-toolbar-text: #0c0c0d;
+    --color-toolbarbtn-hover-bkgd: rgba(12, 12, 13, 0.2);
+    --color-toolbarbtn-active-bkgd: rgba(12, 12, 13, 0.3);
+    --color-toolbarbtn-close-bkgd: transparent;
+    --color-toolbarbtn-close-border: #b1b1b1;
+    --color-toolbarbtn-close-hover-bkgd: rgba(12, 12, 13, 0.1);
+    --color-toolbarbtn-close-active-bkgd: rgba(12, 12, 13, 0.2);
+    --color-th-bkgd: #eee;
+    --color-th-border: #d4d4d4;
+    --color-selected-row: #cbe8f6;
+    --color-active-row: #eff9fe;
+    --color-autocomplete-popup-bkgd: white;
+    --color-autocomplete-popup-shadow: #8f8f8f;
+    --color-autocomplete-listbox-border: white;
+    --color-autocomplete-normal-border: white;
+    --color-autocomplete-normal-bkgd: white;
+    --color-autocomplete-selected-bkgd: #eff9fe;
+    --color-autocomplete-selected-border: #70c0e7;
+    --color-autocomplete-clipping-name: #0c0c0d;
+    --color-autocomplete-clipping-preview: #737373;
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
+	--color-default-text: #f9f9fa;
 	--color-main-toolbar-bkgd: #38383d;
 	--color-main-toolbar-text: #f9f9fa;
+	--color-toolbarbtn-hover-bkgd: #737373;
+	--color-toolbarbtn-active-bkgd: #b1b1b3;
+	--color-toolbarbtn-close-bkgd: transparent;
+	--color-toolbarbtn-close-border: #737373;
+	--color-toolbarbtn-close-hover-bkgd: #737373;
+	--color-toolbarbtn-close-active-bkgd: #b1b1b3;
+	--color-th-bkgd: #4a4a4f;
+	--color-th-border: #737373;
+	--color-selected-row: #0a84ff;
+	--color-active-row: #003eaa;
+	--color-autocomplete-popup-bkgd: black;
+	--color-autocomplete-popup-shadow: #4a4a4f;
+	--color-autocomplete-listbox-border: black;
+	--color-autocomplete-normal-border: black;
+	--color-autocomplete-normal-bkgd: black;
+	--color-autocomplete-selected-bkgd: #0a84ff;
+	--color-autocomplete-selected-border: #0060df;
+	--color-autocomplete-clipping-name: #fff;
+	--color-autocomplete-clipping-preview: #ededf0;
     }
 }
 
@@ -41,19 +82,19 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     background-color: transparent;
-    color: #0c0c0d;
+    color: var(--color-default-text);
     font: caption;
     font-size: 11px !important;
 }
 
 .toolbar-button:hover {
     border-radius: 2px;
-    background-color: rgba(12, 12, 13, 0.2);
+    background-color: var(--color-toolbarbtn-hover-bkgd);
 }
 
 .toolbar-button:active {
     border-radius: 2px;
-    background-color: rgba(12, 12, 13, 0.3);
+    background-color: var(--color-toolbarbtn-active-bkgd);
 }
 
 .toolbar-button-labelled {
@@ -115,17 +156,18 @@ body {
     margin-left: 8px;
     min-width: 30px;
     min-height: 24px;
+    border: 1px solid var(--color-toolbarbtn-close-border);
     border-radius: 3px;
-    background-color: transparent;
+    background-color: var(--color-toolbarbtn-close-bkgd);
     font-size: 11px !important;
 }
 
 #shortcut-list-toolbar #close:hover {
-    background-color: rgba(12, 12, 13, 0.1);
+    background-color: var(--color-toolbarbtn-close-hover-bkgd);
 }
 
 #shortcut-list-toolbar #close:active {
-    background-color: rgba(12, 12, 13, 0.2);
+    background-color: var(--color-toolbarbtn-close-active-bkgd);
 }
 
 #shortcut-list-content {
@@ -143,8 +185,9 @@ body {
 #shortcut-list-content table > thead {
     display: block;
     height: var(--col-hdr-height);
-    background-color: #eee;
-    border-bottom: 1px solid #d4d4d4;
+    background-color: var(--color-th-bkgd);
+    color: var(--color-default-text);
+    border-bottom: 1px solid var(--color-th-border);
 }
 
 #shortcut-list-content table > thead > tr > th {
@@ -157,7 +200,7 @@ body {
 }
 
 #shortcut-list-content table > thead > tr > th:nth-child(1) {
-    border-right: 1px solid #d8d8d8;
+    border-right: 1px solid var(--color-th-border);
 }
 
 #shortcut-list-content table > tbody {
@@ -177,11 +220,11 @@ body {
 }
 
 #shortcut-list-content table > tbody > tr:active {
-    background-color: #eff9fe;
+    background-color: var(--color-active-row);
 }
 
 #shortcut-list-content table > tbody > tr.selected-row {
-    background-color: #cbe8f6;
+    background-color: var(--color-selected-row);
 }
 
 #shortcut-list-content table th:nth-child(1),
@@ -260,13 +303,13 @@ body {
     overflow-x: hidden;
     overflow-y: auto;
 
-    background-color: white;
+    background-color: var(--color-autocomplete-popup-bkgd);
     border: 1px solid #b1b1b1;
-    box-shadow: 4px 4px 2px -2px #8F8F8F;
+    box-shadow: 4px 4px 2px -2px var(--color-autocomplete-popup-shadow);
 }
 
 #search-results-listbox {
-    border: 1px solid white;
+    border: 1px solid var(--color-autocomplete-listbox-border);
     z-index: 100;
 }
 
@@ -274,24 +317,24 @@ body {
     width: 100%;
     height: 36px;    
     border: 1px solid transparent;
-    background-color: white;
+    background-color: var(--color-autocomplete-normal-bkgd);
 }
 
 .clipping[selected="true"] {
-    background-color: #eff9fe;
-    border-color: #70c0e7;
+    background-color: var(--color-autocomplete-selected-bkgd);
+    border-color: var(--color-autocomplete-selected-border);
 }
 
 .clipping > .name {
     height: 18px;
     padding: 0px 4px 0px 4px;
     font-size: 13px;
-    color: #0c0c0d;
+    color: var(--color-autocomplete-clipping-name);
 }
 
 .clipping > .preview {
     height: 18px;
     padding: 0px 4px 0px 4px;
     font-size: 11px;
-    color: #737373;
+    color: var(--color-autocomplete-clipping-preview);
 }
