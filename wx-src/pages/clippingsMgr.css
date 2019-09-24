@@ -17,8 +17,8 @@
     --color-main-toolbar-text: #0c0c0d;
     --color-plchldr-toolbar-bkgd: #eee;
     --color-plchldr-toolbar-text: #0c0c0d;
-    --color-toolbar-hover-bkgd: rgba(12, 12, 13, 0.2);
-    --color-toolbar-active-bkgd: rgba(12, 12, 13, 0.3);
+    --color-toolbarbtn-hover-bkgd: rgba(12, 12, 13, 0.2);
+    --color-toolbarbtn-active-bkgd: rgba(12, 12, 13, 0.3);
     --color-toolbar-menubtn-open: #d7d7db;
     --color-clippings-tree-bkgd: #fbfbfb;
     --color-folder-only-bkgd: #f6f6f6;
@@ -31,6 +31,13 @@
     --color-statusbar-bkgd: -moz-dialog;
     --color-th-bkgd: #eee;
     --color-th-border: #d4d4d4;
+    --color-cxtmenu-bkgd: #fff;
+    --color-cxtmenu-border: #bebebe;
+    --color-cxtmenu-text: #2f2f2f;
+    --color-cxtmenu-menuitem-active-bkgd: #d7d7db;
+    --color-cxtmenu-menuitem-hover-bkgd: #ededf0;
+    --color-cxtmenu-menuitem-hover-text: #0c0c0d;
+    --color-cxtmenu-separator: #e6e6e6;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -42,8 +49,8 @@
 	--color-main-toolbar-text: #f9f9fa;
 	--color-plchldr-toolbar-bkgd: #38383d;
 	--color-plchldr-toolbar-text: #f9f9fa;
-	--color-toolbar-hover-bkgd: #737373;
-	--color-toolbar-active-bkgd: #b1b1b3;
+	--color-toolbarbtn-hover-bkgd: #737373;
+	--color-toolbarbtn-active-bkgd: #b1b1b3;
 	--color-toolbar-menubtn-open: #737373;
 	--color-clippings-tree-bkgd: #0c0c0d;
 	--color-folder-only-bkgd: #2a2a2e;
@@ -56,6 +63,13 @@
 	--color-statusbar-bkgd: #4a4a4f;
 	--color-th-bkgd: #4a4a4f;
 	--color-th-border: #737373;
+	--color-cxtmenu-bkgd: #4a4a4f;
+	--color-cxtmenu-border: #38383d;
+	--color-cxtmenu-text: #f9f9fa;
+	--color-cxtmenu-menuitem-active-bkgd: #737373;
+	--color-cxtmenu-menuitem-hover-bkgd: #606060;
+	--color-cxtmenu-menuitem-hover-text: #fff;
+	--color-cxtmenu-separator: #737373;
     }
 }
 
@@ -161,12 +175,12 @@ input[type="checkbox"] + label {
 
 .toolbar-button:hover {
     border-radius: 2px;
-    background-color: var(--color-toolbar-hover-bkgd);
+    background-color: var(--color-toolbarbtn-hover-bkgd);
 }
 
 .toolbar-button:active {
     border-radius: 2px;
-    background-color: var(--color-toolbar-active-bkgd);
+    background-color: var(--color-toolbarbtn-active-bkgd);
 }
 
 .toolbar-button-menu-open {
@@ -267,11 +281,18 @@ input[type="checkbox"] + label {
 }
 
 /* jQuery contextMenu CSS overrides */
+.context-menu-list {
+    border: 1px solid var(--color-cxtmenu-border);
+    background-color: var(--color-cxtmenu-bkgd);
+}
+
 .ae-menuitem,
 .context-menu-submenu {
     padding-top: 4px;
     padding-bottom: 4px;
     font-size: 12px;
+    background-color: var(--color-cxtmenu-bkgd);
+    color: var(--color-cxtmenu-text);
 }
 
 .context-menu-disabled:hover {
@@ -279,13 +300,17 @@ input[type="checkbox"] + label {
 }
 
 .ae-menuitem:active {
-    background-color: #d7d7db !important;
+    background-color: var(--color-cxtmenu-menuitem-active-bkgd) !important;
 }
 
 .context-menu-item.context-menu-hover {
-    background-color: #ededf0;
-    color: #0c0c0d;
+    background-color: var(--color-cxtmenu-menuitem-hover-bkgd);
+    color: var(--color-cxtmenu-menuitem-hover-text);
     cursor: default;
+}
+
+.context-menu-separator {
+    border-bottom: 1px solid var(--color-cxtmenu-separator);
 }
 
 .context-menu-icon-checked {
