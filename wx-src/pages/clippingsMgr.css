@@ -1020,6 +1020,7 @@ ul.fancytree-container {
     border-top: 1px solid transparent;
     border-right: 1px solid transparent;
     border-left: 1px solid transparent;
+    background: transparent;
 }
 
 #import-dlg #import-clippings-file-upload-btn {
@@ -1029,22 +1030,21 @@ ul.fancytree-container {
     min-width: 72px;
     min-height: 24px;
     padding: 3px 16px 3px 16px;
-    border: 1px solid #b1b1b1;
+    border: 1px solid var(--color-btn-border);
     border-radius: 2px;
     box-shadow: 0 0 0 0 transparent;
-    background-color: #fbfbfb;
+    background-color: var(--color-btn-bkgd);
 
     transition-duration: 250ms;
     transition-property: box-shadow, border;    
 }
 
 #import-dlg #import-clippings-file-upload-btn:hover {
-    background-color: #ebebeb;
-    border: 1px solid #b1b1b1;
+    background-color: var(--color-btn-bkgd-hover);
 }
 
 #import-dlg #import-clippings-file-upload-btn:active {
-    background-color: #d4d4d4;
+    background-color: var(--color-btn-bkgd-active);
     border: 1px solid #858585;
 }
 
@@ -1073,11 +1073,12 @@ ul.fancytree-container {
 }
 
 #import-dlg #restore-backup-warning > p {
+    min-height: 60px;
     margin: 0px 0px 0px 28px;
     padding: 8px;
-    background-color: #fbfb77;
     border-radius: 4px;
-    min-height: 60px;
+    background-color: #fbfb77;
+    color: black;
 }
 
 #import-dlg progress {

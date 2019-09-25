@@ -389,7 +389,6 @@ a:active {
 #sync-clippings-dlg #generic-error .error-msg {
     margin-top: 12px;
     margin-left: 64px;
-    background-color: #ffd2d2;
     padding: 12px;
     border-radius: 4px;
     font-weight: bold;
@@ -397,10 +396,12 @@ a:active {
 
 #sync-clippings-dlg #sync-cxn-error .error-msg {
     background-color: #fbfb77;
+    color: black;
 }
 
 #sync-clippings-dlg #generic-error .error-msg {
     background-color: #ffd2d2;
+    color: black;
 }
 
 #sync-clippings-dlg #generic-error #sync-err-detail {
