@@ -8,6 +8,7 @@
 :root {
     --color-btn-bkgd: rgba(12, 12, 13, 0.1);
     --color-btn-bkgd-hover: rgba(12, 12, 13, 0.2);
+    --color-btn-bkgd-active: rgba(12, 12, 13, 0.3);
     --color-btn-border: rgba(12, 12, 13, 0.1);
     --color-btn-text: black;
     --color-tb-bkgd: -moz-field;
@@ -20,6 +21,7 @@
     :root {
 	--color-btn-bkgd: #4a4a4f;
 	--color-btn-bkgd-hover: #737373;
+	--color-btn-bkgd-active: #2a2a2e;
 	--color-btn-border: #4a4a4f;
 	--color-btn-text: #f9f9fa;
 	--color-tb-bkgd: #0c0c0d;
