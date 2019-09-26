@@ -28,6 +28,11 @@ label {
     margin-right: 4px;
 }
 
+input[type="text"] {
+    height: 24px;
+}
+
+
 input[type="text"], textarea, select {
     margin-bottom: 12px !important;
 }
@@ -35,6 +40,7 @@ input[type="text"], textarea, select {
 input[type="text"], textarea {
     width: 100%;
     margin-top: 4px;
+    font: message-box;
 }
 
 input[type="checkbox"] + label {

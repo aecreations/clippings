@@ -96,6 +96,11 @@ button[disabled] {
 }
 
 input[type="text"],
+input[type="search"] {
+    height: 24px;
+}
+
+input[type="text"],
 input[type="search"],
 textarea,
 select {

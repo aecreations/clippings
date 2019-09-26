@@ -320,6 +320,7 @@ a:active {
 }
 
 .lightbox input[type="text"] {
+    height: 28px;
     font-size: 15px;
 }
 
