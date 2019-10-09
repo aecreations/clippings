@@ -909,7 +909,8 @@ let gCmd = {
   ITEMTYPE_CLIPPING: 1,
   ITEMTYPE_FOLDER: 2,
 
-  // Keep track of the most recent action. Required for the `onBatchChanges`
+  // Keep track of the most recent action.
+  // This was previously required for the now-eliminated `onBatchChanges`
   // database event handler.
   _recentAction: null,
 
@@ -938,6 +939,29 @@ let gCmd = {
     }
   },
 
+  // Redo - only 1 undo action is reversible
+  redoStack: {
+    length: 0,
+    _lastUndo: null,
+
+    push(aState)
+    {
+      this._lastUndo = aState;
+      this.length = (this.length == 0 ? 1 : 1);
+    },
+
+    pop()
+    {
+      var rv = {};
+      for (let ppty in this._lastUndo) {
+        rv[ppty] = this._lastUndo[ppty];
+      }
+      this._lastUndo = null;
+      this.length = 0;
+      return rv;
+    }
+  },
+  
   get recentAction()
   {
     return this._recentAction;
@@ -1004,7 +1028,8 @@ let gCmd = {
         this.undoStack.push({
           action: this.ACTION_CREATENEW,
           id: aNewClippingID,
-          itemType: this.ITEMTYPE_CLIPPING
+          itemType: this.ITEMTYPE_CLIPPING,
+          parentFldrID: parentFolderID,
         });
       }
 
@@ -1087,7 +1112,8 @@ let gCmd = {
         this.undoStack.push({
           action: this.ACTION_CREATENEWFOLDER,
           id: aNewFolderID,
-          itemType: this.ITEMTYPE_FOLDER
+          itemType: this.ITEMTYPE_FOLDER,
+          parentFldrID: parentFolderID,
         });
       }
 
@@ -1196,14 +1222,19 @@ let gCmd = {
       oldParentFldrID = aClipping.parentFolderID;
       return gClippingsSvc.updateClipping(aClippingID, { parentFolderID: aNewParentFldrID }, aClipping);
     }).then(aNumUpd => {
+      let state = {
+        action: this.ACTION_MOVETOFOLDER,
+        itemType: this.ITEMTYPE_CLIPPING,
+        id: aClippingID,
+        oldParentFldrID,
+        newParentFldrID: aNewParentFldrID
+      };
+      
       if (aDestUndoStack == this.UNDO_STACK) {
-        this.undoStack.push({
-          action: this.ACTION_MOVETOFOLDER,
-          itemType: this.ITEMTYPE_CLIPPING,
-          id: aClippingID,
-          oldParentFldrID,
-          newParentFldrID: aNewParentFldrID
-        });
+        this.undoStack.push(state);
+      }
+      else if (aDestUndoStack == this.REDO_STACK) {
+        this.redoStack.push(state);
       }
 
       if (gSyncedItemsIDs[aNewParentFldrID + "F"] || gSyncedItemsIDs[oldParentFldrID + "F"]) {
@@ -1247,7 +1278,8 @@ let gCmd = {
         this.undoStack.push({
           action: this.ACTION_COPYTOFOLDER,
           id: aNewClippingID,
-          itemType: this.ITEMTYPE_CLIPPING
+          itemType: this.ITEMTYPE_CLIPPING,
+          destFldrID: aDestFldrID,
         });
       }
 
@@ -1335,7 +1367,8 @@ let gCmd = {
         this.undoStack.push({
           action: this.ACTION_COPYTOFOLDER,
           id: newFldrID,
-          itemType: this.ITEMTYPE_FOLDER
+          itemType: this.ITEMTYPE_FOLDER,
+          destFldrID: aDestFldrID,
         });
       }
 
@@ -1859,31 +1892,39 @@ let gCmd = {
 
     if (undo.action == this.ACTION_DELETECLIPPING) {
       this.moveClippingIntrl(undo.id, undo.parentFolderID);
+      this.redoStack.push(undo);
     }
     else if (undo.action == this.ACTION_DELETEFOLDER) {
       this.moveFolderIntrl(undo.id, undo.parentFolderID);
+      this.redoStack.push(undo);
     }
     else if (undo.action == this.ACTION_MOVETOFOLDER) {
       if (undo.itemType == this.ITEMTYPE_CLIPPING) {
         this.moveClippingIntrl(undo.id, undo.oldParentFldrID);
+        this.redoStack.push(undo);
       }
       else if (undo.itemType == this.ITEMTYPE_FOLDER) {
         this.moveFolderIntrl(undo.id, undo.oldParentFldrID);
+        this.redoStack.push(undo);
       }
     }
     else if (undo.action == this.ACTION_COPYTOFOLDER) {
       if (undo.itemType == this.ITEMTYPE_CLIPPING) {
         this.moveClippingIntrl(undo.id, aeConst.DELETED_ITEMS_FLDR_ID);
+        this.redoStack.push(undo);
       }
       else if (undo.itemType == this.ITEMTYPE_FOLDER) {
         this.moveFolderIntrl(undo.id, aeConst.DELETED_ITEMS_FLDR_ID);
+        this.redoStack.push(undo);
       }
     }
     else if (undo.action == this.ACTION_CREATENEW) {
       this.moveClippingIntrl(undo.id, aeConst.DELETED_ITEMS_FLDR_ID);
+      this.redoStack.push(undo);
     }
     else if (undo.action == this.ACTION_CREATENEWFOLDER) {
       this.moveFolderIntrl(undo.id, aeConst.DELETED_ITEMS_FLDR_ID);
+      this.redoStack.push(undo);
     }
     else if (undo.action == this.ACTION_EDITNAME) {
       if (undo.itemType == this.ITEMTYPE_CLIPPING) {
@@ -1891,6 +1932,7 @@ let gCmd = {
           let clpNode = getClippingsTree().activateKey(undo.id + "C");
           clpNode.title = undo.oldName;
           $("#clipping-name").val(undo.oldName).select();
+          this.redoStack.push(undo);
         });
       }
       else if (undo.itemType == this.ITEMTYPE_FOLDER) {
@@ -1898,6 +1940,7 @@ let gCmd = {
           let fldrNode = getClippingsTree().activateKey(undo.id + "F");
           fldrNode.title = undo.oldName;
           $("#clipping-name").val(undo.oldName).select();
+          this.redoStack.push(undo);
         });
       }
     }
@@ -1905,10 +1948,12 @@ let gCmd = {
       this.editClippingContentIntrl(undo.id, undo.oldContent).then(() => {
         getClippingsTree().activateKey(undo.id + "C");
         $("#clipping-text").val(undo.oldContent).select();
+        this.redoStack.push(undo);
       });
     }
     else if (undo.action == this.ACTION_SETLABEL) {
       this.setLabelIntrl(undo.id, undo.oldLabel);
+      this.redoStack.push(undo);
     }
     else if (undo.action == this.ACTION_CHANGEPOSITION) {
       let tree = getClippingsTree();
@@ -1935,6 +1980,85 @@ let gCmd = {
       }
 
       this.updateDisplayOrder(parentFldrID);
+    }
+  },
+
+  redo: function ()
+  {
+    if (this.redoStack.length == 0) {
+      window.alert(chrome.i18n.getMessage("clipMgrNoRedo"));
+      return;
+    }
+
+    let redo = this.redoStack.pop();
+
+    if (redo.action == this.ACTION_DELETECLIPPING) {
+      this.moveClippingIntrl(redo.id, aeConst.DELETED_ITEMS_FLDR_ID);
+      this.undoStack.push(redo);
+    }
+    else if (redo.action == this.ACTION_DELETEFOLDER) {
+      this.moveFolderIntrl(redo.id, aeConst.DELETED_ITEMS_FLDR_ID);
+      this.undoStack.push(redo);
+    }
+    else if (redo.action == this.ACTION_MOVETOFOLDER) {
+      if (redo.itemType == this.ITEMTYPE_CLIPPING) {
+        this.moveClippingIntrl(redo.id, redo.newParentFldrID);
+        this.undoStack.push(redo);
+      }
+      else if (redo.itemType == this.ITEMTYPE_FOLDER) {
+        this.moveFolderIntrl(redo.id, redo.newParentFldrID);
+        this.undoStack.push(redo);
+      }
+    }
+    else if (redo.action == this.ACTION_COPYTOFOLDER) {
+      if (redo.itemType == this.ITEMTYPE_CLIPPING) {
+        this.moveClippingIntrl(redo.id, redo.destFldrID);
+        this.undoStack.push(redo);
+      }
+      else if (redo.itemType == this.ITEMTYPE_FOLDER) {
+        this.moveFolderIntrl(redo.id, redo.destFldrID);
+        this.undoStack.push(redo);
+      }
+    }
+    else if (redo.action == this.ACTION_CREATENEW) {
+      this.moveClippingIntrl(redo.id, redo.parentFldrID);
+      this.undoStack.push(redo);
+    }
+    else if (redo.action == this.ACTION_CREATENEWFOLDER) {
+      this.moveFolderIntrl(redo.id, redo.parentFldrID);
+      this.undoStack.push(redo);
+    }
+    else if (redo.action == this.ACTION_EDITNAME) {
+      if (redo.itemType == this.ITEMTYPE_CLIPPING) {
+        this.editClippingNameIntrl(redo.id, redo.name).then(() => {
+          let clpNode = getClippingsTree().activateKey(redo.id + "C");
+          clpNode.title = redo.name;
+          $("#clipping-name").val(redo.name).select();
+          this.undoStack.push(redo);
+        });
+      }
+      else if (redo.itemType == this.ITEMTYPE_FOLDER) {
+        this.editFolderNameIntrl(redo.id, redo.name).then(() => {
+          let fldrNode = getClippingsTree().activateKey(redo.id + "F");
+          fldrNode.title = redo.name;
+          $("#clipping-name").val(redo.name).select();
+          this.undoStack.push(redo);
+        });
+      }
+    }
+    else if (redo.action == this.ACTION_EDITCONTENT) {
+      this.editClippingContentIntrl(redo.id, redo.content).then(() => {
+        getClippingsTree().activateKey(redo.id + "C");
+        $("#clipping-text").val(redo.content).select();
+        this.undoStack.push(redo);
+      });
+    }
+    else if (redo.action == this.ACTION_SETLABEL) {
+      this.setLabelIntrl(redo.id, redo.label);
+      this.undoStack.push(redo);
+    }
+    else if (redo.action == this.ACTION_CHANGEPOSITION) {
+      // TO DO: Finish implementation.
     }
   },
   
@@ -2135,6 +2259,9 @@ $(document).keydown(aEvent => {
     else {
       gDialogs.genericMsgBox.showModal();
     }
+  }
+  else if (aEvent.key == "F2") {
+    gCmd.redo();
   }
   else if (aEvent.key == "Enter") {
     if (gSrcURLBar.isEditing()) {
@@ -2615,7 +2742,7 @@ function initIntroBannerAndHelpDlg()
   {
     let shctKeys = [];
     if (isMacOS) {
-      shctKeys = ["\u2326", "esc", "\u2318F", "\u2318W", "\u2318Z", "F1", "\u2318F10"];
+      shctKeys = ["\u2326", "esc", "\u2318F", "\u2318W", "\u2318Z", "F1", "F2", "\u2318F10"];
     }
     else {
       shctKeys = [
@@ -2625,6 +2752,7 @@ function initIntroBannerAndHelpDlg()
         `${chrome.i18n.getMessage("keyCtrl")}+W`,  // CTRL+W
         `${chrome.i18n.getMessage("keyCtrl")}+Z`,  // CTRL+Z
         "F1",
+        "F2",
         `${chrome.i18n.getMessage("keyCtrl")}+F10`, // CTRL+F10
       ];
     }
@@ -2648,9 +2776,10 @@ function initIntroBannerAndHelpDlg()
     aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[3], "clipMgrIntroCmdClose"));
     aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[4], "clipMgrIntroCmdUndo"));
     aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[5], "clipMgrIntroCmdShowIntro"));
+    aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[6], "clipMgrIntroCmdRedo"));
 
     if (! isLinux) {
-      aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[6], "clipMgrIntroCmdMaximize"));
+      aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[7], "clipMgrIntroCmdMaximize"));
     }
   }
  

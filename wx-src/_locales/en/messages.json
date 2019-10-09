@@ -707,6 +707,11 @@
     "description": "Clippings Manager intro - key binding description"
   },
 
+  "clipMgrIntroCmdRedo": {
+    "message": "Undo undo",
+    "description": "Clippings Manager intro - key binding description"
+  },
+
   "clipMgrStatusBar": {
     "message": "$1 items",
     "description": "Status bar text in Clippings Manager, counting the number of clippings and folders"
@@ -718,6 +723,10 @@
 
   "clipMgrNoUndo": {
     "message": "Nothing to undo"
+  },
+
+  "clipMgrNoRedo": {
+    "message": "Nothing to redo"
   },
 
   "clipMgrShortcutKeyHelpHdg": {
