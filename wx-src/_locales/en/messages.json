@@ -162,39 +162,39 @@
   },
 
   "welcomePageTitle": {
-    "message": "Welcome to Clippings 6",
+    "message": "Welcome to Clippings",
     "description": "Welcome to Clippings (post-installation) page title"
   },
 
   "welcInstallSuccessHdg": {
-    "message": "Welcome to Clippings 6!"
+    "message": "Welcome to Clippings!"
   },
 
   "welcInstallSuccessSubh": {
     "message": "Installation successfully completed."
   },
 
-  "welcCurrUsrHdg": {
-    "message": "Current Users"
+  "welcWhatsNewHdg": {
+    "message": "What's New"
   },
 
-  "welcCurrUsrDesc": {
-    "message": "Bring your clippings over from a previous version of Clippings."
+  "welcWhatsNewDesc": {
+    "message": "Clippings 6.2 comes with many new features and improvements."
   },
 
-  "welcCurrUsrCTA": {
-    "message": "Import My Clippings"
+  "welcWhatsNewCTA": {
+    "message": "Learn More"
   },
 
-  "welcNewUsrHdg": {
-    "message": "New Users"
+  "welcQuickStartHdg": {
+    "message": "Quick Start Guide"
   },
 
-  "welcNewUsrDesc": {
+  "welcQuickStartDesc": {
     "message": "Learn the essential features of Clippings in just a few minutes."
   },
 
-  "welcNewUsrCTA": {
+  "welcQuickStartCTA": {
     "message": "Quick Start Guide"
   },
 
