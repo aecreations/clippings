@@ -175,11 +175,11 @@
   },
 
   "welcWhatsNewHdg": {
-    "message": "What's New"
+    "message": "What\u2019s New"
   },
 
   "welcWhatsNewDesc": {
-    "message": "Clippings 6.2 comes with many new features and improvements."
+    "message": "Clippings 6.2 comes with many new features and improvements, such as Dark Mode support."
   },
 
   "welcWhatsNewCTA": {
@@ -191,7 +191,7 @@
   },
 
   "welcQuickStartDesc": {
-    "message": "Learn the essential features of Clippings in just a few minutes."
+    "message": "Recommended reading for new users. Learn the essential features of Clippings in just a few minutes."
   },
 
   "welcQuickStartCTA": {
