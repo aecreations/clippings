@@ -205,6 +205,10 @@ ul.fancytree-container {
     z-index: 1;
 }
 
+.lightbox {
+    border-radius: 2px;
+}
+
 #new-folder-dlg {
     --width: 320px;
     --height: 180px;
