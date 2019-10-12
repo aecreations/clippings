@@ -3520,7 +3520,7 @@ function initDialogs()
 
   gDialogs.miniHelp = new aeDialog("#mini-help-dlg");
   if (! isMacOS) {
-    $("#mini-help-dlg").css({ height: "310px"})
+    $("#mini-help-dlg").css({ height: "320px"})
   }
 
   gDialogs.showOnlySyncedItemsReminder = new aeDialog("#show-only-synced-items-reminder");
