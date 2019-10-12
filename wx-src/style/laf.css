@@ -7,26 +7,26 @@
 
 :root {
     --color-btn-bkgd: rgba(12, 12, 13, 0.1);
-    --color-btn-bkgd-hover: rgba(12, 12, 13, 0.2);
-    --color-btn-bkgd-active: rgba(12, 12, 13, 0.3);
+    --color-btn-hover-bkgd: rgba(12, 12, 13, 0.2);
+    --color-btn-active-bkgd: rgba(12, 12, 13, 0.3);
     --color-btn-border: rgba(12, 12, 13, 0.1);
     --color-btn-text: black;
     --color-tb-bkgd: -moz-field;
     --color-tb-border: rgba(12, 12, 13, 0.2);
-    --color-tb-border-hover: rgba(12, 12, 13, 0.3);
+    --color-tb-hover-border: rgba(12, 12, 13, 0.3);
     --color-tb-text: -moz-fieldtext;
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
 	--color-btn-bkgd: #4a4a4f;
-	--color-btn-bkgd-hover: #737373;
-	--color-btn-bkgd-active: #2a2a2e;
+	--color-btn-hover-bkgd: #737373;
+	--color-btn-active-bkgd: #2a2a2e;
 	--color-btn-border: #4a4a4f;
 	--color-btn-text: #f9f9fa;
 	--color-tb-bkgd: #0c0c0d;
 	--color-tb-border: #4a4a4f;
-	--color-tb-border-hover: #737373;
+	--color-tb-hover-border: #737373;
 	--color-tb-text: #f9f9fa;
     }
 }
@@ -70,12 +70,12 @@ button.default {
 }
 
 button:hover {
-    background-color: var(--color-btn-bkgd-hover);
+    background-color: var(--color-btn-hover-bkgd);
 }
 
 select.browser-style:hover {
-    border: 1px solid var(--color-btn-bkgd-hover) !important;
-    background-color: var(--color-btn-bkgd-hover) !important;
+    border: 1px solid var(--color-btn-hover-bkgd) !important;
+    background-color: var(--color-btn-hover-bkgd) !important;
 }
 
 button.default:hover {
@@ -112,7 +112,7 @@ textarea {
 input[type="text"]:hover,
 input[type="password"]:hover,
 textarea:hover {
-    border-color: var(--color-tb-border-hover);
+    border-color: var(--color-tb-hover-border);
 }
 
 input[type="text"]:focus,
