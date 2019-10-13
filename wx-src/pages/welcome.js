@@ -42,6 +42,10 @@ let gClippingsListener = {
   folderDeleted: function (aID, aOldData) {},
   importStarted: function () {},
   importFinished: function (aIsSuccess) {},
+  dndMoveStarted: function () {},
+  dndMoveFinished: function () {},
+  copyStarted: function () {},
+  copyFinished: function (aItemCopyID) {},
 };
 
 

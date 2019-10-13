@@ -1959,10 +1959,12 @@ let gCmd = {
       let tree = getClippingsTree();
       let itemNode = tree.getNodeByKey(undo.nodeKey);
       let parentFldrID = undo.parentFolderID;
+      let redoNextSiblingNode = itemNode.getNextSibling();
       
       if (undo.nextSiblingNodeKey) {
         let nextSiblingNode = tree.getNodeByKey(undo.nextSiblingNodeKey);       
         log(`Clippings/wx::clippingsMgr.js: gCmd.undo(): Reordering the tree node (key=${itemNode.key}), placing it before sibling node (key=${undo.nextSiblingNodeKey})`);
+        log(`Current next sibling node key: ${(redoNextSiblingNode ? redoNextSiblingNode.key : null)} (this will be saved to the Redo stack)`)
         itemNode.moveTo(nextSiblingNode, "before");
       }
       else {
@@ -1980,6 +1982,8 @@ let gCmd = {
       }
 
       this.updateDisplayOrder(parentFldrID);
+      undo.nextSiblingNodeKey = redoNextSiblingNode ? redoNextSiblingNode.key : null;
+      this.redoStack.push(undo);
     }
   },
 
@@ -2058,7 +2062,33 @@ let gCmd = {
       this.undoStack.push(redo);
     }
     else if (redo.action == this.ACTION_CHANGEPOSITION) {
-      // TO DO: Finish implementation.
+      let tree = getClippingsTree();
+      let itemNode = tree.getNodeByKey(redo.nodeKey);
+      let parentFldrID = redo.parentFolderID;
+      let undoNextSiblingNode = itemNode.getNextSibling();;
+
+      if (redo.nextSiblingNodeKey) {
+        let nextSiblingNode = tree.getNodeByKey(redo.nextSiblingNodeKey);       
+        log(`Clippings/wx::clippingsMgr.js: gCmd.redo(): Reordering the tree node (key=${itemNode.key}), placing it before sibling node (key=${redo.nextSiblingNodeKey})`);
+        itemNode.moveTo(nextSiblingNode, "before");
+      }
+      else {
+        if (parentFldrID == aeConst.ROOT_FOLDER_ID) {
+          let rootFldrNode = tree.rootNode;
+          log(`Clippings/wx::clippingsMgr.js: gCmd.redo(): Moving the tree node (key=${itemNode.key}) back to be the last node of the root folder.`);
+          itemNode.moveTo(rootFldrNode, "child");
+        }
+        else {
+          let parentFldrNodeKey = parentFldrID + "F";
+          log(`Clippings/wx::clippingsMgr.js: gCmd.redo(): Moving the tree node (key=${itemNode.key}) back to be the last node of its parent (key=${parentFldrNodeKey}).`);
+          let parentFldrNode = tree.getNodeByKey(parentFldrID + "F");
+          itemNode.moveTo(parentFldrNode, "child");
+        }
+      }
+
+      this.updateDisplayOrder(parentFldrID);
+      redo.nextSiblingNodeKey = undoNextSiblingNode ? undoNextSiblingNode.key : null;
+      this.undoStack.push(redo);
     }
   },
   
