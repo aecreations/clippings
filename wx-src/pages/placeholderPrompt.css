@@ -61,6 +61,7 @@ select.browser-style:focus:not(:disabled) {
 
 #single-prmt-input {
     width: 100%;
+    height: 24px;
 }
 
 #plchldr-table {
@@ -76,12 +77,15 @@ select.browser-style:focus:not(:disabled) {
 .ph-name {
     display: inline-block;
     height: 14px;
+    font-size: 11px;
 }
 
 .ph-input {
     width: 100%;
     margin-top: 2px;
-    margin-bottom: 0;
+    margin-bottom: 4px;
+    height: 24px;
+    font-size: 11px !important;
 }
 
 .duplicate-plchldr {
