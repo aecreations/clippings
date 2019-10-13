@@ -5,12 +5,47 @@
 
 :root {
     --page-width: 900px;
+
+    --url-bkgd-img: url("../img/postUpgrade-bkgrd.png");
+    --color-bkgd: none;
+    --color-main-border: #eee;
+    --color-main-bkgd: #fff;
+    --color-main-border-shadow: #7E7A78;
+    --color-text-default: black;
+    --color-text-body: #0c0c0d;
+    --color-card-border-shadow: #EBEDEA;
+    --color-btn-bkgd: rgba(12, 12, 13, 0.1);
+    --color-btn-hover-bkgd: rgba(12, 12, 13, 0.2);
+    --color-btn-active-bkgd: rgba(12, 12, 13, 0.3);
+    --color-btn-border: rgba(12, 12, 13, 0.1);
+    --color-btn-text: black;
 }
+
+@media (prefers-color-scheme: dark) {
+    :root {
+	--url-bkgd-img: none;
+	--color-bkgd: #1a1a1e;
+	--color-main-border: #0c0c0d;
+	--color-main-bkgd: #2a2a2e;
+	--color-main-border-shadow: #0c0c0d;
+	--color-text-default: #f9f9fa;
+	--color-text-body: #f9f9fa;
+	--color-card-border-shadow: #0c0c0d;
+	--color-btn-bkgd: #4a4a4f;
+	--color-btn-hover-bkgd: #606060;
+	--color-btn-active-bkgd: #737373;
+	--color-btn-border: #4a4a4f;
+	--color-btn-text: #f9f9fa;
+    }
+}
+
 
 body {
     margin: 0;
+    background-color: var(--color-bkgd);
+    background-image: var(--url-bkgd-img);
     font: caption;
-    background-image: url("../img/postUpgrade-bkgrd.png");
+    color: var(--color-text-default);
 }
 
 main {
@@ -19,28 +54,28 @@ main {
     margin-right: auto;
     margin-top: 0;
     margin-bottom: 18px;
-    border: 1px solid #eee;
+    border: 1px solid var(--color-main-border);
     border-radius: 2px;
-    box-shadow: 0px 1px 5px 0px #7E7A78;
-    background-color: #ffffff;    
+    box-shadow: 0px 1px 5px 0px var(--color-main-border-shadow);
+    background-color: var(--color-main-bkgd);    
 }
 
 main h2 {
     font-size: 22px;
     font-weight: 600;
-    color: #0c0c0d;
+    color: var(--color-text-body);
 }
 
 main h3 {
     font-size: 18px;
-    color: #0c0c0d;
+    color: var(--color-text-body);
     margin-left: 2rem;
 }
 
 main p, li {
     font-size: 15px;
     font-weight: 400;
-    color: #0c0c0d;
+    color: var(--color-text-body);
     margin-left: 2rem;
 }
 
@@ -50,8 +85,7 @@ li {
 
 strong {
     font-weight: 700;
-    color: #0c0c0d;
-
+    color: var(--color-text-body);
 }
 
 a, .hyperlink {
@@ -71,10 +105,11 @@ button {
     outline: unset;
     border-radius: 2px;
     box-shadow: 0 0 0 0 transparent;
-    border: 1px solid rgba(12, 12, 13, 0.1) !important;
-    background-color: rgba(12, 12, 13, 0.1);
+    border: 1px solid var(--color-btn-border) !important;
+    background-color: var(--color-btn-bkgd);
     font: caption;
     font-size: 15px;
+    color: var(--color-text-default);
 }
 
 button.default {
@@ -85,8 +120,8 @@ button.default {
 }
 
 button:hover {
-    background-color: rgba(12, 12, 13, 0.2);
-    border: 1px solid rgba(12, 12, 13, 0.2) !important;
+    background-color: var(--color-btn-hover-bkgd);
+    border: 1px solid var(--color-btn-border) !important;
 }
 
 button.default:hover {
@@ -95,8 +130,8 @@ button.default:hover {
 }
 
 button:active {
-    background-color: rgba(12, 12, 13, 0.3);
-    border: 1px solid rgba(12, 12, 13, 0.3) !important;
+    background-color: var(--color-btn-active-bkgd);
+    border: 1px solid var(--color-btn-active-bkgd) !important;
 }
 
 button.default:active {
@@ -124,7 +159,7 @@ button.btn-puffy {
     padding: 16px 20px 16px;
     border: 1px solid #eee;
     border-radius: 4px;
-    box-shadow: 0px 0px 6px 0px #EBEDEA;
+    box-shadow: 0px 0px 6px 0px var(--color-card-border-shadow);
     background-position: top;
     background-repeat: no-repeat;
 }
@@ -148,16 +183,12 @@ button.btn-puffy {
     text-align: center;
 }
 
-.welcome-action-card > .card-btns > button {
-
-}
-
-#welcome-current-user {
+#welcome-new-user {
     order: 1;
     margin-right: 16px;
 }
 
-#welcome-new-user {
+#welcome-current-user {
     order: 2;
     margin-left: 16px;
 }
