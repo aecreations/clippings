@@ -12,6 +12,7 @@
     --color-main-bkgd: #fefefe;
     --color-main-border-shadow: #e0e0e0;
     --color-text-default: black;
+    --color-text-sync-status-on: #003706;
     --color-about-btn-bkgd: #f9f9fa;
     --color-about-btn-bkgd-hover: #ededf0;
     --color-about-btn-bkgd-active: #d7d7db;
@@ -28,6 +29,7 @@
 	--color-main-bkgd: #2a2a2e;
 	--color-main-border-shadow: #0c0c0d;
 	--color-text-default: #f9f9fa;
+	--color-text-sync-status-on: #30e60b;
 	--color-about-btn-bkgd: #2a2a2e;
 	--color-about-btn-bkgd-hover: #38383d;
 	--color-about-btn-bkgd-active: #4a4a4f;
@@ -229,7 +231,7 @@ a:active {
 }
 
 .sync-status-on {
-    color: #003706;
+    color: var(--color-text-sync-status-on);
 }
 
 .sync-status-on::after {
