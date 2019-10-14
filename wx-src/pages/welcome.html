@@ -49,82 +49,6 @@
 	  <button id="dismiss-welcome" data-i18n="closeWelcomePg"></button>
 	</div>
       </div> <!-- #welcome-page -->
-
-      <div id="select-backup-file-pg" class="deck-content">
-	<h1 data-i18n="welcImportHdg"></h1>
-
-	<p data-i18n="welcImportDesc"></p>
-
-	<div id="import-file-uploader">
-	  <input type="text" id="import-clippings-file-name" readonly="true"/>
-	  <label id="import-clippings-file-upload-btn" for="import-clippings-file-upload" data-i18n="btnBrowse"></label>
-          <input type="file" id="import-clippings-file-upload" accept=".rdf, .json"/>
-	  <span id="skip-import" class="hyperlink" data-i18n="welcSkipImport"></span>
-        </div>
-
-	<p id="toggle-no-backup-help"><b class="expander-icon">&#9654; </b><span  class="hyperlink" data-i18n="welcNoBackupExpand"></span></p>
-
-	<div id="no-backup-help">
-
-	  <p class="instruction-header" data-i18n="welcNoBackupSubh"><p>
-
-          <ol>
-	    <li id="no-backup-instrxn-step1" data-i18n="welcNoBackupInstrxnStep1"></li>
-
-	    <li id="no-backup-instrxn-step2" data-i18n="welcNoBackupInstrxnStep2"></li>
-
-	    <li data-i18n="welcNoBackupInstrxnStep3"></li>
-
-	    <li data-i18n="welcNoBackupInstrxnStep4"></li>
-	  </ol>
-	</div>
-
-	<div id="ready-import">
-	  <p data-i18n="welcReadyImport"></p>
-
-	  <div class="pg-buttons">
-	    <button id="import-btn" class="default btn-puffy" data-i18n="welcImportBtn"></button>
-	  </div>
-	</div>
-
-	<p id="select-backup-pg-back-link" class="hyperlink back-to-welcome-pg" data-i18n="welcBack"></p>
-	
-      </div>  <!-- #select-backup-file-pg -->
-
-      <div id="import-backup-pg" class="deck-content">
-
-	<p id="import-status" data-i18n="welcImportStatus"></p>
-
-	<progress id="import-progress-bar" value="0" max="100"></progress>
-	<div id="import-statistics"></div>
-	
-	<div id="import-completed">
-
-	  <p data-i18n="welcImportConfirmDone"></p>
-
-	  <div id="shortcut-key-note">
-	    <img class="msg-icon" src="../img/info.svg"/>
-	    <p id="shortcut-key-note-detail" data-i18n="welcShctKeyNote"></p>
-	  </div>
-	  
-	  <div class="pg-buttons">
-	    <button id="open-clippings-mgr" style="margin-right:18px" data-i18n="welcOpenClipMgr"></button>
-	    <button id="finish-btn" class="default" data-i18n="closeWelcomePg"></button>
-	  </div>
-	</div>
-
-	<div id="import-failed">
-
-	  <p class="error" data-i18n="welcImportError"></p>
-
-	  <p data-i18n="welcImportRetry"></p>
-
-	  <div class="pg-buttons">
-	    <button id="retry-import" data-i18n="welcImportRetryBtn"></button>
-          </div>
-        </div>
-	
-      </div>  <!-- #import-backup-pg -->
     </main>
 
     <div id="dismiss-welcome-dlg" class="lightbox">
@@ -137,41 +61,10 @@
 	<button class="dlg-accept default" data-i18n="closeWelcomePg"></button>
       </div>
     </div>
-
-    <div id="skip-import-dlg" class="lightbox">
-      <div class="dlg-content">
-	<p data-i18n="welcImportLater"></p>
-      </div>
-      <div class="dlg-btns">
-	<button class="dlg-cancel" data-i18n="welcCancelDlg"></button>
-	<button class="dlg-accept default" data-i18n="closeWelcomePg"></button>
-      </div>
-    </div>
-
-    <div id="private-browsing-error-msgbox" class="lightbox">
-      <div class="msgbox-error-icon"></div>
-      <div class="dlg-content">
-	<p class="error-msg" data-i18n="welcCantImportHdg"></p>
-	<div class="error-howto-fix-detail">
-	  <p data-i18n="welcCantImportCause"></p>
-	  <p data-i18n="welcCantImportFix"></p>
-	  <ol>
-	    <li data-i18n="welcCantImportFixStep1"></li>
-	    <li data-i18n="welcCantImportFixStep2"></li>
-	    <li data-i18n="welcCantImportFixStep3"></li>
-	  </ol>
-	</div>
-      </div>
-      <div class="dlg-btns">
-	<button class="dlg-accept default" data-i18n="btnClose"></button>
-      </div>
-    </div>
     <div id="lightbox-bkgrd-ovl" class="lightbox-bkgrd"></div>
 
     <script src="../lib/jquery.js"></script>
-    <script src="../lib/rdflib.js"></script>
     <script src="../lib/purify.min.js"></script>
-    <script src="../modules/aeImportExport.js"></script>
     <script src="../modules/aeI18n.js"></script>
     <script src="welcome.js"></script>
   </body>
