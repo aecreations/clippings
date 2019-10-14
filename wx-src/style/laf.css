@@ -20,8 +20,8 @@
 @media (prefers-color-scheme: dark) {
     :root {
 	--color-btn-bkgd: #4a4a4f;
-	--color-btn-hover-bkgd: #737373;
-	--color-btn-active-bkgd: #2a2a2e;
+	--color-btn-hover-bkgd: #606060;
+	--color-btn-active-bkgd: #737373;
 	--color-btn-border: #4a4a4f;
 	--color-btn-text: #f9f9fa;
 	--color-tb-bkgd: #0c0c0d;
@@ -85,7 +85,7 @@ button.default:hover {
 
 button:active {
     border: 1px solid rgba(12, 12, 13, 0.3) !important;
-    background-color: rgba(12, 12, 13, 0.3);
+    background-color: var(--color-btn-active-bkgd);
 }
 
 select.browser-style:active {
