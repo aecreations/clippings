@@ -30,6 +30,7 @@
     --color-clippings-tree-bkgd: #fbfbfb;
     --color-folder-only-bkgd: #f6f6f6;
     --color-textbox-bkgd: -moz-field;
+    --color-listbox-bkgd: #fff;
     --color-details-pane-bkgd: white;
     --color-details-pane-btn-bkgd: #fbfbfb;
     --color-details-pane-btn-hover-bkgd: #ebebeb;
@@ -66,9 +67,10 @@
 	--color-reload-sync-fldr-btn-active-bkgd: #737373;
 	--color-reload-sync-fldr-btn-active-border: #737373;
 	--color-toolbar-menubtn-open: #737373;
-	--color-clippings-tree-bkgd: #0c0c0d;
+	--color-clippings-tree-bkgd: #202023;
 	--color-folder-only-bkgd: #2a2a2e;
 	--color-textbox-bkgd: black;
+	--color-listbox-bkgd: #202023;
 	--color-details-pane-bkgd: #2a2a2e;
 	--color-details-pane-btn-bkgd: #4a4a4f;
 	--color-details-pane-btn-hover-bkgd: #737373;
@@ -121,6 +123,10 @@ select {
     font-size: 11px !important;
     background-color: var(--color-textbox-bkgd);
     color: var(--color-default-text);
+}
+
+select {
+    background-color: var(--color-listbox-bkgd);
 }
 
 .browser-style > input[type="text"],

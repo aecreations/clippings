@@ -16,7 +16,7 @@
 
 @media (prefers-color-scheme: dark) {
     :root {
-	--color-clippings-tree-bkgd: #0c0c0d;
+	--color-clippings-tree-bkgd: #202023;
 	--color-default-text: #f9f9fa;
 	--color-focused-node: #0a84ff;
 	--color-focused-border: #0060df;

@@ -15,6 +15,11 @@
     --color-tb-border: rgba(12, 12, 13, 0.2);
     --color-tb-hover-border: rgba(12, 12, 13, 0.3);
     --color-tb-text: -moz-fieldtext;
+    --color-cb-bkgd: #fff;
+    --color-cb-border: #b1b1b1;
+    --color-cb-hover-bkgd: #fbfbfb;
+    --color-cb-active-bkgd: #ebebeb;
+    --color-error-text: #d70022;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -28,6 +33,11 @@
 	--color-tb-border: #4a4a4f;
 	--color-tb-hover-border: #737373;
 	--color-tb-text: #f9f9fa;
+	--color-cb-bkgd: #202023;
+	--color-cb-border: #737373;
+	--color-cb-hover-bkgd: #2a2a2e;
+	--color-cb-active-bkgd: #38383d;
+	--color-error-text: #ff0039;
     }
 }
 
@@ -130,6 +140,22 @@ textarea::selection {
     background-color: rgba(10, 132, 255, 0.3);
 }
 
+.browser-style > input[type="checkbox"] {
+    background-color: var(--color-cb-bkgd);
+    border: 1px solid var(--color-cb-border);
+}
+
+.browser-style > input[type="checkbox"]:hover,
+.browser-style.hover > input[type="checkbox"]:not(:active) {
+    background-color: var(--color-cb-hover-bkgd);
+    border-color: var(--color-cb-border);
+}
+
+.browser-style > input[type="checkbox"]:hover:active,
+.browser-style.pressed > input[type="checkbox"]:not(:active) {
+    background-color: var(--color-cb-active-bkgd);
+}
+
 .error {
-    color: #d70022;
+    color: var(--color-error-text);
 }
