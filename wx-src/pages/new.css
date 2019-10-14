@@ -228,7 +228,7 @@ ul.fancytree-container {
 
 #create-clipping-error-msgbox {
     --width: 384px;
-    --height: 150px;
+    --height: 145px;
     top: 64px;
 }
 
@@ -248,5 +248,5 @@ ul.fancytree-container {
 
 #create-clipping-error-msgbox .msgbox-error-msg {
     margin-left: 44px;
-    color: red;
+    color: var(--color-error-text);
 }

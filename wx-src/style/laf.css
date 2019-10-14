@@ -15,6 +15,7 @@
     --color-tb-border: rgba(12, 12, 13, 0.2);
     --color-tb-hover-border: rgba(12, 12, 13, 0.3);
     --color-tb-text: -moz-fieldtext;
+    --color-tb-selection: rgba(10, 132, 255, 0.3);
     --color-cb-bkgd: #fff;
     --color-cb-border: #b1b1b1;
     --color-cb-hover-bkgd: #fbfbfb;
@@ -33,6 +34,7 @@
 	--color-tb-border: #4a4a4f;
 	--color-tb-hover-border: #737373;
 	--color-tb-text: #f9f9fa;
+	--color-tb-selection: rgba(10, 132, 255, 0.75);
 	--color-cb-bkgd: #202023;
 	--color-cb-border: #737373;
 	--color-cb-hover-bkgd: #2a2a2e;
@@ -137,7 +139,7 @@ textarea:focus {
 input[type="text"]::selection,
 input[type="password"]::selection,
 textarea::selection {
-    background-color: rgba(10, 132, 255, 0.3);
+    background-color: var(--color-tb-selection);
 }
 
 .browser-style > input[type="checkbox"] {

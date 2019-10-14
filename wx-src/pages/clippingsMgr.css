@@ -12,7 +12,6 @@
 
     --color-bkgd: white;
     --color-default-text: black;
-    --color-error-text: red;
     --color-not-synced-items-text: rgba(0, 0, 0, 0.4);
     --color-main-toolbar-bkgd: linear-gradient(to bottom, #fcfcfc 0%, #dedede 100%);
     --color-main-toolbar-text: #0c0c0d;
@@ -52,7 +51,6 @@
     :root {
 	--color-bkgd: #2a2a2e;
 	--color-default-text: #f9f9fa;
-	--color-error-text: #ff0039;
 	--color-not-synced-items-text: rgba(180, 180, 180, 0.4);
 	--color-main-toolbar-bkgd: #38383d;
 	--color-main-toolbar-text: #f9f9fa;
@@ -1123,7 +1121,7 @@ ul.fancytree-container {
 #import-dlg #import-error {
     display: none;
     margin-top: 8px;
-    color: red;
+    color: var(--color-error-text);
 }
 
 #export-dlg {
@@ -1200,7 +1198,7 @@ ul.fancytree-container {
 
 #move-dlg #move-error {
     margin: 4px 0 4px 0;
-    color: red;
+    color: var(--color-error-text);
 }
 
 #init-error-msgbox {
