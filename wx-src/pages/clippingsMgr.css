@@ -12,6 +12,7 @@
 
     --color-bkgd: white;
     --color-default-text: black;
+    --color-error-text: red;
     --color-not-synced-items-text: rgba(0, 0, 0, 0.4);
     --color-main-toolbar-bkgd: linear-gradient(to bottom, #fcfcfc 0%, #dedede 100%);
     --color-main-toolbar-text: #0c0c0d;
@@ -19,6 +20,12 @@
     --color-plchldr-toolbar-text: #0c0c0d;
     --color-toolbarbtn-hover-bkgd: rgba(12, 12, 13, 0.2);
     --color-toolbarbtn-active-bkgd: rgba(12, 12, 13, 0.3);
+    --color-reload-sync-fldr-btn-bkgd: #fbfbfb;
+    --color-reload-sync-fldr-btn-border: #ddd;
+    --color-reload-sync-fldr-btn-hover-bkgd: #ebebeb;
+    --color-reload-sync-fldr-btn-hover-border: #b1b1b1;
+    --color-reload-sync-fldr-btn-active-bkgd: #d7d7db;
+    --color-reload-sync-fldr-btn-active-border: #b1b1b1;
     --color-toolbar-menubtn-open: #d7d7db;
     --color-clippings-tree-bkgd: #fbfbfb;
     --color-folder-only-bkgd: #f6f6f6;
@@ -44,13 +51,20 @@
     :root {
 	--color-bkgd: #2a2a2e;
 	--color-default-text: #f9f9fa;
-	--color-not-synced-items-text: rgba(0, 0, 0, 0.4);
+	--color-error-text: #ff0039;
+	--color-not-synced-items-text: rgba(180, 180, 180, 0.4);
 	--color-main-toolbar-bkgd: #38383d;
 	--color-main-toolbar-text: #f9f9fa;
 	--color-plchldr-toolbar-bkgd: #38383d;
 	--color-plchldr-toolbar-text: #f9f9fa;
 	--color-toolbarbtn-hover-bkgd: #737373;
 	--color-toolbarbtn-active-bkgd: #b1b1b3;
+	--color-reload-sync-fldr-btn-bkgd: #737373;
+	--color-reload-sync-fldr-btn-border: #b1b1b3;
+	--color-reload-sync-fldr-btn-hover-bkgd: #b1b1b3;
+	--color-reload-sync-fldr-btn-hover-border: #b1b1b3;
+	--color-reload-sync-fldr-btn-active-bkgd: #737373;
+	--color-reload-sync-fldr-btn-active-border: #737373;
 	--color-toolbar-menubtn-open: #737373;
 	--color-clippings-tree-bkgd: #0c0c0d;
 	--color-folder-only-bkgd: #2a2a2e;
@@ -301,6 +315,10 @@ input[type="checkbox"] + label {
     color: var(--color-cxtmenu-text);
 }
 
+.context-menu-item.context-menu-disabled {
+    background-color: var(--color-cxtmenu-bkgd);
+}
+
 .context-menu-disabled:hover {
     background-color: transparent;
 }
@@ -401,10 +419,10 @@ input[type="checkbox"] + label {
     width: 24px;
     height: 20px;
 
-    border: 1px solid #ddd;
+    border: 1px solid var(--color-reload-sync-fldr-btn-border);
     border-radius: 3px;
 
-    background-color: #fbfbfb;
+    background-color: var(--color-reload-sync-fldr-btn-bkgd);
     background-image: url("../img/reload.svg");
     background-size: 14px 14px;
     background-repeat: no-repeat;
@@ -412,13 +430,13 @@ input[type="checkbox"] + label {
 }
 
 #reload-sync-fldr-btn:hover {
-    border: 1px solid #b1b1b1;
-    background-color: #ebebeb;
+    border: 1px solid var(--color-reload-sync-fldr-btn-hover-border);
+    background-color: var(--color-reload-sync-fldr-btn-hover-bkgd);
 }
 
 #reload-sync-fldr-btn:active {
-    border: 1px solid #b1b1b1;
-    background-color: #d7d7db;
+    border: 1px solid var(--color-reload-sync-fldr-btn-active-border);
+    background-color: var(--color-reload-sync-fldr-btn-active-bkgd);
 }
 
 /* If user has set the option to only show synced items in the Clippings menu,
@@ -1186,7 +1204,7 @@ ul.fancytree-container {
 
 #init-error-msgbox > .dlg-content > .msgbox-error-msg {
     margin-left: 44px;
-    color: red;
+    color: var(--color-error-text);
 }
 
 #mini-help-dlg {
