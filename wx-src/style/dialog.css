@@ -29,6 +29,7 @@ body {
 button {
     min-width: 88px;
     min-height: 28px;
+    padding: 0px 8px;
     font-size: 13px !important;
 }
 
