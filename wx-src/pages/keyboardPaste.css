@@ -46,11 +46,11 @@
 	--color-th-border: #737373;
 	--color-selected-row: #0a84ff;
 	--color-active-row: #003eaa;
-	--color-autocomplete-popup-bkgd: black;
+	--color-autocomplete-popup-bkgd: #202023;
 	--color-autocomplete-popup-shadow: #4a4a4f;
 	--color-autocomplete-listbox-border: black;
 	--color-autocomplete-normal-border: black;
-	--color-autocomplete-normal-bkgd: black;
+	--color-autocomplete-normal-bkgd: #202023;
 	--color-autocomplete-selected-bkgd: #0a84ff;
 	--color-autocomplete-selected-border: #0060df;
 	--color-autocomplete-clipping-name: #fff;

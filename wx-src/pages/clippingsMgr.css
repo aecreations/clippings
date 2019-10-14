@@ -909,13 +909,13 @@ ul.fancytree-container {
 
 #custom-placeholder-dlg {
     --width: 330px;
-    --height: 206px;
+    --height: 200px;
     top: 48px;
 }
 
 #numeric-placeholder-dlg {
     --width: 330px;
-    --height: 190px;
+    --height: 184px;
     top: 48px;
 }
 
@@ -931,7 +931,7 @@ ul.fancytree-container {
 
 #insert-date-time-placeholder-dlg {
     --width: 300px;
-    --height: 336px;
+    --height: 326px;
     top: 14px;
 }
 
@@ -941,7 +941,7 @@ ul.fancytree-container {
 
 #shortcut-list-dlg {
     --width: 420px;
-    --height: 324px;
+    --height: 320px;
     top: 18px;
 }
 
@@ -1128,7 +1128,7 @@ ul.fancytree-container {
 
 #export-dlg {
     --width: 360px;
-    --height: 316px;
+    --height: 306px;
     top: 22px;
 }
 
@@ -1179,7 +1179,7 @@ ul.fancytree-container {
 
 #move-dlg {
     --width: 340px;
-    --height: 286px;
+    --height: 282px;
     top: 32px;
 }
 

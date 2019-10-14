@@ -8,7 +8,7 @@
 :root {
     --color-btn-expand-bkgd: #e0e0e1;
     --color-btn-expand-bkgd-hover: #d7d7db;
-    --color-fldr-tree-popup-bkgd: white;
+    --color-fldr-tree-popup-bkgd: #fbfbfb;
     --color-fldr-tree-popup-border: #b1b1b1;
     --color-fldr-tree-popup-shadow: #8f8f8f;
 }
@@ -211,7 +211,7 @@ ul.fancytree-container {
 
 #new-folder-dlg {
     --width: 320px;
-    --height: 180px;
+    --height: 170px;
     top: 64px;
 }
 
