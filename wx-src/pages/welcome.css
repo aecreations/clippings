@@ -13,8 +13,6 @@
     --color-main-border-shadow: #7E7A78;
     --color-text-default: black;
     --color-text-body: #0c0c0d;
-    --color-card-quick-start-bkgd: #e8f4ff;
-    --color-card-whats-new-bkgd: #f7efe1;
     --color-card-border-shadow: #EBEDEA;
     --color-btn-bkgd: rgba(12, 12, 13, 0.1);
     --color-btn-hover-bkgd: rgba(12, 12, 13, 0.2);
@@ -32,8 +30,6 @@
 	--color-main-border-shadow: #0c0c0d;
 	--color-text-default: #f9f9fa;
 	--color-text-body: #f9f9fa;
-	--color-card-quick-start-bkgd: transparent;
-	--color-card-whats-new-bkgd: transparent;
 	--color-card-border-shadow: #0c0c0d;
 	--color-btn-bkgd: #4a4a4f;
 	--color-btn-hover-bkgd: #606060;
@@ -189,13 +185,11 @@ button.btn-puffy {
 #welcome-quick-start {
     order: 1;
     margin-right: 16px;
-    background-color: var(--color-card-quick-start-bkgd);
 }
 
 #welcome-whats-new {
     order: 2;
     margin-left: 16px;
-    background-color: var(--color-card-whats-new-bkgd);
 }
 
 #welcome-whats-new-hdr-img {
