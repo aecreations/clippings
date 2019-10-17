@@ -18,7 +18,7 @@
     --color-about-btn-bkgd-active: #d7d7db;
     --color-about-btn-border: #ededf0;
     --color-about-btn-border-hover: #ededf0;
-    --color-about-btn black;
+    --color-about-btn: black;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -35,7 +35,7 @@
 	--color-about-btn-bkgd-active: #4a4a4f;
 	--color-about-btn-border: #4a4a4f;
 	--color-about-btn-border-hover: #b1b1b3;
-	--color-about-btn #f9f9fa;
+	--color-about-btn: #f9f9fa;
     }
 }
 
