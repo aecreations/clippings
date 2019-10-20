@@ -7,6 +7,7 @@
     --page-width: 900px;
 
     --url-bkgd-img: url("../img/postUpgrade-bkgrd.png");
+    --url-banner-img: url("../img/banner.svg");
     --color-bkgd: none;
     --color-main-border: #eee;
     --color-main-bkgd: #fff;
@@ -24,6 +25,7 @@
 @media (prefers-color-scheme: dark) {
     :root {
 	--url-bkgd-img: none;
+	--url-banner-img: url("../img/banner-dk.svg");
 	--color-bkgd: #1a1a1e;
 	--color-main-border: #0c0c0d;
 	--color-main-bkgd: #2a2a2e;
@@ -241,10 +243,13 @@ button.btn-puffy {
 
 #top-banner {
     width: var(--page-width);
+    height: 40px;
     margin-left: auto;
     margin-right: auto;
-    padding-top: 8px;
-    padding-bottom: 0;
+    margin-top: 4px;
+    margin-bottom: 0;
+    background-image: var(--url-banner-img);
+    background-repeat: no-repeat;
     background-color: transparent;
 }
 
