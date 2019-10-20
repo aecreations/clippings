@@ -1815,10 +1815,15 @@ let gCmd = {
       blobData = new Blob([aJSONData], { type: "application/json;charset=utf-8"});
 
       gSuppressAutoMinzWnd = true;
+
+      let filename = aeConst.CLIPPINGS_BACKUP_FILENAME;
+      if (prefs.backupFilenameWithDate) {
+        filename = aeConst.CLIPPINGS_BACKUP_FILENAME_WITH_DATE.replace("%s", moment().format("YYYY-MM-DD"));
+      }
       
       browser.downloads.download({
         url: URL.createObjectURL(blobData),
-        filename: aeConst.CLIPPINGS_BACKUP_FILENAME,
+        filename,
         saveAs: true
 
       }).then(aDownldItemID => {

@@ -393,6 +393,7 @@ async function setDefaultPrefs()
     afterSyncFldrReloadDelay: 3000,
     syncHelperCheckUpdates: true,
     lastSyncHelperUpdChkDate: null,
+    backupFilenameWithDate: true,
   };
 
   gPrefs = aeClippingsPrefs;
@@ -462,6 +463,7 @@ async function setMalibuPrefs()
     cxtMenuSyncItemsOnly: false,
     clippingsMgrShowSyncItemsOnlyRem: true,
     clippingsMgrAutoShowDetailsPane: true,
+    backupFilenameWithDate: true,
   };
 
   for (let pref in newPrefs) {

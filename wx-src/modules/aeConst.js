@@ -44,6 +44,7 @@ let aeConst = {
   HTML_EXPORT_SHORTCUTS_FILENAME: "clippings-shortcuts.html",
   CSV_EXPORT_FILENAME: "clippings.csv",
   CLIPPINGS_BACKUP_FILENAME: "clippings-backup.json",
+  CLIPPINGS_BACKUP_FILENAME_WITH_DATE: "clippings-backup %s.json",
 
   // Backup reminder frequency
   BACKUP_REMIND_NEVER: 0,

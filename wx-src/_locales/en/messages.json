@@ -987,6 +987,10 @@
     "message": "Check spelling"
   },
 
+  "cbBackupFilenameWithDate": {
+    "message": "Add date to backup file name"
+  },
+
   "backupRemind": {
     "message": "Show backup reminder every",
     "description": "Label for checkbox option for setting backup notification, appears after checkbox and before the reminder frequency drop-down menu"

@@ -143,6 +143,10 @@ function init()
       setPref({ checkSpelling: aEvent.target.checked });
     });
 
+    $("#backup-filename-with-date").attr("checked", aPrefs.backupFilenameWithDate).click(aEvent => {
+      setPref({ backupFilenameWithDate: aEvent.target.checked });
+    });
+
     $("#backup-reminder").prop("checked", (aPrefs.backupRemFrequency != aeConst.BACKUP_REMIND_NEVER)).click(aEvent => {
       let setPref;
 
@@ -185,7 +189,7 @@ function init()
         gClippings.clearBackupNotificationInterval();
         gClippings.setBackupNotificationInterval();
       });
-    });
+    });   
 
     if (aPrefs.syncClippings) {
       $("#sync-settings").show();
