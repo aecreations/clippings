@@ -2997,7 +2997,6 @@ function initDialogs()
   };
 
   gDialogs.insDateTimePlchldr = new aeDialog("#insert-date-time-placeholder-dlg");
-  // TO DO: Handle non-English localizations.
   gDialogs.insDateTimePlchldr.dateFormats = [
     "dddd, MMMM Do, YYYY",
     "MMMM D, YYYY",
@@ -3021,6 +3020,23 @@ function initDialogs()
 
     if (gClippings.getOS() != "mac") {
       dtFmtList.setAttribute("size", "11");
+    }
+
+    let lang = browser.i18n.getUILanguage();
+    if (lang.search(/en/ == -1)) {
+      // Handle non-English locales.
+      that.dateFormats = [
+        "LL",
+        "ll",
+        "l",
+        "YYYY-MM-DD",
+        "lll",
+        "LLLL",
+        "llll",
+      ];
+      that.timeFormats = [
+        "LT",
+      ];
     }
     
     let date = new Date();
