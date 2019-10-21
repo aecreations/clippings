@@ -3023,7 +3023,7 @@ function initDialogs()
     }
 
     let lang = browser.i18n.getUILanguage();
-    if (lang.search(/en/ == -1)) {
+    if (lang.search(/en/) == -1) {
       // Handle non-English locales.
       that.dateFormats = [
         "LL",
