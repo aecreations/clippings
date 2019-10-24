@@ -17,6 +17,7 @@
     --color-card-border-shadow: #EBEDEA;
     --color-btn-bkgd: rgba(12, 12, 13, 0.1);
     --color-btn-hover-bkgd: rgba(12, 12, 13, 0.2);
+    --color-btn-hover-border: rgba(12, 12, 13, 0.1);
     --color-btn-active-bkgd: rgba(12, 12, 13, 0.3);
     --color-btn-border: rgba(12, 12, 13, 0.1);
     --color-btn-text: black;
@@ -35,6 +36,7 @@
 	--color-card-border-shadow: #0c0c0d;
 	--color-btn-bkgd: #4a4a4f;
 	--color-btn-hover-bkgd: #606060;
+	--color-btn-hover-border: #606060;
 	--color-btn-active-bkgd: #737373;
 	--color-btn-border: #4a4a4f;
 	--color-btn-text: #f9f9fa;
@@ -107,7 +109,7 @@ button {
     outline: unset;
     border-radius: 2px;
     box-shadow: 0 0 0 0 transparent;
-    border: 1px solid var(--color-btn-border) !important;
+    border: 1px solid var(--color-btn-border);
     background-color: var(--color-btn-bkgd);
     font: caption;
     font-size: 15px;
@@ -122,8 +124,8 @@ button.default {
 }
 
 button:hover {
+    border-color: var(--color-btn-hover-border);
     background-color: var(--color-btn-hover-bkgd);
-    border: 1px solid var(--color-btn-border) !important;
 }
 
 button.default:hover {
@@ -133,12 +135,10 @@ button.default:hover {
 
 button:active {
     background-color: var(--color-btn-active-bkgd);
-    border: 1px solid var(--color-btn-active-bkgd) !important;
 }
 
 button.default:active {
     background-color: #002275;
-    border: 1px solid #002275;
 }
 
 button.btn-puffy {

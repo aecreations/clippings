@@ -137,7 +137,6 @@ button.default {
 }
 
 button:hover {
-    border: 1px solid rgba(12, 12, 13, 0.2) !important;
     background-color: var(--color-btn-hover-bkgd);
 }
 
