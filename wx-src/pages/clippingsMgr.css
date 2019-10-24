@@ -12,9 +12,12 @@
 
     --color-bkgd: white;
     --color-default-text: black;
+    --color-textbox-bkgd: -moz-field;
+    --color-listbox-bkgd: #fff;
     --color-not-synced-items-text: rgba(0, 0, 0, 0.4);
     --color-main-toolbar-bkgd: linear-gradient(to bottom, #fcfcfc 0%, #dedede 100%);
     --color-main-toolbar-text: #0c0c0d;
+    --color-main-toolbar-border: silver;
     --color-plchldr-toolbar-bkgd: #eee;
     --color-plchldr-toolbar-text: #0c0c0d;
     --color-toolbarbtn-hover-bkgd: rgba(12, 12, 13, 0.2);
@@ -27,9 +30,10 @@
     --color-reload-sync-fldr-btn-active-border: #b1b1b1;
     --color-toolbar-menubtn-open: #d7d7db;
     --color-clippings-tree-bkgd: #fbfbfb;
+    --color-tree-splitter: #fbfbfb;
+    --color-tree-splitter-border: #b1b1b1;
     --color-folder-only-bkgd: #f6f6f6;
-    --color-textbox-bkgd: -moz-field;
-    --color-listbox-bkgd: #fff;
+    --color-item-properties-textbox-border: var(--color-tb-border);
     --color-details-pane-bkgd: white;
     --color-details-pane-btn-bkgd: #fbfbfb;
     --color-details-pane-btn-hover-bkgd: #ebebeb;
@@ -51,9 +55,12 @@
     :root {
 	--color-bkgd: #2a2a2e;
 	--color-default-text: #f9f9fa;
+	--color-textbox-bkgd: black;
+	--color-listbox-bkgd: #202023;
 	--color-not-synced-items-text: rgba(180, 180, 180, 0.4);
 	--color-main-toolbar-bkgd: #38383d;
 	--color-main-toolbar-text: #f9f9fa;
+	--color-main-toolbar-border: #4a4a4f;
 	--color-plchldr-toolbar-bkgd: #38383d;
 	--color-plchldr-toolbar-text: #f9f9fa;
 	--color-toolbarbtn-hover-bkgd: #737373;
@@ -65,10 +72,11 @@
 	--color-reload-sync-fldr-btn-active-bkgd: #737373;
 	--color-reload-sync-fldr-btn-active-border: #737373;
 	--color-toolbar-menubtn-open: #737373;
+	--color-tree-splitter: #4a4a4f;
+	--color-tree-splitter-border: #4a4a4f;
 	--color-clippings-tree-bkgd: #202023;
 	--color-folder-only-bkgd: #2a2a2e;
-	--color-textbox-bkgd: black;
-	--color-listbox-bkgd: #202023;
+	--color-item-properties-textbox-border: transparent;
 	--color-details-pane-bkgd: #2a2a2e;
 	--color-details-pane-btn-bkgd: #4a4a4f;
 	--color-details-pane-btn-hover-bkgd: #737373;
@@ -128,18 +136,6 @@ select {
     background-color: var(--color-listbox-bkgd);
 }
 
-.browser-style > input[type="text"],
-.browser-style > input[type="text"]:not(disabled):hover {
-    border-top: 1px solid transparent;
-    border-left: 1px solid transparent;
-    border-right: 1px solid transparent;
-}
-
-.browser-style > input[type="text"]:active[readonly] {
-    border-color: transparent;
-    box-shadow: none;
-}
-
 .browser-style > input[type="text"][readonly]:focus,
 .browser-style > input[type="text"][readonly]:focus:hover {
     border-color: transparent;
@@ -148,10 +144,7 @@ select {
 
 input[type="search"] {
     padding-left: 20px;
-    border-top: 1px solid transparent;
-    border-left: 1px solid transparent;
-    border-right: 1px solid transparent;
-    border-bottom: 1px solid #b1b1b1;
+    border: 1px solid var(--color-tb-border);
     background-image: url("chrome://global/skin/icons/search-textbox.svg");
     background-position: 4px;
     background-repeat: no-repeat;
@@ -241,7 +234,7 @@ input[type="checkbox"] + label {
     padding-bottom: 2px;
     background: var(--color-main-toolbar-bkgd);
     color: var(--color-main-toolbar-text);
-    border-bottom: 1px solid silver;
+    border-bottom: 1px solid var(--color-main-toolbar-border);
 }
 
 #toolbar > #new-clipping {
@@ -363,7 +356,7 @@ input[type="checkbox"] + label {
 }
 
 #search-box:hover {
-    border-bottom: 1px solid #858585;
+    border: 1px solid var(--color-tb-hover-border);
 }
 
 #search-box:focus,
@@ -406,7 +399,7 @@ input[type="checkbox"] + label {
     width: 220px;
     min-width: 128px;
     overflow: auto;
-    border-right: 1px solid transparent;
+    border-right: 1px solid var(--color-tree-splitter);
     color: var(--color-default-text);
     background-color: var(--color-clippings-tree-bkgd);
 }
@@ -497,8 +490,8 @@ ul.fancytree-container {
     order: 2;
     position: relative;
     width: 2px;
-    background-color: #fbfbfb;
-    border-right: 1px solid #b1b1b1;
+    background-color: var(--color-tree-splitter);
+    border-right: 1px solid var(--color-tree-splitter-border);
     cursor: col-resize;
 }
 
@@ -557,7 +550,7 @@ ul.fancytree-container {
     border-left: none;
     border-right: none;
     border-top: none;
-    border-bottom: 1px solid #b1b1b1;
+    border-bottom: 1px solid var(--color-item-properties-textbox-border);
     background-color: var(--color-textbox-bkgd);
 }
 
@@ -573,7 +566,7 @@ ul.fancytree-container {
     border-left: none;
     border-right: none;
     border-top: none;
-    border-bottom: 1px solid #b1b1b1;
+    border-bottom: 1px solid var(--color-item-properties-textbox-border);
     background-color: var(--color-textbox-bkgd);
 }
 

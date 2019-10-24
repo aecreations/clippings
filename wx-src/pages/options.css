@@ -8,10 +8,11 @@
 :root {
     --url-bkgd-img: url("../img/bkgrd.png");
     --color-bkgd: none;
+    --color-text-default: black;
     --color-main-border: #ddd;
     --color-main-bkgd: #fefefe;
     --color-main-border-shadow: #e0e0e0;
-    --color-text-default: black;
+    --color-fieldset-border: #d7d7db;
     --color-text-sync-status-on: #003706;
     --color-about-btn-bkgd: #f9f9fa;
     --color-about-btn-bkgd-hover: #ededf0;
@@ -25,10 +26,11 @@
     :root {
 	--url-bkgd-img: none;
 	--color-bkgd: #1a1a1e;
+	--color-text-default: #f9f9fa;
 	--color-main-border: #0c0c0d;
 	--color-main-bkgd: #2a2a2e;
 	--color-main-border-shadow: #0c0c0d;
-	--color-text-default: #f9f9fa;
+	--color-fieldset-border: #4a4a4f;
 	--color-text-sync-status-on: #30e60b;
 	--color-about-btn-bkgd: #2a2a2e;
 	--color-about-btn-bkgd-hover: #38383d;
@@ -90,7 +92,7 @@ select {
 }
 
 fieldset {
-    border-top: 1px solid #d7d7db;
+    border-top: 1px solid var(--color-fieldset-border);
     border-right: 0;
     border-bottom: 0;
     border-left: 0;
@@ -530,8 +532,8 @@ a:active {
 #about-dlg hr {
     margin-top: 10px;
     margin-bottom: 10px;
-    border-top: 1px solid #b1b1b3;
-    color: #b1b1b3;
+    border-top: 1px solid var(--color-fieldset-border);
+    color: var(--color-fieldset-border);
 }
 
 #about-dlg #ext-info {
