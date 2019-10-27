@@ -29,7 +29,7 @@ let aeConst = {
   PASTEACTION_SHORTCUT_KEY:   1,
   PASTEACTION_SEARCH_CLIPPING: 2,
 
-  // Folder IDs
+  // Special folder IDs
   ROOT_FOLDER_ID: 0,
   DELETED_ITEMS_FLDR_ID: -1,
 
@@ -37,6 +37,10 @@ let aeConst = {
   DB_CREATED: 1,
   DB_UPDATED: 2,
   DB_DELETED: 3,
+
+  // Origin of clipping/folder creation for Clippings listener
+  ORIGIN_HOSTAPP: 1,
+  ORIGIN_CLIPPINGS_MGR: 2,
 
   // Export to file
   CLIPPINGS_EXPORT_FILENAME: "clippings.json",

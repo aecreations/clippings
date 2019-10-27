@@ -340,7 +340,7 @@ function initDialogs()
 
         let clippingsListeners = gClippings.getClippingsListeners().getListeners();
         clippingsListeners.forEach(aListener => {
-          aListener.newFolderCreated(aFldrID, newFolder);
+          aListener.newFolderCreated(aFldrID, newFolder, aeConst.ORIGIN_HOSTAPP);
         });
         
         that.close();
@@ -502,7 +502,7 @@ function accept(aEvent)
     }).then(aNewClippingID => {
       let clippingsListeners = gClippings.getClippingsListeners().getListeners();
       clippingsListeners.forEach(aListener => {
-        aListener.newClippingCreated(aNewClippingID, newClipping);
+        aListener.newClippingCreated(aNewClippingID, newClipping, aeConst.ORIGIN_HOSTAPP);
       });
       
       let prefs = gClippings.getPrefs();

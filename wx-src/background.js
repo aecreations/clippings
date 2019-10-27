@@ -25,11 +25,6 @@ let gForceShowFirstTimeBkupNotif = false;
 let gClippingsMgrRootFldrReseq = false;
 
 let gClippingsListeners = {
-  ORIGIN_CLIPPINGS_MGR: 1,
-  ORIGIN_HOSTAPP: 2,
-  ORIGIN_NEW_CLIPPING_DLG: 3,
-  ORIGIN_WELCOME_PG: 4,
-
   _listeners: [],
 
   add: function (aNewListener) {
@@ -51,7 +46,7 @@ let gClippingsListener = {
   _isClippingsMgrDnDInProgress: false,
   origin: null,
   
-  newClippingCreated: function (aID, aData)
+  newClippingCreated: function (aID, aData, aOrigin)
   {
     if (this._isCopying) {
       log("Clippings/wx: gClippingsListener.newClippingCreated(): Copying in progress; ignoring DB changes.");
@@ -66,7 +61,7 @@ let gClippingsListener = {
     rebuildContextMenu();
   },
 
-  newFolderCreated: function (aID, aData)
+  newFolderCreated: function (aID, aData, aOrigin)
   {
     if (this._isCopying) {
       log("Clippings/wx: gClippingsListener.newFolderCreated(): Copying in progress; ignoring DB changes.");
@@ -521,7 +516,7 @@ function init()
       openClippingsManager();
     });
 
-    gClippingsListener.origin = gClippingsListeners.ORIGIN_HOSTAPP;
+    gClippingsListener.origin = aeConst.ORIGIN_HOSTAPP;
     gClippingsListeners.add(gClippingsListener);
     gSyncClippingsListeners.add(gSyncClippingsListener);
     

@@ -39,7 +39,7 @@ let gClippingsSvc = {
     let newClippingID = await gClippingsDB.clippings.add(aClippingData);
     let clippingsListeners = gClippings.getClippingsListeners().getListeners();
     clippingsListeners.forEach(aListener => {
-      aListener.newClippingCreated(newClippingID, aClippingData);
+      aListener.newClippingCreated(newClippingID, aClippingData, aeConst.ORIGIN_CLIPPINGS_MGR);
     });
 
     return newClippingID;
@@ -50,7 +50,7 @@ let gClippingsSvc = {
     let newFolderID = await gClippingsDB.folders.add(aFolderData);
     let clippingsListeners = gClippings.getClippingsListeners().getListeners();
     clippingsListeners.forEach(aListener => {
-      aListener.newFolderCreated(newFolderID, aFolderData);
+      aListener.newFolderCreated(newFolderID, aFolderData, aeConst.ORIGIN_CLIPPINGS_MGR);
     });
 
     return newFolderID;
@@ -137,7 +137,7 @@ let gClippingsListener = {
   origin: null,
   copiedItems: [],
   
-  newClippingCreated: function (aID, aData, aDontSelect)
+  newClippingCreated: function (aID, aData, aOrigin, aDontSelect)
   {
     if (this._isCopying) {
       return;
@@ -178,21 +178,30 @@ let gClippingsListener = {
       return;
     }
 
+    let newClipping = {
+      id: aData.id,
+      name: aData.name,
+      parentFolderID: aData.parentFolderID,
+    };
+
     newNode.makeVisible().done(() => {     
       newNode.setActive();
-      $("#clipping-name").val(aData.name);
+      $("#clipping-name").val(newClipping.name);
       $("#clipping-text").val("");
 
-      // New clipping created from clipboard contents.
-      if (aData.name == NEW_CLIPPING_FROM_CLIPBOARD) {
-        log("Clippings/wx::clippingsMgr.js: gClippingsListener.newClippingCreated(): Focusing on clipping content editor textbox");
-        $("#clipping-text").focus();
-        document.execCommand("paste");  // THIS DOES NOT WORK!
+      // Clipping created outside Clippings Manager. Add to undo stack.
+      if (aOrigin == aeConst.ORIGIN_HOSTAPP) {
+        gCmd.undoStack.push({
+          action: gCmd.ACTION_CREATENEW,
+          id: newClipping.id,
+          itemType: gCmd.ITEMTYPE_CLIPPING,
+          parentFldrID: newClipping.parentFolderID,
+        });
       }
     });
   },
 
-  newFolderCreated: function (aID, aData, aDontSelect)
+  newFolderCreated: function (aID, aData, aOrigin, aDontSelect)
   {
     if (this._isCopying) {
       return;
@@ -235,10 +244,26 @@ let gClippingsListener = {
       return;
     }
 
+    let newFolder = {
+      id: aData.id,
+      name: aData.name,
+      parentFolderID: aData.parentFolderID,
+    };
+
     newNode.makeVisible().done(() => {
       newNode.setActive();
-      $("#clipping-name").val(aData.name);
+      $("#clipping-name").val(newFolder.name);
       $("#clipping-text").val("");
+
+      // Folder created outside Clippings Manager. Add to undo stack.
+      if (aOrigin == aeConst.ORIGIN_HOSTAPP) {
+        gCmd.undoStack.push({
+          action: gCmd.ACTION_CREATENEWFOLDER,
+          id: newFolder.id,
+          itemType: gCmd.ITEMTYPE_FOLDER,
+          parentFldrID: newFolder.parentFolderID,
+        });
+      }
     });
   },
 
@@ -387,14 +412,14 @@ let gClippingsListener = {
         if (item.id == aItemCopyID) {
           suppressFldrSelect = false;
         }
-        this.newFolderCreated(item.id, item, suppressFldrSelect);
+        this.newFolderCreated(item.id, item, aeConst.ORIGIN_CLIPPINGS_MGR, suppressFldrSelect);
       }
     }
 
     for (let i = 0; i < this.copiedItems.length; i++) {
       let item = this.copiedItems[i];
       if (item.itemType == gCmd.ITEMTYPE_CLIPPING) {
-        this.newClippingCreated(item.id, item, true);
+        this.newClippingCreated(item.id, item, aeConst.ORIGIN_CLIPPINGS_MGR, true);
       }
     }
 
@@ -2197,7 +2222,7 @@ $(document).ready(() => {
   }
 
   let clippingsListeners = gClippings.getClippingsListeners();
-  gClippingsListener.origin = clippingsListeners.ORIGIN_CLIPPINGS_MGR;
+  gClippingsListener.origin = aeConst.ORIGIN_CLIPPINGS_MGR;
   clippingsListeners.add(gClippingsListener);
 
   let prefs = gClippings.getPrefs();
