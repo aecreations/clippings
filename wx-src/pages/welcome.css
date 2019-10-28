@@ -10,10 +10,11 @@
     --url-banner-img: url("../img/banner.svg");
     --color-bkgd: none;
     --color-main-border: #eee;
-    --color-main-bkgd: #fff;
+    --color-main-bkgd: #F9F9FA;
     --color-main-border-shadow: #7E7A78;
     --color-text-default: black;
     --color-text-body: #0c0c0d;
+    --color-card-bkgd: #fff;
     --color-card-border-shadow: #EBEDEA;
     --color-btn-bkgd: rgba(12, 12, 13, 0.1);
     --color-btn-hover-bkgd: rgba(12, 12, 13, 0.2);
@@ -33,6 +34,7 @@
 	--color-main-border-shadow: #0c0c0d;
 	--color-text-default: #f9f9fa;
 	--color-text-body: #f9f9fa;
+	--color-card-bkgd: transparent;
 	--color-card-border-shadow: #0c0c0d;
 	--color-btn-bkgd: #4a4a4f;
 	--color-btn-hover-bkgd: #606060;
@@ -162,12 +164,14 @@ button.btn-puffy {
     border: 1px solid #eee;
     border-radius: 4px;
     box-shadow: 0px 0px 6px 0px var(--color-card-border-shadow);
+    background-color: var(--color-card-bkgd);
     background-position: top;
+    background-size: 356px 155px;
     background-repeat: no-repeat;
 }
 
 .welcome-action-card > h2 {
-    margin-top: 18px;
+    margin-top: 150px;
     margin-bottom: 0;
     text-align: left;
 }
@@ -187,29 +191,25 @@ button.btn-puffy {
 #welcome-quick-start {
     order: 1;
     margin-right: 16px;
+    background-image: url("../img/welc-quick-start.png");
 }
 
 #welcome-whats-new {
     order: 2;
     margin-left: 16px;
+    background-image: url("../img/welc-whats-new.png");
 }
 
 #welcome-whats-new-hdr-img {
-    height: 48px;
     margin: -16px -20px 0 -20px;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
-    border-bottom: 4px solid #572c04;
-    background-image: linear-gradient(to left, #d77100, #713600);
 }
 
 #welcome-quick-start-hdr-img {
-    height: 48px;
     margin: -16px -20px 0 -20px;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
-    border-bottom: 4px solid #001a2d;
-    background-image: linear-gradient(to left, #0069d5, #082440);
 }
 
 #dismiss-welcome-footer {
