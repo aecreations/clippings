@@ -6,6 +6,7 @@
 
 const WNDH_PLCHLDR_MULTI = 284;
 const WNDH_PLCHLDR_MULTI_SHORT = 240;
+const WNDH_PLCHLDR_MULTI_VSHORT = 190;
 const DLG_HEIGHT_ADJ_WINDOWS = 20;
 
 const REGEXP_CUSTOM_PLACEHOLDER = /\$\[([\w\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)(\{([\w \-\.\?_\/\(\)!@#%&;:,'"$£¥€*¡¢\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF\|])+\})?\]/m;
@@ -94,7 +95,19 @@ $(() => {
         $("#plchldr-multi").show();
 
         let plchldrSet = new Set(gPlaceholders);
-        let height = plchldrSet.size == 2 ? WNDH_PLCHLDR_MULTI_SHORT : WNDH_PLCHLDR_MULTI;
+        let height;
+        switch (plchldrSet.size) {
+        case 1:
+          height = WNDH_PLCHLDR_MULTI_VSHORT;
+          $("#multi-prmt-label").text(chrome.i18n.getMessage("plchldrPrmtMultiSameDesc"));
+          break;
+        case 2:
+          height = WNDH_PLCHLDR_MULTI_SHORT;
+          break;
+        default:
+          height = WNDH_PLCHLDR_MULTI;
+          break;
+        }
 
         if (gClippings.getOS() == "win") {
           height += DLG_HEIGHT_ADJ_WINDOWS;
