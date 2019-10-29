@@ -74,6 +74,14 @@ select.browser-style:focus:not(:disabled) {
     background-color: var(--color-plchldr-table-bkgd);
 }
 
+/* Special handling of a single placeholder used multiple times in the same
+/* clipping. Make the UI resemble single placeholder mode. */
+#plchldr-table.single-plchldr-multi-use {
+    padding: 4px 2px;
+    border: none;
+    background-color: unset;
+}
+
 .ph-name {
     display: inline-block;
     height: 14px;

@@ -6,7 +6,7 @@
 
 const WNDH_PLCHLDR_MULTI = 284;
 const WNDH_PLCHLDR_MULTI_SHORT = 240;
-const WNDH_PLCHLDR_MULTI_VSHORT = 190;
+const WNDH_PLCHLDR_MULTI_VSHORT = 180;
 const DLG_HEIGHT_ADJ_WINDOWS = 20;
 
 const REGEXP_CUSTOM_PLACEHOLDER = /\$\[([\w\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)(\{([\w \-\.\?_\/\(\)!@#%&;:,'"$£¥€*¡¢\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF\|])+\})?\]/m;
@@ -99,7 +99,9 @@ $(() => {
         switch (plchldrSet.size) {
         case 1:
           height = WNDH_PLCHLDR_MULTI_VSHORT;
-          $("#multi-prmt-label").text(chrome.i18n.getMessage("plchldrPrmtMultiSameDesc"));
+          let plchldr = gPlaceholders[0];
+          $("#multi-prmt-label").text(chrome.i18n.getMessage("plchldrPromptSingleDesc", plchldr));
+          $("#plchldr-table").addClass("single-plchldr-multi-use");
           break;
         case 2:
           height = WNDH_PLCHLDR_MULTI_SHORT;
@@ -142,6 +144,14 @@ $(() => {
               gSamePlchldrs[plchldr].push(i);
             }
           }
+
+          // A single placeholder is used multiple times. Make the UI resemble
+          // single placeholder mode, hiding the <label> with placeholder name
+          // directly above the input field.
+          if (plchldrSet.size == 1) {
+            $(".ph-name").hide();
+          }
+          
           $("#plchldr-table").fadeIn("fast");
 
           let firstInputElt = $(".ph-input")[0];

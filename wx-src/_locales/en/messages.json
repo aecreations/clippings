@@ -473,11 +473,6 @@
     "description": "Placeholder prompt dialog - multiple placeholders"
   },
 
-  "plchldrPrmtMultiSameDesc": {
-    "message": "Enter a value for the following placeholder.",
-    "description": "Placeholder prompt dialog - single placeholder occurring multiple times in the same clipping"
-  },
-
   "clippingsMgrWndTitle": {
     "message": "Clippings Manager",
     "description": "Clippings Manager window title"
