@@ -409,6 +409,11 @@ input[type="checkbox"] + label {
     background-image: url("../img/synced-clippings.svg");
 }
 
+/* Search results in tree list. */
+.fancytree-ext-filter-hide span.fancytree-node.fancytree-match span.fancytree-title, .fancytree-ext-filter-hide tr.fancytree-match span.fancytree-title {
+    color: var(--color-default-text);
+}
+
 #reload-sync-fldr-btn {
     display: inline-block;
 
