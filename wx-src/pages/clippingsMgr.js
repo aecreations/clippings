@@ -2020,7 +2020,7 @@ let gCmd = {
   redo: function ()
   {
     if (this.redoStack.length == 0) {
-      window.alert(chrome.i18n.getMessage("clipMgrNoRedo"));
+      window.setTimeout(() => { gDialogs.noRedoNotify.openPopup() }, 100);
       return;
     }
 
@@ -2871,6 +2871,7 @@ function initDialogs()
 
   gDialogs.clippingMissingSrcURL = new aeDialog("#clipping-missing-src-url-msgbar");
   gDialogs.noUndoNotify = new aeDialog("#no-undo-msgbar");
+  gDialogs.noRedoNotify = new aeDialog("#no-redo-msgbar");
 
   gDialogs.shortcutList = new aeDialog("#shortcut-list-dlg");
   gDialogs.shortcutList.isInitialized = false;
