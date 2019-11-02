@@ -7,7 +7,8 @@
 
 :root {
     --color-btn-expand-bkgd: #e0e0e1;
-    --color-btn-expand-bkgd-hover: #d7d7db;
+    --color-btn-expand-hover-bkgd: #d7d7db;
+    --color-btn-expand-active-bkgd: #c9c9ca;
     --color-fldr-tree-popup-bkgd: #fbfbfb;
     --color-fldr-tree-popup-border: #b1b1b1;
     --color-fldr-tree-popup-shadow: #8f8f8f;
@@ -16,7 +17,8 @@
 @media (prefers-color-scheme: dark) {
     :root {
 	--color-btn-expand-bkgd: #4a4a4f;
-	--color-btn-expand-bkgd-hover: #737373;
+	--color-btn-expand-hover-bkgd: #737373;
+	--color-btn-expand-active-bkgd: #808080;
 	--color-fldr-tree-popup-bkgd: #202023;
 	--color-fldr-tree-popup-border: #b1b1b3;
 	--color-fldr-tree-popup-shadow: #4a4a4f;
@@ -41,6 +43,7 @@ input[type="text"], textarea {
     width: 100%;
     margin-top: 4px;
     font: message-box;
+    font-size: 11px;
 }
 
 input[type="checkbox"] + label {
@@ -171,7 +174,11 @@ ul.fancytree-container {
 }
 
 #btn-expand-options:hover {
-    background-color: var(--color-btn-expand-bkgd-hover);
+    background-color: var(--color-btn-expand-hover-bkgd);
+}
+
+#btn-expand-options:active {
+    background-color: var(--color-btn-expand-active-bkgd);
 }
 
 #clipping-options #shct-key-and-label-opts {

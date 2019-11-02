@@ -442,8 +442,8 @@ function initLabelPicker()
     let fgColor = "white";
 
     if (! label) {
-      bgColor = "white";
-      fgColor = "initial";
+      bgColor = "var(--color-btn-bkgd)";
+      fgColor = "var(--color-text-default)";
     }
     else if (label == "yellow") {
       fgColor = "initial";
