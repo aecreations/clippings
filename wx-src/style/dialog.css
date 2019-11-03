@@ -29,7 +29,6 @@ body {
 button {
     min-width: 88px;
     min-height: 28px;
-    padding: 0px 8px;
     font-size: 13px !important;
 }
 
@@ -74,25 +73,7 @@ select.browser-style {
 .browser-style > input[type="text"][readonly]:hover{
     border-bottom: 1px dotted;
 }
-/**
-.browser-style > input[type="text"]:active {
-    border: 1px solid #0996f8;
-}
 
-.browser-style > input[type="text"]:active[readonly] {
-    border: 1px solid #0996f8;
-}
-
-.browser-style > input[type="text"]:focus,
-.browser-style > input[type="text"]:focus:hover {
-    border: 1px solid #0996f8;
-}
-
-.browser-style > input[type="text"][readonly]:focus,
-.browser-style > input[type="text"][readonly]:focus:hover {
-    box-shadow: 0 0 0 1px rgba(97, 181, 255, 0.75);
-}
-**/
 input[type="checkbox"] {
     vertical-align: -2px;
 }
