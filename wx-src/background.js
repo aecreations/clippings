@@ -84,7 +84,8 @@ let gClippingsListener = {
     
     log("Clippings/wx: gClippingsListener.clippingChanged()");
 
-    if (aData.name != aOldData.name || aData.parentFolderID != aOldData.parentFolderID) {
+    if (aData.name != aOldData.name || aData.parentFolderID != aOldData.parentFolderID
+       || aData.label != aOldData.label) {
       rebuildContextMenu();
     }
   },
