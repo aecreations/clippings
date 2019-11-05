@@ -49,6 +49,7 @@
     --color-cxtmenu-menuitem-hover-bkgd: #ededf0;
     --color-cxtmenu-menuitem-hover-text: #0c0c0d;
     --color-cxtmenu-separator: #e6e6e6;
+    --color-dlg-fieldset-border: #b1b1b1;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -92,6 +93,7 @@
 	--color-cxtmenu-menuitem-hover-bkgd: #606060;
 	--color-cxtmenu-menuitem-hover-text: #fff;
 	--color-cxtmenu-separator: #737373;
+	--color-dlg-fieldset-border: #585858;
     }
 }
 
@@ -860,8 +862,8 @@ ul.fancytree-container {
 .lightbox fieldset {
     border-left: none;
     border-right: none;
-    border-top: 1px solid silver;
-    border-bottom: 1px solid #b1b1b1;
+    border-top: 1px solid var(--color-dlg-fieldset-border);
+    border-bottom: 1px solid var(--color-dlg-fieldset-border);
 }
 
 .lightbox fieldset > legend {
