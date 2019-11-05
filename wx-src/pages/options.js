@@ -19,6 +19,16 @@ function sanitizeHTML(aHTMLStr)
 // Options page initialization
 $(() => {
   chrome.runtime.getBackgroundPage(aBkgrdWnd => {
+    if (! aBkgrdWnd) {
+      // Hide the broken "Turn Off Sync" button when Private Browsing turned on.
+      $("#toggle-sync").hide();
+      
+      let privateModeErrDlg = new aeDialog("#private-mode-error-dlg");
+      privateModeErrDlg.onAfterAccept = () => { closePage() };
+      privateModeErrDlg.showModal();
+      return;
+    }
+
     gClippings = aBkgrdWnd;
 
     init();
@@ -578,6 +588,16 @@ $(window).on("contextmenu", aEvent => {
 function gotoURL(aURL)
 {
   chrome.tabs.create({ url: aURL });
+}
+
+
+function closePage()
+{
+  browser.tabs.getCurrent().then(aTab => {
+    return browser.tabs.remove(aTab.id);
+  }).catch(aErr => {
+    console.error("Clippings/wx: options.js: " + aErr);
+  });
 }
 
 

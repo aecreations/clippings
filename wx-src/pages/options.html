@@ -156,7 +156,7 @@
 	  <div class="msgbox-icon"></div>
           <div class="dlg-content">
 	    <div class="error-msg" data-i18n="errSync"></div>
-	    <textarea id="sync-err-detail"></textarea>
+	    <textarea id="sync-err-detail" readonly="true"></textarea>
 	  </div>
         </div>
 	<div id="sync-folder-location" class="deck">
@@ -254,6 +254,15 @@
 	    </div>
 	  </div>  <!-- /.deck -->
 	</div>
+      </div>
+      <div class="dlg-btns">
+	<button class="dlg-accept default" data-i18n="btnOK"></button>
+      </div>
+    </div>
+    <div id="private-mode-error-dlg" class="lightbox">
+      <div class="msgbox-icon"></div>
+      <div class="dlg-content">
+	<p data-i18n="initError"></p>
       </div>
       <div class="dlg-btns">
 	<button class="dlg-accept default" data-i18n="btnOK"></button>
