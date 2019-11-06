@@ -56,7 +56,7 @@
     :root {
 	--color-bkgd: #2a2a2e;
 	--color-default-text: #f9f9fa;
-	--color-textbox-bkgd: black;
+	--color-textbox-bkgd: #0c0c0d;
 	--color-listbox-bkgd: #202023;
 	--color-not-synced-items-text: rgba(180, 180, 180, 0.4);
 	--color-main-toolbar-bkgd: #38383d;
