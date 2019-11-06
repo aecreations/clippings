@@ -21,6 +21,8 @@
     --color-cb-border: #b1b1b1;
     --color-cb-hover-bkgd: #fbfbfb;
     --color-cb-active-bkgd: #ebebeb;
+    --color-hyperlink: #0060df;
+    --color-hyperlink-active: #003eaa;
     --color-error-text: #d70022;
 }
 
@@ -41,13 +43,15 @@
 	--color-cb-border: #737373;
 	--color-cb-hover-bkgd: #2a2a2e;
 	--color-cb-active-bkgd: #38383d;
+	--color-hyperlink: #45a1ff;
+	--color-hyperlink-active: #0a84ff;
 	--color-error-text: #ff0039;
     }
 }
 
 
 a {
-    color: #0060df;
+    color: var(--color-hyperlink);
     text-decoration: none;
 }
 
@@ -56,7 +60,7 @@ a:hover, a:focus {
 }
 
 a:active {
-    color: #003eaa;
+    color: var(--color-hyperlink-active);
     text-decoration: underline;
 }
 
