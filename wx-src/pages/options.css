@@ -161,20 +161,6 @@ progress {
     width: 100%;
 }
 
-a {
-    color: #0060df;
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-a:active {
-    color: #003eaa;
-    text-decoration: underline;
-}
-
 .row {
     margin-top: 4px;
     margin-bottom: 2px;
