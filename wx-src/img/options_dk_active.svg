@@ -14,7 +14,7 @@
    id="svg3012"
    version="1.1"
    inkscape:version="0.92.2 5c3e80d, 2017-08-06"
-   sodipodi:docname="tools_hover.svg">
+   sodipodi:docname="tools_dk_active.svg">
   <defs
      id="defs3014" />
   <sodipodi:namedview
@@ -25,8 +25,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="22.627417"
-     inkscape:cx="-15.571938"
-     inkscape:cy="-1.1083052"
+     inkscape:cx="-6.9540739"
+     inkscape:cy="-2.8760722"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -64,7 +64,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -89,7 +89,7 @@
        id="path4985"
        inkscape:connector-curvature="0" />
     <path
-       style="fill:none;stroke:#bbbbbb;stroke-width:3.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:none;stroke:#aaaaaa;stroke-width:3.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="m 12,194.21218 1.5,1.65 4,-5.5"
        id="path4995"
        inkscape:connector-curvature="0"

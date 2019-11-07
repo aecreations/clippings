@@ -50,6 +50,15 @@
     --color-cxtmenu-menuitem-hover-text: #0c0c0d;
     --color-cxtmenu-separator: #e6e6e6;
     --color-dlg-fieldset-border: #b1b1b1;
+
+    --url-toolbar-btn-img-undo: url("../img/undo.svg");
+    --url-toolbar-btn-img-undo-hover: url("../img/undo_hover.svg");
+    --url-toolbar-btn-img-undo-active: url("../img/undo_hover.svg");
+    --url-toolbar-btn-img-tools: url("../img/options.svg");
+    --url-toolbar-btn-img-tools-hover: url("../img/options_hover.svg");
+    --url-toolbar-btn-img-tools-active: url("../img/options_hover.svg");
+    --url-toolbar-btn-img-tools-menu-open: url("../img/options_menuopen.svg");
+    --url-toolbar-btn-img-dropdown: url("../img/drop-down.svg");
 }
 
 @media (prefers-color-scheme: dark) {
@@ -94,6 +103,15 @@
 	--color-cxtmenu-menuitem-hover-text: #fff;
 	--color-cxtmenu-separator: #737373;
 	--color-dlg-fieldset-border: #585858;
+
+	--url-toolbar-btn-img-undo: url("../img/undo_dk.svg");
+	--url-toolbar-btn-img-undo-hover: url("../img/undo_dk.svg");
+	--url-toolbar-btn-img-undo-active: url("../img/undo_hover.svg");
+	--url-toolbar-btn-img-tools: url("../img/options_dk.svg");
+	--url-toolbar-btn-img-tools-hover: url("../img/options_dk_hover.svg");
+	--url-toolbar-btn-img-tools-active: url("../img/options_dk_active.svg");
+	--url-toolbar-btn-img-tools-menu-open: url("../img/options_dk_menuopen.svg");
+	--url-toolbar-btn-img-dropdown: url("../img/dropdown_dk.svg");
     }
 }
 
@@ -204,7 +222,7 @@ input[type="checkbox"] + label {
 }
 
 .toolbar-button-menu-open {
-    border-radius: 2px 2px 0px 0px;
+    Border-radius: 2px 2px 0px 0px;
     background-color: var(--color-toolbar-menubtn-open);
 }
 
@@ -277,11 +295,15 @@ input[type="checkbox"] + label {
 
 #toolbar > #undo {
     order: 5;
-    background-image: url("../img/undo.svg");
+    background-image: var(--url-toolbar-btn-img-undo);
 }
 
 #toolbar > #undo:hover {
-    background-image: url("../img/undo_hover.svg");
+    background-image: var(--url-toolbar-btn-img-undo-hover);
+}
+
+#toolbar > #undo:active {
+    background-image: var(--url-toolbar-btn-img-undo-active);
 }
 
 #toolbar > #spacer-1 {
@@ -291,13 +313,21 @@ input[type="checkbox"] + label {
 #toolbar > #clippings-mgr-options {
     order: 7;
     padding-right: 12px;
-    background-image: url("../img/options.svg"), url("../img/drop-down.svg");
+    background-image: var(--url-toolbar-btn-img-tools), var(--url-toolbar-btn-img-dropdown);
     background-position-x: 4px, right;
     
 }
 
 #toolbar > #clippings-mgr-options:hover {
-    background-image: url("../img/options_hover.svg"), url("../img/drop-down.svg");
+    background-image: var(--url-toolbar-btn-img-tools-hover), var(--url-toolbar-btn-img-dropdown);
+}
+
+#toolbar > #clippings-mgr-options:active {
+    background-image: var(--url-toolbar-btn-img-tools-active), url("../img/drop-down.svg");
+}
+
+#toolbar > #clippings-mgr-options.toolbar-button-menu-open {
+    background-image: var(--url-toolbar-btn-img-tools-menu-open), var(--url-toolbar-btn-img-dropdown);
 }
 
 /* jQuery contextMenu CSS overrides */
@@ -382,7 +412,7 @@ input[type="checkbox"] + label {
     left: -20px;
     width: 12px;
     height: 12px;
-    background-color: -moz-Field;
+    background-color: transparent;
     background-image: url("../img/search-reset.svg");
     background-position-x: center;
     background-position-y: center;
