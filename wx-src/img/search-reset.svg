@@ -14,7 +14,7 @@
    height="12"
    id="svg3012"
    version="1.1"
-   inkscape:version="0.48.5 r10040"
+   inkscape:version="0.92.2 5c3e80d, 2017-08-06"
    sodipodi:docname="search-reset.svg">
   <defs
      id="defs3014">
@@ -80,10 +80,10 @@
      pagecolor="#ffffff"
      bordercolor="#666666"
      borderopacity="1.0"
-     inkscape:pageopacity="0.0"
+     inkscape:pageopacity="1"
      inkscape:pageshadow="2"
      inkscape:zoom="32"
-     inkscape:cx="5.0704496"
+     inkscape:cx="-1.0233004"
      inkscape:cy="5.8319896"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -95,14 +95,15 @@
      inkscape:snap-to-guides="true"
      inkscape:snap-page="false"
      inkscape:snap-grids="true"
-     inkscape:window-width="1280"
-     inkscape:window-height="674"
+     inkscape:window-width="2048"
+     inkscape:window-height="1026"
      inkscape:window-x="0"
      inkscape:window-y="1"
      inkscape:window-maximized="1"
      showguides="true"
      inkscape:guide-bbox="true"
-     inkscape:snap-nodes="true">
+     inkscape:snap-nodes="true"
+     inkscape:pagecheckerboard="false">
     <inkscape:grid
        type="xygrid"
        id="grid3020"
@@ -110,10 +111,10 @@
        visible="true"
        enabled="true"
        snapvisiblegridlinesonly="true"
-       originx="0px"
-       originy="0px"
-       spacingx="0.5px"
-       spacingy="0.5px" />
+       originx="0"
+       originy="0"
+       spacingx="0.5"
+       spacingy="0.5" />
   </sodipodi:namedview>
   <metadata
      id="metadata3017">
@@ -133,7 +134,7 @@
      id="layer1"
      transform="translate(-10,-186.36218)">
     <path
-       style="fill:none;stroke:#646464;stroke-width:1.60000001999999997;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       style="fill:#000000;stroke:#646464;stroke-width:1.60000002;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;fill-opacity:0"
        d="m 12,188.36218 8,8"
        id="path3828"
        inkscape:connector-curvature="0"
