@@ -71,11 +71,6 @@ function init()
     });
   });
 
-  $(".hyperlink").click(aEvent => {
-    aEvent.preventDefault();
-    gotoURL(aEvent.target.href);
-  });
-
   $("#about-btn").click(aEvent => {
     gDialogs.about.showModal();
   });
@@ -279,27 +274,32 @@ function init()
       gClippings.getShortcutKeyPrefixStr().then(aKeybPasteKeys => {
         $("#shortcut-key-prefix-modifiers").text(aKeybPasteKeys);
       });
-      return;
     }
-    
-    $("#shortcut-key-note").html(sanitizeHTML(chrome.i18n.getMessage("prefsShortcutKeyNote")));
-    keySelectElt.style.display = "inline-block";
+    else {
+      $("#shortcut-key-note").html(sanitizeHTML(chrome.i18n.getMessage("prefsShortcutKeyNote")));
+      keySelectElt.style.display = "inline-block";
 
-    $(keySelectElt).change(aEvent => {
-      let modifierKeys = os == "mac" ? "Command+Shift" : "Alt+Shift"
-      let keybShct = `${modifierKeys}+${aEvent.target.value}`;
+      $(keySelectElt).change(aEvent => {
+        let modifierKeys = os == "mac" ? "Command+Shift" : "Alt+Shift"
+        let keybShct = `${modifierKeys}+${aEvent.target.value}`;
 
-      if (gClippings.isDirectSetKeyboardShortcut()) {        
-        log("Clippings/wx::options.js: Keyboard shortcut changed. Updating command with new keyboard shortcut: " + keybShct);
-        
-        browser.commands.update({
-          name: aeConst.CMD_CLIPPINGS_KEYBOARD_PASTE,
-          shortcut: keybShct,
-        });
-      }
-      else {
-        setPref({ pasteShortcutKeyPrefix: keybShct });
-      }
+        if (gClippings.isDirectSetKeyboardShortcut()) {        
+          log("Clippings/wx::options.js: Keyboard shortcut changed. Updating command with new keyboard shortcut: " + keybShct);
+          
+          browser.commands.update({
+            name: aeConst.CMD_CLIPPINGS_KEYBOARD_PASTE,
+            shortcut: keybShct,
+          });
+        }
+        else {
+          setPref({ pasteShortcutKeyPrefix: keybShct });
+        }
+      });
+    }
+
+    $(".hyperlink").click(aEvent => {
+      aEvent.preventDefault();
+      gotoURL(aEvent.target.href);
     });
   });
 }
