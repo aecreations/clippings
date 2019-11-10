@@ -200,10 +200,6 @@ ul.fancytree-container {
     flex: 0 1 auto;
 }
 
-#clipping-options #clipping-label:hover {
-    background-color: unset;
-}
-
 #clipping-key {
     margin-right: 4px;
 }
