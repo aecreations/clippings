@@ -51,6 +51,7 @@
     --color-cxtmenu-separator: #e6e6e6;
     --color-dlg-fieldset-border: #b1b1b1;
 
+    --url-contextmenu-checked-img: url("../img/checked.svg");
     --url-toolbar-btn-img-undo: url("../img/undo.svg");
     --url-toolbar-btn-img-undo-hover: url("../img/undo_hover.svg");
     --url-toolbar-btn-img-undo-active: url("../img/undo_hover.svg");
@@ -104,6 +105,7 @@
 	--color-cxtmenu-separator: #737373;
 	--color-dlg-fieldset-border: #585858;
 
+	--url-contextmenu-checked-img: url("../img/checked-dk.svg");
 	--url-toolbar-btn-img-undo: url("../img/undo_dk.svg");
 	--url-toolbar-btn-img-undo-hover: url("../img/undo_dk.svg");
 	--url-toolbar-btn-img-undo-active: url("../img/undo_hover.svg");
@@ -323,7 +325,7 @@ input[type="checkbox"] + label {
 }
 
 #toolbar > #clippings-mgr-options:active {
-    background-image: var(--url-toolbar-btn-img-tools-active), url("../img/drop-down.svg");
+    background-image: var(--url-toolbar-btn-img-tools-active), var(--url-toolbar-btn-img-dropdown);
 }
 
 #toolbar > #clippings-mgr-options.toolbar-button-menu-open {
@@ -368,7 +370,7 @@ input[type="checkbox"] + label {
 }
 
 .context-menu-icon-checked {
-    background-image: url("../img/checked.svg");
+    background-image: var(--url-contextmenu-checked-img);
     background-repeat: no-repeat;
     background-position-x: 4px;
     background-position-y: center;
@@ -659,7 +661,7 @@ ul.fancytree-container {
     flex: 0 1 auto;
     
     padding-right: 12px;
-    background-image: url("../img/drop-down.svg");
+    background-image: var(--url-toolbar-btn-img-dropdown);
     background-position-x: right;
 }
 
