@@ -14,7 +14,9 @@
     --color-main-border-shadow: #7E7A78;
     --color-text-default: black;
     --color-text-body: #0c0c0d;
+    --color-header-border: #ddd;
     --color-card-bkgd: #fff;
+    --color-card-border: #eee;
     --color-card-border-shadow: #EBEDEA;
     --color-btn-bkgd: rgba(12, 12, 13, 0.1);
     --color-btn-hover-bkgd: rgba(12, 12, 13, 0.2);
@@ -34,7 +36,9 @@
 	--color-main-border-shadow: #0c0c0d;
 	--color-text-default: #f9f9fa;
 	--color-text-body: #f9f9fa;
+	--color-header-border: #4a4a4f;
 	--color-card-bkgd: transparent;
+	--color-card-border: #4a4a4f;
 	--color-card-border-shadow: #0c0c0d;
 	--color-btn-bkgd: #4a4a4f;
 	--color-btn-hover-bkgd: #606060;
@@ -161,7 +165,7 @@ button.btn-puffy {
     width: 316px;
     margin-top: 36px;
     padding: 16px 20px 16px;
-    border: 1px solid #eee;
+    border: 1px solid var(--color-card-border);
     border-radius: 4px;
     box-shadow: 0px 0px 6px 0px var(--color-card-border-shadow);
     background-color: var(--color-card-bkgd);
@@ -272,7 +276,7 @@ button.btn-puffy {
 #main-header {
     width: 100%;
     text-align: center;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid var(--color-header-border);
     padding-bottom: 8px;
 }
 
