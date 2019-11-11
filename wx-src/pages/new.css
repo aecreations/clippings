@@ -12,6 +12,7 @@
     --color-fldr-tree-popup-bkgd: #fbfbfb;
     --color-fldr-tree-popup-border: #b1b1b1;
     --color-fldr-tree-popup-shadow: #8f8f8f;
+    --url-icon-synced-clippings-fldr: url("../img/synced-clippings.svg");
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,6 +23,7 @@
 	--color-fldr-tree-popup-bkgd: #202023;
 	--color-fldr-tree-popup-border: #737373;
 	--color-fldr-tree-popup-shadow: #2a2a2e;
+	--url-icon-synced-clippings-fldr: url("../img/synced-clippings-dk.svg");
     }
 }
 
@@ -77,7 +79,7 @@ textarea {
 }
 
 .folder-picker-menubtn[syncfldr] {
-    background-image: var(--url-dropdown-arrow), url("../img/synced-clippings.svg");
+    background-image: var(--url-dropdown-arrow), var(--url-icon-synced-clippings-fldr);
     background-position: calc(100% - 4px) center, 8px;
     background-repeat: no-repeat;
 }
@@ -123,7 +125,7 @@ textarea {
 }
 
 .folder-tree .ae-synced-clippings-fldr > .fancytree-icon {
-    background-image: url("../img/synced-clippings.svg");
+    background-image: var(--url-icon-synced-clippings-fldr);
 }
 
 ul.fancytree-container {
