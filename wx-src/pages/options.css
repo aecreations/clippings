@@ -355,10 +355,10 @@ progress {
 #private-mode-error-dlg {
     top: 160px;
     --width: 686px;
-    --height: 204px;
+    --height: 200px;
 }
 
-#private-mode-error-dlg .msgbox-icon {
+#private-mode-error-dlg > .msgbox-icon {
     float: left;
     width: 48px;
     height: 48px;
@@ -368,8 +368,8 @@ progress {
     background-size: contain;
 }
 
-#private-mode-error-dlg .dlg-content p {
-    height: 104px;
+#private-mode-error-dlg > .dlg-content > p {
+    height: 100px;
     margin-top: 12px;
     margin-left: 64px;
     margin-right: -4px;

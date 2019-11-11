@@ -3597,7 +3597,12 @@ function initDialogs()
 
   gDialogs.miniHelp = new aeDialog("#mini-help-dlg");
   if (! isMacOS) {
-    $("#mini-help-dlg").css({ height: "320px"})
+    let dlgHeight = "320px";
+    // Accommodate extra line of text in German locale.
+    if (chrome.i18n.getUILanguage() == "de") {
+      dlgHeight = "325px";
+    }
+    $("#mini-help-dlg").css({ height: dlgHeight });
   }
 
   gDialogs.showOnlySyncedItemsReminder = new aeDialog("#show-only-synced-items-reminder");

@@ -1340,6 +1340,10 @@ ul.fancytree-container {
     --height: 140px;
 }
 
+#show-only-synced-items-reminder > .dlg-content > .msgbox-info-icon {
+    margin-bottom: 72px;
+}
+
 #generic-msg-box {
     --width: 28em;
 }
