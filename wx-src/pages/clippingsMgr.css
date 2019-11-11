@@ -15,6 +15,7 @@
     --color-textbox-bkgd: -moz-field;
     --color-listbox-bkgd: #fff;
     --color-not-synced-items-text: rgba(0, 0, 0, 0.4);
+    --color-not-synced-items-selected-text: rgba(0, 0, 0, 0.4);
     --color-main-toolbar-bkgd: linear-gradient(to bottom, #fcfcfc 0%, #dedede 100%);
     --color-main-toolbar-text: #0c0c0d;
     --color-main-toolbar-border: silver;
@@ -60,6 +61,10 @@
     --url-toolbar-btn-img-tools-active: url("../img/options_hover.svg");
     --url-toolbar-btn-img-tools-menu-open: url("../img/options_menuopen.svg");
     --url-toolbar-btn-img-dropdown: url("../img/drop-down.svg");
+    --url-toolbar-btn-img-help: url("../img/help.svg");
+    --url-toolbar-btn-img-help-hover: url("../img/help_hover.svg");
+    --url-toolbar-btn-img-help-active: url("../img/help.svg");
+    --url-icon-synced-clippings-fldr: url("../img/synced-clippings.svg");
 }
 
 @media (prefers-color-scheme: dark) {
@@ -69,6 +74,7 @@
 	--color-textbox-bkgd: #0c0c0d;
 	--color-listbox-bkgd: #202023;
 	--color-not-synced-items-text: rgba(180, 180, 180, 0.4);
+	--color-not-synced-items-selected-text: #b1b1b3;
 	--color-main-toolbar-bkgd: #38383d;
 	--color-main-toolbar-text: #f9f9fa;
 	--color-main-toolbar-border: #4a4a4f;
@@ -114,6 +120,10 @@
 	--url-toolbar-btn-img-tools-active: url("../img/options_dk_active.svg");
 	--url-toolbar-btn-img-tools-menu-open: url("../img/options_dk_menuopen.svg");
 	--url-toolbar-btn-img-dropdown: url("../img/dropdown_dk.svg");
+	--url-toolbar-btn-img-help: url("../img/help-dk.svg");
+	--url-toolbar-btn-img-help-hover: url("../img/help-dk.svg");
+	--url-toolbar-btn-img-help-active: url("../img/help_hover.svg");
+	--url-icon-synced-clippings-fldr: url("../img/synced-clippings-dk.svg");
     }
 }
 
@@ -439,7 +449,7 @@ input[type="checkbox"] + label {
 }
 
 #clippings-tree .ae-synced-clippings-fldr > .fancytree-icon {
-    background-image: url("../img/synced-clippings.svg");
+    background-image: var(--url-icon-synced-clippings-fldr);
 }
 
 /* Search results in tree list. */
@@ -483,6 +493,67 @@ input[type="checkbox"] + label {
     color: var(--color-not-synced-items-text);
 }
 
+
+    order: 1;
+    flex: 0 1 auto;
+    align-self: stretch;
+    width: 220px;
+    min-width: 128px;
+    overflow: auto;
+    border-right: 1px solid var(--color-tree-splitter);
+    color: var(--color-default-text);
+    background-color: var(--color-clippings-tree-bkgd);
+}
+
+#clippings-tree .ae-synced-clippings-fldr > .fancytree-icon {
+    background-image: var(--url-icon-synced-clippings-fldr);
+}
+
+/* Search results in tree list. */
+.fancytree-ext-filter-hide span.fancytree-node.fancytree-match span.fancytree-title, .fancytree-ext-filter-hide tr.fancytree-match span.fancytree-title {
+    color: var(--color-default-text);
+}
+
+#reload-sync-fldr-btn {
+    display: inline-block;
+
+    position: relative;
+    top: 0px;
+    left: 4px;
+    width: 24px;
+    height: 20px;
+
+    border: 1px solid var(--color-reload-sync-fldr-btn-border);
+    border-radius: 3px;
+
+    background-color: var(--color-reload-sync-fldr-btn-bkgd);
+    background-image: url("../img/reload.svg");
+    background-size: 14px 14px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#reload-sync-fldr-btn:hover {
+    border: 1px solid var(--color-reload-sync-fldr-btn-hover-border);
+    background-color: var(--color-reload-sync-fldr-btn-hover-bkgd);
+}
+
+#reload-sync-fldr-btn:active {
+    border: 1px solid var(--color-reload-sync-fldr-btn-active-border);
+    background-color: var(--color-reload-sync-fldr-btn-active-bkgd);
+}
+
+/* If user has set the option to only show synced items in the Clippings menu,
+ * then grey out all tree node labels and icons except for the Synced Clippings
+ * folder and its children. */
+#clippings-tree.cxt-menu-show-sync-items-only .fancytree-title {
+    color: var(--color-not-synced-items-text);
+}
+
+#clippings-tree.cxt-menu-show-sync-items-only .fancytree-plain.fancytree-container.fancytree-treefocus span.fancytree-active span.fancytree-title {
+    color: var(--color-not-synced-items-selected-text);
+}
+
 #clippings-tree.cxt-menu-show-sync-items-only .fancytree-icon {
     opacity: 0.4;
 }
@@ -493,6 +564,10 @@ input[type="checkbox"] + label {
 
 #clippings-tree.cxt-menu-show-sync-items-only .ae-synced-clippings .fancytree-icon {
     opacity: unset;
+}
+
+#clippings-tree.cxt-menu-show-sync-items-only .fancytree-plain.fancytree-container.fancytree-treefocus .ae-synced-clippings span.fancytree-active.fancytree-focused span.fancytree-title {
+    color: unset;
 }
 
 ul.fancytree-container {
@@ -816,11 +891,15 @@ ul.fancytree-container {
 #options-bar > #shortcut-key-select > #show-shortcut-list {
     height: 24px;
     vertical-align: bottom;
-    background-image: url("../img/help.svg");
+    background-image: var(--url-toolbar-btn-img-help);
 }
 
 #options-bar > #shortcut-key-select > #show-shortcut-list:hover {
-    background-image: url("../img/help_hover.svg");
+    background-image: var(--url-toolbar-btn-img-help-hover);
+}
+
+#options-bar > #shortcut-key-select > #show-shortcut-list:active {
+    background-image: var(--url-toolbar-btn-img-help-active);
 }
 
 #options-bar > #options-bar-spacer {
@@ -1226,7 +1305,7 @@ ul.fancytree-container {
 }
 
 #move-dlg #move-to-fldr-tree .ae-synced-clippings-fldr > .fancytree-icon {
-    background-image: url("../img/synced-clippings.svg");
+    background-image: var(--url-icon-synced-clippings-fldr);
 }
 
 #move-dlg #move-error {
