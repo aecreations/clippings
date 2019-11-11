@@ -27,7 +27,7 @@
           "shortcutKey": "",
           "sourceURL": "",
           "label": "",
-          "seq": 4
+          "seq": 5
         },
         {
           "name": "Multi-select placehldr w/ default value containing special chars #2",
@@ -44,7 +44,15 @@
           "sourceURL": "",
           "label": "",
           "seq": 3
-        }
+        },
+	{
+	  "name": "Single placeholder used multiple times",
+	  "content": "Hello $[name], how are you?  It was really nice meeting you, $[name].  Have a nice day, $[name]!",
+	  "shortcutKey": "",
+	  "sourceURL": "",
+	  "label": "",
+	  "seq": 4
+	}
       ],
       "seq": 1
     }
