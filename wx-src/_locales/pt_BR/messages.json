@@ -124,32 +124,32 @@
     "description": "Clippings browser action submenu"
   },
   "welcomePageTitle": {
-    "message": "Bem vindo ao Clippings 6",
+    "message": "Benvindo ao Clippings",
     "description": "Welcome to Clippings (post-installation) page title"
   },
   "welcInstallSuccessHdg": {
-    "message": "Bem vindo ao Clippings 6!"
+    "message": "Benvindo ao Clippings!"
   },
   "welcInstallSuccessSubh": {
     "message": "Instalação concluída com sucesso."
   },
-  "welcCurrUsrHdg": {
-    "message": "Usuários Atuais"
+  "welcWhatsNewHdg": {
+    "message": "O que há de novo"
   },
-  "welcCurrUsrDesc": {
-    "message": "Traga seus Clippings vindos de uma versão prévia do Clippings."
+  "welcWhatsNewDesc": {
+    "message": "Clippings 6.2 vem com muitos recursos novos e melhorias, como suporte ao Modo Escuro."
   },
-  "welcCurrUsrCTA": {
-    "message": "Importar meus Clippings"
+  "welcWhatsNewCTA": {
+    "message": "Saiba mais"
   },
-  "welcNewUsrHdg": {
-    "message": "Novos usuários"
-  },
-  "welcNewUsrDesc": {
-    "message": "Aprenda as funcionalidades mais importantes do Clippings em poucos minutos."
-  },
-  "welcNewUsrCTA": {
+  "welcQuickStartHdg": {
     "message": "Guia para início rápido"
+  },
+  "welcQuickStartDesc": {
+    "message": "Leitura recomendada para novos usuários. Aprenda os recursos essenciais do Clippings em apenas alguns minutos."
+  },
+  "welcQuickStartCTA": {
+    "message": "Leia um Guia"
   },
   "closeWelcomePg": {
     "message": "Feche esta página"
@@ -218,7 +218,7 @@
     "message": "Seus clippings foram importados com sucesso. Clippings está agora pronto para ser usado."
   },
   "welcShctKeyNote": {
-    "message": "A tecla de \"colar\" <strong>mudou<\/strong> na versão 6. Para colar um Clipping usando sua tecla de atalho ou para pesquisar por nome, pressione <span id=\"keybd-paste-key\">$1<\/span>."
+    "message": "A tecla de \"colar\" <strong>mudou</strong> na versão 6. Para colar um Clipping usando sua tecla de atalho ou para pesquisar por nome, pressione <span id=\"keybd-paste-key\">$1</span>."
   },
   "welcOpenClipMgr": {
     "message": "Abrir gerenciador de Clippings"
@@ -264,7 +264,7 @@
     "description": "New Clipping dialog"
   },
   "labelName": {
-    "message": "Nome:"
+    "message": "Nome do novo clipping:"
   },
   "labelContent": {
     "message": "Texto:"
@@ -341,7 +341,7 @@
     "description": "Clippings <extVersion> on Firefox <fxVersion>"
   },
   "expHTMLShctKeyInstrxn": {
-    "message": "Para colar um Clipping em uma página da web \/ campo de texto no Firefox, pressione ALT + SHIFT + Y (Comando + Shift + Y no macOS), seguida da tecla de atalho."
+    "message": "Para colar um Clipping em uma página da web / campo de texto no Firefox, pressione ALT + SHIFT + Y (Comando + Shift + Y no macOS), seguida da tecla de atalho."
   },
   "expHTMLShctKeyCustNote": {
     "message": "Nota: O atalho de teclado (o Default é ALT + SHIFT + Y ou Command + Shift + Y) podem ser diferentes dependendo de suas configurações no Clippings."
@@ -395,6 +395,9 @@
   "clipMgrIntroKeybHdg": {
     "message": "Atalhos de Teclado"
   },
+  "clipMgrShowOnlySyncItemsRem": {
+    "message": "Clippings mostrará apenas itens sincronizados no menu do Clippings. Você ainda pode adicionar e gerenciar itens fora da pasta Clippings Sincronizados, mas eles não aparecerão no menu do Clippings. Esta opção pode ser alterada nas preferências do Clippings."
+  },
   "labelInsPlchldr": {
     "message": "Inserir Placeholder:",
     "description": "Clippings Manager - Placeholder Toolbar"
@@ -439,7 +442,7 @@
     "message": "Remover Endereços da Web da Fonte..."
   },
   "mnuShowHide": {
-    "message": "Exibir\/Ocultar"
+    "message": "Exibir/Ocultar"
   },
   "mnuShowHideDetails": {
     "message": "Detalhes"
@@ -492,6 +495,10 @@
     "message": "Pasta Principal",
     "description": "Clippings Manager - preset (built-in) placeholder menu"
   },
+  "mnuPlchldrFmtDateTime": {
+    "message": "Data/Hora Formatada...",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
   "clipMgrNameHint": {
     "message": "Nome do Clipping",
     "description": "Clippings Manager - clipping name textbox hint text"
@@ -534,6 +541,10 @@
     "message": "Maximizar janela",
     "description": "Clippings Manager intro - key binding description"
   },
+  "clipMgrIntroCmdRedo": {
+    "message": "Desfazer desfazer",
+    "description": "Clippings Manager intro - key binding description"
+  },
   "clipMgrStatusBar": {
     "message": "$1 itens",
     "description": "Status bar text in Clippings Manager, counting the number of clippings and folders"
@@ -543,6 +554,9 @@
   },
   "clipMgrNoUndo": {
     "message": "Nada para desfazer"
+  },
+  "clipMgrNoRedo": {
+    "message": "Nada para refazer"
   },
   "clipMgrShortcutKeyHelpHdg": {
     "message": "Teclas de atalho do Clipping"
@@ -588,6 +602,9 @@
   },
   "numPlchldrDesc": {
     "message": "Cada vez que o Clipping for colado, o valor deste Placeholder será incrementado por 1, até que o Placeholder seja resetado no botão \"Clippings\" do menu de contexto."
+  },
+  "dateTimeFmts": {
+    "message": "Formatos de data/hora disponíveis:"
   },
   "labelSelImportFile": {
     "message": "Selecione o arquivo a ser importado:"
@@ -681,7 +698,7 @@
   },
   "errMoveToSameParent": {
     "message": "O item já existe na pasta selecionada.",
-    "description": "Error message when attempting to move clipping\/folder to the same parent folder"
+    "description": "Error message when attempting to move clipping/folder to the same parent folder"
   },
   "errMoveToSubfldr": {
     "message": "Não é possível mover ou copiar para a pasta selecionada.",
@@ -718,7 +735,7 @@
     "message": "Ative o modo Teclas de Atalho pressionando estas teclas:"
   },
   "prefsShortcutKeyNote": {
-    "message": "Algumas das Teclas de Atalho disponíveis podem já estar atribuídas a <a href=\"https:\/\/support.mozilla.org\/en-US\/kb\/keyboard-shortcuts-perform-firefox-tasks-quickly\" class=\"hyperlink\">Comandos do Firefox<\/a> ou a outros Complementos."
+    "message": "Alguns dos atalhos de teclado disponíveis já podem ser atribuídos ao <a href=\"https://support.mozilla.org/en-US/kb/keyboard-shortcuts-perform-firefox-tasks-quickly\" class=\"hyperlink\">Comandos do Firefox</a> ou outros Complementos."
   },
   "prefsOutsideShct": {
     "message": "Para alterar atalhos de teclado, vá para Gerenciar Atalhos da Extensão no Gerenciador de Complementos."
@@ -734,6 +751,9 @@
   },
   "cbCheckSpelling": {
     "message": "Verificar ortografia"
+  },
+  "cbBackupFilenameWithDate": {
+    "message": "Adicionar data ao nome do arquivo de backup"
   },
   "backupRemind": {
     "message": "Mostrar lembrete de backup a cada",
@@ -804,13 +824,13 @@
     "description": "The name of the feature for synchronizing clippings between applications or computers."
   },
   "syncIntro": {
-    "message": "Você pode sincronizar o seu Clippings com o Thunderbird ou outras instalações do Firefox, colocando os clippings que você deseja compartilhar numa pasta especial \"Clippings Sincronizados\". Os clippings sincronizados serão salvos em um arquivo no seu sistema.  Requer o app de ajuda <a href=\"http:\/\/aecreations.sourceforge.net\/clippings\/sync.php\" class=\"hyperlink\">Sincronizar Clippings<\/a>."
+    "message": "Você pode sincronizar o seu Clippings com o Thunderbird ou outras instalações do Firefox, colocando os clippings que você deseja compartilhar numa pasta especial \"Clippings Sincronizados\". Os clippings sincronizados serão salvos em um arquivo no seu sistema.  Requer o app de ajuda <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">Sincronizar Clippings</a>."
   },
   "syncLearnMore": {
     "message": "Saiba mais sobre o Sync Clippings."
   },
   "syncHelp": {
-    "message": "<p class=\"dlg-subhead\">Sync Clippings<\/p><p>Sync Clippings permite que você sincronize entre o Firefox e o Thunderbird um subconjunto de seus clippings para que apareçam em ambos. Você pode definir quais clippings deseja sincronizar colocando-os numa pasta especial \"Clippings Sincronizados\". Esta pasta pode ser criada na caixa de diálogo Novo Clipping quando estiver criando um novo. Também pode mover clippings para esta mesma pasta no Gerenciador de Clippings.<\/p><p>A pasta Clippings Sincronizados será criada automaticamente quando Sync Clippings for configurado.<\/p><p class=\"dlg-subhead\">Configuração<\/p><p>Sync Clippings precisa ser ativado nos aplicativos que você deseja sincronizar seus clippings. Sync Clippings é suportado pelo Firefox 60 ou mais recente e pelo Thunderbird 60 ou mais recente (com Clippings para Thunderbird 5.6 ou mais recente instalado).<\/p><p>Além disso, o app Ajuda do Sync Clippings precisa estar instalado no seu sistema para manter atualizado o conteúdo da pasta Clippings Sincronizados. O app está disponível para download no site <a href=\"http:\/\/aecreations.sourceforge.net\/clippings\/sync.php\" class=\"hyperlink\">AE Creations<\/a>. Uma vez instalado, será executado automaticamente em segundo plano quando o Firefox for iniciado.<\/p><p>No Firefox, ative o Sync Clippings nas preferências do Clippings clicando em <b>Ativar Sincronização<\/b>.  Se já não foi definido, será solicitada a definição da pasta em seu sistema onde os dados dos clippings sincronizados serão salvos.<\/p>"
+    "message": "<p class=\"dlg-subhead\">Sync Clippings</p><p>Sync Clippings permite que você sincronize entre o Firefox e o Thunderbird um subconjunto de seus clippings para que apareçam em ambos. Você pode definir quais clippings deseja sincronizar colocando-os numa pasta especial \"Clippings Sincronizados\". Esta pasta pode ser criada na caixa de diálogo Novo Clipping quando estiver criando um novo. Também pode mover clippings para esta mesma pasta no Gerenciador de Clippings.</p><p>A pasta Clippings Sincronizados será criada automaticamente quando Sync Clippings for configurado.</p><p class=\"dlg-subhead\">Configuração</p><p>Sync Clippings precisa ser ativado nos aplicativos que você deseja sincronizar seus clippings. Sync Clippings é suportado pelo Firefox 60 ou mais recente e pelo Thunderbird 60 ou mais recente (com Clippings para Thunderbird 5.6 ou mais recente instalado).</p><p>Além disso, o app Ajuda do Sync Clippings precisa estar instalado no seu sistema para manter atualizado o conteúdo da pasta Clippings Sincronizados. O app está disponível para download no site <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">AE Creations</a>. Uma vez instalado, será executado automaticamente em segundo plano quando o Firefox for iniciado.</p><p>No Firefox, ative o Sync Clippings nas preferências do Clippings clicando em <b>Ativar Sincronização</b>.  Se já não foi definido, será solicitada a definição da pasta em seu sistema onde os dados dos clippings sincronizados serão salvos.</p>"
   },
   "syncStatusOn": {
     "message": "Sync Clippings está ativado."
@@ -850,11 +870,11 @@
     "description": "Example folder path on Windows."
   },
   "syncFileDirExMac": {
-    "message": "\/Users\/SeuNome\/Documents\/Clippings Sincronizados",
+    "message": "/Users/SeuNome/Documents/Clippings Sincronizados",
     "description": "Example folder path on macOS."
   },
   "syncFileDirExLinux": {
-    "message": "\/home\/SeuNome\/clippings-sincronizados",
+    "message": "/home/SeuNome/clippings-sincronizados",
     "description": "Example folder path on Linux."
   },
   "syncFileDirDesc": {
@@ -864,7 +884,7 @@
     "message": "Não foi possível conectar-se ao app de ajuda de Clippings Sync. Certifique-se de que o app está instalado."
   },
   "errSyncConxnDetail": {
-    "message": "O app de ajuda do Clippings Sync é necessário para sincronizar seus clippings. Você pode baixá-lo no site da <a href=\"http:\/\/aecreations.sourceforge.net\/clippings\/sync.php\" class=\"hyperlink\">AE Creations<\/a>."
+    "message": "O app de ajuda do Clippings Sync é necessário para sincronizar seus clippings. Você pode baixá-lo no site da <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">AE Creations</a>."
   },
   "errSync": {
     "message": "Ocorreu um erro com o app de ajuda do Sync Clippings."
@@ -893,8 +913,14 @@
   "syncUpdateMsg": {
     "message": "Uma nova versão do app de ajuda do Sync Clippings está disponível. Clique aqui para ir para a página de download."
   },
+  "syncOptsHdg": {
+    "message": "Opções"
+  },
   "syncUpdateChkOpt": {
     "message": "Verificar automaticamente atualizações do Helper do Sync Clippings"
+  },
+  "cxtMnuSyncItemsOnly": {
+    "message": "Mostrar somente itens sincronizados no menu do Clippings"
   },
   "aboutBtn": {
     "message": "Sobre..."

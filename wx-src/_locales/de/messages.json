@@ -124,32 +124,32 @@
     "description": "Clippings browser action submenu"
   },
   "welcomePageTitle": {
-    "message": "Willkommen bei Clippings 6",
+    "message": "Willkommen bei Clippings",
     "description": "Welcome to Clippings (post-installation) page title"
   },
   "welcInstallSuccessHdg": {
-    "message": "Willkommen bei Clippings 6!"
+    "message": "Willkommen bei Clippings!"
   },
   "welcInstallSuccessSubh": {
     "message": "Installation erfolgreich abgeschlossen."
   },
-  "welcCurrUsrHdg": {
-    "message": "Aktive Benutzer"
+  "welcWhatsNewHdg": {
+    "message": "Was ist neu"
   },
-  "welcCurrUsrDesc": {
-    "message": "Übernehmen Sie ihre Textbausteine aus einer früheren Clippings-Version."
+  "welcWhatsNewDesc": {
+    "message": "Clippings 6.2 enthält viele neue Features und Verbesserungen, wie Dark Mode Unterstützung."
   },
-  "welcCurrUsrCTA": {
-    "message": "Meine Textbausteine importieren"
+  "welcWhatsNewCTA": {
+    "message": "Mehr erfahren"
   },
-  "welcNewUsrHdg": {
-    "message": "Neue Benutzer"
-  },
-  "welcNewUsrDesc": {
-    "message": "Lernen Sie die wesentlichen Funktionen von Clippings in nur wenigen Minuten kennen."
-  },
-  "welcNewUsrCTA": {
+  "welcQuickStartHdg": {
     "message": "Kurzanleitung"
+  },
+  "welcQuickStartDesc": {
+    "message": "Empfohlene Lektüre für neue Nutzer. Erfahren Sie in wenigen Minuten die wesentlichen Eigenschaften von Clippings."
+  },
+  "welcQuickStartCTA": {
+    "message": "Anleitung lesen"
   },
   "closeWelcomePg": {
     "message": "Diese Seite schließen"
@@ -218,7 +218,7 @@
     "message": "Ihre Textbausteine wurden erfolgreich importiert. Clippings kann sie jetzt verwenden."
   },
   "welcShctKeyNote": {
-    "message": "Die Clippings-Taste für das Einfügen von Textbausteinen <strong>hat sich in Clippings 6 geändert<\/strong>. Um einen Textbaustein mit seinem Tastaturkürzel einzufügen oder nach dem Namen zu suchen, drücken Sie <span id=\"keybd-paste-key\">$1<\/span>."
+    "message": "Die Clippings-Taste für das Einfügen von Textbausteinen <strong>hat sich in Clippings 6 geändert</strong>. Um einen Textbaustein mit seinem Tastaturkürzel einzufügen oder nach dem Namen zu suchen, drücken Sie <span id=\"keybd-paste-key\">$1</span>."
   },
   "welcOpenClipMgr": {
     "message": "Textbaustein-Manager öffnen"
@@ -264,7 +264,7 @@
     "description": "New Clipping dialog"
   },
   "labelName": {
-    "message": "Name:"
+    "message": "Name des neuen Clipping:"
   },
   "labelContent": {
     "message": "Text:"
@@ -395,6 +395,9 @@
   "clipMgrIntroKeybHdg": {
     "message": "Tastaturkürzel"
   },
+  "clipMgrShowOnlySyncItemsRem": {
+    "message": "Clippings wird nur synchronisierte Elemente im Menü von Clippings anzeigen. Sie können immer noch Elemente außerhalb des Ordner \"Synchronisierte Textbausteine\" hinzufügen und verwalten, aber diese werden nicht im Menü von Clippings angezeigt. Diese Option kann in den Clippings-Einstellungen geändert werden."
+  },
   "labelInsPlchldr": {
     "message": "Platzhalter einfügen:",
     "description": "Clippings Manager - Placeholder Toolbar"
@@ -439,7 +442,7 @@
     "message": "Webseiten-Quelladressen entfernen..."
   },
   "mnuShowHide": {
-    "message": "Anzeigen\/Verbergen"
+    "message": "Anzeigen/Verbergen"
   },
   "mnuShowHideDetails": {
     "message": "Detailbereich"
@@ -492,6 +495,10 @@
     "message": "Name des übergeordneten Ordners",
     "description": "Clippings Manager - preset (built-in) placeholder menu"
   },
+  "mnuPlchldrFmtDateTime": {
+    "message": "Formatiertes Datum/Zeit...",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
   "clipMgrNameHint": {
     "message": "Name des Textbausteins",
     "description": "Clippings Manager - clipping name textbox hint text"
@@ -534,6 +541,10 @@
     "message": "Fenster maximieren",
     "description": "Clippings Manager intro - key binding description"
   },
+  "clipMgrIntroCmdRedo": {
+    "message": "Rückgängig machen annullieren",
+    "description": "Clippings Manager intro - key binding description"
+  },
   "clipMgrStatusBar": {
     "message": "$1 Einträge",
     "description": "Status bar text in Clippings Manager, counting the number of clippings and folders"
@@ -543,6 +554,9 @@
   },
   "clipMgrNoUndo": {
     "message": "Nichts zum rückgängig machen"
+  },
+  "clipMgrNoRedo": {
+    "message": "Nichts zum Wiederherstellen"
   },
   "clipMgrShortcutKeyHelpHdg": {
     "message": "Tastaturkürzel von Clippings"
@@ -588,6 +602,9 @@
   },
   "numPlchldrDesc": {
     "message": "Jedesmal nach Einfügen eines Textbausteins wird der Wert dieses Platzhalters automatisch um einen Punkt erhöht, bis der Platzhalter über die das Kontextmenü der Clippings-Schaltfläche in der Symbolleiste zurückgesetzt wird."
+  },
+  "dateTimeFmts": {
+    "message": "Verfügbare Datum/Zeitformate:"
   },
   "labelSelImportFile": {
     "message": "Wählen Sie die Import-Datei:"
@@ -681,7 +698,7 @@
   },
   "errMoveToSameParent": {
     "message": "Das Element ist im ausgewählten Ordner bereits vorhanden.",
-    "description": "Error message when attempting to move clipping\/folder to the same parent folder"
+    "description": "Error message when attempting to move clipping/folder to the same parent folder"
   },
   "errMoveToSubfldr": {
     "message": "Das Verschieben oder Kopieren in den ausgewählten Ordner ist nicht möglich.",
@@ -718,7 +735,7 @@
     "message": "Aktivieren sie den Tastenkürzel-Modus, indem sie diese Tasten drücken:"
   },
   "prefsShortcutKeyNote": {
-    "message": "Einige der verfügbaren Tastenkürzel können bereits <a href=\"https:\/\/support.mozilla.org\/en-US\/kb\/keyboard-shortcuts-perform-firefox-tasks-quickly\" class=\"hyperlink\">Firefox-Befehlen<\/a> oder anderen Add-ons zugeordnet sein."
+    "message": "Einige der verfügbaren Tastaturkürzel können bereits <a href=\"https://support.mozilla.org/en-US/kb/keyboard-shortcuts-perform-firefox-tasks-quickly\" class=\"hyperlink\">Firefox-Befehlen</a> oder anderen Add‑ons zugewiesen werden."
   },
   "prefsOutsideShct": {
     "message": "Gehen Sie zu „Tastenkombinationen für Erweiterungen verwalten“ im Add-ons-Manager, um die Tastenkombination zu ändern."
@@ -734,6 +751,9 @@
   },
   "cbCheckSpelling": {
     "message": "Rechtschreibprüfung"
+  },
+  "cbBackupFilenameWithDate": {
+    "message": "Datum zum Namen der Backup-Datei hinzufügen"
   },
   "backupRemind": {
     "message": "Sicherungserinnerung zeigen alle",
@@ -804,13 +824,13 @@
     "description": "The name of the feature for synchronizing clippings between applications or computers."
   },
   "syncIntro": {
-    "message": "Sie können Ihre Textbausteine mit Thunderbird oder anderen Firefox Installationen oder Profilen synchronisieren, indem diese in einem Ordner “Synced Clippings” ablegen. Die synchronisierten Textbausteine werden in einer Datei auf Ihrem Rechner gespeichert. Dies erfordert das <a href=\"http:\/\/aecreations.sourceforge.net\/clippings\/sync.php\" class=\"hyperlink\">Sync Clippings Hilfsprogramm<\/a>."
+    "message": "Sie können Ihre Textbausteine mit Thunderbird oder anderen Firefox Installationen oder Profilen synchronisieren, indem diese in einem Ordner “Synced Clippings” ablegen. Die synchronisierten Textbausteine werden in einer Datei auf Ihrem Rechner gespeichert. Dies erfordert das <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">Sync Clippings Hilfsprogramm</a>."
   },
   "syncLearnMore": {
     "message": "Erfahren Sie mehr über die Synchronisierung von Textbausteinen."
   },
   "syncHelp": {
-    "message": "<p class=\"dlg-subhead\">Textbausteine synchronisieren<\/p><p>Damit können Sie eine Auswahl Ihrer Textbausteine zwischen Firefox und Thunderbird synchronisieren, damit sie in beiden Programmen zur Verfügung stehen. Sie können auswählen, welche Textbausteine synchronisiert werden indem Sie diese in einen speziellen Ordner “Synced Clippings” anlegen, oder indem Sie sie im Textbaustein-Manager in diesen Ordner verschieben.<\/p><p>Dieser Synchronisierungs-Ordner wird automatisch erstellt, wenn \"Textbausteine synchronisieren\" eingerichtet wurde.<\/p><p class=\"dlg-subhead\">Einrichtung<\/p><p> Die Option \"Textbausteine synchronisieren\" muss in allen Anwendungen eingeschaltet werden, die synchronisiert werden sollen. Unterstützt wird Firefox und Thunderbird jeweils ab Version 60 (mit Clippings für Thunderbird Version 5.6 oder neuer).<\/p><p> Außerdem muss das Sync Clippings Hilfsprogramm installiert sein, damit der Inhalt des Austauschordners synchronisiert bleibt. Das Programm kann von der <a href=\"http:\/\/aecreations.sourceforge.net\/clippings\/sync.php\" class=\"hyperlink\">AE Creations Website<\/a> heruntergeladen werden. Einmal installiert wird es automatisch mit Firefox gestartet und bleibt im Hintergrund.<\/p><p>In Firefox wird wird die Synchronisierung in den Clippings Einstellungen aktiviert mit der Option <b>Synchronisierung einschalten<\/b>. Falls noch nicht geschehen, können Sie dann einen Dateispeicherort auswählen, wo die Synchronisierungsdaten gespeichert werden.<\/p>"
+    "message": "<p class=\"dlg-subhead\">Textbausteine synchronisieren</p><p>Damit können Sie eine Auswahl Ihrer Textbausteine zwischen Firefox und Thunderbird synchronisieren, damit sie in beiden Programmen zur Verfügung stehen. Sie können auswählen, welche Textbausteine synchronisiert werden indem Sie diese in einen speziellen Ordner “Synced Clippings” anlegen, oder indem Sie sie im Textbaustein-Manager in diesen Ordner verschieben.</p><p>Dieser Synchronisierungs-Ordner wird automatisch erstellt, wenn \"Textbausteine synchronisieren\" eingerichtet wurde.</p><p class=\"dlg-subhead\">Einrichtung</p><p> Die Option \"Textbausteine synchronisieren\" muss in allen Anwendungen eingeschaltet werden, die synchronisiert werden sollen. Unterstützt wird Firefox und Thunderbird jeweils ab Version 60 (mit Clippings für Thunderbird Version 5.6 oder neuer).</p><p> Außerdem muss das Sync Clippings Hilfsprogramm installiert sein, damit der Inhalt des Austauschordners synchronisiert bleibt. Das Programm kann von der <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">AE Creations Website</a> heruntergeladen werden. Einmal installiert wird es automatisch mit Firefox gestartet und bleibt im Hintergrund.</p><p>In Firefox wird wird die Synchronisierung in den Clippings Einstellungen aktiviert mit der Option <b>Synchronisierung einschalten</b>. Falls noch nicht geschehen, können Sie dann einen Dateispeicherort auswählen, wo die Synchronisierungsdaten gespeichert werden.</p>"
   },
   "syncStatusOn": {
     "message": "Die Synchronisierung von Textbausteinen ist aktiviert."
@@ -850,11 +870,11 @@
     "description": "Example folder path on Windows."
   },
   "syncFileDirExMac": {
-    "message": "\/Users\/IhrName\/Documents\/Synced Clippings",
+    "message": "/Users/IhrName/Documents/Synced Clippings",
     "description": "Example folder path on macOS."
   },
   "syncFileDirExLinux": {
-    "message": "\/home\/IhrName\/synced-clippings",
+    "message": "/home/IhrName/synced-clippings",
     "description": "Example folder path on Linux."
   },
   "syncFileDirDesc": {
@@ -864,7 +884,7 @@
     "message": "Keine Verbindung zum Sync Clippings Hilfsprogramm möglich. Stellen Sie sicher, dass es installiert ist."
   },
   "errSyncConxnDetail": {
-    "message": "Um die Textbausteine zu synchronisieren, wird das Clippings Synchronisierungs-Hilfs-Programm gebraucht, die Sie von der <a href=\"http:\/\/aecreations.sourceforge.net\/clippings\/sync.php\" class=\"hyperlink\">AE Creations Website<\/a> herunterladen können."
+    "message": "Um die Textbausteine zu synchronisieren, wird das Clippings Synchronisierungs-Hilfs-Programm gebraucht, die Sie von der <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">AE Creations Website</a> herunterladen können."
   },
   "errSync": {
     "message": "Mit dem Sync Clippings Hilfsprogramm ist ein Fehler aufgetreten."
@@ -893,8 +913,14 @@
   "syncUpdateMsg": {
     "message": "Eine neue Version des Sync Clippings Hilfsprogramms ist verfügbar. Klicken Sie hier, um zur Downloadseite zu gelangen."
   },
+  "syncOptsHdg": {
+    "message": "Optionen"
+  },
   "syncUpdateChkOpt": {
     "message": "Automatisch nach Updates für das Sync Clippings Hilfsprogramm suchen"
+  },
+  "cxtMnuSyncItemsOnly": {
+    "message": "Nur synchronisierte Elemente im Menü Clippings anzeigen"
   },
   "aboutBtn": {
     "message": "Über..."
