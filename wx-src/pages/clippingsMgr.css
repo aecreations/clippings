@@ -492,64 +492,6 @@ input[type="checkbox"] + label {
 #clippings-tree.cxt-menu-show-sync-items-only .fancytree-title {
     color: var(--color-not-synced-items-text);
 }
-
-
-    order: 1;
-    flex: 0 1 auto;
-    align-self: stretch;
-    width: 220px;
-    min-width: 128px;
-    overflow: auto;
-    border-right: 1px solid var(--color-tree-splitter);
-    color: var(--color-default-text);
-    background-color: var(--color-clippings-tree-bkgd);
-}
-
-#clippings-tree .ae-synced-clippings-fldr > .fancytree-icon {
-    background-image: var(--url-icon-synced-clippings-fldr);
-}
-
-/* Search results in tree list. */
-.fancytree-ext-filter-hide span.fancytree-node.fancytree-match span.fancytree-title, .fancytree-ext-filter-hide tr.fancytree-match span.fancytree-title {
-    color: var(--color-default-text);
-}
-
-#reload-sync-fldr-btn {
-    display: inline-block;
-
-    position: relative;
-    top: 0px;
-    left: 4px;
-    width: 24px;
-    height: 20px;
-
-    border: 1px solid var(--color-reload-sync-fldr-btn-border);
-    border-radius: 3px;
-
-    background-color: var(--color-reload-sync-fldr-btn-bkgd);
-    background-image: url("../img/reload.svg");
-    background-size: 14px 14px;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-#reload-sync-fldr-btn:hover {
-    border: 1px solid var(--color-reload-sync-fldr-btn-hover-border);
-    background-color: var(--color-reload-sync-fldr-btn-hover-bkgd);
-}
-
-#reload-sync-fldr-btn:active {
-    border: 1px solid var(--color-reload-sync-fldr-btn-active-border);
-    background-color: var(--color-reload-sync-fldr-btn-active-bkgd);
-}
-
-/* If user has set the option to only show synced items in the Clippings menu,
- * then grey out all tree node labels and icons except for the Synced Clippings
- * folder and its children. */
-#clippings-tree.cxt-menu-show-sync-items-only .fancytree-title {
-    color: var(--color-not-synced-items-text);
-}
-
 #clippings-tree.cxt-menu-show-sync-items-only .fancytree-plain.fancytree-container.fancytree-treefocus span.fancytree-active span.fancytree-title {
     color: var(--color-not-synced-items-selected-text);
 }
