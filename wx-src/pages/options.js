@@ -318,27 +318,25 @@ function initDialogs()
   
   gDialogs.syncClippings = new aeDialog("#sync-clippings-dlg");
   gDialogs.syncClippings.oldShowSyncItemsOpt = null;
-  gDialogs.syncClippings.onInit = () => {
+  gDialogs.syncClippings.onInit = () => {   
     $("#sync-clippings-dlg .dlg-accept").hide();
     $("#sync-clippings-dlg .dlg-cancel").text(chrome.i18n.getMessage("btnClose"));
     $("#sync-err-detail").text("");
     
-    let deck = $("#sync-clippings-dlg > .dlg-content > .deck");
-    $(deck[0]).show();
-    $(deck[1]).hide();
-    $(deck[2]).hide();
-    $(deck[3]).hide();
+    let deckSyncChk = $("#sync-connection-check");
+    let deckSyncConxnError = $("#sync-cxn-error");
+    let deckSyncError = $("#generic-error");
+    let deckSyncSettings = $("#sync-folder-location");
+
+    deckSyncChk.show();
+    deckSyncConxnError.hide();
+    deckSyncError.hide();
+    deckSyncSettings.hide();
 
     let msg = { msgID: "get-app-version" };
     let sendNativeMsg = browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
     sendNativeMsg.then(aResp => {
       console.info("Sync Clippings helper app version: " + aResp.appVersion);
-
-      $(deck[0]).hide();
-      $(deck[3]).show();
-      $("#sync-clippings-dlg").css({ height: "336px" });
-      $("#sync-clippings-dlg .dlg-accept").show();
-      $("#sync-clippings-dlg .dlg-cancel").text(chrome.i18n.getMessage("btnCancel"));
 
       let prefs = gClippings.getPrefs();
       
@@ -357,23 +355,33 @@ function initDialogs()
       return browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
       
     }).then(aResp => {     
+      $("#sync-clippings-dlg").css({ height: "336px" });
+      $("#sync-clippings-dlg .dlg-accept").show();
+      $("#sync-clippings-dlg .dlg-cancel").text(chrome.i18n.getMessage("btnCancel"));
+
+      deckSyncChk.hide();
+      deckSyncSettings.show();
       $("#sync-fldr-curr-location").val(aResp.syncFilePath).focus().select();
-      
+
     }).catch(aErr => {
       console.error("Clippings/wx::options.js: Error returned from syncClippings native app: " + aErr);
 
-      $(deck[0]).hide();
       if (aErr == aeConst.SYNC_ERROR_CONXN_FAILED) {
         // This would occur if Sync Clippings helper app won't start.
-        $(deck[1]).show();
+        deckSyncChk.hide();
+        deckSyncConxnError.show();
       }
       else if (aErr == aeConst.SYNC_ERROR_UNKNOWN) {
-        $(deck[2]).show();
+        deckSyncChk.hide();
+        deckSyncSettings.hide();
+        deckSyncError.show();
         $("#sync-err-detail").text("Sorry, no further information on this error is available.");
       }
       else {
-        $(deck[2]).show();
-        $("#sync-err-detail").text(aErr);
+        deckSyncChk.hide();
+        deckSyncSettings.hide();
+        deckSyncError.show();
+        $("#sync-err-detail").text("Unable to initialize Sync Clippings settings. Restart Firefox and try again.");
       }
     });
   };
