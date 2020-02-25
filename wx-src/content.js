@@ -111,17 +111,17 @@ function handleRequestInsertClipping(aRequest)
 
   if (isElementOfType(activeElt, "HTMLInputElement")
       || isElementOfType(activeElt, "HTMLTextAreaElement")) {
-    rv = insertTextIntoTextbox(activeElt, clippingText);
+    rv = insertTextIntoTextbox(activeElt, clippingText, aRequest.dispatchInputEvent);
   }
   // Rich text editor
   else if (isElementOfType(activeElt, "HTMLIFrameElement")) {
     let doc = activeElt.contentDocument;
-    rv = insertTextIntoRichTextEditor(doc, clippingText, autoLineBrk, htmlPaste);
+    rv = insertTextIntoRichTextEditor(doc, clippingText, autoLineBrk, htmlPaste, aRequest.dispatchInputEvent);
   }
   // Rich text editor used by Gmail and Outlook.com
   else if (isElementOfType(activeElt, "HTMLDivElement")) {
     let doc = activeElt.ownerDocument;
-    rv = insertTextIntoRichTextEditor(doc, clippingText, autoLineBrk, htmlPaste);
+    rv = insertTextIntoRichTextEditor(doc, clippingText, autoLineBrk, htmlPaste, aRequest.dispatchInputEvent);
   }
   else {
     rv = null;
@@ -142,7 +142,7 @@ function isElementOfType(aElement, aTypeStr)
 }
 
 
-function insertTextIntoTextbox(aTextboxElt, aInsertedText)
+function insertTextIntoTextbox(aTextboxElt, aInsertedText, aDispatchInputEvent)
 {
   log("Clippings/wx::content.js: >> insertTextIntoTextbox()");
   
@@ -167,11 +167,17 @@ function insertTextIntoTextbox(aTextboxElt, aInsertedText)
   aTextboxElt.selectionStart = pos;
   aTextboxElt.selectionEnd = pos;
 
+  if (aDispatchInputEvent) {
+    log(`Clippings/wx::content.js: Dispatching "input" event at ${aTextboxElt} element.`);
+    let inputEvt = createInputEventInstance();
+    aTextboxElt.dispatchEvent(inputEvt);
+  }
+
   return true;
 }
 
 
-function insertTextIntoRichTextEditor(aRichTextEditorDocument, aClippingText, aAutoLineBreak, aPasteMode)
+function insertTextIntoRichTextEditor(aRichTextEditorDocument, aClippingText, aAutoLineBreak, aPasteMode, aDispatchInputEvent)
 {
   log("Clippings/wx::content.js: >> insertTextIntoRichTextEditor()");
 
@@ -210,7 +216,19 @@ function insertTextIntoRichTextEditor(aRichTextEditorDocument, aClippingText, aA
   }
   catch (e) {}
 
+  if (aDispatchInputEvent) {
+    log(`Clippings/wx::content.js: Dispatching "input" event at ${aRichTextEditorDocument} element.`);
+    let inputEvt = createInputEventInstance();
+    aRichTextEditorDocument.dispatchEvent(inputEvt);
+  }
+
   return true;
+}
+
+
+function createInputEventInstance()
+{
+  return new Event("input", { bubbles: true, cancelable: false });
 }
 
 

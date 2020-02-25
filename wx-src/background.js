@@ -351,6 +351,13 @@ browser.runtime.onInstalled.addListener(aDetails => {
       return null;
       
     }).then(() => {
+      if (! hasTopangaPrefs()) {
+        log("Initializing 6.2.1 user preferences.");
+        return setTopangaPrefs();
+      }
+      return null;
+
+    }).then(() => {
       if (gPrefs.clippingsMgrDetailsPane) {
         gPrefs.clippingsMgrAutoShowDetailsPane = false;
       }
@@ -390,6 +397,7 @@ async function setDefaultPrefs()
     syncHelperCheckUpdates: true,
     lastSyncHelperUpdChkDate: null,
     backupFilenameWithDate: true,
+    dispatchInputEvent: true,
   };
 
   gPrefs = aeClippingsPrefs;
@@ -469,6 +477,26 @@ async function setMalibuPrefs()
   await browser.storage.local.set(newPrefs);
 }
 
+
+function hasTopangaPrefs()
+{
+  // Version 6.2.1
+  return gPrefs.hasOwnProperty("dispatchInputEvent");
+}
+
+
+async function setTopangaPrefs()
+{
+  let newPrefs = {
+    dispatchInputEvent: true,
+  };
+
+  for (let pref in newPrefs) {
+    gPrefs[pref] = newPrefs[pref];
+  }
+
+  await browser.storage.local.set(newPrefs);
+}
 
 
 //
@@ -1762,7 +1790,8 @@ function pasteProcessedClipping(aClippingContent, aActiveTabID)
     msgID: "paste-clipping",
     content: aClippingContent,
     htmlPaste: gPrefs.htmlPaste,
-    autoLineBreak: gPrefs.autoLineBreak
+    autoLineBreak: gPrefs.autoLineBreak,
+    dispatchInputEvent: gPrefs.dispatchInputEvent,
   };
 
   log(`Clippings/wx: Extension sending message "paste-clipping" to content script (active tab ID = ${aActiveTabID})`);
