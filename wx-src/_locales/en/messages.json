@@ -1161,8 +1161,16 @@
     "message": "The Sync Clippings helper app is needed to sync your clippings. You can download it from the <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">AE Creations website</a>."
   },
 
+  "errSyncOptsInit": {
+    "message": "Unable to initialize Sync Clippings settings. Restart Firefox and try again."
+  },
+
   "errSync": {
     "message": "An error has occurred with the Sync Clippings helper app."
+  },
+
+  "errNoDetails": {
+    "message": "Sorry, no further information on this error is available."
   },
 
   "syncReloadAck": {

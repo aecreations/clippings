@@ -375,13 +375,13 @@ function initDialogs()
         deckSyncChk.hide();
         deckSyncSettings.hide();
         deckSyncError.show();
-        $("#sync-err-detail").text("Sorry, no further information on this error is available.");
+        $("#sync-err-detail").text(chrome.i18n.getMessage("errNoDetails"));
       }
       else {
         deckSyncChk.hide();
         deckSyncSettings.hide();
         deckSyncError.show();
-        $("#sync-err-detail").text("Unable to initialize Sync Clippings settings. Restart Firefox and try again.");
+        $("#sync-err-detail").text(chrome.i18n.getMessage("errSyncOptsInit"));
       }
     });
   };
