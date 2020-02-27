@@ -352,34 +352,6 @@ progress {
     padding-bottom: 18px;
 }
 
-#private-mode-error-dlg {
-    top: 160px;
-    --width: 686px;
-    --height: 200px;
-}
-
-#private-mode-error-dlg > .msgbox-icon {
-    float: left;
-    width: 48px;
-    height: 48px;
-    margin-top: 14px;
-    margin-right: 12px;
-    background-image: url("../img/error.svg");
-    background-size: contain;
-}
-
-#private-mode-error-dlg > .dlg-content > p {
-    height: 100px;
-    margin-top: 12px;
-    margin-left: 64px;
-    margin-right: -4px;
-    padding: 12px;
-    border-radius: 4px;
-    background-color: #ffd2d2;
-    color: black;
-    font-size: 15px;
-}
-
 #sync-clippings-dlg {
     top: 128px;
     --width: 500px;

@@ -23,9 +23,8 @@ $(() => {
       // Hide the broken "Turn Off Sync" button when Private Browsing turned on.
       $("#toggle-sync").hide();
       
-      let privateModeErrDlg = new aeDialog("#private-mode-error-dlg");
-      privateModeErrDlg.onAfterAccept = () => { closePage() };
-      privateModeErrDlg.showModal();
+      window.alert(chrome.i18n.getMessage("errPrefPgFailed"));
+      closePage();
       return;
     }
 
