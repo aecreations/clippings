@@ -319,7 +319,7 @@ function initDialogs()
   gDialogs.syncClippings.oldShowSyncItemsOpt = null;
   gDialogs.syncClippings.onInit = () => {   
     $("#sync-clippings-dlg .dlg-accept").hide();
-    $("#sync-clippings-dlg .dlg-cancel").text(chrome.i18n.getMessage("btnClose"));
+    $("#sync-clippings-dlg .dlg-cancel").text(chrome.i18n.getMessage("btnCancel"));
     $("#sync-err-detail").text("");
     
     let deckSyncChk = $("#sync-connection-check");
@@ -364,6 +364,8 @@ function initDialogs()
 
     }).catch(aErr => {
       console.error("Clippings/wx::options.js: Error returned from syncClippings native app: " + aErr);
+      
+      $("#sync-clippings-dlg .dlg-cancel").text(chrome.i18n.getMessage("btnClose"));
 
       if (aErr == aeConst.SYNC_ERROR_CONXN_FAILED) {
         // This would occur if Sync Clippings helper app won't start.
