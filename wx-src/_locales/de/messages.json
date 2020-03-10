@@ -154,110 +154,11 @@
   "closeWelcomePg": {
     "message": "Diese Seite schließen"
   },
-  "welcImportHdg": {
-    "message": "Clippings-Backup-Datei importieren"
-  },
-  "welcImportDesc": {
-    "message": "Um loszulegen, klicken Sie auf Durchsuchen und suchen Sie nach der Backup-Datei auf Ihrem System."
-  },
-  "welcSkipImport": {
-    "message": "Importieren überspringen"
-  },
-  "welcNoBackupExpand": {
-    "message": "Was tun, wenn Sie kein Sicherung erstellt haben"
-  },
-  "welcNoBackupSubh": {
-    "message": "Wenn Sie Ihre Textbausteine nicht gesichert haben, gehen Sie folgendermaßen vor:"
-  },
-  "welcFileMgrWindows": {
-    "message": "Windows Explorer",
-    "description": "File manager application on Windows, for locating Clippings backup folder"
-  },
-  "welcFileMgrMac": {
-    "message": "Finder",
-    "description": "File manager application on macOS, for locating Clippings backup folder"
-  },
-  "welcFileMgrGeneric": {
-    "message": "der Datei-Manager auf Ihrem System"
-  },
-  "welcShowBkupFileNote": {
-    "message": "(Sie müssen möglicherweise die Befehlszeile verwenden, um diesen Ordner zu sehen.)",
-    "description": "Note to Linux and macOS users about showing hidden backup folder."
-  },
-  "welcNoBackupInstrxnStep1": {
-    "message": "Verwenden Sie $1, um den Ort der Datenquelle von Clippings zu finden. Je nach Ihren früheren Einstellungen kann das Ihr Firefox-Profilverzeichnis oder ein anderer Ordner anderswo sein."
-  },
-  "welcNoBackupInstrxnStep2": {
-    "message": "Öffnen Sie den Ordner der Datenquelle und suchen Sie den Sicherungsordner von Clippings. Er sollte \"clippings-backup\" oder \".clipbak\" heißen. $1"
-  },
-  "welcNoBackupInstrxnStep3": {
-    "message": "Öffnen Sie den Sicherungsordner von Clippings und suchen Sie nach der neuesten Sicherungsdatei. Kopieren Sie diese in Ihren Ordner Desktop oder Dokumente."
-  },
-  "welcNoBackupInstrxnStep4": {
-    "message": "Klicken Sie oben auf Durchsuchen und wählen Sie dann die Sicherungsdatei aus."
-  },
-  "welcReadyImport": {
-    "message": "Wenn Sie fertig sind, klicken Sie auf Importieren, um Ihre Clippings-Daten in Clippings 6 zu überführen."
-  },
-  "welcImportBtn": {
-    "message": "Importieren"
-  },
-  "welcBack": {
-    "message": "Zurück zur Willkommensseite"
-  },
-  "welcImportStatus": {
-    "message": "Importiere Textbausteine..."
-  },
-  "welcImportStatusDone": {
-    "message": "Importiere Textbausteine... fertig!"
-  },
-  "welcImportCount": {
-    "message": "$1 Einträge importiert."
-  },
-  "welcImportConfirmDone": {
-    "message": "Ihre Textbausteine wurden erfolgreich importiert. Clippings kann sie jetzt verwenden."
-  },
-  "welcShctKeyNote": {
-    "message": "Die Clippings-Taste für das Einfügen von Textbausteinen <strong>hat sich in Clippings 6 geändert</strong>. Um einen Textbaustein mit seinem Tastaturkürzel einzufügen oder nach dem Namen zu suchen, drücken Sie <span id=\"keybd-paste-key\">$1</span>."
-  },
-  "welcOpenClipMgr": {
-    "message": "Textbaustein-Manager öffnen"
-  },
-  "welcImportError": {
-    "message": "Fehler beim Lesen der ausgewählten Datei. Die Datei ist möglicherweise keine gültige Clippings-Datei."
-  },
-  "welcImportRetry": {
-    "message": "Klicken Sie auf Erneut versuchen, um zurück zu gehen und eine andere Sicherungsdatei auszuwählen."
-  },
-  "welcImportRetryBtn": {
-    "message": "Erneut versuchen"
-  },
   "welcLeaveConfirm": {
     "message": "Wollen Sie wirklich die Clippings-Willkommenseite verlassen?"
   },
   "welcCancelDlg": {
     "message": "Zurück"
-  },
-  "welcImportLater": {
-    "message": "Sie können Ihre Clippings-Sicherung später importieren, indem Sie den Textbaustein-Manager öffnen und dann Extras → Importieren auswählen."
-  },
-  "welcCantImportHdg": {
-    "message": "Clippings kann die Sicherungsdatei nicht importieren, da die Clippings-Datenbank nicht zugänglich ist."
-  },
-  "welcCantImportCause": {
-    "message": "Das kann passieren, wenn die Datenschutz-Einstellungen in Firefox zu restriktiv sind (zum Beispiel wenn der private Modus aktiviert ist). Diese Einstellungen können WebExtensions wie Clippings beeinflussen."
-  },
-  "welcCantImportFix": {
-    "message": "Stellen Sie sicher, dass die Datenschutz-Einstellungen des Browsers die Standardwerte verwenden und starten Sie dann Firefox neu und versuchen Sie es erneut. Falls das nicht hilft, gehen Sie folgendermaßen vor:"
-  },
-  "welcCantImportFixStep1": {
-    "message": "Öffnen Sie das Firefox-Menü und wählen Sie Hilfe → Informationen zur Fehlerbehebung."
-  },
-  "welcCantImportFixStep2": {
-    "message": "Klicken Sie auf Firefox bereinigen... und folgen Sie den Anweisungen. Firefox wird neu starten."
-  },
-  "welcCantImportFixStep3": {
-    "message": "Installieren Sie Clippings erneut und versuchen Sie die Sicherungsdatei erneut zu importieren."
   },
   "newClippingDlgTitle": {
     "message": "Neuer Textbaustein",
@@ -713,6 +614,9 @@
   "prefsTitle": {
     "message": "Clippings-Optionen"
   },
+  "errPrefPgFailed": {
+    "message": "Einstellungsseite der Erweiterung kann nicht geladen werden. Starten Sie Firefox neu und versuchen Sie es erneut."
+  },
   "prefsHdgPasteOptions": {
     "message": "Einfügeoptionen"
   },
@@ -886,8 +790,14 @@
   "errSyncConxnDetail": {
     "message": "Um die Textbausteine zu synchronisieren, wird das Clippings Synchronisierungs-Hilfs-Programm gebraucht, die Sie von der <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">AE Creations Website</a> herunterladen können."
   },
+  "errSyncOptsInit": {
+    "message": "Die Sync-Clippings-Einstellungen können nicht initialisiert werden. Starten Sie Firefox neu und versuchen Sie es erneut."
+  },
   "errSync": {
     "message": "Mit dem Sync Clippings Hilfsprogramm ist ein Fehler aufgetreten."
+  },
+  "errNoDetails": {
+    "message": "Leider sind keine weiteren Informationen zu diesem Fehler verfügbar."
   },
   "syncReloadAck": {
     "message": "Der Ordner für synchronisierte Textbausteine wird aktualisiert. Klicken Sie auf Neu laden, um fortzufahren."

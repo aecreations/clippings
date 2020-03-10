@@ -154,110 +154,11 @@
   "closeWelcomePg": {
     "message": "Feche esta página"
   },
-  "welcImportHdg": {
-    "message": "Importar arquivo de Backup do Clippings"
-  },
-  "welcImportDesc": {
-    "message": "Para iniciar, clique em Procurar, então localize o arquivo de Backup em seu sistema."
-  },
-  "welcSkipImport": {
-    "message": "Pular etapa de carregar arquivos"
-  },
-  "welcNoBackupExpand": {
-    "message": "O que você fará caso não tenha criado um backup"
-  },
-  "welcNoBackupSubh": {
-    "message": "Se você não salvou seus arquivos de recortes, siga esses passos:"
-  },
-  "welcFileMgrWindows": {
-    "message": "Windows Explorer",
-    "description": "File manager application on Windows, for locating Clippings backup folder"
-  },
-  "welcFileMgrMac": {
-    "message": "Finder",
-    "description": "File manager application on macOS, for locating Clippings backup folder"
-  },
-  "welcFileMgrGeneric": {
-    "message": "o gerenciador de arquivos no seu sistema"
-  },
-  "welcShowBkupFileNote": {
-    "message": " (Talvez você precise usar a linha de comando para ver esta pasta)",
-    "description": "Note to Linux and macOS users about showing hidden backup folder."
-  },
-  "welcNoBackupInstrxnStep1": {
-    "message": "Use $1 para achar a fonte de dados do Clippings. Dependendo de suas configurações prévias, pode estar em seu arquivo pessoal do Firefox, ou outra pasta localizada em outro lugar."
-  },
-  "welcNoBackupInstrxnStep2": {
-    "message": "Abra a pasta de origem e localize a pasta de Backup. O nome deve ser alterado para \"clippings-backup\" ou \".clipbak\". $1"
-  },
-  "welcNoBackupInstrxnStep3": {
-    "message": "Abra a pasta de backups do Clippings e localize o arquivo mais recente. Copie este para a área de trabalho ou a pasta de documentos."
-  },
-  "welcNoBackupInstrxnStep4": {
-    "message": "Clique em Procurar, e depois selecione o arquivo de backup."
-  },
-  "welcReadyImport": {
-    "message": "Quando estiver pronto, clique em Importar para restaurar os dados para o Clippings 6."
-  },
-  "welcImportBtn": {
-    "message": "Importar"
-  },
-  "welcBack": {
-    "message": "Voltar à tela inicial"
-  },
-  "welcImportStatus": {
-    "message": "Importando Clippings..."
-  },
-  "welcImportStatusDone": {
-    "message": "Importando clippings... pronto!"
-  },
-  "welcImportCount": {
-    "message": "$1 itens importados."
-  },
-  "welcImportConfirmDone": {
-    "message": "Seus clippings foram importados com sucesso. Clippings está agora pronto para ser usado."
-  },
-  "welcShctKeyNote": {
-    "message": "A tecla de \"colar\" <strong>mudou</strong> na versão 6. Para colar um Clipping usando sua tecla de atalho ou para pesquisar por nome, pressione <span id=\"keybd-paste-key\">$1</span>."
-  },
-  "welcOpenClipMgr": {
-    "message": "Abrir gerenciador de Clippings"
-  },
-  "welcImportError": {
-    "message": "Erro ao ler o arquivo selecionado.  O arquivo não pode ser um arquivo Clippings válido."
-  },
-  "welcImportRetry": {
-    "message": "Clique em tentar novamente para voltar e selecionar outro arquivo de backup."
-  },
-  "welcImportRetryBtn": {
-    "message": "Tente novamente"
-  },
   "welcLeaveConfirm": {
     "message": "Tem certeza que quer sair da página de boas vindas do Clipping?"
   },
   "welcCancelDlg": {
     "message": "Voltar"
-  },
-  "welcImportLater": {
-    "message": "Você pode importar seu backup depois abrir o Gerenciador de recortes e selecionando Ferramentas → importar."
-  },
-  "welcCantImportHdg": {
-    "message": "O Clipping não pode importar o arquivo de backup, porque o banco de dados não está acessível."
-  },
-  "welcCantImportCause": {
-    "message": "Isso pode acontecer se as configurações de privacidade no Firefox são demasiado restritivas (por exemplo, ativar o modo de navegação privada).  Essas configurações podem interferir com WebExtensions como o Clippings."
-  },
-  "welcCantImportFix": {
-    "message": "Certifique-se de que as configurações de privacidade do navegador estão em seus padrões, em seguida, reinicie o Firefox e tente novamente. Se isso não corrigir o problema, siga estas etapas:"
-  },
-  "welcCantImportFixStep1": {
-    "message": "Abra o menu Firefox e selecione ajuda → informações de solução de problemas."
-  },
-  "welcCantImportFixStep2": {
-    "message": "Clique em atualizar o Firefox e, em seguida, siga as instruções. O Firefox irá reiniciar."
-  },
-  "welcCantImportFixStep3": {
-    "message": "Reinstale o Clippings, e tente importar o arquivo de backup novamente."
   },
   "newClippingDlgTitle": {
     "message": "Novo Clipping",
@@ -713,6 +614,9 @@
   "prefsTitle": {
     "message": "Opções"
   },
+  "errPrefPgFailed": {
+    "message": "Não foi possível carregar a página de preferências da extensão. Reinicie o Firefox e tente novamente."
+  },
   "prefsHdgPasteOptions": {
     "message": "Opções de colar"
   },
@@ -886,8 +790,14 @@
   "errSyncConxnDetail": {
     "message": "O app de ajuda do Clippings Sync é necessário para sincronizar seus clippings. Você pode baixá-lo no site da <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">AE Creations</a>."
   },
+  "errSyncOptsInit": {
+    "message": "Não foi possível inicializar as configurações do Sync Clippings. Reinicie o Firefox e tente novamente."
+  },
   "errSync": {
     "message": "Ocorreu um erro com o app de ajuda do Sync Clippings."
+  },
+  "errNoDetails": {
+    "message": "Desculpe, não há mais informações disponíveis sobre este erro."
   },
   "syncReloadAck": {
     "message": "Atualizando a pasta de Clippings Sincronizados. Clique em Recarregar para continuar."

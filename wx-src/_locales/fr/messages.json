@@ -154,110 +154,11 @@
   "closeWelcomePg": {
     "message": "Fermer cette page"
   },
-  "welcImportHdg": {
-    "message": "Importer le fichier de sauvegarde de Clippings"
-  },
-  "welcImportDesc": {
-    "message": "Pour commencer, cliquez sur Parcourir, puis recherchez le fichier de sauvegarde sur votre système."
-  },
-  "welcSkipImport": {
-    "message": "Passer l'importation"
-  },
-  "welcNoBackupExpand": {
-    "message": "Que faire si vous n'aviez pas de sauvegarde"
-  },
-  "welcNoBackupSubh": {
-    "message": "Si vous n'avez pas sauvegardé vos clippings, suivez ces étapes:"
-  },
-  "welcFileMgrWindows": {
-    "message": "Explorateur Windows",
-    "description": "File manager application on Windows, for locating Clippings backup folder"
-  },
-  "welcFileMgrMac": {
-    "message": "Chercheur",
-    "description": "File manager application on macOS, for locating Clippings backup folder"
-  },
-  "welcFileMgrGeneric": {
-    "message": "le gestionnaire de fichier de votre système"
-  },
-  "welcShowBkupFileNote": {
-    "message": " (vous devrez peut être utilise la ligne de commande pour voir ce répertoire)",
-    "description": "Note to Linux and macOS users about showing hidden backup folder."
-  },
-  "welcNoBackupInstrxnStep1": {
-    "message": "Utilisez $1 pour trouver l'emplacement des données de Clippings. Selon vos paramètres précédents, il peut être dans votre répertoire de Profil Firefox, ou dans n'importe quel répertoire situé ailleurs."
-  },
-  "welcNoBackupInstrxnStep2": {
-    "message": "Ouvrez le dossier source de données et localisez le dossier de sauvegarde de coupures de presse. Il devrait être nommé « coupures-backup » ou « .clipbak ». $1"
-  },
-  "welcNoBackupInstrxnStep3": {
-    "message": "Ouvrez le dossier de sauvegarde de coupures et recherchez le fichier de sauvegarde plus récent. Copier ce dossier bureau ou Documents."
-  },
-  "welcNoBackupInstrxnStep4": {
-    "message": "Cliquer sur Parcourir ci-dessus, et sélectionner le fichier de sauvegarde."
-  },
-  "welcReadyImport": {
-    "message": "Lorsque vous êtes prêt, cliquez sur Importer pour récupérez vos données de coupures de presse 6."
-  },
-  "welcImportBtn": {
-    "message": "Importer"
-  },
-  "welcBack": {
-    "message": "Retour à la page d'accueil"
-  },
-  "welcImportStatus": {
-    "message": "Importation des clippings en cours ..."
-  },
-  "welcImportStatusDone": {
-    "message": "Importation des Clippings... fait!"
-  },
-  "welcImportCount": {
-    "message": "Importation de $1 éléments."
-  },
-  "welcImportConfirmDone": {
-    "message": "Vos clippings ont été importées. Clippings est maintenant prêt à l’emploi."
-  },
-  "welcShctKeyNote": {
-    "message": "La touche clavier de coller <strong>a changé</strong> dans la version 6 de Clippings. Pour coller un clipping par sa touche de raccourci ou pour effectuer une recherche par nom, appuyez sur <span id=\"keybd-paste-key\">$1</span>."
-  },
-  "welcOpenClipMgr": {
-    "message": "Ouvrir le gestionnaire de Clippings"
-  },
-  "welcImportError": {
-    "message": "Erreur de lecture de fichier sélectionné.  Le fichier est peut-être pas un fichier Clippings valide."
-  },
-  "welcImportRetry": {
-    "message": "Cliquez sur Réessayer pour revenir en arrière et sélectionnez un autre fichier de sauvegarde."
-  },
-  "welcImportRetryBtn": {
-    "message": "Réessayez"
-  },
   "welcLeaveConfirm": {
     "message": "Êtes-vous sûr de que vouloir quitter la page de bienvenue de Clippings ?"
   },
   "welcCancelDlg": {
     "message": "Retour"
-  },
-  "welcImportLater": {
-    "message": "Vous pouvez importer votre sauvegarde de Clippings plus tard en ouvrant le Gestionnaire de Clippings, puis sélectionnez outils → importer."
-  },
-  "welcCantImportHdg": {
-    "message": "Clippings ne peut pas importer le fichier de sauvegarde, car la base de données de Clippings n’est pas accessible."
-  },
-  "welcCantImportCause": {
-    "message": "Ceci peut se produire si les paramètres de confidentialité dans Firefox sont trop restrictifs (par exemple, en activant le mode de navigation privée).  Ces paramètres peuvent interférer avec les Extensions Web telles que des Clippings."
-  },
-  "welcCantImportFix": {
-    "message": "Assurez-vous que les paramètres de confidentialité du navigateur sont à leurs valeurs par défaut, puis redémarrez Firefox et réessayez. Si cela ne résous pas le problème, procédez comme suit :"
-  },
-  "welcCantImportFixStep1": {
-    "message": "Ouvrez le menu Firefox, puis sélectionnez aide → informations sur le dépannage."
-  },
-  "welcCantImportFixStep2": {
-    "message": "Cliquez sur Refresh Firefox, puis suivez les instructions. Firefox va redémarrer."
-  },
-  "welcCantImportFixStep3": {
-    "message": "Réinstaller Clippings et puis essayez de réimporter le fichier de sauvegarde."
   },
   "newClippingDlgTitle": {
     "message": "Nouveau Clipping",
@@ -713,6 +614,9 @@
   "prefsTitle": {
     "message": "Options de Clippings"
   },
+  "errPrefPgFailed": {
+    "message": "Impossible de charger la page de préférences d'extension. Redémarrez Firefox et réessayez."
+  },
   "prefsHdgPasteOptions": {
     "message": "Options de collage"
   },
@@ -886,8 +790,14 @@
   "errSyncConxnDetail": {
     "message": "L’application d’assistance de Sync Clippings est nécessaire pour synchroniser vos coupures. Vous pouvez le télécharger depuis le <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">AE Creations site Internet</a>."
   },
+  "errSyncOptsInit": {
+    "message": "Impossible d'initialiser les paramètres de synchro de Clippings. Redémarrez Firefox et réessayez."
+  },
   "errSync": {
     "message": "Une erreur s’est produite avec l’application d’assistance Clippings Sync."
+  },
+  "errNoDetails": {
+    "message": "Désolé, pas d'information supplémentaire sur cette erreur."
   },
   "syncReloadAck": {
     "message": "Mise à jour du dossier Clippings Sync. Cliquez sur recharger pour continuer."
