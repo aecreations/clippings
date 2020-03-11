@@ -317,7 +317,9 @@ function initDialogs()
   
   gDialogs.syncClippings = new aeDialog("#sync-clippings-dlg");
   gDialogs.syncClippings.oldShowSyncItemsOpt = null;
-  gDialogs.syncClippings.onInit = () => {   
+  gDialogs.syncClippings.isCanceled = false;
+  gDialogs.syncClippings.onInit = () => {
+    gDialogs.syncClippings.isCanceled = false;
     $("#sync-clippings-dlg .dlg-accept").hide();
     $("#sync-clippings-dlg .dlg-cancel").text(chrome.i18n.getMessage("btnCancel"));
     $("#sync-err-detail").text("");
@@ -353,8 +355,10 @@ function initDialogs()
       let msg = { msgID: "get-sync-dir" };
       return browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
       
-    }).then(aResp => {     
-      $("#sync-clippings-dlg").css({ height: "336px" });
+    }).then(aResp => {
+      if (! gDialogs.syncClippings.isCanceled) {
+        $("#sync-clippings-dlg").css({ height: "336px" });
+      }
       $("#sync-clippings-dlg .dlg-accept").show();
       $("#sync-clippings-dlg .dlg-cancel").text(chrome.i18n.getMessage("btnCancel"));
 
@@ -455,7 +459,8 @@ function initDialogs()
   };
   gDialogs.syncClippings.onUnload = () => {
     $("#sync-clippings-dlg").css({ height: "256px" });
-  }
+    gDialogs.syncClippings.isCanceled = true;
+  };
 
   // Dialog UI strings
   if (osName == "win") {
