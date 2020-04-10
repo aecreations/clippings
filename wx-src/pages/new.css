@@ -12,6 +12,7 @@
     --color-fldr-tree-popup-bkgd: #fbfbfb;
     --color-fldr-tree-popup-border: #b1b1b1;
     --color-fldr-tree-popup-shadow: #8f8f8f;
+    --color-fldr-tree-popup-shadow-darker: #555555;
     --url-icon-synced-clippings-fldr: url("../img/synced-clippings.svg");
 }
 
@@ -23,6 +24,7 @@
 	--color-fldr-tree-popup-bkgd: #202023;
 	--color-fldr-tree-popup-border: #737373;
 	--color-fldr-tree-popup-shadow: #2a2a2e;
+	--color-fldr-tree-popup-shadow-darker: #2a2a2e;
 	--url-icon-synced-clippings-fldr: url("../img/synced-clippings-dk.svg");
     }
 }
@@ -111,6 +113,10 @@ textarea {
     width: 350px;
     height: 151px;
     margin-top: 0;
+}
+
+#new-folder-dlg-fldr-tree-popup {
+    box-shadow: 4px 4px 2px -2px var(--color-fldr-tree-popup-shadow-darker);
 }
 
 /* This class to be applied to the folder tree popup if the clipping options
