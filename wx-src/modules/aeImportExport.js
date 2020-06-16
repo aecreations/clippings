@@ -20,6 +20,12 @@ let aeImportExport = {
   CLIPPINGS_RDF_ROOT_FOLDER: "http://clippings.mozdev.org/rdf/user-clippings-v2",
   
   _db: null,
+  _importFileTypes: [
+    "application/json",
+    "application/rdf+xml",    
+  ],
+
+  // Default strings in export file - should be localized from messages.json
   _shctTitle: "Clippings Shortcuts",
   _hostAppStr: "Clippings/wx on Firefox Quantum",
   _shctKeyInstrxns: "To paste, press ALT+SHIFT+Y (Command+Shift+Y on Mac), then the shortcut key.",
@@ -45,6 +51,12 @@ aeImportExport.setL10nStrings = function (aStrings)
   this._shctKeyCustNote = aStrings.shctKeyCustNote;
   this._shctKeyColHdr = aStrings.shctKeyColHdr;
   this._clipNameColHdr = aStrings.clippingNameColHdr;
+};
+
+
+aeImportExport.isValidFileType = function (aFile)
+{
+  return this._importFileTypes.includes(aFile.type);
 };
 
 

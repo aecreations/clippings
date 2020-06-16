@@ -2995,6 +2995,7 @@ function initDialogs()
           $(aEvent.target).removeClass("input-error");
         }
       });
+      that.isInitialized = true;
     }
     $("#numeric-plchldr-name").removeClass("input-error").val("");
   };
@@ -3130,8 +3131,11 @@ function initDialogs()
   gDialogs.importFromFile.IMP_APPEND = 0;
   gDialogs.importFromFile.IMP_REPLACE = 1;
   gDialogs.importFromFile.mode = gDialogs.importFromFile.IMP_APPEND;
+  gDialogs.importFromFile.isInitialized = false;
 
   gDialogs.importFromFile.onInit = () => {
+    let that = gDialogs.importFromFile;
+    
     if (gDialogs.importFromFile.mode == gDialogs.importFromFile.IMP_REPLACE) {
       $("#import-clippings-label").text(chrome.i18n.getMessage("labelSelBkupFile"));
       $("#import-clippings-replc-shct-keys-checkbox").hide();
@@ -3148,20 +3152,31 @@ function initDialogs()
     $("#import-clippings-file-path").val("");
     $("#import-dlg button.dlg-accept").attr("disabled", "true");
     gSuppressAutoMinzWnd = true;
-    
-    $("#import-clippings-file-upload").on("change", aEvent => {
-      $("#import-error").text("").hide();
 
-      let inputFileElt = aEvent.target;
-      if (inputFileElt.files.length > 0) {
-        $("#import-clippings-file-path").val(inputFileElt.files[0].name);
-        $("#import-dlg button.dlg-accept").removeAttr("disabled");
-      }
+    if (! that.isInitialized) {
+      $("#import-clippings-file-upload").on("change", aEvent => {
+        $("#import-error").text("").hide();
 
-      if (gDialogs.importFromFile.mode == gDialogs.importFromFile.IMP_REPLACE) {
-        $("#restore-backup-warning").show();
-      }
-    });
+        let inputFileElt = aEvent.target;
+        if (inputFileElt.files.length > 0) {
+          let file = inputFileElt.files[0];
+
+          if (aeImportExport.isValidFileType(file)) {
+            $("#import-clippings-file-path").val(file.name);
+            $("#import-dlg button.dlg-accept").removeAttr("disabled");
+          }
+          else {
+            $("#import-clippings-file-path").val("");
+            $("#import-dlg button.dlg-accept").attr("disabled", "true");
+          }
+        }
+
+        if (gDialogs.importFromFile.mode == gDialogs.importFromFile.IMP_REPLACE) {
+          $("#restore-backup-warning").show();
+        }
+      });
+      that.isInitialized = true;
+    }
   };
   gDialogs.importFromFile.onUnload = () => {   
     $("#import-error").text("").hide();
