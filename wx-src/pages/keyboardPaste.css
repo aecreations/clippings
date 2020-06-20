@@ -88,11 +88,13 @@ body {
 }
 
 .toolbar-button:hover {
+    border: 1px solid transparent;
     border-radius: 2px;
     background-color: var(--color-toolbarbtn-hover-bkgd);
 }
 
 .toolbar-button:active {
+    border: 1px solid transparent !important;
     border-radius: 2px;
     background-color: var(--color-toolbarbtn-active-bkgd);
 }
