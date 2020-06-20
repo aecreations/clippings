@@ -29,7 +29,7 @@ body {
 }
 
 select.browser-style:focus:not(:disabled) {
-    border-color: #fff !important;
+    border-color: var(--color-bkgd) !important;
     box-shadow: 0 0 0 2px #61b5ffbf;
 }
 
