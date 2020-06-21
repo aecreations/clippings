@@ -4,6 +4,7 @@
 
 @import url("../style/laf.css");
 @import url("../style/clippingLabelPicker.css");
+@import url("../style/searchbox.css");
 
 
 :root {
@@ -71,8 +72,6 @@
     --url-toolbar-btn-img-cancel-hover: url("../img/cancel_hover.svg");
     --url-toolbar-btn-img-cancel-active: url("../img/cancel_active.svg");
     --url-icon-synced-clippings-fldr: url("../img/synced-clippings.svg");
-    --url-icon-search-textbox: url("chrome://global/skin/icons/search-textbox.svg");
-    --url-icon-search-reset: url("../img/search-reset.svg");
 }
 
 @media (prefers-color-scheme: dark) {
@@ -138,8 +137,6 @@
 	--url-toolbar-btn-img-cancel-hover: url("../img/cancel_hover_dk.svg");
 	--url-toolbar-btn-img-cancel-active: url("../img/cancel_active_dk.svg");
 	--url-icon-synced-clippings-fldr: url("../img/synced-clippings-dk.svg");
-	--url-icon-search-textbox: url("../img/search-textbox-dk.svg");
-	--url-icon-search-reset: url("../img/search-reset-dk.svg");
     }
 }
 
@@ -187,18 +184,6 @@ select {
 .browser-style > input[type="text"][readonly]:focus:hover {
     border-color: transparent;
     box-shadow: none;
-}
-
-input[type="search"] {
-    padding-left: 20px;
-    border: 1px solid var(--color-tb-border);
-    background-image: var(--url-icon-search-textbox);
-    background-position: 4px;
-    background-repeat: no-repeat;
-}
-
-input[type="search"]::placeholder {
-    font-style: italic;
 }
 
 input[type="checkbox"] + label {
