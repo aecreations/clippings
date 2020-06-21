@@ -14,21 +14,10 @@
    height="16.000002"
    id="svg3012"
    version="1.1"
-   inkscape:version="0.48.5 r10040"
+   inkscape:version="0.92.2 5c3e80d, 2017-08-06"
    sodipodi:docname="cancel.svg">
   <defs
      id="defs3014">
-    <linearGradient
-       id="linearGradient5329">
-      <stop
-         id="stop5331"
-         offset="0"
-         style="stop-color:#444740;stop-opacity:1;" />
-      <stop
-         id="stop5333"
-         offset="1"
-         style="stop-color:#111111;stop-opacity:1;" />
-    </linearGradient>
     <linearGradient
        osb:paint="gradient"
        id="linearGradient5347">
@@ -41,39 +30,6 @@
          offset="1"
          style="stop-color:#000000;stop-opacity:0;" />
     </linearGradient>
-    <linearGradient
-       id="linearGradient5375">
-      <stop
-         id="stop5377"
-         offset="0"
-         style="stop-color:#e3e0e0;stop-opacity:1;" />
-      <stop
-         id="stop5379"
-         offset="1"
-         style="stop-color:#babdc6;stop-opacity:1;" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient3769">
-      <stop
-         id="stop3771"
-         offset="0"
-         style="stop-color:#f5f5f5;stop-opacity:1;" />
-      <stop
-         id="stop3773"
-         offset="1"
-         style="stop-color:#e6e6e6;stop-opacity:1;" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient3771">
-      <stop
-         id="stop3774"
-         offset="0"
-         style="stop-color:#f7f7f7;stop-opacity:1;" />
-      <stop
-         id="stop3776"
-         offset="1"
-         style="stop-color:#e6e6e6;stop-opacity:1;" />
-    </linearGradient>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -83,7 +39,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="22.627417"
-     inkscape:cx="6.8189299"
+     inkscape:cx="-9.2677494"
      inkscape:cy="8.3319896"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -95,8 +51,8 @@
      inkscape:snap-to-guides="true"
      inkscape:snap-page="false"
      inkscape:snap-grids="true"
-     inkscape:window-width="1280"
-     inkscape:window-height="674"
+     inkscape:window-width="2048"
+     inkscape:window-height="1026"
      inkscape:window-x="0"
      inkscape:window-y="1"
      inkscape:window-maximized="1"
@@ -110,10 +66,10 @@
        visible="true"
        enabled="true"
        snapvisiblegridlinesonly="true"
-       originx="0px"
-       originy="0px"
-       spacingx="0.5px"
-       spacingy="0.5px" />
+       originx="0"
+       originy="0"
+       spacingx="0.5"
+       spacingy="0.5" />
   </sodipodi:namedview>
   <metadata
      id="metadata3017">
