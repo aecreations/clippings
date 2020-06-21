@@ -4,11 +4,11 @@
 
 
 body {
-    font-size: 13px;
+    font-size: 15px;
 }
 
 h3 {
-    font-size: 15px;
+    font-size: 17px;
     font-weight: 600;
     margin: 0;
 }
@@ -32,11 +32,13 @@ select.browser-style {
 
 .centered-row {
     width: 100%;
+    padding-top: 4px;
+    padding-bottom: 4px;
     text-align: center;
 }
 
 .hint, .note {
-    font-size: 11px;
+    font-size: 13px;
 }
 
 #backup-now {
@@ -44,7 +46,7 @@ select.browser-style {
     height: 48px;
     padding-left: 16px;
     padding-right: 16px;
-    font-size: 15px !important;
+    font-size: 17px !important;
     font-weight: 400;
 }
 
@@ -64,4 +66,9 @@ select.browser-style {
 #dlg-buttons {
     right: 16px;
     z-index: 1;
+}
+
+#dlg-buttons > button {
+    min-width: 96px;
+    font-size: 15px !important;
 }
