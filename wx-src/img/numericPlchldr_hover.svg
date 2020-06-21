@@ -14,21 +14,10 @@
    height="16.000002"
    id="svg3012"
    version="1.1"
-   inkscape:version="0.48.5 r10040"
+   inkscape:version="0.92.2 5c3e80d, 2017-08-06"
    sodipodi:docname="placeholderAutoIncrement_hover.svg">
   <defs
      id="defs3014">
-    <linearGradient
-       id="linearGradient5329">
-      <stop
-         id="stop5331"
-         offset="0"
-         style="stop-color:#444740;stop-opacity:1;" />
-      <stop
-         id="stop5333"
-         offset="1"
-         style="stop-color:#111111;stop-opacity:1;" />
-    </linearGradient>
     <linearGradient
        osb:paint="gradient"
        id="linearGradient5347">
@@ -41,39 +30,6 @@
          offset="1"
          style="stop-color:#000000;stop-opacity:0;" />
     </linearGradient>
-    <linearGradient
-       id="linearGradient5375">
-      <stop
-         id="stop5377"
-         offset="0"
-         style="stop-color:#e3e0e0;stop-opacity:1;" />
-      <stop
-         id="stop5379"
-         offset="1"
-         style="stop-color:#babdc6;stop-opacity:1;" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient3769">
-      <stop
-         id="stop3771"
-         offset="0"
-         style="stop-color:#f5f5f5;stop-opacity:1;" />
-      <stop
-         id="stop3773"
-         offset="1"
-         style="stop-color:#e6e6e6;stop-opacity:1;" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient3771">
-      <stop
-         id="stop3774"
-         offset="0"
-         style="stop-color:#f7f7f7;stop-opacity:1;" />
-      <stop
-         id="stop3776"
-         offset="1"
-         style="stop-color:#e6e6e6;stop-opacity:1;" />
-    </linearGradient>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -83,8 +39,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="22.627417"
-     inkscape:cx="7.6618115"
-     inkscape:cy="8.3319896"
+     inkscape:cx="5.1400689"
+     inkscape:cy="-0.50684516"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -95,10 +51,10 @@
      inkscape:snap-to-guides="true"
      inkscape:snap-page="false"
      inkscape:snap-grids="true"
-     inkscape:window-width="1280"
-     inkscape:window-height="667"
+     inkscape:window-width="2048"
+     inkscape:window-height="1026"
      inkscape:window-x="0"
-     inkscape:window-y="0"
+     inkscape:window-y="1"
      inkscape:window-maximized="1"
      showguides="true"
      inkscape:guide-bbox="true"
@@ -110,10 +66,10 @@
        visible="true"
        enabled="true"
        snapvisiblegridlinesonly="true"
-       originx="0px"
-       originy="0px"
-       spacingx="0.5px"
-       spacingy="0.5px" />
+       originx="0"
+       originy="0"
+       spacingx="0.5"
+       spacingy="0.5" />
   </sodipodi:namedview>
   <metadata
      id="metadata3017">
@@ -123,7 +79,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -143,22 +99,22 @@
        id="path13811"
        inkscape:connector-curvature="0" />
     <path
-       style="fill:none;stroke:#5858ff;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="fill:none;stroke:#2020fa;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 16.5,185.36218 -2,10"
        id="path13817"
        inkscape:connector-curvature="0" />
     <path
-       style="fill:none;stroke:#5858ff;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="fill:none;stroke:#2020fa;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 11.5,195.36218 2,-10"
        id="path13819"
        inkscape:connector-curvature="0" />
     <path
-       style="fill:none;stroke:#5858ff;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="fill:none;stroke:#2020fa;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 10.5,191.86218 6.499999,0"
        id="path13821"
        inkscape:connector-curvature="0" />
     <path
-       style="fill:none;stroke:#5858ff;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="fill:none;stroke:#2020fa;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 11,188.86218 6.5,0"
        id="path13823"
        inkscape:connector-curvature="0" />
