@@ -71,6 +71,8 @@
     --url-toolbar-btn-img-cancel-hover: url("../img/cancel_hover.svg");
     --url-toolbar-btn-img-cancel-active: url("../img/cancel_active.svg");
     --url-icon-synced-clippings-fldr: url("../img/synced-clippings.svg");
+    --url-icon-search-textbox: url("chrome://global/skin/icons/search-textbox.svg");
+    --url-icon-search-reset: url("../img/search-reset.svg");
 }
 
 @media (prefers-color-scheme: dark) {
@@ -136,6 +138,8 @@
 	--url-toolbar-btn-img-cancel-hover: url("../img/cancel_hover_dk.svg");
 	--url-toolbar-btn-img-cancel-active: url("../img/cancel_active_dk.svg");
 	--url-icon-synced-clippings-fldr: url("../img/synced-clippings-dk.svg");
+	--url-icon-search-textbox: url("../img/search-textbox-dk.svg");
+	--url-icon-search-reset: url("../img/search-reset-dk.svg");
     }
 }
 
@@ -188,7 +192,7 @@ select {
 input[type="search"] {
     padding-left: 20px;
     border: 1px solid var(--color-tb-border);
-    background-image: url("chrome://global/skin/icons/search-textbox.svg");
+    background-image: var(--url-icon-search-textbox);
     background-position: 4px;
     background-repeat: no-repeat;
 }
@@ -437,7 +441,7 @@ input[type="checkbox"] + label {
     width: 12px;
     height: 12px;
     background-color: transparent;
-    background-image: url("../img/search-reset.svg");
+    background-image: var(--url-icon-search-reset);
     background-position-x: center;
     background-position-y: center;
     background-repeat: no-repeat;
