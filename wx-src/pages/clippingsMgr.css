@@ -71,6 +71,10 @@
     --url-toolbar-btn-img-cancel: url("../img/cancel.svg");
     --url-toolbar-btn-img-cancel-hover: url("../img/cancel_hover.svg");
     --url-toolbar-btn-img-cancel-active: url("../img/cancel_active.svg");
+    --url-toolbar-btn-img-customplchldr: url("../img/customPlchldr.svg");
+    --url-toolbar-btn-img-customplchldr-hover: url("../img/customPlchldr_hover.svg");
+    --url-toolbar-btn-img-autoincplchldr: url("../img/numericPlchldr.svg");
+    --url-toolbar-btn-img-autoincplchldr-hover: url("../img/numericPlchldr_hover.svg");
     --url-icon-synced-clippings-fldr: url("../img/synced-clippings.svg");
 }
 
@@ -136,6 +140,10 @@
 	--url-toolbar-btn-img-cancel: url("../img/cancel_dk.svg");
 	--url-toolbar-btn-img-cancel-hover: url("../img/cancel_hover_dk.svg");
 	--url-toolbar-btn-img-cancel-active: url("../img/cancel_active_dk.svg");
+	--url-toolbar-btn-img-customplchldr: url("../img/customPlchldr_dk.svg");
+	--url-toolbar-btn-img-customplchldr-hover: url("../img/customPlchldr_dk.svg");
+	--url-toolbar-btn-img-autoincplchldr: url("../img/numericPlchldr_dk.svg");
+	--url-toolbar-btn-img-autoincplchldr-hover: url("../img/numericPlchldr_dk.svg");
 	--url-icon-synced-clippings-fldr: url("../img/synced-clippings-dk.svg");
     }
 }
@@ -645,19 +653,27 @@ ul.fancytree-container {
 }
 
 #item-properties > #placeholder-toolbar > #custom-plchldr {
-    background-image: url("../img/customPlchldr.svg");
+    background-image: var(--url-toolbar-btn-img-customplchldr);
 }
 
 #item-properties > #placeholder-toolbar > #custom-plchldr:hover {
-    background-image: url("../img/customPlchldr_hover.svg");
+    background-image: var(--url-toolbar-btn-img-customplchldr-hover);
+}
+
+#item-properties > #placeholder-toolbar > #custom-plchldr:active {
+    background-image: url("../img/customPlchldr.svg");
 }
 
 #item-properties > #placeholder-toolbar > #auto-incr-plchldr {
-    background-image: url("../img/numericPlchldr.svg");
+    background-image: var(--url-toolbar-btn-img-autoincplchldr);
 }
 
 #item-properties > #placeholder-toolbar > #auto-incr-plchldr:hover {
-    background-image: url("../img/numericPlchldr_hover.svg");
+    background-image: var(--url-toolbar-btn-img-autoincplchldr-hover);
+}
+
+#item-properties > #placeholder-toolbar > #auto-incr-plchldr:active {
+    background-image: url("../img/numericPlchldr.svg");
 }
 
 #item-properties > #placeholder-toolbar > label {
