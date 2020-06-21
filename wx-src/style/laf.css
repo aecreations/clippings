@@ -103,15 +103,6 @@ button:hover {
     background-color: var(--color-btn-hover-bkgd);
 }
 
-select.browser-style {
-    background-image: var(--url-dropdown-arrow);
-}
-
-select.browser-style:focus,
-select.browser-style:focus > option {
-    color: var(--color-btn-text);
-}
-
 button.default:hover {
     border: 1px solid #003eaa;
     background-color: #003eaa;
@@ -122,9 +113,22 @@ button:active {
     background-color: var(--color-btn-active-bkgd);
 }
 
+select.browser-style {
+    background-image: var(--url-dropdown-arrow);
+}
+
+select.browser-style:focus,
+select.browser-style:focus > option {
+    color: var(--color-btn-text);
+}
+
 select.browser-style:active {
     border: 1px solid rgba(12, 12, 13, 0.3) !important;
     background-color: rgba(12, 12, 13, 0.3) !important;
+}
+
+select:-moz-focusring {
+    outline-style: none;
 }
 
 button.default:active {
@@ -164,6 +168,13 @@ textarea:focus {
     box-shadow: 0 0 0 2px #61b5ffbf;
     transition-duration: 250ms;
     transition-property: box-shadow;
+}
+
+input[type="text"]:-moz-focusring,
+input[type="password"]:-moz-focusring,
+input[type="search"]:-moz-focusring,
+textarea:-moz-focusring {
+    outline-style: none;
 }
 
 input[type="text"]::selection,
