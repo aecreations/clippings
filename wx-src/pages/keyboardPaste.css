@@ -55,8 +55,8 @@
 	--color-autocomplete-normal-bkgd: #202023;
 	--color-autocomplete-selected-bkgd: #0a84ff;
 	--color-autocomplete-selected-border: #0060df;
-	--color-autocomplete-clipping-name: #fff;
-	--color-autocomplete-clipping-preview: #ededf0;
+	--color-autocomplete-clipping-name: #f9f9fa;
+	--color-autocomplete-clipping-preview: #b1b1b3;
     }
 }
 
