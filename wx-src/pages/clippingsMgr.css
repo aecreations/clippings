@@ -404,25 +404,11 @@ input[type="checkbox"] + label {
     margin-bottom: 1px;
     margin-right: -12px; /* To accommodate "clear search" button hack. */
 }
-/***
-#search-box:hover {
-    border: 1px solid var(--color-tb-hover-border);
-}
 
-#search-box:focus,
-#search-box:focus:hover {
-    border-color: #0996f8;
-    box-shadow: 0 0 0 2px rgba(97, 181, 255, 0.75);
-}
-***/
 #search-box {
     width: 220px;
     height: 100%;
     padding-right: 20px;
-/*
-    font: caption;
-    font-size: 11px;
-*/
 }
 
 #toolbar > #search-clippings-and-folders > #clear-search {
