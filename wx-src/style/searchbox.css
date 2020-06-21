@@ -1,0 +1,27 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+:root {
+    --url-icon-search-textbox: url("chrome://global/skin/icons/search-textbox.svg");
+    --url-icon-search-reset: url("../img/search-reset.svg");
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+	--url-icon-search-textbox: url("../img/search-textbox-dk.svg");
+	--url-icon-search-reset: url("../img/search-reset-dk.svg");
+    }
+}
+
+input[type="search"] {
+    padding-left: 20px;
+    background-image: var(--url-icon-search-textbox);
+    background-position: 4px;
+    background-repeat: no-repeat;
+}
+
+input[type="search"]::placeholder {
+    font-style: italic;
+}
