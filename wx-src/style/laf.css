@@ -6,6 +6,9 @@
 
 
 :root {
+    --color-bkgd: white;
+    --color-default-text: black;
+
     --color-btn-bkgd: rgba(12, 12, 13, 0.1);
     --color-btn-hover-bkgd: rgba(12, 12, 13, 0.2);
     --color-btn-hover-border: rgba(12, 12, 13, 0.1);
@@ -31,6 +34,9 @@
 
 @media (prefers-color-scheme: dark) {
     :root {
+	--color-bkgd: #2a2a2e;
+	--color-default-text: #f9f9fa;
+
 	--color-btn-bkgd: #4a4a4f;
 	--color-btn-hover-bkgd: #606060;
 	--color-btn-hover-border: #606060;

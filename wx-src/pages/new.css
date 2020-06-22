@@ -2,6 +2,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+@import url("../lib/fancytree/skin-win8/ui.fancytree.min.css");
+@import url("../style/dialog.css");
+@import url("../style/lightbox.css");
+@import url("../style/clippingTree.css");
 @import url("../style/clippingLabelPicker.css");
 
 

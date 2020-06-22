@@ -2,6 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+@import url("../style/dialog.css");
 @import url("../style/searchbox.css");
 
 
@@ -9,7 +10,6 @@
     --toolbar-height: 30px;
     --col-hdr-height: 20px;
 
-    --color-default-text: #0c0c0d;
     --color-main-toolbar-bkgd: linear-gradient(to bottom, #fcfcfc 0%, #dedede 100%);
     --color-main-toolbar-text: #0c0c0d;
     --color-toolbarbtn-hover-bkgd: rgba(12, 12, 13, 0.2);
@@ -35,7 +35,6 @@
 
 @media (prefers-color-scheme: dark) {
     :root {
-	--color-default-text: #f9f9fa;
 	--color-main-toolbar-bkgd: #38383d;
 	--color-main-toolbar-text: #f9f9fa;
 	--color-toolbarbtn-hover-bkgd: #737373;

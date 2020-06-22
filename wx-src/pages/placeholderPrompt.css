@@ -2,20 +2,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-@import url("../style/laf.css");
+@import url("../style/dialog.css");
 
 
 :root {
-    --color-bkgd: white;
-    --color-default-text: black;
     --color-plchldr-table-border: #ddd;
     --color-plchldr-table-bkgd: #eee;
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
-	--color-bkgd: #2a2a2e;
-	--color-default-text: #f9f9fa;
 	--color-plchldr-table-border: #4a4a4f;
 	--color-plchldr-table-bkgd: #38383d;
     }

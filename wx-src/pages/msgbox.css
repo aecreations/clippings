@@ -5,19 +5,6 @@
 @import url("../style/laf.css");
 
 
-:root {
-    --color-bkgd: white;
-    --color-default-text: black;
-}
-
-@media (prefers-color-scheme: dark) {
-    :root {
-	--color-bkgd: #2a2a2e;
-	--color-default-text: #f9f9fa;
-    }
-}
-
-
 body {
     margin: 16px;
     background-color: var(--color-bkgd);
