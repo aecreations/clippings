@@ -143,8 +143,8 @@ select:-moz-focusring {
     outline-style: none;
 }
 
-select:focus:not(:disabled),
-select.browser-style:focus:not(:disabled) {
+select:focus:not([size]):not(:disabled),
+select.browser-style:focus:not([size]):not(:disabled) {
     border-color: var(--color-bkgd) !important;
     box-shadow: 0 0 0 2px #61b5ffbf;
 }
