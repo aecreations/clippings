@@ -66,6 +66,10 @@ textarea {
     order: 1;
 }
 
+.folder-picker {
+    margin-top: 4px;
+}
+
 .folder-picker-menubtn {
     width: 100%;
     padding: 4px 4px 4px 28px;
@@ -88,6 +92,14 @@ textarea {
     background-image: var(--url-dropdown-arrow), var(--url-icon-synced-clippings-fldr);
     background-position: calc(100% - 4px) center, 8px;
     background-repeat: no-repeat;
+}
+
+.folder-picker-menubtn:-moz-focusring {
+    border-color: var(--color-bkgd) !important;
+    box-shadow: 0 0 0 2px #61b5ffbf;
+    outline-style: none;
+    transition-duration: 250ms;
+    transition-property: box-shadow;
 }
 
 .popup-bkgrd {
@@ -230,7 +242,7 @@ ul.fancytree-container {
 
 #new-folder-dlg {
     --width: 320px;
-    --height: 170px;
+    --height: 174px;
     top: 64px;
 }
 

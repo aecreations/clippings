@@ -13,18 +13,22 @@
 
   <body>
     <div id="content">
-      <label for="clipping-name" data-i18n="labelName"></label>
-      <br/>
-      <input type="text" id="clipping-name" size="50" />
-      <br/>
-      <label for="clipping-text" data-i18n="labelContent"></label>
-      <br/>
-      <textarea id="clipping-text"
-       placeholder="Enter clipping text" rows="8"></textarea>
-      <br/>
-      
-      <label data-i18n="labelCreateInFldr"></label>
-      <div class="hbox">
+      <div class="row">
+        <label for="clipping-name" data-i18n="labelName"></label>
+      </div>
+      <div class="row">
+        <input type="text" id="clipping-name" size="50" />
+      </div>
+      <div class="row">
+        <label for="clipping-text" data-i18n="labelContent"></label>
+      </div>
+      <div class="row">
+        <textarea id="clipping-text" placeholder="Enter clipping text" rows="8"></textarea>
+      </div>
+      <div class="row">
+        <label data-i18n="labelCreateInFldr"></label>
+      </div>
+      <div class="hbox folder-picker">
         <button id="new-clipping-fldr-picker-menubtn" class="folder-picker-menubtn" value="0"
 	 data-i18n="rootFldrName"></button>
         <button id="new-folder-btn"></button>
@@ -114,12 +118,20 @@
     <!-- Dialog boxes -->
     <div id="new-folder-dlg" class="lightbox">
       <div class="dlg-content">
-	<label for="new-fldr-name" data-i18n="labelNewFldrName"></label>
-	<input type="text" id="new-fldr-name"/>
-	<label id="new-folder-dlg-fldr-picker-label" for="new-folder-dlg-fldr-picker-mnubtn"
-	 data-i18n="labelCreateAsSubfOf"></label>
-	<button id="new-folder-dlg-fldr-picker-mnubtn" class="folder-picker-menubtn" value="0"
-         data-i18n="rootFldrName"></button>
+        <div class="row">
+	  <label for="new-fldr-name" data-i18n="labelNewFldrName"></label>
+        </div>
+        <div class="row">
+	  <input type="text" id="new-fldr-name"/>
+	</div>
+	<div class="row">
+	  <label id="new-folder-dlg-fldr-picker-label" for="new-folder-dlg-fldr-picker-mnubtn"
+	   data-i18n="labelCreateAsSubfOf"></label>
+        </div>
+        <div class="folder-picker">
+	  <button id="new-folder-dlg-fldr-picker-mnubtn" class="folder-picker-menubtn" value="0"
+           data-i18n="rootFldrName"></button>
+        </div>
 	<div id="new-folder-dlg-fldr-tree-popup" class="folder-tree-popup">
 	  <div id="new-folder-dlg-fldr-tree" class="folder-tree"></div>
         </div>

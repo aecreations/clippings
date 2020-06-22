@@ -1566,9 +1566,9 @@ function openClippingsManager(aBackupMode)
 function openNewClippingDlg()
 {
   let url = chrome.runtime.getURL("pages/new.html");
-  let height = 386;
+  let height = 390;
   if (gOS == "win") {
-    height = 422;
+    height = 426;
   }
   openDlgWnd(url, "newClipping", { type: "detached_panel", width: 428, height });
 }
