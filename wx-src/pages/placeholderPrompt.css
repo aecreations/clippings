@@ -24,6 +24,12 @@ body {
     color: var(--color-default-text);
 }
 
+select:focus:not([size]):not(:disabled),
+select.browser-style:focus:not([size]):not(:disabled) {
+    border-color: var(--color-bkgd) !important;
+    box-shadow: 0 0 0 2px #61b5ffbf;
+}
+
 #plchldr-single,
 #plchldr-multi {
     display: none;
