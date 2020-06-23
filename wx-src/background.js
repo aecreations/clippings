@@ -1568,7 +1568,7 @@ function openNewClippingDlg()
   let url = chrome.runtime.getURL("pages/new.html");
   let height = 390;
   if (gOS == "win") {
-    height = 426;
+    height = 420;
   }
   openDlgWnd(url, "newClipping", { type: "detached_panel", width: 428, height });
 }
@@ -1596,7 +1596,7 @@ function openPlaceholderPromptDlg()
 function openBackupDlg()
 {
   let url = browser.runtime.getURL("pages/backup.html");
-  openDlgWnd(url, "backupFirstRun", { type: "detached_panel", width: 590, height: 396 });
+  openDlgWnd(url, "backupFirstRun", { type: "detached_panel", width: 590, height: 400 });
 }
 
 
