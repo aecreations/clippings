@@ -58,6 +58,8 @@
     --color-dlg-fieldset-border: #b1b1b1;
 
     --url-contextmenu-checked-img: url("../img/checked.svg");
+    --url-toolbar-btn-img-newClipping: url("../img/newClipping.svg");
+    --url-toolbar-btn-img-newFolder: url("../img/newFolder.svg");
     --url-toolbar-btn-img-undo: url("../img/undo.svg");
     --url-toolbar-btn-img-undo-hover: url("../img/undo_hover.svg");
     --url-toolbar-btn-img-undo-active: url("../img/undo_hover.svg");
@@ -75,10 +77,10 @@
     --url-toolbar-btn-img-cancel: url("../img/cancel.svg");
     --url-toolbar-btn-img-cancel-hover: url("../img/cancel_hover.svg");
     --url-toolbar-btn-img-cancel-active: url("../img/cancel_active.svg");
-    --url-toolbar-btn-img-customplchldr: url("../img/customPlchldr.svg");
-    --url-toolbar-btn-img-customplchldr-hover: url("../img/customPlchldr_hover.svg");
-    --url-toolbar-btn-img-autoincplchldr: url("../img/numericPlchldr.svg");
-    --url-toolbar-btn-img-autoincplchldr-hover: url("../img/numericPlchldr_hover.svg");
+    --url-toolbar-btn-img-customPlchldr: url("../img/customPlchldr.svg");
+    --url-toolbar-btn-img-customPlchldr-hover: url("../img/customPlchldr_hover.svg");
+    --url-toolbar-btn-img-autoIncPlchldr: url("../img/numericPlchldr.svg");
+    --url-toolbar-btn-img-autoIncPlchldr-hover: url("../img/numericPlchldr_hover.svg");
     --url-icon-synced-clippings-fldr: url("../img/synced-clippings.svg");
 }
 
@@ -127,6 +129,8 @@
 	--color-dlg-fieldset-border: #585858;
 
 	--url-contextmenu-checked-img: url("../img/checked-dk.svg");
+	--url-toolbar-btn-img-newClipping: url("../img/newClipping.svg");
+	--url-toolbar-btn-img-newFolder: url("../img/newFolder.svg");
 	--url-toolbar-btn-img-undo: url("../img/undo_dk.svg");
 	--url-toolbar-btn-img-undo-hover: url("../img/undo_dk.svg");
 	--url-toolbar-btn-img-undo-active: url("../img/undo_hover.svg");
@@ -144,10 +148,10 @@
 	--url-toolbar-btn-img-cancel: url("../img/cancel_dk.svg");
 	--url-toolbar-btn-img-cancel-hover: url("../img/cancel_hover_dk.svg");
 	--url-toolbar-btn-img-cancel-active: url("../img/cancel_active_dk.svg");
-	--url-toolbar-btn-img-customplchldr: url("../img/customPlchldr_dk.svg");
-	--url-toolbar-btn-img-customplchldr-hover: url("../img/customPlchldr_dk.svg");
-	--url-toolbar-btn-img-autoincplchldr: url("../img/numericPlchldr_dk.svg");
-	--url-toolbar-btn-img-autoincplchldr-hover: url("../img/numericPlchldr_dk.svg");
+	--url-toolbar-btn-img-customPlchldr: url("../img/customPlchldr_dk.svg");
+	--url-toolbar-btn-img-customPlchldr-hover: url("../img/customPlchldr_dk.svg");
+	--url-toolbar-btn-img-autoIncPlchldr: url("../img/numericPlchldr_dk.svg");
+	--url-toolbar-btn-img-autoIncPlchldr-hover: url("../img/numericPlchldr_dk.svg");
 	--url-icon-synced-clippings-fldr: url("../img/synced-clippings-dk.svg");
     }
 }
@@ -289,7 +293,7 @@ input[type="checkbox"] + label {
 
 #toolbar > #new-clipping {
     order: 1;
-    background-image: url("../img/newClipping.svg");
+    background-image: var(--url-toolbar-btn-img-newClipping);
 }
 
 #toolbar > #new-clipping:hover {
@@ -298,7 +302,7 @@ input[type="checkbox"] + label {
 
 #toolbar > #new-folder {
     order: 2;
-    background-image: url("../img/newFolder.svg");
+    background-image: var(--url-toolbar-btn-img-newFolder);
 }
 
 #toolbar > #new-folder:hover {
@@ -662,11 +666,11 @@ ul.fancytree-container {
 }
 
 #item-properties > #placeholder-toolbar > #custom-plchldr {
-    background-image: var(--url-toolbar-btn-img-customplchldr);
+    background-image: var(--url-toolbar-btn-img-customPlchldr);
 }
 
 #item-properties > #placeholder-toolbar > #custom-plchldr:hover {
-    background-image: var(--url-toolbar-btn-img-customplchldr-hover);
+    background-image: var(--url-toolbar-btn-img-customPlchldr-hover);
 }
 
 #item-properties > #placeholder-toolbar > #custom-plchldr:active {
@@ -674,11 +678,11 @@ ul.fancytree-container {
 }
 
 #item-properties > #placeholder-toolbar > #auto-incr-plchldr {
-    background-image: var(--url-toolbar-btn-img-autoincplchldr);
+    background-image: var(--url-toolbar-btn-img-autoIncPlchldr);
 }
 
 #item-properties > #placeholder-toolbar > #auto-incr-plchldr:hover {
-    background-image: var(--url-toolbar-btn-img-autoincplchldr-hover);
+    background-image: var(--url-toolbar-btn-img-autoIncPlchldr-hover);
 }
 
 #item-properties > #placeholder-toolbar > #auto-incr-plchldr:active {
