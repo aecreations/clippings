@@ -12,8 +12,8 @@ body {
 }
 
 button {
-    min-width: 88px;
-    min-height: 28px;
+    min-width: 96px;
+    min-height: 32px;
     font-size: 15px !important;
     text-align: center !important;
 }
