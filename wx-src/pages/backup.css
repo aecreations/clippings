@@ -21,6 +21,7 @@ fieldset {
 }
 
 fieldset > legend {
+    margin-left: -12px;
     font-size: 15px;
 }
 
@@ -72,5 +73,6 @@ select.browser-style {
 
 #dlg-buttons > button {
     min-width: 96px;
+    height: 32px;
     font-size: 15px !important;
 }

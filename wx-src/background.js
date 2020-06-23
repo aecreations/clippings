@@ -1596,7 +1596,7 @@ function openPlaceholderPromptDlg()
 function openBackupDlg()
 {
   let url = browser.runtime.getURL("pages/backup.html");
-  openDlgWnd(url, "backupFirstRun", { type: "detached_panel", width: 590, height: 400 });
+  openDlgWnd(url, "backupFirstRun", { type: "detached_panel", width: 590, height: 410 });
 }
 
 
