@@ -94,14 +94,6 @@ textarea {
     background-repeat: no-repeat;
 }
 
-.folder-picker-menubtn:-moz-focusring {
-    border-color: var(--color-bkgd) !important;
-    box-shadow: 0 0 0 2px #61b5ffbf;
-    outline-style: none;
-    transition-duration: 250ms;
-    transition-property: box-shadow;
-}
-
 .popup-bkgrd {
     display: none;
     position: absolute;
