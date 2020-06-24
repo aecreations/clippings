@@ -17,6 +17,7 @@
 
     --color-bkgd: white;
     --color-default-text: black;
+    --color-disabled-text: rgba(0, 0, 0, 0.40);
     --color-textbox-bkgd: -moz-field;
     --color-listbox-bkgd: #fff;
     --color-not-synced-items-text: rgba(0, 0, 0, 0.4);
@@ -88,6 +89,7 @@
     :root {
 	--color-bkgd: #2a2a2e;
 	--color-default-text: #f9f9fa;
+	--color-disabled-text: rgba(249, 249, 250, 0.4);
 	--color-textbox-bkgd: #0c0c0d;
 	--color-listbox-bkgd: #202023;
 	--color-not-synced-items-text: rgba(180, 180, 180, 0.4);
@@ -1231,7 +1233,7 @@ ul.fancytree-container {
 }
 
 #export-dlg #include-src-urls[disabled] + label {
-    color: rgba(0, 0, 0, 0.40);
+    color: var(--color-disabled-text);
 }
 
 #import-confirm-msgbox > .msgbox-icon,
