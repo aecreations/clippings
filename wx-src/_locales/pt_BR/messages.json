@@ -46,6 +46,14 @@
   "btnBrowse": {
     "message": "Explorar..."
   },
+  "pasteTitle": {
+    "message": "Colar Clipping",
+    "description": "Title bar text of keyboard paste dialog"
+  },
+  "msgTitle": {
+    "message": "Alerta",
+    "description": "Title bar text of alert dialog"
+  },
   "msgUnavail": {
     "message": "A ação selecionada não está disponível agora."
   },
@@ -694,6 +702,10 @@
   "backupRemFreqMonthly": {
     "message": "30",
     "description": "Number of days between backup reminders: once a month (every 30 days)"
+  },
+  "firstBackupTitle": {
+    "message": "Backup",
+    "description": "Title bar text for first-time backup dialog"
   },
   "backupNotifyTitle": {
     "message": "Fazer Backup de seus Clippings"
