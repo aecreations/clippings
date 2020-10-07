@@ -468,7 +468,7 @@ progress {
 #about-dlg {
     top: 72px;
     --width: 410px;
-    --height: 298px;
+    --height: 314px;
 }
 
 #about-dlg #ext-icon {
@@ -518,6 +518,14 @@ progress {
 
 #about-dlg #credits label {
     line-height: 18px;
+}
+
+#about-dlg #usr-contrib-cta {
+    margin-top: 8px;
+}
+
+#about-dlg #usr-contrib-cta-hdg {
+    font-weight: 600;
 }
 
 #about-dlg #diag-info {

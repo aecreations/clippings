@@ -76,4 +76,7 @@ let aeConst = {
   // Errors returned by the native messaging app
   SYNC_ERROR_UNKNOWN: "Error: undefined",
   SYNC_ERROR_CONXN_FAILED: "Error: Attempt to postMessage on disconnected port",
+
+  DONATE_URL: "https://www.paypal.com/paypalme/aecreations88/11.99cad",
+  L10N_URL: "https://crowdin.com/project/clippings"
 };

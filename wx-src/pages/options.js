@@ -6,7 +6,6 @@
 let gClippings;
 let gDialogs = {};
 let gIsActivatingSyncClippings = false;
-let gExtInfo = null;
 
 
 // DOM utility
@@ -73,6 +72,12 @@ function init()
   $("#about-btn").click(aEvent => {
     gDialogs.about.showModal();
   });
+
+  let usrContribCTA = $("#usr-contrib-cta");
+  usrContribCTA.append(sanitizeHTML(`<label id="usr-contrib-cta-hdg">${browser.i18n.getMessage("aboutContribHdg")}</label>&nbsp;`));
+  usrContribCTA.append(sanitizeHTML(`<a href="${aeConst.DONATE_URL}" class="hyperlink">${browser.i18n.getMessage("aboutDonate")}</a>&nbsp;`));
+  usrContribCTA.append(sanitizeHTML(`<label id="usr-contrib-cta-conj">${browser.i18n.getMessage("aboutContribConj")}</label>`));
+  usrContribCTA.append(sanitizeHTML(`<a href="${aeConst.L10N_URL}" class="hyperlink">${browser.i18n.getMessage("aboutL10n")}</a>`));
   
   // Handling keyboard events in open modal dialogs.
   $(window).keydown(aEvent => {
@@ -516,25 +521,29 @@ function initDialogs()
   };
 
   gDialogs.about = new aeDialog("#about-dlg");
+  gDialogs.about.extInfo = null;
   gDialogs.about.onInit = () => {
+    let that = gDialogs.about;
+    
     let diagDeck = $("#about-dlg > .dlg-content #diag-info .deck");
     diagDeck.children("#sync-diag-loading").show();
     diagDeck.children("#sync-diag").hide();
     $("#about-dlg > .dlg-content #diag-info #sync-diag-detail").hide();
     $("#about-dlg > .dlg-content #diag-info #sync-file-size").text("");
 
-    if (! gExtInfo) {
+    if (! that.extInfo) {
       let extManifest = chrome.runtime.getManifest();
-      gExtInfo = {
+      that.extInfo = {
         name: extManifest.name,
         version: extManifest.version,
         description: extManifest.description,
+        homePgURL: extManifest.homepage_url,
       };
     }
 
-    $("#about-dlg > .dlg-content #ext-name").text(gExtInfo.name);
-    $("#about-dlg > .dlg-content #ext-ver").text(chrome.i18n.getMessage("aboutExtVer", gExtInfo.version));
-    $("#about-dlg > .dlg-content #ext-desc").text(gExtInfo.description);
+    $("#about-dlg > .dlg-content #ext-name").text(that.extInfo.name);
+    $("#about-dlg > .dlg-content #ext-ver").text(chrome.i18n.getMessage("aboutExtVer", that.extInfo.version));
+    $("#about-dlg > .dlg-content #ext-desc").text(that.extInfo.description);
   };
   gDialogs.about.onShow = () => {
     let msg = { msgID: "get-app-version" };
