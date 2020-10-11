@@ -173,6 +173,11 @@ body {
     background-color: var(--color-toolbarbtn-close-active-bkgd);
 }
 
+/* Used for the Close button on the shortcut key help toolbar. */
+button.browser-style:focus:not(:disabled) {
+    border-color: var(--color-bkgd) !important;
+}
+
 #shortcut-list-content {
     margin-left: -16px;
     margin-right: -16px;
