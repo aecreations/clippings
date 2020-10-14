@@ -1,7 +1,7 @@
 {
   "extName": {
     "message": "Clippings",
-    "description": "Name of the extension"
+    "description": "Name of the extension - do NOT translate"
   },
   "extDesc": {
     "message": "Guardar el texto frecuente para pegar posteriormente.",
@@ -12,8 +12,8 @@
     "description": "Toolbar button label"
   },
   "cmdDesc": {
-    "message": "Pegar usando la tecla de acceso rápido",
-    "description": "Shortcut key command description"
+    "message": "Pegar clipping con atajo",
+    "description": "Keyboard shortcut description in Manage Extension Shortcuts"
   },
   "hostAppFx": {
     "message": "Firefox"
@@ -40,8 +40,19 @@
   "btnNo": {
     "message": "No"
   },
+  "btnDone": {
+    "message": "Hecho"
+  },
   "btnBrowse": {
     "message": "Explorar..."
+  },
+  "pasteTitle": {
+    "message": "Pegar Clipping",
+    "description": "Title bar text of keyboard paste dialog"
+  },
+  "msgTitle": {
+    "message": "Alerta",
+    "description": "Title bar text of alert dialog"
   },
   "msgUnavail": {
     "message": "La acción seleccionada no está disponible ahora mismo."
@@ -68,7 +79,8 @@
     "message": "No hay ayuda disponible (no, no es broma)."
   },
   "none": {
-    "message": "Ninguno"
+    "message": "Ninguno",
+    "description": "Denotes that there is no shortcut key, label or source web address (URL)."
   },
   "newClipping": {
     "message": "Nuevo recorte"
@@ -120,113 +132,35 @@
     "description": "Clippings browser action submenu"
   },
   "welcomePageTitle": {
-    "message": "Bienvenido a Clippings 6",
+    "message": "Bienvenido a Clippings",
     "description": "Welcome to Clippings (post-installation) page title"
   },
   "welcInstallSuccessHdg": {
-    "message": "¡Bienvenido a Clippings 6!"
+    "message": "¡Bienvenido a Clippings!"
   },
   "welcInstallSuccessSubh": {
     "message": "Instalación finalizada."
   },
-  "welcCurrUsrHdg": {
-    "message": "Usuarios actuales"
+  "welcWhatsNewHdg": {
+    "message": "Novedades"
   },
-  "welcCurrUsrDesc": {
-    "message": "Importa tus recortes desde una versión antigua de Clippings."
+  "welcWhatsNewDesc": {
+    "message": "Clippings 6.2 viene con varias mejoras y nuevas características, como el soporte para el Modo Oscuro."
   },
-  "welcCurrUsrCTA": {
-    "message": "Importar \"Mis recortes\""
+  "welcWhatsNewCTA": {
+    "message": "Más información"
   },
-  "welcNewUsrHdg": {
-    "message": "Nuevos usuarios"
+  "welcQuickStartHdg": {
+    "message": "Guía de inicio rápido"
   },
-  "welcNewUsrDesc": {
-    "message": "Da un vistazo rápido a las características básicas de Clippings."
+  "welcQuickStartDesc": {
+    "message": "Lectura recomendada para nuevos usuarios. Aprende las características esenciales de Clippings en pocos minutos."
   },
-  "welcNewUsrCTA": {
-    "message": "Guía de uso básico"
+  "welcQuickStartCTA": {
+    "message": "Lee la guía"
   },
   "closeWelcomePg": {
     "message": "Cerrar esta página"
-  },
-  "welcImportHdg": {
-    "message": "Importar backup de Clippings"
-  },
-  "welcImportDesc": {
-    "message": "Para iniciar haz click sobre \"Explorar\", después selecciona el fichero de recuperación."
-  },
-  "welcSkipImport": {
-    "message": "No importar"
-  },
-  "welcNoBackupExpand": {
-    "message": "Que hacer si no se ha creado el backup"
-  },
-  "welcNoBackupSubh": {
-    "message": "Si no has guardado tus recortes sigue los siguientes pasos:"
-  },
-  "welcFileMgrWindows": {
-    "message": "Windows Explorer",
-    "description": "File manager application on Windows, for locating Clippings backup folder"
-  },
-  "welcFileMgrMac": {
-    "message": "Finder",
-    "description": "File manager application on macOS, for locating Clippings backup folder"
-  },
-  "welcFileMgrGeneric": {
-    "message": "el explorador de archivos en tu sistema"
-  },
-  "welcShowBkupFileNote": {
-    "message": " (Puede que tengas que usar la linea de comandos para ver el directorio)",
-    "description": "Note to Linux and macOS users about showing hidden backup folder."
-  },
-  "welcNoBackupInstrxnStep1": {
-    "message": "Usa $1 para encontrar la localización de los datos de Clippings. Dependiendo de tu configuración puede que sea el directorio del perfil de Firefox u otro directorio en cualquier otro lugar."
-  },
-  "welcNoBackupInstrxnStep2": {
-    "message": "Abre el directorio donde están los datos y localiza el directorio de backups de Clippings. Debería llamarse \"clippings-backup\" o \".clipbak\".$1"
-  },
-  "welcNoBackupInstrxnStep3": {
-    "message": "Abre el directorio de backups y selecciona el fichero más reciente. Copialo a tu Escritorio o al directorio de Documentos."
-  },
-  "welcNoBackupInstrxnStep4": {
-    "message": "Pulsa \"Examinar\" y selecciona el fichero del backup."
-  },
-  "welcReadyImport": {
-    "message": "Cuando estés listo pulsa Importar para restaurar tus datos antiguos en Clippings 6."
-  },
-  "welcImportBtn": {
-    "message": "Importar"
-  },
-  "welcBack": {
-    "message": "Volver a la página de inicio"
-  },
-  "welcImportStatus": {
-    "message": "Importando recortes..."
-  },
-  "welcImportStatusDone": {
-    "message": "Importando recortes... ¡listo!"
-  },
-  "welcImportCount": {
-    "message": "$1 registros importados."
-  },
-  "welcImportConfirmDone": {
-    "message": "Tus recortes se han importado correctamente. Clippings ya está preparado para empezar."
-  },
-  "welcShctKeyNote": {
-    "message": "La tecla de pegar de Clippings <strong>ha cambiado<\/strong> en Clippings 6. Para pegar un recorte usando la tecla de pegado o buscar por nombre pulsa <span id=\"keybd-paste-key\">$1<\/span>."
-  },
-  "welcOpenClipMgr": {
-    "message": "Abrir gestor de recortes"
-  },
-  "welcImportError": {
-    "message": "Error leyendo el fichero. Puede que no sea un fichero de Clippings válido."
-  },
-  "welcImportRetry": {
-    "message": "Pulsa Volver a Intentar para seleccionar otro fichero de backup."
-  },
-  "welcImportRetryBtn": {
-    "message": "Volver a intentar"
   },
   "welcLeaveConfirm": {
     "message": "¿Estás seguro de que quieres salir de la página de Bienvenido a Clippings?"
@@ -234,33 +168,12 @@
   "welcCancelDlg": {
     "message": "Regresar"
   },
-  "welcImportLater": {
-    "message": "Puedes importar el backup más adelante abriendo el Gestor de recortes y seleccionando Herramientas->Importar."
-  },
-  "welcCantImportHdg": {
-    "message": "Clippings no puede importar el fichero porque la base de datos no es accesible."
-  },
-  "welcCantImportCause": {
-    "message": "Esto puede ocurrir si la configuración de privacidad en Firefox es demasiado restrictiva (por ejemplo, el modo de navegación privada).  Esta configuración puede interferir con WebExtensions como recortes."
-  },
-  "welcCantImportFix": {
-    "message": "Asegúrese de que configuración de privacidad del navegador está con los valores predeterminados, entonces reinicie Firefox y vuelva a intentarlo. Si esto no lo soluciona, siga estos pasos:"
-  },
-  "welcCantImportFixStep1": {
-    "message": "Abra el menú Firefox y selecciona ayuda → información de solución de problemas."
-  },
-  "welcCantImportFixStep2": {
-    "message": "Haga clic en actualizar Firefox, luego siga las instrucciones. Firefox se reiniciará."
-  },
-  "welcCantImportFixStep3": {
-    "message": "Reinstale Clippings y luego intente importar el archivo de backup otra vez."
-  },
   "newClippingDlgTitle": {
     "message": "Nuevo recorte",
     "description": "New Clipping dialog"
   },
   "labelName": {
-    "message": "Nombre:"
+    "message": "Nombre del nuevo clipping:"
   },
   "labelContent": {
     "message": "Texto:"
@@ -319,7 +232,8 @@
     "message": "Buscar recorte por nombre:"
   },
   "numMatches": {
-    "message": "$1 coincidencia(s)"
+    "message": "$1 coincidencia(s)",
+    "description": "Status bar message in Clippings Manager showing the number of matches for the search query."
   },
   "insClipping": {
     "message": "Insertar recorte"
@@ -337,6 +251,9 @@
   },
   "expHTMLShctKeyInstrxn": {
     "message": "Para pegar un recorte en un cuadro de texto pulsa ALT+SHIFT+Y (Command+Shift+Y en macOS) y después la tecla de acceso directo."
+  },
+  "expHTMLShctKeyCustNote": {
+    "message": "NOTA: El prefijo del atajo de teclado (por defecto es ALT+SHIFT+Y o Comando+SHIFT+Y) puede varias dependiendo de tu configuración de Clippings."
   },
   "expHTMLShctKeyCol": {
     "message": "Tecla de acceso rápido"
@@ -387,18 +304,24 @@
   "clipMgrIntroKeybHdg": {
     "message": "Atajos de teclado"
   },
+  "clipMgrShowOnlySyncItemsRem": {
+    "message": "Clippings sólo mostrará los elementos sincronizados en su menú de Clippings. Todavía puede añadir y administrar elementos fuera de la carpeta de Clippings sincronizados, pero ellos no aparecerán en el menú de Clippings. Esta opción puede ser modificada en preferencias."
+  },
   "labelInsPlchldr": {
     "message": "Añadir marcador:",
     "description": "Clippings Manager - Placeholder Toolbar"
   },
   "tbPlchldrPresets": {
-    "message": "Preajustes"
+    "message": "Preajustes",
+    "description": "Clippings Manager - Placeholder Toolbar button"
   },
   "tbPlchldrCustom": {
-    "message": "Personalizar"
+    "message": "Personalizar",
+    "description": "Clippings Manager - Placeholder Toolbar button"
   },
   "tbPlchldrNumeric": {
-    "message": "Numérico"
+    "message": "Numérico",
+    "description": "Clippings Manager - Placeholder Toolbar button"
   },
   "labelSrcURL": {
     "message": "Dirección de origen:"
@@ -421,11 +344,14 @@
   "mnuExport": {
     "message": "Exportar..."
   },
+  "mnuReloadSyncFldr": {
+    "message": "Recargar"
+  },
   "mnuRemoveAllSrcURLs": {
     "message": "Eliminar dirección web..."
   },
   "mnuShowHide": {
-    "message": "Mostrar\/Ocultar"
+    "message": "Mostrar/Ocultar"
   },
   "mnuShowHideDetails": {
     "message": "Panel de detalles"
@@ -478,6 +404,10 @@
     "message": "Nombre de la carpeta superior",
     "description": "Clippings Manager - preset (built-in) placeholder menu"
   },
+  "mnuPlchldrFmtDateTime": {
+    "message": "Formateado el fecha/hora...",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
   "clipMgrNameHint": {
     "message": "Nombre del recorte",
     "description": "Clippings Manager - clipping name textbox hint text"
@@ -520,14 +450,22 @@
     "message": "Maximizar ventana",
     "description": "Clippings Manager intro - key binding description"
   },
+  "clipMgrIntroCmdRedo": {
+    "message": "Rehacer",
+    "description": "Clippings Manager intro - key binding description"
+  },
   "clipMgrStatusBar": {
-    "message": "$1 elementos"
+    "message": "$1 elementos",
+    "description": "Status bar text in Clippings Manager, counting the number of clippings and folders"
   },
   "clipMgrRemoveSrcURLsConfirm": {
     "message": "Eliminar las direcciones web de sus recortes."
   },
   "clipMgrNoUndo": {
     "message": "Nada que deshacer"
+  },
+  "clipMgrNoRedo": {
+    "message": "Nada que rehacer"
   },
   "clipMgrShortcutKeyHelpHdg": {
     "message": "Teclas de acceso rápido de Clippings"
@@ -550,6 +488,9 @@
   "clipMgrExportConfirm": {
     "message": "La importación de \"$1\" se ha completado."
   },
+  "clipMgrBackupConfirm": {
+    "message": "El respaldo a \"$1\" se completó exitosamente."
+  },
   "clipMgrWarnRemoveSrcURLs": {
     "message": "Todas las direcciones web de los recortes serán eliminadas. ¿Quieres continuar?"
   },
@@ -570,6 +511,9 @@
   },
   "numPlchldrDesc": {
     "message": "Cada vez que se pega un recorte el valor de su marcador se incrementa en uno hasta que el marcador es reseteado desde el menú contextual de la barra de herramientas de Clippings."
+  },
+  "dateTimeFmts": {
+    "message": "Formatos de fecha/hora disponibles:"
   },
   "labelSelImportFile": {
     "message": "Seleccionar fichero a importar:"
@@ -622,6 +566,12 @@
   "expFmtHTMLDocDesc": {
     "message": "Exporta los datos de Clippings como un documento HTML para imprimir o ver en un explorador web."
   },
+  "expFmtCSV": {
+    "message": "Archivo CSV"
+  },
+  "expFmtCSVDesc": {
+    "message": "Utilice el formato de Valores Separados por Comas (CSV) para intercambiar datos de Clippings con otras aplicaciones. Sólo son exportados los nombres y contenidos de los clippings."
+  },
   "cbExpInclSrcURLs": {
     "message": "Incluir las direcciones origen de los recortes"
   },
@@ -655,6 +605,14 @@
   "cbCreateCopy": {
     "message": "Crear una copia"
   },
+  "errMoveToSameParent": {
+    "message": "El elemento ya existe en la carpeta seleccionada.",
+    "description": "Error message when attempting to move clipping/folder to the same parent folder"
+  },
+  "errMoveToSubfldr": {
+    "message": "No puede copiar o mover hacia la carpeta seleccionada.",
+    "description": "Error message when attempting to move or copy a folder into a subfolder of itself"
+  },
   "btnMove": {
     "message": "Mover"
   },
@@ -663,6 +621,9 @@
   },
   "prefsTitle": {
     "message": "Opciones de Clippings"
+  },
+  "errPrefPgFailed": {
+    "message": "No se puede cargar la página de preferencias de la extensión. Reinicie Firefox e inténtelo nuevamente."
   },
   "prefsHdgPasteOptions": {
     "message": "Opciones de pegado"
@@ -682,6 +643,15 @@
   "htmlPasteDesc": {
     "message": "Un recorte con formato HTML siempre se pegará como texto sin formato si se pega en un cuadro de texto simple o si el recorte contiene etiquetas restringidos tales como <script>, <applet>, <object>, <iframe>, etcetera."
   },
+  "prefsShortcutMode": {
+    "message": "Active los atajos de teclado con la siguiente combinación de teclas:"
+  },
+  "prefsShortcutKeyNote": {
+    "message": "Algunos de los atajos de teclado disponibles podrían ya estar asignados a <a href=\"https://support.mozilla.org/en-US/kb/keyboard-shortcuts-perform-firefox-tasks-quickly\" class=\"hyperlink\">comandos de Firefox</a> u otros complementos."
+  },
+  "prefsOutsideShct": {
+    "message": "Para cambiar el atajo de teclado, vaya a Gestionar atajos de extensiones en el Administrador de complementos."
+  },
   "prefsDefaultNumPlchldrStart": {
     "message": "Valor inicial para marcadores autoincrementales:"
   },
@@ -694,19 +664,287 @@
   "cbCheckSpelling": {
     "message": "Comprobar ortografía"
   },
+  "cbBackupFilenameWithDate": {
+    "message": "Agregar fecha al nombre de la copia de seguridad"
+  },
+  "backupRemind": {
+    "message": "Mostrar recordatorio de respaldo cada",
+    "description": "Label for checkbox option for setting backup notification, appears after checkbox and before the reminder frequency drop-down menu"
+  },
+  "backupRemDays": {
+    "message": "días",
+    "description": "Label appearing after the drop-down menu for backup reminder frequency"
+  },
+  "backupRemFreqDaily": {
+    "message": "1",
+    "description": "Number of days between backup reminders: once a day"
+  },
+  "backupRemFreqTwoDays": {
+    "message": "2",
+    "description": "Number of days between backup reminders: once every 2 days"
+  },
+  "backupRemFreqThreeDays": {
+    "message": "3",
+    "description": "Number of days between backup reminders: once every 3 days"
+  },
+  "backupRemFreqFiveDays": {
+    "message": "5",
+    "description": "Number of days between backup reminders: once every 5 days"
+  },
+  "backupRemFreqWeekly": {
+    "message": "7",
+    "description": "Number of days between backup reminders: once a week (every 7 days)"
+  },
+  "backupRemFreqTwoWeeks": {
+    "message": "14",
+    "description": "Number of days between backup reminders: once every 2 weeks (every 14 days)"
+  },
+  "backupRemFreqMonthly": {
+    "message": "30",
+    "description": "Number of days between backup reminders: once a month (every 30 days)"
+  },
+  "firstBackupTitle": {
+    "message": "Respaldar con copia de seguridad",
+    "description": "Title bar text for first-time backup dialog"
+  },
+  "backupNotifyTitle": {
+    "message": "Respalda tus clippings"
+  },
+  "backupNotifyMsg": {
+    "message": "Es hora de respaldar tus clippings. Haz clic aquí para hacer una copia de seguridad."
+  },
+  "backupNotifyFirstMsg": {
+    "message": "Mantén tus clippings a salvo respaldándolos regularmente. Haz clic aquí para hacer copias de seguridad y configurar recordatorios de respaldo."
+  },
+  "backupFirstDesc": {
+    "message": "Mantén tus clippings a salvo respaldándolos regularmente. Tómate un momento para respaldarlos seleccionando Respaldar ahora."
+  },
+  "backupNow": {
+    "message": "Respaldar ahora"
+  },
+  "backupHint": {
+    "message": "También puede respaldar sus clippings en cualquier momento desde el Gestor de Clippings. Sólo abra Gestor de Cecortes, y seleccione Herramientas → Respaldar con copia de seguridad."
+  },
+  "backupPrefsHdg": {
+    "message": "Configurar recordatorio de respaldo"
+  },
+  "backupPrefsHint": {
+    "message": "Esta configuración también puede modificarse en preferencias de Clippings."
+  },
+  "syncFldrName": {
+    "message": "Clippings sincronizados",
+    "description": "The name of the folder containing the user's synchronized clippings."
+  },
+  "syncClippings": {
+    "message": "Sincronización de Clippings",
+    "description": "The name of the feature for synchronizing clippings between applications or computers."
+  },
+  "syncIntro": {
+    "message": "Puede sincronizar sus clippings con Thunderbird u otras instalaciones de Firefox colocando los clippings que desea compartir en una carpeta especial de “Clippings sincronizados”. Los clippings sincronizados se guardarán en un archivo de su sistema. Requiere la aplicación de ayuda de <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">Sincronización de Clippings</a>."
+  },
+  "syncLearnMore": {
+    "message": "Aprenda más sobre Sincronización de Clippings."
+  },
+  "syncHelp": {
+    "message": "<p class=\"dlg-subhead\">Sincronización de Clippings.</p><p>Sincronización de Clippings te permite sincronizar un conjunto de tus clippings entre Firefox y Thunderbird, para que aparezcan en ambas aplicaciones. Puede elegir qué recortes desea sincronizar creándolos en una carpeta especial \"Clippings sincronizados\" en el cuadro de diálogo Nuevo clipping, o moviéndolos a la misma carpeta en el Administrador de Clippings.</p><p>La carpeta de Clippings sincronizados será creada automáticamente al configurar la Sincronización de Clippings.</p><p class=\"dlg-subhead\">Configuración</p><p>La Sincronización de Clippings debe estar activada en las aplicaciones con las que desea sincronizar sus recortes. Sincronización de Clippings es compatible con Firefox 60 y posteriores, y Thunderbird 60 y posteriores (con Clippings para Thunderbird 5.6 o posteriores instaladas).</p><p> Además, la aplicación de ayuda Sincronización de Clippings debe estar instalada en su sistema para mantener el contenido de la carpeta \"Clippings sincronizados\" actualizado. Está disponible para descargar desde el <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">sitio web de AE Creations</a>. Una vez instalada, se ejecutará automáticamente cuando inicie Firefox y mantendrá su ejecución en segundo plano.</p><p>En Firefox, active Sincronización de Clippings en la página de preferencias de Clippings presionando <b>Activar sincronización</b>. Se le pedirá que elija una ubicación en su sistema donde se guardarán los datos de los clippings sincronizados, si aún no ha sido configurada.</p>"
+  },
+  "syncStatusOn": {
+    "message": "Sincronización de Clippings está activada."
+  },
+  "syncStatusOff": {
+    "message": "Sincronización de Clippings está desactivada."
+  },
+  "syncSettings": {
+    "message": "Ajustes…"
+  },
+  "syncTurnOn": {
+    "message": "Activar sincronización"
+  },
+  "syncTurnOff": {
+    "message": "Desactivar sincronización"
+  },
+  "syncTurnOffConf": {
+    "message": "¿Estás seguro de querer desactivar Sincronización de Clippings?"
+  },
+  "syncTurnOffAck": {
+    "message": "Sincronización de Clippings está desactivada."
+  },
+  "syncTurnOffRmFldr": {
+    "message": "Eliminar carpeta de Clippings sincronizados del menú de Clippings y del Administrador de Clippings"
+  },
+  "syncConnect": {
+    "message": "Conectando con la aplicación de ayuda de Sincronización de Clippings..."
+  },
+  "syncFileDir": {
+    "message": "Ubicación del archivo sincronizado:"
+  },
+  "syncFileDirExample": {
+    "message": "Por ejemplo:"
+  },
+  "syncFileDirExWin": {
+    "message": "C:\\Usuarios\\TuNombre\\Documentos\\Clippings sincronizados",
+    "description": "Example folder path on Windows."
+  },
+  "syncFileDirExMac": {
+    "message": "/Usuarios/TuNombre/Documentos/Clippings sincronizados",
+    "description": "Example folder path on macOS."
+  },
+  "syncFileDirExLinux": {
+    "message": "/home/TuNombre/clippings-sincronizados",
+    "description": "Example folder path on Linux."
+  },
+  "syncFileDirDesc": {
+    "message": "Tus datos de Sincronización de Clippings se almacenan en esta ubicación. Si los estás sincronizando con Thunderbird y quieres cambiar la ubicación del archivo de sincronización también debes cambiar la ubicación del archivo de en las preferencias de Clippings en Thunderbird para que coincidan."
+  },
+  "errSyncConxn": {
+    "message": "No se puede conectar con la aplicación de ayuda de Sincronización de Clippings. Asegúrese de que la aplicación está instalada."
+  },
+  "errSyncConxnDetail": {
+    "message": "La aplicación de ayuda de Sincronización de Clippings es necesaria para realizar la sincronización. Puedes descargarla desde el <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">sitio web de AE Creations</a>."
+  },
+  "errSyncOptsInit": {
+    "message": "No se puede iniciar la configuración de Sincronización de Clippings. Reinicie Firefox e inténtelo de nuevo."
+  },
+  "errSync": {
+    "message": "Se ha producido un error con la aplicación de ayuda de Sincronización de Clippings."
+  },
+  "errNoDetails": {
+    "message": "Lo sentimos, no hay más información disponible sobre este error."
+  },
+  "syncReloadAck": {
+    "message": "Actualizando la carpeta de Sincronización de Clippings. Haga clic en Volver a cargar para continuar."
+  },
+  "deleteSyncFldr": {
+    "message": "No se puede eliminar la carpeta Recortes sincronizados, porque Sincronización de Clippings está activada."
+  },
+  "moveSyncFldr": {
+    "message": "No se puede mover la carpeta de Clippings sincronizados."
+  },
+  "syncPushFailed": {
+    "message": "No se pueden hacer cambios a la carpeta de Clippings sincronizados, porque la conexión a la aplicación de ayuda de Sincronización de Clippings ha fallado. Para arreglar esto, reinstale la aplicación de ayuda de Sincronizacións Clippings."
+  },
+  "syncStartupFailedHdg": {
+    "message": "Error en Sincronización de Clippings"
+  },
+  "syncStartupFailed": {
+    "message": "No se pudo conectar con la aplicación de ayuda de Sincronización de Clippings. Para solucionarlo, reinstala la aplicación de ayuda de Sincronización de Clippings."
+  },
+  "syncUpdateTitle": {
+    "message": "Nueva versión del ayudante de Sincronización de Clippings"
+  },
+  "syncUpdateMsg": {
+    "message": "Una nueva versión de la aplicación de ayuda de Sincronización de Clippings se encuentra disponible. Presione aquí para dirigirse a la página de descarga."
+  },
+  "syncOptsHdg": {
+    "message": "Opciones"
+  },
+  "syncUpdateChkOpt": {
+    "message": "Comprobar automáticamente las actualizaciones del ayudante de Sincronización de Clippings"
+  },
+  "cxtMnuSyncItemsOnly": {
+    "message": "Mostrar sólo elementos sincronizados en el menú Clippings"
+  },
+  "aboutBtn": {
+    "message": "Acerca de…"
+  },
+  "aboutExtVer": {
+    "message": "versión $1",
+    "description": "Extension version number"
+  },
+  "aboutAuthor": {
+    "message": "Creado por AE Creations."
+  },
+  "aboutHomePgLink": {
+    "message": "Visita la página de inicio"
+  },
+  "aboutLicLink": {
+    "message": "Información de la licencia"
+  },
+  "aboutTrans": {
+    "message": "Traducciones aportadas por traductores de Crowdin."
+  },
+  "aboutContribHdg": {
+    "message": "¿Desea colaborar?",
+    "description": "About dialog text for encouraging users to donate or help with translation"
+  },
+  "aboutDonate": {
+    "message": "Hacer una donación"
+  },
+  "aboutContribConj": {
+    "message": "o",
+    "description": "Conjunction connecting the CTA hyperlinks for donating or supplying a translation"
+  },
+  "aboutL10n": {
+    "message": "agregar una traducción."
+  },
+  "aboutSyncVerLabel": {
+    "message": "Versión de la aplicación de ayuda de Sincronización de Clippings:"
+  },
+  "noSyncHelperApp": {
+    "message": "No instalada",
+    "description": "Appears when the Sync Clippings helper app is not detected on the system"
+  },
+  "aboutSyncFileSize": {
+    "message": "Tamaño del archivo sincronizado:"
+  },
   "keyAlt": {
     "message": "ALT"
+  },
+  "keyOption": {
+    "message": "⌥"
   },
   "keyCtrl": {
     "message": "CTRL"
   },
+  "keyMacCtrl": {
+    "message": "⌃"
+  },
+  "keyCommand": {
+    "message": "⌘"
+  },
   "keyShift": {
-    "message": "SHIFT\/MAYÚS"
+    "message": "SHIFT/MAYÚS"
+  },
+  "keyMacShift": {
+    "message": "⇧"
   },
   "keyDel": {
     "message": "BORRAR"
   },
+  "keyMacDel": {
+    "message": "Eliminar ⌦"
+  },
   "keyEsc": {
     "message": "ESC"
+  },
+  "keySpace": {
+    "message": "Espacio"
+  },
+  "keyPageUp": {
+    "message": "Re Pág"
+  },
+  "keyPageDown": {
+    "message": "Av Pág"
+  },
+  "keyHome": {
+    "message": "Inicio"
+  },
+  "keyEnd": {
+    "message": "Fin"
+  },
+  "keyLeft": {
+    "message": "Izquierda"
+  },
+  "keyRight": {
+    "message": "Derecha"
+  },
+  "keyUp": {
+    "message": "Arriba"
+  },
+  "keyDown": {
+    "message": "Abajo"
+  },
+  "keyIns": {
+    "message": "Insertar"
   }
 }
