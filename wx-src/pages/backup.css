@@ -54,6 +54,10 @@ select.browser-style {
     margin-right: 4px;
 }
 
+#prefs-hint {
+    margin-top: 2px;
+}
+
 #dlg-buttons {
     right: 16px;
     z-index: 1;
