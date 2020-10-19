@@ -21,6 +21,11 @@ $(() => {
   gClippings.clearBackupNotificationInterval();
   gClippings.setBackupNotificationInterval();
 
+  let lang = browser.i18n.getUILanguage();
+  if (lang == "fr") {
+    $("#backup-hint").css({ letterSpacing: "-0.3px" });
+  }
+
   $("#backup-now").click(aEvent => {
     gClippings.openClippingsManager(true);
   });

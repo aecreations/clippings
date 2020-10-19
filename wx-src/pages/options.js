@@ -47,10 +47,17 @@ function init()
     $("#shortcut-key-prefix-modifiers").text(`${keyAlt} + ${keyShift} + `);
   }
 
-  // Fit text on one line for German locale.
-  if (chrome.i18n.getUILanguage() == "de" && os != "mac") {
-    $("#enable-shortcut-key-label").css({ letterSpacing: "-0.25px" });
-    $("#shortcut-key-prefix-modifiers").css({ letterSpacing: "-0.25px" });
+  // Fit text on one line for various locales.
+  if (os != "mac") {
+    let lang = chrome.i18n.getUILanguage();
+    if (lang == "de") {
+      $("#enable-shortcut-key-label").css({ fontSize: "13px", letterSpacing: "-0.25px" });
+      $("#shortcut-key-prefix-modifiers").css({ fontSize: "13px", letterSpacing: "-0.25px" });
+    }
+    else if (lang == "es-ES") {
+      $("#enable-shortcut-key-label").css({ fontSize: "13px", letterSpacing: "-0.35px" });
+      $("#shortcut-key-prefix-modifiers").css({ fontSize: "13px", letterSpacing: "-0.35px" });     
+    }
   }
   
   $("#sync-intro").html(sanitizeHTML(chrome.i18n.getMessage("syncIntro")));
@@ -339,6 +346,7 @@ function initDialogs()
     deckSyncError.hide();
     deckSyncSettings.hide();
 
+    let lang = chrome.i18n.getUILanguage();
     let msg = { msgID: "get-app-version" };
     let sendNativeMsg = browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
     sendNativeMsg.then(aResp => {
@@ -351,10 +359,8 @@ function initDialogs()
 
       gDialogs.syncClippings.oldShowSyncItemsOpt = $("#show-only-sync-items").prop("checked");
 
-      // Fit text on one line for German locale.
-      if (chrome.i18n.getUILanguage() == "de") {
-        $("#sync-helper-app-update-check + label").css({ letterSpacing: "-0.5px" });
-        $("#show-only-sync-items + label").css({ letterSpacing: "-0.5px" });
+      if (lang == "de") {
+        $("#sync-helper-app-update-check + label").css({ letterSpacing: "-0.45px" });
       }
 
       let msg = { msgID: "get-sync-dir" };
@@ -363,6 +369,11 @@ function initDialogs()
     }).then(aResp => {
       if (! gDialogs.syncClippings.isCanceled) {
         $("#sync-clippings-dlg").css({ height: "336px" });
+
+        if (lang == "es-ES") {
+          $("#sync-clippings-dlg").css({ width: "606px" });
+          $("#sync-helper-app-update-check + label").css({ letterSpacing: "-0.45px" });
+        }
       }
       $("#sync-clippings-dlg .dlg-accept").show();
       $("#sync-clippings-dlg .dlg-cancel").text(chrome.i18n.getMessage("btnCancel"));
@@ -503,9 +514,13 @@ function initDialogs()
   gDialogs.turnOffSyncAck = new aeDialog("#turn-off-sync-clippings-ack-dlg");
   gDialogs.turnOffSyncAck.oldSyncFldrID = null;
   gDialogs.turnOffSyncAck.onInit = () => {
-    // Fit text on one line for French locale.
-    if (chrome.i18n.getUILanguage() == "fr") {
-      $("#delete-sync-fldr + label").css({ letterSpacing: "-0.3px" });
+    // Fit text on one line for various locales.
+    let lang = chrome.i18n.getUILanguage();
+    if (lang == "de" || lang == "pt-BR") {
+      $("#delete-sync-fldr + label").css({ letterSpacing: "-0.6px" });
+    }
+    else if (lang == "es-ES") {
+      $("#delete-sync-fldr + label").css({ letterSpacing: "-0.9px" });
     }
 
     $("#delete-sync-fldr").prop("checked", true);
@@ -544,6 +559,11 @@ function initDialogs()
     $("#about-dlg > .dlg-content #ext-name").text(that.extInfo.name);
     $("#about-dlg > .dlg-content #ext-ver").text(chrome.i18n.getMessage("aboutExtVer", that.extInfo.version));
     $("#about-dlg > .dlg-content #ext-desc").text(that.extInfo.description);
+
+    let lang = chrome.i18n.getUILanguage();
+    if (lang == "de" || lang == "es-ES") {
+      $("#usr-contrib-cta").css({ letterSpacing: "-0.1px" });
+    }
   };
   gDialogs.about.onShow = () => {
     let msg = { msgID: "get-app-version" };

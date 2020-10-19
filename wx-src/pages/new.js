@@ -6,6 +6,7 @@
 
 const WNDH_OPTIONS_EXPANDED = 450;
 const DLG_HEIGHT_ADJ_WINDOWS = 32;
+const DLG_HEIGHT_ADJ_LOCALE_ES = 12;
 
 let gClippingsDB = null;
 let gClippings = null;
@@ -46,6 +47,11 @@ function initHelper()
       let height = WNDH_OPTIONS_EXPANDED;
       if (gClippings.getOS() == "win") {
         height += DLG_HEIGHT_ADJ_WINDOWS;
+      }
+      
+      let lang = browser.i18n.getUILanguage();
+      if (lang == "es-ES") {
+        height += DLG_HEIGHT_ADJ_LOCALE_ES;
       }
       
       chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, { height }, aWnd => {
