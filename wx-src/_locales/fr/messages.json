@@ -863,6 +863,20 @@
   "aboutTrans": {
     "message": "Localisations des contributions des les traducteurs Crowdin."
   },
+  "aboutContribHdg": {
+    "message": "Je veux vous aider !",
+    "description": "About dialog text for encouraging users to donate or help with translation"
+  },
+  "aboutDonate": {
+    "message": "Faire un don"
+  },
+  "aboutContribConj": {
+    "message": "ou",
+    "description": "Conjunction connecting the CTA hyperlinks for donating or supplying a translation"
+  },
+  "aboutL10n": {
+    "message": "ajouter une traduction."
+  },
   "aboutSyncVerLabel": {
     "message": "Version d’application Clippings Sync :"
   },
