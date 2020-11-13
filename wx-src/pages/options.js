@@ -360,7 +360,7 @@ function initDialogs()
       gDialogs.syncClippings.oldShowSyncItemsOpt = $("#show-only-sync-items").prop("checked");
 
       if (lang == "de") {
-        $("#sync-helper-app-update-check + label").css({ letterSpacing: "-0.45px" });
+        $("#sync-helper-app-update-check + label").css({ letterSpacing: "-0.51px" });
       }
 
       let msg = { msgID: "get-sync-dir" };
