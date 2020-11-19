@@ -17,10 +17,11 @@ let gFolderPickerPopup;
 let gNewFolderDlg;
 
 
-$(document).ready(() => {
-  chrome.history.deleteUrl({ url: window.location.href });
+// Page initialization
+$(async () => {
+  browser.history.deleteUrl({ url: window.location.href });
 
-  gClippings = chrome.extension.getBackgroundPage();
+  gClippings = browser.extension.getBackgroundPage();
   
   if (gClippings) {
     gClippingsDB = gClippings.getClippingsDB();
@@ -32,63 +33,52 @@ $(document).ready(() => {
     return;
   }
 
-  gClippings.verifyDB().then(aNumClippings => {
+  try {
+    await gClippings.verifyDB();    
     initHelper();
-  }).catch(aErr => {
+  }
+  catch (e) {
     showInitError();
-  });
+  };
 });
 
 
-function initHelper()
+async function initHelper()
 {
-  $("#btn-expand-options").click(aEvent => {
-    chrome.windows.getCurrent(aWnd => {
-      let height = WNDH_OPTIONS_EXPANDED;
-      if (gClippings.getOS() == "win") {
-        height += DLG_HEIGHT_ADJ_WINDOWS;
-      }
-      
-      let lang = browser.i18n.getUILanguage();
-      if (lang == "es-ES") {
-        height += DLG_HEIGHT_ADJ_LOCALE_ES;
-      }
-      
-      chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, { height }, aWnd => {
-        $("#clipping-options").show();
-        $("#new-clipping-fldr-tree-popup").addClass("new-clipping-fldr-tree-popup-fixpos");
-      });
-    });
+  $("#btn-expand-options").click(async (aEvent) => {
+    let height = WNDH_OPTIONS_EXPANDED;
+    if (gClippings.getOS() == "win") {
+      height += DLG_HEIGHT_ADJ_WINDOWS;
+    }
+    
+    let lang = browser.i18n.getUILanguage();
+    if (lang == "es-ES") {
+      height += DLG_HEIGHT_ADJ_LOCALE_ES;
+    }
+    
+    await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, { height });
+    $("#clipping-options").show();
+    $("#new-clipping-fldr-tree-popup").addClass("new-clipping-fldr-tree-popup-fixpos");
   });
   
-  if (gClippings.isGoogleChrome()) {
-    chrome.runtime.sendMessage({ msgID: "init-new-clipping-dlg" }, aResp => {
-      // TO DO: Same logic as for Firefox.
-    });
-  }
-  else {
-    // Firefox
-    let sendMsg = browser.runtime.sendMessage({
-      msgID: "init-new-clipping-dlg"
-    });
+  browser.runtime.sendMessage({
+    msgID: "init-new-clipping-dlg"
+  }).then(aResp => {
+    if (! aResp) {
+      console.warn("Clippings/wx::new.js: No response was received from the background script!");
+      return;
+    }
 
-    sendMsg.then(aResp => {
-      if (! aResp) {
-        console.warn("Clippings/wx::new.js: No response was received from the background script!");
-        return;
-      }
-
-      $("#clipping-name").val(aResp.name).select().focus();
-      $("#clipping-text").val(aResp.content).attr("spellcheck", aResp.checkSpelling);
-      $("#save-source-url").prop("checked", aResp.saveSrcURL);
-      gSrcURL = aResp.url || "";
-    });
-  }
+    $("#clipping-name").val(aResp.name).select().focus();
+    $("#clipping-text").val(aResp.content).attr("spellcheck", aResp.checkSpelling);
+    $("#save-source-url").prop("checked", aResp.saveSrcURL);
+    gSrcURL = aResp.url || "";
+  });
 
   $("#clipping-name").blur(aEvent => {
     let name = aEvent.target.value;
     if (! name) {
-      $("#clipping-name").val(chrome.i18n.getMessage("newFolder"));
+      $("#clipping-name").val(browser.i18n.getMessage("newFolder"));
     }
   });
 
@@ -104,11 +94,10 @@ function initHelper()
   // Fix for Fx57 bug where bundled page loaded using
   // browser.windows.create won't show contents unless resized.
   // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1402110>
-  browser.windows.getCurrent(aWnd => {
-    browser.windows.update(aWnd.id, {
-      width: aWnd.width + 1,
-      focused: true,
-    });
+  let wnd = await browser.windows.getCurrent();
+  browser.windows.update(wnd.id, {
+    width: wnd.width + 1,
+    focused: true,
   });
 }
 
@@ -170,19 +159,12 @@ $(window).on("contextmenu", aEvent => {
 });
 
 
-// Google Chrome only.
-$(window).on("unhandledrejection", aEvent => {
-  aEvent.preventDefault();
-  showInitError();
-});
-
-
 function showInitError()
 {
   let errorMsgBox = new aeDialog("#create-clipping-error-msgbox");
   errorMsgBox.onInit = () => {
     let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
-    errMsgElt.text(chrome.i18n.getMessage("initError"));
+    errMsgElt.text(browser.i18n.getMessage("initError"));
   };
   errorMsgBox.onAccept = () => {
     errorMsgBox.close();
@@ -269,14 +251,14 @@ function initDialogs()
       
       $("#new-fldr-name").on("blur", aEvent => {
         if (! aEvent.target.value) {
-          aEvent.target.value = chrome.i18n.getMessage("newFolder");
+          aEvent.target.value = browser.i18n.getMessage("newFolder");
         }
       });
       
       that.firstInit = false;
     }
 
-    $("#new-fldr-name").val(chrome.i18n.getMessage("newFolder"));
+    $("#new-fldr-name").val(browser.i18n.getMessage("newFolder"));
   };
 
   gNewFolderDlg.onShow = () => {
@@ -353,7 +335,7 @@ function initDialogs()
       });
     }).catch(aErr => {
       window.alert(aErr);
-    });
+    });  
   };
 }
 
@@ -363,7 +345,6 @@ function initFolderPicker()
   // Initialize the hidden background that user can click on to dismiss an open
   // folder picker popup.
   $(".popup-bkgrd").click(aEvent => {
-    // TO DO: Why are we using `visibility' and not `display'??
     $(".folder-tree-popup").css({ visibility: "hidden" });
     $(".popup-bkgrd").hide();
   });
@@ -391,7 +372,7 @@ function initFolderPicker()
   // to the width of the New Clipping popup window.
   $("#new-clipping-fldr-tree-popup").css({ width: `${menuBtnWidth + 1}px` });
   
-  $("#new-folder-btn").attr("title", chrome.i18n.getMessage("btnNewFolder"));
+  $("#new-folder-btn").attr("title", browser.i18n.getMessage("btnNewFolder"));
 
   gFolderPickerPopup = new aeFolderPicker("#new-clipping-fldr-tree", gClippingsDB);
   gFolderPickerPopup.onSelectFolder = selectFolder;
@@ -417,7 +398,7 @@ function selectFolder(aFolderData)
 }
 
 
-function initShortcutKeyMenu()
+async function initShortcutKeyMenu()
 {
   let shortcutKeyMenu = $("#clipping-key")[0];
 
@@ -432,11 +413,10 @@ function initShortcutKeyMenu()
       }
     }
   });
-
-  gClippings.getShortcutKeyPrefixStr().then(aKeybPasteKeys => {
-    let tooltip = chrome.i18n.getMessage("shortcutKeyHint", aKeybPasteKeys);
-    $("#shct-key-tooltip").attr("title", tooltip);
-  });
+  
+  let keybPasteKeys = await gClippings.getShortcutKeyPrefixStr();
+  let tooltip = chrome.i18n.getMessage("shortcutKeyHint", keybPasteKeys);
+  $("#shct-key-tooltip").attr("title", tooltip);
 }
 
 
@@ -529,12 +509,12 @@ function accept(aEvent)
 
         log("Clippings/wx::new.js: accept(): Sending message 'set-synced-clippings' to the Sync Clippings helper app.  Message data:");
         log(msg);
-
+        
         return browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
       }
       return null;
 
-    }).then(aMsgResult => {
+    }).then(async (aMsgResult) => {
       if (aMsgResult) {
         log("Clippings/wx::new.js: accept(): Response from the Sync Clippings helper app:");
         log(aMsgResult);
@@ -543,17 +523,12 @@ function accept(aEvent)
       let isClippingsMgrAutoShowDetailsPane = gClippings.getPrefs().clippingsMgrAutoShowDetailsPane;
       
       if (isClippingsMgrAutoShowDetailsPane && isClippingOptionsSet()) {
-        browser.storage.local.set({
+        await browser.storage.local.set({
           clippingsMgrAutoShowDetailsPane: false,
           clippingsMgrDetailsPane: true
-          
-        }).then(() => {
-          closeDlg();
         });
       }
-      else {
-        closeDlg();
-      }
+      closeDlg();
       
     }).catch("OpenFailedError", aErr => {
       // OpenFailedError exception thrown if Firefox is set to "Never remember
@@ -596,7 +571,7 @@ function cancel(aEvent)
 function closeDlg()
 {
   browser.runtime.sendMessage({ msgID: "close-new-clipping-dlg" });
-  chrome.windows.remove(chrome.windows.WINDOW_ID_CURRENT);
+  browser.windows.remove(browser.windows.WINDOW_ID_CURRENT);
 }
 
 
