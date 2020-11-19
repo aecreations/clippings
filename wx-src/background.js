@@ -310,8 +310,8 @@ let gSetDisplayOrderOnRootItems = false;
 // First-run initialization
 //
 
-browser.runtime.onInstalled.addListener(aDetails => {
-  if (aDetails.reason == "install") {
+browser.runtime.onInstalled.addListener(aInstall => {
+  if (aInstall.reason == "install") {
     log("Clippings/wx: It appears that the extension is newly installed.  Welcome to Clippings 6!");
 
     // We can't detect if the previous install is the same version, so always
@@ -320,8 +320,8 @@ browser.runtime.onInstalled.addListener(aDetails => {
       init();
     });
   }
-  else if (aDetails.reason == "update") {
-    let oldVer = aDetails.previousVersion;
+  else if (aInstall.reason == "update") {
+    let oldVer = aInstall.previousVersion;
     let currVer = chrome.runtime.getManifest().version;
     log(`Clippings/wx: Upgrading from version ${oldVer} to ${currVer}`);
 
@@ -526,7 +526,7 @@ function init()
   let getBrwsInfo = browser.runtime.getBrowserInfo();
   let getPlatInfo = browser.runtime.getPlatformInfo();
 
-  Promise.all([getBrwsInfo, getPlatInfo]).then(aResults => {
+  Promise.all([getBrwsInfo, getPlatInfo]).then(async (aResults) => {
     let brws = aResults[0];
     let platform = aResults[1];
     
@@ -541,7 +541,7 @@ function init()
       gPrefs.clippingsMgrMinzWhenInactv = (gOS == "linux");
     }
 
-    chrome.browserAction.onClicked.addListener(aTab => {
+    browser.browserAction.onClicked.addListener(aTab => {
       openClippingsManager();
     });
 
@@ -581,16 +581,15 @@ function init()
       }
     });
 
-    chrome.commands.onCommand.addListener(aCmdName => {
+    browser.commands.onCommand.addListener(async (aCmdName) => {
       info(`Clippings/wx: Command "${aCmdName}" invoked!`);
 
       if (aCmdName == aeConst.CMD_CLIPPINGS_KEYBOARD_PASTE && gPrefs.keyboardPaste) {
-        browser.tabs.query({ active: true, currentWindow: true }).then(aTabs => {
-          let activeTabID = aTabs[0].id;
-          gPasteClippingTargetTabID = activeTabID;
-          log(`Clippings/wx: Active tab ID: ${activeTabID} - opening keyboard paste dialog.`);
-          openKeyboardPasteDlg();
-        });
+        let tabs = await browser.tabs.query({ active: true, currentWindow: true });
+        let activeTabID = tabs[0].id;
+        gPasteClippingTargetTabID = activeTabID;
+        log(`Clippings/wx: Active tab ID: ${activeTabID} - opening keyboard paste dialog.`);
+        openKeyboardPasteDlg();
       }
     });
 
@@ -618,10 +617,9 @@ function init()
     }
 
     if (gSetDisplayOrderOnRootItems) {
-      setDisplayOrderOnRootItems().then(() => {
-        gIsInitialized = true;
-        log("Clippings/wx: Display order on root folder items have been set.\nClippings initialization complete.");
-      });
+      await setDisplayOrderOnRootItems();
+      gIsInitialized = true;
+      log("Clippings/wx: Display order on root folder items have been set.\nClippings initialization complete.");
     }
     else {
       gIsInitialized = true;
@@ -1138,25 +1136,25 @@ function buildContextMenu()
   log("Clippings/wx: buildContextMenu()");
   
   // Context menu for browser action button.
-  chrome.contextMenus.create({
+  browser.contextMenus.create({
     id: "ae-clippings-reset-autoincr-plchldrs",
-    title: chrome.i18n.getMessage("baMenuResetAutoIncrPlaceholders"),
+    title: browser.i18n.getMessage("baMenuResetAutoIncrPlaceholders"),
     enabled: false,
     contexts: ["browser_action"],
     documentUrlPatterns: ["<all_urls>"]
   });
 
   // Context menu for web page textbox or HTML editor.
-  chrome.contextMenus.create({
+  browser.contextMenus.create({
     id: "ae-clippings-new",
-    title: chrome.i18n.getMessage("cxtMenuNew"),
+    title: browser.i18n.getMessage("cxtMenuNew"),
     contexts: ["editable", "selection"],
     documentUrlPatterns: ["<all_urls>"]
   });
 
-  chrome.contextMenus.create({
+  browser.contextMenus.create({
     id: "ae-clippings-manager",
-    title: chrome.i18n.getMessage("cxtMenuOpenClippingsMgr"),
+    title: browser.i18n.getMessage("cxtMenuOpenClippingsMgr"),
     contexts: ["editable", "selection"],
     documentUrlPatterns: ["<all_urls>"]
   });
@@ -1173,7 +1171,7 @@ function buildContextMenu()
     }
     
     if (aMenuData.length > 0) {
-      chrome.contextMenus.create({
+      browser.contextMenus.create({
         type: "separator",
         contexts: ["editable"],
         documentUrlPatterns: ["<all_urls>"]
@@ -1201,7 +1199,7 @@ function buildContextMenuHelper(aMenuData)
       menuItem.parentId = menuData.parentId;
     }
 
-    chrome.contextMenus.create(menuItem);
+    browser.contextMenus.create(menuItem);
     
     if (menuData.submenuItems) {
       buildContextMenuHelper(menuData.submenuItems);
@@ -1226,7 +1224,7 @@ function updateContextMenuForClipping(aUpdatedClippingID)
       // 'updateProperties' parameter to contextMenus.update().
       // See https://bugzilla.mozilla.org/show_bug.cgi?id=1414566
       let menuItemID = gClippingMenuItemIDMap[id];
-      chrome.contextMenus.update(menuItemID, updatePpty);
+      browser.contextMenus.update(menuItemID, updatePpty);
     }
     catch (e) {
       console.error("Clippings/wx: updateContextMenuForClipping(): " + e);
@@ -1241,7 +1239,7 @@ function updateContextMenuForFolder(aUpdatedFolderID)
   gClippingsDB.folders.get(id).then(aResult => {
     let menuItemID = gFolderMenuItemIDMap[id];
     if (menuItemID) {
-      chrome.contextMenus.update(menuItemID, { title: aResult.name });
+      browser.contextMenus.update(menuItemID, { title: aResult.name });
     }
   });
 }
@@ -1250,7 +1248,7 @@ function updateContextMenuForFolder(aUpdatedFolderID)
 function removeContextMenuForClipping(aRemovedClippingID)
 {
   let menuItemID = gClippingMenuItemIDMap[aRemovedClippingID];
-  chrome.contextMenus.remove(menuItemID);
+  browser.contextMenus.remove(menuItemID);
   delete gClippingMenuItemIDMap[aRemovedClippingID];
 }
 
@@ -1258,19 +1256,19 @@ function removeContextMenuForClipping(aRemovedClippingID)
 function removeContextMenuForFolder(aRemovedFolderID)
 {
   let menuItemID = gFolderMenuItemIDMap[aRemovedFolderID];
-  chrome.contextMenus.remove(menuItemID);
+  browser.contextMenus.remove(menuItemID);
   delete gFolderMenuItemIDMap[aRemovedFolderID];
 }
 
 
-function rebuildContextMenu()
+async function rebuildContextMenu()
 {
   log("Clippings/wx: rebuildContextMenu(): Removing all Clippings context menu items and rebuilding the menu...");
-  chrome.contextMenus.removeAll(() => {
-    gClippingMenuItemIDMap = {};
-    gFolderMenuItemIDMap = {};
-    buildContextMenu();
-  });
+  await browser.contextMenus.removeAll();
+
+  gClippingMenuItemIDMap = {};
+  gFolderMenuItemIDMap = {};
+  buildContextMenu();
 }
 
 
@@ -1565,7 +1563,7 @@ function openClippingsManager(aBackupMode)
 
 function openNewClippingDlg()
 {
-  let url = chrome.runtime.getURL("pages/new.html");
+  let url = browser.runtime.getURL("pages/new.html");
   let height = 390;
   if (gOS == "win") {
     height = 420;
@@ -1600,32 +1598,32 @@ function openBackupDlg()
 }
 
 
-function openDlgWnd(aURL, aWndKey, aWndPpty)
+async function openDlgWnd(aURL, aWndKey, aWndPpty)
 {
-  function openDlgWndHelper()
+  async function openDlgWndHelper()
   {
-    browser.windows.create({
+    let wnd = await browser.windows.create({
       url: aURL,
       type: aWndPpty.type,
       width: aWndPpty.width,
       height: aWndPpty.height,
       left: window.screen.availWidth - aWndPpty.width / 2,
       top:  window.screen.availHeight - aWndPpty.height / 2
-    }).then(aWnd => {
-      gWndIDs[aWndKey] = aWnd.id;
-      browser.history.deleteUrl({ url: aURL });
-    }, aErr => {
-      onError(aErr);
     });
+
+    gWndIDs[aWndKey] = wnd.id;
+    browser.history.deleteUrl({ url: aURL });
   }
 
   if (gWndIDs[aWndKey]) {
-    browser.windows.get(gWndIDs[aWndKey]).then(aWnd => {
+    try {
+      await browser.windows.get(gWndIDs[aWndKey]);
       browser.windows.update(gWndIDs[aWndKey], { focused: true });
-    }, aErr => {
+    }
+    catch (e) {
       gWndIDs[aWndKey] = null;
       openDlgWndHelper();
-    });
+    };
   }
   else {
     openDlgWndHelper();
@@ -1796,21 +1794,15 @@ function pasteProcessedClipping(aClippingContent, aActiveTabID)
 
   log(`Clippings/wx: Extension sending message "paste-clipping" to content script (active tab ID = ${aActiveTabID})`);
   
-  if (isGoogleChrome()) {
-    chrome.tabs.sendMessage(aActiveTabID, msgParams, null);
-  }
-  else {
-    // Firefox
-    window.setTimeout(function () {
-      browser.tabs.sendMessage(aActiveTabID, msgParams).then(aResult => {
-        // If successful, aResult should be true.
-      }).catch(aErr => {
-        console.error("Clippings/wx: pasteProcessedClipping(): Failed to paste clipping: " + aErr);
-      }).finally(() => {
-        gPasteClippingTargetTabID = null;
-      });
-    }, 150);    
-  }
+  window.setTimeout(function () {
+    browser.tabs.sendMessage(aActiveTabID, msgParams).then(aResult => {
+      // If successful, aResult should be true.
+    }).catch(aErr => {
+      console.error("Clippings/wx: pasteProcessedClipping(): Failed to paste clipping: " + aErr);
+    }).finally(() => {
+      gPasteClippingTargetTabID = null;
+    });
+  }, 150);    
 }
 
 
@@ -1919,23 +1911,18 @@ function isGoogleChrome()
 
 function alertEx(aMessageID)
 {
-  let message = chrome.i18n.getMessage(aMessageID);
+  let message = browser.i18n.getMessage(aMessageID);
   
-  if (isGoogleChrome()) {
-    window.alert(message);
-  }
-  else {
-    info("Clippings/wx: " + message);
-    let url = "pages/msgbox.html?msgid=" + aMessageID;
-    
-    chrome.windows.create({
-      url: url,
-      type: "popup",
-      width: 520, height: 170,
-      left: window.screen.availWidth - 520 / 2,
-      top:  window.screen.availHeight - 170 / 2
-    });
-  }
+  info("Clippings/wx: " + message);
+  let url = "pages/msgbox.html?msgid=" + aMessageID;
+  
+  browser.windows.create({
+    url: url,
+    type: "popup",
+    width: 520, height: 170,
+    left: window.screen.availWidth - 520 / 2,
+    top:  window.screen.availHeight - 170 / 2
+  });
 }
 
 
