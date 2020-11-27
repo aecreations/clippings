@@ -568,9 +568,9 @@ function cancel(aEvent)
 }
 
 
-function closeDlg()
+async function closeDlg()
 {
-  browser.runtime.sendMessage({ msgID: "close-new-clipping-dlg" });
+  await browser.runtime.sendMessage({ msgID: "close-new-clipping-dlg" });
   browser.windows.remove(browser.windows.WINDOW_ID_CURRENT);
 }
 

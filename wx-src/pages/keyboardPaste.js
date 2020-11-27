@@ -599,15 +599,15 @@ function cancel(aEvent)
 }
 
 
-function closeDlg()
+async function closeDlg()
 {
   // Always remember last paste mode, even if user cancelled.
-  browser.storage.local.set({
+  await browser.storage.local.set({
     pastePromptAction: gPasteMode
-  }).then(() => {
-    browser.runtime.sendMessage({ msgID: "close-keybd-paste-dlg" });
-    chrome.windows.remove(chrome.windows.WINDOW_ID_CURRENT);
   });
+  
+  await browser.runtime.sendMessage({ msgID: "close-keybd-paste-dlg" });
+  browser.windows.remove(chrome.windows.WINDOW_ID_CURRENT);
 }
 
 

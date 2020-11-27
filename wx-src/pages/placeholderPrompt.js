@@ -290,8 +290,8 @@ function cancel(aEvent)
 }
 
 
-function closeDlg()
+async function closeDlg()
 {
-  chrome.runtime.sendMessage({ msgID: "close-placeholder-prmt-dlg" });
-  chrome.windows.remove(chrome.windows.WINDOW_ID_CURRENT);
+  await browser.runtime.sendMessage({ msgID: "close-placeholder-prmt-dlg" });
+  browser.windows.remove(chrome.windows.WINDOW_ID_CURRENT);
 }
