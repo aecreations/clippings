@@ -188,18 +188,22 @@ button.browser-style:focus:not(:disabled) {
     width: 100%;
     border-collapse: collapse;
     border-spacing: 0;
+    font-size: 12px;
 }
 
 #shortcut-list-content table > thead {
     display: block;
     height: var(--col-hdr-height);
-    background-color: var(--color-th-bkgd);
     color: var(--color-default-text);
-    border-bottom: 1px solid var(--color-th-border);
+}
+
+#shortcut-list-content table > thead > tr {
+    background-color: var(--color-th-bkgd);
 }
 
 #shortcut-list-content table > thead > tr > th {
-    padding: 3px 4px 3px 4px;
+    padding: 2px 4px 2px 4px;
+    border-bottom: 1px solid var(--color-th-border);
     font-weight: normal;
     white-space: nowrap;
     overflow: hidden;
@@ -213,13 +217,14 @@ button.browser-style:focus:not(:disabled) {
 
 #shortcut-list-content table > tbody {
     display: block;
-    height: 186px;
+    height: 200px;
+    margin-top: 1px;
     overflow-x: hidden;
     overflow-y: auto;
 }
 
 #shortcut-list-content table > tbody > tr {
-    height: 20px;
+    height: 22px;
 }
 
 #shortcut-list-content table > tbody > tr > td {
@@ -237,7 +242,7 @@ button.browser-style:focus:not(:disabled) {
 
 #shortcut-list-content table th:nth-child(1),
 #shortcut-list-content table td:nth-child(1) {
-    min-width: 90px;
+    min-width: 92px;
 }
 
 #shortcut-list-content table th:nth-child(2),
