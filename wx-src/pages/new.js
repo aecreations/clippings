@@ -409,13 +409,13 @@ async function initShortcutKeyMenu()
     for (let option of shortcutKeyMenu.options) {
       if (assignedKeysLookup[option.text]) {
         option.setAttribute("disabled", "true");
-        option.setAttribute("title", chrome.i18n.getMessage("shortcutKeyAssigned", option.text));
+        option.setAttribute("title", browser.i18n.getMessage("shortcutKeyAssigned", option.text));
       }
     }
   });
   
   let keybPasteKeys = await gClippings.getShortcutKeyPrefixStr();
-  let tooltip = chrome.i18n.getMessage("shortcutKeyHint", keybPasteKeys);
+  let tooltip = browser.i18n.getMessage("shortcutKeyHint", keybPasteKeys);
   $("#shct-key-tooltip").attr("title", tooltip);
 }
 
@@ -536,7 +536,7 @@ function accept(aEvent)
       errorMsgBox.onInit = () => {
         console.error(`Error creating clipping: ${aErr}`);
         let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
-        errMsgElt.text(chrome.i18n.getMessage("saveClippingError"));
+        errMsgElt.text(browser.i18n.getMessage("saveClippingError"));
       };
       errorMsgBox.showModal();
 
@@ -547,7 +547,7 @@ function accept(aEvent)
         let errText = `Error creating clipping: ${aErr}`;
 
         if (aErr == aeConst.SYNC_ERROR_CONXN_FAILED) {
-          errText = chrome.i18n.getMessage("syncPushFailed");
+          errText = browser.i18n.getMessage("syncPushFailed");
           errorMsgBox.onAfterAccept = () => {
             // Despite the native app connection error, the new clipping was
             // successfully created, so just close the main dialog.
