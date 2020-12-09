@@ -333,7 +333,7 @@
     "message": "Nuevo desde el portapapeles"
   },
   "mnuBackup": {
-    "message": "Copia de seguridad..."
+    "message": "Respaldar…"
   },
   "mnuRestoreFromBackup": {
     "message": "Restaurar desde una copia de seguridad..."
@@ -483,7 +483,7 @@
     "message": "La importación de \"$1\" se ha completado."
   },
   "btnReload": {
-    "message": "Recargar"
+    "message": "Cargar de nuevo"
   },
   "clipMgrExportConfirm": {
     "message": "La importación de \"$1\" se ha completado."
@@ -519,31 +519,31 @@
     "message": "Seleccionar fichero a importar:"
   },
   "labelSelBkupFile": {
-    "message": "Seleccione el archivo de backup:"
+    "message": "Seleccionar copia de seguridad:"
   },
   "statusSavingBkup": {
-    "message": "Guardando fichero de backup..."
+    "message": "Guardando copia de seguridad..."
   },
   "statusSavingBkupDone": {
-    "message": "Guardando fichero de backup...¡listo!"
+    "message": "Guardando copia de seguridad... ¡listo!"
   },
   "statusSavingBkupFailed": {
-    "message": "El backup falló."
+    "message": "El proceso de respaldo falló."
   },
   "backupError": {
-    "message": "Lo siento, ha ocurrido un error mientras se generaba el backup.\n\nDetalles:\n$1"
+    "message": "Lo siento, ha ocurrido un error mientras se generaba la copia de seguridad.\n\nDetalles:\n$1"
   },
   "cbImportReplcShctKeys": {
     "message": "Reemplazar teclas de acceso rápido"
   },
   "warnBackupOverwrite": {
-    "message": "Restaurar una copia de seguridad reemplazará todos tus recortes con los del backup. Esta acción no se puede deshacer."
+    "message": "Restaurar una copia de seguridad reemplazará todos tus clippings con los de la copia de seguridad. Esta acción no se puede deshacer."
   },
   "btnImport": {
     "message": "Importar"
   },
   "btnRestoreBkup": {
-    "message": "Restaurar backup"
+    "message": "Restaurar copia de seguridad"
   },
   "importError": {
     "message": "Error leyendo el fichero. Puede que no sea un fichero válido para Clippings."
@@ -558,7 +558,7 @@
     "message": "Clippings 6"
   },
   "expFmtClippings6Desc": {
-    "message": "El formato predeterminado de backup e intercambio de datos con otros usuarios de Clippings.  Requiere Clippings 5.5 o más reciente instalado."
+    "message": "El formato predeterminado de respaldo e intercambio de datos con otros usuarios de Clippings.  Requiere Clippings 5.5 o más reciente instalado."
   },
   "expFmtHTMLDoc": {
     "message": "Documento HTML"
@@ -723,7 +723,7 @@
     "message": "Respaldar ahora"
   },
   "backupHint": {
-    "message": "También puede respaldar sus clippings en cualquier momento desde el Gestor de Clippings. Sólo abra Gestor de Cecortes, y seleccione Herramientas → Respaldar con copia de seguridad."
+    "message": "También puede respaldar sus clippings en cualquier momento desde el Gestor de Clippings. Sólo abra Gestor de Cecortes, y seleccione Herramientas → Respaldar."
   },
   "backupPrefsHdg": {
     "message": "Configurar recordatorio de respaldo"
