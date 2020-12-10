@@ -1280,12 +1280,13 @@ ul.fancytree-container {
     color: var(--color-error-text);
 }
 
-#init-error-msgbox {
+#init-error-msgbox, #sync-error-msgbox {
     --height: 136px;
     top: 64px;
 }
 
-#init-error-msgbox > .dlg-content > .msgbox-error-msg {
+#init-error-msgbox > .dlg-content > .msgbox-error-msg,
+#sync-error-msgbox > .dlg-content > .msgbox-error-msg {
     margin-left: 44px;
     color: var(--color-error-text);
 }

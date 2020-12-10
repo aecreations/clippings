@@ -4108,7 +4108,7 @@ function buildClippingsTreeHelper(aFolderID)
           folderNode.extraClasses = "ae-synced-clippings-fldr";
         }
 
-        if (aItem.displayOrder === undefined) {
+        if (! ("displayOrder" in aItem)) {
           folderNode.displayOrder = 0;
         }
         else {
@@ -4129,7 +4129,7 @@ function buildClippingsTreeHelper(aFolderID)
             clippingNode.extraClasses = `ae-clipping-label-${aItem.label}`;
           }
 
-          if (aItem.displayOrder == undefined) {
+          if (! ("displayOrder" in aItem)) {
             clippingNode.displayOrder = 0;
           }
           else {
@@ -4527,8 +4527,11 @@ function getErrStr(aErr)
 function handlePushSyncItemsError(aError)
 {
   if (aError == aeConst.SYNC_ERROR_CONXN_FAILED && !gErrorPushSyncItems) {
-    // TO DO: Put this in a popup.
-    window.alert(chrome.i18n.getMessage("syncPushFailed"));
+    let errorMsgBox = new aeDialog("#sync-error-msgbox");
+    errorMsgBox.onInit = () => {
+      $("#sync-error-msgbox > .dlg-content > .msgbox-error-msg").text(chrome.i18n.getMessage("syncPushFailed"));
+    };
+    errorMsgBox.showModal();
     gErrorPushSyncItems = true;
   }
 }
