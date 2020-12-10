@@ -3139,7 +3139,11 @@ function initDialogs()
     if (gDialogs.importFromFile.mode == gDialogs.importFromFile.IMP_REPLACE) {
       $("#import-clippings-label").text(chrome.i18n.getMessage("labelSelBkupFile"));
       $("#import-clippings-replc-shct-keys-checkbox").hide();
-      $("#restore-backup-warning").show();
+      
+      if (! gIsClippingsTreeEmpty) {
+        $("#restore-backup-warning").show();
+      }
+
       $("#import-dlg-action-btn").text(chrome.i18n.getMessage("btnRestoreBkup"));
     }
     else {
@@ -3170,8 +3174,8 @@ function initDialogs()
             $("#import-dlg button.dlg-accept").attr("disabled", "true");
           }
         }
-
-        if (gDialogs.importFromFile.mode == gDialogs.importFromFile.IMP_REPLACE) {
+        if (gDialogs.importFromFile.mode == gDialogs.importFromFile.IMP_REPLACE
+            && !gIsClippingsTreeEmpty) {
           $("#restore-backup-warning").show();
         }
       });
