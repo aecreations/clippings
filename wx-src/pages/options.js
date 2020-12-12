@@ -514,15 +514,6 @@ function initDialogs()
   gDialogs.turnOffSyncAck = new aeDialog("#turn-off-sync-clippings-ack-dlg");
   gDialogs.turnOffSyncAck.oldSyncFldrID = null;
   gDialogs.turnOffSyncAck.onInit = () => {
-    // Fit text on one line for various locales.
-    let lang = chrome.i18n.getUILanguage();
-    if (lang == "de" || lang == "pt-BR") {
-      $("#delete-sync-fldr + label").css({ letterSpacing: "-0.6px" });
-    }
-    else if (lang == "es-ES") {
-      $("#delete-sync-fldr + label").css({ letterSpacing: "-0.9px" });
-    }
-
     $("#delete-sync-fldr").prop("checked", true);
   };
   gDialogs.turnOffSyncAck.onAfterAccept = () => {
@@ -563,6 +554,9 @@ function initDialogs()
     let lang = chrome.i18n.getUILanguage();
     if (lang == "de" || lang == "es-ES") {
       $("#usr-contrib-cta").css({ letterSpacing: "-0.1px" });
+    }
+    else if (lang == "pt-BR") {
+      $("#ext-desc").css({ letterSpacing: "-0.42px" });
     }
   };
   gDialogs.about.onShow = () => {
