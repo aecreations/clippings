@@ -83,19 +83,19 @@
     "description": "Denotes that there is no shortcut key, label or source web address (URL)."
   },
   "newClipping": {
-    "message": "Nuevo recorte"
+    "message": "Nuevo clipping"
   },
   "newFolder": {
     "message": "Crear directorio"
   },
   "untitledClipping": {
-    "message": "Recorte sin nombre"
+    "message": "Clipping sin nombre"
   },
   "untitledFolder": {
     "message": "Directorio sin nombre"
   },
   "rootFldrName": {
-    "message": "Recortes",
+    "message": "Clippings",
     "description": "Name of root folder"
   },
   "labelRed": {
@@ -124,7 +124,7 @@
     "description": "Clippings context menu"
   },
   "cxtMenuOpenClippingsMgr": {
-    "message": "Organizar recortes",
+    "message": "Organizar clippings",
     "description": "Clippings context menu"
   },
   "baMenuResetAutoIncrPlaceholders": {
@@ -169,7 +169,7 @@
     "message": "Regresar"
   },
   "newClippingDlgTitle": {
-    "message": "Nuevo recorte",
+    "message": "Nuevo clipping",
     "description": "New Clipping dialog"
   },
   "labelName": {
@@ -192,7 +192,7 @@
     "message": "Guardar la dirección de la página web"
   },
   "labelShortcutKey": {
-    "message": "Acceso directo del teclado:"
+    "message": "Atajo de teclado:"
   },
   "labelLabel": {
     "message": "Etiqueta:",
@@ -205,7 +205,7 @@
     "message": "Crear como subcarpeta de:"
   },
   "shortcutKeyHint": {
-    "message": "Para pegar rápidamente este recorte en un cuadro de texto de en Firefox pulsa $1 seguido de la tecla de acceso rápido."
+    "message": "Para pegar rápidamente este clipping en un cuadro de texto de en Firefox pulsa $1 seguido del atajo de teclado."
   },
   "shortcutKeyAssigned": {
     "message": "'$1' ya está asignada"
@@ -214,35 +214,35 @@
     "message": "Clippings es incompatible si las políticas de privacidad de Firefox son muy restrictivas, así como con el Modo Privado. \nReinicia los valores de privacidad a sus valores por defecto."
   },
   "saveClippingError": {
-    "message": "No se pudo guardar el recorte. Comprueba que la configuración de privacidad no sea muy restrictiva (por ejemplo el modo de navegación privada), reinicia Firefox y vuelve a intentarlo."
+    "message": "No se pudo guardar el clipping. Comprueba que la configuración de privacidad no sea muy restrictiva (por ejemplo el modo de navegación privada), reinicia Firefox y vuelve a intentarlo."
   },
   "shortcutKeyDesc": {
-    "message": "Pulsa la tecla de acceso rápido del recorte que desees pegar."
+    "message": "Pulsa el atajo de teclado del clipping que desees pegar."
   },
   "keybPasteDlgF1": {
     "message": "F1 = lista de accesos rápidos"
   },
   "keybPasteDlgTab": {
-    "message": "TAB = buscar recorte por nombre"
+    "message": "TAB = buscar clipping por nombre"
   },
   "keybPasteDlgTabShctMode": {
-    "message": "TAB = modo de tecla de acceso rápido"
+    "message": "TAB = modo de atajos de teclado"
   },
   "srchByNameDesc": {
-    "message": "Buscar recorte por nombre:"
+    "message": "Buscar clipping por nombre:"
   },
   "numMatches": {
     "message": "$1 coincidencia(s)",
     "description": "Status bar message in Clippings Manager showing the number of matches for the search query."
   },
   "insClipping": {
-    "message": "Insertar recorte"
+    "message": "Insertar clipping"
   },
   "exportHTML": {
     "message": "Exportar a HTML"
   },
   "expHTMLTitle": {
-    "message": "Teclas de acceso rápido de Clippings",
+    "message": "Atajos de teclado de Clippings",
     "description": "HTML export of shortcut key list - page title"
   },
   "expHTMLHostAppInfo": {
@@ -250,7 +250,7 @@
     "description": "Clippings <extVersion> on Firefox <fxVersion>"
   },
   "expHTMLShctKeyInstrxn": {
-    "message": "Para pegar un recorte en un cuadro de texto pulsa ALT+SHIFT+Y (Command+Shift+Y en macOS) y después la tecla de acceso directo."
+    "message": "Para pegar un clipping en un cuadro de texto pulsa ALT+SHIFT+Y (Command+Shift+Y en macOS) y después el atajo de teclado."
   },
   "expHTMLShctKeyCustNote": {
     "message": "NOTA: El prefijo del atajo de teclado (por defecto es ALT+SHIFT+Y o Comando+SHIFT+Y) puede varias dependiendo de tu configuración de Clippings."
@@ -259,7 +259,7 @@
     "message": "Tecla de acceso rápido"
   },
   "expHTMLClipNameCol": {
-    "message": "Nombre del recorte"
+    "message": "Nombre del clipping"
   },
   "plchldrPromptSingleDesc": {
     "message": "Introduzca el valor para \"$1\":",
@@ -270,11 +270,11 @@
     "description": "Placeholder prompt dialog - multiple placeholders"
   },
   "clippingsMgrWndTitle": {
-    "message": "Gestor de recortes",
+    "message": "Gestor de clippings",
     "description": "Clippings Manager window title"
   },
   "tbNewClipping": {
-    "message": "Nuevo recorte"
+    "message": "Nuevo clipping"
   },
   "tbNewFolder": {
     "message": "Carpeta nueva"
@@ -292,14 +292,14 @@
     "message": "Herramientas"
   },
   "clipMgrSrchBarHint": {
-    "message": "Encontrar carpetas y recortes",
+    "message": "Encontrar carpetas y clippings",
     "description": "Clippings Manager search bar hint text"
   },
   "clipMgrIntroHdg": {
-    "message": "Bienvenido al Gestor de recortes"
+    "message": "Bienvenido al Gestor de clippings"
   },
   "clipMgrIntroDesc": {
-    "message": "Usa el Gestor de recortes para editar, renombrar o borrar recortas u organizar tu colección de recortes en directorios."
+    "message": "Usa el Gestor de clippings para editar, renombrar o borrar clippings u organizar tu colección de clippings en directorios."
   },
   "clipMgrIntroKeybHdg": {
     "message": "Atajos de teclado"
@@ -397,7 +397,7 @@
     "description": "Clippings Manager - preset (built-in) placeholder menu"
   },
   "mnuPlchldrClipName": {
-    "message": "Nombre del recorte",
+    "message": "Nombre del clipping",
     "description": "Clippings Manager - preset (built-in) placeholder menu"
   },
   "mnuPlchldrFldrName": {
@@ -420,7 +420,7 @@
     "message": "Ayuda de acceso directo"
   },
   "clipMgrNoItems": {
-    "message": "No se encontraron recortes."
+    "message": "No se encontraron clippings."
   },
   "clipMgrIntroCmdDel": {
     "message": "Eliminar la carpeta o el recorte seleccionado",
@@ -431,11 +431,11 @@
     "description": "Clippings Manager intro - key binding description"
   },
   "clipMgrIntroCmdSrch": {
-    "message": "Encontrar carpetas y recortes",
+    "message": "Encontrar carpetas y clippings",
     "description": "Clippings Manager intro - key binding description"
   },
   "clipMgrIntroCmdClose": {
-    "message": "Cerrar Gestor de recortes",
+    "message": "Cerrar el Gestor de clippings",
     "description": "Clippings Manager intro - key binding description"
   },
   "clipMgrIntroCmdUndo": {
@@ -443,7 +443,7 @@
     "description": "Clippings Manager intro - key binding description"
   },
   "clipMgrIntroCmdShowIntro": {
-    "message": "Mostrar la introducción del Gestor de recortes",
+    "message": "Mostrar la introducción del Gestor de clippings",
     "description": "Clippings Manager intro - key binding description"
   },
   "clipMgrIntroCmdMaximize": {
@@ -468,13 +468,13 @@
     "message": "Nada que rehacer"
   },
   "clipMgrShortcutKeyHelpHdg": {
-    "message": "Teclas de acceso rápido de Clippings"
+    "message": "Atajos de teclado de Clippings"
   },
   "clipMgrShortcutHelpInstrxn": {
-    "message": "Para pegar un recorte de la lista en un cuadro de text de una página web pulsa $1 y la tecla de acceso rápido."
+    "message": "Para pegar un clipping de la lista en un cuadro de texto de una página web en Firefox pulsa $1 y luego, el atajo de teclado."
   },
   "clipMgrShortcutKeyAssigned": {
-    "message": "La tecla de acceso rápido seleccionada ya está asignada. Seleccione otra tecla."
+    "message": "El atajo de teclado seleccionado ya está asignado. Seleccione otro atajo."
   },
   "clipMgrNoSrcURL": {
     "message": "El recorte seleccionado no tiene una dirección web."
@@ -492,7 +492,7 @@
     "message": "El respaldo a \"$1\" se completó exitosamente."
   },
   "clipMgrWarnRemoveSrcURLs": {
-    "message": "Todas las direcciones web de los recortes serán eliminadas. ¿Quieres continuar?"
+    "message": "Todas las direcciones web de tus clippings serán eliminadas. ¿Quieres continuar?"
   },
   "placeholderNameHint": {
     "message": "Letras, números, subrayado, espacios no"
@@ -591,13 +591,13 @@
     "message": "Error exportando datos de Clippings.\n\nDetalles: \n$1"
   },
   "labelMoveClipping": {
-    "message": "Mover el recorte a:"
+    "message": "Mover el clipping a:"
   },
   "labelMoveFolder": {
     "message": "Mover carpeta a:"
   },
   "labelCopyClipping": {
-    "message": "Copiar el recorte a:"
+    "message": "Copiar el clipping a:"
   },
   "labelCopyFolder": {
     "message": "Copiar la carpeta a:"
@@ -629,7 +629,7 @@
     "message": "Opciones de pegado"
   },
   "labelPasteOptions": {
-    "message": "Al pegar un recorte de formato HTML en un cuadro de texto enriquecido:"
+    "message": "Al pegar un clipping de formato HTML en un cuadro de texto enriquecido:"
   },
   "pasteOptFormatted": {
     "message": "Pegar como texto con formato"
@@ -641,7 +641,7 @@
     "message": "Salto de línea automático a no ser que existan las etiquetas <p> o <br>"
   },
   "htmlPasteDesc": {
-    "message": "Un recorte con formato HTML siempre se pegará como texto sin formato si se pega en un cuadro de texto simple o si el recorte contiene etiquetas restringidos tales como <script>, <applet>, <object>, <iframe>, etcetera."
+    "message": "Un recorte con formato HTML siempre se pegará como texto sin formato si se pega en un cuadro de texto simple o si el clipping contiene etiquetas restringidos tales como <script>, <applet>, <object>, <iframe>, etcetera."
   },
   "prefsShortcutMode": {
     "message": "Active los atajos de teclado con la siguiente combinación de teclas:"
