@@ -55,8 +55,8 @@ function init()
       $("#shortcut-key-prefix-modifiers").css({ fontSize: "13px", letterSpacing: "-0.25px" });
     }
     else if (lang == "es-ES") {
-      $("#enable-shortcut-key-label").css({ fontSize: "13px", letterSpacing: "-0.35px" });
-      $("#shortcut-key-prefix-modifiers").css({ fontSize: "13px", letterSpacing: "-0.35px" });     
+      $("#enable-shortcut-key-label").css({ fontSize: "13px", letterSpacing: "-0.46px" });
+      $("#shortcut-key-prefix-modifiers").css({ fontSize: "13px", letterSpacing: "-0.46px" });     
     }
   }
   
@@ -362,6 +362,9 @@ function initDialogs()
       if (lang == "de") {
         $("#sync-helper-app-update-check + label").css({ letterSpacing: "-0.51px" });
       }
+      else if (lang == "pt-BR") {
+        $("#sync-helper-app-update-check + label").css({ letterSpacing: "-0.56px" });
+      }
 
       let msg = { msgID: "get-sync-dir" };
       return browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
@@ -372,7 +375,7 @@ function initDialogs()
 
         if (lang == "es-ES") {
           $("#sync-clippings-dlg").css({ width: "606px" });
-          $("#sync-helper-app-update-check + label").css({ letterSpacing: "-0.45px" });
+          $("#sync-helper-app-update-check + label").css({ letterSpacing: "-0.56px" });
         }
       }
       $("#sync-clippings-dlg .dlg-accept").show();
@@ -552,11 +555,14 @@ function initDialogs()
     $("#about-dlg > .dlg-content #ext-desc").text(that.extInfo.description);
 
     let lang = chrome.i18n.getUILanguage();
-    if (lang == "de" || lang == "es-ES") {
+    if (lang == "de") {
       $("#usr-contrib-cta").css({ letterSpacing: "-0.1px" });
     }
     else if (lang == "pt-BR") {
-      $("#ext-desc").css({ letterSpacing: "-0.42px" });
+      $("#ext-desc").css({ letterSpacing: "-0.55px" });
+    }
+    else if (lang == "es-ES") {
+      $("#sync-ver-label").css({ letterSpacing: "-0.15px" });
     }
   };
   gDialogs.about.onShow = () => {
