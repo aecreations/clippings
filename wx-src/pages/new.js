@@ -60,6 +60,8 @@ async function initHelper()
     $("#clipping-options").show();
     $("#new-clipping-fldr-tree-popup").addClass("new-clipping-fldr-tree-popup-fixpos");
   });
+
+  $("#clipping-text").attr("placeholder", browser.i18n.getMessage("clipMgrContentHint"));
   
   browser.runtime.sendMessage({
     msgID: "init-new-clipping-dlg"
@@ -78,7 +80,7 @@ async function initHelper()
   $("#clipping-name").blur(aEvent => {
     let name = aEvent.target.value;
     if (! name) {
-      $("#clipping-name").val(browser.i18n.getMessage("newFolder"));
+      $("#clipping-name").val(browser.i18n.getMessage("newClipping"));
     }
   });
 
