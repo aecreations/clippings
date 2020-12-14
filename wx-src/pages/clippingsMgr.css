@@ -1217,6 +1217,10 @@ ul.fancytree-container {
     border: 1px solid var(--color-cb-border);
 }
 
+#export-dlg #export-format-list-label {
+    display: block;
+}
+
 #export-dlg fieldset {
     margin-top: 6px;
     margin-bottom: 12px;

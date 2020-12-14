@@ -3259,6 +3259,7 @@ function initDialogs()
 
     // Fit text on one line for German locale.
     if (browser.i18n.getUILanguage() == "de") {
+      $("#export-format-list-label").css({ letterSpacing: "-0.15px" });
       $("#include-src-urls + label").css({ letterSpacing: "-0.4px" });
     }
     

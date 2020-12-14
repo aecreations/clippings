@@ -80,7 +80,7 @@ async function initHelper()
   $("#clipping-name").blur(aEvent => {
     let name = aEvent.target.value;
     if (! name) {
-      $("#clipping-name").val(browser.i18n.getMessage("newClipping"));
+      $("#clipping-name").val(browser.i18n.getMessage("untitledClipping"));
     }
   });
 
