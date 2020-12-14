@@ -409,21 +409,21 @@
     "description": "Clippings Manager - preset (built-in) placeholder menu"
   },
   "clipMgrNameHint": {
-    "message": "Nombre del recorte",
+    "message": "Nombre del clipping",
     "description": "Clippings Manager - clipping name textbox hint text"
   },
   "clipMgrContentHint": {
-    "message": "Ingrese el texto del recorte",
+    "message": "Ingrese el texto del clipping",
     "description": "Clippings Manager - clipping content textarea hint text"
   },
   "clipMgrShortcutHelpHint": {
-    "message": "Ayuda de acceso directo"
+    "message": "Ayuda sobre atajos de teclado"
   },
   "clipMgrNoItems": {
     "message": "No se encontraron clippings."
   },
   "clipMgrIntroCmdDel": {
-    "message": "Eliminar la carpeta o el recorte seleccionado",
+    "message": "Eliminar la carpeta o el clipping seleccionado",
     "description": "Clippings Manager intro - key binding description"
   },
   "clipMgrIntroCmdClearSrchBar": {
@@ -459,7 +459,7 @@
     "description": "Status bar text in Clippings Manager, counting the number of clippings and folders"
   },
   "clipMgrRemoveSrcURLsConfirm": {
-    "message": "Eliminar las direcciones web de sus recortes."
+    "message": "Eliminar las direcciones web de sus clippings."
   },
   "clipMgrNoUndo": {
     "message": "Nada que deshacer"
@@ -477,7 +477,7 @@
     "message": "El atajo de teclado seleccionado ya está asignado. Seleccione otro atajo."
   },
   "clipMgrNoSrcURL": {
-    "message": "El recorte seleccionado no tiene una dirección web."
+    "message": "El clipping seleccionado no tiene una dirección web."
   },
   "clipMgrImportConfirm": {
     "message": "La importación de \"$1\" se ha completado."
