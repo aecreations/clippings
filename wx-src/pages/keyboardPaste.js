@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-
 const WNDH_SHORTCUT_KEY = 164;
 const WNDH_SEARCH_CLIPPING = 222;
 const WNDH_SHORTCUT_LIST = 272;
@@ -168,7 +167,7 @@ let gAutocompleteMenu = {
       }
 
       let numMatches = menuItemsData.length;
-      $("#num-matches").text(chrome.i18n.getMessage("numMatches", numMatches));
+      $("#num-matches").text(browser.i18n.getMessage("numMatches", numMatches));
 
       if (numMatches > 0) {
         // Populate the popup.
@@ -288,61 +287,63 @@ function sanitizeHTML(aHTMLStr)
 
 
 // Initialize dialog
-$(document).ready(() => {
-  gClippings = chrome.extension.getBackgroundPage();
+$(async () => {
+  gClippings = browser.extension.getBackgroundPage();
 
   if (! gClippings) {
     throw new Error("Clippings/wx: clippingKey.js: Failed to retrieve parent browser window!");
   }
 
   gClippingsDB = gClippings.getClippingsDB();
-  let extVer = chrome.runtime.getManifest().version;
+  let extVer = browser.runtime.getManifest().version;
 
   aeImportExport.setDatabase(gClippingsDB);
 
   aeImportExport.setL10nStrings({
-    shctTitle: chrome.i18n.getMessage("expHTMLTitle"),
-    hostAppInfo: chrome.i18n.getMessage("expHTMLHostAppInfo", [extVer, gClippings.getHostAppName()]),
-    shctKeyInstrxns: chrome.i18n.getMessage("expHTMLShctKeyInstrxn"),
-    shctKeyCustNote: chrome.i18n.getMessage("expHTMLShctKeyCustNote"),
-    shctKeyColHdr: chrome.i18n.getMessage("expHTMLShctKeyCol"),
-    clippingNameColHdr: chrome.i18n.getMessage("expHTMLClipNameCol"),
+    shctTitle: browser.i18n.getMessage("expHTMLTitle"),
+    hostAppInfo: browser.i18n.getMessage("expHTMLHostAppInfo", [extVer, gClippings.getHostAppName()]),
+    shctKeyInstrxns: browser.i18n.getMessage("expHTMLShctKeyInstrxn"),
+    shctKeyCustNote: browser.i18n.getMessage("expHTMLShctKeyCustNote"),
+    shctKeyColHdr: browser.i18n.getMessage("expHTMLShctKeyCol"),
+    clippingNameColHdr: browser.i18n.getMessage("expHTMLClipNameCol"),
   });
 
   initAutocomplete();
   $("#btn-cancel").click(aEvent => { cancel(aEvent) });
 
-  chrome.history.deleteUrl({ url: window.location.href });
+  browser.history.deleteUrl({ url: window.location.href });
 
-  browser.storage.local.get().then(aPrefs => {
-    gPasteMode = aPrefs.pastePromptAction;
-    
-    if (gPasteMode == aeConst.PASTEACTION_SHORTCUT_KEY) {
-      $(".deck > #search-by-name").hide();
-      $(".deck > #paste-by-shortcut-key").show();
-    }
-    else {
-      $(".deck > #paste-by-shortcut-key").hide();
-      chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, { height: WNDH_SEARCH_CLIPPING }, aWnd => {
-        $(".deck > #search-by-name").show();
-        $("#clipping-search").focus();
-      });
-    }
-  });
+  let prefs = await browser.storage.local.get();
+  gPasteMode = prefs.pastePromptAction;
+  
+  if (gPasteMode == aeConst.PASTEACTION_SHORTCUT_KEY) {
+    $(".deck > #search-by-name").hide();
+    $(".deck > #paste-by-shortcut-key").show();
+  }
+  else {
+    $(".deck > #paste-by-shortcut-key").hide();
+
+    let updWndInfo = {
+      height: WNDH_SEARCH_CLIPPING
+    };
+    await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, updWndInfo);
+
+    $(".deck > #search-by-name").show();
+    $("#clipping-search").focus();
+  }
 
   // Fix for Fx57 bug where bundled page loaded using
   // browser.windows.create won't show contents unless resized.
   // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1402110>
-  browser.windows.getCurrent(aWnd => {
-    browser.windows.update(aWnd.id, {
-      width: aWnd.width + 1,
-      focused: true,
-    });
+  let wnd = await browser.windows.getCurrent();
+  browser.windows.update(wnd.id, {
+    width: wnd.width + 1,
+    focused: true,
   });
 });
 
 
-$(window).keydown(aEvent => {
+$(window).keydown(async (aEvent) => {
   const isMacOS = gClippings.getOS() == "mac";
 
   function isAccelKeyPressed()
@@ -383,7 +384,7 @@ $(window).keydown(aEvent => {
 
     if (gPasteMode == aeConst.PASTEACTION_SHORTCUT_KEY) {
       $(".deck > #paste-by-shortcut-key").hide();
-      initShortcutList();
+      await initShortcutList();
       return;
     }
   }
@@ -402,18 +403,24 @@ $(window).keydown(aEvent => {
       gPasteMode = aeConst.PASTEACTION_SEARCH_CLIPPING;
       $(".deck > #paste-by-shortcut-key").hide();
 
-      chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, { height: WNDH_SEARCH_CLIPPING }, aWnd => {
-        $(".deck > #search-by-name").fadeIn("fast");
-        $("#clipping-search").focus();
-      });
+      let updWndInfo = {
+        height: WNDH_SEARCH_CLIPPING
+      };
+      await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, updWndInfo);
+      
+      $(".deck > #search-by-name").fadeIn("fast");
+      $("#clipping-search").focus();
     }
     else if (gPasteMode == aeConst.PASTEACTION_SEARCH_CLIPPING) {
       gPasteMode = aeConst.PASTEACTION_SHORTCUT_KEY;
       $(".deck > #search-by-name").hide();
 
-      chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, { height: WNDH_SHORTCUT_KEY }, aWnd => {
-        $(".deck > #paste-by-shortcut-key").fadeIn("fast");
-      });
+      let updWndInfo = {
+        height: WNDH_SHORTCUT_KEY
+      };
+      await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, updWndInfo);
+
+      $(".deck > #paste-by-shortcut-key").fadeIn("fast");
     }
   }
   else if (aEvent.key == "/" || aEvent.key == "'") {
@@ -499,7 +506,7 @@ function initAutocomplete()
 }
 
 
-function initShortcutList()
+async function initShortcutList()
 {
   $("#dlg-buttons").remove();
 
@@ -524,30 +531,29 @@ function initShortcutList()
     updWndInfo.height += DLG_HEIGHT_ADJ_WINDOWS;
   }
   
-  chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, updWndInfo, aWnd => {
-    aeImportExport.getShortcutKeyListHTML(false).then(aShctListHTML => {
-      $("#shortcut-list-content").append(sanitizeHTML(aShctListHTML));
+  await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, updWndInfo);
+  aeImportExport.getShortcutKeyListHTML(false).then(aShctListHTML => {
+    $("#shortcut-list-content").append(sanitizeHTML(aShctListHTML));
 
-      let tblWidth = window.innerWidth;
-      $("#shortcut-list-content > table > thead").css({ width: `${tblWidth}px` });
-      $("#shortcut-list-content > table > tbody").css({ width: `${tblWidth}px` });
+    let tblWidth = window.innerWidth;
+    $("#shortcut-list-content > table > thead").css({ width: `${tblWidth}px` });
+    $("#shortcut-list-content > table > tbody").css({ width: `${tblWidth}px` });
 
-      $("#shortcut-list-content > table > tbody > tr").on("mouseup", aEvent => {
-        $("#shortcut-list-content > table > tbody > tr").removeClass("selected-row");
-        $(aEvent.target).parent().addClass("selected-row");
+    $("#shortcut-list-content > table > tbody > tr").on("mouseup", aEvent => {
+      $("#shortcut-list-content > table > tbody > tr").removeClass("selected-row");
+      $(aEvent.target).parent().addClass("selected-row");
 
-        if ($("#paste-clipping").attr("disabled")) {
-          $("#paste-clipping").removeAttr("disabled");
-        }
-      }).on("dblclick", aEvent => {
-        let clippingKey = $("#shortcut-list-content > table > tbody > tr.selected-row td:first-child").text();
-        execShortcut(clippingKey);
-      });
-
-      $(".deck > #shortcut-list").fadeIn("fast");
-    }).catch(aErr => {
-      console.error("Clippings/wx::keyboardPaste.js: initShortcutList(): " + aErr);
+      if ($("#paste-clipping").attr("disabled")) {
+        $("#paste-clipping").removeAttr("disabled");
+      }
+    }).on("dblclick", aEvent => {
+      let clippingKey = $("#shortcut-list-content > table > tbody > tr.selected-row td:first-child").text();
+      execShortcut(clippingKey);
     });
+
+    $(".deck > #shortcut-list").fadeIn("fast");
+  }).catch(aErr => {
+    console.error("Clippings/wx::keyboardPaste.js: initShortcutList(): " + aErr);
   });
 }
 
@@ -607,7 +613,7 @@ async function closeDlg()
   });
   
   await browser.runtime.sendMessage({ msgID: "close-keybd-paste-dlg" });
-  browser.windows.remove(chrome.windows.WINDOW_ID_CURRENT);
+  browser.windows.remove(browser.windows.WINDOW_ID_CURRENT);
 }
 
 
