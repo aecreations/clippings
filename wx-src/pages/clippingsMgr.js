@@ -1287,13 +1287,25 @@ let gCmd = {
     let clippingCpy = {};
    
     gClippingsDB.clippings.get(aClippingID).then(aClipping => {
+      let tree = getClippingsTree();
+      let parentFldrNode;
+      if (aDestFldrID == aeConst.ROOT_FOLDER_ID) {
+        parentFldrNode = tree.rootNode
+      }
+      else {
+        parentFldrNode = tree.getNodeByKey(aDestFldrID + "F");
+      }
+      let parentFldrChildNodes = parentFldrNode.getChildren();
+      let displayOrder = parentFldrChildNodes ? parentFldrChildNodes.length : 0;
+
       clippingCpy = {
         name: aClipping.name,
         content: aClipping.content,
         shortcutKey: "",
         parentFolderID: aDestFldrID,
         label: aClipping.label,
-        sourceURL: aClipping.sourceURL
+        sourceURL: aClipping.sourceURL,
+        displayOrder
       };
 
       return gClippingsSvc.createClipping(clippingCpy);
@@ -1329,7 +1341,11 @@ let gCmd = {
     
     gClippingsDB.folders.get(aFolderID).then(aFolder => {
       oldParentFldrID = aFolder.parentFolderID;
-      return gClippingsSvc.updateFolder(aFolderID, { parentFolderID: aNewParentFldrID }, aFolder);
+      let folderCpy = {
+        parentFolderID: aNewParentFldrID,
+      };
+      return gClippingsSvc.updateFolder(aFolderID, folderCpy, aFolder);
+
     }).then(aNumUpd => {
       if (aDestUndoStack == this.UNDO_STACK) {
         this.undoStack.push({
@@ -1369,9 +1385,21 @@ let gCmd = {
     let folderCpy = {};
       
     gClippingsDB.folders.get(aFolderID).then(aFolder => {
+      let tree = getClippingsTree();
+      let parentFldrNode;
+      if (aDestFldrID == aeConst.ROOT_FOLDER_ID) {
+        parentFldrNode = tree.rootNode
+      }
+      else {
+        parentFldrNode = tree.getNodeByKey(aDestFldrID + "F");
+      }
+      let parentFldrChildNodes = parentFldrNode.getChildren();
+      let displayOrder = parentFldrChildNodes ? parentFldrChildNodes.length : 0;
+
       folderCpy = {
         name: aFolder.name,
         parentFolderID: aDestFldrID,
+        displayOrder,
       };
       return gClippingsSvc.createFolder(folderCpy);
       
