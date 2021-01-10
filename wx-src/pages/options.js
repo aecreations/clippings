@@ -16,25 +16,23 @@ function sanitizeHTML(aHTMLStr)
 
 
 // Options page initialization
-$(() => {
-  chrome.runtime.getBackgroundPage(aBkgrdWnd => {
-    if (! aBkgrdWnd) {
-      // Hide the broken "Turn Off Sync" button when Private Browsing turned on.
-      $("#toggle-sync").hide();
-      
-      window.alert(chrome.i18n.getMessage("errPrefPgFailed"));
-      closePage();
-      return;
-    }
+$(async () => {
+  gClippings = await browser.runtime.getBackgroundPage();
 
-    gClippings = aBkgrdWnd;
+  if (! gClippings) {
+    // Hide the broken "Turn Off Sync" button when Private Browsing turned on.
+    $("#toggle-sync").hide();
+    
+    window.alert(browser.i18n.getMessage("errPrefPgFailed"));
+    await closePage();
+    return;
+  }
 
-    init();
-  });
+  init();
 });
 
 
-function init()
+async function init()
 {
   let os = gClippings.getOS();
 
@@ -42,14 +40,14 @@ function init()
     $("#shortcut-key-prefix-modifiers").text("\u21e7\u2318");
   }
   else {
-    let keyAlt = chrome.i18n.getMessage("keyAlt");
-    let keyShift = chrome.i18n.getMessage("keyShift");
+    let keyAlt = browser.i18n.getMessage("keyAlt");
+    let keyShift = browser.i18n.getMessage("keyShift");
     $("#shortcut-key-prefix-modifiers").text(`${keyAlt} + ${keyShift} + `);
   }
 
   // Fit text on one line for various locales.
   if (os != "mac") {
-    let lang = chrome.i18n.getUILanguage();
+    let lang = browser.i18n.getUILanguage();
     if (lang == "de") {
       $("#enable-shortcut-key-label").css({ fontSize: "13px", letterSpacing: "-0.25px" });
       $("#shortcut-key-prefix-modifiers").css({ fontSize: "13px", letterSpacing: "-0.25px" });
@@ -60,20 +58,19 @@ function init()
     }
   }
   
-  $("#sync-intro").html(sanitizeHTML(chrome.i18n.getMessage("syncIntro")));
+  $("#sync-intro").html(sanitizeHTML(browser.i18n.getMessage("syncIntro")));
 
   initDialogs();
 
-  $("#toggle-sync").click(aEvent => {
-    browser.storage.local.get().then(aPrefs => {
-      if (aPrefs.syncClippings) {
-        gDialogs.turnOffSync.showModal();
-      }
-      else {
-	gIsActivatingSyncClippings = true;
-        gDialogs.syncClippings.showModal();
-      }
-    });
+  $("#toggle-sync").click(async (aEvent) => {
+    let prefs = await browser.storage.local.get();
+    if (prefs.syncClippings) {
+      gDialogs.turnOffSync.showModal();
+    }
+    else {
+      gIsActivatingSyncClippings = true;
+      gDialogs.syncClippings.showModal();
+    }
   });
 
   $("#about-btn").click(aEvent => {
@@ -134,184 +131,176 @@ function init()
     }
   });
 
-  browser.storage.local.get().then(aPrefs => {
-    $("#html-paste-options").val(aPrefs.htmlPaste).change(aEvent => {
-      setPref({ htmlPaste: aEvent.target.value });
-    });
-    
-    $("#html-auto-line-break").attr("checked", aPrefs.autoLineBreak).click(aEvent => {
-      setPref({ autoLineBreak: aEvent.target.checked });
-    });
+  let prefs = await browser.storage.local.get();
+  $("#html-paste-options").val(prefs.htmlPaste).change(aEvent => {
+    setPref({ htmlPaste: aEvent.target.value });
+  });
+  
+  $("#html-auto-line-break").attr("checked", prefs.autoLineBreak).click(aEvent => {
+    setPref({ autoLineBreak: aEvent.target.checked });
+  });
 
-    $("#enable-shortcut-key").attr("checked", aPrefs.keyboardPaste).click(aEvent => {
-      setPref({ keyboardPaste: aEvent.target.checked })
-    });
+  $("#enable-shortcut-key").attr("checked", prefs.keyboardPaste).click(aEvent => {
+    setPref({ keyboardPaste: aEvent.target.checked })
+  });
 
-    $("#auto-inc-plchldrs-start-val").val(aPrefs.autoIncrPlcHldrStartVal).click(aEvent => {
-      setPref({ autoIncrPlcHldrStartVal: aEvent.target.valueAsNumber });
-    });
+  $("#auto-inc-plchldrs-start-val").val(prefs.autoIncrPlcHldrStartVal).click(aEvent => {
+    setPref({ autoIncrPlcHldrStartVal: aEvent.target.valueAsNumber });
+  });
 
-    $("#always-save-src-url").attr("checked", aPrefs.alwaysSaveSrcURL).click(aEvent => {
-      setPref({ alwaysSaveSrcURL: aEvent.target.checked });
-    });
+  $("#always-save-src-url").attr("checked", prefs.alwaysSaveSrcURL).click(aEvent => {
+    setPref({ alwaysSaveSrcURL: aEvent.target.checked });
+  });
 
-    $("#check-spelling").attr("checked", aPrefs.checkSpelling).click(aEvent => {
-      setPref({ checkSpelling: aEvent.target.checked });
-    });
+  $("#check-spelling").attr("checked", prefs.checkSpelling).click(aEvent => {
+    setPref({ checkSpelling: aEvent.target.checked });
+  });
 
-    $("#backup-filename-with-date").attr("checked", aPrefs.backupFilenameWithDate).click(aEvent => {
-      setPref({ backupFilenameWithDate: aEvent.target.checked });
-    });
+  $("#backup-filename-with-date").attr("checked", prefs.backupFilenameWithDate).click(aEvent => {
+    setPref({ backupFilenameWithDate: aEvent.target.checked });
+  });
 
-    $("#backup-reminder").prop("checked", (aPrefs.backupRemFrequency != aeConst.BACKUP_REMIND_NEVER)).click(aEvent => {
-      let setPref;
-
-      if (aEvent.target.checked) {
-        $("#backup-reminder-freq").prop("disabled", false);
-        setPref = browser.storage.local.set({
-          backupRemFrequency: Number($("#backup-reminder-freq").val()),
-          backupRemFirstRun: false,
-          lastBackupRemDate: new Date().toString(),
-        });
-      }
-      else {
-        $("#backup-reminder-freq").prop("disabled", true);
-        setPref = browser.storage.local.set({ backupRemFrequency: aeConst.BACKUP_REMIND_NEVER });
-      }
-
-      setPref.then(() => {
-        gClippings.clearBackupNotificationInterval();
-        if (aEvent.target.checked) {
-	  gClippings.setBackupNotificationInterval();
-	}
-      });
-    });
-
-    if (aPrefs.backupRemFrequency == aeConst.BACKUP_REMIND_NEVER) {
-      // Set to default interval.
-      $("#backup-reminder-freq").val(aeConst.BACKUP_REMIND_WEEKLY).prop("disabled", true);
-    }
-    else {
-      $("#backup-reminder-freq").val(aPrefs.backupRemFrequency);
-    }
-    
-    $("#backup-reminder-freq").change(aEvent => {
-      browser.storage.local.set({
-        backupRemFrequency: Number(aEvent.target.value),
+  $("#backup-reminder").prop("checked", (prefs.backupRemFrequency != aeConst.BACKUP_REMIND_NEVER)).click(async (aEvent) => {
+    if (aEvent.target.checked) {
+      $("#backup-reminder-freq").prop("disabled", false);
+      await browser.storage.local.set({
+        backupRemFrequency: Number($("#backup-reminder-freq").val()),
         backupRemFirstRun: false,
         lastBackupRemDate: new Date().toString(),
-
-      }).then(() => {
-        gClippings.clearBackupNotificationInterval();
-        gClippings.setBackupNotificationInterval();
       });
-    });   
-
-    if (aPrefs.syncClippings) {
-      $("#sync-settings").show();
-      $("#sync-status").addClass("sync-status-on").text(chrome.i18n.getMessage("syncStatusOn"));
-      $("#toggle-sync").text(chrome.i18n.getMessage("syncTurnOff"));
     }
     else {
-      $("#sync-settings").hide();
-      $("#sync-status").text(chrome.i18n.getMessage("syncStatusOff"));
-      $("#toggle-sync").text(chrome.i18n.getMessage("syncTurnOn"));
+      $("#backup-reminder-freq").prop("disabled", true);
+      await browser.storage.local.set({ backupRemFrequency: aeConst.BACKUP_REMIND_NEVER });
     }
 
-    $("#sync-settings").click(aEvent => {
-      gDialogs.syncClippings.showModal();
+    gClippings.clearBackupNotificationInterval();
+    if (aEvent.target.checked) {
+      gClippings.setBackupNotificationInterval();
+    }
+  });
+
+  if (prefs.backupRemFrequency == aeConst.BACKUP_REMIND_NEVER) {
+    // Set to default interval.
+    $("#backup-reminder-freq").val(aeConst.BACKUP_REMIND_WEEKLY).prop("disabled", true);
+  }
+  else {
+    $("#backup-reminder-freq").val(prefs.backupRemFrequency);
+  }
+  
+  $("#backup-reminder-freq").change(async (aEvent) => {
+    await browser.storage.local.set({
+      backupRemFrequency: Number(aEvent.target.value),
+      backupRemFirstRun: false,
+      lastBackupRemDate: new Date().toString(),
     });
-/***
-    $("#browse-sync-fldr").click(aEvent => {
+
+    gClippings.clearBackupNotificationInterval();
+    gClippings.setBackupNotificationInterval();
+  });   
+
+  if (prefs.syncClippings) {
+    $("#sync-settings").show();
+    $("#sync-status").addClass("sync-status-on").text(browser.i18n.getMessage("syncStatusOn"));
+    $("#toggle-sync").text(browser.i18n.getMessage("syncTurnOff"));
+  }
+  else {
+    $("#sync-settings").hide();
+    $("#sync-status").text(browser.i18n.getMessage("syncStatusOff"));
+    $("#toggle-sync").text(browser.i18n.getMessage("syncTurnOn"));
+  }
+
+  $("#sync-settings").click(aEvent => {
+    gDialogs.syncClippings.showModal();
+  });
+  /***
+      $("#browse-sync-fldr").click(aEvent => {
       let msg = { msgID: "sync-dir-folder-picker" };
       let sendNativeMsg = browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
 
       sendNativeMsg.then(aResp => {
-	if (aResp.syncFilePath) {
-	  $("#sync-fldr-curr-location").val(aResp.syncFilePath);
-	}
+      if (aResp.syncFilePath) {
+      $("#sync-fldr-curr-location").val(aResp.syncFilePath);
+      }
       }).catch(aErr => {
-	window.alert("The Sync Clippings helper app responded with an error.\n\n" + aErr);
+      window.alert("The Sync Clippings helper app responded with an error.\n\n" + aErr);
       });
-    });
-***/
-    
-    $("#show-sync-help").click(aEvent => {
-      gDialogs.syncClippingsHelp.showModal();
-    });
-
-    return browser.commands.getAll();
-
-  }).then(aCmds => {
-    let keybShct = aCmds[0].shortcut;
-    let shctArr = keybShct.split("+");
-    let key, keyModifiers = "";
-    let isSupportedKey = false;
-    let isSupportedKeyMod = false;
-
-    if (shctArr.length > 1) {
-      keyModifiers = keybShct.substring(0, keybShct.lastIndexOf("+"));
-    }
-    key = shctArr[shctArr.length - 1];
-
-    if (os == "mac") {
-      if (keyModifiers == "Command+Shift") {
-        isSupportedKeyMod = true;
-      }
-    }
-    else {
-      if (keyModifiers == "Alt+Shift") {
-        isSupportedKeyMod = true;
-      }
-    }
-
-    let keySelectElt = $("#shortcut-key-selector")[0];
-    let allKeys = keySelectElt.options;
-    
-    for (let i = 0; i < allKeys.length; i++) {
-      if (allKeys[i].value == key) {
-        keySelectElt.selectedIndex = i;
-        isSupportedKey = true;
-        break;
-      }
-    }
-
-    if (!isSupportedKey || !isSupportedKeyMod) {
-      // When the keyboard shortcut is not any of the combinations that can be
-      // set from the extension preferences page, it may have been set from
-      // Manage Extension Shortcuts in Add-ons Manager (Firefox 66+).
-      $("#shortcut-key-note").text(chrome.i18n.getMessage("prefsOutsideShct"));
-
-      gClippings.getShortcutKeyPrefixStr().then(aKeybPasteKeys => {
-        $("#shortcut-key-prefix-modifiers").text(aKeybPasteKeys);
       });
+  ***/
+  
+  $("#show-sync-help").click(aEvent => {
+    gDialogs.syncClippingsHelp.showModal();
+  });
+
+  let cmds = await browser.commands.getAll();
+
+  let keybShct = cmds[0].shortcut;
+  let shctArr = keybShct.split("+");
+  let key, keyModifiers = "";
+  let isSupportedKey = false;
+  let isSupportedKeyMod = false;
+
+  if (shctArr.length > 1) {
+    keyModifiers = keybShct.substring(0, keybShct.lastIndexOf("+"));
+  }
+  key = shctArr[shctArr.length - 1];
+
+  if (os == "mac") {
+    if (keyModifiers == "Command+Shift") {
+      isSupportedKeyMod = true;
     }
-    else {
-      $("#shortcut-key-note").html(sanitizeHTML(chrome.i18n.getMessage("prefsShortcutKeyNote")));
-      keySelectElt.style.display = "inline-block";
-
-      $(keySelectElt).change(aEvent => {
-        let modifierKeys = os == "mac" ? "Command+Shift" : "Alt+Shift"
-        let keybShct = `${modifierKeys}+${aEvent.target.value}`;
-
-        if (gClippings.isDirectSetKeyboardShortcut()) {        
-          log("Clippings/wx::options.js: Keyboard shortcut changed. Updating command with new keyboard shortcut: " + keybShct);
-          
-          browser.commands.update({
-            name: aeConst.CMD_CLIPPINGS_KEYBOARD_PASTE,
-            shortcut: keybShct,
-          });
-        }
-        else {
-          setPref({ pasteShortcutKeyPrefix: keybShct });
-        }
-      });
+  }
+  else {
+    if (keyModifiers == "Alt+Shift") {
+      isSupportedKeyMod = true;
     }
+  }
 
-    $(".hyperlink").click(aEvent => {
-      aEvent.preventDefault();
-      gotoURL(aEvent.target.href);
+  let keySelectElt = $("#shortcut-key-selector")[0];
+  let allKeys = keySelectElt.options;
+  
+  for (let i = 0; i < allKeys.length; i++) {
+    if (allKeys[i].value == key) {
+      keySelectElt.selectedIndex = i;
+      isSupportedKey = true;
+      break;
+    }
+  }
+
+  if (!isSupportedKey || !isSupportedKeyMod) {
+    // When the keyboard shortcut is not any of the combinations that can be
+    // set from the extension preferences page, it may have been set from
+    // Manage Extension Shortcuts in Add-ons Manager (Firefox 66+).
+    $("#shortcut-key-note").text(browser.i18n.getMessage("prefsOutsideShct"));
+
+    let keybPasteKeys = await gClippings.getShortcutKeyPrefixStr();
+    $("#shortcut-key-prefix-modifiers").text(keybPasteKeys);
+  }
+  else {
+    $("#shortcut-key-note").html(sanitizeHTML(browser.i18n.getMessage("prefsShortcutKeyNote")));
+    keySelectElt.style.display = "inline-block";
+
+    $(keySelectElt).change(aEvent => {
+      let modifierKeys = os == "mac" ? "Command+Shift" : "Alt+Shift"
+      let keybShct = `${modifierKeys}+${aEvent.target.value}`;
+
+      if (gClippings.isDirectSetKeyboardShortcut()) {        
+        log("Clippings/wx::options.js: Keyboard shortcut changed. Updating command with new keyboard shortcut: " + keybShct);
+        
+        browser.commands.update({
+          name: aeConst.CMD_CLIPPINGS_KEYBOARD_PASTE,
+          shortcut: keybShct,
+        });
+      }
+      else {
+        setPref({ pasteShortcutKeyPrefix: keybShct });
+      }
     });
+  }
+
+  $(".hyperlink").click(aEvent => {
+    aEvent.preventDefault();
+    gotoURL(aEvent.target.href);
   });
 }
 
@@ -333,7 +322,7 @@ function initDialogs()
   gDialogs.syncClippings.onInit = () => {
     gDialogs.syncClippings.isCanceled = false;
     $("#sync-clippings-dlg .dlg-accept").hide();
-    $("#sync-clippings-dlg .dlg-cancel").text(chrome.i18n.getMessage("btnCancel"));
+    $("#sync-clippings-dlg .dlg-cancel").text(browser.i18n.getMessage("btnCancel"));
     $("#sync-err-detail").text("");
     
     let deckSyncChk = $("#sync-connection-check");
@@ -346,7 +335,7 @@ function initDialogs()
     deckSyncError.hide();
     deckSyncSettings.hide();
 
-    let lang = chrome.i18n.getUILanguage();
+    let lang = browser.i18n.getUILanguage();
     let msg = { msgID: "get-app-version" };
     let sendNativeMsg = browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
     sendNativeMsg.then(aResp => {
@@ -379,7 +368,7 @@ function initDialogs()
         }
       }
       $("#sync-clippings-dlg .dlg-accept").show();
-      $("#sync-clippings-dlg .dlg-cancel").text(chrome.i18n.getMessage("btnCancel"));
+      $("#sync-clippings-dlg .dlg-cancel").text(browser.i18n.getMessage("btnCancel"));
 
       deckSyncChk.hide();
       deckSyncSettings.show();
@@ -388,7 +377,7 @@ function initDialogs()
     }).catch(aErr => {
       console.error("Clippings/wx::options.js: Error returned from syncClippings native app: " + aErr);
       
-      $("#sync-clippings-dlg .dlg-cancel").text(chrome.i18n.getMessage("btnClose"));
+      $("#sync-clippings-dlg .dlg-cancel").text(browser.i18n.getMessage("btnClose"));
 
       if (aErr == aeConst.SYNC_ERROR_CONXN_FAILED) {
         // This would occur if Sync Clippings helper app won't start.
@@ -399,13 +388,13 @@ function initDialogs()
         deckSyncChk.hide();
         deckSyncSettings.hide();
         deckSyncError.show();
-        $("#sync-err-detail").text(chrome.i18n.getMessage("errNoDetails"));
+        $("#sync-err-detail").text(browser.i18n.getMessage("errNoDetails"));
       }
       else {
         deckSyncChk.hide();
         deckSyncSettings.hide();
         deckSyncError.show();
-        $("#sync-err-detail").text(chrome.i18n.getMessage("errSyncOptsInit"));
+        $("#sync-err-detail").text(browser.i18n.getMessage("errSyncOptsInit"));
       }
     });
   };
@@ -452,8 +441,8 @@ function initDialogs()
               clippingsMgrShowSyncItemsOnlyRem: true,
             });
             $("#sync-settings").show();
-            $("#toggle-sync").text(chrome.i18n.getMessage("syncTurnOff"));
-            $("#sync-status").addClass("sync-status-on").text(chrome.i18n.getMessage("syncStatusOn"));
+            $("#toggle-sync").text(browser.i18n.getMessage("syncTurnOff"));
+            $("#sync-status").addClass("sync-status-on").text(browser.i18n.getMessage("syncStatusOn"));
 
 	    gIsActivatingSyncClippings = false;
 	  }
@@ -483,15 +472,15 @@ function initDialogs()
 
   // Dialog UI strings
   if (osName == "win") {
-    $("#example-sync-path").text(chrome.i18n.getMessage("syncFileDirExWin"));
+    $("#example-sync-path").text(browser.i18n.getMessage("syncFileDirExWin"));
   }
   else if (osName == "mac") {
-    $("#example-sync-path").text(chrome.i18n.getMessage("syncFileDirExMac"));
+    $("#example-sync-path").text(browser.i18n.getMessage("syncFileDirExMac"));
   }
   else {
-    $("#example-sync-path").text(chrome.i18n.getMessage("syncFileDirExLinux"));
+    $("#example-sync-path").text(browser.i18n.getMessage("syncFileDirExLinux"));
   }
-  $("#sync-conxn-error-detail").html(sanitizeHTML(chrome.i18n.getMessage("errSyncConxnDetail")));
+  $("#sync-conxn-error-detail").html(sanitizeHTML(browser.i18n.getMessage("errSyncConxnDetail")));
 
   gDialogs.turnOffSync = new aeDialog("#turn-off-sync-clippings-dlg");
   $("#turn-off-sync-clippings-dlg > .dlg-btns > .dlg-btn-yes").click(aEvent => {
@@ -501,8 +490,8 @@ function initDialogs()
     gClippings.enableSyncClippings(false).then(aOldSyncFldrID => {
       setPref({ syncClippings: false });
       $("#sync-settings").hide();
-      $("#toggle-sync").text(chrome.i18n.getMessage("syncTurnOn"));
-      $("#sync-status").removeClass("sync-status-on").text(chrome.i18n.getMessage("syncStatusOff"));
+      $("#toggle-sync").text(browser.i18n.getMessage("syncTurnOn"));
+      $("#sync-status").removeClass("sync-status-on").text(browser.i18n.getMessage("syncStatusOff"));
 
       let syncClippingsListeners = gClippings.getSyncClippingsListeners().getListeners();
       for (let listener of syncClippingsListeners) {
@@ -541,7 +530,7 @@ function initDialogs()
     $("#about-dlg > .dlg-content #diag-info #sync-file-size").text("");
 
     if (! that.extInfo) {
-      let extManifest = chrome.runtime.getManifest();
+      let extManifest = browser.runtime.getManifest();
       that.extInfo = {
         name: extManifest.name,
         version: extManifest.version,
@@ -551,10 +540,10 @@ function initDialogs()
     }
 
     $("#about-dlg > .dlg-content #ext-name").text(that.extInfo.name);
-    $("#about-dlg > .dlg-content #ext-ver").text(chrome.i18n.getMessage("aboutExtVer", that.extInfo.version));
+    $("#about-dlg > .dlg-content #ext-ver").text(browser.i18n.getMessage("aboutExtVer", that.extInfo.version));
     $("#about-dlg > .dlg-content #ext-desc").text(that.extInfo.description);
 
-    let lang = chrome.i18n.getUILanguage();
+    let lang = browser.i18n.getUILanguage();
     if (lang == "de") {
       $("#usr-contrib-cta").css({ letterSpacing: "-0.1px" });
     }
@@ -572,8 +561,8 @@ function initDialogs()
       $("#about-dlg > .dlg-content #diag-info #sync-ver").text(aResp.appVersion);     
       return browser.storage.local.get();
 
-    }).then(aPrefs => {
-      if (aPrefs.syncClippings) {
+    }).then(prefs => {
+      if (prefs.syncClippings) {
         let msg = { msgID: "get-sync-file-info" };
         return browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
       }
@@ -597,7 +586,7 @@ function initDialogs()
       else {
         // Sync Clippings is inactive.
         $("#about-dlg > .dlg-content #diag-info #sync-file-size-label").hide();
-        $("#about-dlg > .dlg-content #diag-info #about-sync-status").text(chrome.i18n.getMessage("syncStatusOff")).show();
+        $("#about-dlg > .dlg-content #diag-info #about-sync-status").text(browser.i18n.getMessage("syncStatusOff")).show();
       }
       
       $("#about-dlg > .dlg-content #diag-info #sync-diag-detail").show();
@@ -605,7 +594,7 @@ function initDialogs()
     }).catch(aErr => {
       // Native app is not installed.
       log("Clippings/wx: About dialog: Error returned from native app: " + aErr);
-      $("#about-dlg > .dlg-content #diag-info #sync-ver").text(chrome.i18n.getMessage("noSyncHelperApp"));
+      $("#about-dlg > .dlg-content #diag-info #sync-ver").text(browser.i18n.getMessage("noSyncHelperApp"));
       
     }).finally(() => {
       let diagDeck = $("#about-dlg > .dlg-content #diag-info .deck");
@@ -617,7 +606,7 @@ function initDialogs()
   gDialogs.syncClippingsHelp = new aeDialog("#sync-clippings-help-dlg");
 
   // Sync Clippings help dialog content.
-  $("#sync-clippings-help-dlg > .dlg-content").html(sanitizeHTML(chrome.i18n.getMessage("syncHelp")));
+  $("#sync-clippings-help-dlg > .dlg-content").html(sanitizeHTML(browser.i18n.getMessage("syncHelp")));
 }
 
 
@@ -630,17 +619,14 @@ $(window).on("contextmenu", aEvent => {
 
 function gotoURL(aURL)
 {
-  chrome.tabs.create({ url: aURL });
+  browser.tabs.create({ url: aURL });
 }
 
 
-function closePage()
+async function closePage()
 {
-  browser.tabs.getCurrent().then(aTab => {
-    return browser.tabs.remove(aTab.id);
-  }).catch(aErr => {
-    console.error("Clippings/wx: options.js: " + aErr);
-  });
+  let tab = await browser.tabs.getCurrent();
+  browser.tabs.remove(tab.id);
 }
 
 
