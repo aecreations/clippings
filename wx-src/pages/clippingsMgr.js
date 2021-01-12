@@ -313,6 +313,10 @@ let gClippingsListener = {
             changedNode = parentNode.addNode(newNodeData);
           }
 
+          if (aData.label) {
+            changedNode.addClass(`ae-clipping-label-${aData.label}`);
+          }
+
           log(`Clippings/wx::clippingsMgr.js: gCmd.clippingChanged(): Updating display order of items under folder (ID = ${newParentFldrID}) after undoing clipping deletion`);
           gCmd.updateDisplayOrder(newParentFldrID, null, null, true);
         }
