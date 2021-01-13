@@ -542,6 +542,7 @@ function initDialogs()
     $("#about-dlg > .dlg-content #ext-name").text(that.extInfo.name);
     $("#about-dlg > .dlg-content #ext-ver").text(browser.i18n.getMessage("aboutExtVer", that.extInfo.version));
     $("#about-dlg > .dlg-content #ext-desc").text(that.extInfo.description);
+    $("#about-dlg > .dlg-content #ext-home-pg").attr("href", that.extInfo.homePgURL);
 
     let lang = browser.i18n.getUILanguage();
     if (lang == "de") {
