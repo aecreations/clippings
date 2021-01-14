@@ -305,6 +305,17 @@ let gPrefs = null;
 let gIsInitialized = false;
 let gSetDisplayOrderOnRootItems = false;
 
+let gMsgBoxStr = {
+  MSG_UNKNOWN: "msgUnknown",
+  MSG_UNAVAILABLE: "msgUnavail",
+  MSG_NO_TEXT_SELECTED: "msgNoTextSel",
+  MSG_BROWSER_WND_NOT_FOCUSED: "msgBrwsWndNotFocused",
+  MSG_CLIPPING_NOT_FOUND: "msgClpgNotFound",
+  MSG_NO_ACTIVE_BROWSER_TAB: "msgNoActvBrwsTab",
+  MSG_RETRY_PAGE_BUSY: "msgRetryPgBusy",
+  MSG_RETRY_PAGE_NOT_LOADED: "msgRetryPgNotLoaded",
+};
+
 
 //
 // First-run initialization
@@ -880,7 +891,7 @@ function initMessageListeners()
         if (! tabs[0]) {
           // This could happen if the browser tab was closed while the
           // placeholder prompt dialog was open.
-          alertEx(aeMsgBox.MSG_NO_ACTIVE_BROWSER_TAB);
+          alertEx(gMsgBoxStr.MSG_NO_ACTIVE_BROWSER_TAB);
           return;
         }
 
@@ -1668,7 +1679,7 @@ async function pasteClipping(aClippingInfo, aExternalRequest)
   let tabs = await browser.tabs.query(queryInfo);
   if (! tabs[0]) {
     // This should never happen...
-    alertEx(aeMsgBox.MSG_NO_ACTIVE_BROWSER_TAB);
+    alertEx(gMsgBoxStr.MSG_NO_ACTIVE_BROWSER_TAB);
     return;
   }
 
@@ -1895,7 +1906,7 @@ browser.contextMenus.onClicked.addListener(async (aInfo, aTab) => {
   case "ae-clippings-new":
     let tabs = await browser.tabs.query({ active: true, currentWindow: true });
     if (! tabs[0]) {
-      alertEx(aeMsgBox.MSG_BROWSER_WND_NOT_FOCUSED);
+      alertEx(gMsgBoxStr.MSG_BROWSER_WND_NOT_FOCUSED);
       return;
     }
 
@@ -1914,13 +1925,13 @@ browser.contextMenus.onClicked.addListener(async (aInfo, aTab) => {
       resp = await browser.tabs.sendMessage(activeTabID, { msgID: "new-clipping" });
     }
     catch (e) {
-      alertEx(aeMsgBox.MSG_RETRY_PAGE_NOT_LOADED);
+      alertEx(gMsgBoxStr.MSG_RETRY_PAGE_NOT_LOADED);
       break;
     }
 
     if (! resp) {
       console.error("Clippings/wx: Unable to receive response from content script!");
-      alertEx(aeMsgBox.MSG_RETRY_PAGE_BUSY);
+      alertEx(gMsgBoxStr.MSG_RETRY_PAGE_BUSY);
       return;
     }
 
@@ -1929,7 +1940,7 @@ browser.contextMenus.onClicked.addListener(async (aInfo, aTab) => {
       content = resp.content;
     }
     else {
-      alertEx(aeMsgBox.MSG_NO_TEXT_SELECTED);
+      alertEx(gMsgBoxStr.MSG_NO_TEXT_SELECTED);
       return;
     }
 
