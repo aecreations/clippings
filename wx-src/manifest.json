@@ -34,7 +34,6 @@
 	    "lib/dexie/dexie.min.js",
 	    "lib/moment.min.js",
 	    "modules/aeConst.js",
-	    "modules/aeMsgBox.js",
 	    "modules/aeClippingSubst.js",
             "modules/aeImportExport.js",
             "modules/aeDateDiff.js",
