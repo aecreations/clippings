@@ -7,10 +7,10 @@ let gClippings;
 
 
 // Dialog initialization
-$(() => {
+$(async () => {
   browser.history.deleteUrl({ url: window.location.href });
 
-  gClippings = chrome.extension.getBackgroundPage();
+  gClippings = browser.extension.getBackgroundPage();
 
   if (! gClippings) {
     throw new Error("Clippings/wx::backup.js: Failed to retrieve parent browser window!");
@@ -32,69 +32,65 @@ $(() => {
   
   $("#btn-close").click(aEvent => { closeDlg() });
 
-  browser.storage.local.get().then(aPrefs => {
-    $("#backup-reminder").prop("checked", (aPrefs.backupRemFrequency != aeConst.BACKUP_REMIND_NEVER)).click(aEvent => {
-      let setPref;
-      
-      if (aEvent.target.checked) {
-        $("#backup-reminder-freq").prop("disabled", false);
-        setPref = browser.storage.local.set({
-          backupRemFrequency: Number($("#backup-reminder-freq").val()),
-          backupRemFirstRun: false,
-          lastBackupRemDate: new Date().toString(),
-        });
-      }
-      else {
-        $("#backup-reminder-freq").prop("disabled", true);
-        setPref = browser.storage.local.set({
-	  backupRemFrequency: aeConst.BACKUP_REMIND_NEVER,
-	});
-      }
-
-      setPref.then(() => {
-	gClippings.clearBackupNotificationInterval();
-	if (aEvent.target.checked) {
-	  gClippings.setBackupNotificationInterval();
-	}
-      });
-    });
-
-    if (aPrefs.backupRemFrequency == aeConst.BACKUP_REMIND_NEVER) {
-      // Set to default interval.
-      $("#backup-reminder-freq").val(aeConst.BACKUP_REMIND_WEEKLY).prop("disabled", true);
-    }
-    else {
-      $("#backup-reminder-freq").val(aPrefs.backupRemFrequency);
-    }
-
-    $("#backup-reminder-freq").change(aEvent => {
-      browser.storage.local.set({
-        backupRemFrequency: Number(aEvent.target.value),
+  let prefs = await browser.storage.local.get();
+  $("#backup-reminder").prop("checked", (prefs.backupRemFrequency != aeConst.BACKUP_REMIND_NEVER)).click(aEvent => {
+    let setPref;
+    
+    if (aEvent.target.checked) {
+      $("#backup-reminder-freq").prop("disabled", false);
+      setPref = browser.storage.local.set({
+        backupRemFrequency: Number($("#backup-reminder-freq").val()),
         backupRemFirstRun: false,
         lastBackupRemDate: new Date().toString(),
-
-      }).then(() => {
-	gClippings.clearBackupNotificationInterval();
-        gClippings.setBackupNotificationInterval();
       });
-    });
-
-    // Fix for Fx57 bug where bundled page loaded using
-    // browser.windows.create won't show contents unless resized.
-    // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1402110>
-    browser.windows.getCurrent(aWnd => {
-      browser.windows.update(aWnd.id, {
-	width: aWnd.width + 1,
-	focused: true,
+    }
+    else {
+      $("#backup-reminder-freq").prop("disabled", true);
+      setPref = browser.storage.local.set({
+	backupRemFrequency: aeConst.BACKUP_REMIND_NEVER,
       });
+    }
+
+    setPref.then(() => {
+      gClippings.clearBackupNotificationInterval();
+      if (aEvent.target.checked) {
+	gClippings.setBackupNotificationInterval();
+      }
     });
+  });
+
+  if (prefs.backupRemFrequency == aeConst.BACKUP_REMIND_NEVER) {
+    // Set to default interval.
+    $("#backup-reminder-freq").val(aeConst.BACKUP_REMIND_WEEKLY).prop("disabled", true);
+  }
+  else {
+    $("#backup-reminder-freq").val(prefs.backupRemFrequency);
+  }
+
+  $("#backup-reminder-freq").change(async (aEvent) => {
+    await browser.storage.local.set({
+      backupRemFrequency: Number(aEvent.target.value),
+      backupRemFirstRun: false,
+      lastBackupRemDate: new Date().toString(),
+    });
+    gClippings.clearBackupNotificationInterval();
+    gClippings.setBackupNotificationInterval();
+  });
+
+  // Fix for Fx57 bug where bundled page loaded using
+  // browser.windows.create won't show contents unless resized.
+  // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1402110>
+  let wnd = await browser.windows.getCurrent();
+  browser.windows.update(wnd.id, {
+    width: wnd.width + 1,
+    focused: true,
   });
 });
 
 
 function closeDlg()
 {
-  chrome.windows.remove(chrome.windows.WINDOW_ID_CURRENT);
+  browser.windows.remove(browser.windows.WINDOW_ID_CURRENT);
 }
 
 
