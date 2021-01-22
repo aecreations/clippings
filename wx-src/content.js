@@ -228,7 +228,13 @@ function insertTextIntoRichTextEditor(aRichTextEditorDocument, aClippingText, aA
 
 function createInputEventInstance()
 {
-  return new Event("input", { bubbles: true, cancelable: false });
+  let eventInit = {
+    bubbles: true,
+    cancelable: false,
+    composed: true
+  };
+  
+  return new Event("input", eventInit);
 }
 
 
