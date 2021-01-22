@@ -49,27 +49,27 @@ span.fancytree-title {
 
 .fancytree-plain span.fancytree-title {
     border: none;
-    padding: 4px 2px 1px 4px;
+    padding: 2px 2px 3px 3px;
 }
 
 .fancytree-plain span.fancytree-active span.fancytree-title,
 .fancytree-plain span.fancytree-selected span.fancytree-title {
     background-color: var(--color-selected-node);
     border: 1px solid var(--color-selected-border);
-    padding: 3px 3px 1px 3px;
+    padding: 1px 2px 2px 2px;
 }
 
 .fancytree-plain span.fancytree-node:hover span.fancytree-title {
     background-color: var(--color-active-node);
     border: 1px solid var(--color-active-border);
-    padding: 3px 3px 1px 3px;
+    padding: 1px 2px 2px 2px;
 }
 
 .fancytree-plain.fancytree-container.fancytree-treefocus span.fancytree-active span.fancytree-title,
 .fancytree-plain.fancytree-container.fancytree-treefocus span.fancytree-selected span.fancytree-title {
     background-color: var(--color-focused-node);
     border: 1px solid var(--color-focused-border);
-    padding: 3px 3px 1px 3px;
+    padding: 1px 2px 2px 2px;
 }
 
 
