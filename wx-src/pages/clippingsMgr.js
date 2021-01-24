@@ -2896,6 +2896,10 @@ function initDialogs()
             }
           });
         });
+
+        if (browser.i18n.getUILanguage() == "nl") {
+          $("#shortcut-instrxns").css({ letterSpacing: "-0.31px" });
+        }
         
         that.isInitialized = true;
       }

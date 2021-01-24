@@ -355,7 +355,10 @@ function initDialogs()
         $("#sync-helper-app-update-check + label").css({ letterSpacing: "-0.56px" });
       }
       else if (lang == "nl") {
-        $("#sync-helper-app-update-check + label").css({ letterSpacing: "-0.65px" });
+        $("#sync-helper-app-update-check + label").css({
+          letterSpacing: "-0.7px",
+          marginRight: "0",
+        });
       }
 
       let msg = { msgID: "get-sync-dir" };
