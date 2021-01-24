@@ -54,10 +54,6 @@ input[type="text"], textarea {
     font-size: 11px;
 }
 
-input[type="checkbox"] + label {
-    vertical-align: -0.3em
-}
-
 textarea {
     resize: none;
 }

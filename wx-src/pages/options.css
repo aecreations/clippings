@@ -112,10 +112,6 @@ label {
     margin-right: 4px;
 }
 
-input[type="checkbox"] + label {
-    vertical-align: middle;
-}
-
 button {
     min-width: 88px;
     height: 32px;
