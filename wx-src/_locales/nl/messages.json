@@ -173,7 +173,7 @@
     "description": "New Clipping dialog"
   },
   "labelName": {
-    "message": "Naam van nieuwe clipping:"
+    "message": "Naam van nieuwe knipsel:"
   },
   "labelContent": {
     "message": "Tekst:"
@@ -270,7 +270,7 @@
     "description": "Placeholder prompt dialog - multiple placeholders"
   },
   "clippingsMgrWndTitle": {
-    "message": "Open Clippings Manager",
+    "message": "Clippings Manager",
     "description": "Clippings Manager window title"
   },
   "tbNewClipping": {
