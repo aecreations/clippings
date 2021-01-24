@@ -354,6 +354,9 @@ function initDialogs()
       else if (lang == "pt-BR") {
         $("#sync-helper-app-update-check + label").css({ letterSpacing: "-0.56px" });
       }
+      else if (lang == "nl") {
+        $("#sync-helper-app-update-check + label").css({ letterSpacing: "-0.65px" });
+      }
 
       let msg = { msgID: "get-sync-dir" };
       return browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
