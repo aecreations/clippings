@@ -296,7 +296,7 @@
     "description": "Clippings Manager search bar hint text"
   },
   "clipMgrIntroHdg": {
-    "message": "Welkom bij Knipsels 6"
+    "message": "Welkom bij Clippings 6"
   },
   "clipMgrIntroDesc": {
     "message": "Gebruik Clippings Manager om clippings te bewerken, te hernoemen of te verwijderen en uw collectie van clippings in mappen te organiseren."
@@ -555,7 +555,7 @@
     "message": "Beschrijving"
   },
   "expFmtClippings6": {
-    "message": "Knipsels 6"
+    "message": "Clippings 6"
   },
   "expFmtClippings6Desc": {
     "message": "Het standaardformaat om Clippings gegevens te back-uppen en uit te wisselen met andere gebruikers of meerdere computers. Vereist Clippings 5.5 of nieuwer."
