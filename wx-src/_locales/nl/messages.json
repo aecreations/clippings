@@ -647,7 +647,7 @@
     "message": "Activeer sneltoetsmodus door op deze toetsen te drukken:"
   },
   "prefsShortcutKeyNote": {
-    "message": "Sommige van de beschikbare sneltoetsen zijn mogelijk al toegewezen aan <a href=\"https://support.mozilla.org/en-US/kb/keyboard-shortcuts-perform-firefox-tasks-quickly\" class=\"hyperlink\">Firefox-commando's</a> of andere add-ons."
+    "message": "Sommige van de beschikbare sneltoetsen zijn mogelijk al toegewezen aan <a href=\"https://support.mozilla.org/en-US/kb/keyboard-shortcuts-perform-firefox-tasks-quickly\" class=\"hyperlink\">Firefox-commando's</a> of andere add\u2011ons."
   },
   "prefsOutsideShct": {
     "message": "Om de sneltoets te wijzigen, gaat u naar het beheren van Extensie snelkoppelingen in Add-ons Manager."
