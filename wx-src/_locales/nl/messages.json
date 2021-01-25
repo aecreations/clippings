@@ -620,7 +620,7 @@
     "message": "Kopiëren"
   },
   "prefsTitle": {
-    "message": "Knipsel opties"
+    "message": "Clippings opties"
   },
   "errPrefPgFailed": {
     "message": "Kan de extensie-voorkeuren pagina niet laden. Herstart Firefox en probeer het opnieuw."
