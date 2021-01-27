@@ -313,6 +313,10 @@ let gClippingsListener = {
             changedNode = parentNode.addNode(newNodeData);
           }
 
+          if (aData.label) {
+            changedNode.addClass(`ae-clipping-label-${aData.label}`);
+          }
+
           log(`Clippings/wx::clippingsMgr.js: gCmd.clippingChanged(): Updating display order of items under folder (ID = ${newParentFldrID}) after undoing clipping deletion`);
           gCmd.updateDisplayOrder(newParentFldrID, null, null, true);
         }
@@ -1287,13 +1291,25 @@ let gCmd = {
     let clippingCpy = {};
    
     gClippingsDB.clippings.get(aClippingID).then(aClipping => {
+      let tree = getClippingsTree();
+      let parentFldrNode;
+      if (aDestFldrID == aeConst.ROOT_FOLDER_ID) {
+        parentFldrNode = tree.rootNode
+      }
+      else {
+        parentFldrNode = tree.getNodeByKey(aDestFldrID + "F");
+      }
+      let parentFldrChildNodes = parentFldrNode.getChildren();
+      let displayOrder = parentFldrChildNodes ? parentFldrChildNodes.length : 0;
+
       clippingCpy = {
         name: aClipping.name,
         content: aClipping.content,
         shortcutKey: "",
         parentFolderID: aDestFldrID,
         label: aClipping.label,
-        sourceURL: aClipping.sourceURL
+        sourceURL: aClipping.sourceURL,
+        displayOrder
       };
 
       return gClippingsSvc.createClipping(clippingCpy);
@@ -1329,7 +1345,11 @@ let gCmd = {
     
     gClippingsDB.folders.get(aFolderID).then(aFolder => {
       oldParentFldrID = aFolder.parentFolderID;
-      return gClippingsSvc.updateFolder(aFolderID, { parentFolderID: aNewParentFldrID }, aFolder);
+      let folderCpy = {
+        parentFolderID: aNewParentFldrID,
+      };
+      return gClippingsSvc.updateFolder(aFolderID, folderCpy, aFolder);
+
     }).then(aNumUpd => {
       if (aDestUndoStack == this.UNDO_STACK) {
         this.undoStack.push({
@@ -1369,9 +1389,21 @@ let gCmd = {
     let folderCpy = {};
       
     gClippingsDB.folders.get(aFolderID).then(aFolder => {
+      let tree = getClippingsTree();
+      let parentFldrNode;
+      if (aDestFldrID == aeConst.ROOT_FOLDER_ID) {
+        parentFldrNode = tree.rootNode
+      }
+      else {
+        parentFldrNode = tree.getNodeByKey(aDestFldrID + "F");
+      }
+      let parentFldrChildNodes = parentFldrNode.getChildren();
+      let displayOrder = parentFldrChildNodes ? parentFldrChildNodes.length : 0;
+
       folderCpy = {
         name: aFolder.name,
         parentFolderID: aDestFldrID,
+        displayOrder,
       };
       return gClippingsSvc.createFolder(folderCpy);
       
@@ -2864,6 +2896,10 @@ function initDialogs()
             }
           });
         });
+
+        if (browser.i18n.getUILanguage() == "nl") {
+          $("#shortcut-instrxns").css({ letterSpacing: "-0.31px" });
+        }
         
         that.isInitialized = true;
       }

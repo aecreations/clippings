@@ -1,0 +1,950 @@
+{
+  "extName": {
+    "message": "Clippings",
+    "description": "Name of the extension - do NOT translate"
+  },
+  "extDesc": {
+    "message": "Vaak ingevoerde tekst opslaan om later te plakken.",
+    "description": "Description of the extension"
+  },
+  "browserActionTitle": {
+    "message": "Knipsels",
+    "description": "Toolbar button label"
+  },
+  "cmdDesc": {
+    "message": "Knipsels met sleutel plakken",
+    "description": "Keyboard shortcut description in Manage Extension Shortcuts"
+  },
+  "hostAppFx": {
+    "message": "Firefox"
+  },
+  "hostAppTb": {
+    "message": "Thunderbird"
+  },
+  "hostAppAll": {
+    "message": "Firefox of Thunderbird"
+  },
+  "btnOK": {
+    "message": "OK"
+  },
+  "btnCancel": {
+    "message": "Annuleren"
+  },
+  "btnClose": {
+    "message": "Sluiten",
+    "description": "Dialog action button"
+  },
+  "btnYes": {
+    "message": "Ja"
+  },
+  "btnNo": {
+    "message": "Nee"
+  },
+  "btnDone": {
+    "message": "Klaar"
+  },
+  "btnBrowse": {
+    "message": "Browse…"
+  },
+  "pasteTitle": {
+    "message": "Plak knipsel",
+    "description": "Title bar text of keyboard paste dialog"
+  },
+  "msgTitle": {
+    "message": "Waarschuwing",
+    "description": "Title bar text of alert dialog"
+  },
+  "msgUnavail": {
+    "message": "De geselecteerde actie is momenteel niet beschikbaar."
+  },
+  "msgNoTextSel": {
+    "message": "Er is geen tekst geselecteerd. Selecteer eerst een tekst."
+  },
+  "msgBrwsWndNotFocused": {
+    "message": "Ga terug naar het browservenster en probeer het opnieuw."
+  },
+  "msgClpgNotFound": {
+    "message": "Kan de geselecteerde knipsel niet vinden!"
+  },
+  "msgNoActvBrwsTab": {
+    "message": "Kan het knipsel niet plakken omdat er geen actief browser-tabblad is."
+  },
+  "msgRetryPgBusy": {
+    "message": "De pagina is bezig. Wacht tot de pagina klaar is, en probeer het opnieuw."
+  },
+  "msgRetryPgNotLoaded": {
+    "message": "Kan de geselecteerde tekst niet ophalen. Herlaad de pagina en probeer het opnieuw."
+  },
+  "msgUnknown": {
+    "message": "Er is geen hulp beschikbaar (dus laat me met rust)."
+  },
+  "none": {
+    "message": "Geen",
+    "description": "Denotes that there is no shortcut key, label or source web address (URL)."
+  },
+  "newClipping": {
+    "message": "Nieuw knipsel"
+  },
+  "newFolder": {
+    "message": "Nieuwe Map"
+  },
+  "untitledClipping": {
+    "message": "Naamloos Knipsel"
+  },
+  "untitledFolder": {
+    "message": "Naamloze Map"
+  },
+  "rootFldrName": {
+    "message": "Knipsels",
+    "description": "Name of root folder"
+  },
+  "labelRed": {
+    "message": "Rood"
+  },
+  "labelOrange": {
+    "message": "Oranje"
+  },
+  "labelYellow": {
+    "message": "Geel"
+  },
+  "labelGreen": {
+    "message": "Groen"
+  },
+  "labelBlue": {
+    "message": "Blauw"
+  },
+  "labelPurple": {
+    "message": "Purper"
+  },
+  "labelGrey": {
+    "message": "Grijs"
+  },
+  "cxtMenuNew": {
+    "message": "Nieuw…",
+    "description": "Clippings context menu"
+  },
+  "cxtMenuOpenClippingsMgr": {
+    "message": "Knipsels organiseren",
+    "description": "Clippings context menu"
+  },
+  "baMenuResetAutoIncrPlaceholders": {
+    "message": "Reset Auto-increment Plaatshouders",
+    "description": "Clippings browser action submenu"
+  },
+  "welcomePageTitle": {
+    "message": "Welkom bij Clippings",
+    "description": "Welcome to Clippings (post-installation) page title"
+  },
+  "welcInstallSuccessHdg": {
+    "message": "Welkom bij Clippings!"
+  },
+  "welcInstallSuccessSubh": {
+    "message": "Installatie succesvol afgerond."
+  },
+  "welcWhatsNewHdg": {
+    "message": "Wat is er nieuw"
+  },
+  "welcWhatsNewDesc": {
+    "message": "Clippings 6.2 bevat veel nieuwe functies en verbeteringen, zoals ondersteuning bij donkere modus."
+  },
+  "welcWhatsNewCTA": {
+    "message": "Meer informatie"
+  },
+  "welcQuickStartHdg": {
+    "message": "Quick Start Guide"
+  },
+  "welcQuickStartDesc": {
+    "message": "Aanbevolen lezen voor nieuwe gebruikers. Leer de essentiële functies van Knipsels in slechts een paar minuten."
+  },
+  "welcQuickStartCTA": {
+    "message": "Lees de handleiding"
+  },
+  "closeWelcomePg": {
+    "message": "Sluit deze pagina"
+  },
+  "welcLeaveConfirm": {
+    "message": "Weet u zeker dat u de welkom bij Clippings pagina wilt verlaten?"
+  },
+  "welcCancelDlg": {
+    "message": "Ga terug"
+  },
+  "newClippingDlgTitle": {
+    "message": "Nieuw knipsel",
+    "description": "New Clipping dialog"
+  },
+  "labelName": {
+    "message": "Naam van nieuwe knipsel:"
+  },
+  "labelContent": {
+    "message": "Tekst:"
+  },
+  "labelCreateInFldr": {
+    "message": "Plaatsen in:"
+  },
+  "btnNewFolder": {
+    "message": "Nieuwe Map"
+  },
+  "labelCreateClippingOptions": {
+    "message": "Opties",
+    "description": "Button to expand clipping options (source URL, label) in New Clipping dialog"
+  },
+  "labelSaveSrcURL": {
+    "message": "Het adres van de bronwebpagina opslaan"
+  },
+  "labelShortcutKey": {
+    "message": "Sneltoets:"
+  },
+  "labelLabel": {
+    "message": "Label:",
+    "description": "Label for the Clipping label menu"
+  },
+  "labelNewFldrName": {
+    "message": "Nieuwe naam van de map:"
+  },
+  "labelCreateAsSubfOf": {
+    "message": "Als een submap aanmaken van:"
+  },
+  "shortcutKeyHint": {
+    "message": "Om deze knipsel snel te plakken in een tekstvak van een webpagina in Firefox, druk op $1 gevolgd door de sneltoets."
+  },
+  "shortcutKeyAssigned": {
+    "message": "'$1' is al toegewezen"
+  },
+  "initError": {
+    "message": "Clippings werkt niet als de privacyinstellingen in Firefox te beperkend zijn, zoals met de privénavigatie mode. Verander deze instellingen terug naar de standaardwaarden, start Firefox vervolgens opnieuw op en probeer het opnieuw."
+  },
+  "saveClippingError": {
+    "message": "Kan nieuwe clipping niet opslaan. Controleer of de privacyinstellingen in Firefox niet te beperkend zijn (zoals het inschakelen van privénavigatie modus), start Firefox opnieuw op en probeer het opnieuw."
+  },
+  "shortcutKeyDesc": {
+    "message": "Druk op de sneltoets van de clipping die je wilt plakken."
+  },
+  "keybPasteDlgF1": {
+    "message": "F1 = snelkoppeling lijst"
+  },
+  "keybPasteDlgTab": {
+    "message": "TAB = knipsel zoeken op naam"
+  },
+  "keybPasteDlgTabShctMode": {
+    "message": "TAB = sneltoetsmodus"
+  },
+  "srchByNameDesc": {
+    "message": "Knipsels zoeken op naam:"
+  },
+  "numMatches": {
+    "message": "$1 overeenkomsten",
+    "description": "Status bar message in Clippings Manager showing the number of matches for the search query."
+  },
+  "insClipping": {
+    "message": "Knipsels invoegen"
+  },
+  "exportHTML": {
+    "message": "Exporteren naar HTML"
+  },
+  "expHTMLTitle": {
+    "message": "Knipsels sneltoetslijst",
+    "description": "HTML export of shortcut key list - page title"
+  },
+  "expHTMLHostAppInfo": {
+    "message": "Knipsels $1 op $2",
+    "description": "Clippings <extVersion> on Firefox <fxVersion>"
+  },
+  "expHTMLShctKeyInstrxn": {
+    "message": "Om een knipsel in een webpagina tekstvak in Firefox te plakken, druk op ALT+SHIFT+Y (Command+Shift+Y op macOS) en daarna de sneltoets."
+  },
+  "expHTMLShctKeyCustNote": {
+    "message": "LET OP: Het voorvoegsel van de sneltoets (standaard sleutels ALT+SHIFT+Y of Command+Shift+Y) kan anders zijn, afhankelijk van uw Knipselinstellingen."
+  },
+  "expHTMLShctKeyCol": {
+    "message": "Sneltoets"
+  },
+  "expHTMLClipNameCol": {
+    "message": "Knipsel naam"
+  },
+  "plchldrPromptSingleDesc": {
+    "message": "Typ waarde voor \"$1\":",
+    "description": "Placeholder prompt dialog - single placeholder"
+  },
+  "plchldrPromptMultiDesc": {
+    "message": "Voer de waarden voor de volgende placeholders in.",
+    "description": "Placeholder prompt dialog - multiple placeholders"
+  },
+  "clippingsMgrWndTitle": {
+    "message": "Clippings Manager",
+    "description": "Clippings Manager window title"
+  },
+  "tbNewClipping": {
+    "message": "Nieuw knipsel"
+  },
+  "tbNewFolder": {
+    "message": "Nieuwe Map"
+  },
+  "tbMoveOrCopy": {
+    "message": "Verplaatsen of kopiëren"
+  },
+  "tbDelete": {
+    "message": "Verwijderen"
+  },
+  "tbUndo": {
+    "message": "Ongedaan maken"
+  },
+  "tbTools": {
+    "message": "Extra"
+  },
+  "clipMgrSrchBarHint": {
+    "message": "Knipsels en mappen vinden",
+    "description": "Clippings Manager search bar hint text"
+  },
+  "clipMgrIntroHdg": {
+    "message": "Welkom bij Clippings 6"
+  },
+  "clipMgrIntroDesc": {
+    "message": "Gebruik Clippings Manager om clippings te bewerken, te hernoemen of te verwijderen en uw collectie van clippings in mappen te organiseren."
+  },
+  "clipMgrIntroKeybHdg": {
+    "message": "Toetsenbord sneltoetsen"
+  },
+  "clipMgrShowOnlySyncItemsRem": {
+    "message": "Knipsels worden alleen gesynchroniseerde items weergegeven in het Knipselmenu. U kunt nog steeds items toevoegen en beheren buiten de Gesynchroniseerde Knipsels map, maar ze worden niet weergegeven in het Knipsels menu. Deze optie kan worden gewijzigd in Knipsels voorkeuren."
+  },
+  "labelInsPlchldr": {
+    "message": "Evenementen plaatshouders:",
+    "description": "Clippings Manager - Placeholder Toolbar"
+  },
+  "tbPlchldrPresets": {
+    "message": "Voorkeursinstellingen",
+    "description": "Clippings Manager - Placeholder Toolbar button"
+  },
+  "tbPlchldrCustom": {
+    "message": "Aangepast",
+    "description": "Clippings Manager - Placeholder Toolbar button"
+  },
+  "tbPlchldrNumeric": {
+    "message": "Numeriek",
+    "description": "Clippings Manager - Placeholder Toolbar button"
+  },
+  "labelSrcURL": {
+    "message": "Bron adres:"
+  },
+  "btnEditSrcURL": {
+    "message": "Bewerken"
+  },
+  "mnuNewFromClipbd": {
+    "message": "Voeg toe vanaf het klembord"
+  },
+  "mnuBackup": {
+    "message": "Back-up maken…"
+  },
+  "mnuRestoreFromBackup": {
+    "message": "Back-up terugzetten…"
+  },
+  "mnuImport": {
+    "message": "Importeer…"
+  },
+  "mnuExport": {
+    "message": "Exporteren…"
+  },
+  "mnuReloadSyncFldr": {
+    "message": "Opnieuw Laden"
+  },
+  "mnuRemoveAllSrcURLs": {
+    "message": "Bron webadressen verwijderen…"
+  },
+  "mnuShowHide": {
+    "message": "Toon/Verberg"
+  },
+  "mnuShowHideDetails": {
+    "message": "Details Schot"
+  },
+  "mnuShowHidePlchldrBar": {
+    "message": "Tijdelijke aanduiding voor sjabloon"
+  },
+  "mnuShowHideStatusBar": {
+    "message": "Status Balk"
+  },
+  "mnuMaximize": {
+    "message": "Maximaliseren"
+  },
+  "mnuMinimizeWhenInactive": {
+    "message": "Minimaliseren bij inactief"
+  },
+  "mnuShowExtPrefs": {
+    "message": "Opties…"
+  },
+  "mnuMoveOrCopy": {
+    "message": "Verplaatsen of kopiëren…"
+  },
+  "mnuEditLabel": {
+    "message": "Label"
+  },
+  "mnuGoToSrcURL": {
+    "message": "Ga naar bronpagina"
+  },
+  "mnuPlchldrDate": {
+    "message": "Datum",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "mnuPlchldrTime": {
+    "message": "Tijd",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "mnuPlchldrAppName": {
+    "message": "Applicatienaam",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "mnuPlchldrUsrAgent": {
+    "message": "Gebruikersagent",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "mnuPlchldrClipName": {
+    "message": "Knipsel naam",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "mnuPlchldrFldrName": {
+    "message": "Naam van bovenliggende map",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "mnuPlchldrFmtDateTime": {
+    "message": "Opgemaakte datum/tijd...",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "clipMgrNameHint": {
+    "message": "Clipping naam",
+    "description": "Clippings Manager - clipping name textbox hint text"
+  },
+  "clipMgrContentHint": {
+    "message": "Kniptekst invoeren",
+    "description": "Clippings Manager - clipping content textarea hint text"
+  },
+  "clipMgrShortcutHelpHint": {
+    "message": "Sneltoets hulp"
+  },
+  "clipMgrNoItems": {
+    "message": "Geen clipping gevonden."
+  },
+  "clipMgrIntroCmdDel": {
+    "message": "Verwijder geselecteerd knipsel of map",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdClearSrchBar": {
+    "message": "Zoekbalk leegmaken",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdSrch": {
+    "message": "Knipsels en mappen vinden",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdClose": {
+    "message": "Clippings manager sluiten",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdUndo": {
+    "message": "Ongedaan maken",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdShowIntro": {
+    "message": "Toon Clippings Manager introductie",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdMaximize": {
+    "message": "Venster maximaliseren",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdRedo": {
+    "message": "Taak ongedaan maken",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrStatusBar": {
+    "message": "$1 items",
+    "description": "Status bar text in Clippings Manager, counting the number of clippings and folders"
+  },
+  "clipMgrRemoveSrcURLsConfirm": {
+    "message": "Bron-webpagina-adressen zijn verwijderd van uw clippings."
+  },
+  "clipMgrNoUndo": {
+    "message": "Niets om ongedaan te maken"
+  },
+  "clipMgrNoRedo": {
+    "message": "Niets om te herstellen"
+  },
+  "clipMgrShortcutKeyHelpHdg": {
+    "message": "Clippings sneltoetslijst"
+  },
+  "clipMgrShortcutHelpInstrxn": {
+    "message": "Om een knipsel van de onderstaande lijst te plakken in een webpagina tekstvak in Firefox, drukt up op $1, vervolgens drukt u op de sneltoets."
+  },
+  "clipMgrShortcutKeyAssigned": {
+    "message": "De geselecteerde sneltoets is al toegewezen aan een ander knipsel, selecteer een andere sneltoets."
+  },
+  "clipMgrNoSrcURL": {
+    "message": "Het geselecteerde knipsel heeft geen bronadres van de webpagina."
+  },
+  "clipMgrImportConfirm": {
+    "message": "Importeren van \"$1\" is met succes afgerond."
+  },
+  "btnReload": {
+    "message": "Herladen"
+  },
+  "clipMgrExportConfirm": {
+    "message": "Clippings exporteren naar \"$1\" is met succes afgerond."
+  },
+  "clipMgrBackupConfirm": {
+    "message": "Importeren van \"$1\" is met succes afgerond."
+  },
+  "clipMgrWarnRemoveSrcURLs": {
+    "message": "Alle bron-webpagina-adressen van uw clippings zullen worden verwijderd. Wilt u doorgaan?"
+  },
+  "placeholderNameHint": {
+    "message": "Letters, cijfers, onderstrepingstekens, geen spaties"
+  },
+  "labelCustPlchldrName": {
+    "message": "Naam van aangepaste aanduiding:"
+  },
+  "labelNumPlchldrName": {
+    "message": "Naam van aangepaste aanduiding:"
+  },
+  "labelCustPlchldrVal": {
+    "message": "Standaardwaarde (optioneel):"
+  },
+  "custPlchldrValDesc": {
+    "message": "Scheid meerdere standaardwaarden door een “|” symbool. Voorbeeld: rood|groen|blauw"
+  },
+  "numPlchldrDesc": {
+    "message": "Elke keer als de knipsel geplakt is, zal de waarde van deze tijdelijke aanduiding automatisch met één verhoogd worden. totdat de placeholder wordt gereset vanuit het contextmenu van de Clippings werkbalk."
+  },
+  "dateTimeFmts": {
+    "message": "Beschikbare datum/tijd formaten:"
+  },
+  "labelSelImportFile": {
+    "message": "Selecteer importbestand:"
+  },
+  "labelSelBkupFile": {
+    "message": "Back-upbestand selecteren:"
+  },
+  "statusSavingBkup": {
+    "message": "Back-upbestand selecteren..."
+  },
+  "statusSavingBkupDone": {
+    "message": "Back-up bestand opslaan... gereed"
+  },
+  "statusSavingBkupFailed": {
+    "message": "Back-up mislukt."
+  },
+  "backupError": {
+    "message": "Sorry, er is een fout opgetreden tijdens het maken van het reservekopiebestand.\n\nDetails:\n$1"
+  },
+  "cbImportReplcShctKeys": {
+    "message": "Snelkoppelingen vervangen"
+  },
+  "warnBackupOverwrite": {
+    "message": "Het herstellen van een back-upbestand zal al uw clippings vervangen door de back-up. Deze actie kan niet ongedaan gemaakt worden."
+  },
+  "btnImport": {
+    "message": "Importeren"
+  },
+  "btnRestoreBkup": {
+    "message": "Backup herstellen"
+  },
+  "importError": {
+    "message": "Fout bij het lezen van het geselecteerde bestand. Het bestand is mogelijk geen geldig Clippings bestand."
+  },
+  "labelSelExportFmt": {
+    "message": "Selecteer een formaat om clippings te exporteren naar:"
+  },
+  "expFmtDescHdg": {
+    "message": "Beschrijving"
+  },
+  "expFmtClippings6": {
+    "message": "Clippings 6"
+  },
+  "expFmtClippings6Desc": {
+    "message": "Het standaardformaat om Clippings gegevens te back-uppen en uit te wisselen met andere gebruikers of meerdere computers. Vereist Clippings 5.5 of nieuwer."
+  },
+  "expFmtHTMLDoc": {
+    "message": "HTML document"
+  },
+  "expFmtHTMLDocDesc": {
+    "message": "Exporteert de Clippings gegevens als een HTML-document voor het afdrukken of weergeven in een webbrowser."
+  },
+  "expFmtCSV": {
+    "message": "CSV-bestand"
+  },
+  "expFmtCSVDesc": {
+    "message": "Gebruik het door komma's gescheiden formaat (CSV) om Clippings gegevens uit te wisselen met andere toepassingen. Alleen knipselnamen en inhoud worden geëxporteerd."
+  },
+  "cbExpInclSrcURLs": {
+    "message": "Webpagina-adressen van knipsels opnemen"
+  },
+  "btnExport": {
+    "message": "Exporteren"
+  },
+  "statusExportStart": {
+    "message": "Exporteren..."
+  },
+  "statusExportDone": {
+    "message": "Exporteren... klaar"
+  },
+  "statusExportFailed": {
+    "message": "Exporteren mislukt."
+  },
+  "exportError": {
+    "message": "Fout bij het exporteren van Clippings gegevens.\n\nDetails:\n$1"
+  },
+  "labelMoveClipping": {
+    "message": "Knipsel verplaatsen naar:"
+  },
+  "labelMoveFolder": {
+    "message": "Verplaats map naar:"
+  },
+  "labelCopyClipping": {
+    "message": "Knipsel kopiëren naar:"
+  },
+  "labelCopyFolder": {
+    "message": "Kopieer map naar:"
+  },
+  "cbCreateCopy": {
+    "message": "Kopie maken"
+  },
+  "errMoveToSameParent": {
+    "message": "Item bestaat al in de gekozen map.",
+    "description": "Error message when attempting to move clipping/folder to the same parent folder"
+  },
+  "errMoveToSubfldr": {
+    "message": "Kan niet verplaatsen of kopiëren naar de gekozen map.",
+    "description": "Error message when attempting to move or copy a folder into a subfolder of itself"
+  },
+  "btnMove": {
+    "message": "Verplaatsen"
+  },
+  "btnCopy": {
+    "message": "Kopiëren"
+  },
+  "prefsTitle": {
+    "message": "Clippings opties"
+  },
+  "errPrefPgFailed": {
+    "message": "Kan de extensie-voorkeuren pagina niet laden. Herstart Firefox en probeer het opnieuw."
+  },
+  "prefsHdgPasteOptions": {
+    "message": "Plak opties"
+  },
+  "labelPasteOptions": {
+    "message": "Bij het plakken van een knipsel met HTML-formaat in een rich text edit box:"
+  },
+  "pasteOptFormatted": {
+    "message": "Plakken als opgemaakt tekst"
+  },
+  "pasteOptRawHTML": {
+    "message": "Plakken als platte tekst, behoud HTML tags"
+  },
+  "cbAutoLineBreak": {
+    "message": "Regels automatisch breken tenzij <p> of <br> tags bestaan"
+  },
+  "htmlPasteDesc": {
+    "message": "Een knipsel met HTML-opmaak wordt altijd als platte tekst geplakt bij plakken in een tekstvak of als de knipsel beperkte tags bevat zoals <script>, <applet>, <object>, <iframe>, etc."
+  },
+  "prefsShortcutMode": {
+    "message": "Activeer sneltoetsmodus door op deze toetsen te drukken:"
+  },
+  "prefsShortcutKeyNote": {
+    "message": "Sommige van de beschikbare sneltoetsen zijn mogelijk al toegewezen aan <a href=\"https://support.mozilla.org/en-US/kb/keyboard-shortcuts-perform-firefox-tasks-quickly\" class=\"hyperlink\">Firefox-commando's</a> of andere add\u2011ons."
+  },
+  "prefsOutsideShct": {
+    "message": "Om de sneltoets te wijzigen, gaat u naar het beheren van Extensie snelkoppelingen in Add-ons Manager."
+  },
+  "prefsDefaultNumPlchldrStart": {
+    "message": "Standaard beginwaarde voor automatisch verhogen van placeholders:"
+  },
+  "prefsHdgGeneralOptions": {
+    "message": "Algemene Opties"
+  },
+  "cbAlwaysSaveSrcURL": {
+    "message": "Het adres van de bronwebpagina altijd opslaan"
+  },
+  "cbCheckSpelling": {
+    "message": "Spelling controleren"
+  },
+  "cbBackupFilenameWithDate": {
+    "message": "Datum toevoegen aan de naam van de back-up"
+  },
+  "backupRemind": {
+    "message": "Toon backup herinnering elke",
+    "description": "Label for checkbox option for setting backup notification, appears after checkbox and before the reminder frequency drop-down menu"
+  },
+  "backupRemDays": {
+    "message": "dagen",
+    "description": "Label appearing after the drop-down menu for backup reminder frequency"
+  },
+  "backupRemFreqDaily": {
+    "message": "1",
+    "description": "Number of days between backup reminders: once a day"
+  },
+  "backupRemFreqTwoDays": {
+    "message": "2",
+    "description": "Number of days between backup reminders: once every 2 days"
+  },
+  "backupRemFreqThreeDays": {
+    "message": "3",
+    "description": "Number of days between backup reminders: once every 3 days"
+  },
+  "backupRemFreqFiveDays": {
+    "message": "5",
+    "description": "Number of days between backup reminders: once every 5 days"
+  },
+  "backupRemFreqWeekly": {
+    "message": "7",
+    "description": "Number of days between backup reminders: once a week (every 7 days)"
+  },
+  "backupRemFreqTwoWeeks": {
+    "message": "14",
+    "description": "Number of days between backup reminders: once every 2 weeks (every 14 days)"
+  },
+  "backupRemFreqMonthly": {
+    "message": "30",
+    "description": "Number of days between backup reminders: once a month (every 30 days)"
+  },
+  "firstBackupTitle": {
+    "message": "Back-up",
+    "description": "Title bar text for first-time backup dialog"
+  },
+  "backupNotifyTitle": {
+    "message": "Back-up maken van Knipsels"
+  },
+  "backupNotifyMsg": {
+    "message": "Het is tijd om een back-up van je knipsels te maken. Klik hier om je knipsels nu een back-up te maken."
+  },
+  "backupNotifyFirstMsg": {
+    "message": "Houd je knipsels veilig door regelmatige backups te maken. Klik hier om een back-up van je knipsels te maken en backup herinneringen in te stellen."
+  },
+  "backupFirstDesc": {
+    "message": "Houd uw knipsels veilig door regelmatige backups te maken. Neem een moment om een back-up te maken van uw clippings door nu op back-up te klikken."
+  },
+  "backupNow": {
+    "message": "Nu Back-uppen"
+  },
+  "backupHint": {
+    "message": "Je kunt ook op elk moment een back-up maken van je clippings manager. Gewoon knipsels manager openen en vervolgens Hulpmiddelen → back-up selecteren."
+  },
+  "backupPrefsHdg": {
+    "message": "Back-up herinnering instellen"
+  },
+  "backupPrefsHint": {
+    "message": "Deze instelling kan ook worden gewijzigd in Knipsels voorkeuren."
+  },
+  "syncFldrName": {
+    "message": "Gesynchroniseerde Knipsels",
+    "description": "The name of the folder containing the user's synchronized clippings."
+  },
+  "syncClippings": {
+    "message": "Gesynchroniseerde Knipsels",
+    "description": "The name of the feature for synchronizing clippings between applications or computers."
+  },
+  "syncIntro": {
+    "message": "Je kunt de clippings synchroniseren met Thunderbird of andere Firefox-installaties door de knipsels die je wilt delen in een speciale map \"Gesynchroniseerde Clippings\". De gesynchroniseerde knipsels zullen worden opgeslagen in een bestand op uw systeem. Vereist de <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">Sync Clippings</a> helper-app."
+  },
+  "syncLearnMore": {
+    "message": "Meer informatie over Clippings synchroniseren."
+  },
+  "syncHelp": {
+    "message": "<p class=\"dlg-subhead\">Sync Clippings</p><p>Met Sync Clippings synchroniseer je een subgroep van knipsels tussen Firefox and Thunderbird, zodat ze beschikbaar komen in beide toepassingen. Je kunt kiezen welke knipsels je wilt synchroniseren door ze aan te maken in een speciale “Synced Clippings” map in de New Clipping dialoog, of door ze te verplaatsen naar een zelfde map in Clippings Manager.</p><p>De Synced Clippings map wordt automatisch aangemaakt als Sync Clippings is geïnstalleerd.</p><p class=\"dlg-subhead\">Installatie</p><p>Sync Clippings moet worden ingeschakeld in de toepassingen waarmee je de knipsels wilt uitwisselen. Sync Clippings wordt ondersteund in Firefox 60  en later en in Thunderbird 60 en nieuwer (mits Clippings for Thunderbird 5.6 of nieuwer is geïnstalleerd). </p><p> Daarnaast moet je de Sync Clippings helper app installeren op je systeem om de inhoud van de Synced Clippings map actueel te houden. Die app kun je ophalen van de <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">AE Creations website</a>. Na installatie start de app automatisch op als Firefox opstart en draait dan op de achtergrond. </p><p>Activeer Sync Clippings in Firefox door op de Clippings voorkeuren pagina te klikken op <b>Turn On Sync</b>.  Er wordt gevraagd om een bestandslocatie te kiezen op je system om de gesynchroniseerde knipsel gegevens  bewaren, als die locatie nog niet is ingevuld.</p>"
+  },
+  "syncStatusOn": {
+    "message": "Synchronisatie knipsels is ingeschakeld."
+  },
+  "syncStatusOff": {
+    "message": "Synchronisatie knipsels is ingeschakeld."
+  },
+  "syncSettings": {
+    "message": "Instellingen…"
+  },
+  "syncTurnOn": {
+    "message": "Synchronisatie inschakelen"
+  },
+  "syncTurnOff": {
+    "message": "Synchronisatie inschakelen"
+  },
+  "syncTurnOffConf": {
+    "message": "Weet u zeker dat u Auto Clean wilt uitschakelen?"
+  },
+  "syncTurnOffAck": {
+    "message": "Synchronisatie knipsels is ingeschakeld."
+  },
+  "syncTurnOffRmFldr": {
+    "message": "Gesynchroniseerde Clippings map verwijderen uit Clippings menu en Clippings Manager"
+  },
+  "syncConnect": {
+    "message": "Verbinding maken met de Sync Clippings helper-app..."
+  },
+  "syncFileDir": {
+    "message": "Locatie backup bestand:"
+  },
+  "syncFileDirExample": {
+    "message": "Voorbeeld:"
+  },
+  "syncFileDirExWin": {
+    "message": "C:\\Users\\YourName\\Documenten\\Synced Clippings",
+    "description": "Example folder path on Windows."
+  },
+  "syncFileDirExMac": {
+    "message": "/Users/YourName/Documenten/Gesynchroniseerde Knipsels",
+    "description": "Example folder path on macOS."
+  },
+  "syncFileDirExLinux": {
+    "message": "/home/YourName/synced-knipsels",
+    "description": "Example folder path on Linux."
+  },
+  "syncFileDirDesc": {
+    "message": "Uw Sync Clippings gegevens worden opgeslagen op deze bestandslocatie. Als je synchroniseert met Thunderbird en de bestandslocatie wilt wijzigen, om overeen te komen met de synchronisatie bestandslocatie in de voorkeuren van Clippings in Thunderbird."
+  },
+  "errSyncConxn": {
+    "message": "Geen verbinding met de Sync Clippings helper-app. Zorg ervoor dat de app is geïnstalleerd."
+  },
+  "errSyncConxnDetail": {
+    "message": "De Sync Clippings helper app is nodig om uw knipselss te synchroniseren. U kunt hem downloaden van de <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">AE Creations website</a>."
+  },
+  "errSyncOptsInit": {
+    "message": "Kan de Sync Clippings instellingen niet initialiseren. Start Firefox opnieuw en probeer het opnieuw."
+  },
+  "errSync": {
+    "message": "Er is een fout opgetreden met de Sync Clippings helper app."
+  },
+  "errNoDetails": {
+    "message": "Sorry, er is geen informatie over deze fout beschikbaar."
+  },
+  "syncReloadAck": {
+    "message": "Bijwerken van de gesynchroniseerde Clippings map. Klik op Herladen om door te gaan."
+  },
+  "deleteSyncFldr": {
+    "message": "Kan de Synced Clippings map niet verwijderen omdat Sync Clippings is ingeschakeld."
+  },
+  "moveSyncFldr": {
+    "message": "Kan de Synced Clippings map niet verplaatsen."
+  },
+  "syncPushFailed": {
+    "message": "Kan geen wijzigingen in de map Gesynchroniseerde Knipsels 'pushen', omdat de verbinding met de app Sync Clippings helper is mislukt. Installeer de Sync Clippings helper app opnieuw."
+  },
+  "syncStartupFailedHdg": {
+    "message": "Gesynchroniseerde Knipsels"
+  },
+  "syncStartupFailed": {
+    "message": "Geen verbinding met de Sync Clippings helper-app. Installeer de Sync Clippings helper app opnieuw."
+  },
+  "syncUpdateTitle": {
+    "message": "Nieuwe versie van Sync Clippings Helper"
+  },
+  "syncUpdateMsg": {
+    "message": "Een nieuwe versie van de Sync Clippings Helper app is beschikbaar. Klik hier om naar de downloadpagina te gaan."
+  },
+  "syncOptsHdg": {
+    "message": "Opties"
+  },
+  "syncUpdateChkOpt": {
+    "message": "Automatisch controleren op updates om Clippings Helper te synchroniseren"
+  },
+  "cxtMnuSyncItemsOnly": {
+    "message": "Toon alleen gesynchroniseerde items in het Knipsels menu"
+  },
+  "aboutBtn": {
+    "message": "Over…"
+  },
+  "aboutExtVer": {
+    "message": "versie $1",
+    "description": "Extension version number"
+  },
+  "aboutAuthor": {
+    "message": "Aangemaakt door AE Creations."
+  },
+  "aboutHomePgLink": {
+    "message": "Homepage bezoeken"
+  },
+  "aboutLicLink": {
+    "message": "Licentie informatie"
+  },
+  "aboutTrans": {
+    "message": "Lokalisaties bijgedragen door Crowdin-vertalers."
+  },
+  "aboutContribHdg": {
+    "message": "Wil je helpen?",
+    "description": "About dialog text for encouraging users to donate or help with translation"
+  },
+  "aboutDonate": {
+    "message": "Geef een donatie"
+  },
+  "aboutContribConj": {
+    "message": "of",
+    "description": "Conjunction connecting the CTA hyperlinks for donating or supplying a translation"
+  },
+  "aboutL10n": {
+    "message": "een vertaling toevoegen."
+  },
+  "aboutSyncVerLabel": {
+    "message": "Sync Clippings helper app versie:"
+  },
+  "noSyncHelperApp": {
+    "message": "Niet geïnstalleerd",
+    "description": "Appears when the Sync Clippings helper app is not detected on the system"
+  },
+  "aboutSyncFileSize": {
+    "message": "Synchronisatie bestandsgrootte:"
+  },
+  "keyAlt": {
+    "message": "Alt"
+  },
+  "keyOption": {
+    "message": "⌥"
+  },
+  "keyCtrl": {
+    "message": "Ctrl"
+  },
+  "keyMacCtrl": {
+    "message": "⌃"
+  },
+  "keyCommand": {
+    "message": "⌘"
+  },
+  "keyShift": {
+    "message": "Shift"
+  },
+  "keyMacShift": {
+    "message": "⇧"
+  },
+  "keyDel": {
+    "message": "Verwijder"
+  },
+  "keyMacDel": {
+    "message": "Verwijderen ⌦"
+  },
+  "keyEsc": {
+    "message": "Esc"
+  },
+  "keySpace": {
+    "message": "Spatiebalk"
+  },
+  "keyPageUp": {
+    "message": "Pagina omhoog"
+  },
+  "keyPageDown": {
+    "message": "Pagina omlaag"
+  },
+  "keyHome": {
+    "message": "Startpagina"
+  },
+  "keyEnd": {
+    "message": "Beëindigen"
+  },
+  "keyLeft": {
+    "message": "Linkerkant"
+  },
+  "keyRight": {
+    "message": "Rechterkant"
+  },
+  "keyUp": {
+    "message": "Omhoog"
+  },
+  "keyDown": {
+    "message": "Omlaag"
+  },
+  "keyIns": {
+    "message": "Invoegen"
+  }
+}

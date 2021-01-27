@@ -209,10 +209,6 @@ select {
     box-shadow: none;
 }
 
-input[type="checkbox"] + label {
-    vertical-align: -0.3em;
-}
-
 .hbox, .vbox {
     display: flex;
     justify-content: flex-start;
