@@ -506,7 +506,7 @@ async function setTopangaPrefs()
 browser.runtime.onStartup.addListener(async () => {
   log("Clippings/wx: Initializing Clippings during browser startup.");
   
-  gPrefs = browser.storage.local.get();
+  gPrefs = await browser.storage.local.get();
   log("Clippings/wx: Successfully retrieved user preferences:");
   log(gPrefs);
     
