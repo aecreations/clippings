@@ -22,7 +22,7 @@ Alex</NS1:text>
   </RDF:Seq>
   <NS1:clipping RDF:about="rdf:#$lxTW2"
                    NS1:name="Parting shot"
-                   NS1:text=""
+                   NS1:text="Goodbye, cruel world!"
                    NS1:srcurl=""
                    NS1:label="" />
   <RDF:Seq RDF:about="rdf:#$jxTW2">
@@ -45,9 +45,14 @@ Alex</NS1:text>
                    NS1:hassubfolders="true" />
   <NS1:clipping RDF:about="rdf:#$ixTW2"
                    NS1:name="Email signature"
-                   NS1:text=""
                    NS1:srcurl=""
-                   NS1:label="yellow" />
+                   NS1:key="S"
+                   NS1:label="yellow">
+    <NS1:text>Alex
+---
+AE Creations website:
+https://aecreations.sourceforge.io</NS1:text>
+  </NS1:clipping>
   <RDF:Seq RDF:about="rdf:#$mxTW2">
   </RDF:Seq>
   <NS1:folder RDF:about="rdf:#$mxTW2"
