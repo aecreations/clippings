@@ -106,6 +106,11 @@ function handleRequestInsertClipping(aRequest)
   let htmlPaste = aRequest.htmlPaste;
   let autoLineBrk = aRequest.autoLineBreak;
   let activeElt = window.document.activeElement;
+  
+   // If element uses shadowDom, then we will pull the active element from shadowDom
+   if (!!activeElt.shadowRoot) {
+    activeElt = activeElt.shadowRoot.activeElement
+  }
 
   log("Clippings/wx::content.js: handleRequestInsertClipping(): activeElt = " + (activeElt ? activeElt.toString() : "???"));  
 
