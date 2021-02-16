@@ -49,7 +49,7 @@ span.fancytree-title {
 
 .fancytree-plain span.fancytree-title {
     border: none;
-    padding: 2px 2px 3px 3px;
+    padding: 2px 3px 3px 3px;
 }
 
 .fancytree-plain span.fancytree-active span.fancytree-title,
