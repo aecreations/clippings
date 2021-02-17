@@ -22,7 +22,7 @@ function handleRequestNewClipping(aRequest)
     return rv;
   }
 
-  let activeElt = window.document.activeElement;
+  let activeElt = getActiveElt();
 
   log("Clippings/wx::content.js: handleRequestNewClipping(): activeElt = " + (activeElt ? activeElt.toString() : "???"));
 
@@ -105,7 +105,7 @@ function handleRequestInsertClipping(aRequest)
   let clippingText = aRequest.content;
   let htmlPaste = aRequest.htmlPaste;
   let autoLineBrk = aRequest.autoLineBreak;
-  let activeElt = window.document.activeElement;
+  let activeElt = getActiveElt();
 
   log("Clippings/wx::content.js: handleRequestInsertClipping(): activeElt = " + (activeElt ? activeElt.toString() : "???"));  
 
@@ -240,6 +240,16 @@ function isGoogleChrome()
   rv = ("version_name" in extManifest);
   
   return rv;
+}
+
+function getActiveElt() {
+  let activeElt = window.document.activeElement;
+
+  if (!!activeElt && !!activeElt.shadowRoot) {
+    activeElt = activeElt.shadowRoot.activeElement;
+  }
+  
+  return activeElt;
 }
 
 
