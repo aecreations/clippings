@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Shadow DOM Demo</title>
+  </head>
+
+  <body>
+    <h1>Shadow DOM Demo</h1>
+
+    <p>Adapted from a Codepen demo by Benjamin Teo: <a href="https://codepen.io/wd23/pen/yLarwvb">https://codepen.io/wd23/pen/yLarwvb</a></p>
+    <br/>
+
+    <label>Shadow DOM input:</label>
+    <div id="shadow-input"></div>
+    <br/>
+    <label>Shadow DOM textarea:</label>
+    <div id="shadow-textarea"></div>
+
+    <script type="application/javascript">
+
+      window.addEventListener("DOMContentLoaded", aEvent => {
+	createShadowElt("shadow-input", "input");
+	createShadowElt("shadow-textarea", "textarea");
+      });
+
+      function createShadowElt(aHostEltID, aTagName)
+      {
+	let hostElt = document.getElementById(aHostEltID);
+	let shadowInput = hostElt.attachShadow({ mode: "open" });
+	let inputElt = document.createElement(aTagName);
+
+	if (aTagName == "input") {
+	  inputElt.type = "text";
+	  inputElt.size = 64;
+	}
+	else if (aTagName == "textarea") {
+	  inputElt.rows = 16;
+	  inputElt.cols = 64;
+	}
+
+	shadowInput.appendChild(inputElt);
+      }
+    
+    </script>
+  </body>
+</html>
+    
