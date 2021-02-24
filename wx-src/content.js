@@ -44,16 +44,18 @@ function handleRequestNewClipping(aRequest)
   // Rich text editor - an <iframe> with designMode == "on"
   else if (isElementOfType(activeElt, "HTMLIFrameElement")) {
     let doc = activeElt.contentDocument;
-    let selection = doc.defaultView.getSelection();
+    if (doc) {
+      let selection = doc.defaultView.getSelection();
 
-    // New (from entire contents)
-    if (selection == "") {
-      doc.execCommand("selectAll");
-      selection = doc.defaultView.getSelection();
+      // New (from entire contents)
+      if (selection == "") {
+        doc.execCommand("selectAll");
+        selection = doc.defaultView.getSelection();
+      }
+
+      let text = selection.toString() || "";
+      rv = { content: text };
     }
-
-    let text = selection.toString() || "";
-    rv = { content: text };
   }
   // Rich text editor used by Gmail, Outlook.com, etc.
   else if (isElementOfType(activeElt, "HTMLDivElement")) {
@@ -71,12 +73,15 @@ function handleRequestNewClipping(aRequest)
   }
   else if (isElementOfType(activeElt, "HTMLBodyElement")) {
     let selection = activeElt.ownerDocument.getSelection();
-    let text = "";
-    if (selection) {
-      text = selection.toString();
-
+    if (selection == "") {
+      let doc = activeElt.ownerDocument;
+      if (activeElt.contentEditable || doc.designMode == "on") {
+        doc.execCommand("selectAll");
+        selection = doc.defaultView.getSelection();
+      }
     }
 
+    let text = selection.toString() || "";
     rv = { content: text };
   }
 
@@ -116,6 +121,16 @@ function handleRequestInsertClipping(aRequest)
   // Rich text editor
   else if (isElementOfType(activeElt, "HTMLIFrameElement")) {
     let doc = activeElt.contentDocument;
+    if (doc) {
+      rv = insertTextIntoRichTextEditor(doc, clippingText, autoLineBrk, htmlPaste, aRequest.dispatchInputEvent);
+    }
+    else {
+      warn("Clippings/wx::content.js: handleRequestInsertClipping(): Document element is null, exiting message handler");
+    }
+  }
+  else if (isElementOfType(activeElt, "HTMLBodyElement")
+           && (activeElt.contentEditable || activeElt.ownerDocument.designMode == "on")) {
+    let doc = activeElt.ownerDocument;
     rv = insertTextIntoRichTextEditor(doc, clippingText, autoLineBrk, htmlPaste, aRequest.dispatchInputEvent);
   }
   // Rich text editor used by Gmail and Outlook.com
@@ -302,12 +317,6 @@ init();
 //
 // Error reporting and debugging output
 //
-
-function onError(aError)
-{
-  console.error("Clippings/wx::content.js: " + aError);
-}
-
 
 function log(aMessage)
 {

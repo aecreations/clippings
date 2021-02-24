@@ -1930,8 +1930,9 @@ browser.contextMenus.onClicked.addListener(async (aInfo, aTab) => {
     }
 
     if (! resp) {
-      console.error("Clippings/wx: Unable to receive response from content script!");
-      alertEx(gMsgBoxStr.MSG_RETRY_PAGE_BUSY);
+      // This may occur when the "new-clipping" message was sent to an <iframe>
+      // containing an <input type="text"> or <textarea> element, in which case
+      // it is safe to ignore.
       return;
     }
 

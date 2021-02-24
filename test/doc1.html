@@ -2,9 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Document 1</title>
+  <title>Document with designMode turned on</title>
+  <script type="application/javascript">
+    function init()
+    {
+      document.designMode = "on";
+    }
+  </script>
 </head>
-<body>
+
+<body onload="init()">
   <h2>Editable Sample</h2>
   <p>The content in this <em>rich edit box</em> is <strong>editable</strong>.  Try <u>clicking into here</u> and typing something.  You can add, edit and delete stuff to your heart's content.</p>
 
