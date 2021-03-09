@@ -128,13 +128,14 @@ function handleRequestInsertClipping(aRequest)
       warn("Clippings/wx::content.js: handleRequestInsertClipping(): Document element is null, exiting message handler");
     }
   }
-  else if (isElementOfType(activeElt, "HTMLBodyElement")
-           && (activeElt.contentEditable || activeElt.ownerDocument.designMode == "on")) {
+  // Rich text editor used by Gmail and Outlook.com
+  else if (isElementOfType(activeElt, "HTMLDivElement")) {
     let doc = activeElt.ownerDocument;
     rv = insertTextIntoRichTextEditor(doc, clippingText, autoLineBrk, htmlPaste, aRequest.dispatchInputEvent);
   }
-  // Rich text editor used by Gmail and Outlook.com
-  else if (isElementOfType(activeElt, "HTMLDivElement")) {
+  // Experimental - enable from background script
+  else if (isElementOfType(activeElt, "HTMLBodyElement") && aRequest.pasteIntoHTMLBodyElt
+           && (activeElt.contentEditable || activeElt.ownerDocument.designMode == "on")) {
     let doc = activeElt.ownerDocument;
     rv = insertTextIntoRichTextEditor(doc, clippingText, autoLineBrk, htmlPaste, aRequest.dispatchInputEvent);
   }
@@ -159,8 +160,6 @@ function isElementOfType(aElement, aTypeStr)
 
 function insertTextIntoTextbox(aTextboxElt, aInsertedText, aDispatchInputEvent)
 {
-  log("Clippings/wx::content.js: >> insertTextIntoTextbox()");
-  
   var text, pre, post, pos;
   text = aTextboxElt.value;
 
@@ -178,12 +177,13 @@ function insertTextIntoTextbox(aTextboxElt, aInsertedText, aDispatchInputEvent)
     pos = p1 + aInsertedText.length;
   }
 
+  log(`Clippings/wx::content.js: insertTextIntoTextbox(): Inserting into textbox ${aTextboxElt}`);
+  
   aTextboxElt.value = pre + aInsertedText + post;
   aTextboxElt.selectionStart = pos;
   aTextboxElt.selectionEnd = pos;
 
   if (aDispatchInputEvent) {
-    log(`Clippings/wx::content.js: Dispatching "input" event at ${aTextboxElt} element.`);
     let inputEvt = createInputEventInstance();
     aTextboxElt.dispatchEvent(inputEvt);
   }
@@ -194,8 +194,6 @@ function insertTextIntoTextbox(aTextboxElt, aInsertedText, aDispatchInputEvent)
 
 function insertTextIntoRichTextEditor(aRichTextEditorDocument, aClippingText, aAutoLineBreak, aPasteMode, aDispatchInputEvent)
 {
-  log("Clippings/wx::content.js: >> insertTextIntoRichTextEditor()");
-
   let hasHTMLTags = aClippingText.search(/<[a-z1-6]+( [a-z]+(\="?.*"?)?)*>/i) != -1;
   let hasRestrictedHTMLTags = aClippingText.search(/<\?|<%|<!DOCTYPE|(<\b(html|head|body|meta|script|applet|embed|object|i?frame|frameset)\b)/i) != -1;
   let clippingText = aClippingText;
@@ -226,13 +224,14 @@ function insertTextIntoRichTextEditor(aRichTextEditorDocument, aClippingText, aA
     clippingText = clippingText.replace(/\n/g, "<br>");
   }
 
+  log(`Clippings/wx::content.js: insertTextIntoRichTextEditor(): Inserting HTML content into rich text editor ${aRichTextEditorDocument}`);
+
   try {
     aRichTextEditorDocument.execCommand("insertHTML", false, clippingText);
   }
   catch (e) {}
 
   if (aDispatchInputEvent) {
-    log(`Clippings/wx::content.js: Dispatching "input" event at ${aRichTextEditorDocument} element.`);
     let inputEvt = createInputEventInstance();
     aRichTextEditorDocument.dispatchEvent(inputEvt);
   }
