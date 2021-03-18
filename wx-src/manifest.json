@@ -37,7 +37,8 @@
 	    "modules/aeClippingSubst.js",
             "modules/aeImportExport.js",
             "modules/aeDateDiff.js",
-	    "background.js"
+            "scripts/aePrefs.js",
+            "background.js"
 	]
     },
     

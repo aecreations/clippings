@@ -63,7 +63,7 @@ async function init()
   initDialogs();
 
   $("#toggle-sync").click(async (aEvent) => {
-    let prefs = await browser.storage.local.get();
+    let prefs = await browser.storage.local.get("syncClippings");
     if (prefs.syncClippings) {
       gDialogs.turnOffSync.showModal();
     }
@@ -131,7 +131,7 @@ async function init()
     }
   });
 
-  let prefs = await browser.storage.local.get();
+  let prefs = await browser.storage.local.get(aePrefs.getPrefKeys());
   $("#html-paste-options").val(prefs.htmlPaste).change(aEvent => {
     setPref({ htmlPaste: aEvent.target.value });
   });
@@ -566,7 +566,7 @@ function initDialogs()
     let sendNativeMsg = browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
     sendNativeMsg.then(aResp => {
       $("#about-dlg > .dlg-content #diag-info #sync-ver").text(aResp.appVersion);     
-      return browser.storage.local.get();
+      return browser.storage.local.get("syncClippings");
 
     }).then(prefs => {
       if (prefs.syncClippings) {

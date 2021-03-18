@@ -32,7 +32,7 @@ $(async () => {
   
   $("#btn-close").click(aEvent => { closeDlg() });
 
-  let prefs = await browser.storage.local.get();
+  let prefs = await browser.storage.local.get("backupRemFrequency");
   $("#backup-reminder").prop("checked", (prefs.backupRemFrequency != aeConst.BACKUP_REMIND_NEVER)).click(aEvent => {
     let setPref;
     

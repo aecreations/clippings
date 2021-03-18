@@ -335,7 +335,7 @@ browser.runtime.onInstalled.addListener(async (aInstall) => {
     let currVer = browser.runtime.getManifest().version;
     log(`Clippings/wx: Upgrading from version ${oldVer} to ${currVer}`);
 
-    gPrefs = await browser.storage.local.get();
+    gPrefs = await browser.storage.local.get(aePrefs.getPrefKeys());
 
     if (! hasSanDiegoPrefs()) {
       gSetDisplayOrderOnRootItems = true;
@@ -370,38 +370,10 @@ browser.runtime.onInstalled.addListener(async (aInstall) => {
 
 async function setDefaultPrefs()
 {
-  let aeClippingsPrefs = {
-    showWelcome: true,
-    htmlPaste: aeConst.HTMLPASTE_AS_FORMATTED,
-    autoLineBreak: true,
-    autoIncrPlcHldrStartVal: 0,
-    alwaysSaveSrcURL: false,
-    keyboardPaste: true,
-    checkSpelling: true,
-    openClippingsMgrInTab: false,
-    pastePromptAction: aeConst.PASTEACTION_SHORTCUT_KEY,
-    clippingsMgrAutoShowDetailsPane: true,
-    clippingsMgrDetailsPane: false,
-    clippingsMgrStatusBar: false,
-    clippingsMgrPlchldrToolbar: false,
-    clippingsMgrMinzWhenInactv: undefined,
-    syncClippings: false,
-    syncFolderID: null,
-    cxtMenuSyncItemsOnly: false,
-    clippingsMgrShowSyncItemsOnlyRem: true,
-    pasteShortcutKeyPrefix: "",
-    lastBackupRemDate: null,
-    backupRemFirstRun: true,
-    backupRemFrequency: aeConst.BACKUP_REMIND_WEEKLY,
-    afterSyncFldrReloadDelay: 3000,
-    syncHelperCheckUpdates: true,
-    lastSyncHelperUpdChkDate: null,
-    backupFilenameWithDate: true,
-    dispatchInputEvent: true,
-  };
+  let defaultPrefs = aePrefs.getDefaultPrefs();
 
-  gPrefs = aeClippingsPrefs;
-  await browser.storage.local.set(aeClippingsPrefs);
+  gPrefs = defaultPrefs;
+  await browser.storage.local.set(defaultPrefs);
 }
 
 
@@ -506,7 +478,7 @@ async function setTopangaPrefs()
 browser.runtime.onStartup.addListener(async () => {
   log("Clippings/wx: Initializing Clippings during browser startup.");
   
-  gPrefs = await browser.storage.local.get();
+  gPrefs = await browser.storage.local.get(aePrefs.getPrefKeys());
   log("Clippings/wx: Successfully retrieved user preferences:");
   log(gPrefs);
     

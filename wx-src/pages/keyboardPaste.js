@@ -313,7 +313,7 @@ $(async () => {
 
   browser.history.deleteUrl({ url: window.location.href });
 
-  let prefs = await browser.storage.local.get();
+  let prefs = await browser.storage.local.get("pastePromptAction");
   gPasteMode = prefs.pastePromptAction;
   
   if (gPasteMode == aeConst.PASTEACTION_SHORTCUT_KEY) {
