@@ -1509,7 +1509,14 @@ function openPlaceholderPromptDlg()
 function openBackupDlg()
 {
   let url = browser.runtime.getURL("pages/backup.html");
-  openDlgWnd(url, "backupFirstRun", { type: "detached_panel", width: 590, height: 410 });
+  let lang = browser.i18n.getUILanguage();
+  let height = 410;
+
+  if (lang == "uk") {
+    height = 450;
+  }
+  
+  openDlgWnd(url, "backupFirstRun", { type: "detached_panel", width: 590, height });
 }
 
 

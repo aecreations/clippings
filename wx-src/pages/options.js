@@ -354,7 +354,7 @@ function initDialogs()
       else if (lang == "pt-BR") {
         $("#sync-helper-app-update-check + label").css({ letterSpacing: "-0.56px" });
       }
-      else if (lang == "nl") {
+      else if (lang == "nl" || lang == "uk") {
         $("#sync-helper-app-update-check + label").css({
           letterSpacing: "-0.7px",
           marginRight: "0",
@@ -558,7 +558,11 @@ function initDialogs()
       $("#ext-desc").css({ letterSpacing: "-0.55px" });
     }
     else if (lang == "es-ES") {
+      $("#usr-contrib-cta").css({ letterSpacing: "-0.12px" });
       $("#sync-ver-label").css({ letterSpacing: "-0.15px" });
+    }
+    else if (lang == "uk") {
+      $("#usr-contrib-cta").css({ letterSpacing: "-0.12px" });
     }
   };
   gDialogs.about.onShow = () => {
