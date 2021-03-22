@@ -2291,9 +2291,9 @@ $(document).keydown(async (aEvent) => {
     // Clippings Manager initialization failed.
     return;
   }
-  
-  const isMacOS = gClippings.getOS() == "mac";
 
+  const isMacOS = gClippings.getOS() == "mac";
+  
   function isAccelKeyPressed()
   {
     if (isMacOS) {
@@ -2302,14 +2302,8 @@ $(document).keydown(async (aEvent) => {
     return aEvent.ctrlKey;
   }
 
-  function isTextboxFocused(aEvent)
-  {
-    return (aEvent.target.tagName == "INPUT" || aEvent.target.tagName == "TEXTAREA");
-  }
-
   aeDialog.hidePopups();
-  
-  // NOTE: CTRL+W/Cmd+W is automatically handled, so no need to define it here.
+
   if (aEvent.key == "F1") {
     if (aeDialog.isOpen()) {
       return;
@@ -2345,22 +2339,8 @@ $(document).keydown(async (aEvent) => {
       gCmd.deleteClippingOrFolder(gCmd.UNDO_STACK);
     }
   }
-  else if (aEvent.key == "/" || aEvent.key == "'") {
-    if (! isTextboxFocused(aEvent)) {
-      aEvent.preventDefault();
-    }
-  }
-  else if (aEvent.key == "F5") {
-    // Suppress browser reload.
-    aEvent.preventDefault();
-  }
   else if (aEvent.key == "F10" && isAccelKeyPressed()) {
     gCmd.toggleMaximize();
-  }
-  else if (aEvent.key.toUpperCase() == "A" && isAccelKeyPressed()) {
-    if (! isTextboxFocused(aEvent)) {
-      aEvent.preventDefault();
-    }
   }
   else if (aEvent.key.toUpperCase() == "F" && isAccelKeyPressed()) {
     aEvent.preventDefault();
@@ -2370,12 +2350,7 @@ $(document).keydown(async (aEvent) => {
     gCmd.undo();
   }
   else {
-    // Ignore standard browser shortcut keys.
-    let key = aEvent.key.toUpperCase();
-    if (isAccelKeyPressed() && (key == "D" || key == "F" || key == "N" || key == "P"
-                                || key == "R" || key == "S" || key == "U")) {
-      aEvent.preventDefault();
-    }
+    aeInterxn.suppressBrowserShortcuts(aEvent, aeConst.DEBUG);
   }
 });
 

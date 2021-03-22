@@ -26,6 +26,11 @@ $(() => {
 });
 
 
+$(window).keydown(aEvent => {
+  aeInterxn.suppressBrowserShortcuts(aEvent, false);
+});
+
+
 // Suppress browser's context menu.
 $(document).on("contextmenu", aEvent => { aEvent.preventDefault() });
 

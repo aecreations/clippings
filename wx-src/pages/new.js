@@ -105,6 +105,11 @@ async function initHelper()
 
 
 $(window).keydown(aEvent => {
+  if (! gClippings) {
+    // Clippings Manager initialization failed.
+    return;
+  }
+
   const isMacOS = gClippings.getOS() == "mac";
 
   function isAccelKeyPressed()
@@ -134,22 +139,8 @@ $(window).keydown(aEvent => {
     }
     cancel(aEvent);
   }
-  else if (aEvent.key == "/" || aEvent.key == "'") {
-    if (! isTextboxFocused(aEvent)) {
-      aEvent.preventDefault();
-    }
-  }
-  else if (aEvent.key == "F5") {
-    // Suppress browser reload.
-    aEvent.preventDefault();
-  }
   else {
-    // Ignore standard browser shortcut keys.
-    let key = aEvent.key.toUpperCase();
-    if (isAccelKeyPressed() && (key == "D" || key == "F" || key == "N" || key == "P"
-                                || key == "R" || key == "S" || key == "U")) {
-      aEvent.preventDefault();
-    }
+    aeInterxn.suppressBrowserShortcuts(aEvent, aeConst.DEBUG);
   }
 });
 

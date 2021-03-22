@@ -83,54 +83,6 @@ async function init()
   usrContribCTA.append(sanitizeHTML(`<label id="usr-contrib-cta-conj">${browser.i18n.getMessage("aboutContribConj")}</label>`));
   usrContribCTA.append(sanitizeHTML(`<a href="${aeConst.L10N_URL}" class="hyperlink">${browser.i18n.getMessage("aboutL10n")}</a>`));
   
-  // Handling keyboard events in open modal dialogs.
-  $(window).keydown(aEvent => {
-    function isAccelKeyPressed()
-    {
-      let rv;
-      if (os == "mac") {
-        rv = aEvent.metaKey;
-      }
-      else {
-        rv = aEvent.ctrlKey;
-      }
-      
-      return rv;
-    }
-
-    function isTextboxFocused(aEvent)
-    {
-      return (aEvent.target.tagName == "INPUT" || aEvent.target.tagName == "TEXTAREA");
-    }
-
-    if (aEvent.key == "Enter" && aeDialog.isOpen()) {
-      aeDialog.acceptDlgs();
-
-      // Don't trigger any further actions that would have occurred if the
-      // ENTER key was pressed.
-      aEvent.preventDefault();
-    }
-    else if (aEvent.key == "Escape" && aeDialog.isOpen()) {
-      aeDialog.cancelDlgs();
-    }
-    else if (aEvent.key == "/" || aEvent.key == "'") {
-      if (! isTextboxFocused(aEvent)) {
-        aEvent.preventDefault();  // Suppress quick find in page.
-      }
-    }
-    else if (aEvent.key == "F5") {
-      aEvent.preventDefault();  // Suppress browser reload.
-    }
-    else {
-      // Ignore standard browser shortcut keys.
-      let key = aEvent.key.toUpperCase();
-      if (isAccelKeyPressed() && (key == "D" || key == "F" || key == "N" || key == "P"
-                                  || key == "R" || key == "S" || key == "U")) {
-        aEvent.preventDefault();
-      }
-    }
-  });
-
   let prefs = await browser.storage.local.get(aePrefs.getPrefKeys());
   $("#html-paste-options").val(prefs.htmlPaste).change(aEvent => {
     setPref({ htmlPaste: aEvent.target.value });
@@ -303,6 +255,23 @@ async function init()
     gotoURL(aEvent.target.href);
   });
 }
+
+
+$(window).keydown(aEvent => {
+  if (aEvent.key == "Enter" && aeDialog.isOpen()) {
+    aeDialog.acceptDlgs();
+
+    // Don't trigger any further actions that would have occurred if the
+    // ENTER key was pressed.
+    aEvent.preventDefault();
+  }
+  else if (aEvent.key == "Escape" && aeDialog.isOpen()) {
+    aeDialog.cancelDlgs();
+  }
+  else {
+    aeInterxn.suppressBrowserShortcuts(aEvent, aeConst.DEBUG);
+  }
+});
 
 
 function setPref(aPref)
