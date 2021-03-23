@@ -19,8 +19,7 @@ let aeInterxn = {
 	aEvent.preventDefault();
       }
     }
-    else if (aEvent.key == "F3" || aEvent.key == "F5"
-	     || (aEvent.key == "Home" && aEvent.altKey)) {
+    else if (["F3", "F5"].includes(aEvent.key) || (aEvent.key == "Home" && aEvent.altKey)) {
       aEvent.preventDefault();
     }
     else if (aEvent.key == "F12" && !aIsDebugging) {
@@ -36,20 +35,15 @@ let aeInterxn = {
       // BUG!! This won't catch window shortcuts (CTRL+N, CTRL+T, CTRL+SHIFT+P)
       let key = aEvent.key.toUpperCase();
       if (this._isAccelKeyPressed(aEvent)
-	  && (key == "D" || key == "F" || key == "G" || key == "I"
-	      || key == "N" || key == "O" || key == "P" || key == "R"
-	      || key == "S" || key == "T" || key == "U" || key == "Y"
-              || key == "J" || key == "^" || key == "E" || key == "K")) {
+          && ["D","E","F","G","I","J","K","N","O","P","R","S","T","U","Y","^"].includes(key)) {
 	aEvent.preventDefault();
       }
-      // Suppress shortcuts for web developer tools on macOS.
+      // Ignore shortcuts for web developer tools on macOS.
       else if (aEvent.altKey && this._isAccelKeyPressed(aEvent)
-	       && (key == "Ç" || key == "´" || key == "µ" || key == "^"
-		   || key == "˚" || key == "Ω")) {
+	       && ["Ç", "´", "µ", "^", "˚", "Ω"].includes(key)) {
 	aEvent.preventDefault();
       }
-      else if (aEvent.shiftKey && (key == "F5" || key == "F7" || key == "F9"
-				   || key == "F12")) {
+      else if (aEvent.shiftKey && ["F5", "F7", "F9", "F12"].includes(key)) {
 	aEvent.preventDefault();
       }
     }
