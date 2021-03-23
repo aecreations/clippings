@@ -180,23 +180,14 @@ $(() => {
 
 
 $(window).keydown(aEvent => {
-  function isTextboxFocused(aEvent) {
-    return (aEvent.target.tagName == "INPUT" || aEvent.target.tagName == "TEXTAREA");
-  }
-  
   if (aEvent.key == "Enter") {
     accept(aEvent);
   }
   else if (aEvent.key == "Escape") {
     cancel(aEvent);
   }
-  else if (aEvent.key == "/" || aEvent.key == "'") {
-    if (! isTextboxFocused(aEvent)) {
-      aEvent.preventDefault();  // Suppress quick find in page.
-    }
-  }
-  else if (aEvent.key == "F5") {
-    aEvent.preventDefault();  // Suppress browser reload.
+  else {
+    aeInterxn.suppressBrowserShortcuts(aEvent, aeConst.DEBUG);
   }
 });
 
