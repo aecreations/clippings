@@ -110,22 +110,15 @@ $(window).keydown(aEvent => {
     return;
   }
 
-  const isMacOS = gClippings.getOS() == "mac";
-
-  function isAccelKeyPressed()
+  function isTextAreaFocused(aEvent)
   {
-    if (isMacOS) {
-      return aEvent.metaKey;
-    }
-    return aEvent.ctrlKey;
-  }
-
-  function isTextboxFocused(aEvent)
-  {
-    return (aEvent.target.tagName == "INPUT" || aEvent.target.tagName == "TEXTAREA");
+    return aEvent.target.tagName == "TEXTAREA";
   }
 
   if (aEvent.key == "Enter") {
+    if (isTextAreaFocused(aEvent)) {
+      return;
+    }
     if (aeDialog.isOpen()) {
       aeDialog.acceptDlgs();
       return;
