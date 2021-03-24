@@ -455,7 +455,7 @@
     "description": "Clippings Manager intro - key binding description"
   },
   "clipMgrStatusBar": {
-    "message": "%1 од.",
+    "message": "$1 од.",
     "description": "Status bar text in Clippings Manager, counting the number of clippings and folders"
   },
   "clipMgrRemoveSrcURLsConfirm": {
