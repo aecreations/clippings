@@ -110,13 +110,8 @@ $(window).keydown(aEvent => {
     return;
   }
 
-  function isTextAreaFocused(aEvent)
-  {
-    return aEvent.target.tagName == "TEXTAREA";
-  }
-
   if (aEvent.key == "Enter") {
-    if (isTextAreaFocused(aEvent)) {
+    if (aEvent.target.tagName == "TEXTAREA") {
       return;
     }
     if (aeDialog.isOpen()) {
