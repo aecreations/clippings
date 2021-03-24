@@ -325,7 +325,7 @@ function initDialogs()
       }
       else if (lang == "nl" || lang == "uk") {
         $("#sync-helper-app-update-check + label").css({
-          letterSpacing: "-0.7px",
+          letterSpacing: "-0.5px",
           marginRight: "0",
         });
       }
@@ -531,7 +531,7 @@ function initDialogs()
       $("#sync-ver-label").css({ letterSpacing: "-0.15px" });
     }
     else if (lang == "uk") {
-      $("#usr-contrib-cta").css({ letterSpacing: "-0.12px" });
+      $("#usr-contrib-cta").css({ letterSpacing: "-0.5px" });
     }
   };
   gDialogs.about.onShow = () => {
