@@ -26,13 +26,10 @@ $(async () => {
     $("#backup-hint").css({ letterSpacing: "-0.3px" });
   }
 
-  $("#backup-now").click(aEvent => {
-    gClippings.openClippingsManager(true);
-  });
-  
+  $("#backup-now").click(aEvent => { backupNow() });
   $("#btn-close").click(aEvent => { closeDlg() });
 
-  let prefs = await browser.storage.local.get();
+  let prefs = await browser.storage.local.get("backupRemFrequency");
   $("#backup-reminder").prop("checked", (prefs.backupRemFrequency != aeConst.BACKUP_REMIND_NEVER)).click(aEvent => {
     let setPref;
     
@@ -88,16 +85,33 @@ $(async () => {
 });
 
 
+function backupNow()
+{
+  gClippings.openClippingsManager(true);
+}
+
+
 function closeDlg()
 {
   browser.windows.remove(browser.windows.WINDOW_ID_CURRENT);
 }
 
 
-$(window).on("contextmenu", aEvent => {
-  if (aEvent.target.tagName != "INPUT" && aEvent.target.tagName != "TEXTAREA") {
-    aEvent.preventDefault();
+$(window).keydown(aEvent => {
+  if (aEvent.key == "Enter") {
+    backupNow();
   }
+  else if (aEvent.key == "Escape") {
+    closeDlg();
+  }
+  else {
+    aeInterxn.suppressBrowserShortcuts(aEvent);
+  }
+});
+
+
+$(window).on("contextmenu", aEvent => {
+  aEvent.preventDefault();
 });
 
 

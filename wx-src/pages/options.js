@@ -63,7 +63,7 @@ async function init()
   initDialogs();
 
   $("#toggle-sync").click(async (aEvent) => {
-    let prefs = await browser.storage.local.get();
+    let prefs = await browser.storage.local.get("syncClippings");
     if (prefs.syncClippings) {
       gDialogs.turnOffSync.showModal();
     }
@@ -83,55 +83,7 @@ async function init()
   usrContribCTA.append(sanitizeHTML(`<label id="usr-contrib-cta-conj">${browser.i18n.getMessage("aboutContribConj")}</label>`));
   usrContribCTA.append(sanitizeHTML(`<a href="${aeConst.L10N_URL}" class="hyperlink">${browser.i18n.getMessage("aboutL10n")}</a>`));
   
-  // Handling keyboard events in open modal dialogs.
-  $(window).keydown(aEvent => {
-    function isAccelKeyPressed()
-    {
-      let rv;
-      if (os == "mac") {
-        rv = aEvent.metaKey;
-      }
-      else {
-        rv = aEvent.ctrlKey;
-      }
-      
-      return rv;
-    }
-
-    function isTextboxFocused(aEvent)
-    {
-      return (aEvent.target.tagName == "INPUT" || aEvent.target.tagName == "TEXTAREA");
-    }
-
-    if (aEvent.key == "Enter" && aeDialog.isOpen()) {
-      aeDialog.acceptDlgs();
-
-      // Don't trigger any further actions that would have occurred if the
-      // ENTER key was pressed.
-      aEvent.preventDefault();
-    }
-    else if (aEvent.key == "Escape" && aeDialog.isOpen()) {
-      aeDialog.cancelDlgs();
-    }
-    else if (aEvent.key == "/" || aEvent.key == "'") {
-      if (! isTextboxFocused(aEvent)) {
-        aEvent.preventDefault();  // Suppress quick find in page.
-      }
-    }
-    else if (aEvent.key == "F5") {
-      aEvent.preventDefault();  // Suppress browser reload.
-    }
-    else {
-      // Ignore standard browser shortcut keys.
-      let key = aEvent.key.toUpperCase();
-      if (isAccelKeyPressed() && (key == "D" || key == "F" || key == "N" || key == "P"
-                                  || key == "R" || key == "S" || key == "U")) {
-        aEvent.preventDefault();
-      }
-    }
-  });
-
-  let prefs = await browser.storage.local.get();
+  let prefs = await browser.storage.local.get(aePrefs.getPrefKeys());
   $("#html-paste-options").val(prefs.htmlPaste).change(aEvent => {
     setPref({ htmlPaste: aEvent.target.value });
   });
@@ -305,6 +257,23 @@ async function init()
 }
 
 
+$(window).keydown(aEvent => {
+  if (aEvent.key == "Enter" && aeDialog.isOpen()) {
+    aeDialog.acceptDlgs();
+
+    // Don't trigger any further actions that would have occurred if the
+    // ENTER key was pressed.
+    aEvent.preventDefault();
+  }
+  else if (aEvent.key == "Escape" && aeDialog.isOpen()) {
+    aeDialog.cancelDlgs();
+  }
+  else {
+    aeInterxn.suppressBrowserShortcuts(aEvent, aeConst.DEBUG);
+  }
+});
+
+
 function setPref(aPref)
 {
   browser.storage.local.set(aPref);
@@ -354,9 +323,9 @@ function initDialogs()
       else if (lang == "pt-BR") {
         $("#sync-helper-app-update-check + label").css({ letterSpacing: "-0.56px" });
       }
-      else if (lang == "nl") {
+      else if (lang == "nl" || lang == "uk") {
         $("#sync-helper-app-update-check + label").css({
-          letterSpacing: "-0.7px",
+          letterSpacing: "-0.5px",
           marginRight: "0",
         });
       }
@@ -558,7 +527,11 @@ function initDialogs()
       $("#ext-desc").css({ letterSpacing: "-0.55px" });
     }
     else if (lang == "es-ES") {
+      $("#usr-contrib-cta").css({ letterSpacing: "-0.12px" });
       $("#sync-ver-label").css({ letterSpacing: "-0.15px" });
+    }
+    else if (lang == "uk") {
+      $("#usr-contrib-cta").css({ letterSpacing: "-0.5px" });
     }
   };
   gDialogs.about.onShow = () => {
@@ -566,7 +539,7 @@ function initDialogs()
     let sendNativeMsg = browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
     sendNativeMsg.then(aResp => {
       $("#about-dlg > .dlg-content #diag-info #sync-ver").text(aResp.appVersion);     
-      return browser.storage.local.get();
+      return browser.storage.local.get("syncClippings");
 
     }).then(prefs => {
       if (prefs.syncClippings) {

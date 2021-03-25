@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "__MSG_extName__",
     "description": "__MSG_extDesc__",
-    "version": "6.2.6.1",
+    "version": "6.2.7",
     "homepage_url": "https://aecreations.sourceforge.io/clippings/index.php",
     "author": "AE Creations",
     
@@ -37,7 +37,8 @@
 	    "modules/aeClippingSubst.js",
             "modules/aeImportExport.js",
             "modules/aeDateDiff.js",
-	    "background.js"
+            "scripts/aePrefs.js",
+            "background.js"
 	]
     },
     

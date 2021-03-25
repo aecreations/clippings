@@ -105,22 +105,15 @@ async function initHelper()
 
 
 $(window).keydown(aEvent => {
-  const isMacOS = gClippings.getOS() == "mac";
-
-  function isAccelKeyPressed()
-  {
-    if (isMacOS) {
-      return aEvent.metaKey;
-    }
-    return aEvent.ctrlKey;
-  }
-
-  function isTextboxFocused(aEvent)
-  {
-    return (aEvent.target.tagName == "INPUT" || aEvent.target.tagName == "TEXTAREA");
+  if (! gClippings) {
+    // Clippings Manager initialization failed.
+    return;
   }
 
   if (aEvent.key == "Enter") {
+    if (aEvent.target.tagName == "TEXTAREA") {
+      return;
+    }
     if (aeDialog.isOpen()) {
       aeDialog.acceptDlgs();
       return;
@@ -134,22 +127,8 @@ $(window).keydown(aEvent => {
     }
     cancel(aEvent);
   }
-  else if (aEvent.key == "/" || aEvent.key == "'") {
-    if (! isTextboxFocused(aEvent)) {
-      aEvent.preventDefault();
-    }
-  }
-  else if (aEvent.key == "F5") {
-    // Suppress browser reload.
-    aEvent.preventDefault();
-  }
   else {
-    // Ignore standard browser shortcut keys.
-    let key = aEvent.key.toUpperCase();
-    if (isAccelKeyPressed() && (key == "D" || key == "F" || key == "N" || key == "P"
-                                || key == "R" || key == "S" || key == "U")) {
-      aEvent.preventDefault();
-    }
+    aeInterxn.suppressBrowserShortcuts(aEvent, aeConst.DEBUG);
   }
 });
 

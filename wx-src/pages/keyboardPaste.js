@@ -313,7 +313,7 @@ $(async () => {
 
   browser.history.deleteUrl({ url: window.location.href });
 
-  let prefs = await browser.storage.local.get();
+  let prefs = await browser.storage.local.get("pastePromptAction");
   gPasteMode = prefs.pastePromptAction;
   
   if (gPasteMode == aeConst.PASTEACTION_SHORTCUT_KEY) {
@@ -344,21 +344,6 @@ $(async () => {
 
 
 $(window).keydown(async (aEvent) => {
-  const isMacOS = gClippings.getOS() == "mac";
-
-  function isAccelKeyPressed()
-  {
-    if (isMacOS) {
-      return aEvent.metaKey;
-    }
-    return aEvent.ctrlKey;
-  }
-
-  function isTextboxFocused(aEvent)
-  {
-    return (aEvent.target.tagName == "INPUT" || aEvent.target.tagName == "TEXTAREA");
-  }
-
   if (aEvent.key == "Escape") {
     if (gPasteMode == aeConst.PASTEACTION_SEARCH_CLIPPING) {
       if (gAutocompleteMenu.isPopupShowing()) {
@@ -387,10 +372,6 @@ $(window).keydown(async (aEvent) => {
       await initShortcutList();
       return;
     }
-  }
-  else if (aEvent.key == "F12" && aeConst.DEBUG) {
-    // Allow opening Developer Tools.
-    return;
   }
   else if (aEvent.key == "Tab") {
     aEvent.preventDefault();
@@ -423,29 +404,16 @@ $(window).keydown(async (aEvent) => {
       $(".deck > #paste-by-shortcut-key").fadeIn("fast");
     }
   }
-  else if (aEvent.key == "/" || aEvent.key == "'") {
-    if (! isTextboxFocused(aEvent)) {
-      aEvent.preventDefault();
-    }
-  }
-  else if (aEvent.key == "F5") {
-    // Suppress browser reload.
-    aEvent.preventDefault();
-  }
   else {
-    // Ignore standard browser shortcut keys.
-    let key = aEvent.key.toUpperCase();
-    if (isAccelKeyPressed() && (key == "D" || key == "F" || key == "N" || key == "P"
-                                || key == "R" || key == "S" || key == "U")) {
-      aEvent.preventDefault();
-    }
-
     if (isShortcutListDisplayed()) {
       return;
     }
     
     if (gPasteMode == aeConst.PASTEACTION_SHORTCUT_KEY) {
       execShortcut(aEvent.key);
+    }
+    else {
+      aeInterxn.suppressBrowserShortcuts(aEvent, aeConst.DEBUG);
     }
   }
 });

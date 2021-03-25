@@ -59,6 +59,7 @@
     --color-dlg-fieldset-border: #b1b1b1;
 
     --url-contextmenu-checked-img: url("../img/checked.svg");
+    --url-contextmenu-submenu-arrow: url("../img/submenu-arrow.svg");
     --url-toolbar-btn-img-newClipping: url("../img/newClipping.svg");
     --url-toolbar-btn-img-newFolder: url("../img/newFolder.svg");
     --url-toolbar-btn-img-undo: url("../img/undo.svg");
@@ -131,6 +132,7 @@
 	--color-dlg-fieldset-border: #585858;
 
 	--url-contextmenu-checked-img: url("../img/checked-dk.svg");
+	--url-contextmenu-submenu-arrow: url("../img/submenu-arrow-dk.svg");
 	--url-toolbar-btn-img-newClipping: url("../img/newClipping.svg");
 	--url-toolbar-btn-img-newFolder: url("../img/newFolder.svg");
 	--url-toolbar-btn-img-undo: url("../img/undo_dk.svg");
@@ -406,9 +408,15 @@ select {
     background-position-y: center;
 }
 
+.context-menu-submenu {
+    background-image: var(--url-contextmenu-submenu-arrow);
+    background-repeat: no-repeat;
+    background-position-x: right 3px;
+    background-position-y: 4px;
+}
+
 .context-menu-submenu::after {
-    border-width: 0.36em 0 0.36em 0.36em;
-    border-color: transparent transparent transparent var(--color-cxtmenu-text);
+    content: unset;
 }
 
 #toolbar > #spacer-2 {
