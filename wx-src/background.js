@@ -1366,11 +1366,11 @@ function showSyncHelperUpdateNotification()
       if (aFetchResp.ok) {       
         return aFetchResp.json();
       }
-      throw new Error("Unable to retrieve Sync Clippings Helper update info - network response was not ok");
+      throw new Error(`HTTP status ${aFetchResp.status} (${aFetchResp.statusText}) received from URL ${aFetchResp.url}`);
 
     }).then(aUpdateInfo => {
       if (versionCompare(currVer, aUpdateInfo.latestVersion) < 0) {
-        info(`Clippings/wx: showSyncHelperUpdateNotification(): Found a newer version of Sync Clippings Helper!  Current version: ${currVer}; new version found: ${aUpdateInfo.latestVersion}\nDisplaying user notification.`);
+        info(`Clippings/wx: showSyncHelperUpdateNotification(): Found a newer version of Sync Clippings Helper!  Current version: ${currVer}; new version found: ${aUpdateInfo.latestVersion}`);
         
         gSyncClippingsHelperDwnldPgURL = aUpdateInfo.downloadPageURL;
         return browser.notifications.create(aeConst.NOTIFY_SYNC_HELPER_UPDATE, {
@@ -1857,6 +1857,11 @@ function versionCompare(aVer1, aVer2)
 
   let v1 = aVer1.split(".");
   let v2 = aVer2.split(".");
+
+  // Last digit may include pre-release suffix, e.g.: a1, b2, rc1
+  let vs1 = v1[v1.length - 1].toString();
+  let vs2 = v2[v2.length - 1].toString();
+
   const k = Math.min(v1.length, v2.length);
   
   for (let i = 0; i < k; ++ i) {
@@ -1870,10 +1875,33 @@ function versionCompare(aVer1, aVer2)
       return -1;
     }
   }
+
+  let s1Idx = vs1.search(/[a-z]/);
+  let s2Idx = vs2.search(/[a-z]/);
+
+  // E.g.: 6.0 <=> 6.0a1
+  if (s1Idx == -1 && s2Idx > 0) {
+    return 1;
+  }
+  // E.g.: 6.0rc1 <=> 6.0
+  if (s1Idx > 0 && s2Idx == -1) {
+    return -1;
+  }
+  // E.g.: 6.0b1 <=> 6.0b2
+  if (s1Idx > 0 && s2Idx > 0) {
+    let s1 = vs1.substr(s1Idx);
+    let s2 = vs2.substr(s2Idx);
+
+    if (s1 < s2) {
+      return -1;
+    }
+    if (s1 > s2) {
+      return 1;
+    }
+  }
   
   return (v1.length == v2.length ? 0: (v1.length < v2.length ? -1 : 1));
 }
-
 
 
 //
