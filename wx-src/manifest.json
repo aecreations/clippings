@@ -33,10 +33,10 @@
 	"scripts": [
 	    "lib/dexie/dexie.min.js",
 	    "lib/moment.min.js",
-	    "modules/aeConst.js",
-	    "modules/aeClippingSubst.js",
-            "modules/aeImportExport.js",
-            "modules/aeDateDiff.js",
+	    "scripts/aeConst.js",
+	    "scripts/aeClippingSubst.js",
+            "scripts/aeImportExport.js",
+            "scripts/aeDateDiff.js",
             "scripts/aePrefs.js",
             "background.js"
 	]
