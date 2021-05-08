@@ -294,6 +294,9 @@ $(async () => {
     throw new Error("Clippings/wx: clippingKey.js: Failed to retrieve parent browser window!");
   }
 
+  let os = gClippings.getOS();
+  document.body.dataset.os = os;
+
   gClippingsDB = gClippings.getClippingsDB();
   let extVer = browser.runtime.getManifest().version;
 

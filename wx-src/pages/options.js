@@ -35,6 +35,7 @@ $(async () => {
 async function init()
 {
   let os = gClippings.getOS();
+  document.body.dataset.os = os;
 
   if (os == "mac") {
     $("#shortcut-key-prefix-modifiers").text("\u21e7\u2318");

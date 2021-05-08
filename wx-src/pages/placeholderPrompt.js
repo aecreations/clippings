@@ -35,6 +35,9 @@ $(() => {
     throw new Error("Clippings/wx::placeholderPrompt.js: Failed to retrieve parent browser window!");
   }
 
+  let os = gClippings.getOS();
+  document.body.dataset.os = os;
+
   if (gClippings.isGoogleChrome()) {
     chrome.runtime.sendMessage({ msgID: "init-placeholder-prmt-dlg" }, aResp => {
       // TO DO: Same logic as for Firefox.
@@ -111,7 +114,7 @@ $(() => {
           break;
         }
 
-        if (gClippings.getOS() == "win") {
+        if (os == "win") {
           height += DLG_HEIGHT_ADJ_WINDOWS;
         }
         
