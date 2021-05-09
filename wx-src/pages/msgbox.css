@@ -30,7 +30,7 @@ button {
 }
 
 #msgbox-icon[os="mac"] {
-    background-image: url("chrome://global/skin/icons/warning-64.png");
+    background-image: url("../img/warning-64-mac.png");
 }
 
 #msgbox-content {

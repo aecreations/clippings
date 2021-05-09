@@ -344,7 +344,7 @@ progress {
 }
 
 #sync-clippings-dlg #sync-cxn-error .msgbox-icon[os="mac"] {
-    background-image: url("chrome://global/skin/icons/warning-64.png");
+    background-image: url("../img/warning-64-mac.png");
 }
 
 #sync-clippings-dlg #generic-error .msgbox-icon {
