@@ -1919,7 +1919,16 @@ browser.runtime.onMessage.addListener(aRequest => {
   
   let resp = null;
 
-  if (aRequest.msgID == "init-new-clipping-dlg") {
+  if (aRequest.msgID == "get-env-info") {
+    resp = {
+      os: gOS,
+      hostAppName: gHostAppName,
+      hostAppVer:  gHostAppVer,
+    };
+    
+    return Promise.resolve(resp);
+  }
+  else if (aRequest.msgID == "init-new-clipping-dlg") {
     resp = gNewClipping.get();
 
     if (resp !== null) {
