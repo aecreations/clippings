@@ -9,7 +9,7 @@ const WNDH_SHORTCUT_LIST = 272;
 const WNDW_SHORTCUT_LIST = 436;
 const DLG_HEIGHT_ADJ_WINDOWS = 14;
 
-let gClippings, gClippingsDB, gPasteMode;
+let gClippings, gClippingsDB, gPasteMode, gOS;
 
 let gAutocompleteMenu = {
   _SCRL_LENGTH: 36,
@@ -294,6 +294,9 @@ $(async () => {
     throw new Error("Clippings/wx: clippingKey.js: Failed to retrieve parent browser window!");
   }
 
+  let envInfo = await browser.runtime.sendMessage({ msgID: "get-env-info" });
+  document.body.dataset.os = gOS = envInfo.os;
+
   gClippingsDB = gClippings.getClippingsDB();
   let extVer = browser.runtime.getManifest().version;
 
@@ -301,7 +304,7 @@ $(async () => {
 
   aeImportExport.setL10nStrings({
     shctTitle: browser.i18n.getMessage("expHTMLTitle"),
-    hostAppInfo: browser.i18n.getMessage("expHTMLHostAppInfo", [extVer, gClippings.getHostAppName()]),
+    hostAppInfo: browser.i18n.getMessage("expHTMLHostAppInfo", [extVer, envInfo.hostAppName]),
     shctKeyInstrxns: browser.i18n.getMessage("expHTMLShctKeyInstrxn"),
     shctKeyCustNote: browser.i18n.getMessage("expHTMLShctKeyCustNote"),
     shctKeyColHdr: browser.i18n.getMessage("expHTMLShctKeyCol"),
@@ -495,7 +498,7 @@ async function initShortcutList()
     width: WNDW_SHORTCUT_LIST,
     height: WNDH_SHORTCUT_LIST,
   };
-  if (gClippings.getOS() == "win") {
+  if (gOS == "win") {
     updWndInfo.height += DLG_HEIGHT_ADJ_WINDOWS;
   }
   

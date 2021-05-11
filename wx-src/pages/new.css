@@ -261,8 +261,8 @@ ul.fancytree-container {
     background-size: contain;
 }
 
-#create-clipping-error-msgbox .msgbox-error-icon[os="mac"] {
-    background-image: url("chrome://global/skin/icons/warning-64.png");
+body[data-os="mac"] #create-clipping-error-msgbox .msgbox-error-icon {
+    background-image: url("../img/warning-64-mac.png");
 }
 
 #create-clipping-error-msgbox .msgbox-error-msg {

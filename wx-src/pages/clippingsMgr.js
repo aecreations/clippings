@@ -8,7 +8,7 @@ const DEBUG_WND_ACTIONS = false;
 const ENABLE_PASTE_CLIPPING = false;
 const NEW_CLIPPING_FROM_CLIPBOARD = "New Clipping From Clipboard";
 
-let gOS;
+let gEnvInfo;
 let gClippingsDB;
 let gClippings;
 let gIsClippingsTreeEmpty;
@@ -2204,11 +2204,11 @@ $(async () => {
 
   aeImportExport.setDatabase(gClippingsDB);
 
-  let platform = await browser.runtime.getPlatformInfo();
-  gOS = platform.os;
+  gEnvInfo = await browser.runtime.sendMessage({ msgID: "get-env-info" });
+  document.body.dataset.os = gEnvInfo.os;
 
   // Platform-specific initialization.
-  if (gOS == "mac") {
+  if (gEnvInfo.os == "mac") {
     $("#status-bar").css({ backgroundImage: "none" });
   }
 
@@ -2292,7 +2292,7 @@ $(document).keydown(async (aEvent) => {
     return;
   }
 
-  const isMacOS = gClippings.getOS() == "mac";
+  const isMacOS = gEnvInfo.os == "mac";
   
   function isAccelKeyPressed()
   {
@@ -2373,7 +2373,7 @@ $(window).on("click", aEvent => {
 
 
 $(window).on("blur", aEvent => {
-  if (gOS == "linux" || DEBUG_WND_ACTIONS) {
+  if (gEnvInfo.os == "linux" || DEBUG_WND_ACTIONS) {
     if (gClippings.getPrefs().clippingsMgrMinzWhenInactv && !gSuppressAutoMinzWnd) {
       let updWndInfo = { state: "minimized" };
       browser.windows.update(browser.windows.WINDOW_ID_CURRENT, updWndInfo);
@@ -2669,7 +2669,7 @@ function initToolbar()
         name: browser.i18n.getMessage("mnuMaximize"),
         className: "ae-menuitem",
         visible: function (aKey, aOpt) {
-          return (gOS == "win" || DEBUG_WND_ACTIONS);
+          return (gEnvInfo.os == "win" || DEBUG_WND_ACTIONS);
         },
         icon: function (aKey, aOpt) {
           if (gIsMaximized) {
@@ -2681,7 +2681,7 @@ function initToolbar()
         name: browser.i18n.getMessage("mnuMinimizeWhenInactive"),
         className: "ae-menuitem",
         visible: function (aKey, aOpt) {
-          return (gOS == "linux" || DEBUG_WND_ACTIONS);
+          return (gEnvInfo.os == "linux" || DEBUG_WND_ACTIONS);
         },
         icon: function (aKey, aOpt) {
           if (gClippings.getPrefs().clippingsMgrMinzWhenInactv) {
@@ -2692,7 +2692,7 @@ function initToolbar()
       windowCmdsSeparator: {
         type: "cm_separator",
         visible: function (akey, aOpt) {
-          return (gOS != "mac" || DEBUG_WND_ACTIONS);
+          return (gEnvInfo.os != "mac" || DEBUG_WND_ACTIONS);
         }
       },
       openExtensionPrefs: {
@@ -2753,8 +2753,8 @@ function initInstantEditing()
 
 function initIntroBannerAndHelpDlg()
 {
-  const isMacOS = gClippings.getOS() == "mac";
-  const isLinux = gClippings.getOS() == "linux";
+  const isMacOS = gEnvInfo.os == "mac";
+  const isLinux = gEnvInfo.os == "linux";
 
   function buildKeyMapTable(aTableDOMElt)
   {
@@ -2811,11 +2811,7 @@ function initIntroBannerAndHelpDlg()
 
 function initDialogs()
 {
-  let osName = gClippings.getOS();
-  $(".msgbox-icon").attr("os", osName);
-  $("#import-dlg #restore-backup-warning > .warning-icon").attr("os", osName);
-
-  const isMacOS = osName == "mac";
+  const isMacOS = gEnvInfo.os == "mac";
 
   initIntroBannerAndHelpDlg();
 
@@ -2844,7 +2840,7 @@ function initDialogs()
         
         aeImportExport.setL10nStrings({
           shctTitle: browser.i18n.getMessage("expHTMLTitle"),
-          hostAppInfo: browser.i18n.getMessage("expHTMLHostAppInfo", [extVer, gClippings.getHostAppName()]),
+          hostAppInfo: browser.i18n.getMessage("expHTMLHostAppInfo", [extVer, gEnvInfo.hostAppName]),
           shctKeyInstrxns: browser.i18n.getMessage("expHTMLShctKeyInstrxn"),
 	  shctKeyCustNote: browser.i18n.getMessage("expHTMLShctKeyCustNote"),
           shctKeyColHdr: browser.i18n.getMessage("expHTMLShctKeyCol"),
@@ -3007,7 +3003,7 @@ function initDialogs()
 
     let dtFmtList = $("#date-time-format-list")[0];
 
-    if (gClippings.getOS() != "mac") {
+    if (gEnvInfo.os != "mac") {
       dtFmtList.setAttribute("size", "11");
     }
 

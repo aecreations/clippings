@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+let gOS;
 let gClippings;
 let gDialogs = {};
 let gIsActivatingSyncClippings = false;
@@ -34,9 +35,10 @@ $(async () => {
 
 async function init()
 {
-  let os = gClippings.getOS();
+  let platform = await browser.runtime.getPlatformInfo();
+  document.body.dataset.os = gOS = platform.os;
 
-  if (os == "mac") {
+  if (gOS == "mac") {
     $("#shortcut-key-prefix-modifiers").text("\u21e7\u2318");
   }
   else {
@@ -46,7 +48,7 @@ async function init()
   }
 
   // Fit text on one line for various locales.
-  if (os != "mac") {
+  if (gOS != "mac") {
     let lang = browser.i18n.getUILanguage();
     if (lang == "de") {
       $("#enable-shortcut-key-label").css({ fontSize: "13px", letterSpacing: "-0.25px" });
@@ -197,7 +199,7 @@ async function init()
   }
   key = shctArr[shctArr.length - 1];
 
-  if (os == "mac") {
+  if (gOS == "mac") {
     if (keyModifiers == "Command+Shift") {
       isSupportedKeyMod = true;
     }
@@ -233,7 +235,7 @@ async function init()
     keySelectElt.style.display = "inline-block";
 
     $(keySelectElt).change(aEvent => {
-      let modifierKeys = os == "mac" ? "Command+Shift" : "Alt+Shift"
+      let modifierKeys = gOS == "mac" ? "Command+Shift" : "Alt+Shift"
       let keybShct = `${modifierKeys}+${aEvent.target.value}`;
 
       if (gClippings.isDirectSetKeyboardShortcut()) {        
@@ -282,9 +284,6 @@ function setPref(aPref)
 
 function initDialogs()
 {
-  let osName = gClippings.getOS();
-  $(".msgbox-icon").attr("os", osName);
-  
   gDialogs.syncClippings = new aeDialog("#sync-clippings-dlg");
   gDialogs.syncClippings.oldShowSyncItemsOpt = null;
   gDialogs.syncClippings.isCanceled = false;
@@ -446,10 +445,10 @@ function initDialogs()
   };
 
   // Dialog UI strings
-  if (osName == "win") {
+  if (gOS == "win") {
     $("#example-sync-path").text(browser.i18n.getMessage("syncFileDirExWin"));
   }
-  else if (osName == "mac") {
+  else if (gOS == "mac") {
     $("#example-sync-path").text(browser.i18n.getMessage("syncFileDirExMac"));
   }
   else {

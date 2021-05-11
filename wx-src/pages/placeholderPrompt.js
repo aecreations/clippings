@@ -11,6 +11,7 @@ const DLG_HEIGHT_ADJ_WINDOWS = 20;
 
 const REGEXP_CUSTOM_PLACEHOLDER = /\$\[([\w\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)(\{([\w \-\.\?_\/\(\)!@#%&;:,'"$£¥€*¡¢\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF\|])+\})?\]/m;
 
+let gOS;
 let gClippings = null;
 let gPlaceholders = null;
 let gPlaceholdersWithDefaultVals = null;
@@ -26,10 +27,13 @@ function sanitizeHTML(aHTMLStr)
 
 
 // Page initialization
-$(() => {
-  chrome.history.deleteUrl({ url: window.location.href });
+$(async () => {
+  browser.history.deleteUrl({ url: window.location.href });
 
-  gClippings = chrome.extension.getBackgroundPage();
+  let platform = await browser.runtime.getPlatformInfo();
+  document.body.dataset.os = gOS = platform.os;
+
+  gClippings = browser.extension.getBackgroundPage();
 
   if (! gClippings) {
     throw new Error("Clippings/wx::placeholderPrompt.js: Failed to retrieve parent browser window!");
@@ -71,7 +75,7 @@ $(() => {
       if (gPlaceholders.length == 1) {
         let plchldr = gPlaceholders[0];
         $("#plchldr-single").show();
-        $("#single-prmt-label").text(chrome.i18n.getMessage("plchldrPromptSingleDesc", plchldr));
+        $("#single-prmt-label").text(browser.i18n.getMessage("plchldrPromptSingleDesc", plchldr));
         $("#single-prmt-input").focus();
 
         if (plchldr in gPlaceholdersWithDefaultVals) {
@@ -100,7 +104,7 @@ $(() => {
         case 1:
           height = WNDH_PLCHLDR_MULTI_VSHORT;
           let plchldr = gPlaceholders[0];
-          $("#multi-prmt-label").text(chrome.i18n.getMessage("plchldrPromptSingleDesc", plchldr));
+          $("#multi-prmt-label").text(browser.i18n.getMessage("plchldrPromptSingleDesc", plchldr));
           $("#plchldr-table").addClass("single-plchldr-multi-use");
           break;
         case 2:
@@ -111,7 +115,7 @@ $(() => {
           break;
         }
 
-        if (gClippings.getOS() == "win") {
+        if (gOS == "win") {
           height += DLG_HEIGHT_ADJ_WINDOWS;
         }
         
@@ -266,7 +270,7 @@ function accept(aEvent)
     }
   }
 
-  chrome.runtime.sendMessage({
+  browser.runtime.sendMessage({
     msgID: "paste-clipping-with-plchldrs",
     processedContent: content
   });
@@ -284,5 +288,5 @@ function cancel(aEvent)
 async function closeDlg()
 {
   await browser.runtime.sendMessage({ msgID: "close-placeholder-prmt-dlg" });
-  browser.windows.remove(chrome.windows.WINDOW_ID_CURRENT);
+  browser.windows.remove(browser.windows.WINDOW_ID_CURRENT);
 }

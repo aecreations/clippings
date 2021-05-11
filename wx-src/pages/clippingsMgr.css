@@ -927,13 +927,13 @@ ul.fancytree-container {
     background-size: contain;
 }
 
+body[data-os="mac"] .lightbox .msgbox-icon {
+    background-image: url("../img/warning-64-mac.png");
+}
+
 .lightbox .msgbox-info-icon {
     background-image: url("../img/info.svg");
     background-size: contain;
-}
-
-.lightbox .msgbox-icon[os="mac"] {
-    background-image: url("chrome://global/skin/icons/warning-64.png");
 }
 
 .lightbox .browser-style input[type="checkbox"] + label::before {
@@ -1182,8 +1182,8 @@ ul.fancytree-container {
     background-size: contain;
 }
 
-#import-dlg #restore-backup-warning > .warning-icon[os="mac"] {
-    background-image: url("chrome://global/skin/icons/warning-64.png");
+body[data-os="mac"] #import-dlg #restore-backup-warning > .warning-icon {
+    background-image: url("../img/warning-64-mac.png");
 }
 
 #import-dlg #restore-backup-warning > p {

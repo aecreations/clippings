@@ -8,6 +8,7 @@ const WNDH_OPTIONS_EXPANDED = 450;
 const DLG_HEIGHT_ADJ_WINDOWS = 32;
 const DLG_HEIGHT_ADJ_LOCALE_ES = 12;
 
+let gOS;
 let gClippingsDB = null;
 let gClippings = null;
 let gParentFolderID = 0;
@@ -45,9 +46,12 @@ $(async () => {
 
 async function initHelper()
 {
+  let platform = await browser.runtime.getPlatformInfo();
+  document.body.dataset.os = platform.os;
+  
   $("#btn-expand-options").click(async (aEvent) => {
     let height = WNDH_OPTIONS_EXPANDED;
-    if (gClippings.getOS() == "win") {
+    if (platform.os == "win") {
       height += DLG_HEIGHT_ADJ_WINDOWS;
     }
     
@@ -157,9 +161,6 @@ function showInitError()
 
 function initDialogs()
 {
-  let osName = gClippings.getOS();
-  $(".msgbox-error-icon").attr("os", osName);
-  
   gNewFolderDlg = new aeDialog("#new-folder-dlg");
   gNewFolderDlg.firstInit = true;
   gNewFolderDlg.fldrTree = null;
