@@ -344,7 +344,7 @@ progress {
 }
 
 #sync-clippings-dlg #sync-cxn-error .msgbox-icon[os="mac"] {
-    background-image: url("chrome://global/skin/icons/warning-64.png");
+    background-image: url("../img/warning-64-mac.png");
 }
 
 #sync-clippings-dlg #generic-error .msgbox-icon {
@@ -418,8 +418,12 @@ progress {
     height: 48px;
     margin-top: 8px;
     margin-right: 12px;
-    background-image: url("chrome://global/skin/icons/question-64.png");
+    background-image: url("../img/question-64.png");
     background-size: contain;
+}
+
+body[data-os="mac"] #turn-off-sync-clippings-dlg .msgbox-icon {
+    background-image: url("../img/question-64-mac.png");
 }
 
 #turn-off-sync-clippings-ack-dlg {

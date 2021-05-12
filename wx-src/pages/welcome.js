@@ -10,6 +10,13 @@ $(() => {
 
   browser.history.deleteUrl({ url: pgURL.href });
 
+  let clippings = browser.extension.getBackgroundPage();
+  if (! clippings) {
+    throw new Error("Clippings/wx::welcome.js: Failed to retrieve parent browser window!");
+  }
+  
+  document.body.dataset.os = clippings.getOS();
+
   $("#goto-whatsnew").click(aEvent => {
     window.location.href = "http://aecreations.sourceforge.net/clippings/whatsnew.php";
   });

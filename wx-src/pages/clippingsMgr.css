@@ -933,7 +933,7 @@ ul.fancytree-container {
 }
 
 .lightbox .msgbox-icon[os="mac"] {
-    background-image: url("chrome://global/skin/icons/warning-64.png");
+    background-image: url("../img/warning-64-mac.png");
 }
 
 .lightbox .browser-style input[type="checkbox"] + label::before {
@@ -1183,7 +1183,7 @@ ul.fancytree-container {
 }
 
 #import-dlg #restore-backup-warning > .warning-icon[os="mac"] {
-    background-image: url("chrome://global/skin/icons/warning-64.png");
+    background-image: url("../img/warning-64-mac.png");
 }
 
 #import-dlg #restore-backup-warning > p {

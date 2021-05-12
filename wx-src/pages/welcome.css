@@ -493,8 +493,12 @@ button.btn-puffy {
     height: 48px;
     margin-top: 8px;
     margin-right: 12px;
-    background-image: url("chrome://global/skin/icons/question-64.png");
+    background-image: url("../img/question-64.png");
     background-size: contain;
+}
+
+body[data-os="mac"] #dismiss-welcome-dlg .msgbox-icon {
+    background-image: url("../img/question-64-mac.png");
 }
 
 #dismiss-welcome-dlg .dlg-content {

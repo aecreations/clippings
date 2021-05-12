@@ -1502,7 +1502,14 @@ function openPlaceholderPromptDlg()
   // TO DO: Same checking for cursor location as in the preceding function.
 
   let url = browser.runtime.getURL("pages/placeholderPrompt.html");
-  openDlgWnd(url, "placeholderPrmt", { type: "detached_panel", width: 500, height: 180 });
+  let height = 180;
+  if (versionCompare(gHostAppVer, "89.0") >= 0) {
+    // Adjust height of placeholder prompt to accommodate restyling of native
+    // drop-down menus in Firefox 89 on Windows.
+    height = 186;
+  }
+  
+  openDlgWnd(url, "placeholderPrmt", { type: "detached_panel", width: 500, height });
 }
 
 
