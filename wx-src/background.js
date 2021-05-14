@@ -1698,12 +1698,6 @@ function getPrefs()
 }
 
 
-function getSyncFolderID()
-{
-  return gSyncFldrID;
-}
-
-
 function isClippingsMgrRootFldrReseq()
 {
   return gClippingsMgrRootFldrReseq;
@@ -1986,6 +1980,10 @@ browser.runtime.onMessage.addListener(aRequest => {
   }
   else if (aRequest.msgID == "close-placeholder-prmt-dlg") {
     gWndIDs.placeholderPrmt = null;
+  }
+  else if (aRequest.msgID == "get-sync-fldr-id") {
+    resp = gSyncFldrID;
+    return Promise.resolve(resp);
   }
 });
 

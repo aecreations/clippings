@@ -17,7 +17,7 @@ let gDialogs = {};
 let gOpenerWndID;
 let gIsMaximized;
 let gSuppressAutoMinzWnd;
-let gSyncFolderID;
+let gSyncFldrID = null;
 let gSyncedItemsIDs = {};
 let gIsBackupMode = false;
 let gErrorPushSyncItems = false;
@@ -220,7 +220,7 @@ let gClippingsListener = {
       children: []
     };
 
-    if (aID == gClippings.getSyncFolderID()) {
+    if (aID == gSyncFldrID) {
       newNodeData.extraClasses = "ae-synced-clippings-fldr";
     }
 
@@ -873,7 +873,7 @@ let gClippingLabelPicker = {
 let gReloadSyncFldrBtn = {
   show()
   {
-    let syncFldrID = gClippings.getSyncFolderID();
+    let syncFldrID = gSyncFldrID;
     if (syncFldrID === null) {
       return;
     }
@@ -1163,7 +1163,7 @@ let gCmd = {
     let selectedNode = tree.activeNode;
     if (selectedNode && selectedNode.isFolder()) {
       let folderID = parseInt(selectedNode.key);
-      if (folderID == gClippings.getSyncFolderID()) {
+      if (folderID == gSyncFldrID) {
         window.setTimeout(() => {gDialogs.moveSyncFldr.showModal()});
         return;
       }
@@ -1188,7 +1188,7 @@ let gCmd = {
     let parentFolderID = this._getParentFldrIDOfTreeNode(selectedNode);
     
     if (selectedNode.isFolder()) {
-      if (id == gClippings.getSyncFolderID()) {
+      if (id == gSyncFldrID) {
         window.setTimeout(() => {gDialogs.deleteSyncFldr.showModal()}, 100);
         return;
       }
@@ -1673,7 +1673,7 @@ let gCmd = {
             gClippings.rebuildContextMenu();
           }
 
-          if (aFolderID == gClippings.getSyncFolderID() || gSyncedItemsIDs[aFolderID + "F"] !== undefined) {
+          if (aFolderID == gSyncFldrID || gSyncedItemsIDs[aFolderID + "F"] !== undefined) {
             gClippings.pushSyncFolderUpdates().then(() => {
               log("Clippings/wx::clippingsMgr.js::gCmd.updateDisplayOrder(): Saved the display order for synced items.");
             });
@@ -2229,7 +2229,7 @@ $(async () => {
   clippingsListeners.add(gClippingsListener);
 
   let prefs = gClippings.getPrefs();
-  gSyncFolderID = prefs.syncFolderID;
+  gSyncFldrID = prefs.syncFolderID;
 
   let syncClippingsListeners = gClippings.getSyncClippingsListeners();
   syncClippingsListeners.add(gSyncClippingsListener);
@@ -3896,7 +3896,7 @@ function buildClippingsTree()
             }
 
             let folderID = parseInt(selectedNode.key);
-            return (folderID == gClippings.getSyncFolderID());
+            return (folderID == gSyncFldrID);
           }
         },
 
@@ -3912,7 +3912,7 @@ function buildClippingsTree()
             }
 
             let folderID = parseInt(selectedNode.key);
-            return (folderID == gClippings.getSyncFolderID());
+            return (folderID == gSyncFldrID);
           }
         },
         gotoSrcURL: {
@@ -4020,7 +4020,7 @@ function buildClippingsTree()
             }
 
             let folderID = parseInt(selectedNode.key);
-            return (folderID == gClippings.getSyncFolderID());
+            return (folderID == gSyncFldrID);
           }
         }
       }
@@ -4063,7 +4063,7 @@ function buildClippingsTreeHelper(aFolderID)
           folder: true
         }
 
-        if (aItem.id == gClippings.getSyncFolderID()) {
+        if (aItem.id == gSyncFldrID) {
           folderNode.extraClasses = "ae-synced-clippings-fldr";
         }
 
@@ -4331,7 +4331,7 @@ function updateDisplay(aEvent, aData)
       $("#item-properties").addClass("folder-only");
 
       let prefs = gClippings.getPrefs();
-      if (prefs.syncClippings && selectedItemID == gClippings.getSyncFolderID()) {
+      if (prefs.syncClippings && selectedItemID == gSyncFldrID) {
         // Prevent renaming of the Synced Clippings folder.
         $("#clipping-name").attr("disabled", "true");
       }

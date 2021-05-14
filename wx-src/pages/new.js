@@ -16,6 +16,7 @@ let gSrcURL = "";
 let gCreateInFldrMenu;
 let gFolderPickerPopup;
 let gNewFolderDlg;
+let gSyncFldrID = null;
 
 
 // Page initialization
@@ -48,6 +49,8 @@ async function initHelper()
 {
   let platform = await browser.runtime.getPlatformInfo();
   document.body.dataset.os = platform.os;
+
+  gSyncFldrID = await browser.runtime.sendMessage({ msgID: "get-sync-fldr-id" });
   
   $("#btn-expand-options").click(async (aEvent) => {
     let height = WNDH_OPTIONS_EXPANDED;
@@ -200,7 +203,7 @@ function initDialogs()
       let fldrID = aFolderData.node.key;
       fldrPickerMnuBtn.val(fldrID).text(aFolderData.node.title);
 
-      if (fldrID == gClippings.getSyncFolderID()) {
+      if (fldrID == gSyncFldrID) {
         fldrPickerMnuBtn.attr("syncfldr", "true");
       }
       else {
@@ -212,7 +215,7 @@ function initDialogs()
     };
 
     fldrPickerMnuBtn.val(selectedFldrID).text(selectedFldrName);
-    if (selectedFldrID == gClippings.getSyncFolderID()) {
+    if (selectedFldrID == gSyncFldrID) {
       fldrPickerMnuBtn.attr("syncfldr", "true");
     }
     else {
@@ -368,7 +371,7 @@ function selectFolder(aFolderData)
   let fldrPickerMenuBtn = $("#new-clipping-fldr-picker-menubtn");
   fldrPickerMenuBtn.text(aFolderData.node.title).val(gParentFolderID);
 
-  if (gParentFolderID == gClippings.getSyncFolderID()) {
+  if (gParentFolderID == gSyncFldrID) {
     fldrPickerMenuBtn.attr("syncfldr", "true");
   }
   else {
@@ -475,10 +478,9 @@ function accept(aEvent)
       
       let prefs = gClippings.getPrefs();
       if (prefs.syncClippings) {
-        let syncFldrID = gClippings.getSyncFolderID();
         aeImportExport.setDatabase(gClippingsDB);
         
-        return aeImportExport.exportToJSON(true, true, syncFldrID, false, true);
+        return aeImportExport.exportToJSON(true, true, gSyncFldrID, false, true);
       }
       return null;
 
