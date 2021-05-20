@@ -35,7 +35,7 @@ $(async () => {
     
     if (aEvent.target.checked) {
       $("#backup-reminder-freq").prop("disabled", false);
-      setPref = aePrefs.setPref({
+      setPref = aePrefs.setPrefs({
         backupRemFrequency: Number($("#backup-reminder-freq").val()),
         backupRemFirstRun: false,
         lastBackupRemDate: new Date().toString(),
@@ -43,7 +43,7 @@ $(async () => {
     }
     else {
       $("#backup-reminder-freq").prop("disabled", true);
-      setPref = aePrefs.setPref({
+      setPref = aePrefs.setPrefs({
 	backupRemFrequency: aeConst.BACKUP_REMIND_NEVER,
       });
     }
