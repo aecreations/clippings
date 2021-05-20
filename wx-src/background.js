@@ -196,7 +196,7 @@ let gSyncClippingsListener = {
   {
     function resetCxtMenuSyncItemsOnlyOpt(aRebuildCxtMenu) {
       if (gPrefs.cxtMenuSyncItemsOnly) {
-        browser.storage.local.set({ cxtMenuSyncItemsOnly: false });
+        aePrefs.setPrefs({ cxtMenuSyncItemsOnly: false });
       }
       if (aRebuildCxtMenu) {
         rebuildContextMenu();
@@ -335,7 +335,7 @@ browser.runtime.onInstalled.addListener(async (aInstall) => {
     let currVer = browser.runtime.getManifest().version;
     log(`Clippings/wx: Upgrading from version ${oldVer} to ${currVer}`);
 
-    gPrefs = await browser.storage.local.get(aePrefs.getPrefKeys());
+    gPrefs = await aePrefs.getAllPrefs();
 
     if (! hasSanDiegoPrefs()) {
       gSetDisplayOrderOnRootItems = true;
@@ -373,7 +373,7 @@ async function setDefaultPrefs()
   let defaultPrefs = aePrefs.getDefaultPrefs();
 
   gPrefs = defaultPrefs;
-  await browser.storage.local.set(defaultPrefs);
+  await aePrefs.setPrefs(defaultPrefs);
 }
 
 
@@ -400,7 +400,7 @@ async function setSanDiegoPrefs()
     gPrefs[pref] = newPrefs[pref];
   }
 
-  await browser.storage.local.set(newPrefs);
+  await aePrefs.setPrefs(newPrefs);
 }
 
 
@@ -422,7 +422,7 @@ async function setBalboaParkPrefs()
     gPrefs[pref] = newPrefs[pref];
   }
 
-  await browser.storage.local.set(newPrefs);
+  await aePrefs.setPrefs(newPrefs);
 }
 
 
@@ -446,7 +446,7 @@ async function setMalibuPrefs()
     gPrefs[pref] = newPrefs[pref];
   }
 
-  await browser.storage.local.set(newPrefs);
+  await aePrefs.setPrefs(newPrefs);
 }
 
 
@@ -467,7 +467,7 @@ async function setTopangaPrefs()
     gPrefs[pref] = newPrefs[pref];
   }
 
-  await browser.storage.local.set(newPrefs);
+  await aePrefs.setPrefs(newPrefs);
 }
 
 
@@ -478,7 +478,7 @@ async function setTopangaPrefs()
 browser.runtime.onStartup.addListener(async () => {
   log("Clippings/wx: Initializing Clippings during browser startup.");
   
-  gPrefs = await browser.storage.local.get(aePrefs.getPrefKeys());
+  gPrefs = await aePrefs.getAllPrefs();
   log("Clippings/wx: Successfully retrieved user preferences:");
   log(gPrefs);
     
@@ -533,7 +533,7 @@ function init()
     }
 
     if (gPrefs.backupRemFirstRun && !gPrefs.lastBackupRemDate) {
-      browser.storage.local.set({
+      aePrefs.setPrefs({
         lastBackupRemDate: new Date().toString(),
       });
     }
@@ -548,7 +548,7 @@ function init()
 
     if (gPrefs.showWelcome) {
       openWelcomePage();
-      browser.storage.local.set({ showWelcome: false });
+      aePrefs.setPrefs({ showWelcome: false });
     }
 
     if (gSetDisplayOrderOnRootItems) {
@@ -632,7 +632,7 @@ async function enableSyncClippings(aIsEnabled)
         console.error("Clippings/wx: enableSyncClippings(): Failed to create the Synced Clipping folder: " + e);
       }
 
-      await browser.storage.local.set({ syncFolderID: gSyncFldrID });
+      await aePrefs.setPrefs({ syncFolderID: gSyncFldrID });
       log("Clippings/wx: enableSyncClippings(): Synced Clippings folder ID: " + gSyncFldrID);
       return gSyncFldrID;
     }
@@ -642,7 +642,7 @@ async function enableSyncClippings(aIsEnabled)
     let oldSyncFldrID = gSyncFldrID;
 
     let numUpd = await gClippingsDB.folders.update(gSyncFldrID, { isSync: undefined });
-    await browser.storage.local.set({ syncFolderID: null });
+    await aePrefs.setPrefs({ syncFolderID: null });
     gSyncFldrID = null;
     return oldSyncFldrID;
   }
@@ -686,7 +686,7 @@ function refreshSyncedClippings(aRebuildClippingsMenu)
     if (gSyncFldrID === null) {
       gSyncFldrID = aSyncFldrID;
       log("Clippings/wx: Synced Clippings folder ID: " + gSyncFldrID);
-      return browser.storage.local.set({ syncFolderID: gSyncFldrID });
+      return aePrefs.setPrefs({ syncFolderID: gSyncFldrID });
     }
       
     gSyncClippingsListeners.getListeners().forEach(aListener => { aListener.onReloadStart() });
@@ -1185,7 +1185,7 @@ function showBackupNotification()
         iconUrl: "img/icon.svg",
 
       }).then(aNotifID => {
-        browser.storage.local.set({
+        aePrefs.setPrefs({
           backupRemFirstRun: false,
           backupRemFrequency: aeConst.BACKUP_REMIND_WEEKLY,
           lastBackupRemDate: new Date().toString(),
@@ -1209,7 +1209,7 @@ function showBackupNotification()
       }).then(aNotifID => {
         clearBackupNotificationInterval();
         setBackupNotificationInterval();
-        browser.storage.local.set({ lastBackupRemDate: new Date().toString() });
+        aePrefs.setPrefs({ lastBackupRemDate: new Date().toString() });
       });
     }
   }
@@ -1281,7 +1281,7 @@ function showSyncHelperUpdateNotification()
       }
 
     }).then(aNotifID => {
-      browser.storage.local.set({ lastSyncHelperUpdChkDate: new Date().toString() });
+      aePrefs.setPrefs({ lastSyncHelperUpdChkDate: new Date().toString() });
       
     }).catch(aErr => {
       console.error("Clippings/wx: showSyncHelperUpdateNotification(): Unable to check for updates to the Sync Clippings Helper app at this time.\n" + aErr);

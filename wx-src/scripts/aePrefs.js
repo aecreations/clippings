@@ -43,5 +43,24 @@ let aePrefs = {
   getPrefKeys()
   {
     return Object.keys(this._defaultPrefs);
+  },
+  
+  async getPref(aPrefName)
+  {
+    let pref = await browser.storage.local.get(aPrefName);
+    let rv = pref[aPrefName];
+    
+    return rv;
+  },
+
+  async getAllPrefs()
+  {
+    let rv = await browser.storage.local.get(this.getPrefKeys());
+    return rv;
+  },
+
+  async setPrefs(aPrefMap)
+  {
+    await browser.storage.local.set(aPrefMap);
   }
 };

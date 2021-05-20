@@ -507,7 +507,7 @@ function accept(aEvent)
       let isClippingsMgrAutoShowDetailsPane = gClippings.getPrefs().clippingsMgrAutoShowDetailsPane;
       
       if (isClippingsMgrAutoShowDetailsPane && isClippingOptionsSet()) {
-        await browser.storage.local.set({
+        await aePrefs.setPrefs({
           clippingsMgrAutoShowDetailsPane: false,
           clippingsMgrDetailsPane: true
         });

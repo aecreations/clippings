@@ -1758,7 +1758,7 @@ let gCmd = {
   showHidePlaceholderToolbar: function ()
   {
     let currSetting = gClippings.getPrefs().clippingsMgrPlchldrToolbar;
-    browser.storage.local.set({ clippingsMgrPlchldrToolbar: !currSetting });
+    aePrefs.setPrefs({ clippingsMgrPlchldrToolbar: !currSetting });
     
     if (gIsClippingsTreeEmpty) {
       return;
@@ -1778,7 +1778,7 @@ let gCmd = {
   showHideDetailsPane: function ()
   {
     let currSetting = gClippings.getPrefs().clippingsMgrDetailsPane;
-    browser.storage.local.set({ clippingsMgrDetailsPane: !currSetting });
+    aePrefs.setPrefs({ clippingsMgrDetailsPane: !currSetting });
 
     if (gIsClippingsTreeEmpty) {
       return;
@@ -1801,7 +1801,7 @@ let gCmd = {
     let isVisible = $("#status-bar").css("display") != "none";
     recalcContentAreaHeight(isVisible);
     
-    browser.storage.local.set({ clippingsMgrStatusBar: isVisible });
+    aePrefs.setPrefs({ clippingsMgrStatusBar: isVisible });
   },
   
   async toggleMaximize()
@@ -1818,7 +1818,7 @@ let gCmd = {
   toggleMinimizeWhenInactive: function ()
   {
     let currSetting = gClippings.getPrefs().clippingsMgrMinzWhenInactv;
-    browser.storage.local.set({ clippingsMgrMinzWhenInactv: !currSetting });
+    aePrefs.setPrefs({ clippingsMgrMinzWhenInactv: !currSetting });
   },
   
   openExtensionPrefs: function ()
@@ -2220,7 +2220,7 @@ $(async () => {
 
   if (DEBUG_WND_ACTIONS) {
     if (gClippings.getPrefs().clippingsMgrMinzWhenInactv === undefined) {
-      browser.storage.local.set({ clippingsMgrMinzWhenInactv: true });
+      aePrefs.setPrefs({ clippingsMgrMinzWhenInactv: true });
     }
   }
 
@@ -2252,7 +2252,7 @@ $(async () => {
   else {
     if (prefs.syncClippings && prefs.cxtMenuSyncItemsOnly && prefs.clippingsMgrShowSyncItemsOnlyRem) {
       gDialogs.showOnlySyncedItemsReminder.showModal();
-      browser.storage.local.set({ clippingsMgrShowSyncItemsOnlyRem: false });
+      aePrefs.setPrefs({ clippingsMgrShowSyncItemsOnlyRem: false });
     }
   }
   

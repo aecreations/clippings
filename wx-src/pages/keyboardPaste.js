@@ -316,8 +316,7 @@ $(async () => {
 
   browser.history.deleteUrl({ url: window.location.href });
 
-  let prefs = await browser.storage.local.get("pastePromptAction");
-  gPasteMode = prefs.pastePromptAction;
+  gPasteMode = await aePrefs.getPref("pastePromptAction");
   
   if (gPasteMode == aeConst.PASTEACTION_SHORTCUT_KEY) {
     $(".deck > #search-by-name").hide();
@@ -579,9 +578,7 @@ function cancel(aEvent)
 async function closeDlg()
 {
   // Always remember last paste mode, even if user cancelled.
-  await browser.storage.local.set({
-    pastePromptAction: gPasteMode
-  });
+  await aePrefs.setPrefs({ pastePromptAction: gPasteMode });
   
   await browser.runtime.sendMessage({ msgID: "close-keybd-paste-dlg" });
   browser.windows.remove(browser.windows.WINDOW_ID_CURRENT);

@@ -29,13 +29,13 @@ $(async () => {
   $("#backup-now").click(aEvent => { backupNow() });
   $("#btn-close").click(aEvent => { closeDlg() });
 
-  let prefs = await browser.storage.local.get("backupRemFrequency");
-  $("#backup-reminder").prop("checked", (prefs.backupRemFrequency != aeConst.BACKUP_REMIND_NEVER)).click(aEvent => {
+  let backupRemFreq = await aePrefs.getPref("backupRemFrequency");
+  $("#backup-reminder").prop("checked", (backupRemFreq != aeConst.BACKUP_REMIND_NEVER)).click(aEvent => {
     let setPref;
     
     if (aEvent.target.checked) {
       $("#backup-reminder-freq").prop("disabled", false);
-      setPref = browser.storage.local.set({
+      setPref = aePrefs.setPref({
         backupRemFrequency: Number($("#backup-reminder-freq").val()),
         backupRemFirstRun: false,
         lastBackupRemDate: new Date().toString(),
@@ -43,7 +43,7 @@ $(async () => {
     }
     else {
       $("#backup-reminder-freq").prop("disabled", true);
-      setPref = browser.storage.local.set({
+      setPref = aePrefs.setPref({
 	backupRemFrequency: aeConst.BACKUP_REMIND_NEVER,
       });
     }
@@ -56,16 +56,16 @@ $(async () => {
     });
   });
 
-  if (prefs.backupRemFrequency == aeConst.BACKUP_REMIND_NEVER) {
+  if (backupRemFreq == aeConst.BACKUP_REMIND_NEVER) {
     // Set to default interval.
     $("#backup-reminder-freq").val(aeConst.BACKUP_REMIND_WEEKLY).prop("disabled", true);
   }
   else {
-    $("#backup-reminder-freq").val(prefs.backupRemFrequency);
+    $("#backup-reminder-freq").val(backupRemFreq);
   }
 
   $("#backup-reminder-freq").change(async (aEvent) => {
-    await browser.storage.local.set({
+    await aePrefs.setPrefs({
       backupRemFrequency: Number(aEvent.target.value),
       backupRemFirstRun: false,
       lastBackupRemDate: new Date().toString(),

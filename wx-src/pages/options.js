@@ -65,8 +65,8 @@ async function init()
   initDialogs();
 
   $("#toggle-sync").click(async (aEvent) => {
-    let prefs = await browser.storage.local.get("syncClippings");
-    if (prefs.syncClippings) {
+    let syncClippings = await aePrefs.getPref("syncClippings");
+    if (syncClippings) {
       gDialogs.turnOffSync.showModal();
     }
     else {
@@ -85,39 +85,39 @@ async function init()
   usrContribCTA.append(sanitizeHTML(`<label id="usr-contrib-cta-conj">${browser.i18n.getMessage("aboutContribConj")}</label>`));
   usrContribCTA.append(sanitizeHTML(`<a href="${aeConst.L10N_URL}" class="hyperlink">${browser.i18n.getMessage("aboutL10n")}</a>`));
   
-  let prefs = await browser.storage.local.get(aePrefs.getPrefKeys());
+  let prefs = await aePrefs.getAllPrefs();
   $("#html-paste-options").val(prefs.htmlPaste).change(aEvent => {
-    setPref({ htmlPaste: aEvent.target.value });
+    aePrefs.setPrefs({ htmlPaste: aEvent.target.value });
   });
   
   $("#html-auto-line-break").attr("checked", prefs.autoLineBreak).click(aEvent => {
-    setPref({ autoLineBreak: aEvent.target.checked });
+    aePrefs.setPrefs({ autoLineBreak: aEvent.target.checked });
   });
 
   $("#enable-shortcut-key").attr("checked", prefs.keyboardPaste).click(aEvent => {
-    setPref({ keyboardPaste: aEvent.target.checked })
+    aePrefs.setPrefs({ keyboardPaste: aEvent.target.checked })
   });
 
   $("#auto-inc-plchldrs-start-val").val(prefs.autoIncrPlcHldrStartVal).click(aEvent => {
-    setPref({ autoIncrPlcHldrStartVal: aEvent.target.valueAsNumber });
+    aePrefs.setPrefs({ autoIncrPlcHldrStartVal: aEvent.target.valueAsNumber });
   });
 
   $("#always-save-src-url").attr("checked", prefs.alwaysSaveSrcURL).click(aEvent => {
-    setPref({ alwaysSaveSrcURL: aEvent.target.checked });
+    aePrefs.setPrefs({ alwaysSaveSrcURL: aEvent.target.checked });
   });
 
   $("#check-spelling").attr("checked", prefs.checkSpelling).click(aEvent => {
-    setPref({ checkSpelling: aEvent.target.checked });
+    aePrefs.setPrefs({ checkSpelling: aEvent.target.checked });
   });
 
   $("#backup-filename-with-date").attr("checked", prefs.backupFilenameWithDate).click(aEvent => {
-    setPref({ backupFilenameWithDate: aEvent.target.checked });
+    aePrefs.setPrefs({ backupFilenameWithDate: aEvent.target.checked });
   });
 
   $("#backup-reminder").prop("checked", (prefs.backupRemFrequency != aeConst.BACKUP_REMIND_NEVER)).click(async (aEvent) => {
     if (aEvent.target.checked) {
       $("#backup-reminder-freq").prop("disabled", false);
-      await browser.storage.local.set({
+      await aePrefs.setPrefs({
         backupRemFrequency: Number($("#backup-reminder-freq").val()),
         backupRemFirstRun: false,
         lastBackupRemDate: new Date().toString(),
@@ -125,7 +125,7 @@ async function init()
     }
     else {
       $("#backup-reminder-freq").prop("disabled", true);
-      await browser.storage.local.set({ backupRemFrequency: aeConst.BACKUP_REMIND_NEVER });
+      await aePrefs.setPrefs({ backupRemFrequency: aeConst.BACKUP_REMIND_NEVER });
     }
 
     gClippings.clearBackupNotificationInterval();
@@ -143,7 +143,7 @@ async function init()
   }
   
   $("#backup-reminder-freq").change(async (aEvent) => {
-    await browser.storage.local.set({
+    await aePrefs.setPrefs({
       backupRemFrequency: Number(aEvent.target.value),
       backupRemFirstRun: false,
       lastBackupRemDate: new Date().toString(),
@@ -247,7 +247,7 @@ async function init()
         });
       }
       else {
-        setPref({ pasteShortcutKeyPrefix: keybShct });
+        aePrefs.setPrefs({ pasteShortcutKeyPrefix: keybShct });
       }
     });
   }
@@ -274,12 +274,6 @@ $(window).keydown(aEvent => {
     aeInterxn.suppressBrowserShortcuts(aEvent, aeConst.DEBUG);
   }
 });
-
-
-function setPref(aPref)
-{
-  browser.storage.local.set(aPref);
-}
 
 
 function initDialogs()
@@ -386,7 +380,7 @@ function initDialogs()
       return;
     }
 
-    setPref({
+    aePrefs.setPrefs({
       syncHelperCheckUpdates: $("#sync-helper-app-update-check").prop("checked"),
       cxtMenuSyncItemsOnly: $("#show-only-sync-items").prop("checked"),
     });
@@ -410,7 +404,7 @@ function initDialogs()
 	  if (gIsActivatingSyncClippings) {
             // Don't do the following if Sync Clippings was already turned on
             // and no changes to settings were made.
-            setPref({
+            aePrefs.setPrefs({
               syncClippings: true,
               clippingsMgrShowSyncItemsOnlyRem: true,
             });
@@ -462,7 +456,7 @@ function initDialogs()
     that.close();
 
     gClippings.enableSyncClippings(false).then(aOldSyncFldrID => {
-      setPref({ syncClippings: false });
+      aePrefs.setPrefs({ syncClippings: false });
       $("#sync-settings").hide();
       $("#toggle-sync").text(browser.i18n.getMessage("syncTurnOn"));
       $("#sync-status").removeClass("sync-status-on").text(browser.i18n.getMessage("syncStatusOff"));
@@ -538,10 +532,10 @@ function initDialogs()
     let sendNativeMsg = browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
     sendNativeMsg.then(aResp => {
       $("#about-dlg > .dlg-content #diag-info #sync-ver").text(aResp.appVersion);     
-      return browser.storage.local.get("syncClippings");
+      return aePrefs.getPref("syncClippings");
 
-    }).then(prefs => {
-      if (prefs.syncClippings) {
+    }).then(aPrefSyncClpgs => {
+      if (!!aPrefSyncClpgs) {
         let msg = { msgID: "get-sync-file-info" };
         return browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
       }
