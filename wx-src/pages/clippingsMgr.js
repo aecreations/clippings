@@ -2212,6 +2212,9 @@ $(async () => {
     $("#status-bar").css({ backgroundImage: "none" });
   }
 
+  let lang = browser.i18n.getUILanguage();
+  document.body.dataset.locale = lang;
+
   let wndURL = new URL(window.location.href);
   gOpenerWndID = Number(wndURL.searchParams.get("openerWndID"));
   gIsBackupMode = wndURL.searchParams.get("backupMode") || false;
@@ -2868,10 +2871,6 @@ function initDialogs()
           });
         });
 
-        if (browser.i18n.getUILanguage() == "nl") {
-          $("#shortcut-instrxns").css({ letterSpacing: "-0.31px" });
-        }
-        
         that.isInitialized = true;
       }
 
@@ -3264,12 +3263,6 @@ function initDialogs()
     that.inclSrcURLs = true;
     gSuppressAutoMinzWnd = true;
 
-    // Fit text on one line for German locale.
-    if (browser.i18n.getUILanguage() == "de") {
-      $("#export-format-list-label").css({ letterSpacing: "-0.15px" });
-      $("#include-src-urls + label").css({ letterSpacing: "-0.4px" });
-    }
-    
     $("#export-format-list").change(aEvent => {
       let selectedFmtIdx = aEvent.target.selectedIndex;
       $("#format-description").text(fmtDesc[selectedFmtIdx]);
@@ -3574,15 +3567,6 @@ function initDialogs()
   gDialogs.deleteSyncFldr = new aeDialog("#delete-sync-fldr-msgbox");
 
   gDialogs.miniHelp = new aeDialog("#mini-help-dlg");
-  if (! isMacOS) {
-    let dlgHeight = "320px";
-    // Accommodate extra line of text in German locale.
-    if (browser.i18n.getUILanguage() == "de") {
-      dlgHeight = "325px";
-    }
-    $("#mini-help-dlg").css({ height: dlgHeight });
-  }
-
   gDialogs.showOnlySyncedItemsReminder = new aeDialog("#show-only-synced-items-reminder");
   gDialogs.genericMsgBox = new aeDialog("#generic-msg-box");
 }

@@ -50,6 +50,10 @@ select.browser-style {
     font-weight: 400;
 }
 
+body[data-locale="fr"] #backup-hint {
+    letter-spacing: -0.3px;
+}
+
 #backup-reminder-freq {
     margin-left: 4px;
     margin-right: 4px;

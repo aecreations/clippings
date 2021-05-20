@@ -16,15 +16,13 @@ $(async () => {
     throw new Error("Clippings/wx::backup.js: Failed to retrieve parent browser window!");
   }
 
+  let lang = browser.i18n.getUILanguage();
+  document.body.dataset.locale = lang;
+
   // Reset backup notification interval timer so that it fires 24 hours after
   // displaying this first-time backup dialog.
   gClippings.clearBackupNotificationInterval();
   gClippings.setBackupNotificationInterval();
-
-  let lang = browser.i18n.getUILanguage();
-  if (lang == "fr") {
-    $("#backup-hint").css({ letterSpacing: "-0.3px" });
-  }
 
   $("#backup-now").click(aEvent => { backupNow() });
   $("#btn-close").click(aEvent => { closeDlg() });

@@ -1026,6 +1026,10 @@ body[data-os="mac"] .lightbox .msgbox-icon {
     top: 18px;
 }
 
+body[data-locale="nl"] #shortcut-list-dlg #shortcut-instrxns {
+    letter-spacing: -0.31px;
+}
+
 #shortcut-list-dlg > .dlg-btns {
     width: 100%;
 }
@@ -1225,6 +1229,10 @@ body[data-os="mac"] #import-dlg #restore-backup-warning > .warning-icon {
     display: block;
 }
 
+body[data-locale="de"] #export-dlg #export-format-list-label {
+    letter-spacing: -0.15px;
+}
+
 #export-dlg fieldset {
     margin-top: 6px;
     margin-bottom: 12px;
@@ -1242,6 +1250,10 @@ body[data-os="mac"] #import-dlg #restore-backup-warning > .warning-icon {
 
 #export-dlg #include-src-urls[disabled] + label {
     color: var(--color-disabled-text);
+}
+
+body[data-locale="de"] #include-src-urls + label {
+    letter-spacing: -0.4px;
 }
 
 #import-confirm-msgbox > .msgbox-icon,
@@ -1303,6 +1315,14 @@ body[data-os="mac"] #import-dlg #restore-backup-warning > .warning-icon {
     --width: 450px;
     --height: 312px;
     top: 20px;
+}
+
+body:not([data-os="mac"]) #mini-help-dlg {
+    height: 320px;
+}
+
+body[data-locale="de"]:not([data-os="mac"]) #mini-help-dlg {
+    height: 325px;
 }
 
 #shortcut-list-dlg .hlp-hdr,

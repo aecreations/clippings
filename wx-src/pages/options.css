@@ -164,8 +164,28 @@ progress {
     margin-top: 4px;
 }
 
+body[data-locale="de"]:not([data-os="mac"]) #enable-shortcut-key-label {
+    font-size: 13px;
+    letter-spacing: -0.25px;
+}
+
+body[data-locale="es-ES"]:not([data-os="mac"]) #enable-shortcut-key-label {
+    font-size: 13px;
+    letter-spacing: -0.46px;
+}
+
 #shortcut-key-prefix-modifiers {
     vertical-align: middle;
+}
+
+body[data-locale="de"]:not([data-os="mac"]) #shortcut-key-prefix-modifiers {
+    font-size: 13px;
+    letter-spacing: -0.25px;
+}
+
+body[data-locale="es-ES"]:not([data-os="mac"]) #shortcut-key-prefix-modifiers {
+    font-size: 13px;
+    letter-spacing: -0.46px;
 }
 
 #shortcut-key-selector {
@@ -406,6 +426,24 @@ body[data-os="mac"] #sync-clippings-dlg #sync-cxn-error .msgbox-icon {
     margin-left: 12px;
 }
 
+body[data-locale="de"] #sync-clippings-dlg #sync-helper-app-update-check + label {
+    letter-spacing: -0.51px;
+}
+
+body[data-locale="es-ES"] #sync-clippings-dlg #sync-helper-app-update-check + label {
+    letter-spacing: -0.56px;
+}
+
+body[data-locale="pt-BR"] #sync-clippings-dlg #sync-helper-app-update-check + label {
+    letter-spacing: -0.56px;
+}
+
+body[data-locale="nl"] #sync-clippings-dlg #sync-helper-app-update-check + label,
+body[data-locale="uk"] #sync-clippings-dlg #sync-helper-app-update-check + label{
+    letter-spacing: -0.5px;
+    margin-right: 0;
+}
+
 #turn-off-sync-clippings-dlg {
     top: 160px;
     --width: 510px;
@@ -518,12 +556,28 @@ body[data-os="mac"] #turn-off-sync-clippings-dlg .msgbox-icon {
     font-size: 13px;
 }
 
+body[data-locale="pt-BR"] #about-dlg #ext-desc {
+    letter-spacing: -0.55px;
+}
+
 #about-dlg #credits label {
     line-height: 18px;
 }
 
 #about-dlg #usr-contrib-cta {
     margin-top: 8px;
+}
+
+body[data-locale="de"] #about-dlg #usr-contrib-cta {
+    letter-spacing: -0.1px;
+}
+
+body[data-locale="es-ES"] #about-dlg #usr-contrib-cta {
+    letter-spacing: -0.12px;
+}
+
+body[data-locale="uk"] #about-dlg #usr-contrib-cta {
+    letter-spacing: -0.5px;
 }
 
 #about-dlg #usr-contrib-cta-hdg {
@@ -541,4 +595,8 @@ body[data-os="mac"] #turn-off-sync-clippings-dlg .msgbox-icon {
 
 #about-dlg #diag-info label {
     line-height: 16px;
+}
+
+body[data-locale="es-ES"] #about-dlg #sync-ver-label {
+    letter-spacing: -0.15px;
 }

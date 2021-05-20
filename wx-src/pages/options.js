@@ -47,19 +47,9 @@ async function init()
     $("#shortcut-key-prefix-modifiers").text(`${keyAlt} + ${keyShift} + `);
   }
 
-  // Fit text on one line for various locales.
-  if (gOS != "mac") {
-    let lang = browser.i18n.getUILanguage();
-    if (lang == "de") {
-      $("#enable-shortcut-key-label").css({ fontSize: "13px", letterSpacing: "-0.25px" });
-      $("#shortcut-key-prefix-modifiers").css({ fontSize: "13px", letterSpacing: "-0.25px" });
-    }
-    else if (lang == "es-ES") {
-      $("#enable-shortcut-key-label").css({ fontSize: "13px", letterSpacing: "-0.46px" });
-      $("#shortcut-key-prefix-modifiers").css({ fontSize: "13px", letterSpacing: "-0.46px" });     
-    }
-  }
-  
+  let lang = browser.i18n.getUILanguage();
+  document.body.dataset.locale = lang;
+
   $("#sync-intro").html(sanitizeHTML(browser.i18n.getMessage("syncIntro")));
 
   initDialogs();
@@ -309,20 +299,6 @@ function initDialogs()
       $("#show-only-sync-items").prop("checked", prefs.cxtMenuSyncItemsOnly);
 
       gDialogs.syncClippings.oldShowSyncItemsOpt = $("#show-only-sync-items").prop("checked");
-
-      if (lang == "de") {
-        $("#sync-helper-app-update-check + label").css({ letterSpacing: "-0.51px" });
-      }
-      else if (lang == "pt-BR") {
-        $("#sync-helper-app-update-check + label").css({ letterSpacing: "-0.56px" });
-      }
-      else if (lang == "nl" || lang == "uk") {
-        $("#sync-helper-app-update-check + label").css({
-          letterSpacing: "-0.5px",
-          marginRight: "0",
-        });
-      }
-
       let msg = { msgID: "get-sync-dir" };
       return browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
       
@@ -332,7 +308,6 @@ function initDialogs()
 
         if (lang == "es-ES") {
           $("#sync-clippings-dlg").css({ width: "606px" });
-          $("#sync-helper-app-update-check + label").css({ letterSpacing: "-0.56px" });
         }
       }
       $("#sync-clippings-dlg .dlg-accept").show();
@@ -511,21 +486,6 @@ function initDialogs()
     $("#about-dlg > .dlg-content #ext-ver").text(browser.i18n.getMessage("aboutExtVer", that.extInfo.version));
     $("#about-dlg > .dlg-content #ext-desc").text(that.extInfo.description);
     $("#about-dlg > .dlg-content #ext-home-pg").attr("href", that.extInfo.homePgURL);
-
-    let lang = browser.i18n.getUILanguage();
-    if (lang == "de") {
-      $("#usr-contrib-cta").css({ letterSpacing: "-0.1px" });
-    }
-    else if (lang == "pt-BR") {
-      $("#ext-desc").css({ letterSpacing: "-0.55px" });
-    }
-    else if (lang == "es-ES") {
-      $("#usr-contrib-cta").css({ letterSpacing: "-0.12px" });
-      $("#sync-ver-label").css({ letterSpacing: "-0.15px" });
-    }
-    else if (lang == "uk") {
-      $("#usr-contrib-cta").css({ letterSpacing: "-0.5px" });
-    }
   };
   gDialogs.about.onShow = () => {
     let msg = { msgID: "get-app-version" };
