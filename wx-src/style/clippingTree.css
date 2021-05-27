@@ -98,6 +98,11 @@ span.fancytree-title {
     background-image: url("../img/clippings-root.svg");    
 }
 
+.ui-fancytree .ae-clippings-sync-root > .fancytree-icon {
+    background-position: unset;
+    background-image: url("../img/synced-clippings.svg");    
+}
+
 /* Tree icons for clippings with labels */
 .ui-fancytree .ae-clipping-label-red > .fancytree-icon {
     background-position: unset;

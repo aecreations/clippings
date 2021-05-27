@@ -6,20 +6,23 @@
 
 class aeFolderPicker
 {
-  constructor(aTreeEltSelector, aClippingsDB, aActiveTreeNodeKey)
+  static ROOT_FOLDER_CLS = "ae-clippings-root";
+  static SYNCED_ROOT_FOLDER_CLS = "ae-clippings-sync-root";
+  
+  constructor(aTreeEltSelector, aClippingsDB, aParentFldrID, aParentFldrName, aRootFldrCls, aActiveTreeNodeKey)
   {
     this._treeEltSelector = aTreeEltSelector;
     this._db = aClippingsDB;
     this._fnOnSelectFolder = function (aFolderData) {};
 
-    this._init(aActiveTreeNodeKey);
+    this._init(aParentFldrID, aParentFldrName, aRootFldrCls, aActiveTreeNodeKey);
   }
 
-  _init(aActiveTreeNodeKey)
+  _init(aParentFldrID, aParentFldrName, aRootFldrCls, aActiveTreeNodeKey)
   {
     let rootFldrTreeNodes = [];
 
-    this._db.folders.where("parentFolderID").equals(0).each((aItem, aCursor) => {
+    this._db.folders.where("parentFolderID").equals(aParentFldrID).each((aItem, aCursor) => {
       let folderNode = {
 	key: aItem.id,
 	title: aItem.name,
@@ -46,13 +49,14 @@ class aeFolderPicker
 
       rootFldrTreeNodes.sort((aItem1, aItem2) => { return this._sort(aItem1, aItem2) });
 
+      let rootFldrCls = aRootFldrCls || this.constructor.ROOT_FOLDER_CLS;
       let treeData = [
         {
-	  title: "Clippings",
-	  key: 0,
+	  title: aParentFldrName,
+	  key: aParentFldrID,
 	  folder: true,
 	  expanded: true,
-          extraClasses: "ae-clippings-root",
+          extraClasses: rootFldrCls,
 	  children: rootFldrTreeNodes,
         }
       ];

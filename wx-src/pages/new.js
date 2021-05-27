@@ -16,7 +16,7 @@ let gSrcURL = "";
 let gCreateInFldrMenu;
 let gFolderPickerPopup;
 let gNewFolderDlg;
-let gSyncFldrID = null;
+let gPrefs;
 
 
 // Page initialization
@@ -50,7 +50,8 @@ async function initHelper()
   let platform = await browser.runtime.getPlatformInfo();
   document.body.dataset.os = platform.os;
 
-  gSyncFldrID = await browser.runtime.sendMessage({ msgID: "get-sync-fldr-id" });
+  gPrefs = await aePrefs.getAllPrefs();
+
   
   $("#btn-expand-options").click(async (aEvent) => {
     let height = WNDH_OPTIONS_EXPANDED;
@@ -190,10 +191,22 @@ function initDialogs()
     let fldrPickerPopup = $("#new-folder-dlg-fldr-tree-popup");
     let selectedFldrID = parentDlgFldrPickerMnuBtn.val();
     let selectedFldrName = parentDlgFldrPickerMnuBtn.text();
+    let rootFldrID = aeConst.ROOT_FOLDER_ID;
+    let rootFldrName = browser.i18n.getMessage("rootFldrName");
+    let rootFldrCls = aeFolderPicker.ROOT_FOLDER_CLS;
+
+    if (gPrefs.syncClippings && gPrefs.newClippingSyncFldrsOnly) {
+      rootFldrID = gPrefs.syncFolderID;
+      rootFldrName = browser.i18n.getMessage("syncFldrName");
+      rootFldrCls = aeFolderPicker.SYNCED_ROOT_FOLDER_CLS;
+    }
 
     that.fldrTree = new aeFolderPicker(
       "#new-folder-dlg-fldr-tree",
       gClippingsDB,
+      rootFldrID,
+      rootFldrName,
+      rootFldrCls,
       selectedFldrID
     );
 
@@ -203,7 +216,7 @@ function initDialogs()
       let fldrID = aFolderData.node.key;
       fldrPickerMnuBtn.val(fldrID).text(aFolderData.node.title);
 
-      if (fldrID == gSyncFldrID) {
+      if (fldrID == gPrefs.syncFolderID) {
         fldrPickerMnuBtn.attr("syncfldr", "true");
       }
       else {
@@ -215,7 +228,7 @@ function initDialogs()
     };
 
     fldrPickerMnuBtn.val(selectedFldrID).text(selectedFldrName);
-    if (selectedFldrID == gSyncFldrID) {
+    if (selectedFldrID == gPrefs.syncFolderID) {
       fldrPickerMnuBtn.attr("syncfldr", "true");
     }
     else {
@@ -327,8 +340,8 @@ function initDialogs()
 
 function initFolderPicker()
 {
-  // Initialize the hidden background that user can click on to dismiss an open
-  // folder picker popup.
+  // Initialize the transparent background that user can click on to dismiss an
+  // open folder picker popup.
   $(".popup-bkgrd").click(aEvent => {
     $(".folder-tree-popup").css({ visibility: "hidden" });
     $(".popup-bkgrd").hide();
@@ -359,7 +372,27 @@ function initFolderPicker()
   
   $("#new-folder-btn").attr("title", browser.i18n.getMessage("btnNewFolder"));
 
-  gFolderPickerPopup = new aeFolderPicker("#new-clipping-fldr-tree", gClippingsDB);
+  let rootFldrID = aeConst.ROOT_FOLDER_ID;
+  let rootFldrName = browser.i18n.getMessage("rootFldrName");
+  let rootFldrCls = aeFolderPicker.ROOT_FOLDER_CLS;
+
+  if (gPrefs.syncClippings && gPrefs.newClippingSyncFldrsOnly) {
+    rootFldrID = gPrefs.syncFolderID;
+    rootFldrName = browser.i18n.getMessage("syncFldrName");
+    rootFldrCls = aeFolderPicker.SYNCED_ROOT_FOLDER_CLS;
+    $("#new-clipping-fldr-picker-menubtn").val(gPrefs.syncFolderID)
+      .text(rootFldrName)
+      .attr("syncfldr", "true");
+  }
+  
+  gFolderPickerPopup = new aeFolderPicker(
+    "#new-clipping-fldr-tree",
+    gClippingsDB,
+    rootFldrID,
+    rootFldrName,
+    rootFldrCls
+  );
+
   gFolderPickerPopup.onSelectFolder = selectFolder;
 }
 
@@ -371,7 +404,7 @@ function selectFolder(aFolderData)
   let fldrPickerMenuBtn = $("#new-clipping-fldr-picker-menubtn");
   fldrPickerMenuBtn.text(aFolderData.node.title).val(gParentFolderID);
 
-  if (gParentFolderID == gSyncFldrID) {
+  if (gParentFolderID == gPrefs.syncFolderID) {
     fldrPickerMenuBtn.attr("syncfldr", "true");
   }
   else {
@@ -480,7 +513,7 @@ function accept(aEvent)
       if (prefs.syncClippings) {
         aeImportExport.setDatabase(gClippingsDB);
         
-        return aeImportExport.exportToJSON(true, true, gSyncFldrID, false, true);
+        return aeImportExport.exportToJSON(true, true, gPrefs.syncFolderID, false, true);
       }
       return null;
 

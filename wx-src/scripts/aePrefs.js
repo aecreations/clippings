@@ -32,7 +32,8 @@ let aePrefs = {
     syncHelperCheckUpdates: true,
     lastSyncHelperUpdChkDate: null,
     backupFilenameWithDate: true,
-    dispatchInputEvent: true,    
+    dispatchInputEvent: true,
+    newClippingSyncFldrsOnly: false,
   },
   
   getDefaultPrefs()

@@ -3469,7 +3469,13 @@ function initDialogs()
       that.fldrTree.getTree().getNodeByKey(Number(aeConst.ROOT_FOLDER_ID).toString()).setActive();
     }
     else {
-      that.fldrTree = new aeFolderPicker("#move-to-fldr-tree", gClippingsDB);
+      that.fldrTree = new aeFolderPicker(
+        "#move-to-fldr-tree",
+        gClippingsDB,
+        aeConst.ROOT_FOLDER_ID,
+        browser.i18n.getMessage("rootFldrName")
+      );
+
       that.fldrTree.onSelectFolder = aFolderData => {
         that.selectedFldrNode = aFolderData.node;
       };
