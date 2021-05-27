@@ -359,6 +359,11 @@ browser.runtime.onInstalled.addListener(async (aInstall) => {
       await setTopangaPrefs();
     }
 
+    if (! hasHuntingdonPrefs()) {
+      log("Initializing 6.3 user preferences.");
+      await setHuntingdonPrefs();
+    }
+
     if (gPrefs.clippingsMgrDetailsPane) {
       gPrefs.clippingsMgrAutoShowDetailsPane = false;
     }
@@ -463,6 +468,27 @@ async function setTopangaPrefs()
     dispatchInputEvent: true,
   };
 
+  for (let pref in newPrefs) {
+    gPrefs[pref] = newPrefs[pref];
+  }
+
+  await aePrefs.setPrefs(newPrefs);
+}
+
+
+function hasHuntingdonPrefs()
+{
+  // Version 6.3
+  return gPrefs.hasOwnProperty("newClippingSyncFldrsOnly");
+}
+
+
+async function setHuntingdonPrefs()
+{
+  let newPrefs = {
+    newClippingSyncFldrsOnly: false,
+  };
+  
   for (let pref in newPrefs) {
     gPrefs[pref] = newPrefs[pref];
   }
