@@ -332,7 +332,8 @@ $(async () => {
     await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, updWndInfo);
 
     $(".deck > #search-by-name").show();
-    $("#clipping-search").focus();
+    let srchBox = $("#clipping-search")[0];
+    srchBox.focus();
   }
 
   // Fix for Fx57 bug where bundled page loaded using
@@ -393,7 +394,8 @@ $(window).keydown(async (aEvent) => {
       await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, updWndInfo);
       
       $(".deck > #search-by-name").fadeIn("fast");
-      $("#clipping-search").focus();
+      let srchBox = $("#clipping-search")[0];
+      srchBox.focus();
     }
     else if (gPasteMode == aeConst.PASTEACTION_SEARCH_CLIPPING) {
       gPasteMode = aeConst.PASTEACTION_SHORTCUT_KEY;
