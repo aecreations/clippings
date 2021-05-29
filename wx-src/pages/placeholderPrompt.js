@@ -4,7 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
-const WNDH_PLCHLDR_MULTI = 284;
+const WNDH_PLCHLDR_MULTI = 286;
 const WNDH_PLCHLDR_MULTI_SHORT = 240;
 const WNDH_PLCHLDR_MULTI_VSHORT = 180;
 const DLG_HEIGHT_ADJ_WINDOWS = 20;

@@ -1424,7 +1424,7 @@ function openPlaceholderPromptDlg()
   // TO DO: Same checking for cursor location as in the preceding function.
 
   let url = browser.runtime.getURL("pages/placeholderPrompt.html");
-  openDlgWnd(url, "placeholderPrmt", { type: "detached_panel", width: 500, height: 180 });
+  openDlgWnd(url, "placeholderPrmt", { type: "detached_panel", width: 536, height: 198 });
 }
 
 
