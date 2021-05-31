@@ -14,8 +14,17 @@ body {
 button {
     min-width: 96px;
     min-height: 32px;
+    border-radius: 4px;
     font-size: 15px !important;
     text-align: center !important;
+}
+
+button.default {
+    border: 1px solid #003eaa;
+}
+
+button.default:hover {
+    border-color: #002275;
 }
 
 #icon {
