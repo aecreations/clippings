@@ -70,6 +70,9 @@
     --url-toolbar-btn-img-tools-active: url("../img/options_hover.svg");
     --url-toolbar-btn-img-tools-menu-open: url("../img/options_menuopen.svg");
     --url-toolbar-btn-img-dropdown: url("../img/drop-down.svg");
+    --url-toolbar-btn-img-shct-keys: url("../img/shctkeys.svg");
+    --url-toolbar-btn-img-shct-keys-hover: url("../img/shctkeys_hover.svg");
+    --url-toolbar-btn-img-shct-keys-active: url("../img/shctkeys_hover.svg");
     --url-toolbar-btn-img-help: url("../img/help.svg");
     --url-toolbar-btn-img-help-hover: url("../img/help_hover.svg");
     --url-toolbar-btn-img-help-active: url("../img/help.svg");
@@ -143,6 +146,9 @@
 	--url-toolbar-btn-img-tools-active: url("../img/options_dk_active.svg");
 	--url-toolbar-btn-img-tools-menu-open: url("../img/options_dk_menuopen.svg");
 	--url-toolbar-btn-img-dropdown: url("../img/dropdown_dk.svg");
+	--url-toolbar-btn-img-shct-keys: url("../img/shctkeys.svg");
+	--url-toolbar-btn-img-shct-keys-hover: url("../img/shctkeys_hover.svg");
+	--url-toolbar-btn-img-shct-keys-active: url("../img/shctkeys_hover.svg");
 	--url-toolbar-btn-img-help: url("../img/help-dk.svg");
 	--url-toolbar-btn-img-help-hover: url("../img/help-dk.svg");
 	--url-toolbar-btn-img-help-active: url("../img/help_hover.svg");
@@ -232,8 +238,8 @@ select {
     flex: 0 1 auto;
     align-self: stretch;
     min-width: 30px;
-    margin-left: 1px;
-    margin-right: 1px;
+    margin-left: 0;
+    margin-right: 0;
     border: 1px solid transparent;
     background-position: center;
     background-repeat: no-repeat;
@@ -283,9 +289,7 @@ select {
 
 #toolbar {
     height: var(--toolbar-height);
-    padding-left: 2px;
-    padding-top: 2px;
-    padding-bottom: 2px;
+    padding: 2px;
     background: var(--color-main-toolbar-bkgd);
     color: var(--color-main-toolbar-text);
     border-bottom: 1px solid var(--color-main-toolbar-border);
@@ -451,6 +455,20 @@ select {
     background-position-y: center;
     background-repeat: no-repeat;
     visibility: hidden;
+}
+
+#toolbar > #spacer-3 {
+    order: 10;
+    width: 8px;
+}
+
+#toolbar > #help {
+    order: 11;
+    background-image: var(--url-toolbar-btn-img-help);
+}
+
+#toolbar > #help:hover {
+    background-image: var(--url-toolbar-btn-img-help-hover);
 }
 
 #content {
@@ -663,6 +681,8 @@ ul.fancytree-container {
 
 #item-properties > #placeholder-toolbar > button {
     height: 24px;
+    margin-left: -1px;
+    margin-right: -2px;
 }
 
 #item-properties > #placeholder-toolbar > #plchldr-presets,
@@ -861,16 +881,20 @@ ul.fancytree-container {
 
 #options-bar > #shortcut-key-select > #show-shortcut-list {
     height: 24px;
+    border: 1px solid var(--color-toolbarbtn-active-bkgd);
+    border-radius: 3px;
     vertical-align: bottom;
-    background-image: var(--url-toolbar-btn-img-help);
+    background-image: var(--url-toolbar-btn-img-shct-keys);
 }
 
 #options-bar > #shortcut-key-select > #show-shortcut-list:hover {
-    background-image: var(--url-toolbar-btn-img-help-hover);
+    border-color: var(--color-toolbarbtn-hover-bkgd);
+    background-image: var(--url-toolbar-btn-img-shct-keys-hover);
 }
 
 #options-bar > #shortcut-key-select > #show-shortcut-list:active {
-    background-image: var(--url-toolbar-btn-img-help-active);
+    background-image: var(--url-toolbar-btn-img-shct-keys-active);
+    border-color: #858585;
 }
 
 #options-bar > #options-bar-spacer {

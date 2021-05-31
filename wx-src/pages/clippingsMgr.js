@@ -1915,6 +1915,16 @@ let gCmd = {
     gDialogs.removeAllSrcURLs.showModal();
   },
 
+  showMiniHelp: function ()
+  {
+    if ($("#intro-content").css("display") == "none") {
+      gDialogs.miniHelp.showModal();
+    }
+    else {
+      gDialogs.genericMsgBox.showModal();
+    }
+  },
+
   undo: function ()
   {
     if (this.undoStack.length == 0) {
@@ -2311,13 +2321,7 @@ $(document).keydown(async (aEvent) => {
     if (aeDialog.isOpen()) {
       return;
     }
-
-    if ($("#intro-content").css("display") == "none") {
-      gDialogs.miniHelp.showModal();
-    }
-    else {
-      gDialogs.genericMsgBox.showModal();
-    }
+    gCmd.showMiniHelp();
   }
   else if (aEvent.key == "F2") {
     gCmd.redo();
@@ -2408,7 +2412,12 @@ function initToolbar()
   $("#delete").attr("title", browser.i18n.getMessage("tbDelete")).click(aEvent => {
     gCmd.deleteClippingOrFolder(gCmd.UNDO_STACK);
   });
-  $("#undo").attr("title", browser.i18n.getMessage("tbUndo")).click(aEvent => { gCmd.undo() });
+  $("#undo").attr("title", browser.i18n.getMessage("tbUndo")).click(aEvent => {
+    gCmd.undo();
+  });
+  $("#help").attr("title", browser.i18n.getMessage("tbHelp")).click(aEvent => {
+    gCmd.showMiniHelp();
+  });
 
   // Placeholder toolbar -> Presets menu
   $.contextMenu({
