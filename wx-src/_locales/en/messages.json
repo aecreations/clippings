@@ -587,6 +587,11 @@
     "message": "Reload"
   },
 
+  "mnuMoreTools": {
+    "message": "More",
+    "description": "Submenu of Tools menu in Clippings Manager"
+  },
+
   "mnuRemoveAllSrcURLs": {
     "message": "Remove Source Web Addresses…"
   },

@@ -2629,15 +2629,19 @@ function initToolbar()
           return (gIsClippingsTreeEmpty);
         }
       },
-      separator2: "--------",
-      removeAllSrcURLs: {
-        name: browser.i18n.getMessage("mnuRemoveAllSrcURLs"),
-        className: "ae-menuitem",
-        disabled: function (aKey, aOpt) {
-          return (gIsClippingsTreeEmpty);
+      moreToolsSubmenu: {
+        name: browser.i18n.getMessage("mnuMoreTools"),
+        items: {
+          removeAllSrcURLs: {
+            name: browser.i18n.getMessage("mnuRemoveAllSrcURLs"),
+            className: "ae-menuitem",
+            disabled: function (aKey, aOpt) {
+              return (gIsClippingsTreeEmpty);
+            }
+          },
         }
       },
-      separator3: "--------",
+      separator2: "--------",
       showHideSubmenu: {
         name: browser.i18n.getMessage("mnuShowHide"),
         items: {
