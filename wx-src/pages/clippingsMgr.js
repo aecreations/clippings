@@ -3613,6 +3613,7 @@ function buildClippingsTree()
       autoScroll: true,
       source: treeData,
       selectMode: 1,
+      strings: { noData: browser.i18n.getMessage("clipMgrNoItems") },
       icon: (gIsClippingsTreeEmpty ? false : true),
 
       init: function (aEvent, aData) {
