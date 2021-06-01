@@ -342,6 +342,7 @@ body[data-locale="es-ES"]:not([data-os="mac"]) #shortcut-key-prefix-modifiers {
 }
 
 #sync-clippings-dlg fieldset {
+    margin-top: 14px;
     margin-left: 0;
 }
 

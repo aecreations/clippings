@@ -1201,14 +1201,6 @@
     "description": "Example folder path on Linux."
   },
 
-  "syncFileDirDesc": {
-    "message": "Your Sync Clippings data is stored in this file location.  If you are synchronizing with Thunderbird and want to change the sync file location, you must also change the sync file location in Clippings preferences in Thunderbird to match."
-  },
-
-  "syncFileDirDescTB": {
-    "message": "Your Sync Clippings data is stored in this file location.  If you are synchronizing with Firefox and want to change the sync file location, you must also change the sync file location in Clippings preferences in Firefox to match."
-  },
-
   "errSyncConxn": {
     "message": "Unable to connect to the Sync Clippings helper app. Make sure that the app is installed."
   },
