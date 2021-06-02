@@ -2845,53 +2845,51 @@ function initDialogs()
 
   gDialogs.shortcutList = new aeDialog("#shortcut-list-dlg");
   gDialogs.shortcutList.isInitialized = false;
-  gDialogs.shortcutList.onInit = () => {
+  gDialogs.shortcutList.onInit = async () => {
     let that = gDialogs.shortcutList;
-
-    gClippings.getShortcutKeyPrefixStr().then(aKeybPasteKeys => {
-      if (! that.isInitialized) {
-        let shctPrefixKey = 0;
-        $("#shortcut-instrxns").text(browser.i18n.getMessage("clipMgrShortcutHelpInstrxn", aKeybPasteKeys));
-        let extVer = browser.runtime.getManifest().version;
-        
-        aeImportExport.setL10nStrings({
-          shctTitle: browser.i18n.getMessage("expHTMLTitle"),
-          hostAppInfo: browser.i18n.getMessage("expHTMLHostAppInfo", [extVer, gEnvInfo.hostAppName]),
-          shctKeyInstrxns: browser.i18n.getMessage("expHTMLShctKeyInstrxn"),
-	  shctKeyCustNote: browser.i18n.getMessage("expHTMLShctKeyCustNote"),
-          shctKeyColHdr: browser.i18n.getMessage("expHTMLShctKeyCol"),
-          clippingNameColHdr: browser.i18n.getMessage("expHTMLClipNameCol"),
-        });
-
-        $("#export-shct-list").click(aEvent => {
-          aeImportExport.getShortcutKeyListHTML(true).then(aHTMLData => {
-            let blobData = new Blob([aHTMLData], { type: "text/html;charset=utf-8"});
-            let downldOpts = {
-              url: URL.createObjectURL(blobData),
-              filename: aeConst.HTML_EXPORT_SHORTCUTS_FILENAME,
-              saveAs: true,
-            };
-            return browser.downloads.download(downldOpts);
-
-          }).catch(aErr => {
-            if (aErr.fileName == "undefined") {
-              // User cancel
-            }
-            else {
-              console.error(aErr);
-              window.alert("Sorry, an error occurred while creating the export file.\n\nDetails:\n" + getErrStr(aErr));
-            }
-          });
-        });
-
-        that.isInitialized = true;
-      }
-
-      aeImportExport.getShortcutKeyListHTML(false).then(aShctListHTML => {
-        $("#shortcut-list-content").append(sanitizeHTML(aShctListHTML));
-      }).catch(aErr => {
-        console.error("Clippings/wx::clippingsMgr.js: gDialogs.shortcutList.onInit(): " + aErr);
+    let keybPasteKeys = await browser.runtime.sendMessage({msgID: "get-shct-key-prefix-ui-str"});
+    if (! that.isInitialized) {
+      let shctPrefixKey = 0;
+      $("#shortcut-instrxns").text(browser.i18n.getMessage("clipMgrShortcutHelpInstrxn", keybPasteKeys));
+      let extVer = browser.runtime.getManifest().version;
+      
+      aeImportExport.setL10nStrings({
+        shctTitle: browser.i18n.getMessage("expHTMLTitle"),
+        hostAppInfo: browser.i18n.getMessage("expHTMLHostAppInfo", [extVer, gEnvInfo.hostAppName]),
+        shctKeyInstrxns: browser.i18n.getMessage("expHTMLShctKeyInstrxn"),
+        shctKeyCustNote: browser.i18n.getMessage("expHTMLShctKeyCustNote"),
+        shctKeyColHdr: browser.i18n.getMessage("expHTMLShctKeyCol"),
+        clippingNameColHdr: browser.i18n.getMessage("expHTMLClipNameCol"),
       });
+
+      $("#export-shct-list").click(aEvent => {
+        aeImportExport.getShortcutKeyListHTML(true).then(aHTMLData => {
+          let blobData = new Blob([aHTMLData], { type: "text/html;charset=utf-8"});
+          let downldOpts = {
+            url: URL.createObjectURL(blobData),
+            filename: aeConst.HTML_EXPORT_SHORTCUTS_FILENAME,
+            saveAs: true,
+          };
+          return browser.downloads.download(downldOpts);
+
+        }).catch(aErr => {
+          if (aErr.fileName == "undefined") {
+            // User cancel
+          }
+          else {
+            console.error(aErr);
+            window.alert("Sorry, an error occurred while creating the export file.\n\nDetails:\n" + getErrStr(aErr));
+          }
+        });
+      });
+
+      that.isInitialized = true;
+    }
+
+    aeImportExport.getShortcutKeyListHTML(false).then(aShctListHTML => {
+      $("#shortcut-list-content").append(sanitizeHTML(aShctListHTML));
+    }).catch(aErr => {
+      console.error("Clippings/wx::clippingsMgr.js: gDialogs.shortcutList.onInit(): " + aErr);
     });
   };
   gDialogs.shortcutList.onUnload = () => {

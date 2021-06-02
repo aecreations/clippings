@@ -2011,6 +2011,10 @@ browser.runtime.onMessage.addListener(aRequest => {
     resp = gSyncFldrID;
     return Promise.resolve(resp);
   }
+  else if (aRequest.msgID == "get-shct-key-prefix-ui-str") {
+    resp = getShortcutKeyPrefixStr();
+    return Promise.resolve(resp);
+  }
 });
 
 

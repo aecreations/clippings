@@ -217,7 +217,7 @@ async function init()
     // Manage Extension Shortcuts in Add-ons Manager (Firefox 66+).
     $("#shortcut-key-note").text(browser.i18n.getMessage("prefsOutsideShct"));
 
-    let keybPasteKeys = await gClippings.getShortcutKeyPrefixStr();
+    let keybPasteKeys = await browser.runtime.sendMessage({msgID: "get-shct-key-prefix-ui-str"});
     $("#shortcut-key-prefix-modifiers").text(keybPasteKeys);
   }
   else {

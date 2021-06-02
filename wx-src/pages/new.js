@@ -451,7 +451,7 @@ async function initShortcutKeyMenu()
     }
   });
   
-  let keybPasteKeys = await gClippings.getShortcutKeyPrefixStr();
+  let keybPasteKeys = await browser.runtime.sendMessage({msgID: "get-shct-key-prefix-ui-str"});
   let tooltip = browser.i18n.getMessage("shortcutKeyHint", keybPasteKeys);
   $("#shct-key-tooltip").attr("title", tooltip);
 }
