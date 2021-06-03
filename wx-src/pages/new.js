@@ -528,8 +528,7 @@ function accept(aEvent)
         aListener.newClippingCreated(aNewClippingID, newClipping, aeConst.ORIGIN_HOSTAPP);
       });
       
-      let prefs = gClippings.getPrefs();
-      if (prefs.syncClippings) {
+      if (gPrefs.syncClippings) {
         aeImportExport.setDatabase(gClippingsDB);
         
         return aeImportExport.exportToJSON(true, true, gPrefs.syncFolderID, false, true);
@@ -556,9 +555,7 @@ function accept(aEvent)
         log(aMsgResult);
       }
 
-      let isClippingsMgrAutoShowDetailsPane = gClippings.getPrefs().clippingsMgrAutoShowDetailsPane;
-      
-      if (isClippingsMgrAutoShowDetailsPane && isClippingOptionsSet()) {
+      if (gPrefs.clippingsMgrAutoShowDetailsPane && isClippingOptionsSet()) {
         await aePrefs.setPrefs({
           clippingsMgrAutoShowDetailsPane: false,
           clippingsMgrDetailsPane: true

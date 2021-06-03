@@ -290,13 +290,14 @@ function initDialogs()
     let lang = browser.i18n.getUILanguage();
     let msg = { msgID: "get-app-version" };
     let sendNativeMsg = browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
+
     sendNativeMsg.then(aResp => {
       console.info("Sync Clippings helper app version: " + aResp.appVersion);
+      return aePrefs.getAllPrefs();
 
-      let prefs = gClippings.getPrefs();
-      
-      $("#sync-helper-app-update-check").prop("checked", prefs.syncHelperCheckUpdates);
-      $("#show-only-sync-items").prop("checked", prefs.cxtMenuSyncItemsOnly);
+    }).then(aPrefs => {
+      $("#sync-helper-app-update-check").prop("checked", aPrefs.syncHelperCheckUpdates);
+      $("#show-only-sync-items").prop("checked", aPrefs.cxtMenuSyncItemsOnly);
 
       gDialogs.syncClippings.oldShowSyncItemsOpt = $("#show-only-sync-items").prop("checked");
       let msg = { msgID: "get-sync-dir" };
