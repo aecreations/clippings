@@ -11,13 +11,13 @@ const NEW_CLIPPING_FROM_CLIPBOARD = "New Clipping From Clipboard";
 let gEnvInfo;
 let gClippingsDB;
 let gClippings;
+let gPrefs;
 let gIsClippingsTreeEmpty;
 let gIsReloading = false;
 let gDialogs = {};
 let gOpenerWndID;
 let gIsMaximized;
 let gSuppressAutoMinzWnd;
-let gSyncFldrID = null;
 let gSyncedItemsIDs = {};
 let gIsBackupMode = false;
 let gErrorPushSyncItems = false;
@@ -220,7 +220,7 @@ let gClippingsListener = {
       children: []
     };
 
-    if (aID == gSyncFldrID) {
+    if (aID == gPrefs.syncFolderID) {
       newNodeData.extraClasses = "ae-synced-clippings-fldr";
     }
 
@@ -873,7 +873,7 @@ let gClippingLabelPicker = {
 let gReloadSyncFldrBtn = {
   show()
   {
-    let syncFldrID = gSyncFldrID;
+    let syncFldrID = gPrefs.syncFolderID;
     if (syncFldrID === null) {
       return;
     }
@@ -1163,7 +1163,7 @@ let gCmd = {
     let selectedNode = tree.activeNode;
     if (selectedNode && selectedNode.isFolder()) {
       let folderID = parseInt(selectedNode.key);
-      if (folderID == gSyncFldrID) {
+      if (folderID == gPrefs.syncFolderID) {
         window.setTimeout(() => {gDialogs.moveSyncFldr.showModal()});
         return;
       }
@@ -1188,7 +1188,7 @@ let gCmd = {
     let parentFolderID = this._getParentFldrIDOfTreeNode(selectedNode);
     
     if (selectedNode.isFolder()) {
-      if (id == gSyncFldrID) {
+      if (id == gPrefs.syncFolderID) {
         window.setTimeout(() => {gDialogs.deleteSyncFldr.showModal()}, 100);
         return;
       }
@@ -1673,7 +1673,7 @@ let gCmd = {
             gClippings.rebuildContextMenu();
           }
 
-          if (aFolderID == gSyncFldrID || gSyncedItemsIDs[aFolderID + "F"] !== undefined) {
+          if (aFolderID == gPrefs.syncFolderID || gSyncedItemsIDs[aFolderID + "F"] !== undefined) {
             gClippings.pushSyncFolderUpdates().then(() => {
               log("Clippings/wx::clippingsMgr.js::gCmd.updateDisplayOrder(): Saved the display order for synced items.");
             });
@@ -1757,7 +1757,7 @@ let gCmd = {
   
   showHidePlaceholderToolbar: function ()
   {
-    let currSetting = gClippings.getPrefs().clippingsMgrPlchldrToolbar;
+    let currSetting = gPrefs.clippingsMgrPlchldrToolbar;
     aePrefs.setPrefs({ clippingsMgrPlchldrToolbar: !currSetting });
     
     if (gIsClippingsTreeEmpty) {
@@ -1777,7 +1777,7 @@ let gCmd = {
   
   showHideDetailsPane: function ()
   {
-    let currSetting = gClippings.getPrefs().clippingsMgrDetailsPane;
+    let currSetting = gPrefs.clippingsMgrDetailsPane;
     aePrefs.setPrefs({ clippingsMgrDetailsPane: !currSetting });
 
     if (gIsClippingsTreeEmpty) {
@@ -1817,7 +1817,7 @@ let gCmd = {
 
   toggleMinimizeWhenInactive: function ()
   {
-    let currSetting = gClippings.getPrefs().clippingsMgrMinzWhenInactv;
+    let currSetting = gPrefs.clippingsMgrMinzWhenInactv;
     aePrefs.setPrefs({ clippingsMgrMinzWhenInactv: !currSetting });
   },
   
@@ -1834,9 +1834,8 @@ let gCmd = {
     setStatusBarMsg(browser.i18n.getMessage("statusSavingBkup"));
 
     let excludeSyncFldrID = null;
-    let prefs = gClippings.getPrefs();
-    if (prefs.syncClippings) {
-      excludeSyncFldrID = prefs.syncFolderID;
+    if (gPrefs.syncClippings) {
+      excludeSyncFldrID = gPrefs.syncFolderID;
     }
 
     let blobData;
@@ -1846,7 +1845,7 @@ let gCmd = {
       gSuppressAutoMinzWnd = true;
 
       let filename = aeConst.CLIPPINGS_BACKUP_FILENAME;
-      if (prefs.backupFilenameWithDate) {
+      if (gPrefs.backupFilenameWithDate) {
         filename = aeConst.CLIPPINGS_BACKUP_FILENAME_WITH_DATE.replace("%s", moment().format("YYYY-MM-DD"));
       }
       
@@ -2214,6 +2213,8 @@ $(async () => {
 
   aeImportExport.setDatabase(gClippingsDB);
 
+  gPrefs = await aePrefs.getAllPrefs();
+
   gEnvInfo = await browser.runtime.sendMessage({ msgID: "get-env-info" });
   document.body.dataset.os = gEnvInfo.os;
 
@@ -2232,7 +2233,7 @@ $(async () => {
   gIsMaximized = false;
 
   if (DEBUG_WND_ACTIONS) {
-    if (gClippings.getPrefs().clippingsMgrMinzWhenInactv === undefined) {
+    if (gPrefs.clippingsMgrMinzWhenInactv === undefined) {
       aePrefs.setPrefs({ clippingsMgrMinzWhenInactv: true });
     }
   }
@@ -2240,9 +2241,6 @@ $(async () => {
   let clippingsListeners = gClippings.getClippingsListeners();
   gClippingsListener.origin = aeConst.ORIGIN_CLIPPINGS_MGR;
   clippingsListeners.add(gClippingsListener);
-
-  let prefs = gClippings.getPrefs();
-  gSyncFldrID = prefs.syncFolderID;
 
   let syncClippingsListeners = gClippings.getSyncClippingsListeners();
   syncClippingsListeners.add(gSyncClippingsListener);
@@ -2263,7 +2261,7 @@ $(async () => {
     gCmd.backup();
   }
   else {
-    if (prefs.syncClippings && prefs.cxtMenuSyncItemsOnly && prefs.clippingsMgrShowSyncItemsOnlyRem) {
+    if (gPrefs.syncClippings && gPrefs.cxtMenuSyncItemsOnly && gPrefs.clippingsMgrShowSyncItemsOnlyRem) {
       gDialogs.showOnlySyncedItemsReminder.showModal();
       aePrefs.setPrefs({ clippingsMgrShowSyncItemsOnlyRem: false });
     }
@@ -2381,7 +2379,7 @@ $(window).on("click", aEvent => {
 
 $(window).on("blur", aEvent => {
   if (gEnvInfo.os == "linux" || DEBUG_WND_ACTIONS) {
-    if (gClippings.getPrefs().clippingsMgrMinzWhenInactv && !gSuppressAutoMinzWnd) {
+    if (gPrefs.clippingsMgrMinzWhenInactv && !gSuppressAutoMinzWnd) {
       let updWndInfo = { state: "minimized" };
       browser.windows.update(browser.windows.WINDOW_ID_CURRENT, updWndInfo);
     }
@@ -2396,10 +2394,10 @@ $(window).on("blur", aEvent => {
 function initToolbar()
 {
   // Show or hide the details pane and status bar.
-  if (! gClippings.getPrefs().clippingsMgrDetailsPane) {
+  if (! gPrefs.clippingsMgrDetailsPane) {
     $("#source-url-bar, #options-bar").hide();
   }
-  if (! gClippings.getPrefs().clippingsMgrStatusBar) {
+  if (! gPrefs.clippingsMgrStatusBar) {
     $("#status-bar").hide();
     recalcContentAreaHeight($("#status-bar").css("display") != "none");
   }
@@ -2700,7 +2698,7 @@ function initToolbar()
           return (gEnvInfo.os == "linux" || DEBUG_WND_ACTIONS);
         },
         icon: function (aKey, aOpt) {
-          if (gClippings.getPrefs().clippingsMgrMinzWhenInactv) {
+          if (gPrefs.clippingsMgrMinzWhenInactv) {
             return "context-menu-icon-checked";
           }
         }
@@ -2763,7 +2761,7 @@ function initInstantEditing()
       let content = aEvent.target.value;
       gCmd.editClippingContentIntrl(id, content, gCmd.UNDO_STACK);
     }
-  }).attr("spellcheck", gClippings.getPrefs().checkSpelling);
+  }).attr("spellcheck", gPrefs.checkSpelling);
 }
 
 
@@ -3334,9 +3332,8 @@ function initDialogs()
     }
 
     let excludeSyncFldrID = null;
-    let prefs = gClippings.getPrefs();
-    if (prefs.syncClippings) {
-      excludeSyncFldrID = prefs.syncFolderID;
+    if (gPrefs.syncClippings) {
+      excludeSyncFldrID = gPrefs.syncFolderID;
     }
     
     let selectedFmtIdx = $("#export-format-list")[0].selectedIndex;
@@ -3700,9 +3697,8 @@ function buildClippingsTree()
             }
 
             let id = parseInt(aData.otherNode.key);
-            let prefs = gClippings.getPrefs();
 
-            if (prefs.syncClippings && id == prefs.syncFolderID
+            if (gPrefs.syncClippings && id == gPrefs.syncFolderID
                 && newParentID != aeConst.ROOT_FOLDER_ID) {
               warn("The Synced Clippings folder cannot be moved.");
               return;
@@ -3898,7 +3894,7 @@ function buildClippingsTree()
             }
 
             let folderID = parseInt(selectedNode.key);
-            return (folderID == gSyncFldrID);
+            return (folderID == gPrefs.syncFolderID);
           }
         },
 
@@ -3914,7 +3910,7 @@ function buildClippingsTree()
             }
 
             let folderID = parseInt(selectedNode.key);
-            return (folderID == gSyncFldrID);
+            return (folderID == gPrefs.syncFolderID);
           }
         },
         gotoSrcURL: {
@@ -4022,18 +4018,17 @@ function buildClippingsTree()
             }
 
             let folderID = parseInt(selectedNode.key);
-            return (folderID == gSyncFldrID);
+            return (folderID == gPrefs.syncFolderID);
           }
         }
       }
     });
 
-    let prefs = gClippings.getPrefs();
-    if (prefs.syncClippings) {
+    if (gPrefs.syncClippings) {
       gReloadSyncFldrBtn.show();
       $(".ae-synced-clippings-fldr").parent().addClass("ae-synced-clippings");
 
-      if (prefs.cxtMenuSyncItemsOnly) {
+      if (gPrefs.cxtMenuSyncItemsOnly) {
         $("#clippings-tree").addClass("cxt-menu-show-sync-items-only");
       }
     }
@@ -4065,7 +4060,7 @@ function buildClippingsTreeHelper(aFolderID)
           folder: true
         }
 
-        if (aItem.id == gSyncFldrID) {
+        if (aItem.id == gPrefs.syncFolderID) {
           folderNode.extraClasses = "ae-synced-clippings-fldr";
         }
 
@@ -4144,15 +4139,14 @@ function initSyncItemsIDLookupList()
   // END nested helper function
 
   return new Promise((aFnResolve, aFnReject) => {
-    let prefs = gClippings.getPrefs();
-    if (! prefs.syncClippings) {
+    if (! gPrefs.syncClippings) {
       aFnResolve();
     }
 
     // Include the ID of the root Synced Clippings folder.
-    gSyncedItemsIDs[prefs.syncFolderID + "F"] = 1;
+    gSyncedItemsIDs[gPrefs.syncFolderID + "F"] = 1;
 
-    initSyncItemsIDLookupListHelper(prefs.syncFolderID).then(() => {
+    initSyncItemsIDLookupListHelper(gPrefs.syncFolderID).then(() => {
       aFnResolve();
     }).catch(aErr => {
       aFnReject(aErr);
@@ -4228,11 +4222,10 @@ function unsetEmptyClippingsState()
   $("#intro-content").hide();
   $("#clipping-name, #clipping-text").show();
 
-  let prefs = gClippings.getPrefs();
-  if (prefs.clippingsMgrDetailsPane) {
+  if (gPrefs.clippingsMgrDetailsPane) {
     $("#source-url-bar, #options-bar").show();
   }
-  if (prefs.clippingsMgrPlchldrToolbar) {
+  if (gPrefs.clippingsMgrPlchldrToolbar) {
     $("#placeholder-toolbar").show();
   }
 }
@@ -4332,8 +4325,7 @@ function updateDisplay(aEvent, aData)
 
       $("#item-properties").addClass("folder-only");
 
-      let prefs = gClippings.getPrefs();
-      if (prefs.syncClippings && selectedItemID == gSyncFldrID) {
+      if (gPrefs.syncClippings && selectedItemID == gPrefs.syncFolderID) {
         // Prevent renaming of the Synced Clippings folder.
         $("#clipping-name").attr("disabled", "true");
       }
@@ -4350,11 +4342,11 @@ function updateDisplay(aEvent, aData)
       $("#clipping-name").val(aResult.name);
       $("#clipping-text").val(aResult.content).show();
 
-      if (gClippings.getPrefs().clippingsMgrDetailsPane) {
+      if (gPrefs.clippingsMgrDetailsPane) {
         $("#source-url-bar, #options-bar").show();
       }
 
-      if (gClippings.getPrefs().clippingsMgrPlchldrToolbar) {
+      if (gPrefs.clippingsMgrPlchldrToolbar) {
         $("#placeholder-toolbar").show();
       }
       
