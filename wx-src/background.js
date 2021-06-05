@@ -554,10 +554,6 @@ function init()
     aeClippingSubst.init(navigator.userAgent, gPrefs.autoIncrPlcHldrStartVal);
     gAutoIncrPlchldrs = new Set();
 
-    if (gPrefs.pasteShortcutKeyPrefix && !isDirectSetKeyboardShortcut()) {
-      setShortcutKeyPrefix(gPrefs.pasteShortcutKeyPrefix);
-    }
-
     if (gPrefs.backupRemFirstRun && !gPrefs.lastBackupRemDate) {
       aePrefs.setPrefs({
         lastBackupRemDate: new Date().toString(),
@@ -804,15 +800,6 @@ function purgeFolderItems(aFolderID, aKeepFolder)
     }).catch(aErr => {
       aFnReject(aErr);
     });
-  });
-}
-
-
-async function setShortcutKeyPrefix(aShortcutKeyPrefix)
-{
-  await browser.commands.update({
-    name: aeConst.CMD_CLIPPINGS_KEYBOARD_PASTE,
-    shortcut: aShortcutKeyPrefix,
   });
 }
 
@@ -1647,14 +1634,6 @@ function pasteProcessedClipping(aClippingContent, aActiveTabID)
 }
 
 
-function isDirectSetKeyboardShortcut()
-{
-  let fxMajorVer = gHostAppVer.split(".")[0];
-  
-  return (fxMajorVer >= 66);
-}
-
-
 function showSyncErrorNotification()
 {
   browser.notifications.create(aeConst.NOTIFY_SYNC_ERROR_ID, {
@@ -1934,9 +1913,6 @@ browser.storage.onChanged.addListener((aChanges, aAreaName) => {
 
     if (pref == "autoIncrPlcHldrStartVal") {
       aeClippingSubst.setAutoIncrementStartValue(aChanges[pref].newValue);
-    }
-    else if (gPrefs.pasteShortcutKeyPrefix && !isDirectSetKeyboardShortcut()) {
-      setShortcutKeyPrefix(gPrefs.pasteShortcutKeyPrefix);
     }
   }
 });

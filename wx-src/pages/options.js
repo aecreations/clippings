@@ -228,17 +228,12 @@ async function init()
       let modifierKeys = gOS == "mac" ? "Command+Shift" : "Alt+Shift"
       let keybShct = `${modifierKeys}+${aEvent.target.value}`;
 
-      if (gClippings.isDirectSetKeyboardShortcut()) {        
-        log("Clippings/wx::options.js: Keyboard shortcut changed. Updating command with new keyboard shortcut: " + keybShct);
-        
-        browser.commands.update({
-          name: aeConst.CMD_CLIPPINGS_KEYBOARD_PASTE,
-          shortcut: keybShct,
-        });
-      }
-      else {
-        aePrefs.setPrefs({ pasteShortcutKeyPrefix: keybShct });
-      }
+      log("Clippings/wx::options.js: Keyboard shortcut changed. Updating command with new keyboard shortcut: " + keybShct);
+      
+      browser.commands.update({
+        name: aeConst.CMD_CLIPPINGS_KEYBOARD_PASTE,
+        shortcut: keybShct,
+      });
     });
   }
 
