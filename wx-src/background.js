@@ -565,11 +565,15 @@ function init()
     }
 
     // Check in 5 minutes whether to show backup reminder notification.
-    window.setTimeout(showBackupNotification, aeConst.BACKUP_REMINDER_DELAY_MS);
+    browser.alarms.create("show-backup-notifcn", {
+      delayInMinutes: aeConst.BACKUP_REMINDER_DELAY_MS / 60000
+    });
 
     if (gPrefs.syncClippings && gPrefs.syncHelperCheckUpdates) {
       // Check for updates to Sync Clippings Helper native app in 10 minutes.
-      window.setTimeout(showSyncHelperUpdateNotification, aeConst.SYNC_HELPER_CHECK_UPDATE_DELAY_MS);
+      browser.alarms.create("show-sync-helper-upd-notifcn", {
+        delayInMinutes: aeConst.SYNC_HELPER_CHECK_UPDATE_DELAY_MS / 60000
+      });
     }
 
     if (gPrefs.showWelcome) {
@@ -728,7 +732,7 @@ function refreshSyncedClippings(aRebuildClippingsMenu)
     aeImportExport.setDatabase(gClippingsDB);
     aeImportExport.importFromJSON(syncJSONData, false, false, gSyncFldrID);
 
-    window.setTimeout(function () {
+    setTimeout(function () {
       gSyncClippingsListeners.getListeners().forEach(aListener => { aListener.onReloadFinish() });
     }, gPrefs.afterSyncFldrReloadDelay);
     
@@ -1233,14 +1237,12 @@ function showBackupNotification()
         iconUrl: "img/icon.svg",
 
       }).then(aNotifID => {
-        clearBackupNotificationInterval();
         setBackupNotificationInterval();
         aePrefs.setPrefs({ lastBackupRemDate: new Date().toString() });
       });
     }
   }
   else {
-    clearBackupNotificationInterval();
     setBackupNotificationInterval();
   }
 }   
@@ -1249,16 +1251,10 @@ function showBackupNotification()
 function setBackupNotificationInterval()
 {
   log("Clippings/wx: Setting backup notification interval (every 24 hours).");
-  gBackupRemIntervalID = window.setInterval(showBackupNotification, aeConst.BACKUP_REMINDER_INTERVAL_MS);
-}
 
-
-function clearBackupNotificationInterval()
-{
-  if (gBackupRemIntervalID) {
-    window.clearInterval(gBackupRemIntervalID);
-    gBackupRemIntervalID = null;
-  }
+  browser.alarms.create("show-backup-notificn", {
+    periodInMinutes: aeConst.BACKUP_REMINDER_INTERVAL_MS / 60000
+  });
 }
 
 
@@ -1637,7 +1633,7 @@ function pasteProcessedClipping(aClippingContent, aActiveTabID)
 
   log(`Clippings/wx: Extension sending message "paste-clipping" to content script (active tab ID = ${aActiveTabID})`);
   
-  window.setTimeout(async () => {
+  setTimeout(async () => {
     try {
       await browser.tabs.sendMessage(aActiveTabID, msgParams);
     }
@@ -1904,6 +1900,18 @@ browser.contextMenus.onClicked.addListener(async (aInfo, aTab) => {
 });
 
 
+browser.alarms.onAlarm.addListener(aAlarm => {
+  info(`Clippings/wx: Alarm "${aAlarm.name}" was triggered.`);
+
+  if (aAlarm.name == "show-backup-notifcn") {
+    showBackupNotification();
+  }
+  else if (aAlarm.name == "show-sync-helper-upd-notifcn") {
+    showSyncHelperUpdateNotification();
+  }
+});
+
+
 browser.notifications.onClicked.addListener(aNotifID => {
   if (aNotifID == aeConst.NOTIFY_BACKUP_REMIND_ID) {
     // Open Clippings Manager in backup mode.
@@ -1987,7 +1995,7 @@ browser.runtime.onMessage.addListener(aRequest => {
   else if (aRequest.msgID == "paste-clipping-with-plchldrs") {
     let content = aRequest.processedContent;
 
-    window.setTimeout(async () => {
+    setTimeout(async () => {
       let tabs = await browser.tabs.query({active: true, currentWindow: true});
       if (! tabs[0]) {
         // This could happen if the browser tab was closed while the
@@ -2006,10 +2014,6 @@ browser.runtime.onMessage.addListener(aRequest => {
   }
   else if (aRequest.msgID == "close-placeholder-prmt-dlg") {
     gWndIDs.placeholderPrmt = null;
-  }
-  else if (aRequest.msgID == "get-sync-fldr-id") {
-    resp = gSyncFldrID;
-    return Promise.resolve(resp);
   }
   else if (aRequest.msgID == "get-shct-key-prefix-ui-str") {
     resp = getShortcutKeyPrefixStr();

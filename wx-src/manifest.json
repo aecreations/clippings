@@ -19,6 +19,7 @@
     },
 
     "permissions": [
+        "alarms",
 	"contextMenus",
 	"downloads",
 	"history",
