@@ -147,6 +147,19 @@ function handleRequestInsertClipping(aRequest)
 }
 
 
+function handleRequestGetWndGeometry(aRequest)
+{
+  let rv = {
+    w: window.outerWidth,
+    h: window.outerHeight,
+    x: window.screenX,
+    y: window.screenY,
+  };
+
+  return rv;
+}
+
+
 //
 // Helper functions
 //
@@ -246,16 +259,6 @@ function createInputEventInstance()
 }
 
 
-function isGoogleChrome()
-{
-  let rv = null;
-  let extManifest = chrome.runtime.getManifest();
-
-  rv = ("version_name" in extManifest);
-  
-  return rv;
-}
-
 function getActiveElt() {
   let activeElt = window.document.activeElement;
 
@@ -271,43 +274,25 @@ function init()
 {
   log(`Clippings/wx::content.js: Initializing content script for:\n${window.location.href}`);
 
-  if (isGoogleChrome()) {
-    chrome.runtime.onMessage.addListener((aRequest, aSender, aSendResponse) => {
-      log("Clippings/wx::content.js: Received message '" + aRequest.msgID + "' from Chrome extension.\n" + window.location.href);
+  browser.runtime.onMessage.addListener(aRequest => {
+    log(`Clippings/wx::content.js: Received message "${aRequest.msgID}" from extension.\n${window.location.href}`);
 
-      let resp = null;
-  
-      if (aRequest.msgID == "new-clipping") {
-        resp = handleRequestNewClipping(aRequest);
-      }
-      else if (aRequest.msgID == "paste") {
-        resp = handleRequestInsertClipping(aRequest);
-      }
-
-      if (resp !== null) {
-        aSendResponse(resp);
-      }
-    });
-  }
-  else {
-    // Firefox
-    browser.runtime.onMessage.addListener(aRequest => {
-      log(`Clippings/wx::content.js: Received message "${aRequest.msgID}" from extension.\n${window.location.href}`);
-
-      let resp = null;
-  
-      if (aRequest.msgID == "new-clipping") {
-        resp = handleRequestNewClipping(aRequest);
-      }
-      else if (aRequest.msgID == "paste-clipping") {
-        resp = handleRequestInsertClipping(aRequest);
-      }
+    let resp = null;
     
-      if (resp !== null) {
-        return Promise.resolve(resp);
-      }
-    });
-  }
+    if (aRequest.msgID == "new-clipping") {
+      resp = handleRequestNewClipping(aRequest);
+    }
+    else if (aRequest.msgID == "paste-clipping") {
+      resp = handleRequestInsertClipping(aRequest);
+    }
+    else if (aRequest.msgID == "get-wnd-geometry") {
+      resp = handleRequestGetWndGeometry(aRequest);
+    }
+    
+    if (resp !== null) {
+      return Promise.resolve(resp);
+    }
+  });
 }
 
 init();
