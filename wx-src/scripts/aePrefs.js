@@ -34,6 +34,9 @@ let aePrefs = {
     backupFilenameWithDate: true,
     dispatchInputEvent: true,
     newClippingSyncFldrsOnly: false,
+    clippingsMgrSaveWndGeom: true,
+    clippingsMgrSaveWndGeomIntv: 5000,
+    clippingsMgrWndGeom: null,
   },
   
   getDefaultPrefs()

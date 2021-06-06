@@ -479,13 +479,15 @@ async function setTopangaPrefs()
 function hasHuntingdonPrefs()
 {
   // Version 6.3
-  return gPrefs.hasOwnProperty("newClippingSyncFldrsOnly");
+  return gPrefs.hasOwnProperty("clippingsMgrSaveWndGeom");
 }
 
 
 async function setHuntingdonPrefs()
 {
   let newPrefs = {
+    clippingsMgrSaveWndGeom: true,
+    clippingsMgrWndGeom: null,
     newClippingSyncFldrsOnly: false,
   };
   
@@ -1343,37 +1345,46 @@ async function openClippingsManager(aBackupMode)
   
   async function openClippingsMgrHelper()
   {
-    let brwsTabs = await browser.tabs.query({ active: true });
-    let activeTabID = brwsTabs[0].id;
-    let wndGeom;
-    try {
-      wndGeom = await browser.tabs.sendMessage(activeTabID, { msgID: "get-wnd-geometry" });
-    }
-    catch (e) {}
-
     let width = 750;
     let height = 400;
     let topOffset = 200;
     let left, top;
+    let wndGeom = gPrefs.clippingsMgrWndGeom;
 
-    if (wndGeom) {
-      if (wndGeom.w < width) {
-        left = null;
-      }
-      else {
-        left = Math.ceil((wndGeom.w - width) / 2) + wndGeom.x;
-      }
-
-      if ((wndGeom.h + topOffset) < height) {
-        top = null;
-      }
-      else {
-        top = wndGeom.y + topOffset;
-      }
+    if (gPrefs.clippingsMgrSaveWndGeom && wndGeom) {
+      width  = wndGeom.w - 1;  // Compensate for workaround to popup window bug.
+      height = wndGeom.h;
+      left   = wndGeom.x;
+      top    = wndGeom.y;
     }
     else {
-      left = 64;
-      top = 128;
+      let brwsTabs = await browser.tabs.query({ active: true });
+      let activeTabID = brwsTabs[0].id;
+
+      try {
+        wndGeom = await browser.tabs.sendMessage(activeTabID, { msgID: "get-wnd-geometry" });
+      }
+      catch (e) {}
+
+      if (wndGeom) {
+        if (wndGeom.w < width) {
+          left = null;
+        }
+        else {
+          left = Math.ceil((wndGeom.w - width) / 2) + wndGeom.x;
+        }
+
+        if ((wndGeom.h + topOffset) < height) {
+          top = null;
+        }
+        else {
+          top = wndGeom.y + topOffset;
+        }
+      }
+      else {
+        left = 64;
+        top = 128;
+      }
     }
     
     let wndInfo = {
