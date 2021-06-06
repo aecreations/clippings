@@ -489,6 +489,7 @@ async function setHuntingdonPrefs()
     clippingsMgrSaveWndGeom: true,
     clippingsMgrWndGeom: null,
     newClippingSyncFldrsOnly: false,
+    autoAdjustWndPos: true,
   };
   
   for (let pref in newPrefs) {
@@ -1358,32 +1359,38 @@ async function openClippingsManager(aBackupMode)
       top    = wndGeom.y;
     }
     else {
-      let brwsTabs = await browser.tabs.query({ active: true });
-      let activeTabID = brwsTabs[0].id;
+      if (gPrefs.autoAdjustWndPos) {
+        let brwsTabs = await browser.tabs.query({ active: true, currentWindow: true });
+        let activeTabID = brwsTabs[0].id;
 
-      try {
-        wndGeom = await browser.tabs.sendMessage(activeTabID, { msgID: "get-wnd-geometry" });
-      }
-      catch (e) {}
+        try {
+          wndGeom = await browser.tabs.sendMessage(activeTabID, { msgID: "get-wnd-geometry" });
+        }
+        catch (e) {}
 
-      if (wndGeom) {
-        if (wndGeom.w < width) {
-          left = null;
+        if (wndGeom) {
+          if (wndGeom.w < width) {
+            left = null;
+          }
+          else {
+            left = Math.ceil((wndGeom.w - width) / 2) + wndGeom.x;
+          }
+
+          if ((wndGeom.h + topOffset) < height) {
+            top = null;
+          }
+          else {
+            top = wndGeom.y + topOffset;
+          }
         }
         else {
-          left = Math.ceil((wndGeom.w - width) / 2) + wndGeom.x;
-        }
-
-        if ((wndGeom.h + topOffset) < height) {
-          top = null;
-        }
-        else {
-          top = wndGeom.y + topOffset;
+          left = 64;
+          top = 128;
         }
       }
       else {
-        left = 64;
-        top = 128;
+        left = Math.ceil((window.screen.availWidth - width) / 2);
+        top = Math.ceil((window.screen.availHeight - height) / 2);
       }
     }
     
@@ -1491,37 +1498,48 @@ async function openDlgWnd(aURL, aWndKey, aWndPpty)
 {
   async function openDlgWndHelper()
   {
-    let brwsTabs = await browser.tabs.query({ active: true });
-    let activeTabID = brwsTabs[0].id;
-    let wndGeom;
-    try {
-      wndGeom = await browser.tabs.sendMessage(activeTabID, { msgID: "get-wnd-geometry" });
-    }
-    catch (e) {}
-
     let width = aWndPpty.width;
     let height = aWndPpty.height;
-    let topOffset = aWndPpty.topOffset ?? 200;
-    let left, top;
+    let left, top, wndGeom;
+    
+    if (gPrefs.autoAdjustWndPos) {
+      let brwsTabs = await browser.tabs.query({ active: true, currentWindow: true });
+      let activeTabID = brwsTabs[0].id;
 
-    if (wndGeom) {
-      if (wndGeom.w < width) {
-        left = null;
+      try {
+        log("Clippings/wx: openDlgWnd() > openDlgWndHelper(): Sending message \"get-wnd-geometry\" to content script; active tab ID: " + activeTabID);
+        wndGeom = await browser.tabs.sendMessage(activeTabID, { msgID: "get-wnd-geometry" });
+      }
+      catch (e) {}
+
+      log("Clippings/wx: openDlgWnd() > openDlgWndHelper(): Window geometry of browser window:");
+      log(wndGeom);
+      
+      let topOffset = aWndPpty.topOffset ?? 200;
+
+      if (wndGeom) {
+        if (wndGeom.w < width) {
+          left = null;
+        }
+        else {
+          left = Math.ceil((wndGeom.w - width) / 2) + wndGeom.x;
+        }
+
+        if ((wndGeom.h + topOffset) < height) {
+          top = null;
+        }
+        else {
+          top = wndGeom.y + topOffset;
+        }
       }
       else {
-        left = Math.ceil((wndGeom.w - width) / 2) + wndGeom.x;
-      }
-
-      if ((wndGeom.h + topOffset) < height) {
-        top = null;
-      }
-      else {
-        top = wndGeom.y + topOffset;
+        left = 64;
+        top = 128;
       }
     }
     else {
-      left = 64;
-      top = 128;
+      left = Math.ceil((window.screen.availWidth - width) / 2);
+      top = Math.ceil((window.screen.availHeight - height) / 2);
     }
 
     let wnd = await browser.windows.create({
@@ -1824,13 +1842,12 @@ function alertEx(aMessageID)
   
   info("Clippings/wx: " + message);
   let url = "pages/msgbox.html?msgid=" + aMessageID;
-  
-  browser.windows.create({
-    url: url,
+
+  openDlgWnd(url, "ae_clippings_msgbox", {
     type: "popup",
-    width: 520, height: 170,
-    left: window.screen.availWidth - 520 / 2,
-    top:  window.screen.availHeight - 170 / 2
+    width: 520,
+    height: 170,
+    topOffset: 160,
   });
 }
 

@@ -37,6 +37,7 @@ let aePrefs = {
     clippingsMgrSaveWndGeom: true,
     clippingsMgrSaveWndGeomIntv: 5000,
     clippingsMgrWndGeom: null,
+    autoAdjustWndPos: true,
   },
   
   getDefaultPrefs()
