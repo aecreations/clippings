@@ -1343,17 +1343,58 @@ async function openClippingsManager(aBackupMode)
   
   async function openClippingsMgrHelper()
   {
+    let brwsTabs = await browser.tabs.query({ active: true });
+    let activeTabID = brwsTabs[0].id;
+    let wndGeom;
+    try {
+      wndGeom = await browser.tabs.sendMessage(activeTabID, { msgID: "get-wnd-geometry" });
+    }
+    catch (e) {}
+
+    let width = 750;
+    let height = 400;
+    let topOffset = 200;
+    let left, top;
+
+    if (wndGeom) {
+      if (wndGeom.w < width) {
+        left = null;
+      }
+      else {
+        left = Math.ceil((wndGeom.w - width) / 2) + wndGeom.x;
+      }
+
+      if ((wndGeom.h + topOffset) < height) {
+        top = null;
+      }
+      else {
+        top = wndGeom.y + topOffset;
+      }
+    }
+    else {
+      left = 64;
+      top = 128;
+    }
+    
     let wndInfo = {
       url: clippingsMgrURL,
       type: "popup",
-      width: 750, height: 400,
-      left: 64, top: 128,
+      width, height,
+      left, top
     };
 
     let wnd = await browser.windows.create(wndInfo);
     gWndIDs.clippingsMgr = wnd.id;
     browser.history.deleteUrl({ url: clippingsMgrURL });
+
+    // Workaround to bug where window position isn't set when calling
+    // `browser.windows.create()`. If unable to get window geometry, then
+    // default to centering on screen.
+    if (wndGeom) {
+      browser.windows.update(wnd.id, { left, top });
+    }
   }
+  // END nested function
     
   let openInNewTab = gPrefs.openClippingsMgrInTab;
 
@@ -1398,7 +1439,12 @@ function openKeyboardPasteDlg()
   // If not, then don't do anything.
 
   let url = browser.runtime.getURL("pages/keyboardPaste.html");
-  openDlgWnd(url, "keyboardPaste", { type: "detached_panel", width: 500, height: 164 });
+  openDlgWnd(url, "keyboardPaste", {
+    type: "detached_panel",
+    width: 500,
+    height: 164,
+    topOffset: 256,
+  });
 }
 
 
@@ -1407,7 +1453,12 @@ function openPlaceholderPromptDlg()
   // TO DO: Same checking for cursor location as in the preceding function.
 
   let url = browser.runtime.getURL("pages/placeholderPrompt.html");
-  openDlgWnd(url, "placeholderPrmt", { type: "detached_panel", width: 536, height: 198 });
+  openDlgWnd(url, "placeholderPrmt", {
+    type: "detached_panel",
+    width: 536,
+    height: 198,
+    topOffset: 256,
+  });
 }
 
 
@@ -1429,18 +1480,57 @@ async function openDlgWnd(aURL, aWndKey, aWndPpty)
 {
   async function openDlgWndHelper()
   {
+    let brwsTabs = await browser.tabs.query({ active: true });
+    let activeTabID = brwsTabs[0].id;
+    let wndGeom;
+    try {
+      wndGeom = await browser.tabs.sendMessage(activeTabID, { msgID: "get-wnd-geometry" });
+    }
+    catch (e) {}
+
+    let width = aWndPpty.width;
+    let height = aWndPpty.height;
+    let topOffset = aWndPpty.topOffset ?? 200;
+    let left, top;
+
+    if (wndGeom) {
+      if (wndGeom.w < width) {
+        left = null;
+      }
+      else {
+        left = Math.ceil((wndGeom.w - width) / 2) + wndGeom.x;
+      }
+
+      if ((wndGeom.h + topOffset) < height) {
+        top = null;
+      }
+      else {
+        top = wndGeom.y + topOffset;
+      }
+    }
+    else {
+      left = 64;
+      top = 128;
+    }
+
     let wnd = await browser.windows.create({
       url: aURL,
       type: aWndPpty.type,
-      width: aWndPpty.width,
-      height: aWndPpty.height,
-      left: window.screen.availWidth - aWndPpty.width / 2,
-      top:  window.screen.availHeight - aWndPpty.height / 2
+      width, height,
+      left, top,
     });
 
     gWndIDs[aWndKey] = wnd.id;
     browser.history.deleteUrl({ url: aURL });
+
+    // Workaround to bug where window position isn't set when calling
+    // `browser.windows.create()`. If unable to get window geometry, then
+    // default to centering on screen.
+    if (wndGeom) {
+      browser.windows.update(wnd.id, { left, top });
+    }
   }
+  // END nested function
 
   if (gWndIDs[aWndKey]) {
     try {
