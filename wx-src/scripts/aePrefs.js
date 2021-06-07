@@ -34,10 +34,10 @@ let aePrefs = {
     backupFilenameWithDate: true,
     dispatchInputEvent: true,
     newClippingSyncFldrsOnly: false,
-    clippingsMgrSaveWndGeom: true,
+    clippingsMgrSaveWndGeom: false,
     clippingsMgrSaveWndGeomIntv: 5000,
     clippingsMgrWndGeom: null,
-    autoAdjustWndPos: true,
+    autoAdjustWndPos: false,
   },
   
   getDefaultPrefs()

@@ -1542,6 +1542,8 @@ async function openDlgWnd(aURL, aWndKey, aWndPpty)
       top = Math.ceil((window.screen.availHeight - height) / 2);
     }
 
+    log(`Opening popup window at coordinates (${left}, ${top}); screen size: width ${window.screen.availWidth}; height ${window.screen.availHeight}`);
+
     let wnd = await browser.windows.create({
       url: aURL,
       type: aWndPpty.type,
