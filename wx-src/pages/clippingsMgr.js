@@ -2395,6 +2395,16 @@ $(window).on("blur", aEvent => {
 });
 
 
+browser.storage.onChanged.addListener((aChanges, aAreaName) => {
+  let changedPrefs = Object.keys(aChanges);
+
+  for (let pref of changedPrefs) {
+    gPrefs[pref] = aChanges[pref].newValue;
+  }
+});
+
+
+
 //
 // Clippings Manager functions
 //
@@ -4442,9 +4452,7 @@ async function saveWindowGeometry()
     return;
   }
   
-  // TO DO: Auto-update global var gPrefs whenever pref settings are updated,
-  // rather than re-reading prefs from local storage.
-  let savedWndGeom = await aePrefs.getPref("clippingsMgrWndGeom");
+  let savedWndGeom = gPrefs.clippingsMgrWndGeom;
 
   if (!savedWndGeom || savedWndGeom.w != window.outerWidth
       || savedWndGeom.h != window.outerHeight
