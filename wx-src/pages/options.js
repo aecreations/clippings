@@ -118,9 +118,9 @@ async function init()
       await aePrefs.setPrefs({ backupRemFrequency: aeConst.BACKUP_REMIND_NEVER });
     }
 
-    gClippings.clearBackupNotificationInterval();
+    await browser.runtime.sendMessage({msgID: "clear-backup-notifcn-intv"});
     if (aEvent.target.checked) {
-      gClippings.setBackupNotificationInterval();
+      browser.runtime.sendMessage({msgID: "set-backup-notifcn-intv"});
     }
   });
 
@@ -139,8 +139,8 @@ async function init()
       lastBackupRemDate: new Date().toString(),
     });
 
-    gClippings.clearBackupNotificationInterval();
-    gClippings.setBackupNotificationInterval();
+    await browser.runtime.sendMessage({msgID: "clear-backup-notifcn-intv"});
+    browser.runtime.sendMessage({msgID: "set-backup-notifcn-intv"});
   });   
 
   if (prefs.syncClippings) {

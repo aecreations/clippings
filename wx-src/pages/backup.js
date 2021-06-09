@@ -21,9 +21,9 @@ $(async () => {
 
   // Reset backup notification interval timer so that it fires 24 hours after
   // displaying this first-time backup dialog.
-  gClippings.clearBackupNotificationInterval();
-  gClippings.setBackupNotificationInterval();
-
+  await browser.runtime.sendMessage({msgID: "clear-backup-notifcn-intv"});
+  browser.runtime.sendMessage({msgID: "set-backup-notifcn-intv"});
+  
   $("#backup-now").click(aEvent => { backupNow() });
   $("#btn-close").click(aEvent => { closeDlg() });
 
@@ -47,9 +47,11 @@ $(async () => {
     }
 
     setPref.then(() => {
-      gClippings.clearBackupNotificationInterval();
+      return browser.runtime.sendMessage({msgID: "clear-backup-notifcn-intv"});
+
+    }).then(() => {
       if (aEvent.target.checked) {
-	gClippings.setBackupNotificationInterval();
+	browser.runtime.sendMessage({msgID: "set-backup-notifcn-intv"});
       }
     });
   });
@@ -68,8 +70,9 @@ $(async () => {
       backupRemFirstRun: false,
       lastBackupRemDate: new Date().toString(),
     });
-    gClippings.clearBackupNotificationInterval();
-    gClippings.setBackupNotificationInterval();
+
+    await browser.runtime.sendMessage({msgID: "clear-backup-notifcn-intv"});
+    browser.runtime.sendMessage({msgID: "set-backup-notifcn-intv"});
   });
 
   // Fix for Fx57 bug where bundled page loaded using

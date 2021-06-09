@@ -1248,6 +1248,13 @@ function setBackupNotificationInterval()
 }
 
 
+async function clearBackupNotificationInterval()
+{
+  log("Clippings/wx: Clearing backup notification interval.");
+  await browser.alarms.clear("show-backup-notificn");
+}
+
+
 function showSyncHelperUpdateNotification()
 {
   if (!gPrefs.syncClippings || !gPrefs.syncHelperCheckUpdates) {
@@ -2114,6 +2121,14 @@ browser.runtime.onMessage.addListener(aRequest => {
   else if (aRequest.msgID == "get-shct-key-prefix-ui-str") {
     resp = getShortcutKeyPrefixStr();
     return Promise.resolve(resp);
+  }
+  else if (aRequest.msgID == "clear-backup-notifcn-intv") {
+    clearBackupNotificationInterval().then(() => {
+      return Promise.resolve();
+    });
+  }
+  else if (aRequest.msgID == "set-backup-notifcn-intv") {
+    setBackupNotificationInterval();
   }
 });
 
