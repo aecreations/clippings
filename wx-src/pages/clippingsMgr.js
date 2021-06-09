@@ -533,6 +533,11 @@ let gSyncClippingsListener = {
     let clippingsTree = getClippingsTree();
     let syncFldrTreeNode = clippingsTree.getNodeByKey(aOldSyncFolderID + "F");
     syncFldrTreeNode.removeClass("ae-synced-clippings-fldr");
+
+    let clippingsTreeElt = $("#clippings-tree");
+    if (clippingsTreeElt.hasClass("cxt-menu-show-sync-items-only")) {
+      clippingsTreeElt.removeClass("cxt-menu-show-sync-items-only");
+    }
   },
 
   onAfterDeactivate(aRemoveSyncFolder, aOldSyncFolderID)
@@ -2281,7 +2286,6 @@ $(async () => {
     if (gPrefs.syncClippings && gPrefs.cxtMenuSyncItemsOnly
         && gPrefs.clippingsMgrShowSyncItemsOnlyRem) {
       gDialogs.showOnlySyncedItemsReminder.showModal();
-      aePrefs.setPrefs({ clippingsMgrShowSyncItemsOnlyRem: false });
     }
   }
   
@@ -3455,7 +3459,7 @@ function initDialogs()
 
   gDialogs.reloadSyncFolder = new aeDialog("#reload-sync-fldr-msgbox");
   gDialogs.reloadSyncFolder.onAfterAccept = () => {
-    window.location.reload();
+    rebuildClippingsTree();
   };
 
   gDialogs.moveTo = new aeDialog("#move-dlg");
@@ -3609,11 +3613,14 @@ function initDialogs()
     that.close();
   };
 
+  gDialogs.showOnlySyncedItemsReminder = new aeDialog("#show-only-synced-items-reminder");
+  gDialogs.showOnlySyncedItemsReminder.onShow = () => {
+    aePrefs.setPrefs({ clippingsMgrShowSyncItemsOnlyRem: false });
+  };
+   
   gDialogs.moveSyncFldr = new aeDialog("#move-sync-fldr-msgbox");
   gDialogs.deleteSyncFldr = new aeDialog("#delete-sync-fldr-msgbox");
-
   gDialogs.miniHelp = new aeDialog("#mini-help-dlg");
-  gDialogs.showOnlySyncedItemsReminder = new aeDialog("#show-only-synced-items-reminder");
   gDialogs.genericMsgBox = new aeDialog("#generic-msg-box");
 }
 
@@ -4105,6 +4112,19 @@ async function rebuildClippingsTree()
   }).then(aTreeData => {
     if (aTreeData) {
       gCmd.updateDisplayOrder(aeConst.ROOT_FOLDER_ID, null, null, true);
+    }
+
+    if (gPrefs.syncClippings) {
+      initSyncedClippingsTree();
+
+      if (gPrefs.cxtMenuSyncItemsOnly) {
+        if (gPrefs.clippingsMgrShowSyncItemsOnlyRem) {
+          gDialogs.showOnlySyncedItemsReminder.showModal();
+        }
+      }
+      else {
+        $("#clippings-tree").removeClass("cxt-menu-show-sync-items-only");
+      }
     }
     
     return Promise.resolve(aTreeData);
