@@ -966,6 +966,11 @@ let gCmd = {
 	rv = this._stack[this.length - 1];
       }
       return rv;
+    },
+
+    clear() {
+      this._stack = [];
+      this.length = 0;
     }
   },
 
@@ -989,6 +994,11 @@ let gCmd = {
       this._lastUndo = null;
       this.length = 0;
       return rv;
+    },
+
+    clear() {
+      this._stack = [];
+      this.length = 0;
     }
   },
   
@@ -3257,7 +3267,10 @@ function initDialogs()
             }
           });
         }).then(() => {
-          log("Clippings/wx::clippingsMgr.js: Finished deleting clippings and folders. Starting import of backup file.");
+          log("Clippings/wx::clippingsMgr.js: Finished deleting clippings and folders. Clearing undo stack and starting import of backup file.");
+
+          gCmd.undoStack.clear();
+          gCmd.redoStack.clear();
           importFile(false);
         });
       }).catch(aErr => {
@@ -3402,10 +3415,11 @@ function initDialogs()
   gDialogs.importConfirmMsgBox.setMessage = aMessage => {
     $("#import-confirm-msgbox > .msgbox-content").text(aMessage);
   };
-  gDialogs.importConfirmMsgBox.onAfterAccept = () => {
+  gDialogs.importConfirmMsgBox.onAfterAccept = async () => {
     let clippingsListeners = gClippings.getClippingsListeners().getListeners();
     clippingsListeners.forEach(aListener => { aListener.importFinished(true) });
-    window.location.reload();
+
+    await rebuildClippingsTree();
   };
 
   gDialogs.exportConfirmMsgBox = new aeDialog("#export-confirm-msgbox");
@@ -4043,25 +4057,69 @@ function buildClippingsTree()
     });
 
     if (gPrefs.syncClippings) {
-      gReloadSyncFldrBtn.show();
-      $(".ae-synced-clippings-fldr").parent().addClass("ae-synced-clippings");
-
-      if (gPrefs.cxtMenuSyncItemsOnly) {
-        $("#clippings-tree").addClass("cxt-menu-show-sync-items-only");
-      }
+      initSyncedClippingsTree();
     }
 
+    // DEPRECATED - Not necessary anymore if reloading tree list without
+    // reloading entire Clippings Manager window.
     if (gClippings.isClippingsMgrRootFldrReseq()) {
       // This should only be performed after Clippings Manager is reloaded
       // following an import.
       gCmd.updateDisplayOrder(aeConst.ROOT_FOLDER_ID, null, null, true);
       gClippings.setClippingsMgrRootFldrReseq(false);
     }
+    // END DEPRECATED
     
   }).catch(aErr => {
     console.error("clippingsMgr.js::buildClippingsTree(): %s", aErr.message);
     showInitError();
   });
+}
+
+
+async function rebuildClippingsTree()
+{
+  let tree = getClippingsTree();
+  let treeData = [];
+
+  buildClippingsTreeHelper(aeConst.ROOT_FOLDER_ID).then(aTreeData => {
+    if (aTreeData.length == 0) {
+      if (! gIsClippingsTreeEmpty) {
+        treeData = setEmptyClippingsState();
+        tree.options.icon = false;
+        tree.reload(treeData);
+      }
+      return null;
+    }
+    else {
+      if (gIsClippingsTreeEmpty) {
+        unsetEmptyClippingsState();
+      }
+      else {
+        tree.clear();
+      }
+      treeData = aTreeData;
+      return tree.reload(treeData);
+    }
+
+  }).then(aTreeData => {
+    if (aTreeData) {
+      gCmd.updateDisplayOrder(aeConst.ROOT_FOLDER_ID, null, null, true);
+    }
+    
+    return Promise.resolve(aTreeData);
+  });
+}
+
+
+function initSyncedClippingsTree()
+{
+  gReloadSyncFldrBtn.show();
+  $(".ae-synced-clippings-fldr").parent().addClass("ae-synced-clippings");
+
+  if (gPrefs.cxtMenuSyncItemsOnly) {
+    $("#clippings-tree").addClass("cxt-menu-show-sync-items-only");
+  }
 }
 
 
