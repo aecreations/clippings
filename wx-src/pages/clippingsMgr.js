@@ -13,7 +13,6 @@ let gClippingsDB;
 let gClippings;
 let gPrefs;
 let gIsClippingsTreeEmpty;
-let gIsReloading = false;
 let gDialogs = {};
 let gOpenerWndID;
 let gIsMaximized;
@@ -2302,9 +2301,7 @@ $(async () => {
 
 // Reloading or closing Clippings Manager window
 $(window).on("beforeunload", () => {
-  if (! gIsReloading) {
-    browser.runtime.sendMessage({ msgID: "close-clippings-mgr-wnd" });
-  }
+  browser.runtime.sendMessage({ msgID: "close-clippings-mgr-wnd" });
 
   let clippingsListeners = gClippings.getClippingsListeners();
   clippingsListeners.remove(gClippingsListener);
@@ -3226,8 +3223,6 @@ function initDialogs()
           return;
         }
 
-        gClippings.setClippingsMgrRootFldrReseq(true);
-
         log("Clippings/wx::clippingsMgr.js: gDialogs.importFromFile.onAccept()::importFile(): Importing Clippings data asynchronously.");
         
         $("#import-error").text("").hide();
@@ -4067,16 +4062,6 @@ function buildClippingsTree()
       initSyncedClippingsTree();
     }
 
-    // DEPRECATED - Not necessary anymore if reloading tree list without
-    // reloading entire Clippings Manager window.
-    if (gClippings.isClippingsMgrRootFldrReseq()) {
-      // This should only be performed after Clippings Manager is reloaded
-      // following an import.
-      gCmd.updateDisplayOrder(aeConst.ROOT_FOLDER_ID, null, null, true);
-      gClippings.setClippingsMgrRootFldrReseq(false);
-    }
-    // END DEPRECATED
-    
   }).catch(aErr => {
     console.error("clippingsMgr.js::buildClippingsTree(): %s", aErr.message);
     showInitError();

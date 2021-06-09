@@ -22,7 +22,6 @@ let gPasteClippingTargetTabID = null;
 let gIsReloadingSyncFldr = false;
 let gSyncClippingsHelperDwnldPgURL;
 let gForceShowFirstTimeBkupNotif = false;
-let gClippingsMgrRootFldrReseq = false;
 
 let gClippingsListeners = {
   _listeners: [],
@@ -1824,18 +1823,6 @@ function getSyncClippingsListeners()
 function getPrefs()
 {
   return gPrefs;
-}
-
-
-function isClippingsMgrRootFldrReseq()
-{
-  return gClippingsMgrRootFldrReseq;
-}
-
-
-function setClippingsMgrRootFldrReseq(aReseqOnReload)
-{
-  gClippingsMgrRootFldrReseq = aReseqOnReload;
 }
 
 
