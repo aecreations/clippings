@@ -3,18 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-let gClippings;
-
-
 // Dialog initialization
 $(async () => {
   browser.history.deleteUrl({ url: window.location.href });
-
-  gClippings = browser.extension.getBackgroundPage();
-
-  if (! gClippings) {
-    throw new Error("Clippings/wx::backup.js: Failed to retrieve parent browser window!");
-  }
 
   let lang = browser.i18n.getUILanguage();
   document.body.dataset.locale = lang;
@@ -88,7 +79,7 @@ $(async () => {
 
 function backupNow()
 {
-  gClippings.openClippingsManager(true);
+  browser.runtime.sendMessage({ msgID: "backup-clippings" });
 }
 
 

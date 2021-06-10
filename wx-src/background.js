@@ -2117,6 +2117,9 @@ browser.runtime.onMessage.addListener(aRequest => {
   else if (aRequest.msgID == "set-backup-notifcn-intv") {
     setBackupNotificationInterval();
   }
+  else if (aRequest.msgID == "backup-clippings") {
+    openClippingsManager(true);
+  }
 });
 
 
