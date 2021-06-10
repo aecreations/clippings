@@ -738,6 +738,10 @@
     "message": "Removed source web page addresses from your clippings."
   },
 
+  "clipMgrRestoredSrcURLs": {
+    "message": "Restored source web page addresses."
+  },
+
   "clipMgrNoUndo": {
     "message": "Nothing to undo"
   },

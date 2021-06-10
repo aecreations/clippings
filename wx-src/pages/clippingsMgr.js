@@ -2043,6 +2043,19 @@ let gCmd = {
       undo.nextSiblingNodeKey = redoNextSiblingNode ? redoNextSiblingNode.key : null;
       this.redoStack.push(undo);
     }
+    else if (undo.action == gCmd.ACTION_REMOVE_ALL_SRC_URLS) {
+      let numUpdates = [];
+      for (let clippingID in undo.clippingsWithSrcURLs) {
+        numUpdates.push(gClippingsDB.clippings.update(Number(clippingID), {
+          sourceURL: undo.clippingsWithSrcURLs[clippingID],
+        }));
+      }
+
+      Promise.all(numUpdates).then(aResults => {
+        this.redoStack.push(undo);
+        gDialogs.restoreSrcURLs.openPopup();
+      });
+    }
   },
 
   redo: function ()
@@ -2147,6 +2160,18 @@ let gCmd = {
       this.updateDisplayOrder(parentFldrID);
       redo.nextSiblingNodeKey = undoNextSiblingNode ? undoNextSiblingNode.key : null;
       this.undoStack.push(redo);
+    }
+    else if (redo.action == this.ACTION_REMOVE_ALL_SRC_URLS) {
+      let clippingIDs = Object.keys(redo.clippingsWithSrcURLs);
+      let numUpdates = [];
+      clippingIDs.forEach((aClippingID, aIndex, aArray) => {
+        numUpdates.push(gClippingsDB.clippings.update(Number(aClippingID), { sourceURL: "" }));
+      });
+
+      Promise.all(numUpdates).then(aResults => {
+        this.undoStack.push(redo);
+        gDialogs.removeAllSrcURLsConfirm.openPopup();
+      });
     }
   },
   
@@ -3439,16 +3464,31 @@ function initDialogs()
   gDialogs.removeAllSrcURLs = new aeDialog("#remove-all-source-urls-dlg");
   $("#remove-all-source-urls-dlg > .dlg-btns > .dlg-btn-yes").click(aEvent => {
     gDialogs.removeAllSrcURLs.close();
-    gCmd.recentAction = gCmd.ACTION_REMOVE_ALL_SRC_URLS;
-    
-    gClippingsDB.clippings.toCollection().modify({ sourceURL: "" }).then(aNumUpd => {
-      gDialogs.removeAllSrcURLsConfirm.openPopup();
+    let clippingsWithSrcURLs = {};
+
+    gClippingsDB.clippings.where("sourceURL").notEqual("").each((aItem, aCursor) => {
+      clippingsWithSrcURLs[aItem.id] = aItem.sourceURL;
+
+    }).then(() => {
+      gCmd.undoStack.push({
+        action: gCmd.ACTION_REMOVE_ALL_SRC_URLS,
+        clippingsWithSrcURLs,
+      });
+      
+      gClippingsDB.clippings.toCollection().modify({ sourceURL: "" }).then(aNumUpd => {
+        gDialogs.removeAllSrcURLsConfirm.openPopup();
+      });
     });
   });
 
   gDialogs.removeAllSrcURLsConfirm = new aeDialog("#all-src-urls-removed-confirm-msgbar");
   gDialogs.removeAllSrcURLsConfirm.onInit = () => {
     // Reselect the selected tree node to force a call to updateDisplay().
+    getClippingsTree().reactivate(true);
+  };
+
+  gDialogs.restoreSrcURLs = new aeDialog("#restored-src-urls-msgbar");
+  gDialogs.restoreSrcURLs.onInit = () => {
     getClippingsTree().reactivate(true);
   };
 

@@ -607,6 +607,9 @@ function initClippingsDB()
   gClippingsDB.version(4).stores({
     clippings: "++id, name, parentFolderID, shortcutKey"
   });
+  gClippingsDB.version(5).stores({
+    clippings: "++id, name, parentFolderID, shortcutKey, sourceURL"
+  });
 
   gClippingsDB.open().catch(aErr => { onError(aErr) });
 }
