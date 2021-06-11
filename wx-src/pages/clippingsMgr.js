@@ -4140,6 +4140,8 @@ async function rebuildClippingsTree()
     }
 
     if (gPrefs.syncClippings) {
+      gSyncedItemsIDs = {};
+      initSyncItemsIDLookupList();
       initSyncedClippingsTree();
 
       if (gPrefs.cxtMenuSyncItemsOnly) {
@@ -4227,7 +4229,7 @@ function buildClippingsTreeHelper(aFolderID)
         aFnResolve(rv);
       });
     }).catch(aErr => {
-      console.error("Clippings/wx::clippingsMgr.js: buildClippingsTreeHelperEx(): %s", aErr.message);
+      console.error("Clippings/wx::clippingsMgr.js: buildClippingsTreeHelper(): %s", aErr.message);
       aFnReject(aErr);
     });
   });
