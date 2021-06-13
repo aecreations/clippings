@@ -35,7 +35,7 @@ let aePrefs = {
     dispatchInputEvent: true,
     newClippingSyncFldrsOnly: false,
     clippingsMgrSaveWndGeom: true,
-    clippingsMgrSaveWndGeomIntv: 5000,
+    clippingsMgrSaveWndGeomIntv: 3000,
     clippingsMgrWndGeom: null,
     autoAdjustWndPos: true,
   },
