@@ -336,31 +336,31 @@ browser.runtime.onInstalled.addListener(async (aInstall) => {
 
     gPrefs = await aePrefs.getAllPrefs();
 
-    if (! hasSanDiegoPrefs()) {
+    if (! aePrefs.hasSanDiegoPrefs(gPrefs)) {
       gSetDisplayOrderOnRootItems = true;
       log("Initializing 6.1 user preferences.");
-      await setSanDiegoPrefs();
+      await aePrefs.setSanDiegoPrefs(gPrefs);
     }
 
-    if (! hasBalboaParkPrefs()) {
+    if (! aePrefs.hasBalboaParkPrefs(gPrefs)) {
       gForceShowFirstTimeBkupNotif = true;
       log("Initializing 6.1.2 user preferences.");
-      await setBalboaParkPrefs();
+      await aePrefs.setBalboaParkPrefs(gPrefs);
     }
 
-    if (! hasMalibuPrefs()) {
+    if (! aePrefs.hasMalibuPrefs(gPrefs)) {
       log("Initializing 6.2 user preferences.");
-      await setMalibuPrefs();
+      await aePrefs.setMalibuPrefs(gPrefs);
     }
     
-    if (! hasTopangaPrefs()) {
+    if (! aePrefs.hasTopangaPrefs(gPrefs)) {
       log("Initializing 6.2.1 user preferences.");
-      await setTopangaPrefs();
+      await aePrefs.setTopangaPrefs(gPrefs);
     }
 
-    if (! hasHuntingdonPrefs()) {
+    if (! aePrefs.hasHuntingdonPrefs(gPrefs)) {
       log("Initializing 6.3 user preferences.");
-      await setHuntingdonPrefs();
+      await aePrefs.setHuntingdonPrefs(gPrefs);
     }
 
     if (gPrefs.clippingsMgrDetailsPane) {
@@ -378,124 +378,6 @@ async function setDefaultPrefs()
 
   gPrefs = defaultPrefs;
   await aePrefs.setPrefs(defaultPrefs);
-}
-
-
-function hasSanDiegoPrefs()
-{
-  // Version 6.1
-  return gPrefs.hasOwnProperty("syncClippings");
-}
-
-
-async function setSanDiegoPrefs()
-{
-  let newPrefs = {
-    syncClippings: false,
-    syncFolderID: null,
-    pasteShortcutKeyPrefix: "",
-    lastBackupRemDate: null,
-    backupRemFirstRun: true,
-    backupRemFrequency: aeConst.BACKUP_REMIND_WEEKLY,
-    afterSyncFldrReloadDelay: 3000,
-  };
-  
-  for (let pref in newPrefs) {
-    gPrefs[pref] = newPrefs[pref];
-  }
-
-  await aePrefs.setPrefs(newPrefs);
-}
-
-
-function hasBalboaParkPrefs()
-{
-  // Version 6.1.2
-  return gPrefs.hasOwnProperty("syncHelperCheckUpdates");
-}
-
-
-async function setBalboaParkPrefs()
-{
-  let newPrefs = {
-    syncHelperCheckUpdates: true,
-    lastSyncHelperUpdChkDate: null,
-  };
-
-  for (let pref in newPrefs) {
-    gPrefs[pref] = newPrefs[pref];
-  }
-
-  await aePrefs.setPrefs(newPrefs);
-}
-
-
-function hasMalibuPrefs()
-{
-  // Version 6.2
-  return gPrefs.hasOwnProperty("cxtMenuSyncItemsOnly");
-}
-
-
-async function setMalibuPrefs()
-{
-  let newPrefs = {
-    cxtMenuSyncItemsOnly: false,
-    clippingsMgrShowSyncItemsOnlyRem: true,
-    clippingsMgrAutoShowDetailsPane: true,
-    backupFilenameWithDate: true,
-  };
-
-  for (let pref in newPrefs) {
-    gPrefs[pref] = newPrefs[pref];
-  }
-
-  await aePrefs.setPrefs(newPrefs);
-}
-
-
-function hasTopangaPrefs()
-{
-  // Version 6.2.1
-  return gPrefs.hasOwnProperty("dispatchInputEvent");
-}
-
-
-async function setTopangaPrefs()
-{
-  let newPrefs = {
-    dispatchInputEvent: true,
-  };
-
-  for (let pref in newPrefs) {
-    gPrefs[pref] = newPrefs[pref];
-  }
-
-  await aePrefs.setPrefs(newPrefs);
-}
-
-
-function hasHuntingdonPrefs()
-{
-  // Version 6.3
-  return gPrefs.hasOwnProperty("clippingsMgrSaveWndGeom");
-}
-
-
-async function setHuntingdonPrefs()
-{
-  let newPrefs = {
-    clippingsMgrSaveWndGeom: true,
-    clippingsMgrWndGeom: null,
-    newClippingSyncFldrsOnly: false,
-    autoAdjustWndPos: true,
-  };
-  
-  for (let pref in newPrefs) {
-    gPrefs[pref] = newPrefs[pref];
-  }
-
-  await aePrefs.setPrefs(newPrefs);
 }
 
 
