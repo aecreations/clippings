@@ -47,7 +47,7 @@
 body {
     background-color: var(--color-bkgd);
     background-image: var(--url-bkgd-img);
-    font-size: 13px;
+    font-size: 15px;
     color: var(--color-default-text);
 }
 
@@ -78,7 +78,7 @@ main {
 
 input[type="number"],
 select {
-    font-size: 13px !important;
+    font-size: 15px !important;
 }
 
 input[type="number"] {
@@ -86,6 +86,14 @@ input[type="number"] {
     border: 1px solid var(--color-tb-border);
     background-color: var(--color-tb-bkgd);
     color: var(--color-tb-text);
+}
+
+input[type="checkbox"] + label {
+    vertical-align: 0;
+}
+
+body[data-os="win"] input[type="checkbox"] + label {
+    vertical-align: baseline;
 }
 
 select {
@@ -99,7 +107,7 @@ fieldset {
     border-bottom: 0;
     border-left: 0;
     padding-top: 4px;
-    padding-bottom: 12px;
+    padding-bottom: 16px;
 }
 
 legend {
@@ -143,7 +151,7 @@ progress {
 }
 
 .note {
-    font-size: 11px;
+    font-size: 13px;
 }
 
 .description {
@@ -154,12 +162,8 @@ progress {
     font-size: 11px;
 }
 
-.browser-style > input[type="checkbox"] + label::before {
-    vertical-align: -3px;
-}
-
 #html-paste-options {
-    width: 420px;
+    width: 445px;
     height: 28px;
     margin-top: 4px;
 }
@@ -169,7 +173,7 @@ body[data-locale="de"]:not([data-os="mac"]) #enable-shortcut-key-label {
     letter-spacing: -0.25px;
 }
 
-body[data-locale="es-ES"]:not([data-os="mac"]) #enable-shortcut-key-label {
+body[data-locale|="es"]:not([data-os="mac"]) #enable-shortcut-key-label {
     font-size: 13px;
     letter-spacing: -0.46px;
 }
@@ -178,18 +182,31 @@ body[data-locale="es-ES"]:not([data-os="mac"]) #enable-shortcut-key-label {
     vertical-align: middle;
 }
 
+body[data-os="win"] #shortcut-key-prefix-modifiers {
+    vertical-align: baseline;
+}
+
 body[data-locale="de"]:not([data-os="mac"]) #shortcut-key-prefix-modifiers {
     font-size: 13px;
     letter-spacing: -0.25px;
 }
 
-body[data-locale="es-ES"]:not([data-os="mac"]) #shortcut-key-prefix-modifiers {
+body[data-locale|="es"]:not([data-os="mac"]) #shortcut-key-prefix-modifiers {
     font-size: 13px;
     letter-spacing: -0.46px;
 }
 
 #shortcut-key-selector {
     display: none;
+}
+
+body[data-os="win"] #shortcut-key-selector {
+    vertical-align: baseline;
+}
+
+body[data-locale="de"] #shortcut-key-selector,
+body[data-locale|="es"] #shortcut-key-selector {
+    font-size: 13px !important;
 }
 
 #shortcut-key-note {
@@ -200,9 +217,17 @@ body[data-locale="es-ES"]:not([data-os="mac"]) #shortcut-key-prefix-modifiers {
     width: 64px;
 }
 
+body[data-os="win"] #backup-reminder-freq {
+    vertical-align: -1px;
+}
+
 #backup-reminder-freq + label {
     margin-left: 4px;
     vertical-align: middle;
+}
+
+body[data-os="win"] #backup-reminder-freq + label {
+    vertical-align: baseline;
 }
 
 #sync-status {
@@ -431,11 +456,11 @@ body[data-locale="de"] #sync-clippings-dlg #sync-helper-app-update-check + label
     letter-spacing: -0.51px;
 }
 
-body[data-locale="es-ES"] #sync-clippings-dlg #sync-helper-app-update-check + label {
+body[data-locale|="es"] #sync-clippings-dlg #sync-helper-app-update-check + label {
     letter-spacing: -0.56px;
 }
 
-body[data-locale="pt-BR"] #sync-clippings-dlg #sync-helper-app-update-check + label {
+body[data-locale|="pt"] #sync-clippings-dlg #sync-helper-app-update-check + label {
     letter-spacing: -0.56px;
 }
 
@@ -557,7 +582,7 @@ body[data-os="mac"] #turn-off-sync-clippings-dlg .msgbox-icon {
     font-size: 13px;
 }
 
-body[data-locale="pt-BR"] #about-dlg #ext-desc {
+body[data-locale|="pt"] #about-dlg #ext-desc {
     letter-spacing: -0.55px;
 }
 
@@ -573,7 +598,7 @@ body[data-locale="de"] #about-dlg #usr-contrib-cta {
     letter-spacing: -0.1px;
 }
 
-body[data-locale="es-ES"] #about-dlg #usr-contrib-cta {
+body[data-locale|="es"] #about-dlg #usr-contrib-cta {
     letter-spacing: -0.12px;
 }
 
@@ -598,6 +623,6 @@ body[data-locale="uk"] #about-dlg #usr-contrib-cta {
     line-height: 16px;
 }
 
-body[data-locale="es-ES"] #about-dlg #sync-ver-label {
+body[data-locale|="es"] #about-dlg #sync-ver-label {
     letter-spacing: -0.15px;
 }
