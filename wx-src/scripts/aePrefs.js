@@ -37,7 +37,7 @@ let aePrefs = {
     clippingsMgrSaveWndGeom: true,
     clippingsMgrSaveWndGeomIntv: 3000,
     clippingsMgrWndGeom: null,
-    autoAdjustWndPos: true,
+    autoAdjustWndPos: null,
     skipBackupRemIfUnchg: true,
     clippingsUnchanged: false,
   },
@@ -158,7 +158,7 @@ let aePrefs = {
       clippingsMgrSaveWndGeom: true,
       clippingsMgrWndGeom: null,
       newClippingSyncFldrsOnly: false,
-      autoAdjustWndPos: true,
+      autoAdjustWndPos: null,
       skipBackupRemIfUnchg: true,
       clippingsUnchanged: false,
     };   

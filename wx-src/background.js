@@ -416,6 +416,11 @@ function init()
     gOS = platform.os;
     log("Clippings/wx: OS: " + gOS);
 
+    if (gPrefs.autoAdjustWndPos === null) {
+      let autoAdjustWndPos = gOS == "win";
+      await aePrefs.setPrefs({ autoAdjustWndPos });
+    }
+
     if (gPrefs.clippingsMgrMinzWhenInactv === undefined) {
       gPrefs.clippingsMgrMinzWhenInactv = (gOS == "linux");
     }
