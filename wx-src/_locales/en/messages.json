@@ -1037,6 +1037,10 @@
     "description": "Label for checkbox option for setting backup notification, appears after checkbox and before the reminder frequency drop-down menu"
   },
 
+  "backupRemSkip": {
+    "message": "Skip reminder if there were no changes since last backup"
+  },
+  
   "backupRemDays": {
     "message": "days",
     "description": "Label appearing after the drop-down menu for backup reminder frequency"

@@ -38,6 +38,8 @@ let aePrefs = {
     clippingsMgrSaveWndGeomIntv: 3000,
     clippingsMgrWndGeom: null,
     autoAdjustWndPos: true,
+    skipBackupRemIfUnchg: true,
+    clippingsUnchanged: false,
   },
   
   getDefaultPrefs()
@@ -157,6 +159,8 @@ let aePrefs = {
       clippingsMgrWndGeom: null,
       newClippingSyncFldrsOnly: false,
       autoAdjustWndPos: true,
+      skipBackupRemIfUnchg: true,
+      clippingsUnchanged: false,
     };   
 
     await this._addPrefs(aPrefs, newPrefs);

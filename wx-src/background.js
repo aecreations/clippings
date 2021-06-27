@@ -1036,7 +1036,7 @@ async function resetAutoIncrPlaceholder(aPlaceholder)
 }
 
 
-function showBackupNotification()
+async function showBackupNotification()
 {
   if (gPrefs.backupRemFrequency == aeConst.BACKUP_REMIND_NEVER) {
     return;
@@ -1082,38 +1082,41 @@ function showBackupNotification()
     if (gPrefs.backupRemFirstRun) {
       info("Clippings/wx: showBackupNotification(): Showing first-time backup reminder.");
 
-      browser.notifications.create(aeConst.NOTIFY_BACKUP_REMIND_FIRSTRUN_ID, {
+      await browser.notifications.create(aeConst.NOTIFY_BACKUP_REMIND_FIRSTRUN_ID, {
         type: "basic",
         title: browser.i18n.getMessage("backupNotifyTitle"),
         message: browser.i18n.getMessage("backupNotifyFirstMsg"),
         iconUrl: "img/icon.svg",
-
-      }).then(aNotifID => {
-        aePrefs.setPrefs({
-          backupRemFirstRun: false,
-          backupRemFrequency: aeConst.BACKUP_REMIND_WEEKLY,
-          lastBackupRemDate: new Date().toString(),
-        });
-
-        if (gForceShowFirstTimeBkupNotif) {
-          setBackupNotificationInterval();
-          gForceShowFirstTimeBkupNotif = false;
-        }
       });
+
+      aePrefs.setPrefs({
+        backupRemFirstRun: false,
+        backupRemFrequency: aeConst.BACKUP_REMIND_WEEKLY,
+        lastBackupRemDate: new Date().toString(),
+      });
+
+      if (gForceShowFirstTimeBkupNotif) {
+        setBackupNotificationInterval();
+        gForceShowFirstTimeBkupNotif = false;
+      }
     }
     else {
       info("Clippings/wx: showBackupNotification(): Last backup reminder: " + gPrefs.lastBackupRemDate);
 
-      browser.notifications.create(aeConst.NOTIFY_BACKUP_REMIND_ID, {
-        type: "basic",
-        title: browser.i18n.getMessage("backupNotifyTitle"),
-        message: browser.i18n.getMessage("backupNotifyMsg"),
-        iconUrl: "img/icon.svg",
+      if (gPrefs.skipBackupRemIfUnchg && gPrefs.clippingsUnchanged) {
+        log("Clippings/wx: No changes to clippings since last backup; skipping backup notification.");
+      }
+      else {
+        await browser.notifications.create(aeConst.NOTIFY_BACKUP_REMIND_ID, {
+          type: "basic",
+          title: browser.i18n.getMessage("backupNotifyTitle"),
+          message: browser.i18n.getMessage("backupNotifyMsg"),
+          iconUrl: "img/icon.svg",
+        });
 
-      }).then(aNotifID => {
         setBackupNotificationInterval();
         aePrefs.setPrefs({ lastBackupRemDate: new Date().toString() });
-      });
+      }
     }
   }
   else {
@@ -1878,11 +1881,11 @@ browser.contextMenus.onClicked.addListener(async (aInfo, aTab) => {
 });
 
 
-browser.alarms.onAlarm.addListener(aAlarm => {
+browser.alarms.onAlarm.addListener(async (aAlarm) => {
   info(`Clippings/wx: Alarm "${aAlarm.name}" was triggered.`);
 
   if (aAlarm.name == "show-backup-notifcn") {
-    showBackupNotification();
+    await showBackupNotification();
   }
   else if (aAlarm.name == "show-sync-helper-upd-notifcn") {
     showSyncHelperUpdateNotification();

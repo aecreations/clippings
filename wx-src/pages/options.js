@@ -104,9 +104,11 @@ async function init()
     aePrefs.setPrefs({ backupFilenameWithDate: aEvent.target.checked });
   });
 
-  $("#backup-reminder").prop("checked", (prefs.backupRemFrequency != aeConst.BACKUP_REMIND_NEVER)).click(async (aEvent) => {
+  $("#backup-reminder").attr("checked", (prefs.backupRemFrequency != aeConst.BACKUP_REMIND_NEVER)).click(async (aEvent) => {
     if (aEvent.target.checked) {
       $("#backup-reminder-freq").prop("disabled", false);
+      $("#skip-backup-if-no-chg").prop("disabled", false);
+      $("#skip-backup-label").removeAttr("disabled");
       await aePrefs.setPrefs({
         backupRemFrequency: Number($("#backup-reminder-freq").val()),
         backupRemFirstRun: false,
@@ -115,6 +117,8 @@ async function init()
     }
     else {
       $("#backup-reminder-freq").prop("disabled", true);
+      $("#skip-backup-if-no-chg").prop("disabled", true);
+      $("#skip-backup-label").attr("disabled", true);
       await aePrefs.setPrefs({ backupRemFrequency: aeConst.BACKUP_REMIND_NEVER });
     }
 
@@ -142,6 +146,10 @@ async function init()
     await browser.runtime.sendMessage({msgID: "clear-backup-notifcn-intv"});
     browser.runtime.sendMessage({msgID: "set-backup-notifcn-intv"});
   });   
+
+  $("#skip-backup-if-no-chg").attr("checked", prefs.skipBackupRemIfUnchg).click(aEvent => {
+    aePrefs.setPrefs({skipBackupRemIfUnchg: aEvent.target.checked});
+  });
 
   if (prefs.syncClippings) {
     $("#sync-settings").show();

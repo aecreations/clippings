@@ -528,6 +528,12 @@ function accept(aEvent)
         aListener.newClippingCreated(aNewClippingID, newClipping, aeConst.ORIGIN_HOSTAPP);
       });
       
+      if (gPrefs.clippingsUnchanged) {
+        return aePrefs.setPrefs({ clippingsUnchanged: false });
+      }
+      return null;
+
+    }).then(() => {
       if (gPrefs.syncClippings) {
         aeImportExport.setDatabase(gClippingsDB);
         
