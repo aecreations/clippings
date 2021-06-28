@@ -416,13 +416,13 @@ function init()
     gOS = platform.os;
     log("Clippings/wx: OS: " + gOS);
 
+    if (gOS == "linux" && gPrefs.clippingsMgrMinzWhenInactv === null) {
+      await aePrefs.setPrefs({ clippingsMgrMinzWhenInactv: true });
+    }
+
     if (gPrefs.autoAdjustWndPos === null) {
       let autoAdjustWndPos = gOS == "win";
       await aePrefs.setPrefs({ autoAdjustWndPos });
-    }
-
-    if (gPrefs.clippingsMgrMinzWhenInactv === undefined) {
-      gPrefs.clippingsMgrMinzWhenInactv = (gOS == "linux");
     }
 
     gClippingsListener.origin = aeConst.ORIGIN_HOSTAPP;

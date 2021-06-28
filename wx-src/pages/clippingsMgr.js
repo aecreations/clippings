@@ -2340,10 +2340,8 @@ $(async () => {
   
   gIsMaximized = false;
 
-  if (DEBUG_WND_ACTIONS) {
-    if (gPrefs.clippingsMgrMinzWhenInactv === undefined) {
-      aePrefs.setPrefs({ clippingsMgrMinzWhenInactv: true });
-    }
+  if (DEBUG_WND_ACTIONS && !gPrefs.clippingsMgrMinzWhenInactv) {
+    aePrefs.setPrefs({ clippingsMgrMinzWhenInactv: true });
   }
 
   let clippingsListeners = gClippings.getClippingsListeners();

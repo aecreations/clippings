@@ -19,7 +19,7 @@ let aePrefs = {
     clippingsMgrDetailsPane: false,
     clippingsMgrStatusBar: false,
     clippingsMgrPlchldrToolbar: false,
-    clippingsMgrMinzWhenInactv: undefined,
+    clippingsMgrMinzWhenInactv: null,
     syncClippings: false,
     syncFolderID: null,
     cxtMenuSyncItemsOnly: false,
@@ -161,7 +161,11 @@ let aePrefs = {
       autoAdjustWndPos: null,
       skipBackupRemIfUnchg: true,
       clippingsUnchanged: false,
-    };   
+    };
+
+    if (typeof aPrefs.clippingsMgrMinzWhenInactv != "boolean") {
+      newPrefs.clippingsMgrMinzWhenInactv = null;
+    }
 
     await this._addPrefs(aPrefs, newPrefs);
   },
