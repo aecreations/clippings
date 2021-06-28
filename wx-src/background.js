@@ -422,7 +422,8 @@ function init()
 
     if (gPrefs.autoAdjustWndPos === null) {
       let autoAdjustWndPos = gOS == "win";
-      await aePrefs.setPrefs({ autoAdjustWndPos });
+      let clippingsMgrSaveWndGeom = autoAdjustWndPos;
+      await aePrefs.setPrefs({ autoAdjustWndPos, clippingsMgrSaveWndGeom });
     }
 
     gClippingsListener.origin = aeConst.ORIGIN_HOSTAPP;

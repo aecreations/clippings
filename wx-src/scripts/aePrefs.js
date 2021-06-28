@@ -34,7 +34,7 @@ let aePrefs = {
     backupFilenameWithDate: true,
     dispatchInputEvent: true,
     newClippingSyncFldrsOnly: false,
-    clippingsMgrSaveWndGeom: true,
+    clippingsMgrSaveWndGeom: false,
     clippingsMgrSaveWndGeomIntv: 3000,
     clippingsMgrWndGeom: null,
     autoAdjustWndPos: null,
@@ -155,7 +155,7 @@ let aePrefs = {
   async setHuntingdonPrefs(aPrefs)
   {
     let newPrefs = {
-      clippingsMgrSaveWndGeom: true,
+      clippingsMgrSaveWndGeom: false,
       clippingsMgrWndGeom: null,
       newClippingSyncFldrsOnly: false,
       autoAdjustWndPos: null,
