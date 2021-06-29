@@ -6,10 +6,10 @@
 
 class aeDialog
 {
-  static HIDE_POPUP_DELAY_MS = 5000;
-  
   constructor(aDlgEltSelector)
   {
+    this.HIDE_POPUP_DELAY_MS = 5000;
+    
     this._dlgEltStor = aDlgEltSelector;
     this._fnInit = function () {};
     this._fnDlgShow = function () {};
@@ -129,7 +129,7 @@ class aeDialog
     // Auto-close after a few second's delay.
     this._popupTimerID = window.setTimeout(() => {
       this.hidePopup();
-    }, this.constructor.HIDE_POPUP_DELAY_MS);
+    }, this.HIDE_POPUP_DELAY_MS);
   }
 
   hidePopup()
