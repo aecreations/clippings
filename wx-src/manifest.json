@@ -2,11 +2,11 @@
     "manifest_version": 2,
     "name": "__MSG_extName__",
     "description": "__MSG_extDesc__",
-    "version": "6.3a2+",
+    "version": "6.3b1",
     "homepage_url": "https://aecreations.sourceforge.io/clippings/index.php",
     "author": "AE Creations",
     
-    "applications": {
+    "browser_specific_settings": {
 	"gecko": {
             "id": "{91aa5abe-9de4-4347-b7b5-322c38dd9271}",
 	    "strict_min_version": "78.0"
