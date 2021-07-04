@@ -122,6 +122,10 @@
 	<div class="row browser-style">
 	  <input type="checkbox" id="backup-filename-with-date"/><label for="backup-filename-with-date" data-i18n="cbBackupFilenameWithDate"></label>
 	</div>
+
+        <div class="row">
+          <button id="wnds-dlgs-settings" data-i18n="wndsAndDlgsOpts"></button>
+        </div>
       </fieldset>
 
       <fieldset id="sync-options">
@@ -142,6 +146,33 @@
     </main>
 
     <!-- Dialog boxes -->
+    <div id="wnds-dlgs-opts-dlg" class="lightbox">
+      <div class="dlg-content">
+        <fieldset>
+          <legend data-i18n="wndsDlgsOptsTitle"></legend>
+
+	  <div id="wnds-dlgs-opts-exp-warn">
+            <div class="warning-icon"></div>
+	    <div id="wnds-dlgs-opts-exp-warn-msg"></div>
+	  </div>
+
+          <div class="row browser-style">
+            <input type="checkbox" id="auto-pos-wnds"/><label for="auto-pos-wnds" data-i18n="autoPosWnds"></label>
+          </div>
+          <div class="row browser-style">
+            <input type="checkbox" id="clpmgr-save-wnd-pos"/><label for="clpmgr-save-wnd-pos" data-i18n="clpMgrSaveWndPos"></label>
+          </div>
+          <div class="row browser-style">
+            <button id="reset-clpmgr-wnd-pos" class="indent" data-i18n="btnReset"></button>
+          </div>
+        </fieldset>
+      </div>
+      <div class="dlg-btns">
+	<button class="dlg-accept default" data-i18n="btnOK"></button>
+	<button class="dlg-cancel" data-i18n="btnCancel"></button>
+      </div>
+    </div>
+
     <div id="sync-clippings-dlg" class="lightbox">
       <div class="dlg-content">
         <div id="sync-connection-check" class="deck">

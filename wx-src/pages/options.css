@@ -230,6 +230,10 @@ body[data-os="win"] #backup-reminder-freq + label {
     vertical-align: baseline;
 }
 
+#wnds-dlgs-settings {
+    margin-top: 8px;
+}
+
 #sync-status {
     font-size: 15px;
 }
@@ -285,8 +289,8 @@ body[data-os="win"] #backup-reminder-freq + label {
 
 .lightbox {
     top: 64px;
-    padding-left: 28px;
-    padding-right: 28px;
+    padding-left: 22px;
+    padding-right: 22px;
     border-radius: 4px;
     font-size: 15px;
 }
@@ -360,6 +364,47 @@ body[data-os="win"] #backup-reminder-freq + label {
     padding-bottom: 18px;
 }
 
+#wnds-dlgs-opts-dlg {
+    top: 160px;
+    --width: 490px;
+    --height: 225px;
+}
+
+#wnds-dlgs-opts-dlg fieldset {
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--color-fieldset-border);
+}
+
+#wnds-dlgs-opts-dlg #wnds-dlgs-opts-exp-warn {
+    display: none;
+}
+
+#wnds-dlgs-opts-dlg #wnds-dlgs-opts-exp-warn .warning-icon {
+    background-image: url("../img/warning-64.png");
+    float: left;
+    width: 30px;
+    height: 30px;
+    margin-top: 4px;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+body[data-os="mac"] #wnds-dlgs-opts-dlg #wnds-dlgs-opts-exp-warn .warning-icon {
+    background-image: url("../img/warning-64-mac.png");
+}
+
+#wnds-dlgs-opts-dlg #wnds-dlgs-opts-exp-warn-msg {
+    height: 82px;
+    margin: 8px 0 12px 40px;
+    padding: 12px;
+    border-radius: 4px;
+ }
+
+#wnds-dlgs-opts-dlg #reset-clpmgr-wnd-pos {
+    min-width: 72px;
+    margin-top: 4px;
+}
+
 #sync-clippings-dlg {
     top: 128px;
     --width: 500px;
@@ -406,6 +451,7 @@ body[data-os="mac"] #sync-clippings-dlg #sync-cxn-error .msgbox-icon {
     font-weight: bold;
 }
 
+#wnds-dlgs-opts-dlg #wnds-dlgs-opts-exp-warn-msg,
 #sync-clippings-dlg #sync-cxn-error .error-msg {
     background-color: #fbfb77;
     color: black;

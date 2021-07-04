@@ -65,6 +65,10 @@
     "message": "Browse…"
   },
 
+  "btnReset": {
+    "message": "Reset"
+  },
+
   "migrnStatusTitle": {
     "message": "Clippings Migration Status",
     "description": "Clippings for Thunderbird"
@@ -1271,6 +1275,29 @@
 
   "cxtMnuSyncItemsOnly": {
     "message": "Show only synced items in the Clippings menu"
+  },
+
+  "wndsAndDlgsOpts": {
+    "message": "Windows and Dialogs…"
+  },
+
+  "wndsDlgsOptsTitle": {
+    "message": "Windows and Dialogs"
+  },
+
+  "wndsDlgsOptsExpWarn": {
+    "message": "These settings are experimental on $1. They may not work properly on systems with multiple displays.",
+    "description": "Warning message in the Windows and Dialogs settings dialog, appearing if using an OS other than Windows"
+  },
+
+  "autoPosWnds": {
+    "message": "Automatically position within originating window",
+    "description": "Checkbox option in Windows and Dialogs settings dialog"
+  },
+
+  "clpMgrSaveWndPos": {
+    "message": "Save Clippings Manager window position and size",
+    "description": "Checkbox option in Windows and Dialogs settings dialog"
   },
 
   "aboutBtn": {
