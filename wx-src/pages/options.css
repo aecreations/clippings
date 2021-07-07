@@ -382,8 +382,8 @@ body[data-os="win"] #backup-reminder-freq + label {
 #wnds-dlgs-opts-dlg #wnds-dlgs-opts-exp-warn .warning-icon {
     background-image: url("../img/warning-64.png");
     float: left;
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     margin-top: 4px;
     background-repeat: no-repeat;
     background-size: contain;
@@ -395,7 +395,7 @@ body[data-os="mac"] #wnds-dlgs-opts-dlg #wnds-dlgs-opts-exp-warn .warning-icon {
 
 #wnds-dlgs-opts-dlg #wnds-dlgs-opts-exp-warn-msg {
     height: 82px;
-    margin: 8px 0 12px 40px;
+    margin: 8px 0 12px 38px;
     padding: 12px;
     border-radius: 4px;
  }
