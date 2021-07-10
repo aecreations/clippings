@@ -176,12 +176,12 @@ body {
     height: 100%;
     overflow: hidden;
     background-color: var(--color-bkgd);
-    font-size: 11px;
+    font-size: 12px;
     color: var(--color-default-text);
 }
 
 button {
-    font-size: 11px !important;
+    font-size: 12px !important;
 }
 
 button[disabled] {
@@ -202,7 +202,6 @@ input[type="text"],
 input[type="search"],
 textarea,
 select {
-    font-size: 11px !important;
     background-color: var(--color-textbox-bkgd);
     color: var(--color-default-text);
 }
@@ -246,7 +245,7 @@ select {
     background-color: transparent;
     color: var(--color-main-toolbar-text);
     font: caption;
-    font-size: 11px;
+    font-size: 11px !important;
 }
 
 .toolbar-button:hover {
@@ -440,6 +439,7 @@ select {
     width: 220px;
     height: 100%;
     padding-right: 20px;
+    font-size: 11px;
 }
 
 #toolbar > #search-clippings-and-folders > #clear-search {
@@ -479,7 +479,7 @@ select {
     order: 1;
     flex: 0 1 auto;
     align-self: stretch;
-    width: 220px;
+    width: 228px;
     min-width: 128px;
     overflow: auto;
     border-right: 1px solid var(--color-tree-splitter);
@@ -647,6 +647,7 @@ ul.fancytree-container {
     border-top: none;
     border-bottom: 1px solid var(--color-item-properties-textbox-border);
     background-color: var(--color-textbox-bkgd);
+    font-size: 13px;
 }
 
 #item-properties > #clipping-text {
@@ -663,6 +664,7 @@ ul.fancytree-container {
     border-top: none;
     border-bottom: 1px solid var(--color-item-properties-textbox-border);
     background-color: var(--color-textbox-bkgd);
+    font-size: 13px;
 }
 
 #item-properties > #placeholder-toolbar {
@@ -718,8 +720,8 @@ ul.fancytree-container {
 #item-properties > #placeholder-toolbar > label {
     order: 1;
     flex: 0 1 auto;
-
     margin-right: 0;
+    font-size: 11px;
 }
 
 #item-properties > #placeholder-toolbar > #plchldr-presets {
@@ -877,6 +879,7 @@ ul.fancytree-container {
 
 #options-bar > #shortcut-key-select > #clipping-key {
     margin-bottom: 0;
+    font-size: 12px;
 }
 
 #options-bar > #shortcut-key-select > #show-shortcut-list {
@@ -905,6 +908,10 @@ ul.fancytree-container {
 #options-bar > #clipping-label {
     order: 3;
     flex: 0 1 auto;
+}
+
+#options-bar > #clipping-label > #clipping-label-picker {
+    font-size: 12px;
 }
 
 #status-bar {
@@ -980,7 +987,7 @@ body[data-os="mac"] .lightbox .msgbox-icon {
 
 .lightbox select {
     font: caption;
-    font-size: 11px;
+    font-size: 12px;
 }
 
 .lightbox select > option {
@@ -1013,14 +1020,14 @@ body[data-os="mac"] .lightbox .msgbox-icon {
 }
 
 #custom-placeholder-dlg {
-    --width: 330px;
-    --height: 200px;
+    --width: 336px;
+    --height: 204px;
     top: 48px;
 }
 
 #numeric-placeholder-dlg {
-    --width: 330px;
-    --height: 184px;
+    --width: 336px;
+    --height: 188px;
     top: 48px;
 }
 
@@ -1035,8 +1042,8 @@ body[data-os="mac"] .lightbox .msgbox-icon {
 }
 
 #insert-date-time-placeholder-dlg {
-    --width: 300px;
-    --height: 326px;
+    --width: 306px;
+    --height: 340px;
     top: 14px;
 }
 
@@ -1045,8 +1052,8 @@ body[data-os="mac"] .lightbox .msgbox-icon {
 }
 
 #shortcut-list-dlg {
-    --width: 420px;
-    --height: 320px;
+    --width: 424px;
+    --height: 322px;
     top: 18px;
 }
 
@@ -1138,8 +1145,8 @@ body[data-locale="nl"] #shortcut-list-dlg #shortcut-instrxns {
 }
 
 #import-dlg {
-    --width: 395px;
-    --height: 200px;
+    --width: 398px;
+    --height: 206px;
     top: 40px;
 }
 
@@ -1152,8 +1159,8 @@ body[data-locale="nl"] #shortcut-list-dlg #shortcut-instrxns {
 #import-dlg #import-clippings-file-path {
     order: 1;
     flex: 1 1 auto;
-
     margin-right: 2px;
+    font-size: 12px;
 }
 
 #import-dlg #import-clippings-file-path,
@@ -1287,11 +1294,11 @@ body[data-locale="de"] #include-src-urls + label {
 }
 
 #import-confirm-msgbox {
-    --width: 400px;
+    --width: 406px;
 }
 
 #reload-sync-fldr-msgbox {
-    --width: 430px;
+    --width: 436px;
 }
 
 #move-sync-fldr-msgbox {
@@ -1299,7 +1306,7 @@ body[data-locale="de"] #include-src-urls + label {
 }
 
 #move-dlg {
-    --width: 340px;
+    --width: 342px;
     --height: 282px;
     top: 32px;
 }
@@ -1325,7 +1332,7 @@ body[data-locale="de"] #include-src-urls + label {
 }
 
 #init-error-msgbox, #sync-error-msgbox {
-    --height: 136px;
+    --height: 142px;
     top: 64px;
 }
 
@@ -1336,13 +1343,9 @@ body[data-locale="de"] #include-src-urls + label {
 }
 
 #mini-help-dlg {
-    --width: 450px;
-    --height: 312px;
-    top: 20px;
-}
-
-body:not([data-os="mac"]) #mini-help-dlg {
-    height: 320px;
+    --width: 454px;
+    --height: 350px;
+    top: 12px;
 }
 
 body[data-locale="de"]:not([data-os="mac"]) #mini-help-dlg {
@@ -1352,12 +1355,12 @@ body[data-locale="de"]:not([data-os="mac"]) #mini-help-dlg {
 #shortcut-list-dlg .hlp-hdr,
 #mini-help-dlg .hlp-hdr {
     margin-top: 0;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: bold;
 }
 
 #show-only-synced-items-reminder {
-    --height: 140px;
+    --height: 150px;
 }
 
 #show-only-synced-items-reminder > .dlg-content > .msgbox-info-icon {
@@ -1365,6 +1368,6 @@ body[data-locale="de"]:not([data-os="mac"]) #mini-help-dlg {
 }
 
 #generic-msg-box {
-    --width: 28em;
+    --width: 30em;
 }
 
