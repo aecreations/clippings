@@ -495,7 +495,7 @@ function initDialogs()
 
     if (! that.isInitialized) {
       if (gOS != "win") {
-        let os = gOS == "mac" ? "macOS" : capitalize(gOS);
+        let os = gOS == "mac" ? browser.i18n.getMessage("macOS") : capitalize(gOS);
         $("#wnds-dlgs-opts-dlg").css({height: "320px"});
         $("#wnds-dlgs-opts-exp-warn-msg").text(browser.i18n.getMessage("wndsDlgsOptsExpWarn", os));
         $("#wnds-dlgs-opts-exp-warn").show();

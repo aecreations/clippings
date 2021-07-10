@@ -1290,6 +1290,10 @@
     "description": "Warning message in the Windows and Dialogs settings dialog, appearing if using an OS other than Windows"
   },
 
+  "macOS": {
+    "message": "macOS"
+  },
+
   "autoPosWnds": {
     "message": "Automatically position within originating window",
     "description": "Checkbox option in Windows and Dialogs settings dialog"
