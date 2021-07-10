@@ -1246,8 +1246,8 @@ async function openClippingsManager(aBackupMode)
   
   async function openClippingsMgrHelper()
   {
-    let width = 750;
-    let height = 400;
+    let width = 760;
+    let height = 410;
     let topOffset = 200;
     let left, top;
     let wndGeom = gPrefs.clippingsMgrWndGeom;
@@ -1343,11 +1343,11 @@ async function openClippingsManager(aBackupMode)
 function openNewClippingDlg()
 {
   let url = browser.runtime.getURL("pages/new.html");
-  let height = 390;
+  let height = 410;
   if (gOS == "win") {
-    height = 420;
+    height = 446;
   }
-  openDlgWnd(url, "newClipping", { type: "detached_panel", width: 428, height });
+  openDlgWnd(url, "newClipping", { type: "detached_panel", width: 432, height });
 }
 
 
