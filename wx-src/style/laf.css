@@ -205,6 +205,11 @@ textarea::selection {
     vertical-align: middle;
 }
 
+body[data-os="win"] .browser-style > input[type="checkbox"] + label,
+body[data-os="win"] .browser-style > input[type="radio"] + label {
+    vertical-align: baseline;
+}
+
 .browser-style > input[type="checkbox"],
 .browser-style > input[type="radio"] {
     background-color: var(--color-cb-bkgd);
