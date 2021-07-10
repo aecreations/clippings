@@ -4,9 +4,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
-const WNDH_OPTIONS_EXPANDED = 450;
-const DLG_HEIGHT_ADJ_WINDOWS = 32;
-const DLG_HEIGHT_ADJ_LOCALE_ES = 12;
+const WNDH_OPTIONS_EXPANDED = 486;
+const DLG_HEIGHT_ADJ_WINDOWS = 36;
+const DLG_HEIGHT_ADJ_LOCALE_ES = 16;
 
 let gOS;
 let gClippingsDB = null;
@@ -36,7 +36,7 @@ $(async () => {
   }
 
   try {
-    await gClippings.verifyDB();    
+    await gClippings.verifyDB();
     initHelper();
   }
   catch (e) {
