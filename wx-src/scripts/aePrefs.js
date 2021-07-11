@@ -40,6 +40,7 @@ let aePrefs = {
     autoAdjustWndPos: null,
     skipBackupRemIfUnchg: true,
     clippingsUnchanged: false,
+    upgradeNotifCount: 0,
   },
   
   getDefaultPrefs()
@@ -161,6 +162,7 @@ let aePrefs = {
       autoAdjustWndPos: null,
       skipBackupRemIfUnchg: true,
       clippingsUnchanged: false,
+      upgradeNotifCount: 0,
     };
 
     if (typeof aPrefs.clippingsMgrMinzWhenInactv != "boolean") {

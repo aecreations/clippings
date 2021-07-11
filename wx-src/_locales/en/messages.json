@@ -1364,6 +1364,58 @@
   "aboutSyncFileSize": {
     "message": "Sync file size:"
   },
+
+  "upgradeNotifcn": {
+    "message": "Clippings was recently updated! Click here to see what's new.",
+    "description": "Post-upgrade notification text"
+  },
+
+  "newVerHdg": {
+    "message": "New Version Installed!",
+    "description": "Header for the What's New page (appears after upgrading Clippings)"
+  },
+
+  "upgrade": {
+    "message": "Clippings has been upgraded to version 6.3.",
+    "description": "What's New page (appears after upgrading Clippings)"
+  },
+
+  "whatsNew": {
+    "message": "What’s New",
+    "description": "What's New page (appears after upgrading Clippings)"
+  },
+
+  "whatsNew1": {
+    "message": "Improvements to Clippings Manager. On Windows, Clippings Manager now remembers its window size and position",
+    "description": "Description of an enhancement or fix in the new version of Clippings"
+  },
+
+  "whatsNew2": {
+    "message": "Improvements to support for multiple displays on Windows. Clippings popup windows and dialogs will now be positioned within the browser window from which they were opened, instead of always centered on the primary display",
+    "description": "Description of an enhancement or fix in the new version of Clippings"
+  },
+
+  "whatsNew3": {
+    "message": "New option to skip backup reminders if there were no changes to your clippings since the last backup",
+    "description": "Description of an enhancement or fix in the new version of Clippings"
+  },
+
+  "donateHdg": {
+    "message": "Donate!",
+    "description": "Donation CTA in the What's New page"
+  },
+
+  "donateCta1": {
+    "message": "Support the development of Clippings by"
+  },
+
+  "donateLink": {
+    "message": "making a small contribution"
+  },
+
+  "donateCta2": {
+    "message": "."
+  },
   
   "keyAlt": {
     "message": "Alt"

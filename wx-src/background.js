@@ -366,6 +366,10 @@ browser.runtime.onInstalled.addListener(async (aInstall) => {
     if (gPrefs.clippingsMgrDetailsPane) {
       gPrefs.clippingsMgrAutoShowDetailsPane = false;
     }
+
+    await aePrefs.setPrefs({
+      upgradeNotifCount: aeConst.MAX_NUM_POST_UPGRADE_NOTIFICNS
+    });
       
     init();
   }
@@ -447,6 +451,13 @@ function init()
     if (gPrefs.backupRemFirstRun && !gPrefs.lastBackupRemDate) {
       aePrefs.setPrefs({
         lastBackupRemDate: new Date().toString(),
+      });
+    }
+
+    if (gPrefs.upgradeNotifCount > 0) {
+      // Show post-upgrade notification in 3 minutes.
+      browser.alarms.create("show-upgrade-notifcn", {
+        delayInMinutes: aeConst.POST_UPGRADE_NOTIFCN_DELAY_MS / 60000
       });
     }
 
@@ -1145,6 +1156,21 @@ async function clearBackupNotificationInterval()
 {
   log("Clippings/wx: Clearing backup notification interval.");
   await browser.alarms.clear("show-backup-notificn");
+}
+
+
+async function showWhatsNewNotification()
+{
+  log("Clippings/wx: Showing post-upgrade notification.");
+  await browser.notifications.create(aeConst.NOTIFY_WHATS_NEW, {
+    type: "basic",
+    title: browser.i18n.getMessage("extName"),
+    message: browser.i18n.getMessage("upgradeNotifcn"),
+    iconUrl: "img/icon.svg",
+  });
+
+  let upgradeNotifCount = gPrefs.upgradeNotifCount - 1;
+  aePrefs.setPrefs({upgradeNotifCount});
 }
 
 
@@ -1896,6 +1922,9 @@ browser.alarms.onAlarm.addListener(async (aAlarm) => {
   else if (aAlarm.name == "show-sync-helper-upd-notifcn") {
     showSyncHelperUpdateNotification();
   }
+  else if (aAlarm.name == "show-upgrade-notifcn") {
+    showWhatsNewNotification();
+  }
 });
 
 
@@ -1909,6 +1938,10 @@ browser.notifications.onClicked.addListener(aNotifID => {
   }
   else if (aNotifID == aeConst.NOTIFY_SYNC_HELPER_UPDATE) {
     browser.tabs.create({ url: gSyncClippingsHelperDwnldPgURL });
+  }
+  else if (aNotifID == aeConst.NOTIFY_WHATS_NEW) {
+    browser.tabs.create({ url: browser.runtime.getURL("pages/whatsnew.html") });
+    aePrefs.setPrefs({ upgradeNotifCount: 0 });
   }
 });
   

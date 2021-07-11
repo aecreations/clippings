@@ -67,11 +67,16 @@ let aeConst = {
   SYNC_HELPER_CHECK_UPDATE_DELAY_MS: 600000,  // 10 minutes
   SYNC_HELPER_CHECK_UPDATE_FREQ_DAYS: 2,
 
+  // Post-upgrade notifications
+  POST_UPGRADE_NOTIFCN_DELAY_MS: 180000, // 3 minutes
+  MAX_NUM_POST_UPGRADE_NOTIFICNS: 3,
+
   // Notification IDs
   NOTIFY_BACKUP_REMIND_FIRSTRUN_ID: "ae-clippings-notify-backup-reminder-firstrun",
   NOTIFY_BACKUP_REMIND_ID: "ae-clippings-notify-backup-reminder",
   NOTIFY_SYNC_ERROR_ID: "ae-clippings-sync-error",
   NOTIFY_SYNC_HELPER_UPDATE: "ae-clippings-sync-helper-update",
+  NOTIFY_WHATS_NEW: "ae-clippings-whats-new",
 
   // Errors returned by the native messaging app
   SYNC_ERROR_UNKNOWN: "Error: undefined",
