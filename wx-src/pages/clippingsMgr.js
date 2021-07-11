@@ -3544,8 +3544,8 @@ function initDialogs()
     $("#backup-confirm-msgbox > .msgbox-content").text(aMessage);
   };
   gDialogs.backupConfirmMsgBox.onAfterAccept = async () => {
+    await aePrefs.setPrefs({ clippingsUnchanged: true });
     if (gIsBackupMode) {
-      await aePrefs.setPrefs({ clippingsUnchanged: true });
       closeWnd();
     }
   };
