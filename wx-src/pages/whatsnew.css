@@ -96,6 +96,17 @@ button {
     margin-bottom: 24px;
 }
 
+#aecreations-links > ul {
+    padding-left: 0;
+    text-align: center;
+}
+
+#aecreations-links > ul > li {
+    display: inline-block;
+    margin-top: 8px;
+    margin-right: 12px;
+}
+
 #dlg-btns {
     margin-top: 32px;
     text-align: center;

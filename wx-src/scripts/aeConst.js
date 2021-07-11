@@ -83,5 +83,7 @@ let aeConst = {
   SYNC_ERROR_CONXN_FAILED: "Error: Attempt to postMessage on disconnected port",
 
   DONATE_URL: "https://www.paypal.com/paypalme/aecreations88/11.99cad",
-  L10N_URL: "https://crowdin.com/project/clippings"
+  L10N_URL: "https://crowdin.com/project/clippings",
+  BLOG_URL: "https://aecreations.blogspot.com/",
+  FORUM_URL: "https://groups.google.com/g/aecreations-help",
 };

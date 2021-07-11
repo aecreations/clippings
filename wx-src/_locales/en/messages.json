@@ -1416,7 +1416,19 @@
   "donateCta2": {
     "message": "."
   },
-  
+
+  "linkWebsite": {
+    "message": "Clippings Website"
+  },
+
+  "linkBlog": {
+    "message": "AE Creations Blog"
+  },
+
+  "linkForum": {
+    "message": "Help and Support Forums"
+  },
+
   "keyAlt": {
     "message": "Alt"
   },

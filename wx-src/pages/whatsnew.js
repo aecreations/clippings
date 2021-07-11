@@ -4,67 +4,22 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
-function $(aID)
-{
-  return document.getElementById(aID);
-}
-
-
 async function init()
 {
   browser.history.deleteUrl({ url: window.location.href });
 
-  let donateCTA = $("donate-cta");
-  donateCTA.appendChild(createTextNode("donateCta1"));
-  donateCTA.appendChild(createTextNodeWithSpc());
-  donateCTA.appendChild(createHyperlink("donateLink", aeConst.DONATE_URL));
-  donateCTA.appendChild(createTextNode("donateCta2"));
+  let donateCTA = $("#donate-cta");
+  donateCTA.append(browser.i18n.getMessage("donateCta1"));
+  donateCTA.append("\u00a0");
+  donateCTA.append(createHyperlink("donateLink", aeConst.DONATE_URL));
+  donateCTA.append(browser.i18n.getMessage("donateCta2"));
   
-  $("btn-close").addEventListener("click", async (aEvent) => { closePage() }); 
-}
-
-
-function createTextNode(aStringKey)
-{
-  let rv = document.createTextNode(browser.i18n.getMessage(aStringKey));
-  return rv;
-}
-
-
-function createTextNodeWithSpc()
-{
-  let rv = document.createTextNode("\u00a0");
-  return rv;
-}
-
-
-function createEltWithID(aNodeName, aNodeID, aStringKey)
-{
-  let rv = document.createElement(aNodeName);
-  rv.id = aNodeID;
-  let text = document.createTextNode(browser.i18n.getMessage(aStringKey));
-  rv.appendChild(text);
-  return rv;
-}
-
-
-function createEltWithClass(aNodeName, aNodeClass, aStringKey)
-{
-  let rv = document.createElement(aNodeName);
-  rv.className = aNodeClass;
-  let text = document.createTextNode(browser.i18n.getMessage(aStringKey));
-  rv.appendChild(text);
-  return rv;
-}
-
-
-function createHyperlink(aStringKey, aURL)
-{
-  let rv = document.createElement("a");
-  rv.setAttribute("href", aURL);
-  let text = document.createTextNode(browser.i18n.getMessage(aStringKey));
-  rv.appendChild(text);
-  return rv; 
+  let extInfo = browser.runtime.getManifest();
+  $("#link-website").append(createHyperlink("linkWebsite", extInfo.homepage_url));
+  $("#link-blog").append(createHyperlink("linkBlog", aeConst.BLOG_URL));
+  $("#link-forum").append(createHyperlink("linkForum", aeConst.FORUM_URL));
+  
+  $("#btn-close").on("click", async (aEvent) => { closePage() }); 
 }
 
 
@@ -72,6 +27,17 @@ async function closePage()
 {
   let tab = await browser.tabs.getCurrent();
   browser.tabs.remove(tab.id);
+}
+
+
+function createHyperlink(aStringKey, aURL)
+{
+  let rv = document.createElement("a");
+  rv.setAttribute("href", aURL);
+  rv.setAttribute("target", "_blank");
+  let text = document.createTextNode(browser.i18n.getMessage(aStringKey));
+  rv.appendChild(text);
+  return rv;
 }
 
 
