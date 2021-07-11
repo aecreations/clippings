@@ -3543,8 +3543,10 @@ function initDialogs()
   gDialogs.backupConfirmMsgBox.setMessage = aMessage => {
     $("#backup-confirm-msgbox > .msgbox-content").text(aMessage);
   };
-  gDialogs.backupConfirmMsgBox.onAfterAccept = async () => {
+  gDialogs.backupConfirmMsgBox.onShow = async () => {
     await aePrefs.setPrefs({ clippingsUnchanged: true });
+  };
+  gDialogs.backupConfirmMsgBox.onAfterAccept = async () => {
     if (gIsBackupMode) {
       closeWnd();
     }
