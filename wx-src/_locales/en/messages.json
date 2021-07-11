@@ -733,6 +733,11 @@
     "description": "Clippings Manager intro - key binding description"
   },
 
+  "clipMgrIntroCmdDetailsPane": {
+    "message": "Show/hide Details Pane",
+    "description": "Clippings Manager intro - key binding description"
+  },
+
   "clipMgrStatusBar": {
     "message": "$1 items",
     "description": "Status bar text in Clippings Manager, counting the number of clippings and folders"

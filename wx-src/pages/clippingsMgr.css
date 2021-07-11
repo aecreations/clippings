@@ -1344,12 +1344,18 @@ body[data-locale="de"] #include-src-urls + label {
 
 #mini-help-dlg {
     --width: 454px;
-    --height: 350px;
-    top: 12px;
+    --height: 352px;
+    top: 8px;
 }
 
-body[data-locale="de"]:not([data-os="mac"]) #mini-help-dlg {
-    height: 325px;
+body[data-os="mac"] #mini-help-dlg {
+    height: 340px;
+    top: 18px;
+}
+
+body[data-locale="de"] #mini-help-dlg {
+    height: 366px;
+    top: 2px;
 }
 
 #shortcut-list-dlg .hlp-hdr,
