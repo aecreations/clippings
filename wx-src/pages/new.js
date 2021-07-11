@@ -490,11 +490,12 @@ function isClippingOptionsSet()
 }
 
 
-async function unsetClippingsUnchangedFlag()
+function unsetClippingsUnchangedFlag()
 {
   if (gPrefs.clippingsUnchanged) {
-    await aePrefs.setPrefs({ clippingsUnchanged: false });
+    return aePrefs.setPrefs({ clippingsUnchanged: false });
   }
+  return Promise.resolve();
 }
 
 
@@ -539,10 +540,7 @@ function accept(aEvent)
         aListener.newClippingCreated(aNewClippingID, newClipping, aeConst.ORIGIN_HOSTAPP);
       });
       
-      if (gPrefs.clippingsUnchanged) {
-        return unsetClippingsUnchangedFlag();
-      }
-      return null;
+      return unsetClippingsUnchangedFlag();
 
     }).then(() => {
       if (gPrefs.syncClippings) {
