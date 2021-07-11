@@ -4,23 +4,27 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
-async function init()
-{
+// Page initialization
+$(async () => {
   browser.history.deleteUrl({ url: window.location.href });
 
   let donateCTA = $("#donate-cta");
   donateCTA.append(browser.i18n.getMessage("donateCta1"));
   donateCTA.append("\u00a0");
-  donateCTA.append(createHyperlink("donateLink", aeConst.DONATE_URL));
+  donateCTA.append(
+    $(document.createElement("a")).attr("href", aeConst.DONATE_URL)
+      .attr("target", "_blank")
+      .text(browser.i18n.getMessage("donateLink"))
+  );
   donateCTA.append(browser.i18n.getMessage("donateCta2"));
   
   let extInfo = browser.runtime.getManifest();
-  $("#link-website").append(createHyperlink("linkWebsite", extInfo.homepage_url));
-  $("#link-blog").append(createHyperlink("linkBlog", aeConst.BLOG_URL));
-  $("#link-forum").append(createHyperlink("linkForum", aeConst.FORUM_URL));
-  
+  $("#link-website").attr("href", extInfo.homepage_url);
+  $("#link-blog").attr("href", aeConst.BLOG_URL);
+  $("#link-forum").attr("href", aeConst.FORUM_URL);
+
   $("#btn-close").on("click", async (aEvent) => { closePage() }); 
-}
+});
 
 
 async function closePage()
@@ -30,20 +34,7 @@ async function closePage()
 }
 
 
-function createHyperlink(aStringKey, aURL)
-{
-  let rv = document.createElement("a");
-  rv.setAttribute("href", aURL);
-  rv.setAttribute("target", "_blank");
-  let text = document.createTextNode(browser.i18n.getMessage(aStringKey));
-  rv.appendChild(text);
-  return rv;
-}
-
-
-document.addEventListener("DOMContentLoaded", async (aEvent) => { init() });
-
-document.addEventListener("contextmenu", aEvent => {
+$(window).on("contextmenu", aEvent => {
   if (aEvent.target.tagName != "INPUT" && aEvent.target.getAttribute("type") != "text") {
     aEvent.preventDefault();
   }

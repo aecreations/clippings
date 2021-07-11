@@ -1323,7 +1323,7 @@
   },
   
   "aboutHomePgLink": {
-    "message": "Visit home page"
+    "message": "Visit website"
   },
 
   "aboutLicLink": {
@@ -1417,16 +1417,12 @@
     "message": "."
   },
 
-  "linkWebsite": {
-    "message": "Clippings Website"
-  },
-
   "linkBlog": {
-    "message": "AE Creations Blog"
+    "message": "AE Creations blog"
   },
 
   "linkForum": {
-    "message": "Help and Support Forums"
+    "message": "Help and Support forums"
   },
 
   "keyAlt": {
