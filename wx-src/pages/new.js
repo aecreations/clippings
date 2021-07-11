@@ -333,7 +333,10 @@ function initDialogs()
         clippingsListeners.forEach(aListener => {
           aListener.newFolderCreated(aFldrID, newFolder, aeConst.ORIGIN_HOSTAPP);
         });
-        
+
+        return unsetClippingsUnchangedFlag();
+
+      }).then(() => {
         that.close();
       });
     }).catch(aErr => {
@@ -487,6 +490,14 @@ function isClippingOptionsSet()
 }
 
 
+async function unsetClippingsUnchangedFlag()
+{
+  if (gPrefs.clippingsUnchanged) {
+    await aePrefs.setPrefs({ clippingsUnchanged: false });
+  }
+}
+
+
 function accept(aEvent)
 {
   let shortcutKeyMenu = $("#clipping-key")[0];
@@ -529,7 +540,7 @@ function accept(aEvent)
       });
       
       if (gPrefs.clippingsUnchanged) {
-        return aePrefs.setPrefs({ clippingsUnchanged: false });
+        return unsetClippingsUnchangedFlag();
       }
       return null;
 
