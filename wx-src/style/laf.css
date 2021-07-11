@@ -23,6 +23,7 @@
     --color-cb-bkgd: #fff;
     --color-cb-border: #b1b1b1;
     --color-cb-hover-bkgd: #fbfbfb;
+    --color-cb-hover-border: #737373;
     --color-cb-active-bkgd: #ebebeb;    
     --color-hyperlink: #0060df;
     --color-hyperlink-active: #003eaa;
@@ -51,6 +52,7 @@
 	--color-cb-bkgd: #202023;
 	--color-cb-border: #737373;
 	--color-cb-hover-bkgd: #2a2a2e;
+	--color-cb-hover-border: #b1b1b3;
 	--color-cb-active-bkgd: #38383d;
 	--color-hyperlink: #45a1ff;
 	--color-hyperlink-active: #0a84ff;
@@ -207,7 +209,7 @@ textarea::selection {
 
 body[data-os="win"] .browser-style > input[type="checkbox"] + label,
 body[data-os="win"] .browser-style > input[type="radio"] + label {
-    vertical-align: baseline;
+    vertical-align: text-top;
 }
 
 .browser-style > input[type="checkbox"],
@@ -221,14 +223,16 @@ body[data-os="win"] .browser-style > input[type="radio"] + label {
 .browser-style > input[type="radio"]:hover,
 .browser-style.hover > input[type="radio"]:not(:active) {
     background-color: var(--color-cb-hover-bkgd);
-    border-color: var(--color-cb-border);
+    border-color: var(--color-cb-hover-border);
 }
 
-.browser-style > input[type="checkbox"]:hover:active,
-.browser-style.pressed > input[type="checkbox"]:not(:active),
-.browser-style > input[type="radio"]:hover:active,
-.browser-style.pressed > input[type="radio"]:not(:active) {
+.browser-style > input[type="checkbox"]:hover:active:not(:disabled),
+.browser-style.pressed > input[type="checkbox"]:not(:active):not(:disabled),
+.browser-style > input[type="radio"]:hover:active:not(:disabled),
+.browser-style.pressed > input[type="radio"]:not(:active):not(:disabled) {
     background-color: var(--color-cb-active-bkgd);
+    border-color: var(--color-cb-hover-border);
+    border-width: 2px;
 }
 
 .browser-style > input[type="checkbox"]:checked {
@@ -245,6 +249,13 @@ body[data-os="win"] .browser-style > input[type="radio"] + label {
 .browser-style > input[type="checkbox"]:checked:hover:active,
 .browser-style.pressed > input[type="checkbox"]:checked:not(:active) {
     background-position: -33px -1px;
+}
+
+.browser-style > input[type="checkbox"]:checked:hover:active,
+.browser-style.pressed > input[type="checkbox"]:checked:not(:active),
+.browser-style > input[type="radio"]:checked:hover:active,
+.browser-style.pressed > input[type="radio"]:checked:not(:active) {
+    border-width: 1px;
 }
 
 .browser-style > input[type="checkbox"].checkbox-s {
