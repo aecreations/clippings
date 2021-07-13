@@ -361,16 +361,18 @@ browser.runtime.onInstalled.addListener(async (aInstall) => {
     if (! aePrefs.hasHuntingdonPrefs(gPrefs)) {
       log("Initializing 6.3 user preferences.");
       await aePrefs.setHuntingdonPrefs(gPrefs);
+
+      // Enable post-upgrade notifications which users can click on to open the
+      // What's New page.
+      await aePrefs.setPrefs({
+        upgradeNotifCount: aeConst.MAX_NUM_POST_UPGRADE_NOTIFICNS
+      });      
     }
 
     if (gPrefs.clippingsMgrDetailsPane) {
       gPrefs.clippingsMgrAutoShowDetailsPane = false;
     }
 
-    await aePrefs.setPrefs({
-      upgradeNotifCount: aeConst.MAX_NUM_POST_UPGRADE_NOTIFICNS
-    });
-      
     init();
   }
 });
