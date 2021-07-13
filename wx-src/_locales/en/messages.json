@@ -1366,8 +1366,8 @@
   },
 
   "upgradeNotifcn": {
-    "message": "Clippings was recently updated! Click here to see what's new.",
-    "description": "Post-upgrade notification text"
+    "message": "$1 was recently updated! Click here to see what's new.",
+    "description": "Post-upgrade notification text, with placeholder for extension name (Clippings or Clippings for Thunderbird)"
   },
 
   "newVerHdg": {

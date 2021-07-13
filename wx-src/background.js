@@ -1164,10 +1164,12 @@ async function clearBackupNotificationInterval()
 async function showWhatsNewNotification()
 {
   log("Clippings/wx: Showing post-upgrade notification.");
+
+  let extName = browser.i18n.getMessage("extName");
   await browser.notifications.create(aeConst.NOTIFY_WHATS_NEW, {
     type: "basic",
-    title: browser.i18n.getMessage("extName"),
-    message: browser.i18n.getMessage("upgradeNotifcn"),
+    title: extName,
+    message: browser.i18n.getMessage("upgradeNotifcn", extName),
     iconUrl: "img/icon.svg",
   });
 
