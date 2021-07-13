@@ -1380,6 +1380,11 @@
     "description": "What's New page (appears after upgrading Clippings)"
   },
 
+  "upgradeTB": {
+    "message": "Clippings for Thunderbird has been upgraded to version 6.1.",
+    "description": "What's New page (appears after upgrading Clippings for Thunderbird)"
+  },
+
   "whatsNew": {
     "message": "What’s New",
     "description": "What's New page (appears after upgrading Clippings)"
