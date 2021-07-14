@@ -264,14 +264,6 @@ button.btn-puffy {
     display: block;
 }
 
-.deck > #select-backup-file-pg {
-    display: none;
-}
-
-.deck > #import-backup-pg {
-    display: none;
-}
-
 #main-header {
     width: 100%;
     text-align: center;
@@ -288,15 +280,15 @@ button.btn-puffy {
 }
 
 #install-success-icon {
-    width: 128px;
-    height: 128px;
+    width: 96px;
+    height: 96px;
     float: left;
     margin-right: 24px;
 }
 
 #install-success-header > h1 {
     margin-bottom: 8px;
-    margin-top: 20px;
+    margin-top: 12px;
     font-size: 33px;
     font-weight: 600;
     letter-spacing: -0.5px;
