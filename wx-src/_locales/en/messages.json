@@ -1405,25 +1405,26 @@
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
 
-  "donateHdg": {
-    "message": "Donate!",
-    "description": "Donation CTA in the What's New page"
+  "contribHdg": {
+    "message": "Contribute",
+    "description": "Contribution CTA in the What's New page"
   },
 
-  "donateCta1": {
-    "message": "Support the development of Clippings by"
-  },
-
-  "donateLink": {
-    "message": "making a small contribution"
-  },
-
-  "donateCta2": {
-    "message": "."
+  "contribCTA": {
+    "message": "Support the development of $1 by <a href=\"$2\">making a donation</a>. Learn more about other ways to <a href=\"$3\">get involved</a>!",
+    "description": "Call to action message to make donation or learn more about contributing to Clippings (or Clippings for Thunderbird)"
   },
 
   "linkBlog": {
     "message": "AE Creations blog"
+  },
+
+  "linkAMO": {
+    "message": "Firefox Add-ons page"
+  },
+
+  "linkATN": {
+    "message": "Thunderbird Add-ons page"
   },
 
   "linkForum": {

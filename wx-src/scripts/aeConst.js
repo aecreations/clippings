@@ -86,4 +86,6 @@ let aeConst = {
   L10N_URL: "https://crowdin.com/project/clippings",
   BLOG_URL: "https://aecreations.blogspot.com/",
   FORUM_URL: "https://groups.google.com/g/aecreations-help",
+  AMO_URL: "https://addons.mozilla.org/firefox/addon/clippings/",
+  CONTRIB_URL: "https://aecreations.sourceforge.io/clippings/contribute.php",
 };

@@ -4,22 +4,22 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
+function sanitizeHTML(aHTMLStr)
+{
+  return DOMPurify.sanitize(aHTMLStr, { SAFE_FOR_JQUERY: true });
+}
+
+
 // Page initialization
 $(async () => {
   browser.history.deleteUrl({ url: window.location.href });
 
-  let donateCTA = $("#donate-cta");
-  donateCTA.append(browser.i18n.getMessage("donateCta1"));
-  donateCTA.append("\u00a0");
-  donateCTA.append(
-    $(document.createElement("a")).attr("href", aeConst.DONATE_URL)
-      .attr("target", "_blank")
-      .text(browser.i18n.getMessage("donateLink"))
-  );
-  donateCTA.append(browser.i18n.getMessage("donateCta2"));
-  
   let extInfo = browser.runtime.getManifest();
+  let contribCTA = browser.i18n.getMessage("contribCTA", [extInfo.name, aeConst.DONATE_URL, aeConst.CONTRIB_URL]);
+  $("#contrib-cta").html(sanitizeHTML(contribCTA));
+  
   $("#link-website").attr("href", extInfo.homepage_url);
+  $("#link-amo").attr("href", aeConst.AMO_URL);
   $("#link-blog").attr("href", aeConst.BLOG_URL);
   $("#link-forum").attr("href", aeConst.FORUM_URL);
 
