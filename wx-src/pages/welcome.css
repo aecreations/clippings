@@ -154,7 +154,7 @@ button.btn-puffy {
     padding: 0 16px 0;
 }
 
-#welcome-actions {
+#welcome-actions, #welcome-help {
     display: flex;
     flex-flow: row nowrap;
     justify-content: center;
@@ -162,7 +162,7 @@ button.btn-puffy {
 
 .welcome-action-card {
     width: 316px;
-    margin-top: 36px;
+    margin-top: 18px;
     padding: 16px 20px 16px;
     border: 1px solid var(--color-card-border);
     border-radius: 4px;
@@ -171,6 +171,16 @@ button.btn-puffy {
     background-position: top;
     background-size: 356px 155px;
     background-repeat: no-repeat;
+}
+
+.welcome-action-card-horiz {
+    width: 706px;
+    margin-top: 28px;
+    padding: 16px 20px 16px;
+    border: 1px solid var(--color-card-border);
+    border-radius: 4px;
+    box-shadow: 0px 0px 6px 0px var(--color-card-border-shadow);  
+    background-color: var(--color-card-bkgd);
 }
 
 .welcome-action-card > h2 {
@@ -216,7 +226,7 @@ button.btn-puffy {
 }
 
 #dismiss-welcome-footer {
-    margin-top: 36px;
+    margin-top: 32px;
     margin-bottom: 12px;
     text-align: center;
 }
@@ -267,7 +277,6 @@ button.btn-puffy {
 #main-header {
     width: 100%;
     text-align: center;
-    border-bottom: 1px solid var(--color-header-border);
     padding-bottom: 8px;
 }
 
@@ -298,6 +307,20 @@ button.btn-puffy {
     font-size: 22px;
     font-weight: 300;
 }
+
+#aecreations-links > ul {
+    padding-left: 0;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+#aecreations-links > ul > li {
+    display: inline-block;
+    margin-top: 0px;
+    margin-right: 12px;
+}
+
 
 #select-backup-file-pg h1 {
     padding-bottom: 8px;

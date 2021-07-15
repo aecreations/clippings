@@ -285,6 +285,10 @@
     "message": "Read the Guide"
   },
 
+  "welcHelpLink": {
+    "message": "Clippings Help"
+  },
+
   "closeWelcomePg": {
     "message": "Close This Page"
   },

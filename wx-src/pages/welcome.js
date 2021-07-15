@@ -19,11 +19,15 @@ $(async () => {
   
   $("#goto-quick-start").click(aEvent => {
     window.location.href = "http://aecreations.sourceforge.net/clippings/quickstart.php";
-  })
+  });
 
   $("#dismiss-welcome").click(aEvent => {
     showModal("#dismiss-welcome-dlg");
   });
+
+  $("#link-website").attr("href", aeConst.HELP_URL);
+  $("#link-blog").attr("href", aeConst.BLOG_URL);
+  $("#link-forum").attr("href", aeConst.FORUM_URL);
   
   initDialogs();
 });
