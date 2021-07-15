@@ -21,16 +21,20 @@ $(async () => {
     window.location.href = "http://aecreations.sourceforge.net/clippings/quickstart.php";
   });
 
-  $("#dismiss-welcome").click(aEvent => {
-    showModal("#dismiss-welcome-dlg");
-  });
+  $("#dismiss-welcome").click(aEvent => { closePage() });
 
   $("#link-website").attr("href", aeConst.HELP_URL);
   $("#link-blog").attr("href", aeConst.BLOG_URL);
   $("#link-forum").attr("href", aeConst.FORUM_URL);
-  
-  initDialogs();
 });
+
+
+function closePage()
+{
+  browser.tabs.getCurrent().then(aTab => {
+    browser.tabs.remove(aTab.id);
+  });
+}
 
 
 $(window).keydown(aEvent => {
@@ -40,33 +44,3 @@ $(window).keydown(aEvent => {
 
 // Suppress browser's context menu.
 $(document).on("contextmenu", aEvent => { aEvent.preventDefault() });
-
-
-function initDialogs()
-{
-  $("#dismiss-welcome-dlg .dlg-accept").click(aEvent => {
-    closePage();
-  });
-
-  $("#dismiss-welcome-dlg .dlg-cancel").click(aEvent => {
-    $("#dismiss-welcome-dlg").removeClass("lightbox-show");    
-    $("#lightbox-bkgrd-ovl").hide();
-  });
-}
-
-
-function showModal(aDlgEltSelector)
-{
-  $("#lightbox-bkgrd-ovl").show();
-  $(aDlgEltSelector).addClass("lightbox-show");
-}
-
-
-function closePage()
-{
-  browser.tabs.getCurrent().then(aTab => {
-    return browser.tabs.remove(aTab.id);
-  }).catch(aErr => {
-    console.error("Clippings/wx: welcome.js: " + aErr);
-  });
-}
