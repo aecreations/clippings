@@ -3527,6 +3527,12 @@ function initDialogs()
   gDialogs.importConfirmMsgBox.setMessage = aMessage => {
     $("#import-confirm-msgbox > .msgbox-content").text(aMessage);
   };
+  gDialogs.importConfirmMsgBox.onShow = async function ()
+  {
+    if (gPrefs.clippingsUnchanged) {
+      await aePrefs.setPrefs({ clippingsUnchanged: false });
+    }
+  };
   gDialogs.importConfirmMsgBox.onAfterAccept = async () => {
     let clippingsListeners = gClippings.getClippingsListeners().getListeners();
     clippingsListeners.forEach(aListener => { aListener.importFinished(true) });
