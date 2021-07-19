@@ -490,10 +490,9 @@ function initDialogs()
   gDialogs.wndsDlgsOpts = new aeDialog("#wnds-dlgs-opts-dlg");
   gDialogs.wndsDlgsOpts.isInitialized = false;
   gDialogs.wndsDlgsOpts.resetClpMgrWndPos = false;
-  gDialogs.wndsDlgsOpts.onInit = async () => {
-    let that = gDialogs.wndsDlgsOpts;
-
-    if (! that.isInitialized) {
+  gDialogs.wndsDlgsOpts.onInit = async function ()
+  {
+    if (! this.isInitialized) {
       if (gOS != "win") {
         let os = gOS == "mac" ? browser.i18n.getMessage("macOS") : capitalize(gOS);
         $("#wnds-dlgs-opts-dlg").css({height: "320px"});
@@ -506,10 +505,10 @@ function initDialogs()
       });
 
       $("#reset-clpmgr-wnd-pos").on("click", aEvent => {
-        that.resetClpMgrWndPos = true;
+        this.resetClpMgrWndPos = true;
       });
 
-      that.isInitialized = true;
+      this.isInitialized = true;
     }
 
     let prefs = await aePrefs.getAllPrefs();
@@ -517,9 +516,8 @@ function initDialogs()
     $("#clpmgr-save-wnd-pos").prop("checked", prefs.clippingsMgrSaveWndGeom);
     $("#reset-clpmgr-wnd-pos").prop("disabled", !$("#clpmgr-save-wnd-pos").prop("checked"));
   };
-  gDialogs.wndsDlgsOpts.onAccept = async (aEvent) => {
-    let that = gDialogs.wndsDlgsOpts;
-
+  gDialogs.wndsDlgsOpts.onAccept = async function (aEvent)
+  {
     let autoAdjustWndPos = $("#auto-pos-wnds").prop("checked");
     let clippingsMgrSaveWndGeom = $("#clpmgr-save-wnd-pos").prop("checked");
     await aePrefs.setPrefs({autoAdjustWndPos, clippingsMgrSaveWndGeom});
@@ -531,27 +529,34 @@ function initDialogs()
     catch (e) {}
 
     if (isClippingsMgrOpen) {
-      let saveWndGeom = that.resetClpMgrWndPos ? false : clippingsMgrSaveWndGeom;
+      let saveWndGeom = this.resetClpMgrWndPos ? false : clippingsMgrSaveWndGeom;
       await browser.runtime.sendMessage({
         msgID: "toggle-save-clipman-wnd-geom",
         saveWndGeom,
       });
 
       if (! saveWndGeom) {
-        await aePrefs.setPrefs({clippingsMgrWndGeom: null});
+        await this._purgeSavedClpMgrWndGeom();
       }
     }
     else {
-      if (that.resetClpMgrWndPos || !clippingsMgrSaveWndGeom) {
-        await aePrefs.setPrefs({clippingsMgrWndGeom: null});
+      if (this.resetClpMgrWndPos || !clippingsMgrSaveWndGeom) {
+        await this._purgeSavedClpMgrWndGeom();
       }
     }
 
-    that.close();
+    this.close();
   };
-  gDialogs.wndsDlgsOpts.onUnload = () => {
-    let that = gDialogs.wndsDlgsOpts;
-    that.resetClpMgrWndPos = false;
+  gDialogs.wndsDlgsOpts._purgeSavedClpMgrWndGeom = async function ()
+  {   
+    await aePrefs.setPrefs({
+      clippingsMgrWndGeom: null,
+      clippingsMgrTreeWidth: null,
+    });
+  };
+  gDialogs.wndsDlgsOpts.onUnload = function ()
+  {
+    this.resetClpMgrWndPos = false;
     $("#reset-clpmgr-wnd-pos").prop("disabled", false);
   };
 
