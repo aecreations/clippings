@@ -947,10 +947,18 @@ ul.fancytree-container {
 .lightbox .msgbox-icon,
 .lightbox .msgbox-info-icon {
     float: left;
-    width: 36px;
-    height: 36px;
     margin-top: 0;
     margin-right: 12px;
+}
+
+.lightbox .msgbox-icon {
+    width: 34px;
+    height: 34px;   
+}
+
+.lightbox .msgbox-info-icon {
+    width: 32px;
+    height: 32px;
 }
 
 .lightbox .msgbox-icon {
