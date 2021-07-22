@@ -96,6 +96,19 @@
     padding: unset;
     background-color: #ededf0;
     box-shadow: 0 2px 5px #00000080;
+
+    animation-name: fadeout;
+    animation-delay: 4.75s;
+    animation-duration: 0.25s;
+}
+
+@keyframes fadeout {
+    from {
+	opacity: 1.0;
+    }
+    to {
+	opacity: 0.0;
+    }
 }
 
 .msgbar-icon, .msgbar-content, .msgbar-dismiss {
