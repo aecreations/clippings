@@ -69,7 +69,7 @@ let aeConst = {
 
   // Post-upgrade notifications
   POST_UPGRADE_NOTIFCN_DELAY_MS: 180000, // 3 minutes
-  MAX_NUM_POST_UPGRADE_NOTIFICNS: 3,
+  MAX_NUM_POST_UPGRADE_NOTIFICNS: 2,
 
   // Notification IDs
   NOTIFY_BACKUP_REMIND_FIRSTRUN_ID: "ae-clippings-notify-backup-reminder-firstrun",
