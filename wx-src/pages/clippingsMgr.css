@@ -1167,17 +1167,23 @@ body[data-locale="nl"] #shortcut-list-dlg #shortcut-instrxns {
 #import-dlg #import-clippings-file-path {
     order: 1;
     flex: 1 1 auto;
-    margin-right: 2px;
+    margin-right: 4px;
     font-size: 12px;
 }
 
-#import-dlg #import-clippings-file-path,
-#import-dlg #import-clippings-file-path:hover {
-    border-bottom: 1px dotted #b1b1b1;
-    border-top: 1px solid transparent;
-    border-right: 1px solid transparent;
-    border-left: 1px solid transparent;
-    background: transparent;
+#import-dlg #import-clippings-file-path:placeholder-shown {
+    border: none;
+    background-image: url("../img/tbd-edge-l.svg"), url("../img/tbd-bg.svg"), url("../img/tbd-edge-r.svg");
+    background-position: left, center, right;
+    background-repeat: no-repeat, repeat-x, no-repeat;
+    opacity: 1;
+}
+
+#import-dlg #import-clippings-file-path {
+    border: none;
+    background-image: url("../img/tbd-edge-l.svg"), url("../img/tbd-bg-bot.svg"), url("../img/tbd-edge-r.svg");
+    background-position: left, center, right;
+    background-repeat: no-repeat, repeat-x, no-repeat;
 }
 
 #import-dlg #import-clippings-file-upload-btn {
