@@ -14,19 +14,30 @@ $(async () => {
   document.body.dataset.os = platform.os;
   
   $("#goto-whatsnew").click(aEvent => {
-    window.location.href = "http://aecreations.sourceforge.net/clippings/whatsnew.php";
+    gotoURL("http://aecreations.sourceforge.net/clippings/whatsnew.php");
   });
   
   $("#goto-quick-start").click(aEvent => {
-    window.location.href = "http://aecreations.sourceforge.net/clippings/quickstart.php";
+    gotoURL("http://aecreations.sourceforge.net/clippings/quickstart.php");
   });
 
   $("#dismiss-welcome").click(aEvent => { closePage() });
 
-  $("#link-website").attr("href", aeConst.HELP_URL);
-  $("#link-blog").attr("href", aeConst.BLOG_URL);
-  $("#link-forum").attr("href", aeConst.FORUM_URL);
+  $("#link-website > a").attr("href", aeConst.HELP_URL);
+  $("#link-blog > a").attr("href", aeConst.BLOG_URL);
+  $("#link-forum > a").attr("href", aeConst.FORUM_URL);
+
+  $("a").click(aEvent => {
+    aEvent.preventDefault();
+    gotoURL(aEvent.target.href);
+  });
 });
+
+
+function gotoURL(aURL)
+{
+  browser.tabs.create({ url: aURL });
+}
 
 
 function closePage()

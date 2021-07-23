@@ -259,8 +259,8 @@ button.btn-puffy {
     height: 40px;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 4px;
-    margin-bottom: 0;
+    margin-top: 8px;
+    margin-bottom: 2px;
     background-image: var(--url-banner-img);
     background-repeat: no-repeat;
     background-color: transparent;
@@ -318,9 +318,30 @@ button.btn-puffy {
 #aecreations-links > ul > li {
     display: inline-block;
     margin-top: 0px;
-    margin-right: 12px;
 }
 
+#aecreations-links > ul > li::before {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    margin-right: 4px;
+    content: " ";   
+    background-size: contain;
+    background-repeat: no-repeat;
+    vertical-align: -7px;
+}
+
+#link-website::before {
+    background-image: url("../img/help.svg");
+}
+
+#link-forum::before {
+    background-image: url("../img/forum.png");
+}
+
+#link-blog::before {
+    background-image: url("../img/blogger.png");
+}
 
 #select-backup-file-pg h1 {
     padding-bottom: 8px;
