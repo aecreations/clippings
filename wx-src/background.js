@@ -1377,7 +1377,7 @@ function openNewClippingDlg()
   if (gOS == "win") {
     height = 446;
   }
-  openDlgWnd(url, "newClipping", { type: "detached_panel", width: 432, height });
+  openDlgWnd(url, "newClipping", { type: "popup", width: 432, height });
 }
 
 
@@ -1388,7 +1388,7 @@ function openKeyboardPasteDlg()
 
   let url = browser.runtime.getURL("pages/keyboardPaste.html");
   openDlgWnd(url, "keyboardPaste", {
-    type: "detached_panel",
+    type: "popup",
     width: 500,
     height: 164,
     topOffset: 256,
@@ -1402,7 +1402,7 @@ function openPlaceholderPromptDlg()
 
   let url = browser.runtime.getURL("pages/placeholderPrompt.html");
   openDlgWnd(url, "placeholderPrmt", {
-    type: "detached_panel",
+    type: "popup",
     width: 536,
     height: 198,
     topOffset: 256,
@@ -1420,7 +1420,7 @@ function openBackupDlg()
     height = 450;
   }
   
-  openDlgWnd(url, "backupFirstRun", { type: "detached_panel", width: 590, height });
+  openDlgWnd(url, "backupFirstRun", { type: "popup", width: 590, height });
 }
 
 
