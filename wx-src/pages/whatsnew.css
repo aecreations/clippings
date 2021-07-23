@@ -98,13 +98,41 @@ button {
 
 #aecreations-links > ul {
     padding-left: 0;
+    padding-top: 8px;
     text-align: center;
 }
 
 #aecreations-links > ul > li {
     display: inline-block;
-    margin-top: 8px;
-    margin-right: 12px;
+    margin: 8px 12px 0 0;
+    font-size: 13px;
+}
+
+#aecreations-links > ul > li::before {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-right: 4px;
+    content: " ";   
+    background-size: contain;
+    background-repeat: no-repeat;
+    vertical-align: -3px;
+}
+
+#link-website::before {
+    background-image: url("../img/website-link-ico.svg");
+}
+
+#link-amo::before {
+    background-image: url("../img/amo.png");
+}
+
+#link-forum::before {
+    background-image: url("../img/forum.png");
+}
+
+#link-blog::before {
+    background-image: url("../img/blogger.png");
 }
 
 #dlg-btns {

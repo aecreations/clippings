@@ -18,13 +18,24 @@ $(async () => {
   let contribCTA = browser.i18n.getMessage("contribCTA", [extInfo.name, aeConst.DONATE_URL, aeConst.CONTRIB_URL]);
   $("#contrib-cta").html(sanitizeHTML(contribCTA));
   
-  $("#link-website").attr("href", extInfo.homepage_url);
-  $("#link-amo").attr("href", aeConst.AMO_URL);
-  $("#link-blog").attr("href", aeConst.BLOG_URL);
-  $("#link-forum").attr("href", aeConst.FORUM_URL);
+  $("#link-website > a").attr("href", extInfo.homepage_url);
+  $("#link-amo > a").attr("href", aeConst.AMO_URL);
+  $("#link-blog > a").attr("href", aeConst.BLOG_URL);
+  $("#link-forum > a").attr("href", aeConst.FORUM_URL);
 
-  $("#btn-close").on("click", async (aEvent) => { closePage() }); 
+  $("#btn-close").on("click", async (aEvent) => { closePage() });
+
+  $("a").click(aEvent => {
+    aEvent.preventDefault();
+    gotoURL(aEvent.target.href);
+  });
 });
+
+
+function gotoURL(aURL)
+{
+  browser.tabs.create({ url: aURL });
+}
 
 
 async function closePage()
