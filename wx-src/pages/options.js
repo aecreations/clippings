@@ -506,6 +506,7 @@ function initDialogs()
 
       $("#reset-clpmgr-wnd-pos").on("click", aEvent => {
         this.resetClpMgrWndPos = true;
+        $("#reset-clpmgr-wnd-pos-ack").css({visibility: "visible"});
       });
 
       this.isInitialized = true;
@@ -558,6 +559,7 @@ function initDialogs()
   {
     this.resetClpMgrWndPos = false;
     $("#reset-clpmgr-wnd-pos").prop("disabled", false);
+    $("#reset-clpmgr-wnd-pos-ack").css({visibility: "hidden"});
   };
 
   gDialogs.about = new aeDialog("#about-dlg");

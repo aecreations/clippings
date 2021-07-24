@@ -405,6 +405,14 @@ body[data-os="mac"] #wnds-dlgs-opts-dlg #wnds-dlgs-opts-exp-warn .warning-icon {
     margin-top: 4px;
 }
 
+#wnds-dlgs-opts-dlg #reset-clpmgr-wnd-pos-ack {
+    visibility: hidden;
+    margin-left: 4px;
+    width: 18px;
+    height: 18px;
+    vertical-align: text-bottom;
+}
+
 #sync-clippings-dlg {
     top: 128px;
     --width: 500px;
