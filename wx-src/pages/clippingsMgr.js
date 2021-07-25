@@ -3292,6 +3292,11 @@ function initDialogs()
           $("#restore-backup-warning").show();
         }
       });
+
+      $("#import-clippings-file-path").on("contextmenu", aEvent => {
+        aEvent.preventDefault();
+      });
+
       that.isInitialized = true;
     }
   };
