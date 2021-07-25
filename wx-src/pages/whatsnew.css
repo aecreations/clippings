@@ -12,6 +12,7 @@
     --color-main-bkgd: #fefefe;
     --color-main-border-shadow: #e0e0e0;
     --color-secondary-text: #737373;
+    --url-amo-img: url("../img/amo.png");
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,6 +23,7 @@
 	--color-main-bkgd: #2a2a2e;
 	--color-main-border-shadow: #0c0c0d;
 	--color-secondary-text: #f9f9fa;
+	--url-amo-img: url("../img/addons-logo-blue.svg");
     }
 }
 
@@ -124,7 +126,7 @@ button {
 }
 
 #link-amo::before {
-    background-image: url("../img/amo.png");
+    background-image: var(--url-amo-img);
 }
 
 #link-forum::before {

@@ -14,6 +14,8 @@
     --color-main-border-shadow: #7E7A78;
     --color-text-default: black;
     --color-text-body: #0c0c0d;
+    --color-hyperlink: #0060df;
+    --color-hyperlink-active: #003eaa;
     --color-header-border: #ddd;
     --color-card-bkgd: #fff;
     --color-card-border: #eee;
@@ -24,6 +26,7 @@
     --color-btn-active-bkgd: rgba(12, 12, 13, 0.3);
     --color-btn-border: rgba(12, 12, 13, 0.1);
     --color-btn-text: black;
+    --url-help-img: url("../img/help.svg");
 }
 
 @media (prefers-color-scheme: dark) {
@@ -36,6 +39,8 @@
 	--color-main-border-shadow: #0c0c0d;
 	--color-text-default: #f9f9fa;
 	--color-text-body: #f9f9fa;
+	--color-hyperlink: #45a1ff;
+	--color-hyperlink-active: #0a84ff;
 	--color-header-border: #4a4a4f;
 	--color-card-bkgd: transparent;
 	--color-card-border: #4a4a4f;
@@ -46,6 +51,7 @@
 	--color-btn-active-bkgd: #737373;
 	--color-btn-border: #4a4a4f;
 	--color-btn-text: #f9f9fa;
+	--url-help-img: url("../img/help-dk.svg");
     }
 }
 
@@ -100,12 +106,17 @@ strong {
 
 a, .hyperlink {
     text-decoration: none;
-    color: #0060df;
+    color: var(--color-hyperlink);
 }
 
 a:hover, .hyperlink:hover {
     text-decoration: underline;
     cursor: pointer;
+}
+
+a:active {
+    color: var(--color-hyperlink-active);
+    text-decoration: underline;
 }
 
 button {
@@ -332,7 +343,7 @@ button.btn-puffy {
 }
 
 #link-website::before {
-    background-image: url("../img/help.svg");
+    background-image: var(--url-help-img);
 }
 
 #link-forum::before {
