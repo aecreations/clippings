@@ -1649,8 +1649,8 @@ async function pasteClipping(aClippingInfo, aExternalRequest)
     if (plchldrs.length > 0) {
       let plchldrsWithDefaultVals = aeClippingSubst.getCustomPlaceholderDefaultVals(processedCtnt, aClippingInfo);
       gPlaceholders.set(plchldrs, plchldrsWithDefaultVals, processedCtnt);
-      
-      openPlaceholderPromptDlg();
+
+      setTimeout(openPlaceholderPromptDlg, 100);
       return;
     }
   }
