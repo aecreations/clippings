@@ -10,6 +10,9 @@ $(async () => {
   let lang = browser.i18n.getUILanguage();
   document.body.dataset.locale = lang;
 
+  let platform = await browser.runtime.getPlatformInfo();
+  document.body.dataset.os = platform.os;
+
   // Reset backup notification interval timer so that it fires 24 hours after
   // displaying this first-time backup dialog.
   await browser.runtime.sendMessage({msgID: "clear-backup-notifcn-intv"});

@@ -58,6 +58,10 @@ textarea {
     resize: none;
 }
 
+body[data-os="win"] .browser-style > input[type="checkbox"] + label {
+    vertical-align: bottom;
+}
+
 #new-clipping-fldr-tree-btn {
     order: 1;
 }
