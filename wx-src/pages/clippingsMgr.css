@@ -1328,8 +1328,8 @@ body[data-locale="de"] #include-src-urls + label {
 
 #move-dlg {
     --width: 342px;
-    --height: 282px;
-    top: 32px;
+    --height: 304px;
+    top: 24px;
 }
 
 #move-dlg #move-to-fldr-tree {
@@ -1339,7 +1339,7 @@ body[data-locale="de"] #include-src-urls + label {
 }
 
 #move-dlg #move-to-fldr-tree > .fancytree-container {
-    height: 154px;
+    height: 174px;
     overflow: auto;
 }
 
