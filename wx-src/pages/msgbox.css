@@ -20,6 +20,10 @@ button {
 }
 
 button.default {
+    border: 1px solid #005bab;
+}
+
+button.default:focus {
     border: 1px solid #003eaa;
 }
 
