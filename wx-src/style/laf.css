@@ -25,6 +25,9 @@
     --color-cb-hover-bkgd: #fbfbfb;
     --color-cb-hover-border: #737373;
     --color-cb-active-bkgd: #ebebeb;    
+    --color-cb-checked-border: #0670cc;
+    --color-cb-checked-hover-border: #005bab;
+    --color-cb-checked-active-border: #004480;
     --color-hyperlink: #0060df;
     --color-hyperlink-active: #003eaa;
     --color-error-text: #d70022;
@@ -54,6 +57,9 @@
 	--color-cb-hover-bkgd: #2a2a2e;
 	--color-cb-hover-border: #b1b1b3;
 	--color-cb-active-bkgd: #38383d;
+	--color-cb-checked-border: #0670cc;
+	--color-cb-checked-hover-border: #005bab;
+	--color-cb-checked-active-border: #004480;
 	--color-hyperlink: #45a1ff;
 	--color-hyperlink-active: #0a84ff;
 	--color-error-text: #ff0039;
@@ -235,6 +241,22 @@ body[data-os="win"] .browser-style > input[type="radio"] + label {
     border-width: 2px;
 }
 
+.browser-style > input[type="checkbox"]:checked:hover:not(:disabled),
+.browser-style.hover > input[type="checkbox"]:checked:not(:active):not(:disabled),
+.browser-style > input[type="radio"]:checked:hover:not(:disabled),
+.browser-style.hover > input[type="radio"]:checked:not(:active):not(:disabled) {
+    border-width: 1px;
+    border-color: var(--color-cb-checked-hover-border);
+}
+
+.browser-style > input[type="checkbox"]:checked:hover:active:not(:disabled),
+.browser-style.pressed > input[type="checkbox"]:checked:hover:not(:disabled),
+.browser-style > input[type="radio"]:checked:hover:active:not(:disabled),
+.browser-style.pressed > input[type="radio"]:checked:hover:not(:disabled) {
+    border-width: 1px;
+    border-color: var(--color-cb-checked-active-border);
+}
+
 .browser-style > input[type="checkbox"]:checked {
     background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDQ4IDE2Ij48cmVjdCB3aWR0aD0iMTYiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzA5OTZmOCIgeD0iMCIgeT0iMCIvPjxwYXRoIGQ9Ik0gNy43LDEyLjkgQyA3LjQsMTMuMyA2LjgsMTMuNCA2LjQsMTMgTCAzLjIsOS44IEMgMi44LDkuNCAyLjgsOC42IDMuMiw4LjIgMy42LDcuOCA0LjQsNy44IDQuOCw4LjIgbCAyLjEsMi4xIDQuMiwtNS45IGMgMC40LC0wLjUgMS4xLC0wLjYgMS42LC0wLjMgMC41LDAuNCAwLjYsMS4xIDAuMywxLjYgeiIgZmlsbD0iI2ZmZmZmZiIvPjxyZWN0IHdpZHRoPSIxNiIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMDY3MGNjIiB4PSIxNiIgeT0iMCIvPjxwYXRoIGQ9Im0gMjMuNywxMi45IGMgLTAuMywwLjQgLTAuOSwwLjUgLTEuMywwLjEgTCAxOS4yLDkuOCBjIC0wLjQsLTAuNCAtMC40LC0xLjIgMCwtMS42IDAuNCwtMC40IDEuMiwtMC40IDEuNiwwIGwgMi4xLDIuMSA0LjIsLTUuOSBjIDAuNCwtMC41IDEuMSwtMC42IDEuNiwtMC4zIDAuNSwwLjQgMC42LDEuMSAwLjMsMS42IHoiIGZpbGw9IiNmZmZmZmYiLz48cmVjdCB3aWR0aD0iMTYiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzAwNWJhYiIgeD0iMzIiIHk9IjAiLz48cGF0aCBkPSJtIDM5LjcsMTIuOSBjIC0wLjMsMC40IC0wLjksMC41IC0xLjMsMC4xIEwgMzUuMiw5LjggYyAtMC40LC0wLjQgLTAuNCwtMS4yIDAsLTEuNiAwLjQsLTAuNCAxLjIsLTAuNCAxLjYsMCBsIDIuMSwyLjEgNC4yLC01LjkgYyAwLjQsLTAuNSAxLjEsLTAuNiAxLjYsLTAuMyAwLjUsMC40IDAuNiwxLjEgMC4zLDEuNiB6IiBmaWxsPSIjZmZmZmZmIi8+PC9zdmc+Cg==");
     background-repeat: no-repeat;
@@ -249,13 +271,6 @@ body[data-os="win"] .browser-style > input[type="radio"] + label {
 .browser-style > input[type="checkbox"]:checked:hover:active,
 .browser-style.pressed > input[type="checkbox"]:checked:not(:active) {
     background-position: -33px -1px;
-}
-
-.browser-style > input[type="checkbox"]:checked:hover:active,
-.browser-style.pressed > input[type="checkbox"]:checked:not(:active),
-.browser-style > input[type="radio"]:checked:hover:active,
-.browser-style.pressed > input[type="radio"]:checked:not(:active) {
-    border-width: 1px;
 }
 
 .browser-style > input[type="checkbox"].checkbox-s {
