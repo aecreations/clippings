@@ -68,7 +68,7 @@ let aeConst = {
   SYNC_HELPER_CHECK_UPDATE_FREQ_DAYS: 2,
 
   // Post-upgrade notifications
-  POST_UPGRADE_NOTIFCN_DELAY_MS: 180000, // 3 minutes
+  POST_UPGRADE_NOTIFCN_DELAY_MS: 60000, // 1 minute
   MAX_NUM_POST_UPGRADE_NOTIFICNS: 2,
 
   // Notification IDs
