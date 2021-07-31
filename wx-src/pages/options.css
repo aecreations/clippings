@@ -168,9 +168,21 @@ progress {
     margin-top: 4px;
 }
 
-body[data-locale="de"]:not([data-os="mac"]) #enable-shortcut-key-label {
+body[data-locale="fr"] #html-auto-line-break-label {
+    letter-spacing: -0.73px;
+}
+
+body[data-locale="de"] #html-auto-line-break-label {
+    letter-spacing: -0.22px;
+}
+
+body[data-locale="fr"]:not([data-os="mac"]) #enable-shortcut-key-label {
+    letter-spacing: -0.5px;
+}
+
+body[data-locale="de"] #enable-shortcut-key-label {
     font-size: 13px;
-    letter-spacing: -0.25px;
+    letter-spacing: -0.3px;
 }
 
 body[data-locale|="es"]:not([data-os="mac"]) #enable-shortcut-key-label {
@@ -188,7 +200,7 @@ body[data-os="win"] #shortcut-key-prefix-modifiers {
 
 body[data-locale="de"]:not([data-os="mac"]) #shortcut-key-prefix-modifiers {
     font-size: 13px;
-    letter-spacing: -0.25px;
+    letter-spacing: -0.3px;
 }
 
 body[data-locale|="es"]:not([data-os="mac"]) #shortcut-key-prefix-modifiers {
@@ -228,6 +240,14 @@ body[data-os="win"] #backup-reminder-freq {
 
 body[data-os="win"] #backup-reminder-freq + label {
     vertical-align: baseline;
+}
+
+body[data-locale="fr"] #skip-backup-label {
+    letter-spacing: -0.9px;
+}
+
+body[data-locale="de"] #skip-backup-label {
+    letter-spacing: -0.5px;
 }
 
 #wnds-dlgs-settings {
@@ -370,6 +390,14 @@ body[data-os="win"] #backup-reminder-freq + label {
     --height: 225px;
 }
 
+body[data-locale="fr"] #wnds-dlgs-opts-dlg {
+    width: 572px;
+}
+
+body[data-locale="de"] #wnds-dlgs-opts-dlg {
+    width: 530px;
+}
+
 #wnds-dlgs-opts-dlg fieldset {
     padding-bottom: 14px;
     border-bottom: 1px solid var(--color-fieldset-border);
@@ -398,7 +426,15 @@ body[data-os="mac"] #wnds-dlgs-opts-dlg #wnds-dlgs-opts-exp-warn .warning-icon {
     margin: 8px 0 12px 38px;
     padding: 12px;
     border-radius: 4px;
- }
+}
+
+body[data-locale="nl"] #wnds-dlgs-opts-dlg #clpmgr-save-wnd-pos-label {
+    letter-spacing: -0.34px;
+}
+
+body[data-locale|="pt"] #wnds-dlgs-opts-dlg #clpmgr-save-wnd-pos-label {
+    letter-spacing: -0.18px;
+}
 
 #wnds-dlgs-opts-dlg #reset-clpmgr-wnd-pos {
     min-width: 72px;
@@ -417,6 +453,10 @@ body[data-os="mac"] #wnds-dlgs-opts-dlg #wnds-dlgs-opts-exp-warn .warning-icon {
     top: 128px;
     --width: 500px;
     --height: 256px;
+}
+
+body[data-locale="de"] #sync-clippings-dlg {
+    width: 530px;
 }
 
 #sync-clippings-dlg fieldset {
@@ -588,7 +628,11 @@ body[data-os="mac"] #turn-off-sync-clippings-dlg .msgbox-icon {
 #about-dlg {
     top: 72px;
     --width: 410px;
-    --height: 314px;
+    --height: 320px;
+}
+
+body[data-locale="de"] #about-dlg {
+    height: 326px;
 }
 
 #about-dlg #ext-icon {

@@ -12,6 +12,9 @@ $(async () => {
 
   let platform = await browser.runtime.getPlatformInfo();
   document.body.dataset.os = platform.os;
+
+  let lang = browser.i18n.getUILanguage();
+  document.body.dataset.locale = lang;
   
   $("#goto-whatsnew").click(aEvent => {
     gotoURL("http://aecreations.sourceforge.net/clippings/whatsnew.php");

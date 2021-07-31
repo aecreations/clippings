@@ -3,13 +3,17 @@
     "message": "Clippings",
     "description": "Name of the extension - do NOT translate"
   },
+  "extNameTB": {
+    "message": "Clippings pour Thunderbird",
+    "description": "Name of the extension for Thunderbird"
+  },
   "extDesc": {
     "message": "Sauvegarder du texte fréquemment écrit pour coller plus tard.",
     "description": "Description of the extension"
   },
   "browserActionTitle": {
     "message": "Clippings",
-    "description": "Toolbar button label"
+    "description": "Label for toolbar button, context submenu and tooltips"
   },
   "cmdDesc": {
     "message": "Coller le clipping par clé",
@@ -46,12 +50,42 @@
   "btnBrowse": {
     "message": "Parcourir..."
   },
+  "btnReset": {
+    "message": "Réinitialiser"
+  },
+  "migrnStatusTitle": {
+    "message": "Statut de migration des Clippings",
+    "description": "Clippings for Thunderbird"
+  },
+  "migrnStatusSuccess": {
+    "message": "Le transfert de vos clippings s'est bien effectué.",
+    "description": "Clippings for Thunderbird"
+  },
+  "migrnStatusFail": {
+    "message": "Désolée, erreur lors du transfert de vos clippings.",
+    "description": "Clippings for Thunderbird"
+  },
+  "migrnFailDetail": {
+    "message": "Cliquer sur Sauvegarde des Clippings pour effectuer une sauvegarde de vos données.",
+    "description": "Clippings for Thunderbird"
+  },
+  "migrnSaveData": {
+    "message": "Sauvegarder les Clippings",
+    "description": "Clippings for Thunderbird"
+  },
+  "migrnFailTtip": {
+    "message": "Nous avons rencontré un problème en migrant vos données Clippings. Cliquez pour plus d'infos.",
+    "description": "Clippings for Thunderbird - tooltip"
+  },
+  "saveConfirm": {
+    "message": "Enregitré."
+  },
   "pasteTitle": {
     "message": "Coller le clipping",
     "description": "Title bar text of keyboard paste dialog"
   },
   "msgTitle": {
-    "message": "Notification",
+    "message": "Alerte",
     "description": "Title bar text of alert dialog"
   },
   "msgUnavail": {
@@ -74,6 +108,9 @@
   },
   "msgRetryPgNotLoaded": {
     "message": "Impossible de récupérer le texte sélectionné. Recharger la page et essayez à nouveau."
+  },
+  "msgClipbdEmpty": {
+    "message": "Le presse papier est vide ou ne contient aucune donnée textuelle."
   },
   "msgUnknown": {
     "message": "Aucune aide n’est disponible (donc laissez-moi tranquille)."
@@ -127,9 +164,33 @@
     "message": "Gérer les clippings",
     "description": "Clippings context menu"
   },
+  "cxtMenuNewFromSel": {
+    "message": "Nouveau depuis la sélection…",
+    "description": "Clippings context menu in Thunderbird message composer"
+  },
+  "cxtMenuNewFromClipbd": {
+    "message": "Nouveau depuis le presse-papiers…",
+    "description": "Clippings context menu in Thunderbird message composer"
+  },
+  "cxtMenuShowPasteOpts": {
+    "message": "Afficher les options de citation lors du collage.",
+    "description": "Clippings context menu in Thunderbird message composer"
+  },
   "baMenuResetAutoIncrPlaceholders": {
     "message": "Réinitialiser l’incrémentation automatique des espaces réservés",
     "description": "Clippings browser action submenu"
+  },
+  "pasteAsHdg": {
+    "message": "Enregistrer le Clipping sous",
+    "description": "Quote Options dialog in Clippings for Thunderbird"
+  },
+  "pasteAsNormal": {
+    "message": "Teste non-formatté",
+    "description": "Quote Options dialog in Clippings for Thunderbird"
+  },
+  "pasteAsQuoted": {
+    "message": "Texte cité",
+    "description": "Quote Options dialog in Clippings for Thunderbird"
   },
   "welcomePageTitle": {
     "message": "Bienvenue sur Clippings",
@@ -145,7 +206,7 @@
     "message": "Quoi de neuf"
   },
   "welcWhatsNewDesc": {
-    "message": "Clippings 6.2 est livré avec de nombreuses nouvelles fonctionnalités et améliorations, comme la prise en charge d'un Mode Sombre."
+    "message": "Clippings 6.3 apporte des améliorations aux fenêtres de dialogue, ainsi qu'un nouveau paramètre pour les notifications de rappel de sauvegarde."
   },
   "welcWhatsNewCTA": {
     "message": "En savoir plus"
@@ -159,11 +220,11 @@
   "welcQuickStartCTA": {
     "message": "Lire le manuel"
   },
+  "welcHelpLink": {
+    "message": "Aide Clippings"
+  },
   "closeWelcomePg": {
     "message": "Fermer cette page"
-  },
-  "welcLeaveConfirm": {
-    "message": "Êtes-vous sûr de que vouloir quitter la page de bienvenue de Clippings ?"
   },
   "welcCancelDlg": {
     "message": "Retour"
@@ -198,14 +259,33 @@
     "message": "Étiquette:",
     "description": "Label for the Clipping label menu"
   },
+  "labelCrtUnq": {
+    "message": "Créer du texte sans guillemets",
+    "description": "New clipping option available only in Thunderbird"
+  },
+  "labelRemLnBrk": {
+    "message": "Supprimer les retours à la ligne inutiles",
+    "description": "New clipping option available only in Thunderbird"
+  },
   "labelNewFldrName": {
     "message": "Nouveau nom de répertoire:"
   },
   "labelCreateAsSubfOf": {
     "message": "Créez un sous-dossier de:"
   },
+  "btnPrevw": {
+    "message": "Aperçu ...",
+    "description": "Clippings for Thunderbird"
+  },
+  "labelPrevw": {
+    "message": "Aperçu du Clipping :",
+    "description": "Clippings for Thunderbird"
+  },
   "shortcutKeyHint": {
     "message": "Pour coller rapidement cet Clip dans une boite de dialogue de texte de la page web dans Firefox, appuyez sur $1 suivi de la touche de raccourci."
+  },
+  "shctKeyHintTB": {
+    "message": "Pour coller ce Clipping dans un message de Thunderbird, appuyer sur $1 suivi de la touche de raccourci."
   },
   "shortcutKeyAssigned": {
     "message": "« $1 » est déjà assigné"
@@ -247,10 +327,14 @@
   },
   "expHTMLHostAppInfo": {
     "message": "Clippings $1 à $2",
-    "description": "Clippings <extVersion> on Firefox <fxVersion>"
+    "description": "Clippings <extVersion> on <hostApp>"
   },
   "expHTMLShctKeyInstrxn": {
     "message": "Pour coller un clipping dans une boite de texte dans Firefox, appuyez sur ALT + MAJ + Y (commande + Maj + Y sur macOS), puis la touche de raccourci."
+  },
+  "expHTMLShctKeyInstrxnTB": {
+    "message": "Pour coller un Clipping dans un message de Thunderbird, appuyer sur ALT + MAJ + Y (Command+Option+V sur macOS), puis sur la touche de raccourci.",
+    "description": "Clippings for Thunderbird"
   },
   "expHTMLShctKeyCustNote": {
     "message": "Remarque : Le raccourci clé préfixe (par défaut les touches ALT + MAJ + Y ou Maj + commande + Y) peut être différent en fonction de vos paramètres de coupures de presse."
@@ -261,13 +345,34 @@
   "expHTMLClipNameCol": {
     "message": "Nom du clipping"
   },
+  "printShctHelpHTML": {
+    "message": "Pour imprimer ce document, consulter l'aide des commandes d'impression de votre navigateur.",
+    "description": "HTML content for HTML export of shortcut key list from Clippings for Thunderbird"
+  },
+  "saveToHTML": {
+    "message": "Enregistrer en HTML"
+  },
+  "print": {
+    "message": "Imprimer",
+    "description": "Shortcut key list in Clippings for Thunderbird"
+  },
+  "htmlFilterDesc": {
+    "message": "Document HTML"
+  },
+  "errorSaveFailed": {
+    "message": "Erreur : fichier enregistré"
+  },
   "plchldrPromptSingleDesc": {
     "message": "Entrez la valeur pour \"$1\":",
-    "description": "Placeholder prompt dialog - single placeholder"
+    "description": "Placeholder prompt dialog - single placeholder, text"
   },
   "plchldrPromptMultiDesc": {
     "message": "Entrez les valeurs pour les espaces réservés suivants.",
     "description": "Placeholder prompt dialog - multiple placeholders"
+  },
+  "plchldrPmtSelectDesc": {
+    "message": "Choisir une valeur pour \"$1\" :",
+    "description": "Placeholder prompt dialog - single placeholder, select"
   },
   "clippingsMgrWndTitle": {
     "message": "Gestionnaire des clippings",
@@ -290,6 +395,9 @@
   },
   "tbTools": {
     "message": "Outils"
+  },
+  "tbHelp": {
+    "message": "Aide"
   },
   "clipMgrSrchBarHint": {
     "message": "Trouver des clippings et des dossiers",
@@ -346,6 +454,10 @@
   },
   "mnuReloadSyncFldr": {
     "message": "Actualiser"
+  },
+  "mnuMoreTools": {
+    "message": "Plus",
+    "description": "Submenu of Tools menu in Clippings Manager"
   },
   "mnuRemoveAllSrcURLs": {
     "message": "Supprimer la source des adresses Web..."
@@ -417,10 +529,10 @@
     "description": "Clippings Manager - clipping content textarea hint text"
   },
   "clipMgrShortcutHelpHint": {
-    "message": "Touche de raccourci de l'aide"
+    "message": "Liste des raccourcis clavier"
   },
   "clipMgrNoItems": {
-    "message": "Pas de Clip trouvé."
+    "message": "Aucun élément trouvé."
   },
   "clipMgrIntroCmdDel": {
     "message": "Supprimer le Clip sélectionné ou le dossier",
@@ -454,12 +566,19 @@
     "message": "Annuler annuler",
     "description": "Clippings Manager intro - key binding description"
   },
+  "clipMgrIntroCmdDetailsPane": {
+    "message": "Montrer/Cacher le panneau Détails",
+    "description": "Clippings Manager intro - key binding description"
+  },
   "clipMgrStatusBar": {
     "message": "$1 éléments",
     "description": "Status bar text in Clippings Manager, counting the number of clippings and folders"
   },
   "clipMgrRemoveSrcURLsConfirm": {
     "message": "Effacer l'adresse de la source de la page web de votre clipping."
+  },
+  "clipMgrRestoredSrcURLs": {
+    "message": "Adresses des pages web sources restaurées."
   },
   "clipMgrNoUndo": {
     "message": "Rien à annuler"
@@ -472,6 +591,9 @@
   },
   "clipMgrShortcutHelpInstrxn": {
     "message": "Pour coller une coupure dans la liste ci-dessous dans un textbox de la page web dans Firefox, appuyez sur $1, puis la touche de raccourci."
+  },
+  "clipMgrShortcutHelpInstrxnTB": {
+    "message": "Pour coller un Clipping de la liste ci-dessous dans votre message de Thunderbird, appuyer sur $1, puis sur la touche de raccourci."
   },
   "clipMgrShortcutKeyAssigned": {
     "message": "Le raccourci clavier sélectionné a déjà été attribué. Veuillez en sélectionner un autre."
@@ -510,7 +632,10 @@
     "message": "Séparez plusieurs valeurs par défaut par un symbole «|». Exemple : rouge|vert|bleu"
   },
   "numPlchldrDesc": {
-    "message": "Chaque fois que le Clipping est collé, la valeur de cet espace réservé augmentera automatiquement par un, jusqu'à ce que l’espace réservé soit réinitialisé dans le menu contextuel de à partir du bouton Clipping dans le menu contextuel ."
+    "message": "A chaque insertion d'un Clipping, la valeur de ce marqueur augmentera automatiquement de un, jusqu'à réinitialisation à partir du menu contextuel de de la barre d'outils de Clippings"
+  },
+  "numPlchldrDescTB": {
+    "message": "A chaque insertion de ce Clipping, la valeur du competuer augmentera automatiquement de un, jusqu'à réinitialisation à partir du menu contextuel de Clippings."
   },
   "dateTimeFmts": {
     "message": "Formats date/heure disponibles:"
@@ -555,10 +680,10 @@
     "message": "Description"
   },
   "expFmtClippings6": {
-    "message": "Clippings 6"
+    "message": "Clippings"
   },
   "expFmtClippings6Desc": {
-    "message": "Le format par défaut pour la sauvegarde et échange de données de coupures avec les autres utilisateurs ou des ordinateurs multiples.  Exige que que Clipping 5.5 ou plus récents installé."
+    "message": "Le format par défut pour la sauvegarde et l'échange des données de Clippings avec d'autre utilisateurs ou sur d'autres ordinateurs."
   },
   "expFmtHTMLDoc": {
     "message": "Document HTML"
@@ -567,7 +692,7 @@
     "message": "Exporte vos données de Clipping en format HTML pour l’impression ou d’affichage dans un navigateur web."
   },
   "expFmtCSV": {
-    "message": "Fichier CSV"
+    "message": "Valeurs séparées par des virgules (CSV)"
   },
   "expFmtCSVDesc": {
     "message": "Utilisez le format de valeurs Comma-Separated (CSV) pour échanger des données Clipping avec d’autres applications. Seuls les noms et les contenus sont exportés."
@@ -646,6 +771,12 @@
   "prefsShortcutMode": {
     "message": "Activer le mode clé de raccourci en appuyant sur ces touches :"
   },
+  "prefsShctMode": {
+    "message": "Activer le mode Raccourcis clavier en appuyant sur $1"
+  },
+  "prefsShctModeNew": {
+    "message": "Utiliser également les touches alternatives $1"
+  },
   "prefsShortcutKeyNote": {
     "message": "Certains raccourcis clavier disponibles peuvent déjà être assignés à <a href=\"https://support.mozilla.org/en-US/kb/keyboard-shortcuts-perform-firefox-tasks-quickly\" class=\"hyperlink\">commandes Firefox</a> ou à d'autres modules."
   },
@@ -670,6 +801,9 @@
   "backupRemind": {
     "message": "Afficher rappel sauvegarde tous les",
     "description": "Label for checkbox option for setting backup notification, appears after checkbox and before the reminder frequency drop-down menu"
+  },
+  "backupRemSkip": {
+    "message": "Sauter le rappel si aucune modification n'a été effectuée depuis la dernière sauvegarde"
   },
   "backupRemDays": {
     "message": "jours",
@@ -742,11 +876,19 @@
   "syncIntro": {
     "message": "Vous pouvez synchroniser vos Clippings avec Thunderbird ou autres installations de Firefox en mettant en partage dans un dossier spécial de « Clippings Sync ».  Les Clippings synchronisées seront enregistrées dans un fichier sur votre système.  Exige l’application d’assistance de <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">coupures Sync</a>."
   },
+  "syncIntroTB": {
+    "message": "Vous pouvez synchroniser vos Clippings avec Firefox ou d'autres installations de Thunderbird en plaçant les Clippings que vous voulez partager dans un dossier spécial « Extraits synchronisés ». Les extraits synchronisés seront enregistrés dans un fichier sur votre système. Installer l'application  <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">Sync Clippings</a>."
+  },
   "syncLearnMore": {
     "message": "En savoir plus sur les Synchronisations de Clippings."
   },
   "syncHelp": {
-    "message": "<p class=\"dlg-subhead\">coupures sync</p><p>Sync Clippings permet de synchroniser un sous-ensemble de vos Clippings entre Firefox et Thunderbird, afin qu’elles apparaissent dans les deux applications . Vous pouvez choisir lesquels vous voulez synchroniser en les créant dans un dossier spécial de « Sync Clippings » dans la boîte de dialogue nouveaux Clippings, ou en les plaçant dans le même dossier dans le gestionnaire des Clippings.</p><p>Le dossier des Clippings synchronisées sera automatiquement créé une fois que Clippings Sync est définii.</p><p class=\"dlg-subhead\">Clippings Sync</p><p> doit être activé dans les différentes applications à synchroniser. Clippings Sync est pris en charge sur Firefox 60 et plus récente et Thunderbird 60 et plus récentes (avec Clippings pour Thunderbird 5,6 ou plus récent installé).</p><p>En outre, l’application d’assistance de Clippings Sync doit être installée sur votre système pour garder votre contenu de dossier Clippings Sync synchronisés à jour. Il est disponible pour téléchargement à partir de <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">AE Creations site Internet</a>. Une fois installé, il sera automatiquement lancé lorsque Firefox démarre et s’exécute en arrière-plan.</p><p>dans Firefox, activer Clippings Sync depuis la page de préférences de Clippings en cliquant sur <b>tourner sur Sync</b>.  On vous demandera de choisir un emplacement de fichier sur votre système où sont sauvegardées les données synchronisées de coupures, si ce n’était pas déjà défini.</p>"
+    "message": "<p class=\"dlg-subhead\">Synchorniser Clippings</p><p>Synchroniser Clippings vous permets de synchroniser un sous ensemble de vos clippings entre Firefox et Thunderbird de manière à apparaitre dans les deux applications. Vous pouvez choisir quels clippings vous voulez synchroniser en créant un dossier  “Synced Clippings” depuis le dialogue de création d'un nouveau clipping, ou en les déplaçant dans le même dossier dans le gestionnaire de Clippings.</p><p>Le répertoire Synced Clippings sera créé automatiquement une fois la fonctionnalité paramétrée.</p><p class=\"dlg-subhead\">Setting Up</p><p>Sync Clippings doit être activé dans les applications qui devront être synchronisées. Sync Clippings est compatible avec Firefox 60 et au dessus et Thunderbird 60 et au dessus. (avec Clippings pour Thunderbird 5.6 ou au dessus installé).</p><p>En plus, l'application d'aide Sync Clippings helper app doit être installée sur votre système pour lui permettre de maintenir la synchronisation des différents répertoires syncrhonisés à jour. Elle est disponible au téléchargement à l'adresse  <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">du site web d'AE Creations</a>. Une fois installée, elle se lancera automatiquement quand Firefox est démarré et tournera en tâche de fond..</p><p>Pour activer Sync Clippings, cliquez sur  <b>Activer Sync</b> depuis la page des paramètres de Clippings. Il vous sera demandé de choisir un emplacement de sauvegarde du fichier sur votre système, où sera sauvegardé les données de synchronisation, si cela n'a pas encore été fait.</p>",
+    "description": "Sync Clippings help in Firefox"
+  },
+  "syncHelpTB": {
+    "message": "<p class=\"dlg-subhead\">Synchorniser Clippings</p><p>Synchroniser Clippings vous permets de synchroniser un sous ensemble de vos clippings entre Firefox et Thunderbird de manière à apparaitre dans les deux applications. Vous pouvez choisir quels clippings vous voulez synchroniser en créant un dossier  “Synced Clippings” depuis le dialogue de création d'un nouveau clipping, ou en les déplaçant dans le même dossier dans le gestionnaire de Clippings.</p><p>Le répertoire Synced Clippings sera créé automatiquement une fois la fonctionnalité paramétrée.</p><p class=\"dlg-subhead\">Setting Up</p><p>Sync Clippings doit être activé dans les applications qui devront être synchronisées. Sync Clippings est compatible avec Firefox 60 et au dessus et Thunderbird 60 et au dessus. (avec Clippings pour Thunderbird 5.6 ou au dessus installé).</p><p>En plus, l'application d'aide Sync Clippings helper app doit être installée sur votre système pour lui permettre de maintenir la synchronisation des différents répertoires syncrhonisés à jour. Elle est disponible au téléchargement à l'adresse  <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">du site web d'AE Creations</a>. Une fois installée, elle se lancera automatiquement quand Thunderbird est démarré et tournera en tâche de fond..</p><p>Pour activer Sync Clippings, cliquez sur  <b>Activer Sync</b> depuis la page des paramètres de Clippings. Il vous sera demandé de choisir un emplacement de sauvegarde du fichier sur votre système, où sera sauvegardé les données de synchronisation, si cela n'a pas encore été fait.</p>",
+    "description": "Sync Clippings help in Thunderbird"
   },
   "syncStatusOn": {
     "message": "La synchronisation des Clippings est activée."
@@ -792,9 +934,6 @@
   "syncFileDirExLinux": {
     "message": "/home/Votre nom/synced-clippings",
     "description": "Example folder path on Linux."
-  },
-  "syncFileDirDesc": {
-    "message": "Vos données Sync Clippings sont enregistrées à cet emplacement de fichier.  Si vous synchronisez avec Thunderbird et  modifié l’emplacement du fichier sync, vous devez également modifier l’emplacement du fichier sync dans les préférences de Clippings dans Thunderbird."
   },
   "errSyncConxn": {
     "message": "Impossible de se connecter à l’aide de Clippings Sync App. S'assurer que l’application est installée."
@@ -844,6 +983,27 @@
   "cxtMnuSyncItemsOnly": {
     "message": "N'afficher que les éléments synchronisés dans le menu Clippings"
   },
+  "wndsAndDlgsOpts": {
+    "message": "Fenêtres et dialogues…"
+  },
+  "wndsDlgsOptsTitle": {
+    "message": "Fenêtres et dialogues"
+  },
+  "wndsDlgsOptsExpWarn": {
+    "message": "Ces paramètres sont expérimentaux sur $1. Ils peuvent ne pas fonctionner correctement sur les systèmes utilisant des affichages multiples.",
+    "description": "Warning message in the Windows and Dialogs settings dialog, appearing if using an OS other than Windows"
+  },
+  "macOS": {
+    "message": "macOS"
+  },
+  "autoPosWnds": {
+    "message": "Positionner automatiquement dans la fenêtre d'origine",
+    "description": "Checkbox option in Windows and Dialogs settings dialog"
+  },
+  "clpMgrSaveWndPos": {
+    "message": "Sauvegarder taille et position de la fenêtre du gestionnaire Clippings",
+    "description": "Checkbox option in Windows and Dialogs settings dialog"
+  },
   "aboutBtn": {
     "message": "A propos ..."
   },
@@ -855,7 +1015,7 @@
     "message": "Créé par AE Creations."
   },
   "aboutHomePgLink": {
-    "message": "Vers notre page"
+    "message": "Voir le site web"
   },
   "aboutLicLink": {
     "message": "Informations de licence"
@@ -886,6 +1046,58 @@
   },
   "aboutSyncFileSize": {
     "message": "Taille du fichier : Sync:"
+  },
+  "upgradeNotifcn": {
+    "message": "$1 a été mis à jour récemment ! Cliquez ici pour voir les modifications.",
+    "description": "Post-upgrade notification text, with placeholder for extension name (Clippings or Clippings for Thunderbird)"
+  },
+  "newVerHdg": {
+    "message": "Nouvelle version installée !",
+    "description": "Header for the What's New page (appears after upgrading Clippings)"
+  },
+  "upgrade": {
+    "message": "Clippings a été mis à jour vers la version 6.3.",
+    "description": "What's New page (appears after upgrading Clippings)"
+  },
+  "upgradeTB": {
+    "message": "Clippings pour Thunderbird a été mis à jour vers la version 6.1.",
+    "description": "What's New page (appears after upgrading Clippings for Thunderbird)"
+  },
+  "whatsNew": {
+    "message": "Nouveautés",
+    "description": "What's New page (appears after upgrading Clippings)"
+  },
+  "whatsNew1": {
+    "message": "Améliorations du gestionnaire Clippings. Sur Windows, le gestionnaire Clippings sauvegarde la taille et position de sa fenêtre",
+    "description": "Description of an enhancement or fix in the new version of Clippings"
+  },
+  "whatsNew2": {
+    "message": "Améliorations pour supporter les affichages multiples sous Windows. Les fenêtres contextuelles et de dialogues sont maintenant positionnées au niveau de la fenêtre de navigateur depuis laquelle elles ont été ouvertes, au lieu de s'ouvrir toujours sur l'affichage principal",
+    "description": "Description of an enhancement or fix in the new version of Clippings"
+  },
+  "whatsNew3": {
+    "message": "Nouvelle option pour éviter le rappel de sauvegarde si aucune modification n'a été apportée à vos clippings depuis la dernière sauvegarde",
+    "description": "Description of an enhancement or fix in the new version of Clippings"
+  },
+  "contribHdg": {
+    "message": "Contribuer",
+    "description": "Contribution CTA in the What's New page"
+  },
+  "contribCTA": {
+    "message": "Apportez votre soutien au développement $1 en <a href=\"$2\">faisant un don</a>. Plus d'informations sur les autres méthodes <a href=\"$3\">de participation</a>!",
+    "description": "Call to action message to make donation or learn more about contributing to Clippings (or Clippings for Thunderbird)"
+  },
+  "linkBlog": {
+    "message": "Blog de AE Creations"
+  },
+  "linkAMO": {
+    "message": "Pages des extensions Firefox"
+  },
+  "linkATN": {
+    "message": "Page des extensions Thunderbird"
+  },
+  "linkForum": {
+    "message": "Forums d'aide et d'idées"
   },
   "keyAlt": {
     "message": "ALT"

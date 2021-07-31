@@ -171,6 +171,14 @@ ul.fancytree-container {
     margin-left: 26px;
 }
 
+body[data-locale="de"] #clipping-options {
+    letter-spacing: -0.16px;
+}
+
+body[data-locale|="pt"] #clipping-options {
+    letter-spacing: -0.25px;
+}
+
 #btn-expand-options {
     position: relative;
     top: -24px;
