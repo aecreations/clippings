@@ -457,7 +457,7 @@ function init()
     }
 
     if (gPrefs.upgradeNotifCount > 0) {
-      // Show post-upgrade notification in 3 minutes.
+      // Show post-upgrade notification in 1 minute.
       browser.alarms.create("show-upgrade-notifcn", {
         delayInMinutes: aeConst.POST_UPGRADE_NOTIFCN_DELAY_MS / 60000
       });
