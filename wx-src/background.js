@@ -1500,7 +1500,12 @@ async function openDlgWnd(aURL, aWndKey, aWndPpty)
 async function getWndGeometryFromBrwsTab()
 {
   let rv = null;
+
   let brwsTabs = await browser.tabs.query({currentWindow: true, discarded: false});
+  if (!brwsTabs || brwsTabs.length == 0) {
+    return rv;
+  }
+  
   let wndGeom;
 
   for (let tab of brwsTabs) {
