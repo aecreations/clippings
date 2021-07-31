@@ -1290,13 +1290,9 @@ async function openClippingsManager(aBackupMode)
     }
     else {
       if (gPrefs.autoAdjustWndPos) {
-        let brwsTabs = await browser.tabs.query({ active: true, currentWindow: true });
-        let activeTabID = brwsTabs[0].id;
-
-        try {
-          wndGeom = await browser.tabs.sendMessage(activeTabID, { msgID: "get-wnd-geometry" });
-        }
-        catch (e) {}
+        wndGeom = await getWndGeometryFromBrwsTab();
+        log("Clippings/wx: openClippingsManager() > openClippingsMgrHelper(): Calculating initial geometry of Clippings Manager. Retrieved window geometry of browser window:");
+        log(wndGeom);
 
         if (wndGeom) {
           if (wndGeom.w < width) {
@@ -1433,15 +1429,7 @@ async function openDlgWnd(aURL, aWndKey, aWndPpty)
     let left, top, wndGeom;
     
     if (gPrefs.autoAdjustWndPos) {
-      let brwsTabs = await browser.tabs.query({ active: true, currentWindow: true });
-      let activeTabID = brwsTabs[0].id;
-
-      try {
-        log("Clippings/wx: openDlgWnd() > openDlgWndHelper(): Sending message \"get-wnd-geometry\" to content script; active tab ID: " + activeTabID);
-        wndGeom = await browser.tabs.sendMessage(activeTabID, { msgID: "get-wnd-geometry" });
-      }
-      catch (e) {}
-
+      wndGeom = await getWndGeometryFromBrwsTab();
       log("Clippings/wx: openDlgWnd() > openDlgWndHelper(): Window geometry of browser window:");
       log(wndGeom);
       
@@ -1506,6 +1494,30 @@ async function openDlgWnd(aURL, aWndKey, aWndPpty)
   else {
     openDlgWndHelper();
   }
+}
+
+
+async function getWndGeometryFromBrwsTab()
+{
+  let rv = null;
+  let brwsTabs = await browser.tabs.query({currentWindow: true, discarded: false});
+  let wndGeom;
+
+  for (let tab of brwsTabs) {
+    try {
+      log("Clippings/wx: getWndGeometryFromBrwsTab(): Sending message \"get-wnd-geometry\" to content script; tab ID: " + tab.id);
+      wndGeom = await browser.tabs.sendMessage(tab.id, { msgID: "get-wnd-geometry" });
+    }
+    catch (e) {}
+
+    if (wndGeom) {
+      log("Successfully retrieved window geometry from browser tab " + tab.id);
+      rv = wndGeom;
+      break;
+    }
+  }
+
+  return rv;
 }
 
 
