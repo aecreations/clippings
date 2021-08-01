@@ -182,7 +182,7 @@ body[data-locale="fr"]:not([data-os="mac"]) #enable-shortcut-key-label {
 
 body[data-locale="de"] #enable-shortcut-key-label {
     font-size: 13px;
-    letter-spacing: -0.3px;
+    letter-spacing: -0.41px;
 }
 
 body[data-locale|="es"]:not([data-os="mac"]) #enable-shortcut-key-label {
@@ -200,7 +200,7 @@ body[data-os="win"] #shortcut-key-prefix-modifiers {
 
 body[data-locale="de"]:not([data-os="mac"]) #shortcut-key-prefix-modifiers {
     font-size: 13px;
-    letter-spacing: -0.3px;
+    letter-spacing: -0.41px;
 }
 
 body[data-locale|="es"]:not([data-os="mac"]) #shortcut-key-prefix-modifiers {
@@ -559,8 +559,8 @@ body[data-locale|="pt"] #sync-clippings-dlg #sync-helper-app-update-check + labe
 }
 
 body[data-locale="nl"] #sync-clippings-dlg #sync-helper-app-update-check + label,
-body[data-locale="uk"] #sync-clippings-dlg #sync-helper-app-update-check + label{
-    letter-spacing: -0.5px;
+body[data-locale="uk"] #sync-clippings-dlg #sync-helper-app-update-check + label {
+    letter-spacing: -0.52px;
     margin-right: 0;
 }
 

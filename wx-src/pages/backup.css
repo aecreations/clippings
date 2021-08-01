@@ -54,7 +54,8 @@ body[data-os="win"] .browser-style > input[type="checkbox"] + label {
     font-weight: 400;
 }
 
-body[data-locale="fr"] #backup-hint {
+body[data-locale="fr"] #backup-hint,
+body[data-locale|="pt"] #backup-hint {
     letter-spacing: -0.3px;
 }
 
