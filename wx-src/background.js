@@ -1773,19 +1773,62 @@ function isGoogleChrome()
 }
 
 
-function alertEx(aMessageID)
+async function alertEx(aMessageID)
 {
   let message = browser.i18n.getMessage(aMessageID);
   
   info("Clippings/wx: " + message);
   let url = "pages/msgbox.html?msgid=" + aMessageID;
 
-  openDlgWnd(url, "ae_clippings_msgbox", {
+  // Center the common message box popup within originating browser window,
+  // both horizontally and vertically.
+  let wndGeom = null;
+  let width = 520;
+  let height = 170;
+
+  // Default popup window coords.  Unless replaced by window geometry calcs,
+  // these coords will be ignored - popup window will always be centered
+  // on screen due to a WebExtension API bug; see next comment.
+  let left = 256;
+  let top = 64;
+
+  if (gPrefs.autoAdjustWndPos) {
+    wndGeom = await getWndGeometryFromBrwsTab();
+
+    if (wndGeom) {
+      if (wndGeom.w < width) {
+        left = null;
+      }
+      else {
+        left = Math.ceil((wndGeom.w - width) / 2) + wndGeom.x;
+      }
+
+      if ((wndGeom.h) < height) {
+        top = null;
+      }
+      else {
+        top = Math.ceil((wndGeom.h - height) / 2) + wndGeom.y;
+      }
+    }
+  }
+
+  let wndKey = "ae_clippings_msgbox";
+  let wnd = await browser.windows.create({
+    url,
     type: "popup",
-    width: 520,
-    height: 170,
-    topOffset: 160,
+    width, height,
+    left, top,
   });
+
+  gWndIDs[wndKey] = wnd.id;
+  browser.history.deleteUrl({ url });
+
+  // Workaround to bug where window position isn't correctly set when calling
+  // `browser.windows.create()`. If unable to get window geometry, then default
+  // to centering on screen.
+  if (wndGeom) {
+    browser.windows.update(wnd.id, { left, top });
+  }
 }
 
 
