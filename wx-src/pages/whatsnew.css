@@ -1,0 +1,143 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+@import url("../style/laf.css");
+
+
+:root {
+    --url-bkgd-img: url("../img/bkgrd.png");
+    --color-bkgd: none;
+    --color-main-border: #ddd;
+    --color-main-bkgd: #fefefe;
+    --color-main-border-shadow: #e0e0e0;
+    --color-secondary-text: #737373;
+    --url-amo-img: url("../img/amo.png");
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+	--url-bkgd-img: none;
+	--color-bkgd: #1a1a1e;
+	--color-main-border: #0c0c0d;
+	--color-main-bkgd: #2a2a2e;
+	--color-main-border-shadow: #0c0c0d;
+	--color-secondary-text: #f9f9fa;
+	--url-amo-img: url("../img/addons-logo-blue.svg");
+    }
+}
+
+
+body {
+    background-image: var(--url-bkgd-img);
+    background-repeat: repeat;
+    background-color: var(--color-bkgd);
+    color: var(--color-default-text);
+    font-size: 15px;
+}
+
+h1 {
+    font-size: 36px;
+    font-weight: 200;
+    letter-spacing: -0.25px;
+    margin-bottom: 8px;
+}
+
+h2 {
+    font-size: 17px;
+    font-weight: 600;
+}
+
+main {
+    width: 640px;
+    margin: 24px auto 24px auto;
+    padding: 24px;
+    border: 1px solid var(--color-main-border);
+    border-radius: 2px;
+    box-shadow: 0 0 8px 2px var(--color-main-border-shadow);
+    background-color: var(--color-main-bkgd);
+}
+
+li {
+    margin-bottom: 8px;
+}
+
+button {
+    min-width: 132px;
+    height: 32px;
+    margin-bottom: 0;
+    margin-left: 10px;
+    padding: 0 24px 0;
+    font-size: 15px;
+}
+
+.keyb {
+    font-weight: bold;
+}
+
+#dlg-hdr {
+    margin-bottom: 32px;
+}
+
+#ext-icon {
+    float: left;
+    margin-right: 14px;
+    margin-bottom: 52px;
+    width: 48px;
+    height: 48px;
+}
+
+#ext-desc {
+    margin-top: 0px;
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--color-secondary-text);
+}
+
+#dlg-content {
+    margin-bottom: 24px;
+}
+
+#aecreations-links > ul {
+    padding-left: 0;
+    padding-top: 8px;
+    text-align: center;
+}
+
+#aecreations-links > ul > li {
+    display: inline-block;
+    margin: 8px 12px 0 0;
+    font-size: 13px;
+}
+
+#aecreations-links > ul > li::before {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-right: 4px;
+    content: " ";   
+    background-size: contain;
+    background-repeat: no-repeat;
+    vertical-align: -3px;
+}
+
+#link-website::before {
+    background-image: url("../img/website-link-ico.svg");
+}
+
+#link-amo::before {
+    background-image: var(--url-amo-img);
+}
+
+#link-forum::before {
+    background-image: url("../img/forum.png");
+}
+
+#link-blog::before {
+    background-image: url("../img/blogger.png");
+}
+
+#dlg-btns {
+    margin-top: 32px;
+    text-align: center;
+}

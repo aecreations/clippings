@@ -4,13 +4,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
-const WNDH_PLCHLDR_MULTI = 284;
+const WNDH_PLCHLDR_MULTI = 286;
 const WNDH_PLCHLDR_MULTI_SHORT = 240;
 const WNDH_PLCHLDR_MULTI_VSHORT = 180;
 const DLG_HEIGHT_ADJ_WINDOWS = 20;
 
 const REGEXP_CUSTOM_PLACEHOLDER = /\$\[([\w\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)(\{([\w \-\.\?_\/\(\)!@#%&;:,'"$£¥€*¡¢\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF\|])+\})?\]/m;
 
+let gOS;
 let gClippings = null;
 let gPlaceholders = null;
 let gPlaceholdersWithDefaultVals = null;
@@ -26,145 +27,135 @@ function sanitizeHTML(aHTMLStr)
 
 
 // Page initialization
-$(() => {
-  chrome.history.deleteUrl({ url: window.location.href });
+$(async () => {
+  browser.history.deleteUrl({ url: window.location.href });
 
-  gClippings = chrome.extension.getBackgroundPage();
+  let platform = await browser.runtime.getPlatformInfo();
+  document.body.dataset.os = gOS = platform.os;
+
+  gClippings = browser.extension.getBackgroundPage();
 
   if (! gClippings) {
     throw new Error("Clippings/wx::placeholderPrompt.js: Failed to retrieve parent browser window!");
   }
 
-  let os = gClippings.getOS();
-  document.body.dataset.os = os;
+  let resp = await browser.runtime.sendMessage({
+    msgID: "init-placeholder-prmt-dlg"
+  });
 
-  if (gClippings.isGoogleChrome()) {
-    chrome.runtime.sendMessage({ msgID: "init-placeholder-prmt-dlg" }, aResp => {
-      // TO DO: Same logic as for Firefox.
-    });
+  gPlaceholders = resp.placeholders;
+  gPlaceholdersWithDefaultVals = resp.placeholdersWithDefaultVals;
+  gClippingContent = resp.content;
+
+  let plchldrCount = {};
+
+  gPlaceholders.forEach(aPlchldr => {
+    if (aPlchldr in plchldrCount) {
+      plchldrCount[aPlchldr]++;
+    }
+    else {
+      plchldrCount[aPlchldr] = 1;
+    }
+  });
+
+  for (let plchldr in plchldrCount) {
+    if (plchldrCount[plchldr] > 1) {
+      gSamePlchldrs[plchldr] = [];
+    }
   }
-  else {
-    // Firefox
-    let sendMsg = browser.runtime.sendMessage({
-      msgID: "init-placeholder-prmt-dlg"
-    });
 
-    sendMsg.then(aResp => {
-      gPlaceholders = aResp.placeholders;
-      gPlaceholdersWithDefaultVals = aResp.placeholdersWithDefaultVals;
-      gClippingContent = aResp.content;
+  if (gPlaceholders.length == 1) {
+    let plchldr = gPlaceholders[0];
+    $("#plchldr-single").show();
+    $("#single-prmt-label").text(browser.i18n.getMessage("plchldrPromptSingleDesc", plchldr));
+    $("#single-prmt-input").focus();
 
-      let plchldrCount = {};
+    if (plchldr in gPlaceholdersWithDefaultVals) {
+      let defaultVal = gPlaceholdersWithDefaultVals[plchldr];
 
-      gPlaceholders.forEach(aPlchldr => {
-        if (aPlchldr in plchldrCount) {
-          plchldrCount[aPlchldr]++;
-        }
-        else {
-          plchldrCount[aPlchldr] = 1;
-        }
-      });
-
-      for (let plchldr in plchldrCount) {
-        if (plchldrCount[plchldr] > 1) {
-          gSamePlchldrs[plchldr] = [];
-        }
-      }
-
-      if (gPlaceholders.length == 1) {
-        let plchldr = gPlaceholders[0];
-        $("#plchldr-single").show();
-        $("#single-prmt-label").text(chrome.i18n.getMessage("plchldrPromptSingleDesc", plchldr));
-        $("#single-prmt-input").focus();
-
-        if (plchldr in gPlaceholdersWithDefaultVals) {
-          let defaultVal = gPlaceholdersWithDefaultVals[plchldr];
-
-          if (defaultVal.indexOf("|") == -1) {
-            $("#single-prmt-input").val(defaultVal).select();
-          }
-          else {
-            let vals = defaultVal.split("|");
-            let optionElts = "";
-            for (let val of vals) {
-              optionElts += sanitizeHTML(`<option value="${val}">${val}</option>`);
-            }
-            $("#single-prmt-input").replaceWith(sanitizeHTML(`<select id="single-prmt-input" class="browser-style">${optionElts}</select>`));
-            $("#single-prmt-input").focus();
-          }
-        }
+      if (defaultVal.indexOf("|") == -1) {
+        $("#single-prmt-input").val(defaultVal).select();
       }
       else {
-        $("#plchldr-multi").show();
-
-        let plchldrSet = new Set(gPlaceholders);
-        let height;
-        switch (plchldrSet.size) {
-        case 1:
-          height = WNDH_PLCHLDR_MULTI_VSHORT;
-          let plchldr = gPlaceholders[0];
-          $("#multi-prmt-label").text(chrome.i18n.getMessage("plchldrPromptSingleDesc", plchldr));
-          $("#plchldr-table").addClass("single-plchldr-multi-use");
-          break;
-        case 2:
-          height = WNDH_PLCHLDR_MULTI_SHORT;
-          break;
-        default:
-          height = WNDH_PLCHLDR_MULTI;
-          break;
+        let vals = defaultVal.split("|");
+        let optionElts = "";
+        for (let val of vals) {
+          optionElts += sanitizeHTML(`<option value="${val}">${val}</option>`);
         }
-
-        if (os == "win") {
-          height += DLG_HEIGHT_ADJ_WINDOWS;
-        }
-        
-        chrome.windows.update(chrome.windows.WINDOW_ID_CURRENT, { height }, aWnd => {
-          for (let i = 0; i < gPlaceholders.length; i++) {
-            let plchldr = gPlaceholders[i];
-            let defaultVal = "";
-            if (plchldr in gPlaceholdersWithDefaultVals) {
-              defaultVal = gPlaceholdersWithDefaultVals[plchldr];
-            }
-
-            let classNames = "ph-row";
-            if (plchldr in gSamePlchldrs && gSamePlchldrs[plchldr].length > 0) {
-              classNames += " duplicate-plchldr";
-            }
-
-            if (defaultVal && defaultVal.indexOf("|") != -1) {
-              let vals = defaultVal.split("|");
-              let optionElts = "";
-              for (let val of vals) {
-                optionElts += sanitizeHTML(`<option value="${val}">${val}</option>`);
-              }
-              $("#plchldr-table").append(sanitizeHTML(`<div class="${classNames}" data-placeholder="${plchldr}"><label class="ph-name">${plchldr}:</label><select class="ph-input browser-style">${optionElts}</select></div>`));
-            }
-            else {
-              $("#plchldr-table").append(sanitizeHTML(`<div class="${classNames}" data-placeholder="${plchldr}"><label class="ph-name">${plchldr}:</label><input type="text" class="ph-input" value="${defaultVal}"/></div>`));
-            }
-
-            if (plchldr in gSamePlchldrs) {
-              gSamePlchldrs[plchldr].push(i);
-            }
-          }
-
-          // A single placeholder is used multiple times. Make the UI resemble
-          // single placeholder mode, hiding the <label> with placeholder name
-          // directly above the input field.
-          if (plchldrSet.size == 1) {
-            $(".ph-name").hide();
-          }
-          
-          $("#plchldr-table").fadeIn("fast");
-
-          let firstInputElt = $(".ph-input")[0];
-          if (firstInputElt.nodeName == "input") {
-            firstInputElt.select();
-          }
-          firstInputElt.focus();
-        });
+        $("#single-prmt-input").replaceWith(sanitizeHTML(`<select id="single-prmt-input" class="browser-style">${optionElts}</select>`));
+        $("#single-prmt-input").focus();
       }
-    });
+    }
+  }
+  else {
+    $("#plchldr-multi").show();
+
+    let plchldrSet = new Set(gPlaceholders);
+    let height;
+    switch (plchldrSet.size) {
+    case 1:
+      height = WNDH_PLCHLDR_MULTI_VSHORT;
+      let plchldr = gPlaceholders[0];
+      $("#multi-prmt-label").text(browser.i18n.getMessage("plchldrPromptSingleDesc", plchldr));
+      $("#plchldr-table").addClass("single-plchldr-multi-use");
+      break;
+    case 2:
+      height = WNDH_PLCHLDR_MULTI_SHORT;
+      break;
+    default:
+      height = WNDH_PLCHLDR_MULTI;
+      break;
+    }
+
+    if (gOS == "win") {
+      height += DLG_HEIGHT_ADJ_WINDOWS;
+    }
+    
+    await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, { height });
+
+    for (let i = 0; i < gPlaceholders.length; i++) {
+      let plchldr = gPlaceholders[i];
+      let defaultVal = "";
+      if (plchldr in gPlaceholdersWithDefaultVals) {
+        defaultVal = gPlaceholdersWithDefaultVals[plchldr];
+      }
+
+      let classNames = "ph-row";
+      if (plchldr in gSamePlchldrs && gSamePlchldrs[plchldr].length > 0) {
+        classNames += " duplicate-plchldr";
+      }
+
+      if (defaultVal && defaultVal.indexOf("|") != -1) {
+        let vals = defaultVal.split("|");
+        let optionElts = "";
+        for (let val of vals) {
+          optionElts += sanitizeHTML(`<option value="${val}">${val}</option>`);
+        }
+        $("#plchldr-table").append(sanitizeHTML(`<div class="${classNames}" data-placeholder="${plchldr}"><label class="ph-name">${plchldr}:</label><select class="ph-input browser-style">${optionElts}</select></div>`));
+      }
+      else {
+        $("#plchldr-table").append(sanitizeHTML(`<div class="${classNames}" data-placeholder="${plchldr}"><label class="ph-name">${plchldr}:</label><input type="text" class="ph-input" value="${defaultVal}"/></div>`));
+      }
+
+      if (plchldr in gSamePlchldrs) {
+        gSamePlchldrs[plchldr].push(i);
+      }
+    }
+
+    // A single placeholder is used multiple times. Make the UI resemble
+    // single placeholder mode, hiding the <label> with placeholder name
+    // directly above the input field.
+    if (plchldrSet.size == 1) {
+      $(".ph-name").hide();
+    }
+    
+    $("#plchldr-table").fadeIn("fast");
+
+    let firstInputElt = $(".ph-input")[0];
+    if (firstInputElt.nodeName == "input") {
+      firstInputElt.select();
+    }
+    firstInputElt.focus();
   }
 
   $("#btn-accept").click(aEvent => { accept(aEvent) });
@@ -173,11 +164,10 @@ $(() => {
   // Fix for Fx57 bug where bundled page loaded using
   // browser.windows.create won't show contents unless resized.
   // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1402110>
-  browser.windows.getCurrent(aWnd => {
-    browser.windows.update(aWnd.id, {
-      width: aWnd.width + 1,
-      focused: true,
-    });
+  let wnd = await browser.windows.getCurrent();
+  browser.windows.update(wnd.id, {
+    width: wnd.width + 1,
+    focused: true,
   });
 });
 
@@ -269,7 +259,7 @@ function accept(aEvent)
     }
   }
 
-  chrome.runtime.sendMessage({
+  browser.runtime.sendMessage({
     msgID: "paste-clipping-with-plchldrs",
     processedContent: content
   });
@@ -287,5 +277,5 @@ function cancel(aEvent)
 async function closeDlg()
 {
   await browser.runtime.sendMessage({ msgID: "close-placeholder-prmt-dlg" });
-  browser.windows.remove(chrome.windows.WINDOW_ID_CURRENT);
+  browser.windows.remove(browser.windows.WINDOW_ID_CURRENT);
 }

@@ -33,7 +33,7 @@
 	  </div>
 	  
 	  <div class="indent browser-style">
-	    <input type="checkbox" id="html-auto-line-break"/><label for="html-auto-line-break" data-i18n="cbAutoLineBreak"></label>
+	    <input type="checkbox" id="html-auto-line-break"/><label id="html-auto-line-break-label" for="html-auto-line-break" data-i18n="cbAutoLineBreak"></label>
 	    <p class="note" data-i18n="htmlPasteDesc"></p>
           </div>
 	  <div class="row browser-style" style="margin-bottom:0">
@@ -115,9 +115,17 @@
 	  <label for="backup-reminder-freq" data-i18n="backupRemDays"></label>
 	</div>
 
+	<div class="row indent browser-style">
+         <input type="checkbox" id="skip-backup-if-no-chg"/><label id="skip-backup-label" for="skip-backup-if-no-chg" data-i18n="backupRemSkip"></label>
+        </div>
+
 	<div class="row browser-style">
 	  <input type="checkbox" id="backup-filename-with-date"/><label for="backup-filename-with-date" data-i18n="cbBackupFilenameWithDate"></label>
 	</div>
+
+        <div class="row">
+          <button id="wnds-dlgs-settings" data-i18n="wndsAndDlgsOpts"></button>
+        </div>
       </fieldset>
 
       <fieldset id="sync-options">
@@ -138,6 +146,34 @@
     </main>
 
     <!-- Dialog boxes -->
+    <div id="wnds-dlgs-opts-dlg" class="lightbox">
+      <div class="dlg-content">
+        <fieldset>
+          <legend data-i18n="wndsDlgsOptsTitle"></legend>
+
+	  <div id="wnds-dlgs-opts-exp-warn">
+            <div class="warning-icon"></div>
+	    <div id="wnds-dlgs-opts-exp-warn-msg"></div>
+	  </div>
+
+          <div class="row browser-style">
+            <input type="checkbox" id="auto-pos-wnds"/><label for="auto-pos-wnds" data-i18n="autoPosWnds"></label>
+          </div>
+          <div class="row browser-style">
+            <input type="checkbox" id="clpmgr-save-wnd-pos"/><label id="clpmgr-save-wnd-pos-label" for="clpmgr-save-wnd-pos" data-i18n="clpMgrSaveWndPos"></label>
+          </div>
+          <div class="row browser-style">
+            <button id="reset-clpmgr-wnd-pos" class="indent" data-i18n="btnReset"></button>
+            <img id="reset-clpmgr-wnd-pos-ack" src="../img/success.svg"/>
+          </div>
+        </fieldset>
+      </div>
+      <div class="dlg-btns">
+	<button class="dlg-accept default" data-i18n="btnOK"></button>
+	<button class="dlg-cancel" data-i18n="btnCancel"></button>
+      </div>
+    </div>
+
     <div id="sync-clippings-dlg" class="lightbox">
       <div class="dlg-content">
         <div id="sync-connection-check" class="deck">
@@ -170,7 +206,6 @@
           </div>
 	  <div class="row">
 	  <div class="example"><label data-i18n="syncFileDirExample"></label><span id="example-sync-path"></span></div>
-	    <p class="description" data-i18n="syncFileDirDesc"></p>
           </div>
 	  <fieldset>
 	  <legend data-i18n="syncOptsHdg"></legend>
@@ -266,8 +301,8 @@
     
     <script src="../lib/jquery.js"></script>
     <script src="../lib/purify.min.js"></script>
-    <script src="../modules/aeConst.js"></script>
-    <script src="../modules/aeDialog.js"></script>
+    <script src="../scripts/aeConst.js"></script>
+    <script src="../scripts/aeDialog.js"></script>
     <script src="../scripts/aeI18n.js"></script>
     <script src="../scripts/aePrefs.js"></script>
     <script src="../scripts/aeInterxn.js"></script>

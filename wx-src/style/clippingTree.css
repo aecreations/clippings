@@ -12,6 +12,8 @@
     --color-focused-border: #26a0da;
     --color-selected-node: #f7f7f7;
     --color-selected-border: #dedede;
+    --color-not-synced-items-text: rgba(0, 0, 0, 0.4);
+    --color-not-synced-items-selected-text: rgba(0, 0, 0, 0.4);
     --url-treelist-icons: url("../lib/fancytree/skin-win8/icons.gif");
 }
 
@@ -25,6 +27,8 @@
 	--color-active-border: #002275;
 	--color-selected-node: #4a4a4f;
 	--color-selected-border: #38383d;
+	--color-not-synced-items-text: rgba(180, 180, 180, 0.4);
+	--color-not-synced-items-selected-text: #b1b1b3;
 	--url-treelist-icons: url("../img/tree-icons-dk.png");
     }
 }
@@ -37,7 +41,7 @@
 
 ul.fancytree-container {
     font: caption;
-    font-size: 11px;
+    font-size: 12px;
     background-color: var(--color-clippings-tree-bkgd);
 }
 
@@ -98,6 +102,11 @@ span.fancytree-title {
     background-image: url("../img/clippings-root.svg");    
 }
 
+.ui-fancytree .ae-clippings-sync-root > .fancytree-icon {
+    background-position: unset;
+    background-image: url("../img/synced-clippings.svg");    
+}
+
 /* Tree icons for clippings with labels */
 .ui-fancytree .ae-clipping-label-red > .fancytree-icon {
     background-position: unset;
@@ -149,4 +158,30 @@ span.fancytree-title {
 
 .fancytree-ico-c span.fancytree-icon:hover {
     background-position: unset;
+}
+
+/* If user has set the option to only show synced folders in the folder picker,
+ * then grey out all tree node labels and icons except for the Synced Clippings
+ * folder and its children. */
+.show-sync-items-only .fancytree-title {
+    color: var(--color-not-synced-items-text);
+}
+.show-sync-items-only .fancytree-plain.fancytree-container.fancytree-treefocus span.fancytree-active span.fancytree-title {
+    color: var(--color-not-synced-items-selected-text);
+}
+
+.show-sync-items-only .fancytree-icon {
+    opacity: 0.4;
+}
+
+.show-sync-items-only .ae-synced-clippings .fancytree-title {
+    color: var(--color-default-text);
+}
+
+.show-sync-items-only .ae-synced-clippings .fancytree-icon {
+    opacity: unset;
+}
+
+.show-sync-items-only .fancytree-plain.fancytree-container.fancytree-treefocus .ae-synced-clippings span.fancytree-active.fancytree-focused span.fancytree-title {
+    color: unset;
 }

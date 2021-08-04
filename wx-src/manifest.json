@@ -2,14 +2,14 @@
     "manifest_version": 2,
     "name": "__MSG_extName__",
     "description": "__MSG_extDesc__",
-    "version": "6.2.10",
+    "version": "6.3",
     "homepage_url": "https://aecreations.sourceforge.io/clippings/index.php",
     "author": "AE Creations",
     
-    "applications": {
+    "browser_specific_settings": {
 	"gecko": {
             "id": "{91aa5abe-9de4-4347-b7b5-322c38dd9271}",
-	    "strict_min_version": "68.0"
+	    "strict_min_version": "78.0"
 	}
     },
 
@@ -19,6 +19,7 @@
     },
 
     "permissions": [
+        "alarms",
 	"contextMenus",
 	"downloads",
 	"history",
@@ -33,10 +34,10 @@
 	"scripts": [
 	    "lib/dexie/dexie.min.js",
 	    "lib/moment.min.js",
-	    "modules/aeConst.js",
-	    "modules/aeClippingSubst.js",
-            "modules/aeImportExport.js",
-            "modules/aeDateDiff.js",
+	    "scripts/aeConst.js",
+	    "scripts/aeClippingSubst.js",
+            "scripts/aeImportExport.js",
+            "scripts/aeDateDiff.js",
             "scripts/aePrefs.js",
             "background.js"
 	]

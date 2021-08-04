@@ -3,13 +3,17 @@
     "message": "Clippings",
     "description": "Name of the extension - do NOT translate"
   },
+  "extNameTB": {
+    "message": "Knipsels voor Thunderbird",
+    "description": "Name of the extension for Thunderbird"
+  },
   "extDesc": {
     "message": "Vaak ingevoerde tekst opslaan om later te plakken.",
     "description": "Description of the extension"
   },
   "browserActionTitle": {
     "message": "Knipsels",
-    "description": "Toolbar button label"
+    "description": "Label for toolbar button, context submenu and tooltips"
   },
   "cmdDesc": {
     "message": "Knipsels met sleutel plakken",
@@ -46,6 +50,36 @@
   "btnBrowse": {
     "message": "Browse…"
   },
+  "btnReset": {
+    "message": "Reset"
+  },
+  "migrnStatusTitle": {
+    "message": "Migratiestatus van knipsels",
+    "description": "Clippings for Thunderbird"
+  },
+  "migrnStatusSuccess": {
+    "message": "Uw knipsels zijn succesvol gemigreerd.",
+    "description": "Clippings for Thunderbird"
+  },
+  "migrnStatusFail": {
+    "message": "Sorry, er is een fout opgetreden terwijl Knipsels uw gegevens probeerde te migreren.",
+    "description": "Clippings for Thunderbird"
+  },
+  "migrnFailDetail": {
+    "message": "Klik op Opslaan Knipsels om een kopie van uw gegevens op te slaan.",
+    "description": "Clippings for Thunderbird"
+  },
+  "migrnSaveData": {
+    "message": "Knipsels opslaan",
+    "description": "Clippings for Thunderbird"
+  },
+  "migrnFailTtip": {
+    "message": "Er trad een probleem op bij het migreren van uw Knipsels gegevens. Klik voor meer informatie.",
+    "description": "Clippings for Thunderbird - tooltip"
+  },
+  "saveConfirm": {
+    "message": "Opgeslagen."
+  },
   "pasteTitle": {
     "message": "Plak knipsel",
     "description": "Title bar text of keyboard paste dialog"
@@ -74,6 +108,9 @@
   },
   "msgRetryPgNotLoaded": {
     "message": "Kan de geselecteerde tekst niet ophalen. Herlaad de pagina en probeer het opnieuw."
+  },
+  "msgClipbdEmpty": {
+    "message": "Klembord is leeg of bevat geen tekst gegevens."
   },
   "msgUnknown": {
     "message": "Er is geen hulp beschikbaar (dus laat me met rust)."
@@ -127,9 +164,33 @@
     "message": "Knipsels organiseren",
     "description": "Clippings context menu"
   },
+  "cxtMenuNewFromSel": {
+    "message": "Nieuw van selectie…",
+    "description": "Clippings context menu in Thunderbird message composer"
+  },
+  "cxtMenuNewFromClipbd": {
+    "message": "Nieuw van Klembord…",
+    "description": "Clippings context menu in Thunderbird message composer"
+  },
+  "cxtMenuShowPasteOpts": {
+    "message": "Toon citaatopties bij het plakken",
+    "description": "Clippings context menu in Thunderbird message composer"
+  },
   "baMenuResetAutoIncrPlaceholders": {
     "message": "Reset Auto-increment Plaatshouders",
     "description": "Clippings browser action submenu"
+  },
+  "pasteAsHdg": {
+    "message": "Plak knipsel als",
+    "description": "Quote Options dialog in Clippings for Thunderbird"
+  },
+  "pasteAsNormal": {
+    "message": "Normale tekst",
+    "description": "Quote Options dialog in Clippings for Thunderbird"
+  },
+  "pasteAsQuoted": {
+    "message": "Geciteerde tekst",
+    "description": "Quote Options dialog in Clippings for Thunderbird"
   },
   "welcomePageTitle": {
     "message": "Welkom bij Clippings",
@@ -145,7 +206,7 @@
     "message": "Wat is er nieuw"
   },
   "welcWhatsNewDesc": {
-    "message": "Clippings 6.2 bevat veel nieuwe functies en verbeteringen, zoals ondersteuning bij donkere modus."
+    "message": "Clippings 6.3 bevat verbeteringen in vensters en dialogen, en een nieuwe instelling voor backup herinneringen."
   },
   "welcWhatsNewCTA": {
     "message": "Meer informatie"
@@ -159,11 +220,11 @@
   "welcQuickStartCTA": {
     "message": "Lees de handleiding"
   },
+  "welcHelpLink": {
+    "message": "Knipsels Help"
+  },
   "closeWelcomePg": {
     "message": "Sluit deze pagina"
-  },
-  "welcLeaveConfirm": {
-    "message": "Weet u zeker dat u de welkom bij Clippings pagina wilt verlaten?"
   },
   "welcCancelDlg": {
     "message": "Ga terug"
@@ -198,14 +259,33 @@
     "message": "Label:",
     "description": "Label for the Clipping label menu"
   },
+  "labelCrtUnq": {
+    "message": "Als ongeciteerde tekst maken",
+    "description": "New clipping option available only in Thunderbird"
+  },
+  "labelRemLnBrk": {
+    "message": "Extra regeleinden verwijderen",
+    "description": "New clipping option available only in Thunderbird"
+  },
   "labelNewFldrName": {
     "message": "Nieuwe naam van de map:"
   },
   "labelCreateAsSubfOf": {
     "message": "Als een submap aanmaken van:"
   },
+  "btnPrevw": {
+    "message": "Voorvertoning…",
+    "description": "Clippings for Thunderbird"
+  },
+  "labelPrevw": {
+    "message": "Knipsel voorbeeld:",
+    "description": "Clippings for Thunderbird"
+  },
   "shortcutKeyHint": {
     "message": "Om deze knipsel snel te plakken in een tekstvak van een webpagina in Firefox, druk op $1 gevolgd door de sneltoets."
+  },
+  "shctKeyHintTB": {
+    "message": "Om dit knipsel snel in een bericht in Thunderbird te plakken, druk je op $1 gevolgd door de sneltoets."
   },
   "shortcutKeyAssigned": {
     "message": "'$1' is al toegewezen"
@@ -247,10 +327,14 @@
   },
   "expHTMLHostAppInfo": {
     "message": "Knipsels $1 op $2",
-    "description": "Clippings <extVersion> on Firefox <fxVersion>"
+    "description": "Clippings <extVersion> on <hostApp>"
   },
   "expHTMLShctKeyInstrxn": {
     "message": "Om een knipsel in een webpagina tekstvak in Firefox te plakken, druk op ALT+SHIFT+Y (Command+Shift+Y op macOS) en daarna de sneltoets."
+  },
+  "expHTMLShctKeyInstrxnTB": {
+    "message": "Om een knipsel in een bericht in Thunderbird te plakken, druk je op ALT+SHIFT+Y (Command+Option+V op macOS), en daarna op de sneltoets.",
+    "description": "Clippings for Thunderbird"
   },
   "expHTMLShctKeyCustNote": {
     "message": "LET OP: Het voorvoegsel van de sneltoets (standaard sleutels ALT+SHIFT+Y of Command+Shift+Y) kan anders zijn, afhankelijk van uw Knipselinstellingen."
@@ -261,13 +345,34 @@
   "expHTMLClipNameCol": {
     "message": "Knipsel naam"
   },
+  "printShctHelpHTML": {
+    "message": "Om dit document af te drukken, roept u uw browser&rsquo;s Print commando op.",
+    "description": "HTML content for HTML export of shortcut key list from Clippings for Thunderbird"
+  },
+  "saveToHTML": {
+    "message": "Opslaan als HTML"
+  },
+  "print": {
+    "message": "Afdrukken",
+    "description": "Shortcut key list in Clippings for Thunderbird"
+  },
+  "htmlFilterDesc": {
+    "message": "HTML document"
+  },
+  "errorSaveFailed": {
+    "message": "Fout: Opslaan mislukt"
+  },
   "plchldrPromptSingleDesc": {
     "message": "Typ waarde voor \"$1\":",
-    "description": "Placeholder prompt dialog - single placeholder"
+    "description": "Placeholder prompt dialog - single placeholder, text"
   },
   "plchldrPromptMultiDesc": {
     "message": "Voer de waarden voor de volgende placeholders in.",
     "description": "Placeholder prompt dialog - multiple placeholders"
+  },
+  "plchldrPmtSelectDesc": {
+    "message": "Kies een waarde voor \"$1\":",
+    "description": "Placeholder prompt dialog - single placeholder, select"
   },
   "clippingsMgrWndTitle": {
     "message": "Clippings Manager",
@@ -290,6 +395,9 @@
   },
   "tbTools": {
     "message": "Extra"
+  },
+  "tbHelp": {
+    "message": "Hulp"
   },
   "clipMgrSrchBarHint": {
     "message": "Knipsels en mappen vinden",
@@ -346,6 +454,10 @@
   },
   "mnuReloadSyncFldr": {
     "message": "Opnieuw Laden"
+  },
+  "mnuMoreTools": {
+    "message": "Extra",
+    "description": "Submenu of Tools menu in Clippings Manager"
   },
   "mnuRemoveAllSrcURLs": {
     "message": "Bron webadressen verwijderen…"
@@ -417,10 +529,10 @@
     "description": "Clippings Manager - clipping content textarea hint text"
   },
   "clipMgrShortcutHelpHint": {
-    "message": "Sneltoets hulp"
+    "message": "Sneltoets lijst"
   },
   "clipMgrNoItems": {
-    "message": "Geen clipping gevonden."
+    "message": "Geen items gevonden."
   },
   "clipMgrIntroCmdDel": {
     "message": "Verwijder geselecteerd knipsel of map",
@@ -454,12 +566,19 @@
     "message": "Taak ongedaan maken",
     "description": "Clippings Manager intro - key binding description"
   },
+  "clipMgrIntroCmdDetailsPane": {
+    "message": "Tonen/verbergen details",
+    "description": "Clippings Manager intro - key binding description"
+  },
   "clipMgrStatusBar": {
     "message": "$1 items",
     "description": "Status bar text in Clippings Manager, counting the number of clippings and folders"
   },
   "clipMgrRemoveSrcURLsConfirm": {
     "message": "Bron-webpagina-adressen zijn verwijderd van uw clippings."
+  },
+  "clipMgrRestoredSrcURLs": {
+    "message": "Herstelde bronweb-adressen."
   },
   "clipMgrNoUndo": {
     "message": "Niets om ongedaan te maken"
@@ -472,6 +591,9 @@
   },
   "clipMgrShortcutHelpInstrxn": {
     "message": "Om een knipsel van de onderstaande lijst te plakken in een webpagina tekstvak in Firefox, drukt up op $1, vervolgens drukt u op de sneltoets."
+  },
+  "clipMgrShortcutHelpInstrxnTB": {
+    "message": "Om uit de onderstaande lijst een knipsel in een bericht in Thunderbird te plakken, druk je op $1, en daarna op de sneltoets."
   },
   "clipMgrShortcutKeyAssigned": {
     "message": "De geselecteerde sneltoets is al toegewezen aan een ander knipsel, selecteer een andere sneltoets."
@@ -510,7 +632,10 @@
     "message": "Scheid meerdere standaardwaarden door een “|” symbool. Voorbeeld: rood|groen|blauw"
   },
   "numPlchldrDesc": {
-    "message": "Elke keer als de knipsel geplakt is, zal de waarde van deze tijdelijke aanduiding automatisch met één verhoogd worden. totdat de placeholder wordt gereset vanuit het contextmenu van de Clippings werkbalk."
+    "message": "Telkens wanneer het knipsel wordt geplakt, wordt de waarde van deze tijdelijke aanduiding automatisch verhoogd met één, tot deze opnieuw wordt ingesteld via het contextmenu van de Knipselknop op de werkbalk."
+  },
+  "numPlchldrDescTB": {
+    "message": "Telkens wanneer het knipsel wordt geplakt, wordt de waarde van deze tijdelijke aanduiding automatisch verhoogd met één, tot het wordt teruggezet via het contextmenu Knipsels."
   },
   "dateTimeFmts": {
     "message": "Beschikbare datum/tijd formaten:"
@@ -555,10 +680,10 @@
     "message": "Beschrijving"
   },
   "expFmtClippings6": {
-    "message": "Clippings 6"
+    "message": "Knipsels"
   },
   "expFmtClippings6Desc": {
-    "message": "Het standaardformaat om Clippings gegevens te back-uppen en uit te wisselen met andere gebruikers of meerdere computers. Vereist Clippings 5.5 of nieuwer."
+    "message": "De standaardindeling voor het maken van back-ups en het uitwisselen van Knipsels-gegevens met andere gebruikers of meerdere computers."
   },
   "expFmtHTMLDoc": {
     "message": "HTML document"
@@ -567,7 +692,7 @@
     "message": "Exporteert de Clippings gegevens als een HTML-document voor het afdrukken of weergeven in een webbrowser."
   },
   "expFmtCSV": {
-    "message": "CSV-bestand"
+    "message": "Kommagescheiden Waarden (CSV)"
   },
   "expFmtCSVDesc": {
     "message": "Gebruik het door komma's gescheiden formaat (CSV) om Clippings gegevens uit te wisselen met andere toepassingen. Alleen knipselnamen en inhoud worden geëxporteerd."
@@ -646,8 +771,14 @@
   "prefsShortcutMode": {
     "message": "Activeer sneltoetsmodus door op deze toetsen te drukken:"
   },
+  "prefsShctMode": {
+    "message": "Activeer sneltoets modus door op $1 te drukken"
+  },
+  "prefsShctModeNew": {
+    "message": "Ook alternatieve toetsen gebruiken $1"
+  },
   "prefsShortcutKeyNote": {
-    "message": "Sommige van de beschikbare sneltoetsen zijn mogelijk al toegewezen aan <a href=\"https://support.mozilla.org/en-US/kb/keyboard-shortcuts-perform-firefox-tasks-quickly\" class=\"hyperlink\">Firefox-commando's</a> of andere add\u2011ons."
+    "message": "Sommige van de beschikbare sneltoetsen zijn mogelijk al toegewezen aan <a href=\"https://support.mozilla.org/en-US/kb/keyboard-shortcuts-perform-firefox-tasks-quickly\" class=\"hyperlink\">Firefox-commando's</a> of andere add‑ons."
   },
   "prefsOutsideShct": {
     "message": "Om de sneltoets te wijzigen, gaat u naar het beheren van Extensie snelkoppelingen in Add-ons Manager."
@@ -670,6 +801,9 @@
   "backupRemind": {
     "message": "Toon backup herinnering elke",
     "description": "Label for checkbox option for setting backup notification, appears after checkbox and before the reminder frequency drop-down menu"
+  },
+  "backupRemSkip": {
+    "message": "Herinnering overslaan als er geen wijzigingen zijn sinds de laatste back-up"
   },
   "backupRemDays": {
     "message": "dagen",
@@ -742,11 +876,19 @@
   "syncIntro": {
     "message": "Je kunt de clippings synchroniseren met Thunderbird of andere Firefox-installaties door de knipsels die je wilt delen in een speciale map \"Gesynchroniseerde Clippings\". De gesynchroniseerde knipsels zullen worden opgeslagen in een bestand op uw systeem. Vereist de <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">Sync Clippings</a> helper-app."
   },
+  "syncIntroTB": {
+    "message": "Je kunt de knipsels synchroniseren met Firefox of andere Thunderbird installaties door de knipsels die u wilt delen in een speciale \"Synced Knipsels\" map te plaatsen.  De gesynchroniseerde knipsels worden opgeslagen in een bestand op uw systeem Vereist de <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">Sync Knipsels</a> helper-app."
+  },
   "syncLearnMore": {
     "message": "Meer informatie over Clippings synchroniseren."
   },
   "syncHelp": {
-    "message": "<p class=\"dlg-subhead\">Sync Clippings</p><p>Met Sync Clippings synchroniseer je een subgroep van knipsels tussen Firefox and Thunderbird, zodat ze beschikbaar komen in beide toepassingen. Je kunt kiezen welke knipsels je wilt synchroniseren door ze aan te maken in een speciale “Synced Clippings” map in de New Clipping dialoog, of door ze te verplaatsen naar een zelfde map in Clippings Manager.</p><p>De Synced Clippings map wordt automatisch aangemaakt als Sync Clippings is geïnstalleerd.</p><p class=\"dlg-subhead\">Installatie</p><p>Sync Clippings moet worden ingeschakeld in de toepassingen waarmee je de knipsels wilt uitwisselen. Sync Clippings wordt ondersteund in Firefox 60  en later en in Thunderbird 60 en nieuwer (mits Clippings for Thunderbird 5.6 of nieuwer is geïnstalleerd). </p><p> Daarnaast moet je de Sync Clippings helper app installeren op je systeem om de inhoud van de Synced Clippings map actueel te houden. Die app kun je ophalen van de <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">AE Creations website</a>. Na installatie start de app automatisch op als Firefox opstart en draait dan op de achtergrond. </p><p>Activeer Sync Clippings in Firefox door op de Clippings voorkeuren pagina te klikken op <b>Turn On Sync</b>.  Er wordt gevraagd om een bestandslocatie te kiezen op je system om de gesynchroniseerde knipsel gegevens  bewaren, als die locatie nog niet is ingevuld.</p>"
+    "message": "<p class=\"dlg-subhead\">Sync Knipsels</p><p>Met Sync Knipsels synchroniseer je een subgroep van knipsels tussen Firefox and Thunderbird, zodat ze beschikbaar komen in beide toepassingen. Je kunt kiezen welke knipsels je wilt synchroniseren door ze aan te maken in een speciale “Synced Knipsels” map in de New Knipsel dialoog, of door ze te verplaatsen naar een zelfde map in Knipsels Manager.</p><p>De Synced Knipsels map wordt automatisch aangemaakt als Sync Knipsels is geïnstalleerd.</p><p class=\"dlg-subhead\">Installatie</p><p>Sync Knipsels moet worden ingeschakeld in de toepassingen waarmee je de knipsels wilt uitwisselen. Sync Knipsels wordt ondersteund in Firefox 60  en later en in Thunderbird 60 en nieuwer (mits Knipsels for Thunderbird 5.6 of nieuwer is geïnstalleerd). </p><p> Daarnaast moet je de Sync Knipsels helper app installeren op je systeem om de inhoud van de Synced Knipsels map actueel te houden. Die app kun je ophalen van de <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">AE Creations website</a>. Na installatie start de app automatisch op als Firefox opstart en draait dan op de achtergrond. </p><p>Activeer Sync Knipsels in Firefox door op de Knipsels voorkeuren pagina te klikken op <b>Turn On Sync</b>.  Er wordt gevraagd om een bestandslocatie te kiezen op je system om de gesynchroniseerde knipsel gegevens  bewaren, als die locatie nog niet is ingevuld.</p>",
+    "description": "Sync Clippings help in Firefox"
+  },
+  "syncHelpTB": {
+    "message": "<p class=\"dlg-subhead\">Sync Knipsels</p><p>Met Sync Knipsels synchroniseer je een subgroep van knipsels tussen Firefox and Thunderbird, zodat ze beschikbaar komen in beide toepassingen. Je kunt kiezen welke knipsels je wilt synchroniseren door ze aan te maken in een speciale “Synced Knipsels” map in de New Knipsel dialoog, of door ze te verplaatsen naar een zelfde map in Knipsels Manager.</p><p>De Synced Knipsels map wordt automatisch aangemaakt als Sync Knipsels is geïnstalleerd.</p><p class=\"dlg-subhead\">Installatie</p><p>Sync Knipsels moet worden ingeschakeld in de toepassingen waarmee je de knipsels wilt uitwisselen. Sync Knipsels wordt ondersteund in Firefox 60  en later en in Thunderbird 60 en nieuwer (mits Knipsels for Thunderbird 5.6 of nieuwer is geïnstalleerd). </p><p> Daarnaast moet je de Sync Knipsels helper app installeren op je systeem om de inhoud van de Synced Knipsels map actueel te houden. Die app kun je ophalen van de <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">AE Creations website</a>. Na installatie start de app automatisch op als Firefox opstart en draait dan op de achtergrond. </p><p>Activeer Sync Knipsels in Firefox door op de Knipsels voorkeuren pagina te klikken op <b>Turn On Sync</b>.  Er wordt gevraagd om een bestandslocatie te kiezen op je system om de gesynchroniseerde knipsel gegevens  bewaren, als die locatie nog niet is ingevuld.</p>",
+    "description": "Sync Clippings help in Thunderbird"
   },
   "syncStatusOn": {
     "message": "Synchronisatie knipsels is ingeschakeld."
@@ -792,9 +934,6 @@
   "syncFileDirExLinux": {
     "message": "/home/YourName/synced-knipsels",
     "description": "Example folder path on Linux."
-  },
-  "syncFileDirDesc": {
-    "message": "Uw Sync Clippings gegevens worden opgeslagen op deze bestandslocatie. Als je synchroniseert met Thunderbird en de bestandslocatie wilt wijzigen, om overeen te komen met de synchronisatie bestandslocatie in de voorkeuren van Clippings in Thunderbird."
   },
   "errSyncConxn": {
     "message": "Geen verbinding met de Sync Clippings helper-app. Zorg ervoor dat de app is geïnstalleerd."
@@ -844,6 +983,27 @@
   "cxtMnuSyncItemsOnly": {
     "message": "Toon alleen gesynchroniseerde items in het Knipsels menu"
   },
+  "wndsAndDlgsOpts": {
+    "message": "Vensters en dialogen…"
+  },
+  "wndsDlgsOptsTitle": {
+    "message": "Vensters en dialogen"
+  },
+  "wndsDlgsOptsExpWarn": {
+    "message": "Deze instellingen zijn experimenteel op $1. Ze werken mogelijk niet goed op systemen met meerdere weergaven.",
+    "description": "Warning message in the Windows and Dialogs settings dialog, appearing if using an OS other than Windows"
+  },
+  "macOS": {
+    "message": "macOS"
+  },
+  "autoPosWnds": {
+    "message": "Automatisch in het origineel venster plaatsen",
+    "description": "Checkbox option in Windows and Dialogs settings dialog"
+  },
+  "clpMgrSaveWndPos": {
+    "message": "Sla de positie en grootte van Clippings Manager venster op",
+    "description": "Checkbox option in Windows and Dialogs settings dialog"
+  },
   "aboutBtn": {
     "message": "Over…"
   },
@@ -855,7 +1015,7 @@
     "message": "Aangemaakt door AE Creations."
   },
   "aboutHomePgLink": {
-    "message": "Homepage bezoeken"
+    "message": "Website bezoeken"
   },
   "aboutLicLink": {
     "message": "Licentie informatie"
@@ -886,6 +1046,58 @@
   },
   "aboutSyncFileSize": {
     "message": "Synchronisatie bestandsgrootte:"
+  },
+  "upgradeNotifcn": {
+    "message": "$1 is onlangs bijgewerkt! Klik hier om te zien wat er nieuw is.",
+    "description": "Post-upgrade notification text, with placeholder for extension name (Clippings or Clippings for Thunderbird)"
+  },
+  "newVerHdg": {
+    "message": "Nieuwe versie geïnstalleerd!",
+    "description": "Header for the What's New page (appears after upgrading Clippings)"
+  },
+  "upgrade": {
+    "message": "Clippings is bijgewerkt naar versie 6.3.",
+    "description": "What's New page (appears after upgrading Clippings)"
+  },
+  "upgradeTB": {
+    "message": "Clippings voor Thunderbird is bijgewerkt naar versie 6.1.",
+    "description": "What's New page (appears after upgrading Clippings for Thunderbird)"
+  },
+  "whatsNew": {
+    "message": "Wat is er nieuw",
+    "description": "What's New page (appears after upgrading Clippings)"
+  },
+  "whatsNew1": {
+    "message": "Verbeteringen aan Clippings Manager. In Windows herkent Clippings Manager nu grootte en positie van het venster",
+    "description": "Description of an enhancement or fix in the new version of Clippings"
+  },
+  "whatsNew2": {
+    "message": "Verbeteringen voor ondersteuning van meerdere displays in Windows. Clippings pop-upvensters en dialogen zullen nu worden geplaatst binnen het browservenster waaruit ze werden geopend, in plaats van altijd gecentreerd op de primaire weergave",
+    "description": "Description of an enhancement or fix in the new version of Clippings"
+  },
+  "whatsNew3": {
+    "message": "Nieuwe optie om back-upherinneringen over te slaan als er geen wijzigingen zijn aangebracht in uw knipsels sinds de laatste back-up",
+    "description": "Description of an enhancement or fix in the new version of Clippings"
+  },
+  "contribHdg": {
+    "message": "Help mee",
+    "description": "Contribution CTA in the What's New page"
+  },
+  "contribCTA": {
+    "message": "Steun de ontwikkeling van $1 door <a href=\"$2\">een donatie</a>te doen. Leer meer over andere manieren om <a href=\"$3\">betrokken te raken</a>!",
+    "description": "Call to action message to make donation or learn more about contributing to Clippings (or Clippings for Thunderbird)"
+  },
+  "linkBlog": {
+    "message": "AE Aanmaak blog"
+  },
+  "linkAMO": {
+    "message": "Firefox Add-ons pagina"
+  },
+  "linkATN": {
+    "message": "Thunderbird Add-ons pagina"
+  },
+  "linkForum": {
+    "message": "Help en Support forums"
   },
   "keyAlt": {
     "message": "Alt"

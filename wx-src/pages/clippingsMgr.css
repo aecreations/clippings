@@ -52,9 +52,9 @@
     --color-cxtmenu-bkgd: #fff;
     --color-cxtmenu-border: #bebebe;
     --color-cxtmenu-text: #2f2f2f;
-    --color-cxtmenu-menuitem-active-bkgd: #d7d7db;
-    --color-cxtmenu-menuitem-hover-bkgd: #ededf0;
+    --color-cxtmenu-menuitem-hover-bkgd: rgba(12, 12, 13, 0.2);
     --color-cxtmenu-menuitem-hover-text: #0c0c0d;
+    --color-cxtmenu-menuitem-active-bkgd: rgba(12, 12, 13, 0.3);
     --color-cxtmenu-separator: #e6e6e6;
     --color-dlg-fieldset-border: #b1b1b1;
 
@@ -70,6 +70,9 @@
     --url-toolbar-btn-img-tools-active: url("../img/options_hover.svg");
     --url-toolbar-btn-img-tools-menu-open: url("../img/options_menuopen.svg");
     --url-toolbar-btn-img-dropdown: url("../img/drop-down.svg");
+    --url-toolbar-btn-img-shct-keys: url("../img/shctkeys.svg");
+    --url-toolbar-btn-img-shct-keys-hover: url("../img/shctkeys_hover.svg");
+    --url-toolbar-btn-img-shct-keys-active: url("../img/shctkeys_hover.svg");
     --url-toolbar-btn-img-help: url("../img/help.svg");
     --url-toolbar-btn-img-help-hover: url("../img/help_hover.svg");
     --url-toolbar-btn-img-help-active: url("../img/help.svg");
@@ -143,9 +146,12 @@
 	--url-toolbar-btn-img-tools-active: url("../img/options_dk_active.svg");
 	--url-toolbar-btn-img-tools-menu-open: url("../img/options_dk_menuopen.svg");
 	--url-toolbar-btn-img-dropdown: url("../img/dropdown_dk.svg");
+	--url-toolbar-btn-img-shct-keys: url("../img/shctkeys-dk.svg");
+	--url-toolbar-btn-img-shct-keys-hover: url("../img/shctkeys_hover-dk.svg");
+	--url-toolbar-btn-img-shct-keys-active: url("../img/shctkeys_hover-dk.svg");
 	--url-toolbar-btn-img-help: url("../img/help-dk.svg");
 	--url-toolbar-btn-img-help-hover: url("../img/help-dk.svg");
-	--url-toolbar-btn-img-help-active: url("../img/help_hover.svg");
+	--url-toolbar-btn-img-help-active: url("../img/help.svg");
 	--url-toolbar-btn-img-ok: url("../img/ok_dk.svg");
 	--url-toolbar-btn-img-ok-hover: url("../img/ok_hover_dk.svg");
 	--url-toolbar-btn-img-ok-active: url("../img/ok_active_dk.svg");
@@ -170,12 +176,12 @@ body {
     height: 100%;
     overflow: hidden;
     background-color: var(--color-bkgd);
-    font-size: 11px;
+    font-size: 12px;
     color: var(--color-default-text);
 }
 
 button {
-    font-size: 11px !important;
+    font-size: 12px !important;
 }
 
 button[disabled] {
@@ -196,7 +202,6 @@ input[type="text"],
 input[type="search"],
 textarea,
 select {
-    font-size: 11px !important;
     background-color: var(--color-textbox-bkgd);
     color: var(--color-default-text);
 }
@@ -232,15 +237,15 @@ select {
     flex: 0 1 auto;
     align-self: stretch;
     min-width: 30px;
-    margin-left: 1px;
-    margin-right: 1px;
+    margin-left: 0;
+    margin-right: 0;
     border: 1px solid transparent;
     background-position: center;
     background-repeat: no-repeat;
     background-color: transparent;
     color: var(--color-main-toolbar-text);
     font: caption;
-    font-size: 11px;
+    font-size: 11px !important;
 }
 
 .toolbar-button:hover {
@@ -283,9 +288,7 @@ select {
 
 #toolbar {
     height: var(--toolbar-height);
-    padding-left: 2px;
-    padding-top: 2px;
-    padding-bottom: 2px;
+    padding: 2px;
     background: var(--color-main-toolbar-bkgd);
     color: var(--color-main-toolbar-text);
     border-bottom: 1px solid var(--color-main-toolbar-border);
@@ -436,6 +439,7 @@ select {
     width: 220px;
     height: 100%;
     padding-right: 20px;
+    font-size: 11px;
 }
 
 #toolbar > #search-clippings-and-folders > #clear-search {
@@ -453,6 +457,24 @@ select {
     visibility: hidden;
 }
 
+#toolbar > #spacer-3 {
+    order: 10;
+    width: 8px;
+}
+
+#toolbar > #help {
+    order: 11;
+    background-image: var(--url-toolbar-btn-img-help);
+}
+
+#toolbar > #help:hover {
+    background-image: var(--url-toolbar-btn-img-help-hover);
+}
+
+#toolbar > #help:active {
+    background-image: var(--url-toolbar-btn-img-help-active);
+}
+
 #content {
     height: calc(100% - var(--toolbar-height) - var(--statusbar-height));
 }
@@ -461,7 +483,7 @@ select {
     order: 1;
     flex: 0 1 auto;
     align-self: stretch;
-    width: 220px;
+    width: 228px;
     min-width: 128px;
     overflow: auto;
     border-right: 1px solid var(--color-tree-splitter);
@@ -629,6 +651,7 @@ ul.fancytree-container {
     border-top: none;
     border-bottom: 1px solid var(--color-item-properties-textbox-border);
     background-color: var(--color-textbox-bkgd);
+    font-size: 13px;
 }
 
 #item-properties > #clipping-text {
@@ -645,6 +668,7 @@ ul.fancytree-container {
     border-top: none;
     border-bottom: 1px solid var(--color-item-properties-textbox-border);
     background-color: var(--color-textbox-bkgd);
+    font-size: 13px;
 }
 
 #item-properties > #placeholder-toolbar {
@@ -663,6 +687,8 @@ ul.fancytree-container {
 
 #item-properties > #placeholder-toolbar > button {
     height: 24px;
+    margin-left: -1px;
+    margin-right: -2px;
 }
 
 #item-properties > #placeholder-toolbar > #plchldr-presets,
@@ -698,8 +724,8 @@ ul.fancytree-container {
 #item-properties > #placeholder-toolbar > label {
     order: 1;
     flex: 0 1 auto;
-
     margin-right: 0;
+    font-size: 11px;
 }
 
 #item-properties > #placeholder-toolbar > #plchldr-presets {
@@ -857,20 +883,27 @@ ul.fancytree-container {
 
 #options-bar > #shortcut-key-select > #clipping-key {
     margin-bottom: 0;
+    font-size: 12px;
 }
 
 #options-bar > #shortcut-key-select > #show-shortcut-list {
     height: 24px;
+    border: var(--color-details-pane-btn-border);
+    border-radius: 3px;
     vertical-align: bottom;
-    background-image: var(--url-toolbar-btn-img-help);
+    background-color: var(--color-details-pane-btn-bkgd);
+    background-image: var(--url-toolbar-btn-img-shct-keys);
 }
 
 #options-bar > #shortcut-key-select > #show-shortcut-list:hover {
-    background-image: var(--url-toolbar-btn-img-help-hover);
+    border-color: var(--color-toolbarbtn-hover-bkgd);
+    background-color: var(--color-btn-hover-bkgd);
+    background-image: var(--url-toolbar-btn-img-shct-keys-hover);
 }
 
 #options-bar > #shortcut-key-select > #show-shortcut-list:active {
-    background-image: var(--url-toolbar-btn-img-help-active);
+    background-image: var(--url-toolbar-btn-img-shct-keys-active);
+    background-color: var(--color-btn-active-bkgd);
 }
 
 #options-bar > #options-bar-spacer {
@@ -881,6 +914,10 @@ ul.fancytree-container {
 #options-bar > #clipping-label {
     order: 3;
     flex: 0 1 auto;
+}
+
+#options-bar > #clipping-label > #clipping-label-picker {
+    font-size: 12px;
 }
 
 #status-bar {
@@ -916,10 +953,18 @@ ul.fancytree-container {
 .lightbox .msgbox-icon,
 .lightbox .msgbox-info-icon {
     float: left;
-    width: 32px;
-    height: 32px;
     margin-top: 0;
     margin-right: 12px;
+}
+
+.lightbox .msgbox-icon {
+    width: 34px;
+    height: 34px;   
+}
+
+.lightbox .msgbox-info-icon {
+    width: 32px;
+    height: 32px;
 }
 
 .lightbox .msgbox-icon {
@@ -927,13 +972,13 @@ ul.fancytree-container {
     background-size: contain;
 }
 
+body[data-os="mac"] .lightbox .msgbox-icon {
+    background-image: url("../img/warning-64-mac.png");
+}
+
 .lightbox .msgbox-info-icon {
     background-image: url("../img/info.svg");
     background-size: contain;
-}
-
-.lightbox .msgbox-icon[os="mac"] {
-    background-image: url("../img/warning-64-mac.png");
 }
 
 .lightbox .browser-style input[type="checkbox"] + label::before {
@@ -956,7 +1001,7 @@ ul.fancytree-container {
 
 .lightbox select {
     font: caption;
-    font-size: 11px;
+    font-size: 12px;
 }
 
 .lightbox select > option {
@@ -989,14 +1034,14 @@ ul.fancytree-container {
 }
 
 #custom-placeholder-dlg {
-    --width: 330px;
-    --height: 200px;
+    --width: 336px;
+    --height: 204px;
     top: 48px;
 }
 
 #numeric-placeholder-dlg {
-    --width: 330px;
-    --height: 184px;
+    --width: 336px;
+    --height: 188px;
     top: 48px;
 }
 
@@ -1011,8 +1056,8 @@ ul.fancytree-container {
 }
 
 #insert-date-time-placeholder-dlg {
-    --width: 300px;
-    --height: 326px;
+    --width: 306px;
+    --height: 340px;
     top: 14px;
 }
 
@@ -1021,9 +1066,21 @@ ul.fancytree-container {
 }
 
 #shortcut-list-dlg {
-    --width: 420px;
-    --height: 320px;
+    --width: 424px;
+    --height: 322px;
     top: 18px;
+}
+
+body[data-locale="nl"] #shortcut-list-dlg #shortcut-instrxns {
+    letter-spacing: -0.38px;
+}
+
+body[data-locale="fr"] #shortcut-list-dlg #shortcut-instrxns {
+    letter-spacing: -0.16px;
+}
+
+body[data-locale="de"] #shortcut-list-dlg #shortcut-instrxns {
+    letter-spacing: -0.25px;
 }
 
 #shortcut-list-dlg > .dlg-btns {
@@ -1110,9 +1167,13 @@ ul.fancytree-container {
 }
 
 #import-dlg {
-    --width: 395px;
-    --height: 200px;
+    --width: 408px;
+    --height: 206px;
     top: 40px;
+}
+
+body[data-locale="de"] #import-dlg {
+    width: 450px;
 }
 
 #import-dlg #import-clippings-filepicker {
@@ -1124,17 +1185,24 @@ ul.fancytree-container {
 #import-dlg #import-clippings-file-path {
     order: 1;
     flex: 1 1 auto;
-
-    margin-right: 2px;
+    margin-right: 4px;
+    background-color: transparent;
+    font-size: 12px;
 }
 
-#import-dlg #import-clippings-file-path,
-#import-dlg #import-clippings-file-path:hover {
-    border-bottom: 1px dotted #b1b1b1;
-    border-top: 1px solid transparent;
-    border-right: 1px solid transparent;
-    border-left: 1px solid transparent;
-    background: transparent;
+#import-dlg #import-clippings-file-path:placeholder-shown {
+    border: none;
+    background-image: url("../img/tbd-edge-l.svg"), url("../img/tbd-bg.svg"), url("../img/tbd-edge-r.svg");
+    background-position: left, center, right;
+    background-repeat: no-repeat, repeat-x, no-repeat;
+    opacity: 1;
+}
+
+#import-dlg #import-clippings-file-path {
+    border: none;
+    background-image: url("../img/tbd-edge-l.svg"), url("../img/tbd-bg-bot.svg"), url("../img/tbd-edge-r.svg");
+    background-position: left, center, right;
+    background-repeat: no-repeat, repeat-x, no-repeat;
 }
 
 #import-dlg #import-clippings-file-upload-btn {
@@ -1182,7 +1250,7 @@ ul.fancytree-container {
     background-size: contain;
 }
 
-#import-dlg #restore-backup-warning > .warning-icon[os="mac"] {
+body[data-os="mac"] #import-dlg #restore-backup-warning > .warning-icon {
     background-image: url("../img/warning-64-mac.png");
 }
 
@@ -1193,6 +1261,10 @@ ul.fancytree-container {
     border-radius: 4px;
     background-color: #fbfb77;
     color: black;
+}
+
+body[data-locale="de"] #import-dlg #restore-backup-warning > p {
+    letter-spacing: -0.30px;
 }
 
 #import-dlg progress {
@@ -1225,6 +1297,10 @@ ul.fancytree-container {
     display: block;
 }
 
+body[data-locale="de"] #export-dlg #export-format-list-label {
+    letter-spacing: -0.64px;
+}
+
 #export-dlg fieldset {
     margin-top: 6px;
     margin-bottom: 12px;
@@ -1244,6 +1320,15 @@ ul.fancytree-container {
     color: var(--color-disabled-text);
 }
 
+body[data-locale="de"] #include-src-urls + label {
+    letter-spacing: -0.8px;
+}
+
+body[data-locale="de"][data-os="win"] #include-src-urls + label {
+    letter-spacing: -0.45px;
+}
+
+
 #import-confirm-msgbox > .msgbox-icon,
 #export-confirm-msgbox > .msgbox-icon,
 #backup-confirm-msgbox > .msgbox-icon {
@@ -1251,11 +1336,11 @@ ul.fancytree-container {
 }
 
 #import-confirm-msgbox {
-    --width: 400px;
+    --width: 406px;
 }
 
 #reload-sync-fldr-msgbox {
-    --width: 430px;
+    --width: 436px;
 }
 
 #move-sync-fldr-msgbox {
@@ -1263,9 +1348,9 @@ ul.fancytree-container {
 }
 
 #move-dlg {
-    --width: 340px;
-    --height: 282px;
-    top: 32px;
+    --width: 342px;
+    --height: 304px;
+    top: 24px;
 }
 
 #move-dlg #move-to-fldr-tree {
@@ -1275,7 +1360,7 @@ ul.fancytree-container {
 }
 
 #move-dlg #move-to-fldr-tree > .fancytree-container {
-    height: 154px;
+    height: 174px;
     overflow: auto;
 }
 
@@ -1289,7 +1374,7 @@ ul.fancytree-container {
 }
 
 #init-error-msgbox, #sync-error-msgbox {
-    --height: 136px;
+    --height: 142px;
     top: 64px;
 }
 
@@ -1300,20 +1385,38 @@ ul.fancytree-container {
 }
 
 #mini-help-dlg {
-    --width: 450px;
-    --height: 312px;
-    top: 20px;
+    --width: 454px;
+    --height: 352px;
+    top: 8px;
+}
+
+body[data-os="mac"] #mini-help-dlg {
+    height: 340px;
+    top: 18px;
+}
+
+body[data-locale="de"] #mini-help-dlg {
+    height: 366px;
+    top: 2px;
 }
 
 #shortcut-list-dlg .hlp-hdr,
 #mini-help-dlg .hlp-hdr {
     margin-top: 0;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: bold;
 }
 
+body[data-locale="fr"] #mini-help-dlg #mini-help-intro {
+    letter-spacing: -0.14px;
+}
+
 #show-only-synced-items-reminder {
-    --height: 140px;
+    --height: 150px;
+}
+
+body[data-locale="de"] #show-only-synced-items-reminder {
+    height: 164px;
 }
 
 #show-only-synced-items-reminder > .dlg-content > .msgbox-info-icon {
@@ -1321,6 +1424,6 @@ ul.fancytree-container {
 }
 
 #generic-msg-box {
-    --width: 28em;
+    --width: 30em;
 }
 

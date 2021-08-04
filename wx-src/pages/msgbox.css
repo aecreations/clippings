@@ -14,8 +14,21 @@ body {
 button {
     min-width: 96px;
     min-height: 32px;
+    border-radius: 4px;
     font-size: 15px !important;
     text-align: center !important;
+}
+
+button.default {
+    border: 1px solid #005bab;
+}
+
+button.default:focus {
+    border: 1px solid #003eaa;
+}
+
+button.default:hover {
+    border-color: #002275;
 }
 
 #icon {
@@ -29,7 +42,7 @@ button {
     background-size: contain;
 }
 
-#msgbox-icon[os="mac"] {
+body[data-os="mac"] #msgbox-icon {
     background-image: url("../img/warning-64-mac.png");
 }
 

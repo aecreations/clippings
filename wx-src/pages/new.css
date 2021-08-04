@@ -51,11 +51,15 @@ input[type="text"], textarea {
     width: 100%;
     margin-top: 4px;
     font: message-box;
-    font-size: 11px;
+    font-size: 13px;
 }
 
 textarea {
     resize: none;
+}
+
+body[data-os="win"] .browser-style > input[type="checkbox"] + label {
+    vertical-align: bottom;
 }
 
 #new-clipping-fldr-tree-btn {
@@ -74,7 +78,6 @@ textarea {
     background-position: calc(100% - 4px) center, 8px;
     background-repeat: no-repeat;
     font: caption !important;
-    font-size: 11px !important;
     text-align: start !important;
 }
 
@@ -112,7 +115,7 @@ textarea {
 }
 
 #new-clipping-fldr-tree-popup {
-    bottom: 12px;
+    bottom: 10px;
     left: 16px;
     width: 350px;
     height: 151px;
@@ -168,6 +171,14 @@ ul.fancytree-container {
     margin-left: 26px;
 }
 
+body[data-locale="de"] #clipping-options {
+    letter-spacing: -0.16px;
+}
+
+body[data-locale|="pt"] #clipping-options {
+    letter-spacing: -0.25px;
+}
+
 #btn-expand-options {
     position: relative;
     top: -24px;
@@ -176,8 +187,6 @@ ul.fancytree-container {
 
     min-width: 26px;
     min-height: 24px;
-    font: caption;
-    font-size: 11px;
 
     background-color: var(--color-btn-expand-bkgd);
     background-image: var(--url-dropdown-arrow);
@@ -193,8 +202,13 @@ ul.fancytree-container {
     background-color: var(--color-btn-expand-active-bkgd);
 }
 
+#clipping-options,
+#clipping-options select {
+    font-size: 12px;
+}
+
 #clipping-options #shct-key-and-label-opts {
-    margin-top: 8px;
+    margin-top: 10px;
 }
 
 #clipping-options #shortcut-key-select {
@@ -229,9 +243,14 @@ ul.fancytree-container {
 }
 
 #new-folder-dlg {
-    --width: 320px;
-    --height: 174px;
+    --width: 324px;
+    --height: 176px;
     top: 64px;
+}
+
+#new-folder-dlg button,
+#new-folder-dlg input[type="text"] {
+    font-size: 12px !important;
 }
 
 #new-folder-dlg-fldr-tree {
@@ -239,29 +258,29 @@ ul.fancytree-container {
 }
 
 #new-folder-dlg-fldr-tree-popup {
-    width: 286px;
+    width: 290px;
     height: 160px;
     margin-top: 0;
     z-index: 1101;
 }
 
 #create-clipping-error-msgbox {
-    --width: 384px;
-    --height: 145px;
+    --width: 390px;
+    --height: 150px;
     top: 64px;
 }
 
 #create-clipping-error-msgbox .msgbox-error-icon {
     float: left;
-    width: 32px;
-    height: 32px;
+    width: 34px;
+    height: 34px;
     margin-top: 0;
     margin-right: 12px;
     background-image: url("../img/warning-64.png");
     background-size: contain;
 }
 
-#create-clipping-error-msgbox .msgbox-error-icon[os="mac"] {
+body[data-os="mac"] #create-clipping-error-msgbox .msgbox-error-icon {
     background-image: url("../img/warning-64-mac.png");
 }
 

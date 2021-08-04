@@ -5,12 +5,14 @@
 
 
 let aeInterxn = {
+  _verboseLogging: false,
   _isMacOS: window.navigator.oscpu.search(/mac/i) != -1,
   
   suppressBrowserShortcuts(aEvent, aIsDebugging)
   {
-    if (aIsDebugging && aEvent.key != "Alt" && aEvent.key != "Control"
-	&& aEvent.key != "Meta" && aEvent.key != "Shift") {
+    if (aIsDebugging && this._verboseLogging
+        && aEvent.key != "Alt" && aEvent.key != "Control"
+        && aEvent.key != "Meta" && aEvent.key != "Shift") {
       console.log(`Clippings/wx::aeInterxn.suppressBrowserShortcuts():\nkey = ${aEvent.key}\ncode = ${aEvent.code}\naltKey = ${aEvent.altKey}\nctrlKey = ${aEvent.ctrlKey}\nmetaKey = ${aEvent.metaKey}\nshiftKey = ${aEvent.shiftKey}`);
     }
     

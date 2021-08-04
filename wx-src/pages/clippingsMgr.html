@@ -31,6 +31,8 @@
 	<input type="search" id="search-box"/>
 	<div id="clear-search"></div>
       </div>
+      <span id="spacer-3" class="spacer"></span>
+      <button id="help" class="toolbar-button"></button>
     </div>
     
     <div id="content" class="hbox">
@@ -150,6 +152,12 @@
       <div class="msgbar-dismiss dlg-accept"></div>
     </div>
 
+    <div id="restored-src-urls-msgbar" class="msgbar panel">
+      <div class="msgbar-icon"></div>
+      <div class="msgbar-content" data-i18n="clipMgrRestoredSrcURLs"></div>
+      <div class="msgbar-dismiss dlg-accept"></div>
+    </div>
+
     <div id="no-undo-msgbar" class="msgbar panel">
       <div class="msgbar-icon"></div>
       <div class="msgbar-content" data-i18n="clipMgrNoUndo"></div>
@@ -238,7 +246,7 @@
       <div class="dlg-content browser-style">
         <label id="import-clippings-label" data-i18n="labelSelImportFile"></label>
 	<div id="import-clippings-filepicker" class="hbox browser-style">
-	  <input type="text" id="import-clippings-file-path" readonly="true"/>
+	  <input type="text" id="import-clippings-file-path" readonly="true" placeholder=""/>
 	  <label id="import-clippings-file-upload-btn" for="import-clippings-file-upload"
 	   data-i18n="btnBrowse"></label>
 	  <input type="file" id="import-clippings-file-upload" accept=".rdf, .json"/>
@@ -382,7 +390,7 @@
     <div id="mini-help-dlg" class="lightbox">
       <div class="dlg-content browser-style">
 	<p class="hlp-hdr" data-i18n="clippingsMgrWndTitle"></p>
-	<p data-i18n="clipMgrIntroDesc"></p>
+	<p id="mini-help-intro" data-i18n="clipMgrIntroDesc"></p>
 	<fieldset>
 	  <legend data-i18n="clipMgrIntroKeybHdg"></legend>
 	  <table id="mini-help-shortcut-key-tbl" class="shortcut-key-tbl"></table>
@@ -421,12 +429,13 @@
     <script src="../lib/contextMenu/jquery.contextMenu.min.js"></script>
     <script src="../lib/simpledrag.js"></script>
     <script src="../lib/moment.min.js"></script>
-    <script src="../modules/aeConst.js"></script>
-    <script src="../modules/aeImportExport.js"></script>
-    <script src="../modules/aeDialog.js"></script>
-    <script src="../modules/aeFolderPicker.js"></script>
+    <script src="../scripts/aeConst.js"></script>
+    <script src="../scripts/aeImportExport.js"></script>
+    <script src="../scripts/aeDialog.js"></script>
+    <script src="../scripts/aeFolderPicker.js"></script>
     <script src="../scripts/aeI18n.js"></script>
     <script src="../scripts/aeInterxn.js"></script>
+    <script src="../scripts/aePrefs.js"></script>
     <script src="clippingsMgr.js"></script>
   </body>
 </html>

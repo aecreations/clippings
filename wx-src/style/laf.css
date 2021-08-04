@@ -23,7 +23,11 @@
     --color-cb-bkgd: #fff;
     --color-cb-border: #b1b1b1;
     --color-cb-hover-bkgd: #fbfbfb;
+    --color-cb-hover-border: #737373;
     --color-cb-active-bkgd: #ebebeb;    
+    --color-cb-checked-border: #0670cc;
+    --color-cb-checked-hover-border: #005bab;
+    --color-cb-checked-active-border: #004480;
     --color-hyperlink: #0060df;
     --color-hyperlink-active: #003eaa;
     --color-error-text: #d70022;
@@ -51,7 +55,11 @@
 	--color-cb-bkgd: #202023;
 	--color-cb-border: #737373;
 	--color-cb-hover-bkgd: #2a2a2e;
+	--color-cb-hover-border: #b1b1b3;
 	--color-cb-active-bkgd: #38383d;
+	--color-cb-checked-border: #0670cc;
+	--color-cb-checked-hover-border: #005bab;
+	--color-cb-checked-active-border: #004480;
 	--color-hyperlink: #45a1ff;
 	--color-hyperlink-active: #0a84ff;
 	--color-error-text: #ff0039;
@@ -205,6 +213,11 @@ textarea::selection {
     vertical-align: middle;
 }
 
+body[data-os="win"] .browser-style > input[type="checkbox"] + label,
+body[data-os="win"] .browser-style > input[type="radio"] + label {
+    vertical-align: text-top;
+}
+
 .browser-style > input[type="checkbox"],
 .browser-style > input[type="radio"] {
     background-color: var(--color-cb-bkgd);
@@ -216,14 +229,32 @@ textarea::selection {
 .browser-style > input[type="radio"]:hover,
 .browser-style.hover > input[type="radio"]:not(:active) {
     background-color: var(--color-cb-hover-bkgd);
-    border-color: var(--color-cb-border);
+    border-color: var(--color-cb-hover-border);
 }
 
-.browser-style > input[type="checkbox"]:hover:active,
-.browser-style.pressed > input[type="checkbox"]:not(:active),
-.browser-style > input[type="radio"]:hover:active,
-.browser-style.pressed > input[type="radio"]:not(:active) {
+.browser-style > input[type="checkbox"]:hover:active:not(:disabled),
+.browser-style.pressed > input[type="checkbox"]:not(:active):not(:disabled),
+.browser-style > input[type="radio"]:hover:active:not(:disabled),
+.browser-style.pressed > input[type="radio"]:not(:active):not(:disabled) {
     background-color: var(--color-cb-active-bkgd);
+    border-color: var(--color-cb-hover-border);
+    border-width: 2px;
+}
+
+.browser-style > input[type="checkbox"]:checked:hover:not(:disabled),
+.browser-style.hover > input[type="checkbox"]:checked:not(:active):not(:disabled),
+.browser-style > input[type="radio"]:checked:hover:not(:disabled),
+.browser-style.hover > input[type="radio"]:checked:not(:active):not(:disabled) {
+    border-width: 1px;
+    border-color: var(--color-cb-checked-hover-border);
+}
+
+.browser-style > input[type="checkbox"]:checked:hover:active:not(:disabled),
+.browser-style.pressed > input[type="checkbox"]:checked:hover:not(:disabled),
+.browser-style > input[type="radio"]:checked:hover:active:not(:disabled),
+.browser-style.pressed > input[type="radio"]:checked:hover:not(:disabled) {
+    border-width: 1px;
+    border-color: var(--color-cb-checked-active-border);
 }
 
 .browser-style > input[type="checkbox"]:checked {

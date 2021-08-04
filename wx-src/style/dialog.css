@@ -10,7 +10,7 @@ body {
     margin: 16px;
     background-color: var(--color-bkgd);
     color: var(--color-default-text);
-    font-size: 11px;
+    font-size: 13px;
 }
 
 button {
@@ -51,7 +51,7 @@ fieldset > legend {
 .browser-style > input[type="text"],
 .browser-style > textarea,
 select.browser-style {
-    font-size: 11px;
+    font-size: 13px;
 }
 
 .browser-style > input[type="text"][disabled],

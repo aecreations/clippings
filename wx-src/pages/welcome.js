@@ -5,32 +5,50 @@
 
 
 // Page initialization
-$(() => {
+$(async () => {
   let pgURL = new URL(window.location.href);
 
   browser.history.deleteUrl({ url: pgURL.href });
 
-  let clippings = browser.extension.getBackgroundPage();
-  if (! clippings) {
-    throw new Error("Clippings/wx::welcome.js: Failed to retrieve parent browser window!");
-  }
-  
-  document.body.dataset.os = clippings.getOS();
+  let platform = await browser.runtime.getPlatformInfo();
+  document.body.dataset.os = platform.os;
 
+  let lang = browser.i18n.getUILanguage();
+  document.body.dataset.locale = lang;
+  
   $("#goto-whatsnew").click(aEvent => {
-    window.location.href = "http://aecreations.sourceforge.net/clippings/whatsnew.php";
+    gotoURL("http://aecreations.sourceforge.net/clippings/whatsnew.php");
   });
   
   $("#goto-quick-start").click(aEvent => {
-    window.location.href = "http://aecreations.sourceforge.net/clippings/quickstart.php";
-  })
-
-  $("#dismiss-welcome").click(aEvent => {
-    showModal("#dismiss-welcome-dlg");
+    gotoURL("http://aecreations.sourceforge.net/clippings/quickstart.php");
   });
-  
-  initDialogs();
+
+  $("#dismiss-welcome").click(aEvent => { closePage() });
+
+  $("#link-website > a").attr("href", aeConst.HELP_URL);
+  $("#link-blog > a").attr("href", aeConst.BLOG_URL);
+  $("#link-forum > a").attr("href", aeConst.FORUM_URL);
+
+  $("a").click(aEvent => {
+    aEvent.preventDefault();
+    gotoURL(aEvent.target.href);
+  });
 });
+
+
+function gotoURL(aURL)
+{
+  browser.tabs.create({ url: aURL });
+}
+
+
+function closePage()
+{
+  browser.tabs.getCurrent().then(aTab => {
+    browser.tabs.remove(aTab.id);
+  });
+}
 
 
 $(window).keydown(aEvent => {
@@ -40,33 +58,3 @@ $(window).keydown(aEvent => {
 
 // Suppress browser's context menu.
 $(document).on("contextmenu", aEvent => { aEvent.preventDefault() });
-
-
-function initDialogs()
-{
-  $("#dismiss-welcome-dlg .dlg-accept").click(aEvent => {
-    closePage();
-  });
-
-  $("#dismiss-welcome-dlg .dlg-cancel").click(aEvent => {
-    $("#dismiss-welcome-dlg").removeClass("lightbox-show");    
-    $("#lightbox-bkgrd-ovl").hide();
-  });
-}
-
-
-function showModal(aDlgEltSelector)
-{
-  $("#lightbox-bkgrd-ovl").show();
-  $(aDlgEltSelector).addClass("lightbox-show");
-}
-
-
-function closePage()
-{
-  browser.tabs.getCurrent().then(aTab => {
-    return browser.tabs.remove(aTab.id);
-  }).catch(aErr => {
-    console.error("Clippings/wx: welcome.js: " + aErr);
-  });
-}

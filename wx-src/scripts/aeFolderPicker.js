@@ -6,20 +6,24 @@
 
 class aeFolderPicker
 {
-  constructor(aTreeEltSelector, aClippingsDB, aActiveTreeNodeKey)
+  constructor(aTreeEltSelector, aClippingsDB, aParentFldrID, aParentFldrName, aRootFldrCls, aActiveTreeNodeKey)
   {
+    this.ROOT_FOLDER_CLS = "ae-clippings-root";
+    this.SYNCED_ROOT_FOLDER_CLS = "ae-clippings-sync-root";
+  
     this._treeEltSelector = aTreeEltSelector;
     this._db = aClippingsDB;
     this._fnOnSelectFolder = function (aFolderData) {};
 
-    this._init(aActiveTreeNodeKey);
+    this._init(aParentFldrID, aParentFldrName, aRootFldrCls, aActiveTreeNodeKey);
   }
 
-  _init(aActiveTreeNodeKey)
+  _init(aParentFldrID, aParentFldrName, aRootFldrCls, aActiveTreeNodeKey)
   {
+    let isSyncClippings = false;
     let rootFldrTreeNodes = [];
 
-    this._db.folders.where("parentFolderID").equals(0).each((aItem, aCursor) => {
+    this._db.folders.where("parentFolderID").equals(aParentFldrID).each((aItem, aCursor) => {
       let folderNode = {
 	key: aItem.id,
 	title: aItem.name,
@@ -27,6 +31,7 @@ class aeFolderPicker
       };
 
       if ("isSync" in aItem) {
+        isSyncClippings = true;
         folderNode.extraClasses = "ae-synced-clippings-fldr";
       }
 
@@ -46,13 +51,14 @@ class aeFolderPicker
 
       rootFldrTreeNodes.sort((aItem1, aItem2) => { return this._sort(aItem1, aItem2) });
 
+      let rootFldrCls = aRootFldrCls || this.ROOT_FOLDER_CLS;
       let treeData = [
         {
-	  title: "Clippings",
-	  key: 0,
+	  title: aParentFldrName,
+	  key: aParentFldrID,
 	  folder: true,
 	  expanded: true,
-          extraClasses: "ae-clippings-root",
+          extraClasses: rootFldrCls,
 	  children: rootFldrTreeNodes,
         }
       ];
@@ -66,7 +72,7 @@ class aeFolderPicker
 	init(aEvent, aData)
         {
           if (aActiveTreeNodeKey) {
-            aData.tree.activateKey(aActiveTreeNodeKey);
+            aData.tree.activateKey(String(aActiveTreeNodeKey));
           }
           else {
             aData.tree.getRootNode().children[0].setActive();
@@ -80,6 +86,10 @@ class aeFolderPicker
           }
 	}
       });
+
+      if (isSyncClippings) {
+        $(".ae-synced-clippings-fldr").parent().addClass("ae-synced-clippings");
+      }
     }).catch(aErr => {
       console.error("aeFolderPicker._init(): " + aErr);
       throw aErr;

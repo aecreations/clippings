@@ -14,13 +14,8 @@ async function init()
 
   browser.history.deleteUrl({ url: url.href });
 
-  let msgIcon = document.getElementById("msgbox-icon");
-  if (navigator.platform == "Win32" || navigator.platform == "Win64") {
-    msgIcon.setAttribute("os", "win");
-  }
-  else if (navigator.platform == "MacIntel") {
-    msgIcon.setAttribute("os", "mac");
-  }
+  let platform = await browser.runtime.getPlatformInfo();
+  document.body.dataset.os = platform.os;
 
   window.addEventListener("keydown", aEvent => {
     if (aEvent.key == "Enter" || aEvent.key == "Escape") {

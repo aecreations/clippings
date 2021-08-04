@@ -4,6 +4,11 @@
     "description": "Name of the extension - do NOT translate"
   },
 
+  "extNameTB": {
+    "message": "Clippings for Thunderbird",
+    "description": "Name of the extension for Thunderbird"
+  },
+
   "extDesc": {
     "message": "Save frequently-entered text for pasting later.",
     "description": "Description of the extension"
@@ -11,7 +16,7 @@
 
   "browserActionTitle": {
     "message": "Clippings",
-    "description": "Toolbar button label"
+    "description": "Label for toolbar button, context submenu and tooltips"
   },
 
   "cmdDesc": {
@@ -60,6 +65,44 @@
     "message": "Browse…"
   },
 
+  "btnReset": {
+    "message": "Reset"
+  },
+
+  "migrnStatusTitle": {
+    "message": "Clippings Migration Status",
+    "description": "Clippings for Thunderbird"
+  },
+
+  "migrnStatusSuccess": {
+    "message": "Your clippings have been successfully migrated.",
+    "description": "Clippings for Thunderbird"
+  },
+
+  "migrnStatusFail": {
+    "message": "Sorry, an error occurred while Clippings was trying to migrate your data.",
+    "description": "Clippings for Thunderbird"
+  },
+
+  "migrnFailDetail": {
+    "message": "Click Save Clippings to save a copy of your data.",
+    "description": "Clippings for Thunderbird"
+  },
+
+  "migrnSaveData": {
+    "message": "Save Clippings",
+    "description": "Clippings for Thunderbird"
+  },
+
+  "migrnFailTtip": {
+    "message": "There was a problem migrating your Clippings data. Click for more info.",
+    "description": "Clippings for Thunderbird - tooltip"
+  },
+  
+  "saveConfirm": {
+    "message": "Saved."
+  },
+
   "pasteTitle": {
     "message": "Paste Clipping",
     "description": "Title bar text of keyboard paste dialog"
@@ -69,7 +112,7 @@
     "message": "Alert",
     "description": "Title bar text of alert dialog"
   },
-
+  
   "msgUnavail": {
     "message": "The selected action is not available right now."
   },
@@ -96,6 +139,10 @@
 
   "msgRetryPgNotLoaded": {
     "message": "Unable to retrieve selected text. Reload the page, and then try again."
+  },
+
+  "msgClipbdEmpty": {
+    "message": "Clipboard is empty or does not contain textual data."
   },
   
   "msgUnknown": {
@@ -166,9 +213,39 @@
     "description": "Clippings context menu"
   },
 
+  "cxtMenuNewFromSel": {
+    "message": "New From Selection…",
+    "description": "Clippings context menu in Thunderbird message composer"
+  },
+
+  "cxtMenuNewFromClipbd": {
+    "message": "New From Clipboard…",
+    "description": "Clippings context menu in Thunderbird message composer"
+  },
+
+  "cxtMenuShowPasteOpts": {
+    "message": "Show Quote Options When Pasting",
+    "description": "Clippings context menu in Thunderbird message composer"
+  },
+
   "baMenuResetAutoIncrPlaceholders": {
     "message": "Reset Auto-increment Placeholders",
     "description": "Clippings browser action submenu"
+  },
+
+  "pasteAsHdg": {
+    "message": "Paste Clipping As",
+    "description": "Quote Options dialog in Clippings for Thunderbird"
+  },
+
+  "pasteAsNormal": {
+    "message": "Normal text",
+    "description": "Quote Options dialog in Clippings for Thunderbird"
+  },
+
+  "pasteAsQuoted": {
+    "message": "Quoted text",
+    "description": "Quote Options dialog in Clippings for Thunderbird"
   },
 
   "welcomePageTitle": {
@@ -189,7 +266,7 @@
   },
 
   "welcWhatsNewDesc": {
-    "message": "Clippings 6.2 comes with many new features and improvements, such as Dark Mode support."
+    "message": "Clippings 6.3 comes with improvements to windows and dialogs, as well as a new setting for backup reminder notifications."
   },
 
   "welcWhatsNewCTA": {
@@ -208,12 +285,12 @@
     "message": "Read the Guide"
   },
 
-  "closeWelcomePg": {
-    "message": "Close This Page"
+  "welcHelpLink": {
+    "message": "Clippings Help"
   },
 
-  "welcLeaveConfirm": {
-    "message": "Are you sure you want to leave the Welcome to Clippings page?"
+  "closeWelcomePg": {
+    "message": "Close This Page"
   },
 
   "welcCancelDlg": {
@@ -259,6 +336,16 @@
     "description": "Label for the Clipping label menu"
   },
 
+  "labelCrtUnq": {
+    "message": "Create as unquoted text",
+    "description": "New clipping option available only in Thunderbird"
+  },
+
+  "labelRemLnBrk": {
+    "message": "Remove extra line breaks",
+    "description": "New clipping option available only in Thunderbird"
+  },
+
   "labelNewFldrName": {
     "message": "New folder name:"
   },
@@ -267,8 +354,22 @@
     "message": "Create as a subfolder of:"
   },
 
+  "btnPrevw": {
+    "message": "Preview…",
+    "description": "Clippings for Thunderbird"
+  },
+
+  "labelPrevw": {
+    "message": "Clipping preview:",
+    "description": "Clippings for Thunderbird"
+  },
+
   "shortcutKeyHint": {
     "message": "To quickly paste this clipping into a web page textbox in Firefox, press $1 followed by the shortcut key."
+  },
+
+  "shctKeyHintTB": {
+    "message": "To quickly paste this clipping into a message in Thunderbird, press $1 followed by the shortcut key."
   },
 
   "shortcutKeyAssigned": {
@@ -323,11 +424,16 @@
 
   "expHTMLHostAppInfo": {
     "message": "Clippings $1 on $2",
-    "description": "Clippings <extVersion> on Firefox <fxVersion>"
+    "description": "Clippings <extVersion> on <hostApp>"
   },
 
   "expHTMLShctKeyInstrxn": {
     "message": "To paste a clipping into a web page textbox in Firefox, press ALT+SHIFT+Y (Command+Shift+Y on macOS), then the shortcut key."
+  },
+
+  "expHTMLShctKeyInstrxnTB": {
+    "message": "To paste a clipping into a message in Thunderbird, press Alt+Shift+Y (Command+Option+V on macOS), then the shortcut key.",
+    "description": "Clippings for Thunderbird"
   },
 
   "expHTMLShctKeyCustNote": {
@@ -342,14 +448,41 @@
     "message": "Clipping Name"
   },
 
+  "printShctHelpHTML": {
+    "message": "To print this document, invoke your browser&rsquo;s Print command.",
+    "description": "HTML content for HTML export of shortcut key list from Clippings for Thunderbird"
+  },
+
+  "saveToHTML": {
+    "message": "Save to HTML"
+  },
+
+  "print": {
+    "message": "Print",
+    "description": "Shortcut key list in Clippings for Thunderbird"
+  },
+
+  "htmlFilterDesc": {
+    "message": "HTML Document"
+  },
+
+  "errorSaveFailed": {
+    "message": "Error: Save failed"
+  },
+
   "plchldrPromptSingleDesc": {
     "message": "Enter value for \"$1\":",
-    "description": "Placeholder prompt dialog - single placeholder"
+    "description": "Placeholder prompt dialog - single placeholder, text"
   },
 
   "plchldrPromptMultiDesc": {
     "message": "Enter the values for the following placeholders.",
     "description": "Placeholder prompt dialog - multiple placeholders"
+  },
+
+  "plchldrPmtSelectDesc": {
+    "message": "Select a value for \"$1\":",
+    "description": "Placeholder prompt dialog - single placeholder, select"
   },
 
   "clippingsMgrWndTitle": {
@@ -379,6 +512,10 @@
 
   "tbTools": {
     "message": "Tools"
+  },
+
+  "tbHelp": {
+    "message": "Help"
   },
 
   "clipMgrSrchBarHint": {
@@ -452,6 +589,11 @@
 
   "mnuReloadSyncFldr": {
     "message": "Reload"
+  },
+
+  "mnuMoreTools": {
+    "message": "More",
+    "description": "Submenu of Tools menu in Clippings Manager"
   },
 
   "mnuRemoveAllSrcURLs": {
@@ -529,7 +671,7 @@
   },
 
   "mnuPlchldrFmtDateTime": {
-    "message": "Formatted Date/Time...",
+    "message": "Formatted Date/Time…",
     "description": "Clippings Manager - preset (built-in) placeholder menu"
   },
 
@@ -544,11 +686,11 @@
   },
 
   "clipMgrShortcutHelpHint": {
-    "message": "Shortcut Help"
+    "message": "Shortcut Key List"
   },
 
   "clipMgrNoItems": {
-    "message": "No clippings found."
+    "message": "No items found."
   },
 
   "clipMgrIntroCmdDel": {
@@ -591,6 +733,11 @@
     "description": "Clippings Manager intro - key binding description"
   },
 
+  "clipMgrIntroCmdDetailsPane": {
+    "message": "Show/hide Details Pane",
+    "description": "Clippings Manager intro - key binding description"
+  },
+
   "clipMgrStatusBar": {
     "message": "$1 items",
     "description": "Status bar text in Clippings Manager, counting the number of clippings and folders"
@@ -598,6 +745,10 @@
 
   "clipMgrRemoveSrcURLsConfirm": {
     "message": "Removed source web page addresses from your clippings."
+  },
+
+  "clipMgrRestoredSrcURLs": {
+    "message": "Restored source web page addresses."
   },
 
   "clipMgrNoUndo": {
@@ -616,6 +767,10 @@
     "message": "To paste a clipping from the list below into a web page textbox in Firefox, press $1, then the shortcut key."
   },
 
+  "clipMgrShortcutHelpInstrxnTB": {
+    "message": "To paste a clipping from the list below into a message in Thunderbird, press $1, then the shortcut key."
+  },
+  
   "clipMgrShortcutKeyAssigned": {
     "message": "The selected shortcut key has already been assigned to another clipping.  Please select a different shortcut key."
   },
@@ -665,7 +820,11 @@
   },
 
   "numPlchldrDesc": {
-    "message": "Each time the clipping is pasted, the value of this placeholder will automatically increase by one, until the placeholder is reset from the Clippings toolbar button context menu."
+    "message": "Each time the clipping is pasted, the value of this placeholder will automatically increase by one, until it is reset from the Clippings toolbar button context menu."
+  },
+
+  "numPlchldrDescTB": {
+    "message": "Each time the clipping is pasted, the value of this placeholder will automatically increase by one, until it is reset from the Clippings context menu."
   },
 
   "dateTimeFmts": {
@@ -725,11 +884,11 @@
   },
 
   "expFmtClippings6": {
-    "message": "Clippings 6"
+    "message": "Clippings"
   },
 
   "expFmtClippings6Desc": {
-    "message": "The default format for backing up and exchanging Clippings data with other users or multiple computers.  Requires Clippings 5.5 or newer installed."
+    "message": "The default format for backing up and exchanging Clippings data with other users or multiple computers."
   },
 
   "expFmtHTMLDoc": {
@@ -741,7 +900,7 @@
   },
 
   "expFmtCSV": {
-    "message": "CSV File"
+    "message": "Comma-Separated Values (CSV)"
   },
 
   "expFmtCSVDesc": {
@@ -846,6 +1005,14 @@
     "message": "Activate shortcut key mode by pressing these keys:"
   },
 
+  "prefsShctMode": {
+    "message": "Activate shortcut key mode by pressing $1"
+  },
+
+  "prefsShctModeNew": {
+    "message": "Also use alternate keys $1"
+  },
+
   "prefsShortcutKeyNote": {
     "message": "Some of the available keyboard shortcuts may already be assigned to <a href=\"https://support.mozilla.org/en-US/kb/keyboard-shortcuts-perform-firefox-tasks-quickly\" class=\"hyperlink\">Firefox commands</a> or other add\u2011ons."
   },
@@ -853,7 +1020,7 @@
   "prefsOutsideShct": {
     "message": "To change the keyboard shortcut, go to Manage Extension Shortcuts in Add-ons Manager."
   },
-
+  
   "prefsDefaultNumPlchldrStart": {
     "message": "Default starting value for auto-incrementing placeholders:"
   },
@@ -879,6 +1046,10 @@
     "description": "Label for checkbox option for setting backup notification, appears after checkbox and before the reminder frequency drop-down menu"
   },
 
+  "backupRemSkip": {
+    "message": "Skip reminder if there were no changes since last backup"
+  },
+  
   "backupRemDays": {
     "message": "days",
     "description": "Label appearing after the drop-down menu for backup reminder frequency"
@@ -970,12 +1141,22 @@
     "message": "You can synchronize your clippings with Thunderbird or other Firefox installations by putting the clippings you want to share into a special \u201cSynced Clippings\u201d folder.  The synchronized clippings will be saved in a file on your system.  Requires the <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">Sync Clippings</a> helper app."
   },
 
+  "syncIntroTB": {
+    "message": "You can synchronize your clippings with Firefox or other Thunderbird installations by putting the clippings you want to share into a special \u201cSynced Clippings\u201d folder.  The synchronized clippings will be saved in a file on your system.  Requires the <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">Sync Clippings</a> helper app."
+  },
+
   "syncLearnMore": {
     "message": "Learn more about Sync Clippings."
   },
 
   "syncHelp": {
-    "message": "<p class=\"dlg-subhead\">Sync Clippings</p><p>Sync Clippings lets you synchronize a subset of your clippings between Firefox and Thunderbird, so that they appear in both applications. You can choose which clippings you want to sync by creating them in a special \u201cSynced Clippings\u201d folder from the New Clipping dialog, or by moving them into the same folder in Clippings Manager.</p><p>The Synced Clippings folder will be automatically created once Sync Clippings is set up.</p><p class=\"dlg-subhead\">Setting Up</p><p>Sync Clippings needs to be turned on in the applications you want to synchronize your clippings with. Sync Clippings is supported on Firefox 60 and newer, and Thunderbird 60 and newer (with Clippings for Thunderbird 5.6 or newer installed).</p><p>In addition, the Sync Clippings helper app needs to be installed on your system to keep your Synced Clippings folder contents up to date. It is available for download from the <a href=\"http:\/\/aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">AE Creations website</a>. Once installed, it will be launched automatically when Firefox is started, and will run in the background.</p><p>In Firefox, activate Sync Clippings from the Clippings preferences page by clicking <b>Turn On Sync</b>.  You will be prompted to choose a file location on your system where the synced clippings data will be saved to, if this was not set already.</p>"
+    "message": "<p class=\"dlg-subhead\">Sync Clippings</p><p>Sync Clippings lets you synchronize a subset of your clippings between Firefox and Thunderbird so that they appear in both applications. You can choose which clippings you want to sync by creating them in a special \u201cSynced Clippings\u201d folder from the New Clipping dialog, or by moving them into the same folder in Clippings Manager.</p><p>The Synced Clippings folder will be automatically created once Sync Clippings is set up.</p><p class=\"dlg-subhead\">Setting Up</p><p>Sync Clippings needs to be turned on in the applications you want to synchronize your clippings with. Sync Clippings is supported on Firefox 60 and newer, and Thunderbird 60 and newer (with Clippings for Thunderbird 5.6 or newer installed).</p><p>In addition, the Sync Clippings helper app needs to be installed on your system to keep your Synced Clippings folder contents up to date. It is available for download from the <a href=\"http:\/\/aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">AE Creations website</a>. Once installed, it will be launched automatically when Firefox is started, and will run in the background.</p><p>To activate Sync Clippings, click <b>Turn On Sync</b> from the Clippings preferences page.  You will be prompted to choose a file location on your system where the synced clippings data will be saved to, if this was not set already.</p>",
+    "description": "Sync Clippings help in Firefox"
+  },
+
+  "syncHelpTB": {
+    "message": "<p class=\"dlg-subhead\">Sync Clippings</p><p>Sync Clippings lets you synchronize a subset of your clippings between Firefox and Thunderbird so that they appear in both applications. You can choose which clippings you want to sync by creating them in a special \u201cSynced Clippings\u201d folder from the New Clipping dialog, or by moving them into the same folder in Clippings Manager.</p><p>The Synced Clippings folder will be automatically created once Sync Clippings is set up.</p><p class=\"dlg-subhead\">Setting Up</p><p>Sync Clippings needs to be turned on in the applications you want to synchronize your clippings with. Sync Clippings is supported on Firefox 60 and newer (with Clippings 6.1 or newer installed), and Thunderbird 60 and newer.</p><p>In addition, the Sync Clippings helper app needs to be installed on your system to keep your Synced Clippings folder contents up to date. It is available for download from the <a href=\"http:\/\/aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">AE Creations website</a>. Once installed, it will be launched automatically when Thunderbird is started, and will run in the background.</p><p>To activate Sync Clippings, click <b>Turn On Sync</b> from the Clippings preferences page.  You will be prompted to choose a file location on your system where the synced clippings data will be saved to, if this was not set already.</p>",
+    "description": "Sync Clippings help in Thunderbird"
   },
 
   "syncStatusOn": {
@@ -1035,10 +1216,6 @@
   "syncFileDirExLinux": {
     "message": "/home/YourName/synced-clippings",
     "description": "Example folder path on Linux."
-  },
-
-  "syncFileDirDesc": {
-    "message": "Your Sync Clippings data is stored in this file location.  If you are synchronizing with Thunderbird and want to change the sync file location, you must also change the sync file location in Clippings preferences in Thunderbird to match."
   },
 
   "errSyncConxn": {
@@ -1105,6 +1282,33 @@
     "message": "Show only synced items in the Clippings menu"
   },
 
+  "wndsAndDlgsOpts": {
+    "message": "Windows and Dialogs…"
+  },
+
+  "wndsDlgsOptsTitle": {
+    "message": "Windows and Dialogs"
+  },
+
+  "wndsDlgsOptsExpWarn": {
+    "message": "These settings are experimental on $1. They may not work properly on systems with multiple displays.",
+    "description": "Warning message in the Windows and Dialogs settings dialog, appearing if using an OS other than Windows"
+  },
+
+  "macOS": {
+    "message": "macOS"
+  },
+
+  "autoPosWnds": {
+    "message": "Automatically position within originating window",
+    "description": "Checkbox option in Windows and Dialogs settings dialog"
+  },
+
+  "clpMgrSaveWndPos": {
+    "message": "Save Clippings Manager window position and size",
+    "description": "Checkbox option in Windows and Dialogs settings dialog"
+  },
+
   "aboutBtn": {
     "message": "About…"
   },
@@ -1119,7 +1323,7 @@
   },
   
   "aboutHomePgLink": {
-    "message": "Visit home page"
+    "message": "Visit website"
   },
 
   "aboutLicLink": {
@@ -1160,7 +1364,73 @@
   "aboutSyncFileSize": {
     "message": "Sync file size:"
   },
-  
+
+  "upgradeNotifcn": {
+    "message": "$1 was recently updated! Click here to see what's new.",
+    "description": "Post-upgrade notification text, with placeholder for extension name (Clippings or Clippings for Thunderbird)"
+  },
+
+  "newVerHdg": {
+    "message": "New Version Installed!",
+    "description": "Header for the What's New page (appears after upgrading Clippings)"
+  },
+
+  "upgrade": {
+    "message": "Clippings has been upgraded to version 6.3.",
+    "description": "What's New page (appears after upgrading Clippings)"
+  },
+
+  "upgradeTB": {
+    "message": "Clippings for Thunderbird has been upgraded to version 6.1.",
+    "description": "What's New page (appears after upgrading Clippings for Thunderbird)"
+  },
+
+  "whatsNew": {
+    "message": "What’s New",
+    "description": "What's New page (appears after upgrading Clippings)"
+  },
+
+  "whatsNew1": {
+    "message": "Improvements to Clippings Manager. On Windows, Clippings Manager now remembers its window size and position",
+    "description": "Description of an enhancement or fix in the new version of Clippings"
+  },
+
+  "whatsNew2": {
+    "message": "Improvements to support for multiple displays on Windows. Clippings popup windows and dialogs will now be positioned within the browser window from which they were opened, instead of always centered on the primary display",
+    "description": "Description of an enhancement or fix in the new version of Clippings"
+  },
+
+  "whatsNew3": {
+    "message": "New option to skip backup reminders if there were no changes to your clippings since the last backup",
+    "description": "Description of an enhancement or fix in the new version of Clippings"
+  },
+
+  "contribHdg": {
+    "message": "Contribute",
+    "description": "Contribution CTA in the What's New page"
+  },
+
+  "contribCTA": {
+    "message": "Support the development of $1 by <a href=\"$2\">making a donation</a>. Learn more about other ways to <a href=\"$3\">get involved</a>!",
+    "description": "Call to action message to make donation or learn more about contributing to Clippings (or Clippings for Thunderbird)"
+  },
+
+  "linkBlog": {
+    "message": "AE Creations blog"
+  },
+
+  "linkAMO": {
+    "message": "Firefox Add-ons page"
+  },
+
+  "linkATN": {
+    "message": "Thunderbird Add-ons page"
+  },
+
+  "linkForum": {
+    "message": "Help and Support forums"
+  },
+
   "keyAlt": {
     "message": "Alt"
   },

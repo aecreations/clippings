@@ -22,7 +22,6 @@ let gPasteClippingTargetTabID = null;
 let gIsReloadingSyncFldr = false;
 let gSyncClippingsHelperDwnldPgURL;
 let gForceShowFirstTimeBkupNotif = false;
-let gClippingsMgrRootFldrReseq = false;
 
 let gClippingsListeners = {
   _listeners: [],
@@ -196,7 +195,7 @@ let gSyncClippingsListener = {
   {
     function resetCxtMenuSyncItemsOnlyOpt(aRebuildCxtMenu) {
       if (gPrefs.cxtMenuSyncItemsOnly) {
-        browser.storage.local.set({ cxtMenuSyncItemsOnly: false });
+        aePrefs.setPrefs({ cxtMenuSyncItemsOnly: false });
       }
       if (aRebuildCxtMenu) {
         rebuildContextMenu();
@@ -335,34 +334,45 @@ browser.runtime.onInstalled.addListener(async (aInstall) => {
     let currVer = browser.runtime.getManifest().version;
     log(`Clippings/wx: Upgrading from version ${oldVer} to ${currVer}`);
 
-    gPrefs = await browser.storage.local.get(aePrefs.getPrefKeys());
+    gPrefs = await aePrefs.getAllPrefs();
 
-    if (! hasSanDiegoPrefs()) {
+    if (! aePrefs.hasSanDiegoPrefs(gPrefs)) {
       gSetDisplayOrderOnRootItems = true;
       log("Initializing 6.1 user preferences.");
-      await setSanDiegoPrefs();
+      await aePrefs.setSanDiegoPrefs(gPrefs);
     }
 
-    if (! hasBalboaParkPrefs()) {
+    if (! aePrefs.hasBalboaParkPrefs(gPrefs)) {
       gForceShowFirstTimeBkupNotif = true;
       log("Initializing 6.1.2 user preferences.");
-      await setBalboaParkPrefs();
+      await aePrefs.setBalboaParkPrefs(gPrefs);
     }
 
-    if (! hasMalibuPrefs()) {
+    if (! aePrefs.hasMalibuPrefs(gPrefs)) {
       log("Initializing 6.2 user preferences.");
-      await setMalibuPrefs();
+      await aePrefs.setMalibuPrefs(gPrefs);
     }
     
-    if (! hasTopangaPrefs()) {
+    if (! aePrefs.hasTopangaPrefs(gPrefs)) {
       log("Initializing 6.2.1 user preferences.");
-      await setTopangaPrefs();
+      await aePrefs.setTopangaPrefs(gPrefs);
+    }
+
+    if (! aePrefs.hasHuntingdonPrefs(gPrefs)) {
+      log("Initializing 6.3 user preferences.");
+      await aePrefs.setHuntingdonPrefs(gPrefs);
+
+      // Enable post-upgrade notifications which users can click on to open the
+      // What's New page.
+      await aePrefs.setPrefs({
+        upgradeNotifCount: aeConst.MAX_NUM_POST_UPGRADE_NOTIFICNS
+      });      
     }
 
     if (gPrefs.clippingsMgrDetailsPane) {
       gPrefs.clippingsMgrAutoShowDetailsPane = false;
     }
-      
+
     init();
   }
 });
@@ -373,101 +383,7 @@ async function setDefaultPrefs()
   let defaultPrefs = aePrefs.getDefaultPrefs();
 
   gPrefs = defaultPrefs;
-  await browser.storage.local.set(defaultPrefs);
-}
-
-
-function hasSanDiegoPrefs()
-{
-  // Version 6.1
-  return gPrefs.hasOwnProperty("syncClippings");
-}
-
-
-async function setSanDiegoPrefs()
-{
-  let newPrefs = {
-    syncClippings: false,
-    syncFolderID: null,
-    pasteShortcutKeyPrefix: "",
-    lastBackupRemDate: null,
-    backupRemFirstRun: true,
-    backupRemFrequency: aeConst.BACKUP_REMIND_WEEKLY,
-    afterSyncFldrReloadDelay: 3000,
-  };
-  
-  for (let pref in newPrefs) {
-    gPrefs[pref] = newPrefs[pref];
-  }
-
-  await browser.storage.local.set(newPrefs);
-}
-
-
-function hasBalboaParkPrefs()
-{
-  // Version 6.1.2
-  return gPrefs.hasOwnProperty("syncHelperCheckUpdates");
-}
-
-
-async function setBalboaParkPrefs()
-{
-  let newPrefs = {
-    syncHelperCheckUpdates: true,
-    lastSyncHelperUpdChkDate: null,
-  };
-
-  for (let pref in newPrefs) {
-    gPrefs[pref] = newPrefs[pref];
-  }
-
-  await browser.storage.local.set(newPrefs);
-}
-
-
-function hasMalibuPrefs()
-{
-  // Version 6.2
-  return gPrefs.hasOwnProperty("cxtMenuSyncItemsOnly");
-}
-
-
-async function setMalibuPrefs()
-{
-  let newPrefs = {
-    cxtMenuSyncItemsOnly: false,
-    clippingsMgrShowSyncItemsOnlyRem: true,
-    clippingsMgrAutoShowDetailsPane: true,
-    backupFilenameWithDate: true,
-  };
-
-  for (let pref in newPrefs) {
-    gPrefs[pref] = newPrefs[pref];
-  }
-
-  await browser.storage.local.set(newPrefs);
-}
-
-
-function hasTopangaPrefs()
-{
-  // Version 6.2.1
-  return gPrefs.hasOwnProperty("dispatchInputEvent");
-}
-
-
-async function setTopangaPrefs()
-{
-  let newPrefs = {
-    dispatchInputEvent: true,
-  };
-
-  for (let pref in newPrefs) {
-    gPrefs[pref] = newPrefs[pref];
-  }
-
-  await browser.storage.local.set(newPrefs);
+  await aePrefs.setPrefs(defaultPrefs);
 }
 
 
@@ -478,7 +394,7 @@ async function setTopangaPrefs()
 browser.runtime.onStartup.addListener(async () => {
   log("Clippings/wx: Initializing Clippings during browser startup.");
   
-  gPrefs = await browser.storage.local.get(aePrefs.getPrefKeys());
+  gPrefs = await aePrefs.getAllPrefs();
   log("Clippings/wx: Successfully retrieved user preferences:");
   log(gPrefs);
     
@@ -506,21 +422,20 @@ function init()
     gOS = platform.os;
     log("Clippings/wx: OS: " + gOS);
 
-    if (gPrefs.clippingsMgrMinzWhenInactv === undefined) {
-      gPrefs.clippingsMgrMinzWhenInactv = (gOS == "linux");
+    if (gOS == "linux" && gPrefs.clippingsMgrMinzWhenInactv === null) {
+      await aePrefs.setPrefs({ clippingsMgrMinzWhenInactv: true });
     }
 
-    browser.browserAction.onClicked.addListener(aTab => {
-      openClippingsManager();
-    });
+    if (gPrefs.autoAdjustWndPos === null) {
+      let autoAdjustWndPos = gOS == "win";
+      let clippingsMgrSaveWndGeom = autoAdjustWndPos;
+      await aePrefs.setPrefs({ autoAdjustWndPos, clippingsMgrSaveWndGeom });
+    }
 
     gClippingsListener.origin = aeConst.ORIGIN_HOSTAPP;
     gClippingsListeners.add(gClippingsListener);
     gSyncClippingsListeners.add(gSyncClippingsListener);
     
-    window.addEventListener("unload", onUnload, false);
-    initMessageListeners();
-
     if (gPrefs.syncClippings) {
       gSyncFldrID = gPrefs.syncFolderID;
 
@@ -535,54 +450,34 @@ function init()
     aeClippingSubst.init(navigator.userAgent, gPrefs.autoIncrPlcHldrStartVal);
     gAutoIncrPlchldrs = new Set();
 
-    browser.storage.onChanged.addListener((aChanges, aAreaName) => {
-      let changedPrefs = Object.keys(aChanges);
-
-      for (let pref of changedPrefs) {
-        gPrefs[pref] = aChanges[pref].newValue;
-
-        if (pref == "autoIncrPlcHldrStartVal") {
-          aeClippingSubst.setAutoIncrementStartValue(aChanges[pref].newValue);
-        }
-        else if (gPrefs.pasteShortcutKeyPrefix && !isDirectSetKeyboardShortcut()) {
-          setShortcutKeyPrefix(gPrefs.pasteShortcutKeyPrefix);
-        }
-      }
-    });
-
-    browser.commands.onCommand.addListener(async (aCmdName) => {
-      info(`Clippings/wx: Command "${aCmdName}" invoked!`);
-
-      if (aCmdName == aeConst.CMD_CLIPPINGS_KEYBOARD_PASTE && gPrefs.keyboardPaste) {
-        let tabs = await browser.tabs.query({ active: true, currentWindow: true });
-        let activeTabID = tabs[0].id;
-        gPasteClippingTargetTabID = activeTabID;
-        log(`Clippings/wx: Active tab ID: ${activeTabID} - opening keyboard paste dialog.`);
-        openKeyboardPasteDlg();
-      }
-    });
-
-    if (gPrefs.pasteShortcutKeyPrefix && !isDirectSetKeyboardShortcut()) {
-      setShortcutKeyPrefix(gPrefs.pasteShortcutKeyPrefix);
-    }
-
     if (gPrefs.backupRemFirstRun && !gPrefs.lastBackupRemDate) {
-      browser.storage.local.set({
+      aePrefs.setPrefs({
         lastBackupRemDate: new Date().toString(),
       });
     }
 
+    if (gPrefs.upgradeNotifCount > 0) {
+      // Show post-upgrade notification in 1 minute.
+      browser.alarms.create("show-upgrade-notifcn", {
+        delayInMinutes: aeConst.POST_UPGRADE_NOTIFCN_DELAY_MS / 60000
+      });
+    }
+
     // Check in 5 minutes whether to show backup reminder notification.
-    window.setTimeout(showBackupNotification, aeConst.BACKUP_REMINDER_DELAY_MS);
+    browser.alarms.create("show-backup-notifcn", {
+      delayInMinutes: aeConst.BACKUP_REMINDER_DELAY_MS / 60000
+    });
 
     if (gPrefs.syncClippings && gPrefs.syncHelperCheckUpdates) {
       // Check for updates to Sync Clippings Helper native app in 10 minutes.
-      window.setTimeout(showSyncHelperUpdateNotification, aeConst.SYNC_HELPER_CHECK_UPDATE_DELAY_MS);
+      browser.alarms.create("show-sync-helper-upd-notifcn", {
+        delayInMinutes: aeConst.SYNC_HELPER_CHECK_UPDATE_DELAY_MS / 60000
+      });
     }
 
     if (gPrefs.showWelcome) {
       openWelcomePage();
-      browser.storage.local.set({ showWelcome: false });
+      aePrefs.setPrefs({ showWelcome: false });
     }
 
     if (gSetDisplayOrderOnRootItems) {
@@ -612,6 +507,9 @@ function initClippingsDB()
   });
   gClippingsDB.version(4).stores({
     clippings: "++id, name, parentFolderID, shortcutKey"
+  });
+  gClippingsDB.version(5).stores({
+    clippings: "++id, name, parentFolderID, shortcutKey, sourceURL"
   });
 
   gClippingsDB.open().catch(aErr => { onError(aErr) });
@@ -666,7 +564,7 @@ async function enableSyncClippings(aIsEnabled)
         console.error("Clippings/wx: enableSyncClippings(): Failed to create the Synced Clipping folder: " + e);
       }
 
-      await browser.storage.local.set({ syncFolderID: gSyncFldrID });
+      await aePrefs.setPrefs({ syncFolderID: gSyncFldrID });
       log("Clippings/wx: enableSyncClippings(): Synced Clippings folder ID: " + gSyncFldrID);
       return gSyncFldrID;
     }
@@ -676,7 +574,7 @@ async function enableSyncClippings(aIsEnabled)
     let oldSyncFldrID = gSyncFldrID;
 
     let numUpd = await gClippingsDB.folders.update(gSyncFldrID, { isSync: undefined });
-    await browser.storage.local.set({ syncFolderID: null });
+    await aePrefs.setPrefs({ syncFolderID: null });
     gSyncFldrID = null;
     return oldSyncFldrID;
   }
@@ -720,7 +618,7 @@ function refreshSyncedClippings(aRebuildClippingsMenu)
     if (gSyncFldrID === null) {
       gSyncFldrID = aSyncFldrID;
       log("Clippings/wx: Synced Clippings folder ID: " + gSyncFldrID);
-      return browser.storage.local.set({ syncFolderID: gSyncFldrID });
+      return aePrefs.setPrefs({ syncFolderID: gSyncFldrID });
     }
       
     gSyncClippingsListeners.getListeners().forEach(aListener => { aListener.onReloadStart() });
@@ -736,7 +634,7 @@ function refreshSyncedClippings(aRebuildClippingsMenu)
     aeImportExport.setDatabase(gClippingsDB);
     aeImportExport.importFromJSON(syncJSONData, false, false, gSyncFldrID);
 
-    window.setTimeout(function () {
+    setTimeout(function () {
       gSyncClippingsListeners.getListeners().forEach(aListener => { aListener.onReloadFinish() });
     }, gPrefs.afterSyncFldrReloadDelay);
     
@@ -808,85 +706,6 @@ function purgeFolderItems(aFolderID, aKeepFolder)
     }).catch(aErr => {
       aFnReject(aErr);
     });
-  });
-}
-
-
-function initMessageListeners()
-{
-  browser.runtime.onMessage.addListener(aRequest => {
-    log(`Clippings/wx: Received message "${aRequest.msgID}"`);
-    
-    let resp = null;
-
-    if (aRequest.msgID == "init-new-clipping-dlg") {
-      resp = gNewClipping.get();
-
-      if (resp !== null) {
-        resp.saveSrcURL = gPrefs.alwaysSaveSrcURL;
-        resp.checkSpelling = gPrefs.checkSpelling;
-        return Promise.resolve(resp);
-      }
-    }
-    else if (aRequest.msgID == "init-placeholder-prmt-dlg") {
-      resp = gPlaceholders.get();
-      return Promise.resolve(resp);
-    }
-    else if (aRequest.msgID == "close-new-clipping-dlg") {
-      gWndIDs.newClipping = null;
-    }
-    else if (aRequest.msgID == "close-clippings-mgr-wnd") {
-      gWndIDs.clippingsMgr = null;
-    }
-    else if (aRequest.msgID == "close-keybd-paste-dlg") {
-      gWndIDs.keyboardPaste = null;
-    }
-    else if (aRequest.msgID == "paste-shortcut-key") {
-      let shortcutKey = aRequest.shortcutKey;
-      if (! shortcutKey) {
-        return;
-      }
-
-      log(`Clippings/wx: Key '${shortcutKey}' was pressed.`);
-      pasteClippingByShortcutKey(shortcutKey);
-    }
-
-    else if (aRequest.msgID == "paste-clipping-by-name") {
-      let externReq = aRequest.fromClippingsMgr;
-      pasteClippingByID(aRequest.clippingID, externReq);
-    }
-    else if (aRequest.msgID == "paste-clipping-with-plchldrs") {
-      let content = aRequest.processedContent;
-
-      window.setTimeout(async () => {
-        let tabs = await browser.tabs.query({active: true, currentWindow: true});
-        if (! tabs[0]) {
-          // This could happen if the browser tab was closed while the
-          // placeholder prompt dialog was open.
-          alertEx(gMsgBoxStr.MSG_NO_ACTIVE_BROWSER_TAB);
-          return;
-        }
-
-        let activeTabID = tabs[0].id;
-        if (activeTabID != gPasteClippingTargetTabID) {
-          warn(`Clippings/wx: Detected mismatch between currently-active browser tab ID and what it was when invoking clipping paste.\nPrevious active tab ID = ${gPasteClippingTargetTabID}, active tab ID = ${activeTabID}`);
-          activeTabID = gPasteClippingTargetTabID;
-        }
-        pasteProcessedClipping(content, activeTabID);
-      }, 60);
-    }
-    else if (aRequest.msgID == "close-placeholder-prmt-dlg") {
-      gWndIDs.placeholderPrmt = null;
-    }
-  });
-}
-
-
-async function setShortcutKeyPrefix(aShortcutKeyPrefix)
-{
-  await browser.commands.update({
-    name: aeConst.CMD_CLIPPINGS_KEYBOARD_PASTE,
-    shortcut: aShortcutKeyPrefix,
   });
 }
 
@@ -1236,7 +1055,7 @@ async function resetAutoIncrPlaceholder(aPlaceholder)
 }
 
 
-function showBackupNotification()
+async function showBackupNotification()
 {
   if (gPrefs.backupRemFrequency == aeConst.BACKUP_REMIND_NEVER) {
     return;
@@ -1282,43 +1101,44 @@ function showBackupNotification()
     if (gPrefs.backupRemFirstRun) {
       info("Clippings/wx: showBackupNotification(): Showing first-time backup reminder.");
 
-      browser.notifications.create(aeConst.NOTIFY_BACKUP_REMIND_FIRSTRUN_ID, {
+      await browser.notifications.create(aeConst.NOTIFY_BACKUP_REMIND_FIRSTRUN_ID, {
         type: "basic",
         title: browser.i18n.getMessage("backupNotifyTitle"),
         message: browser.i18n.getMessage("backupNotifyFirstMsg"),
         iconUrl: "img/icon.svg",
-
-      }).then(aNotifID => {
-        browser.storage.local.set({
-          backupRemFirstRun: false,
-          backupRemFrequency: aeConst.BACKUP_REMIND_WEEKLY,
-          lastBackupRemDate: new Date().toString(),
-        });
-
-        if (gForceShowFirstTimeBkupNotif) {
-          setBackupNotificationInterval();
-          gForceShowFirstTimeBkupNotif = false;
-        }
       });
+
+      aePrefs.setPrefs({
+        backupRemFirstRun: false,
+        backupRemFrequency: aeConst.BACKUP_REMIND_WEEKLY,
+        lastBackupRemDate: new Date().toString(),
+      });
+
+      if (gForceShowFirstTimeBkupNotif) {
+        setBackupNotificationInterval();
+        gForceShowFirstTimeBkupNotif = false;
+      }
     }
     else {
       info("Clippings/wx: showBackupNotification(): Last backup reminder: " + gPrefs.lastBackupRemDate);
 
-      browser.notifications.create(aeConst.NOTIFY_BACKUP_REMIND_ID, {
-        type: "basic",
-        title: browser.i18n.getMessage("backupNotifyTitle"),
-        message: browser.i18n.getMessage("backupNotifyMsg"),
-        iconUrl: "img/icon.svg",
+      if (gPrefs.skipBackupRemIfUnchg && gPrefs.clippingsUnchanged) {
+        log("Clippings/wx: No changes to clippings since last backup; skipping backup notification.");
+      }
+      else {
+        await browser.notifications.create(aeConst.NOTIFY_BACKUP_REMIND_ID, {
+          type: "basic",
+          title: browser.i18n.getMessage("backupNotifyTitle"),
+          message: browser.i18n.getMessage("backupNotifyMsg"),
+          iconUrl: "img/icon.svg",
+        });
 
-      }).then(aNotifID => {
-        clearBackupNotificationInterval();
         setBackupNotificationInterval();
-        browser.storage.local.set({ lastBackupRemDate: new Date().toString() });
-      });
+        aePrefs.setPrefs({ lastBackupRemDate: new Date().toString() });
+      }
     }
   }
   else {
-    clearBackupNotificationInterval();
     setBackupNotificationInterval();
   }
 }   
@@ -1327,16 +1147,34 @@ function showBackupNotification()
 function setBackupNotificationInterval()
 {
   log("Clippings/wx: Setting backup notification interval (every 24 hours).");
-  gBackupRemIntervalID = window.setInterval(showBackupNotification, aeConst.BACKUP_REMINDER_INTERVAL_MS);
+
+  browser.alarms.create("show-backup-notificn", {
+    periodInMinutes: aeConst.BACKUP_REMINDER_INTERVAL_MS / 60000
+  });
 }
 
 
-function clearBackupNotificationInterval()
+async function clearBackupNotificationInterval()
 {
-  if (gBackupRemIntervalID) {
-    window.clearInterval(gBackupRemIntervalID);
-    gBackupRemIntervalID = null;
-  }
+  log("Clippings/wx: Clearing backup notification interval.");
+  await browser.alarms.clear("show-backup-notificn");
+}
+
+
+async function showWhatsNewNotification()
+{
+  log("Clippings/wx: Showing post-upgrade notification.");
+
+  let extName = browser.i18n.getMessage("extName");
+  await browser.notifications.create(aeConst.NOTIFY_WHATS_NEW, {
+    type: "basic",
+    title: extName,
+    message: browser.i18n.getMessage("upgradeNotifcn", extName),
+    iconUrl: "img/icon.svg",
+  });
+
+  let upgradeNotifCount = gPrefs.upgradeNotifCount - 1;
+  aePrefs.setPrefs({upgradeNotifCount});
 }
 
 
@@ -1385,7 +1223,7 @@ function showSyncHelperUpdateNotification()
       }
 
     }).then(aNotifID => {
-      browser.storage.local.set({ lastSyncHelperUpdChkDate: new Date().toString() });
+      aePrefs.setPrefs({ lastSyncHelperUpdChkDate: new Date().toString() });
       
     }).catch(aErr => {
       console.error("Clippings/wx: showSyncHelperUpdateNotification(): Unable to check for updates to the Sync Clippings Helper app at this time.\n" + aErr);
@@ -1438,17 +1276,69 @@ async function openClippingsManager(aBackupMode)
   
   async function openClippingsMgrHelper()
   {
+    let width = 760;
+    let height = 410;
+    let topOffset = 200;
+    let left, top;
+    let wndGeom = gPrefs.clippingsMgrWndGeom;
+
+    if (gPrefs.clippingsMgrSaveWndGeom && wndGeom) {
+      width  = wndGeom.w - 1;  // Compensate for workaround to popup window bug.
+      height = wndGeom.h;
+      left   = wndGeom.x;
+      top    = wndGeom.y;
+    }
+    else {
+      if (gPrefs.autoAdjustWndPos) {
+        wndGeom = await getWndGeometryFromBrwsTab();
+        log("Clippings/wx: openClippingsManager() > openClippingsMgrHelper(): Calculating initial geometry of Clippings Manager. Retrieved window geometry of browser window:");
+        log(wndGeom);
+
+        if (wndGeom) {
+          if (wndGeom.w < width) {
+            left = null;
+          }
+          else {
+            left = Math.ceil((wndGeom.w - width) / 2) + wndGeom.x;
+          }
+
+          if ((wndGeom.h + topOffset) < height) {
+            top = null;
+          }
+          else {
+            top = wndGeom.y + topOffset;
+          }
+        }
+        else {
+          left = 64;
+          top = 128;
+        }
+      }
+      else {
+        left = Math.ceil((window.screen.availWidth - width) / 2);
+        top = Math.ceil((window.screen.availHeight - height) / 2);
+      }
+    }
+    
     let wndInfo = {
       url: clippingsMgrURL,
       type: "popup",
-      width: 750, height: 400,
-      left: 64, top: 128,
+      width, height,
+      left, top
     };
 
     let wnd = await browser.windows.create(wndInfo);
     gWndIDs.clippingsMgr = wnd.id;
     browser.history.deleteUrl({ url: clippingsMgrURL });
+
+    // Workaround to bug where window position isn't set when calling
+    // `browser.windows.create()`. If unable to get window geometry, then
+    // default to centering on screen.
+    if (wndGeom) {
+      browser.windows.update(wnd.id, { left, top });
+    }
   }
+  // END nested function
     
   let openInNewTab = gPrefs.openClippingsMgrInTab;
 
@@ -1479,11 +1369,11 @@ async function openClippingsManager(aBackupMode)
 function openNewClippingDlg()
 {
   let url = browser.runtime.getURL("pages/new.html");
-  let height = 390;
+  let height = 412;
   if (gOS == "win") {
-    height = 420;
+    height = 448;
   }
-  openDlgWnd(url, "newClipping", { type: "detached_panel", width: 428, height });
+  openDlgWnd(url, "newClipping", { type: "popup", width: 432, height });
 }
 
 
@@ -1493,7 +1383,12 @@ function openKeyboardPasteDlg()
   // If not, then don't do anything.
 
   let url = browser.runtime.getURL("pages/keyboardPaste.html");
-  openDlgWnd(url, "keyboardPaste", { type: "detached_panel", width: 500, height: 164 });
+  openDlgWnd(url, "keyboardPaste", {
+    type: "popup",
+    width: 500,
+    height: 164,
+    topOffset: 256,
+  });
 }
 
 
@@ -1502,14 +1397,12 @@ function openPlaceholderPromptDlg()
   // TO DO: Same checking for cursor location as in the preceding function.
 
   let url = browser.runtime.getURL("pages/placeholderPrompt.html");
-  let height = 180;
-  if (versionCompare(gHostAppVer, "89.0") >= 0) {
-    // Adjust height of placeholder prompt to accommodate restyling of native
-    // drop-down menus in Firefox 89 on Windows.
-    height = 186;
-  }
-  
-  openDlgWnd(url, "placeholderPrmt", { type: "detached_panel", width: 500, height });
+  openDlgWnd(url, "placeholderPrmt", {
+    type: "popup",
+    width: 536,
+    height: 198,
+    topOffset: 256,
+  });
 }
 
 
@@ -1523,7 +1416,7 @@ function openBackupDlg()
     height = 450;
   }
   
-  openDlgWnd(url, "backupFirstRun", { type: "detached_panel", width: 590, height });
+  openDlgWnd(url, "backupFirstRun", { type: "popup", width: 590, height });
 }
 
 
@@ -1531,18 +1424,62 @@ async function openDlgWnd(aURL, aWndKey, aWndPpty)
 {
   async function openDlgWndHelper()
   {
+    let width = aWndPpty.width;
+    let height = aWndPpty.height;
+    let left, top, wndGeom;
+    
+    if (gPrefs.autoAdjustWndPos) {
+      wndGeom = await getWndGeometryFromBrwsTab();
+      log("Clippings/wx: openDlgWnd() > openDlgWndHelper(): Window geometry of browser window:");
+      log(wndGeom);
+      
+      let topOffset = aWndPpty.topOffset ?? 200;
+
+      if (wndGeom) {
+        if (wndGeom.w < width) {
+          left = null;
+        }
+        else {
+          left = Math.ceil((wndGeom.w - width) / 2) + wndGeom.x;
+        }
+
+        if ((wndGeom.h + topOffset) < height) {
+          top = null;
+        }
+        else {
+          top = wndGeom.y + topOffset;
+        }
+      }
+      else {
+        left = 64;
+        top = 128;
+      }
+    }
+    else {
+      left = Math.ceil((window.screen.availWidth - width) / 2);
+      top = Math.ceil((window.screen.availHeight - height) / 2);
+    }
+
+    log(`Opening popup window at coordinates (${left}, ${top}); screen size: width ${window.screen.availWidth}; height ${window.screen.availHeight}`);
+
     let wnd = await browser.windows.create({
       url: aURL,
       type: aWndPpty.type,
-      width: aWndPpty.width,
-      height: aWndPpty.height,
-      left: window.screen.availWidth - aWndPpty.width / 2,
-      top:  window.screen.availHeight - aWndPpty.height / 2
+      width, height,
+      left, top,
     });
 
     gWndIDs[aWndKey] = wnd.id;
     browser.history.deleteUrl({ url: aURL });
+
+    // Workaround to bug where window position isn't set when calling
+    // `browser.windows.create()`. If unable to get window geometry, then
+    // default to centering on screen.
+    if (wndGeom) {
+      browser.windows.update(wnd.id, { left, top });
+    }
   }
+  // END nested function
 
   if (gWndIDs[aWndKey]) {
     try {
@@ -1557,6 +1494,35 @@ async function openDlgWnd(aURL, aWndKey, aWndPpty)
   else {
     openDlgWndHelper();
   }
+}
+
+
+async function getWndGeometryFromBrwsTab()
+{
+  let rv = null;
+
+  let brwsTabs = await browser.tabs.query({currentWindow: true, discarded: false});
+  if (!brwsTabs || brwsTabs.length == 0) {
+    return rv;
+  }
+  
+  let wndGeom;
+
+  for (let tab of brwsTabs) {
+    try {
+      log("Clippings/wx: getWndGeometryFromBrwsTab(): Sending message \"get-wnd-geometry\" to content script; tab ID: " + tab.id);
+      wndGeom = await browser.tabs.sendMessage(tab.id, { msgID: "get-wnd-geometry" });
+    }
+    catch (e) {}
+
+    if (wndGeom) {
+      log("Successfully retrieved window geometry from browser tab " + tab.id);
+      rv = wndGeom;
+      break;
+    }
+  }
+
+  return rv;
 }
 
 
@@ -1700,8 +1666,8 @@ async function pasteClipping(aClippingInfo, aExternalRequest)
     if (plchldrs.length > 0) {
       let plchldrsWithDefaultVals = aeClippingSubst.getCustomPlaceholderDefaultVals(processedCtnt, aClippingInfo);
       gPlaceholders.set(plchldrs, plchldrsWithDefaultVals, processedCtnt);
-      
-      openPlaceholderPromptDlg();
+
+      setTimeout(openPlaceholderPromptDlg, 100);
       return;
     }
   }
@@ -1722,7 +1688,7 @@ function pasteProcessedClipping(aClippingContent, aActiveTabID)
 
   log(`Clippings/wx: Extension sending message "paste-clipping" to content script (active tab ID = ${aActiveTabID})`);
   
-  window.setTimeout(async () => {
+  setTimeout(async () => {
     try {
       await browser.tabs.sendMessage(aActiveTabID, msgParams);
     }
@@ -1733,20 +1699,6 @@ function pasteProcessedClipping(aClippingContent, aActiveTabID)
       gPasteClippingTargetTabID = null;
     };
   }, 150);    
-}
-
-
-function isDirectSetKeyboardShortcut()
-{
-  let fxMajorVer = gHostAppVer.split(".")[0];
-  
-  return (fxMajorVer >= 66);
-}
-
-
-function onUnload(aEvent)
-{
-  gClippingsListeners.remove(gClippingsListener);
 }
 
 
@@ -1815,44 +1767,68 @@ function getPrefs()
 }
 
 
-function getSyncFolderID()
-{
-  return gSyncFldrID;
-}
-
-
-function isClippingsMgrRootFldrReseq()
-{
-  return gClippingsMgrRootFldrReseq;
-}
-
-
-function setClippingsMgrRootFldrReseq(aReseqOnReload)
-{
-  gClippingsMgrRootFldrReseq = aReseqOnReload;
-}
-
-
 function isGoogleChrome()
 {
   return (! ("browser" in window));
 }
 
 
-function alertEx(aMessageID)
+async function alertEx(aMessageID)
 {
   let message = browser.i18n.getMessage(aMessageID);
   
   info("Clippings/wx: " + message);
   let url = "pages/msgbox.html?msgid=" + aMessageID;
-  
-  browser.windows.create({
-    url: url,
+
+  // Center the common message box popup within originating browser window,
+  // both horizontally and vertically.
+  let wndGeom = null;
+  let width = 520;
+  let height = 170;
+
+  // Default popup window coords.  Unless replaced by window geometry calcs,
+  // these coords will be ignored - popup window will always be centered
+  // on screen due to a WebExtension API bug; see next comment.
+  let left = 256;
+  let top = 64;
+
+  if (gPrefs.autoAdjustWndPos) {
+    wndGeom = await getWndGeometryFromBrwsTab();
+
+    if (wndGeom) {
+      if (wndGeom.w < width) {
+        left = null;
+      }
+      else {
+        left = Math.ceil((wndGeom.w - width) / 2) + wndGeom.x;
+      }
+
+      if ((wndGeom.h) < height) {
+        top = null;
+      }
+      else {
+        top = Math.ceil((wndGeom.h - height) / 2) + wndGeom.y;
+      }
+    }
+  }
+
+  let wndKey = "ae_clippings_msgbox";
+  let wnd = await browser.windows.create({
+    url,
     type: "popup",
-    width: 520, height: 170,
-    left: window.screen.availWidth - 520 / 2,
-    top:  window.screen.availHeight - 170 / 2
+    width, height,
+    left, top,
   });
+
+  gWndIDs[wndKey] = wnd.id;
+  browser.history.deleteUrl({ url });
+
+  // Workaround to bug where window position isn't correctly set when calling
+  // `browser.windows.create()`. If unable to get window geometry, then default
+  // to centering on screen.
+  if (wndGeom) {
+    browser.windows.update(wnd.id, { left, top });
+  }
 }
 
 
@@ -1912,8 +1888,26 @@ function versionCompare(aVer1, aVer2)
 
 
 //
-// Click event listener for the context menu items
+// Event handlers
 //
+
+browser.browserAction.onClicked.addListener(aTab => {
+  openClippingsManager();
+});
+
+
+browser.commands.onCommand.addListener(async (aCmdName) => {
+  info(`Clippings/wx: Command "${aCmdName}" invoked!`);
+
+  if (aCmdName == aeConst.CMD_CLIPPINGS_KEYBOARD_PASTE && gPrefs.keyboardPaste) {
+    let tabs = await browser.tabs.query({ active: true, currentWindow: true });
+    let activeTabID = tabs[0].id;
+    gPasteClippingTargetTabID = activeTabID;
+    log(`Clippings/wx: Active tab ID: ${activeTabID} - opening keyboard paste dialog.`);
+    openKeyboardPasteDlg();
+  }
+});
+
 
 browser.contextMenus.onClicked.addListener(async (aInfo, aTab) => {
   switch (aInfo.menuItemId) {
@@ -1983,9 +1977,20 @@ browser.contextMenus.onClicked.addListener(async (aInfo, aTab) => {
 });
 
 
-//
-// Click event listener for notifications
-//
+browser.alarms.onAlarm.addListener(async (aAlarm) => {
+  info(`Clippings/wx: Alarm "${aAlarm.name}" was triggered.`);
+
+  if (aAlarm.name == "show-backup-notifcn") {
+    await showBackupNotification();
+  }
+  else if (aAlarm.name == "show-sync-helper-upd-notifcn") {
+    showSyncHelperUpdateNotification();
+  }
+  else if (aAlarm.name == "show-upgrade-notifcn") {
+    showWhatsNewNotification();
+  }
+});
+
 
 browser.notifications.onClicked.addListener(aNotifID => {
   if (aNotifID == aeConst.NOTIFY_BACKUP_REMIND_ID) {
@@ -1998,8 +2003,121 @@ browser.notifications.onClicked.addListener(aNotifID => {
   else if (aNotifID == aeConst.NOTIFY_SYNC_HELPER_UPDATE) {
     browser.tabs.create({ url: gSyncClippingsHelperDwnldPgURL });
   }
+  else if (aNotifID == aeConst.NOTIFY_WHATS_NEW) {
+    browser.tabs.create({ url: browser.runtime.getURL("pages/whatsnew.html") });
+    aePrefs.setPrefs({ upgradeNotifCount: 0 });
+  }
 });
   
+
+browser.storage.onChanged.addListener((aChanges, aAreaName) => {
+  let changedPrefs = Object.keys(aChanges);
+
+  for (let pref of changedPrefs) {
+    gPrefs[pref] = aChanges[pref].newValue;
+
+    if (pref == "autoIncrPlcHldrStartVal") {
+      aeClippingSubst.setAutoIncrementStartValue(aChanges[pref].newValue);
+    }
+  }
+});
+
+
+browser.runtime.onMessage.addListener(aRequest => {
+  log(`Clippings/wx: Received message "${aRequest.msgID}"`);
+  
+  let resp = null;
+
+  if (aRequest.msgID == "get-env-info") {
+    resp = {
+      os: gOS,
+      hostAppName: gHostAppName,
+      hostAppVer:  gHostAppVer,
+    };
+    
+    return Promise.resolve(resp);
+  }
+  else if (aRequest.msgID == "init-new-clipping-dlg") {
+    resp = gNewClipping.get();
+
+    if (resp !== null) {
+      resp.saveSrcURL = gPrefs.alwaysSaveSrcURL;
+      resp.checkSpelling = gPrefs.checkSpelling;
+      return Promise.resolve(resp);
+    }
+  }
+  else if (aRequest.msgID == "init-placeholder-prmt-dlg") {
+    resp = gPlaceholders.get();
+    return Promise.resolve(resp);
+  }
+  else if (aRequest.msgID == "close-new-clipping-dlg") {
+    gWndIDs.newClipping = null;
+  }
+  else if (aRequest.msgID == "close-clippings-mgr-wnd") {
+    gWndIDs.clippingsMgr = null;
+  }
+  else if (aRequest.msgID == "close-keybd-paste-dlg") {
+    gWndIDs.keyboardPaste = null;
+  }
+  else if (aRequest.msgID == "paste-shortcut-key") {
+    let shortcutKey = aRequest.shortcutKey;
+    if (! shortcutKey) {
+      return;
+    }
+
+    log(`Clippings/wx: Key '${shortcutKey}' was pressed.`);
+    pasteClippingByShortcutKey(shortcutKey);
+  }
+
+  else if (aRequest.msgID == "paste-clipping-by-name") {
+    let externReq = aRequest.fromClippingsMgr;
+    pasteClippingByID(aRequest.clippingID, externReq);
+  }
+  else if (aRequest.msgID == "paste-clipping-with-plchldrs") {
+    let content = aRequest.processedContent;
+
+    setTimeout(async () => {
+      let tabs = await browser.tabs.query({active: true, currentWindow: true});
+      if (! tabs[0]) {
+        // This could happen if the browser tab was closed while the
+        // placeholder prompt dialog was open.
+        alertEx(gMsgBoxStr.MSG_NO_ACTIVE_BROWSER_TAB);
+        return;
+      }
+
+      let activeTabID = tabs[0].id;
+      if (activeTabID != gPasteClippingTargetTabID) {
+        warn(`Clippings/wx: Detected mismatch between currently-active browser tab ID and what it was when invoking clipping paste.\nPrevious active tab ID = ${gPasteClippingTargetTabID}, active tab ID = ${activeTabID}`);
+        activeTabID = gPasteClippingTargetTabID;
+      }
+      pasteProcessedClipping(content, activeTabID);
+    }, 60);
+  }
+  else if (aRequest.msgID == "close-placeholder-prmt-dlg") {
+    gWndIDs.placeholderPrmt = null;
+  }
+  else if (aRequest.msgID == "get-shct-key-prefix-ui-str") {
+    resp = getShortcutKeyPrefixStr();
+    return Promise.resolve(resp);
+  }
+  else if (aRequest.msgID == "clear-backup-notifcn-intv") {
+    clearBackupNotificationInterval().then(() => {
+      return Promise.resolve();
+    });
+  }
+  else if (aRequest.msgID == "set-backup-notifcn-intv") {
+    setBackupNotificationInterval();
+  }
+  else if (aRequest.msgID == "backup-clippings") {
+    openClippingsManager(true);
+  }
+});
+
+
+window.addEventListener("unload", aEvent => {
+  gClippingsListeners.remove(gClippingsListener);
+});
+
 
 //
 // Catch any unhandled promise rejections from 3rd-party libs

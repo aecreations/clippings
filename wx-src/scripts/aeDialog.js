@@ -8,14 +8,17 @@ class aeDialog
 {
   constructor(aDlgEltSelector)
   {
+    this.HIDE_POPUP_DELAY_MS = 5000;
+    
     this._dlgEltStor = aDlgEltSelector;
     this._fnInit = function () {};
     this._fnDlgShow = function () {};
     this._fnUnload = function () {};
     this._fnAfterDlgAccept = function () {};
+    this._popupTimerID = null;
 
     this._fnDlgAccept = function (aEvent) {
-      if ($(this._dlgEltStor).hasClass("panel")) {
+      if (this.isPopup()) {
         this.hidePopup();
       }
       else {
@@ -24,7 +27,7 @@ class aeDialog
     };
     
     this._fnDlgCancel = function (aEvent) {
-      if ($(this._dlgEltStor).hasClass("panel")) {
+      if (this.isPopup()) {
         this.hidePopup();
       }
       else {
@@ -89,6 +92,12 @@ class aeDialog
     this._fnDlgCancel = aFnCancel;    
   }
 
+  isPopup()
+  {
+    let rv = $(this._dlgEltStor).hasClass("panel");
+    return rv;
+  }
+
   showModal()
   {
     this._fnInit();
@@ -106,16 +115,35 @@ class aeDialog
 
   openPopup()
   {
+    if (this._popupTimerID) {
+      window.clearTimeout(this._popupTimerID);
+      this._popupTimerID = null;
+    }
+
     this._fnInit();
+
+    let popupElt = $(`${this._dlgEltStor}`);
     $("#panel-bkgrd-ovl").addClass("panel-show");
-    $(`${this._dlgEltStor}`).addClass("panel-show");
+    popupElt.addClass("panel-show");
+
+    // Auto-close after a few second's delay.
+    this._popupTimerID = window.setTimeout(() => {
+      this.hidePopup();
+    }, this.HIDE_POPUP_DELAY_MS);
   }
 
   hidePopup()
   {
-    this._fnUnload();
-    $(`${this._dlgEltStor}`).removeClass("panel-show");
-    $("#panel-bkgrd-ovl").removeClass("panel-show");
+    let popupElt = $(`${this._dlgEltStor}`);
+
+    if (popupElt.hasClass("panel-show")) {
+      this._fnUnload();
+      popupElt.removeClass("panel-show");
+      $("#panel-bkgrd-ovl").removeClass("panel-show");
+
+      window.clearTimeout(this._popupTimerID);
+      this._popupTimerID = null;
+    }
   }
   
   static isOpen()

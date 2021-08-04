@@ -4,10 +4,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
-const WNDH_OPTIONS_EXPANDED = 450;
-const DLG_HEIGHT_ADJ_WINDOWS = 32;
-const DLG_HEIGHT_ADJ_LOCALE_ES = 12;
+const WNDH_OPTIONS_EXPANDED = 486;
+const DLG_HEIGHT_ADJ_WINDOWS = 36;
+const DLG_HEIGHT_ADJ_LOCALE_ES = 16;
 
+let gOS;
 let gClippingsDB = null;
 let gClippings = null;
 let gParentFolderID = 0;
@@ -15,6 +16,7 @@ let gSrcURL = "";
 let gCreateInFldrMenu;
 let gFolderPickerPopup;
 let gNewFolderDlg;
+let gPrefs;
 
 
 // Page initialization
@@ -34,7 +36,7 @@ $(async () => {
   }
 
   try {
-    await gClippings.verifyDB();    
+    await gClippings.verifyDB();
     initHelper();
   }
   catch (e) {
@@ -45,9 +47,18 @@ $(async () => {
 
 async function initHelper()
 {
+  let platform = await browser.runtime.getPlatformInfo();
+  document.body.dataset.os = platform.os;
+
+  let lang = browser.i18n.getUILanguage();
+  document.body.dataset.locale = lang;
+
+  gPrefs = await aePrefs.getAllPrefs();
+
+  
   $("#btn-expand-options").click(async (aEvent) => {
     let height = WNDH_OPTIONS_EXPANDED;
-    if (gClippings.getOS() == "win") {
+    if (platform.os == "win") {
       height += DLG_HEIGHT_ADJ_WINDOWS;
     }
     
@@ -157,9 +168,6 @@ function showInitError()
 
 function initDialogs()
 {
-  let osName = gClippings.getOS();
-  $(".msgbox-error-icon").attr("os", osName);
-  
   gNewFolderDlg = new aeDialog("#new-folder-dlg");
   gNewFolderDlg.firstInit = true;
   gNewFolderDlg.fldrTree = null;
@@ -186,10 +194,27 @@ function initDialogs()
     let fldrPickerPopup = $("#new-folder-dlg-fldr-tree-popup");
     let selectedFldrID = parentDlgFldrPickerMnuBtn.val();
     let selectedFldrName = parentDlgFldrPickerMnuBtn.text();
+    let rootFldrID = aeConst.ROOT_FOLDER_ID;
+    let rootFldrName = browser.i18n.getMessage("rootFldrName");
+    let rootFldrCls = aeFolderPicker.ROOT_FOLDER_CLS;
+
+    if (gPrefs.syncClippings) {
+      if (gPrefs.newClippingSyncFldrsOnly) {
+        rootFldrID = gPrefs.syncFolderID;
+        rootFldrName = browser.i18n.getMessage("syncFldrName");
+        rootFldrCls = aeFolderPicker.SYNCED_ROOT_FOLDER_CLS;
+      }
+      else if (gPrefs.cxtMenuSyncItemsOnly) {
+        $("#new-folder-dlg-fldr-tree").addClass("show-sync-items-only");
+      }
+    }
 
     that.fldrTree = new aeFolderPicker(
       "#new-folder-dlg-fldr-tree",
       gClippingsDB,
+      rootFldrID,
+      rootFldrName,
+      rootFldrCls,
       selectedFldrID
     );
 
@@ -199,7 +224,7 @@ function initDialogs()
       let fldrID = aFolderData.node.key;
       fldrPickerMnuBtn.val(fldrID).text(aFolderData.node.title);
 
-      if (fldrID == gClippings.getSyncFolderID()) {
+      if (fldrID == gPrefs.syncFolderID) {
         fldrPickerMnuBtn.attr("syncfldr", "true");
       }
       else {
@@ -211,7 +236,7 @@ function initDialogs()
     };
 
     fldrPickerMnuBtn.val(selectedFldrID).text(selectedFldrName);
-    if (selectedFldrID == gClippings.getSyncFolderID()) {
+    if (selectedFldrID == gPrefs.syncFolderID) {
       fldrPickerMnuBtn.attr("syncfldr", "true");
     }
     else {
@@ -311,7 +336,10 @@ function initDialogs()
         clippingsListeners.forEach(aListener => {
           aListener.newFolderCreated(aFldrID, newFolder, aeConst.ORIGIN_HOSTAPP);
         });
-        
+
+        return unsetClippingsUnchangedFlag();
+
+      }).then(() => {
         that.close();
       });
     }).catch(aErr => {
@@ -323,8 +351,15 @@ function initDialogs()
 
 function initFolderPicker()
 {
-  // Initialize the hidden background that user can click on to dismiss an open
-  // folder picker popup.
+  function selectSyncedClippingsFldr()
+  {
+    $("#new-clipping-fldr-picker-menubtn").val(gPrefs.syncFolderID)
+      .text(browser.i18n.getMessage("syncFldrName"))
+      .attr("syncfldr", "true");
+  }
+  
+  // Initialize the transparent background that user can click on to dismiss an
+  // open folder picker popup.
   $(".popup-bkgrd").click(aEvent => {
     $(".folder-tree-popup").css({ visibility: "hidden" });
     $(".popup-bkgrd").hide();
@@ -355,7 +390,34 @@ function initFolderPicker()
   
   $("#new-folder-btn").attr("title", browser.i18n.getMessage("btnNewFolder"));
 
-  gFolderPickerPopup = new aeFolderPicker("#new-clipping-fldr-tree", gClippingsDB);
+  let rootFldrID = aeConst.ROOT_FOLDER_ID;
+  let rootFldrName = browser.i18n.getMessage("rootFldrName");
+  let rootFldrCls = aeFolderPicker.ROOT_FOLDER_CLS;
+  let selectedFldrID = aeConst.ROOT_FOLDER_ID;
+
+  if (gPrefs.syncClippings) {
+    if (gPrefs.newClippingSyncFldrsOnly) {
+      selectSyncedClippingsFldr();
+      rootFldrID = gPrefs.syncFolderID;
+      rootFldrName = browser.i18n.getMessage("syncFldrName");
+      rootFldrCls = aeFolderPicker.SYNCED_ROOT_FOLDER_CLS;
+    }
+    else if (gPrefs.cxtMenuSyncItemsOnly) {
+      selectSyncedClippingsFldr();
+      $("#new-clipping-fldr-tree").addClass("show-sync-items-only");
+      selectedFldrID = gPrefs.syncFolderID;
+    }
+  }
+  
+  gFolderPickerPopup = new aeFolderPicker(
+    "#new-clipping-fldr-tree",
+    gClippingsDB,
+    rootFldrID,
+    rootFldrName,
+    rootFldrCls,
+    selectedFldrID
+  );
+
   gFolderPickerPopup.onSelectFolder = selectFolder;
 }
 
@@ -367,7 +429,7 @@ function selectFolder(aFolderData)
   let fldrPickerMenuBtn = $("#new-clipping-fldr-picker-menubtn");
   fldrPickerMenuBtn.text(aFolderData.node.title).val(gParentFolderID);
 
-  if (gParentFolderID == gClippings.getSyncFolderID()) {
+  if (gParentFolderID == gPrefs.syncFolderID) {
     fldrPickerMenuBtn.attr("syncfldr", "true");
   }
   else {
@@ -395,7 +457,7 @@ async function initShortcutKeyMenu()
     }
   });
   
-  let keybPasteKeys = await gClippings.getShortcutKeyPrefixStr();
+  let keybPasteKeys = await browser.runtime.sendMessage({msgID: "get-shct-key-prefix-ui-str"});
   let tooltip = browser.i18n.getMessage("shortcutKeyHint", keybPasteKeys);
   $("#shct-key-tooltip").attr("title", tooltip);
 }
@@ -428,6 +490,15 @@ function isClippingOptionsSet()
   return ($("#clipping-key")[0].selectedIndex != 0
           || $("#clipping-label-picker").val() != ""
           || $("#save-source-url")[0].checked);
+}
+
+
+function unsetClippingsUnchangedFlag()
+{
+  if (gPrefs.clippingsUnchanged) {
+    return aePrefs.setPrefs({ clippingsUnchanged: false });
+  }
+  return Promise.resolve();
 }
 
 
@@ -472,12 +543,13 @@ function accept(aEvent)
         aListener.newClippingCreated(aNewClippingID, newClipping, aeConst.ORIGIN_HOSTAPP);
       });
       
-      let prefs = gClippings.getPrefs();
-      if (prefs.syncClippings) {
-        let syncFldrID = gClippings.getSyncFolderID();
+      return unsetClippingsUnchangedFlag();
+
+    }).then(() => {
+      if (gPrefs.syncClippings) {
         aeImportExport.setDatabase(gClippingsDB);
         
-        return aeImportExport.exportToJSON(true, true, syncFldrID, false, true);
+        return aeImportExport.exportToJSON(true, true, gPrefs.syncFolderID, false, true);
       }
       return null;
 
@@ -501,10 +573,8 @@ function accept(aEvent)
         log(aMsgResult);
       }
 
-      let isClippingsMgrAutoShowDetailsPane = gClippings.getPrefs().clippingsMgrAutoShowDetailsPane;
-      
-      if (isClippingsMgrAutoShowDetailsPane && isClippingOptionsSet()) {
-        await browser.storage.local.set({
+      if (gPrefs.clippingsMgrAutoShowDetailsPane && isClippingOptionsSet()) {
+        await aePrefs.setPrefs({
           clippingsMgrAutoShowDetailsPane: false,
           clippingsMgrDetailsPane: true
         });

@@ -9,7 +9,7 @@ const WNDH_SHORTCUT_LIST = 272;
 const WNDW_SHORTCUT_LIST = 436;
 const DLG_HEIGHT_ADJ_WINDOWS = 14;
 
-let gClippings, gClippingsDB, gPasteMode;
+let gClippings, gClippingsDB, gPasteMode, gOS;
 
 let gAutocompleteMenu = {
   _SCRL_LENGTH: 36,
@@ -294,8 +294,8 @@ $(async () => {
     throw new Error("Clippings/wx: clippingKey.js: Failed to retrieve parent browser window!");
   }
 
-  let os = gClippings.getOS();
-  document.body.dataset.os = os;
+  let envInfo = await browser.runtime.sendMessage({ msgID: "get-env-info" });
+  document.body.dataset.os = gOS = envInfo.os;
 
   gClippingsDB = gClippings.getClippingsDB();
   let extVer = browser.runtime.getManifest().version;
@@ -304,7 +304,7 @@ $(async () => {
 
   aeImportExport.setL10nStrings({
     shctTitle: browser.i18n.getMessage("expHTMLTitle"),
-    hostAppInfo: browser.i18n.getMessage("expHTMLHostAppInfo", [extVer, gClippings.getHostAppName()]),
+    hostAppInfo: browser.i18n.getMessage("expHTMLHostAppInfo", [extVer, envInfo.hostAppName]),
     shctKeyInstrxns: browser.i18n.getMessage("expHTMLShctKeyInstrxn"),
     shctKeyCustNote: browser.i18n.getMessage("expHTMLShctKeyCustNote"),
     shctKeyColHdr: browser.i18n.getMessage("expHTMLShctKeyCol"),
@@ -316,8 +316,7 @@ $(async () => {
 
   browser.history.deleteUrl({ url: window.location.href });
 
-  let prefs = await browser.storage.local.get("pastePromptAction");
-  gPasteMode = prefs.pastePromptAction;
+  gPasteMode = await aePrefs.getPref("pastePromptAction");
   
   if (gPasteMode == aeConst.PASTEACTION_SHORTCUT_KEY) {
     $(".deck > #search-by-name").hide();
@@ -500,7 +499,7 @@ async function initShortcutList()
     width: WNDW_SHORTCUT_LIST,
     height: WNDH_SHORTCUT_LIST,
   };
-  if (gClippings.getOS() == "win") {
+  if (gOS == "win") {
     updWndInfo.height += DLG_HEIGHT_ADJ_WINDOWS;
   }
   
@@ -581,9 +580,7 @@ function cancel(aEvent)
 async function closeDlg()
 {
   // Always remember last paste mode, even if user cancelled.
-  await browser.storage.local.set({
-    pastePromptAction: gPasteMode
-  });
+  await aePrefs.setPrefs({ pastePromptAction: gPasteMode });
   
   await browser.runtime.sendMessage({ msgID: "close-keybd-paste-dlg" });
   browser.windows.remove(browser.windows.WINDOW_ID_CURRENT);

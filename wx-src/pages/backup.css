@@ -29,6 +29,10 @@ select.browser-style {
     font-size: unset;
 }
 
+body[data-os="win"] .browser-style > input[type="checkbox"] + label {
+    vertical-align: baseline;
+}
+
 .centered-row {
     width: 100%;
     padding-top: 4px;
@@ -48,6 +52,11 @@ select.browser-style {
     border-radius: 4px;
     font-size: 17px !important;
     font-weight: 400;
+}
+
+body[data-locale="fr"] #backup-hint,
+body[data-locale|="pt"] #backup-hint {
+    letter-spacing: -0.3px;
 }
 
 #backup-reminder-freq {
