@@ -448,15 +448,6 @@
     "message": "Clipping Name"
   },
 
-  "printShctHelpHTML": {
-    "message": "To print this document, invoke your browser&rsquo;s Print command.",
-    "description": "HTML content for HTML export of shortcut key list from Clippings for Thunderbird"
-  },
-
-  "saveToHTML": {
-    "message": "Save to HTML"
-  },
-
   "print": {
     "message": "Print",
     "description": "Shortcut key list in Clippings for Thunderbird"
