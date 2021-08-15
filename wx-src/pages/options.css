@@ -76,6 +76,11 @@ main {
     background-color: var(--color-main-bkgd);
 }
 
+body[data-locale="de"] main,
+body[data-locale="fr"] main {
+    width: 700px;
+}
+
 input[type="number"],
 select {
     font-size: 15px !important;
@@ -168,21 +173,13 @@ progress {
     margin-top: 4px;
 }
 
-body[data-locale="fr"] #html-auto-line-break-label {
-    letter-spacing: -0.73px;
-}
-
-body[data-locale="de"] #html-auto-line-break-label {
-    letter-spacing: -0.22px;
-}
-
 body[data-locale="fr"]:not([data-os="mac"]) #enable-shortcut-key-label {
     letter-spacing: -0.5px;
 }
 
 body[data-locale="de"] #enable-shortcut-key-label {
-    font-size: 13px;
-    letter-spacing: -0.41px;
+    margin-right: 0;
+    letter-spacing: -0.45px;
 }
 
 body[data-locale|="es"]:not([data-os="mac"]) #enable-shortcut-key-label {
@@ -199,8 +196,8 @@ body[data-os="win"] #shortcut-key-prefix-modifiers {
 }
 
 body[data-locale="de"]:not([data-os="mac"]) #shortcut-key-prefix-modifiers {
-    font-size: 13px;
-    letter-spacing: -0.41px;
+    margin-right: 0;
+    letter-spacing: -0.45px;
 }
 
 body[data-locale|="es"]:not([data-os="mac"]) #shortcut-key-prefix-modifiers {
@@ -216,7 +213,6 @@ body[data-os="win"] #shortcut-key-selector {
     vertical-align: baseline;
 }
 
-body[data-locale="de"] #shortcut-key-selector,
 body[data-locale|="es"] #shortcut-key-selector {
     font-size: 13px !important;
 }
@@ -243,11 +239,7 @@ body[data-os="win"] #backup-reminder-freq + label {
 }
 
 body[data-locale="fr"] #skip-backup-label {
-    letter-spacing: -0.9px;
-}
-
-body[data-locale="de"] #skip-backup-label {
-    letter-spacing: -0.5px;
+    letter-spacing: -0.25px;
 }
 
 #wnds-dlgs-settings {
@@ -386,16 +378,16 @@ body[data-locale="de"] #skip-backup-label {
 
 #wnds-dlgs-opts-dlg {
     top: 160px;
-    --width: 490px;
+    --width: 500px;
     --height: 225px;
 }
 
 body[data-locale="fr"] #wnds-dlgs-opts-dlg {
-    width: 572px;
+    --width: 572px;
 }
 
 body[data-locale="de"] #wnds-dlgs-opts-dlg {
-    width: 530px;
+    --width: 530px;
 }
 
 #wnds-dlgs-opts-dlg fieldset {
@@ -429,10 +421,6 @@ body[data-os="mac"] #wnds-dlgs-opts-dlg #wnds-dlgs-opts-exp-warn .warning-icon {
 }
 
 body[data-locale="nl"] #wnds-dlgs-opts-dlg #clpmgr-save-wnd-pos-label {
-    letter-spacing: -0.34px;
-}
-
-body[data-locale|="pt"] #wnds-dlgs-opts-dlg #clpmgr-save-wnd-pos-label {
     letter-spacing: -0.18px;
 }
 
@@ -681,7 +669,8 @@ body[data-locale="de"] #about-dlg {
 }
 
 body[data-locale|="pt"] #about-dlg #ext-desc {
-    letter-spacing: -0.55px;
+    margin-right: 0;
+    letter-spacing: -0.3px;
 }
 
 #about-dlg #credits label {
