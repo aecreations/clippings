@@ -144,6 +144,11 @@
   "msgClipbdEmpty": {
     "message": "Clipboard is empty or does not contain textual data."
   },
+
+  "msgRunInPrivateChg": {
+    "message": "The \u201cRun in Private Windows\u201d setting for Clippings was recently turned on or off. You\u2019ll need to restart Firefox to apply this change.",
+    "description": "Message box that appears when attempting to open Clippings Manager immediately after toggling the Run in Private Windows setting"
+  },
   
   "msgUnknown": {
     "message": "No help is available (so leave me alone)."

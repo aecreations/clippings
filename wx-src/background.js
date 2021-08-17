@@ -313,6 +313,7 @@ let gMsgBoxStr = {
   MSG_NO_ACTIVE_BROWSER_TAB: "msgNoActvBrwsTab",
   MSG_RETRY_PAGE_BUSY: "msgRetryPgBusy",
   MSG_RETRY_PAGE_NOT_LOADED: "msgRetryPgNotLoaded",
+  MSG_RUN_IN_PRIVATE_CHANGED: "msgRunInPrivateChg",
 };
 
 
@@ -1339,6 +1340,14 @@ async function openClippingsManager(aBackupMode)
     }
   }
   // END nested function
+
+  // The `gPrefs` object is null if the "Run in Private Windows" setting was
+  // turned on or off.  This renders Clippings unusable until Firefox is
+  // restarted.
+  if (! (gPrefs instanceof Object)) {
+    alertEx(gMsgBoxStr.MSG_RUN_IN_PRIVATE_CHANGED);
+    return;
+  }
     
   let openInNewTab = gPrefs.openClippingsMgrInTab;
 
@@ -1792,7 +1801,7 @@ async function alertEx(aMessageID)
   let left = 256;
   let top = 64;
 
-  if (gPrefs.autoAdjustWndPos) {
+  if (gPrefs && gPrefs.autoAdjustWndPos) {
     wndGeom = await getWndGeometryFromBrwsTab();
 
     if (wndGeom) {
