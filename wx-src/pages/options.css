@@ -664,13 +664,21 @@ body[data-locale="de"] #about-dlg {
 
 #about-dlg #ext-desc {
     clear: left;
+    margin-right: 0;
     padding-top: 12px;
     font-size: 13px;
 }
 
+body[data-locale="fr"] #about-dlg #ext-desc {
+    letter-spacing: -0.28px;
+}
+
 body[data-locale|="pt"] #about-dlg #ext-desc {
-    margin-right: 0;
     letter-spacing: -0.3px;
+}
+
+body[data-locale|="pt"][data-os="mac"] #about-dlg #ext-desc {
+    letter-spacing: -0.55px;
 }
 
 #about-dlg #credits label {
