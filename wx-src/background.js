@@ -1378,7 +1378,7 @@ async function openClippingsManager(aBackupMode)
 function openNewClippingDlg()
 {
   let url = browser.runtime.getURL("pages/new.html");
-  let height = 412;
+  let height = 416;
   if (gOS == "win") {
     height = 448;
   }
