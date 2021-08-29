@@ -218,6 +218,7 @@ button.browser-style:focus:not(:disabled) {
 #shortcut-list-content table > tbody {
     display: block;
     height: 200px;
+    min-height: 200px;
     margin-top: 1px;
     overflow-x: hidden;
     overflow-y: auto;
@@ -248,7 +249,10 @@ button.browser-style:focus:not(:disabled) {
 #shortcut-list-content table th:nth-child(2),
 #shortcut-list-content table td:nth-child(2) {
     width: 100%;
+    max-width: 100px;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 #paste-by-shct-key-content, #search-by-name-content {
