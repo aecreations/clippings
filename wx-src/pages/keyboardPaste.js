@@ -423,6 +423,24 @@ $(window).keydown(async (aEvent) => {
 });
 
 
+$(window).on("resize", aEvent => {
+  if (! isShortcutListDisplayed()) {
+    return;
+  }
+
+  let height = WNDH_SHORTCUT_LIST;
+  if (gOS == "win") {
+    height += DLG_HEIGHT_ADJ_WINDOWS;
+  }
+
+  let wndInfo = {
+    width: WNDW_SHORTCUT_LIST,
+    height,
+  };
+  browser.windows.update(browser.windows.WINDOW_ID_CURRENT, wndInfo);
+});
+
+
 function initAutocomplete()
 {
   function sanitize(aStr, aMaxLength)
