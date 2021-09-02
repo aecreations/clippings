@@ -19,7 +19,7 @@
 # in the templates via {{ site.myvariable }}.
 
 title: Clippings Help
-email: your-email@example.com
+#email: your-email@example.com
 description: >- # this means to ignore newlines until "baseurl:"
   AE Creations Help and Support
 baseurl: "/clippings" # the subpath of your site, e.g. /blog
