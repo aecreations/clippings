@@ -21,7 +21,7 @@
 title: AE Creations
 email: your-email@example.com
 description: >- # this means to ignore newlines until "baseurl:"
-AE Creations Help and Support
+  AE Creations Help and Support
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 #twitter_username: jekyllrb
