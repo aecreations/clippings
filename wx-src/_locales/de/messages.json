@@ -112,6 +112,10 @@
   "msgClipbdEmpty": {
     "message": "Die Zwischenablage ist leer oder enthält keine Textdaten."
   },
+  "msgRunInPrivateChg": {
+    "message": "Die Einstellung »In Privaten Fenstern ausführen« für Clippings wurde kürzlich aktiviert oder deaktiviert. Sie müssen Firefox neu starten, um diese Änderung zu übernehmen.",
+    "description": "Message box that appears when attempting to open Clippings Manager immediately after toggling the Run in Private Windows setting"
+  },
   "msgUnknown": {
     "message": "Keine Hilfe verfügbar (lass mich also in Ruhe)."
   },
@@ -344,13 +348,6 @@
   },
   "expHTMLClipNameCol": {
     "message": "Textbausteinname"
-  },
-  "printShctHelpHTML": {
-    "message": "Um dieses Dokument auszudrucken, rufen Sie den Druckbefehl Ihres Browsers auf.",
-    "description": "HTML content for HTML export of shortcut key list from Clippings for Thunderbird"
-  },
-  "saveToHTML": {
-    "message": "Speichern als HTML"
   },
   "print": {
     "message": "Drucken",

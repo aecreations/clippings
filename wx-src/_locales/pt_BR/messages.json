@@ -112,6 +112,10 @@
   "msgClipbdEmpty": {
     "message": "Área de transferência está vazia ou não contém dados textuais."
   },
+  "msgRunInPrivateChg": {
+    "message": "A configuração \"Executar em Janelas Privadas\" foi ativada ou desativada recentemente. Você precisará reiniciar o Firefox para aplicar esta alteração.",
+    "description": "Message box that appears when attempting to open Clippings Manager immediately after toggling the Run in Private Windows setting"
+  },
   "msgUnknown": {
     "message": "Nenhima ajuda possível (deixe para lá)."
   },
@@ -344,13 +348,6 @@
   },
   "expHTMLClipNameCol": {
     "message": "Nome do Clipping"
-  },
-  "printShctHelpHTML": {
-    "message": "Para imprimir este documento, execute o comando Imprimir do seu navegador.",
-    "description": "HTML content for HTML export of shortcut key list from Clippings for Thunderbird"
-  },
-  "saveToHTML": {
-    "message": "Salvar em HTML"
   },
   "print": {
     "message": "Imprimir",

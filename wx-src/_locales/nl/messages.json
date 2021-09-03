@@ -112,6 +112,10 @@
   "msgClipbdEmpty": {
     "message": "Klembord is leeg of bevat geen tekst gegevens."
   },
+  "msgRunInPrivateChg": {
+    "message": "De instelling \"Uitvoeren in privévensters\" voor Clippings is onlangs aan- of uitgezet. Start Firefox opnieuw om deze wijziging toe te passen.",
+    "description": "Message box that appears when attempting to open Clippings Manager immediately after toggling the Run in Private Windows setting"
+  },
   "msgUnknown": {
     "message": "Er is geen hulp beschikbaar (dus laat me met rust)."
   },
@@ -344,13 +348,6 @@
   },
   "expHTMLClipNameCol": {
     "message": "Knipsel naam"
-  },
-  "printShctHelpHTML": {
-    "message": "Om dit document af te drukken, roept u uw browser&rsquo;s Print commando op.",
-    "description": "HTML content for HTML export of shortcut key list from Clippings for Thunderbird"
-  },
-  "saveToHTML": {
-    "message": "Opslaan als HTML"
   },
   "print": {
     "message": "Afdrukken",
