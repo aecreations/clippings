@@ -479,6 +479,14 @@ aeImportExport.getShortcutKeyListHTML = function (aIsFullHTMLDoc)
   let rv = "";
   let htmlSrc = "";
 
+  function escapeHTML(aString)
+  {
+    let rv = aString.replace(/</g, "&lt;");
+    rv = rv.replace(/>/g, "&gt;");
+
+    return rv;
+  }
+
   if (aIsFullHTMLDoc) {
     htmlSrc += `<!DOCTYPE html>
 <html><head><meta charset="utf-8"><title>${this._shctTitle}</title></head>
@@ -503,7 +511,7 @@ aeImportExport.getShortcutKeyListHTML = function (aIsFullHTMLDoc)
         else {
           htmlSrc += `<tr data-id="${aShctKeyMap[shctKey].id}">`;
         }
-        htmlSrc += `<td>${shctKey}</td><td>${aShctKeyMap[shctKey].name}</td></tr>\n`;
+        htmlSrc += `<td>${shctKey}</td><td>${escapeHTML(aShctKeyMap[shctKey].name)}</td></tr>\n`;
       }
 
       htmlSrc += "</tbody></table>";
