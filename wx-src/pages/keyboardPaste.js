@@ -8,6 +8,7 @@ const WNDH_SEARCH_CLIPPING = 222;
 const WNDH_SHORTCUT_LIST = 272;
 const WNDW_SHORTCUT_LIST = 436;
 const DLG_HEIGHT_ADJ_WINDOWS = 14;
+const TOOLBAR_HEIGHT = 50;
 
 let gClippings, gClippingsDB, gPasteMode, gOS;
 
@@ -420,6 +421,18 @@ $(window).keydown(async (aEvent) => {
       aeInterxn.suppressBrowserShortcuts(aEvent, aeConst.DEBUG);
     }
   }
+});
+
+
+$(window).on("resize", aEvent => {
+  if (! isShortcutListDisplayed()) {
+    return;
+  }
+
+  let tblWidth = window.innerWidth;
+  let tblHeight = window.innerHeight - TOOLBAR_HEIGHT;
+  $("#shortcut-list-content > table > thead").css({width: `${tblWidth}px`});
+  $("#shortcut-list-content > table > tbody").css({width: `${tblWidth}px`, height: `${tblHeight}px`});
 });
 
 

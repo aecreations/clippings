@@ -112,6 +112,10 @@
   "msgClipbdEmpty": {
     "message": "Le presse papier est vide ou ne contient aucune donnée textuelle."
   },
+  "msgRunInPrivateChg": {
+    "message": "Le paramètre « Exécuter dans les fenêtres privées » pour Clippings a récemment été activé ou désactivé. Vous devrez redémarrer Firefox pour appliquer ce changement.",
+    "description": "Message box that appears when attempting to open Clippings Manager immediately after toggling the Run in Private Windows setting"
+  },
   "msgUnknown": {
     "message": "Aucune aide n’est disponible (donc laissez-moi tranquille)."
   },
@@ -344,13 +348,6 @@
   },
   "expHTMLClipNameCol": {
     "message": "Nom du clipping"
-  },
-  "printShctHelpHTML": {
-    "message": "Pour imprimer ce document, consulter l'aide des commandes d'impression de votre navigateur.",
-    "description": "HTML content for HTML export of shortcut key list from Clippings for Thunderbird"
-  },
-  "saveToHTML": {
-    "message": "Enregistrer en HTML"
   },
   "print": {
     "message": "Imprimer",

@@ -1067,7 +1067,7 @@ body[data-os="mac"] .lightbox .msgbox-icon {
 
 #shortcut-list-dlg {
     --width: 424px;
-    --height: 322px;
+    --height: 324px;
     top: 18px;
 }
 
@@ -1110,22 +1110,28 @@ body[data-locale="de"] #shortcut-list-dlg #shortcut-instrxns {
 }
 
 #shortcut-list-content table {
-    width: 100%;
+    margin-left: 16px;
+    width: calc(100% - 20px);
     border-collapse: collapse;
     border-spacing: 0;
+    border-left: 1px solid var(--color-th-border);
 }
 
 #shortcut-list-content table > thead {
     display: block;
-    width: 418px;
     height: 20px;
-    background-color: var(--color-th-bkgd);
+    border-top: 1px solid var(--color-th-border);
     color: var(--color-default-text);
-    border-bottom: 1px solid var(--color-th-border);
+}
+
+#shortcut-list-content table > thead > tr {
+    border-right: 1px solid var(--color-th-border);
+    background-color: var(--color-th-bkgd);
 }
 
 #shortcut-list-content table > thead > tr > th {
-    padding: 3px 4px 3px 4px;
+    padding: 2px 4px 2px 4px;
+    border-bottom: 1px solid var(--color-th-border);
     font-weight: normal;
     white-space: nowrap;
     overflow: hidden;
@@ -1139,10 +1145,10 @@ body[data-locale="de"] #shortcut-list-dlg #shortcut-instrxns {
 
 #shortcut-list-content table > tbody {
     display: block;
-    width: 418px;
     height: 160px;
+    margin-top: 2px;
     overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: scroll;
     border-bottom: 1px solid var(--color-th-border);
 }
 
@@ -1163,7 +1169,10 @@ body[data-locale="de"] #shortcut-list-dlg #shortcut-instrxns {
 #shortcut-list-content table th:nth-child(2),
 #shortcut-list-content table td:nth-child(2) {
     width: 100%;
+    max-width: 100px;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 #import-dlg {

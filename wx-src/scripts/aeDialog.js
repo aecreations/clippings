@@ -11,6 +11,8 @@ class aeDialog
     this.HIDE_POPUP_DELAY_MS = 5000;
     
     this._dlgEltStor = aDlgEltSelector;
+    this._isInitialized = false;
+    this._fnFirstInit = function () {};
     this._fnInit = function () {};
     this._fnDlgShow = function () {};
     this._fnUnload = function () {};
@@ -67,6 +69,11 @@ class aeDialog
     this._fnInit = aFnInit;
   }
 
+  set onFirstInit(aFnInit)
+  {
+    this._fnFirstInit = aFnInit;
+  }
+
   set onUnload(aFnUnload)
   {
     this._fnUnload = aFnUnload;
@@ -92,6 +99,13 @@ class aeDialog
     this._fnDlgCancel = aFnCancel;    
   }
 
+  setProps(aProperties)
+  {
+    for (let prop in aProperties) {
+      this[prop] = aProperties[prop];
+    }
+  }
+
   isPopup()
   {
     let rv = $(this._dlgEltStor).hasClass("panel");
@@ -100,6 +114,11 @@ class aeDialog
 
   showModal()
   {
+    if (! this._isInitialized) {
+      this._fnFirstInit();
+      this._isInitialized = true;
+    }
+    
     this._fnInit();
     $("#lightbox-bkgrd-ovl").addClass("lightbox-show");
     $(`${this._dlgEltStor}`).addClass("lightbox-show");
@@ -145,6 +164,14 @@ class aeDialog
       this._popupTimerID = null;
     }
   }
+
+  isAcceptOnly()
+  {
+    let dlgAcceptElt = $(`${this._dlgEltStor} > .dlg-btns > .dlg-accept`);
+    let dlgCancelElt = $(`${this._dlgEltStor} > .dlg-btns > .dlg-cancel`);
+    
+    return (dlgCancelElt.length == 0 && dlgAcceptElt.length > 0);
+  }
   
   static isOpen()
   {
@@ -168,7 +195,15 @@ class aeDialog
     let openDlgElts = $(".lightbox-show");
 
     if (openDlgElts.length > 0) {
-      $(".lightbox-show .dlg-cancel:not(:disabled)").click();
+      // Normally there should just be 1 dialog open at a time.
+      let cancelBtnElt = $(".lightbox-show .dlg-cancel:not(:disabled)");
+      if (cancelBtnElt.length > 0) {
+        cancelBtnElt.click();
+      }
+      else {
+        // Dialog only has an OK, Close or Done button.
+        $(".lightbox-show .dlg-accept").click();
+      }
     }
 
     this.hidePopups();

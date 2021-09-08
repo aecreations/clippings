@@ -92,7 +92,7 @@
     "message": "Die ausgewählte Aktion steht derzeit nicht zur Verfügung."
   },
   "msgNoTextSel": {
-    "message": "Kein Text ausgewählt. Wählen Sie zuerst Text aus."
+    "message": "Es wurde kein Text ausgewählt. Bitte zuerst den Text auswählen."
   },
   "msgBrwsWndNotFocused": {
     "message": "Bitte kehren Sie zum Browser-Fenster zurück und versuchen Sie es erneut."
@@ -111,6 +111,10 @@
   },
   "msgClipbdEmpty": {
     "message": "Die Zwischenablage ist leer oder enthält keine Textdaten."
+  },
+  "msgRunInPrivateChg": {
+    "message": "Die Einstellung »In Privaten Fenstern ausführen« für Clippings wurde kürzlich aktiviert oder deaktiviert. Sie müssen Firefox neu starten, um diese Änderung zu übernehmen.",
+    "description": "Message box that appears when attempting to open Clippings Manager immediately after toggling the Run in Private Windows setting"
   },
   "msgUnknown": {
     "message": "Keine Hilfe verfügbar (lass mich also in Ruhe)."
@@ -345,13 +349,6 @@
   "expHTMLClipNameCol": {
     "message": "Textbausteinname"
   },
-  "printShctHelpHTML": {
-    "message": "Um dieses Dokument auszudrucken, rufen Sie den Druckbefehl Ihres Browsers auf.",
-    "description": "HTML content for HTML export of shortcut key list from Clippings for Thunderbird"
-  },
-  "saveToHTML": {
-    "message": "Speichern als HTML"
-  },
   "print": {
     "message": "Drucken",
     "description": "Shortcut key list in Clippings for Thunderbird"
@@ -404,7 +401,7 @@
     "description": "Clippings Manager search bar hint text"
   },
   "clipMgrIntroHdg": {
-    "message": "Willkommen im Textbaustein-Manager"
+    "message": "Willkommen bei der Textbausteinverwaltung"
   },
   "clipMgrIntroDesc": {
     "message": "Verwenden Sie den Textbaustein-Manager, um Textbausteine zu bearbeiten, umzubenennen oder zu löschen und Ihre Sammlung von Textbausteinen in Ordnern zu organisieren."
@@ -547,7 +544,7 @@
     "description": "Clippings Manager intro - key binding description"
   },
   "clipMgrIntroCmdClose": {
-    "message": "Textbaustein-Manager schließen",
+    "message": "Textbausteinverwaltung schließen",
     "description": "Clippings Manager intro - key binding description"
   },
   "clipMgrIntroCmdUndo": {
@@ -555,7 +552,7 @@
     "description": "Clippings Manager intro - key binding description"
   },
   "clipMgrIntroCmdShowIntro": {
-    "message": "Einführung in den Textbaustein-Manager zeigen",
+    "message": "Einführung in die Textbausteinverwaltung anzeigen",
     "description": "Clippings Manager intro - key binding description"
   },
   "clipMgrIntroCmdMaximize": {
@@ -769,16 +766,16 @@
     "message": "Einen als HTML formatierten Textbaustein immer als reinen Text einfügen, wenn er in eine reine Textbox eingefügt wird oder der Textbaustein einschränkende Tags wie z. B. <script>, <applet>, <object>, <iframe> usw. enthält."
   },
   "prefsShortcutMode": {
-    "message": "Aktivieren sie den Tastenkürzel-Modus, indem sie diese Tasten drücken:"
+    "message": "Durch Drücken folgender Tasten wird der Tastenkürzelmodus aktiviert:"
   },
   "prefsShctMode": {
-    "message": "Aktivieren Sie den Modus Tastenkombinationen mit $1"
+    "message": "Durch Drücken von »$1« wird der Tastenkürzelmodus aktiviert"
   },
   "prefsShctModeNew": {
     "message": "Verwenden Sie auch alternative Tasten $1"
   },
   "prefsShortcutKeyNote": {
-    "message": "Einige der verfügbaren Tastaturkürzel können bereits <a href=\"https://support.mozilla.org/en-US/kb/keyboard-shortcuts-perform-firefox-tasks-quickly\" class=\"hyperlink\">Firefox-Befehlen</a> oder anderen Add‑ons zugewiesen werden."
+    "message": "Einige der verfügbaren Tastaturkürzel können bereits <a href=\"https://support.mozilla.org/de/kb/Tastaturkuerzel\" class=\"hyperlink\">Firefox-Befehlen</a> oder anderen Add‑ons zugewiesen worden sein."
   },
   "prefsOutsideShct": {
     "message": "Gehen Sie zu „Tastenkombinationen für Erweiterungen verwalten“ im Add-ons-Manager, um die Tastenkombination zu ändern."
@@ -799,7 +796,7 @@
     "message": "Datum zum Dateinamen der Sicherung hinzufügen"
   },
   "backupRemind": {
-    "message": "Sicherungserinnerung zeigen alle",
+    "message": "Sicherungserinnerung anzeigen alle",
     "description": "Label for checkbox option for setting backup notification, appears after checkbox and before the reminder frequency drop-down menu"
   },
   "backupRemSkip": {
@@ -874,7 +871,7 @@
     "description": "The name of the feature for synchronizing clippings between applications or computers."
   },
   "syncIntro": {
-    "message": "Sie können Ihre Textbausteine mit Thunderbird oder anderen Firefox Installationen oder Profilen synchronisieren, indem diese in einem Ordner “Synced Clippings” ablegen. Die synchronisierten Textbausteine werden in einer Datei auf Ihrem Rechner gespeichert. Dies erfordert das <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">Sync Clippings Hilfsprogramm</a>."
+    "message": "Sie können Ihre Textbausteine mit anderen Installationen von Thunderbird oder Firefox synchronisieren, indem Sie die auszutauschenden Textbausteine in einem speziellen Ordner »Synchronisierte Textbausteine« ablegen. Die synchronisierten Textbausteine werden in einer Datei auf Ihrem Rechner gespeichert. Das erfordert das <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">Sync-Clippings-Hilfsprogramm</a>."
   },
   "syncIntroTB": {
     "message": "Sie können Ihre Textbausteine mit anderen Installationen von Firefox oder Thunderbird synchronisieren, indem Sie die auszutauschenden Textbausteine in einem speziellen Ordner »Synchronisierte Textbausteine« ablegen. Die synchronisierten Textbausteine werden in einer Datei auf Ihrem Rechner gespeichert. Dies erfordert das <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">Sync-Clippings-Hilfsprogramm</a>."

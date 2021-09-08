@@ -4,13 +4,23 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 const MSG_UNKNOWN = "msgUnknown";
+const DEFAULT_WND_HEIGHT = 170;
+const MSG_BODY_DEFAULT_HEIGHT = 40;
 
 
 async function init()
 {
   let url = new URL(window.location.href);
   let msgID = url.searchParams.get("msgid") || MSG_UNKNOWN;
-  document.querySelector("#msgbox-content > p").textContent = browser.i18n.getMessage(msgID);
+  let msgBody = document.querySelector("#msgbox-content > p");
+  msgBody.textContent = browser.i18n.getMessage(msgID);
+
+  let compStyles = window.getComputedStyle(msgBody);
+  let msgBodyHeight = parseInt(compStyles.getPropertyValue("height"));
+  if (msgBodyHeight > MSG_BODY_DEFAULT_HEIGHT) {
+    let height = DEFAULT_WND_HEIGHT + (msgBodyHeight - MSG_BODY_DEFAULT_HEIGHT);
+    await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, {height});
+  }
 
   browser.history.deleteUrl({ url: url.href });
 

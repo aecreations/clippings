@@ -519,6 +519,7 @@ let gSyncClippingsListener = {
   onActivate(aSyncFolderID)
   {
     log("Clippings/wx::clippingsMgr.js::gSyncClippingsListener.onActivate()");
+    aeDialog.cancelDlgs();
     gDialogs.reloadSyncFolder.showModal();
   },
   
@@ -1978,6 +1979,7 @@ let gCmd = {
   {
     this.recentAction = this.ACTION_RELOAD_SYNC_FLDR;   
     gClippings.refreshSyncedClippings();
+    aeDialog.cancelDlgs();
     gDialogs.reloadSyncFolder.showModal();
   },
   
@@ -2432,10 +2434,13 @@ $(document).keydown(async (aEvent) => {
 
   aeDialog.hidePopups();
 
+  // Prevent invoking keyboard shortcut actions while a dialog is open,
+  // but allow dialog action keys ENTER and ESC.
+  if (aeDialog.isOpen() && !(["Enter", "Escape"].includes(aEvent.key))) {
+    return;
+  }
+
   if (aEvent.key == "F1") {
-    if (aeDialog.isOpen()) {
-      return;
-    }
     gCmd.showMiniHelp();
   }
   else if (aEvent.key == "F2") {
