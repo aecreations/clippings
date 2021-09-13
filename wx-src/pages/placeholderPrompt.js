@@ -12,7 +12,6 @@ const DLG_HEIGHT_ADJ_WINDOWS = 20;
 const REGEXP_CUSTOM_PLACEHOLDER = /\$\[([\w\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)(\{([\w \-\.\?_\/\(\)!@#%&;:,'"$£¥€*¡¢\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF\|])+\})?\]/m;
 
 let gOS;
-let gClippings = null;
 let gPlaceholders = null;
 let gPlaceholdersWithDefaultVals = null;
 let gSamePlchldrs = {};
@@ -32,12 +31,6 @@ $(async () => {
 
   let platform = await browser.runtime.getPlatformInfo();
   document.body.dataset.os = gOS = platform.os;
-
-  gClippings = browser.extension.getBackgroundPage();
-
-  if (! gClippings) {
-    throw new Error("Clippings/wx::placeholderPrompt.js: Failed to retrieve parent browser window!");
-  }
 
   let resp = await browser.runtime.sendMessage({
     msgID: "init-placeholder-prmt-dlg"
