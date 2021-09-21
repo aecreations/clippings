@@ -331,11 +331,6 @@ function initDialogs()
       return browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
       
     }).then(aResp => {
-      if (! gDialogs.syncClippings.isCanceled) {
-        if (lang == "es-ES") {
-          $("#sync-clippings-dlg").css({ width: "606px" });
-        }
-      }
       $("#sync-clippings-dlg .dlg-accept").show();
       $("#sync-clippings-dlg .dlg-cancel").text(browser.i18n.getMessage("btnCancel"));
 

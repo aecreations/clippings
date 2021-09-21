@@ -187,6 +187,10 @@ body[data-locale|="es"]:not([data-os="mac"]) #enable-shortcut-key-label {
     letter-spacing: -0.46px;
 }
 
+body[data-locale|="es"][data-os="mac"] #enable-shortcut-key-label {
+    letter-spacing: -0.2px;
+}
+
 #shortcut-key-prefix-modifiers {
     vertical-align: middle;
 }
@@ -200,9 +204,8 @@ body[data-locale="de"]:not([data-os="mac"]) #shortcut-key-prefix-modifiers {
     letter-spacing: -0.45px;
 }
 
-body[data-locale|="es"]:not([data-os="mac"]) #shortcut-key-prefix-modifiers {
-    font-size: 13px;
-    letter-spacing: -0.46px;
+body[data-locale|="es"] #shortcut-key-prefix-modifiers {
+    letter-spacing: -0.2px;
 }
 
 #shortcut-key-selector {
@@ -444,12 +447,22 @@ body[data-locale="nl"] #wnds-dlgs-opts-dlg #clpmgr-save-wnd-pos-label {
 }
 
 body[data-locale="de"] #sync-clippings-dlg {
-    width: 530px;
+    --width: 560px;
+}
+
+body[data-locale|="es"] #sync-clippings-dlg {
+    --width: 610px;
+}
+
+body[data-locale="nl"] #sync-clippings-dlg,
+body[data-locale="uk"] #sync-clippings-dlg {
+    --width: 512px;
 }
 
 #sync-clippings-dlg fieldset {
     margin-top: 14px;
     margin-left: 0;
+    padding-right: 0;
 }
 
 #sync-clippings-dlg fieldset legend {
@@ -535,20 +548,20 @@ body[data-os="mac"] #sync-clippings-dlg #sync-cxn-error .msgbox-icon {
 }
 
 body[data-locale="de"] #sync-clippings-dlg #sync-helper-app-update-check + label {
-    letter-spacing: -0.51px;
+    letter-spacing: -0.35px;
 }
 
 body[data-locale|="es"] #sync-clippings-dlg #sync-helper-app-update-check + label {
-    letter-spacing: -0.56px;
+    letter-spacing: -0.5px;
 }
 
 body[data-locale|="pt"] #sync-clippings-dlg #sync-helper-app-update-check + label {
-    letter-spacing: -0.56px;
+    letter-spacing: -0.1px;
 }
 
 body[data-locale="nl"] #sync-clippings-dlg #sync-helper-app-update-check + label,
 body[data-locale="uk"] #sync-clippings-dlg #sync-helper-app-update-check + label {
-    letter-spacing: -0.52px;
+    letter-spacing: -0.5px;
     margin-right: 0;
 }
 
@@ -600,6 +613,11 @@ body[data-os="mac"] #turn-off-sync-clippings-dlg .msgbox-icon {
 #sync-clippings-dlg input[type="checkbox"] + label,
 #turn-off-sync-clippings-ack-dlg #delete-sync-fldr-opt > #delete-sync-fldr + label {
     font-size: 13px;
+    vertical-align: baseline;   
+}
+
+body[data-os="win"] #sync-clippings-dlg input[type="checkbox"] + label,
+body[data-os="win"] #turn-off-sync-clippings-ack-dlg #delete-sync-fldr-opt > #delete-sync-fldr + label {
     vertical-align: text-top;
 }
 
