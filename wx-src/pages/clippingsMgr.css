@@ -1340,7 +1340,8 @@ body[data-locale="de"][data-os="win"] #include-src-urls + label {
 
 #import-confirm-msgbox > .msgbox-icon,
 #export-confirm-msgbox > .msgbox-icon,
-#backup-confirm-msgbox > .msgbox-icon {
+#backup-confirm-msgbox > .msgbox-icon,
+#reload-sync-fldr-msgbox > .msgbox-icon {
     margin-top: 8px;
 }
 
