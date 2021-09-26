@@ -481,7 +481,7 @@ select {
 
 #clippings-tree {
     order: 1;
-    flex: 0 1 auto;
+    flex: none;
     align-self: stretch;
     width: 228px;
     min-width: 128px;
