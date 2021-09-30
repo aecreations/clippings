@@ -544,7 +544,8 @@ body[data-os="mac"] #sync-clippings-dlg #sync-cxn-error .msgbox-icon {
 #sync-clippings-dlg #sync-fldr-picker #browse-sync-fldr {
     order: 2;
     flex: 0 1 auto;
-    margin-left: 12px;
+    margin-left: 8px;
+    height: 28px;
 }
 
 body[data-locale="de"] #sync-clippings-dlg #sync-helper-app-update-check + label {
