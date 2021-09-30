@@ -39,6 +39,7 @@
             "scripts/aeImportExport.js",
             "scripts/aeDateDiff.js",
             "scripts/aePrefs.js",
+            "scripts/aeVersionCmp.js",
             "background.js"
 	]
     },

@@ -320,7 +320,7 @@ function initDialogs()
     sendNativeMsg.then(aResp => {
       console.info("Sync Clippings helper app version: " + aResp.appVersion);
 
-      if (gClippings.versionCompare(aResp.appVersion, "1.2b1") < 0) {
+      if (aeVersionCmp(aResp.appVersion, "1.2b1") < 0) {
         $("#browse-sync-fldr").hide();
       }
       
