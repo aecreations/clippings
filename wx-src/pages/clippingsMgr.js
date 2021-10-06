@@ -21,7 +21,6 @@ let gSyncedItemsIDs = {};
 let gIsBackupMode = false;
 let gErrorPushSyncItems = false;
 let gReorderedTreeNodeNextSibling = null;
-let gWndGeomSaveIntvID = null
 
 
 // DOM utility
@@ -2504,11 +2503,24 @@ $(window).on("click", aEvent => {
 
 
 $(window).on("blur", aEvent => {
+  if (gPrefs.clippingsMgrSaveWndGeom) {
+    setSaveWndGeometryInterval(false);
+  }
+
   if (gEnvInfo.os == "linux" || DEBUG_WND_ACTIONS) {
     if (gPrefs.clippingsMgrMinzWhenInactv && !gSuppressAutoMinzWnd) {
       let updWndInfo = { state: "minimized" };
       browser.windows.update(browser.windows.WINDOW_ID_CURRENT, updWndInfo);
     }
+  }
+});
+
+
+$(window).on("focus", aEvent => {
+  // Ensure prefs cache is initialized when the window focus event is fired;
+  // it won't be at the time window is opened.
+  if (!! gPrefs.clippingsMgrSaveWndGeom) {
+    setSaveWndGeometryInterval(true);
   }
 });
 
@@ -4687,17 +4699,18 @@ async function saveWindowGeometry()
 function setSaveWndGeometryInterval(aSaveWndGeom)
 {
   if (aSaveWndGeom) {
-    gWndGeomSaveIntvID = window.setInterval(async () => {
+    setSaveWndGeometryInterval.intvID = window.setInterval(async () => {
       await saveWindowGeometry();
     }, gPrefs.clippingsMgrSaveWndGeomIntv);    
   }
   else {
-    if (!! gWndGeomSaveIntvID) {
-      window.clearInterval(gWndGeomSaveIntvID);
-      gWndGeomSaveIntvID = null;
+    if (!! setSaveWndGeometryInterval.intvID) {
+      window.clearInterval(setSaveWndGeometryInterval.intvID);
+      setSaveWndGeometryInterval.intvID = null;
     }
   }
 }
+setSaveWndGeometryInterval.intvID = null;
 
 
 function closeWnd()

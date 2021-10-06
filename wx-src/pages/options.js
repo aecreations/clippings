@@ -189,20 +189,19 @@ async function init()
   $("#sync-settings").click(aEvent => {
     gDialogs.syncClippings.showModal();
   });
-  /***
-      $("#browse-sync-fldr").click(aEvent => {
-      let msg = { msgID: "sync-dir-folder-picker" };
-      let sendNativeMsg = browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
 
-      sendNativeMsg.then(aResp => {
+  $("#browse-sync-fldr").click(aEvent => {
+    let msg = { msgID: "sync-dir-folder-picker" };
+    let sendNativeMsg = browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
+
+    sendNativeMsg.then(aResp => {
       if (aResp.syncFilePath) {
-      $("#sync-fldr-curr-location").val(aResp.syncFilePath);
+        $("#sync-fldr-curr-location").val(aResp.syncFilePath);
       }
-      }).catch(aErr => {
+    }).catch(aErr => {
       window.alert("The Sync Clippings helper app responded with an error.\n\n" + aErr);
-      });
-      });
-  ***/
+    });
+  });
   
   $("#show-sync-help").click(aEvent => {
     gDialogs.syncClippingsHelp.showModal();
@@ -320,6 +319,11 @@ function initDialogs()
 
     sendNativeMsg.then(aResp => {
       console.info("Sync Clippings helper app version: " + aResp.appVersion);
+
+      if (aeVersionCmp(aResp.appVersion, "1.2b1") < 0) {
+        $("#browse-sync-fldr").hide();
+      }
+      
       return aePrefs.getAllPrefs();
 
     }).then(aPrefs => {
@@ -331,11 +335,6 @@ function initDialogs()
       return browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
       
     }).then(aResp => {
-      if (! gDialogs.syncClippings.isCanceled) {
-        if (lang == "es-ES") {
-          $("#sync-clippings-dlg").css({ width: "606px" });
-        }
-      }
       $("#sync-clippings-dlg .dlg-accept").show();
       $("#sync-clippings-dlg .dlg-cancel").text(browser.i18n.getMessage("btnCancel"));
 

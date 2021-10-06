@@ -174,11 +174,10 @@ function initDialogs()
   gNewFolderDlg.selectedFldrNode = null;
 
   gNewFolderDlg.resetTree = function () {
-    let that = gNewFolderDlg;
-    let fldrTree = that.fldrTree.getTree();
+    let fldrTree = this.fldrTree.getTree();
     fldrTree.clear();
-    that.fldrTree = null;
-    that.selectedFldrNode = null;
+    this.fldrTree = null;
+    this.selectedFldrNode = null;
 
     // Remove and recreate the Fancytree <div> element.
     $("#new-folder-dlg-fldr-tree").children().remove();
@@ -327,7 +326,8 @@ function initDialogs()
         let newFldrNode = parentNode.addNode(newFldrNodeData);
         newFldrNode.setActive();
         
-        $("#new-clipping-fldr-picker-menubtn").text(newFldrName).val(aFldrID);       
+        let mainFldrPickerMenuBtn = $("#new-clipping-fldr-picker-menubtn");
+        mainFldrPickerMenuBtn.text(newFldrName).val(aFldrID).removeAttr("syncfldr");
         gParentFolderID = aFldrID;
         
         that.resetTree();
