@@ -191,6 +191,10 @@ body[data-locale|="es"][data-os="mac"] #enable-shortcut-key-label {
     letter-spacing: -0.2px;
 }
 
+body[data-locale="uk"] #enable-shortcut-key-label {
+    letter-spacing: -0.8px;
+}
+
 #shortcut-key-prefix-modifiers {
     vertical-align: middle;
 }
@@ -206,6 +210,11 @@ body[data-locale="de"]:not([data-os="mac"]) #shortcut-key-prefix-modifiers {
 
 body[data-locale|="es"] #shortcut-key-prefix-modifiers {
     letter-spacing: -0.2px;
+}
+
+body[data-locale="uk"]:not([data-os="mac"]) #shortcut-key-prefix-modifiers {
+    margin-right: 0;
+    letter-spacing: -1px;
 }
 
 #shortcut-key-selector {
@@ -393,6 +402,10 @@ body[data-locale="de"] #wnds-dlgs-opts-dlg {
     --width: 530px;
 }
 
+body[data-locale="uk"] #wnds-dlgs-opts-dlg {
+    --width: 550px;
+}
+
 #wnds-dlgs-opts-dlg fieldset {
     padding-bottom: 14px;
     border-bottom: 1px solid var(--color-fieldset-border);
@@ -546,6 +559,7 @@ body[data-os="mac"] #sync-clippings-dlg #sync-cxn-error .msgbox-icon {
     flex: 0 1 auto;
     margin-left: 8px;
     height: 28px;
+    min-width: revert;
 }
 
 body[data-locale="de"] #sync-clippings-dlg #sync-helper-app-update-check + label {

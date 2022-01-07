@@ -1337,6 +1337,9 @@ body[data-locale="de"][data-os="win"] #include-src-urls + label {
     letter-spacing: -0.45px;
 }
 
+body[data-locale="uk"] #include-src-urls + label {
+    letter-spacing: -0.2px;
+}
 
 #import-confirm-msgbox > .msgbox-icon,
 #export-confirm-msgbox > .msgbox-icon,
@@ -1421,6 +1424,10 @@ body[data-locale="fr"] #mini-help-dlg #mini-help-intro {
     letter-spacing: -0.14px;
 }
 
+body[data-locale="uk"][data-os="mac"] #mini-help-dlg #mini-help-intro {
+    letter-spacing: -0.45px;
+}
+
 #show-only-synced-items-reminder {
     --height: 150px;
 }
@@ -1437,3 +1444,6 @@ body[data-locale="de"] #show-only-synced-items-reminder {
     --width: 30em;
 }
 
+#generic-msg-box > .msgbox-icon {
+    margin-top: 8px;
+}

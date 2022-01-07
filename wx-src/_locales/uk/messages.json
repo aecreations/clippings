@@ -3,13 +3,17 @@
     "message": "Фрагменти",
     "description": "Name of the extension - do NOT translate"
   },
+  "extNameTB": {
+    "message": "Фрагменти для Thunderbird",
+    "description": "Name of the extension for Thunderbird"
+  },
   "extDesc": {
     "message": "Зберігайте часто вводимий текст для вставки пізніше.",
     "description": "Description of the extension"
   },
   "browserActionTitle": {
     "message": "Фрагменти",
-    "description": "Toolbar button label"
+    "description": "Label for toolbar button, context submenu and tooltips"
   },
   "cmdDesc": {
     "message": "Вставити фрагмент за клавішею",
@@ -46,12 +50,42 @@
   "btnBrowse": {
     "message": "Перегляд…"
   },
+  "btnReset": {
+    "message": "Скинути"
+  },
+  "migrnStatusTitle": {
+    "message": "Статус перенесення Фрагментів",
+    "description": "Clippings for Thunderbird"
+  },
+  "migrnStatusSuccess": {
+    "message": "Ваші фрагменти успішно перенесені.",
+    "description": "Clippings for Thunderbird"
+  },
+  "migrnStatusFail": {
+    "message": "Під час спроби Фрагментів перенести ваші дані, сталася помилка.",
+    "description": "Clippings for Thunderbird"
+  },
+  "migrnFailDetail": {
+    "message": "Клацніть Зберегти щоб Фрагменти зберегли копію ваших даних.",
+    "description": "Clippings for Thunderbird"
+  },
+  "migrnSaveData": {
+    "message": "Зберегти Фрагменти",
+    "description": "Clippings for Thunderbird"
+  },
+  "migrnFailTtip": {
+    "message": "Не вдалося перемістити дані ваших Фрагментів. Клацніть для подробиць.",
+    "description": "Clippings for Thunderbird - tooltip"
+  },
+  "saveConfirm": {
+    "message": "Збережено."
+  },
   "pasteTitle": {
     "message": "Вставити фрагмент",
     "description": "Title bar text of keyboard paste dialog"
   },
   "msgTitle": {
-    "message": "Сповіщення",
+    "message": "Увага",
     "description": "Title bar text of alert dialog"
   },
   "msgUnavail": {
@@ -74,6 +108,13 @@
   },
   "msgRetryPgNotLoaded": {
     "message": "Не вдалося отримати виділений текст. Перезавантажте сторінку, а потім повторіть спробу."
+  },
+  "msgClipbdEmpty": {
+    "message": "Буфер обміну пустий або не містить тексту."
+  },
+  "msgRunInPrivateChg": {
+    "message": "Налаштування Фрагментів \"Запускати у Приватному вікні\" було нещодавно змінене. Маєте перезапустити Firefox щоб зміна подіяла.",
+    "description": "Message box that appears when attempting to open Clippings Manager immediately after toggling the Run in Private Windows setting"
   },
   "msgUnknown": {
     "message": "Довідка недоступна (залиште мене сам на сам)."
@@ -127,9 +168,33 @@
     "message": "Організувати фрагменти",
     "description": "Clippings context menu"
   },
+  "cxtMenuNewFromSel": {
+    "message": "Нова форма…",
+    "description": "Clippings context menu in Thunderbird message composer"
+  },
+  "cxtMenuNewFromClipbd": {
+    "message": "Новий з буферу обміну…",
+    "description": "Clippings context menu in Thunderbird message composer"
+  },
+  "cxtMenuShowPasteOpts": {
+    "message": "Показувати варіанти цитування при вставлянні",
+    "description": "Clippings context menu in Thunderbird message composer"
+  },
   "baMenuResetAutoIncrPlaceholders": {
     "message": "Скидання авто-інкрементних заповнювачів",
     "description": "Clippings browser action submenu"
+  },
+  "pasteAsHdg": {
+    "message": "Вставити фрагмент як",
+    "description": "Quote Options dialog in Clippings for Thunderbird"
+  },
+  "pasteAsNormal": {
+    "message": "Звичайний текст",
+    "description": "Quote Options dialog in Clippings for Thunderbird"
+  },
+  "pasteAsQuoted": {
+    "message": "Цитований текст",
+    "description": "Quote Options dialog in Clippings for Thunderbird"
   },
   "welcomePageTitle": {
     "message": "Ласкаво просимо до фрагментів",
@@ -145,7 +210,7 @@
     "message": "Що нового?"
   },
   "welcWhatsNewDesc": {
-    "message": "Фрагменти 6.2 отримали багато нових функцій і поліпшень, таких як підтримка темного режиму."
+    "message": "У Фрагментах 6.3 покращений інтерфейс користувача і додане налаштування нагадування про резервне копіювання."
   },
   "welcWhatsNewCTA": {
     "message": "Дізнатися більше"
@@ -159,11 +224,11 @@
   "welcQuickStartCTA": {
     "message": "Прочитати інструкцію"
   },
+  "welcHelpLink": {
+    "message": "Довідка"
+  },
   "closeWelcomePg": {
     "message": "Зачинити цю сторінку"
-  },
-  "welcLeaveConfirm": {
-    "message": "Ви впевнені, що хочете залишити привітання на сторінці фрагментів?"
   },
   "welcCancelDlg": {
     "message": "Повернутися"
@@ -198,14 +263,33 @@
     "message": "Мітка:",
     "description": "Label for the Clipping label menu"
   },
+  "labelCrtUnq": {
+    "message": "Створити як нецитований текст",
+    "description": "New clipping option available only in Thunderbird"
+  },
+  "labelRemLnBrk": {
+    "message": "Видалити зайві перенесення рядків",
+    "description": "New clipping option available only in Thunderbird"
+  },
   "labelNewFldrName": {
     "message": "Назва нової теки:"
   },
   "labelCreateAsSubfOf": {
     "message": "Створити як підтеку:"
   },
+  "btnPrevw": {
+    "message": "Попередній перегляд…",
+    "description": "Clippings for Thunderbird"
+  },
+  "labelPrevw": {
+    "message": "Попередній перегляд фрагменту:",
+    "description": "Clippings for Thunderbird"
+  },
   "shortcutKeyHint": {
     "message": "Щоб швидко вставити цей фрагмент у текстове поле веб-сторінки у Firefox, натисніть $1 після гарячої клавіші."
+  },
+  "shctKeyHintTB": {
+    "message": "Щоб хутко вставити цей фрагмент до повідомлення Thunderbird, натисніть $1 і гарячу клавішу."
   },
   "shortcutKeyAssigned": {
     "message": "'$1' вже призначений"
@@ -247,10 +331,14 @@
   },
   "expHTMLHostAppInfo": {
     "message": "Фрагменти $1 на $2",
-    "description": "Clippings <extVersion> on Firefox <fxVersion>"
+    "description": "Clippings <extVersion> on <hostApp>"
   },
   "expHTMLShctKeyInstrxn": {
     "message": "Щоб вставити фрагмент у текстове поле веб-сторінки в Firefox, натисніть ALT+SHIFT+Y (Command+Shift+Y на macOS), і  тоді гарячу клавішу."
+  },
+  "expHTMLShctKeyInstrxnTB": {
+    "message": "Щоб вставити фрагмент у повідомлення Thunderbird, натисніть Alt+Shift+Y (Command+Option+V для macOS) і гарячу клавішу.",
+    "description": "Clippings for Thunderbird"
   },
   "expHTMLShctKeyCustNote": {
     "message": "ПРИМІТКА: Гаряча клавіша (клавіші за замовчуванням ALT+SHIFT+Y або Command+Shift+Y) може відрізнятися в залежності від налаштувань Clippings."
@@ -261,13 +349,27 @@
   "expHTMLClipNameCol": {
     "message": "Назва фрагмента"
   },
+  "print": {
+    "message": "Друк",
+    "description": "Shortcut key list in Clippings for Thunderbird"
+  },
+  "htmlFilterDesc": {
+    "message": "Документ HTML"
+  },
+  "errorSaveFailed": {
+    "message": "Помилка збереження"
+  },
   "plchldrPromptSingleDesc": {
     "message": "Введіть значення для \"$1\":",
-    "description": "Placeholder prompt dialog - single placeholder"
+    "description": "Placeholder prompt dialog - single placeholder, text"
   },
   "plchldrPromptMultiDesc": {
     "message": "Введіть значення наступних заповнювачів.",
     "description": "Placeholder prompt dialog - multiple placeholders"
+  },
+  "plchldrPmtSelectDesc": {
+    "message": "Оберіть значення для \"$1\":",
+    "description": "Placeholder prompt dialog - single placeholder, select"
   },
   "clippingsMgrWndTitle": {
     "message": "Менеджер фрагментів",
@@ -290,6 +392,9 @@
   },
   "tbTools": {
     "message": "Інструменти"
+  },
+  "tbHelp": {
+    "message": "Довідка"
   },
   "clipMgrSrchBarHint": {
     "message": "Знайти фрагменти та теки",
@@ -346,6 +451,10 @@
   },
   "mnuReloadSyncFldr": {
     "message": "Перезавантажити"
+  },
+  "mnuMoreTools": {
+    "message": "Ще",
+    "description": "Submenu of Tools menu in Clippings Manager"
   },
   "mnuRemoveAllSrcURLs": {
     "message": "Видалити  веб-адреси джерела…"
@@ -417,10 +526,10 @@
     "description": "Clippings Manager - clipping content textarea hint text"
   },
   "clipMgrShortcutHelpHint": {
-    "message": "Довідка по клавіатурному скороченні"
+    "message": "Гарячі клавіші"
   },
   "clipMgrNoItems": {
-    "message": "Не знайдено фрагментів."
+    "message": "Нічого не знайдено."
   },
   "clipMgrIntroCmdDel": {
     "message": "Вилучити вибраний фрагмент чи теку",
@@ -454,12 +563,19 @@
     "message": "Скасувати відміну",
     "description": "Clippings Manager intro - key binding description"
   },
+  "clipMgrIntroCmdDetailsPane": {
+    "message": "Показати/сховати панель подробиць",
+    "description": "Clippings Manager intro - key binding description"
+  },
   "clipMgrStatusBar": {
     "message": "$1 од.",
     "description": "Status bar text in Clippings Manager, counting the number of clippings and folders"
   },
   "clipMgrRemoveSrcURLsConfirm": {
     "message": "Видалено адреси веб-сторінок із ваших фрагментів."
+  },
+  "clipMgrRestoredSrcURLs": {
+    "message": "Відновлена адреса веб сторінки-джерела."
   },
   "clipMgrNoUndo": {
     "message": "Скасовувати нічого"
@@ -472,6 +588,9 @@
   },
   "clipMgrShortcutHelpInstrxn": {
     "message": "Щоб вставити фрагмент зі списку нижче у веб-сторінку в Firefox, натисніть $1, а потім гарячу клавішу."
+  },
+  "clipMgrShortcutHelpInstrxnTB": {
+    "message": "Аби вставити фрагмент зі списку нижче до повідомлення у Thunderbird, натистніть $1 і гарячу клавішу."
   },
   "clipMgrShortcutKeyAssigned": {
     "message": "Вибрана гаряча клавіша уже була призначена для іншого фрагменту. Будь ласка, виберіть іншу гарячу клавішу."
@@ -510,7 +629,10 @@
     "message": "Розділіть кілька значень за умовчанням символом „|“. Приклад: червоний|зелений|синій"
   },
   "numPlchldrDesc": {
-    "message": "Кожного разу після вставлення фрагмента, значення цього наповнювача автоматично збільшиться на один, Поки заповнювач не буде скинутий з контекстного меню панелі інструментів фрагментів."
+    "message": "Щоразу як фрагмент вставляється, його лічильник вставок автоматично збільшується, поки не буде скинутий кнопкою контекстного меню на панелі інструментів Фрагментів."
+  },
+  "numPlchldrDescTB": {
+    "message": "Щоразу як фрагмент вставляється, його лічильник вставок автоматично збільшується, поки не буде скинутий у контекстному меню Фрагментів."
   },
   "dateTimeFmts": {
     "message": "Доступні формати дати/часу:"
@@ -555,10 +677,10 @@
     "message": "Опис"
   },
   "expFmtClippings6": {
-    "message": "Фрагменти 6"
+    "message": "Фрагменти"
   },
   "expFmtClippings6Desc": {
-    "message": "Формат за замовчуванням для резервного копіювання і обміну даними Clippings з іншими користувачами або кількома комп'ютерами. Для роботи потрібно встановити Clippings 5.5 або новішу."
+    "message": "Базовий формат резервного копіювання й обміну даними Фрагментів між користувачами чи комп'ютерами."
   },
   "expFmtHTMLDoc": {
     "message": "Документ HTML"
@@ -567,7 +689,7 @@
     "message": "Експорт даних Clippings у вигляді HTML документа для друку або відображення у веб-браузері."
   },
   "expFmtCSV": {
-    "message": "Файл CSV"
+    "message": "Значення розділені комами (CSV)"
   },
   "expFmtCSVDesc": {
     "message": "Використовуйте формат (CSV), відокремлені комами, для обміну даними фрагментами з іншими програмами. Лише фрагменти та їх назви експортується."
@@ -646,6 +768,12 @@
   "prefsShortcutMode": {
     "message": "Активуйте режим гарячих клавіш, натиснувши на наступні клавіші:"
   },
+  "prefsShctMode": {
+    "message": "Активуйте режим гарячих клавіш натисненням $1"
+  },
+  "prefsShctModeNew": {
+    "message": "Або скористайтеся клавішами $1"
+  },
   "prefsShortcutKeyNote": {
     "message": "Деякі з доступних комбінацій клавіш вже можуть бути призначені <a href=\"https://support.mozilla.org/en-US/kb/keyboard-shortcuts-perform-firefox-tasks-quickly\" class=\"hyperlink\">командами Firefox</a> або іншими додатками."
   },
@@ -670,6 +798,9 @@
   "backupRemind": {
     "message": "Показувати нагадування про резервну копію кожні",
     "description": "Label for checkbox option for setting backup notification, appears after checkbox and before the reminder frequency drop-down menu"
+  },
+  "backupRemSkip": {
+    "message": "Не нагадувати якщо з останнього збереження не було змін"
   },
   "backupRemDays": {
     "message": "дні",
@@ -742,11 +873,19 @@
   "syncIntro": {
     "message": "Ви можете синхронізувати Ваші фрагменти з Thunderbird або іншими версіями Firefox, помістивши фрагменти, якими ви хочете поділитися в спеціальній теці \"Синхронізовані фрагменти\". Синхронізовані фрагменти будуть збережені у файлі у вашій системі. Потребує допоміжної програми <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">Sync Clippings</a>."
   },
+  "syncIntroTB": {
+    "message": "Можете синхронізувати свої фрагменти з  Firefox чи іншою установкою Thunderbird, помістивши бажані у теку \"Синхронізовані фрагменти\". Вони будуть збережені на вашому комп'ютері. Потрібне помічне розширення <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">Синхронізація фрагментів</a>."
+  },
   "syncLearnMore": {
     "message": "Докладніше про синхронізацію фрагментів."
   },
   "syncHelp": {
-    "message": "<p class=\"dlg-subhead\">Синхронізація фрагментів</p><p>Синхронізація фрагментів дозволяють вам синхронізувати підмножину ваших фрагментів між Firefox і Thunderbird, так щоб вони були в обох додатках. Ви можете вибрати, які фрагменти ви хочете синхронізувати, створивши їх у спеціальній теці \"Синхронізовані фрагменти\" з діалогового вікна Нові фрагменти або перемістивши їх до однієї і тієї ж теки в менеджері фрагментів.</p><p>Тека Synced Clippings буде автоматично створена після встановлення Sync Clippings.</p><p class=\"dlg-subhead\">Налаштування</p><p> Sync Clippings потрібно увімкнути в програмах з якими ви хочете синхронізувати ваші фрагменти. Синхронізація фрагментів підтримується на Firefox 60 і новіше, а Thunderbird 60 і новіше (з Clippings для Thunderbird 5. або новішу установку).</p><p>крім того, додатку для синхронізації потрібно встановити у вашій системі вміст теки Synced Clippings в актуальному стані. Доступно для завантаження з веб-сайту <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">AE Creations</a>. Після установки він буде запущений автоматично при запуску Firefox, і буде запущений у фоновому режимі.</p><p>У Firefox, активуйте налаштування для Sync Clippings зі сторінки налаштувань фрагментів, натиснувши <b>Увімкнути синхронізацію</b>. Вам буде запропоновано вибрати місце розташування файлу у вашій системі, де будуть зберігатися синхронізовані дані та збережені якщо це вже не було встановлено.</p>"
+    "message": "<p class=\"dlg-subhead\">Синхронізовані фрагменти</p><p>Синхронізовані фрагменти дають синхронізувати набори фрагментів між Firefox та Thunderbird щоб вони були доступні в обох програмах. Можете обрати фрагменти до синхронізації створивши їх у спеціальній теці \"Синхронізовані фрагменти\" з меню Новий фрагмент, або переносячи їх у цю ж теку в Керівнику Фрагментів.</p><p>Тека \"Синхронізовані фрагменти\" буде створена автоматично щойно налаштування \"Синхронізувати фрагменти\" буде включене.</p><p class=\"dlg-subhead\">Налаштування</p><p>\"Синхронізувати фрагменти\" має бути включене в усіх програмах де ви хочете мати однакові фрагменти. Функція підтримуєтьяся у Firefox 60 і вище, і Thunderbird 60 і вище (зі встановленими Фрагментами для Thunderbird 5.6 чи новіше).</p><p>Також на вашому комп'ютері має бути встановлена помічна програма Синхронізація Фрагментів щоб тримати вашу теку Синхронізовані фрагменти в актуальному стані. ЇЇ можна завантажити з <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">сайту AE Creations</a>. Встановлена, вона запускатиметься сама зі стартом Firefox і працюватиме на тлі.</p><p>Щоб запустити Синхронізацію Фрагментів, клацніть <b>Включити синхронізацію</b> на сторінці налаштувань Фрагментів. Ви маєте вказати розташування файлу на комп'ютері, куди  буде збережено дані синхронізованих фрагментів, якщо воно ще не вказане.</p>",
+    "description": "Sync Clippings help in Firefox"
+  },
+  "syncHelpTB": {
+    "message": "<p class=\"dlg-subhead\">Синхронізувати фрагменти</p><p>Синхронізація фрагментів дає синхронізувати набори фрагментів між Firefox та Thunderbird аби вони були доступні в обох програмах. Можете обрати фрагменти до синхронізації створивши їх у спеціальній теці \"Синхронізовані фрагменти\" з меню Новий фрагмент, або переносячи їх у цю ж теку в Керівнику Фрагментів.</p><p>Тека \"Синхронізовані фрагменти\" буде створена автоматично щойно налаштування \"Синхронізувати фрагменти\" буде включене.</p><p class=\"dlg-subhead\">Налаштування</p><p>\"Синхронізувати фрагменти\" має бути включене у програмах де ви хочете мати однакові фрагменти. Функція підтримуєтьяся у Firefox 60  і вище (зі встановленими Фрагментами 6.1 чи новіше), і Thunderbird 60 і вище.</p><p>Також на вашому комп'ютері має бути встановлена помічна програма Синхронізація Фрагментів щоб тримати вашу теку Синхронізовані фрагменти в актуальному стані. ЇЇ можна завантажити з <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">сайту AE Creations</a>. Встановлена, вона запускатиметься сама зі стартом Thunderbird, і працюватиме на тлі.</p><p>Щоб запустити Синхронізацію Фрагментів, клацніть <b>Включити синхронізацію</b> на сторінці налаштувань Фрагментів. Ви маєте вказати розташування файлу на комп'ютері, куди  буде збережено дані синхронізованих фрагментів, якщо воно ще не вказане.</p>",
+    "description": "Sync Clippings help in Thunderbird"
   },
   "syncStatusOn": {
     "message": "Синхронізація фрагментів увімкнена."
@@ -792,9 +931,6 @@
   "syncFileDirExLinux": {
     "message": "/home/YourName/synced-clippings",
     "description": "Example folder path on Linux."
-  },
-  "syncFileDirDesc": {
-    "message": "Дані синхронізованих фрагментів зберігаються в цьому розташуванні файлу. Якщо ви синхронізуєте з Thunderbird і хочете змінити місце розташування файлу, ви також повинні змінити розташування файлу синхронізації в параметрах фрагментів у Thunderbird для збігу."
   },
   "errSyncConxn": {
     "message": "Не вдається підключитися до додатку для Sync Clipps. Переконайтеся, що додаток встановлений."
@@ -844,6 +980,27 @@
   "cxtMnuSyncItemsOnly": {
     "message": "Показувати лише синхронізовані елементи в меню фрагментів"
   },
+  "wndsAndDlgsOpts": {
+    "message": "Інтерфейс…"
+  },
+  "wndsDlgsOptsTitle": {
+    "message": "Інтерфейс"
+  },
+  "wndsDlgsOptsExpWarn": {
+    "message": "Ці налаштування експериментальні для $1. Вони можуть працювати неправильно між кількома моніторами.",
+    "description": "Warning message in the Windows and Dialogs settings dialog, appearing if using an OS other than Windows"
+  },
+  "macOS": {
+    "message": "macOS"
+  },
+  "autoPosWnds": {
+    "message": "Автоматично розташувати у похідному вікні",
+    "description": "Checkbox option in Windows and Dialogs settings dialog"
+  },
+  "clpMgrSaveWndPos": {
+    "message": "Зберегти розмір і розташування вікна Керівника фрагментів",
+    "description": "Checkbox option in Windows and Dialogs settings dialog"
+  },
   "aboutBtn": {
     "message": "Про програму…"
   },
@@ -855,7 +1012,7 @@
     "message": "Створено AE Creations."
   },
   "aboutHomePgLink": {
-    "message": "Відвідати домашню сторінку"
+    "message": "Відвідайте сторінку"
   },
   "aboutLicLink": {
     "message": "Відомості про ліцензію"
@@ -886,6 +1043,58 @@
   },
   "aboutSyncFileSize": {
     "message": "Розмір файлу синхронізації:"
+  },
+  "upgradeNotifcn": {
+    "message": "$1 було оновлено. Клацніть дізнатися що нового.",
+    "description": "Post-upgrade notification text, with placeholder for extension name (Clippings or Clippings for Thunderbird)"
+  },
+  "newVerHdg": {
+    "message": "Нова версія встановлена!",
+    "description": "Header for the What's New page (appears after upgrading Clippings)"
+  },
+  "upgrade": {
+    "message": "Фрагменти оновлено до версії 6.3.",
+    "description": "What's New page (appears after upgrading Clippings)"
+  },
+  "upgradeTB": {
+    "message": "Фрагменти для Thunderbird оновлено до версії 6.3.",
+    "description": "What's New page (appears after upgrading Clippings for Thunderbird)"
+  },
+  "whatsNew": {
+    "message": "Що нового",
+    "description": "What's New page (appears after upgrading Clippings)"
+  },
+  "whatsNew1": {
+    "message": "Покращено Керівника Фрагментів: у Windows тепер зберігаються розмір і розташування його вікна",
+    "description": "Description of an enhancement or fix in the new version of Clippings"
+  },
+  "whatsNew2": {
+    "message": "Поліпшення підтримки кількох моніторів у Windows. Меню Фрагментів буде тепер виринати у вікні оглядача де воно викликається, а не центрованим на основному моніторі",
+    "description": "Description of an enhancement or fix in the new version of Clippings"
+  },
+  "whatsNew3": {
+    "message": "Нова можливість уникнути нагадувань якщо фрагменти не мінялися від останнього резервного копіювання",
+    "description": "Description of an enhancement or fix in the new version of Clippings"
+  },
+  "contribHdg": {
+    "message": "Долучись",
+    "description": "Contribution CTA in the What's New page"
+  },
+  "contribCTA": {
+    "message": "Підтримайте розробників $1 <a href=\"$2\">внеском</a>. Більше способів <a href=\"$3\">долучитися</a>!",
+    "description": "Call to action message to make donation or learn more about contributing to Clippings (or Clippings for Thunderbird)"
+  },
+  "linkBlog": {
+    "message": "Блог розробника"
+  },
+  "linkAMO": {
+    "message": "Сторінка доданків Firefox"
+  },
+  "linkATN": {
+    "message": "Сторінка доданків Thunderbird"
+  },
+  "linkForum": {
+    "message": "Довідка і форуми підтримки"
   },
   "keyAlt": {
     "message": "Alt"
