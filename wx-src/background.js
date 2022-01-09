@@ -22,6 +22,7 @@ let gPasteClippingTargetTabID = null;
 let gIsReloadingSyncFldr = false;
 let gSyncClippingsHelperDwnldPgURL;
 let gForceShowFirstTimeBkupNotif = false;
+let gPrefersColorSchemeMedQry;
 
 let gClippingsListeners = {
   _listeners: [],
@@ -433,10 +434,15 @@ function init()
       await aePrefs.setPrefs({ autoAdjustWndPos, clippingsMgrSaveWndGeom });
     }
 
+    // Handle changes to Dark Mode system setting.
+    gPrefersColorSchemeMedQry = window.matchMedia("(prefers-color-scheme: dark)");
+    handlePrefersColorSchemeChange(gPrefersColorSchemeMedQry);
+    gPrefersColorSchemeMedQry.addEventListener("change", handlePrefersColorSchemeChange);
+    
     gClippingsListener.origin = aeConst.ORIGIN_HOSTAPP;
     gClippingsListeners.add(gClippingsListener);
     gSyncClippingsListeners.add(gSyncClippingsListener);
-    
+
     if (gPrefs.syncClippings) {
       gSyncFldrID = gPrefs.syncFolderID;
 
@@ -796,7 +802,7 @@ function getContextMenuData(aFolderID)
     }
     return rv;    
   }
-  
+
   let rv = [];
 
   return new Promise((aFnResolve, aFnReject) => {
@@ -813,11 +819,19 @@ function getContextMenuData(aFolderID)
         // Submenu icon
         let iconPath = "img/folder.svg";
         if (aItem.id == gSyncFldrID) {
-          iconPath = "img/synced-clippings.svg";
+          // Firefox bug on macOS:
+          // Dark Mode setting isn't applied to the browser context menu when
+          // a Firefox dark color theme is used.
+          if (gOS != "mac" && getContextMenuData.isDarkMode) {
+            iconPath = "img/synced-clippings-dk.svg";
+          }
+          else {
+            iconPath = "img/synced-clippings.svg";
+          }
         }
         submenuItemData.icons = { 16: iconPath };
 
-        if (aItem.displayOrder === undefined) {
+        if (! ("displayOrder" in aItem)) {
           submenuItemData.displayOrder = 0;
         }
         else {
@@ -848,7 +862,7 @@ function getContextMenuData(aFolderID)
             },
           };
 
-          if (aItem.displayOrder === undefined) {
+          if (! ("displayOrder" in aItem)) {
             menuItemData.displayOrder = 0;
           }
           else {
@@ -871,6 +885,7 @@ function getContextMenuData(aFolderID)
     });
   });
 }
+getContextMenuData.isDarkMode = null;
 
 
 function buildContextMenu()
@@ -937,7 +952,7 @@ function buildContextMenuHelper(aMenuData)
       documentUrlPatterns: ["<all_urls>"]
     };
 
-    if (menuData.parentId !== undefined && menuData.parentId != aeConst.ROOT_FOLDER_ID) {
+    if ("parentId" in menuData && menuData.parentId != aeConst.ROOT_FOLDER_ID) {
       menuItem.parentId = menuData.parentId;
     }
 
@@ -1011,6 +1026,18 @@ async function rebuildContextMenu()
   gClippingMenuItemIDMap = {};
   gFolderMenuItemIDMap = {};
   buildContextMenu();
+}
+
+
+function handlePrefersColorSchemeChange(aMediaQuery)
+{
+  getContextMenuData.isDarkMode = aMediaQuery.matches;
+
+  // Changes to the Dark Mode setting only affects the Synced Clippings folder
+  // menu icon.
+  if (gPrefs.syncClippings) {
+    rebuildContextMenu();
+  }
 }
 
 
