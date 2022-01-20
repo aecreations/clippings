@@ -9,6 +9,8 @@ Learn more and install the Firefox extension from the [AE Creations website](htt
 
 Support the development of Clippings by [making a donation](https://aecreations.sourceforge.io/clippings/donate.php).  Learn more about other ways to [get involved](https://aecreations.sourceforge.io/clippings/contribute.php)!
 
+---
+
 * [Visit website](https://aecreations.sourceforge.io/clippings/index.php)
 * [Firefox Add-ons page](https://addons.mozilla.org/en-US/firefox/addon/clippings/)
 * [Help and Support forums](https://groups.google.com/d/forum/aecreations-help)
