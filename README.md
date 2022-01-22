@@ -1,5 +1,5 @@
 # Clippings
-**Save frequently-entered text for pasting later.**
+### Save frequently-entered text for pasting later.
 
 Saves and manages frequently-entered text for later pasting into web page forms in [Firefox](https://www.mozilla.org/en-US/firefox/). Pasting a clipping is accomplished with just two mouse clicks, eliminating the hassle of retyping or repetitive copying and pasting.
 
