@@ -562,6 +562,10 @@ body[data-os="mac"] #sync-clippings-dlg #sync-cxn-error .msgbox-icon {
     min-width: revert;
 }
 
+body[data-locale|="zh"] #sync-clippings-dlg #sync-fldr-picker #browse-sync-fldr {
+    min-width: 88px;
+}
+
 body[data-locale="de"] #sync-clippings-dlg #sync-helper-app-update-check + label {
     letter-spacing: -0.35px;
 }
