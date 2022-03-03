@@ -822,7 +822,7 @@ function getContextMenuData(aFolderID)
           // Firefox bug on macOS:
           // Dark Mode setting isn't applied to the browser context menu when
           // a Firefox dark color theme is used.
-          if (gOS != "mac" && getContextMenuData.isDarkMode) {
+          if (getContextMenuData.isDarkMode) {
             iconPath = "img/synced-clippings-dk.svg";
           }
           else {
