@@ -399,15 +399,15 @@ body[data-locale="fr"] #skip-backup-label {
 }
 
 body[data-locale="fr"] #wnds-dlgs-opts-dlg {
-    --width: 576px;
+    --width: 582px;
 }
 
 body[data-locale="de"] #wnds-dlgs-opts-dlg {
-    --width: 534px;
+    --width: 540px;
 }
 
 body[data-locale="uk"] #wnds-dlgs-opts-dlg {
-    --width: 554px;
+    --width: 560px;
 }
 
 #wnds-dlgs-opts-dlg fieldset {
@@ -468,16 +468,16 @@ body[data-os="mac"] #sync-clippings-dlg {
 }
 
 body[data-locale="de"] #sync-clippings-dlg {
-    --width: 564px;
+    --width: 570px;
 }
 
 body[data-locale|="es"] #sync-clippings-dlg {
-    --width: 614px;
+    --width: 620px;
 }
 
 body[data-locale="nl"] #sync-clippings-dlg,
 body[data-locale="uk"] #sync-clippings-dlg {
-    --width: 516px;
+    --width: 522px;
 }
 
 #sync-clippings-dlg fieldset {
@@ -739,7 +739,7 @@ body[data-locale|="pt"][data-os="mac"] #about-dlg #ext-desc {
 }
 
 body[data-locale="de"] #about-dlg #usr-contrib-cta {
-    letter-spacing: -0.1px;
+    letter-spacing: -0.2px;
 }
 
 body[data-locale|="es"] #about-dlg #usr-contrib-cta {
