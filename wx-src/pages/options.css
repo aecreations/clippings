@@ -82,7 +82,7 @@ body[data-os="mac"] main {
 
 body[data-locale="de"] main,
 body[data-locale="fr"] main {
-    width: 700px;
+    width: 720px;
 }
 
 input[type="number"],
@@ -399,7 +399,7 @@ body[data-locale="fr"] #skip-backup-label {
 }
 
 body[data-locale="fr"] #wnds-dlgs-opts-dlg {
-    --width: 582px;
+    --width: 592px;
 }
 
 body[data-locale="de"] #wnds-dlgs-opts-dlg {
@@ -568,6 +568,11 @@ body[data-os="mac"] #sync-clippings-dlg #sync-cxn-error .msgbox-icon {
     margin-left: 8px;
     height: 28px;
     min-width: revert;
+}
+
+body[data-locale="de"] #sync-clippings-dlg #sync-fldr-picker #browse-sync-fldr {
+    min-width: 130px;
+    letter-spacing: -0.75px;
 }
 
 body[data-locale|="zh"] #sync-clippings-dlg #sync-fldr-picker #browse-sync-fldr {

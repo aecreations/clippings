@@ -6,7 +6,7 @@
 
 const WNDH_OPTIONS_EXPANDED = 486;
 const DLG_HEIGHT_ADJ_WINDOWS = 36;
-const DLG_HEIGHT_ADJ_LOCALE_ES = 16;
+const DLG_HEIGHT_ADJ_LOCALE = 16;
 
 let gOS;
 let gClippingsDB = null;
@@ -63,8 +63,8 @@ async function initHelper()
     }
     
     let lang = browser.i18n.getUILanguage();
-    if (lang == "es-ES") {
-      height += DLG_HEIGHT_ADJ_LOCALE_ES;
+    if (lang == "uk" || lang.startsWith("es")) {
+      height += DLG_HEIGHT_ADJ_LOCALE;
     }
     
     await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, { height });
