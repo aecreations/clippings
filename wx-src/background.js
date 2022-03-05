@@ -1446,9 +1446,9 @@ function openBackupDlg()
 {
   let url = browser.runtime.getURL("pages/backup.html");
   let lang = browser.i18n.getUILanguage();
-  let height = 410;
+  let height = 412;
 
-  if (lang == "uk") {
+  if (lang == "uk" || (lang == "fr" && gOS == "mac")) {
     height = 450;
   }
   
