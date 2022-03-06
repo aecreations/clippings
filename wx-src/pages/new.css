@@ -171,14 +171,6 @@ ul.fancytree-container {
     margin-left: 26px;
 }
 
-body[data-locale="de"] #clipping-options {
-    letter-spacing: -0.16px;
-}
-
-body[data-locale|="pt"] #clipping-options {
-    letter-spacing: -0.25px;
-}
-
 #btn-expand-options {
     position: relative;
     top: -24px;
@@ -207,6 +199,10 @@ body[data-locale|="pt"] #clipping-options {
     font-size: 12px;
 }
 
+#clipping-options #save-source-url {
+    margin-left: 0;
+}
+
 #clipping-options #shct-key-and-label-opts {
     margin-top: 10px;
 }
@@ -232,6 +228,31 @@ body[data-locale|="pt"] #clipping-options {
 
 #shct-key-tooltip {
     vertical-align: middle;
+}
+
+body[data-locale="uk"] #clipping-key-lbl,
+body[data-locale="uk"] #clipping-label-picker-lbl,
+body[data-locale|="pt"] #clipping-key-lbl,
+body[data-locale|="pt"] #clipping-label-picker-lbl,
+body[data-locale|="es"] #clipping-key-lbl,
+body[data-locale|="es"] #clipping-label-picker-lbl {
+    display: block;
+    margin-bottom: 4px;
+}
+
+body[data-locale="fr"] #clipping-key-lbl,
+body[data-locale="fr"] #clipping-label-picker-lbl,
+body[data-locale="de"] #clipping-key-lbl,
+body[data-locale="de"] #clipping-label-picker-lbl {
+    letter-spacing: -0.5px;
+}
+
+body:not([data-locale="uk"]):not([data-locale|="pt"]):not([data-locale|="es"]) #clipping-key {
+    width: 78px;
+}
+
+body:not([data-locale="uk"]):not([data-locale|="pt"]):not([data-locale|="es"]) #clipping-label-picker {
+    width: 86px;
 }
 
 #dlg-buttons {

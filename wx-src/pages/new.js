@@ -63,7 +63,7 @@ async function initHelper()
     }
     
     let lang = browser.i18n.getUILanguage();
-    if (lang == "uk" || lang.startsWith("es")) {
+    if (lang == "uk" || lang.startsWith("pt") || lang.startsWith("es")) {
       height += DLG_HEIGHT_ADJ_LOCALE;
     }
     
