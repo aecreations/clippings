@@ -1,0 +1,1159 @@
+{
+  "extName": {
+    "message": "剪辑",
+    "description": "Name of the extension - do NOT translate"
+  },
+  "extNameTB": {
+    "message": "剪辑 for 雷鸟",
+    "description": "Name of the extension for Thunderbird"
+  },
+  "extDesc": {
+    "message": "保存频繁输入的文本以便稍后粘贴",
+    "description": "Description of the extension"
+  },
+  "browserActionTitle": {
+    "message": "剪辑",
+    "description": "Label for toolbar button, context submenu and tooltips"
+  },
+  "cmdDesc": {
+    "message": "使用快捷键粘贴剪辑",
+    "description": "Keyboard shortcut description in Manage Extension Shortcuts"
+  },
+  "hostAppFx": {
+    "message": "Firefox"
+  },
+  "hostAppTb": {
+    "message": "雷鸟"
+  },
+  "hostAppAll": {
+    "message": "Firefox 或 雷鸟"
+  },
+  "btnOK": {
+    "message": "确定"
+  },
+  "btnCancel": {
+    "message": "取消"
+  },
+  "btnClose": {
+    "message": "关闭",
+    "description": "Dialog action button"
+  },
+  "btnYes": {
+    "message": "是"
+  },
+  "btnNo": {
+    "message": "否"
+  },
+  "btnDone": {
+    "message": "完成"
+  },
+  "btnBrowse": {
+    "message": "浏览..."
+  },
+  "btnReset": {
+    "message": "重置"
+  },
+  "migrnStatusTitle": {
+    "message": "剪辑迁移状态",
+    "description": "Clippings for Thunderbird"
+  },
+  "migrnStatusSuccess": {
+    "message": "您的剪辑已成功迁移。",
+    "description": "Clippings for Thunderbird"
+  },
+  "migrnStatusFail": {
+    "message": "很抱歉，剪辑 尝试迁移您的数据时出现错误",
+    "description": "Clippings for Thunderbird"
+  },
+  "migrnFailDetail": {
+    "message": "单击 保存剪辑 以保存您的数据。",
+    "description": "Clippings for Thunderbird"
+  },
+  "migrnSaveData": {
+    "message": "保存剪辑",
+    "description": "Clippings for Thunderbird"
+  },
+  "migrnFailTtip": {
+    "message": "迁移您的剪辑数据时出现问题，点击获取更多信息。",
+    "description": "Clippings for Thunderbird - tooltip"
+  },
+  "saveConfirm": {
+    "message": "已保存"
+  },
+  "pasteTitle": {
+    "message": "粘贴剪辑",
+    "description": "Title bar text of keyboard paste dialog"
+  },
+  "msgTitle": {
+    "message": "警告",
+    "description": "Title bar text of alert dialog"
+  },
+  "msgUnavail": {
+    "message": "所选的动作现在不可用。"
+  },
+  "msgNoTextSel": {
+    "message": "没有选择文本，请先选择文本。"
+  },
+  "msgBrwsWndNotFocused": {
+    "message": "请返回浏览器窗口，然后重试。"
+  },
+  "msgClpgNotFound": {
+    "message": "无法找到所选剪辑！"
+  },
+  "msgNoActvBrwsTab": {
+    "message": "当前无活动的浏览器标签页，无法粘贴剪辑"
+  },
+  "msgRetryPgBusy": {
+    "message": "页面正忙，请等待页面加载完成，然后重试。"
+  },
+  "msgRetryPgNotLoaded": {
+    "message": "无法检索选定的文本。重新加载该页面，然后重试。"
+  },
+  "msgClipbdEmpty": {
+    "message": "剪贴板为空或未包含文本数据。"
+  },
+  "msgRunInPrivateChg": {
+    "message": "最近打开或关闭了 剪辑 “在隐私窗口中运行”的设置。您需要重新启动Firefox才能应用此更改。",
+    "description": "Message box that appears when attempting to open Clippings Manager immediately after toggling the Run in Private Windows setting"
+  },
+  "msgUnknown": {
+    "message": "没有可用的帮助 (让我静静)。"
+  },
+  "none": {
+    "message": "没有",
+    "description": "Denotes that there is no shortcut key, label or source web address (URL)."
+  },
+  "newClipping": {
+    "message": "新建剪辑"
+  },
+  "newFolder": {
+    "message": "新建文件夹"
+  },
+  "untitledClipping": {
+    "message": "未命名剪辑"
+  },
+  "untitledFolder": {
+    "message": "未命名文件夹"
+  },
+  "rootFldrName": {
+    "message": "剪辑",
+    "description": "Name of root folder"
+  },
+  "labelRed": {
+    "message": "红"
+  },
+  "labelOrange": {
+    "message": "橙"
+  },
+  "labelYellow": {
+    "message": "黄"
+  },
+  "labelGreen": {
+    "message": "绿"
+  },
+  "labelBlue": {
+    "message": "蓝"
+  },
+  "labelPurple": {
+    "message": "紫"
+  },
+  "labelGrey": {
+    "message": "灰"
+  },
+  "cxtMenuNew": {
+    "message": "新建…",
+    "description": "Clippings context menu"
+  },
+  "cxtMenuOpenClippingsMgr": {
+    "message": "整理剪辑",
+    "description": "Clippings context menu"
+  },
+  "cxtMenuNewFromSel": {
+    "message": "从选区创建…",
+    "description": "Clippings context menu in Thunderbird message composer"
+  },
+  "cxtMenuNewFromClipbd": {
+    "message": "从剪贴板中新建…",
+    "description": "Clippings context menu in Thunderbird message composer"
+  },
+  "cxtMenuShowPasteOpts": {
+    "message": "粘贴时显示引用选项",
+    "description": "Clippings context menu in Thunderbird message composer"
+  },
+  "baMenuResetAutoIncrPlaceholders": {
+    "message": "重置自动增量占位符",
+    "description": "Clippings browser action submenu"
+  },
+  "pasteAsHdg": {
+    "message": "粘贴剪辑为",
+    "description": "Quote Options dialog in Clippings for Thunderbird"
+  },
+  "pasteAsNormal": {
+    "message": "普通文本",
+    "description": "Quote Options dialog in Clippings for Thunderbird"
+  },
+  "pasteAsQuoted": {
+    "message": "引用文本",
+    "description": "Quote Options dialog in Clippings for Thunderbird"
+  },
+  "welcomePageTitle": {
+    "message": "欢迎使用剪辑",
+    "description": "Welcome to Clippings (post-installation) page title"
+  },
+  "welcInstallSuccessHdg": {
+    "message": "欢迎使用剪辑！"
+  },
+  "welcInstallSuccessSubh": {
+    "message": "安装成功。"
+  },
+  "welcWhatsNewHdg": {
+    "message": "更新内容"
+  },
+  "welcWhatsNewDesc": {
+    "message": "剪辑 6.3版本对窗口和对话框进行了改进，并为备份提醒通知提供了新设置。"
+  },
+  "welcWhatsNewCTA": {
+    "message": "了解更多"
+  },
+  "welcQuickStartHdg": {
+    "message": "快速入门指南"
+  },
+  "welcQuickStartDesc": {
+    "message": "推荐新用户阅读，能够在几分钟内学习剪辑的基本功能。"
+  },
+  "welcQuickStartCTA": {
+    "message": "阅读指南"
+  },
+  "welcHelpLink": {
+    "message": "剪辑帮助"
+  },
+  "closeWelcomePg": {
+    "message": "关闭此标签"
+  },
+  "welcCancelDlg": {
+    "message": "返回"
+  },
+  "newClippingDlgTitle": {
+    "message": "新建剪辑",
+    "description": "New Clipping dialog"
+  },
+  "labelName": {
+    "message": "新建剪辑名称："
+  },
+  "labelContent": {
+    "message": "文本:"
+  },
+  "labelCreateInFldr": {
+    "message": "创建于："
+  },
+  "btnNewFolder": {
+    "message": "新建文件夹"
+  },
+  "labelCreateClippingOptions": {
+    "message": "选项",
+    "description": "Button to expand clipping options (source URL, label) in New Clipping dialog"
+  },
+  "labelSaveSrcURL": {
+    "message": "始终保存源网页的地址"
+  },
+  "labelShortcutKey": {
+    "message": "快捷键:"
+  },
+  "labelLabel": {
+    "message": "标签:",
+    "description": "Label for the Clipping label menu"
+  },
+  "labelCrtUnq": {
+    "message": "创建为未引用文本",
+    "description": "New clipping option available only in Thunderbird"
+  },
+  "labelRemLnBrk": {
+    "message": "删除额外的换行符",
+    "description": "New clipping option available only in Thunderbird"
+  },
+  "labelNewFldrName": {
+    "message": "新建文件夹名称："
+  },
+  "labelCreateAsSubfOf": {
+    "message": "创建子文件夹："
+  },
+  "btnPrevw": {
+    "message": "预览…",
+    "description": "Clippings for Thunderbird"
+  },
+  "labelPrevw": {
+    "message": "剪辑预览：",
+    "description": "Clippings for Thunderbird"
+  },
+  "shortcutKeyHint": {
+    "message": "若要快速将此剪辑粘贴到Firefox中的网页文本框中，请按快捷键 $1 。"
+  },
+  "shctKeyHintTB": {
+    "message": "若要快速将此剪辑粘贴到在Thunderbird（雷鸟）中，请按快捷键$1"
+  },
+  "shortcutKeyAssigned": {
+    "message": "'$1' 键已被分配："
+  },
+  "initError": {
+    "message": "当Firefox中的隐私设置限制过强时，剪辑无法工作，例如开启隐私浏览模式。 尝试更改这些设置恢复到默认值，然后重启 Firefox 并重试。"
+  },
+  "saveClippingError": {
+    "message": "无法保存新的剪辑。 检查Firefox中的隐私设置是否限制过强(例如打开隐私浏览模式)，然后重启 Firefox并重试。"
+  },
+  "shortcutKeyDesc": {
+    "message": "按下要粘贴剪辑的快捷键。"
+  },
+  "keybPasteDlgF1": {
+    "message": "F1 = 快捷表"
+  },
+  "keybPasteDlgTab": {
+    "message": "TAB = 按名称搜索剪辑"
+  },
+  "keybPasteDlgTabShctMode": {
+    "message": "TAB = 快捷键模式"
+  },
+  "srchByNameDesc": {
+    "message": "按名称搜索剪辑："
+  },
+  "numMatches": {
+    "message": "$1 项匹配",
+    "description": "Status bar message in Clippings Manager showing the number of matches for the search query."
+  },
+  "insClipping": {
+    "message": "插入剪辑"
+  },
+  "exportHTML": {
+    "message": "导出为 HTML"
+  },
+  "expHTMLTitle": {
+    "message": "剪辑快捷键",
+    "description": "HTML export of shortcut key list - page title"
+  },
+  "expHTMLHostAppInfo": {
+    "message": "Clippings $1 on $2",
+    "description": "Clippings <extVersion> on <hostApp>"
+  },
+  "expHTMLShctKeyInstrxn": {
+    "message": "若要将剪辑粘贴到 Firefox 中的网页文本框中, 请按 ALT + SHIFT + Y ( macOS 为 Command + Shift + Y)，再按快捷键。"
+  },
+  "expHTMLShctKeyInstrxnTB": {
+    "message": "若要在 Thunderbird 中粘贴剪辑，请按 Alt+Shift+Y (在 macOS 上是 Command+Option+V)，然后按快捷键。",
+    "description": "Clippings for Thunderbird"
+  },
+  "expHTMLShctKeyCustNote": {
+    "message": "注意：快捷键组合（默认为 ALT+SHIFT+Y 或 Command+Shift+Y）会因您使用不同的剪辑设置而不同。"
+  },
+  "expHTMLShctKeyCol": {
+    "message": "快捷键"
+  },
+  "expHTMLClipNameCol": {
+    "message": "剪辑名称"
+  },
+  "print": {
+    "message": "打印",
+    "description": "Shortcut key list in Clippings for Thunderbird"
+  },
+  "htmlFilterDesc": {
+    "message": "HTML 文档"
+  },
+  "errorSaveFailed": {
+    "message": "错误：保存失败"
+  },
+  "plchldrPromptSingleDesc": {
+    "message": "请输入\"$1\"值:",
+    "description": "Placeholder prompt dialog - single placeholder, text"
+  },
+  "plchldrPromptMultiDesc": {
+    "message": "输入下列占位符的值。",
+    "description": "Placeholder prompt dialog - multiple placeholders"
+  },
+  "plchldrPmtSelectDesc": {
+    "message": "选择\"$1\"的值：",
+    "description": "Placeholder prompt dialog - single placeholder, select"
+  },
+  "clippingsMgrWndTitle": {
+    "message": "打开剪辑管理器",
+    "description": "Clippings Manager window title"
+  },
+  "tbNewClipping": {
+    "message": "新建剪辑"
+  },
+  "tbNewFolder": {
+    "message": "新建文件夹"
+  },
+  "tbMoveOrCopy": {
+    "message": "移动或复制"
+  },
+  "tbDelete": {
+    "message": "删除"
+  },
+  "tbUndo": {
+    "message": "撤销"
+  },
+  "tbTools": {
+    "message": "工具"
+  },
+  "tbHelp": {
+    "message": "帮助"
+  },
+  "clipMgrSrchBarHint": {
+    "message": "查找剪辑和文件夹",
+    "description": "Clippings Manager search bar hint text"
+  },
+  "clipMgrIntroHdg": {
+    "message": "欢迎使用剪辑管理器"
+  },
+  "clipMgrIntroDesc": {
+    "message": "使用剪辑管理器编辑、重命名或删除剪辑，并将您的剪辑整理到文件夹中。"
+  },
+  "clipMgrIntroKeybHdg": {
+    "message": "键盘快捷键"
+  },
+  "clipMgrShowOnlySyncItemsRem": {
+    "message": "剪辑 只显示剪辑菜单中的同步项目。 您仍然可以在“同步剪辑”文件夹之外添加和管理项目，但它们不会出现在剪辑菜单中。 此选项可以在 剪辑 - 首选项 中进行更改。"
+  },
+  "labelInsPlchldr": {
+    "message": "插入占位符：",
+    "description": "Clippings Manager - Placeholder Toolbar"
+  },
+  "tbPlchldrPresets": {
+    "message": "预设",
+    "description": "Clippings Manager - Placeholder Toolbar button"
+  },
+  "tbPlchldrCustom": {
+    "message": "自定义",
+    "description": "Clippings Manager - Placeholder Toolbar button"
+  },
+  "tbPlchldrNumeric": {
+    "message": "数值",
+    "description": "Clippings Manager - Placeholder Toolbar button"
+  },
+  "labelSrcURL": {
+    "message": "源地址:"
+  },
+  "btnEditSrcURL": {
+    "message": "编辑"
+  },
+  "mnuNewFromClipbd": {
+    "message": "从剪贴板新建"
+  },
+  "mnuBackup": {
+    "message": "备份..."
+  },
+  "mnuRestoreFromBackup": {
+    "message": "从备份中恢复"
+  },
+  "mnuImport": {
+    "message": "导入..."
+  },
+  "mnuExport": {
+    "message": "导出..."
+  },
+  "mnuReloadSyncFldr": {
+    "message": "刷新"
+  },
+  "mnuMoreTools": {
+    "message": "更多",
+    "description": "Submenu of Tools menu in Clippings Manager"
+  },
+  "mnuRemoveAllSrcURLs": {
+    "message": "删除源网页地址…"
+  },
+  "mnuShowHide": {
+    "message": "显示/隐藏"
+  },
+  "mnuShowHideDetails": {
+    "message": "详细信息面板"
+  },
+  "mnuShowHidePlchldrBar": {
+    "message": "占位符工具栏"
+  },
+  "mnuShowHideStatusBar": {
+    "message": "状态栏​​​​​​​"
+  },
+  "mnuMaximize": {
+    "message": "最大化"
+  },
+  "mnuMinimizeWhenInactive": {
+    "message": "非活动时最小化"
+  },
+  "mnuShowExtPrefs": {
+    "message": "选项..."
+  },
+  "mnuMoveOrCopy": {
+    "message": "移动或复制…"
+  },
+  "mnuEditLabel": {
+    "message": "标签"
+  },
+  "mnuGoToSrcURL": {
+    "message": "跳转到源网页"
+  },
+  "mnuPlchldrDate": {
+    "message": "日期",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "mnuPlchldrTime": {
+    "message": "时间",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "mnuPlchldrAppName": {
+    "message": "应用名称",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "mnuPlchldrUsrAgent": {
+    "message": "用户代理",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "mnuPlchldrClipName": {
+    "message": "剪辑名称",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "mnuPlchldrFldrName": {
+    "message": "上级文件夹名称",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "mnuPlchldrFmtDateTime": {
+    "message": "格式化的日期/时间...",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "clipMgrNameHint": {
+    "message": "剪辑名称",
+    "description": "Clippings Manager - clipping name textbox hint text"
+  },
+  "clipMgrContentHint": {
+    "message": "输入剪切文本",
+    "description": "Clippings Manager - clipping content textarea hint text"
+  },
+  "clipMgrShortcutHelpHint": {
+    "message": "快捷键列表"
+  },
+  "clipMgrNoItems": {
+    "message": "未找到项目。"
+  },
+  "clipMgrIntroCmdDel": {
+    "message": "删除选定的剪辑或文件夹",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdClearSrchBar": {
+    "message": "关闭查找栏",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdSrch": {
+    "message": "查找剪辑和文件夹",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdClose": {
+    "message": "关闭剪辑管理器",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdUndo": {
+    "message": "撤销",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdShowIntro": {
+    "message": "显示剪辑管理器简介",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdMaximize": {
+    "message": "最大化窗口",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdRedo": {
+    "message": "恢复",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCmdDetailsPane": {
+    "message": "显示/隐藏详情面板",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrStatusBar": {
+    "message": "$1 项目",
+    "description": "Status bar text in Clippings Manager, counting the number of clippings and folders"
+  },
+  "clipMgrRemoveSrcURLsConfirm": {
+    "message": "已从剪辑中删除源网页地址。"
+  },
+  "clipMgrRestoredSrcURLs": {
+    "message": "恢复源网页地址。"
+  },
+  "clipMgrNoUndo": {
+    "message": "没有要撤消的操作"
+  },
+  "clipMgrNoRedo": {
+    "message": "没有可重做的内容"
+  },
+  "clipMgrShortcutKeyHelpHdg": {
+    "message": "剪辑快捷键"
+  },
+  "clipMgrShortcutHelpInstrxn": {
+    "message": "要将剪辑从下面的列表粘贴到 Firefox 中的网页文本框中, 请按 $1， 然后按快捷键。"
+  },
+  "clipMgrShortcutHelpInstrxnTB": {
+    "message": "要将剪辑从下面的列表粘贴到雷鸟的消息中，请按 $1， 然后按快捷键。"
+  },
+  "clipMgrShortcutKeyAssigned": {
+    "message": "所选快捷键已分配给另一个剪辑。 请选择其他快捷键。"
+  },
+  "clipMgrNoSrcURL": {
+    "message": "所选剪辑没有源网页地址。"
+  },
+  "clipMgrImportConfirm": {
+    "message": "从 \"$1\" 导入已完成"
+  },
+  "btnReload": {
+    "message": "刷新"
+  },
+  "clipMgrExportConfirm": {
+    "message": "剪辑导出到“$1”已完成。"
+  },
+  "clipMgrBackupConfirm": {
+    "message": "备份到 $1已完成。"
+  },
+  "clipMgrWarnRemoveSrcURLs": {
+    "message": "您的剪辑的所有源网页地址将被删除，是否继续？"
+  },
+  "placeholderNameHint": {
+    "message": "字母、数字、下划线、无空格"
+  },
+  "labelCustPlchldrName": {
+    "message": "自定义占位符的名称:"
+  },
+  "labelNumPlchldrName": {
+    "message": "数字占位符的名称:"
+  },
+  "labelCustPlchldrVal": {
+    "message": "默认值(可选):"
+  },
+  "custPlchldrValDesc": {
+    "message": "用 “|” 符号将多个默认值分开，如：红|绿|蓝"
+  },
+  "numPlchldrDesc": {
+    "message": "每次粘贴剪辑时，占位符的值将会自动增加，直到从剪辑工具栏按钮上下文菜单重置。"
+  },
+  "numPlchldrDescTB": {
+    "message": "每次粘贴剪辑时，占位符的值将会自动增加，直到从剪辑工具栏按钮上下文菜单重置。"
+  },
+  "dateTimeFmts": {
+    "message": "可用的日期/时间格式："
+  },
+  "labelSelImportFile": {
+    "message": "选择导入文件:"
+  },
+  "labelSelBkupFile": {
+    "message": "选择备份文件:"
+  },
+  "statusSavingBkup": {
+    "message": "保存备份文件..."
+  },
+  "statusSavingBkupDone": {
+    "message": "保存备份文件... 完成"
+  },
+  "statusSavingBkupFailed": {
+    "message": "备份失败。"
+  },
+  "backupError": {
+    "message": "抱歉，创建备份文件出错。\n\n详情：\n$1"
+  },
+  "cbImportReplcShctKeys": {
+    "message": "替换快捷键"
+  },
+  "warnBackupOverwrite": {
+    "message": "从备份文件恢复 将用备份替换所有剪辑。此操作无法撤消。"
+  },
+  "btnImport": {
+    "message": "导入"
+  },
+  "btnRestoreBkup": {
+    "message": "恢复备份"
+  },
+  "importError": {
+    "message": "读取所选文件时出错。 该文件可能不是有效的剪辑文件。"
+  },
+  "labelSelExportFmt": {
+    "message": "选择剪辑导出格式："
+  },
+  "expFmtDescHdg": {
+    "message": "说明"
+  },
+  "expFmtClippings6": {
+    "message": "剪辑"
+  },
+  "expFmtClippings6Desc": {
+    "message": "备份与导出（可与其他用户或多台计算机交换剪辑数据）的默认格式。"
+  },
+  "expFmtHTMLDoc": {
+    "message": "HTML 文档"
+  },
+  "expFmtHTMLDocDesc": {
+    "message": "将您的Clippings 数据作为HTML文档输出到Web浏览器中进行打印或显示。"
+  },
+  "expFmtCSV": {
+    "message": "逗号分隔格式 (CSV)"
+  },
+  "expFmtCSVDesc": {
+    "message": "使用逗号分隔值(CSV) 格式与其他应用程序交换剪辑数据。只导出剪辑名称和内容。"
+  },
+  "cbExpInclSrcURLs": {
+    "message": "包含剪辑的源网页地址"
+  },
+  "btnExport": {
+    "message": "导出"
+  },
+  "statusExportStart": {
+    "message": "正在导出..."
+  },
+  "statusExportDone": {
+    "message": "导出... 完成"
+  },
+  "statusExportFailed": {
+    "message": "导出失败。"
+  },
+  "exportError": {
+    "message": "导出剪辑数据出错。\n\n详情：\n$1"
+  },
+  "labelMoveClipping": {
+    "message": "移动剪辑到："
+  },
+  "labelMoveFolder": {
+    "message": "移动文件夹到:"
+  },
+  "labelCopyClipping": {
+    "message": "复制剪辑到："
+  },
+  "labelCopyFolder": {
+    "message": "复制文件夹到："
+  },
+  "cbCreateCopy": {
+    "message": "创建副本"
+  },
+  "errMoveToSameParent": {
+    "message": "项目已经存在于所选文件夹中。",
+    "description": "Error message when attempting to move clipping/folder to the same parent folder"
+  },
+  "errMoveToSubfldr": {
+    "message": "无法移动或复制到选定的文件夹。",
+    "description": "Error message when attempting to move or copy a folder into a subfolder of itself"
+  },
+  "btnMove": {
+    "message": "移动"
+  },
+  "btnCopy": {
+    "message": "复制"
+  },
+  "prefsTitle": {
+    "message": "剪辑设置"
+  },
+  "errPrefPgFailed": {
+    "message": "无法加载扩展的首选项页面，请重启 Firefox 后再试。"
+  },
+  "prefsHdgPasteOptions": {
+    "message": "粘贴选项"
+  },
+  "labelPasteOptions": {
+    "message": "将HTML格式的剪辑数据粘贴到富文本编辑框中时："
+  },
+  "pasteOptFormatted": {
+    "message": "粘贴为格式化文本"
+  },
+  "pasteOptRawHTML": {
+    "message": "粘贴为纯文本，保存HTML标签"
+  },
+  "cbAutoLineBreak": {
+    "message": "自动断行，除非存在<p>或<br>标签"
+  },
+  "htmlPasteDesc": {
+    "message": "如果将HTML格式的剪辑粘贴到纯文本框中，或者如果剪辑包含受限制的标记，如<script>、<applet>、<object>、<iframe>等，则总是将其粘贴为纯文本。"
+  },
+  "prefsShortcutMode": {
+    "message": "按下这些键以激活快捷键模式："
+  },
+  "prefsShctMode": {
+    "message": "按下 $1 激活快捷键模式"
+  },
+  "prefsShctModeNew": {
+    "message": "也可使用$1键"
+  },
+  "prefsShortcutKeyNote": {
+    "message": "一些可用的键盘快捷键可能已经分配给 <a href=\"https://support.mozilla.org/zh-CN/kb/%E9%94%AE%E7%9B%98%E5%BF%AB%E6%8D%B7%E9%94%AE\" class=\"hyperlink\">Firefox 键盘快捷键</a> 或其他附加组件。"
+  },
+  "prefsOutsideShct": {
+    "message": "要更改键盘快捷键，请到 附加组件管理器 - 管理扩展快捷键 中进行修改。"
+  },
+  "prefsDefaultNumPlchldrStart": {
+    "message": "自动增加占位符的默认起始值："
+  },
+  "prefsHdgGeneralOptions": {
+    "message": "通用设置"
+  },
+  "cbAlwaysSaveSrcURL": {
+    "message": "始终保存源网页的地址"
+  },
+  "cbCheckSpelling": {
+    "message": "拼写检查"
+  },
+  "cbBackupFilenameWithDate": {
+    "message": "将日期添加到备份文件名称"
+  },
+  "backupRemind": {
+    "message": "显示备份提醒",
+    "description": "Label for checkbox option for setting backup notification, appears after checkbox and before the reminder frequency drop-down menu"
+  },
+  "backupRemSkip": {
+    "message": "上次备份后没有更改则跳过提醒"
+  },
+  "backupRemDays": {
+    "message": "天",
+    "description": "Label appearing after the drop-down menu for backup reminder frequency"
+  },
+  "backupRemFreqDaily": {
+    "message": "1",
+    "description": "Number of days between backup reminders: once a day"
+  },
+  "backupRemFreqTwoDays": {
+    "message": "2",
+    "description": "Number of days between backup reminders: once every 2 days"
+  },
+  "backupRemFreqThreeDays": {
+    "message": "3",
+    "description": "Number of days between backup reminders: once every 3 days"
+  },
+  "backupRemFreqFiveDays": {
+    "message": "5",
+    "description": "Number of days between backup reminders: once every 5 days"
+  },
+  "backupRemFreqWeekly": {
+    "message": "7",
+    "description": "Number of days between backup reminders: once a week (every 7 days)"
+  },
+  "backupRemFreqTwoWeeks": {
+    "message": "14",
+    "description": "Number of days between backup reminders: once every 2 weeks (every 14 days)"
+  },
+  "backupRemFreqMonthly": {
+    "message": "30",
+    "description": "Number of days between backup reminders: once a month (every 30 days)"
+  },
+  "firstBackupTitle": {
+    "message": "备份",
+    "description": "Title bar text for first-time backup dialog"
+  },
+  "backupNotifyTitle": {
+    "message": "备份您的剪辑"
+  },
+  "backupNotifyMsg": {
+    "message": "是时候备份您的剪辑数据了，单击此处立即备份您的剪辑数据。"
+  },
+  "backupNotifyFirstMsg": {
+    "message": "通过定期备份来保证剪辑数据的安全，点击这里备份剪辑数据并设置备份提醒。"
+  },
+  "backupFirstDesc": {
+    "message": "通过定期备份来保证剪辑数据的安全，现在请花一点时间点击 立即备份 ，立刻备份您的剪辑数据吧！"
+  },
+  "backupNow": {
+    "message": "立即备份"
+  },
+  "backupHint": {
+    "message": "您也可以随时从剪辑管理器中备份您的剪辑。只需打开剪辑管理器，然后选择 工具 - 备份。"
+  },
+  "backupPrefsHdg": {
+    "message": "显示备份提醒"
+  },
+  "backupPrefsHint": {
+    "message": "此设置也可以在剪辑首选项中更改。"
+  },
+  "syncFldrName": {
+    "message": "已同步剪辑",
+    "description": "The name of the folder containing the user's synchronized clippings."
+  },
+  "syncClippings": {
+    "message": "同步剪辑",
+    "description": "The name of the feature for synchronizing clippings between applications or computers."
+  },
+  "syncIntro": {
+    "message": "您可以将您想要分享的剪辑放入一个特殊的“同步剪辑”文件夹中，从而与雷鸟或其他 Firefox 设备同步剪辑。 同步剪辑数据将保存在系统的一个文件中。需要 <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">同步剪辑</a> 助手应用程序。"
+  },
+  "syncIntroTB": {
+    "message": "您可以将您想要分享的剪辑放入一个特殊的“同步剪辑”文件夹中，从而与雷鸟或其他 Firefox 设备同步剪辑。 同步剪辑数据将保存在系统的一个文件中。需要 <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">同步剪辑</a> 助手应用程序。"
+  },
+  "syncLearnMore": {
+    "message": "了解更多关于同步剪辑的信息。"
+  },
+  "syncHelp": {
+    "message": "<p class=\"dlg-subhead\">同步剪辑</p><p>同步剪辑使您可以在 Firefox 和 雷鸟 之间同步一个剪辑文件夹，以便它们出现在这两个应用程序中。 您可以从新的剪辑对话框中选择您想要同步的剪辑，在一个特殊的“同步剪辑”文件夹中创建它们。 或者将它们移动到剪辑管理器的同一文件夹内。</p><p>同步剪辑设置后将自动创建同步剪辑文件夹。</p><p class=\"dlg-subhead\">设置</p><p>同步剪辑需要在您想要同步剪辑的应用程序中开启。 同步剪辑需要Firefox 60及以上版本，Thunderbird 60及以上版本（剪辑必须使用5.6及以上）。</p><p>此外，同步剪辑助手应用也需要安装在您的系统上，以保证剪辑文件夹能同步到最新内容。 它可以从 <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">AE Creations</a>网站中下载。 安装完毕后，Firefox启动时将会自动启动同步剪辑，并在后台运行。</p><p>要激活同步剪辑，请从剪辑首选项主页中点击 <b>启用同步</b>。 若尚未设置此项，您将收到在您的系统中选择一个保存同步剪辑文件位置的提醒。</p>",
+    "description": "Sync Clippings help in Firefox"
+  },
+  "syncHelpTB": {
+    "message": "<p class=\"dlg-subhead\">同步剪辑</p><p>同步剪辑使您可以在 Firefox 和 雷鸟 之间同步一个剪辑文件夹，以便它们出现在这两个应用程序中。 您可以从新的剪辑对话框中选择您想要同步的剪辑，在一个特殊的“同步剪辑”文件夹中创建它们。 或者将它们移动到剪辑管理器的同一文件夹内。</p><p>同步剪辑设置后将自动创建同步剪辑文件夹。</p><p class=\"dlg-subhead\">设置</p><p>同步剪辑需要在您想要同步剪辑的应用程序中开启。 同步剪辑需要Firefox 60及以上版本(剪辑必须使用6.1及以上)，Thunderbird 60及以上版本。</p><p>此外，同步剪辑助手应用也需要安装在您的系统上，以保证剪辑文件夹能同步到最新内容。 它可以从 <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">AE Creations</a>网站中下载。 安装完毕后，Firefox启动时将会自动启动同步剪辑，并在后台运行。</p><p>要激活同步剪辑，请从剪辑首选项主页中点击 <b>启用同步</b>。 若尚未设置此项，您将收到在您的系统中选择一个保存同步剪辑文件位置的提醒。</p>",
+    "description": "Sync Clippings help in Thunderbird"
+  },
+  "syncStatusOn": {
+    "message": "同步剪辑已开启。"
+  },
+  "syncStatusOff": {
+    "message": "同步剪辑已关闭。"
+  },
+  "syncSettings": {
+    "message": "设置…"
+  },
+  "syncTurnOn": {
+    "message": "打开同步"
+  },
+  "syncTurnOff": {
+    "message": "关闭同步"
+  },
+  "syncTurnOffConf": {
+    "message": "您确定要关闭同步剪辑吗？"
+  },
+  "syncTurnOffAck": {
+    "message": "同步剪辑已关闭。"
+  },
+  "syncTurnOffRmFldr": {
+    "message": "从剪辑菜单和剪辑管理器中删除同步剪辑文件夹"
+  },
+  "syncConnect": {
+    "message": "正在连接到同步剪辑助手应用..."
+  },
+  "syncFileDir": {
+    "message": "同步文件位置："
+  },
+  "syncFileDirExample": {
+    "message": "示例︰"
+  },
+  "syncFileDirExWin": {
+    "message": "C:\\Users\\用户名\\Documents\\同步剪辑",
+    "description": "Example folder path on Windows."
+  },
+  "syncFileDirExMac": {
+    "message": "/Users/用户名/Documents/同步剪辑",
+    "description": "Example folder path on macOS."
+  },
+  "syncFileDirExLinux": {
+    "message": "/home/用户名/同步剪辑",
+    "description": "Example folder path on Linux."
+  },
+  "errSyncConxn": {
+    "message": "无法连接到同步剪辑助手应用，请确保应用程序已安装。"
+  },
+  "errSyncConxnDetail": {
+    "message": "同步剪辑需要使用同步剪辑程序。您可以从 <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">AE Creations</a> 网站中下载。"
+  },
+  "errSyncOptsInit": {
+    "message": "无法初始化同步剪辑设置，请重启Firefox后再试。"
+  },
+  "errSync": {
+    "message": "同步剪辑助手应用出错。"
+  },
+  "errNoDetails": {
+    "message": "抱歉，没有关于此错误的进一步信息。"
+  },
+  "syncReloadAck": {
+    "message": "正在更新同步剪辑文件夹，点击 刷新 继续。"
+  },
+  "deleteSyncFldr": {
+    "message": "同步剪辑已启用，无法删除同步剪辑文件夹。"
+  },
+  "moveSyncFldr": {
+    "message": "无法移动同步剪辑文件夹。"
+  },
+  "syncPushFailed": {
+    "message": "连接到同步剪辑助手应用程序失败，无法推送对同步剪辑文件夹的更改。要解决这个问题，请尝试重新安装同步剪辑助手程序。"
+  },
+  "syncStartupFailedHdg": {
+    "message": "同步剪辑错误"
+  },
+  "syncStartupFailed": {
+    "message": "无法连接到同步剪辑助手应用。要解决这个问题，请重新安装同步剪辑助手应用程序。"
+  },
+  "syncUpdateTitle": {
+    "message": "同步剪辑助手应用的新版本"
+  },
+  "syncUpdateMsg": {
+    "message": "新版本的同步剪辑簿助手程序可用。点击此处进入下载页面。"
+  },
+  "syncOptsHdg": {
+    "message": "选项"
+  },
+  "syncUpdateChkOpt": {
+    "message": "自动检查更新以同步同步剪辑助手应用。"
+  },
+  "cxtMnuSyncItemsOnly": {
+    "message": "剪辑菜单中只显示已同步项目"
+  },
+  "wndsAndDlgsOpts": {
+    "message": "窗口和对话框…"
+  },
+  "wndsDlgsOptsTitle": {
+    "message": "窗口和对话框"
+  },
+  "wndsDlgsOptsExpWarn": {
+    "message": "这些设置在 $1 中是实验性的。它们可能无法在多个显示器上正常工作。",
+    "description": "Warning message in the Windows and Dialogs settings dialog, appearing if using an OS other than Windows"
+  },
+  "macOS": {
+    "message": "macOS"
+  },
+  "autoPosWnds": {
+    "message": "自动定位到源窗口中的位置",
+    "description": "Checkbox option in Windows and Dialogs settings dialog"
+  },
+  "clpMgrSaveWndPos": {
+    "message": "保存剪辑管理器窗口位置和大小",
+    "description": "Checkbox option in Windows and Dialogs settings dialog"
+  },
+  "aboutBtn": {
+    "message": "关于…"
+  },
+  "aboutExtVer": {
+    "message": "版本 $1",
+    "description": "Extension version number"
+  },
+  "aboutAuthor": {
+    "message": "由 AE Creations 创建。"
+  },
+  "aboutHomePgLink": {
+    "message": "访问网站"
+  },
+  "aboutLicLink": {
+    "message": "许可证信息"
+  },
+  "aboutTrans": {
+    "message": "Crowdin 翻译贡献的本地化。"
+  },
+  "aboutContribHdg": {
+    "message": "乐于帮助？",
+    "description": "About dialog text for encouraging users to donate or help with translation"
+  },
+  "aboutDonate": {
+    "message": "捐赠"
+  },
+  "aboutContribConj": {
+    "message": "或",
+    "description": "Conjunction connecting the CTA hyperlinks for donating or supplying a translation"
+  },
+  "aboutL10n": {
+    "message": "添加翻译"
+  },
+  "aboutSyncVerLabel": {
+    "message": "同步剪辑簿助手应用程序版本："
+  },
+  "noSyncHelperApp": {
+    "message": "未安装",
+    "description": "Appears when the Sync Clippings helper app is not detected on the system"
+  },
+  "aboutSyncFileSize": {
+    "message": "同步文件大小："
+  },
+  "upgradeNotifcn": {
+    "message": "最近更新了 $1 ！点击这里查看最新内容。",
+    "description": "Post-upgrade notification text, with placeholder for extension name (Clippings or Clippings for Thunderbird)"
+  },
+  "newVerHdg": {
+    "message": "新版本已安装！",
+    "description": "Header for the What's New page (appears after upgrading Clippings)"
+  },
+  "upgrade": {
+    "message": "剪辑簿已升级到6.3版。",
+    "description": "What's New page (appears after upgrading Clippings)"
+  },
+  "upgradeTB": {
+    "message": "雷鸟的 剪辑 已升级到6.1版。",
+    "description": "What's New page (appears after upgrading Clippings for Thunderbird)"
+  },
+  "whatsNew": {
+    "message": "更新内容",
+    "description": "What's New page (appears after upgrading Clippings)"
+  },
+  "whatsNew1": {
+    "message": "改进剪辑管理器。在Windows上，剪辑管理器现在能记住它的窗口大小和位置",
+    "description": "Description of an enhancement or fix in the new version of Clippings"
+  },
+  "whatsNew2": {
+    "message": "改进：在Windows上支持多个显示器。剪辑弹出窗口和对话框现在将定位在打开它的浏览器窗口中，而不是始终集中在主显示屏上",
+    "description": "Description of an enhancement or fix in the new version of Clippings"
+  },
+  "whatsNew3": {
+    "message": "如果自上次备份以来您的剪辑没有更改，请跳过备份提醒",
+    "description": "Description of an enhancement or fix in the new version of Clippings"
+  },
+  "contribHdg": {
+    "message": "参与贡献",
+    "description": "Contribution CTA in the What's New page"
+  },
+  "contribCTA": {
+    "message": "通过<a href=\"$2\">提供捐款</a>来支持开发$1。了解更多参与<a href=\"$3\">捐款</a>的方式！",
+    "description": "Call to action message to make donation or learn more about contributing to Clippings (or Clippings for Thunderbird)"
+  },
+  "linkBlog": {
+    "message": "AE Creations 博客"
+  },
+  "linkAMO": {
+    "message": "Firefox 附加组件页面"
+  },
+  "linkATN": {
+    "message": "Thunderbird 附加组件页面"
+  },
+  "linkForum": {
+    "message": "帮助和支持论坛"
+  },
+  "keyAlt": {
+    "message": "ALT"
+  },
+  "keyOption": {
+    "message": "⌥"
+  },
+  "keyCtrl": {
+    "message": "CTRL"
+  },
+  "keyMacCtrl": {
+    "message": "⌃"
+  },
+  "keyCommand": {
+    "message": "⌘"
+  },
+  "keyShift": {
+    "message": "SHIFT"
+  },
+  "keyMacShift": {
+    "message": "⇧"
+  },
+  "keyDel": {
+    "message": "DEL"
+  },
+  "keyMacDel": {
+    "message": "删除 ⌦"
+  },
+  "keyEsc": {
+    "message": "ESC"
+  },
+  "keySpace": {
+    "message": "空格"
+  },
+  "keyPageUp": {
+    "message": "向上翻页"
+  },
+  "keyPageDown": {
+    "message": "向下翻页"
+  },
+  "keyHome": {
+    "message": "首页"
+  },
+  "keyEnd": {
+    "message": "尾页"
+  },
+  "keyLeft": {
+    "message": "左"
+  },
+  "keyRight": {
+    "message": "右"
+  },
+  "keyUp": {
+    "message": "上"
+  },
+  "keyDown": {
+    "message": "下"
+  },
+  "keyIns": {
+    "message": "插入"
+  }
+}

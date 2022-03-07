@@ -76,9 +76,13 @@ main {
     background-color: var(--color-main-bkgd);
 }
 
+body[data-os="mac"] main {
+    width: 644px;
+}
+
 body[data-locale="de"] main,
 body[data-locale="fr"] main {
-    width: 700px;
+    width: 720px;
 }
 
 input[type="number"],
@@ -395,15 +399,15 @@ body[data-locale="fr"] #skip-backup-label {
 }
 
 body[data-locale="fr"] #wnds-dlgs-opts-dlg {
-    --width: 572px;
+    --width: 592px;
 }
 
 body[data-locale="de"] #wnds-dlgs-opts-dlg {
-    --width: 530px;
+    --width: 540px;
 }
 
 body[data-locale="uk"] #wnds-dlgs-opts-dlg {
-    --width: 550px;
+    --width: 560px;
 }
 
 #wnds-dlgs-opts-dlg fieldset {
@@ -459,17 +463,21 @@ body[data-locale="nl"] #wnds-dlgs-opts-dlg #clpmgr-save-wnd-pos-label {
     --height: 256px;
 }
 
+body[data-os="mac"] #sync-clippings-dlg {
+    --width: 504px;
+}
+
 body[data-locale="de"] #sync-clippings-dlg {
-    --width: 560px;
+    --width: 570px;
 }
 
 body[data-locale|="es"] #sync-clippings-dlg {
-    --width: 610px;
+    --width: 620px;
 }
 
 body[data-locale="nl"] #sync-clippings-dlg,
 body[data-locale="uk"] #sync-clippings-dlg {
-    --width: 512px;
+    --width: 522px;
 }
 
 #sync-clippings-dlg fieldset {
@@ -562,6 +570,15 @@ body[data-os="mac"] #sync-clippings-dlg #sync-cxn-error .msgbox-icon {
     min-width: revert;
 }
 
+body[data-locale="de"] #sync-clippings-dlg #sync-fldr-picker #browse-sync-fldr {
+    min-width: 130px;
+    letter-spacing: -0.75px;
+}
+
+body[data-locale|="zh"] #sync-clippings-dlg #sync-fldr-picker #browse-sync-fldr {
+    min-width: 88px;
+}
+
 body[data-locale="de"] #sync-clippings-dlg #sync-helper-app-update-check + label {
     letter-spacing: -0.35px;
 }
@@ -652,6 +669,10 @@ body[data-os="win"] #turn-off-sync-clippings-ack-dlg #delete-sync-fldr-opt > #de
     --height: 320px;
 }
 
+body[data-os="mac"] #about-dlg {
+    --width: 414px;
+}
+
 body[data-locale="de"] #about-dlg {
     height: 326px;
 }
@@ -723,7 +744,7 @@ body[data-locale|="pt"][data-os="mac"] #about-dlg #ext-desc {
 }
 
 body[data-locale="de"] #about-dlg #usr-contrib-cta {
-    letter-spacing: -0.1px;
+    letter-spacing: -0.2px;
 }
 
 body[data-locale|="es"] #about-dlg #usr-contrib-cta {
