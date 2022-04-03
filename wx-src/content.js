@@ -103,7 +103,7 @@ function handleRequestInsertClipping(aRequest)
   let rv = null;
 
   if (! document.hasFocus()) {
-    warn("Clippings/wx::content.js: handleRequestInsertClipping(): This web page does not have the focus; exiting message handler.");
+    warn(`Clippings/wx::content.js: handleRequestInsertClipping(): The web page at ${document.URL} does not have the focus; exiting message handler.`);
     return rv;
   }
 
@@ -130,6 +130,10 @@ function handleRequestInsertClipping(aRequest)
   }
   // Rich text editor used by Gmail and Outlook.com
   else if (isElementOfType(activeElt, "HTMLDivElement")) {
+    if (activeElt.classList.contains("ck-content")) {
+      info("Clippings/wx::content.js: handleRequestInsertClipping(): Detected CKEditor.");
+    }
+
     let doc = activeElt.ownerDocument;
     rv = insertTextIntoRichTextEditor(doc, clippingText, autoLineBrk, htmlPaste, aRequest.dispatchInputEvent);
   }
