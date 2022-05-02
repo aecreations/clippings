@@ -175,16 +175,16 @@ class aeDialog
   
   static isOpen()
   {
-    return ($(".lightbox-show").length > 0);
+    return ($(".lightbox.lightbox-show").length > 0);
   }
   
   static acceptDlgs()
   {
-    let openDlgElts = $(".lightbox-show");
+    let openDlgElts = $(".lightbox.lightbox-show");
 
     if (openDlgElts.length > 0) {
       // Normally there should just be 1 dialog open at a time.
-      $(".lightbox-show .dlg-accept:not(:disabled)").click();
+      $(".lightbox.lightbox-show .dlg-accept:not(:disabled)").click();
     }
 
     this.hidePopups();
@@ -192,17 +192,17 @@ class aeDialog
 
   static cancelDlgs()
   {
-    let openDlgElts = $(".lightbox-show");
+    let openDlgElts = $(".lightbox.lightbox-show");
 
     if (openDlgElts.length > 0) {
       // Normally there should just be 1 dialog open at a time.
-      let cancelBtnElt = $(".lightbox-show .dlg-cancel:not(:disabled)");
+      let cancelBtnElt = $(".lightbox.lightbox-show .dlg-cancel:not(:disabled)");
       if (cancelBtnElt.length > 0) {
         cancelBtnElt.click();
       }
       else {
         // Dialog only has an OK, Close or Done button.
-        $(".lightbox-show .dlg-accept").click();
+        $(".lightbox.lightbox-show .dlg-accept").click();
       }
     }
 
