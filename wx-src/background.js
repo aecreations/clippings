@@ -6,8 +6,6 @@
 
 const MAX_NAME_LENGTH = 64;
 const ROOT_FOLDER_NAME = "clippings-root";
-const PASTE_ACTION_SHORTCUT_KEY = 1;
-const PASTE_ACTION_SEARCH_CLIPPING = 2;
 
 let gClippingsDB = null;
 let gOS = null;
@@ -302,20 +300,7 @@ let gWndIDs = {
 };
 
 let gPrefs = null;
-let gIsInitialized = false;
 let gSetDisplayOrderOnRootItems = false;
-
-let gMsgBoxStr = {
-  MSG_UNKNOWN: "msgUnknown",
-  MSG_UNAVAILABLE: "msgUnavail",
-  MSG_NO_TEXT_SELECTED: "msgNoTextSel",
-  MSG_BROWSER_WND_NOT_FOCUSED: "msgBrwsWndNotFocused",
-  MSG_CLIPPING_NOT_FOUND: "msgClpgNotFound",
-  MSG_NO_ACTIVE_BROWSER_TAB: "msgNoActvBrwsTab",
-  MSG_RETRY_PAGE_BUSY: "msgRetryPgBusy",
-  MSG_RETRY_PAGE_NOT_LOADED: "msgRetryPgNotLoaded",
-  MSG_RUN_IN_PRIVATE_CHANGED: "msgRunInPrivateChg",
-};
 
 
 //
@@ -489,11 +474,9 @@ function init()
 
     if (gSetDisplayOrderOnRootItems) {
       await setDisplayOrderOnRootItems();
-      gIsInitialized = true;
       log("Clippings/wx: Display order on root folder items have been set.\nClippings initialization complete.");
     }
     else {
-      gIsInitialized = true;
       log("Clippings/wx: Initialization complete.");   
     }
   });
@@ -1372,7 +1355,7 @@ async function openClippingsManager(aBackupMode)
   // turned on or off.  This renders Clippings unusable until Firefox is
   // restarted.
   if (! (gPrefs instanceof Object)) {
-    alertEx(gMsgBoxStr.MSG_RUN_IN_PRIVATE_CHANGED);
+    alertEx("msgRunInPrivateChg");
     return;
   }
     
@@ -1667,7 +1650,7 @@ async function pasteClipping(aClippingInfo, aExternalRequest)
   let tabs = await browser.tabs.query(queryInfo);
   if (! tabs[0]) {
     // This should never happen...
-    alertEx(gMsgBoxStr.MSG_NO_ACTIVE_BROWSER_TAB);
+    alertEx("msgNoActvBrwsTab");
     return;
   }
 
@@ -1895,7 +1878,7 @@ browser.contextMenus.onClicked.addListener(async (aInfo, aTab) => {
   case "ae-clippings-new":
     let tabs = await browser.tabs.query({ active: true, currentWindow: true });
     if (! tabs[0]) {
-      alertEx(gMsgBoxStr.MSG_BROWSER_WND_NOT_FOCUSED);
+      alertEx("msgBrwsWndNotFocused");
       return;
     }
 
@@ -1914,7 +1897,7 @@ browser.contextMenus.onClicked.addListener(async (aInfo, aTab) => {
       resp = await browser.tabs.sendMessage(activeTabID, { msgID: "new-clipping" });
     }
     catch (e) {
-      alertEx(gMsgBoxStr.MSG_RETRY_PAGE_NOT_LOADED);
+      alertEx("msgRetryPgNotLoaded");
       break;
     }
 
@@ -1930,7 +1913,7 @@ browser.contextMenus.onClicked.addListener(async (aInfo, aTab) => {
       content = resp.content;
     }
     else {
-      alertEx(gMsgBoxStr.MSG_NO_TEXT_SELECTED);
+      alertEx("msgNoTextSel");
       return;
     }
 
@@ -2062,7 +2045,7 @@ browser.runtime.onMessage.addListener(aRequest => {
       if (! tabs[0]) {
         // This could happen if the browser tab was closed while the
         // placeholder prompt dialog was open.
-        alertEx(gMsgBoxStr.MSG_NO_ACTIVE_BROWSER_TAB);
+        alertEx("msgNoActvBrwsTab");
         return;
       }
 
