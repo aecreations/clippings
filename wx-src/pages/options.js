@@ -381,7 +381,7 @@ function initDialogs()
       }
     });
   };
-  gDialogs.syncClippings.onAccept = function () {
+  gDialogs.syncClippings.onAccept = async function () {
     let syncFldrPath = $("#sync-fldr-curr-location").val();
 
     // Sanitize the sync folder path value.
@@ -400,51 +400,47 @@ function initDialogs()
 
     let rebuildClippingsMenu = $("#show-only-sync-items").prop("checked") != gDialogs.syncClippings.oldShowSyncItemsOpt;
 
-    let msg = {
+    let natMsg = {
       msgID: "set-sync-dir",
       filePath: syncFldrPath
     };
     log("Sending message 'set-sync-dir' with params:");
-    log(msg);
+    log(natMsg);
 
-    let setSyncFilePath = browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
-    setSyncFilePath.then(aResp => {
-      log("Received response to 'set-sync-dir':");
-      log(aResp);
+    let natMsgResp = await browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, natMsg);
+    log("Received response to 'set-sync-dir':");
+    log(natMsgResp);
 
-      if (aResp.status == "ok") {
-        gClippings.enableSyncClippings(true).then(aSyncFldrID => {
-	  if (gIsActivatingSyncClippings) {
-            // Don't do the following if Sync Clippings was already turned on
-            // and no changes to settings were made.
-            aePrefs.setPrefs({
-              syncClippings: true,
-              clippingsMgrShowSyncItemsOnlyRem: true,
-            });
-            $("#sync-settings").show();
-            $("#toggle-sync").text(browser.i18n.getMessage("syncTurnOff"));
-            $("#sync-status").addClass("sync-status-on").text(browser.i18n.getMessage("syncStatusOn"));
+    if (natMsgResp.status != "ok") {
+      window.alert(`The Sync Clippings helper app responded with an error.\n\nStatus: ${aResp.status}\nDetails: ${aResp.details}`);
+      this.close();
+      return;
+    }     
 
-	    gIsActivatingSyncClippings = false;
-	  }
+    // TO DO: Replace with WebExtension message call
+    let syncFldrID = await gClippings.enableSyncClippings(true);
+    // END TO DO
+    if (gIsActivatingSyncClippings) {
+      // Don't do the following if Sync Clippings was already turned on
+      // and no changes to settings were made.
+      aePrefs.setPrefs({
+        syncClippings: true,
+        clippingsMgrShowSyncItemsOnlyRem: true,
+      });
+      $("#sync-settings").show();
+      $("#toggle-sync").text(browser.i18n.getMessage("syncTurnOff"));
+      $("#sync-status").addClass("sync-status-on").text(browser.i18n.getMessage("syncStatusOn"));
 
-          gClippings.refreshSyncedClippings(rebuildClippingsMenu);  // Asynchronous function.
-          
-	  let syncClippingsListeners = gClippings.getSyncClippingsListeners().getListeners();
-	  for (let listener of syncClippingsListeners) {
-	    listener.onActivate(aSyncFldrID);
-	  }
-	  
-	  this.close();
-        });
-      }
-      else {
-        window.alert(`The Sync Clippings helper app responded with an error.\n\nStatus: ${aResp.status}\nDetails: ${aResp.details}`);
-        this.close();
-      }     
-    }).catch(aErr => {
-      console.error(aErr);
-    });
+      gIsActivatingSyncClippings = false;
+    }
+
+    gClippings.refreshSyncedClippings(rebuildClippingsMenu);  // Asynchronous function.
+    
+    let syncClippingsLstrs = gClippings.getSyncClippingsListeners().getListeners();
+    for (let listener of syncClippingsLstrs) {
+      listener.onActivate(syncFldrID);
+    }    
+    this.close();
   };
   gDialogs.syncClippings.onUnload = function () {
     $("#sync-clippings-dlg").css({ height: "256px" });
@@ -462,8 +458,8 @@ function initDialogs()
       $("#toggle-sync").text(browser.i18n.getMessage("syncTurnOn"));
       $("#sync-status").removeClass("sync-status-on").text(browser.i18n.getMessage("syncStatusOff"));
 
-      let syncClippingsListeners = gClippings.getSyncClippingsListeners().getListeners();
-      for (let listener of syncClippingsListeners) {
+      let syncClippingsLstrs = gClippings.getSyncClippingsListeners().getListeners();
+      for (let listener of syncClippingsLstrs) {
 	listener.onDeactivate(oldSyncFldrID);
       }
 
@@ -479,9 +475,9 @@ function initDialogs()
   };
   gDialogs.turnOffSyncAck.onAfterAccept = function () {
     let removeSyncFldr = $("#delete-sync-fldr").prop("checked");
-    let syncClippingsListeners = gClippings.getSyncClippingsListeners().getListeners();
+    let syncClippingsLstrs = gClippings.getSyncClippingsListeners().getListeners();
 
-    for (let listener of syncClippingsListeners) {
+    for (let listener of syncClippingsLstrs) {
       listener.onAfterDeactivate(removeSyncFldr, this.oldSyncFldrID);
     }
   };

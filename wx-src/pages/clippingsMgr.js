@@ -2349,8 +2349,8 @@ $(async () => {
   gClippingsListener.origin = aeConst.ORIGIN_CLIPPINGS_MGR;
   clippingsLstrs.add(gClippingsListener);
 
-  let syncClippingsListeners = gClippings.getSyncClippingsListeners();
-  syncClippingsListeners.add(gSyncClippingsListener);
+  let syncClippingsLstrs = gClippings.getSyncClippingsListeners();
+  syncClippingsLstrs.add(gSyncClippingsListener);
   
   initToolbar();
   initInstantEditing();
@@ -2401,8 +2401,8 @@ $(window).on("beforeunload", () => {
   let clippingsLstrs = gClippings.getClippingsListeners();
   clippingsLstrs.remove(gClippingsListener);
 
-  let syncClippingsListeners = gClippings.getSyncClippingsListeners();
-  syncClippingsListeners.remove(gSyncClippingsListener);
+  let syncClippingsLstrs = gClippings.getSyncClippingsListeners();
+  syncClippingsLstrs.remove(gSyncClippingsListener);
   
   gClippings.purgeFolderItems(aeConst.DELETED_ITEMS_FLDR_ID).catch(aErr => {
     console.error("Clippings/wx::clippingsMgr.js: $(window).on('beforeunload'): " + aErr);
