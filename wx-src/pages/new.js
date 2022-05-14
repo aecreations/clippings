@@ -169,9 +169,11 @@ function showInitError()
 function initDialogs()
 {
   gNewFolderDlg = new aeDialog("#new-folder-dlg");
-  gNewFolderDlg.firstInit = true;
-  gNewFolderDlg.fldrTree = null;
-  gNewFolderDlg.selectedFldrNode = null;
+  gNewFolderDlg.setProps({
+    firstInit: true,
+    fldrTree: null,
+    selectedFldrNode: null,
+  });
 
   gNewFolderDlg.resetTree = function () {
     let fldrTree = this.fldrTree.getTree();
@@ -186,8 +188,29 @@ function initDialogs()
     $('<div id="new-folder-dlg-fldr-tree" class="folder-tree"></div>').appendTo("#new-folder-dlg-fldr-tree-popup");
   };
   
-  gNewFolderDlg.onInit = () => {
-    let that = gNewFolderDlg;
+  gNewFolderDlg.onFirstInit = function () {
+    let fldrPickerMnuBtn = $("#new-folder-dlg-fldr-picker-mnubtn");
+    let fldrPickerPopup = $("#new-folder-dlg-fldr-tree-popup");
+
+    fldrPickerMnuBtn.click(aEvent => {
+      if (fldrPickerPopup.css("visibility") == "visible") {
+        fldrPickerPopup.css({ visibility: "hidden" });
+        $("#new-folder-dlg-fldr-tree-popup-bkgrd-ovl").hide();
+      }
+      else {
+        fldrPickerPopup.css({ visibility: "visible" });
+        $("#new-folder-dlg-fldr-tree-popup-bkgrd-ovl").show();
+      }
+    })
+    
+    $("#new-fldr-name").on("blur", aEvent => {
+      if (! aEvent.target.value) {
+        aEvent.target.value = browser.i18n.getMessage("newFolder");
+      }
+    });
+  };
+  
+  gNewFolderDlg.onInit = function () {
     let parentDlgFldrPickerMnuBtn = $("#new-clipping-fldr-picker-menubtn");
     let fldrPickerMnuBtn = $("#new-folder-dlg-fldr-picker-mnubtn");
     let fldrPickerPopup = $("#new-folder-dlg-fldr-tree-popup");
@@ -208,7 +231,7 @@ function initDialogs()
       }
     }
 
-    that.fldrTree = new aeFolderPicker(
+    this.fldrTree = new aeFolderPicker(
       "#new-folder-dlg-fldr-tree",
       gClippingsDB,
       rootFldrID,
@@ -217,8 +240,8 @@ function initDialogs()
       selectedFldrID
     );
 
-    that.fldrTree.onSelectFolder = aFolderData => {
-      that.selectedFldrNode = aFolderData.node;
+    this.fldrTree.onSelectFolder = aFolderData => {
+      this.selectedFldrNode = aFolderData.node;
 
       let fldrID = aFolderData.node.key;
       fldrPickerMnuBtn.val(fldrID).text(aFolderData.node.title);
@@ -242,41 +265,19 @@ function initDialogs()
       fldrPickerMnuBtn.removeAttr("syncfldr");
     }
 
-    if (that.firstInit) {
-      fldrPickerMnuBtn.click(aEvent => {
-        if (fldrPickerPopup.css("visibility") == "visible") {
-          fldrPickerPopup.css({ visibility: "hidden" });
-          $("#new-folder-dlg-fldr-tree-popup-bkgrd-ovl").hide();
-        }
-        else {
-          fldrPickerPopup.css({ visibility: "visible" });
-          $("#new-folder-dlg-fldr-tree-popup-bkgrd-ovl").show();
-        }
-      })
-      
-      $("#new-fldr-name").on("blur", aEvent => {
-        if (! aEvent.target.value) {
-          aEvent.target.value = browser.i18n.getMessage("newFolder");
-        }
-      });
-      
-      that.firstInit = false;
-    }
-
     $("#new-fldr-name").val(browser.i18n.getMessage("newFolder"));
   };
 
-  gNewFolderDlg.onShow = () => {
+  gNewFolderDlg.onShow = function () {
     $("#new-fldr-name").select().focus();
   };
   
-  gNewFolderDlg.onAccept = aEvent => {
-    let that = gNewFolderDlg;
-    let newFldrDlgTree = that.fldrTree.getTree();
+  gNewFolderDlg.onAccept = function (aEvent) {
+    let newFldrDlgTree = this.fldrTree.getTree();
     let parentFldrID = aeConst.ROOT_FOLDER_ID;
 
-    if (that.selectedFldrNode) {
-      parentFldrID = Number(that.selectedFldrNode.key);
+    if (this.selectedFldrNode) {
+      parentFldrID = Number(this.selectedFldrNode.key);
     }
     else {
       // User didn't choose a different parent folder.
@@ -330,7 +331,7 @@ function initDialogs()
         mainFldrPickerMenuBtn.text(newFldrName).val(aFldrID).removeAttr("syncfldr");
         gParentFolderID = aFldrID;
         
-        that.resetTree();
+        this.resetTree();
 
         let clippingsListeners = gClippings.getClippingsListeners().getListeners();
         clippingsListeners.forEach(aListener => {
@@ -340,7 +341,7 @@ function initDialogs()
         return unsetClippingsUnchangedFlag();
 
       }).then(() => {
-        that.close();
+        this.close();
       });
     }).catch(aErr => {
       window.alert(aErr);
@@ -584,7 +585,7 @@ function accept(aEvent)
     }).catch("OpenFailedError", aErr => {
       // OpenFailedError exception thrown if Firefox is set to "Never remember
       // history."
-      errorMsgBox.onInit = () => {
+      errorMsgBox.onInit = function () {
         console.error(`Error creating clipping: ${aErr}`);
         let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
         errMsgElt.text(browser.i18n.getMessage("saveClippingError"));
@@ -593,13 +594,13 @@ function accept(aEvent)
 
     }).catch(aErr => {
       console.error("Clippings/wx::new.js: accept(): " + aErr);     
-      errorMsgBox.onInit = () => {
+      errorMsgBox.onInit = function () {
         let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
         let errText = `Error creating clipping: ${aErr}`;
 
         if (aErr == aeConst.SYNC_ERROR_CONXN_FAILED) {
           errText = browser.i18n.getMessage("syncPushFailed");
-          errorMsgBox.onAfterAccept = () => {
+          errorMsgBox.onAfterAccept = function () {
             // Despite the native app connection error, the new clipping was
             // successfully created, so just close the main dialog.
             closeDlg();

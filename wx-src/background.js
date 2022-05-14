@@ -704,8 +704,8 @@ async function getShortcutKeyPrefixStr()
 {
   let rv = "";
   let isMacOS = getOS() == "mac";
-  let cmds = await browser.commands.getAll();
-  let shct = cmds[0].shortcut;
+  let [cmd] = await browser.commands.getAll();
+  let shct = cmd.shortcut;
   let keybPasteKey = shct.substring(shct.lastIndexOf("+") + 1);
   let keybPasteMods = shct.substring(0, shct.lastIndexOf("+"));
 
@@ -1647,14 +1647,14 @@ async function pasteClipping(aClippingInfo, aExternalRequest)
     queryInfo.currentWindow = true;
   }
   
-  let tabs = await browser.tabs.query(queryInfo);
-  if (! tabs[0]) {
+  let [tabs] = await browser.tabs.query(queryInfo);
+  if (! tabs) {
     // This should never happen...
     alertEx("msgNoActvBrwsTab");
     return;
   }
 
-  let activeTabID = tabs[0].id;
+  let activeTabID = tabs.id;
   let processedCtnt = "";
 
   log("Clippings/wx: pasteClipping(): Active tab ID: " + activeTabID);
@@ -1864,8 +1864,8 @@ browser.commands.onCommand.addListener(async (aCmdName) => {
   info(`Clippings/wx: Command "${aCmdName}" invoked!`);
 
   if (aCmdName == aeConst.CMD_CLIPPINGS_KEYBOARD_PASTE && gPrefs.keyboardPaste) {
-    let tabs = await browser.tabs.query({ active: true, currentWindow: true });
-    let activeTabID = tabs[0].id;
+    let [tabs] = await browser.tabs.query({ active: true, currentWindow: true });
+    let activeTabID = tabs.id;
     gPasteClippingTargetTabID = activeTabID;
     log(`Clippings/wx: Active tab ID: ${activeTabID} - opening keyboard paste dialog.`);
     openKeyboardPasteDlg();
@@ -1876,14 +1876,14 @@ browser.commands.onCommand.addListener(async (aCmdName) => {
 browser.contextMenus.onClicked.addListener(async (aInfo, aTab) => {
   switch (aInfo.menuItemId) {
   case "ae-clippings-new":
-    let tabs = await browser.tabs.query({ active: true, currentWindow: true });
-    if (! tabs[0]) {
+    let [tabs] = await browser.tabs.query({ active: true, currentWindow: true });
+    if (! tabs) {
       alertEx("msgBrwsWndNotFocused");
       return;
     }
 
-    let activeTabID = tabs[0].id;
-    let url = tabs[0].url;
+    let activeTabID = tabs.id;
+    let url = tabs.url;
       
     let tabInfo = await browser.tabs.get(activeTabID);
     if (tabInfo.status == "loading") {
@@ -1992,88 +1992,98 @@ browser.runtime.onMessage.addListener(aRequest => {
   
   let resp = null;
 
-  if (aRequest.msgID == "get-env-info") {
+  switch (aRequest.msgID) {
+  case "get-env-info":
     resp = {
       os: gOS,
       hostAppName: gHostAppName,
       hostAppVer:  gHostAppVer,
     };
-    
     return Promise.resolve(resp);
-  }
-  else if (aRequest.msgID == "init-new-clipping-dlg") {
-    resp = gNewClipping.get();
 
+  case "init-new-clipping-dlg":
+    resp = gNewClipping.get();
     if (resp !== null) {
       resp.saveSrcURL = gPrefs.alwaysSaveSrcURL;
       resp.checkSpelling = gPrefs.checkSpelling;
       return Promise.resolve(resp);
-    }
-  }
-  else if (aRequest.msgID == "init-placeholder-prmt-dlg") {
+    }   
+    break;
+
+  case "init-placeholder-prmt-dlg":
     resp = gPlaceholders.get();
     return Promise.resolve(resp);
-  }
-  else if (aRequest.msgID == "close-new-clipping-dlg") {
+
+  case "close-new-clipping-dlg":
     gWndIDs.newClipping = null;
-  }
-  else if (aRequest.msgID == "close-clippings-mgr-wnd") {
+    break;
+
+  case "close-clippings-mgr-wnd":
     gWndIDs.clippingsMgr = null;
-  }
-  else if (aRequest.msgID == "close-keybd-paste-dlg") {
+    break;
+
+  case "close-keybd-paste-dlg":
     gWndIDs.keyboardPaste = null;
-  }
-  else if (aRequest.msgID == "paste-shortcut-key") {
+    break;
+
+  case "paste-shortcut-key":
     let shortcutKey = aRequest.shortcutKey;
     if (! shortcutKey) {
       return;
     }
-
     log(`Clippings/wx: Key '${shortcutKey}' was pressed.`);
     pasteClippingByShortcutKey(shortcutKey);
-  }
+    break;
 
-  else if (aRequest.msgID == "paste-clipping-by-name") {
+  case "paste-clipping-by-name":
     let externReq = aRequest.fromClippingsMgr;
     pasteClippingByID(aRequest.clippingID, externReq);
-  }
-  else if (aRequest.msgID == "paste-clipping-with-plchldrs") {
-    let content = aRequest.processedContent;
+    break;
 
+  case "paste-clipping-with-plchldrs":
+    let content = aRequest.processedContent;
     setTimeout(async () => {
-      let tabs = await browser.tabs.query({active: true, currentWindow: true});
-      if (! tabs[0]) {
+      let [tabs] = await browser.tabs.query({active: true, currentWindow: true});
+      if (! tabs) {
         // This could happen if the browser tab was closed while the
         // placeholder prompt dialog was open.
         alertEx("msgNoActvBrwsTab");
         return;
       }
 
-      let activeTabID = tabs[0].id;
+      let activeTabID = tabs.id;
       if (activeTabID != gPasteClippingTargetTabID) {
         warn(`Clippings/wx: Detected mismatch between currently-active browser tab ID and what it was when invoking clipping paste.\nPrevious active tab ID = ${gPasteClippingTargetTabID}, active tab ID = ${activeTabID}`);
         activeTabID = gPasteClippingTargetTabID;
       }
       pasteProcessedClipping(content, activeTabID);
     }, 60);
-  }
-  else if (aRequest.msgID == "close-placeholder-prmt-dlg") {
+    break;
+
+  case "close-placeholder-prmt-dlg":
     gWndIDs.placeholderPrmt = null;
-  }
-  else if (aRequest.msgID == "get-shct-key-prefix-ui-str") {
+    break;
+    
+  case "get-shct-key-prefix-ui-str":
     resp = getShortcutKeyPrefixStr();
     return Promise.resolve(resp);
-  }
-  else if (aRequest.msgID == "clear-backup-notifcn-intv") {
+
+  case "clear-backup-notifcn-intv":
     clearBackupNotificationInterval().then(() => {
       return Promise.resolve();
-    });
-  }
-  else if (aRequest.msgID == "set-backup-notifcn-intv") {
+    });    
+    break;
+
+  case "set-backup-notifcn-intv":
     setBackupNotificationInterval();
-  }
-  else if (aRequest.msgID == "backup-clippings") {
+    break;
+
+  case "backup-clippings":
     openClippingsManager(true);
+    break;
+    
+  default:
+    break;
   }
 });
 
