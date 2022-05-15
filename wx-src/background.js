@@ -571,9 +571,6 @@ async function enableSyncClippings(aIsEnabled)
 }
 
 
-// TO DO: Make this an asynchronous function.
-// This can only be done after converting aeImportExport.importFromJSON()
-// to an asynchronous method.
 function refreshSyncedClippings(aRebuildClippingsMenu)
 {
   log("Clippings/wx: refreshSyncedClippings(): Retrieving synced clippings from the Sync Clippings helper app...");
@@ -1990,29 +1987,26 @@ browser.storage.onChanged.addListener((aChanges, aAreaName) => {
 browser.runtime.onMessage.addListener(aRequest => {
   log(`Clippings/wx: Received message "${aRequest.msgID}"`);
   
-  let resp = null;
-
   switch (aRequest.msgID) {
   case "get-env-info":
-    resp = {
+    let envInfo = {
       os: gOS,
       hostAppName: gHostAppName,
       hostAppVer:  gHostAppVer,
     };
-    return Promise.resolve(resp);
+    return Promise.resolve(envInfo);
 
   case "init-new-clipping-dlg":
-    resp = gNewClipping.get();
-    if (resp !== null) {
-      resp.saveSrcURL = gPrefs.alwaysSaveSrcURL;
-      resp.checkSpelling = gPrefs.checkSpelling;
-      return Promise.resolve(resp);
+    let newClipping = gNewClipping.get();
+    if (newClipping !== null) {
+      newClipping.saveSrcURL = gPrefs.alwaysSaveSrcURL;
+      newClipping.checkSpelling = gPrefs.checkSpelling;
+      return Promise.resolve(newClipping);
     }   
     break;
 
   case "init-placeholder-prmt-dlg":
-    resp = gPlaceholders.get();
-    return Promise.resolve(resp);
+    return Promise.resolve(gPlaceholders.get());
 
   case "close-new-clipping-dlg":
     gWndIDs.newClipping = null;
@@ -2065,14 +2059,10 @@ browser.runtime.onMessage.addListener(aRequest => {
     break;
     
   case "get-shct-key-prefix-ui-str":
-    resp = getShortcutKeyPrefixStr();
-    return Promise.resolve(resp);
+    return Promise.resolve(getShortcutKeyPrefixStr());
 
   case "clear-backup-notifcn-intv":
-    clearBackupNotificationInterval().then(() => {
-      return Promise.resolve();
-    });    
-    break;
+    return clearBackupNotificationInterval();
 
   case "set-backup-notifcn-intv":
     setBackupNotificationInterval();
@@ -2081,7 +2071,17 @@ browser.runtime.onMessage.addListener(aRequest => {
   case "backup-clippings":
     openClippingsManager(true);
     break;
+
+  case "enable-sync-clippings":
+    return enableSyncClippings(aRequest.isEnabled);
+
+  case "refresh-synced-clippings":
+    refreshSyncedClippings(aRequest.rebuildClippingsMenu);
+    break;
     
+  case "push-sync-fldr-updates":
+    return pushSyncFolderUpdates();
+
   default:
     break;
   }

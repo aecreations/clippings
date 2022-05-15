@@ -190,17 +190,20 @@ async function init()
     gDialogs.syncClippings.showModal();
   });
 
-  $("#browse-sync-fldr").click(aEvent => {
-    let msg = { msgID: "sync-dir-folder-picker" };
-    let sendNativeMsg = browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
-
-    sendNativeMsg.then(aResp => {
-      if (aResp.syncFilePath) {
-        $("#sync-fldr-curr-location").val(aResp.syncFilePath);
-      }
-    }).catch(aErr => {
+  $("#browse-sync-fldr").click(async (aEvent) => {
+    let msg = {msgID: "sync-dir-folder-picker"};
+    let resp;
+    try {
+      resp = await browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
+    }
+    catch (e) {
       window.alert("The Sync Clippings helper app responded with an error.\n\n" + aErr);
-    });
+      return;
+    }
+    
+    if (resp.syncFilePath) {
+      $("#sync-fldr-curr-location").val(resp.syncFilePath);
+    }
   });
   
   $("#show-sync-help").click(aEvent => {
@@ -407,7 +410,15 @@ function initDialogs()
     log("Sending message 'set-sync-dir' with params:");
     log(natMsg);
 
-    let natMsgResp = await browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, natMsg);
+    let natMsgResp;
+    try {
+      natMsgResp = await browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, natMsg);
+    }
+    catch (e) {
+      console.error("Error received from Sync Clippings Helper app: " + e);
+      return;
+    }
+
     log("Received response to 'set-sync-dir':");
     log(natMsgResp);
 
@@ -417,9 +428,10 @@ function initDialogs()
       return;
     }     
 
-    // TO DO: Replace with WebExtension message call
-    let syncFldrID = await gClippings.enableSyncClippings(true);
-    // END TO DO
+    let syncFldrID = await browser.runtime.sendMessage({
+      msgID: "enable-sync-clippings",
+      isEnabled: true,
+    });
     if (gIsActivatingSyncClippings) {
       // Don't do the following if Sync Clippings was already turned on
       // and no changes to settings were made.
@@ -434,7 +446,10 @@ function initDialogs()
       gIsActivatingSyncClippings = false;
     }
 
-    gClippings.refreshSyncedClippings(rebuildClippingsMenu);  // Asynchronous function.
+    browser.runtime.sendMessage({
+      msgID: "refresh-synced-clippings",
+      rebuildClippingsMenu,
+    });
     
     let syncClippingsLstrs = gClippings.getSyncClippingsListeners().getListeners();
     for (let listener of syncClippingsLstrs) {
@@ -452,8 +467,13 @@ function initDialogs()
     $("#turn-off-sync-clippings-dlg > .dlg-btns > .dlg-btn-yes").click(async (aEvent) => {
       this.close();
 
-      let oldSyncFldrID = await gClippings.enableSyncClippings(false);
-      aePrefs.setPrefs({ syncClippings: false });
+      let msg = {
+        msgID: "enable-sync-clippings",
+        isEnabled: false,
+      };
+      let oldSyncFldrID = await browser.runtime.sendMessage(msg);
+
+      aePrefs.setPrefs({syncClippings: false});
       $("#sync-settings").hide();
       $("#toggle-sync").text(browser.i18n.getMessage("syncTurnOn"));
       $("#sync-status").removeClass("sync-status-on").text(browser.i18n.getMessage("syncStatusOff"));
