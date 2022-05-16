@@ -36,7 +36,7 @@ $(async () => {
   }
 
   try {
-    await gClippings.verifyDB();
+    await browser.runtime.sendMessage({msgID: "verify-db"});
     initHelper();
   }
   catch (e) {

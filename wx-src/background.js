@@ -2082,6 +2082,15 @@ browser.runtime.onMessage.addListener(aRequest => {
   case "push-sync-fldr-updates":
     return pushSyncFolderUpdates();
 
+  case "purge-fldr-items":
+    return purgeFolderItems(aRequest.folderID);
+    
+  case "rebuild-cxt-menu":
+    return rebuildContextMenu();
+
+  case "verify-db":
+    return verifyDB();
+
   default:
     break;
   }

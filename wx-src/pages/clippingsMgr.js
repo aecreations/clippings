@@ -1725,7 +1725,7 @@ let gCmd = {
           }
 
           if (! aSuppressClippingsMenuRebuild) {
-            gClippings.rebuildContextMenu();
+            browser.runtime.sendMessage({msgID: "rebuild-cxt-menu"});
           }
 
           if (aFolderID == gPrefs.syncFolderID || gSyncedItemsIDs[aFolderID + "F"] !== undefined) {
@@ -2413,7 +2413,10 @@ $(window).on("beforeunload", () => {
   let syncClippingsLstrs = gClippings.getSyncClippingsListeners();
   syncClippingsLstrs.remove(gSyncClippingsListener);
   
-  gClippings.purgeFolderItems(aeConst.DELETED_ITEMS_FLDR_ID).catch(aErr => {
+  browser.runtime.sendMessage({
+    msgID: "purge-fldr-items",
+    folderID: aeConst.DELETED_ITEMS_FLDR_ID,
+  }).catch(aErr => {
     console.error("Clippings/wx::clippingsMgr.js: $(window).on('beforeunload'): " + aErr);
   });
 });
