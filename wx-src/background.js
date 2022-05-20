@@ -1109,7 +1109,7 @@ async function showBackupNotification()
     if (gPrefs.backupRemFirstRun) {
       info("Clippings/wx: showBackupNotification(): Showing first-time backup reminder.");
 
-      await browser.notifications.create(aeConst.NOTIFY_BACKUP_REMIND_FIRSTRUN_ID, {
+      await browser.notifications.create("backup-reminder-firstrun", {
         type: "basic",
         title: browser.i18n.getMessage("backupNotifyTitle"),
         message: browser.i18n.getMessage("backupNotifyFirstMsg"),
@@ -1134,7 +1134,7 @@ async function showBackupNotification()
         log("Clippings/wx: No changes to clippings since last backup; skipping backup notification.");
       }
       else {
-        await browser.notifications.create(aeConst.NOTIFY_BACKUP_REMIND_ID, {
+        await browser.notifications.create("backup-reminder", {
           type: "basic",
           title: browser.i18n.getMessage("backupNotifyTitle"),
           message: browser.i18n.getMessage("backupNotifyMsg"),
@@ -1174,7 +1174,7 @@ async function showWhatsNewNotification()
   log("Clippings/wx: Showing post-upgrade notification.");
 
   let extName = browser.i18n.getMessage("extName");
-  await browser.notifications.create(aeConst.NOTIFY_WHATS_NEW, {
+  await browser.notifications.create("whats-new", {
     type: "basic",
     title: extName,
     message: browser.i18n.getMessage("upgradeNotifcn", extName),
@@ -1219,7 +1219,7 @@ function showSyncHelperUpdateNotification()
         info(`Clippings/wx: showSyncHelperUpdateNotification(): Found a newer version of Sync Clippings Helper!  Current version: ${currVer}; new version found: ${aUpdateInfo.latestVersion}`);
         
         gSyncClippingsHelperDwnldPgURL = aUpdateInfo.downloadPageURL;
-        return browser.notifications.create(aeConst.NOTIFY_SYNC_HELPER_UPDATE, {
+        return browser.notifications.create("sync-helper-update", {
           type: "basic",
           title: browser.i18n.getMessage("syncUpdateTitle"),
           message: browser.i18n.getMessage("syncUpdateMsg"),
@@ -1720,7 +1720,7 @@ function pasteProcessedClipping(aClippingContent, aActiveTabID)
 
 function showSyncErrorNotification()
 {
-  browser.notifications.create(aeConst.NOTIFY_SYNC_ERROR_ID, {
+  browser.notifications.create("sync-error", {
     type: "basic",
     title: browser.i18n.getMessage("syncStartupFailedHdg"),
     message: browser.i18n.getMessage("syncStartupFailed"),
@@ -1954,17 +1954,17 @@ browser.alarms.onAlarm.addListener(async (aAlarm) => {
 
 
 browser.notifications.onClicked.addListener(aNotifID => {
-  if (aNotifID == aeConst.NOTIFY_BACKUP_REMIND_ID) {
+  if (aNotifID == "backup-reminder") {
     // Open Clippings Manager in backup mode.
     openClippingsManager(true);
   }
-  else if (aNotifID == aeConst.NOTIFY_BACKUP_REMIND_FIRSTRUN_ID) {
+  else if (aNotifID == "backup-reminder-firstrun") {
     openBackupDlg();
   }
-  else if (aNotifID == aeConst.NOTIFY_SYNC_HELPER_UPDATE) {
+  else if (aNotifID == "sync-helper-update") {
     browser.tabs.create({ url: gSyncClippingsHelperDwnldPgURL });
   }
-  else if (aNotifID == aeConst.NOTIFY_WHATS_NEW) {
+  else if (aNotifID == "whats-new") {
     browser.tabs.create({ url: browser.runtime.getURL("pages/whatsnew.html") });
     aePrefs.setPrefs({ upgradeNotifCount: 0 });
   }
