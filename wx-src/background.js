@@ -309,7 +309,7 @@ let gSetDisplayOrderOnRootItems = false;
 
 browser.runtime.onInstalled.addListener(async (aInstall) => {
   if (aInstall.reason == "install") {
-    log("Clippings/wx: It appears that the extension is newly installed.  Welcome to Clippings 6!");
+    log("Clippings/wx: It appears that the WebExtension is newly installed.  Welcome to Clippings!");
 
     // We can't detect if the previous install is the same version, so always
     // initialize user prefs with default values.
@@ -389,7 +389,7 @@ browser.runtime.onStartup.addListener(async () => {
 });
 
 
-function init()
+async function init()
 {
   log("Clippings/wx: Initializing integration with host app...");
   
@@ -397,89 +397,85 @@ function init()
 
   let getBrwsInfo = browser.runtime.getBrowserInfo();
   let getPlatInfo = browser.runtime.getPlatformInfo();
+  let [brws, platform] = await Promise.all([getBrwsInfo, getPlatInfo]);
+  
+  gHostAppName = brws.name;
+  gHostAppVer = brws.version;
+  log(`Clippings/wx: Host app: ${gHostAppName} (version ${gHostAppVer})`);
 
-  Promise.all([getBrwsInfo, getPlatInfo]).then(async (aResults) => {
-    let brws = aResults[0];
-    let platform = aResults[1];
-    
-    gHostAppName = brws.name;
-    gHostAppVer = brws.version;
-    log(`Clippings/wx: Host app: ${gHostAppName} (version ${gHostAppVer})`);
+  gOS = platform.os;
+  log("Clippings/wx: OS: " + gOS);
 
-    gOS = platform.os;
-    log("Clippings/wx: OS: " + gOS);
+  if (gOS == "linux" && gPrefs.clippingsMgrMinzWhenInactv === null) {
+    await aePrefs.setPrefs({ clippingsMgrMinzWhenInactv: true });
+  }
 
-    if (gOS == "linux" && gPrefs.clippingsMgrMinzWhenInactv === null) {
-      await aePrefs.setPrefs({ clippingsMgrMinzWhenInactv: true });
-    }
+  if (gPrefs.autoAdjustWndPos === null) {
+    let autoAdjustWndPos = gOS == "win";
+    let clippingsMgrSaveWndGeom = autoAdjustWndPos;
+    await aePrefs.setPrefs({ autoAdjustWndPos, clippingsMgrSaveWndGeom });
+  }
 
-    if (gPrefs.autoAdjustWndPos === null) {
-      let autoAdjustWndPos = gOS == "win";
-      let clippingsMgrSaveWndGeom = autoAdjustWndPos;
-      await aePrefs.setPrefs({ autoAdjustWndPos, clippingsMgrSaveWndGeom });
-    }
+  // Handle changes to Dark Mode system setting.
+  gPrefersColorSchemeMedQry = window.matchMedia("(prefers-color-scheme: dark)");
+  handlePrefersColorSchemeChange(gPrefersColorSchemeMedQry);
+  gPrefersColorSchemeMedQry.addEventListener("change", handlePrefersColorSchemeChange);
+  
+  gClippingsListener.origin = aeConst.ORIGIN_HOSTAPP;
+  gClippingsListeners.add(gClippingsListener);
+  gSyncClippingsListeners.add(gSyncClippingsListener);
 
-    // Handle changes to Dark Mode system setting.
-    gPrefersColorSchemeMedQry = window.matchMedia("(prefers-color-scheme: dark)");
-    handlePrefersColorSchemeChange(gPrefersColorSchemeMedQry);
-    gPrefersColorSchemeMedQry.addEventListener("change", handlePrefersColorSchemeChange);
-    
-    gClippingsListener.origin = aeConst.ORIGIN_HOSTAPP;
-    gClippingsListeners.add(gClippingsListener);
-    gSyncClippingsListeners.add(gSyncClippingsListener);
+  if (gPrefs.syncClippings) {
+    gSyncFldrID = gPrefs.syncFolderID;
 
-    if (gPrefs.syncClippings) {
-      gSyncFldrID = gPrefs.syncFolderID;
+    // The context menu will be built when refreshing the sync data, via the
+    // onReloadFinish event handler of the Sync Clippings listener.
+    refreshSyncedClippings(true);
+  }
+  else {
+    buildContextMenu();
+  }
+  
+  aeClippingSubst.init(navigator.userAgent, gPrefs.autoIncrPlcHldrStartVal);
+  gAutoIncrPlchldrs = new Set();
 
-      // The context menu will be built when refreshing the sync data, via the
-      // onReloadFinish event handler of the Sync Clippings listener.
-      refreshSyncedClippings(true);
-    }
-    else {
-      buildContextMenu();
-    }
-    
-    aeClippingSubst.init(navigator.userAgent, gPrefs.autoIncrPlcHldrStartVal);
-    gAutoIncrPlchldrs = new Set();
-
-    if (gPrefs.backupRemFirstRun && !gPrefs.lastBackupRemDate) {
-      aePrefs.setPrefs({
-        lastBackupRemDate: new Date().toString(),
-      });
-    }
-
-    if (gPrefs.upgradeNotifCount > 0) {
-      // Show post-upgrade notification in 1 minute.
-      browser.alarms.create("show-upgrade-notifcn", {
-        delayInMinutes: aeConst.POST_UPGRADE_NOTIFCN_DELAY_MS / 60000
-      });
-    }
-
-    // Check in 5 minutes whether to show backup reminder notification.
-    browser.alarms.create("show-backup-notifcn", {
-      delayInMinutes: aeConst.BACKUP_REMINDER_DELAY_MS / 60000
+  if (gPrefs.backupRemFirstRun && !gPrefs.lastBackupRemDate) {
+    aePrefs.setPrefs({
+      lastBackupRemDate: new Date().toString(),
     });
+  }
 
-    if (gPrefs.syncClippings && gPrefs.syncHelperCheckUpdates) {
-      // Check for updates to Sync Clippings Helper native app in 10 minutes.
-      browser.alarms.create("show-sync-helper-upd-notifcn", {
-        delayInMinutes: aeConst.SYNC_HELPER_CHECK_UPDATE_DELAY_MS / 60000
-      });
-    }
+  if (gPrefs.upgradeNotifCount > 0) {
+    // Show post-upgrade notification in 1 minute.
+    browser.alarms.create("show-upgrade-notifcn", {
+      delayInMinutes: aeConst.POST_UPGRADE_NOTIFCN_DELAY_MS / 60000
+    });
+  }
 
-    if (gPrefs.showWelcome) {
-      openWelcomePage();
-      aePrefs.setPrefs({ showWelcome: false });
-    }
-
-    if (gSetDisplayOrderOnRootItems) {
-      await setDisplayOrderOnRootItems();
-      log("Clippings/wx: Display order on root folder items have been set.\nClippings initialization complete.");
-    }
-    else {
-      log("Clippings/wx: Initialization complete.");   
-    }
+  // Check in 5 minutes whether to show backup reminder notification.
+  browser.alarms.create("show-backup-notifcn", {
+    delayInMinutes: aeConst.BACKUP_REMINDER_DELAY_MS / 60000
   });
+
+  if (gPrefs.syncClippings && gPrefs.syncHelperCheckUpdates) {
+    // Check for updates to Sync Clippings Helper native app in 10 minutes.
+    browser.alarms.create("show-sync-helper-upd-notifcn", {
+      delayInMinutes: aeConst.SYNC_HELPER_CHECK_UPDATE_DELAY_MS / 60000
+    });
+  }
+
+  if (gPrefs.showWelcome) {
+    openWelcomePage();
+    aePrefs.setPrefs({ showWelcome: false });
+  }
+
+  if (gSetDisplayOrderOnRootItems) {
+    await setDisplayOrderOnRootItems();
+    log("Clippings/wx: Display order on root folder items have been set.\nClippings initialization complete.");
+  }
+  else {
+    log("Clippings/wx: Initialization complete.");   
+  }
 }
 
 
