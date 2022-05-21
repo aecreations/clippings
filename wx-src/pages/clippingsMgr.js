@@ -3337,6 +3337,9 @@ function initDialogs()
         
         try {
           if (importFile.name.endsWith(".json")) {
+            if (! aeImportExport.isValidClippingsJSON(rawData)) {
+              throw new Error(`Import file "${importFile.name}" is invalid.`);
+            }
             aeImportExport.importFromJSON(rawData, replaceShortcutKeys, aAppendItems);
           }
           else if (importFile.name.endsWith(".rdf")) {
@@ -3345,7 +3348,7 @@ function initDialogs()
         }
         catch (e) {
           $("#import-progress-bar").hide();
-          console.error(e);
+          warn(e);
           $("#import-error").text(browser.i18n.getMessage("importError")).show();
           clippingsLstrs.forEach(aListener => { aListener.importFinished(false) });
 
@@ -3603,6 +3606,9 @@ function initDialogs()
     selectedFldrNode: null,
   });
   gDialogs.moveTo.resetTree = function () {
+    if (! this.fldrTree) {
+      return;
+    }
     let fldrTree = this.fldrTree.getTree();
     fldrTree.clear();
     this.fldrTree = null;
