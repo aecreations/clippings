@@ -395,9 +395,10 @@ async function init()
   
   initClippingsDB();
 
-  let getBrwsInfo = browser.runtime.getBrowserInfo();
-  let getPlatInfo = browser.runtime.getPlatformInfo();
-  let [brws, platform] = await Promise.all([getBrwsInfo, getPlatInfo]);
+  let [brws, platform] = await Promise.all([
+    browser.runtime.getBrowserInfo(),
+    browser.runtime.getPlatformInfo(),
+  ]);
   
   gHostAppName = brws.name;
   gHostAppVer = brws.version;
