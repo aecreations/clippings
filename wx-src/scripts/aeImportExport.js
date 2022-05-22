@@ -13,6 +13,8 @@ let aeImportExport = {
   LAST_SEQ_VALUE: 9999999,
 
   HTML_EXPORT_PAGE_TITLE: "Clippings",
+  NONAME_CLIPPING: "Untitled Clipping",
+  NONAME_FOLDER: "Untitled Folder",
   
   RDF_MIME_TYPE: "application/rdf+xml",
   RDF_SEQ: "http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq",
@@ -23,6 +25,9 @@ let aeImportExport = {
   _importFileTypes: [
     "application/json",
     "application/rdf+xml",    
+  ],
+  _clippingLabels: [
+    "", "red", "orange", "yellow", "green", "blue", "purple", "grey",
   ],
 
   // Default strings in export file - should be localized from messages.json
@@ -132,8 +137,12 @@ aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems
 
     for (let item of aImportedItems) {
       if ("children" in item) {
+	if (! (item.children instanceof Array)) {
+	  continue;
+	}
+
         let folder = {
-          name: item.name,
+          name: ("name" in item ? item.name : this.NONAME_FOLDER),
           parentFolderID: aParentFolderID
         };
 
@@ -163,25 +172,36 @@ aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems
         let clipping = {};
         let shortcutKey = "";
 
-        if (aShortcutKeys[item.shortcutKey]) {
+	if (!("shortcutKey" in item) || typeof item.shortcutKey != "string") {
+	  item.shortcutKey = "";
+	}
+
+	let impShctKey = item.shortcutKey.toUpperCase();
+        if (aShortcutKeys[impShctKey]) {
           if (aReplaceShortcutKeys) {
-            shortcutKey = item.shortcutKey;
-            clippingsWithKeyConflicts.push(aShortcutKeys[item.shortcutKey]);
+            shortcutKey = impShctKey;
+            clippingsWithKeyConflicts.push(aShortcutKeys[impShctKey]);
           }
           else {
             shortcutKey = "";
           }
         }
         else {
-          shortcutKey = item.shortcutKey;
+          shortcutKey = impShctKey;
         }
-        
+
+	let label = "";
+	if ("label" in item && typeof item.label == "string"
+	    && this._clippingLabels.includes(item.label.toLowerCase())) {
+	  label = item.label.toLowerCase();
+	}
+
         clipping = {
-          name: item.name,
-          content: item.content,
+          name: ("name" in item ? item.name : this.NONAME_CLIPPING),
+          content: ("content" in item ? item.content : ""),
+	  label,
           shortcutKey,
-          sourceURL: item.sourceURL,
-          label: ("label" in item ? item.label : ""),
+          sourceURL: ("sourceURL" in item ? item.sourceURL : ""),
           parentFolderID: aParentFolderID
         };
 
