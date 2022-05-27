@@ -177,7 +177,7 @@ aeImportExport._importFromTextSnippetsJSONHelper = function (aParentFolderID, aI
       shortcutKey: "",
       sourceURL: "",
       parentFolderID: aParentFolderID,
-      displayOrder: 0,
+      displayOrder: this.LAST_SEQ_VALUE,
     });
   }
 
