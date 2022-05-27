@@ -184,9 +184,7 @@ aeImportExport._importFromTextSnippetsJSONHelper = function (aParentFolderID, aI
   this._log("aeImportExport._importFromTextSnippetsJSONHelper(): Imported raw data:");
   this._log(importedClippings);
 
-  this._db.transaction("rw", this._db.clippings, () => {
-    this._db.clippings.bulkAdd(importedClippings);
-  }).catch(aErr => {
+  this._db.clippings.bulkAdd(importedClippings).catch(aErr => {
     console.error("aeImportExport._importFromTextSnippetsJSONHelper(): Error: " + aErr);
     throw aErr;
   });
