@@ -91,10 +91,39 @@ aeImportExport.isValidClippingsJSON = function (aImportRawJSON) {
 };
 
 
+aeImportExport.isValidTextSnippetsJSON = function (aImportRawJSON) {
+  let rv = false;
+  let importData;
+
+  try {
+    importData = JSON.parse(aImportRawJSON);
+  }
+  catch (e) {
+    // SyntaxError - Raw JSON data is invalid.
+    return rv;
+  }
+
+  if (importData instanceof Array) {
+    if (importData.length > 0) {
+      let firstTxtSnip = importData[0];
+      rv = (typeof firstTxtSnip == "object"
+	    && "name" in firstTxtSnip && "text" in firstTxtSnip
+	    && typeof firstTxtSnip.name == "string" && typeof firstTxtSnip.text == "string");
+    }
+    else {
+      // Empty array is valid.
+      rv = true;
+    }
+  }
+
+  return rv;
+};
+
+
 aeImportExport.importFromJSON = function (aImportRawJSON, aReplaceShortcutKeys, aAppendItems, aDestFolderID)
 {
   if (! this._db) {
-    throw new Error("aeImportExport: Database not initialized!");
+    throw new Error("Clippings/wx: aeImportExport: Database not initialized!");
   }
 
   if (! aDestFolderID) {
@@ -111,8 +140,16 @@ aeImportExport.importFromJSON = function (aImportRawJSON, aReplaceShortcutKeys, 
     throw e;
   }
 
-  this._log("aeImportExport: Imported JSON data:");
+  this._log("Clippings/wx: aeImportExport.importFromJSON(): Imported JSON data:");
   this._log(importData);
+
+  if (this.isValidTextSnippetsJSON(aImportRawJSON)) {
+    this._log("Clippings/wx: aeImportExport.importFromJSON(): Detected Text Snippets JSON format.");
+    if (importData.length > 0) {
+      this._importFromTextSnippetsJSONHelper(this.ROOT_FOLDER_ID, importData);
+    }
+    return;
+  }
 
   this._getShortcutKeysToClippingIDs().then(aShortcutKeyLookup => {
     this._log("Starting JSON import...");
@@ -126,6 +163,33 @@ aeImportExport.importFromJSON = function (aImportRawJSON, aReplaceShortcutKeys, 
     this._log("Import completed!");
 
   }).catch(aErr => { throw aErr });
+};
+
+
+aeImportExport._importFromTextSnippetsJSONHelper = function (aParentFolderID, aImportedItems) {
+  let importedClippings = [];
+
+  for (let item of aImportedItems) {
+    importedClippings.push({
+      name: ("name" in item ? item.name : this.NONAME_CLIPPING),
+      content: ("text" in item ? item.text : ""),
+      label: "",
+      shortcutKey: "",
+      sourceURL: "",
+      parentFolderID: aParentFolderID,
+      displayOrder: 0,
+    });
+  }
+
+  this._log("aeImportExport._importFromTextSnippetsJSONHelper(): Imported raw data:");
+  this._log(importedClippings);
+
+  this._db.transaction("rw", this._db.clippings, () => {
+    this._db.clippings.bulkAdd(importedClippings);
+  }).catch(aErr => {
+    console.error("aeImportExport._importFromTextSnippetsJSONHelper(): Error: " + aErr);
+    throw aErr;
+  });
 };
 
 

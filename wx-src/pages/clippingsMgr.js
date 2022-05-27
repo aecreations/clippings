@@ -3337,7 +3337,8 @@ function initDialogs()
         
         try {
           if (importFile.name.endsWith(".json")) {
-            if (! aeImportExport.isValidClippingsJSON(rawData)) {
+            if (!aeImportExport.isValidClippingsJSON(rawData)
+                && !aeImportExport.isValidTextSnippetsJSON(rawData)) {
               throw new Error(`Import file "${importFile.name}" is invalid.`);
             }
             aeImportExport.importFromJSON(rawData, replaceShortcutKeys, aAppendItems);
