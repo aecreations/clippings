@@ -1364,7 +1364,7 @@ let gCmd = {
 
       if (gSyncedItemsIDs[aDestFldrID + "F"]) {
         gClippings.pushSyncFolderUpdates().then(() => {
-          gSyncedItemsIDs[aClippingID + "C"] = 1;
+          gSyncedItemsIDs[aNewClippingID + "C"] = 1;
         }).catch(handlePushSyncItemsError);
       }
     }).catch(aErr => {
@@ -1473,7 +1473,7 @@ let gCmd = {
 
       if (gSyncedItemsIDs[aDestFldrID + "F"]) {
         gClippings.pushSyncFolderUpdates().then(() => {
-          gSyncedItemsIDs[aFolderID + "F"] = 1;
+          gSyncedItemsIDs[newFldrID + "F"] = 1;
         }).catch(handlePushSyncItemsError);
       }
 
