@@ -9,6 +9,27 @@ const HTMLPASTE_AS_FORMATTED = 1;
 const HTMLPASTE_AS_IS = 2;
 
 
+browser.runtime.onMessage.addListener(aRequest => {
+  log(`Clippings/wx: Content script received message "${aRequest.msgID}" from WebExtension.\n${window.location.href}`);
+
+  let resp = null;
+  
+  if (aRequest.msgID == "new-clipping") {
+    resp = handleRequestNewClipping(aRequest);
+  }
+  else if (aRequest.msgID == "paste-clipping") {
+    resp = handleRequestInsertClipping(aRequest);
+  }
+  else if (aRequest.msgID == "get-wnd-geometry") {
+    resp = handleRequestGetWndGeometry(aRequest);
+  }
+  
+  if (resp !== null) {
+    return Promise.resolve(resp);
+  }
+});
+
+
 //
 // Message handlers
 //
@@ -272,34 +293,6 @@ function getActiveElt() {
   
   return activeElt;
 }
-
-
-function init()
-{
-  log(`Clippings/wx::content.js: Initializing content script for:\n${window.location.href}`);
-
-  browser.runtime.onMessage.addListener(aRequest => {
-    log(`Clippings/wx::content.js: Received message "${aRequest.msgID}" from extension.\n${window.location.href}`);
-
-    let resp = null;
-    
-    if (aRequest.msgID == "new-clipping") {
-      resp = handleRequestNewClipping(aRequest);
-    }
-    else if (aRequest.msgID == "paste-clipping") {
-      resp = handleRequestInsertClipping(aRequest);
-    }
-    else if (aRequest.msgID == "get-wnd-geometry") {
-      resp = handleRequestGetWndGeometry(aRequest);
-    }
-    
-    if (resp !== null) {
-      return Promise.resolve(resp);
-    }
-  });
-}
-
-init();
 
 
 //
