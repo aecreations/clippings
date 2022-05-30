@@ -1,0 +1,105 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+:root {
+    --ae-clippings-lightbox-width: 480px;
+    --ae-clippings-lightbox-height: 128px;
+    --ae-clippings-color-ovl-bkgd: black;
+    --ae-clippings-opacity-ovl-bkgd: 0.5;
+    --ae-clippings-color-lb-border: #595959;
+    --ae-clippings-color-lb-bkgd: #fefefe;
+    --ae-clippings-color-lb-shadow: #303030cc;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+	--ae-clippings-color-ovl-bkgd: black;
+	--ae-clippings-opacity-ovl-bkgd: 0.85;
+	--ae-clippings-color-lb-border: #2a2a2e;
+	--ae-clippings-color-lb-bkgd: #38383d;
+	--ae-clippings-color-lb-shadow: #0c0c0d;
+    }
+}
+
+
+.ae-clippings-lightbox-bkgrd {
+    display: none;
+    position: fixed;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background-color: var(--ae-clippings-color-ovl-bkgd) !important;
+    z-index: 100001 !important;
+    opacity: var(--ae-clippings-opacity-ovl-bkgd) !important;
+}
+
+.ae-clippings-lightbox {
+    display: none;
+    position: fixed;
+    width: var(--ae-clippings-lightbox-width) !important;
+    height: var(--ae-clippings-lightbox-height) !important;
+    left: calc(calc(100% - var(--ae-clippings-lightbox-width)) / 2) !important;
+    top: calc(calc(100% - var(--ae-clippings-lightbox-height)) / 2) !important;
+    box-sizing: border-box !important;
+    
+    padding: 20px !important;
+    background-color: var(--ae-clippings-color-lb-bkgd) !important;
+    z-index: 100002 !important;
+
+    border: 1px solid var(--ae-clippings-color-lb-border) !important;
+    border-radius: 4px !important;
+    box-shadow: 0px 2px 8px 1px var(--ae-clippings-color-lb-shadow) !important;
+}
+
+.ae-clippings-lightbox > .body {
+    font: caption !important;
+    font-size: 15px !important;
+    font-weight: normal !important;
+    text-align: left !important;
+    line-height: normal !important;
+    color: #000 !important;
+}
+
+.ae-clippings-lightbox > .dlg-btns {
+    position: absolute !important;
+    bottom: 14px !important;
+    right: 6px !important;
+}
+
+.ae-clippings-lightbox > .dlg-btns > button {
+    min-width: 96px !important;
+    min-height: 32px !important;
+    margin-right: 10px !important;
+    cursor: default !important;
+    border-radius: 4px !important;
+    text-align: center !important;
+    font: caption !important;
+    font-size: 15px !important;
+    font-weight: normal !important;
+}
+
+.ae-clippings-lightbox > .dlg-btns > button.default {
+    border: 1px solid #005bab !important;
+    background-color: #0060df !important;
+    color: #fff !important;
+}
+
+.ae-clippings-lightbox > .dlg-btns > button.default:focus {
+    border: 1px solid #003eaa !important;
+}
+
+.ae-clippings-lightbox > .dlg-btns > button.default:hover {
+    border-color: #002275 !important;
+    background-color: #003eaa !important;
+}
+
+.ae-clippings-lightbox > .dlg-btns > button.default:active {
+    border: 1px solid #002275 !important;
+    background-color: #002275 !important;
+}
+
+.ae-clippings-lightbox-show {
+    display: block;
+}

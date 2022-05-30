@@ -19,6 +19,7 @@
     },
 
     "permissions": [
+        "<all_urls>",
         "alarms",
 	"contextMenus",
 	"downloads",
