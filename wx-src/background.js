@@ -348,7 +348,12 @@ browser.runtime.onInstalled.addListener(async (aInstall) => {
     if (! aePrefs.hasHuntingdonPrefs(gPrefs)) {
       log("Initializing 6.3 user preferences.");
       await aePrefs.setHuntingdonPrefs(gPrefs);
+    }
 
+    if (! aePrefs.hasSanClementePrefs(gPrefs)) {
+      log("Initializing 6.4 user preferences.");
+      await aePrefs.setSanClementePrefs(gPrefs);
+      
       // Enable post-upgrade notifications which users can click on to open the
       // What's New page.
       await aePrefs.setPrefs({
@@ -1352,7 +1357,7 @@ async function openClippingsManager(aBackupMode)
   // turned on or off.  This renders Clippings unusable until Firefox is
   // restarted.
   if (! (gPrefs instanceof Object)) {
-    alertEx("msgRunInPrivateChg");
+    alertEx("msgRunInPrivateChg", true);
     return;
   }
     
@@ -1806,7 +1811,7 @@ async function alertEx(aMessageID, aUsePopupWnd=false)
   info("Clippings/wx: " + message);
 
   let [tab] = await browser.tabs.query({active: true, currentWindow: true});
-  if (tab && !aUsePopupWnd) {
+  if (gPrefs.tabModalMsgBox && tab && !aUsePopupWnd) {
     let activeTabID = tab.id;
     let tabInfo = await browser.tabs.get(activeTabID);
 

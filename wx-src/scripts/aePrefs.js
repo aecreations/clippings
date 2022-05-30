@@ -42,6 +42,7 @@ let aePrefs = {
     skipBackupRemIfUnchg: true,
     clippingsUnchanged: false,
     upgradeNotifCount: 0,
+    tabModalMsgBox: true,
   },
   
   getDefaultPrefs()
@@ -171,6 +172,20 @@ let aePrefs = {
       newPrefs.clippingsMgrMinzWhenInactv = null;
     }
 
+    await this._addPrefs(aPrefs, newPrefs);
+  },
+
+  hasSanClementePrefs(aPrefs)
+  {
+    // Version 6.4
+    return aPrefs.hasOwnProperty("tabModalMsgBox");
+  },
+  
+  async setSanClementePrefs(aPrefs)
+  {
+    let newPrefs = {
+      tabModalMsgBox: true,
+    };
     await this._addPrefs(aPrefs, newPrefs);
   },
 
