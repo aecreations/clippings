@@ -319,7 +319,13 @@ browser.runtime.onInstalled.addListener(async (aInstall) => {
   else if (aInstall.reason == "update") {
     let oldVer = aInstall.previousVersion;
     let currVer = browser.runtime.getManifest().version;
-    log(`Clippings/wx: Upgrading from version ${oldVer} to ${currVer}`);
+
+    if (currVer == oldVer) {
+      log("Clippings/wx: WebExtension reloaded.");
+    }
+    else {
+      log(`Clippings/wx: Upgrading from version ${oldVer} to ${currVer}`);
+    }
 
     gPrefs = await aePrefs.getAllPrefs();
 
