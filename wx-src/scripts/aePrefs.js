@@ -13,7 +13,6 @@ let aePrefs = {
     alwaysSaveSrcURL: false,
     keyboardPaste: true,
     checkSpelling: true,
-    openClippingsMgrInTab: false,
     pastePromptAction: aeConst.PASTEACTION_SHORTCUT_KEY,
     clippingsMgrAutoShowDetailsPane: true,
     clippingsMgrDetailsPane: false,
@@ -24,7 +23,6 @@ let aePrefs = {
     syncFolderID: null,
     cxtMenuSyncItemsOnly: false,
     clippingsMgrShowSyncItemsOnlyRem: true,
-    pasteShortcutKeyPrefix: "",
     lastBackupRemDate: null,
     backupRemFirstRun: true,
     backupRemFrequency: aeConst.BACKUP_REMIND_WEEKLY,
@@ -90,7 +88,6 @@ let aePrefs = {
     let newPrefs = {
       syncClippings: false,
       syncFolderID: null,
-      pasteShortcutKeyPrefix: "",
       lastBackupRemDate: null,
       backupRemFirstRun: true,
       backupRemFrequency: aeConst.BACKUP_REMIND_WEEKLY,

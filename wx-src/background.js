@@ -1361,28 +1361,20 @@ async function openClippingsManager(aBackupMode)
     return;
   }
     
-  let openInNewTab = gPrefs.openClippingsMgrInTab;
-
-  if (openInNewTab) {
-    await browser.tabs.create({ url: clippingsMgrURL });
-    browser.history.deleteUrl({ url: clippingsMgrURL });
-  }
-  else {
-    if (gWndIDs.clippingsMgr) {
-      try {
-        let wnd = await browser.windows.get(gWndIDs.clippingsMgr);
-        browser.windows.update(gWndIDs.clippingsMgr, { focused: true });
-      }
-      catch (e) {
-        // Handle dangling ref to previously-closed Clippings Manager window
-        // because it was closed before it finished initializing.
-        gWndIDs.clippingsMgr = null;
-        openClippingsMgrHelper();
-      }
+  if (gWndIDs.clippingsMgr) {
+    try {
+      let wnd = await browser.windows.get(gWndIDs.clippingsMgr);
+      browser.windows.update(gWndIDs.clippingsMgr, {focused: true});
     }
-    else {
+    catch {
+      // Handle dangling ref to previously-closed Clippings Manager window
+      // because it was closed before it finished initializing.
+      gWndIDs.clippingsMgr = null;
       openClippingsMgrHelper();
     }
+  }
+  else {
+    openClippingsMgrHelper();
   }
 }
 
