@@ -1,3 +1,4 @@
+/* -*- mode: javascript; tab-width: 8; indent-tabs-mode: nil; js-indent-level: 2 -*- */
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -83,9 +84,9 @@ aeImportExport.isValidClippingsJSON = function (aImportRawJSON) {
   ];
 
   rv = ("userClippingsRoot" in importData
-	&& importData.userClippingsRoot instanceof Array
-	&& "version" in importData
-	&& knownVersions.includes(importData.version));
+        && importData.userClippingsRoot instanceof Array
+        && "version" in importData
+        && knownVersions.includes(importData.version));
 
   return rv;
 };
@@ -107,8 +108,8 @@ aeImportExport.isValidTextSnippetsJSON = function (aImportRawJSON) {
     if (importData.length > 0) {
       let firstTxtSnip = importData[0];
       rv = (typeof firstTxtSnip == "object"
-	    && "name" in firstTxtSnip && "text" in firstTxtSnip
-	    && typeof firstTxtSnip.name == "string" && typeof firstTxtSnip.text == "string");
+            && "name" in firstTxtSnip && "text" in firstTxtSnip
+            && typeof firstTxtSnip.name == "string" && typeof firstTxtSnip.text == "string");
     }
     else {
       // Empty array is valid.
@@ -199,9 +200,9 @@ aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems
 
     for (let item of aImportedItems) {
       if ("children" in item) {
-	if (! (item.children instanceof Array)) {
-	  continue;
-	}
+        if (! (item.children instanceof Array)) {
+          continue;
+        }
 
         let folder = {
           name: ("name" in item ? item.name : this.NONAME_FOLDER),
@@ -209,22 +210,22 @@ aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems
         };
 
         if (aAppendItems) {
-	  // Append items to root folder, but preserve sort order relative to
-	  // the other imported items.
-	  let seq = ("seq" in item) ? item.seq : 0;
+          // Append items to root folder, but preserve sort order relative to
+          // the other imported items.
+          let seq = ("seq" in item) ? item.seq : 0;
 
-	  if (aParentFolderID == this.ROOT_FOLDER_ID) {
+          if (aParentFolderID == this.ROOT_FOLDER_ID) {
             folder.displayOrder = this.LAST_SEQ_VALUE + seq;
-	  }
-	  else {
-	    folder.displayOrder = seq;
-	  }
+          }
+          else {
+            folder.displayOrder = seq;
+          }
         }
-	else {
-	  if ("seq" in item) {
-	    folder.displayOrder = item.seq;
-	  }
-	}
+        else {
+          if ("seq" in item) {
+            folder.displayOrder = item.seq;
+          }
+        }
         
         this._db.folders.add(folder).then(aNewFolderID => {
           this._importFromJSONHelper(aNewFolderID, item.children, aReplaceShortcutKeys, aShortcutKeys, aAppendItems);
@@ -234,11 +235,11 @@ aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems
         let clipping = {};
         let shortcutKey = "";
 
-	if (!("shortcutKey" in item) || typeof item.shortcutKey != "string") {
-	  item.shortcutKey = "";
-	}
+        if (!("shortcutKey" in item) || typeof item.shortcutKey != "string") {
+          item.shortcutKey = "";
+        }
 
-	let impShctKey = item.shortcutKey.toUpperCase();
+        let impShctKey = item.shortcutKey.toUpperCase();
         if (aShortcutKeys[impShctKey]) {
           if (aReplaceShortcutKeys) {
             shortcutKey = impShctKey;
@@ -252,38 +253,38 @@ aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems
           shortcutKey = impShctKey;
         }
 
-	let label = "";
-	if ("label" in item && typeof item.label == "string"
-	    && this._clippingLabels.includes(item.label.toLowerCase())) {
-	  label = item.label.toLowerCase();
-	}
+        let label = "";
+        if ("label" in item && typeof item.label == "string"
+            && this._clippingLabels.includes(item.label.toLowerCase())) {
+          label = item.label.toLowerCase();
+        }
 
         clipping = {
           name: ("name" in item ? item.name : this.NONAME_CLIPPING),
           content: ("content" in item ? item.content : ""),
-	  label,
+          label,
           shortcutKey,
           sourceURL: ("sourceURL" in item ? item.sourceURL : ""),
           parentFolderID: aParentFolderID
         };
 
         if (aAppendItems) {
-	  // Append items to root folder, but preserve sort order relative to
-	  // the other imported items.
-	  let seq = ("seq" in item) ? item.seq : 0;
+          // Append items to root folder, but preserve sort order relative to
+          // the other imported items.
+          let seq = ("seq" in item) ? item.seq : 0;
 
-	  if (aParentFolderID == this.ROOT_FOLDER_ID) {
+          if (aParentFolderID == this.ROOT_FOLDER_ID) {
             clipping.displayOrder = this.LAST_SEQ_VALUE + seq;
-	  }
-	  else {
-	    clipping.displayOrder = seq;
-	  }
+          }
+          else {
+            clipping.displayOrder = seq;
+          }
         }
-	else {
-	  if ("seq" in item) {
-	    clipping.displayOrder = item.seq;
-	  }
-	}
+        else {
+          if ("seq" in item) {
+            clipping.displayOrder = item.seq;
+          }
+        }
 
         importedClippings.push(clipping);
       }
@@ -352,9 +353,9 @@ aeImportExport._exportToJSONHelper = function (aFolderID, aIncludeSrcURLs, aExcl
           children: []
         };
 
-	if (aIncludeDisplayOrder) {
-	  folder.seq = aItem.displayOrder || 0;
-	}
+        if (aIncludeDisplayOrder) {
+          folder.seq = aItem.displayOrder || 0;
+        }
 
         this._exportToJSONHelper(aItem.id, aIncludeSrcURLs, aExcludeFolderID, aIncludeDisplayOrder).then(aChildItems => {
           folder.children = aChildItems;
@@ -370,10 +371,10 @@ aeImportExport._exportToJSONHelper = function (aFolderID, aIncludeSrcURLs, aExcl
             label: aItem.label,
           };
 
-	  if (aIncludeDisplayOrder) {
-	    clipping.seq = aItem.displayOrder || 0;
-	  }
-	  
+          if (aIncludeDisplayOrder) {
+            clipping.seq = aItem.displayOrder || 0;
+          }
+          
           rv.push(clipping);
         });
       }).then(() => {
