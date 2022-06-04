@@ -2212,7 +2212,7 @@ let gCmd = {
           clpNode.title = redo.name;
           $("#clipping-name").val(redo.name).select();
           this.undoStack.push(redo);
-        });
+        }).catch(aErr => {});
       }
       else if (redo.itemType == this.ITEMTYPE_FOLDER) {
         this.editFolderNameIntrl(redo.id, redo.name).then(() => {
@@ -2220,7 +2220,7 @@ let gCmd = {
           fldrNode.title = redo.name;
           $("#clipping-name").val(redo.name).select();
           this.undoStack.push(redo);
-        });
+        }).catch(aErr => {});
       }
     }
     else if (redo.action == this.ACTION_EDITCONTENT) {
@@ -2228,7 +2228,7 @@ let gCmd = {
         getClippingsTree().activateKey(redo.id + "C");
         $("#clipping-text").val(redo.content).select();
         this.undoStack.push(redo);
-      });
+      }).catch(aErr => {});
     }
     else if (redo.action == this.ACTION_SETLABEL) {
       this.setLabelIntrl(redo.id, redo.label);
