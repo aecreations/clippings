@@ -47,7 +47,7 @@ let aePrefs = {
   {
     return this._defaultPrefs;
   },
-  
+
   getPrefKeys()
   {
     return Object.keys(this._defaultPrefs);
@@ -76,6 +76,31 @@ let aePrefs = {
   //
   // Version upgrade handling
   //
+
+  hasUserPrefs(aPrefs)
+  {
+    return aPrefs.hasOwnProperty("htmlPaste");
+  },
+
+  async setUserPrefs(aPrefs)
+  {
+    let prefs = {
+      showWelcome: true,
+      htmlPaste: aeConst.HTMLPASTE_AS_FORMATTED,
+      autoLineBreak: true,
+      autoIncrPlcHldrStartVal: 0,
+      alwaysSaveSrcURL: false,
+      keyboardPaste: true,
+      checkSpelling: true,
+      pastePromptAction: aeConst.PASTEACTION_SHORTCUT_KEY,
+      clippingsMgrDetailsPane: false,
+      clippingsMgrStatusBar: false,
+      clippingsMgrPlchldrToolbar: false,
+      clippingsMgrMinzWhenInactv: null,
+    };
+
+    await this._addPrefs(aPrefs, prefs);
+  },
 
   hasSanDiegoPrefs(aPrefs)
   {

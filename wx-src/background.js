@@ -304,17 +304,12 @@ let gSetDisplayOrderOnRootItems = false;
 
 
 //
-// First-run initialization
+// Post-installation handling
 //
 
 browser.runtime.onInstalled.addListener(async (aInstall) => {
   if (aInstall.reason == "install") {
     log("Clippings/wx: It appears that the WebExtension is newly installed.  Welcome to Clippings!");
-
-    // We can't detect if the previous install is the same version, so always
-    // initialize user prefs with default values.
-    await setDefaultPrefs();
-    init();
   }
   else if (aInstall.reason == "update") {
     let oldVer = aInstall.previousVersion;
@@ -325,79 +320,77 @@ browser.runtime.onInstalled.addListener(async (aInstall) => {
     }
     else {
       log(`Clippings/wx: Upgrading from version ${oldVer} to ${currVer}`);
-    }
 
-    gPrefs = await aePrefs.getAllPrefs();
-
-    if (! aePrefs.hasSanDiegoPrefs(gPrefs)) {
-      gSetDisplayOrderOnRootItems = true;
-      log("Initializing 6.1 user preferences.");
-      await aePrefs.setSanDiegoPrefs(gPrefs);
+      // Initialize post-upgrade notification only if upgrading from any
+      // previous version to the current major release.
+      if (aeVersionCmp(oldVer, aeConst.CURRENT_MAJOR_VER) < 0) {
+        browser.alarms.create("init-upgrade-notifcn", {delayInMinutes: 0.5});
+      }
     }
-
-    if (! aePrefs.hasBalboaParkPrefs(gPrefs)) {
-      gForceShowFirstTimeBkupNotif = true;
-      log("Initializing 6.1.2 user preferences.");
-      await aePrefs.setBalboaParkPrefs(gPrefs);
-    }
-
-    if (! aePrefs.hasMalibuPrefs(gPrefs)) {
-      log("Initializing 6.2 user preferences.");
-      await aePrefs.setMalibuPrefs(gPrefs);
-    }
-    
-    if (! aePrefs.hasTopangaPrefs(gPrefs)) {
-      log("Initializing 6.2.1 user preferences.");
-      await aePrefs.setTopangaPrefs(gPrefs);
-    }
-
-    if (! aePrefs.hasHuntingdonPrefs(gPrefs)) {
-      log("Initializing 6.3 user preferences.");
-      await aePrefs.setHuntingdonPrefs(gPrefs);
-    }
-
-    if (! aePrefs.hasSanClementePrefs(gPrefs)) {
-      log("Initializing 6.4 user preferences.");
-      await aePrefs.setSanClementePrefs(gPrefs);
-      
-      // Enable post-upgrade notifications which users can click on to open the
-      // What's New page.
-      await aePrefs.setPrefs({
-        upgradeNotifCount: aeConst.MAX_NUM_POST_UPGRADE_NOTIFICNS
-      });      
-    }
-
-    if (gPrefs.clippingsMgrDetailsPane) {
-      gPrefs.clippingsMgrAutoShowDetailsPane = false;
-    }
-
-    init();
   }
 });
-
-
-async function setDefaultPrefs()
-{
-  let defaultPrefs = aePrefs.getDefaultPrefs();
-
-  gPrefs = defaultPrefs;
-  await aePrefs.setPrefs(defaultPrefs);
-}
 
 
 //
 // Browser window and Clippings menu initialization
 //
 
-browser.runtime.onStartup.addListener(async () => {
-  log("Clippings/wx: Initializing Clippings during browser startup.");
+void async function ()
+{
+  log("Clippings/wx: WebExtension startup initiated.");
   
   gPrefs = await aePrefs.getAllPrefs();
   log("Clippings/wx: Successfully retrieved user preferences:");
   log(gPrefs);
-    
+
+  // Check for and set user prefs (if not already set) from all previous
+  // versions of Clippings.  This needs to be performed at every startup since
+  // it is not possible to determine if this function is called after the
+  // WebExtension is installed, updated, reloaded, or loaded during host app
+  // startup.
+  if (! aePrefs.hasUserPrefs(gPrefs)) {
+    log("Initializing Clippings user preferences.");
+    await aePrefs.setUserPrefs(gPrefs);
+  }
+
+  if (! aePrefs.hasSanDiegoPrefs(gPrefs)) {
+    gSetDisplayOrderOnRootItems = true;
+    log("Initializing 6.1 user preferences.");
+    await aePrefs.setSanDiegoPrefs(gPrefs);
+  }
+
+  if (! aePrefs.hasBalboaParkPrefs(gPrefs)) {
+    gForceShowFirstTimeBkupNotif = true;
+    log("Initializing 6.1.2 user preferences.");
+    await aePrefs.setBalboaParkPrefs(gPrefs);
+  }
+
+  if (! aePrefs.hasMalibuPrefs(gPrefs)) {
+    log("Initializing 6.2 user preferences.");
+    await aePrefs.setMalibuPrefs(gPrefs);
+  }
+  
+  if (! aePrefs.hasTopangaPrefs(gPrefs)) {
+    log("Initializing 6.2.1 user preferences.");
+    await aePrefs.setTopangaPrefs(gPrefs);
+  }
+
+  if (! aePrefs.hasHuntingdonPrefs(gPrefs)) {
+    log("Initializing 6.3 user preferences.");
+    await aePrefs.setHuntingdonPrefs(gPrefs);
+  }
+
+  if (! aePrefs.hasSanClementePrefs(gPrefs)) {
+    log("Initializing 6.4 user preferences.");
+    await aePrefs.setSanClementePrefs(gPrefs);
+  }
+
+  if (gPrefs.clippingsMgrDetailsPane) {
+    gPrefs.clippingsMgrAutoShowDetailsPane = false;
+  }
+
   init();
-});
+}();
 
 
 async function init()
@@ -1177,6 +1170,20 @@ async function clearBackupNotificationInterval()
 {
   log("Clippings/wx: Clearing backup notification interval.");
   await browser.alarms.clear("show-backup-notificn");
+}
+
+
+async function setWhatsNewNotificationDelay()
+{
+  log("Clippings/wx: Turning on post-upgrade notification.");
+  await aePrefs.setPrefs({
+    upgradeNotifCount: aeConst.MAX_NUM_POST_UPGRADE_NOTIFICNS
+  });
+
+  // Show post-upgrade notification in 1 minute.
+  browser.alarms.create("show-upgrade-notifcn", {
+    delayInMinutes: aeConst.POST_UPGRADE_NOTIFCN_DELAY_MS / 60000
+  });
 }
 
 
@@ -1985,35 +1992,54 @@ browser.contextMenus.onClicked.addListener(async (aInfo, aTab) => {
 });
 
 
-browser.alarms.onAlarm.addListener(async (aAlarm) => {
+browser.alarms.onAlarm.addListener(aAlarm => {
   info(`Clippings/wx: Alarm "${aAlarm.name}" was triggered.`);
 
-  if (aAlarm.name == "show-backup-notifcn") {
-    await showBackupNotification();
-  }
-  else if (aAlarm.name == "show-sync-helper-upd-notifcn") {
+  switch (aAlarm.name) {
+  case "show-backup-notifcn":
+    showBackupNotification();
+    break;
+
+  case "show-sync-helper-upd-notifcn":
     showSyncHelperUpdateNotification();
-  }
-  else if (aAlarm.name == "show-upgrade-notifcn") {
+    break;
+
+  case "init-upgrade-notifcn":
+    setWhatsNewNotificationDelay();
+    break;
+
+  case aAlarm.name == "show-upgrade-notifcn":
     showWhatsNewNotification();
+    break;
+
+  default:
+    break;
   }
 });
 
 
 browser.notifications.onClicked.addListener(aNotifID => {
-  if (aNotifID == "backup-reminder") {
+  switch (aNotifID) {
+  case "backup-reminder":
     // Open Clippings Manager in backup mode.
     openClippingsManager(true);
-  }
-  else if (aNotifID == "backup-reminder-firstrun") {
+    break;
+
+  case "backup-reminder-firstrun":
     openBackupDlg();
-  }
-  else if (aNotifID == "sync-helper-update") {
-    browser.tabs.create({ url: gSyncClippingsHelperDwnldPgURL });
-  }
-  else if (aNotifID == "whats-new") {
-    browser.tabs.create({ url: browser.runtime.getURL("pages/whatsnew.html") });
-    aePrefs.setPrefs({ upgradeNotifCount: 0 });
+    break;
+
+  case "sync-helper-update":
+    browser.tabs.create({url: gSyncClippingsHelperDwnldPgURL});
+    break;
+
+  case "whats-new":
+    browser.tabs.create({url: browser.runtime.getURL("pages/whatsnew.html")});
+    aePrefs.setPrefs({upgradeNotifCount: 0});
+    break;
+
+  default:
+    break;
   }
 });
   
