@@ -226,6 +226,10 @@ aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems
             folder.displayOrder = item.seq;
           }
         }
+
+        if ("sid" in item) {
+          folder.sid = item.sid;
+        }
         
         this._db.folders.add(folder).then(aNewFolderID => {
           this._importFromJSONHelper(aNewFolderID, item.children, aReplaceShortcutKeys, aShortcutKeys, aAppendItems);
@@ -284,6 +288,10 @@ aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems
           if ("seq" in item) {
             clipping.displayOrder = item.seq;
           }
+        }
+
+        if ("sid" in item) {
+          clipping.sid = item.sid;
         }
 
         importedClippings.push(clipping);
@@ -357,6 +365,10 @@ aeImportExport._exportToJSONHelper = function (aFolderID, aIncludeSrcURLs, aExcl
           folder.seq = aItem.displayOrder || 0;
         }
 
+        if ("sid" in aItem) {
+          folder.sid = aItem.sid;
+        }
+
         this._exportToJSONHelper(aItem.id, aIncludeSrcURLs, aExcludeFolderID, aIncludeDisplayOrder).then(aChildItems => {
           folder.children = aChildItems;
           rv.push(folder);
@@ -373,6 +385,10 @@ aeImportExport._exportToJSONHelper = function (aFolderID, aIncludeSrcURLs, aExcl
 
           if (aIncludeDisplayOrder) {
             clipping.seq = aItem.displayOrder || 0;
+          }
+
+          if ("sid" in aItem) {
+            clipping.sid = aItem.sid;
           }
           
           rv.push(clipping);
