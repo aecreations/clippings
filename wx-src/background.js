@@ -1281,17 +1281,11 @@ async function showSyncHelperUpdateNotification()
     }
 
     if (! fetchResp.ok) {
+      console.error(`Clippings/wx: showSyncHelperUpdateNotification(): HTTP status ${fetchResp.status} (${fetchResp.statusText}) received from URL ${fetchResp.url}`);
       return;
     }
     
-    let updateInfo;
-    try {
-      updateInfo = await fetchResp.json();
-    }
-    catch (e) {
-      console.error(`Clippings/wx: showSyncHelperUpdateNotification(): HTTP status ${fetchResp.status} (${fetchResp.statusText}) received from URL ${fetchResp.url}`);
-      throw e;
-    }
+    let updateInfo = await fetchResp.json();
 
     if (aeVersionCmp(currVer, updateInfo.latestVersion) < 0) {
       info(`Clippings/wx: showSyncHelperUpdateNotification(): Found a newer version of Sync Clippings Helper!  Current version: ${currVer}; new version found: ${updateInfo.latestVersion}`);
