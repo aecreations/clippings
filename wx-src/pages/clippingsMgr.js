@@ -31,19 +31,6 @@ function sanitizeHTML(aHTMLStr)
 }
 
 
-// Random ID generator
-function createID()
-{
-  let rv = "";
-  let ids = new Uint32Array(1);
-  crypto.getRandomValues(ids);
-
-  rv = String(ids[0]);
-
-  return rv;
-}
-
-
 // Wrappers to database create/update/delete operations. These also call the
 // Clippings listeners upon completion of the database operations.
 let gClippingsSvc = {
@@ -246,7 +233,7 @@ let gClippingsListener = {
       else {
         if (aData.parentFolderID != gPrefs.syncFolderID
             && gSyncedItemsIDs.has(aData.parentFolderID + "F")) {
-          newNodeData.sid = createID();
+          newNodeData.sid = aeGUID();
         }
 
         let parentNode = tree.getNodeByKey(aData.parentFolderID + "F");
@@ -1252,7 +1239,7 @@ let gCmd = {
     };
 
     if (gSyncedItemsIDs.has(parentFolderID + "F")) {
-      newClipping.sid = createID();
+      newClipping.sid = aeGUID();
     }
 
     let parentFldrSID;
@@ -1317,7 +1304,7 @@ let gCmd = {
     };
 
     if (gSyncedItemsIDs.has(parentFolderID + "F")) {
-      newClipping.sid = createID();
+      newClipping.sid = aeGUID();
     }
 
     let parentFldrSID;
@@ -1388,7 +1375,7 @@ let gCmd = {
     };
 
     if (gSyncedItemsIDs.has(parentFolderID + "F")) {
-      newFolder.sid = createID();
+      newFolder.sid = aeGUID();
     }
 
     let parentFldrSID;
@@ -1609,7 +1596,7 @@ let gCmd = {
         if (gSyncedItemsIDs.has(aNewParentFldrID + "F")) {
           if (! sid) {
             // Set permanent ID of synced item if it wasn't already so.
-            sid = createID();
+            sid = aeGUID();
           }
           clippingChg.sid = sid;
         }
@@ -1735,7 +1722,7 @@ let gCmd = {
       };
 
       if (gSyncedItemsIDs.has(aDestFldrID + "F")) {
-        sid = createID();
+        sid = aeGUID();
         clippingCpy.sid = sid;
       }
 
@@ -1815,7 +1802,7 @@ let gCmd = {
         if (gSyncedItemsIDs.has(aNewParentFldrID + "F")) {
           if (! sid) {
             // Set permanent ID of synced item if it wasn't already so.
-            sid = createID();
+            sid = aeGUID();
           }
           folderChg.sid = sid;
         }
@@ -1935,7 +1922,7 @@ let gCmd = {
       };
 
       if (gSyncedItemsIDs.has(aDestFldrID + "F")) {
-        sid = createID();
+        sid = aeGUID();
         folderCpy.sid = sid;
       }
 
