@@ -191,13 +191,13 @@ async function init()
   });
 
   $("#browse-sync-fldr").click(async (aEvent) => {
-    let msg = {msgID: "sync-dir-folder-picker"};
+    let natMsg = {msgID: "sync-dir-folder-picker"};
     let resp;
     try {
-      resp = await browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
+      resp = await browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, natMsg);
     }
     catch (e) {
-      window.alert("The Sync Clippings helper app responded with an error.\n\n" + aErr);
+      window.alert("The Sync Clippings helper app responded with an error.\n\n" + e);
       return;
     }
     
@@ -410,9 +410,9 @@ function initDialogs()
     log("Sending message 'set-sync-dir' with params:");
     log(natMsg);
 
-    let natMsgResp;
+    let resp;
     try {
-      natMsgResp = await browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, natMsg);
+      resp = await browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, natMsg);
     }
     catch (e) {
       console.error("Error received from Sync Clippings Helper app: " + e);
@@ -420,10 +420,10 @@ function initDialogs()
     }
 
     log("Received response to 'set-sync-dir':");
-    log(natMsgResp);
+    log(resp);
 
-    if (natMsgResp.status != "ok") {
-      window.alert(`The Sync Clippings helper app responded with an error.\n\nStatus: ${aResp.status}\nDetails: ${aResp.details}`);
+    if (resp.status != "ok") {
+      window.alert(`The Sync Clippings helper app responded with an error.\n\nStatus: ${resp.status}\nDetails: ${resp.details}`);
       this.close();
       return;
     }     
