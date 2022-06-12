@@ -986,7 +986,10 @@ let gCmd = {
     push(aState)
     {
       if (gPrefs.syncClippings) {
-        if ([gCmd.ACTION_MOVETOFOLDER, gCmd.ACTION_COPYTOFOLDER].includes(aState.action)) {
+        if ([gCmd.ACTION_MOVETOFOLDER, gCmd.ACTION_COPYTOFOLDER,
+             gCmd.ACTION_CREATENEW, gCmd.ACTION_CREATENEWFOLDER]
+            .includes(aState.action)) {
+          // Add static ID if it is a synced item.
           if (! ("sid" in aState)) {
             let sfx = "";
             if (aState.itemType == gCmd.ITEMTYPE_CLIPPING) {
@@ -1004,7 +1007,7 @@ let gCmd = {
             }
           }
         }
-        if (gCmd.ACTION_MOVETOFOLDER) {
+        else if (aState.action == gCmd.ACTION_MOVETOFOLDER) {
           if (! ("newParentFldrSID" in aState)) {
             let isNewParentFldrSynced = false;
             for (let [key, value] of gSyncedItemsIDMap) {
@@ -1014,6 +1017,8 @@ let gCmd = {
                 break;
               }
             }
+            // Remote static ID on the item if it wasn't moved to a
+            // synced folder.
             if (!isNewParentFldrSynced && aState.newParentFldrID != gPrefs.syncFolderID) {
               delete aState.sid;
             }
@@ -1027,8 +1032,13 @@ let gCmd = {
             }            
           }
         }
+        else if ([gCmd.ACTION_DELETECLIPPING, gCmd.ACTION_DELETEFOLDER].includes(aState.action)) {
+          // The static ID of a synced item is no longer needed because it is
+          // moved to the hidden deleted items folder.
+          delete aState.sid;
+        }
       }
-      
+
       this._stack.push(aState);
       this.length++;
     },
@@ -1062,7 +1072,12 @@ let gCmd = {
         }
         if ("parentFldrSID" in item) {
           let xpfid = gSyncedItemsIDMap.get(item.parentFldrSID);
-          item.parentFolderID = parseInt(xpfid);
+          if ("parentFolderID" in item) {
+            item.parentFolderID = parseInt(xpfid);
+          }
+          else {
+            item.parentFldrID = parseInt(xpfid);
+          }
         }
         if ("oldParentFldrSID" in item) {
           let xopfid = gSyncedItemsIDMap.get(item.oldParentFldrSID);
@@ -1088,7 +1103,8 @@ let gCmd = {
     push(aState)
     {
       if (gPrefs.syncClippings) {
-        if (aState.action == gCmd.ACTION_MOVETOFOLDER) {          
+        if ([gCmd.ACTION_DELETECLIPPING, gCmd.ACTION_DELETEFOLDER,
+             gCmd.ACTION_MOVETOFOLDER].includes(aState.action)) {
           if ("sid" in aState) {
             if (! gSyncedItemsIDMap.has(aState.sid)) {
               delete aState.sid;
@@ -1111,7 +1127,8 @@ let gCmd = {
             }
           }
         }
-        else if (aState.action == gCmd.ACTION_COPYTOFOLDER) {
+        else if ([gCmd.ACTION_COPYTOFOLDER, gCmd.ACTION_CREATENEW, gCmd.ACTION_CREATENEWFOLDER]
+                 .includes(aState.action)) {
           // The static ID of a synced item is no longer needed because it is
           // moved to the hidden deleted items folder.
           delete aState.sid;
@@ -1151,7 +1168,12 @@ let gCmd = {
       }
       if ("parentFldrSID" in this._lastUndo) {
         let xpfid = gSyncedItemsIDMap.get(this._lastUndo.parentFldrSID);
-        this._lastUndo.parentFolderID = parseInt(xpfid);
+        if ("parentFolderID" in this._lastUndo) {
+          this._lastUndo.parentFolderID = parseInt(xpfid);
+        }
+        else {
+          this._lastUndo.parentFldrID = parseInt(xpfid);
+        }
       }
       if ("oldParentFldrSID" in this._lastUndo) {
         let xopfid = gSyncedItemsIDMap.get(this._lastUndo.oldParentFldrSID);
@@ -1233,7 +1255,15 @@ let gCmd = {
       newClipping.sid = createID();
     }
 
-    gClippingsSvc.createClipping(newClipping).then(aNewClippingID => {
+    let parentFldrSID;
+
+    gClippingsDB.folders.get(parentFolderID).then(aFolder => {
+      if (aFolder && aFolder.id != gPrefs.syncFolderID && "sid" in aFolder) {
+        parentFldrSID = aFolder.sid;
+      }
+      return gClippingsSvc.createClipping(newClipping);
+
+    }).then(aNewClippingID => {
       this._unsetClippingsUnchangedFlag();
       
       if (aDestUndoStack == this.UNDO_STACK) {
@@ -1243,9 +1273,16 @@ let gCmd = {
           itemType: this.ITEMTYPE_CLIPPING,
           parentFldrID: parentFolderID,
         };
-        if ("sid" in newClipping) {
-          state.sid = newClipping.sid;
+
+        if (gSyncedItemsIDs.has(parentFolderID + "F")) {
+          if ("sid" in newClipping) {
+            state.sid = newClipping.sid;
+          }
+          if (parentFldrSID) {
+            state.parentFldrSID = parentFldrSID;
+          }
         }
+
         this.undoStack.push(state);
       }
 
@@ -1283,18 +1320,31 @@ let gCmd = {
       newClipping.sid = createID();
     }
 
-    gClippingsSvc.createClipping(newClipping).then(aNewClippingID => {
-      this._unsetClippingsUnchangedFlag();
+    let parentFldrSID;
 
+    gClippingsDB.folders.get(parentFolderID).then(aFolder => {
+      if (aFolder && aFolder.id != gPrefs.syncFolderID && "sid" in aFolder) {
+        parentFldrSID = aFolder.sid
+      }
+      return gClippingsSvc.createClipping(newClipping);
+
+    }).then(aNewClippingID => {
+      this._unsetClippingsUnchangedFlag();
+      
       if (aDestUndoStack == this.UNDO_STACK) {
         let state = {
           action: this.ACTION_CREATENEW,
           id: aNewClippingID,
           itemType: this.ITEMTYPE_CLIPPING
         };
-        if ("sid" in newClipping) {
+
+        if (gSyncedItemsIDs.has(parentFolderID + "F")) {
           state.sid = newClipping.sid;
+          if (parentFldrSID) {
+            state.parentFldrSID = parentFldrSID;
+          }
         }
+
         this.undoStack.push(state);
       }
 
@@ -1341,7 +1391,15 @@ let gCmd = {
       newFolder.sid = createID();
     }
 
-    gClippingsSvc.createFolder(newFolder).then(aNewFolderID => {
+    let parentFldrSID;
+
+    gClippingsDB.folders.get(parentFolderID).then(aFolder => {
+      if (aFolder && aFolder.id != gPrefs.syncFolderID && "sid" in aFolder) {
+        parentFldrSID = aFolder.sid
+      }
+      return gClippingsSvc.createFolder(newFolder);
+
+    }).then(aNewFolderID => {
       this._unsetClippingsUnchangedFlag();
 
       if (aDestUndoStack == this.UNDO_STACK) {
@@ -1351,9 +1409,14 @@ let gCmd = {
           itemType: this.ITEMTYPE_FOLDER,
           parentFldrID: parentFolderID,
         };
-        if ("sid" in newFolder) {
+
+        if (gSyncedItemsIDs.has(parentFolderID + "F")) {
           state.sid = newFolder.sid;
+          if (parentFldrSID) {
+            state.parentFldrSID = parentFldrSID;
+          }
         }
+        
         this.undoStack.push(state);
       }
 
