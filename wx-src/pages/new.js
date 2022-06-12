@@ -179,7 +179,8 @@ function initDialogs()
     selectedFldrNode: null,
   });
 
-  gNewFolderDlg.resetTree = function () {
+  gNewFolderDlg.resetTree = function ()
+  {
     let fldrTree = this.fldrTree.getTree();
     fldrTree.clear();
     this.fldrTree = null;
@@ -192,7 +193,8 @@ function initDialogs()
     $('<div id="new-folder-dlg-fldr-tree" class="folder-tree"></div>').appendTo("#new-folder-dlg-fldr-tree-popup");
   };
   
-  gNewFolderDlg.onFirstInit = function () {
+  gNewFolderDlg.onFirstInit = function ()
+  {
     let fldrPickerMnuBtn = $("#new-folder-dlg-fldr-picker-mnubtn");
     let fldrPickerPopup = $("#new-folder-dlg-fldr-tree-popup");
 
@@ -214,7 +216,8 @@ function initDialogs()
     });
   };
   
-  gNewFolderDlg.onInit = function () {
+  gNewFolderDlg.onInit = function ()
+  {
     let parentDlgFldrPickerMnuBtn = $("#new-clipping-fldr-picker-menubtn");
     let fldrPickerMnuBtn = $("#new-folder-dlg-fldr-picker-mnubtn");
     let fldrPickerPopup = $("#new-folder-dlg-fldr-tree-popup");
@@ -272,11 +275,13 @@ function initDialogs()
     $("#new-fldr-name").val(browser.i18n.getMessage("newFolder"));
   };
 
-  gNewFolderDlg.onShow = function () {
+  gNewFolderDlg.onShow = function ()
+  {
     $("#new-fldr-name").select().focus();
   };
   
-  gNewFolderDlg.onAccept = function (aEvent) {
+  gNewFolderDlg.onAccept = function (aEvent)
+  {
     let newFldrDlgTree = this.fldrTree.getTree();
     let parentFldrID = aeConst.ROOT_FOLDER_ID;
 

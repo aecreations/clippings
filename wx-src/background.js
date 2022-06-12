@@ -1258,7 +1258,7 @@ async function showSyncHelperUpdateNotification()
 
   if (!gPrefs.lastSyncHelperUpdChkDate || diff.days >= aeConst.SYNC_HELPER_CHECK_UPDATE_FREQ_DAYS) {
     let currVer = "";
-    let natMsg = { msgID: "get-app-version" };
+    let natMsg = {msgID: "get-app-version"};
     let resp;
     try {
       resp = await browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, natMsg);
@@ -1291,7 +1291,7 @@ async function showSyncHelperUpdateNotification()
       info(`Clippings/wx: showSyncHelperUpdateNotification(): Found a newer version of Sync Clippings Helper!  Current version: ${currVer}; new version found: ${updateInfo.latestVersion}`);
       
       gSyncClippingsHelperDwnldPgURL = updateInfo.downloadPageURL;
-      let notifID = await browser.notifications.create("sync-helper-update", {
+      browser.notifications.create("sync-helper-update", {
         type: "basic",
         title: browser.i18n.getMessage("syncUpdateTitle"),
         message: browser.i18n.getMessage("syncUpdateMsg"),

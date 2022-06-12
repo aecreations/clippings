@@ -3577,7 +3577,8 @@ function initDialogs()
   initIntroBannerAndHelpDlg();
 
   gDialogs.shctKeyConflict = new aeDialog("#shortcut-key-conflict-msgbox");
-  gDialogs.shctKeyConflict.onAccept = function (aEvent) {
+  gDialogs.shctKeyConflict.onAccept = function (aEvent)
+  {
     gDialogs.shctKeyConflict.close();
 
     // NOTE: As of Firefox 57b8, this doesn't do anything.
@@ -3589,7 +3590,8 @@ function initDialogs()
   gDialogs.noRedoNotify = new aeDialog("#no-redo-msgbar");
 
   gDialogs.shortcutList = new aeDialog("#shortcut-list-dlg");
-  gDialogs.shortcutList.onFirstInit = async function () {
+  gDialogs.shortcutList.onFirstInit = async function ()
+  {
     let keybPasteKeys = await browser.runtime.sendMessage({msgID: "get-shct-key-prefix-ui-str"});
     let shctPrefixKey = 0;
     $("#shortcut-instrxns").text(browser.i18n.getMessage("clipMgrShortcutHelpInstrxn", keybPasteKeys));
@@ -3626,14 +3628,16 @@ function initDialogs()
     });
   };
 
-  gDialogs.shortcutList.onInit = function () {
+  gDialogs.shortcutList.onInit = function ()
+  {
     aeImportExport.getShortcutKeyListHTML(false).then(aShctListHTML => {
       $("#shortcut-list-content").append(sanitizeHTML(aShctListHTML));
     }).catch(aErr => {
       console.error("Clippings/wx::clippingsMgr.js: gDialogs.shortcutList.onInit(): " + aErr);
     });
   };
-  gDialogs.shortcutList.onUnload = function () {
+  gDialogs.shortcutList.onUnload = function ()
+  {
     $("#shortcut-list-content").empty();
   };
 
@@ -3644,7 +3648,8 @@ function initDialogs()
     }
     return true;    
   };
-  gDialogs.insCustomPlchldr.onFirstInit = function () {
+  gDialogs.insCustomPlchldr.onFirstInit = function ()
+  {
     $("#custom-plchldr-name").prop("placeholder", browser.i18n.getMessage("placeholderNameHint"));
     $("#custom-plchldr-name").on("keydown", aEvent => {
       if ($(aEvent.target).hasClass("input-error")) {
@@ -3652,14 +3657,17 @@ function initDialogs()
       }
     });
   };
-  gDialogs.insCustomPlchldr.onInit = function () {
+  gDialogs.insCustomPlchldr.onInit = function ()
+  {
     $("#custom-plchldr-default-val").val("");
     $("#custom-plchldr-name").removeClass("input-error").val("");
   };
-  gDialogs.insCustomPlchldr.onShow = function () {
+  gDialogs.insCustomPlchldr.onShow = function ()
+  {
     $("#custom-plchldr-name").focus();
   };
-  gDialogs.insCustomPlchldr.onAccept = function () {
+  gDialogs.insCustomPlchldr.onAccept = function ()
+  {
     let placeholderName = $("#custom-plchldr-name").val();
     if (! placeholderName) {
       $("#custom-plchldr-name").focus();
@@ -3688,7 +3696,8 @@ function initDialogs()
   };
 
   gDialogs.insAutoIncrPlchldr = new aeDialog("#numeric-placeholder-dlg");
-  gDialogs.insAutoIncrPlchldr.onFirstInit = function () {
+  gDialogs.insAutoIncrPlchldr.onFirstInit = function ()
+  {
     $("#numeric-plchldr-name").prop("placeholder", browser.i18n.getMessage("placeholderNameHint"));
     $("#numeric-plchldr-name").on("keydown", aEvent => {
       if ($(aEvent.target).hasClass("input-error")) {
@@ -3696,13 +3705,16 @@ function initDialogs()
       }
     });
   };
-  gDialogs.insAutoIncrPlchldr.onInit = function () {
+  gDialogs.insAutoIncrPlchldr.onInit = function ()
+  {
     $("#numeric-plchldr-name").removeClass("input-error").val("");
   };
-  gDialogs.insAutoIncrPlchldr.onShow = function () {
+  gDialogs.insAutoIncrPlchldr.onShow = function ()
+  {
     $("#numeric-plchldr-name").focus();
   };
-  gDialogs.insAutoIncrPlchldr.onAccept = function () {
+  gDialogs.insAutoIncrPlchldr.onAccept = function ()
+  {
     let placeholderName = $("#numeric-plchldr-name").val();
     if (! placeholderName) {
       $("#numeric-plchldr-name").focus();
@@ -3741,7 +3753,8 @@ function initDialogs()
       "HH:mm:ss",
     ],
   });
-  gDialogs.insDateTimePlchldr.onInit = function () {
+  gDialogs.insDateTimePlchldr.onInit = function ()
+  {
     let dtFmtList = $("#date-time-format-list")[0];
 
     if (gEnvInfo.os != "mac") {
@@ -3792,12 +3805,14 @@ function initDialogs()
       dtFmtList.appendChild(timeFmtOpt);
     }
   };
-  gDialogs.insDateTimePlchldr.onShow = function () {
+  gDialogs.insDateTimePlchldr.onShow = function ()
+  {
     let fmtList = $("#date-time-format-list")[0];
     fmtList.focus();
     fmtList.selectedIndex = 0;
   };
-  gDialogs.insDateTimePlchldr.onAccept = function () {
+  gDialogs.insDateTimePlchldr.onAccept = function ()
+  {
     let placeholder = "";
     let dtFmtList = $("#date-time-format-list")[0];
     let selectedFmt = dtFmtList.options[dtFmtList.selectedIndex].value;
@@ -3820,7 +3835,8 @@ function initDialogs()
     contentTextArea.focus();
     insertTextIntoTextbox(contentTextArea, placeholder);
   };
-  gDialogs.insDateTimePlchldr.onUnload = function () {
+  gDialogs.insDateTimePlchldr.onUnload = function ()
+  {
     $("#date-time-format-list").empty();
   };
   
@@ -3830,7 +3846,8 @@ function initDialogs()
     IMP_REPLACE: 1,
     mode: 0,
   });
-  gDialogs.importFromFile.onFirstInit = function () {
+  gDialogs.importFromFile.onFirstInit = function ()
+  {
     $("#import-clippings-file-upload").on("change", aEvent => {
       $("#import-error").text("").hide();
 
@@ -3856,7 +3873,8 @@ function initDialogs()
       aEvent.preventDefault();
     });
   };
-  gDialogs.importFromFile.onInit = function () {
+  gDialogs.importFromFile.onInit = function ()
+  {
     if (this.mode == this.IMP_REPLACE) {
       $("#import-clippings-label").text(browser.i18n.getMessage("labelSelBkupFile"));
       $("#import-clippings-replc-shct-keys-checkbox").hide();
@@ -3878,15 +3896,17 @@ function initDialogs()
     $("#import-dlg button.dlg-accept").attr("disabled", "true");
     gSuppressAutoMinzWnd = true;
   };
-  gDialogs.importFromFile.onUnload = function () {   
+  gDialogs.importFromFile.onUnload = function ()
+  {   
     $("#import-error").text("").hide();
     $("#import-dlg #import-clippings-file-upload").val("");
     $("#import-clippings-replc-shct-keys")[0].checked = true;
     gSuppressAutoMinzWnd = false;
   };
-  gDialogs.importFromFile.onAccept = function (aEvent) {
+  gDialogs.importFromFile.onAccept = function (aEvent)
+  {
     let clippingsLstrs = gClippings.getClippingsListeners().getListeners();
-   
+    
     function importFile(aAppendItems)
     {
       let inputFileElt = $("#import-clippings-file-upload")[0];
@@ -3996,7 +4016,8 @@ function initDialogs()
     FMT_CSV: 2,
     inclSrcURLs: false,
   });
-  gDialogs.exportToFile.onInit = function () {
+  gDialogs.exportToFile.onInit = function ()
+  {
     let fmtDesc = [
       browser.i18n.getMessage("expFmtClippings6Desc"), // Clippings 6
       browser.i18n.getMessage("expFmtHTMLDocDesc"),    // HTML Document
@@ -4027,11 +4048,13 @@ function initDialogs()
     $("#include-src-urls").prop("checked", this.inclSrcURLs);
   };
 
-  gDialogs.exportToFile.onShow = function () {
+  gDialogs.exportToFile.onShow = function ()
+  {
     $("#export-format-list")[0].focus();
   };
 
-  gDialogs.exportToFile.onAfterAccept = function () {
+  gDialogs.exportToFile.onAfterAccept = function ()
+  {
     function saveToFile(aBlobData, aFilename)
     {
       browser.downloads.download({
@@ -4114,7 +4137,8 @@ function initDialogs()
   };
 
   gDialogs.importConfirmMsgBox = new aeDialog("#import-confirm-msgbox");
-  gDialogs.importConfirmMsgBox.setMessage = function (aMessage) {
+  gDialogs.importConfirmMsgBox.setMessage = function (aMessage)
+  {
     $("#import-confirm-msgbox > .msgbox-content").text(aMessage);
   };
   gDialogs.importConfirmMsgBox.onShow = async function ()
@@ -4123,7 +4147,8 @@ function initDialogs()
       await aePrefs.setPrefs({ clippingsUnchanged: false });
     }
   };
-  gDialogs.importConfirmMsgBox.onAfterAccept = async function () {
+  gDialogs.importConfirmMsgBox.onAfterAccept = async function ()
+  {
     let clippingsLstrs = gClippings.getClippingsListeners().getListeners();
     clippingsLstrs.forEach(aListener => { aListener.importFinished(true) });
 
@@ -4131,25 +4156,30 @@ function initDialogs()
   };
 
   gDialogs.exportConfirmMsgBox = new aeDialog("#export-confirm-msgbox");
-  gDialogs.exportConfirmMsgBox.setMessage = function (aMessage) {
+  gDialogs.exportConfirmMsgBox.setMessage = function (aMessage)
+  {
     $("#export-confirm-msgbox > .msgbox-content").text(aMessage);
   };
 
   gDialogs.backupConfirmMsgBox = new aeDialog("#backup-confirm-msgbox");
-  gDialogs.backupConfirmMsgBox.setMessage = function (aMessage) {
+  gDialogs.backupConfirmMsgBox.setMessage = function (aMessage)
+  {
     $("#backup-confirm-msgbox > .msgbox-content").text(aMessage);
   };
-  gDialogs.backupConfirmMsgBox.onShow = async function () {
+  gDialogs.backupConfirmMsgBox.onShow = async function ()
+  {
     await aePrefs.setPrefs({ clippingsUnchanged: true });
   };
-  gDialogs.backupConfirmMsgBox.onAfterAccept = async function () {
+  gDialogs.backupConfirmMsgBox.onAfterAccept = async function ()
+  {
     if (gIsBackupMode) {
       closeWnd();
     }
   };
   
   gDialogs.removeAllSrcURLs = new aeDialog("#remove-all-source-urls-dlg");
-  gDialogs.removeAllSrcURLs.onFirstInit = function () {
+  gDialogs.removeAllSrcURLs.onFirstInit = function ()
+  {
     $("#remove-all-source-urls-dlg > .dlg-btns > .dlg-btn-yes").click(aEvent => {
       this.close();
       gCmd.removeAllSrcURLsIntrl();
@@ -4157,18 +4187,21 @@ function initDialogs()
   };
 
   gDialogs.removeAllSrcURLsConfirm = new aeDialog("#all-src-urls-removed-confirm-msgbar");
-  gDialogs.removeAllSrcURLsConfirm.onInit = function () {
+  gDialogs.removeAllSrcURLsConfirm.onInit = function ()
+  {
     // Reselect the selected tree node to force a call to updateDisplay().
     getClippingsTree().reactivate(true);
   };
 
   gDialogs.restoreSrcURLs = new aeDialog("#restored-src-urls-msgbar");
-  gDialogs.restoreSrcURLs.onInit = function () {
+  gDialogs.restoreSrcURLs.onInit = function ()
+  {
     getClippingsTree().reactivate(true);
   };
 
   gDialogs.reloadSyncFolder = new aeDialog("#reload-sync-fldr-msgbox");
-  gDialogs.reloadSyncFolder.onAfterAccept = function () {
+  gDialogs.reloadSyncFolder.onAfterAccept = function ()
+  {
     rebuildClippingsTree();
   };
 
@@ -4177,7 +4210,8 @@ function initDialogs()
     fldrTree: null,
     selectedFldrNode: null,
   });
-  gDialogs.moveTo.resetTree = function () {
+  gDialogs.moveTo.resetTree = function ()
+  {
     if (! this.fldrTree) {
       return;
     }
@@ -4194,7 +4228,8 @@ function initDialogs()
     $('<div id="move-to-fldr-tree"></div>').insertAfter("#move-to-label");
   };
 
-  gDialogs.moveTo.onFirstInit = function () {
+  gDialogs.moveTo.onFirstInit = function ()
+  {
     $("#copy-instead-of-move").click(aEvent => {
       if (aEvent.target.checked) {
         if (getClippingsTree().activeNode.folder) {
@@ -4216,7 +4251,8 @@ function initDialogs()
       }
     });
   };
-  gDialogs.moveTo.onInit = function () {    
+  gDialogs.moveTo.onInit = function ()
+  {    
     if (this.fldrTree) {
       this.fldrTree.getTree().getNodeByKey(Number(aeConst.ROOT_FOLDER_ID).toString()).setActive();
     }
@@ -4246,12 +4282,14 @@ function initDialogs()
     }
   };
 
-  gDialogs.moveTo.onCancel = function (aEvent) {
+  gDialogs.moveTo.onCancel = function (aEvent)
+  {
     this.resetTree();
     this.close();
   };
 
-  gDialogs.moveTo.onAccept = function (aEvent) {
+  gDialogs.moveTo.onAccept = function (aEvent)
+  {
     let clippingsMgrTree = getClippingsTree();
     let selectedNode = clippingsMgrTree.activeNode;
     let id = parseInt(selectedNode.key);
@@ -4319,10 +4357,11 @@ function initDialogs()
   };
 
   gDialogs.showOnlySyncedItemsReminder = new aeDialog("#show-only-synced-items-reminder");
-  gDialogs.showOnlySyncedItemsReminder.onShow = function () {
+  gDialogs.showOnlySyncedItemsReminder.onShow = function ()
+  {
     aePrefs.setPrefs({ clippingsMgrShowSyncItemsOnlyRem: false });
   };
-   
+  
   gDialogs.moveSyncFldr = new aeDialog("#move-sync-fldr-msgbox");
   gDialogs.deleteSyncFldr = new aeDialog("#delete-sync-fldr-msgbox");
   gDialogs.miniHelp = new aeDialog("#mini-help-dlg");

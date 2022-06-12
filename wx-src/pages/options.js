@@ -302,7 +302,8 @@ function initDialogs()
     oldShowSyncItemsOpt: null,
     isCanceled: false,
   });
-  gDialogs.syncClippings.onFirstInit = function () {
+  gDialogs.syncClippings.onFirstInit = function ()
+  {
     // Dialog UI strings
     if (gOS == "win") {
       $("#example-sync-path").text(browser.i18n.getMessage("syncFileDirExWin"));
@@ -315,7 +316,8 @@ function initDialogs()
     }
     $("#sync-conxn-error-detail").html(sanitizeHTML(browser.i18n.getMessage("errSyncConxnDetail")));
   };
-  gDialogs.syncClippings.onInit = function () {
+  gDialogs.syncClippings.onInit = function ()
+  {
     this.isCanceled = false;
     $("#sync-clippings-dlg .dlg-accept").hide();
     $("#sync-clippings-dlg .dlg-cancel").text(browser.i18n.getMessage("btnCancel"));
@@ -382,7 +384,8 @@ function initDialogs()
       }
     });
   };
-  gDialogs.syncClippings.onAccept = async function () {
+  gDialogs.syncClippings.onAccept = async function ()
+  {
     let syncFldrPath = $("#sync-fldr-curr-location").val();
 
     // Sanitize the sync folder path value.
@@ -455,13 +458,15 @@ function initDialogs()
     }    
     this.close();
   };
-  gDialogs.syncClippings.onUnload = function () {
+  gDialogs.syncClippings.onUnload = function ()
+  {
     $("#sync-clippings-dlg").css({ height: "256px" });
     gDialogs.syncClippings.isCanceled = true;
   };
 
   gDialogs.turnOffSync = new aeDialog("#turn-off-sync-clippings-dlg");
-  gDialogs.turnOffSync.onFirstInit = function () {
+  gDialogs.turnOffSync.onFirstInit = function ()
+  {
     $("#turn-off-sync-clippings-dlg > .dlg-btns > .dlg-btn-yes").click(async (aEvent) => {
       this.close();
 
@@ -488,10 +493,12 @@ function initDialogs()
 
   gDialogs.turnOffSyncAck = new aeDialog("#turn-off-sync-clippings-ack-dlg");
   gDialogs.turnOffSyncAck.setProps({oldSyncFldrID: null});
-  gDialogs.turnOffSyncAck.onInit = function () {
+  gDialogs.turnOffSyncAck.onInit = function ()
+  {
     $("#delete-sync-fldr").prop("checked", true);
   };
-  gDialogs.turnOffSyncAck.onAfterAccept = function () {
+  gDialogs.turnOffSyncAck.onAfterAccept = function ()
+  {
     let removeSyncFldr = $("#delete-sync-fldr").prop("checked");
     let syncClippingsLstrs = gClippings.getSyncClippingsListeners().getListeners();
 
@@ -502,7 +509,8 @@ function initDialogs()
 
   gDialogs.wndsDlgsOpts = new aeDialog("#wnds-dlgs-opts-dlg");
   gDialogs.wndsDlgsOpts.setProps({resetClpMgrWndPos: false});
-  gDialogs.wndsDlgsOpts.onFirstInit = function () {
+  gDialogs.wndsDlgsOpts.onFirstInit = function ()
+  {
     if (gOS != "win") {
       let os = gOS == "mac" ? browser.i18n.getMessage("macOS") : capitalize(gOS);
       $("#wnds-dlgs-opts-dlg").css({height: "320px"});
@@ -531,7 +539,7 @@ function initDialogs()
     let autoAdjustWndPos = $("#auto-pos-wnds").prop("checked");
     let clippingsMgrSaveWndGeom = $("#clpmgr-save-wnd-pos").prop("checked");
     await aePrefs.setPrefs({autoAdjustWndPos, clippingsMgrSaveWndGeom});
-   
+    
     let isClippingsMgrOpen;
     try {
       isClippingsMgrOpen = await browser.runtime.sendMessage({msgID: "ping-clippings-mgr"});
@@ -573,7 +581,8 @@ function initDialogs()
 
   gDialogs.about = new aeDialog("#about-dlg");
   gDialogs.about.setProps({extInfo: null});
-  gDialogs.about.onInit = function () {
+  gDialogs.about.onInit = function ()
+  {
     let diagDeck = $("#about-dlg > .dlg-content #diag-info .deck");
     diagDeck.children("#sync-diag-loading").show();
     diagDeck.children("#sync-diag").hide();
@@ -596,7 +605,8 @@ function initDialogs()
     $("#about-dlg > .dlg-content #ext-home-pg").attr("href", this.extInfo.homePgURL);
   };
   
-  gDialogs.about.onShow = function () {
+  gDialogs.about.onShow = function ()
+  {
     let msg = {msgID: "get-app-version"};
     browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg).then(aResp => {
       $("#about-dlg > .dlg-content #diag-info #sync-ver").text(aResp.appVersion);
@@ -645,7 +655,8 @@ function initDialogs()
   };
   
   gDialogs.syncClippingsHelp = new aeDialog("#sync-clippings-help-dlg");
-  gDialogs.syncClippingsHelp.onFirstInit = function () {
+  gDialogs.syncClippingsHelp.onFirstInit = function ()
+  {
     // Sync Clippings help dialog content.
     $("#sync-clippings-help-dlg > .dlg-content").html(sanitizeHTML(browser.i18n.getMessage("syncHelp")));
   };
