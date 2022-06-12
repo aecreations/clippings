@@ -300,7 +300,7 @@ function initDialogs()
     if (gPrefs.syncClippings) {
       // Set static ID on new folder if it is a synced folder.
       if (gSyncedFldrIDs.has(parentFldrID)) {
-        newFolder.sid = aeGUID();
+        newFolder.sid = aeUUID();
       }
     }
 
@@ -578,7 +578,7 @@ function accept(aEvent)
 
   if (gPrefs.syncClippings) {
     if (gSyncedFldrIDs.has(newClipping.parentFolderID)) {
-      newClipping.sid = aeGUID();
+      newClipping.sid = aeUUID();
     }
   }
 

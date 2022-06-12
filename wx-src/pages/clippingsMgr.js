@@ -1259,7 +1259,7 @@ let gCmd = {
     };
 
     if (gSyncedItemsIDs.has(parentFolderID + "F")) {
-      newClipping.sid = aeGUID();
+      newClipping.sid = aeUUID();
     }
 
     let parentFldrSID;
@@ -1324,7 +1324,7 @@ let gCmd = {
     };
 
     if (gSyncedItemsIDs.has(parentFolderID + "F")) {
-      newClipping.sid = aeGUID();
+      newClipping.sid = aeUUID();
     }
 
     let parentFldrSID;
@@ -1395,7 +1395,7 @@ let gCmd = {
     };
 
     if (gSyncedItemsIDs.has(parentFolderID + "F")) {
-      newFolder.sid = aeGUID();
+      newFolder.sid = aeUUID();
     }
 
     let parentFldrSID;
@@ -1616,7 +1616,7 @@ let gCmd = {
         if (gSyncedItemsIDs.has(aNewParentFldrID + "F")) {
           if (! sid) {
             // Set permanent ID of synced item if it wasn't already so.
-            sid = aeGUID();
+            sid = aeUUID();
           }
           clippingChg.sid = sid;
         }
@@ -1742,7 +1742,7 @@ let gCmd = {
       };
 
       if (gSyncedItemsIDs.has(aDestFldrID + "F")) {
-        sid = aeGUID();
+        sid = aeUUID();
         clippingCpy.sid = sid;
       }
 
@@ -1822,7 +1822,7 @@ let gCmd = {
         if (gSyncedItemsIDs.has(aNewParentFldrID + "F")) {
           if (! sid) {
             // Set permanent ID of synced item if it wasn't already so.
-            sid = aeGUID();
+            sid = aeUUID();
           }
           folderChg.sid = sid;
         }
@@ -1942,7 +1942,7 @@ let gCmd = {
       };
 
       if (gSyncedItemsIDs.has(aDestFldrID + "F")) {
-        sid = aeGUID();
+        sid = aeUUID();
         folderCpy.sid = sid;
       }
 
