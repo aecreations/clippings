@@ -220,11 +220,19 @@ let gSyncClippingsListener = {
     gIsReloadingSyncFldr = true;
   },
   
-  onReloadFinish()
+  async onReloadFinish()
   {
     log("Clippings/wx: gSyncClippingsListeners.onReloadFinish(): Rebuilding Clippings menu");
     gIsReloadingSyncFldr = false;
     rebuildContextMenu();
+
+    log("Clippings/wx: gSyncClippingsListeners.onReloadFinish(): Setting static IDs on synced items that don't already have them.");
+    let isStaticIDsAdded = await addStaticIDs(gSyncFldrID);
+
+    if (isStaticIDsAdded) {
+      log("Clippings/wx: gSyncClippingsListeners.onReloadFinish(): Static IDs added to synced items.  Saving sync file.");
+      await pushSyncFolderUpdates();
+    }
   },
 };
 
@@ -474,7 +482,7 @@ async function init()
 
   if (gPrefs.showWelcome) {
     openWelcomePage();
-    aePrefs.setPrefs({ showWelcome: false });
+    aePrefs.setPrefs({showWelcome: false});
   }
 
   if (gSetDisplayOrderOnRootItems) {
@@ -535,6 +543,37 @@ function setDisplayOrderOnRootItems()
       aFnReject(aErr);
     });
   }); 
+}
+
+
+function addStaticIDs(aFolderID)
+{
+  let rv = false;
+  
+  return new Promise((aFnResolve, aFnReject) => {
+    gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
+      gClippingsDB.folders.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
+        if (! ("sid" in aItem)) {
+          let sid = aeUUID();
+          gClippingsDB.folders.update(aItem.id, {sid});
+          log(`Clippings/wx: addStaticIDs(): Static ID added to folder ${aItem.id} - "${aItem.name}"`);
+          rv = true;
+        }
+        addStaticIDs(aItem.id);
+      }).then(() => {
+        return gClippingsDB.clippings.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
+          if (! ("sid" in aItem)) {
+            let sid = aeUUID();
+            gClippingsDB.clippings.update(aItem.id, {sid});
+            log(`Clippings/wx: addStaticIDs(): Static ID added to clipping ${aItem.id} - "${aItem.name}"`);
+            rv = true;
+          }
+        });
+      }).then(() => {
+        aFnResolve(rv);
+      });
+    }).catch(aErr => { aFnReject(aErr) });
+  });
 }
 
 

@@ -41,6 +41,7 @@
             "scripts/aeDateDiff.js",
             "scripts/aePrefs.js",
             "scripts/aeVersionCmp.js",
+            "scripts/aeUUID.js",
             "background.js"
 	]
     },
