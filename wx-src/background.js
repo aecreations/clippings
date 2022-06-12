@@ -1816,7 +1816,7 @@ async function alertEx(aMessageID, aUsePopupWnd=false)
   info("Clippings/wx: " + message);
 
   let [tab] = await browser.tabs.query({active: true, currentWindow: true});
-  if (gPrefs.tabModalMsgBox && tab && !aUsePopupWnd) {
+  if (gPrefs && gPrefs.tabModalMsgBox && tab && !aUsePopupWnd) {
     let activeTabID = tab.id;
     let tabInfo = await browser.tabs.get(activeTabID);
 
