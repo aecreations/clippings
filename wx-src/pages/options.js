@@ -332,10 +332,8 @@ function initDialogs()
     deckSyncSettings.hide();
 
     let lang = browser.i18n.getUILanguage();
-    let msg = { msgID: "get-app-version" };
-    let sendNativeMsg = browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
-
-    sendNativeMsg.then(aResp => {
+    let msg = {msgID: "get-app-version"};
+    browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg).then(aResp => {
       console.info("Sync Clippings helper app version: " + aResp.appVersion);
 
       if (aeVersionCmp(aResp.appVersion, "1.2b1") < 0) {
@@ -349,7 +347,7 @@ function initDialogs()
       $("#show-only-sync-items").prop("checked", aPrefs.cxtMenuSyncItemsOnly);
 
       this.oldShowSyncItemsOpt = $("#show-only-sync-items").prop("checked");
-      let msg = { msgID: "get-sync-dir" };
+      let msg = {msgID: "get-sync-dir"};
       return browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
       
     }).then(aResp => {
@@ -597,16 +595,16 @@ function initDialogs()
     $("#about-dlg > .dlg-content #ext-desc").text(this.extInfo.description);
     $("#about-dlg > .dlg-content #ext-home-pg").attr("href", this.extInfo.homePgURL);
   };
+  
   gDialogs.about.onShow = function () {
-    let msg = { msgID: "get-app-version" };
-    let sendNativeMsg = browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
-    sendNativeMsg.then(aResp => {
-      $("#about-dlg > .dlg-content #diag-info #sync-ver").text(aResp.appVersion);     
+    let msg = {msgID: "get-app-version"};
+    browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg).then(aResp => {
+      $("#about-dlg > .dlg-content #diag-info #sync-ver").text(aResp.appVersion);
       return aePrefs.getPref("syncClippings");
 
     }).then(aPrefSyncClpgs => {
       if (!!aPrefSyncClpgs) {
-        let msg = { msgID: "get-sync-file-info" };
+        let msg = {msgID: "get-sync-file-info"};
         return browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
       }
       else {
