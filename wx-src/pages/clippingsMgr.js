@@ -191,12 +191,26 @@ let gClippingsListener = {
 
       // Clipping created outside Clippings Manager. Add to undo stack.
       if (aOrigin == aeConst.ORIGIN_HOSTAPP) {
-        gCmd.undoStack.push({
+        let state = {
           action: gCmd.ACTION_CREATENEW,
           id: newClipping.id,
           itemType: gCmd.ITEMTYPE_CLIPPING,
           parentFldrID: newClipping.parentFolderID,
-        });
+        };
+        
+        if (gPrefs.syncClippings) {
+          // BUG!!  "Dead object" error thrown from aData, because the
+          // New Clipping dialog, where the aData parameter is populated from,
+          // will be closed by the time these lines are reached.
+          if ("sid" in aData) {
+            state.sid = aData.sid;
+          }
+          if ("parentFldrSID" in aData) {
+            state.parentFldrSID = aData.parentFldrSID;
+          }
+        }
+        
+        gCmd.undoStack.push(state);
       }
     });
   },
@@ -231,11 +245,6 @@ let gClippingsListener = {
         newNode = tree.rootNode.addNode(newNodeData);
       }
       else {
-        if (aData.parentFolderID != gPrefs.syncFolderID
-            && gSyncedItemsIDs.has(aData.parentFolderID + "F")) {
-          newNodeData.sid = aeGUID();
-        }
-
         let parentNode = tree.getNodeByKey(aData.parentFolderID + "F");
         newNode = parentNode.addNode(newNodeData);
       }
@@ -262,12 +271,23 @@ let gClippingsListener = {
 
       // Folder created outside Clippings Manager. Add to undo stack.
       if (aOrigin == aeConst.ORIGIN_HOSTAPP) {
-        gCmd.undoStack.push({
+        let state = {
           action: gCmd.ACTION_CREATENEWFOLDER,
           id: newFolder.id,
           itemType: gCmd.ITEMTYPE_FOLDER,
           parentFldrID: newFolder.parentFolderID,
-        });
+        };
+
+        if (gPrefs.syncClippings) {
+          if ("sid" in aData) {
+            state.sid = aData.sid;
+          }
+          if ("parentFldrSID" in aData) {
+            state.parentFldrSID = aData.parentFldrSID;
+          }
+        }
+
+        gCmd.undoStack.push(state);
       }
     });
   },
