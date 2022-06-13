@@ -9,7 +9,9 @@ class aeDialog
   constructor(aDlgEltSelector)
   {
     this.HIDE_POPUP_DELAY_MS = 5000;
+    this.FOCUSABLE_ELTS_STOR = "input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), a[href]";
     
+    this._dlgElt = $(`${aDlgEltSelector}`);
     this._dlgEltStor = aDlgEltSelector;
     this._isInitialized = false;
     this._fnFirstInit = function () {};
@@ -18,6 +20,7 @@ class aeDialog
     this._fnUnload = function () {};
     this._fnAfterDlgAccept = function () {};
     this._popupTimerID = null;
+    this._lastFocusedElt = null;
 
     this._fnDlgAccept = function (aEvent) {
       if (this.isPopup()) {
@@ -63,7 +66,7 @@ class aeDialog
       });
     }
   }
-  
+
   set onInit(aFnInit)
   {
     this._fnInit = aFnInit;
@@ -108,11 +111,11 @@ class aeDialog
 
   isPopup()
   {
-    let rv = $(this._dlgEltStor).hasClass("panel");
+    let rv = this._dlgElt.hasClass("panel");
     return rv;
   }
 
-  showModal()
+  showModal(aInitKeyboardNav=true)
   {
     if (! this._isInitialized) {
       this._fnFirstInit();
@@ -120,16 +123,53 @@ class aeDialog
     }
     
     this._fnInit();
+
     $("#lightbox-bkgrd-ovl").addClass("lightbox-show");
-    $(`${this._dlgEltStor}`).addClass("lightbox-show");
+    this._dlgElt.addClass("lightbox-show");
     this._fnDlgShow();
+
+    if (aInitKeyboardNav) {
+      this.initKeyboardNavigation();
+    }
+  }
+
+  initKeyboardNavigation()
+  {
+    this._lastFocusedElt = document.activeElement;
+    let focusableElts = $(`${this.FOCUSABLE_ELTS_STOR}`, this._dlgElt).toArray();
+    let firstTabStop = focusableElts[0];
+    let lastTabStop = focusableElts[focusableElts.length - 1];
+
+    this._dlgElt.on("keydown.aeDialog", aEvent => {
+      if (aEvent.key == "Tab") {
+        if (aEvent.shiftKey) {
+          if (document.activeElement == firstTabStop) {
+            aEvent.preventDefault();
+            lastTabStop.focus();
+          }
+        }
+        else {
+          if (document.activeElement == lastTabStop) {
+            aEvent.preventDefault();
+            firstTabStop.focus();
+          }
+        }
+      }
+    });
+    
+    firstTabStop.focus();
   }
 
   close()
   {
+    this._dlgElt.off("keydown.aeDialog");
+
     this._fnUnload();
-    $(`${this._dlgEltStor}`).removeClass("lightbox-show");
+    this._dlgElt.removeClass("lightbox-show");
     $("#lightbox-bkgrd-ovl").removeClass("lightbox-show");
+
+    this._lastFocusedElt.focus();
+    this._lastFocusedElt = null;
   }
 
   openPopup()
