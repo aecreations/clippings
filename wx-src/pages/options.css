@@ -133,7 +133,6 @@ button {
     min-width: 88px;
     height: 32px;
     padding: 0 12px 0;
-    border-radius: 2px;
     box-shadow: 0 0 0 0 transparent;
     font: caption;
     font-size: 15px;
@@ -319,7 +318,7 @@ body[data-locale="fr"] #skip-backup-label {
     top: 64px;
     padding-left: 22px;
     padding-right: 22px;
-    border-radius: 4px;
+    border-radius: 6px;
     font-size: 15px;
 }
 
@@ -357,7 +356,6 @@ body[data-locale="fr"] #skip-backup-label {
     min-width: 96px;
     height: 32px;
     padding: 0 24px 0;
-    border-radius: 2px;
     font-size: 15px !important;
 }
 

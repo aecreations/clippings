@@ -62,6 +62,10 @@
     font-size: 12px;
 }
 
+.lightbox {
+    border-radius: 3px;
+}
+
 .panel-bkgrd {
     display: none;
     position: fixed;
@@ -160,7 +164,7 @@
 .panel > .dlg-btns > button {
     min-width: 72px;
     min-height: 24px;
-    border-radius: 2px;
+    border-radius: 3.5px;
     text-align: center;
     font-size: 12px !important;
 }

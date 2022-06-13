@@ -946,10 +946,6 @@ ul.fancytree-container {
  * Dialog boxes
  */
 
-.lightbox {
-    border-radius: 2px;
-}
-
 .lightbox .msgbox-icon,
 .lightbox .msgbox-info-icon {
     float: left;
@@ -1222,7 +1218,7 @@ body[data-locale="de"] #import-dlg {
     min-height: 24px;
     padding: 3px 16px 3px 16px;
     border: 1px solid var(--color-btn-border);
-    border-radius: 2px;
+    border-radius: 3.5px;
     box-shadow: 0 0 0 0 transparent;
     background-color: var(--color-btn-bkgd);
 

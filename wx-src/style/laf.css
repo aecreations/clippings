@@ -74,7 +74,7 @@ a {
     text-decoration: none;
 }
 
-a:hover, a:focus {
+a:hover {
     text-decoration: underline;
 }
 
@@ -93,7 +93,7 @@ select.browser-style {
 
 button {
     padding: 0px 8px;
-    border-radius: 2px;
+    border-radius: 4.5px;
     text-align: center;
 }
 

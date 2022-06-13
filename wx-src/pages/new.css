@@ -259,10 +259,6 @@ body:not([data-locale="uk"]):not([data-locale|="pt"]):not([data-locale|="es"]) #
     z-index: 1;
 }
 
-.lightbox {
-    border-radius: 2px;
-}
-
 #new-folder-dlg {
     --width: 324px;
     --height: 176px;
