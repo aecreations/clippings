@@ -207,16 +207,17 @@ function handleRequestShowLightbox(aRequest)
   else {
     loadLightboxUI();
 
-    let msg = browser.i18n.getMessage(aRequest.strKey);
     let ovl = document.querySelector("#ae-clippings-ui > .ae-clippings-lightbox-bkgrd");
     let lbox = document.querySelector("#ae-clippings-ui > #ae-clippings-tm-lightbox");
 
     if (ovl && lbox) {
+      let msg = browser.i18n.getMessage(aRequest.strKey);
       let txt = document.createTextNode(msg);
-      document.querySelector(".body").appendChild(txt);
+      document.getElementById("ae-clippings-lightbox-body").appendChild(txt);
       
       ovl.classList.add("ae-clippings-lightbox-show");
       lbox.classList.add("ae-clippings-lightbox-show");
+      document.querySelector("#ae-clippings-lightbox-btn-accept").focus();
       rv = {status: "ok"};
     }
     else {
@@ -348,14 +349,29 @@ function loadLightboxUI()
   lbox.id = "ae-clippings-tm-lightbox";
   lbox.className = "ae-clippings-lightbox";
 
+  let img = document.createElement("div");
+  img.id = "ae-clippings-lightbox-icon";
+
+  let title = document.createElement("div");
+  title.id = "ae-clippings-lightbox-title";
+  let titleTxt = document.createTextNode(browser.i18n.getMessage("extName"));
+  title.appendChild(titleTxt);
+
+  let titleBar = document.createElement("div");
+  titleBar.id = "ae-clippings-lightbox-titlebar";
+  titleBar.appendChild(img);
+  titleBar.appendChild(title);
+  lbox.appendChild(titleBar);
+
   // Message box text
   let body = document.createElement("div");
-  body.className = "body";
+  body.id = "ae-clippings-lightbox-body";
   lbox.appendChild(body);
 
   let dlgBtns = document.createElement("div");
-  dlgBtns.className = "dlg-btns";
+  dlgBtns.className = "ae-clippings-lightbox-dlg-btns";
   let btn = document.createElement("button");
+  btn.id = "ae-clippings-lightbox-btn-accept";
   btn.className = "default";
   btn.addEventListener("click", aEvent => {unloadLightboxUI()});
   
