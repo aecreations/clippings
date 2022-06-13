@@ -618,8 +618,8 @@ function refreshSyncedClippings(aRebuildClippingsMenu)
 {
   log("Clippings/wx: refreshSyncedClippings(): Retrieving synced clippings from the Sync Clippings helper app...");
 
-  let msg = { msgID: "get-synced-clippings" };
-  let getSyncedClippings = browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
+  let natMsg = {msgID: "get-synced-clippings"};
+  let getSyncedClippings = browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, natMsg);
   let syncJSONData = "";
 
   getSyncedClippings.then(aResp => {

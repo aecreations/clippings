@@ -334,8 +334,8 @@ function initDialogs()
     deckSyncSettings.hide();
 
     let lang = browser.i18n.getUILanguage();
-    let msg = {msgID: "get-app-version"};
-    browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg).then(aResp => {
+    let natMsg = {msgID: "get-app-version"};
+    browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, natMsg).then(aResp => {
       console.info("Sync Clippings helper app version: " + aResp.appVersion);
 
       if (aeVersionCmp(aResp.appVersion, "1.2b1") < 0) {
@@ -349,8 +349,8 @@ function initDialogs()
       $("#show-only-sync-items").prop("checked", aPrefs.cxtMenuSyncItemsOnly);
 
       this.oldShowSyncItemsOpt = $("#show-only-sync-items").prop("checked");
-      let msg = {msgID: "get-sync-dir"};
-      return browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
+      let natMsg = {msgID: "get-sync-dir"};
+      return browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, natMsg);
       
     }).then(aResp => {
       $("#sync-clippings-dlg .dlg-accept").show();
@@ -607,15 +607,15 @@ function initDialogs()
   
   gDialogs.about.onShow = function ()
   {
-    let msg = {msgID: "get-app-version"};
-    browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg).then(aResp => {
+    let natMsg = {msgID: "get-app-version"};
+    browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, natMsg).then(aResp => {
       $("#about-dlg > .dlg-content #diag-info #sync-ver").text(aResp.appVersion);
       return aePrefs.getPref("syncClippings");
 
     }).then(aPrefSyncClpgs => {
       if (!!aPrefSyncClpgs) {
-        let msg = {msgID: "get-sync-file-info"};
-        return browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
+        let natMsg = {msgID: "get-sync-file-info"};
+        return browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, natMsg);
       }
       else {
         return null;
