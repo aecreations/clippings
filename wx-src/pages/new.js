@@ -598,7 +598,7 @@ function accept(aEvent)
       return gClippingsDB.folders.get(gParentFolderID);
 
     }).then(aFolder => {
-      if (aFolder && aFolder.id != gPrefs.syncFolderID && "sid" in aFolder.id) {
+      if (aFolder && aFolder.id != gPrefs.syncFolderID && "sid" in aFolder) {
         newClipping.parentFldrSID = aFolder.sid;
       }
       return gClippingsDB.clippings.add(newClipping);
@@ -621,26 +621,26 @@ function accept(aEvent)
 
     }).then(aSyncData => {
       if (aSyncData) {
-        let msg = {
+        let natMsg = {
           msgID: "set-synced-clippings",
           syncData: aSyncData.userClippingsRoot,
         };
 
         log("Clippings/wx::new.js: accept(): Sending message 'set-synced-clippings' to the Sync Clippings helper app.  Message data:");
-        log(msg);
+        log(natMsg);
         
-        return browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
+        return browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, natMsg);
       }
       return null;
 
-    }).then(async (aMsgResult) => {
-      if (aMsgResult) {
+    }).then(async (aResp) => {
+      if (aResp) {
         log("Clippings/wx::new.js: accept(): Response from the Sync Clippings helper app:");
-        log(aMsgResult);
+        log(aResp);
       }
 
       if (gPrefs.clippingsMgrAutoShowDetailsPane && isClippingOptionsSet()) {
-        await aePrefs.setPrefs({
+        aePrefs.setPrefs({
           clippingsMgrAutoShowDetailsPane: false,
           clippingsMgrDetailsPane: true
         });
