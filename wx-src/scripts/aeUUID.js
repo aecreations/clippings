@@ -7,7 +7,7 @@ function aeUUID()
 {
   let rv;
   
-  if ("randomUUID" in window.crypto) {
+  if (typeof crypto.randomUUID == "function") {
     rv = crypto.randomUUID(); 
   }
   else {
