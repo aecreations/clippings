@@ -83,4 +83,5 @@ let aeConst = {
   AMO_URL: "https://addons.mozilla.org/firefox/addon/clippings/",
   CONTRIB_URL: "https://aecreations.sourceforge.io/clippings/contribute.php",
   HELP_URL: "https://aecreations.sourceforge.io/clippings/help.php",
+  SYNC_CLIPPINGS_HELP_URL: "https://aecreations.sourceforge.io/clippings/sync.php",
 };
