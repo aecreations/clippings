@@ -1488,7 +1488,7 @@ let gCmd = {
         return gClippingsDB.folders.get(parentFolderID);
 
       }).then(aFolder => {
-        if (aFolder.id != gPrefs.syncFolderID && "sid" in aFolder) {
+        if (aFolder && aFolder.id != gPrefs.syncFolderID && "sid" in aFolder) {
           parentFldrSID = aFolder.sid;
         }
 
@@ -1542,7 +1542,7 @@ let gCmd = {
         return gClippingsDB.folders.get(parentFolderID);
 
       }).then(aFolder => {
-        if (aFolder.id != gPrefs.syncFolderID && "sid" in aFolder) {
+        if (aFolder && aFolder.id != gPrefs.syncFolderID && "sid" in aFolder) {
           parentFldrSID = aFolder.sid;
         }
 
