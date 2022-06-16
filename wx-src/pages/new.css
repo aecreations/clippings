@@ -150,6 +150,8 @@ ul.fancytree-container {
     
     min-width: 32px;
     margin: 0 0 0 4px;
+    border-radius: 3px;
+    
     background-image: url("../img/newFolder.svg");
     background-position: center;
     background-repeat: no-repeat;
@@ -179,6 +181,7 @@ ul.fancytree-container {
 
     min-width: 26px;
     min-height: 24px;
+    border-radius: 3px;
 
     background-color: var(--color-btn-expand-bkgd);
     background-image: var(--url-dropdown-arrow);
