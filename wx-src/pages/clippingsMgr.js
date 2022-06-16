@@ -1072,6 +1072,10 @@ let gCmd = {
 
     refreshSyncedItems()
     {
+      if (! gPrefs.syncClippings) {
+        return;
+      }
+
       for (let item of this._stack) {
         if ("sid" in item) {
           let xid = gSyncedItemsIDMap.get(item.sid);
@@ -1165,6 +1169,9 @@ let gCmd = {
 
     refreshSyncedItems()
     {
+      if (! gPrefs.syncClippings) {
+        return;
+      }
       if (! this._lastUndo) {
         return;
       }
