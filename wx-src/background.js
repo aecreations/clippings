@@ -22,6 +22,7 @@ let gSyncClippingsHelperDwnldPgURL;
 let gForceShowFirstTimeBkupNotif = false;
 let gPrefersColorSchemeMedQry;
 let gIsFirstRun = false;
+let gIsMajorVerUpdate = false;
 
 let gClippingsListeners = {
   _listeners: [],
@@ -313,7 +314,7 @@ let gSetDisplayOrderOnRootItems = false;
 
 
 //
-// Post-installation handling
+// Post-installation event handler
 //
 
 browser.runtime.onInstalled.addListener(async (aInstall) => {
@@ -385,6 +386,9 @@ void async function ()
   }
 
   if (! aePrefs.hasSanClementePrefs(gPrefs)) {
+    // This should be set when updating to the latest release.
+    gIsMajorVerUpdate = true;
+
     log("Initializing 6.4 user preferences.");
     await aePrefs.setSanClementePrefs(gPrefs);
   }
@@ -454,8 +458,7 @@ async function init()
     });
   }
 
-  if (gPrefs.majorVerUpdate && !gIsFirstRun) {
-    aePrefs.setPrefs({majorVerUpdate: false});
+  if (gIsMajorVerUpdate && !gIsFirstRun) {
     setWhatsNewNotificationDelay();
   }
   else {
