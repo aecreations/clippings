@@ -21,6 +21,7 @@ let gIsReloadingSyncFldr = false;
 let gSyncClippingsHelperDwnldPgURL;
 let gForceShowFirstTimeBkupNotif = false;
 let gPrefersColorSchemeMedQry;
+let gIsFirstRun = false;
 
 let gClippingsListeners = {
   _listeners: [],
@@ -352,6 +353,7 @@ void async function ()
   // startup.
   if (! aePrefs.hasUserPrefs(gPrefs)) {
     log("Initializing Clippings user preferences.");
+    gIsFirstRun = true;
     await aePrefs.setUserPrefs(gPrefs);
   }
 
@@ -452,7 +454,7 @@ async function init()
     });
   }
 
-  if (gPrefs.majorVerUpdate) {
+  if (gPrefs.majorVerUpdate && !gIsFirstRun) {
     aePrefs.setPrefs({majorVerUpdate: false});
     setWhatsNewNotificationDelay();
   }
