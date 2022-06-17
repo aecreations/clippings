@@ -925,7 +925,15 @@ let gReloadSyncFldrBtn = {
     let reloadBtn = document.createElement("span");
     reloadBtn.id = "reload-sync-fldr-btn";
     reloadBtn.title = browser.i18n.getMessage("btnReload");
+    reloadBtn.setAttribute("tabindex", "0");
+    reloadBtn.setAttribute("role", "button");
+    reloadBtn.setAttribute("aria-label", reloadBtn.title);
     reloadBtn.addEventListener("click", aEvent => { gCmd.reloadSyncFolder() });
+    reloadBtn.addEventListener("keydown", aEvent => {
+      if (aEvent.key == "Enter" || aEvent.key == " ") {
+        aEvent.target.click();
+      }
+    });
     
     syncFldrSpanElt.appendChild(reloadBtn);
   },
