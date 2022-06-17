@@ -6,6 +6,7 @@
 
 let aePrefs = {
   _defaultPrefs: {
+    majorVerUpdate: false,
     showWelcome: true,
     htmlPaste: aeConst.HTMLPASTE_AS_FORMATTED,
     autoLineBreak: true,
@@ -85,6 +86,7 @@ let aePrefs = {
   async setUserPrefs(aPrefs)
   {
     let prefs = {
+      majorVerUpdate: false,
       showWelcome: true,
       htmlPaste: aeConst.HTMLPASTE_AS_FORMATTED,
       autoLineBreak: true,
@@ -207,7 +209,11 @@ let aePrefs = {
   {
     let newPrefs = {
       tabModalMsgBox: true,
+
+      // Always set this pref when updating to the latest major release.
+      majorVerUpdate: true
     };
+
     await this._addPrefs(aPrefs, newPrefs);
   },
 

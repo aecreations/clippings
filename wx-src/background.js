@@ -327,13 +327,7 @@ browser.runtime.onInstalled.addListener(async (aInstall) => {
       log("Clippings/wx: WebExtension reloaded.");
     }
     else {
-      log(`Clippings/wx: Upgrading from version ${oldVer} to ${currVer}`);
-
-      // Initialize post-upgrade notification only if upgrading from any
-      // previous version to the current major release.
-      if (aeVersionCmp(oldVer, aeConst.CURRENT_MAJOR_VER) < 0) {
-        browser.alarms.create("init-upgrade-notifcn", {delayInMinutes: 0.5});
-      }
+      log(`Clippings/wx: Updating from version ${oldVer} to ${currVer}`);
     }
   }
 });
@@ -458,13 +452,19 @@ async function init()
     });
   }
 
-  if (gPrefs.upgradeNotifCount > 0) {
-    // Show post-upgrade notification in 1 minute.
-    browser.alarms.create("show-upgrade-notifcn", {
-      delayInMinutes: aeConst.POST_UPGRADE_NOTIFCN_DELAY_MS / 60000
-    });
+  if (gPrefs.majorVerUpdate) {
+    aePrefs.setPrefs({majorVerUpdate: false});
+    setWhatsNewNotificationDelay();
   }
-
+  else {
+    if (gPrefs.upgradeNotifCount > 0) {
+      // Show post-update notification in 1 minute.
+      browser.alarms.create("show-upgrade-notifcn", {
+        delayInMinutes: aeConst.POST_UPGRADE_NOTIFCN_DELAY_MS / 60000
+      });
+    }
+  }
+      
   // Check in 5 minutes whether to show backup reminder notification.
   browser.alarms.create("show-backup-notifcn", {
     delayInMinutes: aeConst.BACKUP_REMINDER_DELAY_MS / 60000
@@ -1214,12 +1214,12 @@ async function clearBackupNotificationInterval()
 
 async function setWhatsNewNotificationDelay()
 {
-  log("Clippings/wx: Turning on post-upgrade notification.");
+  log("Clippings/wx: Turning on post-update notification.");
   await aePrefs.setPrefs({
     upgradeNotifCount: aeConst.MAX_NUM_POST_UPGRADE_NOTIFICNS
   });
 
-  // Show post-upgrade notification in 1 minute.
+  // Show post-update notification in 1 minute.
   browser.alarms.create("show-upgrade-notifcn", {
     delayInMinutes: aeConst.POST_UPGRADE_NOTIFCN_DELAY_MS / 60000
   });
@@ -1228,7 +1228,7 @@ async function setWhatsNewNotificationDelay()
 
 async function showWhatsNewNotification()
 {
-  log("Clippings/wx: Showing post-upgrade notification.");
+  log("Clippings/wx: Showing post-update notification.");
 
   let extName = browser.i18n.getMessage("extName");
   await browser.notifications.create("whats-new", {
@@ -2050,10 +2050,6 @@ browser.alarms.onAlarm.addListener(aAlarm => {
 
   case "show-sync-helper-upd-notifcn":
     showSyncHelperUpdateNotification();
-    break;
-
-  case "init-upgrade-notifcn":
-    setWhatsNewNotificationDelay();
     break;
 
   case aAlarm.name == "show-upgrade-notifcn":
