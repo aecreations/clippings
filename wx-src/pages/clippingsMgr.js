@@ -1136,6 +1136,21 @@ let gCmd = {
         if ("nextSiblingSID" in item) {
           item.nextSiblingNodeKey = gSyncedItemsIDMap.get(item.nextSiblingSID);
         }
+
+        if (item.action == gCmd.ACTION_REMOVE_ALL_SRC_URLS) {
+          item.clippingsWithSrcURLs.forEach(aClipping => {
+            // Update IDs of synced clippings whose source URLs were removed.
+            if ("sid" in aClipping) {
+              let xid = gSyncedItemsIDMap.get(aClipping.sid);
+              if (xid) {
+                aClipping.id = parseInt(xid);
+              }
+              else {
+                delete aClipping.sid;
+              } 
+            }
+          });
+        }
       };
     }
   },
@@ -1255,6 +1270,21 @@ let gCmd = {
       }
       if ("nextSiblingSID" in this._lastUndo) {
         this._lastUndo.nextSiblingNodeKey = gSyncedItemsIDMap.get(this._lastUndo.nextSiblingSID);
+      }
+
+      if (this._lastUndo.action == gCmd.ACTION_REMOVE_ALL_SRC_URLS) {
+        this._lastUndo.clippingsWithSrcURLs.forEach(aClipping => {
+          // Update IDs of synced clippings whose source URLs were removed.
+          if ("sid" in aClipping) {
+            let xid = gSyncedItemsIDMap.get(aClipping.sid);
+            if (xid) {
+              aClipping.id = parseInt(xid);
+            }
+            else {
+              delete aClipping.sid;
+            } 
+          }
+        });
       }
     }
   },
@@ -2374,10 +2404,19 @@ let gCmd = {
 
   removeAllSrcURLsIntrl()
   {
-    let clippingsWithSrcURLs = {};
+    let clippingsWithSrcURLs = [];
 
     gClippingsDB.clippings.where("sourceURL").notEqual("").each((aItem, aCursor) => {
-      clippingsWithSrcURLs[aItem.id] = aItem.sourceURL;
+      let clipping = {
+        id: aItem.id,
+        srcURL: aItem.sourceURL,
+      };
+
+      if ("sid" in aItem) {
+        clipping.sid = aItem.sid;
+      }
+      
+      clippingsWithSrcURLs.push(clipping);
 
     }).then(() => {
       this._unsetClippingsUnchangedFlag();
@@ -2386,7 +2425,7 @@ let gCmd = {
         clippingsWithSrcURLs,
       });
       
-      gClippingsDB.clippings.toCollection().modify({ sourceURL: "" }).then(aNumUpd => {
+      gClippingsDB.clippings.toCollection().modify({sourceURL: ""}).then(aNumUpd => {
         gDialogs.removeAllSrcURLsConfirm.openPopup();
       });
     });  
@@ -2757,16 +2796,15 @@ let gCmd = {
     }
     else if (undo.action == gCmd.ACTION_REMOVE_ALL_SRC_URLS) {
       let numUpdates = [];
-      for (let clippingID in undo.clippingsWithSrcURLs) {
-        numUpdates.push(gClippingsDB.clippings.update(Number(clippingID), {
-          sourceURL: undo.clippingsWithSrcURLs[clippingID],
+      for (let clipping of undo.clippingsWithSrcURLs) {
+        numUpdates.push(gClippingsDB.clippings.update(Number(clipping.id), {
+          sourceURL: clipping.srcURL,
         }));
       }
 
-      Promise.all(numUpdates).then(aResults => {
-        this.redoStack.push(undo);
-        gDialogs.restoreSrcURLs.openPopup();
-      });
+      await Promise.all(numUpdates);
+      this.redoStack.push(undo);
+      gDialogs.restoreSrcURLs.openPopup();
     }
   },
 
@@ -2890,16 +2928,14 @@ let gCmd = {
       this.undoStack.push(redo);
     }
     else if (redo.action == this.ACTION_REMOVE_ALL_SRC_URLS) {
-      let clippingIDs = Object.keys(redo.clippingsWithSrcURLs);
       let numUpdates = [];
-      clippingIDs.forEach((aClippingID, aIndex, aArray) => {
-        numUpdates.push(gClippingsDB.clippings.update(Number(aClippingID), { sourceURL: "" }));
+      redo.clippingsWithSrcURLs.forEach(aClipping => {
+        numUpdates.push(gClippingsDB.clippings.update(Number(aClipping.id), {sourceURL: ""}));
       });
 
-      Promise.all(numUpdates).then(aResults => {
-        this.undoStack.push(redo);
-        gDialogs.removeAllSrcURLsConfirm.openPopup();
-      });
+      await Promise.all(numUpdates);
+      this.undoStack.push(redo);
+      gDialogs.removeAllSrcURLsConfirm.openPopup();
     }
   },
 
