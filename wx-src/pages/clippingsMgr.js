@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const DEBUG_TREE = false;
+const DEBUG_TREE = true;
 const DEBUG_WND_ACTIONS = false;
 const ENABLE_PASTE_CLIPPING = false;
 const NEW_CLIPPING_FROM_CLIPBOARD = "New Clipping From Clipboard";
@@ -1057,6 +1057,21 @@ let gCmd = {
           // moved to the hidden deleted items folder.
           delete aState.sid;
         }
+        else if (aState.action == gCmd.ACTION_CHANGEPOSITION) {
+          if (aState.nextSiblingNodeKey) {
+            if (! ("nextSiblingSID" in aState)) {
+              for (let [key, value] of gSyncedItemsIDMap) {
+                if (value == aState.nextSiblingNodeKey) {
+                  aState.nextSiblingSID = key;
+                  break;
+                }
+              }
+            }
+          }
+          else {
+            delete aState.nextSiblingSID;
+          }
+        }
       }
 
       this._stack.push(aState);
@@ -1093,6 +1108,9 @@ let gCmd = {
         if ("sid" in item) {
           let xid = gSyncedItemsIDMap.get(item.sid);
           item.id = parseInt(xid);
+          if ("nodeKey" in item) {
+            item.nodeKey = xid;
+          }
         }
         if ("parentFldrSID" in item) {
           let xpfid = gSyncedItemsIDMap.get(item.parentFldrSID);
@@ -1112,8 +1130,11 @@ let gCmd = {
           item.newParentFldrID = parseInt(xnpfid);
         }
         if ("destFldrSID" in item) {
-          let dfid = gSyncedItemsIDMap.get(item.destFldrSID);
-          item.destFldrID = parseInt(dfid);
+          let xdfid = gSyncedItemsIDMap.get(item.destFldrSID);
+          item.destFldrID = parseInt(xdfid);
+        }
+        if ("nextSiblingSID" in item) {
+          item.nextSiblingNodeKey = gSyncedItemsIDMap.get(item.nextSiblingSID);
         }
       };
     }
@@ -1157,6 +1178,21 @@ let gCmd = {
           // moved to the hidden deleted items folder.
           delete aState.sid;
         }
+        else if (aState.action == gCmd.ACTION_CHANGEPOSITION) {
+          if (aState.nextSiblingNodeKey) {
+            if (! ("nextSiblingSID" in aState)) {
+              for (let [key, value] of gSyncedItemsIDMap) {
+                if (value == aState.nextSiblingNodeKey) {
+                  aState.nextSiblingSID = key;
+                  break;
+                }
+              }
+            }
+          }
+          else {
+            delete aState.nextSiblingSID;
+          }
+        }
       }
       
       this._lastUndo = aState;
@@ -1192,6 +1228,9 @@ let gCmd = {
       if ("sid" in this._lastUndo) {
         let xid = gSyncedItemsIDMap.get(this._lastUndo.sid);
         this._lastUndo.id = parseInt(xid);
+        if ("nodeKey" in this._lastUndo) {
+          this._lastUndo.nodeKey = xid;
+        }
       }
       if ("parentFldrSID" in this._lastUndo) {
         let xpfid = gSyncedItemsIDMap.get(this._lastUndo.parentFldrSID);
@@ -1213,6 +1252,9 @@ let gCmd = {
       if ("destFldrSID" in this._lastUndo) {
         let dfid = gSyncedItemsIDMap.get(this._lastUndo.destFldrSID);
         this._lastUndo.destFldrID = parseInt(dfid);
+      }
+      if ("nextSiblingSID" in this._lastUndo) {
+        this._lastUndo.nextSiblingNodeKey = gSyncedItemsIDMap.get(this._lastUndo.nextSiblingSID);
       }
     }
   },
@@ -2693,7 +2735,24 @@ let gCmd = {
       }
 
       this.updateDisplayOrder(parentFldrID);
+      
       undo.nextSiblingNodeKey = redoNextSiblingNode ? redoNextSiblingNode.key : null;
+      if (gPrefs.syncClippings) {
+        // Change the static ID of the next sibling node.
+        if (redoNextSiblingNode) {
+          for (let [key, value] of gSyncedItemsIDMap) {
+            if (value == redoNextSiblingNode.key) {
+              undo.nextSiblingSID = key;
+              break;
+            }
+          }
+          
+        }
+        else {
+          delete undo.nextSiblingSID;
+        }
+      }
+      
       this.redoStack.push(undo);
     }
     else if (undo.action == gCmd.ACTION_REMOVE_ALL_SRC_URLS) {
@@ -2811,7 +2870,23 @@ let gCmd = {
       }
 
       this.updateDisplayOrder(parentFldrID);
+      
       redo.nextSiblingNodeKey = undoNextSiblingNode ? undoNextSiblingNode.key : null;
+      if (gPrefs.syncClippings) {
+        // Change the static ID of the next sibling node.
+        if (undoNextSiblingNode) {
+          for (let [key, value] of gSyncedItemsIDMap) {
+            if (value == undoNextSiblingNode.key) {
+              redo.nextSiblingSID = key;
+              break;
+            }
+          }          
+        }
+        else {
+          delete redo.nextSiblingSID;
+        }
+      }
+      
       this.undoStack.push(redo);
     }
     else if (redo.action == this.ACTION_REMOVE_ALL_SRC_URLS) {
@@ -4473,7 +4548,8 @@ function buildClippingsTree()
           return true;
         },
 
-        dragDrop: function (aNode, aData) {
+        dragDrop(aNode, aData)
+        {
           if (gIsClippingsTreeEmpty) {
             return;
           }
@@ -4482,6 +4558,21 @@ function buildClippingsTree()
           if (!aNode.isFolder() && aData.hitMode == "over") {
             return;
           }
+
+          function getStaticID(aSyncedItemID)
+          {
+            let rv;
+            if (gPrefs.syncClippings) {
+              for (let [key, value] of gSyncedItemsIDMap) {
+                if (value == aSyncedItemID) {
+                  rv = key;
+                  break;
+                }
+              }
+            }
+            return rv;
+          }
+          // END nested function
 
           let parentNode = aNode.getParent();
           let clippingsLstrs = gClippings.getClippingsListeners().getListeners();
@@ -4556,6 +4647,22 @@ function buildClippingsTree()
                 itemType: (aNode.folder ? gCmd.ITEMTYPE_FOLDER : gCmd.ITEMTYPE_CLIPPING),
                 nextSiblingNodeKey: (nextSiblingNode ? nextSiblingNode.key : null),
               };
+
+              if (gPrefs.syncClippings) {
+                let sfx = aData.otherNode.isFolder() ? "F" : "C";
+                let syncedNodeKey = `${undoInfo.id}${sfx}`;
+                
+                if (gSyncedItemsIDs.has(syncedNodeKey)) {
+                  undoInfo.sid = getStaticID(syncedNodeKey);
+                  if (nextSiblingNode) {
+                    undoInfo.nextSiblingSID = getStaticID(undoInfo.nextSiblingNodeKey);
+                  }
+                  if (newParentID != gPrefs.syncFolderID && gSyncedItemsIDs.has(`${newParentID}F`)) {
+                    undoInfo.parentFldrSID = getStaticID(`${newParentID}F`);
+                  }
+                }
+              }
+              
               log("Clippings/wx::clippingsMgr.js: Saving undo info for clipping/folder reordering:");
               log(undoInfo);
             }
