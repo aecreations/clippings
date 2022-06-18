@@ -1004,8 +1004,13 @@ let gCmd = {
         if ([gCmd.ACTION_MOVETOFOLDER, gCmd.ACTION_COPYTOFOLDER,
              gCmd.ACTION_CREATENEW, gCmd.ACTION_CREATENEWFOLDER]
             .includes(aState.action)) {
-          // Add static ID if it is a synced item.
-          if (! ("sid" in aState)) {
+          if ("sid" in aState) {
+            if (! gSyncedItemsIDMap.has(aState.sid)) {
+              delete aState.sid;
+            }
+          }
+          else {
+            // Add static ID if it is a synced item.
             let sfx = "";
             if (aState.itemType == gCmd.ITEMTYPE_CLIPPING) {
               sfx = "C";
@@ -1603,7 +1608,7 @@ let gCmd = {
   },
 
   // Internal commands are NOT meant to be invoked directly from the UI.
-  moveClippingIntrl: function (aClippingID, aNewParentFldrID, aDestUndoStack)
+  moveClippingIntrl(aClippingID, aNewParentFldrID, aDestUndoStack)
   {
     if (gIsClippingsTreeEmpty) {
       unsetEmptyClippingsState();
@@ -1678,19 +1683,12 @@ let gCmd = {
           else {
             state.sid = sid;
           }
-          if (oldParentFldrSID) {
-            state.oldParentFldrSID = oldParentFldrSID;
-          }
           if (newParentFldrSID) {
             state.newParentFldrSID = newParentFldrSID;
           }
         }
-
-        if (aDestUndoStack == this.UNDO_STACK) {
-          this.undoStack.push(state);
-        }
-        else if (aDestUndoStack == this.REDO_STACK) {
-          this.redoStack.push(state);
+        if (oldParentFldrSID) {
+          state.oldParentFldrSID = oldParentFldrSID;
         }
 
         if (gSyncedItemsIDs.has(aNewParentFldrID + "F")
@@ -1709,10 +1707,12 @@ let gCmd = {
               gSyncedItemsIDs.add(aClippingID + "C");
               gSyncedItemsIDMap.set(sid, aClippingID + "C");
             }
+            this._pushToUndoStack(aDestUndoStack, state);
             aFnResolve();
           }).catch(handlePushSyncItemsError);
         }
         else {
+          this._pushToUndoStack(aDestUndoStack, state);
           aFnResolve();
         }
       }).catch(aErr => {
@@ -1722,7 +1722,7 @@ let gCmd = {
     });
   },
 
-  copyClippingIntrl: function (aClippingID, aDestFldrID, aDestUndoStack)
+  copyClippingIntrl(aClippingID, aDestFldrID, aDestUndoStack)
   {
     this.recentAction = this.ACTION_COPYTOFOLDER;
 
@@ -1809,7 +1809,7 @@ let gCmd = {
     });
   },
   
-  moveFolderIntrl: function (aFolderID, aNewParentFldrID, aDestUndoStack)
+  moveFolderIntrl(aFolderID, aNewParentFldrID, aDestUndoStack)
   {
     if (gIsClippingsTreeEmpty) {
       unsetEmptyClippingsState();
@@ -1868,29 +1868,27 @@ let gCmd = {
       }).then(aNumUpd => {
         this._unsetClippingsUnchangedFlag();
 
-        if (aDestUndoStack == this.UNDO_STACK) {
-          let state = {
-            action: this.ACTION_MOVETOFOLDER,
-            itemType: this.ITEMTYPE_FOLDER,
-            id: aFolderID,
-            oldParentFldrID,
-            newParentFldrID: aNewParentFldrID
-          };
-          if (gSyncedItemsIDs.has(aNewParentFldrID + "F")) {
-            if ("sid" in folderChg) {
-              state.sid = folderChg.sid;
-            }
-            else {
-              state.sid = sid;
-            }
-            if (oldParentFldrSID) {
-              state.oldParentFldrSID = oldParentFldrSID;
-            }
-            if (newParentFldrSID) {
-              state.newParentFldrSID = newParentFldrSID;
-            }
+        let state = {
+          action: this.ACTION_MOVETOFOLDER,
+          itemType: this.ITEMTYPE_FOLDER,
+          id: aFolderID,
+          oldParentFldrID,
+          newParentFldrID: aNewParentFldrID
+        };
+
+        if (gSyncedItemsIDs.has(aNewParentFldrID + "F")) {
+          if ("sid" in folderChg) {
+            state.sid = folderChg.sid;
           }
-          this.undoStack.push(state);
+          else {
+            state.sid = sid;
+          }
+          if (newParentFldrSID) {
+            state.newParentFldrSID = newParentFldrSID;
+          }
+        }
+        if (oldParentFldrSID) {
+          state.oldParentFldrSID = oldParentFldrSID;
         }
 
         if (gSyncedItemsIDs.has(aNewParentFldrID + "F")
@@ -1906,10 +1904,12 @@ let gCmd = {
               gSyncedItemsIDs.add(aFolderID + "F");
               gSyncedItemsIDMap.set(sid, aFolderID + "F");
             }
+            this._pushToUndoStack(aDestUndoStack, state);
             aFnResolve();
           }).catch(handlePushSyncItemsError);
         }
         else {
+          this._pushToUndoStack(aDestUndoStack, state);
           aFnResolve();
         }
       }).catch(aErr => {
@@ -1919,7 +1919,7 @@ let gCmd = {
     });
   },
 
-  copyFolderIntrl: function (aFolderID, aDestFldrID, aDestUndoStack)
+  copyFolderIntrl(aFolderID, aDestFldrID, aDestUndoStack)
   {
     let newFldrID = null;
     
@@ -2895,6 +2895,16 @@ let gCmd = {
   {
     if (gPrefs.clippingsUnchanged) {
       aePrefs.setPrefs({ clippingsUnchanged: false });
+    }
+  },
+
+  _pushToUndoStack(aDestUndoStack, aState)
+  {
+    if (aDestUndoStack == this.UNDO_STACK) {
+      this.undoStack.push(aState);
+    }
+    else if (aDestUndoStack == this.REDO_STACK) {
+      this.redoStack.push(aState);
     }
   },
 };
