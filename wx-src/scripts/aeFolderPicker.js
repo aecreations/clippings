@@ -144,7 +144,12 @@ class aeFolderPicker
   getTree()
   {
     let rv = $(this._treeEltSelector).fancytree("getTree");
+    return rv;
+  }
 
+  getContainer()
+  {
+    let rv = $(this._treeEltSelector).fancytree("getTree").$container[0];
     return rv;
   }
 }
