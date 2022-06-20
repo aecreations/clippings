@@ -94,7 +94,11 @@ function closeDlg()
 
 $(window).keydown(aEvent => {
   if (aEvent.key == "Enter") {
-    backupNow();
+    // Avoid duplicate invocation due to pressing ENTER while the Backup Now
+    // button is focused.
+    if (aEvent.target.id != "backup-now") {
+      backupNow();
+    }
   }
   else if (aEvent.key == "Escape") {
     closeDlg();
