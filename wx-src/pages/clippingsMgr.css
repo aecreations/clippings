@@ -1362,6 +1362,14 @@ body[data-locale="uk"] #include-src-urls + label {
     top: 24px;
 }
 
+#move-dlg #activate-move-to-fldr-tree {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    border: 0;
+    padding: 0;
+}
+
 #move-dlg #move-to-fldr-tree {
     margin-top: 4px;
     margin-bottom: 8px;

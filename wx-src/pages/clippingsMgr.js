@@ -3167,8 +3167,22 @@ $(document).keydown(async (aEvent) => {
   else if (aEvent.key == "Enter") {
     if (gSrcURLBar.isEditing()) {
       gSrcURLBar.acceptEdit();
+      return;
     }
-    aeDialog.acceptDlgs();
+
+    if (aEvent.target.tagName == "BUTTON" && !aEvent.target.classList.contains("dlg-accept")) {
+      aEvent.target.click();
+      aEvent.preventDefault();
+      return;
+    }
+
+    // Prevent duplicate invocation of default action button in modal dialogs.
+    if (aeDialog.isOpen()) {
+      if (! aEvent.target.classList.contains("default")) {
+        aeDialog.acceptDlgs();
+        aEvent.preventDefault();
+      }
+    }
   }
   else if (aEvent.key == "Escape") {
     if (gSearchBox.isActivated()) {
@@ -4361,7 +4375,7 @@ function initDialogs()
     $("#move-to-fldr-tree").children().remove();
     let parentElt = $("#move-to-fldr-tree").parent();
     parentElt.children("#move-to-fldr-tree").remove();
-    $('<div id="move-to-fldr-tree"></div>').insertAfter("#move-to-label");
+    $('<div id="move-to-fldr-tree"></div>').insertAfter("#activate-move-to-fldr-tree");
   };
 
   gDialogs.moveTo.onFirstInit = function ()
@@ -4399,11 +4413,16 @@ function initDialogs()
         aeConst.ROOT_FOLDER_ID,
         browser.i18n.getMessage("rootFldrName")
       );
-
-      this.fldrTree.onSelectFolder = aFolderData => {
-        this.selectedFldrNode = aFolderData.node;
-      };
     }
+
+    // Workaround to allow keyboard navigation into the folder tree list.
+    $("#activate-move-to-fldr-tree").on("focus", aEvent => {
+      try {
+        this.fldrTree.getContainer().focus();
+      }
+      // Ignore thrown exception; it still works.
+      catch {}
+    });
 
     $("#copy-instead-of-move").prop("checked", false);
     $("#move-dlg-action-btn").text(browser.i18n.getMessage("btnMove"));
@@ -4431,11 +4450,8 @@ function initDialogs()
     let id = parseInt(selectedNode.key);
     let parentNode = selectedNode.getParent();
 
-    // Handle case where default selection of root folder node wasn't changed.
-    if (this.selectedFldrNode === null) {
-      this.selectedFldrNode = this.fldrTree.getTree().getNodeByKey(Number(aeConst.ROOT_FOLDER_ID).toString());
-    }
-    
+    this.selectedFldrNode = this.fldrTree.getTree().activeNode;
+
     let parentFolderID = (parentNode.isRootNode() ? aeConst.ROOT_FOLDER_ID : parseInt(parentNode.key));
     let destFolderID = parseInt(this.selectedFldrNode.key);
 
