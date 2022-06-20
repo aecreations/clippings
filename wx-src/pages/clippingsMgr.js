@@ -3176,6 +3176,12 @@ $(document).keydown(async (aEvent) => {
       return;
     }
 
+    // File ficker in the Import modal dialog.
+    if (aEvent.target.tagName == "INPUT" && aEvent.target.type == "file") {
+      aEvent.target.click();
+      return;
+    }
+
     // Prevent duplicate invocation of default action button in modal dialogs.
     if (aeDialog.isOpen()) {
       if (! aEvent.target.classList.contains("default")) {
@@ -4017,6 +4023,10 @@ function initDialogs()
       if (this.mode == this.IMP_REPLACE && !gIsClippingsTreeEmpty) {
         $("#restore-backup-warning").show();
       }
+    }).on("focus", aEvent => {
+      $("#import-clippings-file-upload-btn").addClass("focused");
+    }).on("blur", aEvent => {
+      $("#import-clippings-file-upload-btn").removeClass("focused");
     });
 
     $("#import-clippings-file-path").on("contextmenu", aEvent => {

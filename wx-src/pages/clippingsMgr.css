@@ -1226,6 +1226,12 @@ body[data-locale="de"] #import-dlg {
     transition-property: box-shadow, border;    
 }
 
+#import-dlg #import-clippings-file-upload-btn.focused {
+    border: 1px solid;
+    border-color: var(--color-bkgd);
+    box-shadow: 0 0 0 2px #61b5ffbf;
+}
+
 #import-dlg #import-clippings-file-upload-btn:hover {
     background-color: var(--color-btn-hover-bkgd);
 }
