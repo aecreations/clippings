@@ -40,7 +40,7 @@ let aePrefs = {
     skipBackupRemIfUnchg: true,
     clippingsUnchanged: false,
     upgradeNotifCount: 0,
-    tabModalMsgBox: true,
+    tabModalMsgBox: false,
   },
   
   getDefaultPrefs()
@@ -206,7 +206,7 @@ let aePrefs = {
   async setSanClementePrefs(aPrefs)
   {
     let newPrefs = {
-      tabModalMsgBox: true,
+      tabModalMsgBox: false,
     };
 
     await this._addPrefs(aPrefs, newPrefs);
