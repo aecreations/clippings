@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 :root {
+    --ae-clippings-color-text: black;
     --ae-clippings-lightbox-width: 520px;
     --ae-clippings-lightbox-height: 170px;
     --ae-clippings-color-ovl-bkgd: black;
@@ -14,6 +15,7 @@
 
 @media (prefers-color-scheme: dark) {
     :root {
+	--ae-clippings-color-text: #f9f9fa;
 	--ae-clippings-color-ovl-bkgd: black;
 	--ae-clippings-opacity-ovl-bkgd: 0.85;
 	--ae-clippings-color-lb-border: #2a2a2e;
@@ -46,6 +48,7 @@
     
     padding: 8px 20px 20px 8px !important;
     background-color: var(--ae-clippings-color-lb-bkgd) !important;
+    color: var(--ae-clippings-color-text) !important;
     z-index: 100002 !important;
 
     border: 1px solid var(--ae-clippings-color-lb-border) !important;
@@ -72,7 +75,7 @@
     display: inline-block !important;
     font: caption !important;
     font-size: 15px !important;
-    font-weight: 700 !important;
+    font-weight: 600 !important;
 }
 
 #ae-clippings-lightbox-body {
@@ -82,7 +85,7 @@
     font-weight: normal !important;
     text-align: left !important;
     line-height: normal !important;
-    color: #000 !important;
+    color: var(--ae-clippings-color-text) !important;
 }
 
 .ae-clippings-lightbox > .ae-clippings-lightbox-dlg-btns {
