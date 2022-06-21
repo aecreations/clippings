@@ -7,6 +7,9 @@
 const DEBUG = false;
 const HTMLPASTE_AS_FORMATTED = 1;
 const HTMLPASTE_AS_IS = 2;
+const FOCUSABLE_ELTS_STOR = "button:not([disabled])";
+
+let gLastFocusedElt;
 
 
 browser.runtime.onMessage.addListener(aRequest => {
@@ -385,6 +388,43 @@ function loadLightboxUI()
   wrapper.appendChild(ovl);
   wrapper.appendChild(lbox);
   document.body.prepend(wrapper);
+
+  initLightboxKeyboardNav();
+}
+
+
+function initLightboxKeyboardNav()
+{
+  gLastFocusedElt = document.activeElement;
+
+  let lightbox = document.getElementById("ae-clippings-tm-lightbox");
+  if (! lightbox) {
+    console.error("Clippings/wx: initLightboxKeyboardNav(): Unable to locate tab modal lightbox element!");
+    return;
+  }
+
+  let focusableElts = lightbox.querySelectorAll(FOCUSABLE_ELTS_STOR);
+  let firstTabStop = focusableElts[0];
+  let lastTabStop = focusableElts[focusableElts.length - 1];
+
+  lightbox.addEventListener("keydown", aEvent => {
+    if (aEvent.key == "Tab") {
+      if (aEvent.shiftKey) {
+        if (document.activeElement == firstTabStop) {
+          aEvent.preventDefault();
+          lastTabStop.focus();
+        }
+      }
+      else {
+        if (document.activeElement == lastTabStop) {
+          aEvent.preventDefault();
+          firstTabStop.focus();
+        }
+      }
+    }
+  });
+
+  firstTabStop.focus();
 }
 
 
