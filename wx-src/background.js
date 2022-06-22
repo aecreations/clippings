@@ -2057,7 +2057,7 @@ browser.alarms.onAlarm.addListener(aAlarm => {
     showSyncHelperUpdateNotification();
     break;
 
-  case aAlarm.name == "show-upgrade-notifcn":
+  case "show-upgrade-notifcn":
     showWhatsNewNotification();
     break;
 
