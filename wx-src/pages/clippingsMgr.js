@@ -2424,11 +2424,16 @@ let gCmd = {
         action: gCmd.ACTION_REMOVE_ALL_SRC_URLS,
         clippingsWithSrcURLs,
       });
+      return gClippingsDB.clippings.toCollection().modify({sourceURL: ""});
       
-      gClippingsDB.clippings.toCollection().modify({sourceURL: ""}).then(aNumUpd => {
-        gDialogs.removeAllSrcURLsConfirm.openPopup();
-      });
-    });  
+    }).then(aNumUpd => {
+      gDialogs.removeAllSrcURLsConfirm.openPopup();
+
+      if (gPrefs.syncClippings) {
+        browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"})
+          .catch(handlePushSyncItemsError);
+      }
+    });
   },
   
 
@@ -2805,6 +2810,11 @@ let gCmd = {
       await Promise.all(numUpdates);
       this.redoStack.push(undo);
       gDialogs.restoreSrcURLs.openPopup();
+
+      if (gPrefs.syncClippings) {
+        browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"})
+          .catch(handlePushSyncItemsError);
+      }
     }
   },
 
@@ -2936,6 +2946,11 @@ let gCmd = {
       await Promise.all(numUpdates);
       this.undoStack.push(redo);
       gDialogs.removeAllSrcURLsConfirm.openPopup();
+
+      if (gPrefs.syncClippings) {
+        browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"})
+          .catch(handlePushSyncItemsError);
+      }
     }
   },
 
