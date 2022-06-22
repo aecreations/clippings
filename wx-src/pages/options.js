@@ -315,7 +315,55 @@ function initDialogs()
   gDialogs.syncClippings.setProps({
     oldShowSyncItemsOpt: null,
     isCanceled: false,
+    lastFocusedElt: null,
   });
+
+  gDialogs.syncClippings.initKeyboardNav = function (aVisibleDeckID, aIsBrwsSyncFldrBtnVisible)
+  {
+    let focusableElts = [];
+    
+    if (aVisibleDeckID == "sync-folder-location") {
+      focusableElts.push(
+        $("#sync-fldr-curr-location")[0],
+        $("#sync-helper-app-update-check")[0],
+        $("#show-only-sync-items")[0],
+        $("#sync-clippings-dlg .dlg-accept")[0],
+        $("#sync-clippings-dlg .dlg-cancel")[0],
+      );
+
+      if (aIsBrwsSyncFldrBtnVisible) {
+        focusableElts.splice(1, 0, $("#browse-sync-fldr")[0]);
+      }
+    }
+    else {
+      // Only the "Close" button appears for errors.
+      focusableElts.push($("#sync-clippings-dlg .dlg-cancel")[0]);
+    }
+
+    this.lastFocusedElt = document.activeElement;
+    let firstTabStop = focusableElts[0];
+    let lastTabStop = focusableElts[focusableElts.length - 1];
+
+    this._dlgElt.on("keydown", aEvent => {
+      if (aEvent.key == "Tab") {
+        if (aEvent.shiftKey) {
+          if (document.activeElement == firstTabStop) {
+            aEvent.preventDefault();
+            lastTabStop.focus();
+          }
+        }
+        else {
+          if (document.activeElement == lastTabStop) {
+            aEvent.preventDefault();
+            firstTabStop.focus();
+          }
+        }
+      }
+    });
+
+    firstTabStop.focus();
+  };
+  
   gDialogs.syncClippings.onFirstInit = function ()
   {
     // Dialog UI strings
@@ -329,7 +377,10 @@ function initDialogs()
       $("#example-sync-path").text(browser.i18n.getMessage("syncFileDirExLinux"));
     }
     $("#sync-conxn-error-detail").html(sanitizeHTML(browser.i18n.getMessage("errSyncConxnDetail")));
+
+    $("#sync-fldr-curr-location").on("focus", aEvent => { aEvent.target.select() });
   };
+  
   gDialogs.syncClippings.onInit = function ()
   {
     this.isCanceled = false;
@@ -347,6 +398,7 @@ function initDialogs()
     deckSyncError.hide();
     deckSyncSettings.hide();
 
+    let isBrwsSyncFldrVisible = true;
     let lang = browser.i18n.getUILanguage();
     let natMsg = {msgID: "get-app-version"};
     browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, natMsg).then(aResp => {
@@ -354,6 +406,7 @@ function initDialogs()
 
       if (aeVersionCmp(aResp.appVersion, "1.2b1") < 0) {
         $("#browse-sync-fldr").hide();
+        isBrwsSyncFldrVisible = false;
       }
       
       return aePrefs.getAllPrefs();
@@ -372,7 +425,8 @@ function initDialogs()
 
       deckSyncChk.hide();
       deckSyncSettings.show();
-      $("#sync-fldr-curr-location").val(aResp.syncFilePath).focus().select();
+
+      this.initKeyboardNav("sync-folder-location", isBrwsSyncFldrVisible);
 
     }).catch(aErr => {
       console.error("Clippings/wx::options.js: Error returned from syncClippings native app: " + aErr);
@@ -386,18 +440,23 @@ function initDialogs()
       }
       else if (aErr == aeConst.SYNC_ERROR_UNKNOWN) {
         deckSyncChk.hide();
-        deckSyncSettings.hide();
+        deckSyncSettings.hide();        
         deckSyncError.show();
+        $("#sync-clippings-dlg .dlg-accept").hide();
         $("#sync-err-detail").text(browser.i18n.getMessage("errNoDetails"));
       }
       else {
         deckSyncChk.hide();
         deckSyncSettings.hide();
         deckSyncError.show();
+        $("#sync-clippings-dlg .dlg-accept").hide();
         $("#sync-err-detail").text(browser.i18n.getMessage("errSyncOptsInit"));
       }
+
+      this.initKeyboardNav(null, false);
     });
   };
+  
   gDialogs.syncClippings.onAccept = async function ()
   {
     let syncFldrPath = $("#sync-fldr-curr-location").val();
@@ -472,10 +531,12 @@ function initDialogs()
     }    
     this.close();
   };
+  
   gDialogs.syncClippings.onUnload = function ()
   {
     $("#sync-clippings-dlg").css({ height: "256px" });
     gDialogs.syncClippings.isCanceled = true;
+    this.lastFocusedElt?.focus();
   };
 
   gDialogs.turnOffSync = new aeDialog("#turn-off-sync-clippings-dlg");
