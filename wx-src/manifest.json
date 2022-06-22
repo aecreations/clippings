@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "__MSG_extName__",
     "description": "__MSG_extDesc__",
-    "version": "6.4b2+",
+    "version": "6.4b3",
     "homepage_url": "https://aecreations.sourceforge.io/clippings/index.php",
     "author": "AE Creations",
     
