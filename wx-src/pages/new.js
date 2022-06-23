@@ -808,7 +808,26 @@ async function closeDlg()
 }
 
 
+//
+// Event handlers
+//
+
+browser.runtime.onMessage.addListener(aRequest => {
+  log(`Clippings/wx::new.js: New Clipping dialog received message "${aRequest.msgID}"`);
+
+  if (aRequest.msgID == "ping-new-clipping-dlg") {
+    let resp = {isOpen: true};
+    return Promise.resolve(resp);
+  }
+});
+
+
+//
+// Utilities
+//
+
 function log(aMessage)
 {
   if (aeConst.DEBUG) { console.log(aMessage); }
 }
+

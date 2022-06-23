@@ -927,7 +927,6 @@ let gReloadSyncFldrBtn = {
     reloadBtn.title = browser.i18n.getMessage("btnReload");
     reloadBtn.setAttribute("tabindex", "0");
     reloadBtn.setAttribute("role", "button");
-    reloadBtn.setAttribute("aria-label", reloadBtn.title);
     reloadBtn.addEventListener("click", aEvent => { gCmd.reloadSyncFolder() });
     reloadBtn.addEventListener("keydown", aEvent => {
       if (aEvent.key == "Enter" || aEvent.key == " ") {
@@ -2651,8 +2650,19 @@ let gCmd = {
     gDialogs.exportToFile.showModal();
   },
 
-  reloadSyncFolder: function ()
+  async reloadSyncFolder()
   {
+    let pingResp;
+    try {
+      pingResp = await browser.runtime.sendMessage({msgID: "ping-new-clipping-dlg"});
+    }
+    catch {}
+
+    if (pingResp) {
+      gDialogs.actionUnavailable.openPopup();
+      return;
+    }
+
     this.recentAction = this.ACTION_RELOAD_SYNC_FLDR;   
     browser.runtime.sendMessage({
       msgID: "refresh-synced-clippings",
@@ -3759,6 +3769,7 @@ function initDialogs()
   gDialogs.clippingMissingSrcURL = new aeDialog("#clipping-missing-src-url-msgbar");
   gDialogs.noUndoNotify = new aeDialog("#no-undo-msgbar");
   gDialogs.noRedoNotify = new aeDialog("#no-redo-msgbar");
+  gDialogs.actionUnavailable = new aeDialog("#action-not-available");
 
   gDialogs.shortcutList = new aeDialog("#shortcut-list-dlg");
   gDialogs.shortcutList.onFirstInit = async function ()
