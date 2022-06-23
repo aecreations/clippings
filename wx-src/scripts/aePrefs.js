@@ -41,6 +41,7 @@ let aePrefs = {
     clippingsUnchanged: false,
     upgradeNotifCount: 0,
     tabModalMsgBox: false,
+    showNewClippingOpts: false,
   },
   
   getDefaultPrefs()
@@ -207,6 +208,7 @@ let aePrefs = {
   {
     let newPrefs = {
       tabModalMsgBox: false,
+      showNewClippingOpts: false,
     };
 
     await this._addPrefs(aPrefs, newPrefs);

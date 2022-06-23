@@ -4,6 +4,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
+const WNDH_NORMAL = 416;
+const WNDH_NORMAL_WINDOWS = 448;
 const WNDH_OPTIONS_EXPANDED = 486;
 const DLG_HEIGHT_ADJ_WINDOWS = 36;
 const DLG_HEIGHT_ADJ_LOCALE = 16;
@@ -59,21 +61,14 @@ async function initHelper()
   if (gPrefs.syncClippings) {
     initSyncItemsIDLookupList();
   }
+
+  if (gPrefs.showNewClippingOpts) {
+    expandOptions(true);
+  }
   
-  $("#btn-expand-options").click(async (aEvent) => {
-    let height = WNDH_OPTIONS_EXPANDED;
-    if (platform.os == "win") {
-      height += DLG_HEIGHT_ADJ_WINDOWS;
-    }
-    
-    let lang = browser.i18n.getUILanguage();
-    if (lang == "uk" || lang.startsWith("pt") || lang.startsWith("es")) {
-      height += DLG_HEIGHT_ADJ_LOCALE;
-    }
-    
-    await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, { height });
-    $("#clipping-options").show();
-    $("#new-clipping-fldr-tree-popup").addClass("new-clipping-fldr-tree-popup-fixpos");
+  $("#btn-expand-options").data("isExpanded", gPrefs.showNewClippingOpts).click(aEvent => {
+    let isExpanded = $(aEvent.target).data("isExpanded");
+    expandOptions(! isExpanded);
   });
 
   $("#clipping-text").attr("placeholder", browser.i18n.getMessage("clipMgrContentHint"));
@@ -116,6 +111,41 @@ async function initHelper()
     width: wnd.width + 1,
     focused: true,
   });
+}
+
+
+async function expandOptions(aIsOptionsExpanded)
+{
+  let lang = browser.i18n.getUILanguage();
+
+  if (aIsOptionsExpanded) {
+    let height = WNDH_OPTIONS_EXPANDED;
+    if (document.body.dataset.os == "win") {
+      height += DLG_HEIGHT_ADJ_WINDOWS;
+    } 
+    if (lang == "uk" || lang.startsWith("pt") || lang.startsWith("es")) {
+      height += DLG_HEIGHT_ADJ_LOCALE;
+    }
+
+    await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, {height});
+    $("#clipping-options").show();
+    $("#new-clipping-fldr-tree-popup").addClass("new-clipping-fldr-tree-popup-fixpos");
+    $("#btn-expand-options").addClass("expanded");
+  }
+  else {
+    let height = WNDH_NORMAL;
+    if (document.body.dataset.os == "win") {
+      height = WNDH_NORMAL_WINDOWS;
+    } 
+
+    $("#clipping-options").hide();
+    $("#new-clipping-fldr-tree-popup").removeClass("new-clipping-fldr-tree-popup-fixpos");
+    $("#btn-expand-options").removeClass("expanded");
+    await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, {height});
+  }
+
+  $("#btn-expand-options").data("isExpanded", aIsOptionsExpanded);
+  await aePrefs.setPrefs({showNewClippingOpts: aIsOptionsExpanded});
 }
 
 
