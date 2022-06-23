@@ -4375,6 +4375,13 @@ function initDialogs()
   };
 
   gDialogs.reloadSyncFolder = new aeDialog("#reload-sync-fldr-msgbox");
+  gDialogs.reloadSyncFolder.onShow = function ()
+  {
+    setTimeout(() => {
+      let acceptBtn = $("#reload-sync-fldr-msgbox > .dlg-btns > .dlg-accept")[0];
+      acceptBtn.focus();
+    }, 100);
+  };
   gDialogs.reloadSyncFolder.onAfterAccept = function ()
   {
     rebuildClippingsTree();
