@@ -133,10 +133,18 @@ class aeDialog
     }
   }
 
-  initKeyboardNavigation()
+  initKeyboardNavigation(aFocusableEltsArray)
   {
     this._lastFocusedElt = document.activeElement;
-    let focusableElts = $(`${this.FOCUSABLE_ELTS_STOR}`, this._dlgElt).toArray();
+
+    let focusableElts = [];
+    if (aFocusableEltsArray) {
+      focusableElts = aFocusableEltsArray;
+    }
+    else {
+      focusableElts = $(`${this.FOCUSABLE_ELTS_STOR}`, this._dlgElt).toArray();
+    }
+    
     let firstTabStop = focusableElts[0];
     let lastTabStop = focusableElts[focusableElts.length - 1];
 
@@ -156,7 +164,7 @@ class aeDialog
         }
       }
     });
-    
+
     firstTabStop.focus();
   }
 
@@ -168,7 +176,7 @@ class aeDialog
     this._dlgElt.removeClass("lightbox-show");
     $("#lightbox-bkgrd-ovl").removeClass("lightbox-show");
 
-    this._lastFocusedElt.focus();
+    this._lastFocusedElt?.focus();
     this._lastFocusedElt = null;
   }
 

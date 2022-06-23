@@ -318,7 +318,7 @@ function initDialogs()
     lastFocusedElt: null,
   });
 
-  gDialogs.syncClippings.initKeyboardNav = function (aVisibleDeckID, aIsBrwsSyncFldrBtnVisible)
+  gDialogs.syncClippings._initKeyboardNav = function (aVisibleDeckID, aIsBrwsSyncFldrBtnVisible)
   {
     let focusableElts = [];
     
@@ -340,28 +340,7 @@ function initDialogs()
       focusableElts.push($("#sync-clippings-dlg .dlg-cancel")[0]);
     }
 
-    this.lastFocusedElt = document.activeElement;
-    let firstTabStop = focusableElts[0];
-    let lastTabStop = focusableElts[focusableElts.length - 1];
-
-    this._dlgElt.on("keydown", aEvent => {
-      if (aEvent.key == "Tab") {
-        if (aEvent.shiftKey) {
-          if (document.activeElement == firstTabStop) {
-            aEvent.preventDefault();
-            lastTabStop.focus();
-          }
-        }
-        else {
-          if (document.activeElement == lastTabStop) {
-            aEvent.preventDefault();
-            firstTabStop.focus();
-          }
-        }
-      }
-    });
-
-    firstTabStop.focus();
+    this.initKeyboardNavigation(focusableElts);
   };
   
   gDialogs.syncClippings.onFirstInit = function ()
@@ -426,7 +405,7 @@ function initDialogs()
       deckSyncChk.hide();
       deckSyncSettings.show();
 
-      this.initKeyboardNav("sync-folder-location", isBrwsSyncFldrVisible);
+      this._initKeyboardNav("sync-folder-location", isBrwsSyncFldrVisible);
 
     }).catch(aErr => {
       console.error("Clippings/wx::options.js: Error returned from syncClippings native app: " + aErr);
@@ -453,7 +432,7 @@ function initDialogs()
         $("#sync-err-detail").text(browser.i18n.getMessage("errSyncOptsInit"));
       }
 
-      this.initKeyboardNav(null, false);
+      this._initKeyboardNav(null, false);
     });
   };
   
