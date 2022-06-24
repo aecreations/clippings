@@ -201,7 +201,7 @@ let aePrefs = {
   hasSanClementePrefs(aPrefs)
   {
     // Version 6.4
-    return aPrefs.hasOwnProperty("tabModalMsgBox");
+    return aPrefs.hasOwnProperty("showNewClippingOpts");
   },
   
   async setSanClementePrefs(aPrefs)
