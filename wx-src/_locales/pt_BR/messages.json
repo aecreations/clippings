@@ -210,7 +210,7 @@
     "message": "O que há de novo"
   },
   "welcWhatsNewDesc": {
-    "message": "Clippings 6.3 vem com melhorias em janelas e diálogos, bem como uma nova configuração para notificações de lembrete de backup."
+    "message": "O Clippings 6.4 vem com melhorias na navegação do teclado, em janelas e caixas de diálogo, além de outras melhorias."
   },
   "welcWhatsNewCTA": {
     "message": "Saiba mais"
@@ -880,11 +880,11 @@
     "message": "Saiba mais sobre o Sync Clippings."
   },
   "syncHelp": {
-    "message": "<p class=\"dlg-subhead\">Sync Clippings</p><p>Sync Clippings permite que você sincronize entre o Firefox e o Thunderbird um subconjunto de seus clippings para que apareçam em ambos. Você pode definir quais clippings deseja sincronizar colocando-os numa pasta especial \"Clippings Sincronizados\". Esta pasta pode ser criada na caixa de diálogo Novo Clipping quando estiver criando um novo. Também pode mover clippings para esta mesma pasta no Gerenciador de Clippings.</p><p>A pasta Clippings Sincronizados será criada automaticamente quando Sync Clippings for configurado.</p><p class=\"dlg-subhead\">Configuração</p><p>Sync Clippings precisa ser ativado nos aplicativos que você deseja sincronizar seus clippings. Sync Clippings é suportado pelo Firefox 60 ou mais recente e pelo Thunderbird 60 ou mais recente (com Clippings para Thunderbird 5.6 ou mais recente instalado).</p><p>Além disso, o app Ajuda do Sync Clippings precisa estar instalado no seu sistema para manter atualizado o conteúdo da pasta Clippings Sincronizados. O app está disponível para download no site <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">AE Creations</a>. Uma vez instalado, será executado automaticamente em segundo plano quando o Firefox for iniciado.</p><p>No Firefox, ative o Sync Clippings nas preferências do Clippings clicando em <b>Ativar Sincronização</b>.  Se já não foi definido, será solicitada a definição da pasta em seu sistema onde os dados dos clippings sincronizados serão salvos.</p>",
+    "message": "<p class=\"dlg-subhead\">Sync Clippings</p><p>Sync Clippings permite sincronizar um subconjunto de Clippings entre Firefox e Thunderbird, ou outras instâncias desses aplicativos. Você pode escolher quais recortes deseja sincronizar criando-os em uma pasta especial \"Clippings Sincronizados\" na caixa de diálogo Novo Clipping ou movendo-os para a mesma pasta no Gerenciador de Clippings.</p><p>A pasta \"Clippings Sincronizados\" será criada automaticamente assim que o Sync Clippings for configurado.</p><p class=\"dlg-subhead\">Como Configurar</p><p>O Sync Clippings Helper App precisa ser instalado para manter sua pasta \"Clippings Sincronizados\" com conteúdos atualizados. Ele está disponível para download no <a href=\"$1\" class=\"hyperlink\">site da AE Creations</a>. Uma vez instalado, ele será iniciado automaticamente quando o Firefox for iniciado e será executado em segundo plano.</p><p>Para ativar o \"Clippings Sincronizados\", clique em <b>Ativar sincronização</b> na página de Preferências de Clippings. Você será solicitado a escolher um local de arquivo em seu sistema onde os dados de \"Clippings Sincronizados\" serão salvos. Repita a configuração nos outros aplicativos com os quais deseja sincronizar seus Clippings, selecionando o mesmo local de arquivo para os dados de sincronização.</p>",
     "description": "Sync Clippings help in Firefox"
   },
   "syncHelpTB": {
-    "message": "<p class=\"dlg-subhead\">Sync Clippings</p><p>Sync Clippings permite que você sincronize entre o Firefox e o Thunderbird um subconjunto de seus clippings para que apareçam em ambos. Você pode definir quais clippings deseja sincronizar colocando-os numa pasta especial \"Clippings Sincronizados\". Esta pasta pode ser criada na caixa de diálogo Novo Clipping quando estiver criando um novo. Também pode mover clippings para esta mesma pasta no Gerenciador de Clippings.</p><p>A pasta Clippings Sincronizados será criada automaticamente quando Sync Clippings for configurado.</p><p class=\"dlg-subhead\">Configuração</p><p>Sync Clippings precisa ser ativado nos aplicativos que você deseja sincronizar seus clippings. Sync Clippings é suportado pelo Firefox 60 ou mais recente e pelo Thunderbird 60 ou mais recente (com Clippings para Thunderbird 5.6 ou mais recente instalado).</p><p>Além disso, o app Ajuda do Sync Clippings precisa estar instalado no seu sistema para manter atualizado o conteúdo da pasta Clippings Sincronizados. O app está disponível para download no site <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">AE Creations</a>. Uma vez instalado, será executado automaticamente em segundo plano quando o Firefox for iniciado.</p><p>No Firefox, ative o Sync Clippings nas preferências do Clippings clicando em <b>Ativar Sincronização</b>.  Se já não foi definido, será solicitada a definição da pasta em seu sistema onde os dados dos clippings sincronizados serão salvos.</p>",
+    "message": "<p class=\"dlg-subhead\">Sync Clippings</p><p>Sync Clippings permite sincronizar um subconjunto de Clippings entre Firefox e Thunderbird, ou outras instâncias desses aplicativos. Você pode escolher quais recortes deseja sincronizar criando-os em uma pasta especial \"Clippings Sincronizados\" na caixa de diálogo Novo Clipping ou movendo-os para a mesma pasta no Gerenciador de Clippings.</p><p>A pasta \"Clippings Sincronizados\" será criada automaticamente assim que o Sync Clippings for configurado.</p><p class=\"dlg-subhead\">Como Configurar</p><p>O Sync Clippings Helper App precisa ser instalado para manter sua pasta \"Clippings Sincronizados\" com conteúdos atualizados. Ele está disponível para download no <a href=\"$1\" class=\"hyperlink\">site da AE Creations</a>. Uma vez instalado, ele será iniciado automaticamente quando o Firefox for iniciado e será executado em segundo plano.</p><p>Para ativar o \"Clippings Sincronizados\", clique em <b>Ativar sincronização</b> na página de Preferências de Clippings. Você será solicitado a escolher um local de arquivo em seu sistema onde os dados de \"Clippings Sincronizados\" serão salvos. Repita a configuração nos outros aplicativos com os quais deseja sincronizar seus Clippings, selecionando o mesmo local de arquivo para os dados de sincronização.</p>",
     "description": "Sync Clippings help in Thunderbird"
   },
   "syncStatusOn": {
@@ -1053,11 +1053,11 @@
     "description": "Header for the What's New page (appears after upgrading Clippings)"
   },
   "upgrade": {
-    "message": "Clippings foi atualizados para Versão 6.3.",
+    "message": "Clippings foi atualizados para Versão 6.4.",
     "description": "What's New page (appears after upgrading Clippings)"
   },
   "upgradeTB": {
-    "message": "Clippings para Thunderbird foi atualizados para Versão 6.1.",
+    "message": "Clippings para Thunderbird foi atualizados para Versão 6.2.",
     "description": "What's New page (appears after upgrading Clippings for Thunderbird)"
   },
   "whatsNew": {
@@ -1065,16 +1065,20 @@
     "description": "What's New page (appears after upgrading Clippings)"
   },
   "whatsNew1": {
-    "message": "Melhorias no Gerenciador de Clippings. No Windows, o Gerenciador de Clippings agora lembra sua posição e tamanho de janela",
+    "message": "Melhorias na navegação por teclado em janelas e diálogos",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
   "whatsNew2": {
-    "message": "Melhorias no suporte a várias telas no Windows. Janelas de Diálogos e Popup do Clippings agora serão posicionados dentro da janela do navegador a partir da qual foram abertas, ao invés de sempre centralizado na exibição primária",
+    "message": "Corrigido um bug do Clippings Manager onde desfazer ações em um clipping sincronizado ou pasta parou de funcionar depois de recarregar a pasta Clippings Sincronizados",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
   "whatsNew3": {
-    "message": "Nova opção para pular Lembretes de Backup se não houver alterações nos clippings desde o último Backup",
+    "message": "Pequena atualização visual dos botões e diálogos",
     "description": "Description of an enhancement or fix in the new version of Clippings"
+  },
+  "whatsNew-Fx": {
+    "message": "Adicionada a capacidade de importar dados de Texto Snippets (extensão do Chrome)",
+    "description": "Description of a Firefox-only enhancement or fix in the new version of Clippings"
   },
   "contribHdg": {
     "message": "Contribuir",

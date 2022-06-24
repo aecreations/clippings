@@ -177,7 +177,7 @@
     "description": "Clippings context menu in Thunderbird message composer"
   },
   "cxtMenuShowPasteOpts": {
-    "message": "Zeige Zitat-Optionen beim Einfügen",
+    "message": "Zitatoptionen beim Einfügen anzeigen",
     "description": "Clippings context menu in Thunderbird message composer"
   },
   "baMenuResetAutoIncrPlaceholders": {
@@ -210,7 +210,7 @@
     "message": "Was ist neu"
   },
   "welcWhatsNewDesc": {
-    "message": "Clippings 6.3 enthält Verbesserungen an Fenstern und Dialogen sowie eine neue Einstellung für Erinnerungen an Sicherungsbenachrichtigungen."
+    "message": "Clippings 6.4 enthält Verbesserungen bei der Tastaturnavigation in Fenstern und Dialogen sowie weitere Neuerungen."
   },
   "welcWhatsNewCTA": {
     "message": "Mehr erfahren"
@@ -880,11 +880,11 @@
     "message": "Mehr über die Synchronisierung von Textbausteinen erfahren."
   },
   "syncHelp": {
-    "message": "<p class=\"dlg-subhead\">Textbausteine synchronisieren</p><p>Damit können Sie eine Auswahl Ihrer Textbausteine zwischen Firefox und Thunderbird synchronisieren, so dass sie in beiden Anwendungen erscheinen. Sie können auswählen, welche Textbausteine Sie synchronisieren möchten, indem Sie diese in einen speziellen Ordner “Synced Clippings” im Dialogfeld \"Neue Clippings\" erstellen, oder indem Sie sie in den selben Ordner im Textbaustein-Manager verschieben.</p><p>Der Ordner “Synced Clippings” wird automatisch erstellt, sobald \"Textbausteine synchronisieren\" eingerichtet ist.</p><p class=\"dlg-subhead\">Einrichtung</p><p> Die Option \"Textbausteine synchronisieren\" muss in allen Anwendungen die synchronisiert werden sollen eingeschaltet werden. Unterstützt wird Firefox und Thunderbird jeweils ab Version 60 und neuer (mit installiertem Clippings für Thunderbird Version 5.6 oder neuer).</p><p> Außerdem muss das Sync-Clippings-Hilfsprogramm installiert sein, damit der Inhalt des Ordners \"Synced Clippings\" immer aktuell gehalten wird. Das Programm kann von der <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">AE Creations Website</a> heruntergeladen werden. Einmal installiert wird es automatisch mit Firefox gestartet und läuft im Hintergrund.</p><p>Um die Synchronisierung der Textbausteine, klicken Sie auf <b>Synchronisierung einschalten</b> auf der Clippings-Einstellungsseite. Sie werden aufgefordert, einen Speicherort auf Ihrem System zu wählen, an dem die synchronisierten Clippings-Daten gespeichert werden sollen, falls dies noch nicht festgelegt wurde.</p>",
+    "message": "<p class=\"dlg-subhead\">Sync Clippings</p><p>Sync Clippings lets you synchronize a subset of your clippings between Firefox and Thunderbird, or other instances of those applications.  You can choose which clippings you want to sync by creating them in a special “Synced Clippings” folder from the New Clipping dialog, or by moving them into the same folder in Clippings Manager.</p><p>The Synced Clippings folder will be automatically created once Sync Clippings is set up.</p><p class=\"dlg-subhead\">How to Set Up</p><p>The Sync Clippings Helper App needs to be installed to keep your Synced Clippings folder contents up to date. It is available for download from the <a href=\"$1\" class=\"hyperlink\">AE Creations website</a>. Once installed, it’ll be launched automatically when Firefox is started, and will run in the background.</p><p>To activate Sync Clippings, click <b>Turn On Sync</b> from the Clippings preferences page.  You’ll be prompted to choose a file location on your system where the synced clippings data will be saved to.  Repeat the setup in the other applications you want to sync your clippings with, selecting the same file location for the sync data.</p>",
     "description": "Sync Clippings help in Firefox"
   },
   "syncHelpTB": {
-    "message": "<p class=\"dlg-subhead\">Textbausteine synchronisieren</p><p>Damit können Sie eine Auswahl Ihrer Textbausteine zwischen Firefox und Thunderbird synchronisieren, so dass sie in beiden Anwendungen erscheinen. Sie können auswählen, welche Textbausteine Sie synchronisieren möchten, indem Sie diese in einen speziellen Ordner “Synced Clippings” im Dialogfeld \"Neue Clippings\" erstellen oder indem Sie sie in den selben Ordner im Textbaustein-Manager verschieben.</p><p>Der Ordner “Synced Clippings” wird automatisch erstellt, sobald \"Textbausteine synchronisieren\" eingerichtet ist.</p><p class=\"dlg-subhead\">Einrichtung</p><p> Die Option \"Textbausteine synchronisieren\" muss in allen Anwendungen die synchronisiert werden sollen eingeschaltet werden. Unterstützt werden Firefox ab Version 60 (mit installiertem Clippings 6.1 oder neuer) und Thunderbird ab Version 60.</p><p> Zusätzlich muss das Sync-Clippings-Hilfsprogramm installiert sein, um den Inhalt Ihres Ordners \"Synced Clippings\" auf dem neuesten Stand zu halten. Die Helper App steht auf <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">AE Creations Website</a> zum Download bereit. Nach der Installation wird es automatisch beim Start von Thunderbird gestartet und läuft im Hintergrund.</p><p>Um die Synchronisierung der Textbausteine zu aktivieren, klicken Sie auf <b>Synchronisierung einschalten</b> auf der Einstellungenseite von Clippings. Sie werden aufgefordert, einen Speicherort auf Ihrem System zu wählen, an dem die synchronisierten Clippings-Daten gespeichert werden sollen, falls dies noch nicht festgelegt wurde.</p>",
+    "message": "<p class=\"dlg-subhead\">Sync Clippings</p><p>Sync Clippings lets you synchronize a subset of your clippings between Firefox and Thunderbird, or other instances of those applications.  You can choose which clippings you want to sync by creating them in a special “Synced Clippings” folder from the New Clipping dialog, or by moving them into the same folder in Clippings Manager.</p><p>The Synced Clippings folder will be automatically created once Sync Clippings is set up.</p><p class=\"dlg-subhead\">How to Set Up</p><p>The Sync Clippings Helper App needs to be installed to keep your Synced Clippings folder contents up to date. It is available for download from the <a href=\"$1\" class=\"hyperlink\">AE Creations website</a>. Once installed, it’ll be launched automatically when Thunderbird is started, and will run in the background.</p><p>To activate Sync Clippings, click <b>Turn On Sync</b> from the Clippings preferences page.  You’ll be prompted to choose a file location on your system where the synced clippings data will be saved to.  Repeat the setup in the other applications you want to sync your clippings with, selecting the same file location for the sync data.</p>",
     "description": "Sync Clippings help in Thunderbird"
   },
   "syncStatusOn": {
@@ -1053,11 +1053,11 @@
     "description": "Header for the What's New page (appears after upgrading Clippings)"
   },
   "upgrade": {
-    "message": "Clippings wurde auf Version 6.3 aktualisiert.",
+    "message": "Clippings wurde auf Version 6.4 aktualisiert.",
     "description": "What's New page (appears after upgrading Clippings)"
   },
   "upgradeTB": {
-    "message": "Clippings für Thunderbird wurde auf Version 6.1 aktualisiert.",
+    "message": "Clippings für Thunderbird wurde auf Version 6.2 aktualisiert.",
     "description": "What's New page (appears after upgrading Clippings for Thunderbird)"
   },
   "whatsNew": {
@@ -1065,16 +1065,20 @@
     "description": "What's New page (appears after upgrading Clippings)"
   },
   "whatsNew1": {
-    "message": "Verbesserungen an der Textbausteinverwaltung. Unter Windows merkt sich die Textbausteinverwaltung jetzt seine Fenstergröße und -position",
+    "message": "Verbesserungen der Tastaturnavigation in Fenstern und Dialogen",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
   "whatsNew2": {
-    "message": "Verbesserungen bei der Unterstützung für mehrere Bildschirme unter Windows. Textbausteinfenster und -Dialoge werden jetzt innerhalb des Browser-Fensters positioniert, aus dem sie geöffnet wurden, anstatt immer auf dem Hauptbildschirm zentriert zu werden.",
+    "message": "Ein Fehler in der Textbausteinverwaltung wurde behoben, bei dem das Rückgängigmachen von Aktionen für einen synchronisierten Textbaustein oder Ordner nicht mehr funktionierte, nachdem der Ordner »Synchronisierte Textbausteine« neu geladen wurde.",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
   "whatsNew3": {
-    "message": "Neue Option, um die Erinnerungen an die Sicherung wegzulassen, wenn es seit der letzten Sicherung keine Änderungen an den Textbausteinen gab",
+    "message": "Geringfügige optische Überarbeitung von Tasten und Dialogen",
     "description": "Description of an enhancement or fix in the new version of Clippings"
+  },
+  "whatsNew-Fx": {
+    "message": "Möglichkeit zum Importieren von Daten aus Textschnipseln hinzugefügt (Chrome-Erweiterung)",
+    "description": "Description of a Firefox-only enhancement or fix in the new version of Clippings"
   },
   "contribHdg": {
     "message": "Mitmachen",
