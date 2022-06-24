@@ -99,6 +99,10 @@ li {
     margin-left: 3em;
 }
 
+li:first-of-type {
+    margin-left: 0;
+}
+
 strong {
     font-weight: 700;
     color: var(--color-text-body);
