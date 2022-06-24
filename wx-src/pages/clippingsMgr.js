@@ -4438,7 +4438,7 @@ function initDialogs()
     setTimeout(() => {
       $("#remove-all-source-urls-dlg > .dlg-btns > .dlg-accept")[0].focus();
     }, 10);
-  }
+  };
 
   gDialogs.removeAllSrcURLsConfirm = new aeDialog("#all-src-urls-removed-confirm-msgbar");
   gDialogs.removeAllSrcURLsConfirm.onInit = function ()
