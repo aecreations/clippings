@@ -604,6 +604,7 @@ let gSearchBox = {
     $("#search-box").focus(aEvent => {
       gSearchBox.activate();
     });
+    $("#search-box").blur(aEvent => { gSearchBox.deactivate() });
 
     $("#search-box").keyup(aEvent => {
       this.updateSearch();
@@ -644,7 +645,6 @@ let gSearchBox = {
     if (numMatches === undefined) {
       // User cleared search box by deleting all search text
       setStatusBarMsg();
-      this._isActive = false;
     }
     else {
       setStatusBarMsg(browser.i18n.getMessage("numMatches", numMatches));
@@ -662,6 +662,11 @@ let gSearchBox = {
   {
     this._isActive = true;
   },
+
+  deactivate()
+  {
+    this._isActive = false;
+  },
   
   reset: function ()
   {
@@ -669,7 +674,6 @@ let gSearchBox = {
     $("#search-box").val("").focus();
     $("#clear-search").css({ visibility: "hidden" });
     setStatusBarMsg();
-    this._isActive = false;
   }
 };
 
