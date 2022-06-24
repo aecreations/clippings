@@ -68,7 +68,7 @@ main {
     width: var(--page-width);
     margin-left: auto;
     margin-right: auto;
-    margin-top: 0;
+    margin-top: 24px;
     margin-bottom: 18px;
     border: 1px solid var(--color-main-border);
     border-radius: 2px;
@@ -96,7 +96,7 @@ main p, li {
 }
 
 li {
-    margin-left: 2em;
+    margin-left: 3em;
 }
 
 strong {
@@ -163,7 +163,7 @@ button.default:-moz-focusring {
 
 button.default:-moz-focusring {
     border-color: var(--color-bkgd) !important;
-    box-shadow: 0 0 0 2px #61b5ffbf;
+    box-shadow: 0 0 0 3px #61b5ffbf;
     transition-duration: 250ms;
     transition-property: box-shadow;
 }
@@ -280,20 +280,8 @@ body[data-locale="de"] .welcome-action-card > p {
     text-align: center;
 }
 
-#top-banner {
-    width: var(--page-width);
-    height: 40px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 8px;
-    margin-bottom: 2px;
-    background-image: var(--url-banner-img);
-    background-repeat: no-repeat;
-    background-color: transparent;
-}
-
 .deck-content {
-    padding: 6px 24px 24px 24px;    
+    padding: 12px 24px 24px 24px;    
 }
 
 .deck > #welcome-pg {
@@ -314,17 +302,17 @@ body[data-locale="de"] .welcome-action-card > p {
     text-align: left;
 }
 
-#install-success-icon {
+#install-success-hdr-icon {
     width: 96px;
     height: 96px;
     float: left;
-    margin-right: 24px;
+    margin-right: 18px;
 }
 
 #install-success-header > h1 {
+    margin-top: 0;
     margin-bottom: 8px;
-    margin-top: 12px;
-    font-size: 33px;
+    font-size: 36px;
     font-weight: 600;
     letter-spacing: -0.5px;
 }
@@ -332,6 +320,19 @@ body[data-locale="de"] .welcome-action-card > p {
 #install-success-header > .subhead {
     font-size: 22px;
     font-weight: 300;
+}
+
+#install-success-header > .subhead::after {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    margin-left: 8px;
+    vertical-align: text-bottom;
+    content: " ";   
+
+    background-image: url("../img/success.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 
 #aecreations-links > ul {
@@ -350,7 +351,7 @@ body[data-locale="de"] .welcome-action-card > p {
     display: inline-block;
     width: 24px;
     height: 24px;
-    margin-right: 4px;
+    margin-right: 6px;
     content: " ";   
     background-size: contain;
     background-repeat: no-repeat;
