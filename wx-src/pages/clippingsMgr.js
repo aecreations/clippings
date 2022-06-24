@@ -4088,6 +4088,7 @@ function initDialogs()
     IMP_REPLACE: 1,
     mode: 0,
   });
+
   gDialogs.importFromFile.onFirstInit = function ()
   {
     $("#import-clippings-file-upload").on("change", aEvent => {
@@ -4117,8 +4118,9 @@ function initDialogs()
 
     $("#import-clippings-file-path").on("contextmenu", aEvent => {
       aEvent.preventDefault();
-    });
+    }).on("focus", aEvent => { aEvent.target.select() });
   };
+
   gDialogs.importFromFile.onInit = function ()
   {
     if (this.mode == this.IMP_REPLACE) {
