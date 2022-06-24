@@ -161,7 +161,7 @@ select.browser-style:-moz-focusring:not([size]):not(:disabled) {
 }
 
 button.default:-moz-focusring:not(:disabled) {
-    transition-duration: 200ms;
+    transition-duration: 250ms;
     transition-property: box-shadow;
 }
 

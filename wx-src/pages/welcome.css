@@ -164,7 +164,7 @@ button.default:-moz-focusring {
 button.default:-moz-focusring {
     border-color: var(--color-bkgd) !important;
     box-shadow: 0 0 0 2px #61b5ffbf;
-    transition-duration: 200ms;
+    transition-duration: 250ms;
     transition-property: box-shadow;
 }
 
