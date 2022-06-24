@@ -95,7 +95,7 @@
 }
 
 .ae-clippings-lightbox > .ae-clippings-lightbox-dlg-btns > button {
-    min-width: 96px !important;
+    min-width: 120px !important;
     min-height: 32px !important;
     margin-right: 10px !important;
     cursor: default !important;
