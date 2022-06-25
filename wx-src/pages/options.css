@@ -654,7 +654,7 @@ body[data-os="win"] #turn-off-sync-clippings-ack-dlg #delete-sync-fldr-opt > #de
 
 #sync-clippings-help-dlg {
     --width: 600px;
-    --height: 488px;
+    --height: 424px;
 }
 
 #sync-clippings-help-dlg .dlg-content {
