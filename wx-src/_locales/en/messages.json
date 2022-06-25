@@ -1134,11 +1134,11 @@
   },
 
   "syncIntro": {
-    "message": "You can synchronize your clippings with Thunderbird or other Firefox installations by putting the clippings you want to share into a special \u201cSynced Clippings\u201d folder.  The synchronized clippings will be saved in a file on your system.  Requires the <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">Sync Clippings</a> helper app."
+    "message": "You can synchronize your clippings with Thunderbird or other Firefox installations by putting the clippings you want to share into a special \u201cSynced Clippings\u201d folder.  The synchronized clippings will be saved in a file on your system.  Requires the <a href=\"https://aecreations.io/clippings/sync.php\" class=\"hyperlink\">Sync Clippings</a> helper app."
   },
 
   "syncIntroTB": {
-    "message": "You can synchronize your clippings with Firefox or other Thunderbird installations by putting the clippings you want to share into a special \u201cSynced Clippings\u201d folder.  The synchronized clippings will be saved in a file on your system.  Requires the <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">Sync Clippings</a> helper app."
+    "message": "You can synchronize your clippings with Firefox or other Thunderbird installations by putting the clippings you want to share into a special \u201cSynced Clippings\u201d folder.  The synchronized clippings will be saved in a file on your system.  Requires the <a href=\"http://aecreations.io/clippings/sync.php\" class=\"hyperlink\">Sync Clippings</a> helper app."
   },
 
   "syncLearnMore": {
@@ -1219,7 +1219,7 @@
   },
 
   "errSyncConxnDetail": {
-    "message": "The Sync Clippings helper app is needed to sync your clippings. You can download it from the <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">AE Creations website</a>."
+    "message": "The Sync Clippings helper app is needed to sync your clippings. You can download it from the <a href=\"https://aecreations.io/clippings/sync.php\" class=\"hyperlink\">AE Creations website</a>."
   },
 
   "errSyncOptsInit": {
