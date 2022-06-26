@@ -2511,7 +2511,7 @@ let gCmd = {
   
   showShortcutList: function ()
   {
-    gDialogs.shortcutList.showModal();
+    gDialogs.shortcutList.showModal(false);
   },
 
   insertCustomPlaceholder: function ()
@@ -3870,14 +3870,30 @@ function initDialogs()
     });
   };
 
-  gDialogs.shortcutList.onInit = function ()
+  gDialogs.shortcutList.onInit = async function ()
   {
-    aeImportExport.getShortcutKeyListHTML(false).then(aShctListHTML => {
-      $("#shortcut-list-content").append(sanitizeHTML(aShctListHTML));
-    }).catch(aErr => {
+    let shctListHTML;
+    try {
+      shctListHTML = await aeImportExport.getShortcutKeyListHTML(false);
+    }
+    catch (e) {
       console.error("Clippings/wx::clippingsMgr.js: gDialogs.shortcutList.onInit(): " + aErr);
-    });
+      return;
+    }
+
+    $("#shortcut-list-content").append(sanitizeHTML(shctListHTML));
+
+    let tbodyElt = $("#shortcut-list-dlg > #shortcut-list-content > table > tbody");
+    tbodyElt.attr("tabindex", "0");
+
+    let dlgElts = [
+      tbodyElt[0],
+      $("#shortcut-list-dlg > .dlg-btns > #export-shct-list")[0],
+      $("#shortcut-list-dlg > .dlg-btns > .dlg-accept")[0],
+    ];
+    this.initKeyboardNavigation(dlgElts);
   };
+
   gDialogs.shortcutList.onUnload = function ()
   {
     $("#shortcut-list-content").empty();
