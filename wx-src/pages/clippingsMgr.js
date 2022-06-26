@@ -4622,7 +4622,11 @@ function initDialogs()
   gDialogs.showOnlySyncedItemsReminder = new aeDialog("#show-only-synced-items-reminder");
   gDialogs.showOnlySyncedItemsReminder.onShow = function ()
   {
-    aePrefs.setPrefs({ clippingsMgrShowSyncItemsOnlyRem: false });
+    aePrefs.setPrefs({clippingsMgrShowSyncItemsOnlyRem: false});
+    setTimeout(() => {
+      let acceptBtn = $("#show-only-synced-items-reminder > .dlg-btns > .dlg-accept")[0];
+      acceptBtn.focus();
+    }, 100);
   };
   
   gDialogs.moveSyncFldr = new aeDialog("#move-sync-fldr-msgbox");
