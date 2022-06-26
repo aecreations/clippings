@@ -399,6 +399,7 @@ function initDialogs()
       return browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, natMsg);
       
     }).then(aResp => {
+      $("#sync-fldr-curr-location").val(aResp.syncFilePath);
       $("#sync-clippings-dlg .dlg-accept").show();
       $("#sync-clippings-dlg .dlg-cancel").text(browser.i18n.getMessage("btnCancel"));
 
