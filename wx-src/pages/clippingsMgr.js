@@ -3877,7 +3877,7 @@ function initDialogs()
       shctListHTML = await aeImportExport.getShortcutKeyListHTML(false);
     }
     catch (e) {
-      console.error("Clippings/wx::clippingsMgr.js: gDialogs.shortcutList.onInit(): " + aErr);
+      console.error("Clippings/wx::clippingsMgr.js: gDialogs.shortcutList.onInit(): " + e);
       return;
     }
 
