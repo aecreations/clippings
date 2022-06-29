@@ -167,7 +167,11 @@ $(async () => {
 
 $(window).keydown(aEvent => {
   if (aEvent.key == "Enter") {
-    accept(aEvent);
+    // Avoid duplicate invocation due to pressing ENTER while OK button
+    // is focused.
+    if (aEvent.target.id != "btn-accept") {
+      accept(aEvent);
+    }
   }
   else if (aEvent.key == "Escape") {
     cancel(aEvent);

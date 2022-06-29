@@ -74,7 +74,7 @@ a {
     text-decoration: none;
 }
 
-a:hover, a:focus {
+a:hover {
     text-decoration: underline;
 }
 
@@ -93,7 +93,7 @@ select.browser-style {
 
 button {
     padding: 0px 8px;
-    border-radius: 2px;
+    border-radius: 4px;
     text-align: center;
 }
 
@@ -148,14 +148,21 @@ select.browser-style:active {
     background-color: rgba(12, 12, 13, 0.3) !important;
 }
 
+button.default:-moz-focusring,
 select:-moz-focusring {
     outline-style: none;
 }
 
+button.default:-moz-focusring:not(:disabled),
 select:-moz-focusring:not([size]):not(:disabled),
 select.browser-style:-moz-focusring:not([size]):not(:disabled) {
     border-color: var(--color-bkgd) !important;
     box-shadow: 0 0 0 2px #61b5ffbf;
+}
+
+button.default:-moz-focusring:not(:disabled) {
+    transition-duration: 250ms;
+    transition-property: box-shadow;
 }
 
 input[type="text"],
@@ -298,7 +305,7 @@ body[data-os="win"] .browser-style > input[type="radio"] + label {
 .browser-style > input[type="checkbox"].checkbox-xs {
     width: 13px;
     height: 13px;
-    margin-right: 4px;
+    margin-right: 5px;
 }
 
 .browser-style > input[type="checkbox"].checkbox-xs:checked {

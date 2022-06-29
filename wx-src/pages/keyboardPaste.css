@@ -77,8 +77,8 @@ body {
     align-self: stretch;
     min-width: 30px;
     min-height: 24px;
-    margin-left: 1px;
-    margin-right: 1px;
+    margin-left: 0px;
+    margin-right: 0px;
     border: 1px solid transparent;
     background-position: center;
     background-repeat: no-repeat;
@@ -90,13 +90,13 @@ body {
 
 .toolbar-button:hover {
     border: 1px solid transparent;
-    border-radius: 2px;
+    border-radius: 3px;
     background-color: var(--color-toolbarbtn-hover-bkgd);
 }
 
 .toolbar-button:active {
     border: 1px solid transparent !important;
-    border-radius: 2px;
+    border-radius: 3px;
     background-color: var(--color-toolbarbtn-active-bkgd);
 }
 

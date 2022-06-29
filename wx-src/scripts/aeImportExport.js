@@ -1,3 +1,4 @@
+/* -*- mode: javascript; tab-width: 8; indent-tabs-mode: nil; js-indent-level: 2 -*- */
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -13,6 +14,8 @@ let aeImportExport = {
   LAST_SEQ_VALUE: 9999999,
 
   HTML_EXPORT_PAGE_TITLE: "Clippings",
+  NONAME_CLIPPING: "Untitled Clipping",
+  NONAME_FOLDER: "Untitled Folder",
   
   RDF_MIME_TYPE: "application/rdf+xml",
   RDF_SEQ: "http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq",
@@ -23,6 +26,9 @@ let aeImportExport = {
   _importFileTypes: [
     "application/json",
     "application/rdf+xml",    
+  ],
+  _clippingLabels: [
+    "", "red", "orange", "yellow", "green", "blue", "purple", "grey",
   ],
 
   // Default strings in export file - should be localized from messages.json
@@ -60,10 +66,65 @@ aeImportExport.isValidFileType = function (aFile)
 };
 
 
+aeImportExport.isValidClippingsJSON = function (aImportRawJSON) {
+  let rv = false;
+  let importData;
+
+  try {
+    importData = JSON.parse(aImportRawJSON);
+  }
+  catch (e) {
+    // SyntaxError - Raw JSON data is invalid.
+    return rv;
+  }
+
+  let knownVersions = [
+    this.CLIPPINGS_JSON_VER,
+    this.CLIPPINGS_JSON_VER_WITH_SEQ,
+  ];
+
+  rv = ("userClippingsRoot" in importData
+        && importData.userClippingsRoot instanceof Array
+        && "version" in importData
+        && knownVersions.includes(importData.version));
+
+  return rv;
+};
+
+
+aeImportExport.isValidTextSnippetsJSON = function (aImportRawJSON) {
+  let rv = false;
+  let importData;
+
+  try {
+    importData = JSON.parse(aImportRawJSON);
+  }
+  catch (e) {
+    // SyntaxError - Raw JSON data is invalid.
+    return rv;
+  }
+
+  if (importData instanceof Array) {
+    if (importData.length > 0) {
+      let firstTxtSnip = importData[0];
+      rv = (typeof firstTxtSnip == "object"
+            && "name" in firstTxtSnip && "text" in firstTxtSnip
+            && typeof firstTxtSnip.name == "string" && typeof firstTxtSnip.text == "string");
+    }
+    else {
+      // Empty array is valid.
+      rv = true;
+    }
+  }
+
+  return rv;
+};
+
+
 aeImportExport.importFromJSON = function (aImportRawJSON, aReplaceShortcutKeys, aAppendItems, aDestFolderID)
 {
   if (! this._db) {
-    throw new Error("aeImportExport: Database not initialized!");
+    throw new Error("Clippings/wx: aeImportExport: Database not initialized!");
   }
 
   if (! aDestFolderID) {
@@ -80,8 +141,16 @@ aeImportExport.importFromJSON = function (aImportRawJSON, aReplaceShortcutKeys, 
     throw e;
   }
 
-  this._log("aeImportExport: Imported JSON data:");
+  this._log("Clippings/wx: aeImportExport.importFromJSON(): Imported JSON data:");
   this._log(importData);
+
+  if (this.isValidTextSnippetsJSON(aImportRawJSON)) {
+    this._log("Clippings/wx: aeImportExport.importFromJSON(): Detected Text Snippets JSON format.");
+    if (importData.length > 0) {
+      this._importFromTextSnippetsJSONHelper(this.ROOT_FOLDER_ID, importData);
+    }
+    return;
+  }
 
   this._getShortcutKeysToClippingIDs().then(aShortcutKeyLookup => {
     this._log("Starting JSON import...");
@@ -98,6 +167,31 @@ aeImportExport.importFromJSON = function (aImportRawJSON, aReplaceShortcutKeys, 
 };
 
 
+aeImportExport._importFromTextSnippetsJSONHelper = function (aParentFolderID, aImportedItems) {
+  let importedClippings = [];
+
+  for (let item of aImportedItems) {
+    importedClippings.push({
+      name: ("name" in item ? item.name : this.NONAME_CLIPPING),
+      content: ("text" in item ? item.text : ""),
+      label: "",
+      shortcutKey: "",
+      sourceURL: "",
+      parentFolderID: aParentFolderID,
+      displayOrder: this.LAST_SEQ_VALUE,
+    });
+  }
+
+  this._log("aeImportExport._importFromTextSnippetsJSONHelper(): Imported raw data:");
+  this._log(importedClippings);
+
+  this._db.clippings.bulkAdd(importedClippings).catch(aErr => {
+    console.error("aeImportExport._importFromTextSnippetsJSONHelper(): Error: " + aErr);
+    throw aErr;
+  });
+};
+
+
 aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems, aReplaceShortcutKeys, aShortcutKeys, aAppendItems)
 {
   this._db.transaction("rw", this._db.clippings, this._db.folders, () => {
@@ -106,28 +200,36 @@ aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems
 
     for (let item of aImportedItems) {
       if ("children" in item) {
+        if (! (item.children instanceof Array)) {
+          continue;
+        }
+
         let folder = {
-          name: item.name,
+          name: ("name" in item ? item.name : this.NONAME_FOLDER),
           parentFolderID: aParentFolderID
         };
 
         if (aAppendItems) {
-	  // Append items to root folder, but preserve sort order relative to
-	  // the other imported items.
-	  let seq = ("seq" in item) ? item.seq : 0;
+          // Append items to root folder, but preserve sort order relative to
+          // the other imported items.
+          let seq = ("seq" in item) ? item.seq : 0;
 
-	  if (aParentFolderID == this.ROOT_FOLDER_ID) {
+          if (aParentFolderID == this.ROOT_FOLDER_ID) {
             folder.displayOrder = this.LAST_SEQ_VALUE + seq;
-	  }
-	  else {
-	    folder.displayOrder = seq;
-	  }
+          }
+          else {
+            folder.displayOrder = seq;
+          }
         }
-	else {
-	  if ("seq" in item) {
-	    folder.displayOrder = item.seq;
-	  }
-	}
+        else {
+          if ("seq" in item) {
+            folder.displayOrder = item.seq;
+          }
+        }
+
+        if ("sid" in item) {
+          folder.sid = item.sid;
+        }
         
         this._db.folders.add(folder).then(aNewFolderID => {
           this._importFromJSONHelper(aNewFolderID, item.children, aReplaceShortcutKeys, aShortcutKeys, aAppendItems);
@@ -137,45 +239,60 @@ aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems
         let clipping = {};
         let shortcutKey = "";
 
-        if (aShortcutKeys[item.shortcutKey]) {
+        if (!("shortcutKey" in item) || typeof item.shortcutKey != "string") {
+          item.shortcutKey = "";
+        }
+
+        let impShctKey = item.shortcutKey.toUpperCase();
+        if (aShortcutKeys[impShctKey]) {
           if (aReplaceShortcutKeys) {
-            shortcutKey = item.shortcutKey;
-            clippingsWithKeyConflicts.push(aShortcutKeys[item.shortcutKey]);
+            shortcutKey = impShctKey;
+            clippingsWithKeyConflicts.push(aShortcutKeys[impShctKey]);
           }
           else {
             shortcutKey = "";
           }
         }
         else {
-          shortcutKey = item.shortcutKey;
+          shortcutKey = impShctKey;
         }
-        
+
+        let label = "";
+        if ("label" in item && typeof item.label == "string"
+            && this._clippingLabels.includes(item.label.toLowerCase())) {
+          label = item.label.toLowerCase();
+        }
+
         clipping = {
-          name: item.name,
-          content: item.content,
+          name: ("name" in item ? item.name : this.NONAME_CLIPPING),
+          content: ("content" in item ? item.content : ""),
+          label,
           shortcutKey,
-          sourceURL: item.sourceURL,
-          label: ("label" in item ? item.label : ""),
+          sourceURL: ("sourceURL" in item ? item.sourceURL : ""),
           parentFolderID: aParentFolderID
         };
 
         if (aAppendItems) {
-	  // Append items to root folder, but preserve sort order relative to
-	  // the other imported items.
-	  let seq = ("seq" in item) ? item.seq : 0;
+          // Append items to root folder, but preserve sort order relative to
+          // the other imported items.
+          let seq = ("seq" in item) ? item.seq : 0;
 
-	  if (aParentFolderID == this.ROOT_FOLDER_ID) {
+          if (aParentFolderID == this.ROOT_FOLDER_ID) {
             clipping.displayOrder = this.LAST_SEQ_VALUE + seq;
-	  }
-	  else {
-	    clipping.displayOrder = seq;
-	  }
+          }
+          else {
+            clipping.displayOrder = seq;
+          }
         }
-	else {
-	  if ("seq" in item) {
-	    clipping.displayOrder = item.seq;
-	  }
-	}
+        else {
+          if ("seq" in item) {
+            clipping.displayOrder = item.seq;
+          }
+        }
+
+        if ("sid" in item) {
+          clipping.sid = item.sid;
+        }
 
         importedClippings.push(clipping);
       }
@@ -244,9 +361,13 @@ aeImportExport._exportToJSONHelper = function (aFolderID, aIncludeSrcURLs, aExcl
           children: []
         };
 
-	if (aIncludeDisplayOrder) {
-	  folder.seq = aItem.displayOrder || 0;
-	}
+        if (aIncludeDisplayOrder) {
+          folder.seq = aItem.displayOrder || 0;
+        }
+
+        if ("sid" in aItem) {
+          folder.sid = aItem.sid;
+        }
 
         this._exportToJSONHelper(aItem.id, aIncludeSrcURLs, aExcludeFolderID, aIncludeDisplayOrder).then(aChildItems => {
           folder.children = aChildItems;
@@ -262,10 +383,14 @@ aeImportExport._exportToJSONHelper = function (aFolderID, aIncludeSrcURLs, aExcl
             label: aItem.label,
           };
 
-	  if (aIncludeDisplayOrder) {
-	    clipping.seq = aItem.displayOrder || 0;
-	  }
-	  
+          if (aIncludeDisplayOrder) {
+            clipping.seq = aItem.displayOrder || 0;
+          }
+
+          if ("sid" in aItem) {
+            clipping.sid = aItem.sid;
+          }
+          
           rv.push(clipping);
         });
       }).then(() => {

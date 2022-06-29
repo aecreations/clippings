@@ -4,6 +4,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
+const WNDH_NORMAL = 416;
+const WNDH_NORMAL_WINDOWS = 448;
 const WNDH_OPTIONS_EXPANDED = 486;
 const DLG_HEIGHT_ADJ_WINDOWS = 36;
 const DLG_HEIGHT_ADJ_LOCALE = 16;
@@ -17,6 +19,7 @@ let gCreateInFldrMenu;
 let gFolderPickerPopup;
 let gNewFolderDlg;
 let gPrefs;
+let gSyncedFldrIDs = new Set();
 
 
 // Page initialization
@@ -36,7 +39,7 @@ $(async () => {
   }
 
   try {
-    await gClippings.verifyDB();
+    await browser.runtime.sendMessage({msgID: "verify-db"});
     initHelper();
   }
   catch (e) {
@@ -55,21 +58,17 @@ async function initHelper()
 
   gPrefs = await aePrefs.getAllPrefs();
 
+  if (gPrefs.syncClippings) {
+    initSyncItemsIDLookupList();
+  }
+
+  if (gPrefs.showNewClippingOpts) {
+    expandOptions(true);
+  }
   
-  $("#btn-expand-options").click(async (aEvent) => {
-    let height = WNDH_OPTIONS_EXPANDED;
-    if (platform.os == "win") {
-      height += DLG_HEIGHT_ADJ_WINDOWS;
-    }
-    
-    let lang = browser.i18n.getUILanguage();
-    if (lang == "uk" || lang.startsWith("pt") || lang.startsWith("es")) {
-      height += DLG_HEIGHT_ADJ_LOCALE;
-    }
-    
-    await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, { height });
-    $("#clipping-options").show();
-    $("#new-clipping-fldr-tree-popup").addClass("new-clipping-fldr-tree-popup-fixpos");
+  $("#btn-expand-options").data("isExpanded", gPrefs.showNewClippingOpts).click(aEvent => {
+    let isExpanded = $(aEvent.target).data("isExpanded");
+    expandOptions(! isExpanded);
   });
 
   $("#clipping-text").attr("placeholder", browser.i18n.getMessage("clipMgrContentHint"));
@@ -115,6 +114,41 @@ async function initHelper()
 }
 
 
+async function expandOptions(aIsOptionsExpanded)
+{
+  let lang = browser.i18n.getUILanguage();
+
+  if (aIsOptionsExpanded) {
+    let height = WNDH_OPTIONS_EXPANDED;
+    if (document.body.dataset.os == "win") {
+      height += DLG_HEIGHT_ADJ_WINDOWS;
+    } 
+    if (lang == "uk" || lang.startsWith("pt") || lang.startsWith("es")) {
+      height += DLG_HEIGHT_ADJ_LOCALE;
+    }
+
+    await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, {height});
+    $("#clipping-options").show();
+    $("#new-clipping-fldr-tree-popup").addClass("new-clipping-fldr-tree-popup-fixpos");
+    $("#btn-expand-options").addClass("expanded");
+  }
+  else {
+    let height = WNDH_NORMAL;
+    if (document.body.dataset.os == "win") {
+      height = WNDH_NORMAL_WINDOWS;
+    } 
+
+    $("#clipping-options").hide();
+    $("#new-clipping-fldr-tree-popup").removeClass("new-clipping-fldr-tree-popup-fixpos");
+    $("#btn-expand-options").removeClass("expanded");
+    await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, {height});
+  }
+
+  $("#btn-expand-options").data("isExpanded", aIsOptionsExpanded);
+  await aePrefs.setPrefs({showNewClippingOpts: aIsOptionsExpanded});
+}
+
+
 $(window).keydown(aEvent => {
   if (! gClippings) {
     // Clippings Manager initialization failed.
@@ -125,18 +159,74 @@ $(window).keydown(aEvent => {
     if (aEvent.target.tagName == "TEXTAREA") {
       return;
     }
-    if (aeDialog.isOpen()) {
-      aeDialog.acceptDlgs();
+
+    if (aEvent.target.tagName == "BUTTON" && aEvent.target.id != "btn-accept"
+        && !aEvent.target.classList.contains("dlg-accept")) {
+      aEvent.target.click();
       return;
     }
-    accept(aEvent);
+
+    if (aEvent.target.tagName == "UL" && aEvent.target.classList.contains("ui-fancytree")) {
+      let selectedFldrNodeKey;
+      let fldrData;
+
+      if (aeDialog.isOpen()) {
+        // New Folder modal lightbox.
+        gNewFolderDlg.selectAndCloseFolderPicker();
+        $("#new-folder-dlg-fldr-picker-mnubtn").focus();
+      }
+      else {
+        selectAndCloseFolderPicker();
+        $("#new-clipping-fldr-picker-menubtn").focus();
+      }
+      
+      return;
+    }
+
+    if (aeDialog.isOpen()) {
+      // Avoid duplicate invocation due to pressing ENTER while OK button
+      // is focused in the New Clipping dialog.
+      if (! aEvent.target.classList.contains("dlg-accept")) {
+        aeDialog.acceptDlgs();
+      }
+      return;
+    }
+
+    if (aEvent.target.id != "btn-accept") {
+      accept(aEvent);
+    }
   }
   else if (aEvent.key == "Escape") {
+    if (aEvent.target.tagName == "UL" && aEvent.target.classList.contains("ui-fancytree")) {
+      if (aeDialog.isOpen()) {
+        // New Folder modal lightbox.
+        gNewFolderDlg.closeFolderPicker();
+        $("#new-folder-dlg-fldr-picker-mnubtn").focus();
+      }
+      else {
+        closeFolderPicker();
+        $("#new-clipping-fldr-picker-menubtn").focus();
+      }
+      
+      return;
+    }
+
     if (aeDialog.isOpen()) {
       aeDialog.cancelDlgs();
       return;
     }
     cancel(aEvent);
+  }
+  else if (aEvent.key == "ArrowDown") {
+    if (aEvent.target.classList.contains("folder-picker-menubtn")) {
+      if (aeDialog.isOpen()) {
+        // New Folder modal lightbox.
+        gNewFolderDlg.openFolderPicker();
+      }
+      else {
+        openFolderPicker();
+      }
+    }
   }
   else {
     aeInterxn.suppressBrowserShortcuts(aEvent, aeConst.DEBUG);
@@ -169,11 +259,60 @@ function showInitError()
 function initDialogs()
 {
   gNewFolderDlg = new aeDialog("#new-folder-dlg");
-  gNewFolderDlg.firstInit = true;
-  gNewFolderDlg.fldrTree = null;
-  gNewFolderDlg.selectedFldrNode = null;
+  gNewFolderDlg.setProps({
+    firstInit: true,
+    fldrTree: null,
+    selectedFldrNode: null,
+  });
 
-  gNewFolderDlg.resetTree = function () {
+  gNewFolderDlg.openFolderPicker = function ()
+  {
+    $("#new-folder-dlg-fldr-tree-popup").css({visibility: "visible"});
+    $("#new-folder-dlg-fldr-tree-popup-bkgrd-ovl").show();
+    this.fldrTree.getContainer().focus();
+  };
+
+  gNewFolderDlg.selectFolder = function (aFolderData)
+  {
+    this.selectedFldrNode = aFolderData.node;
+
+    let fldrID = aFolderData.node.key;
+    let fldrPickerMnuBtn = $("#new-folder-dlg-fldr-picker-mnubtn");
+    fldrPickerMnuBtn.val(fldrID).text(aFolderData.node.title);
+
+    if (fldrID == gPrefs.syncFolderID) {
+      fldrPickerMnuBtn.attr("syncfldr", "true");
+    }
+    else {
+      fldrPickerMnuBtn.removeAttr("syncfldr");
+    }
+    
+    $("#new-folder-dlg-fldr-tree-popup").css({visibility: "hidden"});
+    $("#new-folder-dlg-fldr-tree-popup-bkgrd-ovl").hide();
+    
+  };
+
+  gNewFolderDlg.selectAndCloseFolderPicker = function ()
+  {
+    let fldrPickerTree = gNewFolderDlg.fldrTree.getTree();
+    selectedFldrNodeKey = fldrPickerTree.activeNode.key;
+    let fldrData = {
+      node: {
+        key: selectedFldrNodeKey,
+        title: fldrPickerTree.activeNode.title,
+      }
+    };
+    gNewFolderDlg.selectFolder(fldrData);
+  };
+
+  gNewFolderDlg.closeFolderPicker = function ()
+  {
+    $("#new-folder-dlg-fldr-tree-popup").css({visibility: "hidden"});
+    $("#new-folder-dlg-fldr-tree-popup-bkgrd-ovl").hide();
+  };
+
+  gNewFolderDlg.resetTree = function ()
+  {
     let fldrTree = this.fldrTree.getTree();
     fldrTree.clear();
     this.fldrTree = null;
@@ -186,8 +325,28 @@ function initDialogs()
     $('<div id="new-folder-dlg-fldr-tree" class="folder-tree"></div>').appendTo("#new-folder-dlg-fldr-tree-popup");
   };
   
-  gNewFolderDlg.onInit = () => {
-    let that = gNewFolderDlg;
+  gNewFolderDlg.onFirstInit = function ()
+  {
+    let fldrPickerPopup = $("#new-folder-dlg-fldr-tree-popup");
+
+    $("#new-folder-dlg-fldr-picker-mnubtn").click(aEvent => {
+      if (fldrPickerPopup.css("visibility") == "visible") {
+        this.closeFolderPicker();
+      }
+      else {
+        this.openFolderPicker();
+      }
+    });
+    
+    $("#new-fldr-name").on("blur", aEvent => {
+      if (! aEvent.target.value) {
+        aEvent.target.value = browser.i18n.getMessage("newFolder");
+      }
+    });
+  };
+  
+  gNewFolderDlg.onInit = function ()
+  {
     let parentDlgFldrPickerMnuBtn = $("#new-clipping-fldr-picker-menubtn");
     let fldrPickerMnuBtn = $("#new-folder-dlg-fldr-picker-mnubtn");
     let fldrPickerPopup = $("#new-folder-dlg-fldr-tree-popup");
@@ -208,7 +367,7 @@ function initDialogs()
       }
     }
 
-    that.fldrTree = new aeFolderPicker(
+    this.fldrTree = new aeFolderPicker(
       "#new-folder-dlg-fldr-tree",
       gClippingsDB,
       rootFldrID,
@@ -217,21 +376,8 @@ function initDialogs()
       selectedFldrID
     );
 
-    that.fldrTree.onSelectFolder = aFolderData => {
-      that.selectedFldrNode = aFolderData.node;
-
-      let fldrID = aFolderData.node.key;
-      fldrPickerMnuBtn.val(fldrID).text(aFolderData.node.title);
-
-      if (fldrID == gPrefs.syncFolderID) {
-        fldrPickerMnuBtn.attr("syncfldr", "true");
-      }
-      else {
-        fldrPickerMnuBtn.removeAttr("syncfldr");
-      }
-      
-      fldrPickerPopup.css({ visibility: "hidden" });
-      $("#new-folder-dlg-fldr-tree-popup-bkgrd-ovl").hide();
+    this.fldrTree.onSelectFolder = aFolderData => {
+      this.selectFolder(aFolderData);
     };
 
     fldrPickerMnuBtn.val(selectedFldrID).text(selectedFldrName);
@@ -242,41 +388,23 @@ function initDialogs()
       fldrPickerMnuBtn.removeAttr("syncfldr");
     }
 
-    if (that.firstInit) {
-      fldrPickerMnuBtn.click(aEvent => {
-        if (fldrPickerPopup.css("visibility") == "visible") {
-          fldrPickerPopup.css({ visibility: "hidden" });
-          $("#new-folder-dlg-fldr-tree-popup-bkgrd-ovl").hide();
-        }
-        else {
-          fldrPickerPopup.css({ visibility: "visible" });
-          $("#new-folder-dlg-fldr-tree-popup-bkgrd-ovl").show();
-        }
-      })
-      
-      $("#new-fldr-name").on("blur", aEvent => {
-        if (! aEvent.target.value) {
-          aEvent.target.value = browser.i18n.getMessage("newFolder");
-        }
-      });
-      
-      that.firstInit = false;
-    }
-
     $("#new-fldr-name").val(browser.i18n.getMessage("newFolder"));
   };
 
-  gNewFolderDlg.onShow = () => {
+  gNewFolderDlg.onShow = function ()
+  {
     $("#new-fldr-name").select().focus();
   };
   
-  gNewFolderDlg.onAccept = aEvent => {
-    let that = gNewFolderDlg;
-    let newFldrDlgTree = that.fldrTree.getTree();
+  gNewFolderDlg.onAccept = function (aEvent)
+  {
+    log("Clippings/wx::new.js: gNewFolderDlg.onAccept()");
+    
+    let newFldrDlgTree = this.fldrTree.getTree();
     let parentFldrID = aeConst.ROOT_FOLDER_ID;
 
-    if (that.selectedFldrNode) {
-      parentFldrID = Number(that.selectedFldrNode.key);
+    if (this.selectedFldrNode) {
+      parentFldrID = Number(this.selectedFldrNode.key);
     }
     else {
       // User didn't choose a different parent folder.
@@ -292,6 +420,13 @@ function initDialogs()
       displayOrder: 0,
     };
 
+    if (gPrefs.syncClippings) {
+      // Set static ID on new folder if it is a synced folder.
+      if (gSyncedFldrIDs.has(parentFldrID)) {
+        newFolder.sid = aeUUID();
+      }
+    }
+
     gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
       gClippingsDB.folders.where("parentFolderID").equals(parentFldrID).count().then(aNumFldrs => {
         numItemsInParent += aNumFldrs;
@@ -300,6 +435,12 @@ function initDialogs()
       }).then(aNumClippings => {
         numItemsInParent += aNumClippings;
         newFolder.displayOrder = numItemsInParent;
+        return gClippingsDB.folders.get(parentFldrID);
+
+      }).then(aFolder => {        
+        if (aFolder && aFolder.id != gPrefs.syncFolderID && "sid" in aFolder) {
+          newFolder.parentFldrSID = aFolder.sid;
+        }
         return gClippingsDB.folders.add(newFolder);
 
       }).then(aFldrID => {
@@ -330,7 +471,7 @@ function initDialogs()
         mainFldrPickerMenuBtn.text(newFldrName).val(aFldrID).removeAttr("syncfldr");
         gParentFolderID = aFldrID;
         
-        that.resetTree();
+        this.resetTree();
 
         let clippingsListeners = gClippings.getClippingsListeners().getListeners();
         clippingsListeners.forEach(aListener => {
@@ -340,7 +481,7 @@ function initDialogs()
         return unsetClippingsUnchangedFlag();
 
       }).then(() => {
-        that.close();
+        this.close();
       });
     }).catch(aErr => {
       window.alert(aErr);
@@ -370,12 +511,11 @@ function initFolderPicker()
     let popup = $("#new-clipping-fldr-tree-popup");
 
     if (popup.css("visibility") == "hidden") {
-      popup.css({ visibility: "visible" });
-      $(".popup-bkgrd").show();
+      openFolderPicker();
     }
     else {
-      popup.css({ visibility: "hidden" });
-      $(".popup-bkgrd").hide();
+      closeFolderPicker();
+      aEvent.target.focus();
     }
   });
 
@@ -422,6 +562,14 @@ function initFolderPicker()
 }
 
 
+function openFolderPicker()
+{
+  $("#new-clipping-fldr-tree-popup").css({visibility: "visible"});
+  $(".popup-bkgrd").show();
+  gFolderPickerPopup.getContainer().focus();
+}
+
+
 function selectFolder(aFolderData)
 {
   gParentFolderID = Number(aFolderData.node.key);
@@ -436,7 +584,28 @@ function selectFolder(aFolderData)
     fldrPickerMenuBtn.removeAttr("syncfldr");
   }
   
-  $("#new-clipping-fldr-tree-popup").css({ visibility: "hidden" });
+  $("#new-clipping-fldr-tree-popup").css({visibility: "hidden"});
+  $(".popup-bkgrd").hide();
+}
+
+
+function selectAndCloseFolderPicker()
+{
+  let fldrPickerTree = gFolderPickerPopup.getTree();
+  selectedFldrNodeKey = fldrPickerTree.activeNode.key;
+  let fldrData = {
+    node: {
+      key: selectedFldrNodeKey,
+      title: fldrPickerTree.activeNode.title,
+    }
+  };
+  selectFolder(fldrData);
+}
+
+
+function closeFolderPicker()
+{
+  $("#new-clipping-fldr-tree-popup").css({visibility: "hidden"});
   $(".popup-bkgrd").hide();
 }
 
@@ -485,6 +654,37 @@ function initLabelPicker()
 }
 
 
+function initSyncItemsIDLookupList()
+{
+  function initSyncItemsIDLookupListHelper(aFolderID)
+  {
+    return new Promise((aFnResolve, aFnReject) => {
+      gClippingsDB.folders.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
+        gSyncedFldrIDs.add(aItem.id);
+        initSyncItemsIDLookupListHelper(aItem.id);
+        
+      }).then(() => {
+        aFnResolve();
+      });
+    }).catch(aErr => { aFnReject(aErr) });
+  }
+  // END nested helper function
+
+  return new Promise((aFnResolve, aFnReject) => {
+    if (! gPrefs.syncClippings) {
+      aFnResolve();
+    }
+
+    // Include the ID of the root Synced Clippings folder.
+    gSyncedFldrIDs.add(gPrefs.syncFolderID);
+
+    initSyncItemsIDLookupListHelper(gPrefs.syncFolderID).then(() => {
+      aFnResolve();
+    }).catch(aErr => { aFnReject(aErr) });
+  });
+}
+
+
 function isClippingOptionsSet()
 {
   return ($("#clipping-key")[0].selectedIndex != 0
@@ -527,6 +727,12 @@ function accept(aEvent)
     sourceURL: ($("#save-source-url")[0].checked ? gSrcURL : ""),
   };
 
+  if (gPrefs.syncClippings) {
+    if (gSyncedFldrIDs.has(newClipping.parentFolderID)) {
+      newClipping.sid = aeUUID();
+    }
+  }
+
   gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
     gClippingsDB.folders.where("parentFolderID").equals(gParentFolderID).count().then(aNumFldrs => {
       numItemsInParent += aNumFldrs;
@@ -535,6 +741,12 @@ function accept(aEvent)
     }).then(aNumClippings => {
       numItemsInParent += aNumClippings;
       newClipping.displayOrder = numItemsInParent;
+      return gClippingsDB.folders.get(gParentFolderID);
+
+    }).then(aFolder => {
+      if (aFolder && aFolder.id != gPrefs.syncFolderID && "sid" in aFolder) {
+        newClipping.parentFldrSID = aFolder.sid;
+      }
       return gClippingsDB.clippings.add(newClipping);
 
     }).then(aNewClippingID => {
@@ -555,26 +767,26 @@ function accept(aEvent)
 
     }).then(aSyncData => {
       if (aSyncData) {
-        let msg = {
+        let natMsg = {
           msgID: "set-synced-clippings",
           syncData: aSyncData.userClippingsRoot,
         };
 
         log("Clippings/wx::new.js: accept(): Sending message 'set-synced-clippings' to the Sync Clippings helper app.  Message data:");
-        log(msg);
+        log(natMsg);
         
-        return browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, msg);
+        return browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, natMsg);
       }
       return null;
 
-    }).then(async (aMsgResult) => {
-      if (aMsgResult) {
+    }).then(async (aResp) => {
+      if (aResp) {
         log("Clippings/wx::new.js: accept(): Response from the Sync Clippings helper app:");
-        log(aMsgResult);
+        log(aResp);
       }
 
       if (gPrefs.clippingsMgrAutoShowDetailsPane && isClippingOptionsSet()) {
-        await aePrefs.setPrefs({
+        aePrefs.setPrefs({
           clippingsMgrAutoShowDetailsPane: false,
           clippingsMgrDetailsPane: true
         });
@@ -584,7 +796,7 @@ function accept(aEvent)
     }).catch("OpenFailedError", aErr => {
       // OpenFailedError exception thrown if Firefox is set to "Never remember
       // history."
-      errorMsgBox.onInit = () => {
+      errorMsgBox.onInit = function () {
         console.error(`Error creating clipping: ${aErr}`);
         let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
         errMsgElt.text(browser.i18n.getMessage("saveClippingError"));
@@ -593,13 +805,13 @@ function accept(aEvent)
 
     }).catch(aErr => {
       console.error("Clippings/wx::new.js: accept(): " + aErr);     
-      errorMsgBox.onInit = () => {
+      errorMsgBox.onInit = function () {
         let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
         let errText = `Error creating clipping: ${aErr}`;
 
         if (aErr == aeConst.SYNC_ERROR_CONXN_FAILED) {
           errText = browser.i18n.getMessage("syncPushFailed");
-          errorMsgBox.onAfterAccept = () => {
+          errorMsgBox.onAfterAccept = function () {
             // Despite the native app connection error, the new clipping was
             // successfully created, so just close the main dialog.
             closeDlg();
@@ -626,7 +838,26 @@ async function closeDlg()
 }
 
 
+//
+// Event handlers
+//
+
+browser.runtime.onMessage.addListener(aRequest => {
+  log(`Clippings/wx::new.js: New Clipping dialog received message "${aRequest.msgID}"`);
+
+  if (aRequest.msgID == "ping-new-clipping-dlg") {
+    let resp = {isOpen: true};
+    return Promise.resolve(resp);
+  }
+});
+
+
+//
+// Utilities
+//
+
 function log(aMessage)
 {
   if (aeConst.DEBUG) { console.log(aMessage); }
 }
+

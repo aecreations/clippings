@@ -13,7 +13,6 @@ let aePrefs = {
     alwaysSaveSrcURL: false,
     keyboardPaste: true,
     checkSpelling: true,
-    openClippingsMgrInTab: false,
     pastePromptAction: aeConst.PASTEACTION_SHORTCUT_KEY,
     clippingsMgrAutoShowDetailsPane: true,
     clippingsMgrDetailsPane: false,
@@ -24,7 +23,6 @@ let aePrefs = {
     syncFolderID: null,
     cxtMenuSyncItemsOnly: false,
     clippingsMgrShowSyncItemsOnlyRem: true,
-    pasteShortcutKeyPrefix: "",
     lastBackupRemDate: null,
     backupRemFirstRun: true,
     backupRemFrequency: aeConst.BACKUP_REMIND_WEEKLY,
@@ -42,13 +40,15 @@ let aePrefs = {
     skipBackupRemIfUnchg: true,
     clippingsUnchanged: false,
     upgradeNotifCount: 0,
+    tabModalMsgBox: false,
+    showNewClippingOpts: false,
   },
   
   getDefaultPrefs()
   {
     return this._defaultPrefs;
   },
-  
+
   getPrefKeys()
   {
     return Object.keys(this._defaultPrefs);
@@ -78,6 +78,31 @@ let aePrefs = {
   // Version upgrade handling
   //
 
+  hasUserPrefs(aPrefs)
+  {
+    return aPrefs.hasOwnProperty("htmlPaste");
+  },
+
+  async setUserPrefs(aPrefs)
+  {
+    let prefs = {
+      showWelcome: true,
+      htmlPaste: aeConst.HTMLPASTE_AS_FORMATTED,
+      autoLineBreak: true,
+      autoIncrPlcHldrStartVal: 0,
+      alwaysSaveSrcURL: false,
+      keyboardPaste: true,
+      checkSpelling: true,
+      pastePromptAction: aeConst.PASTEACTION_SHORTCUT_KEY,
+      clippingsMgrDetailsPane: false,
+      clippingsMgrStatusBar: false,
+      clippingsMgrPlchldrToolbar: false,
+      clippingsMgrMinzWhenInactv: null,
+    };
+
+    await this._addPrefs(aPrefs, prefs);
+  },
+
   hasSanDiegoPrefs(aPrefs)
   {
     // Version 6.1
@@ -89,7 +114,6 @@ let aePrefs = {
     let newPrefs = {
       syncClippings: false,
       syncFolderID: null,
-      pasteShortcutKeyPrefix: "",
       lastBackupRemDate: null,
       backupRemFirstRun: true,
       backupRemFrequency: aeConst.BACKUP_REMIND_WEEKLY,
@@ -170,6 +194,22 @@ let aePrefs = {
     if (typeof aPrefs.clippingsMgrMinzWhenInactv != "boolean") {
       newPrefs.clippingsMgrMinzWhenInactv = null;
     }
+
+    await this._addPrefs(aPrefs, newPrefs);
+  },
+
+  hasSanClementePrefs(aPrefs)
+  {
+    // Version 6.4
+    return aPrefs.hasOwnProperty("showNewClippingOpts");
+  },
+  
+  async setSanClementePrefs(aPrefs)
+  {
+    let newPrefs = {
+      tabModalMsgBox: false,
+      showNewClippingOpts: false,
+    };
 
     await this._addPrefs(aPrefs, newPrefs);
   },

@@ -250,19 +250,23 @@ select {
 
 .toolbar-button:hover {
     border: 1px solid transparent;
-    border-radius: 2px;
+    border-radius: 3px;
     background-color: var(--color-toolbarbtn-hover-bkgd);
 }
 
 .toolbar-button:active {
     border: 1px solid transparent !important;
-    border-radius: 2px;
+    border-radius: 3px;
     background-color: var(--color-toolbarbtn-active-bkgd);
 }
 
 .toolbar-button-menu-open {
-    Border-radius: 2px 2px 0px 0px;
+    border-radius: 3px 3px 0px 0px;
     background-color: var(--color-toolbar-menubtn-open);
+}
+
+#plchldr-presets.toolbar-button-menu-open {
+    border-radius: 0px 0px 3px 3px;
 }
 
 .toolbar-button-labelled {
@@ -946,10 +950,6 @@ ul.fancytree-container {
  * Dialog boxes
  */
 
-.lightbox {
-    border-radius: 2px;
-}
-
 .lightbox .msgbox-icon,
 .lightbox .msgbox-info-icon {
     float: left;
@@ -1222,12 +1222,18 @@ body[data-locale="de"] #import-dlg {
     min-height: 24px;
     padding: 3px 16px 3px 16px;
     border: 1px solid var(--color-btn-border);
-    border-radius: 2px;
+    border-radius: 3.5px;
     box-shadow: 0 0 0 0 transparent;
     background-color: var(--color-btn-bkgd);
 
-    transition-duration: 250ms;
-    transition-property: box-shadow, border;    
+    transition-duration: 200ms;
+    transition-property: box-shadow;    
+}
+
+#import-dlg #import-clippings-file-upload-btn.focused {
+    border: 1px solid;
+    border-color: var(--color-bkgd);
+    box-shadow: 0 0 0 2px #61b5ffbf;
 }
 
 #import-dlg #import-clippings-file-upload-btn:hover {
@@ -1329,6 +1335,11 @@ body[data-locale="de"] #export-dlg #export-format-list-label {
     color: var(--color-disabled-text);
 }
 
+body[data-locale="de"] #include-src-urls,
+body[data-locale="uk"] #include-src-urls {
+    margin-right: 4px;
+}
+
 body[data-locale="de"] #include-src-urls + label {
     letter-spacing: -0.8px;
 }
@@ -1364,6 +1375,14 @@ body[data-locale="uk"] #include-src-urls + label {
     --width: 342px;
     --height: 304px;
     top: 24px;
+}
+
+#move-dlg #activate-move-to-fldr-tree {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    border: 0;
+    padding: 0;
 }
 
 #move-dlg #move-to-fldr-tree {

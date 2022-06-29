@@ -17,11 +17,11 @@ $(async () => {
   document.body.dataset.locale = lang;
   
   $("#goto-whatsnew").click(aEvent => {
-    gotoURL("http://aecreations.sourceforge.net/clippings/whatsnew.php");
+    gotoURL(aeConst.WHATSNEW_URL);
   });
   
   $("#goto-quick-start").click(aEvent => {
-    gotoURL("http://aecreations.sourceforge.net/clippings/quickstart.php");
+    gotoURL(aeConst.QUICKSTART_URL);
   });
 
   $("#dismiss-welcome").click(aEvent => { closePage() });

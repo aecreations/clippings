@@ -378,11 +378,11 @@ $(window).keydown(async (aEvent) => {
     }
   }
   else if (aEvent.key == "Tab") {
-    aEvent.preventDefault();
-
     if (isShortcutListDisplayed()) {
       return;
     }
+
+    aEvent.preventDefault();
     
     if (gPasteMode == aeConst.PASTEACTION_SHORTCUT_KEY) {
       gPasteMode = aeConst.PASTEACTION_SEARCH_CLIPPING;

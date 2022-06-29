@@ -1,0 +1,39 @@
+{
+  "version": "6.1",
+  "createdBy": "Alex Eng",
+  "userClippingsRoot": [
+    {
+      "name": "Complete and valid clipping",
+      "content": "Hello, cruel world!",
+      "label": "RED",
+      "shortcutKey": "k",
+      "sourceURL": "https://aecreations.sourceforge.io/clippings/",
+      "seq": 0
+    },
+    {
+      "text": "Invalid clipping",
+      "seq": 1
+    },
+    {
+      "name": "Invalid folder",
+      "children": null,
+      "seq": 2
+    },
+    {
+      "name": "Missing folder",
+      "seq": 3
+    },
+    {
+      "content": "Nameless clipping",
+      "shortcutKey": "N",
+      "seq": 4
+    },
+    {
+      "name": "Partially valid clipping",
+      "content": "<p>The <em>quick</em> <span style=\"font-weight:bold;color:brown\">brown</span> fox  <sup style=\"font-weight:bold\">jumps</sup> over the <span style=\"text-decoration:underline\">lazy</span> dog.</p>",
+      "label": "asdf",
+      "shortcutKey": 123,
+      "seq": 5
+    }
+  ]
+}

@@ -210,7 +210,7 @@
     "message": "更新内容"
   },
   "welcWhatsNewDesc": {
-    "message": "剪辑 6.3版本对窗口和对话框进行了改进，并为备份提醒通知提供了新设置。"
+    "message": "剪辑 6.4 对窗口和对话框中的键盘导航以及其它方面进行了改进"
   },
   "welcWhatsNewCTA": {
     "message": "了解更多"
@@ -871,20 +871,20 @@
     "description": "The name of the feature for synchronizing clippings between applications or computers."
   },
   "syncIntro": {
-    "message": "您可以将您想要分享的剪辑放入一个特殊的“同步剪辑”文件夹中，从而与雷鸟或其他 Firefox 设备同步剪辑。 同步剪辑数据将保存在系统的一个文件中。需要 <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">同步剪辑</a> 助手应用程序。"
+    "message": "您可以将您想要分享的剪辑放入一个特殊的“同步剪辑”文件夹中，从而与雷鸟或其他 Firefox 设备同步剪辑。 同步剪辑数据将保存在系统的一个文件中。需要 <a href=\"https://aecreations.io/clippings/sync.php\" class=\"hyperlink\">同步剪辑</a> 助手应用程序。"
   },
   "syncIntroTB": {
-    "message": "您可以将您想要分享的剪辑放入一个特殊的“同步剪辑”文件夹中，从而与雷鸟或其他 Firefox 设备同步剪辑。 同步剪辑数据将保存在系统的一个文件中。需要 <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">同步剪辑</a> 助手应用程序。"
+    "message": "您可以将您想要分享的剪辑放入一个特殊的“同步剪辑”文件夹中，从而与雷鸟或其他 Firefox 设备同步剪辑。 同步剪辑数据将保存在系统的一个文件中。需要 <a href=\"https://aecreations.io/clippings/sync.php\" class=\"hyperlink\">同步剪辑</a> 助手应用程序。"
   },
   "syncLearnMore": {
     "message": "了解更多关于同步剪辑的信息。"
   },
   "syncHelp": {
-    "message": "<p class=\"dlg-subhead\">同步剪辑</p><p>同步剪辑使您可以在 Firefox 和 雷鸟 之间同步一个剪辑文件夹，以便它们出现在这两个应用程序中。 您可以从新的剪辑对话框中选择您想要同步的剪辑，在一个特殊的“同步剪辑”文件夹中创建它们。 或者将它们移动到剪辑管理器的同一文件夹内。</p><p>同步剪辑设置后将自动创建同步剪辑文件夹。</p><p class=\"dlg-subhead\">设置</p><p>同步剪辑需要在您想要同步剪辑的应用程序中开启。 同步剪辑需要Firefox 60及以上版本，Thunderbird 60及以上版本（剪辑必须使用5.6及以上）。</p><p>此外，同步剪辑助手应用也需要安装在您的系统上，以保证剪辑文件夹能同步到最新内容。 它可以从 <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">AE Creations</a>网站中下载。 安装完毕后，Firefox启动时将会自动启动同步剪辑，并在后台运行。</p><p>要激活同步剪辑，请从剪辑首选项主页中点击 <b>启用同步</b>。 若尚未设置此项，您将收到在您的系统中选择一个保存同步剪辑文件位置的提醒。</p>",
+    "message": "<p class=\"dlg-subhead\">同步剪辑</p><p>同步剪辑允许您在Firefox和Thunderbird或这些应用程序的其他实例之间同步剪辑的子集。您可以在“新建剪辑”对话框中的创建一个特殊的“同步剪辑”文件夹，或将其移动到剪辑管理器的同一文件夹中，来选择要同步的剪辑。</p><p>一旦设置同步剪辑后，将自动创建 同步剪辑 文件夹。</p><p class=\"dlg-subhead\">如何设置</p><p>需要安装同步剪辑助手应用程序，以使同步剪辑文件夹内容保持最新。可从<a href=\"$1\" class=\"hyperlink\">AE Creations</a>网站下载。一旦安装，它将在Firefox启动时自动启动，并在后台运行。</p><p>要激活同步剪辑，请单击剪辑首选项页面中的<b>打开同步</b>。系统将提示您选择系统上的文件位置，同步剪辑数据将保存到该位置。在要同步剪辑的其他应用程序中重复此设置，为同步数据选择相同的文件位置</p>",
     "description": "Sync Clippings help in Firefox"
   },
   "syncHelpTB": {
-    "message": "<p class=\"dlg-subhead\">同步剪辑</p><p>同步剪辑使您可以在 Firefox 和 雷鸟 之间同步一个剪辑文件夹，以便它们出现在这两个应用程序中。 您可以从新的剪辑对话框中选择您想要同步的剪辑，在一个特殊的“同步剪辑”文件夹中创建它们。 或者将它们移动到剪辑管理器的同一文件夹内。</p><p>同步剪辑设置后将自动创建同步剪辑文件夹。</p><p class=\"dlg-subhead\">设置</p><p>同步剪辑需要在您想要同步剪辑的应用程序中开启。 同步剪辑需要Firefox 60及以上版本(剪辑必须使用6.1及以上)，Thunderbird 60及以上版本。</p><p>此外，同步剪辑助手应用也需要安装在您的系统上，以保证剪辑文件夹能同步到最新内容。 它可以从 <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">AE Creations</a>网站中下载。 安装完毕后，Firefox启动时将会自动启动同步剪辑，并在后台运行。</p><p>要激活同步剪辑，请从剪辑首选项主页中点击 <b>启用同步</b>。 若尚未设置此项，您将收到在您的系统中选择一个保存同步剪辑文件位置的提醒。</p>",
+    "message": "<p class=\"dlg-subhead\">同步剪辑</p><p>同步剪辑允许您在Firefox和Thunderbird或这些应用程序的其他实例之间同步剪辑的子集。您可以在“新建剪辑”对话框中的创建一个特殊的“同步剪辑”文件夹，或将其移动到剪辑管理器的同一文件夹中，来选择要同步的剪辑。</p><p>一旦设置同步剪辑后，将自动创建 同步剪辑 文件夹。</p><p class=\"dlg-subhead\">如何设置</p><p>需要安装同步剪辑助手应用程序，以使同步剪辑文件夹内容保持最新。可从<a href=\"$1\" class=\"hyperlink\">AE Creations</a>网站下载。一旦安装，它将在雷鸟(Thunderbird) 启动时自动启动，并在后台运行。</p><p>要激活同步剪辑，请单击剪辑首选项页面中的<b>打开同步</b>。系统将提示您选择系统上的文件位置，同步剪辑数据将保存到该位置。在要同步剪辑的其他应用程序中重复此设置，为同步数据选择相同的文件位置</p>",
     "description": "Sync Clippings help in Thunderbird"
   },
   "syncStatusOn": {
@@ -936,7 +936,7 @@
     "message": "无法连接到同步剪辑助手应用，请确保应用程序已安装。"
   },
   "errSyncConxnDetail": {
-    "message": "同步剪辑需要使用同步剪辑程序。您可以从 <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">AE Creations</a> 网站中下载。"
+    "message": "同步剪辑需要使用同步剪辑程序。您可以从 <a href=\"https://aecreations.io/clippings/sync.php\" class=\"hyperlink\">AE Creations</a> 网站中下载。"
   },
   "errSyncOptsInit": {
     "message": "无法初始化同步剪辑设置，请重启Firefox后再试。"
@@ -1053,11 +1053,11 @@
     "description": "Header for the What's New page (appears after upgrading Clippings)"
   },
   "upgrade": {
-    "message": "剪辑簿已升级到6.3版。",
+    "message": "剪辑 已升级到6.4版",
     "description": "What's New page (appears after upgrading Clippings)"
   },
   "upgradeTB": {
-    "message": "雷鸟的 剪辑 已升级到6.1版。",
+    "message": "雷鸟(Thunderbird)的 剪辑 版本已升级到6.2版。",
     "description": "What's New page (appears after upgrading Clippings for Thunderbird)"
   },
   "whatsNew": {
@@ -1065,16 +1065,20 @@
     "description": "What's New page (appears after upgrading Clippings)"
   },
   "whatsNew1": {
-    "message": "改进剪辑管理器。在Windows上，剪辑管理器现在能记住它的窗口大小和位置",
+    "message": "改进弹出窗口和对话框的键盘导航",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
   "whatsNew2": {
-    "message": "改进：在Windows上支持多个显示器。剪辑弹出窗口和对话框现在将定位在打开它的浏览器窗口中，而不是始终集中在主显示屏上",
+    "message": "修复了剪辑管理器的一个错误，即在重新加载 同步剪辑 文件夹后，无法撤消对同步剪辑或其他文件夹的操作",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
   "whatsNew3": {
-    "message": "如果自上次备份以来您的剪辑没有更改，请跳过备份提醒",
+    "message": "按钮和对话框的视觉刷新效果",
     "description": "Description of an enhancement or fix in the new version of Clippings"
+  },
+  "whatsNew-Fx": {
+    "message": "添加了从文本片段导入数据的功能(Chrome扩展)",
+    "description": "Description of a Firefox-only enhancement or fix in the new version of Clippings"
   },
   "contribHdg": {
     "message": "参与贡献",

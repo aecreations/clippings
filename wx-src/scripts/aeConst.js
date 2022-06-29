@@ -71,22 +71,18 @@ let aeConst = {
   POST_UPGRADE_NOTIFCN_DELAY_MS: 60000, // 1 minute
   MAX_NUM_POST_UPGRADE_NOTIFICNS: 2,
 
-  // Notification IDs
-  NOTIFY_BACKUP_REMIND_FIRSTRUN_ID: "ae-clippings-notify-backup-reminder-firstrun",
-  NOTIFY_BACKUP_REMIND_ID: "ae-clippings-notify-backup-reminder",
-  NOTIFY_SYNC_ERROR_ID: "ae-clippings-sync-error",
-  NOTIFY_SYNC_HELPER_UPDATE: "ae-clippings-sync-helper-update",
-  NOTIFY_WHATS_NEW: "ae-clippings-whats-new",
-
   // Errors returned by the native messaging app
   SYNC_ERROR_UNKNOWN: "Error: undefined",
   SYNC_ERROR_CONXN_FAILED: "Error: Attempt to postMessage on disconnected port",
 
-  DONATE_URL: "https://aecreations.sourceforge.io/clippings/donate.php",
+  QUICKSTART_URL: "https://aecreations.io/clippings/quickstart.php",
+  WHATSNEW_URL: "https://aecreations.io/clippings/whatsnew.php",
+  DONATE_URL: "https://aecreations.io/clippings/donate.php",
   L10N_URL: "https://crowdin.com/project/clippings",
   BLOG_URL: "https://aecreations.blogspot.com/",
-  FORUM_URL: "https://groups.google.com/g/aecreations-help",
+  FORUM_URL: "https://aecreations.io/forums",
   AMO_URL: "https://addons.mozilla.org/firefox/addon/clippings/",
-  CONTRIB_URL: "https://aecreations.sourceforge.io/clippings/contribute.php",
-  HELP_URL: "https://aecreations.sourceforge.io/clippings/help.php",
+  CONTRIB_URL: "https://aecreations.io/clippings/contribute.php",
+  HELP_URL: "https://aecreations.io/clippings/help.php",
+  SYNC_CLIPPINGS_HELP_URL: "https://aecreations.io/clippings/sync.php",
 };

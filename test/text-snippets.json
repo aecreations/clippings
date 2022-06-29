@@ -1,0 +1,38 @@
+[
+  {
+    "id": "2",
+    "type": "text",
+    "level": "0",
+    "parent": "0",
+    "name": "Greetings!",
+    "text": "The quick brown fox jumps over the lazy dog.",
+    "html": "false"
+  },
+  {
+    "id": "3",
+    "type": "text",
+    "level": "0",
+    "parent": "0",
+    "name": "Parting shot",
+    "text": "Goodbye, cruel world!",
+    "html": "false"
+  },
+  {
+    "id": "4",
+    "type": "text",
+    "level": "0",
+    "parent": "0",
+    "name": "With Asian characters",
+    "text": "你好嗎？ How are you?\n我很好, 你呢？  I am fine, and you?",
+    "html": "false"
+  },
+  {
+    "id": "5",
+    "type": "text",
+    "level": "0",
+    "parent": "0",
+    "name": "HTML-formatted Sample",
+    "text": "<P>The <em>quick</em> <span style=\"font-weight:bold;color:brown\">brown</span> fox  <sup style=\"font-weight:bold\">jumps</sup> over the <span style=\"text-decoration:underline\">lazy</span> dog.</p>",
+    "html": "true"
+  }
+]
