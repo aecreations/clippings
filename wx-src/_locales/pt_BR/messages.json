@@ -871,7 +871,7 @@
     "description": "The name of the feature for synchronizing clippings between applications or computers."
   },
   "syncIntro": {
-    "message": "Você pode sincronizar o seu Clippings com o Thunderbird ou outras instalações do Firefox, colocando os clippings que você deseja compartilhar numa pasta especial \"Clippings Sincronizados\". Os clippings sincronizados serão salvos em um arquivo no seu sistema.  Requer o app de ajuda <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">Sincronizar Clippings</a>."
+    "message": "Você pode sincronizar o seu Clippings com o Thunderbird ou outras instalações do Firefox, colocando os clippings que você deseja compartilhar numa pasta especial \"Clippings Sincronizados\". Os clippings sincronizados serão salvos em um arquivo no seu sistema.  Requer o app de ajuda <a href=\"https://aecreations.io/clippings/sync.php\" class=\"hyperlink\">Sincronizar Clippings</a>."
   },
   "syncIntroTB": {
     "message": "Você pode sincronizar seus clippings com Firefox ou outras instalações do Thunderbird colocando os clippings que você deseja compartilhar em uma pasta especial \"Clippings Sincronizados\". Os clippings sincronizados serão salvos em um arquivo no seu sistema. Requer o <a href=\"https://aecreations.io/clippings/sync.php\" class=\"hyperlink\">Sync Clippings</a> app."
