@@ -482,8 +482,10 @@ async function init()
     });
   }
 
-  let tabs = await browser.tabs.query({});
-  tabs.forEach(aTab => {initContentCSS(aTab.id)});
+  if (gPrefs.tabModalMsgBox) {
+    let tabs = await browser.tabs.query({});
+    tabs.forEach(aTab => {initContentCSS(aTab.id)});
+  }
 
   if (gPrefs.showWelcome) {
     openWelcomePage();
