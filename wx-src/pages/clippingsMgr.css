@@ -844,6 +844,11 @@ ul.fancytree-container {
     background-image: var(--url-toolbar-btn-img-ok-active);
 }
 
+#edit-src-url-ok:-moz-focusring {
+    background-color: #61b5ffbf !important;
+    background-image: var(--url-toolbar-btn-img-ok-hover);
+}
+
 #source-url-bar > #source-url-deck > #src-url-edit-mode > #edit-src-url-cancel {
     order: 3;
 
@@ -864,6 +869,11 @@ ul.fancytree-container {
 
 #edit-src-url-cancel:active {
     background-image: var(--url-toolbar-btn-img-cancel-active);
+}
+
+#edit-src-url-cancel:-moz-focusring {
+    background-color: #61b5ffbf !important;
+    background-image: var(--url-toolbar-btn-img-cancel-hover);   
 }
 
 #edit-src-url-ok:focus,
