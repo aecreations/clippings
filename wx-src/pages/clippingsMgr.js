@@ -4785,7 +4785,7 @@ function buildClippingsTree()
 
             let id = parseInt(aData.otherNode.key);
 
-            if (gPrefs.syncClippings && id == gPrefs.syncFolderID
+            if (gPrefs.syncClippings && aData.otherNode.isFolder() && id == gPrefs.syncFolderID
                 && newParentID != aeConst.ROOT_FOLDER_ID) {
               warn("The Synced Clippings folder cannot be moved.");
               return;
@@ -5013,7 +5013,7 @@ function buildClippingsTree()
             }
 
             let folderID = parseInt(selectedNode.key);
-            return (folderID == gPrefs.syncFolderID);
+            return (selectedNode.isFolder() && folderID == gPrefs.syncFolderID);
           }
         },
         gotoSrcURL: {
@@ -5121,7 +5121,7 @@ function buildClippingsTree()
             }
 
             let folderID = parseInt(selectedNode.key);
-            return (folderID == gPrefs.syncFolderID);
+            return (selectedNode.isFolder() && folderID == gPrefs.syncFolderID);
           }
         }
       }
