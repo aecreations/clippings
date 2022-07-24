@@ -59,9 +59,19 @@ body[data-locale|="pt"] #backup-hint {
     letter-spacing: -0.3px;
 }
 
+#backup-reminder ~ label {
+    vertical-align: -1px;
+}
+
 #backup-reminder-freq {
     margin-left: 4px;
     margin-right: 4px;
+    vertical-align: -1px;
+}
+
+body[data-os="win"] #backup-reminder ~ label,
+body[data-os="win"] #backup-reminder-freq {
+    vertical-align: 0;
 }
 
 #prefs-hint {
