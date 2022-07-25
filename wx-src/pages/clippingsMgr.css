@@ -79,9 +79,11 @@
     --url-toolbar-btn-img-ok: url("../img/ok.svg");
     --url-toolbar-btn-img-ok-hover: url("../img/ok_hover.svg");
     --url-toolbar-btn-img-ok-active: url("../img/ok_active.svg");
+    --url-toolbar-btn-img-ok-focus: url("../img/ok_focus.svg");
     --url-toolbar-btn-img-cancel: url("../img/cancel.svg");
     --url-toolbar-btn-img-cancel-hover: url("../img/cancel_hover.svg");
     --url-toolbar-btn-img-cancel-active: url("../img/cancel_active.svg");
+    --url-toolbar-btn-img-cancel-focus: url("../img/cancel_focus.svg");
     --url-toolbar-btn-img-customPlchldr: url("../img/customPlchldr.svg");
     --url-toolbar-btn-img-customPlchldr-hover: url("../img/customPlchldr_hover.svg");
     --url-toolbar-btn-img-autoIncPlchldr: url("../img/numericPlchldr.svg");
@@ -155,9 +157,11 @@
 	--url-toolbar-btn-img-ok: url("../img/ok_dk.svg");
 	--url-toolbar-btn-img-ok-hover: url("../img/ok_hover_dk.svg");
 	--url-toolbar-btn-img-ok-active: url("../img/ok_active_dk.svg");
+	--url-toolbar-btn-img-ok-focus: url("../img/ok_focus.svg");
 	--url-toolbar-btn-img-cancel: url("../img/cancel_dk.svg");
 	--url-toolbar-btn-img-cancel-hover: url("../img/cancel_hover_dk.svg");
 	--url-toolbar-btn-img-cancel-active: url("../img/cancel_active_dk.svg");
+	--url-toolbar-btn-img-cancel-focus: url("../img/cancel_focus.svg");
 	--url-toolbar-btn-img-customPlchldr: url("../img/customPlchldr_dk.svg");
 	--url-toolbar-btn-img-customPlchldr-hover: url("../img/customPlchldr_dk.svg");
 	--url-toolbar-btn-img-autoIncPlchldr: url("../img/numericPlchldr_dk.svg");
@@ -845,8 +849,7 @@ ul.fancytree-container {
 }
 
 #edit-src-url-ok:-moz-focusring {
-    background-color: #61b5ffbf !important;
-    background-image: var(--url-toolbar-btn-img-ok-hover);
+    background-image: var(--url-toolbar-btn-img-ok-focus);
 }
 
 #source-url-bar > #source-url-deck > #src-url-edit-mode > #edit-src-url-cancel {
@@ -872,8 +875,7 @@ ul.fancytree-container {
 }
 
 #edit-src-url-cancel:-moz-focusring {
-    background-color: #61b5ffbf !important;
-    background-image: var(--url-toolbar-btn-img-cancel-hover);   
+    background-image: var(--url-toolbar-btn-img-cancel-focus);   
 }
 
 #edit-src-url-ok:focus,
