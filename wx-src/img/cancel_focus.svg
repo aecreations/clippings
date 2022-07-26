@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16" height="16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:osb="http://www.openswatchbook.org/uri/2009/osb">
+ <g transform="translate(-10 -182.36)" fill="none">
+  <path transform="translate(10 182.36)" d="m4 4 8 8" stroke="#a00000" stroke-width="2.5"/>
+  <path d="m22 186.36-8 8" stroke="#a00000" stroke-width="2.5"/>
+  <path d="m14.853 184.82 3.1692 3.1029 3.0983-3.1536 2.4659 2.4862-3.1315 3.0873 3.1357 3.1278-2.4979 2.4674-3.1046-3.147-3.1111 3.1534-2.4483-2.4483 3.1416-3.1588-3.1463-3.0975z" stroke="#61b5ff" stroke-width="1px"/>
+ </g>
+</svg>

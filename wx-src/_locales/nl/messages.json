@@ -210,7 +210,7 @@
     "message": "Wat is er nieuw"
   },
   "welcWhatsNewDesc": {
-    "message": "Clippings 6.3 bevat verbeteringen in vensters en dialogen, en een nieuwe instelling voor backup herinneringen."
+    "message": "Clippings 6.4 biedt verbeteringen van de toetsenbordnavigatie in vensters, dialogen en andere aanvullingen."
   },
   "welcWhatsNewCTA": {
     "message": "Meer informatie"
@@ -871,20 +871,20 @@
     "description": "The name of the feature for synchronizing clippings between applications or computers."
   },
   "syncIntro": {
-    "message": "Je kunt de clippings synchroniseren met Thunderbird of andere Firefox-installaties door de knipsels die je wilt delen in een speciale map \"Gesynchroniseerde Clippings\". De gesynchroniseerde knipsels zullen worden opgeslagen in een bestand op uw systeem. Vereist de <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">Sync Clippings</a> helper-app."
+    "message": "Je kunt de clippings synchroniseren met Thunderbird of andere Firefox-installaties door de knipsels die je wilt delen in een speciale map \"Gesynchroniseerde Clippings\". De gesynchroniseerde knipsels zullen worden opgeslagen in een bestand op uw systeem. Vereist de <a href=\"https://aecreations.sourceforge.io/clippings/sync.php\" class=\"hyperlink\">Sync Clippings</a> helper-app."
   },
   "syncIntroTB": {
-    "message": "Je kunt de knipsels synchroniseren met Firefox of andere Thunderbird installaties door de knipsels die u wilt delen in een speciale \"Synced Knipsels\" map te plaatsen.  De gesynchroniseerde knipsels worden opgeslagen in een bestand op uw systeem Vereist de <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">Sync Knipsels</a> helper-app."
+    "message": "Je kunt de knipsels synchroniseren met Firefox of andere Thunderbird installaties door de knipsels die u wilt delen in een speciale \"Synced Knipsels\" map te plaatsen.  De gesynchroniseerde knipsels worden opgeslagen in een bestand op uw systeem Vereist de <a href=\"https://aecreations.sourceforge.io/clippings/sync.php\" class=\"hyperlink\">Sync Knipsels</a> helper-app."
   },
   "syncLearnMore": {
     "message": "Meer informatie over Clippings synchroniseren."
   },
   "syncHelp": {
-    "message": "<p class=\"dlg-subhead\">Sync Knipsels</p><p>Met Sync Knipsels synchroniseer je een subgroep van knipsels tussen Firefox and Thunderbird, zodat ze beschikbaar komen in beide toepassingen. Je kunt kiezen welke knipsels je wilt synchroniseren door ze aan te maken in een speciale “Synced Knipsels” map in de New Knipsel dialoog, of door ze te verplaatsen naar een zelfde map in Knipsels Manager.</p><p>De Synced Knipsels map wordt automatisch aangemaakt als Sync Knipsels is geïnstalleerd.</p><p class=\"dlg-subhead\">Installatie</p><p>Sync Knipsels moet worden ingeschakeld in de toepassingen waarmee je de knipsels wilt uitwisselen. Sync Knipsels wordt ondersteund in Firefox 60  en later en in Thunderbird 60 en nieuwer (mits Knipsels for Thunderbird 5.6 of nieuwer is geïnstalleerd). </p><p> Daarnaast moet je de Sync Knipsels helper app installeren op je systeem om de inhoud van de Synced Knipsels map actueel te houden. Die app kun je ophalen van de <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">AE Creations website</a>. Na installatie start de app automatisch op als Firefox opstart en draait dan op de achtergrond. </p><p>Activeer Sync Knipsels in Firefox door op de Knipsels voorkeuren pagina te klikken op <b>Turn On Sync</b>.  Er wordt gevraagd om een bestandslocatie te kiezen op je system om de gesynchroniseerde knipsel gegevens  bewaren, als die locatie nog niet is ingevuld.</p>",
+    "message": "<p class=\"dlg-subhead\">Sync Clippings</p><p>Sync Clippings synchroniseert een subset van knipsels tussen Firefox en Thunderbird, of andere versies van deze programma's. Je kunt kiezen welke knipsels je wilt synchroniseren door ze aan te maken in een speciale map \"Synced Clippings\" vanuit het dialoogvenster New Clipping, of door ze naar dezelfde map te verplaatsen in Clippings Manager.</p><p>De map Synced Clippings wordt automatisch aangemaakt als het programma wordt ingesteld.</p><p class=\"dlg-subhead\">Instellen</p><p>De Sync Clippings Helper-app moet worden geïnstalleerd om de inhoud van je map Synced Clippings up-to-date te houden. Download deze app van de <a href=\"$1\" class=\"hyperlink\">AE Creations website</a>. Na installatie start het automatisch als Firefox wordt gestart en draait het op de achtergrond.</p><p>Om Sync Clippings te activeren, klik je op <b>Sync inschakelen</b> op de voorkeurenpagina voor Clippings. Je krijgt de vraag een locatie op het systeem te kiezen om de gesynchroniseerde knipselgegevens op te slaan. Herhaal deze instelling in de andere toepassingen waarmee je de knipsels wilt synchroniseren, en kies dezelfde opslaglocatie voor de synchronisatiegegevens.</p>",
     "description": "Sync Clippings help in Firefox"
   },
   "syncHelpTB": {
-    "message": "<p class=\"dlg-subhead\">Sync Knipsels</p><p>Met Sync Knipsels synchroniseer je een subgroep van knipsels tussen Firefox and Thunderbird, zodat ze beschikbaar komen in beide toepassingen. Je kunt kiezen welke knipsels je wilt synchroniseren door ze aan te maken in een speciale “Synced Knipsels” map in de New Knipsel dialoog, of door ze te verplaatsen naar een zelfde map in Knipsels Manager.</p><p>De Synced Knipsels map wordt automatisch aangemaakt als Sync Knipsels is geïnstalleerd.</p><p class=\"dlg-subhead\">Installatie</p><p>Sync Knipsels moet worden ingeschakeld in de toepassingen waarmee je de knipsels wilt uitwisselen. Sync Knipsels wordt ondersteund in Firefox 60  en later en in Thunderbird 60 en nieuwer (mits Knipsels for Thunderbird 5.6 of nieuwer is geïnstalleerd). </p><p> Daarnaast moet je de Sync Knipsels helper app installeren op je systeem om de inhoud van de Synced Knipsels map actueel te houden. Die app kun je ophalen van de <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">AE Creations website</a>. Na installatie start de app automatisch op als Firefox opstart en draait dan op de achtergrond. </p><p>Activeer Sync Knipsels in Firefox door op de Knipsels voorkeuren pagina te klikken op <b>Turn On Sync</b>.  Er wordt gevraagd om een bestandslocatie te kiezen op je system om de gesynchroniseerde knipsel gegevens  bewaren, als die locatie nog niet is ingevuld.</p>",
+    "message": "<p class=\"dlg-subhead\">Sync Clippings</p><p>Sync Clippings synchroniseert een subset van knipsels tussen Firefox en Thunderbird, of andere versies van deze programma's. Je kunt kiezen welke knipsels je wilt synchroniseren door ze aan te maken in een speciale map \"Synced Clippings\" vanuit het dialoogvenster New Clipping, of door ze naar dezelfde map te verplaatsen in Clippings Manager.</p><p>De map Synced Clippings wordt automatisch aangemaakt als het programma wordt ingesteld.</p><p class=\"dlg-subhead\">Instellen</p><p>De Sync Clippings Helper-app moet worden geïnstalleerd om de inhoud van je map Synced Clippings up-to-date te houden. Download deze app van de <a href=\"$1\" class=\"hyperlink\">AE Creations website</a>. Na installatie start het automatisch als Firefox wordt gestart en draait het op de achtergrond.</p><p>Om Sync Clippings te activeren, klik je op <b>Sync inschakelen</b> op de voorkeurenpagina voor Clippings. Je krijgt de vraag een locatie op het systeem te kiezen om de gesynchroniseerde knipselgegevens op te slaan. Herhaal deze instelling in de andere toepassingen waarmee je de knipsels wilt synchroniseren, en kies dezelfde opslaglocatie voor de synchronisatiegegevens.</p>",
     "description": "Sync Clippings help in Thunderbird"
   },
   "syncStatusOn": {
@@ -936,7 +936,7 @@
     "message": "Geen verbinding met de Sync Clippings helper-app. Zorg ervoor dat de app is geïnstalleerd."
   },
   "errSyncConxnDetail": {
-    "message": "De Sync Clippings helper app is nodig om uw knipselss te synchroniseren. U kunt hem downloaden van de <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">AE Creations website</a>."
+    "message": "De Sync Clippings helper app is nodig om uw knipselss te synchroniseren. U kunt hem downloaden van de <a href=\"https://aecreations.sourceforge.io/clippings/sync.php\" class=\"hyperlink\">AE Creations website</a>."
   },
   "errSyncOptsInit": {
     "message": "Kan de Sync Clippings instellingen niet initialiseren. Start Firefox opnieuw en probeer het opnieuw."
@@ -1053,11 +1053,11 @@
     "description": "Header for the What's New page (appears after upgrading Clippings)"
   },
   "upgrade": {
-    "message": "Clippings is bijgewerkt naar versie 6.3.",
+    "message": "Clippings is opgewaardeerd naar versie 6.4.",
     "description": "What's New page (appears after upgrading Clippings)"
   },
   "upgradeTB": {
-    "message": "Clippings voor Thunderbird is bijgewerkt naar versie 6.1.",
+    "message": "Clippings voor Thunderbird is opgewaardeerd naar versie 6.2.",
     "description": "What's New page (appears after upgrading Clippings for Thunderbird)"
   },
   "whatsNew": {
@@ -1065,16 +1065,20 @@
     "description": "What's New page (appears after upgrading Clippings)"
   },
   "whatsNew1": {
-    "message": "Verbeteringen aan Clippings Manager. In Windows herkent Clippings Manager nu grootte en positie van het venster",
+    "message": "Verbeteringen aan toetsenbordnavigatie in vensters en dialoogvensters",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
   "whatsNew2": {
-    "message": "Verbeteringen voor ondersteuning van meerdere displays in Windows. Clippings pop-upvensters en dialogen zullen nu worden geplaatst binnen het browservenster waaruit ze werden geopend, in plaats van altijd gecentreerd op de primaire weergave",
+    "message": "Oplossing voor een bug in Clippings Manager waarbij het ongedaan maken van acties op een gesynchroniseerd knipsel of map niet meer werkte na het herladen van de map Gesynchroniseerde Knipsels",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
   "whatsNew3": {
-    "message": "Nieuwe optie om back-upherinneringen over te slaan als er geen wijzigingen zijn aangebracht in uw knipsels sinds de laatste back-up",
+    "message": "Kleine visuele opfrissing voor knoppen en dialoogvensters",
     "description": "Description of an enhancement or fix in the new version of Clippings"
+  },
+  "whatsNew-Fx": {
+    "message": "Mogelijkheid toegevoegd om gegevens te importeren uit Text Snippets (Chrome-extensie)",
+    "description": "Description of a Firefox-only enhancement or fix in the new version of Clippings"
   },
   "contribHdg": {
     "message": "Help mee",
@@ -1085,16 +1089,16 @@
     "description": "Call to action message to make donation or learn more about contributing to Clippings (or Clippings for Thunderbird)"
   },
   "linkBlog": {
-    "message": "AE Aanmaak blog"
+    "message": "AE Creations Blog"
   },
   "linkAMO": {
-    "message": "Firefox Add-ons pagina"
+    "message": "Firefox invoegtoepassingen pagina"
   },
   "linkATN": {
-    "message": "Thunderbird Add-ons pagina"
+    "message": "Thunderbird invoegtoepassingen pagina"
   },
   "linkForum": {
-    "message": "Help en Support forums"
+    "message": "Forums voor hulp en ondersteuning"
   },
   "keyAlt": {
     "message": "Alt"
