@@ -871,10 +871,10 @@
     "description": "The name of the feature for synchronizing clippings between applications or computers."
   },
   "syncIntro": {
-    "message": "Você pode sincronizar o seu Clippings com o Thunderbird ou outras instalações do Firefox, colocando os clippings que você deseja compartilhar numa pasta especial \"Clippings Sincronizados\". Os clippings sincronizados serão salvos em um arquivo no seu sistema.  Requer o app de ajuda <a href=\"https://aecreations.io/clippings/sync.php\" class=\"hyperlink\">Sincronizar Clippings</a>."
+    "message": "Você pode sincronizar o seu Clippings com o Thunderbird ou outras instalações do Firefox, colocando os clippings que você deseja compartilhar numa pasta especial \"Clippings Sincronizados\". Os clippings sincronizados serão salvos em um arquivo no seu sistema.  Requer o app de ajuda <a href=\"https://aecreations.sourceforge.io/clippings/sync.php\" class=\"hyperlink\">Sincronizar Clippings</a>."
   },
   "syncIntroTB": {
-    "message": "Você pode sincronizar seus clippings com Firefox ou outras instalações do Thunderbird colocando os clippings que você deseja compartilhar em uma pasta especial \"Clippings Sincronizados\". Os clippings sincronizados serão salvos em um arquivo no seu sistema. Requer o <a href=\"https://aecreations.io/clippings/sync.php\" class=\"hyperlink\">Sync Clippings</a> app."
+    "message": "Você pode sincronizar seus clippings com Firefox ou outras instalações do Thunderbird colocando os clippings que você deseja compartilhar em uma pasta especial \"Clippings Sincronizados\". Os clippings sincronizados serão salvos em um arquivo no seu sistema. Requer o <a href=\"https://aecreations.sourceforge.io/clippings/sync.php\" class=\"hyperlink\">Sync Clippings</a> app."
   },
   "syncLearnMore": {
     "message": "Saiba mais sobre o Sync Clippings."
@@ -936,7 +936,7 @@
     "message": "Não foi possível conectar-se ao app de ajuda de Clippings Sync. Certifique-se de que o app está instalado."
   },
   "errSyncConxnDetail": {
-    "message": "O app de ajuda do Clippings Sync é necessário para sincronizar seus clippings. Você pode baixá-lo no site da <a href=\"https://aecreations.io/clippings/sync.php\" class=\"hyperlink\">AE Creations</a>."
+    "message": "O app de ajuda do Clippings Sync é necessário para sincronizar seus clippings. Você pode baixá-lo no site da <a href=\"https://aecreations.sourceforge.io/clippings/sync.php\" class=\"hyperlink\">AE Creations</a>."
   },
   "errSyncOptsInit": {
     "message": "Não foi possível inicializar as configurações do Sync Clippings. Reinicie o Firefox e tente novamente."

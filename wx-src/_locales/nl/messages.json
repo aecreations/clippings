@@ -871,10 +871,10 @@
     "description": "The name of the feature for synchronizing clippings between applications or computers."
   },
   "syncIntro": {
-    "message": "Je kunt de clippings synchroniseren met Thunderbird of andere Firefox-installaties door de knipsels die je wilt delen in een speciale map \"Gesynchroniseerde Clippings\". De gesynchroniseerde knipsels zullen worden opgeslagen in een bestand op uw systeem. Vereist de <a href=\"https://aecreations.io/clippings/sync.php\" class=\"hyperlink\">Sync Clippings</a> helper-app."
+    "message": "Je kunt de clippings synchroniseren met Thunderbird of andere Firefox-installaties door de knipsels die je wilt delen in een speciale map \"Gesynchroniseerde Clippings\". De gesynchroniseerde knipsels zullen worden opgeslagen in een bestand op uw systeem. Vereist de <a href=\"https://aecreations.sourceforge.io/clippings/sync.php\" class=\"hyperlink\">Sync Clippings</a> helper-app."
   },
   "syncIntroTB": {
-    "message": "Je kunt de knipsels synchroniseren met Firefox of andere Thunderbird installaties door de knipsels die u wilt delen in een speciale \"Synced Knipsels\" map te plaatsen.  De gesynchroniseerde knipsels worden opgeslagen in een bestand op uw systeem Vereist de <a href=\"https://aecreations.io/clippings/sync.php\" class=\"hyperlink\">Sync Knipsels</a> helper-app."
+    "message": "Je kunt de knipsels synchroniseren met Firefox of andere Thunderbird installaties door de knipsels die u wilt delen in een speciale \"Synced Knipsels\" map te plaatsen.  De gesynchroniseerde knipsels worden opgeslagen in een bestand op uw systeem Vereist de <a href=\"https://aecreations.sourceforge.io/clippings/sync.php\" class=\"hyperlink\">Sync Knipsels</a> helper-app."
   },
   "syncLearnMore": {
     "message": "Meer informatie over Clippings synchroniseren."
@@ -936,7 +936,7 @@
     "message": "Geen verbinding met de Sync Clippings helper-app. Zorg ervoor dat de app is geïnstalleerd."
   },
   "errSyncConxnDetail": {
-    "message": "De Sync Clippings helper app is nodig om uw knipselss te synchroniseren. U kunt hem downloaden van de <a href=\"https://aecreations.io/clippings/sync.php\" class=\"hyperlink\">AE Creations website</a>."
+    "message": "De Sync Clippings helper app is nodig om uw knipselss te synchroniseren. U kunt hem downloaden van de <a href=\"https://aecreations.sourceforge.io/clippings/sync.php\" class=\"hyperlink\">AE Creations website</a>."
   },
   "errSyncOptsInit": {
     "message": "Kan de Sync Clippings instellingen niet initialiseren. Start Firefox opnieuw en probeer het opnieuw."

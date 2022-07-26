@@ -871,10 +871,10 @@
     "description": "The name of the feature for synchronizing clippings between applications or computers."
   },
   "syncIntro": {
-    "message": "Sie können Ihre Textbausteine mit anderen Installationen von Thunderbird oder Firefox synchronisieren, indem Sie die auszutauschenden Textbausteine in einem speziellen Ordner »Synchronisierte Textbausteine« ablegen. Die synchronisierten Textbausteine werden in einer Datei auf Ihrem Rechner gespeichert. Das erfordert das <a href=\"https://aecreations.io/clippings/sync.php\" class=\"hyperlink\">Sync-Clippings-Hilfsprogramm</a>."
+    "message": "Sie können Ihre Textbausteine mit anderen Installationen von Thunderbird oder Firefox synchronisieren, indem Sie die auszutauschenden Textbausteine in einem speziellen Ordner »Synchronisierte Textbausteine« ablegen. Die synchronisierten Textbausteine werden in einer Datei auf Ihrem Rechner gespeichert. Das erfordert das <a href=\"https://aecreations.sourceforge.io/clippings/sync.php\" class=\"hyperlink\">Sync-Clippings-Hilfsprogramm</a>."
   },
   "syncIntroTB": {
-    "message": "Sie können Ihre Textbausteine mit anderen Installationen von Firefox oder Thunderbird synchronisieren, indem Sie die auszutauschenden Textbausteine in einem speziellen Ordner »Synchronisierte Textbausteine« ablegen. Die synchronisierten Textbausteine werden in einer Datei auf Ihrem Rechner gespeichert. Dies erfordert das <a href=\"https://aecreations.io/clippings/sync.php\" class=\"hyperlink\">Sync-Clippings-Hilfsprogramm</a>."
+    "message": "Sie können Ihre Textbausteine mit anderen Installationen von Firefox oder Thunderbird synchronisieren, indem Sie die auszutauschenden Textbausteine in einem speziellen Ordner »Synchronisierte Textbausteine« ablegen. Die synchronisierten Textbausteine werden in einer Datei auf Ihrem Rechner gespeichert. Dies erfordert das <a href=\"https://aecreations.sourceforge.io/clippings/sync.php\" class=\"hyperlink\">Sync-Clippings-Hilfsprogramm</a>."
   },
   "syncLearnMore": {
     "message": "Mehr über die Synchronisierung von Textbausteinen erfahren."
@@ -936,7 +936,7 @@
     "message": "Keine Verbindung zum Sync-Clippings-Hilfsprogramm möglich. Stellen Sie sicher, dass es installiert ist."
   },
   "errSyncConxnDetail": {
-    "message": "Um die Textbausteine zu synchronisieren, wird das Clippings Synchronisierungs-Hilfs-Programm gebraucht, die Sie von der <a href=\"https://aecreations.io/clippings/sync.php\" class=\"hyperlink\">AE Creations Website</a> herunterladen können."
+    "message": "Um die Textbausteine zu synchronisieren, wird das Clippings Synchronisierungs-Hilfs-Programm gebraucht, die Sie von der <a href=\"https://aecreations.sourceforge.io/clippings/sync.php\" class=\"hyperlink\">AE Creations Website</a> herunterladen können."
   },
   "errSyncOptsInit": {
     "message": "Die Sync-Clippings-Einstellungen können nicht initialisiert werden. Starten Sie Firefox neu und versuchen Sie es erneut."
