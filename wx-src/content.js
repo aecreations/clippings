@@ -156,11 +156,12 @@ function handleRequestInsertClipping(aRequest)
   // Rich text editor
   else if (isElementOfType(activeElt, "HTMLIFrameElement")) {
     let doc = activeElt.contentDocument;
-    if (doc) {
+    if (doc && doc.body.hasAttribute("contenteditable")
+        && doc.body.getAttribute("contenteditable") != "false") {
       rv = insertTextIntoRichTextEditor(doc, clippingText, autoLineBrk, htmlPaste, aRequest.dispatchInputEvent);
     }
     else {
-      warn("Clippings/wx::content.js: handleRequestInsertClipping(): Document element is null, exiting message handler");
+      warn("Clippings/wx::content.js: handleRequestInsertClipping(): Document element is null or <body> doesn't have 'contenteditable' attribute set; exiting message handler");
     }
   }
   // Rich text editor used by Gmail and Outlook.com
