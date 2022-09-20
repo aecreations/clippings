@@ -871,10 +871,10 @@
     "description": "The name of the feature for synchronizing clippings between applications or computers."
   },
   "syncIntro": {
-    "message": "您可以将您想要分享的剪辑放入一个特殊的“同步剪辑”文件夹中，从而与雷鸟或其他 Firefox 设备同步剪辑。 同步剪辑数据将保存在系统的一个文件中。需要 <a href=\"https://aecreations.sourceforge.io/clippings/sync.php\" class=\"hyperlink\">同步剪辑</a> 助手应用程序。"
+    "message": "您可以将您想要分享的剪辑放入一个特殊的“同步剪辑”文件夹中，从而与雷鸟或其他 Firefox 设备同步剪辑。 同步剪辑数据将保存在系统的一个文件中。需要 <a href=\"https://aecreations.io/clippings/sync.php\" class=\"hyperlink\">同步剪辑</a> 助手应用程序。"
   },
   "syncIntroTB": {
-    "message": "您可以将您想要分享的剪辑放入一个特殊的“同步剪辑”文件夹中，从而与雷鸟或其他 Firefox 设备同步剪辑。 同步剪辑数据将保存在系统的一个文件中。需要 <a href=\"https://aecreations.sourceforge.io/clippings/sync.php\" class=\"hyperlink\">同步剪辑</a> 助手应用程序。"
+    "message": "您可以将您想要分享的剪辑放入一个特殊的“同步剪辑”文件夹中，从而与雷鸟或其他 Firefox 设备同步剪辑。 同步剪辑数据将保存在系统的一个文件中。需要 <a href=\"https://aecreations.io/clippings/sync.php\" class=\"hyperlink\">同步剪辑</a> 助手应用程序。"
   },
   "syncLearnMore": {
     "message": "了解更多关于同步剪辑的信息。"
@@ -936,7 +936,7 @@
     "message": "无法连接到同步剪辑助手应用，请确保应用程序已安装。"
   },
   "errSyncConxnDetail": {
-    "message": "同步剪辑需要使用同步剪辑程序。您可以从 <a href=\"https://aecreations.sourceforge.io/clippings/sync.php\" class=\"hyperlink\">AE Creations</a> 网站中下载。"
+    "message": "同步剪辑需要使用同步剪辑程序。您可以从 <a href=\"https://aecreations.io/clippings/sync.php\" class=\"hyperlink\">AE Creations</a> 网站中下载。"
   },
   "errSyncOptsInit": {
     "message": "无法初始化同步剪辑设置，请重启Firefox后再试。"

@@ -2,8 +2,8 @@
     "manifest_version": 2,
     "name": "__MSG_extName__",
     "description": "__MSG_extDesc__",
-    "version": "6.4.1",
-    "homepage_url": "https://aecreations.sourceforge.io/clippings/index.php",
+    "version": "6.4.2",
+    "homepage_url": "https://aecreations.io/clippings/index.php",
     "author": "AE Creations",
     
     "browser_specific_settings": {
@@ -14,6 +14,7 @@
     },
 
     "icons": {
+        "32": "img/icon32.svg",
         "48": "img/icon.svg",
         "96": "img/icon.svg"
     },

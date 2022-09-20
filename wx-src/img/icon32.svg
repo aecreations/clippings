@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32" height="32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:osb="http://www.openswatchbook.org/uri/2009/osb" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <linearGradient id="linearGradient3228" x1="43.246" x2="43.41" y1="1010.7" y2="1052" gradientTransform="matrix(.66162 0 0 .63958 .2606 363.24)" gradientUnits="userSpaceOnUse">
+   <stop stop-opacity="0" offset="0"/>
+   <stop stop-color="#545454" stop-opacity=".37647" offset="1"/>
+  </linearGradient>
+  <linearGradient id="linearGradient3230" x1="4.2501" x2="42.709" y1="1003.5" y2="1043.1" gradientTransform="matrix(.66569 0 0 .6415 -.52501 360.44)" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#eef3f6" offset="0"/>
+   <stop stop-color="#abc3d2" offset="1"/>
+  </linearGradient>
+  <linearGradient id="linearGradient3232" x1="4.2501" x2="37.46" y1="1003.5" y2="1051.5" gradientTransform="matrix(.66569 0 0 .6415 -.52501 360.44)" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#6c8ad0" offset="0"/>
+   <stop stop-color="#203567" offset="1"/>
+  </linearGradient>
+ </defs>
+ <g transform="translate(0 -1004.4)">
+  <path d="m20.214 1006.7v6.1754h7.4744m-23.454-6.2775v26.04c1.5088-4.161 7.4813-5.8582 11.333-3.7054 2.8667 1.5375 2.3722 3.0104 6.3409 5.3291 2.5353 1.0773 4.571 0.8467 5.8547 0.8467l0.05864-22.207-7.8673-6.303z" fill="none" stroke="url(#linearGradient3228)" stroke-width="2.4678"/>
+  <path d="m18.985 1005.6v6.7786h7.9668m-23.952-6.9762v26.475c1.5388-4.2307 7.6301-5.9562 11.558-3.7673 2.9238 1.5631 2.4194 3.0605 6.4671 5.418 2.16 1.0136 4.6619 0.8611 5.9712 0.8611l-0.03122-22.31-7.9328-6.6765z" fill="url(#linearGradient3230)" stroke="url(#linearGradient3232)" stroke-width="2"/>
+  <g fill="none" stroke="#6080cc">
+   <path d="m7.0027 1009.9 8.0433-0.044" stroke-width="1px"/>
+   <path d="m7.0027 1012.9 8.0433-0.044" stroke-width="1px"/>
+   <g>
+    <path d="m7.0027 1015.9 15.995 2e-4"/>
+    <path d="m7 1018.9 15.995 2e-4"/>
+    <path d="m7 1021.9 15.995 2e-4"/>
+   </g>
+   <path d="m16.003 1024.9 6.9945-0.044" stroke-width="1px"/>
+  </g>
+ </g>
+</svg>

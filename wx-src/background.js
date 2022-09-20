@@ -2221,22 +2221,12 @@ browser.runtime.onMessage.addListener(aRequest => {
 });
 
 
-browser.tabs.onUpdated.addListener((aTabID, aChangeInfo, aTab) => {
-  if (aTab.status == "complete") {
-    initContentCSS(aTabID);
-  }
-}, {properties: ["status"]});
-
-
 window.addEventListener("unload", aEvent => {
   gClippingsListeners.remove(gClippingsListener);
 });
 
 
-//
 // Catch any unhandled promise rejections from 3rd-party libs
-//
-
 window.addEventListener("unhandledrejection", aEvent => {
   aEvent.preventDefault();
 });
