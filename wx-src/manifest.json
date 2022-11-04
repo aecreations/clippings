@@ -14,6 +14,7 @@
     },
 
     "icons": {
+        "16": "img/clippings16.svg",
         "32": "img/icon32.svg",
         "48": "img/icon.svg",
         "96": "img/icon.svg"
