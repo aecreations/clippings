@@ -1163,7 +1163,7 @@ async function showBackupNotification()
         type: "basic",
         title: browser.i18n.getMessage("backupNotifyTitle"),
         message: browser.i18n.getMessage("backupNotifyFirstMsg"),
-        iconUrl: "img/icon.svg",
+        iconUrl: "img/notifIcon.svg",
       });
 
       aePrefs.setPrefs({
@@ -1188,7 +1188,7 @@ async function showBackupNotification()
           type: "basic",
           title: browser.i18n.getMessage("backupNotifyTitle"),
           message: browser.i18n.getMessage("backupNotifyMsg"),
-          iconUrl: "img/icon.svg",
+          iconUrl: "img/notifIcon.svg",
         });
 
         setBackupNotificationInterval();
@@ -1242,7 +1242,7 @@ async function showWhatsNewNotification()
     type: "basic",
     title: extName,
     message: browser.i18n.getMessage("upgradeNotifcn", extName),
-    iconUrl: "img/icon.svg",
+    iconUrl: "img/notifIcon.svg",
   });
 
   let upgradeNotifCount = gPrefs.upgradeNotifCount - 1;
