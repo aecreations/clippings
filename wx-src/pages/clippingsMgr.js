@@ -5,6 +5,7 @@
 
 const DEBUG_TREE = false;
 const DEBUG_WND_ACTIONS = false;
+const REBUILD_BRWS_CXT_MENU_DELAY = 3000;
 const ENABLE_PASTE_CLIPPING = false;
 const NEW_CLIPPING_FROM_CLIPBOARD = "New Clipping From Clipboard";
 
@@ -4170,6 +4171,7 @@ function initDialogs()
   gDialogs.importFromFile.onAccept = function (aEvent)
   {
     let clippingsLstrs = gClippings.getClippingsListeners().getListeners();
+    let currClippingsData;
     
     function importFile(aAppendItems)
     {
@@ -4206,7 +4208,20 @@ function initDialogs()
           $("#import-progress-bar").hide();
           warn(e);
           $("#import-error").text(browser.i18n.getMessage("importError")).show();
-          clippingsLstrs.forEach(aListener => { aListener.importFinished(false) });
+
+          if (aAppendItems) {
+            clippingsLstrs.forEach(aListener => { aListener.importFinished(false) });
+          }
+          else {
+            log("Clippings/wx::clippingsMgr.js: Restore from backup file has failed.  Rolling back.");
+            aeImportExport.importFromJSON(currClippingsData, true, aAppendItems);
+            setTimeout(() => {
+              // Restoring the current clippings data will change the IDs of
+              // clippings and folders, so force a rebuild of the Clippings
+              // context menu.
+              clippingsLstrs.forEach(aListener => { aListener.importFinished(true) });
+            }, REBUILD_BRWS_CXT_MENU_DELAY);
+          }
 
           return;
         }
@@ -4229,40 +4244,50 @@ function initDialogs()
       info("Clippings/wx::clippingsMgr.js: Import dialog mode: Restore From Backup");
 
       $("#restore-backup-warning").hide();
-      
-      gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
-        log("Clippings/wx::clippingsMgr.js: gDialogs.importFromFile.onAccept(): Starting restore from backup file.\nDeleting all clippings and folders (except the 'Synced Clippings' folder, if Sync Clippings turned on).");
 
-        clippingsLstrs.forEach(aListener => { aListener.importStarted() });       
-	gCmd.recentAction = gCmd.ACTION_RESTORE_BACKUP;
+      // Create an in-memory backup of the existing data.  If the restore fails
+      // due to bad JSON import data, then roll back by restoring this backup.
+      let excludeSyncFldrID = null;
+      if (gPrefs.syncClippings) {
+        excludeSyncFldrID = gPrefs.syncFolderID;
+      }
+      aeImportExport.exportToJSON(true, false, aeConst.ROOT_FOLDER_ID, excludeSyncFldrID, true).then(aJSONData => {
+        currClippingsData = aJSONData;
 
-        gClippingsDB.folders.each((aItem, aCursor) => {
-          if ("isSync" in aItem) {
-            // Don't delete the Synced Clippings folder.
-            return;
-          }
+        gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
+          log("Clippings/wx::clippingsMgr.js: gDialogs.importFromFile.onAccept(): Starting restore from backup file.\nDeleting all clippings and folders (except the 'Synced Clippings' folder, if Sync Clippings turned on).");
 
-          let fldrID = aItem.id + "F";         
-          if (! gSyncedItemsIDs.has(fldrID)) {
-            gClippingsSvc.deleteFolder(parseInt(fldrID));
-          }
-        }).then(() => {
-          return gClippingsDB.clippings.each((aItem, aCursor) => {
-            let clpgID = aItem.id + "C";
-            if (! gSyncedItemsIDs.has(clpgID)) {
-              gClippingsSvc.deleteClipping(parseInt(clpgID));
+          clippingsLstrs.forEach(aListener => { aListener.importStarted() });       
+	  gCmd.recentAction = gCmd.ACTION_RESTORE_BACKUP;
+
+          gClippingsDB.folders.each((aItem, aCursor) => {
+            if ("isSync" in aItem) {
+              // Don't delete the Synced Clippings folder.
+              return;
             }
-          });
-        }).then(() => {
-          log("Clippings/wx::clippingsMgr.js: Finished deleting clippings and folders. Clearing undo stack and starting import of backup file.");
 
-          gCmd.undoStack.clear();
-          gCmd.redoStack.clear();
-          importFile(false);
+            let fldrID = aItem.id + "F";         
+            if (! gSyncedItemsIDs.has(fldrID)) {
+              gClippingsSvc.deleteFolder(parseInt(fldrID));
+            }
+          }).then(() => {
+            return gClippingsDB.clippings.each((aItem, aCursor) => {
+              let clpgID = aItem.id + "C";
+              if (! gSyncedItemsIDs.has(clpgID)) {
+                gClippingsSvc.deleteClipping(parseInt(clpgID));
+              }
+            });
+          }).then(() => {
+            log("Clippings/wx::clippingsMgr.js: Finished deleting clippings and folders. Clearing undo stack and starting import of backup file.");
+
+            gCmd.undoStack.clear();
+            gCmd.redoStack.clear();
+            importFile(false);
+          });
+        }).catch(aErr => {
+          console.error("Clippings/wx::clippingsMgr.js: gDialogs.importFromFile.onAccept(): " + aErr);
         });
-      }).catch(aErr => {
-        console.error("Clippings/wx::clippingsMgr.js: gDialogs.importFromFile.onAccept(): " + aErr);
-      });
+      });      
     }
     else {
       info("Clippings/wx::clippingsMgr.js: Import dialog mode: Import File");
