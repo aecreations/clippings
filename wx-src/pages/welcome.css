@@ -6,12 +6,12 @@
 :root {
     --page-width: 900px;
 
-    --url-bkgd-img: url("../img/postUpgrade-bkgrd.png");
+    --url-bkgd-img: url("../img/welc-bkgd.png");
     --url-banner-img: url("../img/banner.svg");
     --color-bkgd: none;
-    --color-main-border: #eee;
+    --color-main-border: #ccc;
     --color-main-bkgd: #F9F9FA;
-    --color-main-border-shadow: #7E7A78;
+    --color-main-border-shadow: #c8c8c8;
     --color-text-default: black;
     --color-text-body: #0c0c0d;
     --color-hyperlink: #0060df;
@@ -72,7 +72,7 @@ main {
     margin-bottom: 18px;
     border: 1px solid var(--color-main-border);
     border-radius: 2px;
-    box-shadow: 0px 1px 5px 0px var(--color-main-border-shadow);
+    box-shadow: 0px 0px 8px 2px var(--color-main-border-shadow);
     background-color: var(--color-main-bkgd);    
 }
 
