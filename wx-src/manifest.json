@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "__MSG_extName__",
     "description": "__MSG_extDesc__",
-    "version": "6.4.2",
+    "version": "6.4.3",
     "homepage_url": "https://aecreations.io/clippings/index.php",
     "author": "AE Creations",
     
@@ -14,6 +14,7 @@
     },
 
     "icons": {
+        "16": "img/clippings16.svg",
         "32": "img/icon32.svg",
         "48": "img/icon.svg",
         "96": "img/icon.svg"

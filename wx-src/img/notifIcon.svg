@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="48" height="48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:osb="http://www.openswatchbook.org/uri/2009/osb" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <linearGradient id="linearGradient3228" x1="43.246" x2="43.41" y1="1010.7" y2="1052" gradientTransform="matrix(.98728 0 0 .98066 1.3049 20.852)" gradientUnits="userSpaceOnUse">
+   <stop stop-opacity="0" offset="0"/>
+   <stop stop-color="#545454" stop-opacity=".37647" offset="1"/>
+  </linearGradient>
+  <linearGradient id="linearGradient3230" x1="4.2501" x2="42.709" y1="1003.5" y2="1043.1" gradientTransform="matrix(.97696 0 0 .97042 .064406 30.014)" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#eef3f6" offset="0"/>
+   <stop stop-color="#abc3d2" offset="1"/>
+  </linearGradient>
+  <linearGradient id="linearGradient3232" x1="4.2501" x2="37.46" y1="1003.5" y2="1051.5" gradientTransform="matrix(.97696 0 0 .97042 .064406 30.014)" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#6c8ad0" offset="0"/>
+   <stop stop-color="#203567" offset="1"/>
+  </linearGradient>
+ </defs>
+ <g transform="translate(0 -1004.4)">
+  <path d="m31.079 1007.5v9.4687h11.153m-34.999-9.6253v39.927c2.2514-6.38 11.164-8.9823 16.91-5.6815 4.2778 2.3574 3.5398 4.6158 9.4619 8.1711 3.8457 1.9643 6.8208 1.2983 8.7365 1.2983l-0.11033-33.779-11.542-9.9355z" fill="none" stroke="url(#linearGradient3228)" stroke-width="2.4678"/>
+  <path d="m29.156 1005.8v9.4979h11.188m-35.106-9.6549v40.049c2.2583-6.3997 11.198-9.0099 16.962-5.699 4.2909 2.3646 3.5507 4.63 9.491 8.1961 3.8575 1.9706 6.8418 1.3025 8.7633 1.3025l-0.11067-33.883-11.577-9.966z" fill="url(#linearGradient3230)" stroke="url(#linearGradient3232)" stroke-width="2.4753"/>
+  <g fill="none" stroke="#6080cc">
+   <path d="m34.073 1020.2h-23.116" stroke-width="1.7492"/>
+   <path d="m23.704 1016h-12.74" stroke-width="1.7097"/>
+   <path d="m10.952 1024.4h23.154" stroke-width="1.7507"/>
+   <path d="m10.875 1028.8h23.115" stroke-width="1.7492"/>
+   <path d="m10.912 1033.1h23.193" stroke-width="1.7522"/>
+   <path d="m10.971 1011.8h12.761" stroke-width="1.711"/>
+   <path d="m34.178 1037.5h-7.5643" stroke-width="1.8"/>
+  </g>
+ </g>
+</svg>

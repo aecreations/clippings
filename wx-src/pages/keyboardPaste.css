@@ -141,7 +141,11 @@ body {
 
 #shortcut-list-toolbar #paste-clipping {
     order: 1;
-    background-image: url("../img/clipping.svg");
+    background-image: url("../img/insClipping.svg");
+}
+
+#shortcut-list-toolbar #paste-clipping:hover {
+    background-image: url("../img/insClipping-hover.svg");
 }
 
 #shortcut-list-toolbar #export-shct-list {
