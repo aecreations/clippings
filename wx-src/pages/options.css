@@ -212,6 +212,7 @@ body[data-locale="de"]:not([data-os="mac"]) #shortcut-key-prefix-modifiers {
 }
 
 body[data-locale|="es"] #shortcut-key-prefix-modifiers {
+    font-size: 13px;
     letter-spacing: -0.2px;
 }
 
