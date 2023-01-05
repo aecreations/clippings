@@ -753,7 +753,7 @@ body[data-locale|="es"] #about-dlg #ext-desc {
 }
 
 body[data-locale="de"] #about-dlg #usr-contrib-cta,
-body[data-locale|="es"] #about-dlg #usr-contrib-cta {
+body[data-locale|="es"]:not([data-os="win"]) #about-dlg #usr-contrib-cta {
     letter-spacing: -0.2px;
 }
 
