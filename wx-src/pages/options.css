@@ -446,7 +446,7 @@ body[data-locale="nl"] #wnds-dlgs-opts-dlg #clpmgr-save-wnd-pos-label {
 }
 
 body[data-locale|="es"] #wnds-dlgs-opts-dlg #clpmgr-save-wnd-pos-label {
-    letter-spacing: -0.4px;
+    letter-spacing: -0.5px;
 }
 
 #wnds-dlgs-opts-dlg #reset-clpmgr-wnd-pos {
@@ -741,7 +741,7 @@ body[data-locale|="pt"][data-os="mac"] #about-dlg #ext-desc {
 }
 
 body[data-locale|="es"] #about-dlg #ext-desc {
-    letter-spacing: -0.38px;
+    letter-spacing: -0.4px;
 }
 
 #about-dlg #credits label {
@@ -754,7 +754,7 @@ body[data-locale|="es"] #about-dlg #ext-desc {
 
 body[data-locale="de"] #about-dlg #usr-contrib-cta,
 body[data-locale|="es"]:not([data-os="win"]) #about-dlg #usr-contrib-cta {
-    letter-spacing: -0.2px;
+    letter-spacing: -0.25px;
 }
 
 body[data-locale="uk"] #about-dlg #usr-contrib-cta {
