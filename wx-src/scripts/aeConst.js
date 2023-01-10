@@ -74,6 +74,7 @@ let aeConst = {
   // Errors returned by the native messaging app
   SYNC_ERROR_UNKNOWN: "Error: undefined",
   SYNC_ERROR_CONXN_FAILED: "Error: Attempt to postMessage on disconnected port",
+  SYNC_ERROR_NAT_APP_NOT_FOUND: "Error: No such native application syncClippings",
 
   QUICKSTART_URL: "https://aecreations.io/clippings/quickstart.php",
   WHATSNEW_URL: "https://aecreations.io/clippings/whatsnew.php",

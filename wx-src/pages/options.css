@@ -212,6 +212,7 @@ body[data-locale="de"]:not([data-os="mac"]) #shortcut-key-prefix-modifiers {
 }
 
 body[data-locale|="es"] #shortcut-key-prefix-modifiers {
+    font-size: 13px;
     letter-spacing: -0.2px;
 }
 
@@ -405,6 +406,7 @@ body[data-locale="de"] #wnds-dlgs-opts-dlg {
     --width: 540px;
 }
 
+body[data-locale|="es"] #wnds-dlgs-opts-dlg,
 body[data-locale="uk"] #wnds-dlgs-opts-dlg {
     --width: 560px;
 }
@@ -441,6 +443,10 @@ body[data-os="mac"] #wnds-dlgs-opts-dlg #wnds-dlgs-opts-exp-warn .warning-icon {
 
 body[data-locale="nl"] #wnds-dlgs-opts-dlg #clpmgr-save-wnd-pos-label {
     letter-spacing: -0.18px;
+}
+
+body[data-locale|="es"] #wnds-dlgs-opts-dlg #clpmgr-save-wnd-pos-label {
+    letter-spacing: -0.5px;
 }
 
 #wnds-dlgs-opts-dlg #reset-clpmgr-wnd-pos {
@@ -734,6 +740,10 @@ body[data-locale|="pt"][data-os="mac"] #about-dlg #ext-desc {
     letter-spacing: -0.55px;
 }
 
+body[data-locale|="es"] #about-dlg #ext-desc {
+    letter-spacing: -0.4px;
+}
+
 #about-dlg #credits label {
     line-height: 18px;
 }
@@ -742,12 +752,9 @@ body[data-locale|="pt"][data-os="mac"] #about-dlg #ext-desc {
     margin-top: 8px;
 }
 
-body[data-locale="de"] #about-dlg #usr-contrib-cta {
-    letter-spacing: -0.2px;
-}
-
-body[data-locale|="es"] #about-dlg #usr-contrib-cta {
-    letter-spacing: -0.12px;
+body[data-locale="de"] #about-dlg #usr-contrib-cta,
+body[data-locale|="es"]:not([data-os="win"]) #about-dlg #usr-contrib-cta {
+    letter-spacing: -0.25px;
 }
 
 body[data-locale="uk"] #about-dlg #usr-contrib-cta {
