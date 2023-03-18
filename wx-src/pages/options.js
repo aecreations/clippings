@@ -89,12 +89,17 @@ async function init()
     gDialogs.about.showModal();
   });
 
+  // About dialog.
   let usrContribCTA = $("#usr-contrib-cta");
   usrContribCTA.append(sanitizeHTML(`<label id="usr-contrib-cta-hdg">${browser.i18n.getMessage("aboutContribHdg")}</label>&nbsp;`));
   usrContribCTA.append(sanitizeHTML(`<a href="${aeConst.DONATE_URL}" class="hyperlink">${browser.i18n.getMessage("aboutDonate")}</a>&nbsp;`));
   usrContribCTA.append(sanitizeHTML(`<label id="usr-contrib-cta-conj">${browser.i18n.getMessage("aboutContribConj")}</label>`));
   usrContribCTA.append(sanitizeHTML(`<a href="${aeConst.L10N_URL}" class="hyperlink">${browser.i18n.getMessage("aboutL10n")}</a>`));
   
+  // Sync Clippings help dialog content.
+  let syncHlpTxt = browser.i18n.getMessage("syncHelp", aeConst.SYNC_CLIPPINGS_HELP_URL);
+  $("#sync-clippings-help-dlg > .dlg-content").html(sanitizeHTML(syncHlpTxt));
+
   let prefs = await aePrefs.getAllPrefs();
   $("#html-paste-options").val(prefs.htmlPaste).change(aEvent => {
     aePrefs.setPrefs({ htmlPaste: aEvent.target.value });
@@ -715,14 +720,8 @@ function initDialogs()
       diagDeck.children("#sync-diag").show();
     });
   };
-  
+
   gDialogs.syncClippingsHelp = new aeDialog("#sync-clippings-help-dlg");
-  gDialogs.syncClippingsHelp.onFirstInit = function ()
-  {
-    // Sync Clippings help dialog content.
-    let hlpCont = browser.i18n.getMessage("syncHelp", aeConst.SYNC_CLIPPINGS_HELP_URL);
-    $("#sync-clippings-help-dlg > .dlg-content").html(sanitizeHTML(hlpCont));
-  };
 }
 
 
