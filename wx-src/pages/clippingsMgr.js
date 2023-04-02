@@ -456,9 +456,6 @@ let gClippingsListener = {
     this.copiedItems = [];
   },
 
-  importStarted: function () {},
-  importFinished: function (aIsSuccess) {},
-
   // Helper methods
   _buildChildNodes: function (aFolderNode)
   {
@@ -4170,7 +4167,6 @@ function initDialogs()
   };
   gDialogs.importFromFile.onAccept = function (aEvent)
   {
-    let clippingsLstrs = gClippings.getClippingsListeners().getListeners();
     let currClippingsData;
     
     function importFile(aAppendItems)
@@ -4210,7 +4206,10 @@ function initDialogs()
           $("#import-error").text(browser.i18n.getMessage("importError")).show();
 
           if (aAppendItems) {
-            clippingsLstrs.forEach(aListener => { aListener.importFinished(false) });
+            browser.runtime.sendMessage({
+              msgID: "import-finished",
+              isSuccess: false,
+            });
           }
           else {
             log("Clippings/wx::clippingsMgr.js: Restore from backup file has failed.  Rolling back.");
@@ -4219,7 +4218,10 @@ function initDialogs()
               // Restoring the current clippings data will change the IDs of
               // clippings and folders, so force a rebuild of the Clippings
               // context menu.
-              clippingsLstrs.forEach(aListener => { aListener.importFinished(true) });
+              browser.runtime.sendMessage({
+                msgID: "import-finished",
+                isSuccess: true,
+              });
             }, REBUILD_BRWS_CXT_MENU_DELAY);
           }
 
@@ -4253,11 +4255,12 @@ function initDialogs()
       }
       aeImportExport.exportToJSON(true, false, aeConst.ROOT_FOLDER_ID, excludeSyncFldrID, true).then(aJSONData => {
         currClippingsData = aJSONData;
+        return browser.runtime.sendMessage({msgID: "import-started"});
 
+      }).then(() => {
         gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
           log("Clippings/wx::clippingsMgr.js: gDialogs.importFromFile.onAccept(): Starting restore from backup file.\nDeleting all clippings and folders (except the 'Synced Clippings' folder, if Sync Clippings turned on).");
 
-          clippingsLstrs.forEach(aListener => { aListener.importStarted() });       
 	  gCmd.recentAction = gCmd.ACTION_RESTORE_BACKUP;
 
           gClippingsDB.folders.each((aItem, aCursor) => {
@@ -4292,9 +4295,10 @@ function initDialogs()
     else {
       info("Clippings/wx::clippingsMgr.js: Import dialog mode: Import File");
       gCmd.recentAction = gCmd.ACTION_IMPORT;
-      clippingsLstrs.forEach(aListener => { aListener.importStarted() });
-      
-      importFile(true);
+
+      browser.runtime.sendMessage({msgID: "import-started"}).then(() => {
+        importFile(true);
+      });
     }
   };
   
@@ -4438,9 +4442,10 @@ function initDialogs()
   };
   gDialogs.importConfirmMsgBox.onAfterAccept = async function ()
   {
-    let clippingsLstrs = gClippings.getClippingsListeners().getListeners();
-    clippingsLstrs.forEach(aListener => { aListener.importFinished(true) });
-
+    await browser.runtime.sendMessage({
+      msgID: "import-finished",
+      isSuccess: true,
+    });
     await rebuildClippingsTree();
   };
 

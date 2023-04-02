@@ -2215,6 +2215,14 @@ browser.runtime.onMessage.addListener(aRequest => {
   case "verify-db":
     return verifyDB();
 
+  case "import-started":
+    gClippingsListener.importStarted();
+    break;
+
+  case "import-finished":
+    gClippingsListener.importFinished(aRequest.isSuccess);
+    break;
+
   default:
     break;
   }
