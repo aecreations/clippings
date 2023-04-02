@@ -4,7 +4,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 let gOS;
-let gClippings;
 let gDialogs = {};
 let gIsActivatingSyncClippings = false;
 
@@ -38,17 +37,6 @@ function capitalize(aString)
 
 // Options page initialization
 $(async () => {
-  gClippings = await browser.runtime.getBackgroundPage();
-
-  if (! gClippings) {
-    // Hide the broken "Turn Off Sync" button when Private Browsing turned on.
-    $("#toggle-sync").hide();
-    
-    window.alert(browser.i18n.getMessage("errPrefPgFailed"));
-    await closePage();
-    return;
-  }
-
   init();
 });
 
