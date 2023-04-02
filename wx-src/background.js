@@ -2223,6 +2223,14 @@ browser.runtime.onMessage.addListener(aRequest => {
     gClippingsListener.importFinished(aRequest.isSuccess);
     break;
 
+  case "sync-deactivated":
+    gSyncClippingsListener.onDeactivate(aRequest.oldSyncFolderID);
+    break;
+
+  case "sync-deactivated-after":
+    gSyncClippingsListener.onAfterDeactivate(aRequest.removeSyncFolder, aRequest.oldSyncFolderID);
+    break;
+
   default:
     break;
   }

@@ -488,7 +488,7 @@ function initDialogs()
       return;
     }     
 
-    let syncFldrID = await browser.runtime.sendMessage({
+    let syncFolderID = await browser.runtime.sendMessage({
       msgID: "enable-sync-clippings",
       isEnabled: true,
     });
@@ -510,11 +510,11 @@ function initDialogs()
       msgID: "refresh-synced-clippings",
       rebuildClippingsMenu,
     });
-    
-    let syncClippingsLstrs = gClippings.getSyncClippingsListeners().getListeners();
-    for (let listener of syncClippingsLstrs) {
-      listener.onActivate(syncFldrID);
-    }    
+    browser.runtime.sendMessage({
+      msgID: "sync-activated",
+      syncFolderID,
+    });
+
     this.close();
   };
   
@@ -535,19 +535,19 @@ function initDialogs()
         msgID: "enable-sync-clippings",
         isEnabled: false,
       };
-      let oldSyncFldrID = await browser.runtime.sendMessage(msg);
+      let oldSyncFolderID = await browser.runtime.sendMessage(msg);
 
       aePrefs.setPrefs({syncClippings: false});
       $("#sync-settings").hide();
       $("#toggle-sync").text(browser.i18n.getMessage("syncTurnOn"));
       $("#sync-status").removeClass("sync-status-on").text(browser.i18n.getMessage("syncStatusOff"));
 
-      let syncClippingsLstrs = gClippings.getSyncClippingsListeners().getListeners();
-      for (let listener of syncClippingsLstrs) {
-	listener.onDeactivate(oldSyncFldrID);
-      }
+      browser.runtime.sendMessage({
+        msgID: "sync-deactivated",
+        oldSyncFolderID,
+      });
 
-      gDialogs.turnOffSyncAck.oldSyncFldrID = oldSyncFldrID;
+      gDialogs.turnOffSyncAck.oldSyncFldrID = oldSyncFolderID;
       gDialogs.turnOffSyncAck.showModal();
     });
   };
@@ -566,12 +566,13 @@ function initDialogs()
   };
   gDialogs.turnOffSyncAck.onAfterAccept = function ()
   {
-    let removeSyncFldr = $("#delete-sync-fldr").prop("checked");
-    let syncClippingsLstrs = gClippings.getSyncClippingsListeners().getListeners();
+    let removeSyncFolder = $("#delete-sync-fldr").prop("checked");
 
-    for (let listener of syncClippingsLstrs) {
-      listener.onAfterDeactivate(removeSyncFldr, this.oldSyncFldrID);
-    }
+    browser.runtime.sendMessage({
+      msgID: "sync-deactivated-after",
+      removeSyncFolder,
+      oldSyncFolderID: this.oldSyncFldrID,
+    });
   };
 
   gDialogs.wndsDlgsOpts = new aeDialog("#wnds-dlgs-opts-dlg");

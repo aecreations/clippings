@@ -3357,12 +3357,35 @@ browser.storage.onChanged.addListener((aChanges, aAreaName) => {
 
 
 browser.runtime.onMessage.addListener(aRequest => {
-  if (aRequest.msgID == "ping-clippings-mgr") {
-    let resp = { isOpen: true };
-    return Promise.resolve(resp);
-  }
-  else if (aRequest.msgID == "toggle-save-clipman-wnd-geom") {
+  let resp = null;
+
+  switch (aRequest.msgID) {
+  case "ping-clippings-mgr":
+    resp = {isOpen: true};
+    break;
+
+  case "toggle-save-clipman-wnd-geom":
     setSaveWndGeometryInterval(aRequest.saveWndGeom);
+    break;
+
+  case "sync-activated":
+    gSyncClippingsListener.onActivate(aRequest.syncFolderID);
+    break;
+
+  case "sync-deactivated":
+    gSyncClippingsListener.onDeactivate(aRequest.oldSyncFolderID);
+    break;
+
+  case "sync-deactivated-after":
+    gSyncClippingsListener.onAfterDeactivate(aRequest.removeSyncFolder, aRequest.oldSyncFolderID);
+    break;
+
+  default:
+    break;
+  }
+
+  if (resp) {
+    return Promise.resolve(resp);
   }
 });
 
