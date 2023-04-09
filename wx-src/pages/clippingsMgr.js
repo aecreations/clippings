@@ -579,9 +579,6 @@ let gSyncClippingsListener = {
       // empty clippings UI.
     }
   },
-
-  onReloadStart() {},
-  onReloadFinish() {},
 };
 
 

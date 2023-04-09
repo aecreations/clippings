@@ -658,7 +658,7 @@ function refreshSyncedClippings(aRebuildClippingsMenu)
       return aePrefs.setPrefs({ syncFolderID: gSyncFldrID });
     }
       
-    gSyncClippingsListeners.getListeners().forEach(aListener => { aListener.onReloadStart() });
+    gSyncClippingsListener.onReloadStart();
 
     log("Clippings/wx: Purging existing items in the Synced Clippings folder...");
     return purgeFolderItems(gSyncFldrID, true);
@@ -672,7 +672,7 @@ function refreshSyncedClippings(aRebuildClippingsMenu)
     aeImportExport.importFromJSON(syncJSONData, false, false, gSyncFldrID);
 
     setTimeout(function () {
-      gSyncClippingsListeners.getListeners().forEach(aListener => { aListener.onReloadFinish() });
+      gSyncClippingsListener.onReloadFinish();
     }, gPrefs.afterSyncFldrReloadDelay);
     
   }).catch(aErr => {
