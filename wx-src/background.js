@@ -7,7 +7,6 @@
 const MAX_NAME_LENGTH = 64;
 const ROOT_FOLDER_NAME = "clippings-root";
 
-let gClippingsDB = null;
 let gOS = null;
 let gHostAppName = null;
 let gHostAppVer;
@@ -405,7 +404,7 @@ async function init()
 {
   log("Clippings/wx: Initializing integration with host app...");
   
-  initClippingsDB();
+  aeClippings.init();
 
   let [brws, platform] = await Promise.all([
     browser.runtime.getBrowserInfo(),
@@ -441,8 +440,7 @@ async function init()
   if (gPrefs.syncClippings) {
     gSyncFldrID = gPrefs.syncFolderID;
 
-    // The context menu will be built when refreshing the sync data, via the
-    // onReloadFinish event handler of the Sync Clippings listener.
+    // The context menu will be built when refreshing the sync data.
     refreshSyncedClippings(true);
   }
   else {
@@ -502,43 +500,22 @@ async function init()
 }
 
 
-function initClippingsDB()
-{
-  gClippingsDB = new Dexie("aeClippings");
-  gClippingsDB.version(1).stores({
-    clippings: "++id, name, parentFolderID"
-  });
-  // This was needed to use the Dexie.Observable add-on (discontinued as of 6.2)
-  gClippingsDB.version(2).stores({});
-
-  gClippingsDB.version(3).stores({
-    folders: "++id, name, parentFolderID"
-  });
-  gClippingsDB.version(4).stores({
-    clippings: "++id, name, parentFolderID, shortcutKey"
-  });
-  gClippingsDB.version(5).stores({
-    clippings: "++id, name, parentFolderID, shortcutKey, sourceURL"
-  });
-
-  gClippingsDB.open().catch(aErr => { onError(aErr) });
-}
-
-
 function setDisplayOrderOnRootItems()
 {
+  let clippingsDB = aeClippings.getDB();
+  
   return new Promise((aFnResolve, aFnReject) => {
     let seq = 1;
 
-    gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
-      gClippingsDB.folders.where("parentFolderID").equals(aeConst.ROOT_FOLDER_ID).each((aItem, aCursor) => {
+    clippingsDB.transaction("rw", clippingsDB.clippings, clippingsDB.folders, () => {
+      clippingsDB.folders.where("parentFolderID").equals(aeConst.ROOT_FOLDER_ID).each((aItem, aCursor) => {
         log(`Clippings/wx: setDisplayOrderOnRootItems(): Folder "${aItem.name}" (id=${aItem.id}): display order = ${seq}`);
-        let numUpd = gClippingsDB.folders.update(aItem.id, { displayOrder: seq++ });
+        let numUpd = clippingsDB.folders.update(aItem.id, { displayOrder: seq++ });
 
       }).then(() => {
-        return gClippingsDB.clippings.where("parentFolderID").equals(aeConst.ROOT_FOLDER_ID).each((aItem, aCursor) => {
+        return clippingsDB.clippings.where("parentFolderID").equals(aeConst.ROOT_FOLDER_ID).each((aItem, aCursor) => {
           log(`Clippings/wx: setDisplayOrderOnRootItems(): Clipping "${aItem.name}" (id=${aItem.id}): display order = ${seq}`);
-          let numUpd = gClippingsDB.clippings.update(aItem.id, { displayOrder: seq++ });
+          let numUpd = clippingsDB.clippings.update(aItem.id, { displayOrder: seq++ });
         });
 
       }).then(() => {
@@ -556,22 +533,23 @@ function setDisplayOrderOnRootItems()
 function addStaticIDs(aFolderID)
 {
   let rv = false;
+  let clippingsDB = aeClippings.getDB();
   
   return new Promise((aFnResolve, aFnReject) => {
-    gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
-      gClippingsDB.folders.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
+    clippingsDB.transaction("rw", clippingsDB.clippings, clippingsDB.folders, () => {
+      clippingsDB.folders.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
         if (! ("sid" in aItem)) {
           let sid = aeUUID();
-          gClippingsDB.folders.update(aItem.id, {sid});
+          clippingsDB.folders.update(aItem.id, {sid});
           log(`Clippings/wx: addStaticIDs(): Static ID added to folder ${aItem.id} - "${aItem.name}"`);
           rv = true;
         }
         addStaticIDs(aItem.id);
       }).then(() => {
-        return gClippingsDB.clippings.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
+        return clippingsDB.clippings.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
           if (! ("sid" in aItem)) {
             let sid = aeUUID();
-            gClippingsDB.clippings.update(aItem.id, {sid});
+            clippingsDB.clippings.update(aItem.id, {sid});
             log(`Clippings/wx: addStaticIDs(): Static ID added to clipping ${aItem.id} - "${aItem.name}"`);
             rv = true;
           }
@@ -586,6 +564,8 @@ function addStaticIDs(aFolderID)
 
 async function enableSyncClippings(aIsEnabled)
 {
+  let clippingsDB = aeClippings.getDB();
+
   if (aIsEnabled) {
     log("Clippings/wx: enableSyncClippings(): Turning ON");
 
@@ -598,7 +578,7 @@ async function enableSyncClippings(aIsEnabled)
         isSync: true,
       };
       try {
-        gSyncFldrID = await gClippingsDB.folders.add(syncFldr);
+        gSyncFldrID = await clippingsDB.folders.add(syncFldr);
       }
       catch (e) {
         console.error("Clippings/wx: enableSyncClippings(): Failed to create the Synced Clipping folder: " + e);
@@ -613,7 +593,7 @@ async function enableSyncClippings(aIsEnabled)
     log("Clippings/wx: enableSyncClippings(): Turning OFF");
     let oldSyncFldrID = gSyncFldrID;
 
-    let numUpd = await gClippingsDB.folders.update(gSyncFldrID, { isSync: undefined });
+    let numUpd = await clippingsDB.folders.update(gSyncFldrID, { isSync: undefined });
     await aePrefs.setPrefs({ syncFolderID: null });
     gSyncFldrID = null;
     return oldSyncFldrID;
@@ -625,6 +605,7 @@ function refreshSyncedClippings(aRebuildClippingsMenu)
 {
   log("Clippings/wx: refreshSyncedClippings(): Retrieving synced clippings from the Sync Clippings helper app...");
 
+  let clippingsDB = aeClippings.getDB();
   let natMsg = {msgID: "get-synced-clippings"};
   let getSyncedClippings = browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, natMsg);
   let syncJSONData = "";
@@ -645,7 +626,7 @@ function refreshSyncedClippings(aRebuildClippingsMenu)
         displayOrder: 0,
       };
       
-      return gClippingsDB.folders.add(syncFldr);
+      return clippingsDB.folders.add(syncFldr);
     }
 
     log("Clippings/wx: refreshSyncedClippings(): Synced Clippings folder ID: " + gSyncFldrID);
@@ -668,7 +649,7 @@ function refreshSyncedClippings(aRebuildClippingsMenu)
 
     // Method aeImportExport.importFromJSON() is asynchronous, so the import
     // may not yet be finished when this function has finished executing!
-    aeImportExport.setDatabase(gClippingsDB);
+    aeImportExport.setDatabase(clippingsDB);
     aeImportExport.importFromJSON(syncJSONData, false, false, gSyncFldrID);
 
     setTimeout(function () {
@@ -720,22 +701,24 @@ async function pushSyncFolderUpdates()
 
 function purgeFolderItems(aFolderID, aKeepFolder)
 {
+  let clippingsDB = aeClippings.getDB();
+
   return new Promise((aFnResolve, aFnReject) => {
-    gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
-      gClippingsDB.folders.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
+    clippingsDB.transaction("rw", clippingsDB.clippings, clippingsDB.folders, () => {
+      clippingsDB.folders.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
         purgeFolderItems(aItem.id, false).then(() => {});
 
       }).then(() => {
         if (!aKeepFolder && aFolderID != aeConst.DELETED_ITEMS_FLDR_ID) {
           log("Clippings/wx: purgeFolderItems(): Deleting folder: " + aFolderID);
-          return gClippingsDB.folders.delete(aFolderID);
+          return clippingsDB.folders.delete(aFolderID);
         }
         return null;
         
       }).then(() => {
-        return gClippingsDB.clippings.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
+        return clippingsDB.clippings.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
           log("Clippings/wx: purgeFolderItems(): Deleting clipping: " + aItem.id);
-          gClippingsDB.clippings.delete(aItem.id);
+          clippingsDB.clippings.delete(aItem.id);
         });
       }).then(() => {
         aFnResolve();
@@ -834,10 +817,11 @@ function getContextMenuData(aFolderID)
   }
 
   let rv = [];
+  let clippingsDB = aeClippings.getDB();
 
   return new Promise((aFnResolve, aFnReject) => {
-    gClippingsDB.transaction("r", gClippingsDB.folders, gClippingsDB.clippings, () => {
-      gClippingsDB.folders.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
+    clippingsDB.transaction("r", clippingsDB.folders, clippingsDB.clippings, () => {
+      clippingsDB.folders.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
         let fldrMenuItemID = "ae-clippings-folder-" + aItem.id + "_" + Date.now();
         gFolderMenuItemIDMap[aItem.id] = fldrMenuItemID;
 
@@ -880,7 +864,7 @@ function getContextMenuData(aFolderID)
         });
 
       }).then(() => {
-        return gClippingsDB.clippings.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
+        return clippingsDB.clippings.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
           let menuItemID = "ae-clippings-clipping-" + aItem.id + "_" + Date.now();
           gClippingMenuItemIDMap[aItem.id] = menuItemID;
 
@@ -998,7 +982,9 @@ function buildContextMenuHelper(aMenuData)
 function updateContextMenuForClipping(aUpdatedClippingID)
 {
   let id = Number(aUpdatedClippingID);
-  gClippingsDB.clippings.get(id).then(aResult => {
+  let clippingsDB = aeClippings.getDB();
+
+  clippingsDB.clippings.get(id).then(aResult => {
     let updatePpty = {
       title: aResult.name,
       icons: {
@@ -1023,7 +1009,9 @@ function updateContextMenuForClipping(aUpdatedClippingID)
 function updateContextMenuForFolder(aUpdatedFolderID)
 {
   let id = Number(aUpdatedFolderID);
-  gClippingsDB.folders.get(id).then(aResult => {
+  let clippingsDB = aeClippings.getDB();
+
+  clippingsDB.folders.get(id).then(aResult => {
     let menuItemID = gFolderMenuItemIDMap[id];
     if (menuItemID) {
       browser.contextMenus.update(menuItemID, { title: aResult.name });
@@ -1609,10 +1597,12 @@ async function getWndGeometryFromBrwsTab()
 
 function pasteClippingByID(aClippingID, aExternalRequest)
 {
-  gClippingsDB.transaction("r", gClippingsDB.clippings, gClippingsDB.folders, () => {
+  let clippingsDB = aeClippings.getDB();
+
+  clippingsDB.transaction("r", clippingsDB.clippings, clippingsDB.folders, () => {
     let clipping = null;
     
-    gClippingsDB.clippings.get(aClippingID).then(aClipping => {
+    clippingsDB.clippings.get(aClippingID).then(aClipping => {
       if (! aClipping) {
         throw new Error("Cannot find clipping with ID = " + aClippingID);
       }
@@ -1624,7 +1614,7 @@ function pasteClippingByID(aClippingID, aExternalRequest)
       clipping = aClipping;
       log(`Pasting clipping named "${clipping.name}"\nid = ${clipping.id}`);
         
-      return gClippingsDB.folders.get(aClipping.parentFolderID);
+      return clippingsDB.folders.get(aClipping.parentFolderID);
     }).then(aFolder => {
       let parentFldrName = "";
       if (aFolder) {
@@ -1650,8 +1640,10 @@ function pasteClippingByID(aClippingID, aExternalRequest)
 
 function pasteClippingByShortcutKey(aShortcutKey)
 {
-  gClippingsDB.transaction("r", gClippingsDB.clippings, gClippingsDB.folders, () => {
-    let results = gClippingsDB.clippings.where("shortcutKey").equals(aShortcutKey.toUpperCase());
+  let clippingsDB = aeClippings.getDB();
+
+  clippingsDB.transaction("r", clippingsDB.clippings, clippingsDB.folders, () => {
+    let results = clippingsDB.clippings.where("shortcutKey").equals(aShortcutKey.toUpperCase());
     let clipping = {};
     
     results.first().then(aClipping => {
@@ -1667,7 +1659,7 @@ function pasteClippingByShortcutKey(aShortcutKey)
       clipping = aClipping;
       log(`Pasting clipping named "${clipping.name}"\nid = ${clipping.id}`);
 
-      return gClippingsDB.folders.get(aClipping.parentFolderID);
+      return clippingsDB.folders.get(aClipping.parentFolderID);
     }).then(aFolder => {
       if (aFolder === null) {
         return;
@@ -1800,23 +1792,7 @@ function showSyncErrorNotification()
 
 function getClippingsDB()
 {
-  return gClippingsDB;
-}
-
-
-function verifyDB()
-{
-  return new Promise((aFnResolve, aFnReject) => {
-    let numClippings;
-
-    gClippingsDB.clippings.count(aNumItems => {
-      numClippings = aNumItems;
-    }).then(() => {
-      aFnResolve(numClippings);
-    }).catch(aErr => {
-      aFnReject(aErr);
-    });
-  });
+  return aeClippings.getDB();
 }
 
 
@@ -2213,8 +2189,8 @@ browser.runtime.onMessage.addListener(aRequest => {
     return rebuildContextMenu();
 
   case "verify-db":
-    return verifyDB();
-
+    return aeClippings.verifyDB();
+    
   case "import-started":
     gClippingsListener.importStarted();
     break;
