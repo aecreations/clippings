@@ -51,16 +51,4 @@ let aeClippings = {
       });
     });    
   },
-
-
-  //
-  // Helpers
-  //
-  
-  _log(aMessage)
-  {
-    if (aeConst.DEBUG) {
-      console.log(aMessage);
-    }
-  }
 };
