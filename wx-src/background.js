@@ -2188,9 +2188,6 @@ browser.runtime.onMessage.addListener(aRequest => {
   case "rebuild-cxt-menu":
     return rebuildContextMenu();
 
-  case "verify-db":
-    return aeClippings.verifyDB();
-    
   case "import-started":
     gClippingsListener.importStarted();
     break;
@@ -2205,6 +2202,14 @@ browser.runtime.onMessage.addListener(aRequest => {
 
   case "sync-deactivated-after":
     gSyncClippingsListener.onAfterDeactivate(aRequest.removeSyncFolder, aRequest.oldSyncFolderID);
+    break;
+
+  case "new-clipping-created":
+    gClippingsListener.newClippingCreated(aRequest.newClippingID, aRequest.newClipping);
+    break;
+
+  case "new-folder-created":
+    gClippingsListener.newFolderCreated(aRequest.newFolderID, aRequest.newFolder);
     break;
 
   default:

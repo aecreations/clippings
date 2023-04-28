@@ -12,7 +12,6 @@ const DLG_HEIGHT_ADJ_LOCALE = 16;
 
 let gOS;
 let gClippingsDB = null;
-let gClippings = null;
 let gParentFolderID = 0;
 let gSrcURL = "";
 let gCreateInFldrMenu;
@@ -24,22 +23,13 @@ let gSyncedFldrIDs = new Set();
 
 // Page initialization
 $(async () => {
-  browser.history.deleteUrl({ url: window.location.href });
+  browser.history.deleteUrl({url: window.location.href});
 
-  gClippings = browser.extension.getBackgroundPage();
-  
-  if (gClippings) {
-    gClippingsDB = gClippings.getClippingsDB();
-  }
-  else {
-    // gClippingsDB is null if Private Browsing mode is turned on.
-    console.error("Clippings/wx::new.js: Error initializing New Clipping dialog - unable to locate parent browser window.");
-    showInitError();
-    return;
-  }
+  aeClippings.init();
+  gClippingsDB = aeClippings.getDB();
 
   try {
-    await browser.runtime.sendMessage({msgID: "verify-db"});
+    await aeClippings.verifyDB();
     initHelper();
   }
   catch (e) {
@@ -150,11 +140,6 @@ async function expandOptions(aIsOptionsExpanded)
 
 
 $(window).keydown(aEvent => {
-  if (! gClippings) {
-    // Clippings Manager initialization failed.
-    return;
-  }
-
   if (aEvent.key == "Enter") {
     if (aEvent.target.tagName == "TEXTAREA") {
       return;
@@ -473,9 +458,10 @@ function initDialogs()
         
         this.resetTree();
 
-        let clippingsListeners = gClippings.getClippingsListeners().getListeners();
-        clippingsListeners.forEach(aListener => {
-          aListener.newFolderCreated(aFldrID, newFolder, aeConst.ORIGIN_HOSTAPP);
+        browser.runtime.sendMessage({
+          msgID: "new-folder-created",
+          newFolderID: aFldrID,
+          newFolder,
         });
 
         return unsetClippingsUnchangedFlag();
@@ -750,11 +736,12 @@ function accept(aEvent)
       return gClippingsDB.clippings.add(newClipping);
 
     }).then(aNewClippingID => {
-      let clippingsListeners = gClippings.getClippingsListeners().getListeners();
-      clippingsListeners.forEach(aListener => {
-        aListener.newClippingCreated(aNewClippingID, newClipping, aeConst.ORIGIN_HOSTAPP);
+      browser.runtime.sendMessage({
+        msgID: "new-clipping-created",
+        newClippingID: aNewClippingID,
+        newClipping,
       });
-      
+
       return unsetClippingsUnchangedFlag();
 
     }).then(() => {
