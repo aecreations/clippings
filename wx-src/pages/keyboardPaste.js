@@ -10,7 +10,7 @@ const WNDW_SHORTCUT_LIST = 436;
 const DLG_HEIGHT_ADJ_WINDOWS = 14;
 const TOOLBAR_HEIGHT = 50;
 
-let gClippings, gClippingsDB, gPasteMode, gOS;
+let gClippingsDB, gPasteMode, gOS;
 
 let gAutocompleteMenu = {
   _SCRL_LENGTH: 36,
@@ -283,26 +283,21 @@ let gAutocompleteMenu = {
 // DOM utility
 function sanitizeHTML(aHTMLStr)
 {
-  return DOMPurify.sanitize(aHTMLStr, { SAFE_FOR_JQUERY: true });
+  return DOMPurify.sanitize(aHTMLStr, {SAFE_FOR_JQUERY: true});
 }
 
 
 // Initialize dialog
 $(async () => {
-  gClippings = browser.extension.getBackgroundPage();
-
-  if (! gClippings) {
-    throw new Error("Clippings/wx: clippingKey.js: Failed to retrieve parent browser window!");
-  }
-
-  let envInfo = await browser.runtime.sendMessage({ msgID: "get-env-info" });
+  let envInfo = await browser.runtime.sendMessage({msgID: "get-env-info"});
   document.body.dataset.os = gOS = envInfo.os;
 
-  gClippingsDB = gClippings.getClippingsDB();
+  aeClippings.init();
+  gClippingsDB = aeClippings.getDB();
+
   let extVer = browser.runtime.getManifest().version;
 
   aeImportExport.setDatabase(gClippingsDB);
-
   aeImportExport.setL10nStrings({
     shctTitle: browser.i18n.getMessage("expHTMLTitle"),
     hostAppInfo: browser.i18n.getMessage("expHTMLHostAppInfo", [extVer, envInfo.hostAppName]),
@@ -315,7 +310,7 @@ $(async () => {
   initAutocomplete();
   $("#btn-cancel").click(aEvent => { cancel(aEvent) });
 
-  browser.history.deleteUrl({ url: window.location.href });
+  browser.history.deleteUrl({url: window.location.href});
 
   gPasteMode = await aePrefs.getPref("pastePromptAction");
   
