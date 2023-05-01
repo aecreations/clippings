@@ -4,7 +4,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 let aeClippings = {
+  MAX_NAME_LENGTH: 64,
   _db: null,
+  
 
   init()
   {
@@ -50,5 +52,27 @@ let aeClippings = {
         aFnReject(aErr);
       });
     });    
+  },
+
+  createClippingNameFromText(aText)
+  {
+    let rv = "";
+    let clipName = "";
+
+    aText = aText.trim();
+
+    if (aText.length > this.MAX_NAME_LENGTH) {
+      // Leave room for the three-character elipsis.
+      clipName = aText.substr(0, this.MAX_NAME_LENGTH - 3) + "...";
+    } 
+    else {
+      clipName = aText;
+    }
+
+    // Truncate clipping names at newlines if they exist.
+    let newlineIdx = clipName.indexOf("\n");
+    rv = (newlineIdx == -1) ? clipName : clipName.substring(0, newlineIdx);
+
+    return rv;
   },
 };

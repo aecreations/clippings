@@ -11,7 +11,6 @@ const NEW_CLIPPING_FROM_CLIPBOARD = "New Clipping From Clipboard";
 
 let gEnvInfo;
 let gClippingsDB;
-let gClippings;
 let gPrefs;
 let gIsClippingsTreeEmpty;
 let gDialogs = {};
@@ -3101,19 +3100,6 @@ let gCmd = {
 
 // Initializing Clippings Manager window
 $(async () => {
-  // TO DO: DELETE
-  gClippings = browser.extension.getBackgroundPage();
-
-  if (gClippings) {
-  }
-  else {
-    console.error("Error initializing Clippings Manager: Failed to retrieve background page!");
-    $("#clipping-name, #clipping-text, #source-url-bar, #options-bar").hide();
-    showInitError();
-    return;
-  }
-  // END TO DO
-  
   aeClippings.init();
   gClippingsDB = aeClippings.getDB();
   aeImportExport.setDatabase(gClippingsDB);
@@ -4927,7 +4913,7 @@ function buildClippingsTree()
               parentID = parentNode.isRootNode() ? aeConst.ROOT_FOLDER_ID : parseInt(parentNode.key);
             }
 
-            let clipName = gClippings.createClippingNameFromText(dndData);
+            let clipName = aeClippings.createClippingNameFromText(dndData);
             let clipContent = dndData;
 
             gCmd.newClippingWithContent(parentID, clipName, clipContent, gCmd.UNDO_STACK);

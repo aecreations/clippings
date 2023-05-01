@@ -4,7 +4,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
-const MAX_NAME_LENGTH = 64;
 const ROOT_FOLDER_NAME = "clippings-root";
 
 let gOS = null;
@@ -43,7 +42,7 @@ let gClippingsListener = {
   _isImporting: false,
   _isCopying: false,
   _isClippingsMgrDnDInProgress: false,
-  origin: null,
+  origin: aeConst.ORIGIN_HOSTAPP,
   
   newClippingCreated: function (aID, aData, aOrigin)
   {
@@ -430,7 +429,6 @@ async function init()
   handlePrefersColorSchemeChange(gPrefersColorSchemeMedQry);
   gPrefersColorSchemeMedQry.addEventListener("change", handlePrefersColorSchemeChange);
   
-  gClippingsListener.origin = aeConst.ORIGIN_HOSTAPP;
   gClippingsListeners.add(gClippingsListener);
   gSyncClippingsListeners.add(gSyncClippingsListener);
 
@@ -1306,29 +1304,6 @@ async function openWelcomePage()
 }
 
 
-function createClippingNameFromText(aText)
-{
-  let rv = "";
-  let clipName = "";
-
-  aText = aText.trim();
-
-  if (aText.length > MAX_NAME_LENGTH) {
-    // Leave room for the three-character elipsis.
-    clipName = aText.substr(0, MAX_NAME_LENGTH - 3) + "...";
-  } 
-  else {
-    clipName = aText;
-  }
-
-  // Truncate clipping names at newlines if they exist.
-  let newlineIdx = clipName.indexOf("\n");
-  rv = (newlineIdx == -1) ? clipName : clipName.substring(0, newlineIdx);
-
-  return rv;
-}
-
-
 async function openClippingsManager(aBackupMode)
 {
   let clippingsMgrURL = browser.runtime.getURL("pages/clippingsMgr.html");
@@ -1439,7 +1414,7 @@ function openNewClippingDlg()
   if (gOS == "win") {
     height = 448;
   }
-  openDlgWnd(url, "newClipping", { type: "popup", width: 432, height });
+  openDlgWnd(url, "newClipping", {type: "popup", width: 432, height});
 }
 
 
@@ -1962,9 +1937,9 @@ browser.contextMenus.onClicked.addListener(async (aInfo, aTab) => {
       return;
     }
 
-    let name = createClippingNameFromText(content);
+    let name = aeClippings.createClippingNameFromText(content);
 
-    gNewClipping.set({ name, content, url });
+    gNewClipping.set({name, content, url});
     openNewClippingDlg();
     break;
 
