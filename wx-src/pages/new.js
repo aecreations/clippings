@@ -462,6 +462,7 @@ function initDialogs()
           msgID: "new-folder-created",
           newFolderID: aFldrID,
           newFolder,
+          origin: aeConst.ORIGIN_HOSTAPP,
         });
 
         return unsetClippingsUnchangedFlag();
@@ -740,6 +741,7 @@ function accept(aEvent)
         msgID: "new-clipping-created",
         newClippingID: aNewClippingID,
         newClipping,
+        origin: aeConst.ORIGIN_HOSTAPP,
       });
 
       return unsetClippingsUnchangedFlag();
