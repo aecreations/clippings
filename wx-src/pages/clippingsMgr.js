@@ -38,9 +38,12 @@ let gClippingsSvc = {
   async createClipping(aClippingData)
   {
     let newClippingID = await gClippingsDB.clippings.add(aClippingData);
-    let clippingsLstrs = gClippings.getClippingsListeners().getListeners();
-    clippingsLstrs.forEach(aListener => {
-      aListener.newClippingCreated(newClippingID, aClippingData, aeConst.ORIGIN_CLIPPINGS_MGR);
+    gClippingsListener.newClippingCreated(newClippingID, aClippingData, aeConst.ORIGIN_CLIPPINGS_MGR);
+    browser.runtime.sendMessage({
+      msgID: "new-clipping-created",
+      newClippingID,
+      newClipping: aClippingData,
+      origin: aeConst.ORIGIN_CLIPPINGS_MGR,
     });
 
     return newClippingID;
@@ -49,11 +52,14 @@ let gClippingsSvc = {
   async createFolder(aFolderData)
   {
     let newFolderID = await gClippingsDB.folders.add(aFolderData);
-    let clippingsLstrs = gClippings.getClippingsListeners().getListeners();
-    clippingsLstrs.forEach(aListener => {
-      aListener.newFolderCreated(newFolderID, aFolderData, aeConst.ORIGIN_CLIPPINGS_MGR);
+    gClippingsListener.newFolderCreated(newFolderID, aFolderData, aeConst.ORIGIN_CLIPPINGS_MGR);
+    browser.runtime.sendMessage({
+      msgID: "new-folder-created",
+      newFolderID,
+      newFolder: aFolderData,
+      origin: aeConst.ORIGIN_CLIPPINGS_MGR,
     });
-
+    
     return newFolderID;
   },
 
@@ -73,11 +79,14 @@ let gClippingsSvc = {
       else {
         newClipping[key] = aOldClipping[key];
       }
-    }        
+    }
 
-    let clippingsLstrs = gClippings.getClippingsListeners().getListeners();
-    clippingsLstrs.forEach(aListener => {
-      aListener.clippingChanged(aClippingID, newClipping, aOldClipping);
+    gClippingsListener.clippingChanged(aClippingID, newClipping, aOldClipping);
+    browser.runtime.sendMessage({
+      msgID: "clipping-changed",
+      clippingID: aClippingID,
+      clippingData: newClipping,
+      oldClippingData: aOldClipping,
     });
 
     return numUpd;
@@ -99,11 +108,14 @@ let gClippingsSvc = {
       else {
         newFolder[key] = aOldFolder[key];
       }
-    }        
-
-    let clippingsLstrs = gClippings.getClippingsListeners().getListeners();
-    clippingsLstrs.forEach(aListener => {
-      aListener.folderChanged(aFolderID, newFolder, aOldFolder);
+    }
+    
+    gClippingsListener.folderChanged(aFolderID, newFolder, aOldFolder);
+    browser.runtime.sendMessage({
+      msgID: "folder-changed",
+      folderID: aFolderID,
+      folderData: newFolder,
+      oldFolderData: aOldFolder,
     });
 
     return numUpd;
@@ -112,21 +124,11 @@ let gClippingsSvc = {
   async deleteClipping(aClippingID)
   {
     await gClippingsDB.clippings.delete(aClippingID);
-
-    let clippingsLstrs = gClippings.getClippingsListeners().getListeners();
-    clippingsLstrs.forEach(aListener => {
-      aListener.clippingDeleted(aClippingID);    
-    });
   },
 
   async deleteFolder(aFolderID)
   {
     await gClippingsDB.folders.delete(aFolderID);
-
-    let clippingsLstrs = gClippings.getClippingsListeners().getListeners();
-    clippingsLstrs.forEach(aListener => {
-      aListener.folderDeleted(aFolderID);
-    });
   }
 };
 
@@ -135,7 +137,7 @@ let gClippingsSvc = {
 let gClippingsListener = {
   _isCopying:   false,
 
-  origin: null,
+  origin: aeConst.ORIGIN_CLIPPINGS_MGR,
   copiedItems: [],
   
   newClippingCreated: function (aID, aData, aOrigin, aDontSelect)
@@ -419,11 +421,6 @@ let gClippingsListener = {
     }
   },
 
-  clippingDeleted: function (aID, aOldData) {},
-  folderDeleted: function (aID, aOldData) {},
-  dndMoveStarted: function () {},
-  dndMoveFinished: function () {},
-  
   copyStarted: function ()
   {
     this._isCopying = true;
@@ -2017,11 +2014,9 @@ let gCmd = {
     
     this.recentAction = this.ACTION_COPYTOFOLDER;
 
-    let clippingsLstrs = gClippings.getClippingsListeners().getListeners();
-    clippingsLstrs.forEach(aListener => {
-      aListener.copyStarted();
-    });
-
+    gClippingsListener.copyStarted();
+    browser.runtime.sendMessage({msgID: "copy-started"});
+    
     let folderCpy = {};
     let folder, sid, destFldrSID;
       
@@ -2108,9 +2103,12 @@ let gCmd = {
         }).catch(handlePushSyncItemsError);
       }
 
-      clippingsLstrs.forEach(aListener => {
-        aListener.copyFinished(newFldrID);
+      gClippingsListener.copyFinished(newFldrID);
+      browser.runtime.sendMessage({
+        msgID: "copy-finished",
+        itemCopyID: newFldrID,
       });
+
     }).catch(aErr => {
       console.error("Clippings/wx::clippingsMgr.js: gCmd.copyFolderIntrl(): " + aErr);
     });
@@ -3103,11 +3101,10 @@ let gCmd = {
 
 // Initializing Clippings Manager window
 $(async () => {
+  // TO DO: DELETE
   gClippings = browser.extension.getBackgroundPage();
 
   if (gClippings) {
-    gClippingsDB = gClippings.getClippingsDB();
-    log("Clippings/wx::clippingsMgr: Successfully opened Clippings DB");
   }
   else {
     console.error("Error initializing Clippings Manager: Failed to retrieve background page!");
@@ -3115,7 +3112,10 @@ $(async () => {
     showInitError();
     return;
   }
-
+  // END TO DO
+  
+  aeClippings.init();
+  gClippingsDB = aeClippings.getDB();
   aeImportExport.setDatabase(gClippingsDB);
 
   gPrefs = await aePrefs.getAllPrefs();
@@ -3141,13 +3141,6 @@ $(async () => {
     aePrefs.setPrefs({ clippingsMgrMinzWhenInactv: true });
   }
 
-  let clippingsLstrs = gClippings.getClippingsListeners();
-  gClippingsListener.origin = aeConst.ORIGIN_CLIPPINGS_MGR;
-  clippingsLstrs.add(gClippingsListener);
-
-  let syncClippingsLstrs = gClippings.getSyncClippingsListeners();
-  syncClippingsLstrs.add(gSyncClippingsListener);
-  
   initToolbar();
   initInstantEditing();
   gShortcutKey.init();
@@ -3194,12 +3187,6 @@ $(async () => {
 $(window).on("beforeunload", () => {
   browser.runtime.sendMessage({ msgID: "close-clippings-mgr-wnd" });
 
-  let clippingsLstrs = gClippings.getClippingsListeners();
-  clippingsLstrs.remove(gClippingsListener);
-
-  let syncClippingsLstrs = gClippings.getSyncClippingsListeners();
-  syncClippingsLstrs.remove(gSyncClippingsListener);
-  
   browser.runtime.sendMessage({
     msgID: "purge-fldr-items",
     folderID: aeConst.DELETED_ITEMS_FLDR_ID,
@@ -3375,6 +3362,14 @@ browser.runtime.onMessage.addListener(aRequest => {
 
   case "sync-deactivated-after":
     gSyncClippingsListener.onAfterDeactivate(aRequest.removeSyncFolder, aRequest.oldSyncFolderID);
+    break;
+
+  case "new-clipping-created":
+    gClippingsListener.newClippingCreated(aRequest.newClippingID, aRequest.newClipping, aRequest.origin);
+    break;
+
+  case "new-folder-created":
+    gClippingsListener.newFolderCreated(aRequest.newFolderID, aRequest.newFolder, aRequest.origin);
     break;
 
   default:
@@ -4808,7 +4803,6 @@ function buildClippingsTree()
           // END nested function
 
           let parentNode = aNode.getParent();
-          let clippingsLstrs = gClippings.getClippingsListeners().getListeners();
           
           if (aData.otherNode) {           
             let newParentID = aeConst.ROOT_FOLDER_ID;
@@ -4841,9 +4835,7 @@ function buildClippingsTree()
               return;
             }
 
-            clippingsLstrs.forEach(aListener => {
-              aListener.dndMoveStarted();
-            });
+            browser.runtime.sendMessage({msgID: "dnd-move-started"});
 
             aData.otherNode.moveTo(aNode, aData.hitMode);
             
@@ -4902,9 +4894,7 @@ function buildClippingsTree()
             
             gCmd.updateDisplayOrder(oldParentID, destUndoStack, undoInfo, !isReordering).then(() => {
               if (isReordering) {
-                clippingsLstrs.forEach(aListener => {
-                  aListener.dndMoveFinished();
-                });
+                browser.runtime.sendMessage({msgID: "dnd-move-finished"});
                 return;
               }
               return gCmd.updateDisplayOrder(newParentID, null, null, false);
@@ -4913,9 +4903,7 @@ function buildClippingsTree()
                 aNode.setExpanded();
               }
 
-              clippingsLstrs.forEach(aListener => {
-                aListener.dndMoveFinished();
-              });
+              browser.runtime.sendMessage({msgID: "dnd-move-finished"});
 	    });
           }
           else {

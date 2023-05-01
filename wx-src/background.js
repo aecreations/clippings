@@ -110,9 +110,6 @@ let gClippingsListener = {
     }
   },
 
-  clippingDeleted: function (aID, aOldData) {},
-  folderDeleted: function (aID, aOldData) {},
-
   copyStarted: function ()
   {
     this._isCopying = true;
@@ -1304,8 +1301,8 @@ async function showSyncHelperUpdateNotification()
 async function openWelcomePage()
 {
   let url = browser.runtime.getURL("pages/welcome.html");
-  let tab = await browser.tabs.create({ url });
-  browser.history.deleteUrl({ url });
+  let tab = await browser.tabs.create({url});
+  browser.history.deleteUrl({url});
 }
 
 
@@ -1790,43 +1787,9 @@ function showSyncErrorNotification()
 // Utility functions
 //
 
-function getClippingsDB()
-{
-  return aeClippings.getDB();
-}
-
-
 function getOS()
 {
   return gOS;
-}
-
-
-function getHostAppName()
-{
-  return gHostAppName;
-}
-
-
-function getClippingsListeners()
-{
-  return gClippingsListeners;
-}
-
-function getSyncClippingsListeners()
-{
-  return gSyncClippingsListeners;
-}
-
-function getPrefs()
-{
-  return gPrefs;
-}
-
-
-function isGoogleChrome()
-{
-  return (! ("browser" in window));
 }
 
 
@@ -2205,11 +2168,35 @@ browser.runtime.onMessage.addListener(aRequest => {
     break;
 
   case "new-clipping-created":
-    gClippingsListener.newClippingCreated(aRequest.newClippingID, aRequest.newClipping);
+    gClippingsListener.newClippingCreated(aRequest.newClippingID, aRequest.newClipping, aRequest.origin);
     break;
 
   case "new-folder-created":
-    gClippingsListener.newFolderCreated(aRequest.newFolderID, aRequest.newFolder);
+    gClippingsListener.newFolderCreated(aRequest.newFolderID, aRequest.newFolder, aRequest.origin);
+    break;
+
+  case "clipping-changed":
+    gClippingsListener.clippingChanged(aRequest.clippingID, aRequest.clippingData, aRequest.oldClippingData);
+    break;
+    
+  case "folder-changed":
+    gClippingsListener.folderChanged(aRequest.folderID, aRequest.folderData, aRequest.oldFolderData);
+    break;
+
+  case "copy-started":
+    gClippingsListener.copyStarted();
+    break;
+
+  case "copy-finished":
+    gClippingsListener.copyFinished(aRequest.itemCopyID);
+    break;
+
+  case "dnd-move-started":
+    gClippingsListener.dndMoveStarted();
+    break;
+
+  case "dnd-move-finished":
+    gClippingsListener.dndMoveFinished();
     break;
 
   default:
