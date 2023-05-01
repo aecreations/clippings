@@ -22,22 +22,6 @@ let gPrefersColorSchemeMedQry;
 let gIsFirstRun = false;
 let gIsMajorVerUpdate = false;
 
-let gClippingsListeners = {
-  _listeners: [],
-
-  add: function (aNewListener) {
-    this._listeners.push(aNewListener);
-  },
-
-  remove: function (aTargetListener) {
-    this._listeners = this._listeners.filter(aListener => aListener != aTargetListener);
-  },
-
-  getListeners: function () {
-    return this._listeners;
-  }
-};
-
 let gClippingsListener = {
   _isImporting: false,
   _isCopying: false,
@@ -148,22 +132,6 @@ let gClippingsListener = {
   },
 };
 
-let gSyncClippingsListeners = {
-  _listeners: [],
-
-  add(aNewListener) {
-    this._listeners.push(aNewListener)
-  },
-
-  remove(aTargetListener) {
-    this._listeners = this._listeners.filter(aListener => aListener != aTargetListener);
-  },
-
-  getListeners() {
-    return this._listeners;
-  },
-};
-
 let gSyncClippingsListener = {
   onActivate(aSyncFolderID)
   {
@@ -198,7 +166,7 @@ let gSyncClippingsListener = {
       }
     }
 
-    log("Clippings/wx: gSyncClippingsListeners.onAfterDeactivate(): Remove Synced Clippings folder: " + aRemoveSyncFolder);
+    log("Clippings/wx: gSyncClippingsListener.onAfterDeactivate(): Remove Synced Clippings folder: " + aRemoveSyncFolder);
 
     if (aRemoveSyncFolder) {
       log(`Removing old Synced Clippings folder (ID = ${aOldSyncFolderID})`);
@@ -213,21 +181,21 @@ let gSyncClippingsListener = {
 
   onReloadStart()
   {
-    log("Clippings/wx: gSyncClippingsListeners.onReloadStart()");
+    log("Clippings/wx: gSyncClippingsListener.onReloadStart()");
     gIsReloadingSyncFldr = true;
   },
   
   async onReloadFinish()
   {
-    log("Clippings/wx: gSyncClippingsListeners.onReloadFinish(): Rebuilding Clippings menu");
+    log("Clippings/wx: gSyncClippingsListener.onReloadFinish(): Rebuilding Clippings menu");
     gIsReloadingSyncFldr = false;
     rebuildContextMenu();
 
-    log("Clippings/wx: gSyncClippingsListeners.onReloadFinish(): Setting static IDs on synced items that don't already have them.");
+    log("Clippings/wx: gSyncClippingsListener.onReloadFinish(): Setting static IDs on synced items that don't already have them.");
     let isStaticIDsAdded = await addStaticIDs(gSyncFldrID);
 
     if (isStaticIDsAdded) {
-      log("Clippings/wx: gSyncClippingsListeners.onReloadFinish(): Static IDs added to synced items.  Saving sync file.");
+      log("Clippings/wx: gSyncClippingsListener.onReloadFinish(): Static IDs added to synced items.  Saving sync file.");
       await pushSyncFolderUpdates();
     }
   },
@@ -429,9 +397,6 @@ async function init()
   handlePrefersColorSchemeChange(gPrefersColorSchemeMedQry);
   gPrefersColorSchemeMedQry.addEventListener("change", handlePrefersColorSchemeChange);
   
-  gClippingsListeners.add(gClippingsListener);
-  gSyncClippingsListeners.add(gSyncClippingsListener);
-
   if (gPrefs.syncClippings) {
     gSyncFldrID = gPrefs.syncFolderID;
 
@@ -2177,11 +2142,6 @@ browser.runtime.onMessage.addListener(aRequest => {
   default:
     break;
   }
-});
-
-
-window.addEventListener("unload", aEvent => {
-  gClippingsListeners.remove(gClippingsListener);
 });
 
 
