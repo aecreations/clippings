@@ -3188,11 +3188,6 @@ $(window).on("beforeunload", () => {
 
 // Keyboard event handler
 $(document).keydown(async (aEvent) => {
-  if (! gClippings) {
-    // Clippings Manager initialization failed.
-    return;
-  }
-
   const isMacOS = gEnvInfo.os == "mac";
   
   function isAccelKeyPressed()
