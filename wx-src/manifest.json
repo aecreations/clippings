@@ -1,89 +1,89 @@
 {
-    "manifest_version": 2,
-    "name": "__MSG_extName__",
-    "description": "__MSG_extDesc__",
-    "version": "6.5a0+",
-    "homepage_url": "https://aecreations.io/clippings/index.php",
-    "author": "AE Creations",
-    
-    "browser_specific_settings": {
-	"gecko": {
-            "id": "{91aa5abe-9de4-4347-b7b5-322c38dd9271}",
-	    "strict_min_version": "102.0"
-	}
+  "manifest_version": 2,
+  "name": "__MSG_extName__",
+  "description": "__MSG_extDesc__",
+  "version": "6.5a0+",
+  "homepage_url": "https://aecreations.io/clippings/index.php",
+  "author": "AE Creations",
+  
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{91aa5abe-9de4-4347-b7b5-322c38dd9271}",
+      "strict_min_version": "102.0"
+    }
+  },
+
+  "icons": {
+    "16": "img/clippings16.svg",
+    "32": "img/icon32.svg",
+    "48": "img/icon.svg",
+    "96": "img/icon.svg"
+  },
+
+  "permissions": [
+    "<all_urls>",
+    "alarms",
+    "contextMenus",
+    "downloads",
+    "history",
+    "nativeMessaging",
+    "notifications",
+    "storage",
+    "tabs",
+    "unlimitedStorage"
+  ],
+  
+  "background": {
+    "scripts": [
+      "lib/dexie/dexie.min.js",
+      "lib/moment/moment.min.js",
+      "lib/moment/locales.min.js",
+      "scripts/aeConst.js",
+      "scripts/aeClippingSubst.js",
+      "scripts/aeImportExport.js",
+      "scripts/aeDateDiff.js",
+      "scripts/aePrefs.js",
+      "scripts/aeVersionCmp.js",
+      "scripts/aeUUID.js",
+      "scripts/aeClippings.js",
+      "background.js"
+    ]
+  },
+  
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "all_frames": true,
+      "js": ["content.js"]
+    }
+  ],
+
+  "browser_action": {
+    "default_icon": {
+      "16": "img/clippings16.svg",
+      "32": "img/clippings32.svg"
     },
 
-    "icons": {
-        "16": "img/clippings16.svg",
-        "32": "img/icon32.svg",
-        "48": "img/icon.svg",
-        "96": "img/icon.svg"
-    },
+    "default_area": "navbar",
+    "default_title": "__MSG_browserActionTitle__",
+    "browser_style": false
+  },
 
-    "permissions": [
-        "<all_urls>",
-        "alarms",
-	"contextMenus",
-	"downloads",
-	"history",
-        "nativeMessaging",
-        "notifications",
-	"storage",
-	"tabs",
-	"unlimitedStorage"
-    ],
-    
-    "background": {
-	"scripts": [
-	    "lib/dexie/dexie.min.js",
-	    "lib/moment/moment.min.js",
-  	    "lib/moment/locales.min.js",
-	    "scripts/aeConst.js",
-	    "scripts/aeClippingSubst.js",
-            "scripts/aeImportExport.js",
-            "scripts/aeDateDiff.js",
-            "scripts/aePrefs.js",
-            "scripts/aeVersionCmp.js",
-            "scripts/aeUUID.js",
-            "scripts/aeClippings.js",
-            "background.js"
-	]
-    },
-    
-    "content_scripts": [
-	{
-	    "matches": ["<all_urls>"],
-	    "all_frames": true,
-	    "js": ["content.js"]
-	}
-    ],
+  "commands" : {
+    "ae-clippings-paste-clipping": {
+      "suggested_key": {
+        "default": "Alt+Shift+Y",
+        "mac": "Command+Shift+Y"
+      },
+      "description": "__MSG_cmdDesc__"
+    }
+  },
 
-    "browser_action": {
-	"default_icon": {
-	    "16": "img/clippings16.svg",
-            "32": "img/clippings32.svg"
-	},
+  "options_ui": {
+    "page": "pages/options.html",
+    "open_in_tab": true,
+    "browser_style": true
+  },
 
-	"default_area": "navbar",
-        "default_title": "__MSG_browserActionTitle__",
-        "browser_style": false
-    },
-
-    "commands" : {
-	"ae-clippings-paste-clipping": {
-	    "suggested_key": {
-		"default": "Alt+Shift+Y",
-		"mac": "Command+Shift+Y"
-	    },
-	    "description": "__MSG_cmdDesc__"
-	}
-    },
-
-    "options_ui": {
-        "page": "pages/options.html",
-        "open_in_tab": true,
-        "browser_style": true
-    },
-
-    "default_locale": "en"
+  "default_locale": "en"
 }
