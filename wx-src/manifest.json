@@ -36,7 +36,8 @@
     "background": {
 	"scripts": [
 	    "lib/dexie/dexie.min.js",
-	    "lib/moment.min.js",
+	    "lib/moment/moment.min.js",
+  	    "lib/moment/locales.min.js",
 	    "scripts/aeConst.js",
 	    "scripts/aeClippingSubst.js",
             "scripts/aeImportExport.js",

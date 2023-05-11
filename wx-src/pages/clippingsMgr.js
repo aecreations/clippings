@@ -3116,6 +3116,7 @@ $(async () => {
 
   let lang = browser.i18n.getUILanguage();
   document.body.dataset.locale = lang;
+  moment.locale(lang);
 
   let wndURL = new URL(window.location.href);
   gOpenerWndID = Number(wndURL.searchParams.get("openerWndID"));

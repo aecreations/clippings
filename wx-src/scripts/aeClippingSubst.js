@@ -42,6 +42,9 @@ aeClippingSubst.init = function (aUserAgentStr, aAutoIncrementStartVal)
       this._hostAppName = `${aBrwsInfo.name} ${aBrwsInfo.version}`;
     });
   }
+
+  // Initialize locale used for formatting dates.
+  moment.locale(browser.i18n.getUILanguage());
 };
 
 
