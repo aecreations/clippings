@@ -9,7 +9,7 @@ const WNDH_PLCHLDR_MULTI_SHORT = 240;
 const WNDH_PLCHLDR_MULTI_VSHORT = 180;
 const DLG_HEIGHT_ADJ_WINDOWS = 20;
 
-const REGEXP_CUSTOM_PLACEHOLDER = /\$\[([\w\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)(\{([\w \-\.\?_\/\(\)!@#%&;:,'"$£¥€*¡¢\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF\|])+\})?\]/m;
+const REGEXP_CUSTOM_PLACEHOLDER = /\$\[([\w\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)(\{([\w \-\.\?_\/\(\)!@#%&;:,'"$£¥€*¡¢\u{0080}-\u{10FFFF}\|])+\})?\]/mu;
 
 let gOS;
 let gPlaceholders = null;
@@ -21,7 +21,7 @@ let gClippingContent = null;
 // DOM utility
 function sanitizeHTML(aHTMLStr)
 {
-  return DOMPurify.sanitize(aHTMLStr, { SAFE_FOR_JQUERY: true });
+  return DOMPurify.sanitize(aHTMLStr, {SAFE_FOR_JQUERY: true});
 }
 
 
@@ -104,7 +104,7 @@ $(async () => {
       height += DLG_HEIGHT_ADJ_WINDOWS;
     }
     
-    await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, { height });
+    await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, {height});
 
     for (let i = 0; i < gPlaceholders.length; i++) {
       let plchldr = gPlaceholders[i];
