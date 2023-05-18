@@ -45,16 +45,54 @@
           "label": "",
           "seq": 3
         },
-	{
-	  "name": "Single placeholder used multiple times",
-	  "content": "Hello $[name], how are you?  It was really nice meeting you, $[name].  Have a nice day, $[name]!",
-	  "shortcutKey": "",
-	  "sourceURL": "",
-	  "label": "",
-	  "seq": 4
-	}
+        {
+          "name": "Single placeholder used multiple times",
+          "content": "Hello $[name], how are you?  It was really nice meeting you, $[name].  Have a nice day, $[name]!",
+          "shortcutKey": "",
+          "sourceURL": "",
+          "label": "",
+          "seq": 4
+        }
       ],
       "seq": 1
+    },
+    {
+      "name": "Placeholder values with Symbols & Emoji",
+      "children": [
+        {
+          "name": "Symbols and emoji",
+          "content": "Arrows: $[arrows{←|→|⇑|⇓|⇿}]\nMathematical Operators: $[math{∀|∈|∞|⋿}]\nMiscellaneous Symbols: $[misc{☀|☘|♠|♫|⛩}]\nDingbats: $[dingbats{✅|❌|➿}]\nMiscellaneous Symbols and Pictographs: $[pictographs{🌀|🌎|🌞|🍅|🍕|🏀|👍|💖|💰|🔔|🔥|🗿}]\nEmoticons (Emoji): $[emoji{😀|😃|😄|😆|😎|🙁|🙂|🙏}]\nTransport and Map Symbols: $[transport{🚀|🚘|🚨}]\nSupplemental Symbols and Pictographs: $[supplmtSymbols{🤘|🤠|🤣|🥑|🦷|🧿}]",
+          "shortcutKey": "",
+          "sourceURL": "",
+          "label": "",
+          "seq": 0
+        },
+        {
+          "name": "macOS symbols and emoji",
+          "content": "Emoji - Smileys and People: $[smileys{😀|👍|🌂}]\nEmoji - Animals and Nature: $[nature{🍄|🌵|🐶|☔}]\nEmoji - Food and Drink: $[food{🍏|🍕|🧂}]\nEmoji - Activity: $[activity{⚽️|🏆|🧩}]\nEmoji - Travel and Places: $[travel{🚗|✈️|⛩|🌁}]\nEmoji - Objects: $[objects{📀|⚙|🔓}]\nEmoji - Symbols: $[symbols{❤️|☮️|❌|🔴|🟦|🔔|🕧}]\nEmoji - Flags: $[flags{🏁|🏴‍☠️|🚩|🏳️|🏴|🏳️‍🌈|🇨🇦|🇺🇸|🇿🇼}]\nBullets and Stars: $[bullets{●|★|☆|❖|※}]\nCurrency: $[currency{¢|€|£|₧}]\nLetter-like: $[letterLike{®|©|™|℅}]\nMath Symbols: $[math{±|×|℮|∅|∑|√}]\nParentheses: $[parens{【|】|‹|›|«|»}]\nPictographs: $[picto{☀|☯|☮|⚑}]\nPunctuation: $[punct{¡|§|¶}]\n**Unsupported Punctuation: $[unsupportedPunct{¡|~}]\nTechnical Symbols: $[tech{⌘|⇥|⌦|⌥|⏏|⎈}]",
+          "shortcutKey": "",
+          "sourceURL": "",
+          "label": "",
+          "seq": 1
+        },
+        {
+          "name": "Embedded symbols and emoji",
+          "content": "I feel $[emoji{happy 😃|sad 🙁|angry 😡|funny 🤣|cool 😎}]!\n\nMy favorite symbol is: $[symbol{← left arrow|⇒ double right arrow|★ star|® registered trademark}] ",
+          "shortcutKey": "",
+          "sourceURL": "",
+          "label": "",
+          "seq": 2
+        },
+        {
+          "name": "Test Clipping for issue #418",
+          "content": "Unicode symbols / emojis not supported in placeholders' default values (#418)\n\n$[foo{bar|baz}]\n$[quux{←|→}]\n$[qux{💪|🚀}]",
+          "shortcutKey": "",
+          "sourceURL": "",
+          "label": "",
+          "seq": 3
+        }
+      ],
+      "seq": 2
     }
   ]
 }
