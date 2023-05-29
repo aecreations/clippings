@@ -4,9 +4,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
-const WNDH_PLCHLDR_MULTI = 286;
-const WNDH_PLCHLDR_MULTI_SHORT = 240;
-const WNDH_PLCHLDR_MULTI_VSHORT = 180;
+const WNDH_PLCHLDR_MULTI = 318;
+const WNDH_PLCHLDR_MULTI_SHORT = 272;
+const WNDH_PLCHLDR_MULTI_VSHORT = 212;
 const DLG_HEIGHT_ADJ_WINDOWS = 20;
 
 const REGEXP_CUSTOM_PLACEHOLDER = /\$\[([\w\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)(\{([\w \-\.\?_\/\(\)!@#%&;:,'"$£¥€*¡¢\u{0080}-\u{10FFFF}\|])+\})?\]/mu;
@@ -27,7 +27,7 @@ function sanitizeHTML(aHTMLStr)
 
 // Page initialization
 $(async () => {
-  browser.history.deleteUrl({ url: window.location.href });
+  browser.history.deleteUrl({url: window.location.href});
 
   let platform = await browser.runtime.getPlatformInfo();
   document.body.dataset.os = gOS = platform.os;
@@ -36,6 +36,7 @@ $(async () => {
     msgID: "init-placeholder-prmt-dlg"
   });
 
+  let clippingName = sanitizeHTML(resp.clippingName);
   gPlaceholders = resp.placeholders;
   gPlaceholdersWithDefaultVals = resp.placeholdersWithDefaultVals;
   gClippingContent = resp.content;
@@ -58,6 +59,7 @@ $(async () => {
   }
 
   if (gPlaceholders.length == 1) {
+    $("#plchldr-single-content > .clipping-name").text(clippingName);
     let plchldr = gPlaceholders[0];
     $("#plchldr-single").show();
     $("#single-prmt-label").text(browser.i18n.getMessage("plchldrPromptSingleDesc", plchldr));
@@ -82,6 +84,7 @@ $(async () => {
   }
   else {
     $("#plchldr-multi").show();
+    $("#plchldr-multi-content > .clipping-name").text(clippingName);
 
     let plchldrSet = new Set(gPlaceholders);
     let height;

@@ -58,6 +58,15 @@ body[data-os="mac"] .prompt-icon {
     margin-top: 2px;
     margin-bottom: 12px;
     font-size: 13px;
+
+    width: 440px;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.clipping-name {
+    font-weight: bold;
 }
 
 #single-prmt-input {

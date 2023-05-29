@@ -232,11 +232,13 @@ let gNewClipping = {
 };
 
 let gPlaceholders = {
+  _clippingName: null,
   _plchldrs: null,
   _clpCtnt: null,
   _plchldrsWithDefVals: null,
 
-  set: function (aPlaceholders, aPlaceholdersWithDefaultVals, aClippingText) {
+  set: function (aClippingName, aPlaceholders, aPlaceholdersWithDefaultVals, aClippingText) {
+    this._clippingName = aClippingName;
     this._plchldrs = aPlaceholders;
     this._plchldrsWithDefVals = aPlaceholdersWithDefaultVals;
     this._clpCtnt = aClippingText;
@@ -251,6 +253,7 @@ let gPlaceholders = {
 
   copy: function () {
     let rv = {
+      clippingName: this._clippingName,
       placeholders: this._plchldrs.slice(),
       placeholdersWithDefaultVals: Object.assign({}, this._plchldrsWithDefVals),
       content: this._clpCtnt
@@ -259,6 +262,7 @@ let gPlaceholders = {
   },
 
   reset: function () {
+    this._clippingName = null;
     this._plchldrs = null;
     this._plchldrsWithDefVals = null;
     this._clpCtnt = null;
@@ -1406,7 +1410,7 @@ function openPlaceholderPromptDlg()
   openDlgWnd(url, "placeholderPrmt", {
     type: "popup",
     width: 536,
-    height: 198,
+    height: 224,
     topOffset: 256,
   });
 }
@@ -1675,7 +1679,7 @@ async function pasteClipping(aClippingInfo, aExternalRequest)
     let plchldrs = aeClippingSubst.getCustomPlaceholders(processedCtnt);
     if (plchldrs.length > 0) {
       let plchldrsWithDefaultVals = aeClippingSubst.getCustomPlaceholderDefaultVals(processedCtnt, aClippingInfo);
-      gPlaceholders.set(plchldrs, plchldrsWithDefaultVals, processedCtnt);
+      gPlaceholders.set(aClippingInfo.name, plchldrs, plchldrsWithDefaultVals, processedCtnt);
 
       setTimeout(openPlaceholderPromptDlg, 100);
       return;
