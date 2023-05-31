@@ -1,7 +1,7 @@
 {
   "extName": {
     "message": "Clippings",
-    "description": "Name of the extension - do NOT translate"
+    "description": "Name of the extension"
   },
 
   "extNameTB": {
@@ -969,10 +969,6 @@
     "message": "Clippings Options"
   },
 
-  "errPrefPgFailed": {
-    "message": "Unable to load extension preferences page. Restart Firefox and try again."
-  },
-
   "prefsHdgPasteOptions": {
     "message": "Paste Options"
   },
@@ -1100,7 +1096,7 @@
   },
 
   "backupNotifyFirstMsg": {
-    "message": "Keep your clippings safe by doing regular backups. Click here to back up your clippings and set up backup reminders."
+    "message": "Keep your clippings safe by doing regular backups. Click here to get started."
   },
 
   "backupFirstDesc": {
