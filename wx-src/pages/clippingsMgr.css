@@ -1189,7 +1189,7 @@ body[data-locale="de"] #shortcut-list-dlg #shortcut-instrxns {
 
 #import-dlg {
     --width: 408px;
-    --height: 206px;
+    --height: 210px;
     top: 40px;
 }
 
@@ -1200,7 +1200,7 @@ body[data-locale="de"] #import-dlg {
 #import-dlg #import-clippings-filepicker {
     width: 100%;
     margin-top: 2px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
 
 #import-dlg #import-clippings-file-path {
@@ -1239,8 +1239,24 @@ body[data-locale="de"] #import-dlg {
     height: 0px;
 }
 
+#import-dlg #import-formats > p {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+#import-dlg #import-formats > ul {
+    padding-left: 12px;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+#import-dlg #import-clippings-replc-shct-keys-checkbox {
+    margin-bottom: -1px;
+}
+
 #import-dlg #restore-backup-warning {
-    display: none;   
+    display: none;
+    margin-top: 12px;
 }
 
 #import-dlg #restore-backup-warning > .warning-icon {
@@ -1273,7 +1289,7 @@ body[data-locale="de"] #import-dlg #restore-backup-warning > p {
 #import-dlg progress {
     display: none;
     width: 355px;
-    margin-top: 12px;
+    margin-top: 8px;
 }
 
 #import-dlg #import-error {

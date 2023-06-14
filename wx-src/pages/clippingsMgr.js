@@ -4138,6 +4138,7 @@ function initDialogs()
     if (this.mode == this.IMP_REPLACE) {
       $("#import-clippings-label").text(browser.i18n.getMessage("labelSelBkupFile"));
       $("#import-clippings-replc-shct-keys-checkbox").hide();
+      $("#import-formats").hide();
       
       if (! gIsClippingsTreeEmpty) {
         $("#restore-backup-warning").show();
@@ -4148,6 +4149,7 @@ function initDialogs()
     else {
       $("#import-clippings-label").text(browser.i18n.getMessage("labelSelImportFile"));
       $("#import-clippings-replc-shct-keys-checkbox").show();
+      $("#import-formats").show();
       $("#restore-backup-warning").hide();
       $("#import-dlg-action-btn").text(browser.i18n.getMessage("btnImport"));
     }

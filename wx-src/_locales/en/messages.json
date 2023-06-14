@@ -828,7 +828,23 @@
   },
 
   "labelSelImportFile": {
-    "message": "Select import file:"
+    "message": "Select import file:",
+    "description": "Import dialog in Clippings Manager"
+  },
+
+  "importFmtHdg": {
+    "message": "Accepted file formats:",
+    "description": "Import dialog in Clippings Manager, describing accepted file formats for import"
+  },
+
+  "impFmtClippings": {
+    "message": "Clippings (*.json, *.rdf)",
+    "description": "Import dialog in Clippings Manager, describing accepted file formats for import"
+  },
+
+  "impFmtTextSnippets": {
+    "message": "Text Snippets (*.json)",
+    "description": "Import dialog in Clippings Manager, describing accepted file formats for import"
   },
 
   "labelSelBkupFile": {
