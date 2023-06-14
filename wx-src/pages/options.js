@@ -11,7 +11,7 @@ let gIsActivatingSyncClippings = false;
 // DOM utility
 function sanitizeHTML(aHTMLStr)
 {
-  return DOMPurify.sanitize(aHTMLStr, { SAFE_FOR_JQUERY: true });
+  return DOMPurify.sanitize(aHTMLStr, {SAFE_FOR_JQUERY: true});
 }
 
 function capitalize(aString)
@@ -45,6 +45,12 @@ async function init()
 {
   let platform = await browser.runtime.getPlatformInfo();
   document.body.dataset.os = gOS = platform.os;
+
+  if (gOS == "win") {
+    let prefPgTitleWin = browser.i18n.getMessage("prefsTitleWin");
+    document.title = prefPgTitleWin;
+    $("#pref-pg-hdr-text").text(prefPgTitleWin);
+  }
 
   if (gOS == "mac") {
     $("#shortcut-key-prefix-modifiers").text("\u21e7\u2318");

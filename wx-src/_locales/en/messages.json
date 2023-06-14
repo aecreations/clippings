@@ -992,7 +992,13 @@
   },
 
   "prefsTitle": {
-    "message": "Clippings Options"
+    "message": "Clippings Preferences",
+    "description": "Extension preferences page title"
+  },
+
+  "prefsTitleWin": {
+    "message": "Clippings Options",
+    "description": "Extension preferences page title on Windows"
   },
 
   "prefsHdgPasteOptions": {
