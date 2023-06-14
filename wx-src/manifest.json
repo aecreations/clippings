@@ -23,7 +23,7 @@
   "permissions": [
     "<all_urls>",
     "alarms",
-    "contextMenus",
+    "menus",
     "downloads",
     "history",
     "nativeMessaging",

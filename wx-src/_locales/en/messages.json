@@ -981,6 +981,16 @@
     "message": "Copy"
   },
 
+  "mnuPrefs": {
+    "message": "Clippings Preferences…",
+    "description": "Browser toolbar button context menu option for opening the extension preferences page"
+  },
+
+  "mnuPrefsWin": {
+    "message": "Clippings Options…",
+    "description": "Browser toolbar button context menu option for opening the extension preferences page - Windows only"
+  },
+
   "prefsTitle": {
     "message": "Clippings Options"
   },

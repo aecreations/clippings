@@ -152,7 +152,12 @@ let gSyncClippingsListener = {
 
     // Change the icon on the "Synced Clippings" folder to be a normal
     // folder icon.
-    browser.contextMenus.update(syncFldrMenuID, { icons: { 16: "img/folder.svg" }});
+    let mnuIco = {
+      icons: {
+        16: "img/folder.svg"
+      }
+    };
+    browser.menus.update(syncFldrMenuID, mnuIco);
   },
 
   onAfterDeactivate(aRemoveSyncFolder, aOldSyncFolderID)
@@ -393,7 +398,7 @@ async function init()
   if (gPrefs.autoAdjustWndPos === null) {
     let autoAdjustWndPos = gOS == "win";
     let clippingsMgrSaveWndGeom = autoAdjustWndPos;
-    await aePrefs.setPrefs({ autoAdjustWndPos, clippingsMgrSaveWndGeom });
+    await aePrefs.setPrefs({autoAdjustWndPos, clippingsMgrSaveWndGeom});
   }
 
   // Handle changes to Dark Mode system setting.
@@ -870,8 +875,8 @@ function buildContextMenu()
 {
   log("Clippings/wx: buildContextMenu()");
   
-  // Context menu for browser action button.
-  browser.contextMenus.create({
+  // Context menus for browser action button.
+  browser.menus.create({
     id: "ae-clippings-reset-autoincr-plchldrs",
     title: browser.i18n.getMessage("baMenuResetAutoIncrPlaceholders"),
     enabled: false,
@@ -879,15 +884,25 @@ function buildContextMenu()
     documentUrlPatterns: ["<all_urls>"]
   });
 
+  let prefsMnuStrKey = "mnuPrefs";
+  if (gOS == "win") {
+    prefsMnuStrKey = "mnuPrefsWin";
+  }
+  browser.menus.create({
+    id: "ae-clippings-prefs",
+    title: browser.i18n.getMessage(prefsMnuStrKey),
+    contexts: ["browser_action"],
+  });
+
   // Context menu for web page textbox or HTML editor.
-  browser.contextMenus.create({
+  browser.menus.create({
     id: "ae-clippings-new",
     title: browser.i18n.getMessage("cxtMenuNew"),
     contexts: ["editable", "selection"],
     documentUrlPatterns: ["<all_urls>"]
   });
 
-  browser.contextMenus.create({
+  browser.menus.create({
     id: "ae-clippings-manager",
     title: browser.i18n.getMessage("cxtMenuOpenClippingsMgr"),
     contexts: ["editable", "selection"],
@@ -906,7 +921,7 @@ function buildContextMenu()
     }
     
     if (aMenuData.length > 0) {
-      browser.contextMenus.create({
+      browser.menus.create({
         type: "separator",
         contexts: ["editable"],
         documentUrlPatterns: ["<all_urls>"]
@@ -934,7 +949,7 @@ function buildContextMenuHelper(aMenuData)
       menuItem.parentId = menuData.parentId;
     }
 
-    browser.contextMenus.create(menuItem);
+    browser.menus.create(menuItem);
     
     if (menuData.submenuItems) {
       buildContextMenuHelper(menuData.submenuItems);
@@ -961,7 +976,7 @@ function updateContextMenuForClipping(aUpdatedClippingID)
       // 'updateProperties' parameter to contextMenus.update().
       // See https://bugzilla.mozilla.org/show_bug.cgi?id=1414566
       let menuItemID = gClippingMenuItemIDMap[id];
-      browser.contextMenus.update(menuItemID, updatePpty);
+      browser.menus.update(menuItemID, updatePpty);
     }
     catch (e) {
       console.error("Clippings/wx: updateContextMenuForClipping(): " + e);
@@ -978,7 +993,7 @@ function updateContextMenuForFolder(aUpdatedFolderID)
   clippingsDB.folders.get(id).then(aResult => {
     let menuItemID = gFolderMenuItemIDMap[id];
     if (menuItemID) {
-      browser.contextMenus.update(menuItemID, { title: aResult.name });
+      browser.menus.update(menuItemID, {title: aResult.name});
     }
   });
 }
@@ -987,7 +1002,7 @@ function updateContextMenuForFolder(aUpdatedFolderID)
 function removeContextMenuForClipping(aRemovedClippingID)
 {
   let menuItemID = gClippingMenuItemIDMap[aRemovedClippingID];
-  browser.contextMenus.remove(menuItemID);
+  browser.menus.remove(menuItemID);
   delete gClippingMenuItemIDMap[aRemovedClippingID];
 }
 
@@ -995,7 +1010,7 @@ function removeContextMenuForClipping(aRemovedClippingID)
 function removeContextMenuForFolder(aRemovedFolderID)
 {
   let menuItemID = gFolderMenuItemIDMap[aRemovedFolderID];
-  browser.contextMenus.remove(menuItemID);
+  browser.menus.remove(menuItemID);
   delete gFolderMenuItemIDMap[aRemovedFolderID];
 }
 
@@ -1003,7 +1018,7 @@ function removeContextMenuForFolder(aRemovedFolderID)
 async function rebuildContextMenu()
 {
   log("Clippings/wx: rebuildContextMenu(): Removing all Clippings context menu items and rebuilding the menu...");
-  await browser.contextMenus.removeAll();
+  await browser.menus.removeAll();
 
   gClippingMenuItemIDMap = {};
   gFolderMenuItemIDMap = {};
@@ -1039,9 +1054,9 @@ function buildAutoIncrementPlchldrResetMenu(aAutoIncrPlchldrs)
         documentUrlPatterns: ["<all_urls>"]
       };
       
-      await browser.contextMenus.create(menuItem);
+      await browser.menus.create(menuItem);
       if (! enabledResetMenu) {
-        await browser.contextMenus.update("ae-clippings-reset-autoincr-plchldrs", {
+        await browser.menus.update("ae-clippings-reset-autoincr-plchldrs", {
           enabled: true
         });
         enabledResetMenu = true;
@@ -1057,10 +1072,10 @@ async function resetAutoIncrPlaceholder(aPlaceholder)
 
   aeClippingSubst.resetAutoIncrementVar(aPlaceholder);
   gAutoIncrPlchldrs.delete(aPlaceholder);
-  await browser.contextMenus.remove(`ae-clippings-reset-autoincr-${aPlaceholder}`);
+  await browser.menus.remove(`ae-clippings-reset-autoincr-${aPlaceholder}`);
   
   if (gAutoIncrPlchldrs.size == 0) {
-    browser.contextMenus.update("ae-clippings-reset-autoincr-plchldrs", { enabled: false });
+    browser.menus.update("ae-clippings-reset-autoincr-plchldrs", {enabled: false});
   }
 }
 
@@ -1862,7 +1877,7 @@ browser.commands.onCommand.addListener(async (aCmdName) => {
 });
 
 
-browser.contextMenus.onClicked.addListener(async (aInfo, aTab) => {
+browser.menus.onClicked.addListener(async (aInfo, aTab) => {
   switch (aInfo.menuItemId) {
   case "ae-clippings-new":
     let [tabs] = await browser.tabs.query({ active: true, currentWindow: true });
@@ -1914,6 +1929,10 @@ browser.contextMenus.onClicked.addListener(async (aInfo, aTab) => {
 
   case "ae-clippings-manager":
     openClippingsManager();
+    break;
+
+  case "ae-clippings-prefs":
+    browser.runtime.openOptionsPage();
     break;
 
   default:
