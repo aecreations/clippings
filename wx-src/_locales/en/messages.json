@@ -271,7 +271,7 @@
   },
 
   "welcWhatsNewDesc": {
-    "message": "Clippings 6.5 comes with many fixes and improvements, such as the ability to add symbols and emojis to placeholder default values. 🙂"
+    "message": "Clippings 6.5 comes with many fixes and improvements, such as support for symbols and emojis in placeholder default values. 🙂"
   },
 
   "welcWhatsNewCTA": {
@@ -1415,7 +1415,7 @@
   },
 
   "whatsNew1": {
-    "message": "Symbols and emojis are now allowed in placeholder default values 🙂",
+    "message": "Symbols and emojis are now supported in placeholder default values 🙂",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
 
