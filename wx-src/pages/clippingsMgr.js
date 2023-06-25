@@ -4474,16 +4474,11 @@ function initDialogs()
   gDialogs.removeAllSrcURLs = new aeDialog("#remove-all-source-urls-dlg");
   gDialogs.removeAllSrcURLs.onFirstInit = function ()
   {
-    $("#remove-all-source-urls-dlg > .dlg-btns > .dlg-btn-yes").click(aEvent => {
+    this.focusedSelector = ".dlg-btns > .dlg-accept";
+    this.find(".dlg-btns > .dlg-btn-yes").click(aEvent => {
       this.close();
       gCmd.removeAllSrcURLsIntrl();
     });
-  };
-  gDialogs.removeAllSrcURLs.onShow = function ()
-  {
-    setTimeout(() => {
-      $("#remove-all-source-urls-dlg > .dlg-btns > .dlg-accept")[0].focus();
-    }, 10);
   };
 
   gDialogs.removeAllSrcURLsConfirm = new aeDialog("#all-src-urls-removed-confirm-msgbar");
@@ -4500,12 +4495,9 @@ function initDialogs()
   };
 
   gDialogs.reloadSyncFolder = new aeDialog("#reload-sync-fldr-msgbox");
-  gDialogs.reloadSyncFolder.onShow = function ()
+  gDialogs.reloadSyncFolder.onFirstInit = function ()
   {
-    setTimeout(() => {
-      let acceptBtn = $("#reload-sync-fldr-msgbox > .dlg-btns > .dlg-accept")[0];
-      acceptBtn.focus();
-    }, 100);
+    this.focusedSelector = ".dlg-btns > .dlg-accept";
   };
   gDialogs.reloadSyncFolder.onAfterAccept = function ()
   {
@@ -4666,13 +4658,13 @@ function initDialogs()
   };
 
   gDialogs.showOnlySyncedItemsReminder = new aeDialog("#show-only-synced-items-reminder");
+  gDialogs.showOnlySyncedItemsReminder.onFirstInit = function ()
+  {
+    this.focusedSelector = ".dlg-btns > .dlg-accept";
+  };
   gDialogs.showOnlySyncedItemsReminder.onShow = function ()
   {
     aePrefs.setPrefs({clippingsMgrShowSyncItemsOnlyRem: false});
-    setTimeout(() => {
-      let acceptBtn = $("#show-only-synced-items-reminder > .dlg-btns > .dlg-accept")[0];
-      acceptBtn.focus();
-    }, 100);
   };
   
   gDialogs.moveSyncFldr = new aeDialog("#move-sync-fldr-msgbox");
