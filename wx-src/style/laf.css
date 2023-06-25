@@ -148,18 +148,24 @@ select.browser-style:active {
     background-color: rgba(12, 12, 13, 0.3) !important;
 }
 
+button:-moz-focusring,
 button.default:-moz-focusring,
 select:-moz-focusring {
     outline-style: none;
 }
 
-button.default:-moz-focusring:not(:disabled),
+button:-moz-focusring:not(:disabled),
 select:-moz-focusring:not([size]):not(:disabled),
 select.browser-style:-moz-focusring:not([size]):not(:disabled) {
     border-color: var(--color-bkgd) !important;
+    box-shadow: 0 0 0 2px #45a1ff;
+}
+
+button.default:-moz-focusring:not(:disabled) {
     box-shadow: 0 0 0 2px #61b5ffbf;
 }
 
+button:-moz-focusring:not(:disabled),
 button.default:-moz-focusring:not(:disabled) {
     transition-duration: 250ms;
     transition-property: box-shadow;
