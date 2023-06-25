@@ -40,14 +40,10 @@ select.browser-style:focus:not([size]):not(:disabled) {
 }
 
 .prompt-icon {
-    width: 36px;
-    height: 36px;
-    background-image: url("../img/question-64.png");
+    width: 32px;
+    height: 32px;
+    background-image: url("../img/placehldr.svg");
     background-size: contain;
-}
-
-body[data-os="mac"] .prompt-icon {
-    background-image: url("../img/question-64-mac.png");
 }
 
 .prompt-content {
