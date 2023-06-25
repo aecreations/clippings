@@ -24,7 +24,7 @@
         <fieldset id="paste-options">
           <legend data-i18n="prefsHdgPasteOptions"></legend>
 
-	  <div class="row" style="margin-bottom:6px">
+	  <div id="html-paste-options-ctr" class="row">
   	    <label for="html-paste-options"data-i18n="labelPasteOptions"></label>
 	    <br/>
 	    <select id="html-paste-options" class="browser-style">
@@ -33,11 +33,11 @@
             </select>
 	  </div>
 	  
-	  <div class="indent browser-style">
+	  <div id="paste-formatted-opts" class="indent browser-style">
 	    <input type="checkbox" id="html-auto-line-break"/><label id="html-auto-line-break-label" for="html-auto-line-break" data-i18n="cbAutoLineBreak"></label>
 	    <p class="note" data-i18n="htmlPasteDesc"></p>
           </div>
-	  <div class="row browser-style" style="margin-bottom:0">
+	  <div id="enable-shortcut-key-ctr" class="row browser-style">
 	    <input type="checkbox" id="enable-shortcut-key"/><label id="enable-shortcut-key-label" for="enable-shortcut-key" data-i18n="prefsShortcutMode"></label>
 	    <label id="shortcut-key-prefix-modifiers"></label>
 	    <select id="shortcut-key-selector" class="browser-style">
@@ -133,8 +133,8 @@
 	<legend data-i18n="syncClippings"></legend>
 
 	<div class="row browser-style">
-	  <p id="sync-intro" class="description" style="margin-bottom:0"></p>
-	  <p class="description" style="margin-top:6px"><a id="show-sync-help" href="#"><span data-i18n="syncLearnMore"></span></a></p>
+	  <p id="sync-intro" class="description"></p>
+	  <p id="sync-hlp-cta" class="description"><a id="show-sync-help" href="#"><span data-i18n="syncLearnMore"></span></a></p>
 
 	  <p id="sync-status"></p>
         </div>
