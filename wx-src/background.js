@@ -785,6 +785,16 @@ function getContextMenuData(aFolderID)
     return rv;    
   }
 
+  function sanitizeMenuTitle(aTitle)
+  {
+    // Escape the ampersand character, which would normally be used to denote
+    // the access key for the menu item.
+    let rv = aTitle.replace(/&/g, "&&");
+
+    return rv;
+  }
+  // END nested functions
+
   let rv = [];
   let clippingsDB = aeClippings.getDB();
 
@@ -796,7 +806,7 @@ function getContextMenuData(aFolderID)
 
         let submenuItemData = {
           id: fldrMenuItemID,
-          title: aItem.name,
+          title: sanitizeMenuTitle(aItem.name),
         };
 
         // Submenu icon
@@ -839,7 +849,7 @@ function getContextMenuData(aFolderID)
 
           let menuItemData = {
             id: menuItemID,
-            title: aItem.name,
+            title: sanitizeMenuTitle(aItem.name),
             icons: {
               16: "img/" + (aItem.label ? `clipping-${aItem.label}.svg` : "clipping.svg")
             },
