@@ -71,10 +71,10 @@ async function init()
   $("#html-paste-options").on("change", aEvent => {
     let pasteOpt = aEvent.target.value;
     if (pasteOpt == aeConst.HTMLPASTE_AS_FORMATTED) {
-      $("#paste-formatted-opts").show();
+      $("#paste-formatted-opts").fadeIn();
     }
     else {
-      $("#paste-formatted-opts").hide();
+      $("#paste-formatted-opts").fadeOut();
     }
   });
 
