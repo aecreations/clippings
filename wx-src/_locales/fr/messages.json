@@ -1,7 +1,7 @@
 {
   "extName": {
     "message": "Clippings",
-    "description": "Name of the extension - do NOT translate"
+    "description": "Name of the extension"
   },
   "extNameTB": {
     "message": "Clippings pour Thunderbird",
@@ -210,7 +210,7 @@
     "message": "Quoi de neuf"
   },
   "welcWhatsNewDesc": {
-    "message": "Clippings 6.3 apporte des améliorations aux fenêtres de dialogue, ainsi qu'un nouveau paramètre pour les notifications de rappel de sauvegarde."
+    "message": "Clippings 6.5 est fourni avec de nombreuses corrections et améliorations, telles que le support des symboles et des émoticônes dans les valeurs par défaut des marqueurs. :-)"
   },
   "welcWhatsNewCTA": {
     "message": "En savoir plus"
@@ -638,7 +638,20 @@
     "message": "Formats date/heure disponibles:"
   },
   "labelSelImportFile": {
-    "message": "Sélectionnez le fichier à importer:"
+    "message": "Sélectionnez le fichier à importer:",
+    "description": "Import dialog in Clippings Manager"
+  },
+  "importFmtHdg": {
+    "message": "Formats acceptés:",
+    "description": "Import dialog in Clippings Manager, describing accepted file formats for import"
+  },
+  "impFmtClippings": {
+    "message": "Clippings (*.json)",
+    "description": "Import dialog in Clippings Manager, describing accepted file formats for import"
+  },
+  "impFmtTextSnippets": {
+    "message": "Extraits de texte (*.json)",
+    "description": "Import dialog in Clippings Manager, describing accepted file formats for import"
   },
   "labelSelBkupFile": {
     "message": "Sélection du fichier de sauvegarde:"
@@ -741,11 +754,21 @@
   "btnCopy": {
     "message": "Copier"
   },
-  "prefsTitle": {
-    "message": "Options de Clippings"
+  "mnuPrefs": {
+    "message": "Préférences de Clippings…",
+    "description": "Browser toolbar button context menu option for opening the extension preferences page"
   },
-  "errPrefPgFailed": {
-    "message": "Impossible de charger la page de préférences d'extension. Redémarrez Firefox et réessayez."
+  "mnuPrefsWin": {
+    "message": "Options de Clippings…",
+    "description": "Browser toolbar button context menu option for opening the extension preferences page - Windows only"
+  },
+  "prefsTitle": {
+    "message": "Préférences de Clippings",
+    "description": "Extension preferences page title"
+  },
+  "prefsTitleWin": {
+    "message": "Options de Clippings",
+    "description": "Extension preferences page title on Windows"
   },
   "prefsHdgPasteOptions": {
     "message": "Options de collage"
@@ -845,7 +868,7 @@
     "message": "Il est temps de sauvegarder vos . Cliquez ici pour sauvegarder vos Clippings maintenant."
   },
   "backupNotifyFirstMsg": {
-    "message": "Protégez vos Clippings en effectuant des sauvegardes régulières. Cliquez ici pour sauvegarder vos Clippings et définir des rappels de sauvegarde."
+    "message": "Gardez vos clippings en sécurité en effectuant des sauvegardes régulières. Cliquez ici pour commencer."
   },
   "backupFirstDesc": {
     "message": "Protégez vos Clippings en effectuant des sauvegardes régulières. Prenez un moment pour sauvegarder vos Clippings en cliquant sur sauvegarde maintenant."
@@ -880,11 +903,11 @@
     "message": "En savoir plus sur les Synchronisations de Clippings."
   },
   "syncHelp": {
-    "message": "<p class=\"dlg-subhead\">Synchorniser Clippings</p><p>Synchroniser Clippings vous permets de synchroniser un sous ensemble de vos clippings entre Firefox et Thunderbird de manière à apparaitre dans les deux applications. Vous pouvez choisir quels clippings vous voulez synchroniser en créant un dossier  “Synced Clippings” depuis le dialogue de création d'un nouveau clipping, ou en les déplaçant dans le même dossier dans le gestionnaire de Clippings.</p><p>Le répertoire Synced Clippings sera créé automatiquement une fois la fonctionnalité paramétrée.</p><p class=\"dlg-subhead\">Setting Up</p><p>Sync Clippings doit être activé dans les applications qui devront être synchronisées. Sync Clippings est compatible avec Firefox 60 et au dessus et Thunderbird 60 et au dessus. (avec Clippings pour Thunderbird 5.6 ou au dessus installé).</p><p>En plus, l'application d'aide Sync Clippings helper app doit être installée sur votre système pour lui permettre de maintenir la synchronisation des différents répertoires syncrhonisés à jour. Elle est disponible au téléchargement à l'adresse  <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">du site web d'AE Creations</a>. Une fois installée, elle se lancera automatiquement quand Firefox est démarré et tournera en tâche de fond..</p><p>Pour activer Sync Clippings, cliquez sur  <b>Activer Sync</b> depuis la page des paramètres de Clippings. Il vous sera demandé de choisir un emplacement de sauvegarde du fichier sur votre système, où sera sauvegardé les données de synchronisation, si cela n'a pas encore été fait.</p>",
+    "message": "<p class=\"dlg-subhead\">Synchronisation Clippings</p><p> La synchornisation des Clippings vous permets de synchroniser un sous-ensemble de vos clippings entre Firefox et Thunderbird, ou tout autre instance de ces applications. Vous pouvez choisir quels clippings vous voulez synchroniser en les créant dans un répertoire spécifique “Synced Clippings” depuis le nouveau dialogue de \"Nouveau clipping\", ou en les déplaçant dans ce répertoire via le Gestionnaire de Clippings.</p><p>Le répertoire \"Clippings synchronisés\" sera créé automatiquement une fois l'option de synchronisation installée.</p><p class=\"dlg-subhead\">Comment l'installé</p><p>L'application d'aide à la synchronisation des Clippings doit être installée pour maintenir votre répertoire de Clippings Synchronisés à jour. Elle est disponible au téléchargement depuis <a href=\"$1\" class=\"hyperlink\">le site web AE Creations</a>. Une fois installée, elle se lancera automatiquement au démarrage de Firefox et tournera en arrière plan.</p><p>Pour activer la synchronisation des Clippings, <b>Activer Sync</b> depuis la page de préférences de Clippings.  Il vous sera demandé de choisir un emplacement pour le ficher sur votre système où seront sauvegardés les Clippings synchronisés.  Répétez le procesus pour les autres applications avec lesquels vous voulez synchroniser Clippings, en choisissant le même emplacement de fichier pour les données de synchronisation.</p>",
     "description": "Sync Clippings help in Firefox"
   },
   "syncHelpTB": {
-    "message": "<p class=\"dlg-subhead\">Synchorniser Clippings</p><p>Synchroniser Clippings vous permets de synchroniser un sous ensemble de vos clippings entre Firefox et Thunderbird de manière à apparaitre dans les deux applications. Vous pouvez choisir quels clippings vous voulez synchroniser en créant un dossier  “Synced Clippings” depuis le dialogue de création d'un nouveau clipping, ou en les déplaçant dans le même dossier dans le gestionnaire de Clippings.</p><p>Le répertoire Synced Clippings sera créé automatiquement une fois la fonctionnalité paramétrée.</p><p class=\"dlg-subhead\">Setting Up</p><p>Sync Clippings doit être activé dans les applications qui devront être synchronisées. Sync Clippings est compatible avec Firefox 60 et au dessus et Thunderbird 60 et au dessus. (avec Clippings pour Thunderbird 5.6 ou au dessus installé).</p><p>En plus, l'application d'aide Sync Clippings helper app doit être installée sur votre système pour lui permettre de maintenir la synchronisation des différents répertoires syncrhonisés à jour. Elle est disponible au téléchargement à l'adresse  <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">du site web d'AE Creations</a>. Une fois installée, elle se lancera automatiquement quand Thunderbird est démarré et tournera en tâche de fond..</p><p>Pour activer Sync Clippings, cliquez sur  <b>Activer Sync</b> depuis la page des paramètres de Clippings. Il vous sera demandé de choisir un emplacement de sauvegarde du fichier sur votre système, où sera sauvegardé les données de synchronisation, si cela n'a pas encore été fait.</p>",
+    "message": "<p class=\"dlg-subhead\">Synchronisation Clippings</p><p> La synchornisation des Clippings vous permets de synchroniser un sous-ensemble de vos clippings entre Firefox et Thunderbird, ou tout autre instance de ces applications. Vous pouvez choisir quels clippings vous voulez synchroniser en les créant dans un répertoire spécifique “Synced Clippings” depuis le nouveau dialogue de \"Nouveau clipping\", ou en les déplaçant dans ce répertoire via le Gestionnaire de Clippings.</p><p>Le répertoire \"Clippings synchronisés\" sera créé automatiquement une fois l'option de synchronisation installée.</p><p class=\"dlg-subhead\">Comment l'installé</p><p>L'application d'aide à la synchronisation des Clippings doit être installée pour maintenir votre répertoire de Clippings Synchronisés à jour. Elle est disponible au téléchargement depuis <a href=\"$1\" class=\"hyperlink\">le site web AE Creations</a>. Une fois installée, elle se lancera automatiquement au démarrage de Thunderbird et tournera en arrière plan.</p><p>Pour activer la synchronisation des Clippings, <b>Activer Sync</b> depuis la page de préférences de Clippings.  Il vous sera demandé de choisir un emplacement pour le ficher sur votre système où seront sauvegardés les Clippings synchronisés.  Répétez le procesus pour les autres applications avec lesquels vous voulez synchroniser Clippings, en choisissant le même emplacement de fichier pour les données de synchronisation.</p>",
     "description": "Sync Clippings help in Thunderbird"
   },
   "syncStatusOn": {
@@ -1053,11 +1076,11 @@
     "description": "Header for the What's New page (appears after upgrading Clippings)"
   },
   "upgrade": {
-    "message": "Clippings a été mis à jour vers la version 6.3.",
+    "message": "Clippings a été mis à jour vers la version 6.5.",
     "description": "What's New page (appears after upgrading Clippings)"
   },
   "upgradeTB": {
-    "message": "Clippings pour Thunderbird a été mis à jour vers la version 6.1.",
+    "message": "Clippings pour Thunderbird a été mis à jour vers la version 6.3.",
     "description": "What's New page (appears after upgrading Clippings for Thunderbird)"
   },
   "whatsNew": {
@@ -1065,15 +1088,15 @@
     "description": "What's New page (appears after upgrading Clippings)"
   },
   "whatsNew1": {
-    "message": "Améliorations du gestionnaire Clippings. Sur Windows, le gestionnaire Clippings sauvegarde la taille et position de sa fenêtre",
+    "message": "Les symboles et les émoticônes sont maintenant pris en charge dans les valeurs par défaut des espaces réservés :-)",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
   "whatsNew2": {
-    "message": "Améliorations pour supporter les affichages multiples sous Windows. Les fenêtres contextuelles et de dialogues sont maintenant positionnées au niveau de la fenêtre de navigateur depuis laquelle elles ont été ouvertes, au lieu de s'ouvrir toujours sur l'affichage principal",
+    "message": "Les valeurs du marqueur date/heure formatées s'affichent correctement dans les langues autres que l'anglais",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
   "whatsNew3": {
-    "message": "Nouvelle option pour éviter le rappel de sauvegarde si aucune modification n'a été apportée à vos clippings depuis la dernière sauvegarde",
+    "message": "Les valeurs par défaut des boîtes de dialogue affichent maintenant le nom du clipping sélectionné, afin que vous sachiez que vous avez sélectionné le bon",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
   "contribHdg": {
@@ -1085,16 +1108,16 @@
     "description": "Call to action message to make donation or learn more about contributing to Clippings (or Clippings for Thunderbird)"
   },
   "linkBlog": {
-    "message": "Blog de AE Creations"
+    "message": "Blog AE Creations"
   },
   "linkAMO": {
-    "message": "Pages des extensions Firefox"
+    "message": "Page des modules Firefox"
   },
   "linkATN": {
-    "message": "Page des extensions Thunderbird"
+    "message": "Page des modules Thunderbird"
   },
   "linkForum": {
-    "message": "Forums d'aide et d'idées"
+    "message": "Forums d'aide et de support"
   },
   "keyAlt": {
     "message": "ALT"
