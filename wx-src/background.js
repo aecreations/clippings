@@ -1435,7 +1435,7 @@ function openPlaceholderPromptDlg()
   openDlgWnd(url, "placeholderPrmt", {
     type: "popup",
     width: 536,
-    height: 224,
+    height: 228,
     topOffset: 256,
   });
 }
