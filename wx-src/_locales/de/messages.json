@@ -1,7 +1,7 @@
 {
   "extName": {
     "message": "Clippings",
-    "description": "Name of the extension - do NOT translate"
+    "description": "Name of the extension"
   },
   "extNameTB": {
     "message": "Clippings für Thunderbird",
@@ -210,7 +210,7 @@
     "message": "Was ist neu"
   },
   "welcWhatsNewDesc": {
-    "message": "Clippings 6.4 enthält Verbesserungen bei der Tastaturnavigation in Fenstern und Dialogen sowie weitere Neuerungen."
+    "message": "Clippings 6.5 enthält viele Korrekturen und Verbesserungen, wie zum Beispiel Unterstützung von Symbolen und Emojis in Platzhalter-Standardwerten. 🙂"
   },
   "welcWhatsNewCTA": {
     "message": "Mehr erfahren"
@@ -638,7 +638,20 @@
     "message": "Verfügbare Datum/Zeitformate:"
   },
   "labelSelImportFile": {
-    "message": "Wählen Sie die Import-Datei:"
+    "message": "Wählen Sie die Import-Datei:",
+    "description": "Import dialog in Clippings Manager"
+  },
+  "importFmtHdg": {
+    "message": "Akzeptierte Dateiformate:",
+    "description": "Import dialog in Clippings Manager, describing accepted file formats for import"
+  },
+  "impFmtClippings": {
+    "message": "Textbausteine (*.json, *.rdf)",
+    "description": "Import dialog in Clippings Manager, describing accepted file formats for import"
+  },
+  "impFmtTextSnippets": {
+    "message": "Textschnipsel (*.json)",
+    "description": "Import dialog in Clippings Manager, describing accepted file formats for import"
   },
   "labelSelBkupFile": {
     "message": "Wählen Sie die Sicherungsdatei:"
@@ -741,11 +754,21 @@
   "btnCopy": {
     "message": "Kopieren"
   },
-  "prefsTitle": {
-    "message": "Clippings-Optionen"
+  "mnuPrefs": {
+    "message": "Textbausteineinstellungen …",
+    "description": "Browser toolbar button context menu option for opening the extension preferences page"
   },
-  "errPrefPgFailed": {
-    "message": "Einstellungsseite der Erweiterung kann nicht geladen werden. Starten Sie Firefox neu und versuchen Sie es erneut."
+  "mnuPrefsWin": {
+    "message": "Textbausteinoptionen …",
+    "description": "Browser toolbar button context menu option for opening the extension preferences page - Windows only"
+  },
+  "prefsTitle": {
+    "message": "Textbausteineinstellungen",
+    "description": "Extension preferences page title"
+  },
+  "prefsTitleWin": {
+    "message": "Textbausteinoptionen",
+    "description": "Extension preferences page title on Windows"
   },
   "prefsHdgPasteOptions": {
     "message": "Einfügeoptionen"
@@ -845,7 +868,7 @@
     "message": "Es ist an der Zeit, Ihre Textbausteine zu sichern. Klicken Sie hier, um Ihre Textbausteine jetzt zu sichern."
   },
   "backupNotifyFirstMsg": {
-    "message": "Sichern Sie regelmäßige Ihre Textbausteine. Klicken sie hier, um Ihre Textbausteine zu sichern und eine Erinnerung für die Sicherung einzustellen."
+    "message": "Schützen Sie Ihre Textbausteine, indem Sie regelmäßig Sicherungen durchführen. Hier klicken, um loszulegen."
   },
   "backupFirstDesc": {
     "message": "Sichern Sie regelmäßige Ihre Textbausteine. Nehmen Sie sich einen Augenblick Zeit, um Ihre Textbausteine zu sichern, indem Sie auf \"Jetzt sichern\" klicken."
@@ -1053,11 +1076,11 @@
     "description": "Header for the What's New page (appears after upgrading Clippings)"
   },
   "upgrade": {
-    "message": "Clippings wurde auf Version 6.4 aktualisiert.",
+    "message": "Clippings wurde auf Version 6.5 aktualisiert.",
     "description": "What's New page (appears after upgrading Clippings)"
   },
   "upgradeTB": {
-    "message": "Clippings für Thunderbird wurde auf Version 6.2 aktualisiert.",
+    "message": "Clippings für Thunderbird wurde auf Version 6.3 aktualisiert.",
     "description": "What's New page (appears after upgrading Clippings for Thunderbird)"
   },
   "whatsNew": {
@@ -1065,20 +1088,16 @@
     "description": "What's New page (appears after upgrading Clippings)"
   },
   "whatsNew1": {
-    "message": "Verbesserungen der Tastaturnavigation in Fenstern und Dialogen",
+    "message": "Symbole und Emojis werden jetzt in den Platzhalter-Standardwerten unterstützt: 🙂",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
   "whatsNew2": {
-    "message": "Ein Fehler in der Textbausteinverwaltung wurde behoben, bei dem das Rückgängigmachen von Aktionen für einen synchronisierten Textbaustein oder Ordner nicht mehr funktionierte, nachdem der Ordner »Synchronisierte Textbausteine« neu geladen wurde.",
+    "message": "Formatierte Datum-/Zeit-Platzhalter-Werte werden korrekt in anderen Sprachen als Englisch angezeigt",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
   "whatsNew3": {
-    "message": "Geringfügige optische Überarbeitung von Tasten und Dialogen",
+    "message": "In den Dialogfenstern wird der Name des ausgewählten Textbausteins angezeigt, so dass Sie wissen, dass Sie den richtigen ausgewählt haben",
     "description": "Description of an enhancement or fix in the new version of Clippings"
-  },
-  "whatsNew-Fx": {
-    "message": "Möglichkeit zum Importieren von Daten aus Textschnipseln hinzugefügt (Chrome-Erweiterung)",
-    "description": "Description of a Firefox-only enhancement or fix in the new version of Clippings"
   },
   "contribHdg": {
     "message": "Mitmachen",
