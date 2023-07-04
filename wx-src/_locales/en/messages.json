@@ -1283,7 +1283,7 @@
   },
   
   "syncStartupFailed": {
-    "message": "Failed to connect to the Sync Clippings helper app. To fix this, reinstall the Sync Clippings helper app."
+    "message": "Unable to connect to the Sync Clippings helper app. To fix this, reinstall the Sync Clippings helper app."
   },
 
   "syncUpdateTitle": {
