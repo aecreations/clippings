@@ -606,7 +606,7 @@ TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
 				    *  *  *
 
 Fancytree License
-=================  MIT License
+=================
 
 This license applies to Fancytree.
 
@@ -634,7 +634,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 				    *  *  *
 jQuery License
-==============  MIT License
+==============
 
 This license applies to jQuery.
 
@@ -671,7 +671,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				    *  *  *
 				    
 jQuery contextMenu License
-==========================  MIT License
+==========================
 
 This license applies to jQuery contextMenu.
 
@@ -700,7 +700,7 @@ THE SOFTWARE.
 				    *  *  *
 
 Moment.js License
-=================  MIT License
+=================
 
 This license applies to Moment.js.
 
@@ -730,7 +730,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 				    *  *  *
 
 rdflib.js License
-=================  MIT License
+=================
 
 This license applies to rdflib.js.
 
