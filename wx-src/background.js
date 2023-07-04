@@ -302,6 +302,11 @@ browser.runtime.onInstalled.addListener(async (aInstall) => {
     }
     else {
       log(`Clippings/wx: Updating from version ${oldVer} to ${currVer}`);
+
+      // Detect upgrade to version 6.5, which doesn't have any new prefs.
+      if (aeVersionCmp(oldVer, "6.5") < 0) {
+        gIsMajorVerUpdate = true;
+      }
     }
   }
 });
@@ -358,9 +363,6 @@ void async function ()
   }
 
   if (! aePrefs.hasSanClementePrefs(gPrefs)) {
-    // This should be set when updating to the latest release.
-    gIsMajorVerUpdate = true;
-
     log("Initializing 6.4 user preferences.");
     await aePrefs.setSanClementePrefs(gPrefs);
   }
