@@ -5723,10 +5723,11 @@ function getErrStr(aErr)
 
 function handlePushSyncItemsError(aError)
 {
-  if (aError == aeConst.SYNC_ERROR_CONXN_FAILED && !gErrorPushSyncItems) {
+  if ([aeConst.SYNC_ERROR_CONXN_FAILED, aeConst.SYNC_ERROR_NAT_APP_NOT_FOUND].includes(aError)
+      && !gErrorPushSyncItems) {
     let errorMsgBox = new aeDialog("#sync-error-msgbox");
     errorMsgBox.onInit = function () {
-      $("#sync-error-msgbox > .dlg-content > .msgbox-error-msg").text(browser.i18n.getMessage("syncPushFailed"));
+      this.find(".dlg-content > .msgbox-error-msg").text(browser.i18n.getMessage("syncPushFailed"));
     };
     errorMsgBox.showModal();
     gErrorPushSyncItems = true;
