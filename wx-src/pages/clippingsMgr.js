@@ -5723,7 +5723,8 @@ function getErrStr(aErr)
 
 function handlePushSyncItemsError(aError)
 {
-  if ([aeConst.SYNC_ERROR_CONXN_FAILED, aeConst.SYNC_ERROR_NAT_APP_NOT_FOUND].includes(aError)
+  let err = aError.toString();
+  if ([aeConst.SYNC_ERROR_CONXN_FAILED, aeConst.SYNC_ERROR_NAT_APP_NOT_FOUND].includes(err)
       && !gErrorPushSyncItems) {
     let errorMsgBox = new aeDialog("#sync-error-msgbox");
     errorMsgBox.onInit = function () {
