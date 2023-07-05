@@ -23,6 +23,7 @@
     --color-not-synced-items-text: rgba(0, 0, 0, 0.4);
     --color-not-synced-items-selected-text: rgba(0, 0, 0, 0.4);
     --color-main-toolbar-bkgd: linear-gradient(to bottom, #fcfcfc 0%, #dedede 100%);
+    --color-main-toolbar-bkgd-btn: transparent;
     --color-main-toolbar-text: #0c0c0d;
     --color-main-toolbar-border: silver;
     --color-plchldr-toolbar-bkgd: #eee;
@@ -101,6 +102,7 @@
 	--color-not-synced-items-text: rgba(180, 180, 180, 0.4);
 	--color-not-synced-items-selected-text: #b1b1b3;
 	--color-main-toolbar-bkgd: #38383d;
+	--color-main-toolbar-bkgd-btn: #38383d;
 	--color-main-toolbar-text: #f9f9fa;
 	--color-main-toolbar-border: #4a4a4f;
 	--color-plchldr-toolbar-bkgd: #38383d;
@@ -429,6 +431,15 @@ select {
 .context-menu-submenu::after {
     content: unset;
 }
+
+#toolbar > .toolbar-button:-moz-focusring {
+    border-color: var(--color-main-toolbar-bkgd-btn) !important;
+}
+
+#placeholder-toolbar > .toolbar-button:-moz-focusring {
+    border-color: var(--color-plchldr-toolbar-bkgd) !important;
+}
+
 
 #toolbar > #spacer-2 {
     order: 8;
@@ -996,6 +1007,10 @@ body[data-os="mac"] .lightbox .msgbox-icon {
 .lightbox .browser-style input[type="checkbox"] + label::before {
     width: 14px;
     height: 14px;
+}
+
+body[data-os="win"] .browser-style > input[type="checkbox"] + label {
+    vertical-align: -1px;
 }
 
 .lightbox fieldset {
