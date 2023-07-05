@@ -632,9 +632,12 @@ function refreshSyncedClippings(aRebuildClippingsMenu)
     if (aErr == aeConst.SYNC_ERROR_CONXN_FAILED
         || aErr == aeConst.SYNC_ERROR_NAT_APP_NOT_FOUND) {
       showSyncErrorNotification();
+
+      // Don't proceed further, otherwise duplicated items may appear in the
+      // Clippings context menu.
+      return;
     }
 
-    // Sync errors should not prevent building the Clippings menu on startup.
     if (aRebuildClippingsMenu) {
       buildContextMenu();
     }
