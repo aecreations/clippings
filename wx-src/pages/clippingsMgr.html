@@ -253,10 +253,16 @@
         <label id="import-clippings-label" data-i18n="labelSelImportFile"></label>
 	<div id="import-clippings-filepicker" class="hbox browser-style">
 	  <input type="text" id="import-clippings-file-path" readonly="true" placeholder=""/>
-	  <label id="import-clippings-file-upload-btn" for="import-clippings-file-upload"
-	   data-i18n="btnBrowse"></label>
-	  <input type="file" id="import-clippings-file-upload" accept=".rdf, .json"/>
+          <button id="import-clippings-browse" data-i18n="btnBrowse"></button>
+	  <input type="file" id="import-clippings-file-upload" accept=".rdf, .json" tabindex="-1"/>
 	</div>
+        <div id="import-formats">
+          <p data-i18n="importFmtHdg"></p>
+          <ul>
+            <li data-i18n="impFmtClippings"></li>
+            <li data-i18n="impFmtTextSnippets"></li>
+          </ul>
+        </div>
 	<div id="import-clippings-replc-shct-keys-checkbox" class="browser-style">
 	  <input type="checkbox" id="import-clippings-replc-shct-keys" class="checkbox-xs" checked="true"/><label for="import-clippings-replc-shct-keys" data-i18n="cbImportReplcShctKeys"></label>
 	  <br/>
@@ -426,6 +432,7 @@
       </div>
     </div>
     
+    <script src="../lib/dexie/dexie.min.js"></script>
     <script src="../lib/jquery.js"></script>
     <script src="../lib/purify.min.js"></script>
     <script src="../lib/fancytree/jquery.fancytree-all-deps.min.js"></script>
@@ -435,7 +442,8 @@
     <script src="../lib/contextMenu/jquery.ui.position.min.js"></script>
     <script src="../lib/contextMenu/jquery.contextMenu.min.js"></script>
     <script src="../lib/simpledrag.js"></script>
-    <script src="../lib/moment.min.js"></script>
+    <script src="../lib/moment/moment.min.js"></script>
+    <script src="../lib/moment/locales.min.js"></script>
     <script src="../scripts/aeConst.js"></script>
     <script src="../scripts/aeImportExport.js"></script>
     <script src="../scripts/aeDialog.js"></script>
@@ -444,6 +452,7 @@
     <script src="../scripts/aeInterxn.js"></script>
     <script src="../scripts/aePrefs.js"></script>
     <script src="../scripts/aeUUID.js"></script>
+    <script src="../scripts/aeClippings.js"></script>
     <script src="clippingsMgr.js"></script>
   </body>
 </html>

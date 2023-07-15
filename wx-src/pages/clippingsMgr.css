@@ -23,6 +23,7 @@
     --color-not-synced-items-text: rgba(0, 0, 0, 0.4);
     --color-not-synced-items-selected-text: rgba(0, 0, 0, 0.4);
     --color-main-toolbar-bkgd: linear-gradient(to bottom, #fcfcfc 0%, #dedede 100%);
+    --color-main-toolbar-bkgd-btn: transparent;
     --color-main-toolbar-text: #0c0c0d;
     --color-main-toolbar-border: silver;
     --color-plchldr-toolbar-bkgd: #eee;
@@ -101,6 +102,7 @@
 	--color-not-synced-items-text: rgba(180, 180, 180, 0.4);
 	--color-not-synced-items-selected-text: #b1b1b3;
 	--color-main-toolbar-bkgd: #38383d;
+	--color-main-toolbar-bkgd-btn: #38383d;
 	--color-main-toolbar-text: #f9f9fa;
 	--color-main-toolbar-border: #4a4a4f;
 	--color-plchldr-toolbar-bkgd: #38383d;
@@ -429,6 +431,15 @@ select {
 .context-menu-submenu::after {
     content: unset;
 }
+
+#toolbar > .toolbar-button:-moz-focusring {
+    border-color: var(--color-main-toolbar-bkgd-btn) !important;
+}
+
+#placeholder-toolbar > .toolbar-button:-moz-focusring {
+    border-color: var(--color-plchldr-toolbar-bkgd) !important;
+}
+
 
 #toolbar > #spacer-2 {
     order: 8;
@@ -998,6 +1009,10 @@ body[data-os="mac"] .lightbox .msgbox-icon {
     height: 14px;
 }
 
+body[data-os="win"] .browser-style > input[type="checkbox"] + label {
+    vertical-align: -1px;
+}
+
 .lightbox fieldset {
     border-left: none;
     border-right: none;
@@ -1189,7 +1204,7 @@ body[data-locale="de"] #shortcut-list-dlg #shortcut-instrxns {
 
 #import-dlg {
     --width: 408px;
-    --height: 206px;
+    --height: 210px;
     top: 40px;
 }
 
@@ -1200,7 +1215,7 @@ body[data-locale="de"] #import-dlg {
 #import-dlg #import-clippings-filepicker {
     width: 100%;
     margin-top: 2px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
 
 #import-dlg #import-clippings-file-path {
@@ -1226,35 +1241,11 @@ body[data-locale="de"] #import-dlg {
     background-repeat: no-repeat, repeat-x, no-repeat;
 }
 
-#import-dlg #import-clippings-file-upload-btn {
+#import-dlg #import-clippings-browse {
     order: 2;
     flex: 0 1 auto;
-    
+
     min-width: 72px;
-    min-height: 24px;
-    padding: 3px 16px 3px 16px;
-    border: 1px solid var(--color-btn-border);
-    border-radius: 3.5px;
-    box-shadow: 0 0 0 0 transparent;
-    background-color: var(--color-btn-bkgd);
-
-    transition-duration: 200ms;
-    transition-property: box-shadow;    
-}
-
-#import-dlg #import-clippings-file-upload-btn.focused {
-    border: 1px solid;
-    border-color: var(--color-bkgd);
-    box-shadow: 0 0 0 2px #61b5ffbf;
-}
-
-#import-dlg #import-clippings-file-upload-btn:hover {
-    background-color: var(--color-btn-hover-bkgd);
-}
-
-#import-dlg #import-clippings-file-upload-btn:active {
-    background-color: var(--color-btn-active-bkgd);
-    border: 1px solid #858585;
 }
 
 #import-dlg #import-clippings-file-upload {
@@ -1263,8 +1254,24 @@ body[data-locale="de"] #import-dlg {
     height: 0px;
 }
 
+#import-dlg #import-formats > p {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+#import-dlg #import-formats > ul {
+    padding-left: 12px;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+#import-dlg #import-clippings-replc-shct-keys-checkbox {
+    margin-bottom: -1px;
+}
+
 #import-dlg #restore-backup-warning {
-    display: none;   
+    display: none;
+    margin-top: 12px;
 }
 
 #import-dlg #restore-backup-warning > .warning-icon {
@@ -1297,7 +1304,7 @@ body[data-locale="de"] #import-dlg #restore-backup-warning > p {
 #import-dlg progress {
     display: none;
     width: 355px;
-    margin-top: 12px;
+    margin-top: 8px;
 }
 
 #import-dlg #import-error {

@@ -154,7 +154,6 @@ progress {
 
 .note, description {
     margin-top: 6px;
-    margin-bottom: 16px;
     margin-right: 18px;
 }
 
@@ -170,10 +169,19 @@ progress {
     font-size: 11px;
 }
 
+#html-paste-options-ctr {
+    margin-bottom: 8px;
+}
+
 #html-paste-options {
     width: 445px;
     height: 28px;
     margin-top: 4px;
+}
+
+#enable-shortcut-key-ctr {
+    margin-top: 12px;
+    margin-bottom: 0;
 }
 
 body[data-locale="fr"]:not([data-os="mac"]) #enable-shortcut-key-label {
@@ -260,6 +268,14 @@ body[data-locale="fr"] #skip-backup-label {
 
 #wnds-dlgs-settings {
     margin-top: 8px;
+}
+
+#sync-intro {
+    margin-bottom: 0;
+}
+
+#sync-hlp-cta {
+    margin-top: 6px;
 }
 
 #sync-status {

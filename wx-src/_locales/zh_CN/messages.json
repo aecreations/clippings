@@ -1,7 +1,7 @@
 {
   "extName": {
     "message": "剪辑",
-    "description": "Name of the extension - do NOT translate"
+    "description": "Name of the extension"
   },
   "extNameTB": {
     "message": "剪辑 for 雷鸟",
@@ -210,7 +210,7 @@
     "message": "更新内容"
   },
   "welcWhatsNewDesc": {
-    "message": "剪辑 6.4 对窗口和对话框中的键盘导航以及其它方面进行了改进"
+    "message": "剪辑 6.5 带来了许多修复和改进，比如在默认提示信息中支持符号和Emoji表情符号"
   },
   "welcWhatsNewCTA": {
     "message": "了解更多"
@@ -638,7 +638,20 @@
     "message": "可用的日期/时间格式："
   },
   "labelSelImportFile": {
-    "message": "选择导入文件:"
+    "message": "选择导入文件:",
+    "description": "Import dialog in Clippings Manager"
+  },
+  "importFmtHdg": {
+    "message": "接受的文件格式：",
+    "description": "Import dialog in Clippings Manager, describing accepted file formats for import"
+  },
+  "impFmtClippings": {
+    "message": "剪辑 (*.json, *.rdf)",
+    "description": "Import dialog in Clippings Manager, describing accepted file formats for import"
+  },
+  "impFmtTextSnippets": {
+    "message": "文本片段 (*.json)",
+    "description": "Import dialog in Clippings Manager, describing accepted file formats for import"
   },
   "labelSelBkupFile": {
     "message": "选择备份文件:"
@@ -741,11 +754,21 @@
   "btnCopy": {
     "message": "复制"
   },
-  "prefsTitle": {
-    "message": "剪辑设置"
+  "mnuPrefs": {
+    "message": "剪辑 首选项…",
+    "description": "Browser toolbar button context menu option for opening the extension preferences page"
   },
-  "errPrefPgFailed": {
-    "message": "无法加载扩展的首选项页面，请重启 Firefox 后再试。"
+  "mnuPrefsWin": {
+    "message": "剪辑 选项…",
+    "description": "Browser toolbar button context menu option for opening the extension preferences page - Windows only"
+  },
+  "prefsTitle": {
+    "message": "剪辑 首选项",
+    "description": "Extension preferences page title"
+  },
+  "prefsTitleWin": {
+    "message": "剪辑 选项",
+    "description": "Extension preferences page title on Windows"
   },
   "prefsHdgPasteOptions": {
     "message": "粘贴选项"
@@ -845,7 +868,7 @@
     "message": "是时候备份您的剪辑数据了，单击此处立即备份您的剪辑数据。"
   },
   "backupNotifyFirstMsg": {
-    "message": "通过定期备份来保证剪辑数据的安全，点击这里备份剪辑数据并设置备份提醒。"
+    "message": "定期备份来保障剪辑的安全。点此开始。"
   },
   "backupFirstDesc": {
     "message": "通过定期备份来保证剪辑数据的安全，现在请花一点时间点击 立即备份 ，立刻备份您的剪辑数据吧！"
@@ -1053,11 +1076,11 @@
     "description": "Header for the What's New page (appears after upgrading Clippings)"
   },
   "upgrade": {
-    "message": "剪辑 已升级到6.4版",
+    "message": "剪辑 已升级到6.5版。",
     "description": "What's New page (appears after upgrading Clippings)"
   },
   "upgradeTB": {
-    "message": "雷鸟(Thunderbird)的 剪辑 版本已升级到6.2版。",
+    "message": "剪辑 雷鸟版 已升级到6.3版。",
     "description": "What's New page (appears after upgrading Clippings for Thunderbird)"
   },
   "whatsNew": {
@@ -1065,20 +1088,16 @@
     "description": "What's New page (appears after upgrading Clippings)"
   },
   "whatsNew1": {
-    "message": "改进弹出窗口和对话框的键盘导航",
+    "message": "提示信息现已支持符号和Emoji表情符号",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
   "whatsNew2": {
-    "message": "修复了剪辑管理器的一个错误，即在重新加载 同步剪辑 文件夹后，无法撤消对同步剪辑或其他文件夹的操作",
+    "message": "提示信息中的已格式化的日期/时间，现在能在英语以外的语言中正确显示",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
   "whatsNew3": {
-    "message": "按钮和对话框的视觉刷新效果",
+    "message": "对话框的提示信息现在能显示所选剪辑的名称，以便你知道你已经选择了正确的剪辑。",
     "description": "Description of an enhancement or fix in the new version of Clippings"
-  },
-  "whatsNew-Fx": {
-    "message": "添加了从文本片段导入数据的功能(Chrome扩展)",
-    "description": "Description of a Firefox-only enhancement or fix in the new version of Clippings"
   },
   "contribHdg": {
     "message": "参与贡献",

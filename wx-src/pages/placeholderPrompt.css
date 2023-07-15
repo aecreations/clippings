@@ -40,14 +40,10 @@ select.browser-style:focus:not([size]):not(:disabled) {
 }
 
 .prompt-icon {
-    width: 36px;
-    height: 36px;
-    background-image: url("../img/question-64.png");
+    width: 32px;
+    height: 32px;
+    background-image: url("../img/placehldr.svg");
     background-size: contain;
-}
-
-body[data-os="mac"] .prompt-icon {
-    background-image: url("../img/question-64-mac.png");
 }
 
 .prompt-content {
@@ -58,6 +54,15 @@ body[data-os="mac"] .prompt-icon {
     margin-top: 2px;
     margin-bottom: 12px;
     font-size: 13px;
+
+    width: 440px;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.clipping-name {
+    font-weight: bold;
 }
 
 #single-prmt-input {

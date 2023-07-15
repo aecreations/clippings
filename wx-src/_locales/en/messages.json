@@ -1,7 +1,7 @@
 {
   "extName": {
     "message": "Clippings",
-    "description": "Name of the extension - do NOT translate"
+    "description": "Name of the extension"
   },
 
   "extNameTB": {
@@ -271,7 +271,7 @@
   },
 
   "welcWhatsNewDesc": {
-    "message": "Clippings 6.4 comes with improvements to keyboard navigation in windows and dialogs, and other enhancements."
+    "message": "Clippings 6.5 comes with many fixes and improvements, such as support for symbols and emojis in placeholder default values. 🙂"
   },
 
   "welcWhatsNewCTA": {
@@ -828,7 +828,23 @@
   },
 
   "labelSelImportFile": {
-    "message": "Select import file:"
+    "message": "Select import file:",
+    "description": "Import dialog in Clippings Manager"
+  },
+
+  "importFmtHdg": {
+    "message": "Accepted file formats:",
+    "description": "Import dialog in Clippings Manager, describing accepted file formats for import"
+  },
+
+  "impFmtClippings": {
+    "message": "Clippings (*.json, *.rdf)",
+    "description": "Import dialog in Clippings Manager, describing accepted file formats for import"
+  },
+
+  "impFmtTextSnippets": {
+    "message": "Text Snippets (*.json)",
+    "description": "Import dialog in Clippings Manager, describing accepted file formats for import"
   },
 
   "labelSelBkupFile": {
@@ -965,12 +981,24 @@
     "message": "Copy"
   },
 
-  "prefsTitle": {
-    "message": "Clippings Options"
+  "mnuPrefs": {
+    "message": "Clippings Preferences…",
+    "description": "Browser toolbar button context menu option for opening the extension preferences page"
   },
 
-  "errPrefPgFailed": {
-    "message": "Unable to load extension preferences page. Restart Firefox and try again."
+  "mnuPrefsWin": {
+    "message": "Clippings Options…",
+    "description": "Browser toolbar button context menu option for opening the extension preferences page - Windows only"
+  },
+
+  "prefsTitle": {
+    "message": "Clippings Preferences",
+    "description": "Extension preferences page title"
+  },
+
+  "prefsTitleWin": {
+    "message": "Clippings Options",
+    "description": "Extension preferences page title on Windows"
   },
 
   "prefsHdgPasteOptions": {
@@ -1100,7 +1128,7 @@
   },
 
   "backupNotifyFirstMsg": {
-    "message": "Keep your clippings safe by doing regular backups. Click here to back up your clippings and set up backup reminders."
+    "message": "Keep your clippings safe by doing regular backups. Click here to get started."
   },
 
   "backupFirstDesc": {
@@ -1255,7 +1283,7 @@
   },
   
   "syncStartupFailed": {
-    "message": "Failed to connect to the Sync Clippings helper app. To fix this, reinstall the Sync Clippings helper app."
+    "message": "Unable to connect to the Sync Clippings helper app. To fix this, reinstall the Sync Clippings helper app."
   },
 
   "syncUpdateTitle": {
@@ -1372,12 +1400,12 @@
   },
 
   "upgrade": {
-    "message": "Clippings has been upgraded to version 6.4.",
+    "message": "Clippings has been upgraded to version 6.5.",
     "description": "What's New page (appears after upgrading Clippings)"
   },
 
   "upgradeTB": {
-    "message": "Clippings for Thunderbird has been upgraded to version 6.2.",
+    "message": "Clippings for Thunderbird has been upgraded to version 6.3.",
     "description": "What's New page (appears after upgrading Clippings for Thunderbird)"
   },
 
@@ -1387,23 +1415,18 @@
   },
 
   "whatsNew1": {
-    "message": "Improvements to keyboard navigation in windows and dialogs",
+    "message": "Symbols and emojis are now supported in placeholder default values 🙂",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
 
   "whatsNew2": {
-    "message": "Fixed a Clippings Manager bug where undoing actions on a synced clipping or folder stopped working after reloading the Synced Clippings folder",
+    "message": "Formatted date/time placeholder values show up correctly in languages other than English",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
 
   "whatsNew3": {
-    "message": "Minor visual refresh for buttons and dialogs",
+    "message": "Placeholder prompt dialogs now display the name of the selected clipping, so that you know you've selected the right one",
     "description": "Description of an enhancement or fix in the new version of Clippings"
-  },
-
-  "whatsNew-Fx": {
-    "message": "Added ability to import data from Text Snippets (Chrome extension)",
-    "description": "Description of a Firefox-only enhancement or fix in the new version of Clippings"
   },
 
   "contribHdg": {

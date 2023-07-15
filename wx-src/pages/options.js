@@ -4,7 +4,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 let gOS;
-let gClippings;
 let gDialogs = {};
 let gIsActivatingSyncClippings = false;
 
@@ -12,7 +11,7 @@ let gIsActivatingSyncClippings = false;
 // DOM utility
 function sanitizeHTML(aHTMLStr)
 {
-  return DOMPurify.sanitize(aHTMLStr, { SAFE_FOR_JQUERY: true });
+  return DOMPurify.sanitize(aHTMLStr, {SAFE_FOR_JQUERY: true});
 }
 
 function capitalize(aString)
@@ -38,17 +37,6 @@ function capitalize(aString)
 
 // Options page initialization
 $(async () => {
-  gClippings = await browser.runtime.getBackgroundPage();
-
-  if (! gClippings) {
-    // Hide the broken "Turn Off Sync" button when Private Browsing turned on.
-    $("#toggle-sync").hide();
-    
-    window.alert(browser.i18n.getMessage("errPrefPgFailed"));
-    await closePage();
-    return;
-  }
-
   init();
 });
 
@@ -57,6 +45,12 @@ async function init()
 {
   let platform = await browser.runtime.getPlatformInfo();
   document.body.dataset.os = gOS = platform.os;
+
+  if (gOS == "win") {
+    let prefPgTitleWin = browser.i18n.getMessage("prefsTitleWin");
+    document.title = prefPgTitleWin;
+    $("#pref-pg-hdr-text").text(prefPgTitleWin);
+  }
 
   if (gOS == "mac") {
     $("#shortcut-key-prefix-modifiers").text("\u21e7\u2318");
@@ -73,6 +67,16 @@ async function init()
   $("#sync-intro").html(sanitizeHTML(browser.i18n.getMessage("syncIntro")));
 
   initDialogs();
+
+  $("#html-paste-options").on("change", aEvent => {
+    let pasteOpt = aEvent.target.value;
+    if (pasteOpt == aeConst.HTMLPASTE_AS_FORMATTED) {
+      $("#paste-formatted-opts").fadeIn();
+    }
+    else {
+      $("#paste-formatted-opts").fadeOut();
+    }
+  });
 
   $("#toggle-sync").click(async (aEvent) => {
     let syncClippings = await aePrefs.getPref("syncClippings");
@@ -488,7 +492,7 @@ function initDialogs()
       return;
     }     
 
-    let syncFldrID = await browser.runtime.sendMessage({
+    let syncFolderID = await browser.runtime.sendMessage({
       msgID: "enable-sync-clippings",
       isEnabled: true,
     });
@@ -510,11 +514,11 @@ function initDialogs()
       msgID: "refresh-synced-clippings",
       rebuildClippingsMenu,
     });
-    
-    let syncClippingsLstrs = gClippings.getSyncClippingsListeners().getListeners();
-    for (let listener of syncClippingsLstrs) {
-      listener.onActivate(syncFldrID);
-    }    
+    browser.runtime.sendMessage({
+      msgID: "sync-activated",
+      syncFolderID,
+    });
+
     this.close();
   };
   
@@ -535,19 +539,19 @@ function initDialogs()
         msgID: "enable-sync-clippings",
         isEnabled: false,
       };
-      let oldSyncFldrID = await browser.runtime.sendMessage(msg);
+      let oldSyncFolderID = await browser.runtime.sendMessage(msg);
 
       aePrefs.setPrefs({syncClippings: false});
       $("#sync-settings").hide();
       $("#toggle-sync").text(browser.i18n.getMessage("syncTurnOn"));
       $("#sync-status").removeClass("sync-status-on").text(browser.i18n.getMessage("syncStatusOff"));
 
-      let syncClippingsLstrs = gClippings.getSyncClippingsListeners().getListeners();
-      for (let listener of syncClippingsLstrs) {
-	listener.onDeactivate(oldSyncFldrID);
-      }
+      browser.runtime.sendMessage({
+        msgID: "sync-deactivated",
+        oldSyncFolderID,
+      });
 
-      gDialogs.turnOffSyncAck.oldSyncFldrID = oldSyncFldrID;
+      gDialogs.turnOffSyncAck.oldSyncFldrID = oldSyncFolderID;
       gDialogs.turnOffSyncAck.showModal();
     });
   };
@@ -566,12 +570,13 @@ function initDialogs()
   };
   gDialogs.turnOffSyncAck.onAfterAccept = function ()
   {
-    let removeSyncFldr = $("#delete-sync-fldr").prop("checked");
-    let syncClippingsLstrs = gClippings.getSyncClippingsListeners().getListeners();
+    let removeSyncFolder = $("#delete-sync-fldr").prop("checked");
 
-    for (let listener of syncClippingsLstrs) {
-      listener.onAfterDeactivate(removeSyncFldr, this.oldSyncFldrID);
-    }
+    browser.runtime.sendMessage({
+      msgID: "sync-deactivated-after",
+      removeSyncFolder,
+      oldSyncFolderID: this.oldSyncFldrID,
+    });
   };
 
   gDialogs.wndsDlgsOpts = new aeDialog("#wnds-dlgs-opts-dlg");

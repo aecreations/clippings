@@ -4,10 +4,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
-const MAX_NAME_LENGTH = 64;
 const ROOT_FOLDER_NAME = "clippings-root";
 
-let gClippingsDB = null;
 let gOS = null;
 let gHostAppName = null;
 let gHostAppVer;
@@ -24,27 +22,11 @@ let gPrefersColorSchemeMedQry;
 let gIsFirstRun = false;
 let gIsMajorVerUpdate = false;
 
-let gClippingsListeners = {
-  _listeners: [],
-
-  add: function (aNewListener) {
-    this._listeners.push(aNewListener);
-  },
-
-  remove: function (aTargetListener) {
-    this._listeners = this._listeners.filter(aListener => aListener != aTargetListener);
-  },
-
-  getListeners: function () {
-    return this._listeners;
-  }
-};
-
 let gClippingsListener = {
   _isImporting: false,
   _isCopying: false,
   _isClippingsMgrDnDInProgress: false,
-  origin: null,
+  origin: aeConst.ORIGIN_HOSTAPP,
   
   newClippingCreated: function (aID, aData, aOrigin)
   {
@@ -111,9 +93,6 @@ let gClippingsListener = {
     }
   },
 
-  clippingDeleted: function (aID, aOldData) {},
-  folderDeleted: function (aID, aOldData) {},
-
   copyStarted: function ()
   {
     this._isCopying = true;
@@ -153,22 +132,6 @@ let gClippingsListener = {
   },
 };
 
-let gSyncClippingsListeners = {
-  _listeners: [],
-
-  add(aNewListener) {
-    this._listeners.push(aNewListener)
-  },
-
-  remove(aTargetListener) {
-    this._listeners = this._listeners.filter(aListener => aListener != aTargetListener);
-  },
-
-  getListeners() {
-    return this._listeners;
-  },
-};
-
 let gSyncClippingsListener = {
   onActivate(aSyncFolderID)
   {
@@ -189,7 +152,12 @@ let gSyncClippingsListener = {
 
     // Change the icon on the "Synced Clippings" folder to be a normal
     // folder icon.
-    browser.contextMenus.update(syncFldrMenuID, { icons: { 16: "img/folder.svg" }});
+    let mnuIco = {
+      icons: {
+        16: "img/folder.svg"
+      }
+    };
+    browser.menus.update(syncFldrMenuID, mnuIco);
   },
 
   onAfterDeactivate(aRemoveSyncFolder, aOldSyncFolderID)
@@ -203,7 +171,7 @@ let gSyncClippingsListener = {
       }
     }
 
-    log("Clippings/wx: gSyncClippingsListeners.onAfterDeactivate(): Remove Synced Clippings folder: " + aRemoveSyncFolder);
+    log("Clippings/wx: gSyncClippingsListener.onAfterDeactivate(): Remove Synced Clippings folder: " + aRemoveSyncFolder);
 
     if (aRemoveSyncFolder) {
       log(`Removing old Synced Clippings folder (ID = ${aOldSyncFolderID})`);
@@ -218,21 +186,21 @@ let gSyncClippingsListener = {
 
   onReloadStart()
   {
-    log("Clippings/wx: gSyncClippingsListeners.onReloadStart()");
+    log("Clippings/wx: gSyncClippingsListener.onReloadStart()");
     gIsReloadingSyncFldr = true;
   },
   
   async onReloadFinish()
   {
-    log("Clippings/wx: gSyncClippingsListeners.onReloadFinish(): Rebuilding Clippings menu");
+    log("Clippings/wx: gSyncClippingsListener.onReloadFinish(): Rebuilding Clippings menu");
     gIsReloadingSyncFldr = false;
     rebuildContextMenu();
 
-    log("Clippings/wx: gSyncClippingsListeners.onReloadFinish(): Setting static IDs on synced items that don't already have them.");
+    log("Clippings/wx: gSyncClippingsListener.onReloadFinish(): Setting static IDs on synced items that don't already have them.");
     let isStaticIDsAdded = await addStaticIDs(gSyncFldrID);
 
     if (isStaticIDsAdded) {
-      log("Clippings/wx: gSyncClippingsListeners.onReloadFinish(): Static IDs added to synced items.  Saving sync file.");
+      log("Clippings/wx: gSyncClippingsListener.onReloadFinish(): Static IDs added to synced items.  Saving sync file.");
       await pushSyncFolderUpdates();
     }
   },
@@ -269,11 +237,13 @@ let gNewClipping = {
 };
 
 let gPlaceholders = {
+  _clippingName: null,
   _plchldrs: null,
   _clpCtnt: null,
   _plchldrsWithDefVals: null,
 
-  set: function (aPlaceholders, aPlaceholdersWithDefaultVals, aClippingText) {
+  set: function (aClippingName, aPlaceholders, aPlaceholdersWithDefaultVals, aClippingText) {
+    this._clippingName = aClippingName;
     this._plchldrs = aPlaceholders;
     this._plchldrsWithDefVals = aPlaceholdersWithDefaultVals;
     this._clpCtnt = aClippingText;
@@ -288,6 +258,7 @@ let gPlaceholders = {
 
   copy: function () {
     let rv = {
+      clippingName: this._clippingName,
       placeholders: this._plchldrs.slice(),
       placeholdersWithDefaultVals: Object.assign({}, this._plchldrsWithDefVals),
       content: this._clpCtnt
@@ -296,6 +267,7 @@ let gPlaceholders = {
   },
 
   reset: function () {
+    this._clippingName = null;
     this._plchldrs = null;
     this._plchldrsWithDefVals = null;
     this._clpCtnt = null;
@@ -330,6 +302,11 @@ browser.runtime.onInstalled.addListener(async (aInstall) => {
     }
     else {
       log(`Clippings/wx: Updating from version ${oldVer} to ${currVer}`);
+
+      // Detect upgrade to version 6.5, which doesn't have any new prefs.
+      if (aeVersionCmp(oldVer, "6.5") < 0) {
+        gIsMajorVerUpdate = true;
+      }
     }
   }
 });
@@ -386,9 +363,6 @@ void async function ()
   }
 
   if (! aePrefs.hasSanClementePrefs(gPrefs)) {
-    // This should be set when updating to the latest release.
-    gIsMajorVerUpdate = true;
-
     log("Initializing 6.4 user preferences.");
     await aePrefs.setSanClementePrefs(gPrefs);
   }
@@ -405,7 +379,7 @@ async function init()
 {
   log("Clippings/wx: Initializing integration with host app...");
   
-  initClippingsDB();
+  aeClippings.init();
 
   let [brws, platform] = await Promise.all([
     browser.runtime.getBrowserInfo(),
@@ -426,7 +400,7 @@ async function init()
   if (gPrefs.autoAdjustWndPos === null) {
     let autoAdjustWndPos = gOS == "win";
     let clippingsMgrSaveWndGeom = autoAdjustWndPos;
-    await aePrefs.setPrefs({ autoAdjustWndPos, clippingsMgrSaveWndGeom });
+    await aePrefs.setPrefs({autoAdjustWndPos, clippingsMgrSaveWndGeom});
   }
 
   // Handle changes to Dark Mode system setting.
@@ -434,15 +408,10 @@ async function init()
   handlePrefersColorSchemeChange(gPrefersColorSchemeMedQry);
   gPrefersColorSchemeMedQry.addEventListener("change", handlePrefersColorSchemeChange);
   
-  gClippingsListener.origin = aeConst.ORIGIN_HOSTAPP;
-  gClippingsListeners.add(gClippingsListener);
-  gSyncClippingsListeners.add(gSyncClippingsListener);
-
   if (gPrefs.syncClippings) {
     gSyncFldrID = gPrefs.syncFolderID;
 
-    // The context menu will be built when refreshing the sync data, via the
-    // onReloadFinish event handler of the Sync Clippings listener.
+    // The context menu will be built when refreshing the sync data.
     refreshSyncedClippings(true);
   }
   else {
@@ -502,43 +471,22 @@ async function init()
 }
 
 
-function initClippingsDB()
-{
-  gClippingsDB = new Dexie("aeClippings");
-  gClippingsDB.version(1).stores({
-    clippings: "++id, name, parentFolderID"
-  });
-  // This was needed to use the Dexie.Observable add-on (discontinued as of 6.2)
-  gClippingsDB.version(2).stores({});
-
-  gClippingsDB.version(3).stores({
-    folders: "++id, name, parentFolderID"
-  });
-  gClippingsDB.version(4).stores({
-    clippings: "++id, name, parentFolderID, shortcutKey"
-  });
-  gClippingsDB.version(5).stores({
-    clippings: "++id, name, parentFolderID, shortcutKey, sourceURL"
-  });
-
-  gClippingsDB.open().catch(aErr => { onError(aErr) });
-}
-
-
 function setDisplayOrderOnRootItems()
 {
+  let clippingsDB = aeClippings.getDB();
+  
   return new Promise((aFnResolve, aFnReject) => {
     let seq = 1;
 
-    gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
-      gClippingsDB.folders.where("parentFolderID").equals(aeConst.ROOT_FOLDER_ID).each((aItem, aCursor) => {
+    clippingsDB.transaction("rw", clippingsDB.clippings, clippingsDB.folders, () => {
+      clippingsDB.folders.where("parentFolderID").equals(aeConst.ROOT_FOLDER_ID).each((aItem, aCursor) => {
         log(`Clippings/wx: setDisplayOrderOnRootItems(): Folder "${aItem.name}" (id=${aItem.id}): display order = ${seq}`);
-        let numUpd = gClippingsDB.folders.update(aItem.id, { displayOrder: seq++ });
+        let numUpd = clippingsDB.folders.update(aItem.id, { displayOrder: seq++ });
 
       }).then(() => {
-        return gClippingsDB.clippings.where("parentFolderID").equals(aeConst.ROOT_FOLDER_ID).each((aItem, aCursor) => {
+        return clippingsDB.clippings.where("parentFolderID").equals(aeConst.ROOT_FOLDER_ID).each((aItem, aCursor) => {
           log(`Clippings/wx: setDisplayOrderOnRootItems(): Clipping "${aItem.name}" (id=${aItem.id}): display order = ${seq}`);
-          let numUpd = gClippingsDB.clippings.update(aItem.id, { displayOrder: seq++ });
+          let numUpd = clippingsDB.clippings.update(aItem.id, { displayOrder: seq++ });
         });
 
       }).then(() => {
@@ -556,22 +504,23 @@ function setDisplayOrderOnRootItems()
 function addStaticIDs(aFolderID)
 {
   let rv = false;
+  let clippingsDB = aeClippings.getDB();
   
   return new Promise((aFnResolve, aFnReject) => {
-    gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
-      gClippingsDB.folders.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
+    clippingsDB.transaction("rw", clippingsDB.clippings, clippingsDB.folders, () => {
+      clippingsDB.folders.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
         if (! ("sid" in aItem)) {
           let sid = aeUUID();
-          gClippingsDB.folders.update(aItem.id, {sid});
+          clippingsDB.folders.update(aItem.id, {sid});
           log(`Clippings/wx: addStaticIDs(): Static ID added to folder ${aItem.id} - "${aItem.name}"`);
           rv = true;
         }
         addStaticIDs(aItem.id);
       }).then(() => {
-        return gClippingsDB.clippings.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
+        return clippingsDB.clippings.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
           if (! ("sid" in aItem)) {
             let sid = aeUUID();
-            gClippingsDB.clippings.update(aItem.id, {sid});
+            clippingsDB.clippings.update(aItem.id, {sid});
             log(`Clippings/wx: addStaticIDs(): Static ID added to clipping ${aItem.id} - "${aItem.name}"`);
             rv = true;
           }
@@ -586,6 +535,8 @@ function addStaticIDs(aFolderID)
 
 async function enableSyncClippings(aIsEnabled)
 {
+  let clippingsDB = aeClippings.getDB();
+
   if (aIsEnabled) {
     log("Clippings/wx: enableSyncClippings(): Turning ON");
 
@@ -598,7 +549,7 @@ async function enableSyncClippings(aIsEnabled)
         isSync: true,
       };
       try {
-        gSyncFldrID = await gClippingsDB.folders.add(syncFldr);
+        gSyncFldrID = await clippingsDB.folders.add(syncFldr);
       }
       catch (e) {
         console.error("Clippings/wx: enableSyncClippings(): Failed to create the Synced Clipping folder: " + e);
@@ -613,7 +564,7 @@ async function enableSyncClippings(aIsEnabled)
     log("Clippings/wx: enableSyncClippings(): Turning OFF");
     let oldSyncFldrID = gSyncFldrID;
 
-    let numUpd = await gClippingsDB.folders.update(gSyncFldrID, { isSync: undefined });
+    let numUpd = await clippingsDB.folders.update(gSyncFldrID, { isSync: undefined });
     await aePrefs.setPrefs({ syncFolderID: null });
     gSyncFldrID = null;
     return oldSyncFldrID;
@@ -625,6 +576,7 @@ function refreshSyncedClippings(aRebuildClippingsMenu)
 {
   log("Clippings/wx: refreshSyncedClippings(): Retrieving synced clippings from the Sync Clippings helper app...");
 
+  let clippingsDB = aeClippings.getDB();
   let natMsg = {msgID: "get-synced-clippings"};
   let getSyncedClippings = browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, natMsg);
   let syncJSONData = "";
@@ -645,7 +597,7 @@ function refreshSyncedClippings(aRebuildClippingsMenu)
         displayOrder: 0,
       };
       
-      return gClippingsDB.folders.add(syncFldr);
+      return clippingsDB.folders.add(syncFldr);
     }
 
     log("Clippings/wx: refreshSyncedClippings(): Synced Clippings folder ID: " + gSyncFldrID);
@@ -658,7 +610,7 @@ function refreshSyncedClippings(aRebuildClippingsMenu)
       return aePrefs.setPrefs({ syncFolderID: gSyncFldrID });
     }
       
-    gSyncClippingsListeners.getListeners().forEach(aListener => { aListener.onReloadStart() });
+    gSyncClippingsListener.onReloadStart();
 
     log("Clippings/wx: Purging existing items in the Synced Clippings folder...");
     return purgeFolderItems(gSyncFldrID, true);
@@ -668,20 +620,24 @@ function refreshSyncedClippings(aRebuildClippingsMenu)
 
     // Method aeImportExport.importFromJSON() is asynchronous, so the import
     // may not yet be finished when this function has finished executing!
-    aeImportExport.setDatabase(gClippingsDB);
+    aeImportExport.setDatabase(clippingsDB);
     aeImportExport.importFromJSON(syncJSONData, false, false, gSyncFldrID);
 
     setTimeout(function () {
-      gSyncClippingsListeners.getListeners().forEach(aListener => { aListener.onReloadFinish() });
+      gSyncClippingsListener.onReloadFinish();
     }, gPrefs.afterSyncFldrReloadDelay);
     
   }).catch(aErr => {
     console.error("Clippings/wx: refreshSyncedClippings(): " + aErr);
-    if (aErr == aeConst.SYNC_ERROR_CONXN_FAILED) {
+    if (aErr == aeConst.SYNC_ERROR_CONXN_FAILED
+        || aErr == aeConst.SYNC_ERROR_NAT_APP_NOT_FOUND) {
       showSyncErrorNotification();
+
+      // Don't proceed further, otherwise duplicated items may appear in the
+      // Clippings context menu.
+      return;
     }
 
-    // Sync errors should not prevent building the Clippings menu on startup.
     if (aRebuildClippingsMenu) {
       buildContextMenu();
     }
@@ -720,22 +676,24 @@ async function pushSyncFolderUpdates()
 
 function purgeFolderItems(aFolderID, aKeepFolder)
 {
+  let clippingsDB = aeClippings.getDB();
+
   return new Promise((aFnResolve, aFnReject) => {
-    gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
-      gClippingsDB.folders.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
+    clippingsDB.transaction("rw", clippingsDB.clippings, clippingsDB.folders, () => {
+      clippingsDB.folders.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
         purgeFolderItems(aItem.id, false).then(() => {});
 
       }).then(() => {
         if (!aKeepFolder && aFolderID != aeConst.DELETED_ITEMS_FLDR_ID) {
           log("Clippings/wx: purgeFolderItems(): Deleting folder: " + aFolderID);
-          return gClippingsDB.folders.delete(aFolderID);
+          return clippingsDB.folders.delete(aFolderID);
         }
         return null;
         
       }).then(() => {
-        return gClippingsDB.clippings.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
+        return clippingsDB.clippings.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
           log("Clippings/wx: purgeFolderItems(): Deleting clipping: " + aItem.id);
-          gClippingsDB.clippings.delete(aItem.id);
+          clippingsDB.clippings.delete(aItem.id);
         });
       }).then(() => {
         aFnResolve();
@@ -833,17 +791,28 @@ function getContextMenuData(aFolderID)
     return rv;    
   }
 
+  function sanitizeMenuTitle(aTitle)
+  {
+    // Escape the ampersand character, which would normally be used to denote
+    // the access key for the menu item.
+    let rv = aTitle.replace(/&/g, "&&");
+
+    return rv;
+  }
+  // END nested functions
+
   let rv = [];
+  let clippingsDB = aeClippings.getDB();
 
   return new Promise((aFnResolve, aFnReject) => {
-    gClippingsDB.transaction("r", gClippingsDB.folders, gClippingsDB.clippings, () => {
-      gClippingsDB.folders.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
+    clippingsDB.transaction("r", clippingsDB.folders, clippingsDB.clippings, () => {
+      clippingsDB.folders.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
         let fldrMenuItemID = "ae-clippings-folder-" + aItem.id + "_" + Date.now();
         gFolderMenuItemIDMap[aItem.id] = fldrMenuItemID;
 
         let submenuItemData = {
           id: fldrMenuItemID,
-          title: aItem.name,
+          title: sanitizeMenuTitle(aItem.name),
         };
 
         // Submenu icon
@@ -880,13 +849,13 @@ function getContextMenuData(aFolderID)
         });
 
       }).then(() => {
-        return gClippingsDB.clippings.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
+        return clippingsDB.clippings.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
           let menuItemID = "ae-clippings-clipping-" + aItem.id + "_" + Date.now();
           gClippingMenuItemIDMap[aItem.id] = menuItemID;
 
           let menuItemData = {
             id: menuItemID,
-            title: aItem.name,
+            title: sanitizeMenuTitle(aItem.name),
             icons: {
               16: "img/" + (aItem.label ? `clipping-${aItem.label}.svg` : "clipping.svg")
             },
@@ -922,8 +891,8 @@ function buildContextMenu()
 {
   log("Clippings/wx: buildContextMenu()");
   
-  // Context menu for browser action button.
-  browser.contextMenus.create({
+  // Context menus for browser action button.
+  browser.menus.create({
     id: "ae-clippings-reset-autoincr-plchldrs",
     title: browser.i18n.getMessage("baMenuResetAutoIncrPlaceholders"),
     enabled: false,
@@ -931,15 +900,25 @@ function buildContextMenu()
     documentUrlPatterns: ["<all_urls>"]
   });
 
+  let prefsMnuStrKey = "mnuPrefs";
+  if (gOS == "win") {
+    prefsMnuStrKey = "mnuPrefsWin";
+  }
+  browser.menus.create({
+    id: "ae-clippings-prefs",
+    title: browser.i18n.getMessage(prefsMnuStrKey),
+    contexts: ["browser_action"],
+  });
+
   // Context menu for web page textbox or HTML editor.
-  browser.contextMenus.create({
+  browser.menus.create({
     id: "ae-clippings-new",
     title: browser.i18n.getMessage("cxtMenuNew"),
     contexts: ["editable", "selection"],
     documentUrlPatterns: ["<all_urls>"]
   });
 
-  browser.contextMenus.create({
+  browser.menus.create({
     id: "ae-clippings-manager",
     title: browser.i18n.getMessage("cxtMenuOpenClippingsMgr"),
     contexts: ["editable", "selection"],
@@ -958,7 +937,7 @@ function buildContextMenu()
     }
     
     if (aMenuData.length > 0) {
-      browser.contextMenus.create({
+      browser.menus.create({
         type: "separator",
         contexts: ["editable"],
         documentUrlPatterns: ["<all_urls>"]
@@ -986,7 +965,7 @@ function buildContextMenuHelper(aMenuData)
       menuItem.parentId = menuData.parentId;
     }
 
-    browser.contextMenus.create(menuItem);
+    browser.menus.create(menuItem);
     
     if (menuData.submenuItems) {
       buildContextMenuHelper(menuData.submenuItems);
@@ -998,7 +977,9 @@ function buildContextMenuHelper(aMenuData)
 function updateContextMenuForClipping(aUpdatedClippingID)
 {
   let id = Number(aUpdatedClippingID);
-  gClippingsDB.clippings.get(id).then(aResult => {
+  let clippingsDB = aeClippings.getDB();
+
+  clippingsDB.clippings.get(id).then(aResult => {
     let updatePpty = {
       title: aResult.name,
       icons: {
@@ -1011,7 +992,7 @@ function updateContextMenuForClipping(aUpdatedClippingID)
       // 'updateProperties' parameter to contextMenus.update().
       // See https://bugzilla.mozilla.org/show_bug.cgi?id=1414566
       let menuItemID = gClippingMenuItemIDMap[id];
-      browser.contextMenus.update(menuItemID, updatePpty);
+      browser.menus.update(menuItemID, updatePpty);
     }
     catch (e) {
       console.error("Clippings/wx: updateContextMenuForClipping(): " + e);
@@ -1023,10 +1004,12 @@ function updateContextMenuForClipping(aUpdatedClippingID)
 function updateContextMenuForFolder(aUpdatedFolderID)
 {
   let id = Number(aUpdatedFolderID);
-  gClippingsDB.folders.get(id).then(aResult => {
+  let clippingsDB = aeClippings.getDB();
+
+  clippingsDB.folders.get(id).then(aResult => {
     let menuItemID = gFolderMenuItemIDMap[id];
     if (menuItemID) {
-      browser.contextMenus.update(menuItemID, { title: aResult.name });
+      browser.menus.update(menuItemID, {title: aResult.name});
     }
   });
 }
@@ -1035,7 +1018,7 @@ function updateContextMenuForFolder(aUpdatedFolderID)
 function removeContextMenuForClipping(aRemovedClippingID)
 {
   let menuItemID = gClippingMenuItemIDMap[aRemovedClippingID];
-  browser.contextMenus.remove(menuItemID);
+  browser.menus.remove(menuItemID);
   delete gClippingMenuItemIDMap[aRemovedClippingID];
 }
 
@@ -1043,7 +1026,7 @@ function removeContextMenuForClipping(aRemovedClippingID)
 function removeContextMenuForFolder(aRemovedFolderID)
 {
   let menuItemID = gFolderMenuItemIDMap[aRemovedFolderID];
-  browser.contextMenus.remove(menuItemID);
+  browser.menus.remove(menuItemID);
   delete gFolderMenuItemIDMap[aRemovedFolderID];
 }
 
@@ -1051,7 +1034,7 @@ function removeContextMenuForFolder(aRemovedFolderID)
 async function rebuildContextMenu()
 {
   log("Clippings/wx: rebuildContextMenu(): Removing all Clippings context menu items and rebuilding the menu...");
-  await browser.contextMenus.removeAll();
+  await browser.menus.removeAll();
 
   gClippingMenuItemIDMap = {};
   gFolderMenuItemIDMap = {};
@@ -1087,9 +1070,9 @@ function buildAutoIncrementPlchldrResetMenu(aAutoIncrPlchldrs)
         documentUrlPatterns: ["<all_urls>"]
       };
       
-      await browser.contextMenus.create(menuItem);
+      await browser.menus.create(menuItem);
       if (! enabledResetMenu) {
-        await browser.contextMenus.update("ae-clippings-reset-autoincr-plchldrs", {
+        await browser.menus.update("ae-clippings-reset-autoincr-plchldrs", {
           enabled: true
         });
         enabledResetMenu = true;
@@ -1105,10 +1088,10 @@ async function resetAutoIncrPlaceholder(aPlaceholder)
 
   aeClippingSubst.resetAutoIncrementVar(aPlaceholder);
   gAutoIncrPlchldrs.delete(aPlaceholder);
-  await browser.contextMenus.remove(`ae-clippings-reset-autoincr-${aPlaceholder}`);
+  await browser.menus.remove(`ae-clippings-reset-autoincr-${aPlaceholder}`);
   
   if (gAutoIncrPlchldrs.size == 0) {
-    browser.contextMenus.update("ae-clippings-reset-autoincr-plchldrs", { enabled: false });
+    browser.menus.update("ae-clippings-reset-autoincr-plchldrs", {enabled: false});
   }
 }
 
@@ -1316,31 +1299,8 @@ async function showSyncHelperUpdateNotification()
 async function openWelcomePage()
 {
   let url = browser.runtime.getURL("pages/welcome.html");
-  let tab = await browser.tabs.create({ url });
-  browser.history.deleteUrl({ url });
-}
-
-
-function createClippingNameFromText(aText)
-{
-  let rv = "";
-  let clipName = "";
-
-  aText = aText.trim();
-
-  if (aText.length > MAX_NAME_LENGTH) {
-    // Leave room for the three-character elipsis.
-    clipName = aText.substr(0, MAX_NAME_LENGTH - 3) + "...";
-  } 
-  else {
-    clipName = aText;
-  }
-
-  // Truncate clipping names at newlines if they exist.
-  let newlineIdx = clipName.indexOf("\n");
-  rv = (newlineIdx == -1) ? clipName : clipName.substring(0, newlineIdx);
-
-  return rv;
+  let tab = await browser.tabs.create({url});
+  browser.history.deleteUrl({url});
 }
 
 
@@ -1454,7 +1414,7 @@ function openNewClippingDlg()
   if (gOS == "win") {
     height = 448;
   }
-  openDlgWnd(url, "newClipping", { type: "popup", width: 432, height });
+  openDlgWnd(url, "newClipping", {type: "popup", width: 432, height});
 }
 
 
@@ -1481,7 +1441,7 @@ function openPlaceholderPromptDlg()
   openDlgWnd(url, "placeholderPrmt", {
     type: "popup",
     width: 536,
-    height: 198,
+    height: 228,
     topOffset: 256,
   });
 }
@@ -1609,10 +1569,12 @@ async function getWndGeometryFromBrwsTab()
 
 function pasteClippingByID(aClippingID, aExternalRequest)
 {
-  gClippingsDB.transaction("r", gClippingsDB.clippings, gClippingsDB.folders, () => {
+  let clippingsDB = aeClippings.getDB();
+
+  clippingsDB.transaction("r", clippingsDB.clippings, clippingsDB.folders, () => {
     let clipping = null;
     
-    gClippingsDB.clippings.get(aClippingID).then(aClipping => {
+    clippingsDB.clippings.get(aClippingID).then(aClipping => {
       if (! aClipping) {
         throw new Error("Cannot find clipping with ID = " + aClippingID);
       }
@@ -1624,7 +1586,7 @@ function pasteClippingByID(aClippingID, aExternalRequest)
       clipping = aClipping;
       log(`Pasting clipping named "${clipping.name}"\nid = ${clipping.id}`);
         
-      return gClippingsDB.folders.get(aClipping.parentFolderID);
+      return clippingsDB.folders.get(aClipping.parentFolderID);
     }).then(aFolder => {
       let parentFldrName = "";
       if (aFolder) {
@@ -1650,8 +1612,10 @@ function pasteClippingByID(aClippingID, aExternalRequest)
 
 function pasteClippingByShortcutKey(aShortcutKey)
 {
-  gClippingsDB.transaction("r", gClippingsDB.clippings, gClippingsDB.folders, () => {
-    let results = gClippingsDB.clippings.where("shortcutKey").equals(aShortcutKey.toUpperCase());
+  let clippingsDB = aeClippings.getDB();
+
+  clippingsDB.transaction("r", clippingsDB.clippings, clippingsDB.folders, () => {
+    let results = clippingsDB.clippings.where("shortcutKey").equals(aShortcutKey.toUpperCase());
     let clipping = {};
     
     results.first().then(aClipping => {
@@ -1667,7 +1631,7 @@ function pasteClippingByShortcutKey(aShortcutKey)
       clipping = aClipping;
       log(`Pasting clipping named "${clipping.name}"\nid = ${clipping.id}`);
 
-      return gClippingsDB.folders.get(aClipping.parentFolderID);
+      return clippingsDB.folders.get(aClipping.parentFolderID);
     }).then(aFolder => {
       if (aFolder === null) {
         return;
@@ -1746,7 +1710,7 @@ async function pasteClipping(aClippingInfo, aExternalRequest)
     let plchldrs = aeClippingSubst.getCustomPlaceholders(processedCtnt);
     if (plchldrs.length > 0) {
       let plchldrsWithDefaultVals = aeClippingSubst.getCustomPlaceholderDefaultVals(processedCtnt, aClippingInfo);
-      gPlaceholders.set(plchldrs, plchldrsWithDefaultVals, processedCtnt);
+      gPlaceholders.set(aClippingInfo.name, plchldrs, plchldrsWithDefaultVals, processedCtnt);
 
       setTimeout(openPlaceholderPromptDlg, 100);
       return;
@@ -1798,59 +1762,9 @@ function showSyncErrorNotification()
 // Utility functions
 //
 
-function getClippingsDB()
-{
-  return gClippingsDB;
-}
-
-
-function verifyDB()
-{
-  return new Promise((aFnResolve, aFnReject) => {
-    let numClippings;
-
-    gClippingsDB.clippings.count(aNumItems => {
-      numClippings = aNumItems;
-    }).then(() => {
-      aFnResolve(numClippings);
-    }).catch(aErr => {
-      aFnReject(aErr);
-    });
-  });
-}
-
-
 function getOS()
 {
   return gOS;
-}
-
-
-function getHostAppName()
-{
-  return gHostAppName;
-}
-
-
-function getClippingsListeners()
-{
-  return gClippingsListeners;
-}
-
-function getSyncClippingsListeners()
-{
-  return gSyncClippingsListeners;
-}
-
-function getPrefs()
-{
-  return gPrefs;
-}
-
-
-function isGoogleChrome()
-{
-  return (! ("browser" in window));
 }
 
 
@@ -1979,7 +1893,7 @@ browser.commands.onCommand.addListener(async (aCmdName) => {
 });
 
 
-browser.contextMenus.onClicked.addListener(async (aInfo, aTab) => {
+browser.menus.onClicked.addListener(async (aInfo, aTab) => {
   switch (aInfo.menuItemId) {
   case "ae-clippings-new":
     let [tabs] = await browser.tabs.query({ active: true, currentWindow: true });
@@ -2023,14 +1937,18 @@ browser.contextMenus.onClicked.addListener(async (aInfo, aTab) => {
       return;
     }
 
-    let name = createClippingNameFromText(content);
+    let name = aeClippings.createClippingNameFromText(content);
 
-    gNewClipping.set({ name, content, url });
+    gNewClipping.set({name, content, url});
     openNewClippingDlg();
     break;
 
   case "ae-clippings-manager":
     openClippingsManager();
+    break;
+
+  case "ae-clippings-prefs":
+    browser.runtime.openOptionsPage();
     break;
 
   default:
@@ -2212,17 +2130,57 @@ browser.runtime.onMessage.addListener(aRequest => {
   case "rebuild-cxt-menu":
     return rebuildContextMenu();
 
-  case "verify-db":
-    return verifyDB();
+  case "import-started":
+    gClippingsListener.importStarted();
+    break;
+
+  case "import-finished":
+    gClippingsListener.importFinished(aRequest.isSuccess);
+    break;
+
+  case "sync-deactivated":
+    gSyncClippingsListener.onDeactivate(aRequest.oldSyncFolderID);
+    break;
+
+  case "sync-deactivated-after":
+    gSyncClippingsListener.onAfterDeactivate(aRequest.removeSyncFolder, aRequest.oldSyncFolderID);
+    break;
+
+  case "new-clipping-created":
+    gClippingsListener.newClippingCreated(aRequest.newClippingID, aRequest.newClipping, aRequest.origin);
+    break;
+
+  case "new-folder-created":
+    gClippingsListener.newFolderCreated(aRequest.newFolderID, aRequest.newFolder, aRequest.origin);
+    break;
+
+  case "clipping-changed":
+    gClippingsListener.clippingChanged(aRequest.clippingID, aRequest.clippingData, aRequest.oldClippingData);
+    break;
+    
+  case "folder-changed":
+    gClippingsListener.folderChanged(aRequest.folderID, aRequest.folderData, aRequest.oldFolderData);
+    break;
+
+  case "copy-started":
+    gClippingsListener.copyStarted();
+    break;
+
+  case "copy-finished":
+    gClippingsListener.copyFinished(aRequest.itemCopyID);
+    break;
+
+  case "dnd-move-started":
+    gClippingsListener.dndMoveStarted();
+    break;
+
+  case "dnd-move-finished":
+    gClippingsListener.dndMoveFinished();
+    break;
 
   default:
     break;
   }
-});
-
-
-window.addEventListener("unload", aEvent => {
-  gClippingsListeners.remove(gClippingsListener);
 });
 
 

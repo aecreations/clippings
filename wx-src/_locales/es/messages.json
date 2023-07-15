@@ -1,7 +1,7 @@
 {
   "extName": {
     "message": "Clippings",
-    "description": "Name of the extension - do NOT translate"
+    "description": "Name of the extension"
   },
   "extNameTB": {
     "message": "Recortes para Thunderbird",
@@ -136,7 +136,7 @@
     "message": "Directorio sin nombre"
   },
   "rootFldrName": {
-    "message": "Recortes",
+    "message": "Clippings",
     "description": "Name of root folder"
   },
   "labelRed": {
@@ -210,7 +210,7 @@
     "message": "Novedades"
   },
   "welcWhatsNewDesc": {
-    "message": "Los Recortes ver. 6.4 vienen con mejoras en la navegación del teclado en ventanas y diálogos y otras mejoras."
+    "message": "Clippings 6.5 viene con muchas correcciones y mejoras, tales como soporte para símbolos y emojis. 🙂"
   },
   "welcWhatsNewCTA": {
     "message": "Más información"
@@ -638,7 +638,20 @@
     "message": "Formatos de fecha/hora disponibles:"
   },
   "labelSelImportFile": {
-    "message": "Seleccionar fichero a importar:"
+    "message": "Seleccionar fichero a importar:",
+    "description": "Import dialog in Clippings Manager"
+  },
+  "importFmtHdg": {
+    "message": "Formatos aceptados:",
+    "description": "Import dialog in Clippings Manager, describing accepted file formats for import"
+  },
+  "impFmtClippings": {
+    "message": "Clippings (*.json, *.rdf)",
+    "description": "Import dialog in Clippings Manager, describing accepted file formats for import"
+  },
+  "impFmtTextSnippets": {
+    "message": "Fragmentos de texto (*.json)",
+    "description": "Import dialog in Clippings Manager, describing accepted file formats for import"
   },
   "labelSelBkupFile": {
     "message": "Seleccionar copia de seguridad:"
@@ -741,11 +754,21 @@
   "btnCopy": {
     "message": "Copiar"
   },
-  "prefsTitle": {
-    "message": "Opciones de Clippings"
+  "mnuPrefs": {
+    "message": "Preferencias…",
+    "description": "Browser toolbar button context menu option for opening the extension preferences page"
   },
-  "errPrefPgFailed": {
-    "message": "No se puede cargar la página de preferencias de la extensión. Reinicie Firefox e inténtelo nuevamente."
+  "mnuPrefsWin": {
+    "message": "Opciones de Clippings…",
+    "description": "Browser toolbar button context menu option for opening the extension preferences page - Windows only"
+  },
+  "prefsTitle": {
+    "message": "Preferencias",
+    "description": "Extension preferences page title"
+  },
+  "prefsTitleWin": {
+    "message": "Opciones de Clippings",
+    "description": "Extension preferences page title on Windows"
   },
   "prefsHdgPasteOptions": {
     "message": "Opciones de pegado"
@@ -845,7 +868,7 @@
     "message": "Es hora de respaldar tus clippings. Haz clic aquí para hacer una copia de seguridad."
   },
   "backupNotifyFirstMsg": {
-    "message": "Mantén tus clippings a salvo respaldándolos regularmente. Haz clic aquí para hacer copias de seguridad y configurar recordatorios de respaldo."
+    "message": "Mantén tus recortes a salvo haciendo copias de seguridad. Pulsar aquí para empezar."
   },
   "backupFirstDesc": {
     "message": "Mantén tus clippings a salvo respaldándolos regularmente. Tómate un momento para respaldarlos seleccionando Respaldar ahora."
@@ -1053,11 +1076,11 @@
     "description": "Header for the What's New page (appears after upgrading Clippings)"
   },
   "upgrade": {
-    "message": "Clippings ha sido actualizado a la versión 6.4.",
+    "message": "Clippings ha sido actualizado a la versión 6.5.",
     "description": "What's New page (appears after upgrading Clippings)"
   },
   "upgradeTB": {
-    "message": "Los clippings para Thunderbird han sido actualizados a la versión 6.2.",
+    "message": "Clippings para Thunderbird ha sido actualizado a la versión 6.3.",
     "description": "What's New page (appears after upgrading Clippings for Thunderbird)"
   },
   "whatsNew": {
@@ -1065,20 +1088,16 @@
     "description": "What's New page (appears after upgrading Clippings)"
   },
   "whatsNew1": {
-    "message": "Mejoras en la navegación del teclado en ventanas y diálogos",
+    "message": "Ahora pueden usarse símbolos y emojis como valores por defecto 🙂",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
   "whatsNew2": {
-    "message": "Se ha corregido un error del Administrador de Clippings donde deshaciendo acciones en un recorte sincronizado o carpeta dejó de funcionar después de recargar la carpeta de Recortes sincronizados",
+    "message": "Los valores de fecha y hora se muestran conforme al formato del idioma usado",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
   "whatsNew3": {
-    "message": "Actualización menor para botones y diálogos",
+    "message": "Ahora se muestra el nombre del recorte seleccionado en los diálogos, lo que facilita seleccionar el correcto",
     "description": "Description of an enhancement or fix in the new version of Clippings"
-  },
-  "whatsNew-Fx": {
-    "message": "Se ha añadido la capacidad de importar datos de fragmentos de texto (extensión Chrome)",
-    "description": "Description of a Firefox-only enhancement or fix in the new version of Clippings"
   },
   "contribHdg": {
     "message": "Contribuir",

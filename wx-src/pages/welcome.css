@@ -220,7 +220,8 @@ button.btn-puffy {
     min-height: 64px;
 }
 
-body[data-locale="de"] .welcome-action-card > p {
+body[data-locale="de"] .welcome-action-card > p,
+body[data-locale="uk"] .welcome-action-card > p {
     min-height: 80px;
 }
 
