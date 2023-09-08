@@ -5,10 +5,11 @@
 
 const WNDH_SHORTCUT_KEY = 164;
 const WNDH_SEARCH_CLIPPING = 222;
-const WNDH_SHORTCUT_LIST = 272;
+const WNDH_SHORTCUT_LIST = 278;
 const WNDW_SHORTCUT_LIST = 436;
-const DLG_HEIGHT_ADJ_WINDOWS = 14;
-const TOOLBAR_HEIGHT = 50;
+const DLG_HEIGHT_ADJ_WINDOWS = 8;
+const TOOLBAR_HEIGHT = 52;
+const SHORTCUT_LIST_HEIGHT_ADJ_MAC = 2;
 
 let gClippingsDB, gPasteMode, gOS;
 
@@ -426,6 +427,10 @@ $(window).on("resize", aEvent => {
 
   let tblWidth = window.innerWidth;
   let tblHeight = window.innerHeight - TOOLBAR_HEIGHT;
+  if (gOS == "mac") {
+    tblHeight += SHORTCUT_LIST_HEIGHT_ADJ_MAC;
+  }
+
   $("#shortcut-list-content > table > thead").css({width: `${tblWidth}px`});
   $("#shortcut-list-content > table > tbody").css({width: `${tblWidth}px`, height: `${tblHeight}px`});
 });

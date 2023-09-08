@@ -68,6 +68,7 @@ const aeConst = Object.freeze({
   SYNC_ERROR_UNKNOWN: "Error: undefined",
   SYNC_ERROR_CONXN_FAILED: "Error: Attempt to postMessage on disconnected port",
   SYNC_ERROR_NAT_APP_NOT_FOUND: "Error: No such native application syncClippings",
+  SYNC_ERROR_UNEXPECTED: "Error: An unexpected error occurred",
 
   QUICKSTART_URL: "https://aecreations.io/clippings/quickstart.php",
   WHATSNEW_URL: "https://aecreations.io/clippings/whatsnew.php",

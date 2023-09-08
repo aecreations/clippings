@@ -1,7 +1,7 @@
 {
   "extName": {
     "message": "Clippings",
-    "description": "Name of the extension - do NOT translate"
+    "description": "Name of the extension"
   },
   "extNameTB": {
     "message": "Knipsels voor Thunderbird",
@@ -210,7 +210,7 @@
     "message": "Wat is er nieuw"
   },
   "welcWhatsNewDesc": {
-    "message": "Clippings 6.4 biedt verbeteringen van de toetsenbordnavigatie in vensters, dialogen en andere aanvullingen."
+    "message": "Clippings 6.5 komt met veel correcties en verbeteringen, zoals ondersteuning voor symbolen en emoji's in plaatshouder-standaardwaarden. 🙂"
   },
   "welcWhatsNewCTA": {
     "message": "Meer informatie"
@@ -638,7 +638,20 @@
     "message": "Beschikbare datum/tijd formaten:"
   },
   "labelSelImportFile": {
-    "message": "Selecteer importbestand:"
+    "message": "Selecteer importbestand:",
+    "description": "Import dialog in Clippings Manager"
+  },
+  "importFmtHdg": {
+    "message": "Toegestane bestandsformaten:",
+    "description": "Import dialog in Clippings Manager, describing accepted file formats for import"
+  },
+  "impFmtClippings": {
+    "message": "Knipsels (*.json, *.rdf)",
+    "description": "Import dialog in Clippings Manager, describing accepted file formats for import"
+  },
+  "impFmtTextSnippets": {
+    "message": "Tekstfragmenten (*.json)",
+    "description": "Import dialog in Clippings Manager, describing accepted file formats for import"
   },
   "labelSelBkupFile": {
     "message": "Back-upbestand selecteren:"
@@ -741,11 +754,21 @@
   "btnCopy": {
     "message": "Kopiëren"
   },
-  "prefsTitle": {
-    "message": "Clippings opties"
+  "mnuPrefs": {
+    "message": "Knipsels Voorkeuren…",
+    "description": "Browser toolbar button context menu option for opening the extension preferences page"
   },
-  "errPrefPgFailed": {
-    "message": "Kan de extensie-voorkeuren pagina niet laden. Herstart Firefox en probeer het opnieuw."
+  "mnuPrefsWin": {
+    "message": "Clippings opties…",
+    "description": "Browser toolbar button context menu option for opening the extension preferences page - Windows only"
+  },
+  "prefsTitle": {
+    "message": "Knipsels Voorkeuren",
+    "description": "Extension preferences page title"
+  },
+  "prefsTitleWin": {
+    "message": "Knipsels opties",
+    "description": "Extension preferences page title on Windows"
   },
   "prefsHdgPasteOptions": {
     "message": "Plak opties"
@@ -845,7 +868,7 @@
     "message": "Het is tijd om een back-up van je knipsels te maken. Klik hier om je knipsels nu een back-up te maken."
   },
   "backupNotifyFirstMsg": {
-    "message": "Houd je knipsels veilig door regelmatige backups te maken. Klik hier om een back-up van je knipsels te maken en backup herinneringen in te stellen."
+    "message": "Houd je knipsels veilig door regelmatige backups te maken. Klik hier om te beginnen."
   },
   "backupFirstDesc": {
     "message": "Houd uw knipsels veilig door regelmatige backups te maken. Neem een moment om een back-up te maken van uw clippings door nu op back-up te klikken."
@@ -1053,11 +1076,11 @@
     "description": "Header for the What's New page (appears after upgrading Clippings)"
   },
   "upgrade": {
-    "message": "Clippings is opgewaardeerd naar versie 6.4.",
+    "message": "Clippings is bijgewerkt naar versie 6.5.",
     "description": "What's New page (appears after upgrading Clippings)"
   },
   "upgradeTB": {
-    "message": "Clippings voor Thunderbird is opgewaardeerd naar versie 6.2.",
+    "message": "Clippings voor Thunderbird is bijgewerkt naar versie 6.3.",
     "description": "What's New page (appears after upgrading Clippings for Thunderbird)"
   },
   "whatsNew": {
@@ -1065,20 +1088,16 @@
     "description": "What's New page (appears after upgrading Clippings)"
   },
   "whatsNew1": {
-    "message": "Verbeteringen aan toetsenbordnavigatie in vensters en dialoogvensters",
+    "message": "Symbolen en emoji's worden nu ondersteund in 'placeholder' standaardwaarden 🙂",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
   "whatsNew2": {
-    "message": "Oplossing voor een bug in Clippings Manager waarbij het ongedaan maken van acties op een gesynchroniseerd knipsel of map niet meer werkte na het herladen van de map Gesynchroniseerde Knipsels",
+    "message": "Geformatteerde plaatshouders voor datum/tijd worden correct weergegeven in andere talen dan Engels",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
   "whatsNew3": {
-    "message": "Kleine visuele opfrissing voor knoppen en dialoogvensters",
+    "message": "Dialoogvensters met plaatshouders tonen nu de naam van het geselecteerde knipsel, zodat je weet dat je het juiste knipsel hebt geselecteerd",
     "description": "Description of an enhancement or fix in the new version of Clippings"
-  },
-  "whatsNew-Fx": {
-    "message": "Mogelijkheid toegevoegd om gegevens te importeren uit Text Snippets (Chrome-extensie)",
-    "description": "Description of a Firefox-only enhancement or fix in the new version of Clippings"
   },
   "contribHdg": {
     "message": "Help mee",

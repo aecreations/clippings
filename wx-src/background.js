@@ -637,6 +637,11 @@ function refreshSyncedClippings(aRebuildClippingsMenu)
       // Clippings context menu.
       return;
     }
+    else if (aErr == aeConst.SYNC_ERROR_UNEXPECTED) {
+      // This error occurs if Sync Clippings was uninstalled and then
+      // reinstalled, but the sync folder location isn't set.
+      return;
+    }
 
     if (aRebuildClippingsMenu) {
       buildContextMenu();
