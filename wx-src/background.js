@@ -1734,6 +1734,7 @@ function pasteProcessedClipping(aClippingContent, aActiveTabID)
     htmlPaste: gPrefs.htmlPaste,
     autoLineBreak: gPrefs.autoLineBreak,
     dispatchInputEvent: gPrefs.dispatchInputEvent,
+    useInsertHTMLCmd: false,  // TO DO: Specify this as a user pref.
   };
 
   log(`Clippings/wx: Extension sending message "paste-clipping" to content script (active tab ID = ${aActiveTabID})`);
