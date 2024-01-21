@@ -4,7 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
-const DEBUG = false;
+const DEBUG = true;
 const HTMLPASTE_AS_FORMATTED = 1;
 const HTMLPASTE_AS_IS = 2;
 const FOCUSABLE_ELTS_STOR = "button:not([disabled])";
@@ -321,12 +321,16 @@ function insertTextIntoRichTextEditor(aRichTextEditorDocument, aClippingText, aA
   }
   else {
     let selection = aRichTextEditorDocument.getSelection();
-    let range = selection.getRangeAt(0);
-    range.deleteContents();
+    selection.deleteFromDocument();  // Selection type after: "Caret"
+ 
+    // Fire a clipboard paste event to insert the HTML-formatted clipping.
+    // THIS DOESN'T WORK!!
+    // See https://developer.mozilla.org/en-US/docs/Web/API/Element/paste_event
+    let pasteEvt = new ClipboardEvent("paste", {bubbles: true, cancelable: false, dataType: "text/html", data: clippingText});
 
-    let frag = range.createContextualFragment(clippingText);
-    range.insertNode(frag);
-    range.collapse();
+    log("Clippings/wx::content.js: firing 'paste' event on rich text editor");
+    aRichTextEditorDocument.dispatchEvent(pasteEvt);
+    
   }
 
   if (aDispatchInputEvent) {
