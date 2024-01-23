@@ -313,6 +313,10 @@ function insertTextIntoRichTextEditor(aRichTextEditorDocument, aClippingText, aA
 
   log(`Clippings/wx::content.js: insertTextIntoRichTextEditor(): Inserting HTML content into rich text editor ${aRichTextEditorDocument}`);
 
+  // Sanitize the HTML-formatted clipping to get rid of any inline scripts
+  // and other dirty HTML.
+  clippingText = DOMPurify.sanitize(clippingText);
+
   if (aUseInsertHTMLCmd) {
     try {
       aRichTextEditorDocument.execCommand("insertHTML", false, clippingText);

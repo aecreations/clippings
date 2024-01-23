@@ -54,7 +54,10 @@
     {
       "matches": ["<all_urls>"],
       "all_frames": true,
-      "js": ["content.js"]
+      "js": [
+	"lib/purify.min.js",
+	"content.js"
+      ]
     }
   ],
 
