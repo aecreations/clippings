@@ -74,7 +74,7 @@ function handleRequestNewClipping(aRequest)
                                        activeElt.selectionEnd);
     }
 
-    rv = { content: text };
+    rv = {content: text};
   }
   // Rich text editor - an <iframe> with designMode == "on"
   else if (isElementOfType(activeElt, "HTMLIFrameElement")) {
@@ -89,7 +89,7 @@ function handleRequestNewClipping(aRequest)
       }
 
       let text = selection.toString() || "";
-      rv = { content: text };
+      rv = {content: text};
     }
   }
   // Rich text editor used by Gmail, Outlook.com, etc.
@@ -104,7 +104,7 @@ function handleRequestNewClipping(aRequest)
     }
 
     let text = selection.toString() || "";
-    rv = { content: text };
+    rv = {content: text};
   }
   else if (isElementOfType(activeElt, "HTMLBodyElement")) {
     let selection = activeElt.ownerDocument.getSelection();
@@ -117,7 +117,7 @@ function handleRequestNewClipping(aRequest)
     }
 
     let text = selection.toString() || "";
-    rv = { content: text };
+    rv = {content: text};
   }
 
   if (rv !== null) {
@@ -158,7 +158,7 @@ function handleRequestInsertClipping(aRequest)
     let doc = activeElt.contentDocument;
     if (doc && doc.body.hasAttribute("contenteditable")
         && doc.body.getAttribute("contenteditable") != "false") {
-      rv = insertTextIntoRichTextEditor(doc, clippingText, autoLineBrk, htmlPaste, aRequest.dispatchInputEvent);
+      rv = insertTextIntoRichTextEditor(doc, clippingText, autoLineBrk, htmlPaste, aRequest.dispatchInputEvent, aRequest.useInsertHTMLCmd);
     }
     else {
       warn("Clippings/wx::content.js: handleRequestInsertClipping(): Document element is null or <body> doesn't have 'contenteditable' attribute set; exiting message handler");
@@ -171,13 +171,13 @@ function handleRequestInsertClipping(aRequest)
     }
 
     let doc = activeElt.ownerDocument;
-    rv = insertTextIntoRichTextEditor(doc, clippingText, autoLineBrk, htmlPaste, aRequest.dispatchInputEvent);
+    rv = insertTextIntoRichTextEditor(doc, clippingText, autoLineBrk, htmlPaste, aRequest.dispatchInputEvent, aRequest.useInsertHTMLCmd);
   }
   // Experimental - enable from background script
   else if (isElementOfType(activeElt, "HTMLBodyElement") && aRequest.pasteIntoHTMLBodyElt
            && (activeElt.contentEditable || activeElt.ownerDocument.designMode == "on")) {
     let doc = activeElt.ownerDocument;
-    rv = insertTextIntoRichTextEditor(doc, clippingText, autoLineBrk, htmlPaste, aRequest.dispatchInputEvent);
+    rv = insertTextIntoRichTextEditor(doc, clippingText, autoLineBrk, htmlPaste, aRequest.dispatchInputEvent, aRequest.useInsertHTMLCmd);
   }
   else {
     rv = null;
@@ -279,7 +279,7 @@ function insertTextIntoTextbox(aTextboxElt, aInsertedText, aDispatchInputEvent)
 }
 
 
-function insertTextIntoRichTextEditor(aRichTextEditorDocument, aClippingText, aAutoLineBreak, aPasteMode, aDispatchInputEvent)
+function insertTextIntoRichTextEditor(aRichTextEditorDocument, aClippingText, aAutoLineBreak, aPasteMode, aDispatchInputEvent, aUseInsertHTMLCmd)
 {
   let hasHTMLTags = aClippingText.search(/<[a-z1-6]+( [a-z]+(\="?.*"?)?)*>/i) != -1;
   let hasRestrictedHTMLTags = aClippingText.search(/<\?|<%|<!DOCTYPE|(<\b(html|head|body|meta|script|applet|embed|object|i?frame|frameset)\b)/i) != -1;
@@ -313,10 +313,25 @@ function insertTextIntoRichTextEditor(aRichTextEditorDocument, aClippingText, aA
 
   log(`Clippings/wx::content.js: insertTextIntoRichTextEditor(): Inserting HTML content into rich text editor ${aRichTextEditorDocument}`);
 
-  try {
-    aRichTextEditorDocument.execCommand("insertHTML", false, clippingText);
+  // Sanitize the HTML-formatted clipping to get rid of any inline scripts
+  // and other dirty HTML.
+  clippingText = DOMPurify.sanitize(clippingText);
+
+  if (aUseInsertHTMLCmd) {
+    try {
+      aRichTextEditorDocument.execCommand("insertHTML", false, clippingText);
+    }
+    catch {}
   }
-  catch (e) {}
+  else {
+    let selection = aRichTextEditorDocument.getSelection();
+    let range = selection.getRangeAt(0);
+    range.deleteContents();
+
+    let frag = range.createContextualFragment(clippingText);
+    range.insertNode(frag);
+    range.collapse();
+  }
 
   if (aDispatchInputEvent) {
     let inputEvt = createInputEventInstance();
@@ -329,7 +344,7 @@ function insertTextIntoRichTextEditor(aRichTextEditorDocument, aClippingText, aA
 
 function createInputEventInstance()
 {
-  return new Event("input", { bubbles: true, cancelable: false });
+  return new Event("input", {bubbles: true, cancelable: false});
 }
 
 

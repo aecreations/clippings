@@ -42,6 +42,7 @@ let aePrefs = {
     upgradeNotifCount: 0,
     tabModalMsgBox: false,
     showNewClippingOpts: false,
+    useInsertHTMLCmd: false,
   },
   
   getDefaultPrefs()
@@ -211,6 +212,18 @@ let aePrefs = {
       showNewClippingOpts: false,
     };
 
+    await this._addPrefs(aPrefs, newPrefs);
+  },
+
+  hasModestoPrefs(aPrefs)
+  {
+    // Version 6.5.2
+    return ("useInsertHTMLCmd" in aPrefs);
+  },
+
+  async setModestoPrefs(aPrefs)
+  {
+    let newPrefs = {useInsertHTMLCmd: false};
     await this._addPrefs(aPrefs, newPrefs);
   },
 

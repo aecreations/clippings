@@ -367,6 +367,11 @@ void async function ()
     await aePrefs.setSanClementePrefs(gPrefs);
   }
 
+  if (! aePrefs.hasModestoPrefs(gPrefs)) {
+    log("Initializing 6.5.2 user preferences.");
+    await aePrefs.setModestoPrefs(gPrefs);
+  }
+
   if (gPrefs.clippingsMgrDetailsPane) {
     gPrefs.clippingsMgrAutoShowDetailsPane = false;
   }
@@ -1734,6 +1739,7 @@ function pasteProcessedClipping(aClippingContent, aActiveTabID)
     htmlPaste: gPrefs.htmlPaste,
     autoLineBreak: gPrefs.autoLineBreak,
     dispatchInputEvent: gPrefs.dispatchInputEvent,
+    useInsertHTMLCmd: gPrefs.useInsertHTMLCmd,
   };
 
   log(`Clippings/wx: Extension sending message "paste-clipping" to content script (active tab ID = ${aActiveTabID})`);

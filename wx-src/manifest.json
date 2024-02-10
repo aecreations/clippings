@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "__MSG_extName__",
   "description": "__MSG_extDesc__",
-  "version": "6.5.1",
+  "version": "6.5.2.1",
   "homepage_url": "https://aecreations.io/clippings/index.php",
   "author": "AE Creations",
   
@@ -54,7 +54,10 @@
     {
       "matches": ["<all_urls>"],
       "all_frames": true,
-      "js": ["content.js"]
+      "js": [
+	"lib/purify.min.js",
+	"content.js"
+      ]
     }
   ],
 
