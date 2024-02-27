@@ -317,7 +317,8 @@ function insertTextIntoRichTextEditor(aRichTextEditorDocument, aClippingText, aA
   // and other dirty HTML.
   clippingText = DOMPurify.sanitize(clippingText);
 
-  if (aUseInsertHTMLCmd) {
+  // Pasting a clipping using the DOM Range API doesn't work on Twitter.
+  if (aUseInsertHTMLCmd || ["twitter.com", "x.com"].includes(window.location.hostname)) {
     try {
       aRichTextEditorDocument.execCommand("insertHTML", false, clippingText);
     }
