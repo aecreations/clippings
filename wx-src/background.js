@@ -984,33 +984,6 @@ function buildContextMenuHelper(aMenuData)
 }
 
 
-function updateContextMenuForClipping(aUpdatedClippingID)
-{
-  let id = Number(aUpdatedClippingID);
-  let clippingsDB = aeClippings.getDB();
-
-  clippingsDB.clippings.get(id).then(aResult => {
-    let updatePpty = {
-      title: aResult.name,
-      icons: {
-        16: "img/" + (aResult.label ? `clipping-${aResult.label}.svg` : "clipping.svg")
-      }
-    };
-    
-    try {
-      // This will fail due to the 'icons' property not supported on the
-      // 'updateProperties' parameter to contextMenus.update().
-      // See https://bugzilla.mozilla.org/show_bug.cgi?id=1414566
-      let menuItemID = gClippingMenuItemIDMap[id];
-      browser.menus.update(menuItemID, updatePpty);
-    }
-    catch (e) {
-      console.error("Clippings/wx: updateContextMenuForClipping(): " + e);
-    }
-  });
-}
-
-
 function updateContextMenuForFolder(aUpdatedFolderID)
 {
   let id = Number(aUpdatedFolderID);
@@ -1022,22 +995,6 @@ function updateContextMenuForFolder(aUpdatedFolderID)
       browser.menus.update(menuItemID, {title: aResult.name});
     }
   });
-}
-
-
-function removeContextMenuForClipping(aRemovedClippingID)
-{
-  let menuItemID = gClippingMenuItemIDMap[aRemovedClippingID];
-  browser.menus.remove(menuItemID);
-  delete gClippingMenuItemIDMap[aRemovedClippingID];
-}
-
-
-function removeContextMenuForFolder(aRemovedFolderID)
-{
-  let menuItemID = gFolderMenuItemIDMap[aRemovedFolderID];
-  browser.menus.remove(menuItemID);
-  delete gFolderMenuItemIDMap[aRemovedFolderID];
 }
 
 
