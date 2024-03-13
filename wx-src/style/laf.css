@@ -2,9 +2,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-@import url("chrome://browser/content/extension.css");
-
-
 :root {
     --color-bkgd: white;
     --color-default-text: black;
@@ -67,6 +64,258 @@
 	--url-dropdown-arrow: url('data:image/svg+xml;utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 16 16"><g><path style="fill:none;fill-rule:evenodd;stroke:rgb(237,237,240);stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M 3.5,6.5 8,11 12.5,6.5"/></g></svg>');
     }
 }
+
+
+/*
+ * Base style rules from chrome://browser/content/extension.css
+ */
+
+/* Global */
+html,
+body {
+  background: transparent;
+  box-sizing: border-box;
+  color: #222426;
+  cursor: default;
+  display: flex;
+  flex-direction: column;
+  font: caption;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+}
+
+body * {
+  box-sizing: border-box;
+  text-align: start;
+}
+
+.browser-style {
+  appearance: none;
+  margin-bottom: 6px;
+  text-align: left;
+}
+
+/* Buttons */
+button.browser-style,
+select.browser-style {
+  background-color: #fbfbfb;
+  border: 1px solid #b1b1b1;
+  box-shadow: 0 0 0 0 transparent;
+  font: caption;
+  height: 24px;
+  outline: 0 !important;
+  padding: 0 8px 0;
+  transition-duration: 250ms;
+  transition-property: box-shadow, border;
+}
+
+select.browser-style {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICA8cGF0aCBkPSJNOCwxMkwzLDcsNCw2bDQsNCw0LTQsMSwxWiIgZmlsbD0iIzZBNkE2QSIgLz4KPC9zdmc+Cg==);
+  background-position: calc(100% - 4px) center;
+  background-repeat: no-repeat;
+  padding-inline-end: 24px;
+  text-overflow: ellipsis;
+}
+
+label.browser-style-label {
+  font: caption;
+}
+
+button.browser-style::-moz-focus-inner {
+  border: 0;
+  outline: 0;
+}
+
+/* Dropdowns */
+select.browser-style {
+  background-color: #fbfbfb;
+  border: 1px solid #b1b1b1;
+  box-shadow: 0 0 0 0 transparent;
+  font: caption;
+  height: 24px;
+  outline: 0 !important;
+  padding: 0 8px 0;
+  transition-duration: 250ms;
+  transition-property: box-shadow, border;
+}
+
+select.browser-style {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICA8cGF0aCBkPSJNOCwxMkwzLDcsNCw2bDQsNCw0LTQsMSwxWiIgZmlsbD0iIzZBNkE2QSIgLz4KPC9zdmc+Cg==);
+  background-position: calc(100% - 4px) center;
+  background-repeat: no-repeat;
+  padding-inline-end: 24px;
+  text-overflow: ellipsis;
+}
+
+select.browser-style:-moz-focusring {
+  color: transparent;
+  text-shadow: 0 0 0 #000;
+}
+
+select.browser-style:-moz-focusring * {
+  color: #000;
+  text-shadow: none;
+}
+
+button.browser-style.hover,
+select.browser-style.hover {
+  background-color: #ebebeb;
+  border: 1px solid #b1b1b1;
+}
+
+button.browser-style.pressed,
+select.browser-style.pressed {
+  background-color: #d4d4d4;
+  border: 1px solid #858585;
+}
+
+button.browser-style:disabled,
+select.browser-style:disabled {
+  color: #999;
+  opacity: .5;
+}
+
+button.browser-style.focused,
+select.browser-style.focused {
+  border-color: #fff;
+  box-shadow: 0 0 0 2px rgba(97, 181, 255, 0.75);
+}
+
+button.browser-style.default {
+  background-color: #0996f8;
+  border-color: #0670cc;
+  color: #fff;
+}
+
+button.browser-style.default.hover {
+  background-color: #0670cc;
+  border-color: #005bab;
+}
+
+button.browser-style.default.pressed {
+  background-color: #005bab;
+  border-color: #004480;
+}
+
+button.browser-style.default.focused {
+  border-color: #fff;
+}
+
+.browser-style > label {
+  user-select: none;
+}
+
+.browser-style.disabled > label {
+  color: #999;
+  opacity: .5;
+}
+
+/* Radio Buttons */
+.browser-style > input[type="radio"] {
+  appearance: none;
+  background-color: #fff;
+  background-position: center;
+  border: 1px solid #b1b1b1;
+  border-radius: 50%;
+  content: "";
+  display: inline-block;
+  height: 16px;
+  margin-right: 6px;
+  vertical-align: text-top;
+  width: 16px;
+}
+
+.browser-style > input[type="radio"]:hover,
+.browser-style.hover > input[type="radio"]:not(:active) {
+  background-color: #fbfbfb;
+  border-color: #b1b1b1;
+}
+
+.browser-style > input[type="radio"]:hover:active,
+.browser-style.pressed > input[type="radio"]:not(:active) {
+  background-color: #ebebeb;
+  border-color: #858585;
+}
+
+.browser-style > input[type="radio"]:checked {
+  background-color: #0996f8;
+  border-color: #0670cc;
+}
+
+.browser-style > input[type="radio"]:checked:hover,
+.browser-style.hover > input[type="radio"]:checked:not(:active) {
+  background-color: #0670cc;
+  border-color: #005bab;
+}
+
+.browser-style > input[type="radio"]:checked:hover:active,
+.browser-style.pressed > input[type="radio"]:checked:not(:active) {
+  background-color: #005bab;
+  border-color: #004480;
+}
+
+.browser-style.focused > input[type="radio"] {
+  border-color: #0996f8;
+  box-shadow: 0 0 0 2px rgba(97, 181, 255, 0.75);
+}
+
+.browser-style.focused > input[type="radio"]:checked {
+  border-color: #fff;
+}
+
+/* Checkboxes */
+.browser-style > input[type="checkbox"] {
+  appearance: none;
+  background-color: #fff;
+  background-position: center;
+  border: 1px solid #b1b1b1;
+  content: "";
+  display: inline-block;
+  height: 16px;
+  margin-right: 6px;
+  vertical-align: text-top;
+  width: 16px;
+}
+
+.browser-style > input[type="checkbox"]:hover,
+.browser-style.hover > input[type="checkbox"]:not(:active) {
+  background-color: #fbfbfb;
+  border-color: #b1b1b1;
+}
+
+.browser-style > input[type="checkbox"]:hover:active,
+.browser-style.pressed > input[type="checkbox"]:not(:active) {
+  background-color: #ebebeb;
+  border-color: #858585;
+}
+
+.browser-style > input[type="checkbox"]:checked {
+  background-color: #0996f8;
+  border-color: #0670cc;
+}
+
+.browser-style > input[type="checkbox"]:checked:hover,
+.browser-style.hover > input[type="checkbox"]:checked:not(:active) {
+  background-color: #0670cc;
+  border-color: #005bab;
+}
+
+.browser-style > input[type="checkbox"]:checked:hover:active,
+.browser-style.pressed > input[type="checkbox"]:checked:not(:active) {
+  background-color: #005bab;
+  border-color: #004480;
+}
+
+.browser-style.focused > input[type="checkbox"] {
+  border-color: #0996f8;
+  box-shadow: 0 0 0 2px rgba(97, 181, 255, 0.75);
+}
+
+.browser-style.focused > input[type="checkbox"]:checked {
+  border-color: #fff;
+}
+/* END extension.css */
 
 
 a {
