@@ -313,14 +313,10 @@ function insertTextIntoRichTextEditor(aRichTextEditorDocument, aClippingText, aA
 
   log(`Clippings/wx::content.js: insertTextIntoRichTextEditor(): Inserting HTML content into rich text editor ${aRichTextEditorDocument}`);
 
-  // Sanitize the HTML-formatted clipping to get rid of any inline scripts
-  // and other dirty HTML.
-  clippingText = DOMPurify.sanitize(clippingText);
-
   // Pasting a clipping using the DOM Range API doesn't work on Twitter.
   if (aUseInsertHTMLCmd || ["twitter.com", "x.com"].includes(window.location.hostname)) {
     try {
-      aRichTextEditorDocument.execCommand("insertHTML", false, clippingText);
+      aRichTextEditorDocument.execCommand("insertHTML", false, DOMPurify.sanitize(clippingText));
     }
     catch {}
   }
@@ -329,7 +325,7 @@ function insertTextIntoRichTextEditor(aRichTextEditorDocument, aClippingText, aA
     let range = selection.getRangeAt(0);
     range.deleteContents();
 
-    let frag = range.createContextualFragment(clippingText);
+    let frag = range.createContextualFragment(DOMPurify.sanitize(clippingText));
     range.insertNode(frag);
     range.collapse();
   }

@@ -984,33 +984,6 @@ function buildContextMenuHelper(aMenuData)
 }
 
 
-function updateContextMenuForClipping(aUpdatedClippingID)
-{
-  let id = Number(aUpdatedClippingID);
-  let clippingsDB = aeClippings.getDB();
-
-  clippingsDB.clippings.get(id).then(aResult => {
-    let updatePpty = {
-      title: aResult.name,
-      icons: {
-        16: "img/" + (aResult.label ? `clipping-${aResult.label}.svg` : "clipping.svg")
-      }
-    };
-    
-    try {
-      // This will fail due to the 'icons' property not supported on the
-      // 'updateProperties' parameter to contextMenus.update().
-      // See https://bugzilla.mozilla.org/show_bug.cgi?id=1414566
-      let menuItemID = gClippingMenuItemIDMap[id];
-      browser.menus.update(menuItemID, updatePpty);
-    }
-    catch (e) {
-      console.error("Clippings/wx: updateContextMenuForClipping(): " + e);
-    }
-  });
-}
-
-
 function updateContextMenuForFolder(aUpdatedFolderID)
 {
   let id = Number(aUpdatedFolderID);
@@ -1022,22 +995,6 @@ function updateContextMenuForFolder(aUpdatedFolderID)
       browser.menus.update(menuItemID, {title: aResult.name});
     }
   });
-}
-
-
-function removeContextMenuForClipping(aRemovedClippingID)
-{
-  let menuItemID = gClippingMenuItemIDMap[aRemovedClippingID];
-  browser.menus.remove(menuItemID);
-  delete gClippingMenuItemIDMap[aRemovedClippingID];
-}
-
-
-function removeContextMenuForFolder(aRemovedFolderID)
-{
-  let menuItemID = gFolderMenuItemIDMap[aRemovedFolderID];
-  browser.menus.remove(menuItemID);
-  delete gFolderMenuItemIDMap[aRemovedFolderID];
 }
 
 
@@ -1417,6 +1374,47 @@ async function openClippingsManager(aBackupMode)
 }
 
 
+async function newClipping(aActiveTab)
+{
+  if (aActiveTab.status == "loading") {
+    console.warn("Clippings/wx: The active tab (ID = %s) is still loading or busy. Messages sent to it now may not receive a response.", aActiveTab.id);
+  }
+  
+  log("Clippings/wx: Extension sending message \"new-clipping\" to content script; active tab ID: " + aActiveTab.id);
+
+  let resp;
+  try {
+    resp = await browser.tabs.sendMessage(aActiveTab.id, {msgID: "new-clipping"});
+  }
+  catch (e) {
+    alertEx("msgRetryPgNotLoaded");
+    return;
+  }
+
+  if (! resp) {
+    // This may occur when the "new-clipping" message was sent to an <iframe>
+    // containing an <input type="text"> or <textarea> element, in which case
+    // it is safe to ignore.
+    return;
+  }
+
+  let content;
+  if (resp.content) {
+    content = resp.content;
+  }
+  else {
+    alertEx("msgNoTextSel");
+    return;
+  }
+
+  let name = aeClippings.createClippingNameFromText(content);
+  let url = aActiveTab.url;
+
+  gNewClipping.set({name, content, url});
+  openNewClippingDlg();
+}
+
+
 function openNewClippingDlg()
 {
   let url = browser.runtime.getURL("pages/new.html");
@@ -1683,14 +1681,14 @@ async function pasteClipping(aClippingInfo, aExternalRequest)
     queryInfo.currentWindow = true;
   }
   
-  let [tabs] = await browser.tabs.query(queryInfo);
-  if (! tabs) {
+  let [tab] = await browser.tabs.query(queryInfo);
+  if (! tab) {
     // This should never happen...
     alertEx("msgNoActvBrwsTab");
     return;
   }
 
-  let activeTabID = tabs.id;
+  let activeTabID = tab.id;
   let processedCtnt = "";
 
   log("Clippings/wx: pasteClipping(): Active tab ID: " + activeTabID);
@@ -1895,8 +1893,8 @@ browser.commands.onCommand.addListener(async (aCmdName) => {
   info(`Clippings/wx: Command "${aCmdName}" invoked!`);
 
   if (aCmdName == aeConst.CMD_CLIPPINGS_KEYBOARD_PASTE && gPrefs.keyboardPaste) {
-    let [tabs] = await browser.tabs.query({ active: true, currentWindow: true });
-    let activeTabID = tabs.id;
+    let [tab] = await browser.tabs.query({active: true, currentWindow: true});
+    let activeTabID = tab.id;
     gPasteClippingTargetTabID = activeTabID;
     log(`Clippings/wx: Active tab ID: ${activeTabID} - opening keyboard paste dialog.`);
     openKeyboardPasteDlg();
@@ -1907,51 +1905,7 @@ browser.commands.onCommand.addListener(async (aCmdName) => {
 browser.menus.onClicked.addListener(async (aInfo, aTab) => {
   switch (aInfo.menuItemId) {
   case "ae-clippings-new":
-    let [tabs] = await browser.tabs.query({ active: true, currentWindow: true });
-    if (! tabs) {
-      alertEx("msgBrwsWndNotFocused");
-      return;
-    }
-
-    let activeTabID = tabs.id;
-    let url = tabs.url;
-      
-    let tabInfo = await browser.tabs.get(activeTabID);
-    if (tabInfo.status == "loading") {
-      console.warn("Clippings/wx: The active tab (ID = %s) is still loading or busy. Messages sent to it now may not receive a response.", activeTabID);
-    }
-      
-    log("Clippings/wx: Extension sending message \"new-clipping\" to content script; active tab ID: " + activeTabID);
-
-    let resp;
-    try {
-      resp = await browser.tabs.sendMessage(activeTabID, { msgID: "new-clipping" });
-    }
-    catch (e) {
-      alertEx("msgRetryPgNotLoaded");
-      break;
-    }
-
-    if (! resp) {
-      // This may occur when the "new-clipping" message was sent to an <iframe>
-      // containing an <input type="text"> or <textarea> element, in which case
-      // it is safe to ignore.
-      return;
-    }
-
-    let content;
-    if (resp.content) {
-      content = resp.content;
-    }
-    else {
-      alertEx("msgNoTextSel");
-      return;
-    }
-
-    let name = aeClippings.createClippingNameFromText(content);
-
-    gNewClipping.set({name, content, url});
-    openNewClippingDlg();
+    newClipping(aTab);
     break;
 
   case "ae-clippings-manager":
@@ -2074,31 +2028,29 @@ browser.runtime.onMessage.addListener(aRequest => {
     break;
 
   case "paste-shortcut-key":
-    let shortcutKey = aRequest.shortcutKey;
-    if (! shortcutKey) {
+    if (! aRequest.shortcutKey) {
       return;
     }
-    log(`Clippings/wx: Key '${shortcutKey}' was pressed.`);
-    pasteClippingByShortcutKey(shortcutKey);
+    log(`Clippings/wx: Key '${aRequest.shortcutKey}' was pressed.`);
+    pasteClippingByShortcutKey(aRequest.shortcutKey);
     break;
 
   case "paste-clipping-by-name":
-    let externReq = aRequest.fromClippingsMgr;
-    pasteClippingByID(aRequest.clippingID, externReq);
+    pasteClippingByID(aRequest.clippingID, aRequest.fromClippingsMgr);
     break;
 
   case "paste-clipping-with-plchldrs":
     let content = aRequest.processedContent;
     setTimeout(async () => {
-      let [tabs] = await browser.tabs.query({active: true, currentWindow: true});
-      if (! tabs) {
+      let [tab] = await browser.tabs.query({active: true, currentWindow: true});
+      if (! tab) {
         // This could happen if the browser tab was closed while the
         // placeholder prompt dialog was open.
         alertEx("msgNoActvBrwsTab");
         return;
       }
 
-      let activeTabID = tabs.id;
+      let activeTabID = tab.id;
       if (activeTabID != gPasteClippingTargetTabID) {
         warn(`Clippings/wx: Detected mismatch between currently-active browser tab ID and what it was when invoking clipping paste.\nPrevious active tab ID = ${gPasteClippingTargetTabID}, active tab ID = ${activeTabID}`);
         activeTabID = gPasteClippingTargetTabID;
