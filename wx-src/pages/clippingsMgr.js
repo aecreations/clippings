@@ -7,7 +7,6 @@ const DEBUG_TREE = false;
 const DEBUG_WND_ACTIONS = false;
 const REBUILD_BRWS_CXT_MENU_DELAY = 3000;
 const ENABLE_PASTE_CLIPPING = false;
-const NEW_CLIPPING_FROM_CLIPBOARD = "New Clipping From Clipboard";
 
 let gEnvInfo;
 let gClippingsDB;
@@ -1305,7 +1304,7 @@ let gCmd = {
     return rv;
   },
   
-  newClipping: function (aDestUndoStack, aIsFromClipboard)
+  newClipping(aDestUndoStack)
   {
     if (gIsClippingsTreeEmpty) {
       unsetEmptyClippingsState();
@@ -1327,13 +1326,9 @@ let gCmd = {
       }
     }
 
-    let name = browser.i18n.getMessage("newClipping");
-    if (aIsFromClipboard) {
-      name = NEW_CLIPPING_FROM_CLIPBOARD;
-    }
-
     this.recentAction = this.ACTION_CREATENEW;
 
+    let name = browser.i18n.getMessage("newClipping");
     let newClipping = {
       name,
       content: "",
@@ -1428,7 +1423,8 @@ let gCmd = {
         let state = {
           action: this.ACTION_CREATENEW,
           id: aNewClippingID,
-          itemType: this.ITEMTYPE_CLIPPING
+          itemType: this.ITEMTYPE_CLIPPING,
+          parentFldrID: parentFolderID,
         };
 
         if (gSyncedItemsIDs.has(parentFolderID + "F")) {
