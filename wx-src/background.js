@@ -14,7 +14,6 @@ let gClippingMenuItemIDMap = {};
 let gFolderMenuItemIDMap = {};
 let gSyncFldrID = null;
 let gBackupRemIntervalID = null;
-let gPasteClippingTargetTabID = null;
 let gIsReloadingSyncFldr = false;
 let gSyncClippingsHelperDwnldPgURL;
 let gForceShowFirstTimeBkupNotif = false;
@@ -1426,12 +1425,12 @@ function openNewClippingDlg()
 }
 
 
-function openKeyboardPasteDlg()
+function openKeyboardPasteDlg(aTabID)
 {
   // TO DO: Check first if the cursor is in a web page textbox or HTML editor.
   // If not, then don't do anything.
 
-  let url = browser.runtime.getURL("pages/keyboardPaste.html");
+  let url = browser.runtime.getURL("pages/keyboardPaste.html?tabID=" + aTabID);
   openDlgWnd(url, "keyboardPaste", {
     type: "popup",
     width: 500,
@@ -1441,11 +1440,11 @@ function openKeyboardPasteDlg()
 }
 
 
-function openPlaceholderPromptDlg()
+function openPlaceholderPromptDlg(aTabID)
 {
   // TO DO: Same checking for cursor location as in the preceding function.
 
-  let url = browser.runtime.getURL("pages/placeholderPrompt.html");
+  let url = browser.runtime.getURL("pages/placeholderPrompt.html?tabID=" + aTabID);
   openDlgWnd(url, "placeholderPrmt", {
     type: "popup",
     width: 536,
@@ -1575,7 +1574,7 @@ async function getWndGeometryFromBrwsTab()
 }
 
 
-function pasteClippingByID(aClippingID, aExternalRequest)
+function pasteClippingByID(aClippingID, aIsExternalRequest, aTabID)
 {
   let clippingsDB = aeClippings.getDB();
 
@@ -1610,7 +1609,7 @@ function pasteClippingByID(aClippingID, aExternalRequest)
         parentFolderName: parentFldrName
       };
 
-      pasteClipping(clippingInfo, aExternalRequest);
+      pasteClipping(clippingInfo, aIsExternalRequest, aTabID);
     });
   }).catch(aErr => {
     console.error("Clippings/wx: pasteClippingByID(): " + aErr);
@@ -1618,7 +1617,7 @@ function pasteClippingByID(aClippingID, aExternalRequest)
 }
 
 
-function pasteClippingByShortcutKey(aShortcutKey)
+function pasteClippingByShortcutKey(aShortcutKey, aTabID)
 {
   let clippingsDB = aeClippings.getDB();
 
@@ -1660,7 +1659,7 @@ function pasteClippingByShortcutKey(aShortcutKey)
         parentFolderName: parentFldrName
       };
 
-      pasteClipping(clippingInfo);
+      pasteClipping(clippingInfo, false, aTabID);
     });
   }).catch(aErr => {
     console.error("Clippings/wx: pasteClippingByShortcutKey(): " + aErr);
@@ -1668,40 +1667,21 @@ function pasteClippingByShortcutKey(aShortcutKey)
 }
 
 
-async function pasteClipping(aClippingInfo, aExternalRequest)
+async function pasteClipping(aClippingInfo, aIsExternalRequest, aTabID)
 {
-  let queryInfo = {
-    active: true,
-  };
-
-  if (aExternalRequest) {
-    queryInfo.lastFocusedWindow = true;
-  }
-  else {
-    queryInfo.currentWindow = true;
-  }
-  
-  let [tab] = await browser.tabs.query(queryInfo);
-  if (! tab) {
-    // This should never happen...
-    alertEx("msgNoActvBrwsTab");
-    return;
-  }
-
-  let activeTabID = tab.id;
-  let processedCtnt = "";
-
-  log("Clippings/wx: pasteClipping(): Active tab ID: " + activeTabID);
-
-  if (gPasteClippingTargetTabID === null) {
-    gPasteClippingTargetTabID = activeTabID;
-  }
-  else {
-    if (activeTabID != gPasteClippingTargetTabID) {
-      warn(`Clippings/wx: pasteClipping(): Detected mismatch between active tab ID and what it was before the keyboard paste dialog.\nPrevious active tab ID = ${gPasteClippingTargetTabID}, current active tab ID = ${activeTabID}`);
-      activeTabID = gPasteClippingTargetTabID;
+  let activeTabID = aTabID;
+  if (aIsExternalRequest) {
+    let [tab] = await browser.tabs.query({active: true, lastFocusedWindow: true});
+    if (! tab) {
+      // This should never happen...
+      alertEx("msgNoActvBrwsTab");
+      return;
     }
+    activeTabID = tab.id;
   }
+
+  let processedCtnt = "";
+  log("Clippings/wx: pasteClipping(): Active tab ID: " + activeTabID);
 
   if (aeClippingSubst.hasNoSubstFlag(aClippingInfo.name)) {
     processedCtnt = aClippingInfo.text;
@@ -1720,18 +1700,18 @@ async function pasteClipping(aClippingInfo, aExternalRequest)
       let plchldrsWithDefaultVals = aeClippingSubst.getCustomPlaceholderDefaultVals(processedCtnt, aClippingInfo);
       gPlaceholders.set(aClippingInfo.name, plchldrs, plchldrsWithDefaultVals, processedCtnt);
 
-      setTimeout(openPlaceholderPromptDlg, 100);
+      openPlaceholderPromptDlg(activeTabID);
       return;
     }
   }
 
-  pasteProcessedClipping(processedCtnt, activeTabID);
+  await pasteProcessedClipping(processedCtnt, activeTabID);
 }
 
 
-function pasteProcessedClipping(aClippingContent, aActiveTabID)
+async function pasteProcessedClipping(aClippingContent, aTabID)
 {
-  let msgParams = {
+  let msg = {
     msgID: "paste-clipping",
     content: aClippingContent,
     htmlPaste: gPrefs.htmlPaste,
@@ -1740,19 +1720,21 @@ function pasteProcessedClipping(aClippingContent, aActiveTabID)
     useInsertHTMLCmd: gPrefs.useInsertHTMLCmd,
   };
 
-  log(`Clippings/wx: Extension sending message "paste-clipping" to content script (active tab ID = ${aActiveTabID})`);
+  log(`Clippings/wx: Extension sending message "paste-clipping" to content script (active tab ID = ${aTabID})`);
+  log(msg);
   
+  // The placeholder prompt or keyboard paste dialog may not be fully closed
+  // when the message is sent to the content script, which can't insert the
+  // clipping if the web page doesn't have focus.
+  // Work around by sending message after a short delay.
   setTimeout(async () => {
     try {
-      await browser.tabs.sendMessage(aActiveTabID, msgParams);
+      await browser.tabs.sendMessage(aTabID, msg);
     }
     catch (e) {
       console.error("Clippings/wx: pasteProcessedClipping(): Failed to paste clipping: " + e);
     }
-    finally {
-      gPasteClippingTargetTabID = null;
-    };
-  }, 150);    
+  }, 150);
 }
 
 
@@ -1889,15 +1871,17 @@ browser.browserAction.onClicked.addListener(aTab => {
 });
 
 
-browser.commands.onCommand.addListener(async (aCmdName) => {
+browser.commands.onCommand.addListener(async (aCmdName, aTab) => {
   info(`Clippings/wx: Command "${aCmdName}" invoked!`);
 
+  // The aTab parameter is undefined - see Bugzilla bug:
+  // https://bugzilla.mozilla.org/show_bug.cgi?id=1843866
+  // Expected to be fixed in Firefox 126.
+  let [tab] = await browser.tabs.query({active: true, currentWindow: true});
+
   if (aCmdName == aeConst.CMD_CLIPPINGS_KEYBOARD_PASTE && gPrefs.keyboardPaste) {
-    let [tab] = await browser.tabs.query({active: true, currentWindow: true});
-    let activeTabID = tab.id;
-    gPasteClippingTargetTabID = activeTabID;
-    log(`Clippings/wx: Active tab ID: ${activeTabID} - opening keyboard paste dialog.`);
-    openKeyboardPasteDlg();
+    log(`Clippings/wx: Active tab ID: ${tab.id} - opening keyboard paste dialog.`);
+    openKeyboardPasteDlg(tab.id);
   }
 });
 
@@ -1919,7 +1903,7 @@ browser.menus.onClicked.addListener(async (aInfo, aTab) => {
   default:
     if (aInfo.menuItemId.startsWith("ae-clippings-clipping-")) {
       let id = Number(aInfo.menuItemId.substring(aInfo.menuItemId.lastIndexOf("-") + 1, aInfo.menuItemId.indexOf("_")));
-      pasteClippingByID(id);
+      pasteClippingByID(id, false, aTab.id);
     }
     else if (aInfo.menuItemId.startsWith("ae-clippings-reset-autoincr-")) {
       let plchldr = aInfo.menuItemId.substr(28);
@@ -1996,12 +1980,11 @@ browser.runtime.onMessage.addListener(aRequest => {
   
   switch (aRequest.msgID) {
   case "get-env-info":
-    let envInfo = {
+    return Promise.resolve({
       os: gOS,
       hostAppName: gHostAppName,
       hostAppVer:  gHostAppVer,
-    };
-    return Promise.resolve(envInfo);
+    });
 
   case "init-new-clipping-dlg":
     let newClipping = gNewClipping.get();
@@ -2032,32 +2015,15 @@ browser.runtime.onMessage.addListener(aRequest => {
       return;
     }
     log(`Clippings/wx: Key '${aRequest.shortcutKey}' was pressed.`);
-    pasteClippingByShortcutKey(aRequest.shortcutKey);
+    pasteClippingByShortcutKey(aRequest.shortcutKey, aRequest.browserTabID);
     break;
 
   case "paste-clipping-by-name":
-    pasteClippingByID(aRequest.clippingID, aRequest.fromClippingsMgr);
+    pasteClippingByID(aRequest.clippingID, aRequest.fromClippingsMgr, aRequest.browserTabID);
     break;
 
   case "paste-clipping-with-plchldrs":
-    let content = aRequest.processedContent;
-    setTimeout(async () => {
-      let [tab] = await browser.tabs.query({active: true, currentWindow: true});
-      if (! tab) {
-        // This could happen if the browser tab was closed while the
-        // placeholder prompt dialog was open.
-        alertEx("msgNoActvBrwsTab");
-        return;
-      }
-
-      let activeTabID = tab.id;
-      if (activeTabID != gPasteClippingTargetTabID) {
-        warn(`Clippings/wx: Detected mismatch between currently-active browser tab ID and what it was when invoking clipping paste.\nPrevious active tab ID = ${gPasteClippingTargetTabID}, active tab ID = ${activeTabID}`);
-        activeTabID = gPasteClippingTargetTabID;
-      }
-      pasteProcessedClipping(content, activeTabID);
-    }, 60);
-    break;
+    return Promise.resolve(pasteProcessedClipping(aRequest.processedContent, aRequest.browserTabID));
 
   case "close-placeholder-prmt-dlg":
     gWndIDs.placeholderPrmt = null;
