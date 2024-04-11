@@ -1879,7 +1879,7 @@ browser.commands.onCommand.addListener(async (aCmdName, aTab) => {
   // Expected to be fixed in Firefox 126.
   let [tab] = await browser.tabs.query({active: true, currentWindow: true});
 
-  if (aCmdName == aeConst.CMD_CLIPPINGS_KEYBOARD_PASTE && gPrefs.keyboardPaste) {
+  if (aCmdName == "ae-clippings-paste-clipping" && gPrefs.keyboardPaste) {
     log(`Clippings/wx: Active tab ID: ${tab.id} - opening keyboard paste dialog.`);
     openKeyboardPasteDlg(tab.id);
   }

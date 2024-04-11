@@ -10,9 +10,6 @@ const aeConst = Object.freeze({
   // Native messaging helper app
   SYNC_CLIPPINGS_APP_NAME: "syncClippings",
 
-  // Keyboard shortcut
-  CMD_CLIPPINGS_KEYBOARD_PASTE: "ae-clippings-paste-clipping",
-  
   // Constants for HTML paste options
   HTMLPASTE_ASK_THE_USER: 0,
   HTMLPASTE_AS_FORMATTED: 1,
