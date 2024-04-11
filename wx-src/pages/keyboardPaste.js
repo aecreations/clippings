@@ -12,6 +12,7 @@ const TOOLBAR_HEIGHT = 52;
 const SHORTCUT_LIST_HEIGHT_ADJ_MAC = 2;
 
 let gClippingsDB, gPasteMode, gOS;
+let gBrowserTabID = null;
 
 let gAutocompleteMenu = {
   _SCRL_LENGTH: 36,
@@ -253,7 +254,9 @@ let gAutocompleteMenu = {
 
     browser.runtime.sendMessage({
       msgID: "paste-clipping-by-name",
-      clippingID: aClippingID
+      clippingID: aClippingID,
+      browserTabID: gBrowserTabID,
+      fromClippingsMgr: false,
     });
 
     closeDlg();
@@ -290,6 +293,9 @@ function sanitizeHTML(aHTMLStr)
 
 // Initialize dialog
 $(async () => {
+  let params = new URLSearchParams(window.location.search);
+  gBrowserTabID = Number(params.get("tabID"));
+  
   let envInfo = await browser.runtime.sendMessage({msgID: "get-env-info"});
   document.body.dataset.os = gOS = envInfo.os;
 
@@ -577,7 +583,8 @@ function execShortcut(aShortcutKey)
 {
   browser.runtime.sendMessage({
     msgID: "paste-shortcut-key",
-    shortcutKey: aShortcutKey
+    shortcutKey: aShortcutKey,
+    browserTabID: gBrowserTabID,
   });
 
   closeDlg();
@@ -593,9 +600,9 @@ function cancel(aEvent)
 async function closeDlg()
 {
   // Always remember last paste mode, even if user cancelled.
-  await aePrefs.setPrefs({ pastePromptAction: gPasteMode });
+  await aePrefs.setPrefs({pastePromptAction: gPasteMode});
   
-  await browser.runtime.sendMessage({ msgID: "close-keybd-paste-dlg" });
+  await browser.runtime.sendMessage({msgID: "close-keybd-paste-dlg"});
   browser.windows.remove(browser.windows.WINDOW_ID_CURRENT);
 }
 
