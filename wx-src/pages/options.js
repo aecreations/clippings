@@ -274,7 +274,7 @@ async function init()
       log("Clippings/wx::options.js: Keyboard shortcut changed. Updating command with new keyboard shortcut: " + keybShct);
       
       browser.commands.update({
-        name: aeConst.CMD_CLIPPINGS_KEYBOARD_PASTE,
+        name: "ae-clippings-paste-clipping",
         shortcut: keybShct,
       });
     });
