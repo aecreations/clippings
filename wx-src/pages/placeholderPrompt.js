@@ -16,6 +16,7 @@ let gPlaceholders = null;
 let gPlaceholdersWithDefaultVals = null;
 let gSamePlchldrs = {};
 let gClippingContent = null;
+let gBrowserTabID = null;
 
 
 // DOM utility
@@ -28,6 +29,9 @@ function sanitizeHTML(aHTMLStr)
 // Page initialization
 $(async () => {
   browser.history.deleteUrl({url: window.location.href});
+
+  let params = new URLSearchParams(window.location.search);
+  gBrowserTabID = Number(params.get("tabID"));
 
   let platform = await browser.runtime.getPlatformInfo();
   document.body.dataset.os = gOS = platform.os;
@@ -261,7 +265,8 @@ function accept(aEvent)
 
   browser.runtime.sendMessage({
     msgID: "paste-clipping-with-plchldrs",
-    processedContent: content
+    processedContent: content,
+    browserTabID: gBrowserTabID,
   });
   
   closeDlg();
@@ -276,6 +281,6 @@ function cancel(aEvent)
 
 async function closeDlg()
 {
-  await browser.runtime.sendMessage({ msgID: "close-placeholder-prmt-dlg" });
+  await browser.runtime.sendMessage({msgID: "close-placeholder-prmt-dlg"});
   browser.windows.remove(browser.windows.WINDOW_ID_CURRENT);
 }
