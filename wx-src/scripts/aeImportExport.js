@@ -9,6 +9,7 @@ let aeImportExport = {
 
   CLIPPINGS_JSON_VER: "6.0",
   CLIPPINGS_JSON_VER_WITH_SEQ: "6.1",
+  CLIPPINGS_JSON_VER_WITH_SEP: "6.2",
   CLIPPINGS_JSON_CREATED_BY: "Clippings/wx",
   ROOT_FOLDER_ID: 0,
   LAST_SEQ_VALUE: 9999999,
@@ -81,6 +82,7 @@ aeImportExport.isValidClippingsJSON = function (aImportRawJSON) {
   let knownVersions = [
     this.CLIPPINGS_JSON_VER,
     this.CLIPPINGS_JSON_VER_WITH_SEQ,
+    this.CLIPPINGS_JSON_VER_WITH_SEP,
   ];
 
   rv = ("userClippingsRoot" in importData
@@ -236,6 +238,13 @@ aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems
         });
       }
       else {
+        // TEMPORARY - Clippings 6.x only
+        // Skip over separators in import data from Clippings 7.0 and newer.
+        if (item.sep) {
+          continue;
+        }
+        // END TEMPORARY
+
         let clipping = {};
         let shortcutKey = "";
 
