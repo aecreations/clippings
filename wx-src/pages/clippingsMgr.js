@@ -4304,37 +4304,40 @@ function initDialogs()
     FMT_HTML: 1,
     FMT_CSV: 2,
     inclSrcURLs: false,
-  });
-  gDialogs.exportToFile.onInit = function ()
-  {
-    let fmtDesc = [
-      browser.i18n.getMessage("expFmtClippings6Desc"), // Clippings 6
+    fmtDesc: [
+      browser.i18n.getMessage("expFmtClippings6Desc"), // Clippings
       browser.i18n.getMessage("expFmtHTMLDocDesc"),    // HTML Document
       browser.i18n.getMessage("expFmtCSVDesc"),        // CSV File
-    ];
+    ],
+  });
 
-    this.inclSrcURLs = true;
-    gSuppressAutoMinzWnd = true;
-
+  gDialogs.exportToFile.onFirstInit = function ()
+  {
     $("#export-format-list").change(aEvent => {
       let selectedFmtIdx = aEvent.target.selectedIndex;
-      $("#format-description").text(fmtDesc[selectedFmtIdx]);
+      $("#format-description").text(this.fmtDesc[selectedFmtIdx]);
 
       if (selectedFmtIdx == this.FMT_CLIPPINGS_WX) {
-        $("#include-src-urls").removeAttr("disabled").prop("checked", this.inclSrcURLs);
+        $("#include-src-urls").prop("disabled", false).prop("checked", this.inclSrcURLs);
       }
       else if (selectedFmtIdx == this.FMT_HTML || selectedFmtIdx == this.FMT_CSV) {
-        $("#include-src-urls").attr("disabled", "true").prop("checked", false);
+        $("#include-src-urls").prop("disabled", true).prop("checked", false);
       }
     });
 
     $("#include-src-urls").click(aEvent => {
       this.inclSrcURLs = aEvent.target.checked;
     });
+  };
+
+  gDialogs.exportToFile.onInit = function ()
+  {
+    this.inclSrcURLs = true;
+    gSuppressAutoMinzWnd = true;
 
     $("#export-format-list")[0].selectedIndex = this.FMT_CLIPPINGS_WX;
-    $("#format-description").text(fmtDesc[this.FMT_CLIPPINGS_WX]);
-    $("#include-src-urls").prop("checked", this.inclSrcURLs);
+    $("#format-description").text(this.fmtDesc[this.FMT_CLIPPINGS_WX]);
+    $("#include-src-urls").prop("checked", this.inclSrcURLs).prop("disabled", false);
   };
 
   gDialogs.exportToFile.onShow = function ()
