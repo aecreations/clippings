@@ -576,81 +576,69 @@ async function enableSyncClippings(aIsEnabled)
 }
 
 
-function refreshSyncedClippings(aRebuildClippingsMenu)
+async function refreshSyncedClippings(aRebuildClippingsMenu)
 {
   log("Clippings/wx: refreshSyncedClippings(): Retrieving synced clippings from the Sync Clippings helper app...");
 
   let clippingsDB = aeClippings.getDB();
   let natMsg = {msgID: "get-synced-clippings"};
-  let getSyncedClippings = browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, natMsg);
-  let syncJSONData = "";
-
-  getSyncedClippings.then(aResp => {
-    if (aResp) {
-      syncJSONData = aResp;
-    }
-    else {
-      throw new Error("Clippings/wx: refreshSyncedClippings(): Response data from native app is invalid");
-    }
-    
-    if (gSyncFldrID === null) {
-      log("Clippings/wx: The Synced Clippings folder is missing. Creating it...");
-      let syncFldr = {
-        name: browser.i18n.getMessage("syncFldrName"),
-        parentFolderID: aeConst.ROOT_FOLDER_ID,
-        displayOrder: 0,
-      };
-      
-      return clippingsDB.folders.add(syncFldr);
-    }
-
-    log("Clippings/wx: refreshSyncedClippings(): Synced Clippings folder ID: " + gSyncFldrID);
-    return gSyncFldrID;
-
-  }).then(aSyncFldrID => {
-    if (gSyncFldrID === null) {
-      gSyncFldrID = aSyncFldrID;
-      log("Clippings/wx: Synced Clippings folder ID: " + gSyncFldrID);
-      return aePrefs.setPrefs({ syncFolderID: gSyncFldrID });
-    }
-      
-    gSyncClippingsListener.onReloadStart();
-
-    log("Clippings/wx: Purging existing items in the Synced Clippings folder...");
-    return purgeFolderItems(gSyncFldrID, true);
-
-  }).then(() => {
-    log("Clippings/wx: Importing clippings data from sync file...");
-
-    // Method aeImportExport.importFromJSON() is asynchronous, so the import
-    // may not yet be finished when this function has finished executing!
-    aeImportExport.setDatabase(clippingsDB);
-    aeImportExport.importFromJSON(syncJSONData, false, false, gSyncFldrID);
-
-    setTimeout(function () {
-      gSyncClippingsListener.onReloadFinish();
-    }, gPrefs.afterSyncFldrReloadDelay);
-    
-  }).catch(aErr => {
-    console.error("Clippings/wx: refreshSyncedClippings(): " + aErr);
-    if (aErr == aeConst.SYNC_ERROR_CONXN_FAILED
-        || aErr == aeConst.SYNC_ERROR_NAT_APP_NOT_FOUND) {
+  let resp;
+  try {
+    resp = await browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, natMsg);
+  }
+  catch (e) {
+    console.error("Clippings/mx: refreshSyncedClippings(): Error sending native message to Sync Clippings Helper: " + e);
+    if (e == aeConst.SYNC_ERROR_CONXN_FAILED
+        || e == aeConst.SYNC_ERROR_NAT_APP_NOT_FOUND) {
       showSyncErrorNotification();
-
-      // Don't proceed further, otherwise duplicated items may appear in the
-      // Clippings context menu.
-      return;
     }
     else if (aErr == aeConst.SYNC_ERROR_UNEXPECTED) {
       // This error occurs if Sync Clippings was uninstalled and then
       // reinstalled, but the sync folder location isn't set.
-      return;
     }
 
     if (aRebuildClippingsMenu) {
       buildContextMenu();
     }
-  });
+    return;
+  }
+
+  let syncJSONData = "";
+  if (resp) {
+    syncJSONData = resp;
+  }
+  else {
+    throw new Error("Clippings/wx: refreshSyncedClippings(): Response data from native app is invalid");
+  }
+
+  if (gSyncFldrID === null) {
+    log("Clippings/wx: The Synced Clippings folder is missing. Creating it...");
+    let syncFldr = {
+      name: browser.i18n.getMessage("syncFldrName"),
+      parentFolderID: aeConst.ROOT_FOLDER_ID,
+      displayOrder: 0,
+    };
+    
+    gSyncFldrID = await clippingsDB.folders.add(syncFldr);
+  }
+  log("Clippings/wx: refreshSyncedClippings(): Synced Clippings folder ID: " + gSyncFldrID);
+  
+  await aePrefs.setPrefs({syncFolderID: gSyncFldrID});
+  gSyncClippingsListener.onReloadStart();
+
+  log("Clippings/wx: Purging existing items in the Synced Clippings folder...");
+  await purgeFolderItems(gSyncFldrID, true);
+
+  log("Clippings/wx: Importing clippings data from sync file...");
+
+  // Method aeImportExport.importFromJSON() is asynchronous, so the import
+  // may not yet be finished when this function has finished executing!
+  aeImportExport.setDatabase(clippingsDB);
+  aeImportExport.importFromJSON(syncJSONData, false, false, gSyncFldrID);
+
+  setTimeout(function () {
+    gSyncClippingsListener.onReloadFinish();
+  }, gPrefs.afterSyncFldrReloadDelay);
 }
 
 
