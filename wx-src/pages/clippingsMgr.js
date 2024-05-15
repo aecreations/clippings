@@ -4675,7 +4675,7 @@ function initDialogs()
 
 function getClippingsTree()
 {
-  let rv = $("#clippings-tree").fancytree("getTree");
+  let rv = $.ui.fancytree.getTree("#clippings-tree");
   return rv;
 }
 
@@ -4728,7 +4728,7 @@ function buildClippingsTree()
 
       dnd5: {
         autoExpandMS: 1000,
-        preventRecursiveMoves: true,
+        preventRecursion: true,
         preventVoidMoves: true,
         scroll: true,
 
