@@ -1967,13 +1967,6 @@ browser.runtime.onMessage.addListener(aRequest => {
   log(`Clippings/wx: Received message "${aRequest.msgID}"`);
   
   switch (aRequest.msgID) {
-  case "get-env-info":
-    return Promise.resolve({
-      os: gOS,
-      hostAppName: gHostAppName,
-      hostAppVer:  gHostAppVer,
-    });
-
   case "init-new-clipping-dlg":
     let newClipping = gNewClipping.get();
     if (newClipping !== null) {

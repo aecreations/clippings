@@ -296,7 +296,15 @@ $(async () => {
   let params = new URLSearchParams(window.location.search);
   gBrowserTabID = Number(params.get("tabID"));
   
-  let envInfo = await browser.runtime.sendMessage({msgID: "get-env-info"});
+  let [brws, platform] = await Promise.all([
+    browser.runtime.getBrowserInfo(),
+    browser.runtime.getPlatformInfo(),
+  ]);
+  envInfo = {
+    os: platform.os,
+    hostAppName: brws.name,
+    hostAppVer:  brws.version,
+  };
   document.body.dataset.os = gOS = envInfo.os;
 
   aeClippings.init();
