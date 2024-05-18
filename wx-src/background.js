@@ -893,7 +893,7 @@ function buildContextMenu()
     id: "ae-clippings-reset-autoincr-plchldrs",
     title: browser.i18n.getMessage("baMenuResetAutoIncrPlaceholders"),
     enabled: false,
-    contexts: ["browser_action"],
+    contexts: ["action"],
     documentUrlPatterns: ["<all_urls>"]
   });
 
@@ -904,7 +904,7 @@ function buildContextMenu()
   browser.menus.create({
     id: "ae-clippings-prefs",
     title: browser.i18n.getMessage(prefsMnuStrKey),
-    contexts: ["browser_action"],
+    contexts: ["action"],
   });
 
   // Context menu for web page textbox or HTML editor.
@@ -1020,7 +1020,7 @@ function buildAutoIncrementPlchldrResetMenu(aAutoIncrPlchldrs)
         id: `ae-clippings-reset-autoincr-${aItem}`,
         title: `#[${aItem}]`,
         parentId: "ae-clippings-reset-autoincr-plchldrs",
-        contexts: ["browser_action"],
+        contexts: ["action"],
         documentUrlPatterns: ["<all_urls>"]
       };
       
@@ -1854,7 +1854,7 @@ async function alertEx(aMessageID, aUsePopupWnd=false)
 // Event handlers
 //
 
-browser.browserAction.onClicked.addListener(aTab => {
+browser.action.onClicked.addListener(aTab => {
   openClippingsManager();
 });
 
