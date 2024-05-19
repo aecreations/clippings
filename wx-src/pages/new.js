@@ -72,8 +72,8 @@ async function initHelper()
     }
 
     $("#clipping-name").val(aResp.name).select().focus();
-    $("#clipping-text").val(aResp.content).attr("spellcheck", aResp.checkSpelling);
-    $("#save-source-url").prop("checked", aResp.saveSrcURL);
+    $("#clipping-text").val(aResp.content).attr("spellcheck", gPrefs.checkSpelling);
+    $("#save-source-url").prop("checked", gPrefs.alwaysSaveSrcURL);
     gSrcURL = aResp.url || "";
   });
 
