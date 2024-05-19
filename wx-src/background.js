@@ -6,7 +6,6 @@
 
 const ROOT_FOLDER_NAME = "clippings-root";
 
-let gOS = null;
 let gHostAppName = null;
 let gHostAppVer;
 let gAutoIncrPlchldrs = null;
@@ -393,16 +392,14 @@ async function init()
   gHostAppName = brws.name;
   gHostAppVer = brws.version;
   log(`Clippings/wx: Host app: ${gHostAppName} (version ${gHostAppVer})`);
+  log("Clippings/wx: OS: " + platform.os);
 
-  gOS = platform.os;
-  log("Clippings/wx: OS: " + gOS);
-
-  if (gOS == "linux" && gPrefs.clippingsMgrMinzWhenInactv === null) {
-    await aePrefs.setPrefs({ clippingsMgrMinzWhenInactv: true });
+  if (platform.os == "linux" && gPrefs.clippingsMgrMinzWhenInactv === null) {
+    await aePrefs.setPrefs({clippingsMgrMinzWhenInactv: true});
   }
 
   if (gPrefs.autoAdjustWndPos === null) {
-    let autoAdjustWndPos = gOS == "win";
+    let autoAdjustWndPos = platform.os == "win";
     let clippingsMgrSaveWndGeom = autoAdjustWndPos;
     await aePrefs.setPrefs({autoAdjustWndPos, clippingsMgrSaveWndGeom});
   }
@@ -419,7 +416,7 @@ async function init()
     refreshSyncedClippings(true);
   }
   else {
-    buildContextMenu();
+    buildContextMenu(platform.os);
   }
   
   aeClippingSubst.init(navigator.userAgent, gPrefs.autoIncrPlcHldrStartVal);
@@ -580,6 +577,7 @@ async function refreshSyncedClippings(aRebuildClippingsMenu)
 {
   log("Clippings/wx: refreshSyncedClippings(): Retrieving synced clippings from the Sync Clippings helper app...");
 
+  let platform = await browser.runtime.getPlatformInfo();
   let clippingsDB = aeClippings.getDB();
   let natMsg = {msgID: "get-synced-clippings"};
   let resp;
@@ -598,7 +596,7 @@ async function refreshSyncedClippings(aRebuildClippingsMenu)
     }
 
     if (aRebuildClippingsMenu) {
-      buildContextMenu();
+      buildContextMenu(platform.os);
     }
     return;
   }
@@ -705,7 +703,8 @@ function purgeFolderItems(aFolderID, aKeepFolder)
 async function getShortcutKeyPrefixStr()
 {
   let rv = "";
-  let isMacOS = getOS() == "mac";
+  let platform = await browser.runtime.getPlatformInfo();
+  let isMacOS = platform.os == "mac";
   let [cmd] = await browser.commands.getAll();
   let shct = cmd.shortcut;
   let keybPasteKey = shct.substring(shct.lastIndexOf("+") + 1);
@@ -884,7 +883,7 @@ function getContextMenuData(aFolderID)
 getContextMenuData.isDarkMode = null;
 
 
-function buildContextMenu()
+function buildContextMenu(aPlatformOS)
 {
   log("Clippings/wx: buildContextMenu()");
   
@@ -898,7 +897,7 @@ function buildContextMenu()
   });
 
   let prefsMnuStrKey = "mnuPrefs";
-  if (gOS == "win") {
+  if (aPlatformOS == "win") {
     prefsMnuStrKey = "mnuPrefsWin";
   }
   browser.menus.create({
@@ -914,7 +913,6 @@ function buildContextMenu()
     contexts: ["editable", "selection"],
     documentUrlPatterns: ["<all_urls>"]
   });
-
   browser.menus.create({
     id: "ae-clippings-manager",
     title: browser.i18n.getMessage("cxtMenuOpenClippingsMgr"),
@@ -1396,17 +1394,18 @@ async function newClipping(aActiveTab)
 
   let name = aeClippings.createClippingNameFromText(content);
   let url = aActiveTab.url;
-
   gNewClipping.set({name, content, url});
-  openNewClippingDlg();
+
+  let platform = await browser.runtime.getPlatformInfo();
+  openNewClippingDlg(platform.os);
 }
 
 
-function openNewClippingDlg()
+function openNewClippingDlg(aPlatformOS)
 {
   let url = browser.runtime.getURL("pages/new.html");
   let height = 416;
-  if (gOS == "win") {
+  if (aPlatformOS == "win") {
     height = 448;
   }
   openDlgWnd(url, "newClipping", {type: "popup", width: 432, height});
@@ -1442,17 +1441,18 @@ function openPlaceholderPromptDlg(aTabID)
 }
 
 
-function openBackupDlg()
+async function openBackupDlg()
 {
   let url = browser.runtime.getURL("pages/backup.html");
   let lang = browser.i18n.getUILanguage();
   let height = 412;
+  let platform = await browser.runtime.getPlatformInfo();
 
-  if (lang == "uk" || (lang == "fr" && gOS == "mac")) {
+  if (lang == "uk" || (lang == "fr" && platform.os == "mac")) {
     height = 450;
   }
   
-  openDlgWnd(url, "backupFirstRun", { type: "popup", width: 590, height });
+  openDlgWnd(url, "backupFirstRun", {type: "popup", width: 590, height});
 }
 
 
@@ -1740,12 +1740,6 @@ function showSyncErrorNotification()
 //
 // Utility functions
 //
-
-function getOS()
-{
-  return gOS;
-}
-
 
 async function initContentCSS(aTabID)
 {
