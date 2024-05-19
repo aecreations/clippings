@@ -9,7 +9,6 @@ const ROOT_FOLDER_NAME = "clippings-root";
 let gAutoIncrPlchldrs = null;
 let gClippingMenuItemIDMap = {};
 let gFolderMenuItemIDMap = {};
-let gSyncFldrID = null;
 let gBackupRemIntervalID = null;
 let gIsReloadingSyncFldr = false;
 let gSyncClippingsHelperDwnldPgURL;
@@ -196,7 +195,8 @@ let gSyncClippingsListener = {
     rebuildContextMenu();
 
     log("Clippings/wx: gSyncClippingsListener.onReloadFinish(): Setting static IDs on synced items that don't already have them.");
-    let isStaticIDsAdded = await addStaticIDs(gSyncFldrID);
+    let syncFldrID = await aePrefs.getPref("syncFolderID");
+    let isStaticIDsAdded = await addStaticIDs(syncFldrID);
 
     if (isStaticIDsAdded) {
       log("Clippings/wx: gSyncClippingsListener.onReloadFinish(): Static IDs added to synced items.  Saving sync file.");
@@ -421,8 +421,6 @@ async function init(aPrefs)
   gPrefersColorSchemeMedQry.addEventListener("change", handlePrefersColorSchemeChange);
   
   if (aPrefs.syncClippings) {
-    gSyncFldrID = aPrefs.syncFolderID;
-
     // The context menu will be built when refreshing the sync data.
     refreshSyncedClippings(true);
   }
@@ -548,11 +546,12 @@ function addStaticIDs(aFolderID)
 async function enableSyncClippings(aIsEnabled)
 {
   let clippingsDB = aeClippings.getDB();
+  let syncFolderID = await aePrefs.getPref("syncFolderID");
 
   if (aIsEnabled) {
     log("Clippings/wx: enableSyncClippings(): Turning ON");
 
-    if (gSyncFldrID === null) {
+    if (syncFolderID === null) {
       log("Clippings/wx: enableSyncClippings(): Creating the Synced Clippings folder."); 
       let syncFldr = {
         name: browser.i18n.getMessage("syncFldrName"),
@@ -561,24 +560,23 @@ async function enableSyncClippings(aIsEnabled)
         isSync: true,
       };
       try {
-        gSyncFldrID = await clippingsDB.folders.add(syncFldr);
+        syncFolderID = await clippingsDB.folders.add(syncFldr);
       }
       catch (e) {
         console.error("Clippings/wx: enableSyncClippings(): Failed to create the Synced Clipping folder: " + e);
       }
 
-      await aePrefs.setPrefs({ syncFolderID: gSyncFldrID });
-      log("Clippings/wx: enableSyncClippings(): Synced Clippings folder ID: " + gSyncFldrID);
-      return gSyncFldrID;
+      await aePrefs.setPrefs({syncFolderID});
+      log("Clippings/wx: enableSyncClippings(): Synced Clippings folder ID: " + syncFolderID);
+      return syncFolderID;
     }
   }
   else {
     log("Clippings/wx: enableSyncClippings(): Turning OFF");
-    let oldSyncFldrID = gSyncFldrID;
+    let oldSyncFldrID = syncFolderID;
 
-    let numUpd = await clippingsDB.folders.update(gSyncFldrID, { isSync: undefined });
-    await aePrefs.setPrefs({ syncFolderID: null });
-    gSyncFldrID = null;
+    let numUpd = await clippingsDB.folders.update(syncFolderID, { isSync: undefined });
+    await aePrefs.setPrefs({syncFolderID: null});
     return oldSyncFldrID;
   }
 }
@@ -621,7 +619,9 @@ async function refreshSyncedClippings(aRebuildClippingsMenu)
     throw new Error("Clippings/wx: refreshSyncedClippings(): Response data from native app is invalid");
   }
 
-  if (gSyncFldrID === null) {
+  let syncFolderID = await aePrefs.getPref("syncFolderID");
+
+  if (syncFolderID === null) {
     log("Clippings/wx: The Synced Clippings folder is missing. Creating it...");
     let syncFldr = {
       name: browser.i18n.getMessage("syncFldrName"),
@@ -629,22 +629,22 @@ async function refreshSyncedClippings(aRebuildClippingsMenu)
       displayOrder: 0,
     };
     
-    gSyncFldrID = await clippingsDB.folders.add(syncFldr);
+    syncFolderID = await clippingsDB.folders.add(syncFldr);
   }
-  log("Clippings/wx: refreshSyncedClippings(): Synced Clippings folder ID: " + gSyncFldrID);
+  log("Clippings/wx: refreshSyncedClippings(): Synced Clippings folder ID: " + syncFolderID);
   
-  await aePrefs.setPrefs({syncFolderID: gSyncFldrID});
+  await aePrefs.setPrefs({syncFolderID});
   gSyncClippingsListener.onReloadStart();
 
   log("Clippings/wx: Purging existing items in the Synced Clippings folder...");
-  await purgeFolderItems(gSyncFldrID, true);
+  await purgeFolderItems(syncFolderID, true);
 
   log("Clippings/wx: Importing clippings data from sync file...");
 
   // Method aeImportExport.importFromJSON() is asynchronous, so the import
   // may not yet be finished when this function has finished executing!
   aeImportExport.setDatabase(clippingsDB);
-  aeImportExport.importFromJSON(syncJSONData, false, false, gSyncFldrID);
+  aeImportExport.importFromJSON(syncJSONData, false, false, syncFolderID);
 
   let afterSyncFldrReloadDelay = await aePrefs.getPref("afterSyncFldrReloadDelay");
   setTimeout(function () {
@@ -655,12 +655,12 @@ async function refreshSyncedClippings(aRebuildClippingsMenu)
 
 async function pushSyncFolderUpdates()
 {
-  let syncClippings = await aePrefs.getPref("syncClippings");
-  if (!syncClippings || gSyncFldrID === null) {
+  let prefs = await aePrefs.getAllPrefs();
+  if (!prefs.syncClippings || prefs.syncFolderID === null) {
     throw new Error("Sync Clippings is not turned on!");
   }
   
-  let syncData = await aeImportExport.exportToJSON(true, true, gSyncFldrID, false, true);
+  let syncData = await aeImportExport.exportToJSON(true, true, prefs.syncFolderID, false, true);
   let natMsg = {
     msgID: "set-synced-clippings",
     syncData: syncData.userClippingsRoot,
@@ -790,7 +790,7 @@ async function getShortcutKeyPrefixStr()
 }
 
 
-function getContextMenuData(aFolderID)
+function getContextMenuData(aFolderID, aPrefs)
 {
   function fnSortMenuItems(aItem1, aItem2)
   {
@@ -827,7 +827,7 @@ function getContextMenuData(aFolderID)
 
         // Submenu icon
         let iconPath = "img/folder.svg";
-        if (aItem.id == gSyncFldrID) {
+        if (aItem.id == aPrefs.syncFolderID) {
           // Firefox bug on macOS:
           // Dark Mode setting isn't applied to the browser context menu when
           // a Firefox dark color theme is used.
@@ -852,7 +852,7 @@ function getContextMenuData(aFolderID)
           submenuItemData.parentId = parentFldrMenuItemID;
         }
 
-        getContextMenuData(aItem.id).then(aSubmenuData => {
+        getContextMenuData(aItem.id, aPrefs).then(aSubmenuData => {
           aSubmenuData.sort(fnSortMenuItems);
           submenuItemData.submenuItems = aSubmenuData;
           rv.push(submenuItemData);
@@ -936,10 +936,10 @@ function buildContextMenu(aPlatformOS, aPrefs)
 
   let rootFldrID = aeConst.ROOT_FOLDER_ID;
   if (aPrefs.syncClippings && aPrefs.cxtMenuSyncItemsOnly) {
-    rootFldrID = gSyncFldrID;
+    rootFldrID = aPrefs.syncFolderID;
   }
 
-  getContextMenuData(rootFldrID).then(aMenuData => {
+  getContextMenuData(rootFldrID, aPrefs).then(aMenuData => {
     if (aeConst.DEBUG) {
       console.log("buildContextMenu(): Menu data: ");
       console.log(aMenuData);
