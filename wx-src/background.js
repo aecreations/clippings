@@ -933,6 +933,7 @@ function buildContextMenu(aPlatformOS)
     
     if (aMenuData.length > 0) {
       browser.menus.create({
+        id: "ae-clippings-submenu-separator",
         type: "separator",
         contexts: ["editable"],
         documentUrlPatterns: ["<all_urls>"]
