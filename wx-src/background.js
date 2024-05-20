@@ -302,21 +302,7 @@ browser.runtime.onInstalled.addListener(async (aInstall) => {
 
 browser.runtime.onStartup.addListener(async () => {
   log("Clippings/wx: Resetting persistent background script data during browser startup");
-  await aePrefs.setPrefs({
-    _isInitialized: false,
-    _clippingMenuItemIDMap: {},
-    _folderMenuItemIDMap: {},
-    _autoIncrPlchldrs: [],
-    _autoIncrPlchldrVals: {},
-    _forceShowFirstTimeBkupNotif: false,
-    _syncClippingsHelperDwnldPgURL: null,
-    _wndIDs: {
-      newClipping: null,
-      keyboardPaste: null,
-      placeholderPrmt: null,
-      clippingsMgr: null,
-    },
-  });
+  await aePrefs.setDefaultState();
 });
 
 

@@ -5,7 +5,7 @@
 
 
 let aePrefs = {
-  _defaultPrefs: {
+  _defaultState: {
     // Background script state persistence
     _isInitialized: false,
     _clippingMenuItemIDMap: {},
@@ -20,7 +20,9 @@ let aePrefs = {
       placeholderPrmt: null,
       clippingsMgr: null,
     },
-
+  },
+  
+  _defaultPrefs: {
     // User preferences and customizations
     showWelcome: true,
     htmlPaste: aeConst.HTMLPASTE_AS_FORMATTED,
@@ -61,14 +63,10 @@ let aePrefs = {
     useInsertHTMLCmd: false,
   },
   
-  getDefaultPrefs()
-  {
-    return this._defaultPrefs;
-  },
-
   getPrefKeys()
   {
-    return Object.keys(this._defaultPrefs);
+    let allPrefs = {...this._defaultState, ...this._defaultPrefs};
+    return Object.keys(allPrefs);
   },
   
   async getPref(aPrefName)
@@ -90,6 +88,11 @@ let aePrefs = {
     await browser.storage.local.set(aPrefMap);
   },
 
+  async setDefaultState()
+  {
+    await browser.storage.local.set(this._defaultState);
+  },
+
 
   //
   // Version upgrade handling
@@ -97,7 +100,7 @@ let aePrefs = {
 
   hasUserPrefs(aPrefs)
   {
-    return aPrefs.hasOwnProperty("htmlPaste");
+    return ("htmlPaste" in aPrefs);
   },
 
   async setUserPrefs(aPrefs)
@@ -123,7 +126,7 @@ let aePrefs = {
   hasSanDiegoPrefs(aPrefs)
   {
     // Version 6.1
-    return aPrefs.hasOwnProperty("syncClippings");
+    return ("syncClippings" in aPrefs);
   },
 
   async setSanDiegoPrefs(aPrefs)
@@ -143,7 +146,7 @@ let aePrefs = {
   hasBalboaParkPrefs(aPrefs)
   {
     // Version 6.1.2
-    return aPrefs.hasOwnProperty("syncHelperCheckUpdates");
+    return ("syncHelperCheckUpdates" in aPrefs);
   },
 
   async setBalboaParkPrefs(aPrefs)
@@ -159,7 +162,7 @@ let aePrefs = {
   hasMalibuPrefs(aPrefs)
   {
     // Version 6.2
-    return aPrefs.hasOwnProperty("cxtMenuSyncItemsOnly");
+    return ("cxtMenuSyncItemsOnly" in aPrefs);
   },
 
   async setMalibuPrefs(aPrefs)
@@ -177,7 +180,7 @@ let aePrefs = {
   hasTopangaPrefs(aPrefs)
   {
     // Version 6.2.1
-    return aPrefs.hasOwnProperty("dispatchInputEvent");
+    return ("dispatchInputEvent" in aPrefs);
   },
 
   async setTopangaPrefs(aPrefs)
@@ -192,7 +195,7 @@ let aePrefs = {
   hasHuntingdonPrefs(aPrefs)
   {
     // Version 6.3
-    return aPrefs.hasOwnProperty("clippingsMgrSaveWndGeom");
+    return ("clippingsMgrSaveWndGeom" in aPrefs);
   },
 
   async setHuntingdonPrefs(aPrefs)
@@ -218,7 +221,7 @@ let aePrefs = {
   hasSanClementePrefs(aPrefs)
   {
     // Version 6.4
-    return aPrefs.hasOwnProperty("showNewClippingOpts");
+    return ("showNewClippingOpts" in aPrefs);
   },
   
   async setSanClementePrefs(aPrefs)
@@ -252,6 +255,7 @@ let aePrefs = {
   async setSanFranciscoPrefs(aPrefs)
   {
     let newPrefs = {
+      _isInitialized: false,
       _clippingMenuItemIDMap: {},
       _folderMenuItemIDMap: {},
       _autoIncrPlchldrs: [],
