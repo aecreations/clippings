@@ -303,6 +303,7 @@ browser.runtime.onInstalled.addListener(async (aInstall) => {
 browser.runtime.onStartup.addListener(async () => {
   log("Clippings/wx: Resetting persistent background script data during browser startup");
   await aePrefs.setPrefs({
+    _isInitialized: false,
     _clippingMenuItemIDMap: {},
     _folderMenuItemIDMap: {},
     _autoIncrPlchldrs: [],
@@ -423,10 +424,14 @@ async function init(aPrefs)
   
   if (aPrefs.syncClippings) {
     // The context menu will be built when refreshing the sync data.
+    // Do this even when the background script is restarted in order to pick up
+    // any changes to sync data.
     refreshSyncedClippings(true);
   }
   else {
-    buildContextMenu(platform.os, aPrefs);
+    if (! aPrefs._isInitialized) {
+      buildContextMenu(platform.os, aPrefs);
+    }
   }
   
   aeClippingSubst.init(navigator.userAgent, aPrefs.autoIncrPlcHldrStartVal);
@@ -478,6 +483,8 @@ async function init(aPrefs)
   else {
     log("Clippings/wx: Initialization complete.");   
   }
+
+  await aePrefs.setPrefs({_isInitialized: true});
 }
 
 

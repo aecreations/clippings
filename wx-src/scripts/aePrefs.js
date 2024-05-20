@@ -7,6 +7,7 @@
 let aePrefs = {
   _defaultPrefs: {
     // Background script state persistence
+    _isInitialized: false,
     _clippingMenuItemIDMap: {},
     _folderMenuItemIDMap: {},
     _autoIncrPlchldrs: [],
