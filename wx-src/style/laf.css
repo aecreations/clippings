@@ -9,8 +9,10 @@
     --color-btn-bkgd: rgba(12, 12, 13, 0.1);
     --color-btn-hover-bkgd: rgba(12, 12, 13, 0.2);
     --color-btn-hover-border: rgba(12, 12, 13, 0.1);
+    --color-btn-default-hover-border: #001a55;
     --color-btn-active-bkgd: rgba(12, 12, 13, 0.3);
     --color-btn-border: rgba(12, 12, 13, 0.1);
+    --color-btn-default-border: #004888;
     --color-btn-text: black;
     --color-tb-bkgd: -moz-field;
     --color-tb-border: rgba(12, 12, 13, 0.2);
@@ -41,8 +43,10 @@
 	--color-btn-bkgd: #4a4a4f;
 	--color-btn-hover-bkgd: #606060;
 	--color-btn-hover-border: #606060;
+	--color-btn-default-hover-border: #003eaa;
 	--color-btn-active-bkgd: #737373;
 	--color-btn-border: #4a4a4f;
+	--color-btn-default-border: #0060df;
 	--color-btn-text: #f9f9fa;
 	--color-tb-bkgd: #0c0c0d;
 	--color-tb-border: #4a4a4f;
@@ -352,7 +356,7 @@ select.browser-style[disabled] {
 }
 
 button.default {
-    border: 1px solid #0060df;
+    border: 1px solid var(--color-btn-default-border);
     background-color: #0060df;
     color: #fff;
 }
@@ -369,7 +373,7 @@ button:hover {
 }
 
 button.default:hover {
-    border: 1px solid #003eaa;
+    border: 1px solid var(--color-btn-default-hover-border);
     background-color: #003eaa;
 }
 
@@ -399,13 +403,17 @@ select.browser-style:active {
 
 button:-moz-focusring,
 button.default:-moz-focusring,
-select:-moz-focusring {
+select:-moz-focusring,
+.browser-style > input[type="checkbox"],
+.browser-style > input[type="radio"] {
     outline-style: none;
 }
 
 button:-moz-focusring:not(:disabled),
 select:-moz-focusring:not([size]):not(:disabled),
-select.browser-style:-moz-focusring:not([size]):not(:disabled) {
+select.browser-style:-moz-focusring:not([size]):not(:disabled),
+.browser-style > input[type="checkbox"]:-moz-focusring:not(:disabled),
+.browser-style > input[type="radio"]:-moz-focusring:not(:disabled) {
     border-color: var(--color-bkgd) !important;
     box-shadow: 0 0 0 2px #45a1ff;
 }
@@ -415,7 +423,9 @@ button.default:-moz-focusring:not(:disabled) {
 }
 
 button:-moz-focusring:not(:disabled),
-button.default:-moz-focusring:not(:disabled) {
+button.default:-moz-focusring:not(:disabled),
+.browser-style > input[type="checkbox"]:-moz-focusring:not(:disabled),
+.browser-style > input[type="radio"]:-moz-focusring:not(:disabled) {
     transition-duration: 250ms;
     transition-property: box-shadow;
 }
