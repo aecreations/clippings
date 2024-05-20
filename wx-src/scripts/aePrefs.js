@@ -11,6 +11,7 @@ let aePrefs = {
     _clippingMenuItemIDMap: {},
     _folderMenuItemIDMap: {},
     _autoIncrPlchldrs: [],
+    _autoIncrPlchldrVals: {},
     _forceShowFirstTimeBkupNotif: false,
     _syncClippingsHelperDwnldPgURL: null,
     _wndIDs: {
@@ -254,6 +255,7 @@ let aePrefs = {
       _clippingMenuItemIDMap: {},
       _folderMenuItemIDMap: {},
       _autoIncrPlchldrs: [],
+      _autoIncrPlchldrVals: {},
       _forceShowFirstTimeBkupNotif: false,
       _syncClippingsHelperDwnldPgURL: null,
       _wndIDs: {

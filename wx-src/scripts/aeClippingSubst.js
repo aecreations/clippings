@@ -207,9 +207,10 @@ aeClippingSubst._processDateTimePlaceholders = function (aPlaceholders, aReplace
 };
 
 
-aeClippingSubst.processAutoIncrPlaceholders = function (aClippingText)
+aeClippingSubst.processAutoIncrPlaceholders = async function (aClippingText)
 {
   let rv = "";
+  this._autoIncrementVars = await aePrefs.getPref("_autoIncrPlchldrVals");
   
   let fnAutoIncrement = (aMatch, aP1) => {
     let varName = aP1;
@@ -232,17 +233,15 @@ aeClippingSubst.processAutoIncrPlaceholders = function (aClippingText)
 };
 
 
-aeClippingSubst.getAutoIncrementVarNames = function ()
+aeClippingSubst.saveAutoIncrementVars = async function ()
 {
-  var rv = [];
-  for (var name in this._autoIncrementVars) {
-    rv.push(name);
-  }
-  return rv;
+  await aePrefs.setPrefs({_autoIncrPlchldrVals: this._autoIncrementVars});
 };
 
 
-aeClippingSubst.resetAutoIncrementVar = function (aVarName)
+aeClippingSubst.resetAutoIncrementVar = async function (aVarName)
 {
+  this._autoIncrementVars = await aePrefs.getPref("_autoIncrPlchldrVals");
   delete this._autoIncrementVars[aVarName];
+  await aePrefs.setPrefs({_autoIncrPlchldrVals: this._autoIncrementVars});
 };

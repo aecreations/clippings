@@ -307,6 +307,7 @@ browser.runtime.onStartup.addListener(async () => {
     _clippingMenuItemIDMap: {},
     _folderMenuItemIDMap: {},
     _autoIncrPlchldrs: [],
+    _autoIncrPlchldrVals: {},
     _forceShowFirstTimeBkupNotif: false,
     _syncClippingsHelperDwnldPgURL: null,
     _wndIDs: {
@@ -1079,7 +1080,7 @@ async function resetAutoIncrPlaceholder(aPlaceholder)
 {
   log(`Clippings/wx: resetAutoIncrPlaceholder(): Resetting placeholder: #[${aPlaceholder}]`);
 
-  aeClippingSubst.resetAutoIncrementVar(aPlaceholder);
+  await aeClippingSubst.resetAutoIncrementVar(aPlaceholder);
   let autoIncrPlchldrs = await aePrefs.getPref("_autoIncrPlchldrs");
   let autoIncrPlchldrsSet = new Set(autoIncrPlchldrs);
   autoIncrPlchldrsSet.delete(aPlaceholder);
@@ -1745,7 +1746,8 @@ async function pasteClipping(aClippingInfo, aIsExternalRequest, aTabID)
     let autoIncrPlchldrs = aeClippingSubst.getAutoIncrPlaceholders(processedCtnt);
     if (autoIncrPlchldrs.length > 0) {
       buildAutoIncrementPlchldrResetMenu(autoIncrPlchldrs);
-      processedCtnt = aeClippingSubst.processAutoIncrPlaceholders(processedCtnt);
+      processedCtnt = await aeClippingSubst.processAutoIncrPlaceholders(processedCtnt);
+      await aeClippingSubst.saveAutoIncrementVars();
     }
 
     let plchldrs = aeClippingSubst.getCustomPlaceholders(processedCtnt);
