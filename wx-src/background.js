@@ -6,16 +6,15 @@
 
 const ROOT_FOLDER_NAME = "clippings-root";
 
-let gAutoIncrPlchldrs = null;
+// These globals are used only briefly or during initialization, so they don't
+// need to be saved to extension storage.
 let gClippingMenuItemIDMap = {};
 let gFolderMenuItemIDMap = {};
-let gBackupRemIntervalID = null;
-let gIsReloadingSyncFldr = false;
-let gSyncClippingsHelperDwnldPgURL;
-let gForceShowFirstTimeBkupNotif = false;
 let gPrefersColorSchemeMedQry;
 let gIsFirstRun = false;
 let gIsMajorVerUpdate = false;
+let gSetDisplayOrderOnRootItems = false;
+let gIsReloadingSyncFldr = false;
 
 let gClippingsListener = {
   _isImporting: false,
@@ -143,8 +142,9 @@ let gSyncClippingsListener = {
     if (cxtMenuSyncItemsOnly) {
       return;
     }
-    
-    let syncFldrMenuID = gFolderMenuItemIDMap[aOldSyncFolderID];
+
+    let fldrMenuItemIDMap = await aePrefs.getPref("_folderMenuItemIDMap");
+    let syncFldrMenuID = fldrMenuItemIDMap[aOldSyncFolderID];
 
     // Change the icon on the "Synced Clippings" folder to be a normal
     // folder icon.
@@ -273,15 +273,6 @@ let gPlaceholders = {
   }
 };
 
-let gWndIDs = {
-  newClipping: null,
-  keyboardPaste: null,
-  placeholderPrmt: null,
-  clippingsMgr: null
-};
-
-let gSetDisplayOrderOnRootItems = false;
-
 
 //
 // Post-installation event handler
@@ -300,11 +291,6 @@ browser.runtime.onInstalled.addListener(async (aInstall) => {
     }
     else {
       log(`Clippings/wx: Updating from version ${oldVer} to ${currVer}`);
-
-      // Detect upgrade to version 6.5, which doesn't have any new prefs.
-      if (aeVersionCmp(oldVer, "6.5") < 0) {
-        gIsMajorVerUpdate = true;
-      }
     }
   }
 });
@@ -314,11 +300,20 @@ browser.runtime.onInstalled.addListener(async (aInstall) => {
 // Browser startup
 //
 
-browser.runtime.onStartup.addListener(() => {
+browser.runtime.onStartup.addListener(async () => {
   log("Clippings/wx: Resetting persistent background script data during browser startup");
-  aePrefs.setPrefs({
-    // TO DO: Add prefs representing global variables that should be
-    // reset at browser startup.
+  await aePrefs.setPrefs({
+    _clippingMenuItemIDMap: {},
+    _folderMenuItemIDMap: {},
+    _autoIncrPlchldrs: [],
+    _forceShowFirstTimeBkupNotif: false,
+    _syncClippingsHelperDwnldPgURL: null,
+    _wndIDs: {
+      newClipping: null,
+      keyboardPaste: null,
+      placeholderPrmt: null,
+      clippingsMgr: null,
+    },
   });
 });
 
@@ -353,9 +348,9 @@ void async function ()
   }
 
   if (! aePrefs.hasBalboaParkPrefs(prefs)) {
-    gForceShowFirstTimeBkupNotif = true;
     log("Initializing 6.1.2 user preferences.");
     await aePrefs.setBalboaParkPrefs(prefs);
+    aePrefs.setPrefs({_forceShowFirstTimeBkupNotif: true});
   }
 
   if (! aePrefs.hasMalibuPrefs(prefs)) {
@@ -381,6 +376,12 @@ void async function ()
   if (! aePrefs.hasModestoPrefs(prefs)) {
     log("Initializing 6.5.2 user preferences.");
     await aePrefs.setModestoPrefs(prefs);
+  }
+
+  if (! aePrefs.hasSanFranciscoPrefs(prefs)) {
+    log("Initializing 7.0 user preferences and MV3 background script state storage.");
+    await aePrefs.setSanFranciscoPrefs(prefs);
+    gIsMajorVerUpdate = true;
   }
 
   if (prefs.clippingsMgrDetailsPane) {
@@ -429,7 +430,6 @@ async function init(aPrefs)
   }
   
   aeClippingSubst.init(navigator.userAgent, aPrefs.autoIncrPlcHldrStartVal);
-  gAutoIncrPlchldrs = new Set();
 
   if (aPrefs.backupRemFirstRun && !aPrefs.lastBackupRemDate) {
     aePrefs.setPrefs({
@@ -838,7 +838,7 @@ function getContextMenuData(aFolderID, aPrefs)
             iconPath = "img/synced-clippings.svg";
           }
         }
-        submenuItemData.icons = { 16: iconPath };
+        submenuItemData.icons = {16: iconPath};
 
         if (! ("displayOrder" in aItem)) {
           submenuItemData.displayOrder = 0;
@@ -851,7 +851,6 @@ function getContextMenuData(aFolderID, aPrefs)
           let parentFldrMenuItemID = gFolderMenuItemIDMap[aFolderID];
           submenuItemData.parentId = parentFldrMenuItemID;
         }
-
         getContextMenuData(aItem.id, aPrefs).then(aSubmenuData => {
           aSubmenuData.sort(fnSortMenuItems);
           submenuItemData.submenuItems = aSubmenuData;
@@ -877,7 +876,7 @@ function getContextMenuData(aFolderID, aPrefs)
           else {
             menuItemData.displayOrder = aItem.displayOrder;
           }
-          
+
           if (aFolderID != aeConst.ROOT_FOLDER_ID) {
             let fldrMenuItemID = gFolderMenuItemIDMap[aFolderID];
             menuItemData.parentId = fldrMenuItemID;
@@ -939,11 +938,19 @@ function buildContextMenu(aPlatformOS, aPrefs)
     rootFldrID = aPrefs.syncFolderID;
   }
 
+  gFolderMenuItemIDMap = aPrefs._clippingMenuItemIDMap;
+  gClippingMenuItemIDMap = aPrefs._folderMenuItemIDMap;
+
   getContextMenuData(rootFldrID, aPrefs).then(aMenuData => {
     if (aeConst.DEBUG) {
       console.log("buildContextMenu(): Menu data: ");
       console.log(aMenuData);
     }
+
+    aePrefs.setPrefs({
+      _clippingMenuItemIDMap: gClippingMenuItemIDMap,
+      _folderMenuItemIDMap: gFolderMenuItemIDMap,
+    });
     
     if (aMenuData.length > 0) {
       browser.menus.create({
@@ -984,17 +991,17 @@ function buildContextMenuHelper(aMenuData)
 }
 
 
-function updateContextMenuForFolder(aUpdatedFolderID)
+async function updateContextMenuForFolder(aUpdatedFolderID)
 {
   let id = Number(aUpdatedFolderID);
   let clippingsDB = aeClippings.getDB();
 
-  clippingsDB.folders.get(id).then(aResult => {
-    let menuItemID = gFolderMenuItemIDMap[id];
-    if (menuItemID) {
-      browser.menus.update(menuItemID, {title: aResult.name});
-    }
-  });
+  let folder = await clippingsDB.folders.get(id);
+  let fldrMenuItemIDMap = await aePrefs.getPref("_folderMenuItemIDMap");
+  let menuItemID = fldrMenuItemIDMap[id];
+  if (menuItemID) {
+    browser.menus.update(menuItemID, {title: folder.name});
+  }
 }
 
 
@@ -1005,6 +1012,10 @@ async function rebuildContextMenu()
 
   gClippingMenuItemIDMap = {};
   gFolderMenuItemIDMap = {};
+  await aePrefs.setPrefs({
+    _clippingMenuItemIDMap: {},
+    _folderMenuItemIDMap: {},
+  });
 
   let platform = await browser.runtime.getPlatformInfo();
   let prefs = await aePrefs.getAllPrefs();
@@ -1026,13 +1037,16 @@ async function handlePrefersColorSchemeChange(aMediaQuery)
 }
 
 
-function buildAutoIncrementPlchldrResetMenu(aAutoIncrPlchldrs)
+async function buildAutoIncrementPlchldrResetMenu(aAutoIncrPlchldrs)
 {
+  let autoIncrPlchldrs = await aePrefs.getPref("_autoIncrPlchldrs");
+  let autoIncrPlchldrsSet = new Set(autoIncrPlchldrs);
   let enabledResetMenu = false;
   
   aAutoIncrPlchldrs.forEach(async (aItem, aIndex, aArray) => {
-    if (! gAutoIncrPlchldrs.has(aItem)) {
-      gAutoIncrPlchldrs.add(aItem);
+    if (! autoIncrPlchldrsSet.has(aItem)) {
+      autoIncrPlchldrsSet.add(aItem);
+      await aePrefs.setPrefs({_autoIncrPlchldrs: [...autoIncrPlchldrsSet]});
 
       let menuItem = {
         id: `ae-clippings-reset-autoincr-${aItem}`,
@@ -1059,10 +1073,13 @@ async function resetAutoIncrPlaceholder(aPlaceholder)
   log(`Clippings/wx: resetAutoIncrPlaceholder(): Resetting placeholder: #[${aPlaceholder}]`);
 
   aeClippingSubst.resetAutoIncrementVar(aPlaceholder);
-  gAutoIncrPlchldrs.delete(aPlaceholder);
+  let autoIncrPlchldrs = await aePrefs.getPref("_autoIncrPlchldrs");
+  let autoIncrPlchldrsSet = new Set(autoIncrPlchldrs);
+  autoIncrPlchldrsSet.delete(aPlaceholder);
   await browser.menus.remove(`ae-clippings-reset-autoincr-${aPlaceholder}`);
+  aePrefs.setPrefs({_autoIncrPlchldrs: [...autoIncrPlchldrsSet]});
   
-  if (gAutoIncrPlchldrs.size == 0) {
+  if (autoIncrPlchldrsSet.size == 0) {
     browser.menus.update("ae-clippings-reset-autoincr-plchldrs", {enabled: false});
   }
 }
@@ -1111,7 +1128,7 @@ async function showBackupNotification()
     break;
   }
 
-  if (diff.days >= numDays || gForceShowFirstTimeBkupNotif) {
+  if (diff.days >= numDays || prefs._forceShowFirstTimeBkupNotif) {
     if (prefs.backupRemFirstRun) {
       info("Clippings/wx: showBackupNotification(): Showing first-time backup reminder.");
 
@@ -1122,15 +1139,15 @@ async function showBackupNotification()
         iconUrl: "img/notifIcon.svg",
       });
 
-      aePrefs.setPrefs({
+      await aePrefs.setPrefs({
         backupRemFirstRun: false,
         backupRemFrequency: aeConst.BACKUP_REMIND_WEEKLY,
         lastBackupRemDate: new Date().toString(),
       });
 
-      if (gForceShowFirstTimeBkupNotif) {
+      if (prefs._forceShowFirstTimeBkupNotif) {
         setBackupNotificationInterval();
-        gForceShowFirstTimeBkupNotif = false;
+        aePrefs.setPrefs({_forceShowFirstTimeBkupNotif: false});
       }
     }
     else {
@@ -1255,16 +1272,16 @@ async function showSyncHelperUpdateNotification()
     if (aeVersionCmp(currVer, updateInfo.latestVersion) < 0) {
       info(`Clippings/wx: showSyncHelperUpdateNotification(): Found a newer version of Sync Clippings Helper!  Current version: ${currVer}; new version found: ${updateInfo.latestVersion}`);
       
-      gSyncClippingsHelperDwnldPgURL = updateInfo.downloadPageURL;
+      await aePrefs.setPrefs({
+        _syncClippingsHelperDwnldPgURL: updateInfo.downloadPageURL,
+        lastSyncHelperUpdChkDate: new Date().toString(),
+      });
+
       browser.notifications.create("sync-helper-update", {
         type: "basic",
         title: browser.i18n.getMessage("syncUpdateTitle"),
         message: browser.i18n.getMessage("syncUpdateMsg"),
         iconUrl: "img/syncClippingsApp.svg",
-      });
-
-      aePrefs.setPrefs({
-        lastSyncHelperUpdChkDate: new Date().toString()
       });
     }
   }
@@ -1345,7 +1362,11 @@ async function openClippingsManager(aBackupMode)
     };
 
     let wnd = await browser.windows.create(wndInfo);
-    gWndIDs.clippingsMgr = wnd.id;
+    let wndIDs = await aePrefs.getPref("_wndIDs");
+    wndIDs.clippingsMgr = wnd.id;
+    aePrefs.setPrefs({_wndIDs: wndIDs});
+
+    // TO DO: This might not be needed anymore.
     browser.history.deleteUrl({ url: clippingsMgrURL });
 
     // Workaround to bug where window position isn't set when calling
@@ -1357,15 +1378,17 @@ async function openClippingsManager(aBackupMode)
   }
   // END nested function
 
-  if (gWndIDs.clippingsMgr) {
+  let wndIDs = await aePrefs.getPref("_wndIDs");
+  if (wndIDs.clippingsMgr) {
     try {
-      let wnd = await browser.windows.get(gWndIDs.clippingsMgr);
-      browser.windows.update(gWndIDs.clippingsMgr, {focused: true});
+      let wnd = await browser.windows.get(wndIDs.clippingsMgr);
+      browser.windows.update(wndIDs.clippingsMgr, {focused: true});
     }
     catch {
       // Handle dangling ref to previously-closed Clippings Manager window
       // because it was closed before it finished initializing.
-      gWndIDs.clippingsMgr = null;
+      wndIDs.clippingsMgr = null;
+      aePrefs.setPrefs({_wndIDs: wndIDs});
       openClippingsMgrHelper();
     }
   }
@@ -1534,7 +1557,11 @@ async function openDlgWnd(aURL, aWndKey, aWndPpty)
       left, top,
     });
 
-    gWndIDs[aWndKey] = wnd.id;
+    let wndIDs = await aePrefs.getPref("_wndIDs");
+    wndIDs[aWndKey] = wnd.id;
+    aePrefs.setPrefs({_wndIDs: wndIDs});
+
+    // TO DO: This might not be needed anymore.
     browser.history.deleteUrl({ url: aURL });
 
     // Workaround to bug where window position isn't set when calling
@@ -1546,13 +1573,15 @@ async function openDlgWnd(aURL, aWndKey, aWndPpty)
   }
   // END nested function
 
-  if (gWndIDs[aWndKey]) {
+  let wndIDs = await aePrefs.getPref("_wndIDs");
+  if (wndIDs[aWndKey]) {
     try {
-      await browser.windows.get(gWndIDs[aWndKey]);
-      browser.windows.update(gWndIDs[aWndKey], { focused: true });
+      await browser.windows.get(wndIDs[aWndKey]);
+      browser.windows.update(wndIDs[aWndKey], {focused: true});
     }
     catch (e) {
-      gWndIDs[aWndKey] = null;
+      wndIDs[aWndKey] = null;
+      aePrefs.setPrefs({_wndIDs: wndIDs});
       openDlgWndHelper();
     };
   }
@@ -1756,6 +1785,13 @@ async function pasteProcessedClipping(aClippingContent, aTabID)
 }
 
 
+async function openSyncClippingsDownloadPage()
+{
+  let syncClippingsHelperDwnldPgURL = await aePrefs.getPref("_syncClippingsHelperDwnldPgURL");
+  browser.tabs.create({url: syncClippingsHelperDwnldPgURL});
+}
+
+
 function showSyncErrorNotification()
 {
   browser.notifications.create("sync-error", {
@@ -1863,16 +1899,29 @@ async function alertEx(aMessageID, aUsePopupWnd=false)
     left, top,
   });
 
-  gWndIDs[wndKey] = wnd.id;
+  let wndIDs = prefs._wndIDs;
+  wndIDs[wndKey] = wnd.id;
+  aePrefs.setPrefs({_wndIDs: wndIDs});
+
+  // TO DO: This might not be needed anymore
   browser.history.deleteUrl({ url });
 
   // Workaround to bug where window position isn't correctly set when calling
   // `browser.windows.create()`. If unable to get window geometry, then default
   // to centering on screen.
   if (wndGeom) {
-    browser.windows.update(wnd.id, { left, top });
+    browser.windows.update(wnd.id, {left, top});
   }
 }
+
+
+async function resetWndID(aWndID)
+{
+  let wndIDs = await aePrefs.getPref("_wndIDs");
+  wndIDs[aWndID] = null;
+  await aePrefs.setPrefs({_wndIDs: wndIDs});
+}
+
 
 
 //
@@ -1963,7 +2012,7 @@ browser.notifications.onClicked.addListener(aNotifID => {
     break;
 
   case "sync-helper-update":
-    browser.tabs.create({url: gSyncClippingsHelperDwnldPgURL});
+    openSyncClippingsDownloadPage();
     break;
 
   case "whats-new":
@@ -2000,15 +2049,15 @@ browser.runtime.onMessage.addListener(aRequest => {
     return Promise.resolve(gPlaceholders.get());
 
   case "close-new-clipping-dlg":
-    gWndIDs.newClipping = null;
+    resetWndID("newClipping");
     break;
 
   case "close-clippings-mgr-wnd":
-    gWndIDs.clippingsMgr = null;
+    resetWndID("clippingsMgr");
     break;
 
   case "close-keybd-paste-dlg":
-    gWndIDs.keyboardPaste = null;
+    resetWndID("keyboardPaste");
     break;
 
   case "paste-shortcut-key":
@@ -2027,7 +2076,7 @@ browser.runtime.onMessage.addListener(aRequest => {
     return Promise.resolve(pasteProcessedClipping(aRequest.processedContent, aRequest.browserTabID));
 
   case "close-placeholder-prmt-dlg":
-    gWndIDs.placeholderPrmt = null;
+    resetWndID("placeholderPrmt");
     break;
     
   case "get-shct-key-prefix-ui-str":

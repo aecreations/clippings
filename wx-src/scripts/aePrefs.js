@@ -6,6 +6,20 @@
 
 let aePrefs = {
   _defaultPrefs: {
+    // Background script state persistence
+    _clippingMenuItemIDMap: {},
+    _folderMenuItemIDMap: {},
+    _autoIncrPlchldrs: [],
+    _forceShowFirstTimeBkupNotif: false,
+    _syncClippingsHelperDwnldPgURL: null,
+    _wndIDs: {
+      newClipping: null,
+      keyboardPaste: null,
+      placeholderPrmt: null,
+      clippingsMgr: null,
+    },
+
+    // User preferences and customizations
     showWelcome: true,
     htmlPaste: aeConst.HTMLPASTE_AS_FORMATTED,
     autoLineBreak: true,
@@ -224,6 +238,30 @@ let aePrefs = {
   async setModestoPrefs(aPrefs)
   {
     let newPrefs = {useInsertHTMLCmd: false};
+    await this._addPrefs(aPrefs, newPrefs);
+  },
+
+  hasSanFranciscoPrefs(aPrefs)
+  {
+    // Version 7.0
+    return ("_clippingMenuItemIDMap" in aPrefs);
+  },
+
+  async setSanFranciscoPrefs(aPrefs)
+  {
+    let newPrefs = {
+      _clippingMenuItemIDMap: {},
+      _folderMenuItemIDMap: {},
+      _autoIncrPlchldrs: [],
+      _forceShowFirstTimeBkupNotif: false,
+      _syncClippingsHelperDwnldPgURL: null,
+      _wndIDs: {
+        newClipping: null,
+        keyboardPaste: null,
+        placeholderPrmt: null,
+        clippingsMgr: null,
+      },
+    };
     await this._addPrefs(aPrefs, newPrefs);
   },
 
