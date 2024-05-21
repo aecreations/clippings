@@ -5,7 +5,7 @@
 
 
 let aePrefs = {
-  _defaultState: {
+  _defaultBkgdState: {
     // Background script state persistence
     _isInitialized: false,
     _clippingMenuItemIDMap: {},
@@ -65,7 +65,7 @@ let aePrefs = {
   
   getPrefKeys()
   {
-    let allPrefs = {...this._defaultState, ...this._defaultPrefs};
+    let allPrefs = {...this._defaultBkgdState, ...this._defaultPrefs};
     return Object.keys(allPrefs);
   },
   
@@ -88,9 +88,9 @@ let aePrefs = {
     await browser.storage.local.set(aPrefMap);
   },
 
-  async setDefaultState()
+  async setDefaultBkgdState()
   {
-    await browser.storage.local.set(this._defaultState);
+    await browser.storage.local.set(this._defaultBkgdState);
   },
 
 

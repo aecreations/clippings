@@ -302,7 +302,7 @@ browser.runtime.onInstalled.addListener(async (aInstall) => {
 
 browser.runtime.onStartup.addListener(async () => {
   log("Clippings/wx: Resetting persistent background script data during browser startup");
-  await aePrefs.setDefaultState();
+  await aePrefs.setDefaultBkgdState();
 });
 
 
