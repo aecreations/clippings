@@ -794,15 +794,6 @@ function getContextMenuData(aFolderID, aPrefs)
     }
     return rv;    
   }
-
-  function sanitizeMenuTitle(aTitle)
-  {
-    // Escape the ampersand character, which would normally be used to denote
-    // the access key for the menu item.
-    let rv = aTitle.replace(/&/g, "&&");
-
-    return rv;
-  }
   // END nested functions
 
   let rv = [];
@@ -994,7 +985,7 @@ async function updateContextMenuForFolder(aUpdatedFolderID)
   let fldrMenuItemIDMap = await aePrefs.getPref("_folderMenuItemIDMap");
   let menuItemID = fldrMenuItemIDMap[id];
   if (menuItemID) {
-    browser.menus.update(menuItemID, {title: folder.name});
+    browser.menus.update(menuItemID, {title: sanitizeMenuTitle(folder.name)});
   }
 }
 
@@ -1810,6 +1801,16 @@ async function initContentCSS(aTabID)
   catch (e) {
     console.error("Clippings/wx: Failed to inject lightbox CSS into tab content: %s", e);
   }  
+}
+
+
+function sanitizeMenuTitle(aTitle)
+{
+  // Escape the ampersand character, which would normally be used to denote
+  // the access key for the menu item.
+  let rv = aTitle.replace(/&/g, "&&");
+
+  return rv;
 }
 
 
