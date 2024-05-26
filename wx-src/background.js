@@ -416,9 +416,7 @@ async function init(aPrefs)
     refreshSyncedClippings(true);
   }
   else {
-    if (! aPrefs._isInitialized) {
-      buildContextMenu(platform.os, aPrefs);
-    }
+    rebuildContextMenu();
   }
   
   aeClippingSubst.init(navigator.userAgent, aPrefs.autoIncrPlcHldrStartVal);
@@ -470,8 +468,6 @@ async function init(aPrefs)
   else {
     log("Clippings/wx: Initialization complete.");   
   }
-
-  await aePrefs.setPrefs({_isInitialized: true});
 }
 
 
