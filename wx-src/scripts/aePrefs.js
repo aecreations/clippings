@@ -267,10 +267,6 @@ let aePrefs = {
         clippingsMgr: null,
       },
     };
-
-    // Show first-time backup notification only on new installs.
-    newPrefs._forceShowFirstTimeBkupNotif = aPrefs.backupRemFirstRun;
-    
     await this._addPrefs(aPrefs, newPrefs);
   },
 
