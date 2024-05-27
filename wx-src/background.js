@@ -799,16 +799,6 @@ function getContextMenuData(aFolderID)
     return rv;    
   }
 
-  function sanitizeMenuTitle(aTitle)
-  {
-    // Escape the ampersand character, which would normally be used to denote
-    // the access key for the menu item.
-    let rv = aTitle.replace(/&/g, "&&");
-
-    return rv;
-  }
-  // END nested functions
-
   let rv = [];
   let clippingsDB = aeClippings.getDB();
 
@@ -990,7 +980,7 @@ function updateContextMenuForFolder(aUpdatedFolderID)
   clippingsDB.folders.get(id).then(aResult => {
     let menuItemID = gFolderMenuItemIDMap[id];
     if (menuItemID) {
-      browser.menus.update(menuItemID, {title: aResult.name});
+      browser.menus.update(menuItemID, {title: sanitizeMenuTitle(aResult.name)});
     }
   });
 }
@@ -1755,6 +1745,16 @@ function showSyncErrorNotification()
 function getOS()
 {
   return gOS;
+}
+
+
+function sanitizeMenuTitle(aTitle)
+{
+  // Escape the ampersand character, which would normally be used to denote
+  // the access key for the menu item.
+  let rv = aTitle.replace(/&/g, "&&");
+
+  return rv;
 }
 
 
