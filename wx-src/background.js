@@ -341,7 +341,6 @@ void async function ()
   }
 
   if (! aePrefs.hasBalboaParkPrefs(gPrefs)) {
-    gForceShowFirstTimeBkupNotif = true;
     log("Initializing 6.1.2 user preferences.");
     await aePrefs.setBalboaParkPrefs(gPrefs);
   }
