@@ -338,7 +338,6 @@ void async function ()
   if (! aePrefs.hasBalboaParkPrefs(prefs)) {
     log("Initializing 6.1.2 user preferences.");
     await aePrefs.setBalboaParkPrefs(prefs);
-    aePrefs.setPrefs({_forceShowFirstTimeBkupNotif: true});
   }
 
   if (! aePrefs.hasMalibuPrefs(prefs)) {
@@ -367,13 +366,13 @@ void async function ()
   }
 
   if (! aePrefs.hasSanFranciscoPrefs(prefs)) {
-    log("Initializing 7.0 user preferences and MV3 background script state storage.");
+    log("Initializing 7.0 user preferences and MV3 background script state persistence.");
     await aePrefs.setSanFranciscoPrefs(prefs);
     gIsMajorVerUpdate = true;
   }
 
   if (prefs.clippingsMgrDetailsPane) {
-    prefs.clippingsMgrAutoShowDetailsPane = false;
+    aePrefs.setPrefs({clippingsMgrAutoShowDetailsPane: false});
   }
 
   init(prefs);
@@ -1146,7 +1145,7 @@ async function showBackupNotification()
         });
 
         setBackupNotificationInterval();
-        aePrefs.setPrefs({ lastBackupRemDate: new Date().toString() });
+        aePrefs.setPrefs({lastBackupRemDate: new Date().toString()});
       }
     }
   }
