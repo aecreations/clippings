@@ -3102,7 +3102,15 @@ $(async () => {
 
   gPrefs = await aePrefs.getAllPrefs();
 
-  gEnvInfo = await browser.runtime.sendMessage({ msgID: "get-env-info" });
+  let [brws, platform] = await Promise.all([
+    browser.runtime.getBrowserInfo(),
+    browser.runtime.getPlatformInfo(),
+  ]);
+  gEnvInfo = {
+    os: platform.os,
+    hostAppName: brws.name,
+    hostAppVer:  brws.version,
+  };
   document.body.dataset.os = gEnvInfo.os;
 
   // Platform-specific initialization.

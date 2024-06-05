@@ -35,6 +35,9 @@ let aeClippings = {
 
   getDB()
   {
+    if (! this._db) {
+      this.init();
+    }
     return this._db;
   },
 
