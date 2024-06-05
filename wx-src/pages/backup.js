@@ -5,8 +5,6 @@
 
 // Dialog initialization
 $(async () => {
-  browser.history.deleteUrl({ url: window.location.href });
-
   let lang = browser.i18n.getUILanguage();
   document.body.dataset.locale = lang;
 

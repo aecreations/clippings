@@ -3142,8 +3142,6 @@ $(async () => {
   initTreeSplitter();
   initSyncItemsIDLookupList();
 
-  browser.history.deleteUrl({ url: window.location.href });
-
   if (gPrefs.clippingsMgrTreeWidth) {
     let width = `${parseInt(gPrefs.clippingsMgrTreeWidth)}px`;
     $("#clippings-tree").css({ width });

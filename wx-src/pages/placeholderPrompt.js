@@ -28,8 +28,6 @@ function sanitizeHTML(aHTMLStr)
 
 // Page initialization
 $(async () => {
-  browser.history.deleteUrl({url: window.location.href});
-
   let params = new URLSearchParams(window.location.search);
   gBrowserTabID = Number(params.get("tabID"));
 

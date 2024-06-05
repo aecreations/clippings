@@ -12,8 +12,6 @@ function sanitizeHTML(aHTMLStr)
 
 // Page initialization
 $(async () => {
-  browser.history.deleteUrl({ url: window.location.href });
-
   let extInfo = browser.runtime.getManifest();
   let contribCTA = browser.i18n.getMessage("contribCTA", [extInfo.name, aeConst.DONATE_URL, aeConst.CONTRIB_URL]);
   $("#contrib-cta").html(sanitizeHTML(contribCTA));

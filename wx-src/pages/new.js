@@ -23,8 +23,6 @@ let gSyncedFldrIDs = new Set();
 
 // Page initialization
 $(async () => {
-  browser.history.deleteUrl({url: window.location.href});
-
   aeClippings.init();
   gClippingsDB = aeClippings.getDB();
 

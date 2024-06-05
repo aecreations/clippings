@@ -1272,7 +1272,6 @@ async function openWelcomePage()
 {
   let url = browser.runtime.getURL("pages/welcome.html");
   let tab = await browser.tabs.create({url});
-  browser.history.deleteUrl({url});
 }
 
 
@@ -1345,9 +1344,6 @@ async function openClippingsManager(aBackupMode)
     let wndIDs = await aePrefs.getPref("_wndIDs");
     wndIDs.clippingsMgr = wnd.id;
     aePrefs.setPrefs({_wndIDs: wndIDs});
-
-    // TO DO: This might not be needed anymore.
-    browser.history.deleteUrl({ url: clippingsMgrURL });
 
     // Workaround to bug where window position isn't set when calling
     // `browser.windows.create()`. If unable to get window geometry, then
@@ -1540,9 +1536,6 @@ async function openDlgWnd(aURL, aWndKey, aWndPpty)
     let wndIDs = await aePrefs.getPref("_wndIDs");
     wndIDs[aWndKey] = wnd.id;
     aePrefs.setPrefs({_wndIDs: wndIDs});
-
-    // TO DO: This might not be needed anymore.
-    browser.history.deleteUrl({ url: aURL });
 
     // Workaround to bug where window position isn't set when calling
     // `browser.windows.create()`. If unable to get window geometry, then
@@ -1895,9 +1888,6 @@ async function alertEx(aMessageID, aUsePopupWnd=false)
   let wndIDs = prefs._wndIDs;
   wndIDs[wndKey] = wnd.id;
   aePrefs.setPrefs({_wndIDs: wndIDs});
-
-  // TO DO: This might not be needed anymore
-  browser.history.deleteUrl({ url });
 
   // Workaround to bug where window position isn't correctly set when calling
   // `browser.windows.create()`. If unable to get window geometry, then default

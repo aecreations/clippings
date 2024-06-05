@@ -8,8 +8,6 @@
 $(async () => {
   let pgURL = new URL(window.location.href);
 
-  browser.history.deleteUrl({ url: pgURL.href });
-
   let platform = await browser.runtime.getPlatformInfo();
   document.body.dataset.os = platform.os;
 

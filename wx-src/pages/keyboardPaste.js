@@ -325,8 +325,6 @@ $(async () => {
   initAutocomplete();
   $("#btn-cancel").click(aEvent => { cancel(aEvent) });
 
-  browser.history.deleteUrl({url: window.location.href});
-
   gPasteMode = await aePrefs.getPref("pastePromptAction");
   
   if (gPasteMode == aeConst.PASTEACTION_SHORTCUT_KEY) {
