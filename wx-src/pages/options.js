@@ -84,8 +84,18 @@ async function init()
       gDialogs.turnOffSync.showModal();
     }
     else {
-      gIsActivatingSyncClippings = true;
-      gDialogs.syncClippings.showModal();
+      // Check if the optional extension permission "nativeMessaging"
+      // was granted.
+      let perms = await browser.permissions.getAll();
+      if (perms.permissions.includes("nativeMessaging")) {
+        gIsActivatingSyncClippings = true;
+        gDialogs.syncClippings.showModal();
+      }
+      else {
+        // TEMPORARY
+        window.alert("Clippings needs additional permission to connect to Sync Clippings Helper.\n\n • Exchange messages with programs other than Firefox");
+        // END TEMPORARY
+      }
     }
   });
 
@@ -195,7 +205,15 @@ async function init()
     $("#toggle-sync").text(browser.i18n.getMessage("syncTurnOn"));
   }
 
-  $("#sync-settings").click(aEvent => {
+  $("#sync-settings").click(async (aEvent) => {
+    let perms = await browser.permissions.getAll();
+    if (! perms.permissions.includes("nativeMessaging")) {
+      // TEMPORARY
+      window.alert("Clippings needs additional permission to connect to Sync Clippings Helper.\n\n • Exchange messages with programs other than Firefox");
+      // END TEMPORARY
+      return;
+    }
+    
     gDialogs.syncClippings.showModal();
   });
 
@@ -677,8 +695,20 @@ function initDialogs()
     $("#about-dlg > .dlg-content #ext-home-pg").attr("href", this.extInfo.homePgURL);
   };
   
-  gDialogs.about.onShow = function ()
+  gDialogs.about.onShow = async function ()
   {
+    let perms = await browser.permissions.getAll();
+    if (perms.permissions.includes("nativeMessaging")) {
+      $("#about-dlg > .dlg-content #diag-info").show();
+      // TO DO: Resize dialog to show the Sync Clippings status.
+    }
+    else {
+      $("#about-dlg > .dlg-content #diag-info").hide();
+      // TO DO: Reduce dialog height.
+      return;
+    }
+
+    // TO DO: Refactor below calls to sendNativeMessage() to use await.
     let natMsg = {msgID: "get-app-version"};
     browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, natMsg).then(aResp => {
       $("#about-dlg > .dlg-content #diag-info #sync-ver").text(aResp.appVersion);

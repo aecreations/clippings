@@ -573,6 +573,12 @@ async function enableSyncClippings(aIsEnabled)
 
 async function refreshSyncedClippings(aRebuildClippingsMenu)
 {
+  let perms = await browser.permissions.getAll();
+  if (! perms.permissions.includes("nativeMessaging")) {
+    showNoNativeMsgPermNotification();
+    return;
+  }
+  
   log("Clippings/wx: refreshSyncedClippings(): Retrieving synced clippings from the Sync Clippings helper app...");
 
   let platform = await browser.runtime.getPlatformInfo();
@@ -587,7 +593,7 @@ async function refreshSyncedClippings(aRebuildClippingsMenu)
     console.error("Clippings/mx: refreshSyncedClippings(): Error sending native message to Sync Clippings Helper: " + e);
     if (e == aeConst.SYNC_ERROR_CONXN_FAILED
         || e == aeConst.SYNC_ERROR_NAT_APP_NOT_FOUND) {
-      showSyncErrorNotification();
+      showSyncAppErrorNotification();
     }
     else if (aErr == aeConst.SYNC_ERROR_UNEXPECTED) {
       // This error occurs if Sync Clippings was uninstalled and then
@@ -647,6 +653,11 @@ async function pushSyncFolderUpdates()
   let prefs = await aePrefs.getAllPrefs();
   if (!prefs.syncClippings || prefs.syncFolderID === null) {
     throw new Error("Sync Clippings is not turned on!");
+  }
+
+  let perms = await browser.permissions.getAll();
+  if (! perms.permissions.includes("nativeMessaging")) {
+    return;
   }
   
   let syncData = await aeImportExport.exportToJSON(true, true, prefs.syncFolderID, false, true);
@@ -1211,6 +1222,13 @@ async function showSyncHelperUpdateNotification()
     return;
   }
 
+  // Don't bother proceeding if the native messaging optional permission
+  // wasn't granted.
+  let perms = await browser.permissions.getAll();
+  if (! perms.permissions.includes("nativeMessaging")) {
+    return;
+  }
+
   let today, lastUpdateCheck, diff;
   if (prefs.lastSyncHelperUpdChkDate) {
     today = new Date();
@@ -1768,7 +1786,7 @@ async function openSyncClippingsDownloadPage()
 }
 
 
-function showSyncErrorNotification()
+function showSyncAppErrorNotification()
 {
   browser.notifications.create("sync-error", {
     type: "basic",
@@ -1776,6 +1794,13 @@ function showSyncErrorNotification()
     message: browser.i18n.getMessage("syncStartupFailed"),
     iconUrl: "img/error.svg",
   });
+}
+
+
+function showNoNativeMsgPermNotification()
+{
+  // TEMPORARY
+  console.error("Clippings/wx: Unable to connect to the Sync Clippings helper app.  Optional permission not granted: Exchange messages with programs other than Firefox.")
 }
 
 

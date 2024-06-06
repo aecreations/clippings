@@ -25,11 +25,14 @@
     "alarms",
     "menus",
     "downloads",
-    "nativeMessaging",
     "notifications",
     "storage",
     "tabs",
     "unlimitedStorage"
+  ],
+
+  "optional_permissions": [
+    "nativeMessaging"
   ],
 
   "host_permissions": [
