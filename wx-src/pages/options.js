@@ -550,7 +550,7 @@ function initDialogs()
   gDialogs.turnOffSync = new aeDialog("#turn-off-sync-clippings-dlg");
   gDialogs.turnOffSync.onFirstInit = function ()
   {
-    $("#turn-off-sync-clippings-dlg > .dlg-btns > .dlg-btn-yes").click(async (aEvent) => {
+    this.find(".dlg-btns > .dlg-btn-yes").click(async (aEvent) => {
       this.close();
 
       let msg = {
@@ -673,11 +673,11 @@ function initDialogs()
   gDialogs.about.setProps({extInfo: null});
   gDialogs.about.onInit = function ()
   {
-    let diagDeck = $("#about-dlg > .dlg-content #diag-info .deck");
+    let diagDeck = this.find("#diag-info .deck");
     diagDeck.children("#sync-diag-loading").show();
     diagDeck.children("#sync-diag").hide();
-    $("#about-dlg > .dlg-content #diag-info #sync-diag-detail").hide();
-    $("#about-dlg > .dlg-content #diag-info #sync-file-size").text("");
+    this.find("#sync-diag-detail").hide();
+    this.find("#sync-file-size").text("");
 
     if (! this.extInfo) {
       let extManifest = browser.runtime.getManifest();
@@ -689,71 +689,73 @@ function initDialogs()
       };
     }
 
-    $("#about-dlg > .dlg-content #ext-name").text(this.extInfo.name);
-    $("#about-dlg > .dlg-content #ext-ver").text(browser.i18n.getMessage("aboutExtVer", this.extInfo.version));
-    $("#about-dlg > .dlg-content #ext-desc").text(this.extInfo.description);
-    $("#about-dlg > .dlg-content #ext-home-pg").attr("href", this.extInfo.homePgURL);
+    this.find("#ext-name").text(this.extInfo.name);
+    this.find("#ext-ver").text(browser.i18n.getMessage("aboutExtVer", this.extInfo.version));
+    this.find("#ext-desc").text(this.extInfo.description);
+    this.find(".dlg-content #ext-home-pg").attr("href", this.extInfo.homePgURL);
   };
   
   gDialogs.about.onShow = async function ()
   {
     let perms = await browser.permissions.getAll();
     if (perms.permissions.includes("nativeMessaging")) {
-      $("#about-dlg > .dlg-content #diag-info").show();
+      this.find("#diag-info").show();
       // TO DO: Resize dialog to show the Sync Clippings status.
     }
     else {
-      $("#about-dlg > .dlg-content #diag-info").hide();
+      this.find("#diag-info").hide();
       // TO DO: Reduce dialog height.
       return;
     }
 
-    // TO DO: Refactor below calls to sendNativeMessage() to use await.
-    let natMsg = {msgID: "get-app-version"};
-    browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, natMsg).then(aResp => {
-      $("#about-dlg > .dlg-content #diag-info #sync-ver").text(aResp.appVersion);
-      return aePrefs.getPref("syncClippings");
-
-    }).then(aPrefSyncClpgs => {
-      if (!!aPrefSyncClpgs) {
-        let natMsg = {msgID: "get-sync-file-info"};
-        return browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, natMsg);
-      }
-      else {
-        return null;
-      }
-    }).then(aResp => {
-      if (aResp) {
-        let syncFileSize;
-        if (aResp.fileSizeKB == "") {
-          // Sync Clippings is turned on, but sync file is not yet created.
-          syncFileSize = "-";
-        }
-        else {
-          syncFileSize = `${aResp.fileSizeKB} KiB`;
-        }
-        $("#about-dlg > .dlg-content #diag-info #about-sync-status").hide();
-        $("#about-dlg > .dlg-content #diag-info #sync-file-size-label").show();
-        $("#about-dlg > .dlg-content #diag-info #sync-file-size").text(syncFileSize);
-      }
-      else {
-        // Sync Clippings is inactive.
-        $("#about-dlg > .dlg-content #diag-info #sync-file-size-label").hide();
-        $("#about-dlg > .dlg-content #diag-info #about-sync-status").text(browser.i18n.getMessage("syncStatusOff")).show();
-      }
-      
-      $("#about-dlg > .dlg-content #diag-info #sync-diag-detail").show();
-
-    }).catch(aErr => {
+    let resp;
+    try {
+      resp = await browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, {
+        msgID: "get-app-version"
+      });
+    }
+    catch (e) {
       // Native app is not installed.
-      log("Clippings/wx: About dialog: Error returned from native app: " + aErr);
-      $("#about-dlg > .dlg-content #diag-info #sync-ver").text(browser.i18n.getMessage("noSyncHelperApp"));
-      
-    }).finally(() => {
-      let diagDeck = $("#about-dlg > .dlg-content #diag-info .deck");
-      diagDeck.children("#sync-diag-loading").hide();
-      diagDeck.children("#sync-diag").show();
-    });
+      log("Clippings/wx: About dialog: Error returned from native app: " + e);
+      this.find("#sync-ver").text(browser.i18n.getMessage("noSyncHelperApp"));
+    }
+
+    let diagDeck = this.find("#diag-info .deck");
+    diagDeck.children("#sync-diag-loading").hide();
+    diagDeck.children("#sync-diag").show();
+
+    if (! resp) {
+      return;
+    }
+
+    this.find("#sync-ver").text(resp.appVersion);
+    let syncClippings = await aePrefs.getPref("syncClippings");
+    resp = null;
+
+    if (syncClippings) {
+      resp = await browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, {
+        msgID: "get-sync-file-info"
+      });
+
+      let syncFileSize;
+      if (resp.fileSizeKB == "") {
+        // Sync Clippings is turned on, but sync file is not yet created.
+        syncFileSize = "-";
+      }
+      else {
+        syncFileSize = `${resp.fileSizeKB} KiB`;
+      }
+      this.find("#about-sync-status").hide();
+      this.find("#sync-file-size-label").show();
+      this.find("#sync-file-size").text(syncFileSize);
+    }
+    else {
+      // Sync Clippings is inactive.
+      this.find("#sync-file-size-label").hide();
+      this.find("#about-sync-status").text(browser.i18n.getMessage("syncStatusOff")).show();
+    }
+    
+    this.find("#sync-diag-detail").show();
   };
 
   gDialogs.syncClippingsHelp = new aeDialog("#sync-clippings-help-dlg");
