@@ -26,10 +26,6 @@ browser.runtime.onMessage.addListener(aRequest => {
     resp = handleRequestInsertClipping(aRequest);
     break;
 
-  case "get-wnd-geometry":
-    resp = handleRequestGetWndGeometry(aRequest);
-    break;
-
   case "show-lightbox":
     resp = handleRequestShowLightbox(aRequest);
     break;
@@ -182,19 +178,6 @@ function handleRequestInsertClipping(aRequest)
   else {
     rv = null;
   }
-
-  return rv;
-}
-
-
-function handleRequestGetWndGeometry(aRequest)
-{
-  let rv = {
-    w: window.outerWidth,
-    h: window.outerHeight,
-    x: window.screenX,
-    y: window.screenY,
-  };
 
   return rv;
 }

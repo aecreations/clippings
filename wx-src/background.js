@@ -1312,6 +1312,7 @@ async function openClippingsManager(aBackupMode)
     let topOffset = 200;
     let left, top;
     let wndGeom = prefs.clippingsMgrWndGeom;
+    let [tab] = await browser.tabs.query({currentWindow: true, discarded: false});
 
     if (prefs.clippingsMgrSaveWndGeom && wndGeom) {
       width  = wndGeom.w - 1;  // Compensate for workaround to popup window bug.
@@ -1321,7 +1322,7 @@ async function openClippingsManager(aBackupMode)
     }
     else {
       if (prefs.autoAdjustWndPos) {
-        wndGeom = await getWndGeometryFromBrwsTab();
+        wndGeom = await getWndGeometryFromBrwsTab(tab.id);
         log("Clippings/wx: openClippingsManager() > openClippingsMgrHelper(): Calculating initial geometry of Clippings Manager. Retrieved window geometry of browser window:");
         log(wndGeom);
 
@@ -1430,18 +1431,18 @@ async function newClipping(aActiveTab)
   gNewClipping.set({name, content, url});
 
   let platform = await browser.runtime.getPlatformInfo();
-  openNewClippingDlg(platform.os);
+  openNewClippingDlg(platform.os, aActiveTab.id);
 }
 
 
-function openNewClippingDlg(aPlatformOS)
+function openNewClippingDlg(aPlatformOS, aTabID)
 {
   let url = browser.runtime.getURL("pages/new.html");
   let height = 416;
   if (aPlatformOS == "win") {
     height = 448;
   }
-  openDlgWnd(url, "newClipping", {type: "popup", width: 432, height});
+  openDlgWnd(url, "newClipping", {type: "popup", width: 432, height}, aTabID);
 }
 
 
@@ -1463,12 +1464,13 @@ function openKeyboardPasteDlg(aTabID)
   // If not, then don't do anything.
 
   let url = browser.runtime.getURL("pages/keyboardPaste.html?tabID=" + aTabID);
-  openDlgWnd(url, "keyboardPaste", {
+  let wndPpty = {
     type: "popup",
     width: 500,
     height: 164,
     topOffset: 256,
-  });
+  };
+  openDlgWnd(url, "keyboardPaste", wndPpty, aTabID);
 }
 
 
@@ -1477,12 +1479,14 @@ function openPlaceholderPromptDlg(aTabID)
   // TO DO: Same checking for cursor location as in the preceding function.
 
   let url = browser.runtime.getURL("pages/placeholderPrompt.html?tabID=" + aTabID);
-  openDlgWnd(url, "placeholderPrmt", {
+  let wndPpty = {
     type: "popup",
     width: 536,
     height: 228,
     topOffset: 256,
-  });
+  };
+
+  openDlgWnd(url, "placeholderPrmt", wndPpty, aTabID);
 }
 
 
@@ -1501,17 +1505,21 @@ async function openBackupDlg()
 }
 
 
-async function openDlgWnd(aURL, aWndKey, aWndPpty)
+async function openDlgWnd(aURL, aWndKey, aWndPpty, aTabID=null)
 {
+  if (! aTabID) {
+    aTabID = await browser.tabs.query({currentWindow: true, discarded: false});
+  }
+
   async function openDlgWndHelper()
   {
     let autoAdjustWndPos = await aePrefs.getPref("autoAdjustWndPos");
     let width = aWndPpty.width;
     let height = aWndPpty.height;
     let left, top, wndGeom;
-    
+
     if (autoAdjustWndPos) {
-      wndGeom = await getWndGeometryFromBrwsTab();
+      wndGeom = await getWndGeometryFromBrwsTab(aTabID);
       log("Clippings/wx: openDlgWnd() > openDlgWndHelper(): Window geometry of browser window:");
       log(wndGeom);
       
@@ -1559,7 +1567,7 @@ async function openDlgWnd(aURL, aWndKey, aWndPpty)
     // `browser.windows.create()`. If unable to get window geometry, then
     // default to centering on screen.
     if (wndGeom) {
-      browser.windows.update(wnd.id, { left, top });
+      browser.windows.update(wnd.id, {left, top});
     }
   }
   // END nested function
@@ -1582,30 +1590,18 @@ async function openDlgWnd(aURL, aWndKey, aWndPpty)
 }
 
 
-async function getWndGeometryFromBrwsTab()
+async function getWndGeometryFromBrwsTab(aTabID)
 {
   let rv = null;
-
-  let brwsTabs = await browser.tabs.query({currentWindow: true, discarded: false});
-  if (!brwsTabs || brwsTabs.length == 0) {
-    return rv;
-  }
+  let tab = await browser.tabs.get(aTabID);
+  let wnd = await browser.windows.get(tab.windowId);
   
-  let wndGeom;
-
-  for (let tab of brwsTabs) {
-    try {
-      log("Clippings/wx: getWndGeometryFromBrwsTab(): Sending message \"get-wnd-geometry\" to content script; tab ID: " + tab.id);
-      wndGeom = await browser.tabs.sendMessage(tab.id, { msgID: "get-wnd-geometry" });
-    }
-    catch (e) {}
-
-    if (wndGeom) {
-      log("Successfully retrieved window geometry from browser tab " + tab.id);
-      rv = wndGeom;
-      break;
-    }
-  }
+  rv = {
+    w: wnd.width,
+    h: wnd.height,
+    x: wnd.left,
+    y: wnd.top
+  };
 
   return rv;
 }
@@ -1883,7 +1879,7 @@ async function alertEx(aMessageID, aUsePopupWnd=false)
   let top = 64;
 
   if (prefs.autoAdjustWndPos) {
-    wndGeom = await getWndGeometryFromBrwsTab();
+    wndGeom = await getWndGeometryFromBrwsTab(activeTabID);
 
     if (wndGeom) {
       if (wndGeom.w < width) {
