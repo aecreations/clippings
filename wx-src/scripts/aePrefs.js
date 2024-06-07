@@ -57,7 +57,6 @@ let aePrefs = {
     skipBackupRemIfUnchg: true,
     clippingsUnchanged: false,
     upgradeNotifCount: 0,
-    tabModalMsgBox: false,
     showNewClippingOpts: false,
     useInsertHTMLCmd: false,
   },
@@ -226,7 +225,6 @@ let aePrefs = {
   async setSanClementePrefs(aPrefs)
   {
     let newPrefs = {
-      tabModalMsgBox: false,
       showNewClippingOpts: false,
     };
 
@@ -268,6 +266,9 @@ let aePrefs = {
       },
     };
     await this._addPrefs(aPrefs, newPrefs);
+
+    // Remove deprecated prefs
+    delete aPrefs.tabModalMsgBox;
   },
 
 

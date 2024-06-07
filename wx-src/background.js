@@ -450,11 +450,6 @@ async function init(aPrefs)
     });
   }
 
-  if (aPrefs.tabModalMsgBox) {
-    let tabs = await browser.tabs.query({});
-    tabs.forEach(aTab => {initContentCSS(aTab.id)});
-  }
-
   if (aPrefs.showWelcome) {
     openWelcomePage();
     aePrefs.setPrefs({showWelcome: false});
@@ -1804,17 +1799,6 @@ function showNoNativeMsgPermNotification()
 // Utility functions
 //
 
-async function initContentCSS(aTabID)
-{
-  try {
-    browser.tabs.insertCSS(aTabID, {file: "/style/tmLightbox.css"});
-  }
-  catch (e) {
-    console.error("Clippings/wx: Failed to inject lightbox CSS into tab content: %s", e);
-  }  
-}
-
-
 function sanitizeMenuTitle(aTitle)
 {
   // Escape the ampersand character, which would normally be used to denote
@@ -1825,46 +1809,14 @@ function sanitizeMenuTitle(aTitle)
 }
 
 
-async function alertEx(aMessageID, aUsePopupWnd=false)
+async function alertEx(aMessageName, aUsePopupWnd=false)
 {
-  let message = browser.i18n.getMessage(aMessageID);
+  let message = browser.i18n.getMessage(aMessageName);
   info("Clippings/wx: " + message);
 
   let prefs = await aePrefs.getAllPrefs();
   let [tab] = await browser.tabs.query({active: true, currentWindow: true});
-  if (prefs.tabModalMsgBox && tab && !aUsePopupWnd) {
-    let activeTabID = tab.id;
-    let tabInfo = await browser.tabs.get(activeTabID);
-
-    if (tabInfo.status == "complete") {
-      let msg = {
-        msgID: "show-lightbox",
-        strKey: aMessageID,
-      };
-      let resp;
-      try {
-        resp = await browser.tabs.sendMessage(activeTabID, msg);
-      }
-      catch (e) {
-        console.error("Clippings/wx: alertEx(): Error sending message to content script\n%s", e);
-      }
-
-      if (resp) {
-        return;
-      }
-      else {
-        // Reached here if the tab URL is in a restricted domain (mozilla.org or
-        // mozilla.com), the tab is displaying Firefox settings, Add-ons Manager
-        // or other internal page, or if the content script couldn't be loaded
-        // (e.g. because the page is still loading).
-        // In this case, we could fall back to displaying the message box in an
-        // ordinary popup window.
-        warn("Clippings/wx: No response was received from content script for message 'show-lightbox'.");
-      }
-    }
-  }
-
-  let url = "pages/msgbox.html?msgid=" + aMessageID;
+  let url = "pages/msgbox.html?msgid=" + aMessageName;
 
   // Center the common message box popup within originating browser window,
   // both horizontally and vertically.
@@ -1879,7 +1831,7 @@ async function alertEx(aMessageID, aUsePopupWnd=false)
   let top = 64;
 
   if (prefs.autoAdjustWndPos) {
-    wndGeom = await getWndGeometryFromBrwsTab(activeTabID);
+    wndGeom = await getWndGeometryFromBrwsTab(tab.id);
 
     if (wndGeom) {
       if (wndGeom.w < width) {
