@@ -10,6 +10,7 @@ $(async () => {
 
   let platform = await browser.runtime.getPlatformInfo();
   document.body.dataset.os = platform.os;
+  aeInterxn.init(platform.os);
 
   // Reset backup notification interval timer so that it fires 24 hours after
   // displaying this first-time backup dialog.

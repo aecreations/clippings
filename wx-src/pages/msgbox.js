@@ -24,6 +24,7 @@ async function init()
 
   let platform = await browser.runtime.getPlatformInfo();
   document.body.dataset.os = platform.os;
+  aeInterxn.init(platform.os);
 
   window.addEventListener("keydown", aEvent => {
     if (aEvent.key == "Enter" || aEvent.key == "Escape") {

@@ -5,7 +5,12 @@
 
 
 let aeInterxn = {
-  _isMacOS: window.navigator.oscpu.search(/mac/i) != -1,
+  _isMacOS: null,
+
+  init(aOSName)
+  {
+    this._isMacOS = aOSName == "mac";
+  },
   
   initDialogButtonFocusHandlers()
   {
@@ -97,6 +102,10 @@ let aeInterxn = {
   
   _isAccelKeyPressed(aEvent)
   {
+    if (typeof this._isMacOS != "boolean") {
+      throw new ReferenceError("aeInterxn not initialized");
+    }
+
     let rv = aEvent.ctrlKey;
     if (this._isMacOS) {
       rv = aEvent.metaKey;

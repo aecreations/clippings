@@ -33,6 +33,7 @@ $(async () => {
 
   let platform = await browser.runtime.getPlatformInfo();
   document.body.dataset.os = gOS = platform.os;
+  aeInterxn.init(platform.os);
 
   let resp = await browser.runtime.sendMessage({
     msgID: "init-placeholder-prmt-dlg"

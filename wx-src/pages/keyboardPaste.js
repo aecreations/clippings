@@ -306,6 +306,7 @@ $(async () => {
     hostAppVer:  brws.version,
   };
   document.body.dataset.os = gOS = envInfo.os;
+  aeInterxn.init(gOS);
 
   aeClippings.init();
   gClippingsDB = aeClippings.getDB();

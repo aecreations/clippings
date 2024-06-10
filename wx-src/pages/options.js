@@ -297,6 +297,7 @@ $(async () => {
     gotoURL(aEvent.target.href);
   });
 
+  aeInterxn.init(gOS);
   if (prefs.defDlgBtnFollowsFocus) {
     aeInterxn.initDialogButtonFocusHandlers();
   }
