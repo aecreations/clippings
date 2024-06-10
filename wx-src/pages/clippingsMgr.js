@@ -3160,6 +3160,10 @@ $(async () => {
       gDialogs.showOnlySyncedItemsReminder.showModal();
     }
   }
+
+  if (gPrefs.defDlgBtnFollowsFocus) {
+    aeInterxn.initDialogButtonFocusHandlers();
+  }
   
   // Fix for Fx57 bug where bundled page loaded using
   // browser.windows.create won't show contents unless resized.

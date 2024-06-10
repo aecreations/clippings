@@ -37,12 +37,6 @@ function capitalize(aString)
 
 // Options page initialization
 $(async () => {
-  init();
-});
-
-
-async function init()
-{
   let platform = await browser.runtime.getPlatformInfo();
   document.body.dataset.os = gOS = platform.os;
 
@@ -302,7 +296,11 @@ async function init()
     aEvent.preventDefault();
     gotoURL(aEvent.target.href);
   });
-}
+
+  if (prefs.defDlgBtnFollowsFocus) {
+    aeInterxn.initDialogButtonFocusHandlers();
+  }
+});
 
 
 $(window).keydown(aEvent => {

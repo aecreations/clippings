@@ -59,6 +59,7 @@ let aePrefs = {
     upgradeNotifCount: 0,
     showNewClippingOpts: false,
     useInsertHTMLCmd: false,
+    defDlgBtnFollowsFocus: true,
   },
   
   getPrefKeys()
@@ -264,6 +265,8 @@ let aePrefs = {
         placeholderPrmt: null,
         clippingsMgr: null,
       },
+
+      defDlgBtnFollowsFocus: true,
     };
     await this._addPrefs(aPrefs, newPrefs);
 

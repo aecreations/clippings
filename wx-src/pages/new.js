@@ -28,16 +28,12 @@ $(async () => {
 
   try {
     await aeClippings.verifyDB();
-    initHelper();
   }
   catch (e) {
     showInitError();
-  };
-});
+    return;
+  }
 
-
-async function initHelper()
-{
   let platform = await browser.runtime.getPlatformInfo();
   document.body.dataset.os = platform.os;
 
@@ -91,6 +87,10 @@ async function initHelper()
   $("#btn-accept").click(aEvent => { accept(aEvent) });
   $("#btn-cancel").click(aEvent => { cancel(aEvent) });
 
+  if (gPrefs.defDlgBtnFollowsFocus) {
+    aeInterxn.initDialogButtonFocusHandlers();
+  }
+
   // Fix for Fx57 bug where bundled page loaded using
   // browser.windows.create won't show contents unless resized.
   // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1402110>
@@ -99,7 +99,7 @@ async function initHelper()
     width: wnd.width + 1,
     focused: true,
   });
-}
+});
 
 
 async function expandOptions(aIsOptionsExpanded)
