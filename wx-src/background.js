@@ -341,7 +341,6 @@ void async function ()
   }
 
   if (! aePrefs.hasBalboaParkPrefs(gPrefs)) {
-    gForceShowFirstTimeBkupNotif = true;
     log("Initializing 6.1.2 user preferences.");
     await aePrefs.setBalboaParkPrefs(gPrefs);
   }
@@ -800,16 +799,6 @@ function getContextMenuData(aFolderID)
     return rv;    
   }
 
-  function sanitizeMenuTitle(aTitle)
-  {
-    // Escape the ampersand character, which would normally be used to denote
-    // the access key for the menu item.
-    let rv = aTitle.replace(/&/g, "&&");
-
-    return rv;
-  }
-  // END nested functions
-
   let rv = [];
   let clippingsDB = aeClippings.getDB();
 
@@ -991,7 +980,7 @@ function updateContextMenuForFolder(aUpdatedFolderID)
   clippingsDB.folders.get(id).then(aResult => {
     let menuItemID = gFolderMenuItemIDMap[id];
     if (menuItemID) {
-      browser.menus.update(menuItemID, {title: aResult.name});
+      browser.menus.update(menuItemID, {title: sanitizeMenuTitle(aResult.name)});
     }
   });
 }
@@ -1711,6 +1700,19 @@ async function pasteClipping(aClippingInfo, aIsExternalRequest, aTabID)
 
 async function pasteProcessedClipping(aClippingContent, aTabID)
 {
+  // Focus the target window and tab to ensure that the clipping is
+  // successfully pasted into the web page.
+  let tab;
+  try {
+    tab = await browser.tabs.get(aTabID);
+  }
+  catch (e) {
+    // Browser tab was closed.
+    warn("Clippings/wx: pasteProcessedClipping(): Can't find browser tab " + aTabID);
+    return;
+  }
+  await browser.windows.update(tab.windowId, {focused: true});
+
   let msg = {
     msgID: "paste-clipping",
     content: aClippingContent,
@@ -1722,19 +1724,8 @@ async function pasteProcessedClipping(aClippingContent, aTabID)
 
   log(`Clippings/wx: Extension sending message "paste-clipping" to content script (active tab ID = ${aTabID})`);
   log(msg);
-  
-  // The placeholder prompt or keyboard paste dialog may not be fully closed
-  // when the message is sent to the content script, which can't insert the
-  // clipping if the web page doesn't have focus.
-  // Work around by sending message after a short delay.
-  setTimeout(async () => {
-    try {
-      await browser.tabs.sendMessage(aTabID, msg);
-    }
-    catch (e) {
-      console.error("Clippings/wx: pasteProcessedClipping(): Failed to paste clipping: " + e);
-    }
-  }, 150);
+
+  await browser.tabs.sendMessage(aTabID, msg);
 }
 
 
@@ -1756,6 +1747,16 @@ function showSyncErrorNotification()
 function getOS()
 {
   return gOS;
+}
+
+
+function sanitizeMenuTitle(aTitle)
+{
+  // Escape the ampersand character, which would normally be used to denote
+  // the access key for the menu item.
+  let rv = aTitle.replace(/&/g, "&&");
+
+  return rv;
 }
 
 
