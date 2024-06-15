@@ -1712,9 +1712,10 @@ async function pasteProcessedClipping(aClippingContent, aTabID)
     return;
   }
 
-  if (gOS != "linux") {
-    await browser.windows.update(tab.windowId, {focused: true});
-  }
+  // BUG!!
+  // On Linux, this call has no effect, and it does not throw an error.
+  // Issue reproducible on Firefox 127; not occurring on Firefox 115 ESR.
+  await browser.windows.update(tab.windowId, {focused: true});
 
   let msg = {
     msgID: "paste-clipping",
@@ -1728,7 +1729,19 @@ async function pasteProcessedClipping(aClippingContent, aTabID)
   log(`Clippings/wx: Extension sending message "paste-clipping" to content script (active tab ID = ${aTabID})`);
   log(msg);
 
-  await browser.tabs.sendMessage(aTabID, msg);
+  if (gOS == "linux") {
+    setTimeout(async () => {
+      try {
+        await browser.tabs.sendMessage(aTabID, msg);
+      }
+      catch (e) {
+        console.error("Clippings/wx: pasteProcessedClipping(): Failed to paste clipping: " + e);
+      }
+    }, 150); 
+  }
+  else {
+    await browser.tabs.sendMessage(aTabID, msg);
+  }
 }
 
 
