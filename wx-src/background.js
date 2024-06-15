@@ -1711,7 +1711,10 @@ async function pasteProcessedClipping(aClippingContent, aTabID)
     warn("Clippings/wx: pasteProcessedClipping(): Can't find browser tab " + aTabID);
     return;
   }
-  await browser.windows.update(tab.windowId, {focused: true});
+
+  if (gOS != "linux") {
+    await browser.windows.update(tab.windowId, {focused: true});
+  }
 
   let msg = {
     msgID: "paste-clipping",
