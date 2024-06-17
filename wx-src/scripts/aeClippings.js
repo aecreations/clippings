@@ -78,4 +78,10 @@ let aeClippings = {
 
     return rv;
   },
+
+  hasHTMLTags(aText)
+  {
+    let rv = aText.search(/<[a-z1-6]+( [a-z]+(\="?.*"?)?)*>/i) != -1;
+    return rv;
+  }
 };

@@ -643,6 +643,11 @@
     "description": "Clippings Manager tree list context menu"
   },
 
+  "mnuCopyClipTxt": {
+    "message": "Copy Clipping Text",
+    "description": "Clippings Manager tree list context menu"
+  },
+
   "mnuGoToSrcURL": {
     "message": "Go to Source Web Page",
     "description": "Clippings Manager tree list context menu"

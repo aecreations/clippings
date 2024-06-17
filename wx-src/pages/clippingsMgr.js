@@ -1488,6 +1488,48 @@ let gCmd = {
     this.newClippingWithContent(parentFolderID, name, content, gCmd.UNDO_STACK);
   },
 
+  async copyClippingTextToClipboard()
+  {
+    if (gIsClippingsTreeEmpty) {
+      return;
+    }
+
+    let tree = getClippingsTree();
+    let selectedNode = tree.activeNode;
+    if (! selectedNode) {
+      return;
+    }
+
+    let id = parseInt(selectedNode.key);
+    let clipping = await gClippingsDB.clippings.get(id);
+    if (! clipping) {
+      throw new Error("No clipping found for ID " + id);
+    }
+
+    let type;
+    let isFormatted = aeClippings.hasHTMLTags(clipping.content);
+    if (isFormatted) {
+      // TEMPORARY
+      let copyAsFmtTxt = window.confirm("Do you want to copy the selected clipping as HTML-formatted text?\n\n• To copy as HTML-formatted text, click OK.\n• To copy as plain text with HTML tags, click Cancel.");
+      type = copyAsFmtTxt ? "text/html" : "text/plain";
+      // TO DO:
+      // - Use paste setting for breaking lines in HTML-formatted clippings
+      // - Always copy as plain text if content contains restricted HTML tags
+      // END TEMPORARY
+    }
+    else {
+      type = "text/plain";
+    }
+
+    let blob = new Blob([clipping.content], {type});
+    let data = [new ClipboardItem({[type]: blob})];
+    try {
+      await navigator.clipboard.write(data);
+    }
+    catch (e) {
+      console.warn("Error copying clipping to clipboard\n" + e);
+    }
+  },
 
   newFolder: function (aDestUndoStack)
   {
@@ -5054,6 +5096,10 @@ function buildClippingsTree()
           setLabel(aItemKey.substr(5).toLowerCase());
           break;
 
+        case "copyClippingText":
+          gCmd.copyClippingTextToClipboard();
+          break;
+
         default:
           window.alert("The selected action is not available right now.");
           break;
@@ -5182,6 +5228,29 @@ function buildClippingsTree()
                 }
               }
             },
+          }
+        },
+        copyClippingTextSeparator: {
+          type: "cm_separator",
+          visible(aItemKey, aOpt) {
+            let tree = getClippingsTree();
+            let selectedNode = tree.activeNode;
+            if (!selectedNode || selectedNode.isFolder()) {
+              return false;
+            }
+            return true;
+          }
+        },
+        copyClippingText: {
+          name: browser.i18n.getMessage("mnuCopyClipTxt"),
+          className: "ae-menuitem",
+          visible(aItemKey, aOpt) {
+            let tree = getClippingsTree();
+            let selectedNode = tree.activeNode;
+            if (!selectedNode || selectedNode.isFolder()) {
+              return false;
+            }
+            return true;
           }
         },
         separator0: "--------",
