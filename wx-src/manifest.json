@@ -32,6 +32,7 @@
   ],
 
   "optional_permissions": [
+    "clipboardRead",
     "nativeMessaging"
   ],
 

@@ -1446,6 +1446,49 @@ let gCmd = {
     });
   },
 
+  async newClippingFromClipboard()
+  {
+    let perms = await browser.permissions.getAll();
+    if (! perms.permissions.includes("clipboardRead")) {
+      // TO DO: Put the following message in a proper modal dialog,
+      // which should be opened here.
+      // Once the dialog is displayed, exit this function.
+      window.alert(`${browser.i18n.getMessage('permReqTitle')}\n\n  • ${browser.i18n.getMessage('extPrmClipbdR')}\n\n${browser.i18n.getMessage('extPermInstr')}`);
+      return;
+    }
+
+    let content = await navigator.clipboard.readText();
+    if (content == "") {
+      window.setTimeout(() => {gDialogs.clipboardEmpty.openPopup()}, 100);
+      return;
+    }
+
+    content = DOMPurify.sanitize(content);
+    let name = aeClippings.createClippingNameFromText(content);
+    
+    let tree = getClippingsTree();
+    let selectedNode = tree.activeNode;
+    let parentFolderID = aeConst.ROOT_FOLDER_ID;
+    
+    if (selectedNode) {
+      parentFolderID = this._getParentFldrIDOfTreeNode(selectedNode);
+      let parentFldrChildNodes = selectedNode.getParent().getChildren();
+      if (parentFldrChildNodes === undefined) {
+        warn("Clippings/wx::clippingsMgr.js: gCmd.newClippingFromClipboard(): Can't get child nodes of the parent node, because Fancytree lazy loading is in effect!");
+      }
+    }
+
+    // If attempting to create new clipping in the Synced Clippings folder
+    // when sync file is read-only, create in the root folder instead.
+    if (gPrefs.syncClippings && gPrefs.isSyncReadOnly
+        && gSyncedItemsIDs.has(parentFolderID + "F")) {
+      parentFolderID = aeConst.ROOT_FOLDER_ID;
+    }
+
+    this.newClippingWithContent(parentFolderID, name, content, gCmd.UNDO_STACK);
+  },
+
+
   newFolder: function (aDestUndoStack)
   {
     if (gIsClippingsTreeEmpty) {
@@ -3539,6 +3582,10 @@ function initToolbar()
     
     callback: function (aItemKey, aOpt, aRootMenu, aOriginalEvent) {
       switch (aItemKey) {
+      case "newFromClipboard":
+        gCmd.newClippingFromClipboard();
+        break;
+
       case "backup":
         gCmd.backup();
         break;
@@ -3589,6 +3636,11 @@ function initToolbar()
       }
     },
     items: {
+      newFromClipboard: {
+        name: browser.i18n.getMessage("mnuNewFromClipbd"),
+        className: "ae-menuitem",
+      },
+      separator0: "--------",
       backup: {
         name: browser.i18n.getMessage("mnuBackup"),
         className: "ae-menuitem",
@@ -3831,6 +3883,7 @@ function initDialogs()
   gDialogs.clippingMissingSrcURL = new aeDialog("#clipping-missing-src-url-msgbar");
   gDialogs.noUndoNotify = new aeDialog("#no-undo-msgbar");
   gDialogs.noRedoNotify = new aeDialog("#no-redo-msgbar");
+  gDialogs.clipboardEmpty = new aeDialog("#clipboard-empty-msgbar");
   gDialogs.actionUnavailable = new aeDialog("#action-not-available");
 
   gDialogs.shortcutList = new aeDialog("#shortcut-list-dlg");
