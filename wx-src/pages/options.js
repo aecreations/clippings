@@ -371,18 +371,7 @@ function initDialogs()
   
   gDialogs.syncClippings.onFirstInit = function ()
   {
-    // Dialog UI strings
-    if (gOS == "win") {
-      $("#example-sync-path").text(browser.i18n.getMessage("syncFileDirExWin"));
-    }
-    else if (gOS == "mac") {
-      $("#example-sync-path").text(browser.i18n.getMessage("syncFileDirExMac"));
-    }
-    else {
-      $("#example-sync-path").text(browser.i18n.getMessage("syncFileDirExLinux"));
-    }
     $("#sync-conxn-error-detail").html(sanitizeHTML(browser.i18n.getMessage("errSyncConxnDetail")));
-
     $("#sync-fldr-curr-location").on("focus", aEvent => { aEvent.target.select() });
   };
   
@@ -444,10 +433,18 @@ function initDialogs()
       $("#browse-sync-fldr").hide();
       isBrwsSyncFldrVisible = false;
     }
+
+    if (aeVersionCmp(resp.appVersion, "2.0b1") < 0) {
+      $("#sync-clippings-dlg").addClass("expanded");
+      $("#cmprs-sync-data-reqmt").html(
+        browser.i18n.getMessage("cmprsSyncReqmt", aeConst.SYNC_CLIPPINGS_DWNLD_URL)
+      ).show();
+    }
       
     let prefs = await aePrefs.getAllPrefs();
     $("#sync-helper-app-update-check").prop("checked", prefs.syncHelperCheckUpdates);
     $("#show-only-sync-items").prop("checked", prefs.cxtMenuSyncItemsOnly);
+    $("#cmprs-sync-data").prop("checked", prefs.compressSyncData);
 
     this.oldShowSyncItemsOpt = $("#show-only-sync-items").prop("checked");
 
@@ -478,6 +475,7 @@ function initDialogs()
     aePrefs.setPrefs({
       syncHelperCheckUpdates: $("#sync-helper-app-update-check").prop("checked"),
       cxtMenuSyncItemsOnly: $("#show-only-sync-items").prop("checked"),
+      compressSyncData: $("#cmprs-sync-data").prop("checked"),
     });
 
     let rebuildClippingsMenu = $("#show-only-sync-items").prop("checked") != gDialogs.syncClippings.oldShowSyncItemsOpt;
@@ -539,7 +537,7 @@ function initDialogs()
   
   gDialogs.syncClippings.onUnload = function ()
   {
-    $("#sync-clippings-dlg").css({ height: "256px" });
+    $("#sync-clippings-dlg").removeClass("expanded");
     gDialogs.syncClippings.isCanceled = true;
     this.lastFocusedElt?.focus();
   };

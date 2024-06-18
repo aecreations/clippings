@@ -78,4 +78,5 @@ const aeConst = Object.freeze({
   CONTRIB_URL: "https://aecreations.io/clippings/contribute.php",
   HELP_URL: "https://aecreations.io/clippings/help.php",
   SYNC_CLIPPINGS_HELP_URL: "https://aecreations.io/clippings/sync.php",
+  SYNC_CLIPPINGS_DWNLD_URL: "https://aecreations.io/clippings/sync-clippings-helper.php",
 });
