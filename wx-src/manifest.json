@@ -53,6 +53,7 @@
       "scripts/aeVersionCmp.js",
       "scripts/aeUUID.js",
       "scripts/aeClippings.js",
+      "scripts/aeCompress.js",
       "background.js"
     ]
   },

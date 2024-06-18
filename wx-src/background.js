@@ -573,19 +573,16 @@ async function refreshSyncedClippings(aRebuildClippingsMenu)
     showNoNativeMsgPermNotification();
     return;
   }
-  
-  log("Clippings/wx: refreshSyncedClippings(): Retrieving synced clippings from the Sync Clippings helper app...");
 
-  let platform = await browser.runtime.getPlatformInfo();
   let prefs = await aePrefs.getAllPrefs();
-  let clippingsDB = aeClippings.getDB();
-  let natMsg = {msgID: "get-synced-clippings"};
   let resp;
   try {
-    resp = await browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, natMsg);
+    resp = await browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, {
+      msgID: "get-app-version",
+    });
   }
   catch (e) {
-    console.error("Clippings/mx: refreshSyncedClippings(): Error sending native message to Sync Clippings Helper: " + e);
+    console.error("Clippings/wx: refreshSyncedClippings(): Error sending native message to Sync Clippings Helper: " + e);
     if (e == aeConst.SYNC_ERROR_CONXN_FAILED
         || e == aeConst.SYNC_ERROR_NAT_APP_NOT_FOUND) {
       showSyncAppErrorNotification();
@@ -601,15 +598,46 @@ async function refreshSyncedClippings(aRebuildClippingsMenu)
     return;
   }
 
+  log(`Clippings/wx: refreshSyncedClippings(): Sync Clippings Helper version: ${resp.appVersion}`);
+
+  let isCompressedSyncData = false;
+  let natMsg = {msgID: "get-synced-clippings"};
+  if (aeVersionCmp(resp.appVersion, "2.0b1") >= 0 && prefs.compressSyncData) {
+    isCompressedSyncData = true;
+    natMsg.msgID = "get-compressed-synced-clippings";
+  }
+  
+  log(`Clippings/wx: refreshSyncedClippings(): Retrieving synced clippings from Sync Clippings Helper by sending native message "${natMsg.msgID}"`);
+
   let syncJSONData = "";
+  resp = await browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, natMsg);
+
   if (resp) {
-    syncJSONData = resp;
+    log("Response data from native messaging app:");
+    log(resp);
+    if (isCompressedSyncData) {
+      log("Clippings/wx: refreshSyncedClippings(): Received Sync Clippings Helper 2.0 response (base64-encoded gzip format)");
+      if (resp.status == "ok") {
+        let zipData = aeCompress.base64ToBytes(resp.data);
+        syncJSONData = await aeCompress.decompress(zipData);
+      }
+      else {
+        console.error("Sync Clippings Helper is unable to read the sync file.  Error details:\n" + resp.details);
+        showSyncReadErrorNotification();
+        return;
+      }
+    }
+    else {
+      log("Clippings/wx: refreshSyncedClippings(): Received Sync Clippings Helper 1.x response");
+      syncJSONData = resp;
+    }
   }
   else {
     throw new Error("Clippings/wx: refreshSyncedClippings(): Response data from native app is invalid");
   }
 
-  let syncFolderID = await aePrefs.getPref("syncFolderID");
+  let clippingsDB = aeClippings.getDB();
+  let syncFolderID = prefs.syncFolderID;
 
   if (syncFolderID === null) {
     log("Clippings/wx: The Synced Clippings folder is missing. Creating it...");
@@ -636,10 +664,9 @@ async function refreshSyncedClippings(aRebuildClippingsMenu)
   aeImportExport.setDatabase(clippingsDB);
   aeImportExport.importFromJSON(syncJSONData, false, false, syncFolderID);
 
-  let afterSyncFldrReloadDelay = await aePrefs.getPref("afterSyncFldrReloadDelay");
   setTimeout(function () {
     gSyncClippingsListener.onReloadFinish();
-  }, afterSyncFldrReloadDelay);
+  }, prefs.afterSyncFldrReloadDelay);
 }
 
 
@@ -1788,10 +1815,25 @@ function showSyncAppErrorNotification()
 }
 
 
+function showSyncReadErrorNotification()
+{
+  browser.notifications.create("sync-read-error", {
+    type: "basic",
+    title: browser.i18n.getMessage("syncStartupFailedHdg"),
+    message: browser.i18n.getMessage("syncGetFailed"),
+    iconUrl: "img/error.svg",
+  });
+}
+
+
 function showNoNativeMsgPermNotification()
 {
-  // TEMPORARY
-  console.error("Clippings/wx: Unable to connect to the Sync Clippings helper app.  Optional permission not granted: Exchange messages with programs other than Firefox.")
+  browser.notifications.create("native-msg-perm-error", {
+    type: "basic",
+    title: browser.i18n.getMessage("syncStartupFailedHdg"),
+    message: browser.i18n.getMessage("syncPermNotif"),
+    iconUrl: "img/error.svg",
+  });
 }
 
 

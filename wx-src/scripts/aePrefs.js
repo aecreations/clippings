@@ -60,6 +60,7 @@ let aePrefs = {
     showNewClippingOpts: false,
     useInsertHTMLCmd: false,
     defDlgBtnFollowsFocus: true,
+    compressSyncData: true,
   },
   
   getPrefKeys()
@@ -247,7 +248,7 @@ let aePrefs = {
   hasSanFranciscoPrefs(aPrefs)
   {
     // Version 7.0
-    return ("_clippingMenuItemIDMap" in aPrefs);
+    return ("compressSyncData" in aPrefs);
   },
 
   async setSanFranciscoPrefs(aPrefs)
@@ -266,6 +267,7 @@ let aePrefs = {
         clippingsMgr: null,
       },
 
+      compressSyncData: true,
       defDlgBtnFollowsFocus: true,
     };
     await this._addPrefs(aPrefs, newPrefs);
