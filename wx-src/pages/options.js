@@ -505,10 +505,19 @@ function initDialogs()
       return;
     }     
 
+    // Check if the sync file is read only.
+    resp = null;
+    resp = await browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, {
+      msgID: "get-sync-file-info",
+    });
+    let isSyncReadOnly = !!resp.readOnly;
+    aePrefs.setPrefs({isSyncReadOnly});
+
     let syncFolderID = await browser.runtime.sendMessage({
       msgID: "enable-sync-clippings",
       isEnabled: true,
     });
+
     if (gIsActivatingSyncClippings) {
       // Don't do the following if Sync Clippings was already turned on
       // and no changes to settings were made.
@@ -538,6 +547,7 @@ function initDialogs()
   gDialogs.syncClippings.onUnload = function ()
   {
     $("#sync-clippings-dlg").removeClass("expanded");
+    $("#cmprs-sync-data-reqmt").text("").hide();
     gDialogs.syncClippings.isCanceled = true;
     this.lastFocusedElt?.focus();
   };

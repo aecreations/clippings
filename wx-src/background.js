@@ -409,10 +409,14 @@ async function init(aPrefs)
   gPrefersColorSchemeMedQry.addEventListener("change", handlePrefersColorSchemeChange);
   
   if (aPrefs.syncClippings) {
+    let isSyncReadOnly = await isSyncedClippingsReadOnly();
+    log(`Clippings/wx: It is ${isSyncReadOnly} that the sync data is read only.`);
+    
     // The context menu will be built when refreshing the sync data.
     // Do this even when the background script is restarted in order to pick up
     // any changes to sync data.
     refreshSyncedClippings(true);
+    aePrefs.setPrefs({isSyncReadOnly});
   }
   else {
     rebuildContextMenu();
@@ -566,6 +570,31 @@ async function enableSyncClippings(aIsEnabled)
 }
 
 
+async function isSyncedClippingsReadOnly()
+{
+  let rv = null;
+  let perms = await browser.permissions.getAll();
+  if (! perms.permissions.includes("nativeMessaging")) {
+    return rv;
+  }
+
+  let resp;
+  try {
+    resp = await browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, {
+      msgID: "get-sync-file-info",
+    });
+  }
+  catch (e) {
+    console.error("Clippings/wx: isSyncedClippingsReadOnly(): Error sending native message to Sync Clippings Helper: " + e);
+    return rv;
+  }
+
+  rv = !!resp.readOnly;
+
+  return rv;
+}
+
+
 async function refreshSyncedClippings(aRebuildClippingsMenu)
 {
   let perms = await browser.permissions.getAll();
@@ -613,8 +642,6 @@ async function refreshSyncedClippings(aRebuildClippingsMenu)
   resp = await browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, natMsg);
 
   if (resp) {
-    log("Response data from native messaging app:");
-    log(resp);
     if (isCompressedSyncData) {
       log("Clippings/wx: refreshSyncedClippings(): Received Sync Clippings Helper 2.0 response (base64-encoded gzip format)");
       if (resp.status == "ok") {
@@ -702,6 +729,14 @@ async function pushSyncFolderUpdates()
 
   log("Clippings/wx: pushSyncFolderUpdates(): Response from native app:");
   log(resp);
+
+  if (resp.status == "error") {
+    // An error may occur if the push failed because the sync file is
+    // read only.
+    if (resp.details.search(/TypeError/) != -1) {
+      showSyncPushReadOnlyNotification();
+    }
+  }
 }
 
 
@@ -1821,6 +1856,17 @@ function showSyncReadErrorNotification()
     type: "basic",
     title: browser.i18n.getMessage("syncStartupFailedHdg"),
     message: browser.i18n.getMessage("syncGetFailed"),
+    iconUrl: "img/error.svg",
+  });
+}
+
+
+function showSyncPushReadOnlyNotification()
+{
+  browser.notifications.create("sync-push-read-only-error", {
+    type: "basic",
+    title: browser.i18n.getMessage("syncStartupFailedHdg"),
+    message: browser.i18n.getMessage("syncFldrRdOnly"),
     iconUrl: "img/error.svg",
   });
 }

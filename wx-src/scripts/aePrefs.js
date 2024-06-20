@@ -61,6 +61,7 @@ let aePrefs = {
     useInsertHTMLCmd: false,
     defDlgBtnFollowsFocus: true,
     compressSyncData: true,
+    isSyncReadOnly: false,
   },
   
   getPrefKeys()
@@ -268,6 +269,7 @@ let aePrefs = {
       },
 
       compressSyncData: true,
+      isSyncReadOnly: false,
       defDlgBtnFollowsFocus: true,
     };
     await this._addPrefs(aPrefs, newPrefs);
