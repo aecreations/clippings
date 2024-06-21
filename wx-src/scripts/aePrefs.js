@@ -5,8 +5,8 @@
 
 
 let aePrefs = {
+  // Background script state persistence
   _defaultBkgdState: {
-    // Background script state persistence
     _clippingMenuItemIDMap: {},
     _folderMenuItemIDMap: {},
     _autoIncrPlchldrs: [],
@@ -21,8 +21,8 @@ let aePrefs = {
     },
   },
   
+  // User preferences and customizations
   _defaultPrefs: {
-    // User preferences and customizations
     showWelcome: true,
     htmlPaste: aeConst.HTMLPASTE_AS_FORMATTED,
     autoLineBreak: true,
@@ -276,6 +276,11 @@ let aePrefs = {
 
     // Remove deprecated prefs
     delete aPrefs.tabModalMsgBox;
+
+    // Change default setting of Linux-specific pref.
+    if (aPrefs.clippingsMgrMinzWhenInactv) {
+      aPrefs.clippingsMgrMinzWhenInactv = false;
+    }
   },
 
 

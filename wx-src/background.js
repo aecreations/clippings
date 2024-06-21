@@ -395,7 +395,7 @@ async function init(aPrefs)
   log("Clippings/wx: OS: " + platform.os);
 
   if (platform.os == "linux" && aPrefs.clippingsMgrMinzWhenInactv === null) {
-    await aePrefs.setPrefs({clippingsMgrMinzWhenInactv: true});
+    await aePrefs.setPrefs({clippingsMgrMinzWhenInactv: false});
   }
 
   if (aPrefs.autoAdjustWndPos === null) {
