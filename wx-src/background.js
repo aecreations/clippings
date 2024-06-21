@@ -15,6 +15,7 @@ let gIsFirstRun = false;
 let gIsMajorVerUpdate = false;
 let gSetDisplayOrderOnRootItems = false;
 let gIsReloadingSyncFldr = false;
+let gIsSyncPushFailed = false;
 
 let gClippingsListener = {
   _isImporting: false,
@@ -733,8 +734,9 @@ async function pushSyncFolderUpdates()
   if (resp.status == "error") {
     // An error may occur if the push failed because the sync file is
     // read only.
-    if (resp.details.search(/TypeError/) != -1) {
+    if (resp.details.search(/TypeError/) != -1 && !gIsSyncPushFailed) {
       showSyncPushReadOnlyNotification();
+      gIsSyncPushFailed = true;
     }
   }
 }
