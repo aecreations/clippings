@@ -3442,7 +3442,7 @@ $(window).on("focus", aEvent => {
 });
 
 
-$("#minz-when-inactv-mode").on("dblclick", aEvent => {
+$("#minz-when-inactv-mode").on("click", aEvent => {
   gCmd.toggleMinimizeWhenInactive();
 });
 
