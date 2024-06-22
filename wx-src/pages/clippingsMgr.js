@@ -2685,10 +2685,11 @@ let gCmd = {
     gIsMaximized = updWnd.state == "maximized";
   },
 
-  toggleMinimizeWhenInactive: function ()
+  toggleMinimizeWhenInactive()
   {
     let currSetting = gPrefs.clippingsMgrMinzWhenInactv;
-    aePrefs.setPrefs({ clippingsMgrMinzWhenInactv: !currSetting });
+    aePrefs.setPrefs({clippingsMgrMinzWhenInactv: !currSetting});
+    $("#minz-when-inactv-mode").attr("data-checked", !currSetting);
   },
   
   openExtensionPrefs: function ()
@@ -3223,7 +3224,20 @@ $(async () => {
 
   // Platform-specific initialization.
   if (gEnvInfo.os == "mac") {
-    $("#status-bar").css({ backgroundImage: "none" });
+    $("#status-bar").css({backgroundImage: "none"});
+  }
+  else if (gEnvInfo.os == "linux") {
+    if (gPrefs.clippingsMgrAutoShowStatusBar) {
+      $("#status-bar").show();
+      aePrefs.setPrefs({
+        clippingsMgrAutoShowStatusBar: false,
+        clippingsMgrStatusBar: true,
+      });
+    }
+
+    $("#minz-when-inactv-mode").show();
+    $("#minz-when-inactv-mode").attr("data-checked", !!gPrefs.clippingsMgrMinzWhenInactv)
+      .attr("title", browser.i18n.getMessage("mnuMinimizeWhenInactive"));
   }
 
   let lang = browser.i18n.getUILanguage();
@@ -3237,7 +3251,7 @@ $(async () => {
   gIsMaximized = false;
 
   if (DEBUG_WND_ACTIONS && !gPrefs.clippingsMgrMinzWhenInactv) {
-    aePrefs.setPrefs({ clippingsMgrMinzWhenInactv: true });
+    aePrefs.setPrefs({clippingsMgrMinzWhenInactv: true});
   }
 
   initToolbar();
@@ -3252,7 +3266,7 @@ $(async () => {
 
   if (gPrefs.clippingsMgrTreeWidth) {
     let width = `${parseInt(gPrefs.clippingsMgrTreeWidth)}px`;
-    $("#clippings-tree").css({ width });
+    $("#clippings-tree").css({width});
   }
   
   if (gPrefs.clippingsMgrSaveWndGeom) {
@@ -3287,7 +3301,7 @@ $(async () => {
 
 // Reloading or closing Clippings Manager window
 $(window).on("beforeunload", () => {
-  browser.runtime.sendMessage({ msgID: "close-clippings-mgr-wnd" });
+  browser.runtime.sendMessage({msgID: "close-clippings-mgr-wnd"});
 
   browser.runtime.sendMessage({
     msgID: "purge-fldr-items",
@@ -3425,6 +3439,11 @@ $(window).on("focus", aEvent => {
   if (gPrefs && gPrefs.clippingsMgrSaveWndGeom) {
     setSaveWndGeometryInterval(true);
   }
+});
+
+
+$("#minz-when-inactv-mode").on("dblclick", aEvent => {
+  gCmd.toggleMinimizeWhenInactive();
 });
 
 

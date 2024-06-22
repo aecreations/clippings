@@ -62,6 +62,7 @@ let aePrefs = {
     defDlgBtnFollowsFocus: true,
     compressSyncData: true,
     isSyncReadOnly: false,
+    clippingsMgrAutoShowStatusBar: false,
   },
   
   getPrefKeys()
@@ -271,6 +272,7 @@ let aePrefs = {
       compressSyncData: true,
       isSyncReadOnly: false,
       defDlgBtnFollowsFocus: true,
+      clippingsMgrAutoShowStatusBar: false,
     };
     await this._addPrefs(aPrefs, newPrefs);
 

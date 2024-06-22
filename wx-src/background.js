@@ -370,6 +370,11 @@ void async function ()
     log("Initializing 7.0 user preferences and MV3 background script state persistence.");
     await aePrefs.setSanFranciscoPrefs(prefs);
     gIsMajorVerUpdate = true;
+
+    let platform = await browser.runtime.getPlatformInfo();
+    if (platform.os == "linux") {
+      aePrefs.setPrefs({clippingsMgrAutoShowStatusBar: true});
+    }
   }
 
   if (prefs.clippingsMgrDetailsPane) {

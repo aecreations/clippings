@@ -968,6 +968,25 @@ ul.fancytree-container {
     text-align: left;
 }
 
+#minz-when-inactv-mode {
+    display: none;
+    
+    border-left: 1px solid silver;
+    margin-right: 8px;
+    text-align: right;
+
+    background-image: url("../img/auto-minimize-on.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 12px 12px;
+    width: 24px;
+    height: 16px;
+}
+
+#minz-when-inactv-mode[data-checked="false"] {
+    background-image: url("../img/auto-minimize-off.svg");
+}
+
 
 /*
  * Dialog boxes
