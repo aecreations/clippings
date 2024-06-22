@@ -147,11 +147,14 @@ aeClippingSubst.getAutoIncrPlaceholders = function (aClippingText)
 
 aeClippingSubst.processStdPlaceholders = function (aClippingInfo)
 {
+  const RE_DATE = /\$\[DATE\(([AaDdHhKkMmosYLlTZ ,.:\-\/]+)\)\]/;
+  const RE_TIME = /\$\[TIME\(([AaHhKkmsLTZ .:]+)\)\]/;
+  
   let rv = "";
   let date = new Date();
   let hasFmtDateTime = false;
 
-  hasFmtDateTime = (aClippingInfo.text.search(/\$\[DATE\(([AaDdHhKkMmosYLlTZ ,.:\-\/]+)\)\]/) != -1 || aClippingInfo.text.search(/\$\[TIME\(([AaHhKkmsLTZ .:]+)\)\]/) != -1);
+  hasFmtDateTime = (RE_DATE.exec(aClippingInfo.text) != null || RE_TIME.exec(aClippingInfo.text) != null);
 
   rv = aClippingInfo.text.replace(/\$\[DATE\]/gm, date.toLocaleDateString());
   rv = rv.replace(/\$\[TIME\]/gm, date.toLocaleTimeString());
@@ -165,14 +168,14 @@ aeClippingSubst.processStdPlaceholders = function (aClippingInfo)
     let dtReplaced = [];
     let plchldrType = [];
 
-    let fmtDateRe = /\$\[DATE\(([AaDdHhKkMmosYLlTZ ,.:\-\/]+)\)\]/g;
+    let fmtDateRe = new RegExp(RE_DATE, "g");
     let fmtDateResult;
     while ((fmtDateResult = fmtDateRe.exec(aClippingInfo.text)) != null) {
       dtPlaceholders.push(fmtDateResult[1]);
       plchldrType.push("D");
     }
 
-    let fmtTimeRe = /\$\[TIME\(([AaHhKkmsLTZ .:]+)\)\]/g;
+    let fmtTimeRe = new RegExp(RE_TIME, "g");
     let fmtTimeResult;
     while ((fmtTimeResult = fmtTimeRe.exec(aClippingInfo.text)) != null) {
       dtPlaceholders.push(fmtTimeResult[1]);
