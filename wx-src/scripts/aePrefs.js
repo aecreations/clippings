@@ -281,7 +281,7 @@ let aePrefs = {
 
     // Change default setting of Linux-specific pref.
     if (aPrefs.clippingsMgrMinzWhenInactv) {
-      aPrefs.clippingsMgrMinzWhenInactv = false;
+      await this.setPrefs({clippingsMgrMinzWhenInactv: false});
     }
   },
 
