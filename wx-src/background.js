@@ -1784,7 +1784,7 @@ async function pasteClipping(aClippingInfo, aIsExternalRequest, aTabID)
     processedCtnt = aClippingInfo.text;
   }
   else {
-    processedCtnt = aeClippingSubst.processStdPlaceholders(aClippingInfo);
+    processedCtnt = await aeClippingSubst.processStdPlaceholders(aClippingInfo);
 
     let autoIncrPlchldrs = aeClippingSubst.getAutoIncrPlaceholders(processedCtnt);
     if (autoIncrPlchldrs.length > 0) {

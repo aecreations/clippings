@@ -79,6 +79,18 @@ let aeClippings = {
     return rv;
   },
 
+  
+  async getClippingsByName(aName)
+  {
+    if (! this._db) {
+      this.init();
+    }
+    
+    let rv = await this._db.clippings.where("name").equals(aName).toArray();
+    return rv;
+  },
+
+  
   hasHTMLTags(aText)
   {
     let rv = aText.search(/<[a-z1-6]+( [a-z]+(\="?.*"?)?)*>/i) != -1;

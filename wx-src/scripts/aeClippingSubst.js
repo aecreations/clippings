@@ -145,23 +145,61 @@ aeClippingSubst.getAutoIncrPlaceholders = function (aClippingText)
 };
 
 
-aeClippingSubst.processStdPlaceholders = function (aClippingInfo)
+aeClippingSubst.processStdPlaceholders = async function (aClippingInfo)
 {
+  // Formatted date/time placeholders using formats from Moment library.
   const RE_DATE = /\$\[DATE\(([AaDdHhKkMmosYLlTZ ,.:\-\/]+)\)\]/;
   const RE_TIME = /\$\[TIME\(([AaHhKkmsLTZ .:]+)\)\]/;
+
+  // Name of clipping can be alphanumeric char's, underscores, and
+  // the following Unicode blocks: Latin-1 Supplement, Latin Extended-A, Latin
+  // Extended-B, Cyrillic, Hebrew, as well as the space, hyphen, period,
+  // parentheses, common currency symbols, all Unicode characters, and the
+  // following special characters: ?_/!@#%&;,:'"
+  const RE_CLIPPING = /\$\[CLIPPING\((([\w\d\s\.\-_!@#%&;:,'"$£¥€*¡¢\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF\u0080-\u10FFFF])+)\)\]/;
   
   let rv = "";
+  let processedTxt = "";  // Contains expanded clipping in clipping placeholders.
+  let clipInClipMatches = [];
+  let clipInClipRe = new RegExp(RE_CLIPPING, "g");
+  clipInClipMatches = [...aClippingInfo.text.matchAll(clipInClipRe)];
+
+  if (clipInClipMatches.length > 0) {
+    let startIdx = 0;
+    for (let i = 0; i < clipInClipMatches.length; i++) {
+      let match = clipInClipMatches[i];
+      let preTxt = match.input.substring(startIdx, match.index);
+      let clippings = await aeClippings.getClippingsByName(match[1]);
+      let clippingTxt = "";
+      if (clippings.length > 0) {
+        clippingTxt = clippings[0].content;
+      }
+      else {
+        // If clipping doesn't exist, then placeholder should be inserted as is
+        clippingTxt = match[0];
+      }
+      
+      processedTxt += preTxt + clippingTxt;
+      startIdx = match.index + match[0].length;
+    }
+
+    // Get the rest of the clipping.
+    processedTxt += aClippingInfo.text.substring(startIdx);
+  }
+  else {
+    processedTxt = aClippingInfo.text;
+  }
+
   let date = new Date();
-  let hasFmtDateTime = false;
-
-  hasFmtDateTime = (RE_DATE.exec(aClippingInfo.text) != null || RE_TIME.exec(aClippingInfo.text) != null);
-
-  rv = aClippingInfo.text.replace(/\$\[DATE\]/gm, date.toLocaleDateString());
+  rv = processedTxt.replace(/\$\[DATE\]/gm, date.toLocaleDateString());
   rv = rv.replace(/\$\[TIME\]/gm, date.toLocaleTimeString());
   rv = rv.replace(/\$\[NAME\]/gm, aClippingInfo.name);
   rv = rv.replace(/\$\[FOLDER\]/gm, aClippingInfo.parentFolderName);
   rv = rv.replace(/\$\[HOSTAPP\]/gm, this._hostAppName);
   rv = rv.replace(/\$\[UA\]/gm, this._userAgentStr);
+
+  let hasFmtDateTime = false;
+  hasFmtDateTime = (RE_DATE.exec(processedTxt) != null || RE_TIME.exec(processedTxt) != null);
 
   if (hasFmtDateTime) {
     let dtPlaceholders = [];
@@ -170,14 +208,14 @@ aeClippingSubst.processStdPlaceholders = function (aClippingInfo)
 
     let fmtDateRe = new RegExp(RE_DATE, "g");
     let fmtDateResult;
-    while ((fmtDateResult = fmtDateRe.exec(aClippingInfo.text)) != null) {
+    while ((fmtDateResult = fmtDateRe.exec(rv)) != null) {
       dtPlaceholders.push(fmtDateResult[1]);
       plchldrType.push("D");
     }
 
     let fmtTimeRe = new RegExp(RE_TIME, "g");
     let fmtTimeResult;
-    while ((fmtTimeResult = fmtTimeRe.exec(aClippingInfo.text)) != null) {
+    while ((fmtTimeResult = fmtTimeRe.exec(rv)) != null) {
       dtPlaceholders.push(fmtTimeResult[1]);
       plchldrType.push("T");
     }
