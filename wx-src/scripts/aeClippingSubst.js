@@ -21,6 +21,17 @@ let aeClippingSubst = {
   REGEXP_CUSTOM_PLACEHOLDER: /\$\[([\w\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)(\{([\w \-\.\?_\/\(\)!@#%&;:,'"$£¥€*¡¢\u{0080}-\u{10FFFF}\|])+\})?\]/gmu,
 
   REGEXP_AUTO_INCR_PLACEHOLDER: /\#\[([a-zA-Z0-9_\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)\]/gm,
+
+  // Formatted date/time placeholders using formats from Moment library.
+  REGEXP_DATE: /\$\[DATE\(([AaDdHhKkMmosYLlTZ ,.:\-\/]+)\)\]/,
+  REGEXP_TIME: /\$\[TIME\(([AaHhKkmsLTZ .:]+)\)\]/,
+
+  // Name of clipping can be alphanumeric char's, underscores, and
+  // the following Unicode blocks: Latin-1 Supplement, Latin Extended-A, Latin
+  // Extended-B, Cyrillic, Hebrew, as well as the space, hyphen, period,
+  // parentheses, common currency symbols, all Unicode characters, and the
+  // following special characters: ?_/!@#%&;,:'"
+  REGEXP_CLIPPING: /\$\[CLIPPING\((([\w\d\s\.\-_!@#%&;:,'"$£¥€*¡¢\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF\u0080-\u10FFFF])+)\)\]/,
   
   _userAgentStr: null,
   _hostAppName: null,
@@ -147,21 +158,10 @@ aeClippingSubst.getAutoIncrPlaceholders = function (aClippingText)
 
 aeClippingSubst.processStdPlaceholders = async function (aClippingInfo)
 {
-  // Formatted date/time placeholders using formats from Moment library.
-  const RE_DATE = /\$\[DATE\(([AaDdHhKkMmosYLlTZ ,.:\-\/]+)\)\]/;
-  const RE_TIME = /\$\[TIME\(([AaHhKkmsLTZ .:]+)\)\]/;
-
-  // Name of clipping can be alphanumeric char's, underscores, and
-  // the following Unicode blocks: Latin-1 Supplement, Latin Extended-A, Latin
-  // Extended-B, Cyrillic, Hebrew, as well as the space, hyphen, period,
-  // parentheses, common currency symbols, all Unicode characters, and the
-  // following special characters: ?_/!@#%&;,:'"
-  const RE_CLIPPING = /\$\[CLIPPING\((([\w\d\s\.\-_!@#%&;:,'"$£¥€*¡¢\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF\u0080-\u10FFFF])+)\)\]/;
-  
   let rv = "";
   let processedTxt = "";  // Contains expanded clipping in clipping placeholders.
   let clipInClipMatches = [];
-  let clipInClipRe = new RegExp(RE_CLIPPING, "g");
+  let clipInClipRe = new RegExp(this.REGEXP_CLIPPING, "g");
   clipInClipMatches = [...aClippingInfo.text.matchAll(clipInClipRe)];
 
   if (clipInClipMatches.length > 0) {
@@ -199,21 +199,21 @@ aeClippingSubst.processStdPlaceholders = async function (aClippingInfo)
   rv = rv.replace(/\$\[UA\]/gm, this._userAgentStr);
 
   let hasFmtDateTime = false;
-  hasFmtDateTime = (RE_DATE.exec(processedTxt) != null || RE_TIME.exec(processedTxt) != null);
+  hasFmtDateTime = (this.REGEXP_DATE.exec(processedTxt) != null || this.REGEXP_TIME.exec(processedTxt) != null);
 
   if (hasFmtDateTime) {
     let dtPlaceholders = [];
     let dtReplaced = [];
     let plchldrType = [];
 
-    let fmtDateRe = new RegExp(RE_DATE, "g");
+    let fmtDateRe = new RegExp(this.REGEXP_DATE, "g");
     let fmtDateResult;
     while ((fmtDateResult = fmtDateRe.exec(rv)) != null) {
       dtPlaceholders.push(fmtDateResult[1]);
       plchldrType.push("D");
     }
 
-    let fmtTimeRe = new RegExp(RE_TIME, "g");
+    let fmtTimeRe = new RegExp(this.REGEXP_TIME, "g");
     let fmtTimeResult;
     while ((fmtTimeResult = fmtTimeRe.exec(rv)) != null) {
       dtPlaceholders.push(fmtTimeResult[1]);
