@@ -1989,14 +1989,9 @@ browser.commands.onCommand.addListener(async (aCmdName, aTab) => {
 
   let keyboardPaste = await aePrefs.getPref("keyboardPaste");
 
-  // The aTab parameter is undefined - see Bugzilla bug:
-  // https://bugzilla.mozilla.org/show_bug.cgi?id=1843866
-  // Expected to be fixed in Firefox 126.
-  let [tab] = await browser.tabs.query({active: true, currentWindow: true});
-
   if (aCmdName == "ae-clippings-paste-clipping" && keyboardPaste) {
-    log(`Clippings/wx: Active tab ID: ${tab.id} - opening keyboard paste dialog.`);
-    openKeyboardPasteDlg(tab.id);
+    log(`Clippings/wx: Active tab ID: ${aTab.id} - opening keyboard paste dialog.`);
+    openKeyboardPasteDlg(aTab.id);
   }
 });
 
