@@ -36,7 +36,8 @@ let aeClippingSubst = {
   _userAgentStr: null,
   _hostAppName: null,
   _autoIncrementVars: {},
-  _autoIncrementStartVal: 0
+  _autoIncrementStartVal: 0,
+  _failedPlchldrs: [],
 };
 
 
@@ -162,6 +163,9 @@ aeClippingSubst.processStdPlaceholders = async function (aClippingInfo)
   let processedTxt = "";  // Contains expanded clipping in clipping placeholders.
   let clipInClipMatches = [];
   let clipInClipRe = new RegExp(this.REGEXP_CLIPPING, "g");
+
+  this._failedPlchldrs = [];
+  
   clipInClipMatches = [...aClippingInfo.text.matchAll(clipInClipRe)];
 
   if (clipInClipMatches.length > 0) {
@@ -177,6 +181,7 @@ aeClippingSubst.processStdPlaceholders = async function (aClippingInfo)
       else {
         // If clipping doesn't exist, then placeholder should be inserted as is
         clippingTxt = match[0];
+        this._failedPlchldrs.push(match[0]);
       }
       
       processedTxt += preTxt + clippingTxt;
@@ -285,4 +290,10 @@ aeClippingSubst.resetAutoIncrementVar = async function (aVarName)
   this._autoIncrementVars = await aePrefs.getPref("_autoIncrPlchldrVals");
   delete this._autoIncrementVars[aVarName];
   await aePrefs.setPrefs({_autoIncrPlchldrVals: this._autoIncrementVars});
+};
+
+
+aeClippingSubst.getFailedPlaceholders = function ()
+{
+  return this._failedPlchldrs;
 };

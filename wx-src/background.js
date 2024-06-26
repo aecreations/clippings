@@ -1785,6 +1785,13 @@ async function pasteClipping(aClippingInfo, aIsExternalRequest, aTabID)
   }
   else {
     processedCtnt = await aeClippingSubst.processStdPlaceholders(aClippingInfo);
+    let failedPlchldrs = aeClippingSubst.getFailedPlaceholders();
+    if (failedPlchldrs.length > 0) {
+      // TO DO: Show dialog giving the user the option to edit the clipping in
+      // Clippings Manager, paste anyway, or cancel.
+      warn(`Clipping: ${aClippingInfo.name}\nOne or more placeholders could not be filled in.`);
+      log(failedPlchldrs.toString());
+    }
 
     let autoIncrPlchldrs = aeClippingSubst.getAutoIncrPlaceholders(processedCtnt);
     if (autoIncrPlchldrs.length > 0) {
