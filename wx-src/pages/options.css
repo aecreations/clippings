@@ -474,6 +474,12 @@ body[data-locale|="es"] #wnds-dlgs-opts-dlg #clpmgr-save-wnd-pos-label {
     vertical-align: text-bottom;
 }
 
+#request-native-app-conxn-perm-dlg {
+    top: 128px;
+    --width: 510px;
+    --height: 270px;
+}
+
 #sync-clippings-dlg {
     top: 128px;
     --width: 530px;
@@ -523,6 +529,7 @@ body[data-locale="uk"] #sync-clippings-dlg {
     margin-left: 27px;
 }
 
+#request-native-app-conxn-perm-dlg .msgbox-icon,
 #sync-clippings-dlg #sync-cxn-error .msgbox-icon,
 #sync-clippings-dlg #generic-error .msgbox-icon {
     float: left;
@@ -533,10 +540,12 @@ body[data-locale="uk"] #sync-clippings-dlg {
     background-size: contain;
 }
 
+#request-native-app-conxn-perm-dlg .msgbox-icon,
 #sync-clippings-dlg #sync-cxn-error .msgbox-icon {
     background-image: url("../img/warning-64.png");
 }
 
+body[data-os="mac"] #request-native-app-conxn-perm-dlg .msgbox-icon,
 body[data-os="mac"] #sync-clippings-dlg #sync-cxn-error .msgbox-icon {
     background-image: url("../img/warning-64-mac.png");
 }
@@ -554,7 +563,20 @@ body[data-os="mac"] #sync-clippings-dlg #sync-cxn-error .msgbox-icon {
     font-weight: bold;
 }
 
+#request-native-app-conxn-perm-dlg p:first-of-type {
+    margin-top: 8px;
+}
+
+#request-native-app-conxn-perm-dlg ul {
+    padding-left: 24px;
+}
+
+#request-native-app-conxn-perm-dlg .dlg-content {
+    margin-left: 64px;
+}
+
 #wnds-dlgs-opts-dlg #wnds-dlgs-opts-exp-warn-msg,
+#request-native-app-conxn-perm-dlg .error-msg,
 #sync-clippings-dlg #sync-cxn-error .error-msg {
     background-color: #fbfb77;
     color: black;

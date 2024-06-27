@@ -60,6 +60,10 @@ $(async () => {
 
   $("#sync-intro").html(sanitizeHTML(browser.i18n.getMessage("syncIntro")));
 
+  let hostApp = browser.i18n.getMessage("hostAppFx");
+  $("#ext-perm-native-msg").text(browser.i18n.getMessage("extPrmNativeMessaging", hostApp));
+  $("#ext-perm-native-msg-detail").html(sanitizeHTML(browser.i18n.getMessage("syncPermReqDetail")));
+
   initDialogs();
 
   $("#html-paste-options").on("change", aEvent => {
@@ -86,9 +90,7 @@ $(async () => {
         gDialogs.syncClippings.showModal();
       }
       else {
-        // TEMPORARY
-        window.alert("Clippings needs additional permission to connect to Sync Clippings Helper.\n\n • Exchange messages with programs other than Firefox");
-        // END TEMPORARY
+        gDialogs.reqNativeAppConxnPerm.showModal();
       }
     }
   });
@@ -202,9 +204,7 @@ $(async () => {
   $("#sync-settings").click(async (aEvent) => {
     let perms = await browser.permissions.getAll();
     if (! perms.permissions.includes("nativeMessaging")) {
-      // TEMPORARY
-      window.alert("Clippings needs additional permission to connect to Sync Clippings Helper.\n\n • Exchange messages with programs other than Firefox");
-      // END TEMPORARY
+      gDialogs.reqNativeAppConxnPerm.showModal();
       return;
     }
     
@@ -337,6 +337,21 @@ $(window).keydown(aEvent => {
 
 function initDialogs()
 {
+  gDialogs.reqNativeAppConxnPerm = new aeDialog("#request-native-app-conxn-perm-dlg");
+  gDialogs.reqNativeAppConxnPerm.onAccept = async function ()
+  {
+    this.close();
+    
+    let permGranted = await browser.permissions.request({
+      permissions: ["nativeMessaging"],
+    });
+
+    if (permGranted) {
+      gIsActivatingSyncClippings = true;
+      gDialogs.syncClippings.showModal();
+    }
+  };
+
   gDialogs.syncClippings = new aeDialog("#sync-clippings-dlg");
   gDialogs.syncClippings.setProps({
     oldShowSyncItemsOpt: null,
