@@ -1521,13 +1521,10 @@ let gCmd = {
     let type;
     let isFormatted = aeClippings.hasHTMLTags(clipping.content);
     if (isFormatted) {
-      // TEMPORARY
-      let copyAsFmtTxt = window.confirm("Do you want to copy the selected clipping as HTML-formatted text?\n\n• To copy as HTML-formatted text, click OK.\n• To copy as plain text with HTML tags, click Cancel.");
-      type = copyAsFmtTxt ? "text/html" : "text/plain";
-      // TO DO:
-      // - Use paste setting for breaking lines in HTML-formatted clippings
-      // - Always copy as plain text if content contains restricted HTML tags
-      // END TEMPORARY
+      // TO DO: Update aeDialog library to handle buttons when setting up
+      // keyboard navigation.
+      gDialogs.copyClippingTextFormat.showModal(false);
+      return;
     }
     else {
       type = "text/plain";
@@ -3954,6 +3951,101 @@ function initDialogs()
   const isMacOS = gEnvInfo.os == "mac";
 
   initIntroBannerAndHelpDlg();
+
+  gDialogs.copyClippingTextFormat = new aeDialog("#copy-clipping-txt-fmt-dlg");
+  gDialogs.copyClippingTextFormat.getClippingText = async function ()
+  {
+    let rv = null;
+    let tree = getClippingsTree();
+    let selectedNode = tree.activeNode;
+    let id = parseInt(selectedNode.key);
+    let clipping = await gClippingsDB.clippings.get(id);
+    rv = clipping.content;
+
+    return rv;
+  };
+
+  gDialogs.copyClippingTextFormat.onFirstInit = async function ()
+  {
+    this.find("#copy-cliptxt-html").on("click", async (aEvent) => {
+      let clippingTxt = await this.getClippingText();
+      if (! clippingTxt) {
+        warn("Clippings/wx::clippingsMgr.js: gDialogs.copyClippingTextFormat: No clipping found for ID " + id);
+        this.close();
+      }
+
+      let type = "text/html";
+      let blob = new Blob([clippingTxt], {type});
+      let data = [new ClipboardItem({[type]: blob})];
+      try {
+        await navigator.clipboard.write(data);
+      }
+      catch (e) {
+        console.warn("Error copying clipping to clipboard\n" + e);
+      }
+      this.close();
+    });
+
+    this.find("#copy-cliptxt-plain").on("click", async (aEvent) => {
+      let clippingTxt = await this.getClippingText();
+      if (! clippingTxt) {
+        warn("Clippings/wx::clippingsMgr.js: gDialogs.copyClippingTextFormat: No clipping found for ID " + id);
+        this.close();
+      }
+      
+      let isConvFailed = false;
+      try {
+        clippingTxt = jQuery(clippingTxt).text();
+      }
+      catch (e) {
+        isConvFailed = true;
+      }
+
+      if (isConvFailed) {
+        // Clipping text may contain partial HTML. Try again by enclosing the
+        // content in HTML tags.
+        let content = "<div>" + clippingTxt + "</div>";
+        try {
+          clippingTxt = jQuery(content).text();
+        }
+        catch (e) {
+          // Clipping text contains unrecognized markup, e.g. PHP or ASP.net tags.
+          // In this case, keep the clipping content intact.
+          warn("Clippings/wx::clippingsMgr.js: gDialogs.copyClippingTextFormat: Unable to strip HTML tags from clipping content!\n" + e);
+        }
+      }
+
+      let type = "text/plain";
+      let blob = new Blob([clippingTxt], {type});
+      let data = [new ClipboardItem({[type]: blob})];
+      try {
+        await navigator.clipboard.write(data);
+      }
+      catch (e) {
+        console.warn("Error copying clipping to clipboard\n" + e);
+      }
+      this.close();
+    });
+
+    this.find("#copy-cliptxt-plain-html").on("click", async (aEvent) => {
+      let clippingTxt = await this.getClippingText();
+      if (! clippingTxt) {
+        warn("Clippings/wx::clippingsMgr.js: gDialogs.copyClippingTextFormat: No clipping found for ID " + id);
+        this.close();
+      }
+
+      let type = "text/plain";
+      let blob = new Blob([clippingTxt], {type});
+      let data = [new ClipboardItem({[type]: blob})];
+      try {
+        await navigator.clipboard.write(data);
+      }
+      catch (e) {
+        console.warn("Error copying clipping to clipboard\n" + e);
+      }
+      this.close();
+    });
+  };
 
   gDialogs.shctKeyConflict = new aeDialog("#shortcut-key-conflict-msgbox");
   gDialogs.shctKeyConflict.onAccept = function (aEvent)
