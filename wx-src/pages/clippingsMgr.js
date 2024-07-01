@@ -2520,6 +2520,25 @@ let gCmd = {
   },
 
 
+  async openWebPageSourceURL()
+  {
+    let tree = getClippingsTree();
+    let selectedNode = tree.activeNode;
+    if (!selectedNode || selectedNode.isFolder()) {
+      return;
+    }
+
+    let clippingID = parseInt(selectedNode.key);
+    let clipping = await gClippingsDB.clippings.get(clippingID);
+    if (clipping.sourceURL == "") {
+      gDialogs.clippingMissingSrcURL.openPopup();
+      return;
+    }
+
+    gCmd.gotoURL(clipping.sourceURL);
+  },
+
+
   removeAllSrcURLsIntrl()
   {
     let clippingsWithSrcURLs = [];
@@ -5215,21 +5234,7 @@ function buildClippingsTree()
           break;
           
         case "gotoSrcURL":
-          let tree = getClippingsTree();
-          let selectedNode = tree.activeNode;
-          if (!selectedNode || selectedNode.isFolder()) {
-            return;
-          }
-
-          let clippingID = parseInt(selectedNode.key);
-          gClippingsDB.clippings.get(clippingID).then(async (aClipping) => {
-            let srcURL = aClipping.sourceURL;
-            if (srcURL == "") {
-              gDialogs.clippingMissingSrcURL.openPopup();
-              return;
-            }
-            gCmd.gotoURL(srcURL);
-          });
+          gCmd.openWebPageSourceURL();
           break;
 
         case "labelNone":
