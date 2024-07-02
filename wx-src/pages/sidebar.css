@@ -1,0 +1,278 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+@import url("../lib/fancytree/skin-win8/ui.fancytree.min.css");
+@import url("../lib/contextMenu/jquery.contextMenu.css");
+@import url("../style/laf.css");
+@import url("../style/lightbox.css");
+@import url("../style/clippingTree.css");
+@import url("../style/searchbox.css");
+
+
+:root {
+    --color-bkgd: #fbfbfb;
+    --color-default-text: black;
+    --color-disabled-text: rgba(0, 0, 0, 0.40);
+    --color-main-toolbar-bkgd: transparent;
+    --color-main-toolbar-text: #0c0c0d;
+    --color-main-toolbar-border: transparent;
+    --color-toolbarbtn-hover-bkgd: rgba(12, 12, 13, 0.2);
+    --color-toolbarbtn-active-bkgd: rgba(12, 12, 13, 0.3);
+    --color-reload-sync-fldr-btn-bkgd: #fbfbfb;
+    --color-reload-sync-fldr-btn-border: #ddd;
+    --color-reload-sync-fldr-btn-hover-bkgd: #ebebeb;
+    --color-reload-sync-fldr-btn-hover-border: #b1b1b1;
+    --color-reload-sync-fldr-btn-active-bkgd: #d7d7db;
+    --color-reload-sync-fldr-btn-active-border: #b1b1b1;
+
+    --color-cxtmenu-bkgd: #fff;
+    --color-cxtmenu-border: #bebebe;
+    --color-cxtmenu-text: #2f2f2f;
+    --color-cxtmenu-menuitem-hover-bkgd: rgba(12, 12, 13, 0.2);
+    --color-cxtmenu-menuitem-hover-text: #0c0c0d;
+    --color-cxtmenu-menuitem-active-bkgd: rgba(12, 12, 13, 0.3);
+    --color-cxtmenu-separator: #e6e6e6;
+
+    --url-toolbar-btn-open-clippings-mgr: url("../img/clipping.svg");
+    --url-toolbar-btn-help: url("../img/help.svg");
+    --url-icon-synced-clippings-fldr: url("../img/synced-clippings.svg");
+
+    --toolbar-height: 28px;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+	--color-bkgd: #38383d;
+	--color-default-text: #f9f9fa;
+	--color-disabled-text: rgba(249, 249, 250, 0.4);
+	--color-main-toolbar-text: #f9f9fa;
+	--color-toolbarbtn-hover-bkgd: #737373;
+	--color-toolbarbtn-active-bkgd: #b1b1b3;
+	--color-reload-sync-fldr-btn-bkgd: #737373;
+	--color-reload-sync-fldr-btn-border: #b1b1b3;
+	--color-reload-sync-fldr-btn-hover-bkgd: #b1b1b3;
+	--color-reload-sync-fldr-btn-hover-border: #b1b1b3;
+	--color-reload-sync-fldr-btn-active-bkgd: #737373;
+	--color-reload-sync-fldr-btn-active-border: #737373;
+
+	--color-cxtmenu-bkgd: #4a4a4f;
+	--color-cxtmenu-border: #38383d;
+	--color-cxtmenu-text: #f9f9fa;
+	--color-cxtmenu-menuitem-active-bkgd: #737373;
+	--color-cxtmenu-menuitem-hover-bkgd: #606060;
+	--color-cxtmenu-menuitem-hover-text: #fff;
+	--color-cxtmenu-separator: #737373;
+
+	--url-toolbar-btn-help: url("../img/help-dk.svg");
+	--url-icon-synced-clippings-fldr: url("../img/synced-clippings-dk.svg");
+    }
+}
+
+
+html {
+    height: 100%;
+}
+
+body {
+    background-color: var(--color-bkgd);
+    color: var(--color-default-text);
+    overflow-y: hidden;
+}
+
+.hbox, .vbox {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.hbox {
+    flex-flow: row nowrap;
+}
+
+.vbox {
+    flex-flow: column nowrap;
+}
+
+button, label {
+    font: caption;
+    font-size: 11px;
+}
+
+#toolbars {
+    border-bottom: 1px solid var(--color-main-toolbar-border);
+}
+
+#toolbar, #search-bar {
+    width: 100%;
+    height: var(--toolbar-height);
+    padding: 2px 4px 2px 4px;
+    background: var(--color-main-toolbar-bkgd);
+    color: var(--color-main-toolbar-text);
+}
+
+#toolbar {
+    margin-bottom: -1px;
+    overflow: hidden;
+}
+
+.toolbar-button {
+    flex: 0 1 auto;
+    align-self: stretch;
+    min-width: 30px;
+    margin-left: 0;
+    margin-right: 0;
+    border: 1px solid transparent;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    color: var(--color-main-toolbar-text);
+    font: caption;
+    font-size: 11px !important;
+}
+
+.toolbar-button:hover {
+    border: 1px solid transparent;
+    border-radius: 3px;
+    background-color: var(--color-toolbarbtn-hover-bkgd);
+}
+
+.toolbar-button:active {
+    border: 1px solid transparent !important;
+    border-radius: 3px;
+    background-color: var(--color-toolbarbtn-active-bkgd);
+}
+
+.toolbar-button-labelled {
+    background-position: 4px;
+    padding-left: 24px;
+    padding-right: 6px;
+}
+
+.toolbar-button-labelled:active {
+    background-position: 4px;
+    padding-left: 24px;
+    padding-right: 6px;
+}
+
+.toolbar-flex-spacer {
+    flex: 1 1 auto;
+}
+
+#toolbar > #open-clippings-mgr {
+    background-image: var(--url-toolbar-btn-open-clippings-mgr);
+}
+
+#toolbar > #help {
+    background-image: var(--url-toolbar-btn-help);
+}
+
+#toolbar > #search-clippings-and-folders {
+    margin-top: 1px;
+    margin-bottom: 1px;
+    margin-right: -12px; /* To accommodate "clear search" button hack. */
+}
+
+#search-bar > #search-clippings-and-folders > #search-box {
+    width: calc(100% - 16px);
+    height: 100%;
+    padding-right: 20px;
+    font-size: 11px;
+}
+
+#search-bar > #search-clippings-and-folders > #clear-search {
+    display: inline-block;
+    position: relative;
+    top: 1px;
+    left: -2px;
+    width: 12px;
+    height: 12px;
+    background-color: var(--color-tb-bkgd);
+    background-image: var(--url-icon-search-reset);
+    background-position-x: center;
+    background-position-y: center;
+    background-repeat: no-repeat;
+    visibility: hidden;
+}
+
+#scroll-content {
+    overflow-y: auto;
+}
+
+#clippings-tree .ae-synced-clippings-fldr > .fancytree-icon {
+    background-image: var(--url-icon-synced-clippings-fldr);
+}
+
+/* Search results in tree list. */
+.fancytree-ext-filter-hide span.fancytree-node.fancytree-match span.fancytree-title, .fancytree-ext-filter-hide tr.fancytree-match span.fancytree-title {
+    color: var(--color-default-text);
+}
+
+#reload-sync-fldr-btn {
+    display: inline-block;
+
+    position: relative;
+    top: 0px;
+    left: 4px;
+    width: 24px;
+    height: 20px;
+
+    border: 1px solid var(--color-reload-sync-fldr-btn-border);
+    border-radius: 3px;
+
+    background-color: var(--color-reload-sync-fldr-btn-bkgd);
+    background-image: url("../img/reload.svg");
+    background-size: 14px 14px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#reload-sync-fldr-btn:hover {
+    border: 1px solid var(--color-reload-sync-fldr-btn-hover-border);
+    background-color: var(--color-reload-sync-fldr-btn-hover-bkgd);
+}
+
+#reload-sync-fldr-btn:active {
+    border: 1px solid var(--color-reload-sync-fldr-btn-active-border);
+    background-color: var(--color-reload-sync-fldr-btn-active-bkgd);
+}
+
+ul.fancytree-container {
+    border: none;
+}
+
+/* jQuery contextMenu CSS overrides */
+.context-menu-list {
+    border: 1px solid var(--color-cxtmenu-border);
+    background-color: var(--color-cxtmenu-bkgd);
+}
+
+.ae-menuitem {
+    padding-top: 4px;
+    padding-bottom: 4px;
+    font-size: 12px;
+    background-color: var(--color-cxtmenu-bkgd);
+    color: var(--color-cxtmenu-text);
+}
+
+.context-menu-item.context-menu-disabled {
+    background-color: var(--color-cxtmenu-bkgd);
+}
+
+.context-menu-disabled:hover {
+    background-color: transparent;
+}
+
+.ae-menuitem:active {
+    background-color: var(--color-cxtmenu-menuitem-active-bkgd) !important;
+}
+
+.context-menu-item.context-menu-hover {
+    background-color: var(--color-cxtmenu-menuitem-hover-bkgd);
+    color: var(--color-cxtmenu-menuitem-hover-text);
+    cursor: default;
+}
+
+.context-menu-separator {
+    border-bottom: 1px solid var(--color-cxtmenu-separator);
+}
