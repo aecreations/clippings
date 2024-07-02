@@ -63,6 +63,8 @@ let aePrefs = {
     compressSyncData: true,
     isSyncReadOnly: false,
     clippingsMgrAutoShowStatusBar: false,
+    sidebarToolbar: true,
+    sidebarSearchBar: true,
   },
   
   getPrefKeys()
@@ -273,6 +275,8 @@ let aePrefs = {
       isSyncReadOnly: false,
       defDlgBtnFollowsFocus: true,
       clippingsMgrAutoShowStatusBar: false,
+      sidebarToolbar: true,
+      sidebarSearchBar: true,
     };
     await this._addPrefs(aPrefs, newPrefs);
 
