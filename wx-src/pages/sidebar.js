@@ -338,37 +338,51 @@ $(async () => {
   gClippingsDB = aeClippings.getDB();
 
   gPrefs = await aePrefs.getAllPrefs();
+  setCustomizations();
   setScrollableContentHeight();
+  gSearchBox.init();
 
   buildClippingsTree();
   initSyncItemsIDLookupList();
 
   aeInterxn.init(gEnvInfo.os);
-  gSearchBox.init();
-
-  // Toolbar initialization
-  $("#open-clippings-mgr").on("click", aEvent => {
-    gCmd.openClippingsManager();
-  });
-  $("#help").on("click", aEvent => {
-    gCmd.showMiniHelp();
-  });
 });
 
 
 function setScrollableContentHeight()
 {
   let cntHeight = window.innerHeight;
-  // TEMPORARY
-  cntHeight -= TOOLBAR_HEIGHT * 2;
-/**
-  //if (gPrefs.toolbar) {
-    cntHeight -= TOOLBAR_HEIGHT;
-  //}
-  if (gPrefs.searchBar) {
+
+  if (gPrefs.sidebarToolbar) {
     cntHeight -= TOOLBAR_HEIGHT;
   }
-**/
+  if (gPrefs.sidebarSearchBar) {
+    cntHeight -= TOOLBAR_HEIGHT;
+  }
+
+  $("#scroll-content").css({height: `${cntHeight}px`});
+}
+
+
+function setCustomizations()
+{
+  let cntHeight = window.innerHeight;
+
+  if (gPrefs.sidebarToolbar) {
+    $("#toolbar").show();
+    cntHeight -= TOOLBAR_HEIGHT;
+  }
+  else {
+    $("#toolbar").hide();
+  }
+  if (gPrefs.sidebarSearchBar) {
+    $("#search-bar").show();
+    cntHeight -= TOOLBAR_HEIGHT;
+  }
+  else {
+    $("#search-bar").hide();
+  }
+
   $("#scroll-content").css({height: `${cntHeight}px`});
 }
 
@@ -789,8 +803,75 @@ function updateDisplay(aEvent, aData)
 
 
 //
-// Event listeners
+// Event handlers
 //
+
+browser.runtime.onMessage.addListener(aRequest => {
+  let resp = null;
+
+  switch (aRequest.msgID) {
+  case "new-clipping-created":
+  case "new-folder-created":
+  case "clipping-changed":
+  case "folder-changed":
+  case "copy-finished":
+  case "dnd-move-finished":
+  case "import-finished":
+    rebuildClippingsTree();
+    break;
+    
+  case "sync-activated":
+    gSyncClippingsListener.onActivate(aRequest.syncFolderID);
+    break;
+
+  case "sync-deactivated":
+    gSyncClippingsListener.onDeactivate(aRequest.oldSyncFolderID);
+    break;
+
+  case "sync-deactivated-after":
+    gSyncClippingsListener.onAfterDeactivate(aRequest.removeSyncFolder, aRequest.oldSyncFolderID);
+    break;
+
+  default:
+    break;
+  }
+
+  if (resp) {
+    return Promise.resolve(resp);
+  }
+});
+
+
+browser.storage.onChanged.addListener((aChanges, aAreaName) => {
+  let changedPrefs = Object.keys(aChanges);
+
+  for (let pref of changedPrefs) {
+    gPrefs[pref] = aChanges[pref].newValue;
+  }
+
+  setCustomizations();
+});
+
+
+// Toolbar event handlers
+$("#open-clippings-mgr").on("click", aEvent => {
+  gCmd.openClippingsManager();
+});
+$("#help").on("click", aEvent => {
+  gCmd.showMiniHelp();
+});
+
+
+$(window).on("resize", aEvent => {
+  warn("Clippings::sidebar.js: The 'resize' event was fired!!");
+  // The "resize" event is sometimes fired when the sidebar is shown, but
+  // before it is initialized.
+  if (! gPrefs) {
+    return;
+  }
+  setScrollableContentHeight();
+});
+
 
 // Keyboard event handler
 $(document).keydown(async (aEvent) => {
@@ -839,48 +920,8 @@ $(document).keydown(async (aEvent) => {
 });
 
 
-browser.storage.onChanged.addListener((aChanges, aAreaName) => {
-  let changedPrefs = Object.keys(aChanges);
-
-  for (let pref of changedPrefs) {
-    gPrefs[pref] = aChanges[pref].newValue;
-  }
-});
-
-
-browser.runtime.onMessage.addListener(aRequest => {
-  let resp = null;
-
-  switch (aRequest.msgID) {
-  case "new-clipping-created":
-  case "new-folder-created":
-  case "clipping-changed":
-  case "folder-changed":
-  case "copy-finished":
-  case "dnd-move-finished":
-  case "import-finished":
-    rebuildClippingsTree();
-    break;
-    
-  case "sync-activated":
-    gSyncClippingsListener.onActivate(aRequest.syncFolderID);
-    break;
-
-  case "sync-deactivated":
-    gSyncClippingsListener.onDeactivate(aRequest.oldSyncFolderID);
-    break;
-
-  case "sync-deactivated-after":
-    gSyncClippingsListener.onAfterDeactivate(aRequest.removeSyncFolder, aRequest.oldSyncFolderID);
-    break;
-
-  default:
-    break;
-  }
-
-  if (resp) {
-    return Promise.resolve(resp);
-  }
+$(document).on("contextmenu", aEvent => {
+  aEvent.preventDefault();
 });
 
 
