@@ -26,6 +26,10 @@ browser.runtime.onMessage.addListener(aRequest => {
     resp = handleRequestInsertClipping(aRequest);
     break;
 
+  case "focus-active-tab":
+    resp = handleRequestFocusTab();
+    break;
+
   default:
     break;
   }
@@ -175,6 +179,26 @@ function handleRequestInsertClipping(aRequest)
     rv = null;
   }
 
+  return rv;
+}
+
+
+function handleRequestFocusTab()
+{
+  let rv;
+
+  rv = document.title;
+
+  let activeElt = getActiveElt();
+  if (activeElt
+      && (isElementOfType(activeElt, "HTMLInputElement")
+          || isElementOfType(activeElt, "HTMLTextAreaElement")
+          || isElementOfType(activeElt, "HTMLIFrameElement")
+          || isElementOfType(activeElt, "HTMLDivElement"))) {
+    activeElt.ownerDocument.defaultView.focus();
+    activeElt.focus();
+  }
+  
   return rv;
 }
 

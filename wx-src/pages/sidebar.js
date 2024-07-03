@@ -16,7 +16,7 @@ let gSyncedItemsIDMap = new Map();
 let gSyncClippingsListener = {
   onActivate(aSyncFolderID)
   {
-    log("Clippings/wx::sidebar.js::gSyncClippingsListener.onActivate()");
+    log("Clippings::sidebar.js::gSyncClippingsListener.onActivate()");
     aeDialog.cancelDlgs();
     // TO DO: Put this in a modal dialog.
     alert(browser.i18n.getMessage("syncReloadAck"));
@@ -26,7 +26,7 @@ let gSyncClippingsListener = {
   
   onDeactivate(aOldSyncFolderID)
   {
-    log(`Clippings/wx::sidebar.js::gSyncClippingsListener.onDeactivate(): ID of old sync folder: ${aOldSyncFolderID}`);
+    log(`Clippings::sidebar.js::gSyncClippingsListener.onDeactivate(): ID of old sync folder: ${aOldSyncFolderID}`);
     gSyncedItemsIDs.clear();
     gSyncedItemsIDMap.clear();
 
@@ -44,7 +44,7 @@ let gSyncClippingsListener = {
 
   onAfterDeactivate(aRemoveSyncFolder, aOldSyncFolderID)
   {
-    log(`Clippings/wx::sidebar.js: gSyncClippingsListener.onAfterDeactivate(): Remove Synced Clippings folder = ${aRemoveSyncFolder}; old sync folder ID = ${aOldSyncFolderID}`)
+    log(`Clippings::sidebar.js: gSyncClippingsListener.onAfterDeactivate(): Remove Synced Clippings folder = ${aRemoveSyncFolder}; old sync folder ID = ${aOldSyncFolderID}`)
 
     if (aRemoveSyncFolder) {
       let clippingsTree = getClippingsTree();
@@ -90,7 +90,7 @@ let gReloadSyncFldrBtn = {
   {
     let syncFldrSpan = this._getSyncFldrSpan();
     if (! syncFldrSpan) {
-      console.error("Clippings/wx::clippingsMgr.js: gReloadSyncFldrBtn.hide(): Failed to retrieve the Fancytree <span> element for the Synced Clippings folder!");
+      console.error("Clippings::clippingsMgr.js: gReloadSyncFldrBtn.hide(): Failed to retrieve the Fancytree <span> element for the Synced Clippings folder!");
       return;
     }
 
@@ -208,20 +208,36 @@ let gCmd = {
       return;
     }
 
-    let id = parseInt(selectedNode.key);
-    let clipping = await gClippingsDB.clippings.get(id);
+    let clippingID = parseInt(selectedNode.key);
+    let clipping = await gClippingsDB.clippings.get(clippingID);
     if (! clipping) {
-      throw new Error("No clipping found for ID " + id);
+      throw new Error("No clipping found for ID " + clippingID);
     }
 
-    // BUG!!
-    // This DOES NOT work because the target web page loses focus when the user
-    // interacts with the sidebar. The content script that receives the message
-    // to paste the clipping won't be able to find the active element, so it
-    // won't do anything.
+    let wnd = await browser.windows.getCurrent({populate: true});
+    let tabs = wnd.tabs;
+    let [actvTab] = tabs.filter(aTab => aTab.active);
+    let resp;
+    try {
+      // For this to work, the user must focus the textbox or HTML editor in
+      // the web page immediately before invoking this action on the currently
+      // selected clipping.
+      resp = await browser.tabs.sendMessage(actvTab.id, {msgID: "focus-active-tab"});
+    }
+    catch (e) {
+      warn("Clippings::sidebar.js: gCmd.insertClipping(): " + e);
+      return;
+    }
+
+    if (resp) {
+      log(`Clippings::sidebar.js: gCmd.insertClipping(): Focused tab title: "${resp}"`);
+    }
+    
     browser.runtime.sendMessage({
-      msgID: "paste-clipping-current-tab",
-      clippingID: id,
+      msgID: "paste-clipping-by-name",
+      clippingID,
+      browserTabID: actvTab.id,
+      fromClippingsMgr: false,
     });
   },
 
@@ -427,18 +443,18 @@ function buildClippingsTree()
 
       activate(aEvent, aData)
       {
-        log("Clippings/wx::sidebar.js: Activate event fired on clippings tree");
+        log("Clippings::sidebar.js: Activate event fired on clippings tree");
         updateDisplay(aEvent, aData);
       },
 
       async dblclick(aEvent, aData)
       {
-        log("Clippings/wx::sidebar.js: Double-click event fired on clippings tree");
+        log("Clippings::sidebar.js: Double-click event fired on clippings tree");
         updateDisplay(aEvent, aData);
 
         if (aData.targetType == "title" || aData.targetType == "icon") {
           if (! aData.node.isFolder()) {
-            gCmd.copyClippingTextToClipboard();
+            gCmd.insertClipping();
           }
         }
       },
@@ -472,6 +488,10 @@ function buildClippingsTree()
 	  gCmd.openWebPageSourceURL();
           break;
 
+        case "insertClipping":
+          gCmd.insertClipping();
+          break;
+
         case "copyClippingText":
           gCmd.copyClippingTextToClipboard();
           break;
@@ -501,6 +521,18 @@ function buildClippingsTree()
 
             let folderID = parseInt(selectedNode.key);
             return (folderID == gPrefs.syncFolderID);
+          }
+        },
+        insertClipping: {
+          name: browser.i18n.getMessage("insClipping"),
+          className: "ae-menuitem",
+          visible(aItemKey, aOpt) {
+            let tree = getClippingsTree();
+            let selectedNode = tree.activeNode;
+            if (!selectedNode || selectedNode.isFolder()) {
+              return false;
+            }
+            return true;
           }
         },
         copyClippingText: {
@@ -654,7 +686,7 @@ function buildClippingsTreeHelper(aFolderID)
         aFnResolve(rv);
       });
     }).catch(aErr => {
-      console.error("Clippings/wx::sidebar.js: buildClippingsTreeHelper(): %s", aErr.message);
+      console.error("Clippings::sidebar.js: buildClippingsTreeHelper(): %s", aErr.message);
       aFnReject(aErr);
     });
   });
@@ -796,7 +828,7 @@ function updateDisplay(aEvent, aData)
     return;
   }
 
-  log("Clippings/wx::sidebar.js: Updating display...");
+  log("Clippings::sidebar.js: Updating display...");
 
   // TO DO: Finish implementation
 }

@@ -1671,13 +1671,6 @@ async function getWndGeometryFromBrwsTab(aTabID)
 }
 
 
-async function pasteClippingByIDIntoActiveTab(aClippingID)
-{
-  let [tab] = await browser.tabs.query({active: true, lastFocusedWindow: true});
-  pasteClippingByID(aClippingID, true, tab.id);
-}
-
-
 function pasteClippingByID(aClippingID, aIsExternalRequest, aTabID)
 {
   let clippingsDB = aeClippings.getDB();
@@ -2136,10 +2129,6 @@ browser.runtime.onMessage.addListener(aRequest => {
 
   case "paste-clipping-by-name":
     pasteClippingByID(aRequest.clippingID, aRequest.fromClippingsMgr, aRequest.browserTabID);
-    break;
-
-  case "paste-clipping-current-tab":
-    pasteClippingByIDIntoActiveTab(aRequest.clippingID);
     break;
 
   case "paste-clipping-with-plchldrs":
