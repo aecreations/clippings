@@ -26,10 +26,6 @@ browser.runtime.onMessage.addListener(aRequest => {
     resp = handleRequestInsertClipping(aRequest);
     break;
 
-  case "show-lightbox":
-    resp = handleRequestShowLightbox(aRequest);
-    break;
-
   default:
     break;
   }
@@ -183,40 +179,6 @@ function handleRequestInsertClipping(aRequest)
 }
 
 
-function handleRequestShowLightbox(aRequest)
-{
-  let rv = null;
-  
-  if (isLightboxLoaded()) {
-    info("Clippings/wx: The lightbox modal is already displayed.");
-    rv = {status: "ok"};
-  }
-  else {
-    loadLightboxUI();
-
-    let ovl = document.querySelector("#ae-clippings-ui > .ae-clippings-lightbox-bkgrd");
-    let lbox = document.querySelector("#ae-clippings-ui > #ae-clippings-tm-lightbox");
-
-    if (ovl && lbox) {
-      let msg = browser.i18n.getMessage(aRequest.strKey);
-      let txt = document.createTextNode(msg);
-      document.getElementById("ae-clippings-lightbox-body").appendChild(txt);
-      
-      ovl.classList.add("ae-clippings-lightbox-show");
-      lbox.classList.add("ae-clippings-lightbox-show");
-      document.querySelector("#ae-clippings-lightbox-btn-accept").focus();
-      rv = {status: "ok"};
-    }
-    else {
-      console.error("Lightbox: Unable to locate lightbox DOM elements!");
-      rv = {status: "error"};
-    }
-  }
-
-  return rv;
-}
-
-
 //
 // Helper functions
 //
@@ -339,111 +301,8 @@ function getActiveElt() {
 }
 
 
-function loadLightboxUI()
-{
-  let ovl = document.createElement("div");
-  ovl.className = "ae-clippings-lightbox-bkgrd";
-
-  let lbox = document.createElement("div");
-  lbox.id = "ae-clippings-tm-lightbox";
-  lbox.className = "ae-clippings-lightbox";
-
-  let img = document.createElement("div");
-  img.id = "ae-clippings-lightbox-icon";
-
-  let title = document.createElement("div");
-  title.id = "ae-clippings-lightbox-title";
-  let titleTxt = document.createTextNode(browser.i18n.getMessage("extName"));
-  title.appendChild(titleTxt);
-
-  let titleBar = document.createElement("div");
-  titleBar.id = "ae-clippings-lightbox-titlebar";
-  titleBar.appendChild(img);
-  titleBar.appendChild(title);
-  lbox.appendChild(titleBar);
-
-  // Message box text
-  let body = document.createElement("div");
-  body.id = "ae-clippings-lightbox-body";
-  lbox.appendChild(body);
-
-  let dlgBtns = document.createElement("div");
-  dlgBtns.className = "ae-clippings-lightbox-dlg-btns";
-  let btn = document.createElement("button");
-  btn.id = "ae-clippings-lightbox-btn-accept";
-  btn.className = "default";
-  btn.addEventListener("click", aEvent => {unloadLightboxUI()});
-  
-  let btnCapt = document.createTextNode(browser.i18n.getMessage("btnOK"));
-  btn.appendChild(btnCapt);
-  dlgBtns.appendChild(btn);
-  lbox.appendChild(dlgBtns);
-
-  let wrapper = document.createElement("div");
-  wrapper.id = "ae-clippings-ui";
-  wrapper.appendChild(ovl);
-  wrapper.appendChild(lbox);
-  document.body.prepend(wrapper);
-
-  initLightboxKeyboardNav();
-}
-
-
-function initLightboxKeyboardNav()
-{
-  gLastFocusedElt = document.activeElement;
-
-  let lightbox = document.getElementById("ae-clippings-tm-lightbox");
-  if (! lightbox) {
-    console.error("Clippings/wx: initLightboxKeyboardNav(): Unable to locate tab modal lightbox element!");
-    return;
-  }
-
-  let focusableElts = lightbox.querySelectorAll(FOCUSABLE_ELTS_STOR);
-  let firstTabStop = focusableElts[0];
-  let lastTabStop = focusableElts[focusableElts.length - 1];
-
-  lightbox.addEventListener("keydown", aEvent => {
-    if (aEvent.key == "Tab") {
-      if (aEvent.shiftKey) {
-        if (document.activeElement == firstTabStop) {
-          aEvent.preventDefault();
-          lastTabStop.focus();
-        }
-      }
-      else {
-        if (document.activeElement == lastTabStop) {
-          aEvent.preventDefault();
-          firstTabStop.focus();
-        }
-      }
-    }
-  });
-
-  firstTabStop.focus();
-}
-
-
-function unloadLightboxUI()
-{
-  document.querySelector("#ae-clippings-ui > #ae-clippings-tm-lightbox").classList.remove("ae-clippings-lightbox-show");
-  document.querySelector("#ae-clippings-ui > .ae-clippings-lightbox-bkgrd").classList.remove("ae-clippings-lightbox-show");
-
-  let wrapper = document.getElementById("ae-clippings-ui");
-  document.body.removeChild(wrapper);
-}
-
-
-function isLightboxLoaded()
-{
-  let lightbox = document.querySelector("#ae-clippings-ui > #ae-clippings-tm-lightbox");
-
-  return (lightbox && lightbox.classList.contains("ae-clippings-lightbox-show"));
-}
-
-
 //
-// Utilities
+// Debugging output
 //
 
 function log(aMessage)
