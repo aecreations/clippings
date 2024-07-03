@@ -569,29 +569,21 @@ function buildClippingsTree()
             return true;
           }
         },
-	editItem: {
-	  name: "edit",
-	  className: "ae-menuitem",
-	  /***
-	  callback(aKey, aOpt) {
-	    // TO DO: Put callback here, instead of above.
-	  },
-	  ***/
-	  disabled(aItemKey, aOpt) {
+        custzSeparator: {
+          type: "cm_separator",
+          visible(aItemKey, aOpt) {
             let tree = getClippingsTree();
             let selectedNode = tree.activeNode;
             if (! selectedNode) {
-              return true;
+              return false;
             }
-
-	    if (selectedNode.isFolder()) {
+            if (selectedNode.isFolder()) {
               let folderID = parseInt(selectedNode.key);
               return (folderID == gPrefs.syncFolderID);
-	    }
-	    return false;
+            }
+            return true;
           }
-	},
-        separator0: "--------",
+        },
 	togglePreviewPane: {
 	  name: "show/hide preview pane",
 	  className: "ae-menuitem",
