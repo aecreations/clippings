@@ -688,6 +688,16 @@
     "description": "Clippings Manager - preset (built-in) placeholder menu"
   },
 
+  "mnuPlchldrClipClip": {
+    "message": "Clipping In Clipping",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+
+  "plchldrClipClipArg": {
+    "message": "Name of clipping to insert",
+    "description": "Default argument for the clipping-in-clipping placeholder - appears as $[CLIPPING(Name of clipping to insert)]"
+  },
+
   "clipMgrNameHint": {
     "message": "Clipping Name",
     "description": "Clippings Manager - clipping name textbox hint text"
