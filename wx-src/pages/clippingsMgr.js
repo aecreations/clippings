@@ -1464,7 +1464,7 @@ let gCmd = {
 
     let content = await navigator.clipboard.readText();
     if (content == "") {
-      window.setTimeout(() => {gDialogs.clipboardEmpty.openPopup()}, 100);
+      setTimeout(() => {gDialogs.clipboardEmpty.openPopup()}, 100);
       return;
     }
 
@@ -2640,7 +2640,19 @@ let gCmd = {
   {
     gDialogs.insDateTimePlchldr.showModal();
   },
-  
+
+  insertClippingInClippingPlaceholder()
+  {
+    let contentTextArea = $("#clipping-text");
+    let arg = browser.i18n.getMessage("plchldrClipClipArg");
+    let plchldr = "$[CLIPPING(" + arg + ")]";
+    insertTextIntoTextbox(contentTextArea, plchldr);
+
+    // Select the placeholder argument.
+    contentTextArea[0].selectionStart = contentTextArea[0].selectionEnd - arg.length - 2;
+    contentTextArea[0].selectionEnd -= 2;
+  },
+      
   showHidePlaceholderToolbar: function ()
   {
     let currSetting = gPrefs.clippingsMgrPlchldrToolbar;
@@ -2853,7 +2865,7 @@ let gCmd = {
     }
 
     if (this.undoStack.length == 0) {
-      window.setTimeout(() => { gDialogs.noUndoNotify.openPopup() }, 100);
+      setTimeout(() => { gDialogs.noUndoNotify.openPopup() }, 100);
       return;
     }
 
@@ -3004,7 +3016,7 @@ let gCmd = {
     }
 
     if (this.redoStack.length == 0) {
-      window.setTimeout(() => { gDialogs.noRedoNotify.openPopup() }, 100);
+      setTimeout(() => { gDialogs.noRedoNotify.openPopup() }, 100);
       return;
     }
 
@@ -3578,7 +3590,7 @@ function initToolbar()
       function insertPlaceholder(aPlaceholder) {
         insertTextIntoTextbox(contentTextArea, aPlaceholder);
       }
-      
+
       switch (aItemKey) {
       case "insDate":
         insertPlaceholder("$[DATE]");
@@ -3607,6 +3619,10 @@ function initToolbar()
       case "insFormattedDateTime":
         gCmd.insertFormattedDateTimePlaceholder();
         break;
+
+      case "insClippingInClipping":
+        gCmd.insertClippingInClippingPlaceholder();
+        break;
         
       default:
         window.alert("The selected action is not available right now.");
@@ -3619,36 +3635,33 @@ function initToolbar()
         name: browser.i18n.getMessage("mnuPlchldrDate"),
         className: "ae-menuitem"
       },
-
       insTime: {
         name: browser.i18n.getMessage("mnuPlchldrTime"),
         className: "ae-menuitem"
       },
-
       insAppName: {
         name: browser.i18n.getMessage("mnuPlchldrAppName"),
         className: "ae-menuitem"
       },
-
       insUserAgent: {
         name: browser.i18n.getMessage("mnuPlchldrUsrAgent"),
         className: "ae-menuitem"
       },
-
       insClippingName: {
         name: browser.i18n.getMessage("mnuPlchldrClipName"),
         className: "ae-menuitem"
       },
-
       insParentFolderName: {
         name: browser.i18n.getMessage("mnuPlchldrFldrName"),
         className: "ae-menuitem"
       },
-
       separator1: "--------",
-
       insFormattedDateTime: {
         name: browser.i18n.getMessage("mnuPlchldrFmtDateTime"),
+        className: "ae-menuitem"
+      },
+      insClippingInClipping: {
+        name: browser.i18n.getMessage("mnuPlchldrClipClip"),
         className: "ae-menuitem"
       },
     }
@@ -3719,7 +3732,7 @@ function initToolbar()
         break;
 
       case "maximizeWnd":
-        window.setTimeout(async () => { gCmd.toggleMaximize() }, 100);
+        setTimeout(async () => { gCmd.toggleMaximize() }, 100);
         break;
 
       case "minimizeWhenInactive":
@@ -5957,13 +5970,13 @@ async function saveWindowGeometry()
 function setSaveWndGeometryInterval(aSaveWndGeom)
 {
   if (aSaveWndGeom) {
-    setSaveWndGeometryInterval.intvID = window.setInterval(async () => {
+    setSaveWndGeometryInterval.intvID = setInterval(async () => {
       await saveWindowGeometry();
     }, gPrefs.clippingsMgrSaveWndGeomIntv);    
   }
   else {
     if (!! setSaveWndGeometryInterval.intvID) {
-      window.clearInterval(setSaveWndGeometryInterval.intvID);
+      clearInterval(setSaveWndGeometryInterval.intvID);
       setSaveWndGeometryInterval.intvID = null;
     }
   }
