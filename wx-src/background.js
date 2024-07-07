@@ -715,7 +715,7 @@ async function pushSyncFolderUpdates()
     return;
   }
   
-  let syncData = await aeImportExport.exportToJSON(true, true, prefs.syncFolderID, false, true);
+  let syncData = await aeImportExport.exportToJSON(true, true, prefs.syncFolderID, false, true, true);
   let natMsg = {
     msgID: "set-synced-clippings",
     syncData: syncData.userClippingsRoot,
@@ -914,24 +914,41 @@ function getContextMenuData(aFolderID, aPrefs)
 
       }).then(() => {
         return clippingsDB.clippings.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
-          let menuItemID = "ae-clippings-clipping-" + aItem.id + "_" + Date.now();
-          gClippingMenuItemIDMap[aItem.id] = menuItemID;
+          let menuItemData;
+          if (aItem.separator) {
+            menuItemData = {separator: true};
 
-          let menuItemData = {
-            id: menuItemID,
-            title: sanitizeMenuTitle(aItem.name),
-            icons: {
-              16: "img/" + (aItem.label ? `clipping-${aItem.label}.svg` : "clipping.svg")
-            },
-          };
-
-          if (! ("displayOrder" in aItem)) {
-            menuItemData.displayOrder = 0;
+            if ("displayOrder" in aItem) {
+              menuItemData.displayOrder = aItem.displayOrder;
+            }
+            else {
+              menuItemData.displayOrder = 0;
+            }
           }
           else {
-            menuItemData.displayOrder = aItem.displayOrder;
-          }
+            let menuItemID = "ae-clippings-clipping-" + aItem.id + "_" + Date.now();
+            gClippingMenuItemIDMap[aItem.id] = menuItemID;
 
+            menuItemData = {
+              id: menuItemID,
+              title: sanitizeMenuTitle(aItem.name),
+              icons: {
+                16: "img/" + (aItem.label ? `clipping-${aItem.label}.svg` : "clipping.svg")
+              },
+            };
+
+            if (aItem.label) {
+              menuItemData.label = aItem.label;
+            }
+
+            if ("displayOrder" in aItem) {
+              menuItemData.displayOrder = aItem.displayOrder;
+            }
+            else {
+              menuItemData.displayOrder = 0;
+            }
+          }
+          
           if (aFolderID != aeConst.ROOT_FOLDER_ID) {
             let fldrMenuItemID = gFolderMenuItemIDMap[aFolderID];
             menuItemData.parentId = fldrMenuItemID;
@@ -1025,14 +1042,27 @@ function buildContextMenuHelper(aMenuData)
 {
   for (let i = 0; i < aMenuData.length; i++) {
     let menuData = aMenuData[i];
-    let menuItem = {
-      id: menuData.id,
-      title: menuData.title,
-      icons: menuData.icons,
-      contexts: ["editable"],
-      documentUrlPatterns: ["<all_urls>"]
-    };
+    let menuItem;
 
+    if (menuData.separator) {
+      menuItem = {
+        // MV3 extensions need to have IDs on all menu items, even separators.
+        id: `aesep_${aeUUID()}`,
+        type: "separator",
+        contexts: ["editable"],
+        documentUrlPatterns: ["<all_urls>"]
+      };
+    }
+    else {
+      menuItem = {
+        id: menuData.id,
+        title: menuData.title,
+        icons: menuData.icons,
+        contexts: ["editable"],
+        documentUrlPatterns: ["<all_urls>"]
+      };
+    }
+    
     if ("parentId" in menuData && menuData.parentId != aeConst.ROOT_FOLDER_ID) {
       menuItem.parentId = menuData.parentId;
     }
