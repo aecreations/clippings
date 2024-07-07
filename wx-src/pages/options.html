@@ -13,30 +13,83 @@
   </head>
 
   <body>
-    <main id="ae-clippings-preferences">
+    <header>
       <div id="pref-pg-hdr">
         <img id="addon-icon" src="../img/icon.svg"/>
         <h2 id="pref-pg-hdr-text" data-i18n="prefsTitle"></h2>
 	<button id="about-btn" data-i18n="aboutBtn"></button>
       </div>
+    </header>
 
-      <div class="pref-section-content">
+    <main id="ae-clippings-preferences">
+      <div class="tab-container">
+	<div id="preftab-general" class="tab">
+	  <button id="preftab-general-btn" class="active-tab" data-i18n="prefTabGen"></button>
+	</div><div id="preftab-paste" class="tab">
+	  <button id="preftab-paste-btn" data-i18n="prefTabPaste"></button>
+	</div><div id="preftab-sync-clippings" class="tab">
+	  <button id="preftab-sync-clippings-btn" data-i18n="syncClippings"></button>
+	</div>
+      </div>
+
+      <div id="prefpane-general" class="tab-panel active-tab-panel">
+	<fieldset id="general-options">
+	  <legend data-i18n="prefsHdgGeneralOptions"></legend>
+
+	  <div class="row browser-style">
+	    <input type="checkbox" id="always-save-src-url"/><label for="always-save-src-url" data-i18n="cbAlwaysSaveSrcURL"></label>
+	  </div>
+	  <div class="row browser-style">
+	    <input type="checkbox" id="check-spelling"/><label for="check-spelling" data-i18n="cbCheckSpelling"></label>
+	  </div>
+
+	  <div class="row browser-style">
+	    <input type="checkbox" id="backup-reminder"/><label for="backup-reminder" data-i18n="backupRemind"></label>
+	    <select id="backup-reminder-freq" class="browser-style">
+	      <option value="1" data-i18n="backupRemFreqDaily"></option>
+	      <option value="5" data-i18n="backupRemFreqTwoDays"></option>
+	      <option value="6" data-i18n="backupRemFreqThreeDays"></option>
+	      <option value="7" data-i18n="backupRemFreqFiveDays"></option>
+	      <option value="2" data-i18n="backupRemFreqWeekly"></option>
+	      <option value="4" data-i18n="backupRemFreqTwoWeeks"></option>
+	      <option value="3" data-i18n="backupRemFreqMonthly"></option>
+	    </select>
+	    <label for="backup-reminder-freq" data-i18n="backupRemDays"></label>
+	  </div>
+
+	  <div class="row indent browser-style">
+	   <input type="checkbox" id="skip-backup-if-no-chg"/><label id="skip-backup-label" for="skip-backup-if-no-chg" data-i18n="backupRemSkip"></label>
+	  </div>
+
+	  <div class="row browser-style">
+	    <input type="checkbox" id="backup-filename-with-date"/><label for="backup-filename-with-date" data-i18n="cbBackupFilenameWithDate"></label>
+	  </div>
+
+	  <div class="row">
+	    <button id="wnds-dlgs-settings" data-i18n="wndsAndDlgsOpts"></button>
+	  </div>
+	</fieldset>
+      </div> <!-- /prefpane-general -->
+
+      <div id="prefpane-paste" class="tab-panel">
+	<p id="html-paste-options" data-i18n="labelPasteOpts"></p>
+
+        <div id="html-paste-options-ctr">
+	  <div class="row browser-style">
+	    <input type="radio" id="paste-opt-formatted" name="html-paste-opt" value="1"/><label for="paste-opt-formatted" data-i18n="pasteOptFormatted"></label>
+	  </div>
+	  <div id="paste-formatted-opts" class="row indent browser-style">
+	    <p id="html-paste-note" data-i18n="htmlPasteDescTB"></p>
+	    <input type="checkbox" id="html-auto-line-break" class="checkbox"/><label id="html-auto-line-break-label" for="html-auto-line-break" data-i18n="cbAutoLineBreak"></label>
+	  </div>
+	  <div id="paste-opt-raw-html-row" class="row browser-style">
+	    <input type="radio" id="paste-opt-raw-html" name="html-paste-opt" value="2"/><label for="paste-opt-raw-html" data-i18n="pasteOptRawHTML"></label>
+	  </div>
+        </div>
+
         <fieldset id="paste-options">
           <legend data-i18n="prefsHdgPasteOptions"></legend>
 
-	  <div id="html-paste-options-ctr" class="row">
-  	    <label for="html-paste-options"data-i18n="labelPasteOptions"></label>
-	    <br/>
-	    <select id="html-paste-options" class="browser-style">
-	      <option value="1" data-i18n="pasteOptFormatted"></option>
-	      <option value="2" data-i18n="pasteOptRawHTML"></option>
-            </select>
-	  </div>
-	  
-	  <div id="paste-formatted-opts" class="indent browser-style">
-	    <input type="checkbox" id="html-auto-line-break"/><label id="html-auto-line-break-label" for="html-auto-line-break" data-i18n="cbAutoLineBreak"></label>
-	    <p class="note" data-i18n="htmlPasteDesc"></p>
-          </div>
 	  <div id="enable-shortcut-key-ctr" class="row browser-style">
 	    <input type="checkbox" id="enable-shortcut-key"/><label id="enable-shortcut-key-label" for="enable-shortcut-key" data-i18n="prefsShortcutMode"></label>
 	    <label id="shortcut-key-prefix-modifiers"></label>
@@ -90,60 +143,24 @@
 	    <input type="number" id="auto-inc-plchldrs-start-val" min="0" value="0"/>
 	  </row>
         </fieldset>
-      </div>
+      </div> <!-- /prefpane-paste -->
 
-      <fieldset id="general-options">
-	<legend data-i18n="prefsHdgGeneralOptions"></legend>
+      <div id="prefpane-sync-clippings" class="tab-panel">
+	<fieldset id="sync-options">
+	  <legend data-i18n="syncClippings"></legend>
 
-	<div class="row browser-style">
-	  <input type="checkbox" id="always-save-src-url"/><label for="always-save-src-url" data-i18n="cbAlwaysSaveSrcURL"></label>
-        </div>
-	<div class="row browser-style">
-	  <input type="checkbox" id="check-spelling"/><label for="check-spelling" data-i18n="cbCheckSpelling"></label>
-	</div>
+	  <div class="row browser-style">
+	    <p id="sync-intro" class="description"></p>
+	    <p id="sync-hlp-cta" class="description"><a id="show-sync-help" href="#"><span data-i18n="syncLearnMore"></span></a></p>
 
-	<div class="row browser-style">
-	  <input type="checkbox" id="backup-reminder"/><label for="backup-reminder" data-i18n="backupRemind"></label>
-          <select id="backup-reminder-freq" class="browser-style">
-	    <option value="1" data-i18n="backupRemFreqDaily"></option>
-	    <option value="5" data-i18n="backupRemFreqTwoDays"></option>
-	    <option value="6" data-i18n="backupRemFreqThreeDays"></option>
-	    <option value="7" data-i18n="backupRemFreqFiveDays"></option>
-            <option value="2" data-i18n="backupRemFreqWeekly"></option>
-	    <option value="4" data-i18n="backupRemFreqTwoWeeks"></option>
-            <option value="3" data-i18n="backupRemFreqMonthly"></option>
-	  </select>
-	  <label for="backup-reminder-freq" data-i18n="backupRemDays"></label>
-	</div>
-
-	<div class="row indent browser-style">
-         <input type="checkbox" id="skip-backup-if-no-chg"/><label id="skip-backup-label" for="skip-backup-if-no-chg" data-i18n="backupRemSkip"></label>
-        </div>
-
-	<div class="row browser-style">
-	  <input type="checkbox" id="backup-filename-with-date"/><label for="backup-filename-with-date" data-i18n="cbBackupFilenameWithDate"></label>
-	</div>
-
-        <div class="row">
-          <button id="wnds-dlgs-settings" data-i18n="wndsAndDlgsOpts"></button>
-        </div>
-      </fieldset>
-
-      <fieldset id="sync-options">
-	<legend data-i18n="syncClippings"></legend>
-
-	<div class="row browser-style">
-	  <p id="sync-intro" class="description"></p>
-	  <p id="sync-hlp-cta" class="description"><a id="show-sync-help" href="#"><span data-i18n="syncLearnMore"></span></a></p>
-
-	  <p id="sync-status"></p>
-        </div>
-	<div class="row">
-	  <button id="sync-settings" data-i18n="syncSettings"></button>
-	  <button id="toggle-sync"></button>
-	</div>
-
-      </fieldset>	
+	    <p id="sync-status"></p>
+	  </div>
+	  <div class="row">
+	    <button id="sync-settings" data-i18n="syncSettings"></button>
+	    <button id="toggle-sync"></button>
+	  </div>
+	</fieldset>	
+      </div> <!-- /prefpane-sync-clippings -->
     </main>
 
     <!-- Dialog boxes -->

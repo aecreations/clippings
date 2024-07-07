@@ -58,6 +58,10 @@ $(async () => {
   let lang = browser.i18n.getUILanguage();
   document.body.dataset.locale = lang;
 
+  $("#preftab-general-btn").on("click", switchPrefsPanel);
+  $("#preftab-paste-btn").on("click", switchPrefsPanel);
+  $("#preftab-sync-clippings-btn").on("click", switchPrefsPanel);
+
   $("#sync-intro").html(sanitizeHTML(browser.i18n.getMessage("syncIntro")));
 
   let hostApp = browser.i18n.getMessage("hostAppFx");
@@ -66,16 +70,18 @@ $(async () => {
 
   initDialogs();
 
-  $("#html-paste-options").on("change", aEvent => {
-    let pasteOpt = aEvent.target.value;
-    if (pasteOpt == aeConst.HTMLPASTE_AS_FORMATTED) {
-      $("#paste-formatted-opts").fadeIn();
-    }
-    else {
-      $("#paste-formatted-opts").fadeOut();
-    }
+  $("#paste-opt-formatted").click(aEvent => {
+    $("#html-auto-line-break").prop("disabled", false);
+    $("#html-paste-note").removeClass("disabled");
+    aePrefs.setPrefs({htmlPaste: aEvent.target.value});
   });
 
+  $("#paste-opt-raw-html").click(aEvent => {
+    $("#html-auto-line-break").prop("disabled", true);
+    $("#html-paste-note").addClass("disabled");
+    aePrefs.setPrefs({htmlPaste: aEvent.target.value});
+  });
+  
   $("#toggle-sync").click(async (aEvent) => {
     let syncClippings = await aePrefs.getPref("syncClippings");
     if (syncClippings) {
@@ -111,15 +117,25 @@ $(async () => {
   $("#sync-clippings-help-dlg > .dlg-content").html(sanitizeHTML(syncHlpTxt));
 
   let prefs = await aePrefs.getAllPrefs();
-  $("#html-paste-options").val(prefs.htmlPaste).change(aEvent => {
-    aePrefs.setPrefs({ htmlPaste: aEvent.target.value });
-  });
   
-  $("#html-auto-line-break").attr("checked", prefs.autoLineBreak).click(aEvent => {
+  if (prefs.htmlPaste == aeConst.HTMLPASTE_AS_FORMATTED) {
+    $("#paste-opt-formatted").prop("checked", true);
+    $("#paste-opt-raw-html").prop("checked", false);
+    $("#html-auto-line-break").prop("disabled", false);
+    $("#html-paste-note").removeClass("disabled");
+  }
+  else if (prefs.htmlPaste == aeConst.HTMLPASTE_AS_IS) {
+    $("#paste-opt-formatted").prop("checked", false);
+    $("#paste-opt-raw-html").prop("checked", true);
+    $("#html-auto-line-break").prop("disabled", true);
+    $("#html-paste-note").addClass("disabled");
+  }
+  
+  $("#html-auto-line-break").prop("checked", prefs.autoLineBreak).click(aEvent => {
     aePrefs.setPrefs({ autoLineBreak: aEvent.target.checked });
   });
 
-  $("#enable-shortcut-key").attr("checked", prefs.keyboardPaste).click(aEvent => {
+  $("#enable-shortcut-key").prop("checked", prefs.keyboardPaste).click(aEvent => {
     aePrefs.setPrefs({ keyboardPaste: aEvent.target.checked })
   });
 
@@ -127,19 +143,19 @@ $(async () => {
     aePrefs.setPrefs({ autoIncrPlcHldrStartVal: aEvent.target.valueAsNumber });
   });
 
-  $("#always-save-src-url").attr("checked", prefs.alwaysSaveSrcURL).click(aEvent => {
+  $("#always-save-src-url").prop("checked", prefs.alwaysSaveSrcURL).click(aEvent => {
     aePrefs.setPrefs({ alwaysSaveSrcURL: aEvent.target.checked });
   });
 
-  $("#check-spelling").attr("checked", prefs.checkSpelling).click(aEvent => {
+  $("#check-spelling").prop("checked", prefs.checkSpelling).click(aEvent => {
     aePrefs.setPrefs({ checkSpelling: aEvent.target.checked });
   });
 
-  $("#backup-filename-with-date").attr("checked", prefs.backupFilenameWithDate).click(aEvent => {
+  $("#backup-filename-with-date").prop("checked", prefs.backupFilenameWithDate).click(aEvent => {
     aePrefs.setPrefs({ backupFilenameWithDate: aEvent.target.checked });
   });
 
-  $("#backup-reminder").attr("checked", (prefs.backupRemFrequency != aeConst.BACKUP_REMIND_NEVER)).click(async (aEvent) => {
+  $("#backup-reminder").prop("checked", (prefs.backupRemFrequency != aeConst.BACKUP_REMIND_NEVER)).click(async (aEvent) => {
     if (aEvent.target.checked) {
       $("#backup-reminder-freq").prop("disabled", false);
       $("#skip-backup-if-no-chg").prop("disabled", false);
@@ -153,7 +169,7 @@ $(async () => {
     else {
       $("#backup-reminder-freq").prop("disabled", true);
       $("#skip-backup-if-no-chg").prop("disabled", true);
-      $("#skip-backup-label").attr("disabled", true);
+      $("#skip-backup-label").prop("disabled", true);
       await aePrefs.setPrefs({ backupRemFrequency: aeConst.BACKUP_REMIND_NEVER });
     }
 
@@ -182,7 +198,7 @@ $(async () => {
     browser.runtime.sendMessage({msgID: "set-backup-notifcn-intv"});
   });   
 
-  $("#skip-backup-if-no-chg").attr("checked", prefs.skipBackupRemIfUnchg).click(aEvent => {
+  $("#skip-backup-if-no-chg").prop("checked", prefs.skipBackupRemIfUnchg).click(aEvent => {
     aePrefs.setPrefs({skipBackupRemIfUnchg: aEvent.target.checked});
   });
 
@@ -333,6 +349,29 @@ $(window).keydown(aEvent => {
     aeInterxn.suppressBrowserShortcuts(aEvent, aeConst.DEBUG);
   }
 });
+
+
+function switchPrefsPanel(aEvent)
+{
+  let id = aEvent.target.id;
+
+  if (id == "preftab-general-btn") {
+    $("#preftab-paste-btn, #preftab-sync-clippings-btn").removeClass("active-tab");
+    $("#prefpane-paste, #prefpane-sync-clippings").removeClass("active-tab-panel");
+    $("#prefpane-general").addClass("active-tab-panel");
+  }
+  else if (id == "preftab-paste-btn") {
+    $("#preftab-general-btn, #preftab-sync-clippings-btn").removeClass("active-tab");
+    $("#prefpane-general, #prefpane-sync-clippings").removeClass("active-tab-panel");
+    $("#prefpane-paste").addClass("active-tab-panel");
+  }
+  else if (id == "preftab-sync-clippings-btn") {   
+    $("#preftab-general-btn, #preftab-paste-btn").removeClass("active-tab");
+    $("#prefpane-general, #prefpane-paste").removeClass("active-tab-panel");
+    $("#prefpane-sync-clippings").addClass("active-tab-panel");
+  }
+  aEvent.target.classList.add("active-tab");
+}
 
 
 function initDialogs()
@@ -712,7 +751,7 @@ function initDialogs()
     this.find("#ext-name").text(this.extInfo.name);
     this.find("#ext-ver").text(browser.i18n.getMessage("aboutExtVer", this.extInfo.version));
     this.find("#ext-desc").text(this.extInfo.description);
-    this.find(".dlg-content #ext-home-pg").attr("href", this.extInfo.homePgURL);
+    this.find(".dlg-content #ext-home-pg").prop("href", this.extInfo.homePgURL);
   };
   
   gDialogs.about.onShow = async function ()
