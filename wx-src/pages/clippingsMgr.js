@@ -4818,9 +4818,10 @@ function initDialogs()
     this.inclSrcURLs = true;
     gSuppressAutoMinzWnd = true;
 
-    $("#export-format-list")[0].selectedIndex = this.FMT_CLIPPINGS_WX;
-    $("#format-description").text(this.fmtDesc[this.FMT_CLIPPINGS_WX]);
-    $("#include-src-urls").prop("checked", this.inclSrcURLs).prop("disabled", false);
+    this.find("#export-format-list")[0].selectedIndex = this.FMT_CLIPPINGS_WX;
+    this.find("#format-description").text(this.fmtDesc[this.FMT_CLIPPINGS_WX]);
+    this.find("#include-src-urls").prop("checked", this.inclSrcURLs).prop("disabled", false);
+    this.find("#export-incl-separators").prop("checked", true);
   };
 
   gDialogs.exportToFile.onShow = function ()
@@ -4910,11 +4911,6 @@ function initDialogs()
         gSuppressAutoMinzWnd = false;
       });
     }
-  };
-
-  gDialogs.exportToFile.onUnload = function ()
-  {
-    this.find("#export-incl-separators").prop("checked", true);
   };
 
   gDialogs.importConfirmMsgBox = new aeDialog("#import-confirm-msgbox");
