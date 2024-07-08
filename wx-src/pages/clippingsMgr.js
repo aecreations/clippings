@@ -6078,7 +6078,7 @@ function updateDisplay(aEvent, aData)
         $("#item-properties").addClass("folder-only");
         $("#clipping-name").prop("disabled", true);
         $("#clipping-text").val("").hide();
-        $("#options-bar, #placeholder-toolbar").hide();
+        $("#source-url-bar, #options-bar, #placeholder-toolbar").hide();
       }
       else {
         $("#move, #delete").prop("disabled", false);
