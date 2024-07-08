@@ -1151,6 +1151,16 @@
     "description": "Drop-down menu option for the 'Show assigned shortcut key' option in the extension preferences page"
   },
 
+  "shctDispParen": {
+    "message": "Parentheses (S)",
+    "description": "Drop-down menu option for the 'Show assigned shortcut key' option in the extension preferences page"
+  },
+
+  "shctDispSqBkt": {
+    "message": "Square brackets [S]",
+    "description": "Drop-down menu option for the 'Show assigned shortcut key' option in the extension preferences page"
+  },
+
   "cbBackupFilenameWithDate": {
     "message": "Add date to backup file name",
     "description": "Checkbox option in extension preferences page"

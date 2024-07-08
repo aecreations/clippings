@@ -941,6 +941,17 @@ function getContextMenuData(aFolderID, aPrefs)
               menuItemData.label = aItem.label;
             }
 
+            if ("shortcutKey" in aItem && aItem.shortcutKey != "" && aPrefs.showShctKey) {
+              let shctKey = "";
+              if (aPrefs.showShctKeyDispStyle == aeConst.SHCTKEY_DISPLAY_SQ_BRKT) {
+                shctKey = ` [${aItem.shortcutKey}]`;
+              }
+              else {
+                shctKey = ` (${aItem.shortcutKey})`;
+              }
+              menuItemData.title += shctKey;
+            }
+
             if ("displayOrder" in aItem) {
               menuItemData.displayOrder = aItem.displayOrder;
             }

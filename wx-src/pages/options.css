@@ -414,8 +414,13 @@ body[data-locale="fr"] #skip-backup-label {
     letter-spacing: -0.25px;
 }
 
+#shct-key-in-menu-opt-label {
+    margin-left: 2px;
+    vertical-align: -2px;
+}
+
 #wnds-dlgs-settings {
-    margin-top: 14px;
+    margin-top: 12px;
 }
 
 #sync-intro {

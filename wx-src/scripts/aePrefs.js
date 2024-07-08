@@ -63,6 +63,8 @@ let aePrefs = {
     compressSyncData: true,
     isSyncReadOnly: false,
     clippingsMgrAutoShowStatusBar: false,
+    showShctKey: false,
+    showShctKeyDispStyle: aeConst.SHCTKEY_DISPLAY_PARENS,
     sidebarToolbar: true,
     sidebarSearchBar: true,
   },
@@ -275,6 +277,8 @@ let aePrefs = {
       isSyncReadOnly: false,
       defDlgBtnFollowsFocus: true,
       clippingsMgrAutoShowStatusBar: false,
+      showShctKey: false,
+      showShctKeyDispStyle: aeConst.SHCTKEY_DISPLAY_PARENS,
       sidebarToolbar: true,
       sidebarSearchBar: true,
     };

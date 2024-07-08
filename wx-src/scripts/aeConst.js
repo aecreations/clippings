@@ -20,6 +20,10 @@ const aeConst = Object.freeze({
   PASTEACTION_SHORTCUT_KEY:   1,
   PASTEACTION_SEARCH_CLIPPING: 2,
 
+  // Display of assigned shortcut key in Clippings menu
+  SHCTKEY_DISPLAY_PARENS: 0,
+  SHCTKEY_DISPLAY_SQ_BRKT: 1,
+
   // Special folder IDs
   ROOT_FOLDER_ID: 0,
   DELETED_ITEMS_FLDR_ID: -1,
