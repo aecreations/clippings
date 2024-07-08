@@ -632,11 +632,11 @@ function buildClippingsTreeHelper(aFolderID)
           folderNode.extraClasses = "ae-synced-clippings-fldr";
         }
 
-        if (! ("displayOrder" in aItem)) {
-          folderNode.displayOrder = 0;
+        if ("displayOrder" in aItem) {
+          folderNode.displayOrder = aItem.displayOrder;
         }
         else {
-          folderNode.displayOrder = aItem.displayOrder;
+          folderNode.displayOrder = 0;
         }
 
         if ("sid" in aItem) {
@@ -657,11 +657,16 @@ function buildClippingsTreeHelper(aFolderID)
             clippingNode.extraClasses = `ae-clipping-label-${aItem.label}`;
           }
 
-          if (! ("displayOrder" in aItem)) {
-            clippingNode.displayOrder = 0;
+          if ("displayOrder" in aItem) {
+            clippingNode.displayOrder = aItem.displayOrder;
           }
           else {
-            clippingNode.displayOrder = aItem.displayOrder;
+            clippingNode.displayOrder = 0;
+          }
+
+          if (aItem.separator) {
+            clippingNode.title = "<hr>";
+            clippingNode.extraClasses = "ae-separator";
           }
 
           rv.push(clippingNode);
