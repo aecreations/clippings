@@ -527,12 +527,7 @@ function buildClippingsTree()
           name: browser.i18n.getMessage("insClipping"),
           className: "ae-menuitem",
           visible(aItemKey, aOpt) {
-            let tree = getClippingsTree();
-            let selectedNode = tree.activeNode;
-            if (!selectedNode || selectedNode.isFolder()) {
-              return false;
-            }
-            return true;
+            return (!isFolderSelected() && !isSeparatorSelected());
           }
         },
         copyClippingText: {
@@ -544,12 +539,7 @@ function buildClippingsTree()
 	  },
 	  ***/
           visible(aItemKey, aOpt) {
-            let tree = getClippingsTree();
-            let selectedNode = tree.activeNode;
-            if (!selectedNode || selectedNode.isFolder()) {
-              return false;
-            }
-            return true;
+            return (!isFolderSelected() && !isSeparatorSelected());
           }
         },
         gotoSrcURL: {
@@ -561,12 +551,7 @@ function buildClippingsTree()
 	  },
 	  ***/
           visible(aItemKey, aOpt) {
-            let tree = getClippingsTree();
-            let selectedNode = tree.activeNode;
-            if (!selectedNode || selectedNode.isFolder()) {
-              return false;
-            }
-            return true;
+            return (!isFolderSelected() && !isSeparatorSelected());
           }
         },
         custzSeparator: {
@@ -575,6 +560,9 @@ function buildClippingsTree()
             let tree = getClippingsTree();
             let selectedNode = tree.activeNode;
             if (! selectedNode) {
+              return false;
+            }
+            if (isSeparatorSelected()) {
               return false;
             }
             if (selectedNode.isFolder()) {
@@ -817,6 +805,27 @@ function unsetEmptyClippingsState()
   gIsClippingsTreeEmpty = false;
 }
 
+
+function isFolderSelected()
+{
+  let selectedNode = getClippingsTree().activeNode;
+
+  if (! selectedNode) {
+    return undefined;
+  }
+  return selectedNode.isFolder();
+}
+
+
+function isSeparatorSelected()
+{
+  let selectedNode = getClippingsTree().activeNode;
+
+  if (! selectedNode) {
+    return undefined;
+  }
+  return selectedNode.extraClasses == "ae-separator";
+}
 
 
 function updateDisplay(aEvent, aData)
