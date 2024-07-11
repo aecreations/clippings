@@ -16,6 +16,11 @@ const aeConst = Object.freeze({
   HTMLPASTE_AS_FORMATTED: 1,
   HTMLPASTE_AS_IS:        2,
 
+  // Copy clipping text
+  COPY_AS_HTML: 1,
+  COPY_AS_PLAIN_HTML: 2,
+  COPY_AS_PLAIN: 3,
+
   // Keyboard pasting mode
   PASTEACTION_SHORTCUT_KEY:   1,
   PASTEACTION_SEARCH_CLIPPING: 2,

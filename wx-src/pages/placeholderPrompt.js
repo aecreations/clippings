@@ -8,6 +8,7 @@ const WNDH_PLCHLDR_MULTI = 318;
 const WNDH_PLCHLDR_MULTI_SHORT = 272;
 const WNDH_PLCHLDR_MULTI_VSHORT = 212;
 const DLG_HEIGHT_ADJ_WINDOWS = 20;
+const DLG_HEIGHT_ADJ_COPY_MODE = 20;
 
 const REGEXP_CUSTOM_PLACEHOLDER = /\$\[([\w\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)(\{([\w \-\.\?_\/\(\)!@#%&;:,'"$£¥€*¡¢\u{0080}-\u{10FFFF}\|])+\})?\]/mu;
 
@@ -17,6 +18,7 @@ let gPlaceholdersWithDefaultVals = null;
 let gSamePlchldrs = {};
 let gClippingContent = null;
 let gBrowserTabID = null;
+let gDlgMode = 0;
 
 
 // DOM utility
@@ -30,6 +32,11 @@ function sanitizeHTML(aHTMLStr)
 $(async () => {
   let params = new URLSearchParams(window.location.search);
   gBrowserTabID = Number(params.get("tabID"));
+  gDlgMode = Number(params.get("mode"));
+
+  if (gDlgMode > 0) {
+    document.title = browser.i18n.getMessage("mnuCopyClipTxt");
+  }
 
   let platform = await browser.runtime.getPlatformInfo();
   document.body.dataset.os = gOS = platform.os;
@@ -109,6 +116,10 @@ $(async () => {
     if (gOS == "win") {
       height += DLG_HEIGHT_ADJ_WINDOWS;
     }
+
+    if (gDlgMode > 0) {
+      height += DLG_HEIGHT_ADJ_COPY_MODE;
+    }
     
     await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, {height});
 
@@ -155,6 +166,10 @@ $(async () => {
       firstInputElt.select();
     }
     firstInputElt.focus();
+  }
+
+  if (gDlgMode > 0) {
+    $("#copy-mode-opt").show();
   }
 
   $("#btn-accept").click(aEvent => { accept(aEvent) });
@@ -262,12 +277,28 @@ function accept(aEvent)
     }
   }
 
-  browser.runtime.sendMessage({
-    msgID: "paste-clipping-with-plchldrs",
-    processedContent: content,
-    browserTabID: gBrowserTabID,
-  });
+  let msg;
+  if (gDlgMode > 0) {
+    msg = {
+      msgID: "copy-clipping-with-plchldrs",
+      copyMode: gDlgMode,
+    }
+    if ($("#skip-filling-plchldrs").prop("checked")) {
+      msg.processedContent = gClippingContent;
+    }
+    else {
+      msg.processedContent = content;
+    }
+  }
+  else {
+    msg = {
+      msgID: "paste-clipping-with-plchldrs",
+      processedContent: content,
+      browserTabID: gBrowserTabID,
+    };
+  }
   
+  browser.runtime.sendMessage(msg);
   closeDlg();
 }
 

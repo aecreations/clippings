@@ -1573,21 +1573,36 @@ let gCmd = {
       return;
     }
 
-    let id = parseInt(selectedNode.key);
-    let clipping = await gClippingsDB.clippings.get(id);
+    let perms = await browser.permissions.getAll();
+    if (! perms.permissions.includes("clipboardWrite")) {
+      // TO DO: Put the following message in a proper modal dialog,
+      // which should be opened here.
+      // Once the dialog is displayed, exit this function.
+      window.alert(`${browser.i18n.getMessage('permReqTitle')}\n\n  • ${browser.i18n.getMessage('extPrmClipbdW')}\n\n${browser.i18n.getMessage('extPermInstr')}`);
+      return;
+    }
+
+    let clippingID = parseInt(selectedNode.key);
+    let clipping = await gClippingsDB.clippings.get(clippingID);
     if (! clipping) {
-      throw new Error("No clipping found for ID " + id);
+      throw new Error("No clipping found for ID " + clippingID);
     }
 
     let type;
     let isFormatted = aeClippings.hasHTMLTags(clipping.content);
     if (isFormatted) {
-      // TO DO: Update aeDialog library to handle buttons when setting up
-      // keyboard navigation.
+      // TO DO: Why is aeDialog library unable to handle buttons when setting up
+      // keyboard navigation??
       gDialogs.copyClippingTextFormat.showModal(false);
       return;
     }
     else {
+      browser.runtime.sendMessage({
+        msgID: "copy-clipping",
+        clippingID,
+        copyFormat: aeConst.COPY_AS_PLAIN,
+      });
+      // TO DO: Move the following to the background script.
       type = "text/plain";
     }
 
@@ -4196,96 +4211,45 @@ function initDialogs()
   initIntroBannerAndHelpDlg();
 
   gDialogs.copyClippingTextFormat = new aeDialog("#copy-clipping-txt-fmt-dlg");
-  gDialogs.copyClippingTextFormat.getClippingText = async function ()
+  gDialogs.copyClippingTextFormat.getClippingID = function ()
   {
     let rv = null;
     let tree = getClippingsTree();
     let selectedNode = tree.activeNode;
+    if (selectedNode.isFolder()) {
+      throw new TypeError("The selected tree node is not a clipping!");
+    }
+    
     let id = parseInt(selectedNode.key);
-    let clipping = await gClippingsDB.clippings.get(id);
-    rv = clipping.content;
+    rv = id;
 
     return rv;
   };
 
+  gDialogs.copyClippingTextFormat.copyClippingText = function (aButtonID)
+  {
+    let copyFormat;
+    if (aButtonID == "copy-cliptxt-html") {
+      copyFormat = aeConst.COPY_AS_HTML;
+    }
+    else if (aButtonID == "copy-cliptxt-plain-html") {
+      copyFormat = aeConst.COPY_AS_PLAIN_HTML;
+    }
+    else {
+      copyFormat = aeConst.COPY_AS_PLAIN;
+    }
+
+    browser.runtime.sendMessage({
+      msgID: "copy-clipping",
+      clippingID: this.getClippingID(),
+      copyFormat,
+    });
+  };
+
   gDialogs.copyClippingTextFormat.onFirstInit = async function ()
   {
-    this.find("#copy-cliptxt-html").on("click", async (aEvent) => {
-      let clippingTxt = await this.getClippingText();
-      if (! clippingTxt) {
-        warn("Clippings/wx::clippingsMgr.js: gDialogs.copyClippingTextFormat: No clipping found for ID " + id);
-        this.close();
-      }
-
-      let type = "text/html";
-      let blob = new Blob([clippingTxt], {type});
-      let data = [new ClipboardItem({[type]: blob})];
-      try {
-        await navigator.clipboard.write(data);
-      }
-      catch (e) {
-        console.warn("Error copying clipping to clipboard\n" + e);
-      }
-      this.close();
-    });
-
-    this.find("#copy-cliptxt-plain").on("click", async (aEvent) => {
-      let clippingTxt = await this.getClippingText();
-      if (! clippingTxt) {
-        warn("Clippings/wx::clippingsMgr.js: gDialogs.copyClippingTextFormat: No clipping found for ID " + id);
-        this.close();
-      }
-      
-      let isConvFailed = false;
-      try {
-        clippingTxt = jQuery(clippingTxt).text();
-      }
-      catch (e) {
-        isConvFailed = true;
-      }
-
-      if (isConvFailed) {
-        // Clipping text may contain partial HTML. Try again by enclosing the
-        // content in HTML tags.
-        let content = "<div>" + clippingTxt + "</div>";
-        try {
-          clippingTxt = jQuery(content).text();
-        }
-        catch (e) {
-          // Clipping text contains unrecognized markup, e.g. PHP or ASP.net tags.
-          // In this case, keep the clipping content intact.
-          warn("Clippings/wx::clippingsMgr.js: gDialogs.copyClippingTextFormat: Unable to strip HTML tags from clipping content!\n" + e);
-        }
-      }
-
-      let type = "text/plain";
-      let blob = new Blob([clippingTxt], {type});
-      let data = [new ClipboardItem({[type]: blob})];
-      try {
-        await navigator.clipboard.write(data);
-      }
-      catch (e) {
-        console.warn("Error copying clipping to clipboard\n" + e);
-      }
-      this.close();
-    });
-
-    this.find("#copy-cliptxt-plain-html").on("click", async (aEvent) => {
-      let clippingTxt = await this.getClippingText();
-      if (! clippingTxt) {
-        warn("Clippings/wx::clippingsMgr.js: gDialogs.copyClippingTextFormat: No clipping found for ID " + id);
-        this.close();
-      }
-
-      let type = "text/plain";
-      let blob = new Blob([clippingTxt], {type});
-      let data = [new ClipboardItem({[type]: blob})];
-      try {
-        await navigator.clipboard.write(data);
-      }
-      catch (e) {
-        console.warn("Error copying clipping to clipboard\n" + e);
-      }
+    $("#copy-cliptxt-html, #copy-cliptxt-plain, #copy-cliptxt-plain-html").on("click", aEvent => {
+      this.copyClippingText(aEvent.target.id);
       this.close();
     });
   };

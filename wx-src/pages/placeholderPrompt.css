@@ -114,3 +114,9 @@ body[data-os="mac"] #plchldr-table {
 .duplicate-plchldr {
     display: none;
 }
+
+#copy-mode-opt {
+    display: none;
+    margin-top: 8px;
+    margin-left: 40px;
+}

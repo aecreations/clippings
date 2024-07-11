@@ -257,6 +257,11 @@
     "description": "User-facing description of the 'clipboardRead' extension permission"
   },
 
+  "extPrmClipbdW": {
+    "message": "Input data to the clipboard",
+    "description": "User-facing description of the 'clipboardWrite' extension permission"
+  },
+
   "extPermInstr": {
     "message": "To grant Clippings this permission, open Add-ons Manager, click on Clippings in the list of installed extensions, and then turn on the permission in the Permissions tab.",
     "description": "Instructions in the optional permission request dialog"
@@ -646,6 +651,11 @@
   "mnuCopyClipTxt": {
     "message": "Copy Clipping Text",
     "description": "Clippings Manager tree list context menu"
+  },
+
+  "copySkipPlchldrs": {
+    "message": "Skip filling in placeholders and copy with placeholders intact",
+    "description": "Checkbox option in the placeholder prompt dialog when copying clipping to clipboard"
   },
 
   "mnuGoToSrcURL": {

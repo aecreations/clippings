@@ -1579,11 +1579,11 @@ function openKeyboardPasteDlg(aTabID)
 }
 
 
-function openPlaceholderPromptDlg(aTabID)
+function openPlaceholderPromptDlg(aTabID, aDlgMode)
 {
   // TO DO: Same checking for cursor location as in the preceding function.
 
-  let url = browser.runtime.getURL("pages/placeholderPrompt.html?tabID=" + aTabID);
+  let url = browser.runtime.getURL(`pages/placeholderPrompt.html?tabID=${aTabID}&mode=${aDlgMode}`);
   let wndPpty = {
     type: "popup",
     width: 536,
@@ -1712,7 +1712,20 @@ async function getWndGeometryFromBrwsTab(aTabID)
 }
 
 
+function copyClippingText(aClippingID, aCopyMode)
+{
+  log("Clippings: copyClippingText(): Copy mode (1=copy as HTML-formatted, 2=copy as plain with HTML, 3=copy as plain): " + aCopyMode);
+  pasteOrCopyClippingByID(aClippingID, true, null, aCopyMode);
+}
+
+
 function pasteClippingByID(aClippingID, aIsExternalRequest, aTabID)
+{
+  pasteOrCopyClippingByID(aClippingID, aIsExternalRequest, aTabID, pasteOrCopyClippingByID.MODE_PASTE);
+}
+
+
+function pasteOrCopyClippingByID(aClippingID, aIsExternalRequest, aTabID, aMode)
 {
   let clippingsDB = aeClippings.getDB();
 
@@ -1725,11 +1738,11 @@ function pasteClippingByID(aClippingID, aIsExternalRequest, aTabID)
       }
 
       if (aClipping.parentFolderID == -1) {
-        throw new Error("Attempting to paste a deleted clipping!");
+        throw new Error("Attempting to copy or paste a deleted clipping!");
       }
 
       clipping = aClipping;
-      log(`Pasting clipping named "${clipping.name}"\nid = ${clipping.id}`);
+      log(`Copying/pasting the clipping named "${clipping.name}"\nid = ${clipping.id}`);
         
       return clippingsDB.folders.get(aClipping.parentFolderID);
     }).then(aFolder => {
@@ -1747,12 +1760,13 @@ function pasteClippingByID(aClippingID, aIsExternalRequest, aTabID)
         parentFolderName: parentFldrName
       };
 
-      pasteClipping(clippingInfo, aIsExternalRequest, aTabID);
+      processClipping(clippingInfo, aIsExternalRequest, aTabID, aMode);
     });
   }).catch(aErr => {
-    console.error("Clippings/wx: pasteClippingByID(): " + aErr);
+    console.error("Clippings/wx: pasteOrCopyClippingByID(): " + aErr);
   });
 }
+pasteOrCopyClippingByID.MODE_PASTE = 0;
 
 
 function pasteClippingByShortcutKey(aShortcutKey, aTabID)
@@ -1797,7 +1811,7 @@ function pasteClippingByShortcutKey(aShortcutKey, aTabID)
         parentFolderName: parentFldrName
       };
 
-      pasteClipping(clippingInfo, false, aTabID);
+      processClipping(clippingInfo, false, aTabID, pasteOrCopyClippingByID.MODE_PASTE);
     });
   }).catch(aErr => {
     console.error("Clippings/wx: pasteClippingByShortcutKey(): " + aErr);
@@ -1805,7 +1819,7 @@ function pasteClippingByShortcutKey(aShortcutKey, aTabID)
 }
 
 
-async function pasteClipping(aClippingInfo, aIsExternalRequest, aTabID)
+async function processClipping(aClippingInfo, aIsExternalRequest, aTabID, aMode)
 {
   let activeTabID = aTabID;
   if (aIsExternalRequest) {
@@ -1819,7 +1833,7 @@ async function pasteClipping(aClippingInfo, aIsExternalRequest, aTabID)
   }
 
   let processedCtnt = "";
-  log("Clippings/wx: pasteClipping(): Active tab ID: " + activeTabID);
+  log("Clippings/wx: processClipping(): Active tab ID: " + activeTabID);
 
   if (aeClippingSubst.hasNoSubstFlag(aClippingInfo.name)) {
     processedCtnt = aClippingInfo.text;
@@ -1846,12 +1860,17 @@ async function pasteClipping(aClippingInfo, aIsExternalRequest, aTabID)
       let plchldrsWithDefaultVals = aeClippingSubst.getCustomPlaceholderDefaultVals(processedCtnt, aClippingInfo);
       gPlaceholders.set(aClippingInfo.name, plchldrs, plchldrsWithDefaultVals, processedCtnt);
 
-      openPlaceholderPromptDlg(activeTabID);
+      openPlaceholderPromptDlg(activeTabID, aMode);
       return;
     }
   }
 
-  await pasteProcessedClipping(processedCtnt, activeTabID);
+  if (aMode == pasteOrCopyClippingByID.MODE_PASTE) {
+    await pasteProcessedClipping(processedCtnt, activeTabID);
+  }
+  else {
+    await copyProcessedClipping(processedCtnt, aMode);
+  }
 }
 
 
@@ -1884,6 +1903,47 @@ async function pasteProcessedClipping(aClippingContent, aTabID)
   log(msg);
   
   await browser.tabs.sendMessage(aTabID, msg);
+}
+
+
+async function copyProcessedClipping(aClippingContent, aCopyMode)
+{
+  let type = "text/plain";
+  if (aCopyMode == aeConst.COPY_AS_HTML) {
+    type = "text/html";
+  }
+  else if (aCopyMode == aeConst.COPY_AS_PLAIN && aeClippings.hasHTMLTags(aClippingContent)) {
+    let isConvFailed = false;
+    try {
+      aClippingContent = jQuery(aClippingContent).text();
+    }
+    catch (e) {
+      // Clipping text may contain partial HTML. Try again by enclosing the
+      // content in HTML tags.
+      isConvFailed = true;
+    }
+
+    if (isConvFailed) {
+      let content = "<div>" + aClippingContent + "</div>";
+      try {
+        aClippingContent = jQuery(content).text();
+      }
+      catch (e) {
+        // Clipping text contains unrecognized markup, e.g. PHP or ASP.net tags.
+        // In this case, keep the clipping content intact.
+        console.warn("Clippings: copyProcessedClipping(): Unable to strip HTML tags from clipping content!\n" + e);
+      }
+    }
+  }
+  
+  let blob = new Blob([aClippingContent], {type});
+  let data = [new ClipboardItem({[type]: blob})];
+  try {
+    await navigator.clipboard.write(data);
+  }
+  catch (e) {
+    console.warn("Clippings: copyProcessedClipping(): Error copying clipping to clipboard\n" + e);
+  }
 }
 
 
@@ -2174,6 +2234,13 @@ browser.runtime.onMessage.addListener(aRequest => {
 
   case "paste-clipping-with-plchldrs":
     return Promise.resolve(pasteProcessedClipping(aRequest.processedContent, aRequest.browserTabID));
+
+  case "copy-clipping":
+    copyClippingText(aRequest.clippingID, aRequest.copyFormat);
+    break;
+
+  case "copy-clipping-with-plchldrs":
+    return Promise.resolve(copyProcessedClipping(aRequest.processedContent, aRequest.copyMode));
 
   case "close-placeholder-prmt-dlg":
     resetWndID("placeholderPrmt");
