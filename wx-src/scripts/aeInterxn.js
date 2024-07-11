@@ -38,16 +38,22 @@ let aeInterxn = {
 
       dlgBtns?.forEach(aDlgBtn => {
         aDlgBtn.addEventListener("focus", aEvent => {
-          aDlg.querySelector(".dlg-accept").classList.remove("default");
-          dlgBtns.forEach(aOtherDlgBtns => {
-            aOtherDlgBtns.classList.remove("default");
-          });
-          aEvent.target.classList.add("default");
+          let acceptBtn = aDlg.querySelector(".dlg-accept");
+          if (acceptBtn) {
+            acceptBtn.classList.remove("default");
+            dlgBtns.forEach(aOtherDlgBtns => {
+              aOtherDlgBtns.classList.remove("default");
+            });
+            aEvent.target.classList.add("default");
+          }
         });
 
         aDlgBtn.addEventListener("blur", aEvent => {
           aEvent.target.classList.remove("default");
-          aDlg.querySelector(".dlg-accept").classList.add("default");
+          let acceptBtn = aDlg.querySelector(".dlg-accept");
+          if (acceptBtn) {
+            acceptBtn.classList.add("default");
+          }
         });
       });
     });
