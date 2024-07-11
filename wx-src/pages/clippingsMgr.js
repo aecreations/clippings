@@ -1591,9 +1591,7 @@ let gCmd = {
     let type;
     let isFormatted = aeClippings.hasHTMLTags(clipping.content);
     if (isFormatted) {
-      // TO DO: Why is aeDialog library unable to handle buttons when setting up
-      // keyboard navigation??
-      gDialogs.copyClippingTextFormat.showModal(false);
+      gDialogs.copyClippingTextFormat.showModal();
       return;
     }
     else {
@@ -4252,6 +4250,11 @@ function initDialogs()
       this.copyClippingText(aEvent.target.id);
       this.close();
     });
+  };
+
+  gDialogs.copyClippingTextFormat.onInit = function ()
+  {
+    $("#copy-cliptxt-html")[0].focus();
   };
 
   gDialogs.shctKeyConflict = new aeDialog("#shortcut-key-conflict-msgbox");

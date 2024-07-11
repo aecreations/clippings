@@ -1080,34 +1080,30 @@ body[data-os="win"] .browser-style > input[type="checkbox"] + label {
 }
 
 #copy-clipping-txt-fmt-dlg {
-    --width: 236px;
-    --height: 150px;
-    top: 100px;
-    padding: 0 0px 12px 0;
+    --width: 290px;
+    --height: 206px;
+    top: 80px;
+    left: 128px;
 }
 
 #copy-clipping-txt-fmt-dlg .panel-hdr {
-    margin-left: 8px;
-    margin-bottom: 6px;
-    margin-top: 6px;
+    margin-top: 0;
+    margin-bottom: 12px;
     font-weight: bold;
 }
 
-#copy-clipping-txt-fmt-dlg .toolbar-button {
+#copy-clipping-txt-fmt-dlg .copy-fmt-btn {
     min-width: unset;
     width: 100%;
-    text-align: left;
+    height: 28px;
+    margin-bottom: 6px;
     font-size: 12px !important;
-    height: 24px;
-    border-radius: unset;
-}
-
-#copy-clipping-txt-fmt-dlg .row:first-of-type {
-    border-top: 1px solid var(--color-cxtmenu-separator);
+    text-align: left;
 }
 
 #copy-clipping-txt-fmt-dlg .last-row {
-    border-bottom: 1px solid var(--color-cxtmenu-separator);
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 8px;
 }
 
 #custom-placeholder-dlg {
