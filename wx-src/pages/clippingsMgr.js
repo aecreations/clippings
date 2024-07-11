@@ -1588,11 +1588,9 @@ let gCmd = {
       throw new Error("No clipping found for ID " + clippingID);
     }
 
-    let type;
     let isFormatted = aeClippings.hasHTMLTags(clipping.content);
     if (isFormatted) {
       gDialogs.copyClippingTextFormat.showModal();
-      return;
     }
     else {
       browser.runtime.sendMessage({
@@ -1600,17 +1598,6 @@ let gCmd = {
         clippingID,
         copyFormat: aeConst.COPY_AS_PLAIN,
       });
-      // TO DO: Move the following to the background script.
-      type = "text/plain";
-    }
-
-    let blob = new Blob([clipping.content], {type});
-    let data = [new ClipboardItem({[type]: blob})];
-    try {
-      await navigator.clipboard.write(data);
-    }
-    catch (e) {
-      console.warn("Error copying clipping to clipboard\n" + e);
     }
   },
 
