@@ -8,6 +8,7 @@
 @import url("../style/laf.css");
 @import url("../style/lightbox.css");
 @import url("../style/clippingTree.css");
+@import url("../style/contextMenu.css");
 @import url("../style/searchbox.css");
 
 
@@ -26,14 +27,6 @@
     --color-reload-sync-fldr-btn-hover-border: #b1b1b1;
     --color-reload-sync-fldr-btn-active-bkgd: #d7d7db;
     --color-reload-sync-fldr-btn-active-border: #b1b1b1;
-
-    --color-cxtmenu-bkgd: #fff;
-    --color-cxtmenu-border: #bebebe;
-    --color-cxtmenu-text: #2f2f2f;
-    --color-cxtmenu-menuitem-hover-bkgd: rgba(12, 12, 13, 0.2);
-    --color-cxtmenu-menuitem-hover-text: #0c0c0d;
-    --color-cxtmenu-menuitem-active-bkgd: rgba(12, 12, 13, 0.3);
-    --color-cxtmenu-separator: #e6e6e6;
 
     --url-toolbar-btn-open-clippings-mgr: url("../img/clipping.svg");
     --url-toolbar-btn-help: url("../img/help.svg");
@@ -56,14 +49,6 @@
 	--color-reload-sync-fldr-btn-hover-border: #b1b1b3;
 	--color-reload-sync-fldr-btn-active-bkgd: #737373;
 	--color-reload-sync-fldr-btn-active-border: #737373;
-
-	--color-cxtmenu-bkgd: #4a4a4f;
-	--color-cxtmenu-border: #38383d;
-	--color-cxtmenu-text: #f9f9fa;
-	--color-cxtmenu-menuitem-active-bkgd: #737373;
-	--color-cxtmenu-menuitem-hover-bkgd: #606060;
-	--color-cxtmenu-menuitem-hover-text: #fff;
-	--color-cxtmenu-separator: #737373;
 
 	--url-toolbar-btn-help: url("../img/help-dk.svg");
 	--url-icon-synced-clippings-fldr: url("../img/synced-clippings-dk.svg");
