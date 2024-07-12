@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const DEBUG_TREE = false;
 const TOOLBAR_HEIGHT = 28;
 
 let gEnvInfo;
@@ -298,7 +297,7 @@ let gCmd = {
       return;
     }
 
-    browser.tabs.create({url: clipping.sourceURL});
+    aeNavigator.gotoURL(clipping.sourceURL, aeNavigator.TARGET_NEW_TAB);
   },
 
   editInClippingsManager()
@@ -362,6 +361,9 @@ $(async () => {
   initSyncItemsIDLookupList();
 
   aeInterxn.init(gEnvInfo.os);
+
+  let wnd = await browser.windows.getCurrent();
+  aeNavigator.init(wnd.id);
 });
 
 

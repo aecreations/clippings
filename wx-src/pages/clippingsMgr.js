@@ -12,7 +12,6 @@ let gClippingsDB;
 let gPrefs;
 let gIsClippingsTreeEmpty;
 let gDialogs = {};
-let gOpenerWndID;
 let gIsMaximized;
 let gSuppressAutoMinzWnd;
 let gSyncedItemsIDs = new Set();
@@ -2743,7 +2742,7 @@ let gCmd = {
       return;
     }
 
-    gCmd.gotoURL(clipping.sourceURL);
+    aeNavigator.gotoURL(clipping.sourceURL, aeNavigator.TARGET_NEW_WINDOW);
   },
 
 
@@ -2781,34 +2780,6 @@ let gCmd = {
     });
   },
   
-
-  async gotoURL(aURL)
-  {
-    const DEFAULT_MAX_WIDTH = 1000;
-    const DEFAULT_MAX_HEIGHT = 720;
-
-    try {
-      let openerWnd = await browser.windows.get(gOpenerWndID);
-      browser.windows.create({
-        url: aURL,
-        type: "normal",
-        state: "normal",
-        width: openerWnd.width,
-        height: openerWnd.height,
-      });
-    }
-    catch (e) {
-      warn("Clippings/wx::clippingsMgr.js: gCmd.gotoURL(): " + e);
-
-      browser.windows.create({
-        url: aURL,
-        type: "normal",
-        state: "normal",
-        width: DEFAULT_MAX_WIDTH,
-        height: DEFAULT_MAX_HEIGHT,
-      });
-    }
-  },
 
   async pasteClipping(aClippingID)
   {
@@ -3483,7 +3454,8 @@ $(async () => {
   moment.locale(lang);
 
   let wndURL = new URL(window.location.href);
-  gOpenerWndID = Number(wndURL.searchParams.get("openerWndID"));
+  let openerWndID = Number(wndURL.searchParams.get("openerWndID"));
+  aeNavigator.init(openerWndID);
   gIsBackupMode = wndURL.searchParams.get("backupMode") || false;
   
   gIsMaximized = false;
@@ -5885,7 +5857,7 @@ function updateDisplay(aEvent, aData)
           $("#clipping-src-url").html(sanitizeHTML(`<a href="${aResult.sourceURL}">${aResult.sourceURL}</a>`));
           $("#clipping-src-url > a").click(async (aEvent) => {
             aEvent.preventDefault();
-            gCmd.gotoURL(aEvent.target.textContent);
+            aeNavigator.gotoURL(aEvent.target.textContent, aeNavigator.TARGET_NEW_WINDOW);
           });
         }
         else {
