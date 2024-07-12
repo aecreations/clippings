@@ -27,8 +27,10 @@
     --color-reload-sync-fldr-btn-hover-border: #b1b1b1;
     --color-reload-sync-fldr-btn-active-bkgd: #d7d7db;
     --color-reload-sync-fldr-btn-active-border: #b1b1b1;
+    --color-tree-splitter: #fbfbfb;
+    --color-tree-splitter-border: #b1b1b1;
 
-    --url-toolbar-btn-open-clippings-mgr: url("../img/clipping.svg");
+    --url-toolbar-btn-open-clippings-mgr: url("../img/clippings-root.svg");
     --url-toolbar-btn-help: url("../img/help.svg");
     --url-icon-synced-clippings-fldr: url("../img/synced-clippings.svg");
 
@@ -49,6 +51,8 @@
 	--color-reload-sync-fldr-btn-hover-border: #b1b1b3;
 	--color-reload-sync-fldr-btn-active-bkgd: #737373;
 	--color-reload-sync-fldr-btn-active-border: #737373;
+	--color-tree-splitter: #4a4a4f;
+	--color-tree-splitter-border: #4a4a4f;
 
 	--url-toolbar-btn-help: url("../img/help-dk.svg");
 	--url-icon-synced-clippings-fldr: url("../img/synced-clippings-dk.svg");
@@ -181,6 +185,10 @@ button, label {
 }
 
 #scroll-content {
+    order: 1;
+    flex: 1 1 auto;
+    align-self: stretch;
+    
     overflow-y: auto;
 }
 
@@ -260,4 +268,49 @@ ul.fancytree-container {
 
 .context-menu-separator {
     border-bottom: 1px solid var(--color-cxtmenu-separator);
+}
+
+#pane-splitter {
+    order: 2;
+    position: relative;
+    height: 2px;
+    background-color: var(--color-tree-splitter);
+    border-top: 1px solid var(--color-tree-splitter-border);
+    cursor: row-resize;
+}
+
+#preview-pane {
+    order: 3;
+    flex: none;
+    align-self: stretch;
+    height: 256px;
+}
+
+#preview-pane[type="folder"] {
+    background-image: url("../img/folder.svg");
+    background-size: 16px 16px;
+    background-repeat: no-repeat;
+    background-position: 4px 2px;
+}
+
+#preview-pane[type="clipping"] {
+    background-image: url("../img/clipping.svg");
+    background-size: 16px 16px;
+    background-repeat: no-repeat;
+    background-position: 4px 2px;
+}
+
+#item-name {
+    order: 1;
+    flex: 0 1 auto;
+    margin-left: 24px;
+}
+
+#preview-pane[type="separator"] #item-name {
+    margin-left: 0;
+}
+
+#clipping-content {
+    order: 2;
+    flex: 1 1 auto;
 }

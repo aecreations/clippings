@@ -27,10 +27,15 @@
 	</div>
       </div> <!-- /fixed-pos-content -->
 
-      <div id="scroll-content" class="vbox">
-        <div id="clippings-tree"></div>
-        <!-- TO DO: Splitter and preview pane -->
-
+      <div id="content" class="vbox">
+	<div id="scroll-content">
+	  <div id="clippings-tree"></div>
+	</div>
+	<div id="pane-splitter"></div>
+	<div id="preview-pane" class="vbox">
+          <input type="text" id="item-name" readonly/>
+          <textarea id="clipping-content" readonly></textarea>
+	</div>
       </div> <!-- /content -->
     </main>
 

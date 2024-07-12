@@ -4,6 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 const TOOLBAR_HEIGHT = 28;
+const PREVIEW_PANE_HEIGHT = 256;
 
 let gEnvInfo;
 let gPrefs;
@@ -378,6 +379,9 @@ function setScrollableContentHeight()
     cntHeight -= TOOLBAR_HEIGHT;
   }
 
+  // TO DO: Configurable preview pane visibility.
+  cntHeight -= PREVIEW_PANE_HEIGHT;
+
   $("#scroll-content").css({height: `${cntHeight}px`});
 }
 
@@ -728,9 +732,31 @@ function updateDisplay(aEvent, aData)
     return;
   }
 
-  log("Clippings::sidebar.js: Updating display...");
+  $("#item-name, #clipping-content").val('');
+  $("#item-name").prop("disabled", false);
 
-  // TO DO: Finish implementation
+  let selectedItemID = parseInt(aData.node.key);
+
+  if (aData.node.isFolder()) {
+    $("#preview-pane").attr("type", "folder");
+    gClippingsDB.folders.get(selectedItemID).then(aFolder => {
+      $("#item-name").val(aFolder.name);
+    });
+  }
+  else {
+    gClippingsDB.clippings.get(selectedItemID).then(aClipping => {
+      $("#item-name").val(aClipping.name);
+      $("#clipping-content").val(aClipping.content);
+
+      if (aClipping.separator) {
+        $("#preview-pane").attr("type", "separator");
+        $("#item-name").prop("disabled", true);
+      }
+      else {
+        $("#preview-pane").attr("type", "clipping");
+      }
+    });
+  }
 }
 
 
@@ -739,6 +765,7 @@ function updateDisplay(aEvent, aData)
 //
 
 browser.runtime.onMessage.addListener(aRequest => {
+  log(`Clippings::sidebar.js: Received message "${aRequest.msgID}"`);
   let resp = null;
 
   switch (aRequest.msgID) {
@@ -782,6 +809,7 @@ browser.storage.onChanged.addListener((aChanges, aAreaName) => {
   }
 
   setCustomizations();
+  setScrollableContentHeight();
 });
 
 
