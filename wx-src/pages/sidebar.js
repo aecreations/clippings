@@ -12,6 +12,7 @@ let gClippingsDB;
 let gIsClippingsTreeEmpty;
 let gSyncedItemsIDs = new Set();
 let gSyncedItemsIDMap = new Map();
+let gCustomizeDlg;
 
 let gSyncClippingsListener = {
   onActivate(aSyncFolderID)
@@ -329,6 +330,11 @@ let gCmd = {
     $("#pane-splitter, #preview-pane").toggle();
   },
 
+  customize()
+  {
+    gCustomizeDlg.showModal();
+  },
+
   showMiniHelp()
   {
     // TEMPORARY
@@ -368,11 +374,32 @@ $(async () => {
   buildClippingsTree();
   initSyncItemsIDLookupList();
 
+  initDialogs();
   aeInterxn.init(gEnvInfo.os);
 
   let wnd = await browser.windows.getCurrent();
   aeNavigator.init(wnd.id);
 });
+
+
+function initDialogs()
+{
+  gCustomizeDlg = new aeDialog("#customize-dlg");
+  gCustomizeDlg.onInit = function ()
+  {
+    $("#show-toolbar").prop("checked", gPrefs.sidebarToolbar).on("click", aEvent => {
+      aePrefs.setPrefs({sidebarToolbar: aEvent.target.checked});
+    });
+
+    $("#show-search-bar").prop("checked", gPrefs.sidebarSearchBar).on("click", aEvent => {
+      aePrefs.setPrefs({sidebarSearchBar: aEvent.target.checked});
+    });
+
+    $("#show-preview-pane").prop("checked", gPrefs.sidebarPreview).on("click", aEvent => {
+      aePrefs.setPrefs({sidebarPreview: aEvent.target.checked});
+    });
+  };
+}
 
 
 function setScrollableContentHeight()
@@ -515,6 +542,10 @@ function buildClippingsTree()
           gCmd.showHidePreviewPane();
           break;
 
+        case "customize":
+          gCmd.customize();
+          break;
+
         default:
           window.alert(browser.i18n.getMessage("msgUnavail"));
           break;
@@ -592,7 +623,7 @@ function buildClippingsTree()
           }
         },
 	togglePreviewPane: {
-	  name: "show/hide preview pane",
+	  name: "preview pane",
 	  className: "ae-menuitem",
           icon(aOpt, $itemElement, aItemKey, aItem) {
             if ($("#pane-splitter").css("display") != "none"

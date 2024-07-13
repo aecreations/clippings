@@ -304,6 +304,7 @@ ul.fancytree-container {
     order: 1;
     flex: 0 1 auto;
     margin-left: 24px;
+    font-size: 12px;
 }
 
 #preview-pane[type="separator"] #item-name {
@@ -313,4 +314,44 @@ ul.fancytree-container {
 #clipping-content {
     order: 2;
     flex: 1 1 auto;
+    font-size: 12px;
+}
+
+/* Sidebar dialogs */
+.lightbox {
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 12px;
+}
+
+.lightbox .dlg-hdg {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.lightbox > .dlg-btns {
+    right: 2px;
+}
+
+.lightbox .row {
+    width: 100%;
+    margin-bottom: 2px;
+}
+
+.lightbox label {
+    font-size: 12px;
+}
+
+#customize-dlg {
+    top: 88px;
+    --width: 180px;
+    --height: 154px;
+}
+
+#customize-dlg > .dlg-content > .row {
+    margin-left: 22px;
+    text-indent: -22px;
+    width: 152px;
 }

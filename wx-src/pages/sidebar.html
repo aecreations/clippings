@@ -39,6 +39,26 @@
       </div> <!-- /content -->
     </main>
 
+    <!-- Dialog boxes -->
+    <div id="lightbox-bkgrd-ovl" class="lightbox-bkgrd"></div>
+    <div id="customize-dlg" class="lightbox">
+      <div class="dlg-content">
+        <p class="dlg-hdg">customize</p>
+	<div class="row browser-style">
+	  <input type="checkbox" id="show-toolbar" class="checkbox-xs"><label for="show-toolbar">show toolbar</label>
+	</div>
+	<div class="row browser-style">
+	  <input type="checkbox" id="show-search-bar" class="checkbox-xs"><label for="show-search-bar">show search bar</label>
+	</div>
+	<div class="row browser-style">
+	  <input type="checkbox" id="show-preview-pane" class="checkbox-xs"><label for="show-preview-pane">show preview pane</label>
+	</div>
+      </div>
+      <div class="dlg-btns">
+	<button class="dlg-accept default" data-i18n="btnDone"></button>
+      </div>
+    </div>
+
     <script src="../lib/dexie/dexie.min.js"></script>
     <script src="../lib/jquery.js"></script>
     <script src="../lib/purify.min.js"></script>
