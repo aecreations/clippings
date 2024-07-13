@@ -53,8 +53,6 @@
     --color-th-border: #d4d4d4;
     --color-dlg-fieldset-border: #b1b1b1;
 
-    --url-contextmenu-checked-img: url("../img/checked.svg");
-    --url-contextmenu-submenu-arrow: url("../img/submenu-arrow.svg");
     --url-toolbar-btn-img-newClipping: url("../img/newClipping.svg");
     --url-toolbar-btn-img-newFolder: url("../img/newFolder.svg");
     --url-toolbar-btn-img-undo: url("../img/undo.svg");
@@ -125,8 +123,6 @@
 	--color-th-border: #737373;
 	--color-dlg-fieldset-border: #585858;
 
-	--url-contextmenu-checked-img: url("../img/checked-dk.svg");
-	--url-contextmenu-submenu-arrow: url("../img/submenu-arrow-dk.svg");
 	--url-toolbar-btn-img-newClipping: url("../img/newClipping.svg");
 	--url-toolbar-btn-img-newFolder: url("../img/newFolder.svg");
 	--url-toolbar-btn-img-undo: url("../img/undo_dk.svg");

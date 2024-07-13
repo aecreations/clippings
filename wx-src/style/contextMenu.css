@@ -10,6 +10,9 @@
     --color-cxtmenu-menuitem-hover-text: #0c0c0d;
     --color-cxtmenu-menuitem-active-bkgd: rgba(12, 12, 13, 0.3);
     --color-cxtmenu-separator: #e6e6e6;
+
+    --url-contextmenu-checked-img: url("../img/checked.svg");
+    --url-contextmenu-submenu-arrow: url("../img/submenu-arrow.svg");
 }
 
 @media (prefers-color-scheme: dark) {
@@ -21,6 +24,9 @@
 	--color-cxtmenu-menuitem-hover-bkgd: #606060;
 	--color-cxtmenu-menuitem-hover-text: #fff;
 	--color-cxtmenu-separator: #737373;
+
+	--url-contextmenu-checked-img: url("../img/checked-dk.svg");
+	--url-contextmenu-submenu-arrow: url("../img/submenu-arrow-dk.svg");
     }
 }
 
