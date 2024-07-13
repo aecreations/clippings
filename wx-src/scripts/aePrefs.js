@@ -67,6 +67,7 @@ let aePrefs = {
     showShctKeyDispStyle: aeConst.SHCTKEY_DISPLAY_PARENS,
     sidebarToolbar: true,
     sidebarSearchBar: true,
+    sidebarPreview: true,
   },
   
   getPrefKeys()
@@ -281,7 +282,9 @@ let aePrefs = {
       showShctKeyDispStyle: aeConst.SHCTKEY_DISPLAY_PARENS,
       sidebarToolbar: true,
       sidebarSearchBar: true,
+      sidebarPreview: true,
     };
+
     await this._addPrefs(aPrefs, newPrefs);
 
     // Remove deprecated prefs

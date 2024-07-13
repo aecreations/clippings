@@ -322,6 +322,13 @@ let gCmd = {
     this._openClippingsMgr({});
   },
 
+  showHidePreviewPane()
+  {
+    let currSetting = gPrefs.sidebarPreview;
+    aePrefs.setPrefs({sidebarPreview: !currSetting});
+    $("#pane-splitter, #preview-pane").toggle();
+  },
+
   showMiniHelp()
   {
     // TEMPORARY
@@ -379,8 +386,9 @@ function setScrollableContentHeight()
     cntHeight -= TOOLBAR_HEIGHT;
   }
 
-  // TO DO: Configurable preview pane visibility.
-  cntHeight -= PREVIEW_PANE_HEIGHT;
+  if (gPrefs.sidebarPreview) {
+    cntHeight -= PREVIEW_PANE_HEIGHT;
+  }
 
   $("#scroll-content").css({height: `${cntHeight}px`});
 }
@@ -403,6 +411,14 @@ function setCustomizations()
   }
   else {
     $("#search-bar").hide();
+  }
+
+  if (gPrefs.sidebarPreview) {
+    $("#pane-splitter, #preview-pane").show();
+    cntHeight -= PREVIEW_PANE_HEIGHT;
+  }
+  else {
+    $("#pane-splitter, #preview-pane").hide();
   }
 
   $("#scroll-content").css({height: `${cntHeight}px`});
@@ -453,7 +469,7 @@ function buildClippingsTree()
 
         if (aData.targetType == "title" || aData.targetType == "icon") {
           if (! aData.node.isFolder()) {
-            gCmd.insertClipping();
+            gCmd.copyClippingTextToClipboard();
           }
         }
       },
@@ -493,6 +509,10 @@ function buildClippingsTree()
 
         case "copyClippingText":
           gCmd.copyClippingTextToClipboard();
+          break;
+
+        case "togglePreviewPane":
+          gCmd.showHidePreviewPane();
           break;
 
         default:
@@ -574,6 +594,12 @@ function buildClippingsTree()
 	togglePreviewPane: {
 	  name: "show/hide preview pane",
 	  className: "ae-menuitem",
+          icon(aOpt, $itemElement, aItemKey, aItem) {
+            if ($("#pane-splitter").css("display") != "none"
+                && $("#preview-pane").css("display") != "none") {
+              return "context-menu-icon-checked";
+            }
+          }
 	},
 	customize: {
 	  name: "customize...",
