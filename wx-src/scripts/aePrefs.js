@@ -68,6 +68,7 @@ let aePrefs = {
     sidebarToolbar: true,
     sidebarSearchBar: true,
     sidebarPreview: true,
+    pasteFromSidebar: false,
   },
   
   getPrefKeys()
@@ -283,6 +284,7 @@ let aePrefs = {
       sidebarToolbar: true,
       sidebarSearchBar: true,
       sidebarPreview: true,
+      pasteFromSidebar: false,
     };
 
     await this._addPrefs(aPrefs, newPrefs);

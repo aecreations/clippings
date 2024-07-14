@@ -152,7 +152,10 @@
 	  <div class="row">
 	    <label for="auto-inc-plchldrs-start-val" data-i18n="prefsDefaultNumPlchldrStart"></label>
 	    <input type="number" id="auto-inc-plchldrs-start-val" min="0" value="0"/>
-	  </row>
+	  </div>
+	  <div class="row">
+            <button id="sidebar-paste-opts">clippings sidebar...</button>
+          </div>
         </fieldset>
       </div> <!-- /prefpane-paste -->
 
@@ -196,6 +199,29 @@
             <img id="reset-clpmgr-wnd-pos-ack" src="../img/success.svg"/>
           </div>
         </fieldset>
+      </div>
+      <div class="dlg-btns">
+	<button class="dlg-accept default" data-i18n="btnOK"></button>
+	<button class="dlg-btn dlg-cancel" data-i18n="btnCancel"></button>
+      </div>
+    </div>
+
+    <div id="sidebar-opts-dlg" class="lightbox">
+      <div class="dlg-content">
+	<p class="dlg-subhead">clippings sidebar</p>
+        <div class="row browser-style">
+          <input type="checkbox" id="enbl-sidebar-paste"><label for="enbl-sidebar-paste">enable paste clipping from Clippings Sidebar</label><span class="experimental-label">(experimental)</span>
+        </div>
+
+	<p>to paste a clipping from the Sidebar:</p>
+        <ol>
+          <li>select the clipping that you want to paste</li>
+          <li>click on the textbox in the web page and position the cursor where the clipping should be pasted</li>
+          <li>return to Clippings Sidebar, then right-click on the selection and then select Paste Clipping</li>
+        </ol>
+
+	<p>always click the web page textbox first before pasting, even when pasting one clipping after another.</p>
+
       </div>
       <div class="dlg-btns">
 	<button class="dlg-accept default" data-i18n="btnOK"></button>

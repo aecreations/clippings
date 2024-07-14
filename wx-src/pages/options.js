@@ -228,10 +228,12 @@ $(async () => {
     browser.runtime.sendMessage({msgID: "rebuild-cxt-menu"});
   });
 
-
-
   $("#wnds-dlgs-settings").on("click", aEvent => {
     gDialogs.wndsDlgsOpts.showModal();
+  });
+
+  $("#sidebar-paste-opts").on("click", aEvent => {
+    gDialogs.clippingsSidebar.showModal();
   });
 
   if (prefs.syncClippings) {
@@ -404,6 +406,19 @@ function switchPrefsPanel(aEvent)
 
 function initDialogs()
 {
+  gDialogs.clippingsSidebar = new aeDialog("#sidebar-opts-dlg");
+  gDialogs.clippingsSidebar.onInit = async function ()
+  {
+    let pasteFromSidebar = await aePrefs.getPref("pasteFromSidebar");
+    $("#enbl-sidebar-paste").prop("checked", pasteFromSidebar);
+  };
+
+  gDialogs.clippingsSidebar.onAccept = function ()
+  {
+    aePrefs.setPrefs({pasteFromSidebar: $("#enbl-sidebar-paste").prop("checked")});
+    this.close();
+  };
+
   gDialogs.reqNativeAppConxnPerm = new aeDialog("#request-native-app-conxn-perm-dlg");
   gDialogs.reqNativeAppConxnPerm.onAccept = async function ()
   {

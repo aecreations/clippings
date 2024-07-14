@@ -577,6 +577,9 @@ function buildClippingsTree()
           name: browser.i18n.getMessage("insClipping"),
           className: "ae-menuitem",
           visible(aItemKey, aOpt) {
+            if (! gPrefs.pasteFromSidebar) {
+              return false;
+            }
             return (!aeClippingsTree.isFolderSelected() && !aeClippingsTree.isSeparatorSelected());
           }
         },
