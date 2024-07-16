@@ -299,8 +299,18 @@ progress {
     background-image: url("../img/pref-sync-clippings-checked.svg");
 }
 
+#browser-action-opt-ctr {
+    margin-left: 15px;
+}
+
+#brws-act-open-clippings-mgr + label {
+    margin-right: 12px;
+}
+
+#browser-action-opt-label,
 #html-paste-options {
     font-size: 15px;
+    margin-left: 4px;
     margin-bottom: 8px;
 }
 
@@ -323,6 +333,7 @@ progress {
     margin-top: 8px;
 }
 
+#general-options,
 #paste-options {
     margin-top: 20px;
 }

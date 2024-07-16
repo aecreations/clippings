@@ -465,6 +465,8 @@ async function init(aPrefs)
     aePrefs.setPrefs({showWelcome: false});
   }
 
+  localStorage.setItem("browserAction", aPrefs.browserAction);
+
   if (gSetDisplayOrderOnRootItems) {
     await setDisplayOrderOnRootItems();
     log("Clippings/wx: Display order on root folder items have been set.\nClippings initialization complete.");
@@ -2088,7 +2090,13 @@ async function resetWndID(aWndID)
 //
 
 browser.action.onClicked.addListener(aTab => {
-  openClippingsManager();
+  let browserAction = localStorage.getItem("browserAction");
+  if (browserAction == aeConst.BRWSACT_OPEN_CLIPPINGS_MGR) {
+    openClippingsManager();
+  }
+  else if (browserAction == aeConst.BRWSACT_OPEN_SIDEBAR) {
+    browser.sidebarAction.toggle();
+  }
 });
 
 
@@ -2186,6 +2194,9 @@ browser.storage.onChanged.addListener((aChanges, aAreaName) => {
   for (let pref of changedPrefs) {
     if (pref == "autoIncrPlcHldrStartVal") {
       aeClippingSubst.setAutoIncrementStartValue(aChanges[pref].newValue);
+    }
+    else if (pref == "browserAction") {
+      localStorage.setItem("browserAction", aChanges[pref].newValue);
     }
   }
 });

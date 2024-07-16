@@ -11,6 +11,10 @@ const aeConst = Object.freeze({
   // Native messaging helper app
   SYNC_CLIPPINGS_APP_NAME: "syncClippings",
 
+  // Browser action
+  BRWSACT_OPEN_CLIPPINGS_MGR: 1,
+  BRWSACT_OPEN_SIDEBAR: 2,
+
   // Constants for HTML paste options
   HTMLPASTE_ASK_THE_USER: 0,
   HTMLPASTE_AS_FORMATTED: 1,

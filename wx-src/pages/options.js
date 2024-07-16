@@ -70,6 +70,10 @@ $(async () => {
 
   initDialogs();
 
+  $("#brws-act-open-clippings-mgr, #brws-act-open-clippings-sidebar").click(aEvent => {
+    aePrefs.setPrefs({browserAction: aEvent.target.value});
+  });
+
   $("#paste-opt-formatted").click(aEvent => {
     $("#html-auto-line-break").prop("disabled", false);
     $("#html-paste-note").removeClass("disabled");
@@ -118,6 +122,13 @@ $(async () => {
 
   let prefs = await aePrefs.getAllPrefs();
   
+  if (prefs.browserAction == aeConst.BRWSACT_OPEN_CLIPPINGS_MGR) {
+    $("#brws-act-open-clippings-mgr").prop("checked", true);
+  }
+  else if (prefs.browserAction == aeConst.BRWSACT_OPEN_SIDEBAR) {
+    $("#brws-act-open-clippings-sidebar").prop("checked", true);
+  }
+
   if (prefs.htmlPaste == aeConst.HTMLPASTE_AS_FORMATTED) {
     $("#paste-opt-formatted").prop("checked", true);
     $("#paste-opt-raw-html").prop("checked", false);
