@@ -468,7 +468,7 @@
   },
 
   "copySkipPlchldrs": {
-    "message": "Skip filling in placeholders and copy with placeholders intact",
+    "message": "Skip filling in placeholders and copy clipping as is",
     "description": "Checkbox option in the placeholder prompt dialog when copying clipping to clipboard"
   },
 
@@ -719,8 +719,8 @@
   },
 
   "plchldrClipClipArg": {
-    "message": "Name of clipping to insert",
-    "description": "Default argument for the clipping-in-clipping placeholder - appears as $[CLIPPING(Name of clipping to insert)]"
+    "message": "Name of clipping",
+    "description": "Default argument for the clipping-in-clipping placeholder - appears as $[CLIPPING(Name of clipping)]"
   },
 
   "clipMgrNameHint": {
