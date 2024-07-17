@@ -3436,14 +3436,6 @@ $(async () => {
     $("#status-bar").css({backgroundImage: "none"});
   }
   else if (gEnvInfo.os == "linux") {
-    if (gPrefs.clippingsMgrAutoShowStatusBar) {
-      $("#status-bar").show();
-      aePrefs.setPrefs({
-        clippingsMgrAutoShowStatusBar: false,
-        clippingsMgrStatusBar: true,
-      });
-    }
-
     $("#minz-when-inactv-mode").show();
     $("#minz-when-inactv-mode").attr("data-checked", !!gPrefs.clippingsMgrMinzWhenInactv)
       .attr("title", browser.i18n.getMessage("mnuMinimizeWhenInactive"));
@@ -3720,8 +3712,16 @@ function initToolbar()
     $("#source-url-bar, #options-bar").hide();
   }
   if (! gPrefs.clippingsMgrStatusBar) {
-    $("#status-bar").hide();
-    recalcContentAreaHeight($("#status-bar").css("display") != "none");
+    if (gPrefs.clippingsMgrAutoShowStatusBar) {
+      aePrefs.setPrefs({
+        clippingsMgrAutoShowStatusBar: false,
+        clippingsMgrStatusBar: true,
+      });
+    }
+    else {
+      $("#status-bar").hide();
+      recalcContentAreaHeight($("#status-bar").css("display") != "none");
+    }
   }
 
   $("#new-clipping").click(aEvent => { gCmd.newClipping(gCmd.UNDO_STACK) });
@@ -5857,7 +5857,7 @@ function updateDisplay(aEvent, aData)
           $("#clipping-src-url").html(sanitizeHTML(`<a href="${aResult.sourceURL}">${aResult.sourceURL}</a>`));
           $("#clipping-src-url > a").click(async (aEvent) => {
             aEvent.preventDefault();
-            aeNavigator.gotoURL(aEvent.target.textContent, aeNavigator.TARGET_NEW_WINDOW);
+            aeNavigator.gotoURL(aEvent.target.textContent);
           });
         }
         else {
