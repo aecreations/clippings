@@ -43,11 +43,15 @@ let aeClippingSubst = {
 
 aeClippingSubst.init = async function (aUserAgentStr, aAutoIncrementStartVal)
 {
+  if (!! this._userAgentStr) {
+    return;
+  }
+
   this._userAgentStr = aUserAgentStr;
   this._autoIncrementStartVal = aAutoIncrementStartVal;
 
-  let brwsInf = await browser.runtime.getBrowserInfo();
-  this._hostAppName = `${brwsInf.name} ${brwsInf.version}`;
+  let brws = await browser.runtime.getBrowserInfo();
+  this._hostAppName = `${brws.name} ${brws.version}`;
 
   // Initialize locale used for formatting dates.
   moment.locale(browser.i18n.getUILanguage());
