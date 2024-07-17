@@ -41,20 +41,13 @@ let aeClippingSubst = {
 };
 
 
-aeClippingSubst.init = function (aUserAgentStr, aAutoIncrementStartVal)
+aeClippingSubst.init = async function (aUserAgentStr, aAutoIncrementStartVal)
 {
   this._userAgentStr = aUserAgentStr;
   this._autoIncrementStartVal = aAutoIncrementStartVal;
 
-  if (! ("browser" in window)) {
-    this._hostAppName = "Google Chrome";
-  }
-  else {
-    let getBrowserInfo = browser.runtime.getBrowserInfo();
-    getBrowserInfo.then(aBrwsInfo => {
-      this._hostAppName = `${aBrwsInfo.name} ${aBrwsInfo.version}`;
-    });
-  }
+  let brwsInf = await browser.runtime.getBrowserInfo();
+  this._hostAppName = `${brwsInf.name} ${brwsInf.version}`;
 
   // Initialize locale used for formatting dates.
   moment.locale(browser.i18n.getUILanguage());

@@ -428,8 +428,6 @@ async function init(aPrefs)
     rebuildContextMenu();
   }
   
-  aeClippingSubst.init(navigator.userAgent, aPrefs.autoIncrPlcHldrStartVal);
-
   if (aPrefs.backupRemFirstRun && !aPrefs.lastBackupRemDate) {
     aePrefs.setPrefs({
       lastBackupRemDate: new Date().toString(),
@@ -1836,6 +1834,9 @@ async function processClipping(aClippingInfo, aIsExternalRequest, aTabID, aMode)
 
   let processedCtnt = "";
   log("Clippings/wx: processClipping(): Active tab ID: " + activeTabID);
+
+  let autoIncrPlcHldrStartVal = await aePrefs.getPref("autoIncrPlcHldrStartVal");
+  await aeClippingSubst.init(navigator.userAgent, autoIncrPlcHldrStartVal);
 
   if (aeClippingSubst.hasNoSubstFlag(aClippingInfo.name)) {
     processedCtnt = aClippingInfo.text;
