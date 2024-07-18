@@ -8,7 +8,6 @@ const WNDH_PLCHLDR_MULTI = 318;
 const WNDH_PLCHLDR_MULTI_SHORT = 272;
 const WNDH_PLCHLDR_MULTI_VSHORT = 212;
 const DLG_HEIGHT_ADJ_WINDOWS = 20;
-const DLG_HEIGHT_ADJ_COPY_MODE = 20;
 
 const REGEXP_CUSTOM_PLACEHOLDER = /\$\[([\w\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)(\{([\w \-\.\?_\/\(\)!@#%&;:,'"$£¥€*¡¢\u{0080}-\u{10FFFF}\|])+\})?\]/mu;
 
@@ -117,10 +116,6 @@ $(async () => {
       height += DLG_HEIGHT_ADJ_WINDOWS;
     }
 
-    if (gDlgMode > 0) {
-      height += DLG_HEIGHT_ADJ_COPY_MODE;
-    }
-    
     await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, {height});
 
     for (let i = 0; i < gPlaceholders.length; i++) {
@@ -166,10 +161,6 @@ $(async () => {
       firstInputElt.select();
     }
     firstInputElt.focus();
-  }
-
-  if (gDlgMode > 0) {
-    $("#copy-mode-opt").show();
   }
 
   $("#btn-accept").click(aEvent => { accept(aEvent) });
@@ -282,12 +273,7 @@ function accept(aEvent)
     msg = {
       msgID: "copy-clipping-with-plchldrs",
       copyMode: gDlgMode,
-    }
-    if ($("#skip-filling-plchldrs").prop("checked")) {
-      msg.processedContent = gClippingContent;
-    }
-    else {
-      msg.processedContent = content;
+      processedContent: content,
     }
   }
   else {

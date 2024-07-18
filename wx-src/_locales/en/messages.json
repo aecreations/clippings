@@ -467,11 +467,6 @@
     "description": "Placeholder prompt dialog - single placeholder, select"
   },
 
-  "copySkipPlchldrs": {
-    "message": "Skip filling in placeholders and copy clipping as is",
-    "description": "Checkbox option in the placeholder prompt dialog when copying clipping to clipboard"
-  },
-
   "copyAsHTML": {
     "message": "Copy as Formatted Text",
     "Description": "Copy Clipping Text dialog in Clippings Manager and Clippings sidebar - user selection of data format of clipping to be copied"
