@@ -512,7 +512,7 @@ body[data-os="mac"] .lightbox .msgbox-icon {
 }
 
 .lightbox.msgbox > .dlg-btns > button {
-    width: 128px;
+    width: 120px;
     height: 26px;
     margin-right: 0;
 }
