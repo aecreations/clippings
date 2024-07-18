@@ -13,7 +13,7 @@ let gClippingsDB;
 let gIsClippingsTreeEmpty;
 let gSyncedItemsIDs = new Set();
 let gSyncedItemsIDMap = new Map();
-let gCustomizeDlg;
+let gCustomizeDlg, gReloadSyncFldrMsgBox;
 let gMsgBarTimerID = null;
 
 let gSyncClippingsListener = {
@@ -21,10 +21,7 @@ let gSyncClippingsListener = {
   {
     log("Clippings::sidebar.js::gSyncClippingsListener.onActivate()");
     aeDialog.cancelDlgs();
-    // TO DO: Put this in a modal dialog.
-    alert(browser.i18n.getMessage("syncReloadAck"));
-    // TEMPORARY
-    rebuildClippingsTree();
+    gReloadSyncFldrMsgBox.showModal();
   },
   
   onDeactivate(aOldSyncFolderID)
@@ -196,10 +193,7 @@ let gCmd = {
     });
     
     aeDialog.cancelDlgs();
-    // TO DO: Put this in a modal dialog.
-    alert(browser.i18n.getMessage("syncReloadAck"));
-    // TEMPORARY
-    rebuildClippingsTree();
+    gReloadSyncFldrMsgBox.showModal();
   },
 
   async insertClipping()
@@ -396,6 +390,17 @@ function initDialogs()
     $("#show-preview-pane").prop("checked", gPrefs.sidebarPreview).on("click", aEvent => {
       aePrefs.setPrefs({sidebarPreview: aEvent.target.checked});
     });
+  };
+
+  gReloadSyncFldrMsgBox = new aeDialog("#reload-sync-fldr-msgbox");
+  gReloadSyncFldrMsgBox.onFirstInit = function ()
+  {
+    this.focusedSelector = ".msgbox-btns > .dlg-accept";
+  };
+
+  gReloadSyncFldrMsgBox.onAfterAccept = function ()
+  {
+    rebuildClippingsTree();
   };
 }
 

@@ -458,10 +458,6 @@ ul.fancytree-container {
     font-weight: 600;
 }
 
-.lightbox > .dlg-btns {
-    right: 2px;
-}
-
 .lightbox .row {
     width: 100%;
     margin-bottom: 2px;
@@ -469,6 +465,62 @@ ul.fancytree-container {
 
 .lightbox label {
     font-size: 12px;
+}
+
+.lightbox > .msgbox-content {
+    display: flex;
+    justify-content: flex-start;
+    flex-flow: column nowrap;
+}
+
+.lightbox .msgbox-icon,
+.lightbox .msgbox-info-icon {
+    width: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.lightbox .msgbox-icon {
+    height: 50px;
+}
+
+.lightbox .msgbox-info-icon {
+    height: 48px;
+}
+
+.lightbox .msgbox-icon {
+    background-image: url("../img/warning-64.png");
+    background-size: contain;
+}
+
+body[data-os="mac"] .lightbox .msgbox-icon {
+    background-image: url("../img/warning-64-mac.png");
+}
+
+.lightbox .msgbox-info-icon {
+    background-image: url("../img/info.svg");
+    background-size: contain;
+}
+
+.lightbox > .msgbox-content > p {
+    margin-bottom: 18px;
+}
+
+.lightbox.msgbox > .dlg-btns {
+    position: unset;
+    text-align: center;
+}
+
+.lightbox.msgbox > .dlg-btns > button {
+    width: 128px;
+    height: 26px;
+    margin-right: 0;
+}
+
+#reload-sync-fldr-msgbox {
+    top: 88px;
+    --width: 200px;
+    --height: 178px;
 }
 
 #customize-dlg {
