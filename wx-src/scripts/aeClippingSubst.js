@@ -43,7 +43,7 @@ let aeClippingSubst = {
 
 aeClippingSubst.init = async function (aUserAgentStr, aAutoIncrementStartVal)
 {
-  if (!! this._userAgentStr) {
+  if (!!this._userAgentStr && aAutoIncrementStartVal == this._autoIncrementStartVal) {
     return;
   }
 
