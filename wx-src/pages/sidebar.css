@@ -16,6 +16,7 @@
     --color-bkgd: #fbfbfb;
     --color-default-text: black;
     --color-disabled-text: rgba(0, 0, 0, 0.40);
+    --color-msgbars-bkgd: white;
     --color-main-toolbar-bkgd: transparent;
     --color-main-toolbar-text: #0c0c0d;
     --color-main-toolbar-border: transparent;
@@ -42,6 +43,7 @@
 	--color-bkgd: #38383d;
 	--color-default-text: #f9f9fa;
 	--color-disabled-text: rgba(249, 249, 250, 0.4);
+	--color-msgbars-bkgd: #38383d;
 	--color-main-toolbar-text: #f9f9fa;
 	--color-toolbarbtn-hover-bkgd: #737373;
 	--color-toolbarbtn-active-bkgd: #b1b1b3;
@@ -86,6 +88,131 @@ body {
 button, label {
     font: caption;
     font-size: 11px;
+}
+
+#msgbars {
+    display: block;
+    width: 100%;
+    background: var(--color-msgbars-bkgd);
+}
+
+#msgbars.msgbars-visible {
+    padding: 0 2px 2px 2px;
+}
+
+.inline-msgbar {
+    display: none;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-content: center;
+    align-items: stretch;
+    
+    margin-top: 2px;
+    padding: 4px;
+    border-radius: 4px;
+}
+
+.inline-msgbar .inline-msgbar-icon {
+    order: 1;
+    flex: 0 1 auto;
+
+    min-width: 16px;
+    height: 16px;
+}
+
+.inline-msgbar.msgbar-info {
+    background-color: #ededf0;
+    color: black;
+}
+
+.inline-msgbar.msgbar-warning {
+    background-color: #ffe900;
+    color: #3e2800;
+}
+
+.inline-msgbar.msgbar-success {
+    background-color: #30e60b;
+    color: #003706;
+}
+
+.inline-msgbar.msgbar-info .inline-msgbar-icon {
+    background-image: url("chrome://global/skin/icons/info.svg");    
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.inline-msgbar.msgbar-warning .inline-msgbar-icon {
+    background-image: url("chrome://global/skin/icons/warning.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.inline-msgbar.msgbar-success .inline-msgbar-icon {
+    background-image: url("../img/check.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.inline-msgbar .inline-msgbar-body {
+    order: 2;
+    flex: 1 1 auto;
+
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+.inline-msgbar .inline-msgbar-body .inline-msgbar-content label {
+    font-size: 12px;
+}
+
+.inline-msgbar-actions {
+    margin: 6px 0 1px 0;
+    text-align: left;
+}
+
+.inline-msgbar button {
+    height: 24px;
+    padding-left: 8px;
+    padding-right: 8px;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+.inline-msgbar .inline-msgbar-dismiss {
+    order: 3;
+    flex: 0 1 auto;
+
+    min-width: 16px;
+    height: 16px;
+    margin: 0;
+    background-image: url("../img/close-panel.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    border-radius: 2px;
+}
+
+.msgbar-info .inline-msgbar-dismiss:hover {
+    background-color: rgba(12, 12, 13, 0.2);
+}
+
+.msgbar-info .inline-msgbar-dismiss:active {
+    background-color: rgba(12, 12, 13, 0.3);
+}
+
+.msgbar-warning .inline-msgbar-dismiss:hover {
+    background-color: #a47f00;
+}
+
+.msgbar-warning .inline-msgbar-dismiss:active {
+    background-color: #715100;
+}
+
+.msgbar-success .inline-msgbar-dismiss:hover {
+    background-color: #058b00;
+}
+
+.msgbar-success .inline-msgbar-dismiss:active {
+    background-color: #006504;
 }
 
 #toolbars {

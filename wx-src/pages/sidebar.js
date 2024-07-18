@@ -5,6 +5,7 @@
 
 const TOOLBAR_HEIGHT = 28;
 const PREVIEW_PANE_HEIGHT = 256;
+const MSGBAR_DELAY_MS = 4750;
 
 let gEnvInfo;
 let gPrefs;
@@ -13,6 +14,7 @@ let gIsClippingsTreeEmpty;
 let gSyncedItemsIDs = new Set();
 let gSyncedItemsIDMap = new Map();
 let gCustomizeDlg;
+let gMsgBarTimerID = null;
 
 let gSyncClippingsListener = {
   onActivate(aSyncFolderID)
@@ -184,8 +186,7 @@ let gCmd = {
     catch {}
 
     if (pingResp) {
-      // TO DO: Put this in a message bar.
-      alert(browser.i18n.getMessage("msgUnavail"));
+      showMessageBar("#action-not-available-msgbar");
       return;
     }
 
@@ -292,10 +293,7 @@ let gCmd = {
     let clippingID = parseInt(selectedNode.key);
     let clipping = await gClippingsDB.clippings.get(clippingID);
     if (clipping.sourceURL == "") {
-      // TEMPORARY
-      window.alert(browser.i18n.getMessage("clipMgrNoSrcURL"));
-      // TO DO: Show a message bar alerting user that there isn't a URL saved
-      // for the selected clipping.
+      showMessageBar("#clipping-missing-src-url-msgbar");
       return;
     }
 
@@ -439,6 +437,13 @@ function setCustomizations()
   else {
     $("#search-bar").hide();
   }
+
+  let msgBarsCSS = window.getComputedStyle($("#msgbars")[0]);
+  let msgBarsHeight = parseInt(msgBarsCSS.getPropertyValue("height"));
+  if (isNaN(msgBarsHeight)) {
+    msgBarsHeight = 0;
+  }
+  cntHeight -= msgBarsHeight;
 
   if (gPrefs.sidebarPreview) {
     $("#pane-splitter, #preview-pane").show();
@@ -820,6 +825,33 @@ function updateDisplay(aEvent, aData)
 }
 
 
+function showMessageBar(aMsgBarStor, aAutoHide=true)
+{
+  $(`#msgbars > ${aMsgBarStor}`).css({display: "flex"});
+  if (! $("#msgbars").hasClass("msgbars-visible")) {
+    $("#msgbars").addClass("msgbars-visible");
+  }
+
+  if (aAutoHide) {
+    gMsgBarTimerID = setTimeout(() => { hideMessageBar(aMsgBarStor) }, MSGBAR_DELAY_MS);
+  }
+  
+  setCustomizations();
+}
+
+
+function hideMessageBar(aMsgBarStor)
+{
+  $(`#msgbars > ${aMsgBarStor}`).css({display: "none"});
+  if (! $("#msgbars").children().is(":visible")) {
+    $("#msgbars").removeClass("msgbars-visible");
+  }
+
+  setCustomizations();
+  gMsgBarTimerID && clearTimeout(gMsgBarTimerID);
+}
+
+
 //
 // Event handlers
 //
@@ -879,6 +911,12 @@ $("#open-clippings-mgr").on("click", aEvent => {
 });
 $("#help").on("click", aEvent => {
   gCmd.showMiniHelp();
+});
+
+
+$(".inline-msgbar > .inline-msgbar-dismiss").on("click", aEvent => {
+  let msgBarID = aEvent.target.parentNode.id;
+  hideMessageBar(`#${msgBarID}`);
 });
 
 
