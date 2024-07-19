@@ -5386,9 +5386,11 @@ function initTreeSplitter()
 
 function setEmptyClippingsState()
 {
-  var rv;
-  rv = [{ title: browser.i18n.getMessage("clipMgrNoItems"), key: "0" }];
+  let rv = [
+    {title: browser.i18n.getMessage("clipMgrNoItems"), key: "0"}
+  ];
   gIsClippingsTreeEmpty = true;
+  $("#move, #delete").prop("disabled", true);
   $("#clipping-name, #clipping-text, #placeholder-toolbar, #source-url-bar, #options-bar").hide();
   $("#intro-content").show();
   
@@ -5473,6 +5475,7 @@ function isFolderSelected()
 function updateDisplay(aEvent, aData)
 {
   if (gIsClippingsTreeEmpty) {
+    $("#move, #delete").prop("disabled", true);
     $("#source-url-bar, #options-bar").hide();
     setStatusBarMsg(browser.i18n.getMessage("clipMgrStatusBar", "0"));
     return;
