@@ -136,13 +136,13 @@ button, label {
 }
 
 .inline-msgbar.msgbar-info .inline-msgbar-icon {
-    background-image: url("chrome://global/skin/icons/info.svg");    
+    background-image: url("../img/msgbar-info.svg");    
     background-size: contain;
     background-repeat: no-repeat;
 }
 
 .inline-msgbar.msgbar-warning .inline-msgbar-icon {
-    background-image: url("chrome://global/skin/icons/warning.svg");
+    background-image: url("../img/msgbar-warn.svg");
     background-size: contain;
     background-repeat: no-repeat;
 }
