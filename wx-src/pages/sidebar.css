@@ -430,7 +430,13 @@ ul.fancytree-container {
 #item-name {
     order: 1;
     flex: 0 1 auto;
-    margin-left: 24px;
+
+    margin: 2px 4px 2px 22px;
+    padding-left: 2px;
+    padding-right: 4px;
+    border: none;
+
+    background-color: transparent;
     font-size: 12px;
 }
 
@@ -441,6 +447,13 @@ ul.fancytree-container {
 #clipping-content {
     order: 2;
     flex: 1 1 auto;
+
+    margin: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
+    border: none;
+
+    background-color: transparent;
     font-size: 12px;
 }
 
