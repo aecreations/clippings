@@ -1014,7 +1014,7 @@ body[data-os="win"] .browser-style > input[type="checkbox"] + label {
     left: 128px;
 }
 
-#copy-clipping-txt-fmt-dlg .panel-hdr {
+#copy-clipping-txt-fmt-dlg .dlg-hdr {
     margin-top: 0;
     margin-bottom: 12px;
     font-weight: bold;
@@ -1027,7 +1027,24 @@ body[data-os="win"] .browser-style > input[type="checkbox"] + label {
     margin-bottom: 6px;
     font-size: 12px !important;
     text-align: left;
+    padding-left: 28px;
+    background-repeat: no-repeat;
+    background-size: 16px 16px;
+    background-position: 4px;
 }
+
+#copy-clipping-txt-fmt-dlg #copy-cliptxt-html {
+    background-image: url("../img/copy-clipping-html16.svg");   
+}
+
+#copy-clipping-txt-fmt-dlg #copy-cliptxt-plain {
+    background-image: url("../img/copy-clipping-txt16.svg");   
+}
+
+#copy-clipping-txt-fmt-dlg #copy-cliptxt-plain-html {
+    background-image: url("../img/copy-clipping-txt-html16.svg");   
+}
+
 
 #copy-clipping-txt-fmt-dlg .last-row {
     border-bottom: 1px solid #ddd;
