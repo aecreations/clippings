@@ -20,7 +20,7 @@ p {
 }
 
 .dlg-content {
-    max-height: 256px;
+    max-height: 262px;
     overflow-y: auto;
 }
 
