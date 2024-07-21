@@ -237,9 +237,44 @@ let gCmd = {
     });
   },
 
-  copyClippingTextToClipboard()
+  async copyClippingTextToClipboard()
   {
-    aeCopyClippingTextFormatDlg.showModal();
+    if (gIsClippingsTreeEmpty) {
+      return;
+    }
+
+    let tree = aeClippingsTree.getTree();
+    let selectedNode = tree.activeNode;
+    if (! selectedNode) {
+      return;
+    }
+
+    let perms = await browser.permissions.getAll();
+    if (! perms.permissions.includes("clipboardWrite")) {
+      // TO DO: Put the following message in a proper modal dialog,
+      // which should be opened here.
+      // Once the dialog is displayed, exit this function.
+      window.alert(`${browser.i18n.getMessage('permReqTitle')}\n\n  • ${browser.i18n.getMessage('extPrmClipbdW')}\n\n${browser.i18n.getMessage('extPermInstr')}`);
+      return;
+    }
+
+    let clippingID = parseInt(selectedNode.key);
+    let clipping = await gClippingsDB.clippings.get(clippingID);
+    if (! clipping) {
+      throw new Error("No clipping found for ID " + clippingID);
+    }
+
+    let isFormatted = aeClippings.hasHTMLTags(clipping.content);
+    if (isFormatted) {
+      aeCopyClippingTextFormatDlg.showModal();
+    }
+    else {
+      browser.runtime.sendMessage({
+        msgID: "copy-clipping",
+        clippingID,
+        copyFormat: aeConst.COPY_AS_PLAIN,
+      });
+    }
   },
   
   async openWebPageSourceURL()
