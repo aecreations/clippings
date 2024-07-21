@@ -328,10 +328,9 @@ let gCmd = {
     gCustomizeDlg.showModal();
   },
 
-  showMiniHelp()
+  showHelp()
   {
-    // TEMPORARY
-    alert(browser.i18n.getMessage("msgUnknown"));
+    browser.runtime.sendMessage({msgID: "open-sidebar-help"});
   },
 
   // Private helper method
@@ -473,6 +472,8 @@ function buildClippingsTree()
   aeClippingsTree.build(rootFldrID).then(aTreeData => {
     if (aTreeData.length == 0) {
       treeData = setEmptyClippingsState();
+      $("#normal-content").hide();
+      $("#welcome-content").show();
     }
     else {
       treeData = aTreeData;
@@ -802,9 +803,13 @@ function unsetEmptyClippingsState()
 function updateDisplay(aEvent, aData)
 {
   if (gIsClippingsTreeEmpty) {
+    $("#normal-content").hide();
+    $("#welcome-content").show();
     return;
   }
 
+  $("#normal-content").show();
+  $("#welcome-content").hide();
   $("#item-name, #clipping-content").val('');
   $("#item-name").prop("disabled", false);
 
@@ -918,13 +923,18 @@ $("#open-clippings-mgr").on("click", aEvent => {
   gCmd.openClippingsManager();
 });
 $("#help").on("click", aEvent => {
-  gCmd.showMiniHelp();
+  gCmd.showHelp();
 });
 
 
 $(".inline-msgbar > .inline-msgbar-dismiss").on("click", aEvent => {
   let msgBarID = aEvent.target.parentNode.id;
   hideMessageBar(`#${msgBarID}`);
+});
+
+
+$("#welcome-clippings-mgr").on("click", aEvent => {
+  gCmd.openClippingsManager();
 });
 
 

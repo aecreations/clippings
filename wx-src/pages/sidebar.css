@@ -397,6 +397,42 @@ ul.fancytree-container {
     border-bottom: 1px solid var(--color-cxtmenu-separator);
 }
 
+#welcome-content {
+    display: none;
+    margin: 12px;
+}
+
+#welcome-content #welcome-hdg {
+    text-align: center;
+}
+
+#welcome-hdg {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+#welcome-icon {
+    width: 100%;
+    height: 128px;
+    margin-top: 8px;
+
+    background-image: url("../img/icon96.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+
+#welcome-cta {
+    text-align: center;
+}
+
+#welcome-clippings-mgr {
+    min-width: 128px;
+    height: 32px;
+    margin-top: 8px;
+    font-size: 13px;
+}
+
 #pane-splitter {
     order: 2;
     position: relative;

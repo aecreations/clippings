@@ -18,6 +18,7 @@ let aePrefs = {
       keyboardPaste: null,
       placeholderPrmt: null,
       clippingsMgr: null,
+      sidebarHlp: null,
     },
   },
   
@@ -274,6 +275,7 @@ let aePrefs = {
         keyboardPaste: null,
         placeholderPrmt: null,
         clippingsMgr: null,
+        sidebarHlp: null,
       },
 
       compressSyncData: true,

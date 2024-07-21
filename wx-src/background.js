@@ -1610,10 +1610,31 @@ async function openBackupDlg()
 }
 
 
+async function openSidebarHelpDlg()
+{
+  let url = browser.runtime.getURL("pages/sidebarHelp.html");
+  let height = 360;
+  let platform = await browser.runtime.getPlatformInfo();
+
+  if (platform.os == "mac") {
+    height = 334;
+  }
+  
+  let wndPpty = {
+    type: "popup",
+    width: 600,
+    height,
+  };
+
+  openDlgWnd(url, "sidebarHlp", wndPpty);
+}
+
+
 async function openDlgWnd(aURL, aWndKey, aWndPpty, aTabID=null)
 {
   if (! aTabID) {
-    aTabID = await browser.tabs.query({currentWindow: true, discarded: false});
+    let [tab] = await browser.tabs.query({currentWindow: true, discarded: false});
+    aTabID = tab.id;
   }
 
   async function openDlgWndHelper()
@@ -2219,8 +2240,6 @@ browser.runtime.onMessage.addListener(aRequest => {
     break;
 
   case "open-clippings-mgr":
-    // TO DO: Handle ability to open Clippings Manager and automatically select
-    // a clipping or folder.
     openClippingsManager(false);
     break;
 
@@ -2334,6 +2353,10 @@ browser.runtime.onMessage.addListener(aRequest => {
 
   case "dnd-move-finished":
     gClippingsListener.dndMoveFinished();
+    break;
+
+  case "open-sidebar-help":
+    openSidebarHelpDlg();
     break;
 
   default:

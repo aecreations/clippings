@@ -49,14 +49,24 @@
       </div> <!-- /fixed-pos-content -->
 
       <div id="content" class="vbox">
-	<div id="scroll-content">
-	  <div id="clippings-tree"></div>
-	</div>
-	<div id="pane-splitter"></div>
-	<div id="preview-pane" class="vbox">
-          <input type="text" id="item-name" readonly/>
-          <textarea id="clipping-content" readonly></textarea>
-	</div>
+        <div id="normal-content">
+	  <div id="scroll-content">
+	    <div id="clippings-tree"></div>
+	  </div>
+	  <div id="pane-splitter"></div>
+	  <div id="preview-pane" class="vbox">
+	    <input type="text" id="item-name" readonly/>
+	    <textarea id="clipping-content" readonly></textarea>
+	  </div>
+        </div>
+        <div id="welcome-content">
+          <div id="welcome-icon"></div>
+	  <p id="welcome-hdg">clippings sidebar</p>
+	  <p>get started by creating a clipping from selected text in the web page or in Clippings Manager.</p>
+	  <div id="welcome-cta" class="row">
+            <button id="welcome-clippings-mgr">open clippings manager</button>
+          </div>
+        </div>
       </div> <!-- /content -->
     </main>
 
