@@ -13,7 +13,7 @@ let gClippingsDB;
 let gIsClippingsTreeEmpty;
 let gSyncedItemsIDs = new Set();
 let gSyncedItemsIDMap = new Map();
-let gCustomizeDlg, gReloadSyncFldrMsgBox;
+let gCustomizeDlg, gReloadSyncFldrMsgBox, gInitErrorMsgBox;
 let gMsgBarTimerID = null;
 
 let gSyncClippingsListener = {
@@ -368,6 +368,8 @@ function initDialogs()
   {
     rebuildClippingsTree();
   };
+
+  gInitErrorMsgBox = new aeDialog("#init-error-msgbox");
 }
 
 
@@ -966,7 +968,7 @@ window.addEventListener("unhandledrejection", aEvent => {
 
 function showInitError()
 {
-  window.alert(browser.i18n.getMessage("initError"));
+  gInitErrorMsgBox.showModal();
 }
 
 

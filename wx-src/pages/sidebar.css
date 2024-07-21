@@ -595,3 +595,13 @@ body[data-os="mac"] .lightbox .msgbox-icon {
     text-indent: -22px;
     width: 152px;
 }
+
+#init-error-msgbox {
+    top: 88px;
+    --width: 200px;
+    --height: 250px;
+}
+
+#init-error-msgbox .msgbox-error-msg {
+    color: var(--color-error-text);
+}
