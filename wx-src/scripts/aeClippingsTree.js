@@ -168,6 +168,17 @@ aeCopyClippingTextFormatDlg.onFirstInit = async function ()
     this.copyClippingText(aEvent.target.id);
     this.close();
   });
+
+  // Compact dialog
+  if (this._dlgElt.attr("data-compact")) {
+    $("#copy-cliptxt-html, #copy-cliptxt-plain, #copy-cliptxt-plain-html").on("focus mouseover", aEvent => {
+      let title = aEvent.target.dataset.title;
+      $("#copy-title").text(browser.i18n.getMessage(title));
+
+    }).on("blur mouseout", aEvent => {
+      $("#copy-title").text('');
+    });
+  }
 },
 
 aeCopyClippingTextFormatDlg.onInit = function ()

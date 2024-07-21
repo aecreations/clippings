@@ -517,6 +517,54 @@ body[data-os="mac"] .lightbox .msgbox-icon {
     margin-right: 0;
 }
 
+#copy-clipping-txt-fmt-dlg {
+    top: 88px;
+    --width: 192px;
+    --height: 184px;
+}
+
+#copy-clipping-txt-fmt-dlg .dlg-hdr {
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-weight: bold;
+}
+
+#copy-clipping-txt-fmt-dlg .copy-fmt-btn {
+    min-width: unset;
+    width: 50px;
+    height: 48px;
+    margin-top: 6px;
+    margin-right: 8px;
+    margin-bottom: 0;
+    background-repeat: no-repeat;
+    background-size: 32px 32px;
+    background-position: 8px;
+}
+
+#copy-clipping-txt-fmt-dlg .copy-fmt-btn:last-of-type {
+    margin-right: 0;
+}
+
+#copy-clipping-txt-fmt-dlg #copy-cliptxt-html {
+    background-image: url("../img/copy-clipping-html32.svg");
+}
+
+#copy-clipping-txt-fmt-dlg #copy-cliptxt-plain {
+    background-image: url("../img/copy-clipping-txt32.svg");
+}
+
+#copy-clipping-txt-fmt-dlg #copy-cliptxt-plain-html {
+    background-image: url("../img/copy-clipping-txt-html32.svg");
+}
+
+#copy-clipping-txt-fmt-dlg #copy-title {
+    margin-bottom: 8px;
+}
+
+#copy-clipping-txt-fmt-dlg .dlg-btns {
+    right: 2px;
+}
+
 #reload-sync-fldr-msgbox {
     top: 88px;
     --width: 200px;

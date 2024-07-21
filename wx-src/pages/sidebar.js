@@ -5,7 +5,7 @@
 
 const TOOLBAR_HEIGHT = 28;
 const PREVIEW_PANE_HEIGHT = 256;
-const MSGBAR_DELAY_MS = 4750;
+const MSGBAR_DELAY_MS = 5000;
 
 let gEnvInfo;
 let gPrefs;
@@ -237,43 +237,9 @@ let gCmd = {
     });
   },
 
-  async copyClippingTextToClipboard()
+  copyClippingTextToClipboard()
   {
-    let tree = aeClippingsTree.getTree();
-    let selectedNode = tree.activeNode;
-    if (!selectedNode || selectedNode.isFolder()) {
-      return;
-    }
-
-    let id = parseInt(selectedNode.key);
-    let clipping = await gClippingsDB.clippings.get(id);
-    if (! clipping) {
-      throw new Error("No clipping found for ID " + id);
-    }
-
-    let type;
-    let isFormatted = aeClippings.hasHTMLTags(clipping.content);
-    if (isFormatted) {
-      // TEMPORARY
-      let copyAsFmtTxt = window.confirm("Do you want to copy the selected clipping as formatted text?\n\n• To copy as formatted text, click OK.\n• To copy as plain text with HTML tags, click Cancel.");
-      type = copyAsFmtTxt ? "text/html" : "text/plain";
-      // TO DO:
-      // - Use paste setting for breaking lines in HTML-formatted clippings
-      // - Always copy as plain text if content contains restricted HTML tags
-      // END TEMPORARY
-    }
-    else {
-      type = "text/plain";
-    }
-
-    let blob = new Blob([clipping.content], {type});
-    let data = [new ClipboardItem({[type]: blob})];
-    try {
-      await navigator.clipboard.write(data);
-    }
-    catch (e) {
-      console.warn("Error copying clipping to clipboard\n" + e);
-    }
+    aeCopyClippingTextFormatDlg.showModal();
   },
   
   async openWebPageSourceURL()
