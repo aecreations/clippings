@@ -371,6 +371,8 @@ $(async () => {
 
   let wnd = await browser.windows.getCurrent();
   aeNavigator.init(wnd.id);
+
+  $("#help").attr("title", browser.i18n.getMessage("tbHelp"));
 });
 
 
@@ -561,7 +563,7 @@ function buildClippingsTree()
           break;
 
         default:
-          window.alert(browser.i18n.getMessage("msgUnavail"));
+          alert(browser.i18n.getMessage("msgUnavail"));
           break;
         }
       },
@@ -570,11 +572,6 @@ function buildClippingsTree()
         reloadSyncFolder: {
           name: browser.i18n.getMessage("mnuReloadSyncFldr"),
           className: "ae-menuitem",
-	  /***
-	  callback(aKey, aOpt) {
-	    // TO DO: Put callback here, instead of above.
-	  },
-	  ***/
           visible(aItemKey, aOpt) {
             let tree = aeClippingsTree.getTree();
             let selectedNode = tree.activeNode;
@@ -600,11 +597,6 @@ function buildClippingsTree()
         copyClippingText: {
           name: browser.i18n.getMessage("mnuCopyClipTxt"),
           className: "ae-menuitem",
-	  /***
-	  callback(aKey, aOpt) {
-	    // TO DO: Put callback here, instead of above.
-	  },
-	  ***/
           visible(aItemKey, aOpt) {
             return (!aeClippingsTree.isFolderSelected() && !aeClippingsTree.isSeparatorSelected());
           }
@@ -612,11 +604,6 @@ function buildClippingsTree()
         gotoSrcURL: {
           name: browser.i18n.getMessage("mnuGoToSrcURL"),
           className: "ae-menuitem",
-	  /***
-	  callback(aKey, aOpt) {
-	    // TO DO: Put callback here, instead of above.
-	  },
-	  ***/
           visible(aItemKey, aOpt) {
             return (!aeClippingsTree.isFolderSelected() && !aeClippingsTree.isSeparatorSelected());
           }
@@ -640,7 +627,7 @@ function buildClippingsTree()
           }
         },
 	togglePreviewPane: {
-	  name: "preview pane",
+	  name: browser.i18n.getMessage("mnuPrevPane"),
 	  className: "ae-menuitem",
           icon(aOpt, $itemElement, aItemKey, aItem) {
             if ($("#pane-splitter").css("display") != "none"
@@ -650,7 +637,7 @@ function buildClippingsTree()
           }
 	},
 	customize: {
-	  name: "customize...",
+	  name: browser.i18n.getMessage("mnuCustz"),
 	  className: "ae-menuitem",
 	}
       }

@@ -12,6 +12,14 @@ async function init()
   document.body.dataset.os = platform.os;
   aeInterxn.init(platform.os);
 
+  let pasteShct = browser.i18n.getMessage("keyCtrl") + "+V";
+  if (platform.os == "mac") {
+    pasteShct = browser.i18n.getMessage("keyCommand") + "V";
+  }
+
+  let txt = document.createTextNode(browser.i18n.getMessage("sbarHlpWhat", pasteShct));
+  document.querySelector("#what-is").appendChild(txt);
+
   document.querySelector("#btn-accept").addEventListener("click", aEvent => { closeDlg() });
 
   // Fix for Fx57 bug where bundled page loaded using

@@ -1272,6 +1272,121 @@
     "message": "This setting can also be changed in Clippings preferences."
   },
 
+  "brwsActOpt": {
+    "message": "Clippings toolbar button action:",
+    "description": "Radio button groupbox caption in extension preferences page"
+  },
+
+  "brwsActClpMgr": {
+    "message": "Open Clippings Manager",
+    "description": "Radio button option in extension preferences page"
+  },
+
+  "brwsActSbar": {
+    "message": "Open Clippings Sidebar",
+    "description": "Radio button option in extension preferences page"
+  },
+
+  "sidebarOpts": {
+    "message": "Clippings Sidebar...",
+    "description": "Button label in extension preferences page"
+  },
+
+  "sidebarTitle": {
+    "message": "Clippings Sidebar",
+    "description": "Title of the Clippings Sidebar, used in dialogs"
+  },
+
+  "optPasteFromSbar": {
+    "message": "Enable paste clipping from Clippings Sidebar",
+    "description": "Checkbox option for enabling clipping paste from Clippings Sidebar"
+  },
+
+  "labelExpermt": {
+    "message": "(experimental)",
+    "description": "Label indicating that the associated feature or option is experimental"
+  },
+
+  "pasteFromSbarInstr": {
+    "message": "To paste a clipping from the Sidebar:",
+    "description": "Instructions for pasting a clipping from Clippings Sidebar"
+  },
+
+  "pasteFromSbarStep1": {
+    "message": "Select the clipping that you want to paste",
+    "description": "Instructions for pasting a clipping from Clippings Sidebar"
+  },
+
+  "pasteFromSbarStep2": {
+    "message": "Click on the textbox in the web page and position the cursor where the clipping should be pasted",
+    "description": "Instructions for pasting a clipping from Clippings Sidebar"
+  },
+
+  "pasteFromSbarStep3": {
+    "message": "Return to Clippings Sidebar, then right-click on the selection and then select Paste Clipping",
+    "description": "Instructions for pasting a clipping from Clippings Sidebar"
+  },
+
+  "pasteFromSbarTip": {
+    "message": "Always click the web page textbox first before pasting, even when pasting one clipping after another.",
+    "description": "Instructions for pasting a clipping from Clippings Sidebar"
+  },
+
+  "mnuPrevPane": {
+    "message": "Preview Pane",
+    "description": "Clippings Sidebar context menu"
+  },
+
+  "mnuCustz": {
+    "message": "Customize...",
+    "description": "Clippings Sidebar context menu"
+  },
+
+  "sbarCustzTitle": {
+    "message": "Customize",
+    "description": "Clippings Sidebar customize dialog title"
+  },
+
+  "sbarCustzTbar": {
+    "message": "Show toolbar",
+    "description": "Checkbox option in Clippings Sidebar customize dialog"
+  },
+
+  "sbarCustzSrch": {
+    "message": "Show search bar",
+    "description": "Checkbox option in Clippings Sidebar customize dialog"
+  },
+
+  "sbarCustzPrevw": {
+    "message": "Show preview pane",
+    "description": "Checkbox option in Clippings Sidebar customize dialog"
+  },
+
+  "sbFirstRun": {
+    "message": "Get started by creating a clipping from selected text in the web page or in Clippings Manager.",
+    "description": "Clippings Sidebar first-run message"
+  },
+
+  "sbarHlpTitle": {
+    "message": "Sidebar Help",
+    "description": "Clippings Sidebar help window title"
+  },
+
+  "sbarHlpWhat": {
+    "message": "Use Clippings Sidebar to search for and select a clipping for copying and pasting into a web page textbox.  Double-click on a clipping to copy its content to the clipboard.  You can then paste it into a web page textbox or HTML editor by pressing $1 or right-clicking and selecting Paste in the browser context menu.  Right-click on a clipping for more options.",
+    "description": "Clippings Sidebar help"
+  },
+
+  "sbarHlpCopy": {
+    "message": "If the clipping contains HTML tags, you\u2019ll be prompted to choose the format of the copied content.  Select \u201cCopy as Formatted Text\u201d if pasting into an HTML editor and want to include text formatting such as bold, italic, fonts and headings.  Select \u201cCopy as Plain Text\u201d if pasting into a normal web page textbox or you want to paste the clipping into an HTML editor without any formatting.",
+    "description": "Clippings Sidebar help"
+  },
+
+  "sbarHlpEdit": {
+    "message": "To edit and organize your clippings in Clippings Manager, click Organize Clippings on the toolbar.",
+    "description": "Clippings Sidebar help"
+  },
+
   "syncFldrName": {
     "message": "Synced Clippings",
     "description": "The name of the folder containing the user's synchronized clippings."

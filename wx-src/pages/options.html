@@ -33,10 +33,10 @@
       </div>
 
       <div id="prefpane-general" class="tab-panel active-tab-panel">
-        <p id="browser-action-opt-label">clippings toolbar button action:</p>
+        <p id="browser-action-opt-label" data-i18n="brwsActOpt"></p>
         <div id="browser-action-opt-ctr" class="row browser-style">
-          <input type="radio" id="brws-act-open-clippings-mgr" name="browser-action-opt" value="1"><label for="brws-act-open-clippings-mgr">open clippings manager</label>
-          <input type="radio" id="brws-act-open-clippings-sidebar" name="browser-action-opt" value="2"><label for="brws-act-open-clippings-sidebar">open clippings sidebar</label>
+          <input type="radio" id="brws-act-open-clippings-mgr" name="browser-action-opt" value="1"><label for="brws-act-open-clippings-mgr" data-i18n="brwsActClpMgr"></label>
+          <input type="radio" id="brws-act-open-clippings-sidebar" name="browser-action-opt" value="2"><label for="brws-act-open-clippings-sidebar" data-i18n="brwsActSbar"></label>
         </div>
 	<fieldset id="general-options">
 	  <legend data-i18n="prefsHdgGeneralOptions"></legend>
@@ -159,7 +159,7 @@
 	    <input type="number" id="auto-inc-plchldrs-start-val" min="0" value="0"/>
 	  </div>
 	  <div class="row">
-            <button id="sidebar-paste-opts">clippings sidebar...</button>
+            <button id="sidebar-paste-opts" data-i18n="sidebarOpts"></button>
           </div>
         </fieldset>
       </div> <!-- /prefpane-paste -->
@@ -213,19 +213,19 @@
 
     <div id="sidebar-opts-dlg" class="lightbox">
       <div class="dlg-content">
-	<p class="dlg-subhead">clippings sidebar</p>
+	<p class="dlg-subhead" data-i18n="sidebarTitle"></p>
         <div class="row browser-style">
-          <input type="checkbox" id="enbl-sidebar-paste"><label for="enbl-sidebar-paste">enable paste clipping from Clippings Sidebar</label><span class="experimental-label">(experimental)</span>
+          <input type="checkbox" id="enbl-sidebar-paste"><label for="enbl-sidebar-paste" data-i18n="optPasteFromSbar"></label><span class="experimental-label" data-i18n="labelExpermt"></span>
         </div>
 
-	<p>to paste a clipping from the Sidebar:</p>
+	<p data-i18n="pasteFromSbarInstr"></p>
         <ol>
-          <li>select the clipping that you want to paste</li>
-          <li>click on the textbox in the web page and position the cursor where the clipping should be pasted</li>
-          <li>return to Clippings Sidebar, then right-click on the selection and then select Paste Clipping</li>
+          <li data-i18n="pasteFromSbarStep1"></li>
+          <li data-i18n="pasteFromSbarStep2"></li>
+          <li data-i18n="pasteFromSbarStep3"></li>
         </ol>
 
-	<p>always click the web page textbox first before pasting, even when pasting one clipping after another.</p>
+	<p data-i18n="pasteFromSbarTip"></p>
 
       </div>
       <div class="dlg-btns">
