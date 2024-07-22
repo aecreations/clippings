@@ -504,7 +504,7 @@ ul.fancytree-container {
     margin-top: 0;
     margin-bottom: 10px;
     font-size: 13px;
-    font-weight: 600;
+    font-weight: bold;
 }
 
 .lightbox .row {
@@ -630,6 +630,24 @@ body[data-os="mac"] .lightbox .msgbox-icon {
     margin-left: 22px;
     text-indent: -22px;
     width: 152px;
+}
+
+#request-clipbd-write-perm-dlg {
+    top: 88px;
+    --width: 200px;
+    --height: 320px;
+}
+
+#request-clipbd-write-perm-dlg .perm-request {
+    margin-bottom: unset;
+}
+
+#request-clipbd-write-perm-dlg ul {
+    padding-left: 20px;
+}
+
+#request-clipbd-write-perm-dlg .perm-instr {
+    margin-top: 0;
 }
 
 #init-error-msgbox {

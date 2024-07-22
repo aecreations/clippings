@@ -13,7 +13,7 @@ let gClippingsDB;
 let gIsClippingsTreeEmpty;
 let gSyncedItemsIDs = new Set();
 let gSyncedItemsIDMap = new Map();
-let gCustomizeDlg, gReloadSyncFldrMsgBox, gInitErrorMsgBox;
+let gCustomizeDlg, gReloadSyncFldrMsgBox, gClipbdWritePermMsgBox, gInitErrorMsgBox;
 let gMsgBarTimerID = null;
 
 let gSyncClippingsListener = {
@@ -251,10 +251,7 @@ let gCmd = {
 
     let perms = await browser.permissions.getAll();
     if (! perms.permissions.includes("clipboardWrite")) {
-      // TO DO: Put the following message in a proper modal dialog,
-      // which should be opened here.
-      // Once the dialog is displayed, exit this function.
-      window.alert(`${browser.i18n.getMessage('permReqTitle')}\n\n  • ${browser.i18n.getMessage('extPrmClipbdW')}\n\n${browser.i18n.getMessage('extPermInstr')}`);
+      gClipbdWritePermMsgBox.showModal();
       return;
     }
 
@@ -405,6 +402,7 @@ function initDialogs()
     rebuildClippingsTree();
   };
 
+  gClipbdWritePermMsgBox = new aeDialog("#request-clipbd-write-perm-dlg");
   gInitErrorMsgBox = new aeDialog("#init-error-msgbox");
 }
 
