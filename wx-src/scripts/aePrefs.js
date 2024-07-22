@@ -60,7 +60,7 @@ let aePrefs = {
     upgradeNotifCount: 0,
     showNewClippingOpts: false,
     useInsertHTMLCmd: false,
-    defDlgBtnFollowsFocus: true,
+    defDlgBtnFollowsFocus: false,
     compressSyncData: true,
     isSyncReadOnly: false,
     clippingsMgrAutoShowStatusBar: false,
@@ -280,7 +280,7 @@ let aePrefs = {
 
       compressSyncData: true,
       isSyncReadOnly: false,
-      defDlgBtnFollowsFocus: true,
+      defDlgBtnFollowsFocus: false,
       clippingsMgrAutoShowStatusBar: false,
       showShctKey: false,
       showShctKeyDispStyle: aeConst.SHCTKEY_DISPLAY_PARENS,
