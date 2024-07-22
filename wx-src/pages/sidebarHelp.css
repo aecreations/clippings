@@ -6,17 +6,13 @@
 
 
 body {
-    font-size: 15px;
+    font-size: 13px;
 }
 
 h3 {
-    font-size: 17px;
+    font-size: 15px;
     font-weight: 600;
     margin: 0;
-}
-
-p {
-    font-size: 13px;
 }
 
 .dlg-content {
