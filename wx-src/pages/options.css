@@ -304,7 +304,7 @@ progress {
 }
 
 #brws-act-open-clippings-mgr + label {
-    margin-right: 12px;
+    margin-right: 18px;
 }
 
 #browser-action-opt-label,
@@ -649,16 +649,24 @@ body[data-locale|="es"] #wnds-dlgs-opts-dlg #clpmgr-save-wnd-pos-label {
 #sidebar-opts-dlg {
     top: 190px;
     --width: 530px;
-    --height: 300px;
+    --height: 326px;
 }
 
 .experimental-label {
-    vertical-align: middle;
+    vertical-align: 0;
 }
 
 #sidebar-opts-dlg p:not(.dlg-subhead),
 #sidebar-opts-dlg li {
     font-size: 13px;
+}
+
+#sidebar-opts-dlg li {
+    margin-bottom: 6px;
+}
+
+#sidebar-opts-dlg li:last-of-type {
+    margin-bottom: 0;
 }
 
 #sidebar-opts-dlg p:not(.dlg-subhead) {
