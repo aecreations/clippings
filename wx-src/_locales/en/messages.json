@@ -1688,6 +1688,11 @@
     "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
   },
 
+  "whatsNewFx2": {
+    "message": "Brought back the ability to create a new clipping from clipboard content in Clippings Manager (Tools \u2192 New From Clipboard)",
+    "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
+  },
+
   "whatsNewTb1": {
     "message": "The Clippings toolbar button in the message compose window has moved from the status bar to the Composition Toolbar. The Clippings toolbar button is no longer available in the main Thunderbird window",
     "description": "Description of a Thunderbird-specific enhancement in the new version of Clippings"
