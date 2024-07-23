@@ -37,8 +37,8 @@ body {
 }
 
 h1 {
-    font-size: 36px;
-    font-weight: 200;
+    font-size: 28px;
+    font-weight: 600;
     letter-spacing: -0.25px;
     margin-bottom: 8px;
 }
@@ -46,6 +46,13 @@ h1 {
 h2 {
     font-size: 17px;
     font-weight: 600;
+}
+
+h3 {
+    margin-left: 24px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-secondary-text);
 }
 
 main {
@@ -82,7 +89,6 @@ button {
 #ext-icon {
     float: left;
     margin-right: 14px;
-    margin-bottom: 52px;
     width: 48px;
     height: 48px;
 }
@@ -90,8 +96,8 @@ button {
 #ext-desc {
     margin-top: 0px;
     font-size: 17px;
-    font-weight: 400;
-    color: var(--color-secondary-text);
+    font-weight: 200;
+    letter-spacing: -0.25px;
 }
 
 #dlg-content {

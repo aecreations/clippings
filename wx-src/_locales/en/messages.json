@@ -1678,9 +1678,19 @@
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
 
+  "whatsNew3": {
+    "message": "New placeholder for embedding a clipping in a clipping",
+    "description": "Description of an enhancement or fix in the new version of Clippings"
+  },
+  
   "whatsNewFx1": {
-    "message": "Clipping text can be copied by right-clicking on a clipping in Clippings Manager or the new Clippings sidebar",
+    "message": "Copy clipping text to the clipboard by right-clicking on a clipping in Clippings Manager or in the new Clippings Sidebar",
     "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
+  },
+
+  "whatsNewTb1": {
+    "message": "The Clippings toolbar button in the message compose window has moved from the status bar to the Composition Toolbar. The Clippings toolbar button is no longer available in the main Thunderbird window",
+    "description": "Description of a Thunderbird-specific enhancement in the new version of Clippings"
   },
 
   "whatsNewSync": {
