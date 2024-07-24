@@ -117,7 +117,7 @@ body[data-os="win"] .browser-style > input[type="checkbox"] + label {
 }
 
 #new-clipping-fldr-tree-popup {
-    bottom: 10px;
+    bottom: 4px;
     left: 16px;
     width: 350px;
     height: 151px;

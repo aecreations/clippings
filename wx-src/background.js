@@ -1543,9 +1543,9 @@ async function newClipping(aActiveTab)
 function openNewClippingDlg(aPlatformOS, aTabID)
 {
   let url = browser.runtime.getURL("pages/new.html");
-  let height = 416;
+  let height = 410;
   if (aPlatformOS == "win") {
-    height = 448;
+    height = 434;
   }
   openDlgWnd(url, "newClipping", {type: "popup", width: 432, height}, aTabID);
 }

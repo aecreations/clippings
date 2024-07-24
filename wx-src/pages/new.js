@@ -4,10 +4,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
-const WNDH_NORMAL = 416;
-const WNDH_NORMAL_WINDOWS = 448;
-const WNDH_OPTIONS_EXPANDED = 486;
-const DLG_HEIGHT_ADJ_WINDOWS = 36;
+const WNDH_NORMAL = 410;
+const WNDH_NORMAL_WINDOWS = 434;
+const WNDH_OPTIONS_EXPANDED = 474;
+const DLG_HEIGHT_ADJ_WINDOWS = 24;
 const DLG_HEIGHT_ADJ_LOCALE = 16;
 
 let gOS;
