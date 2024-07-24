@@ -16,8 +16,9 @@ h3 {
 }
 
 .dlg-content {
-    max-height: 262px;
+    max-height: 250px;
     overflow-y: auto;
+    line-height: 1.23;
 }
 
 #dlg-buttons {

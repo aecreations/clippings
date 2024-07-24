@@ -1613,13 +1613,13 @@ async function openBackupDlg()
 async function openSidebarHelpDlg()
 {
   let url = browser.runtime.getURL("pages/sidebarHelp.html");
-  let height = 374;
+  let height = 364;
   let platform = await browser.runtime.getPlatformInfo();
 
   if (platform.os == "mac") {
-    height = 358;
+    height = 348;
   }
-  
+
   let wndPpty = {
     type: "popup",
     width: 600,

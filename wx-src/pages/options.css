@@ -12,7 +12,7 @@
     --color-main-border: #ddd;
     --color-main-bkgd: #fefefe;
     --color-main-border-shadow: #e0e0e0;
-    --color-header-bkgd: radial-gradient(#fff, #f0f0f4);
+    --color-header-bkgd: radial-gradient(#fff, #eef0f4);
     --color-tab-cntr-border: #cfcfd8;
     --color-tab-bkgd-hover: #e0e0e6;
     --color-tab-bkgd-active: #cfcfd8;
@@ -21,7 +21,7 @@
     --color-fieldset-border: #d7d7db;
     --color-dlg-fieldset-border: #d7d7db;
     --color-text-sync-status-on: #003706;
-    --color-about-btn-bkgd: #f0f0f4;
+    --color-about-btn-bkgd: #eef0f4;
     --color-about-btn-bkgd-hover: #e0e0e6;
     --color-about-btn-bkgd-active: #d7d7db;
     --color-about-btn-border: #e0e0e6;
@@ -649,11 +649,15 @@ body[data-locale|="es"] #wnds-dlgs-opts-dlg #clpmgr-save-wnd-pos-label {
 #sidebar-opts-dlg {
     top: 190px;
     --width: 530px;
-    --height: 326px;
+    --height: 310px;
 }
 
 .experimental-label {
     vertical-align: 0;
+}
+
+#sidebar-opts-dlg .dlg-content {
+    line-height: 1.23;
 }
 
 #sidebar-opts-dlg p:not(.dlg-subhead),
