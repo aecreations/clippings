@@ -1288,7 +1288,7 @@
   },
 
   "sidebarOpts": {
-    "message": "Clippings Sidebar...",
+    "message": "Clippings Sidebar…",
     "description": "Button label in extension preferences page"
   },
 
@@ -1338,7 +1338,7 @@
   },
 
   "mnuCustz": {
-    "message": "Customize...",
+    "message": "Customize…",
     "description": "Clippings Sidebar context menu"
   },
 
@@ -1452,7 +1452,7 @@
   },
 
   "syncConnect": {
-    "message": "Connecting to the Sync Clippings helper app..."
+    "message": "Connecting to the Sync Clippings helper app…"
   },
 
   "syncFileDir": {
