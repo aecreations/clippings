@@ -561,7 +561,7 @@ body[data-os="mac"] .lightbox .msgbox-icon {
 }
 
 .lightbox.msgbox > .dlg-btns > button {
-    width: 120px;
+    width: 100px;
     height: 26px;
     margin-right: 0;
 }
@@ -569,7 +569,7 @@ body[data-os="mac"] .lightbox .msgbox-icon {
 #copy-clipping-txt-fmt-dlg {
     top: 88px;
     --width: 192px;
-    --height: 184px;
+    --height: 176px;
 }
 
 #copy-clipping-txt-fmt-dlg .dlg-hdr {
@@ -607,7 +607,9 @@ body[data-os="mac"] .lightbox .msgbox-icon {
 }
 
 #copy-clipping-txt-fmt-dlg #copy-title {
+    margin-top: 6px;
     margin-bottom: 8px;
+    line-height: 1.2;
 }
 
 #copy-clipping-txt-fmt-dlg .dlg-btns {
