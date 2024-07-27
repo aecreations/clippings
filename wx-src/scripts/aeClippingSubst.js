@@ -55,6 +55,8 @@ aeClippingSubst.init = async function (aUserAgentStr, aAutoIncrementStartVal)
 
   // Initialize locale used for formatting dates.
   moment.locale(browser.i18n.getUILanguage());
+
+  this._autoIncrementVars = await aePrefs.getPref("_autoIncrPlchldrVals");
 };
 
 
@@ -287,6 +289,16 @@ aeClippingSubst.resetAutoIncrementVar = async function (aVarName)
   this._autoIncrementVars = await aePrefs.getPref("_autoIncrPlchldrVals");
   delete this._autoIncrementVars[aVarName];
   await aePrefs.setPrefs({_autoIncrPlchldrVals: this._autoIncrementVars});
+};
+
+
+aeClippingSubst.resetAllAutoIncrementVars = async function ()
+{
+  this._autoIncrementVars = {};
+  await aePrefs.setPrefs({
+    _autoIncrPlchldrs: [],
+    _autoIncrPlchldrVals: {},
+  });
 };
 
 

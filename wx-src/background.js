@@ -304,6 +304,7 @@ browser.runtime.onInstalled.addListener(async (aInstall) => {
 browser.runtime.onStartup.addListener(async () => {
   log("Clippings/wx: Resetting persistent background script data during browser startup");
   await aePrefs.setDefaultBkgdState();
+  await aeClippingSubst.resetAllAutoIncrementVars();
 });
 
 
@@ -979,7 +980,7 @@ function getContextMenuData(aFolderID, aPrefs)
 getContextMenuData.isDarkMode = null;
 
 
-function buildContextMenu(aPlatformOS, aPrefs)
+async function buildContextMenu(aPlatformOS, aPrefs)
 {
   log("Clippings/wx: buildContextMenu()");
   
@@ -1024,28 +1025,29 @@ function buildContextMenu(aPlatformOS, aPrefs)
   gFolderMenuItemIDMap = aPrefs._clippingMenuItemIDMap;
   gClippingMenuItemIDMap = aPrefs._folderMenuItemIDMap;
 
-  getContextMenuData(rootFldrID, aPrefs).then(aMenuData => {
-    if (aeConst.DEBUG) {
-      console.log("buildContextMenu(): Menu data: ");
-      console.log(aMenuData);
-    }
+  let menuData = await getContextMenuData(rootFldrID, aPrefs);
+  if (aeConst.DEBUG) {
+    console.log("buildContextMenu(): Menu data: ");
+    console.log(menuData);
+  }
 
-    aePrefs.setPrefs({
-      _clippingMenuItemIDMap: gClippingMenuItemIDMap,
-      _folderMenuItemIDMap: gFolderMenuItemIDMap,
+  aePrefs.setPrefs({
+    _clippingMenuItemIDMap: gClippingMenuItemIDMap,
+    _folderMenuItemIDMap: gFolderMenuItemIDMap,
+  });
+  
+  if (menuData.length > 0) {
+    browser.menus.create({
+      id: "ae-clippings-submenu-separator",
+      type: "separator",
+      contexts: ["editable"],
+      documentUrlPatterns: ["<all_urls>"]
     });
-    
-    if (aMenuData.length > 0) {
-      browser.menus.create({
-        id: "ae-clippings-submenu-separator",
-        type: "separator",
-        contexts: ["editable"],
-        documentUrlPatterns: ["<all_urls>"]
-      });
 
-      buildContextMenuHelper(aMenuData);
-    }
-  }).catch(aErr => { onError(aErr) });
+    buildContextMenuHelper(menuData);
+  }
+
+  await rebuildAutoIncrementPlchldrResetMenu();
 }
 
 
@@ -1115,7 +1117,7 @@ async function rebuildContextMenu()
 
   let platform = await browser.runtime.getPlatformInfo();
   let prefs = await aePrefs.getAllPrefs();
-  buildContextMenu(platform.os, prefs);
+  await buildContextMenu(platform.os, prefs);
 }
 
 
@@ -1161,6 +1163,28 @@ async function buildAutoIncrementPlchldrResetMenu(aAutoIncrPlchldrs)
       }
     }
   });
+}
+
+
+async function rebuildAutoIncrementPlchldrResetMenu()
+{
+  let autoIncrPlchldrs = await aePrefs.getPref("_autoIncrPlchldrs");
+
+  if (autoIncrPlchldrs.length > 0) {
+    await browser.menus.update("ae-clippings-reset-autoincr-plchldrs", {
+      enabled: true,
+    });
+    autoIncrPlchldrs.forEach(async (aItem) => {
+      let menuItem = {
+        id: `ae-clippings-reset-autoincr-${aItem}`,
+        title: `#[${aItem}]`,
+        parentId: "ae-clippings-reset-autoincr-plchldrs",
+        contexts: ["action"],
+        documentUrlPatterns: ["<all_urls>"]
+      };
+      await browser.menus.create(menuItem);
+    });
+  }
 }
 
 
