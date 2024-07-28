@@ -452,7 +452,6 @@ ul.fancytree-container {
     height: 2px;
     background-color: var(--color-tree-splitter);
     border-top: 1px solid var(--color-tree-splitter-border);
-    cursor: row-resize;
 }
 
 #preview-pane {
