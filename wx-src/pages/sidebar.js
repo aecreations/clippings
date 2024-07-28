@@ -363,6 +363,7 @@ $(async () => {
   buildClippingsTree();
   initSyncItemsIDLookupList();
 
+  initTreeSplitter();
   initDialogs();
   aeInterxn.init(gEnvInfo.os);
 
@@ -765,10 +766,56 @@ function initSyncItemsIDLookupList()
 }
 
 
+function initTreeSplitter()
+{
+  // See the same function in clippingsMgr.js for acknowledgements.
+  // Usage is similar, but changed to vertical orientation.
+  let topPane = document.getElementById("scroll-content");
+  let bottomPane = document.getElementById("preview-pane");
+  let paneSep = document.getElementById("pane-splitter");
+
+  // The script below constrains the target to move vertically between top
+  // and bottom virtual boundaries.
+  // - the top limit is positioned at 20% of the screen height
+  // - the bottom limit is positioned at 20% of the screen height
+  let topLimit = 20;
+  let bottomLimit = 20;
+
+  paneSep.sdrag(function (el, pageX, startX, pageY, startY, fix) {
+    fix.skipY = true;
+
+    if (pageY < window.innerHeight * topLimit / 100) {
+      pageY = window.innerHeight * topLimit / 100;
+      fix.pageY = pageY;
+    }
+    if (pageY > window.innerHeight * bottomLimit / 100) {
+      pageY = window.innerHeight * bottomLimit / 100;
+      fix.pageY = pageY;
+    }
+
+    let cur = pageY / window.innerHeight * 100;
+    if (cur < 0) {
+      cur = 0;
+    }
+    if (cur > window.innerHeight) {
+      cur = window.innerHeight;
+    }
+
+    // TO DO: Calculations need to handle the height of the toolbar and search
+    // bar, if visible, as well as any message bars on display.
+    let top = (100-cur-2);
+    bottomPane.style.height = cur + '%';
+    topPane.style.height = top + '%';
+
+  }, null, 'vertical');
+}
+
+
 function setEmptyClippingsState()
 {
-  var rv;
-  rv = [{ title: browser.i18n.getMessage("clipMgrNoItems"), key: "0" }];
+  let rv = [
+    {title: browser.i18n.getMessage("clipMgrNoItems"), key: "0"},
+  ];
   gIsClippingsTreeEmpty = true;
   
   return rv;
