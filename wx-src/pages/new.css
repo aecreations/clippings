@@ -68,6 +68,10 @@ body[data-os="win"] .browser-style > input[type="checkbox"] + label {
     order: 1;
 }
 
+.hlabel {
+    display: block;
+}
+
 .folder-picker {
     margin-top: 4px;
 }

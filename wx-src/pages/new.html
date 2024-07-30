@@ -13,27 +13,17 @@
 
   <body>
     <div id="content">
-      <div class="row">
-        <label for="clipping-name" data-i18n="labelName"></label>
-      </div>
-      <div class="row">
-        <input type="text" id="clipping-name" size="50" />
-      </div>
-      <div class="row">
-        <label for="clipping-text" data-i18n="labelContent"></label>
-      </div>
-      <div class="row">
-        <textarea id="clipping-text" rows="8"></textarea>
-      </div>
-      <div class="row">
-        <label data-i18n="labelCreateInFldr"></label>
-      </div>
+      <label class="hlabel" for="clipping-name" data-i18n="labelName"></label>
+      <input type="text" id="clipping-name" size="50" />
+      <label class="hlabel" for="clipping-text" data-i18n="labelContent"></label>
+      <textarea id="clipping-text" rows="8"></textarea>
+      <label class="hlabel" for="new-clipping-fldr-picker-menubtn" data-i18n="labelCreateInFldr"></label>
       <div class="hbox folder-picker">
         <button id="new-clipping-fldr-picker-menubtn" class="folder-picker-menubtn" value="0"
 	 data-i18n="rootFldrName"></button>
         <button id="new-folder-btn"></button>
       </div>
-      <div id="new-clipping-fldr-tree-popup" class="folder-tree-popup">
+      <div id="new-clipping-fldr-tree-popup" class="folder-tree-popup" role="menu">
 	<div id="new-clipping-fldr-tree" class="folder-tree"></div>
       </div>
 
@@ -117,18 +107,12 @@
     </div>
 
     <!-- Dialog boxes -->
-    <div id="new-folder-dlg" class="lightbox">
+    <div id="new-folder-dlg" class="lightbox" role="dialog">
       <div class="dlg-content">
-        <div class="row">
-	  <label for="new-fldr-name" data-i18n="labelNewFldrName"></label>
-        </div>
-        <div class="row">
-	  <input type="text" id="new-fldr-name"/>
-	</div>
-	<div class="row">
-	  <label id="new-folder-dlg-fldr-picker-label" for="new-folder-dlg-fldr-picker-mnubtn"
-	   data-i18n="labelCreateAsSubfOf"></label>
-        </div>
+	<label class="hlabel" for="new-fldr-name" data-i18n="labelNewFldrName"></label>
+	<input type="text" id="new-fldr-name"/>
+	<label id="new-folder-dlg-fldr-picker-label" class="hlabel"
+	 for="new-folder-dlg-fldr-picker-mnubtn" data-i18n="labelCreateAsSubfOf"></label>
         <div class="folder-picker">
 	  <button id="new-folder-dlg-fldr-picker-mnubtn" class="folder-picker-menubtn" value="0"
            data-i18n="rootFldrName"></button>
@@ -144,7 +128,7 @@
       </div>
     </div>
 
-    <div id="create-clipping-error-msgbox" class="lightbox">
+    <div id="create-clipping-error-msgbox" class="lightbox" role="alertdialog">
       <div class="dlg-content browser-style">
 	<div class="msgbox-error-icon"></div>
 	<p class="msgbox-error-msg"></p>

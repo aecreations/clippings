@@ -184,12 +184,15 @@ let gAutocompleteMenu = {
           clippingDiv.className = "clipping";
           clippingDiv.dataset.index = item.index;
           clippingDiv.dataset.clippingId = item.id;
+          clippingDiv.setAttribute("role", "menuitem");
           
           nameDiv.className = "name";
           nameDiv.appendChild(document.createTextNode(item.name));
+          nameDiv.setAttribute("role", "caption");
           
           previewDiv.className = "preview";
           previewDiv.appendChild(document.createTextNode(item.preview));
+          previewDiv.setAttribute("aria-label", item.preview);
           
           clippingDiv.appendChild(nameDiv);
           clippingDiv.appendChild(previewDiv);
