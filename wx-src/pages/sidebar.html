@@ -17,7 +17,7 @@
             <div class="inline-msgbar-icon"></div>
             <div class="inline-msgbar-body">
 	      <div class="inline-msgbar-content">
-		<label data-i18n="clipMgrNoSrcURL"></label>
+		<label data-i18n="clipMgrNoSrcURL" role="alert"></label>
 	      </div>
             </div>
 	    <div class="inline-msgbar-dismiss"></div>
@@ -26,7 +26,7 @@
             <div class="inline-msgbar-icon"></div>
             <div class="inline-msgbar-body">
 	      <div class="inline-msgbar-content">
-		<label data-i18n="msgUnavail"></label>
+		<label data-i18n="msgUnavail" role="alert"></label>
 	      </div>
             </div>
 	    <div class="inline-msgbar-dismiss"></div>
@@ -34,14 +34,14 @@
 	</div>
 
 	<div id="toolbars">
-	  <div id="toolbar" class="hbox">
+	  <div id="toolbar" class="hbox" role="toolbar">
 	    <button id="open-clippings-mgr" class="toolbar-button toolbar-button-labelled" data-i18n="cxtMenuOpenClippingsMgr"></button>
 	    <div class="toolbar-flex-spacer"></div>
 	    <button id="help" class="toolbar-button"></button>
 	  </div>
-          <div id="search-bar" class="hbox">
+          <div id="search-bar" class="hbox" role="toolbar">
 	    <div id="search-clippings-and-folders">
-	      <input type="search" id="search-box"/>
+	      <input type="search" id="search-box" role="searchbox"/>
 	      <div id="clear-search"></div>
 	    </div>
           </div>	    
@@ -55,13 +55,13 @@
 	  </div>
 	  <div id="pane-splitter"></div>
 	  <div id="preview-pane" class="vbox">
-	    <input type="text" id="item-name" readonly/>
-	    <textarea id="clipping-content" readonly></textarea>
+	    <input type="text" id="item-name" readonly role="presentation"/>
+	    <textarea id="clipping-content" readonly role="presentation"></textarea>
 	  </div>
         </div>
         <div id="welcome-content">
           <div id="welcome-icon"></div>
-	  <p id="welcome-hdg" data-i18n="sidebarTitle"></p>
+	  <p id="welcome-hdg" role="heading" data-i18n="sidebarTitle"></p>
 	  <p data-i18n="sbFirstRun"></p>
 	  <div id="welcome-cta" class="row">
             <button id="welcome-clippings-mgr" data-i18n="brwsActClpMgr"></button>
@@ -72,13 +72,13 @@
 
     <!-- Dialog boxes -->
     <div id="lightbox-bkgrd-ovl" class="lightbox-bkgrd"></div>
-    <div id="copy-clipping-txt-fmt-dlg" class="lightbox" data-compact="true">
+    <div id="copy-clipping-txt-fmt-dlg" class="lightbox" data-compact="true" role="dialog">
       <div class="dlg-content">
-	<p class="dlg-hdr" data-i18n="mnuCopyClipTxt"></p>
+	<p class="dlg-hdr" role="heading" data-i18n="mnuCopyClipTxt"></p>
 	<div class="row hbox">
-	  <button id="copy-cliptxt-html" class="copy-fmt-btn dlg-btn" data-title="copyAsHTML"></button>
-	  <button id="copy-cliptxt-plain" class="copy-fmt-btn dlg-btn" data-title="copyAsPlain"></button>
-          <button id="copy-cliptxt-plain-html" class="copy-fmt-btn dlg-btn" data-title="copyAsPlainHTML"></button>
+	  <button id="copy-cliptxt-html" class="copy-fmt-btn dlg-btn" aria-labelledby="copy-title" data-title="copyAsHTML"></button>
+	  <button id="copy-cliptxt-plain" class="copy-fmt-btn dlg-btn" aria-labelledby="copy-title" data-title="copyAsPlain"></button>
+          <button id="copy-cliptxt-plain-html" class="copy-fmt-btn dlg-btn" aria-labelledby="copy-title" data-title="copyAsPlainHTML"></button>
         </div>
         <p id="copy-title"></p>
       </div>
@@ -99,7 +99,7 @@
 	<button class="dlg-accept default" data-i18n="btnOK"></button>
       </div>
     </div>
-    <div id="reload-sync-fldr-msgbox" class="lightbox msgbox">
+    <div id="reload-sync-fldr-msgbox" class="lightbox msgbox" role="alertdialog">
       <div class="msgbox-content">
 	<div class="msgbox-icon"></div>
 	<p data-i18n="syncReloadAck"></p>
@@ -108,9 +108,9 @@
 	<button class="dlg-accept default" data-i18n="btnReload"></button>
       </div>
     </div>
-    <div id="customize-dlg" class="lightbox">
+    <div id="customize-dlg" class="lightbox" role="dialog">
       <div class="dlg-content">
-        <p class="dlg-hdg" data-i18n="sbarCustzTitle"></p>
+        <p class="dlg-hdg" role="heading" data-i18n="sbarCustzTitle"></p>
 	<div class="row browser-style">
 	  <input type="checkbox" id="show-toolbar" class="checkbox-xs"><label for="show-toolbar" data-i18n="sbarCustzTbar"></label>
 	</div>
@@ -125,7 +125,7 @@
 	<button class="dlg-accept default" data-i18n="btnDone"></button>
       </div>
     </div>
-    <div id="init-error-msgbox" class="lightbox msgbox">
+    <div id="init-error-msgbox" class="lightbox msgbox" role="alertdialog">
       <div class="msgbox-content">
 	<div class="msgbox-icon"></div>
 	<p class="msgbox-error-msg" data-i18n="initError"></p>
