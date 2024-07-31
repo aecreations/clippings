@@ -58,9 +58,17 @@ $(async () => {
   let lang = browser.i18n.getUILanguage();
   document.body.dataset.locale = lang;
 
-  $("#preftab-general-btn").on("click", switchPrefsPanel);
-  $("#preftab-paste-btn").on("click", switchPrefsPanel);
-  $("#preftab-sync-clippings-btn").on("click", switchPrefsPanel);
+  let tabGeneral = $("#preftab-general-btn");
+  tabGeneral.on("click", switchPrefsPanel);
+  tabGeneral.ariaSelected = true;
+
+  let tabPaste = $("#preftab-paste-btn");
+  tabPaste.on("click", switchPrefsPanel);
+  tabPaste.ariaSelected = false;
+
+  let tabSync = $("#preftab-sync-clippings-btn");
+  tabSync.on("click", switchPrefsPanel);
+  tabSync.ariaSelected = false;
 
   $("#sync-intro").html(sanitizeHTML(browser.i18n.getMessage("syncIntro")));
 
@@ -397,21 +405,25 @@ function switchPrefsPanel(aEvent)
   let id = aEvent.target.id;
 
   if (id == "preftab-general-btn") {
-    $("#preftab-paste-btn, #preftab-sync-clippings-btn").removeClass("active-tab");
+    $("#preftab-paste-btn, #preftab-sync-clippings-btn").removeClass("active-tab")
+      .attr("aria-selected", "false");
     $("#prefpane-paste, #prefpane-sync-clippings").removeClass("active-tab-panel");
     $("#prefpane-general").addClass("active-tab-panel");
   }
   else if (id == "preftab-paste-btn") {
-    $("#preftab-general-btn, #preftab-sync-clippings-btn").removeClass("active-tab");
+    $("#preftab-general-btn, #preftab-sync-clippings-btn").removeClass("active-tab")
+      .attr("aria-selected", "false");
     $("#prefpane-general, #prefpane-sync-clippings").removeClass("active-tab-panel");
     $("#prefpane-paste").addClass("active-tab-panel");
   }
   else if (id == "preftab-sync-clippings-btn") {   
-    $("#preftab-general-btn, #preftab-paste-btn").removeClass("active-tab");
+    $("#preftab-general-btn, #preftab-paste-btn").removeClass("active-tab")
+      .attr("aria-selected", "false");
     $("#prefpane-general, #prefpane-paste").removeClass("active-tab-panel");
     $("#prefpane-sync-clippings").addClass("active-tab-panel");
   }
   aEvent.target.classList.add("active-tab");
+  aEvent.target.ariaSelected = true;
 }
 
 
