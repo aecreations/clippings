@@ -16,7 +16,7 @@
       <span id="banner-msg"></span>
     </div>
 
-    <div id="toolbar" class="hbox">
+    <div id="toolbar" class="hbox" role="toolbar">
       <button id="new-clipping" class="toolbar-button toolbar-button-labelled" data-i18n="tbNewClipping"></button>
       <button id="new-folder" class="toolbar-button toolbar-button-labelled" data-i18n="tbNewFolder"></button>
       <button id="move" class="toolbar-button"></button>
@@ -59,11 +59,11 @@
         </div>
 	
 	<!-- Source URL -->
-	<div id="source-url-bar" class="hbox">
+	<div id="source-url-bar" class="hbox" role="toolbar">
 	  <label id="src-url-label" data-i18n="labelSrcURL"></label>
 	  <div id="source-url-deck">
 	    <div id="src-url-normal-mode" class="hbox">
-   	      <div id="clipping-src-url" data-i18n="none"></div>
+   	      <div id="clipping-src-url" data-i18n="none" role="paragraph"></div>
               <button id="edit-url-btn" class="browser-style" data-i18n="btnEditSrcURL"></button>
 	    </div>
 	    <div id="src-url-edit-mode" class="hbox">
@@ -75,7 +75,7 @@
 	</div>
 
 	<!-- Shortcut key -->
-	<div id="options-bar" class="hbox">
+	<div id="options-bar" class="hbox" role="toolbar">
 	  <div id="shortcut-key-select">
 	    <label for="clipping-key" data-i18n="labelShortcutKey"></label>
 	    <select id="clipping-key" class="browser-style">
@@ -140,64 +140,65 @@
     </div> <!-- #content -->
 
     <div id="status-bar" class="hbox">
-      <span id="status-bar-msg"></span>
-      <span id="minz-when-inactv-mode" data-checked="false"></span>
+      <span id="status-bar-msg" role="status"></span>
+      <span id="minz-when-inactv-mode" data-checked="false" role="presentation"></span>
     </div>
 
     <!-- Popup panels -->
     <div id="panel-bkgrd-ovl" class="panel-bkgrd"></div>      
     <div id="all-src-urls-removed-confirm-msgbar" class="msgbar panel">
       <div class="msgbar-icon"></div>
-      <div class="msgbar-content" data-i18n="clipMgrRemoveSrcURLsConfirm"></div>
+      <div class="msgbar-content" data-i18n="clipMgrRemoveSrcURLsConfirm" role="alert"></div>
       <div class="msgbar-dismiss dlg-accept"></div>
     </div>
 
     <div id="restored-src-urls-msgbar" class="msgbar panel">
       <div class="msgbar-icon"></div>
-      <div class="msgbar-content" data-i18n="clipMgrRestoredSrcURLs"></div>
+      <div class="msgbar-content" data-i18n="clipMgrRestoredSrcURLs" role="alert"></div>
       <div class="msgbar-dismiss dlg-accept"></div>
     </div>
 
     <div id="no-undo-msgbar" class="msgbar panel">
       <div class="msgbar-icon"></div>
-      <div class="msgbar-content" data-i18n="clipMgrNoUndo"></div>
+      <div class="msgbar-content" data-i18n="clipMgrNoUndo" role="alert"></div>
       <div class="msgbar-dismiss dlg-accept"></div>
     </div>
 
     <div id="no-redo-msgbar" class="msgbar panel">
       <div class="msgbar-icon"></div>
-      <div class="msgbar-content" data-i18n="clipMgrNoRedo"></div>
+      <div class="msgbar-content" data-i18n="clipMgrNoRedo" role="alert"></div>
       <div class="msgbar-dismiss dlg-accept"></div>
     </div>
 
     <div id="clipboard-empty-msgbar" class="msgbar msgbar-warn panel">
       <div class="msgbar-warn-icon"></div>
-      <div class="msgbar-content" data-i18n="msgClipbdEmpty"></div>
+      <div class="msgbar-content" data-i18n="msgClipbdEmpty" role="alert"></div>
       <div class="msgbar-dismiss dlg-accept"></div>
     </div>
 
     <div id="clipping-missing-src-url-msgbar" class="msgbar panel">
       <div class="msgbar-icon"></div>
-      <div class="msgbar-content" data-i18n="clipMgrNoSrcURL"></div>
+      <div class="msgbar-content" data-i18n="clipMgrNoSrcURL" role="alert"></div>
       <div class="msgbar-dismiss dlg-accept"></div>
     </div>
 
     <div id="sync-file-readonly-msgbar" class="msgbar msgbar-warn panel">
       <div class="msgbar-warn-icon"></div>
-      <div class="msgbar-content" data-i18n="syncFldrRdOnly"></div>
+      <div class="msgbar-content" data-i18n="syncFldrRdOnly" role="alert"></div>
       <div class="msgbar-dismiss dlg-accept"></div>
     </div>
 
     <div id="action-not-available" class="msgbar msgbar-warn panel">
       <div class="msgbar-warn-icon"></div>
-      <div class="msgbar-content" data-i18n="msgUnavail"></div>
+      <div class="msgbar-content" data-i18n="msgUnavail" role="alert"></div>
       <div class="msgbar-dismiss dlg-accept"></div>
     </div>
 
     <!-- Dialog boxes -->
     <div id="lightbox-bkgrd-ovl" class="lightbox-bkgrd"></div>
-    <div id="copy-clipping-txt-fmt-dlg" class="lightbox">
-      <p class="dlg-hdr" data-i18n="mnuCopyClipTxt"></p>
+    <div id="copy-clipping-txt-fmt-dlg" class="lightbox"
+     role="dialog" aria-labelledby="copy-clipping-txt-fmt-dlg-hdg">
+      <p id="copy-clipping-txt-fmt-dlg-hdg" class="dlg-hdr" data-i18n="mnuCopyClipTxt" role="heading"></p>
       <div class="row">
         <button id="copy-cliptxt-html" class="copy-fmt-btn dlg-btn" data-i18n="copyAsHTML"></button>
       </div>
@@ -212,8 +213,8 @@
       </div>
     </div>
 
-    <div id="shortcut-list-dlg" class="lightbox">
-      <p class="hlp-hdr" data-i18n="clipMgrShortcutKeyHelpHdg"></p>
+    <div id="shortcut-list-dlg" class="lightbox" role="dialog" aria-labelledby="shortcut-list-dlg-hdg">
+      <p id="shortcut-list-dlg-hdg" class="hlp-hdr" data-i18n="clipMgrShortcutKeyHelpHdg"></p>
       <p id="shortcut-instrxns"></p>
       <div id="shortcut-list-content"></div>    
       <div class="dlg-btns hbox">
@@ -223,7 +224,7 @@
       </div>
     </div>
 
-    <div id="shortcut-key-conflict-msgbox" class="lightbox">
+    <div id="shortcut-key-conflict-msgbox" class="lightbox" role="alertdialog">
       <div class="msgbox-icon" style="margin-top:8px"></div>
       <p data-i18n="clipMgrShortcutKeyAssigned"></p>
       <div class="dlg-btns">
@@ -231,7 +232,7 @@
       </div>
     </div>
 
-    <div id="custom-placeholder-dlg" class="lightbox">
+    <div id="custom-placeholder-dlg" class="lightbox" role="dialog">
       <div class="dlg-content">
 	<div class="row">
 	<label for="custom-plchldr-name" data-i18n="labelCustPlchldrName"></label>
@@ -240,9 +241,9 @@
 	</div>
 	<div class="row">
   	  <label for="custom-plchldr-default-val" data-i18n="labelCustPlchldrVal"></label>
-  	  <input type="text" id="custom-plchldr-default-val"/>
+  	  <input type="text" id="custom-plchldr-default-val" aria-describedby="custom-plchldr-val-desc"/>
         </div>
-	<p data-i18n="custPlchldrValDesc"></p>
+	<p id="custom-plchldr-val-desc" role="tooltip" data-i18n="custPlchldrValDesc"></p>
       </div>
       <div class="dlg-btns">
 	<button class="dlg-accept default" data-i18n="btnOK"></button>
@@ -250,14 +251,15 @@
       </div>
     </div>
 
-    <div id="numeric-placeholder-dlg" class="lightbox">      
+    <div id="numeric-placeholder-dlg" class="lightbox" role="dialog">
       <div class="dlg-content">
         <div class="row">
   	  <label data-i18n="labelNumPlchldrName"></label>
 	  <input type="text" id="numeric-plchldr-name" required
+           aria-describedby="num-plchldr-val-desc"
  	   pattern="[a-zA-Z0-9_\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+"/>
         </div>
-	<p data-i18n="numPlchldrDesc"></p>
+	<p id="num-plchldr-val-desc" role="tooltip" data-i18n="numPlchldrDesc"></p>
       </div>
       <div class="dlg-btns">
 	<button class="dlg-accept default" data-i18n="btnOK"></button>
@@ -265,7 +267,7 @@
       </div>
     </div>
 
-    <div id="insert-date-time-placeholder-dlg" class="lightbox">
+    <div id="insert-date-time-placeholder-dlg" class="lightbox" role="dialog">
       <div class="dlg-content browser-style">
 	<label for="date-time-format-list" data-i18n="dateTimeFmts"></label>
         <select id="date-time-format-list" size="12"></select>
@@ -276,7 +278,7 @@
       </div>
     </div>
 
-    <div id="import-dlg" class="lightbox">
+    <div id="import-dlg" class="lightbox" role="dialog">
       <div class="dlg-content browser-style">
         <label id="import-clippings-label" data-i18n="labelSelImportFile"></label>
 	<div id="import-clippings-filepicker" class="hbox browser-style">
@@ -309,7 +311,7 @@
       </div>
     </div>
 
-    <div id="import-confirm-msgbox" class="lightbox">
+    <div id="import-confirm-msgbox" class="lightbox" role="alertdialog">
       <div class="msgbox-icon"></div>
       <p class="msgbox-content"></p>
       <div class="dlg-btns">
@@ -317,7 +319,7 @@
       </div>
     </div>
 
-    <div id="export-dlg" class="lightbox">
+    <div id="export-dlg" class="lightbox" role="dialog">
       <div class="dlg-content browser-style">
 	<label id="export-format-list-label" data-i18n="labelSelExportFmt"></label>
 	<select id="export-format-list" size="3">
@@ -342,7 +344,7 @@
       </div>
     </div>
 
-    <div id="export-confirm-msgbox" class="lightbox">
+    <div id="export-confirm-msgbox" class="lightbox" role="alertdialog">
       <div class="msgbox-icon"></div>
       <p class="msgbox-content"></p>
       <div class="dlg-btns">
@@ -350,7 +352,7 @@
       </div>
     </div>
 
-    <div id="backup-confirm-msgbox" class="lightbox">
+    <div id="backup-confirm-msgbox" class="lightbox" role="alertdialog">
       <div class="msgbox-icon"></div>
       <p class="msgbox-content"></p>
       <div class="dlg-btns">
@@ -358,7 +360,7 @@
       </div>
     </div>
 
-    <div id="reload-sync-fldr-msgbox" class="lightbox">
+    <div id="reload-sync-fldr-msgbox" class="lightbox" role="alertdialog">
       <div class="msgbox-icon"></div>
       <p class="msgbox-content" data-i18n="syncReloadAck"></p>
       <div class="dlg-btns">
@@ -366,7 +368,7 @@
       </div>
     </div>
 
-    <div id="remove-all-source-urls-dlg" class="lightbox">
+    <div id="remove-all-source-urls-dlg" class="lightbox" role="alertdialog">
       <div class="dlg-content browser-style">
 	<div class="msgbox-icon"></div>
 	<p data-i18n="clipMgrWarnRemoveSrcURLs"></p>
@@ -377,7 +379,7 @@
       </div>
     </div>
 
-    <div id="move-dlg" class="lightbox">
+    <div id="move-dlg" class="lightbox" role="dialog">
       <div class="dlg-content browser-style">
 	<label id="move-to-label" for="move-to-fldr-tree"></label>
         <button id="activate-move-to-fldr-tree"></button>
@@ -393,7 +395,7 @@
       </div>
     </div>
 
-    <div id="init-error-msgbox" class="lightbox">
+    <div id="init-error-msgbox" class="lightbox" role="alertdialog">
       <div class="dlg-content browser-style">
 	<div class="msgbox-icon"></div>
 	<p class="msgbox-error-msg"></p>
@@ -403,7 +405,7 @@
       </div>
     </div>
 
-    <div id="sync-error-msgbox" class="lightbox">
+    <div id="sync-error-msgbox" class="lightbox" role="alertdialog">
       <div class="dlg-content browser-style">
 	<div class="msgbox-icon"></div>
 	<p class="msgbox-error-msg"></p>
@@ -413,9 +415,9 @@
       </div>
     </div>
 
-    <div id="mini-help-dlg" class="lightbox">
+    <div id="mini-help-dlg" class="lightbox" role="dialog" aria-labelledby="mini-help-dlg-hdg">
       <div class="dlg-content browser-style">
-	<p class="hlp-hdr" data-i18n="clippingsMgrWndTitle"></p>
+	<p id="mini-help-dlg-hdg" class="hlp-hdr" data-i18n="clippingsMgrWndTitle" role="heading"></p>
 	<p id="mini-help-intro" data-i18n="clipMgrIntroDesc"></p>
 	<fieldset>
 	  <legend data-i18n="clipMgrIntroKeybHdg"></legend>
@@ -427,7 +429,7 @@
       </div>
     </div>
 
-    <div id="show-only-synced-items-reminder" class="lightbox">
+    <div id="show-only-synced-items-reminder" class="lightbox" role="alertdialog">
       <div class="dlg-content browser-style">
         <div class="msgbox-info-icon"></div>
         <p data-i18n="clipMgrShowOnlySyncItemsRem"></p>
@@ -437,7 +439,7 @@
       </div>
     </div>
 
-    <div id="generic-msg-box" class="lightbox">
+    <div id="generic-msg-box" class="lightbox" role="alertdialog">
       <div class="msgbox-icon"></div>
       <p data-i18n="msgUnknown"></p>
       <div class="dlg-btns">
