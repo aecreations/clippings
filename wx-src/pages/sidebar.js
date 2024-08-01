@@ -526,8 +526,14 @@ function buildClippingsTree()
     // Context menu for the clippings tree.
     $.contextMenu({
       selector: "#clippings-tree > ul.ui-fancytree > li",
+      className: "sidebar-cxt-menu",
 
       events: {
+        activated(aOpts) {
+          let mnu = aOpts.$menu;
+          mnu[0].focus();
+        },
+        
         show(aOpts) {
           return (! gIsClippingsTreeEmpty);
         }
@@ -644,6 +650,8 @@ function buildClippingsTree()
     if (gPrefs.syncClippings) {
       initSyncedClippingsTree();
     }
+
+    aeInterxn.initContextMenuAriaRoles(".sidebar-cxt-menu");
 
   }).catch(aErr => {
     console.error("sidebar.js::buildClippingsTree(): %s", aErr.message);

@@ -37,6 +37,10 @@
     background-color: var(--color-cxtmenu-bkgd);
 }
 
+.context-menu-list:-moz-focusring {
+    outline-style: none;
+}
+
 .ae-menuitem,
 .context-menu-submenu {
     padding-top: 4px;

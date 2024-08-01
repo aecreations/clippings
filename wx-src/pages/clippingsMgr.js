@@ -3743,9 +3743,12 @@ function initToolbar()
   $.contextMenu({
     selector: "#plchldr-presets",
     trigger: "left",
+    className: "placeholder-menu",
 
     events: {
       activated: function (aOptions) {
+        let mnu = aOptions.$menu;
+        mnu[0].focus();
         $("#plchldr-presets").addClass("toolbar-button-menu-open");
       },
 
@@ -3853,9 +3856,12 @@ function initToolbar()
   $.contextMenu({
     selector: "#clippings-mgr-options",
     trigger: "left",
+    className: "tools-menu",
 
     events: {
       activated: function (aOptions) {
+        let mnu = aOptions.$menu;
+        mnu[0].focus();
         $("#clippings-mgr-options").addClass("toolbar-button-menu-open");
       },
 
@@ -4047,6 +4053,9 @@ function initToolbar()
       }
     }
   });
+
+  aeInterxn.initContextMenuAriaRoles(".placeholder-menu");
+  aeInterxn.initContextMenuAriaRoles(".tools-menu");
 
   $("#custom-plchldr").click(aEvent => { gCmd.insertCustomPlaceholder() });
   $("#auto-incr-plchldr").click(aEvent => { gCmd.insertNumericPlaceholder() });
@@ -5303,9 +5312,15 @@ function buildClippingsTree()
     // Context menu for the clippings tree.
     $.contextMenu({
       selector: "#clippings-tree > ul.ui-fancytree > li",
+      className: "clippings-tree-cxt-menu",
 
       events: {
-        show: function (aOpts) {
+        activated(aOpts) {
+          let mnu = aOpts.$menu;
+          mnu[0].focus();  
+        },
+        
+        show(aOpts) {
           return (! gIsClippingsTreeEmpty);
         }
       },
@@ -5535,6 +5550,8 @@ function buildClippingsTree()
         }
       }
     });
+
+    aeInterxn.initContextMenuAriaRoles(".clippings-tree-cxt-menu");
 
     if (gPrefs.syncClippings) {
       initSyncedClippingsTree();
