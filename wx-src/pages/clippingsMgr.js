@@ -3587,6 +3587,12 @@ $(document).keydown(async (aEvent) => {
   else if (aEvent.key == "F10" && isAccelKeyPressed()) {
     gCmd.toggleMaximize();
   }
+  else if (aEvent.key == "F10" && aEvent.shiftKey) {
+    let focusedTreeNodeElt = $(".fancytree-focused");
+    if (focusedTreeNodeElt.length == 1) {
+      focusedTreeNodeElt.parent().trigger("contextmenu");
+    }
+  }
   else if (aEvent.key.toUpperCase() == "D" && isAccelKeyPressed()) {
     aEvent.preventDefault();
     gCmd.showHideDetailsPane();
