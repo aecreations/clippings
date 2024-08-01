@@ -184,27 +184,24 @@
 
     <!-- Dialog boxes -->
     <div id="lightbox-bkgrd-ovl" class="lightbox-bkgrd"></div>
-    <div id="wnds-dlgs-opts-dlg" class="lightbox" role="dialog">
+    <div id="wnds-dlgs-opts-dlg" class="lightbox" role="dialog" aria-labelledby="wnds-dlgs-opts-dlg-hdg">
       <div class="dlg-content">
-        <fieldset>
-          <legend data-i18n="wndsDlgsOptsTitle"></legend>
+        <p id="wnds-dlgs-opts-dlg-hdg" class="dlg-subhead" role="heading" data-i18n="wndsDlgsOptsTitle"></p>
+	<div id="wnds-dlgs-opts-exp-warn">
+	  <div class="warning-icon"></div>
+	  <div id="wnds-dlgs-opts-exp-warn-msg"></div>
+	</div>
 
-	  <div id="wnds-dlgs-opts-exp-warn">
-            <div class="warning-icon"></div>
-	    <div id="wnds-dlgs-opts-exp-warn-msg"></div>
-	  </div>
-
-          <div class="row browser-style">
-            <input type="checkbox" id="auto-pos-wnds"/><label for="auto-pos-wnds" data-i18n="autoPosWnds"></label>
-          </div>
-          <div class="row browser-style">
-            <input type="checkbox" id="clpmgr-save-wnd-pos"/><label id="clpmgr-save-wnd-pos-label" for="clpmgr-save-wnd-pos" data-i18n="clpMgrSaveWndPos"></label>
-          </div>
-          <div class="row browser-style">
-            <button id="reset-clpmgr-wnd-pos" class="indent dlg-btn" data-i18n="btnReset"></button>
-            <img id="reset-clpmgr-wnd-pos-ack" src="../img/success.svg"/>
-          </div>
-        </fieldset>
+	<div class="row browser-style">
+	  <input type="checkbox" id="auto-pos-wnds"/><label for="auto-pos-wnds" data-i18n="autoPosWnds"></label>
+	</div>
+	<div class="row browser-style">
+	  <input type="checkbox" id="clpmgr-save-wnd-pos"/><label id="clpmgr-save-wnd-pos-label" for="clpmgr-save-wnd-pos" data-i18n="clpMgrSaveWndPos"></label>
+	</div>
+	<div class="row browser-style">
+	  <button id="reset-clpmgr-wnd-pos" class="indent dlg-btn" data-i18n="btnReset"></button>
+	  <img id="reset-clpmgr-wnd-pos-ack" src="../img/success.svg"/>
+	</div>
       </div>
       <div class="dlg-btns">
 	<button class="dlg-accept default" data-i18n="btnOK"></button>
@@ -252,9 +249,9 @@
       </div>
     </div>
 
-    <div id="sync-clippings-dlg" class="lightbox" role="dialog">
+    <div id="sync-clippings-dlg" class="lightbox" role="dialog" aria-labelledby="sync-clippings-dlg-hdg">
       <div class="dlg-content">
-	<!-- TO DO: Put dialog title here -->
+	<p id="sync-clippings-dlg-hdg" class="dlg-subhead" role="heading" data-i18n="syncClippings"></p>
         <div id="sync-connection-check" class="deck">
 	  <p class="label" data-i18n="syncConnect"><p>
 	  <progress></progress>
