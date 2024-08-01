@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16" height="16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:osb="http://www.openswatchbook.org/uri/2009/osb" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <linearGradient id="linearGradient5763" x1="18.5" x2="18.5" y1="181.86" y2="193.36" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#d8d4ff" offset="0"/>
+   <stop stop-color="#9f99de" offset="1"/>
+  </linearGradient>
+ </defs>
+ <g transform="translate(-10 -182.36)">
+  <path d="m25.5 194.86v-9.0182l-0.5-0.48179-0.50431-0.49999h-4.9957l-1.5-2h-5.7692l-1.1538 1.8333-0.57692 0.91666v9.25z" fill="url(#linearGradient5763)" stroke="#8270bc"/>
+  <path d="m19.5 184.36-1.5 1.5h-7.5" fill="none" stroke="#8270bc" stroke-width="1px"/>
+  <path transform="translate(10 182.36)" d="m4.5 5.5h7.0347l1.9653 2.0589v7.9411s-1.6812-0.13232-2.5-0.5c-1.0199-0.45801-2-1.5-3.5-1.5-1 0-3 1-3 1z" fill="#f0f0ff" stroke="#766aab" stroke-width="1px"/>
+  <g fill="none">
+   <path d="m16.5 191.86h5" stroke="#9a91c6" stroke-width="1px"/>
+   <path d="m16.5 193.86h5" stroke="#9a91c6" stroke-width="1px"/>
+   <path transform="translate(10 182.36)" d="m11.5 5.5v2h2" stroke="#766aab" stroke-width="1px"/>
+   <path d="m16.5 189.86h3.5" stroke="#9a91c6" stroke-width="1px"/>
+  </g>
+ </g>
+</svg>
