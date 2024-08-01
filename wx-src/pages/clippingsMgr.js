@@ -4521,7 +4521,13 @@ function initDialogs()
     $("#import-clippings-file-path").val("");
     $("#import-dlg button.dlg-accept").attr("disabled", "true");
     gSuppressAutoMinzWnd = true;
+
+    // Delay to allow time to switch to import or restore backup UI.
+    setTimeout(() => {
+      this.find("#import-clippings-browse")[0].focus();
+    }, 200);
   };
+
   gDialogs.importFromFile.onUnload = function ()
   {   
     $("#import-error").text("").hide();

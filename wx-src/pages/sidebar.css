@@ -606,6 +606,11 @@ body[data-os="mac"] .lightbox .msgbox-icon {
     margin-right: 0;
 }
 
+#copy-clipping-txt-fmt-dlg .copy-fmt-btn:focus {
+    border-color: var(--color-bkgd) !important;
+    box-shadow: 0 0 0 2px #45a1ff;
+}
+
 #copy-clipping-txt-fmt-dlg #copy-cliptxt-html {
     background-image: url("../img/copy-clipping-html32.svg");
 }

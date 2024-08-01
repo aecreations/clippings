@@ -1033,6 +1033,11 @@ body[data-os="win"] .browser-style > input[type="checkbox"] + label {
     background-position: 4px;
 }
 
+#copy-clipping-txt-fmt-dlg .copy-fmt-btn:focus {
+    border-color: var(--color-bkgd) !important;
+    box-shadow: 0 0 0 2px #45a1ff;
+}
+
 #copy-clipping-txt-fmt-dlg #copy-cliptxt-html {
     background-image: url("../img/copy-clipping-html16.svg");   
 }
