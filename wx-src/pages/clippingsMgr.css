@@ -993,6 +993,7 @@ body[data-os="win"] .browser-style > input[type="checkbox"] + label {
     margin-bottom: 8px;
 }
 
+#request-clipbd-write-perm-dlg,
 #shortcut-key-conflict-msgbox,
 #clipping-missing-src-url-msgbox,
 #remove-all-source-urls-dlg,
@@ -1054,6 +1055,23 @@ body[data-os="win"] .browser-style > input[type="checkbox"] + label {
 #copy-clipping-txt-fmt-dlg .last-row {
     border-bottom: 1px solid #ddd;
     padding-bottom: 8px;
+}
+
+#request-clipbd-write-perm-dlg {
+    --width: 372px;
+    --height: 220px;
+}
+
+#request-clipbd-write-perm-dlg p:first-of-type {
+    margin-top: 4px;
+}
+
+#request-clipbd-write-perm-dlg ul {
+    padding-left: 24px;
+}
+
+#request-clipbd-write-perm-dlg .dlg-content {
+    margin-left: 48px;
 }
 
 #custom-placeholder-dlg {
