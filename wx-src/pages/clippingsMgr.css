@@ -1106,6 +1106,10 @@ body[data-os="win"] .browser-style > input[type="checkbox"] + label {
     --width: 430px;
 }
 
+#shortcut-key-conflict-msgbox .msgbox-icon {
+    margin-top: 8px;
+}
+
 #shortcut-list-dlg {
     --width: 424px;
     --height: 324px;
