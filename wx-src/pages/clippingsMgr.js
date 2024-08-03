@@ -1514,10 +1514,8 @@ let gCmd = {
   {
     let perms = await browser.permissions.getAll();
     if (! perms.permissions.includes("clipboardRead")) {
-      // TO DO: Put the following message in a proper modal dialog,
-      // which should be opened here.
-      // Once the dialog is displayed, exit this function.
-      window.alert(`${browser.i18n.getMessage('permReqTitle')}\n\n  • ${browser.i18n.getMessage('extPrmClipbdR')}\n\n${browser.i18n.getMessage('extPermInstr')}`);
+      gDialogs.requestExtPerm.setPermission("clipboardRead");
+      gDialogs.requestExtPerm.showModal();
       return;
     }
 
@@ -1573,7 +1571,8 @@ let gCmd = {
 
     let perms = await browser.permissions.getAll();
     if (! perms.permissions.includes("clipboardWrite")) {
-      gDialogs.clipboardWritePerm.showModal();
+      gDialogs.requestExtPerm.setPermission("clipboardWrite");
+      gDialogs.requestExtPerm.showModal();
       return;
     }
 
@@ -4190,9 +4189,38 @@ function initDialogs()
   gDialogs.clippingMissingSrcURL = new aeDialog("#clipping-missing-src-url-msgbar");
   gDialogs.noUndoNotify = new aeDialog("#no-undo-msgbar");
   gDialogs.noRedoNotify = new aeDialog("#no-redo-msgbar");
-  gDialogs.clipboardWritePerm = new aeDialog("#request-clipbd-write-perm-dlg");
   gDialogs.clipboardEmpty = new aeDialog("#clipboard-empty-msgbar");
   gDialogs.actionUnavailable = new aeDialog("#action-not-available");
+
+  gDialogs.requestExtPerm = new aeDialog("#request-ext-perm-dlg");
+  gDialogs.requestExtPerm.setProps({
+    extPerm: null,
+    extPermStrKeys: {
+      clipboardRead: "extPrmClipbdR",
+      clipboardWrite: "extPrmClipbdW",
+    },
+  });
+
+  gDialogs.requestExtPerm.setPermission = function (aPermission)
+  {
+    this.extPerm = aPermission;
+  };
+
+  gDialogs.requestExtPerm.onInit = function ()
+  {
+    if (! this.extPerm) {
+      throw new ReferenceError("Extension permission keyword not set");
+    }
+
+    let strKey = this.extPermStrKeys[this.extPerm];
+    this.find(".dlg-content ul > li").text(browser.i18n.getMessage(strKey));
+  };
+
+  gDialogs.requestExtPerm.onUnload = function ()
+  {
+    this.extPerm = null;
+    this.find(".dlg-content ul > li").text('');
+  };
 
   gDialogs.shortcutList = new aeDialog("#shortcut-list-dlg");
   gDialogs.shortcutList.onFirstInit = async function ()
