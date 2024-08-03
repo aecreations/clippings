@@ -4942,11 +4942,15 @@ function initDialogs()
       this.fldrTree.getTree().getNodeByKey(Number(aeConst.ROOT_FOLDER_ID).toString()).setActive();
     }
     else {
+      let hideSyncFldr = gPrefs.isSyncReadOnly && !gPrefs.cxtMenuSyncItemsOnly;
       this.fldrTree = new aeFolderPicker(
         "#move-to-fldr-tree",
         gClippingsDB,
         aeConst.ROOT_FOLDER_ID,
-        browser.i18n.getMessage("rootFldrName")
+        browser.i18n.getMessage("rootFldrName"),
+        aeFolderPicker.ROOT_FOLDER_CLS,
+        null,
+        hideSyncFldr
       );
     }
 

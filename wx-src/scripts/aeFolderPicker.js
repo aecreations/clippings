@@ -6,7 +6,7 @@
 
 class aeFolderPicker
 {
-  constructor(aTreeEltSelector, aClippingsDB, aParentFldrID, aParentFldrName, aRootFldrCls, aActiveTreeNodeKey)
+  constructor(aTreeEltSelector, aClippingsDB, aParentFldrID, aParentFldrName, aRootFldrCls, aActiveTreeNodeKey, aHideSyncFolder)
   {
     this.ROOT_FOLDER_CLS = "ae-clippings-root";
     this.SYNCED_ROOT_FOLDER_CLS = "ae-clippings-sync-root";
@@ -15,19 +15,19 @@ class aeFolderPicker
     this._db = aClippingsDB;
     this._fnOnSelectFolder = function (aFolderData) {};
 
-    this._init(aParentFldrID, aParentFldrName, aRootFldrCls, aActiveTreeNodeKey);
+    this._init(aParentFldrID, aParentFldrName, aRootFldrCls, aActiveTreeNodeKey, aHideSyncFolder);
   }
 
-  _init(aParentFldrID, aParentFldrName, aRootFldrCls, aActiveTreeNodeKey)
+  _init(aParentFldrID, aParentFldrName, aRootFldrCls, aActiveTreeNodeKey, aHideSyncFolder)
   {
     let isSyncClippings = false;
     let rootFldrTreeNodes = [];
 
     this._db.folders.where("parentFolderID").equals(aParentFldrID).each((aItem, aCursor) => {
       let folderNode = {
-	key: aItem.id,
-	title: aItem.name,
-	folder: true
+        key: aItem.id,
+        title: aItem.name,
+        folder: true
       };
 
       if ("isSync" in aItem) {
@@ -48,6 +48,14 @@ class aeFolderPicker
       });
     }).then(() => {
       let that = this;
+
+      if (aHideSyncFolder) {
+        let syncFldrIdx = rootFldrTreeNodes.findIndex(aItem => aItem.folder && aItem.extraClasses == "ae-synced-clippings-fldr");
+        if (syncFldrIdx != -1) {
+          // Remove the Synced Clippings folder.
+          rootFldrTreeNodes.splice(syncFldrIdx, 1);
+        }
+      }
 
       rootFldrTreeNodes.sort((aItem1, aItem2) => { return this._sort(aItem1, aItem2) });
 
