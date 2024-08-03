@@ -220,7 +220,7 @@
   },
 
   "welcWhatsNewDesc": {
-    "message": "Clippings 6.5 comes with many fixes and improvements, such as support for symbols and emojis in placeholder default values. 🙂"
+    "message": "Clippings 7.0 contains many new features and improvements, such as copying clipping text, and separators for organizing your clippings."
   },
 
   "welcWhatsNewCTA": {
@@ -1694,7 +1694,7 @@
   },
 
   "whatsNewTb1": {
-    "message": "The Clippings toolbar button in the message compose window has moved from the status bar to the Composition Toolbar. The Clippings toolbar button is no longer available in the main Thunderbird window",
+    "message": "The Clippings toolbar button in the message compose window has moved from the status bar to the Composition Toolbar.  The Clippings toolbar button no longer appears in the main Thunderbird window",
     "description": "Description of a Thunderbird-specific enhancement in the new version of Clippings"
   },
 
