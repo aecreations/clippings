@@ -906,11 +906,11 @@
   },
 
   "statusSavingBkup": {
-    "message": "Saving backup file..."
+    "message": "Saving backup file…"
   },
 
   "statusSavingBkupDone": {
-    "message": "Saving backup file... done"
+    "message": "Saving backup file… done"
   },
 
   "statusSavingBkupFailed": {
@@ -995,12 +995,12 @@
   },
 
   "statusExportStart": {
-    "message": "Exporting...",
+    "message": "Exporting…",
     "description": "Status bar text in Clippings Manager"
   },
 
   "statusExportDone": {
-    "message": "Exporting... done",
+    "message": "Exporting… done",
     "description": "Status bar text in Clippings Manager"
   },
 
