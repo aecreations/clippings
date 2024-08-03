@@ -261,7 +261,8 @@ function initDialogs()
     if (gPrefs.syncClippings && gPrefs.isSyncReadOnly) {
       let folderID = Number(aFolderData.node.key);
       if (folderID == gPrefs.syncFolderID || gSyncedFldrIDs.has(folderID)) {
-        // TO DO: Show this message in a modal lightbox.
+        // This should never happen, because the Synced Clippings folder
+        // won't appear in the folder list when the sync file is read-only.
         alert(browser.i18n.getMessage("syncFldrRdOnly"));
         return;
       }
@@ -583,8 +584,6 @@ function selectFolder(aFolderData)
   if (gPrefs.syncClippings && gPrefs.isSyncReadOnly) {
     let folderID = Number(aFolderData.node.key);
     if (folderID == gPrefs.syncFolderID || gSyncedFldrIDs.has(folderID)) {
-      // TO DO: Show this message in a modal lightbox.
-      alert(browser.i18n.getMessage("syncFldrRdOnly"));
       return;
     }
   }
