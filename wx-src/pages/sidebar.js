@@ -118,18 +118,21 @@ let gSearchBox = {
       return;
     }
     
-    $("#search-box").prop("placeholder", browser.i18n.getMessage("clipMgrSrchBarHint"));
-    $("#search-box").focus(aEvent => {
-      gSearchBox.activate();
-    });
-    $("#search-box").blur(aEvent => { gSearchBox.deactivate() });
-
-    $("#search-box").keyup(aEvent => {
-      this.updateSearch();
-      $("#clear-search").css({
-        visibility: (aEvent.target.value ? "visible" : "hidden")
+    $("#search-box").prop("placeholder", browser.i18n.getMessage("clipMgrSrchBarHint"))
+      .focus(aEvent => {
+        gSearchBox.activate();
+        $("#search-clippings-and-folders").addClass("focus");
+      })
+      .blur(aEvent => {
+        gSearchBox.deactivate();
+        $("#search-clippings-and-folders").removeClass("focus");
+      })
+      .keyup(aEvent => {
+        this.updateSearch();
+        $("#clear-search").css({
+          visibility: (aEvent.target.value ? "visible" : "hidden")
+        });
       });
-    });
 
     $("#clear-search").click(aEvent => { this.reset() });
 

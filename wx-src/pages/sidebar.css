@@ -226,7 +226,6 @@ button, label {
 
 #toolbar, #search-bar {
     width: 100%;
-    height: var(--toolbar-height);
     padding: 2px 4px 2px 4px;
     background: var(--color-main-toolbar-bkgd);
     color: var(--color-main-toolbar-text);
@@ -234,6 +233,7 @@ button, label {
 
 #toolbar {
     margin-bottom: -1px;
+    height: var(--toolbar-height);
     overflow: hidden;
 }
 
@@ -288,20 +288,32 @@ button, label {
     background-image: var(--url-toolbar-btn-help);
 }
 
-#toolbar > #search-clippings-and-folders {
-    margin-top: 1px;
-    margin-bottom: 1px;
-    margin-right: -12px; /* To accommodate "clear search" button hack. */
+#search-clippings-and-folders {
+    width: 100%;
+    border: 1px solid var(--color-tb-border);
+    background-color: var(--color-tb-bkgd);
 }
 
-#search-bar > #search-clippings-and-folders > #search-box {
+#search-clippings-and-folders.focus {
+    border-color: #0a84ff;
+}
+
+#search-box {
     width: calc(100% - 16px);
-    height: 100%;
-    padding-right: 20px;
-    font-size: 11px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    font-size: 12px;
+    border: none;
 }
 
-#search-bar > #search-clippings-and-folders > #clear-search {
+#search-box:focus {
+    border-color: unset;
+    box-shadow: unset;
+    transition-duration: unset;
+    transition-property: unset;
+}
+
+#clear-search {
     display: inline-block;
     position: relative;
     top: 1px;
