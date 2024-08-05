@@ -1665,7 +1665,7 @@
   },
 
   "whatsNew1": {
-    "message": "You can now add separators to organize your clippings",
+    "message": "You can now add separators to organize your clippings.",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
 
@@ -1680,7 +1680,7 @@
   },
   
   "whatsNewFx1": {
-    "message": "Copy clipping text to the clipboard by right-clicking on a clipping in Clippings Manager or in the new Clippings Sidebar",
+    "message": "Copy clipping text to the clipboard from Clippings Manager or in the new Clippings Sidebar.",
     "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
   },
 
