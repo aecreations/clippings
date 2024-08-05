@@ -1710,7 +1710,7 @@
   },
 
   "contribCTA": {
-    "message": "Support the development of $1 by <a href=\"$2\">making a donation</a>. Learn more about other ways to <a href=\"$3\">get involved</a>!",
+    "message": "Support the development of $1 by <a href=\"$2\">making a donation</a>. Learn more about other ways to <a href=\"$3\">get\u00a0involved</a>!",
     "description": "Call to action message to make donation or learn more about contributing to Clippings (or Clippings for Thunderbird)"
   },
 

@@ -7,7 +7,7 @@
 
 :root {
     --url-bkgd-img: url("../img/bkgrd.png");
-    --page-width: 800px;
+    --page-width: 750px;
     --color-bkgd: none;
     --color-secondary-text: #737373;
     --color-main-border: #ddd;
@@ -137,7 +137,7 @@ button {
 }
 
 .whatsnew-card {
-    width: 330px;
+    width: 316px;
     margin-top: 18px;
     padding: 4px 20px 4px 20px;
 
