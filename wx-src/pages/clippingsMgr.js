@@ -4206,6 +4206,11 @@ function initDialogs()
     this.extPerm = aPermission;
   };
 
+  gDialogs.requestExtPerm.onFirstInit = function ()
+  {
+    let extName = browser.i18n.getMessage("extName");
+    this.find("#grant-ext-perm").text(browser.i18n.getMessage("extPermInstr", extName));
+  };
   gDialogs.requestExtPerm.onInit = function ()
   {
     if (! this.extPerm) {
