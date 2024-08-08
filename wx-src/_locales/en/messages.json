@@ -259,8 +259,8 @@
   },
 
   "extPermInstr": {
-    "message": "To grant Clippings this permission, open Add-ons Manager, click on Clippings in the list of installed extensions, and then turn on the permission in the Permissions tab.",
-    "description": "Instructions in the optional permission request dialog"
+    "message": "To grant Clippings this permission, open Add-ons Manager, click on $1 in the list of installed extensions, and then turn on the permission in the Permissions tab.",
+    "description": "Instructions in the optional permission request dialog for how to grant the extension permission (placeholder $1 is the extension name)"
   },
 
   "btnReqPerm": {
