@@ -406,6 +406,12 @@ function initDialogs()
   };
 
   gClipbdWritePermMsgBox = new aeDialog("#request-clipbd-write-perm-dlg");
+  gClipbdWritePermMsgBox.onFirstInit = function ()
+  {
+    let extName = browser.i18n.getMessage("extName")
+    $("#perm-request").text(browser.i18n.getMessage("extPermInstr", extName));
+  };
+  
   gInitErrorMsgBox = new aeDialog("#init-error-msgbox");
 }
 
@@ -513,7 +519,7 @@ function buildClippingsTree()
 
         if (aData.targetType == "title" || aData.targetType == "icon") {
           if (! aData.node.isFolder()) {
-            gCmd.copyClippingTextToClipboard();
+            // Perform default action (not currently implemented)
           }
         }
       },
