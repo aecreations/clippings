@@ -244,7 +244,7 @@
   },
 
   "permReqTitle": {
-    "message": "Clippings needs additional permission to complete the selected action:",
+    "message": "To complete the selected action, Clippings needs additional permission:",
     "description": "Header for modal dialog that appears when trying to complete an action that requires an optional extension permission to be turned on"
   },
   
@@ -1690,7 +1690,7 @@
   },
 
   "whatsNewTb1": {
-    "message": "The Clippings toolbar button in the message compose window has moved from the status bar to the Composition Toolbar.  The Clippings toolbar button no longer appears in the main Thunderbird window",
+    "message": "The Clippings toolbar button in the message compose window has moved from the status bar to the Composition Toolbar.  The Clippings toolbar button no longer appears in the main Thunderbird window.",
     "description": "Description of a Thunderbird-specific enhancement in the new version of Clippings"
   },
 
