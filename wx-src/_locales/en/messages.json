@@ -1369,12 +1369,12 @@
   },
 
   "sbarHlpWhat": {
-    "message": "Use Clippings Sidebar to search for and select a clipping for copying and pasting into a web page textbox.  Double-click on a clipping to copy its content to the clipboard.  You can then paste it into a web page textbox or HTML editor by pressing $1 or right-clicking and selecting Paste in the browser context menu.  Right-click on a clipping for more options.",
+    "message": "Use Clippings Sidebar to search for and select a clipping for copying and pasting into a web page textbox.  Right-click on a clipping for more options.",
     "description": "Clippings Sidebar help"
   },
 
   "sbarHlpCopy": {
-    "message": "If the clipping contains HTML tags, you\u2019ll be prompted to choose the format of the copied content.  Select \u201cCopy as Formatted Text\u201d if pasting into an HTML editor and want to include text formatting such as bold, italic, fonts and headings.  Select \u201cCopy as Plain Text\u201d if pasting into a normal web page textbox or you want to paste the clipping into an HTML editor without any formatting.",
+    "message": "If the clipping contains HTML tags, you\u2019ll be prompted to choose the format of the copied content.  Select \u201cCopy as Formatted Text\u201d if pasting into an HTML editor and want to include text formatting such as fonts and headings.  Select \u201cCopy as Plain Text\u201d if pasting into a normal web page textbox or you want to paste the clipping into an HTML editor without any formatting.",
     "description": "Clippings Sidebar help"
   },
 

@@ -11,12 +11,12 @@ body {
 
 h3 {
     font-size: 15px;
-    font-weight: 600;
+    font-weight: bold;
     margin: 0;
 }
 
 .dlg-content {
-    max-height: 250px;
+    max-height: 220px;
     overflow-y: auto;
     line-height: 1.23;
 }
