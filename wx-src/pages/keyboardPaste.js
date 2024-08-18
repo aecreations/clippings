@@ -470,7 +470,9 @@ function initAutocomplete()
   
   let allClippings = [];
 
-  gClippingsDB.clippings.where("parentFolderID").notEqual(aeConst.DELETED_ITEMS_FLDR_ID).each((aItem, aCursor) => {
+  gClippingsDB.clippings.where("parentFolderID").notEqual(aeConst.DELETED_ITEMS_FLDR_ID)
+    .filter(aItem => !aItem.separator)
+    .each((aItem, aCursor) => {
     allClippings.push({
       id: aItem.id,
       name: sanitize(aItem.name, 56),
