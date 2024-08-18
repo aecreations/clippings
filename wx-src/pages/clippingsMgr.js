@@ -4996,16 +4996,28 @@ function initDialogs()
       catch {}
     });
 
-    $("#copy-instead-of-move").prop("checked", false);
+    $("#copy-instead-of-move").prop("checked", false).prop("disabled", false);
     $("#move-dlg-action-btn").text(browser.i18n.getMessage("btnMove"));
     $("#move-error").text("");
     this.selectedFldrNode = null;
 
-    if (aeClippingsTree.getTree().activeNode.folder) {
+    let activeNode = aeClippingsTree.getTree().activeNode;
+    let nodeID = parseInt(activeNode.key);
+    let isSyncedItem;
+
+    if (activeNode.folder) {
       $("#move-to-label").text(browser.i18n.getMessage("labelMoveFolder"));
+      isSyncedItem = gSyncedItemsIDs.has(nodeID + "F");
     }
     else {
       $("#move-to-label").text(browser.i18n.getMessage("labelMoveClipping"));
+      isSyncedItem = gSyncedItemsIDs.has(nodeID + "C");
+    }
+
+    // Only allow copying a clipping or folder out of Synced Clippings folder
+    // if sync file is read-only.
+    if (gPrefs.syncClippings && gPrefs.isSyncReadOnly && isSyncedItem) {
+      $("#copy-instead-of-move").click().prop("disabled", true);
     }
   };
 
@@ -5156,6 +5168,14 @@ function buildClippingsTree()
         scroll: true,
 
         dragStart: function (aNode, aData) {
+          // Prevent drag 'n drop out of Synced Clippings folder if sync file
+          // is read-only.
+          let nodeID = parseInt(aNode.key);
+          let isSyncedItem = gSyncedItemsIDs.has(nodeID + (aNode.folder ? "F" : "C"));
+          if (gPrefs.syncClippings && gPrefs.isSyncReadOnly && isSyncedItem) {
+            return false;
+          }
+          
           gReorderedTreeNodeNextSibling = aNode.getNextSibling();
           return true;
         },
@@ -5485,7 +5505,14 @@ function buildClippingsTree()
                 if (gClippingLabelPicker.selectedLabel == "") {
                   return "context-menu-icon-checked";
                 }
-              }
+              },
+              disabled(aKey, aOpt) {
+                let selectedNode = aeClippingsTree.getTree().activeNode;
+                if (! selectedNode) {
+                  return false;
+                }
+                return isReadOnlySyncedItem(selectedNode);
+              },
             },
             labelRed: {
               name: browser.i18n.getMessage("labelRed"),
@@ -5494,7 +5521,14 @@ function buildClippingsTree()
                 if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
                   return "context-menu-icon-checked";
                 }
-              }
+              },
+              disabled(aKey, aOpt) {
+                let selectedNode = aeClippingsTree.getTree().activeNode;
+                if (! selectedNode) {
+                  return false;
+                }
+                return isReadOnlySyncedItem(selectedNode);
+              },
             },
             labelOrange: {
               name: browser.i18n.getMessage("labelOrange"),
@@ -5503,7 +5537,14 @@ function buildClippingsTree()
                 if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
                   return "context-menu-icon-checked";
                 }
-              }
+              },
+              disabled(aKey, aOpt) {
+                let selectedNode = aeClippingsTree.getTree().activeNode;
+                if (! selectedNode) {
+                  return false;
+                }
+                return isReadOnlySyncedItem(selectedNode);
+              },
             },
             labelYellow: {
               name: browser.i18n.getMessage("labelYellow"),
@@ -5512,7 +5553,14 @@ function buildClippingsTree()
                 if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
                   return "context-menu-icon-checked";
                 }
-              }
+              },
+              disabled(aKey, aOpt) {
+                let selectedNode = aeClippingsTree.getTree().activeNode;
+                if (! selectedNode) {
+                  return false;
+                }
+                return isReadOnlySyncedItem(selectedNode);
+              },
             },
             labelGreen: {
               name: browser.i18n.getMessage("labelGreen"),
@@ -5521,7 +5569,14 @@ function buildClippingsTree()
                 if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
                   return "context-menu-icon-checked";
                 }
-              }
+              },
+              disabled(aKey, aOpt) {
+                let selectedNode = aeClippingsTree.getTree().activeNode;
+                if (! selectedNode) {
+                  return false;
+                }
+                return isReadOnlySyncedItem(selectedNode);
+              },
             },
             labelBlue: {
               name: browser.i18n.getMessage("labelBlue"),
@@ -5530,7 +5585,14 @@ function buildClippingsTree()
                 if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
                   return "context-menu-icon-checked";
                 }
-              }
+              },
+              disabled(aKey, aOpt) {
+                let selectedNode = aeClippingsTree.getTree().activeNode;
+                if (! selectedNode) {
+                  return false;
+                }
+                return isReadOnlySyncedItem(selectedNode);
+              },
             },
             labelPurple: {
               name: browser.i18n.getMessage("labelPurple"),
@@ -5539,7 +5601,14 @@ function buildClippingsTree()
                 if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
                   return "context-menu-icon-checked";
                 }
-              }
+              },
+              disabled(aKey, aOpt) {
+                let selectedNode = aeClippingsTree.getTree().activeNode;
+                if (! selectedNode) {
+                  return false;
+                }
+                return isReadOnlySyncedItem(selectedNode);
+              },
             },
             labelGrey: {
               name: browser.i18n.getMessage("labelGrey"),
@@ -5548,7 +5617,14 @@ function buildClippingsTree()
                 if (gClippingLabelPicker.selectedLabel == aItemKey.substr(5).toLowerCase()) {
                   return "context-menu-icon-checked";
                 }
-              }
+              },
+              disabled(aKey, aOpt) {
+                let selectedNode = aeClippingsTree.getTree().activeNode;
+                if (! selectedNode) {
+                  return false;
+                }
+                return isReadOnlySyncedItem(selectedNode);
+              },
             },
           }
         },
@@ -5574,6 +5650,9 @@ function buildClippingsTree()
             if (! selectedNode) {
               return false;
             }
+            if (isReadOnlySyncedItem(selectedNode)) {
+              return true;
+            }
             if (aeClippingsTree.isSeparatorSelected()) {
               return true;
             }
@@ -5586,9 +5665,11 @@ function buildClippingsTree()
           disabled: function (aKey, aOpt) {
             let tree = aeClippingsTree.getTree();
             let selectedNode = tree.activeNode;
-
             if (! selectedNode) {
               return false;
+            }
+            if (isReadOnlySyncedItem(selectedNode)) {
+              return true;
             }
 
             let folderID = parseInt(selectedNode.key);
@@ -5608,6 +5689,22 @@ function buildClippingsTree()
     console.error("clippingsMgr.js::buildClippingsTree(): %s", aErr.message);
     showInitError();
   });
+}
+
+
+function isReadOnlySyncedItem(aTreeNode)
+{
+  let rv = false;
+  if (! gPrefs.syncClippings) {
+    return rv;
+  }
+
+  let nodeID = parseInt(aTreeNode.key);
+  let isSyncedItem = gSyncedItemsIDs.has(nodeID + (aTreeNode.folder ? "F" : "C"));
+  
+  rv = (gPrefs.isSyncReadOnly && isSyncedItem);
+  
+  return rv;
 }
 
 
@@ -5887,10 +5984,13 @@ function updateDisplay(aEvent, aData)
         // Prevent moving, deleting or renaming of the Synced Clippings folder.
         // Also disable editing if this is a synced item and the sync data
         // is read-only.
-        if (selectedItemID == gPrefs.syncFolderID
-           || (gSyncedItemsIDs.has(selectedItemID + "F") && gPrefs.isSyncReadOnly)) {
-          // Prevent moving, deleting or renaming of the Synced Clippings folder.
-          $("#move, #delete, #clipping-name").prop("disabled", "true");
+        if (selectedItemID == gPrefs.syncFolderID) {
+          $("#move, #delete, #clipping-name").prop("disabled", true);
+        }
+        else if (gSyncedItemsIDs.has(selectedItemID + "F") && gPrefs.isSyncReadOnly) {
+          // Allow the Move/Copy toolbar button to be enabled, since copying
+          // a read-only synced item is permitted.
+          $("#delete, #clipping-name").prop("disabled", true);
         }
       }
       else {
@@ -5951,9 +6051,11 @@ function updateDisplay(aEvent, aData)
         gClippingLabelPicker.selectedLabel = aResult.label;
       }
 
-      // Disable editing if this is a synced item and the sync data
-      // is read-only.
+      // Disable editing if this is a synced item and the sync data is
+      // read-only. But allow the Move/Copy toolbar button to be enabled,
+      // since copying a read-only synced item is permitted.
       if (gSyncedItemsIDs.has(selectedItemID + "C") && gPrefs.isSyncReadOnly) {
+        $("#delete").prop("disabled", true);
         $(`#clipping-name, #clipping-text, #clipping-key, #clipping-label-picker,
            #placeholder-toolbar > button`).prop("disabled", true);
         $("#options-bar label, #placeholder-toolbar label").attr("disabled", "");
