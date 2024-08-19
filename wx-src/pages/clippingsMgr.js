@@ -3004,7 +3004,7 @@ let gCmd = {
     this.recentAction = this.ACTION_RELOAD_SYNC_FLDR;   
     browser.runtime.sendMessage({
       msgID: "refresh-synced-clippings",
-      rebuildClippingsMenu: false,      
+      rebuildClippingsMenu: false,
     });
     
     aeDialog.cancelDlgs();
@@ -3682,6 +3682,11 @@ browser.runtime.onMessage.addListener(aRequest => {
 
   case "sync-deactivated-after":
     gSyncClippingsListener.onAfterDeactivate(aRequest.removeSyncFolder, aRequest.oldSyncFolderID);
+    break;
+
+  case "refresh-synced-clippings":
+    info("Clippings::clippingsMgr.js: Received extension message 'refresh-synced-clippings'");
+    refreshSyncedClippings();
     break;
 
   case "new-clipping-created":
@@ -5824,6 +5829,16 @@ function initSyncItemsIDLookupList()
       aFnReject(aErr);
     });
   });
+}
+
+
+async function refreshSyncedClippings()
+{
+  gSyncedItemsIDs.clear();
+  gSyncedItemsIDMap.clear();
+
+  await rebuildClippingsTree();
+  await initSyncItemsIDLookupList();
 }
 
 

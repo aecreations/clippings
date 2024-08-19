@@ -203,6 +203,12 @@ let gSyncClippingsListener = {
       log("Clippings/wx: gSyncClippingsListener.onReloadFinish(): Static IDs added to synced items.  Saving sync file.");
       await pushSyncFolderUpdates();
     }
+
+    log("Clippings/wx: gSyncClippingsListener.onReloadFinish(): Sending message 'refresh-synced-clippings'");
+    browser.runtime.sendMessage({
+      msgID: "refresh-synced-clippings",
+      rebuildClippingsMenu: true,
+    });
   },
 };
 
@@ -715,7 +721,7 @@ async function pushSyncFolderUpdates()
   if (! perms.permissions.includes("nativeMessaging")) {
     return;
   }
-  
+
   let syncData = await aeImportExport.exportToJSON(true, true, prefs.syncFolderID, false, true, true);
   let natMsg = {
     msgID: "set-synced-clippings",
