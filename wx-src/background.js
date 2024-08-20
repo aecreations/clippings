@@ -722,6 +722,9 @@ async function pushSyncFolderUpdates()
     return;
   }
 
+  let clippingsDB = aeClippings.getDB();
+  aeImportExport.setDatabase(clippingsDB);
+
   let syncData = await aeImportExport.exportToJSON(true, true, prefs.syncFolderID, false, true, true);
   let natMsg = {
     msgID: "set-synced-clippings",
