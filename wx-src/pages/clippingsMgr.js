@@ -3684,11 +3684,6 @@ browser.runtime.onMessage.addListener(aRequest => {
     gSyncClippingsListener.onAfterDeactivate(aRequest.removeSyncFolder, aRequest.oldSyncFolderID);
     break;
 
-  case "refresh-synced-clippings":
-    info("Clippings::clippingsMgr.js: Received extension message 'refresh-synced-clippings'");
-    refreshSyncedClippings();
-    break;
-
   case "new-clipping-created":
     gClippingsListener.newClippingCreated(aRequest.newClippingID, aRequest.newClipping, aRequest.origin);
     break;
@@ -5829,16 +5824,6 @@ function initSyncItemsIDLookupList()
       aFnReject(aErr);
     });
   });
-}
-
-
-async function refreshSyncedClippings()
-{
-  gSyncedItemsIDs.clear();
-  gSyncedItemsIDMap.clear();
-
-  await rebuildClippingsTree();
-  await initSyncItemsIDLookupList();
 }
 
 

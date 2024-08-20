@@ -7,6 +7,7 @@
 let aePrefs = {
   // Background script state persistence
   _defaultBkgdState: {
+    _isInitialized: false,
     _clippingMenuItemIDMap: {},
     _folderMenuItemIDMap: {},
     _autoIncrPlchldrs: [],
@@ -264,6 +265,7 @@ let aePrefs = {
   async setSanFranciscoPrefs(aPrefs)
   {
     let newPrefs = {
+      _isInitialized: false,
       _clippingMenuItemIDMap: {},
       _folderMenuItemIDMap: {},
       _autoIncrPlchldrs: [],

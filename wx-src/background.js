@@ -203,12 +203,6 @@ let gSyncClippingsListener = {
       log("Clippings/wx: gSyncClippingsListener.onReloadFinish(): Static IDs added to synced items.  Saving sync file.");
       await pushSyncFolderUpdates();
     }
-
-    log("Clippings/wx: gSyncClippingsListener.onReloadFinish(): Sending message 'refresh-synced-clippings'");
-    browser.runtime.sendMessage({
-      msgID: "refresh-synced-clippings",
-      rebuildClippingsMenu: true,
-    });
   },
 };
 
@@ -425,10 +419,13 @@ async function init(aPrefs)
     let isSyncReadOnly = await isSyncedClippingsReadOnly();
     log(`Clippings/wx: It is ${isSyncReadOnly} that the sync data is read only.`);
     
-    // The context menu will be built when refreshing the sync data.
-    // Do this even when the background script is restarted in order to pick up
-    // any changes to sync data.
-    refreshSyncedClippings(true);
+    if (aPrefs._isInitialized) {
+      rebuildContextMenu();
+    }
+    else {
+      // The context menu will be built when refreshing the sync data.
+      refreshSyncedClippings(true);
+    }
     aePrefs.setPrefs({isSyncReadOnly});
   }
   else {
@@ -474,11 +471,11 @@ async function init(aPrefs)
 
   if (gSetDisplayOrderOnRootItems) {
     await setDisplayOrderOnRootItems();
-    log("Clippings/wx: Display order on root folder items have been set.\nClippings initialization complete.");
+    log("Clippings/wx: Display order on root folder items have been set");
   }
-  else {
-    log("Clippings/wx: Initialization complete.");   
-  }
+
+  aePrefs.setPrefs({_isInitialized: true});
+  log("Clippings/wx: Initialization complete.");   
 }
 
 
