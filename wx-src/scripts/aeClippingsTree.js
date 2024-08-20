@@ -21,9 +21,17 @@ let aeClippingsTree = {
         gClippingsDB.folders.where("parentFolderID").equals(aFolderID).each(async (aItem, aCursor) => {
           let folderNode = {
             key: aItem.id + "F",
-            title: this.sanitizeTreeNodeTitle(this.DEBUG ? `${aItem.name} [key=${aItem.id}F]` : aItem.name),
-            folder: true
+            folder: true,
           }
+
+          let title = "";
+          if (this.DEBUG) {
+            title = this.sanitizeTreeNodeTitle(`${aItem.name} [key=${aItem.id}F]`);
+          }
+          else {
+            title = this.sanitizeTreeNodeTitle(aItem.name);
+          }
+          folderNode.title = title;
 
           if (aItem.id == gPrefs.syncFolderID) {
             folderNode.extraClasses = "ae-synced-clippings-fldr";
@@ -38,6 +46,9 @@ let aeClippingsTree = {
 
           if ("sid" in aItem) {
             folderNode.sid = aItem.sid;
+            if (this.DEBUG) {
+              folderNode.title += ` [sid=${aItem.sid}]`;
+            }
           }
           
           let childNodes = await this.build(aItem.id);
@@ -48,8 +59,17 @@ let aeClippingsTree = {
           return gClippingsDB.clippings.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
             let clippingNode = {
               key: aItem.id + "C",
-              title: this.sanitizeTreeNodeTitle(this.DEBUG ? `${aItem.name} [key=${aItem.id}C]` : aItem.name)
             };
+
+            let title = "";
+            if (this.DEBUG) {
+              title = this.sanitizeTreeNodeTitle(`${aItem.name} [key=${aItem.id}C]`);
+            }
+            else {
+              title = this.sanitizeTreeNodeTitle(aItem.name);
+            }
+            clippingNode.title = title;
+
             if (aItem.label) {
               clippingNode.extraClasses = `ae-clipping-label-${aItem.label}`;
             }
