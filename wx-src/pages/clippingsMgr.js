@@ -4068,6 +4068,31 @@ function initToolbar()
   $("#show-shortcut-list").click(aEvent => { gCmd.showShortcutList() });
 
   gSearchBox.init();
+
+  aeVisual.preloadLafImages();
+  aeVisual.cacheIcons(
+    "newClipping_hover.svg",
+    "newFolder_hover.svg",
+    "moveTo_hover.svg",
+    "delete_hover.svg",
+    "undo_hover.svg",
+    "options_hover.svg",
+    "options_menuopen.svg",
+    "shctkeys_hover.svg",
+    "help_hover.svg",
+    "customPlchldr_hover.svg",
+    "numericPlchldr_hover.svg",
+    "options_dk_hover.svg",
+    "options_dk_active.svg",
+    "options_dk_menuopen.svg",
+    "shctkeys_hover-dk.svg",
+    "help-dk.svg",
+    "ok_hover.svg",
+    "ok_hover_dk.svg",
+    "cancel_hover.svg",
+    "cancel_hover_dk.svg",
+    "folder-open.svg"
+  );
 }
 
 

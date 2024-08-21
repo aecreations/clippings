@@ -293,13 +293,6 @@ let gAutocompleteMenu = {
 };
 
 
-// DOM utility
-function sanitizeHTML(aHTMLStr)
-{
-  return DOMPurify.sanitize(aHTMLStr, {SAFE_FOR_JQUERY: true});
-}
-
-
 // Initialize dialog
 $(async () => {
   let params = new URLSearchParams(window.location.search);
@@ -354,6 +347,8 @@ $(async () => {
     srchBox.focus();
   }
 
+  aeVisual.cacheIcons("insClipping-hover.svg", "export_hover.svg");
+  
   // Fix for Fx57 bug where bundled page loaded using
   // browser.windows.create won't show contents unless resized.
   // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1402110>
@@ -622,6 +617,12 @@ async function closeDlg()
   
   await browser.runtime.sendMessage({msgID: "close-keybd-paste-dlg"});
   browser.windows.remove(browser.windows.WINDOW_ID_CURRENT);
+}
+
+
+function sanitizeHTML(aHTMLStr)
+{
+  return DOMPurify.sanitize(aHTMLStr, {SAFE_FOR_JQUERY: true});
 }
 
 
