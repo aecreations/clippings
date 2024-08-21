@@ -5123,7 +5123,7 @@ function buildClippingsTree()
 {
   let treeData = [];
   
-  aeClippingsTree.build(aeConst.ROOT_FOLDER_ID).then(aTreeData => {
+  aeClippingsTree.build(aeConst.ROOT_FOLDER_ID, gPrefs).then(aTreeData => {
     if (aTreeData.length == 0) {
       treeData = setEmptyClippingsState();
     }
@@ -5717,7 +5717,7 @@ async function rebuildClippingsTree()
   let tree = aeClippingsTree.getTree();
   let treeData = [];
 
-  aeClippingsTree.build(aeConst.ROOT_FOLDER_ID).then(aTreeData => {
+  aeClippingsTree.build(aeConst.ROOT_FOLDER_ID, gPrefs).then(aTreeData => {
     if (aTreeData.length == 0) {
       if (! gIsClippingsTreeEmpty) {
         treeData = setEmptyClippingsState();

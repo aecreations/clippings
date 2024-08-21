@@ -12,7 +12,7 @@ let aeClippingsTree = {
     return rv;
   },
   
-  build(aFolderID)
+  build(aFolderID, aPrefs)
   {
     let rv = [];
 
@@ -33,9 +33,9 @@ let aeClippingsTree = {
           }
           folderNode.title = title;
 
-          if (aItem.id == gPrefs.syncFolderID) {
+          if (aItem.id == aPrefs.syncFolderID) {
             folderNode.extraClasses = "ae-synced-clippings-fldr";
-            if (gPrefs.isSyncReadOnly) {
+            if (aPrefs.isSyncReadOnly) {
               folderNode.extraClasses += " ae-synced-clippings-readonly";
             }
           }

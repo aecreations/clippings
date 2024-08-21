@@ -478,7 +478,7 @@ function buildClippingsTree()
   let treeData = [];
   let rootFldrID = getRootFolderID();
   
-  aeClippingsTree.build(rootFldrID).then(aTreeData => {
+  aeClippingsTree.build(rootFldrID, gPrefs).then(aTreeData => {
     if (aTreeData.length == 0) {
       treeData = setEmptyClippingsState();
       $("#normal-content").hide();
@@ -684,7 +684,7 @@ async function rebuildClippingsTree()
   let treeData = [];
   let rootFldrID = getRootFolderID();
 
-  aeClippingsTree.build(rootFldrID).then(aTreeData => {
+  aeClippingsTree.build(rootFldrID, gPrefs).then(aTreeData => {
     if (aTreeData.length == 0) {
       if (! gIsClippingsTreeEmpty) {
         treeData = setEmptyClippingsState();
