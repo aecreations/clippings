@@ -44,6 +44,7 @@ let gAutocompleteMenu = {
 
         if (! this.isPopupShowing()) {
           this._popupElt.show();
+          this._listboxElt.focus();
           let popupHt = parseInt(this._popupElt.css("height"));
           if (popupHt == this._POPUP_MAX_HEIGHT) {
             $("#search-by-name .key-legend").hide();
@@ -57,6 +58,7 @@ let gAutocompleteMenu = {
         if (this._selectedIdx == -1) {
           let firstChild = this._listboxElt.children()[0];
           firstChild.setAttribute("selected", "true");
+          firstChild.setAttribute("aria-selected", "true");
           this._selectedIdx = 0;
         }
         else if (this._selectedIdx == (this._listboxElt.children().length - 1)) {
@@ -74,6 +76,7 @@ let gAutocompleteMenu = {
             if (i == this._selectedIdx) {
               selectedItem = popupMenuItems[i];
               selectedItem.setAttribute("selected", "true");
+              selectedItem.setAttribute("aria-selected", "true");
               break;
             }
           }
@@ -115,6 +118,7 @@ let gAutocompleteMenu = {
             if (i == this._selectedIdx) {
               selectedItem = popupMenuItems[i];
               selectedItem.setAttribute("selected", "true");
+              selectedItem.setAttribute("aria-selected", "true");
               break;
             }
           }
@@ -184,15 +188,15 @@ let gAutocompleteMenu = {
           clippingDiv.className = "clipping";
           clippingDiv.dataset.index = item.index;
           clippingDiv.dataset.clippingId = item.id;
-          clippingDiv.setAttribute("role", "menuitem");
+          clippingDiv.setAttribute("role", "option");
+          clippingDiv.setAttribute("aria-label", item.name);
+          clippingDiv.setAttribute("aria-selected", "false");
           
           nameDiv.className = "name";
           nameDiv.appendChild(document.createTextNode(item.name));
-          nameDiv.setAttribute("role", "caption");
           
           previewDiv.className = "preview";
           previewDiv.appendChild(document.createTextNode(item.preview));
-          previewDiv.setAttribute("aria-label", item.preview);
           
           clippingDiv.appendChild(nameDiv);
           clippingDiv.appendChild(previewDiv);
@@ -220,6 +224,7 @@ let gAutocompleteMenu = {
       let selectedItem = aEvent.target.parentNode;
       if (selectedItem.className == "clipping") {
         selectedItem.setAttribute("selected", "true");
+        selectedItem.setAttribute("aria-selected", "true");
         this._selectedIdx = selectedItem.dataset.index;
       }
     });
@@ -249,6 +254,7 @@ let gAutocompleteMenu = {
   {
     let oldSelectedItem = $('div.clipping[selected="true"]');
     oldSelectedItem.removeAttr("selected");
+    oldSelectedItem.attr("aria-selected", "false");
   },
   
   _selectClipping(aClippingID)
