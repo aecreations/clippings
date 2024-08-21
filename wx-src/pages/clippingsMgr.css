@@ -82,6 +82,7 @@
     --url-toolbar-btn-img-autoIncPlchldr: url("../img/numericPlchldr.svg");
     --url-toolbar-btn-img-autoIncPlchldr-hover: url("../img/numericPlchldr_hover.svg");
     --url-icon-synced-clippings-fldr: url("../img/synced-clippings.svg");
+    --url-icon-synced-clippings-readonly-fldr: url("../img/synced-clippings-readonly.svg");
 }
 
 @media (prefers-color-scheme: dark) {
@@ -152,6 +153,7 @@
 	--url-toolbar-btn-img-autoIncPlchldr: url("../img/numericPlchldr_dk.svg");
 	--url-toolbar-btn-img-autoIncPlchldr-hover: url("../img/numericPlchldr_dk.svg");
 	--url-icon-synced-clippings-fldr: url("../img/synced-clippings-dk.svg");
+	--url-icon-synced-clippings-readonly-fldr: url("../img/synced-clippings-readonly-dk.svg");
     }
 }
 
@@ -440,6 +442,10 @@ select {
 
 #clippings-tree .ae-synced-clippings-fldr > .fancytree-icon {
     background-image: var(--url-icon-synced-clippings-fldr);
+}
+
+#clippings-tree .ae-synced-clippings-fldr.ae-synced-clippings-readonly > .fancytree-icon {
+    background-image: var(--url-icon-synced-clippings-readonly-fldr);
 }
 
 /* Search results in tree list. */
@@ -993,7 +999,6 @@ body[data-os="win"] .browser-style > input[type="checkbox"] + label {
     margin-bottom: 8px;
 }
 
-#request-ext-perm-dlg,
 #shortcut-key-conflict-msgbox,
 #clipping-missing-src-url-msgbox,
 #remove-all-source-urls-dlg,
@@ -1060,6 +1065,7 @@ body[data-os="win"] .browser-style > input[type="checkbox"] + label {
 #request-ext-perm-dlg {
     --width: 372px;
     --height: 220px;
+    top: 48px;
 }
 
 #request-ext-perm-dlg p:first-of-type {

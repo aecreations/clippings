@@ -894,10 +894,20 @@ function getContextMenuData(aFolderID, aPrefs)
           // Dark Mode setting isn't applied to the browser context menu when
           // a Firefox dark color theme is used.
           if (getContextMenuData.isDarkMode) {
-            iconPath = "img/synced-clippings-dk.svg";
+            if (gPrefs.isSyncReadOnly) {
+              iconPath = "img/synced-clippings-readonly-dk.svg";
+            }
+            else {
+              iconPath = "img/synced-clippings-dk.svg";
+            }
           }
           else {
-            iconPath = "img/synced-clippings.svg";
+            if (gPrefs.isSyncReadOnly) {
+              iconPath = "img/synced-clippings-readonly.svg";
+            }
+            else {
+              iconPath = "img/synced-clippings.svg";
+            }
           }
         }
         submenuItemData.icons = {16: iconPath};

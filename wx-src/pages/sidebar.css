@@ -34,6 +34,7 @@
     --url-toolbar-btn-open-clippings-mgr: url("../img/clippings-mgr.svg");
     --url-toolbar-btn-help: url("../img/help.svg");
     --url-icon-synced-clippings-fldr: url("../img/synced-clippings.svg");
+    --url-icon-synced-clippings-readonly-fldr: url("../img/synced-clippings-readonly.svg");
 
     --toolbar-height: 28px;
 }
@@ -58,6 +59,7 @@
 
 	--url-toolbar-btn-help: url("../img/help-dk.svg");
 	--url-icon-synced-clippings-fldr: url("../img/synced-clippings-dk.svg");
+	--url-icon-synced-clippings-readonly-fldr: url("../img/synced-clippings-readonly-dk.svg");
     }
 }
 
@@ -348,6 +350,10 @@ button, label {
     background-image: var(--url-icon-synced-clippings-fldr);
 }
 
+#clippings-tree .ae-synced-clippings-fldr.ae-synced-clippings-readonly > .fancytree-icon {
+    background-image: var(--url-icon-synced-clippings-readonly-fldr);
+}
+
 /* Search results in tree list. */
 .fancytree-ext-filter-hide span.fancytree-node.fancytree-match span.fancytree-title, .fancytree-ext-filter-hide tr.fancytree-match span.fancytree-title {
     color: var(--color-default-text);
@@ -585,8 +591,8 @@ body[data-os="mac"] .lightbox .msgbox-icon {
 }
 
 .lightbox.msgbox > .dlg-btns > button {
-    width: 100px;
-    height: 26px;
+    width: 96px;
+    height: 28px;
     margin-right: 0;
 }
 
@@ -666,7 +672,7 @@ body[data-os="mac"] .lightbox .msgbox-icon {
 #request-clipbd-write-perm-dlg {
     top: 88px;
     --width: 200px;
-    --height: 320px;
+    --height: 322px;
 }
 
 #request-clipbd-write-perm-dlg .perm-request {

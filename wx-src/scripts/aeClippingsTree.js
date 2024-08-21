@@ -35,6 +35,9 @@ let aeClippingsTree = {
 
           if (aItem.id == gPrefs.syncFolderID) {
             folderNode.extraClasses = "ae-synced-clippings-fldr";
+            if (gPrefs.isSyncReadOnly) {
+              folderNode.extraClasses += " ae-synced-clippings-readonly";
+            }
           }
 
           if ("displayOrder" in aItem) {
