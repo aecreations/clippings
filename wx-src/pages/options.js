@@ -8,33 +8,6 @@ let gDialogs = {};
 let gIsActivatingSyncClippings = false;
 
 
-// DOM utility
-function sanitizeHTML(aHTMLStr)
-{
-  return DOMPurify.sanitize(aHTMLStr, {SAFE_FOR_JQUERY: true});
-}
-
-function capitalize(aString)
-{
-  let rv;
-
-  if (typeof aString != "string") {
-    throw new TypeError("Not a string");
-  }
-  else if (! aString) {
-    rv = "";
-  }
-  else if (aString.length == 1) {
-    rv = aString.toUpperCase();
-  }
-  else {
-    rv = aString[0].toUpperCase().concat(aString.substring(1));
-  }
-
-  return rv;
-}
-
-
 // Options page initialization
 $(async () => {
   let platform = await browser.runtime.getPlatformInfo();
@@ -366,6 +339,12 @@ $(async () => {
   if (prefs.defDlgBtnFollowsFocus) {
     aeInterxn.initDialogButtonFocusHandlers();
   }
+
+  aeVisual.cacheIcons(
+    "pref-general-checked.svg",
+    "pref-paste-checked.svg",
+    "pref-sync-clippings-checked.svg"
+  );
 });
 
 
@@ -904,6 +883,37 @@ async function closePage()
 {
   let tab = await browser.tabs.getCurrent();
   browser.tabs.remove(tab.id);
+}
+
+
+//
+// Utilities
+//
+
+function sanitizeHTML(aHTMLStr)
+{
+  return DOMPurify.sanitize(aHTMLStr, {SAFE_FOR_JQUERY: true});
+}
+
+
+function capitalize(aString)
+{
+  let rv;
+
+  if (typeof aString != "string") {
+    throw new TypeError("Not a string");
+  }
+  else if (! aString) {
+    rv = "";
+  }
+  else if (aString.length == 1) {
+    rv = aString.toUpperCase();
+  }
+  else {
+    rv = aString[0].toUpperCase().concat(aString.substring(1));
+  }
+
+  return rv;
 }
 
 

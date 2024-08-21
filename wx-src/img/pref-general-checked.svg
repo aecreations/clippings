@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="32px" height="32px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:osb="http://www.openswatchbook.org/uri/2009/osb" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="32px" height="32px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
  <g stroke="#007af5">
-  <rect x="1" y="3" width="30" height="26" fill="#d6eaff" opacity=".95" stroke-linecap="round" stroke-width="2"/>
+  <rect x="1" y="3" width="30" height="26" rx="2.5429" ry="2.5429" fill="#d6eaff" opacity=".95" stroke-linecap="round" stroke-width="2"/>
   <path d="m8 8.9864v14.027" fill="none" stroke-linecap="round" stroke-width="2"/>
   <rect x="5.5" y="13.5" width="5" height="3" ry="1.0268" fill="#99cbff"/>
   <path d="m16 8.9864v14.027" fill="none" stroke-linecap="round" stroke-width="2"/>
