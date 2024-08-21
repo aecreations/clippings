@@ -525,7 +525,7 @@ body[data-locale="fr"] #skip-backup-label {
 
 .lightbox .dlg-subhead {
     font-size: 15px;
-    font-weight: 600;
+    font-weight: bold;
 }
 
 .lightbox .dlg-subhead:first-of-type {
