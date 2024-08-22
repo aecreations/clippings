@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="16" height="16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:osb="http://www.openswatchbook.org/uri/2009/osb">
+<svg width="16" height="16" version="1.1" xmlns="http://www.w3.org/2000/svg">
  <g transform="translate(-10 -182.36)">
   <path d="m11.5 187.36 1e-6 9c0 0.55147 0.47984 1.5 1.5 1.5 1.5 0 2.7619-1e-5 4.5-1e-5 1.7715 0 3 1e-5 4.5 1e-5 0.98419 0 1.5-0.96021 1.5-1.5l-1e-6 -9" fill="#f0f0ff" stroke="#6256aa" stroke-linecap="round"/>
   <g fill="none">
@@ -12,7 +12,7 @@
     <path d="m13.5 187.86v9" stroke-width="1px"/>
     <path d="m19.5 187.86v9" stroke-width="1px"/>
    </g>
-   <path d="m14.5 184.86v-2h6v0.72528 1.2747" stroke="#6256aa"/>
+   <path d="m14.5 184.86v-1.2405c0-0.40328 0.25946-0.74741 0.74806-0.74849l4.5078-0.01c0.35113-7.8e-4 0.73594 0.31649 0.73953 0.72289l0.0046 1.2761" stroke="#6256aa"/>
   </g>
   <rect x="10.5" y="184.86" width="14" height="2" fill="#fff" stroke="#6256aa" stroke-linecap="round"/>
  </g>

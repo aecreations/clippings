@@ -5,8 +5,8 @@
   <g fill="none">
    <path d="m19.5 182.86v4h4" stroke="#5858ff" stroke-width="1px"/>
    <path transform="translate(10 182.36)" d="m9 14.5h4.5v-5.5" stroke="#fff" stroke-width="1px"/>
-   <path d="m20 195.36h6" stroke="#00f" stroke-width="2"/>
-   <path d="m23 192.36v6" stroke="#00f" stroke-width="2"/>
+   <path d="m21 195.36h4" stroke="#00f" stroke-linecap="round" stroke-width="2"/>
+   <path d="m23 193.36v4" stroke="#00f" stroke-linecap="round" stroke-width="2"/>
   </g>
  </g>
 </svg>

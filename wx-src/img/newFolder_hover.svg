@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="16" height="16" version="1.1" xmlns="http://www.w3.org/2000/svg">
  <g transform="translate(-10 -182.36)">
-  <path d="m17 195.86h6.5v-10h-5l-1.5-2h-5l-1.5 3v9z" fill="#f0f0ff" stroke="#5858ff" stroke-width="1px"/>
+  <path d="m17 195.86h6.5v-10s-4.1172 0.0192-4.4918-1e-5c-0.37446-0.0192-0.54239-0.076-0.81341-0.2829-0.48911-0.3733-1.2013-1.2517-1.5926-1.4961-0.27034-0.16889-0.4251-0.21326-0.70527-0.21961-0.30513-7e-3 -2.9689 5.3e-4 -3.3744-6e-3 -0.28848-5e-3 -0.48359-1e-3 -0.69933 0.15969-0.2442 0.18209-1.2051 1.8303-1.2873 2.3756-0.061362 0.40707-0.035962 1.1101-0.035962 1.1101v8.3592z" fill="#f0f0ff" stroke="#5858ff" stroke-width="1px"/>
   <g fill="none">
    <path d="m19 195.86h4.5v-4.5" stroke="#fff" stroke-width="1px"/>
-   <path d="m23 192.36v6" stroke="#00f" stroke-width="2"/>
-   <path d="m20 195.36h6" stroke="#00f" stroke-width="2"/>
-   <path transform="translate(10 182.36)" d="m8.5 3.5-2 1h-6" stroke="#5858ff" stroke-width="1px"/>
+   <path d="m21 195.36h4" stroke="#00f" stroke-linecap="round" stroke-width="2"/>
+   <path d="m23 193.36v4" stroke="#00f" stroke-linecap="round" stroke-width="2"/>
   </g>
  </g>
 </svg>
