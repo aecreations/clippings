@@ -376,6 +376,17 @@ void async function ()
     if (platform.os == "linux") {
       aePrefs.setPrefs({clippingsMgrAutoShowStatusBar: true});
     }
+
+    // Starting in Clippings 7.0, window positioning prefs are turned on
+    // by default for macOS.
+    // They were previously turned off due to a bug occurring on systems with
+    // multiple displays in older versions of macOS.
+    if (platform.os == "mac") {
+      aePrefs.setPrefs({
+        autoAdjustWndPos: true,
+        clippingsMgrSaveWndGeom: true,
+      });
+    }
   }
 
   if (prefs.clippingsMgrDetailsPane) {
@@ -405,7 +416,7 @@ async function init(aPrefs)
   }
 
   if (aPrefs.autoAdjustWndPos === null) {
-    let autoAdjustWndPos = platform.os == "win";
+    let autoAdjustWndPos = ["win", "mac"].includes(platform.os);
     let clippingsMgrSaveWndGeom = autoAdjustWndPos;
     await aePrefs.setPrefs({autoAdjustWndPos, clippingsMgrSaveWndGeom});
   }
