@@ -54,7 +54,7 @@ let aeClippingsTree = {
             }
           }
           
-          let childNodes = await this.build(aItem.id);
+          let childNodes = await this.build(aItem.id, aPrefs);
           folderNode.children = childNodes;
           rv.push(folderNode);
 
