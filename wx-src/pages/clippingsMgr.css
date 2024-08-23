@@ -890,9 +890,6 @@ ul.fancytree-container {
     
     border-top: 1px solid var(--color-tb-border);
     background-color: var(--color-statusbar-bkgd);
-    background-image: url("../img/resizer.svg");
-    background-position: right bottom;
-    background-repeat: no-repeat;
 
     font: small-caption;
 }
