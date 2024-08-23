@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="16" height="16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:osb="http://www.openswatchbook.org/uri/2009/osb">
+<svg width="16" height="16" version="1.1" xmlns="http://www.w3.org/2000/svg">
  <g transform="translate(-10 -182.36)">
-  <path d="m13 190.36 3.5 3.5 5.5-7.5" fill="none" stroke="#323232" stroke-width="3"/>
+  <path d="m13.5 190.83 3 3.1562 5-7.125" fill="none" stroke="#42414d" stroke-linecap="round" stroke-width="3"/>
  </g>
 </svg>

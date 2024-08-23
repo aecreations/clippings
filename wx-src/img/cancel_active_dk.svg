@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="16" height="16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:osb="http://www.openswatchbook.org/uri/2009/osb">
- <g transform="translate(-10 -182.36)" fill="none" stroke="#f0f0ff" stroke-width="2.5">
-  <path transform="translate(10 182.36)" d="m4 4 8 8"/>
-  <path d="m22 186.36-8 8"/>
+<svg width="16" height="16" version="1.1" xmlns="http://www.w3.org/2000/svg">
+ <g transform="translate(-10 -182.36)" fill="none" stroke="#f0f0ff" stroke-linecap="round" stroke-width="2.5">
+  <path d="m14.25 186.61 7.5 7.5"/>
+  <path d="m21.75 186.64-7.5 7.5"/>
  </g>
 </svg>
