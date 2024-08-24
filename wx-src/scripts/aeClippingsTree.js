@@ -202,6 +202,18 @@ aeCopyClippingTextFormatDlg.onFirstInit = async function ()
       $("#copy-title").text('');
     });
   }
+
+  this._dlgElt.keydown(aEvent => {
+    if (aEvent.key.toUpperCase() == "F") {
+      $("#copy-cliptxt-html")[0].click();
+    }
+    else if (aEvent.key.toUpperCase() == "T") {
+      $("#copy-cliptxt-plain")[0].click();
+    }
+    else if (aEvent.key.toUpperCase() == "H") {
+      $("#copy-cliptxt-plain-html")[0].click();
+    }
+  });
 },
 
 aeCopyClippingTextFormatDlg.onInit = function ()

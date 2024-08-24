@@ -3593,6 +3593,15 @@ $(document).keydown(async (aEvent) => {
       focusedTreeNodeElt.parent().trigger("contextmenu");
     }
   }
+  else if (aEvent.key.toUpperCase() == "C" && isAccelKeyPressed()) {
+    if (aEvent.target.classList.contains("ui-fancytree")) {
+      gCmd.copyClippingTextToClipboard();
+      aEvent.preventDefault();
+    }
+    else {
+      log("Clippings::clippingsMgr.js: Ignoring keyboard shortcut CTRL+C, falling back to default action")
+    }
+  }
   else if (aEvent.key.toUpperCase() == "D" && isAccelKeyPressed()) {
     aEvent.preventDefault();
     gCmd.showHideDetailsPane();
