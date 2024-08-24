@@ -1359,7 +1359,7 @@
   },
 
   "sbFirstRun": {
-    "message": "Get started by creating a clipping from selected text in the web page or in Clippings Manager.",
+    "message": "Get started by creating a clipping in Clippings Manager or from selected text in the web page.",
     "description": "Clippings Sidebar first-run message"
   },
 
