@@ -83,7 +83,12 @@ function closeDlg()
 document.addEventListener("DOMContentLoaded", aEvent => { init() });
 
 document.addEventListener("keydown", aEvent => {
-  aeInterxn.suppressBrowserShortcuts(aEvent, aeConst.DEBUG);
+  if (aEvent.key == "Enter" || aEvent.key == "Escape") {
+    closeDlg();
+  }
+  else {
+    aeInterxn.suppressBrowserShortcuts(aEvent, aeConst.DEBUG);
+  }
 });
 
 document.addEventListener("contextmenu", aEvent => { aEvent.preventDefault() });
