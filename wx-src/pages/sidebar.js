@@ -993,10 +993,22 @@ $(document).keydown(async (aEvent) => {
     }
     aeDialog.cancelDlgs();
   }
+  else if (aEvent.key == "F1") {
+    gCmd.showHelp();
+  }
   else if (aEvent.key == "F10" && aEvent.shiftKey) {
     let focusedTreeNodeElt = $(".fancytree-focused");
     if (focusedTreeNodeElt.length == 1) {
       focusedTreeNodeElt.parent().trigger("contextmenu");
+    }
+  }
+  else if (aEvent.key.toUpperCase() == "C" && isAccelKeyPressed()) {
+    if (aEvent.target.classList.contains("ui-fancytree")) {
+      gCmd.copyClippingTextToClipboard();
+      aEvent.preventDefault();
+    }
+    else {
+      log("Clippings::sidebar.js: Ignoring keyboard shortcut CTRL+C, falling back to default action")
     }
   }
   else {
