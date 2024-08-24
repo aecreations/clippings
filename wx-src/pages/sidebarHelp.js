@@ -22,6 +22,8 @@ async function init()
 
   document.querySelector("#btn-accept").addEventListener("click", aEvent => { closeDlg() });
 
+  initKeyboardShortcutTable(platform.os);
+
   // Fix for Fx57 bug where bundled page loaded using
   // browser.windows.create won't show contents unless resized.
   // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1402110>
@@ -30,6 +32,45 @@ async function init()
     width: wnd.width + 1,
     focused: true,
   });
+}
+
+
+function initKeyboardShortcutTable(aOSName)
+{
+  const isMacOS = aOSName == "mac";
+
+  function buildKeyMapTable(aTableDOMElt)
+  {
+    let shctKeys = [];
+    if (isMacOS) {
+      shctKeys = ["F1", "\u2318C"];
+    }
+    else {
+      shctKeys = ["F1", `${browser.i18n.getMessage("keyCtrl")}+C`];
+    }
+
+    function buildKeyMapTableRow(aShctKey, aCmdL10nStrIdx)
+    {
+      let tr = document.createElement("tr");
+      let tdKey = document.createElement("td");
+      let tdCmd = document.createElement("td");
+      tdKey.appendChild(document.createTextNode(aShctKey));
+      tdCmd.appendChild(document.createTextNode(browser.i18n.getMessage(aCmdL10nStrIdx)));
+      tr.appendChild(tdKey);
+      tr.appendChild(tdCmd);
+
+      return tr;
+    }
+
+    aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[0], "sbarHlpTitle"));
+    aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[1], "mnuCopyClipTxt"));
+  }
+ 
+  let shctKeyTbls = document.querySelectorAll(".shortcut-key-tbl");
+
+  for (let tbl of shctKeyTbls) {
+    buildKeyMapTable(tbl);
+  }
 }
 
 

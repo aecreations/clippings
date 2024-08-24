@@ -1664,11 +1664,11 @@ async function openBackupDlg()
 async function openSidebarHelpDlg()
 {
   let url = browser.runtime.getURL("pages/sidebarHelp.html");
-  let height = 328;
+  let height = 406;
   let platform = await browser.runtime.getPlatformInfo();
 
   if (platform.os == "mac") {
-    height = 322;
+    height = 404;
   }
 
   let wndPpty = {

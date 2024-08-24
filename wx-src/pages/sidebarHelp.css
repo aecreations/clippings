@@ -4,7 +4,17 @@
 
 @import url("../style/dialog.css");
 
+:root {
+    --color-dlg-fieldset-border: #b1b1b1;
+}
 
+@media (prefers-color-scheme: dark) {
+    :root {
+	--color-dlg-fieldset-border: #585858;
+    }
+}
+
+    
 body {
     font-size: 13px;
 }
@@ -15,10 +25,20 @@ h3 {
     margin: 0;
 }
 
+fieldset {
+    margin-top: 20px;
+    border-top: 1px solid var(--color-dlg-fieldset-border);
+    border-bottom: 1px solid var(--color-dlg-fieldset-border);
+}
+
 .dlg-content {
-    max-height: 220px;
+    max-height: 296px;
     overflow-y: auto;
     line-height: 1.23;
+}
+
+.shortcut-key-tbl > tr > td:first-of-type {
+  width: 5em;
 }
 
 #dlg-buttons {
