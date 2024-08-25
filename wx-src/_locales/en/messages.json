@@ -92,7 +92,7 @@
   },
 
   "msgRetryPgNotLoaded": {
-    "message": "Unable to retrieve selected text. Reload the page, and then try again."
+    "message": "Unable to retrieve selected text.  Check that Clippings has permission to access data for all websites, then reload the page and try again."
   },
 
   "msgClipbdEmpty": {
