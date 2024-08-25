@@ -1680,7 +1680,7 @@
   },
   
   "whatsNewFx1": {
-    "message": "Copy clipping text to the clipboard from Clippings Manager or in the new Clippings Sidebar.",
+    "message": "Copy clipping text to the clipboard from Clippings Manager or the new Clippings Sidebar.",
     "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
   },
 
