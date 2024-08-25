@@ -62,8 +62,8 @@ function initKeyboardShortcutTable(aOSName)
       return tr;
     }
 
-    aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[0], "sbarHlpTitle"));
     aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[1], "mnuCopyClipTxt"));
+    aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[0], "sbarHlpTitle"));
   }
  
   let shctKeyTbls = document.querySelectorAll(".shortcut-key-tbl");
