@@ -515,10 +515,13 @@ ul.fancytree-container {
 #intro-content {
     display: none;
     font-size: 13px;
-    margin: 8px 24px 8px 24px;
+    margin: 0 0 0 24px;
+    padding: 8px 24px 8px 0;
+    overflow-y: auto;
 }
 
 #intro-content h3 {
+    margin-top: 8px;
     font-size: 17px;
     font-weight: 600;
 }
@@ -528,6 +531,10 @@ ul.fancytree-container {
     margin-bottom: 4px;
     font-size: 13px;
     font-weight: 600;
+}
+
+#intro-content #intro-desc {
+    line-height: 1.23;
 }
 
 #intro-content .shortcut-key-tbl {
@@ -1464,17 +1471,17 @@ body[data-locale="uk"] #include-src-urls + label {
 
 #mini-help-dlg {
     --width: 454px;
-    --height: 352px;
-    top: 8px;
+    --height: 370px;
+    top: 1px;
 }
 
 body[data-os="mac"] #mini-help-dlg {
-    height: 340px;
-    top: 18px;
+    --height: 358px;
+    top: 8px;
 }
 
 body[data-locale="de"] #mini-help-dlg {
-    height: 366px;
+    --height: 366px;
     top: 2px;
 }
 
@@ -1483,6 +1490,10 @@ body[data-locale="de"] #mini-help-dlg {
     margin-top: 0;
     font-size: 13px;
     font-weight: bold;
+}
+
+#mini-help-dlg #mini-help-intro {
+    line-height: 1.23;
 }
 
 body[data-locale="fr"] #mini-help-dlg #mini-help-intro {

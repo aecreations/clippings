@@ -753,6 +753,11 @@
     "description": "Clippings Manager intro - key binding description"
   },
 
+  "clipMgrIntroCpyClpTxt": {
+    "message": "Copy Clipping Text (when a clipping is selected)",
+    "description": "Clippings Manager intro - key binding description"
+  },
+
   "clipMgrIntroCmdUndo": {
     "message": "Undo",
     "description": "Clippings Manager intro - key binding description"
