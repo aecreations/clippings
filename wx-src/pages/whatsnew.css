@@ -124,23 +124,10 @@ button {
     margin-left: 24px;
 }
 
-#whatsnew-card1 {
-    order: 1;
-    margin-right: 16px;
-    background-image: url("../img/src/whatsnew1.png");
-}
-
-#whatsnew-card2 {
-    order: 2;
-    margin-left: 16px;
-    background-image: url("../img/src/whatsnew2.png");
-}
-
 .whatsnew-card {
     width: 316px;
     margin-top: 18px;
     padding: 4px 20px 4px 20px;
-
 
     border: 1px solid var(--color-card-border);
     border-radius: 4px;
@@ -152,7 +139,20 @@ button {
 }
 
 .whatsnew-card > p {
+    margin-top: 164px;  /* Make room for thumbnail image on tile. */
     line-height: 1.23;
+}
+
+#whatsnew-card1 {
+    order: 1;
+    margin-right: 16px;
+    background-image: url("../img/welc-whats-new.png");
+}
+
+#whatsnew-card2 {
+    order: 2;
+    margin-left: 16px;
+    background-image: url("../img/whatsnew2.png");
 }
 
 #dlg-content {
