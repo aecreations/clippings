@@ -878,10 +878,6 @@
     "message": "Each time the clipping is pasted, the value of this placeholder will automatically increase by one, until it is reset from the Clippings toolbar button context menu."
   },
 
-  "numPlchldrDescTB": {
-    "message": "Each time the clipping is pasted, the value of this placeholder will automatically increase by one, until it is reset from the Clippings context menu."
-  },
-
   "dateTimeFmts": {
     "message": "Available date/time formats:"
   },
