@@ -1085,8 +1085,19 @@
     "description": "Tab label for extension preferences page"
   },
 
+  "prefsHdgIntegrn": {
+    "message": "Integration",
+    "description": "Groupbox caption in extension preferences page"
+  },
+
+  "cbToolsMnu": {
+    "message": "Show \u201cOrganize Clippings\u201d menu item in the Tools menu",
+    "description": "Checkbox option in extension preferences page"
+  },
+
   "prefsHdgPasteOptions": {
-    "message": "Paste Options"
+    "message": "Paste Options",
+    "description": "Groupbox caption in extension preferences page"
   },
 
   "labelPasteOpts": {
@@ -1128,10 +1139,6 @@
     "message": "Activate shortcut key mode by pressing $1"
   },
 
-  "prefsShctModeNew": {
-    "message": "Also use alternate keys $1"
-  },
-
   "prefsShortcutKeyNote": {
     "message": "Some of the available keyboard shortcuts may already be assigned to <a href=\"https://support.mozilla.org/en-US/kb/keyboard-shortcuts-perform-firefox-tasks-quickly\" class=\"hyperlink\">Firefox commands</a> or other add\u2011ons."
   },
@@ -1145,7 +1152,8 @@
   },
 
   "prefsHdgGeneralOptions": {
-    "message": "General Options"
+    "message": "General Options",
+    "description": "Groupbox caption in extension preferences page"
   },
 
   "cbAlwaysSaveSrcURL": {
@@ -1467,7 +1475,7 @@
   },
 
   "syncPermReqDetail": {
-    "message": "<a href=\"https://aecreations.io/clippings/sync-clippings-helper.php\" class=\"hyperlink\">Sync Clippings Helper</a> is an application that works quietly in the background to keep your synced clippings updated.",
+    "message": "<a href=\"$1\" class=\"hyperlink\">Sync Clippings Helper</a> is an application that works quietly in the background to keep your synced clippings updated.",
     "description": "Message in modal dialog in extension preferences page that appears when trying to turn on Sync Clippings without the optional 'nativeMessaging' permission turned on first"
   },
 
