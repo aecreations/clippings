@@ -47,7 +47,9 @@ $(async () => {
 
   let hostApp = browser.i18n.getMessage("hostAppFx");
   $("#ext-perm-native-msg").text(browser.i18n.getMessage("extPrmNativeMessaging", hostApp));
-  $("#ext-perm-native-msg-detail").html(sanitizeHTML(browser.i18n.getMessage("syncPermReqDetail")));
+  $("#ext-perm-native-msg-detail").html(
+    sanitizeHTML(browser.i18n.getMessage("syncPermReqDetail", aeConst.SYNC_CLIPPINGS_DWNLD_URL))
+  );
 
   initDialogs();
 
