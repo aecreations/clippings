@@ -3,9 +3,39 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
+:root {
+    --color-label-picker-default-bkgd: #fdfefd;
+    --color-label-picker-default-border: #d7d7db;
+    --color-label-picker-default-text: #32313c;
+    --color-label-picker-alt-yellow: rgb(200, 200, 0);
+}
+
+#clipping-label-picker.browser-style {
+    background-color: var(--color-label-picker-default-bkgd);
+    border-color: var(--color-label-picker-default-border);
+    color: var(--color-label-picker-default-text);
+
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICA8cGF0aCBkPSJNOCwxMkwzLDcsNCw2bDQsNCw0LTQsMSwxWiIgZmlsbD0iIzZBNkE2QSIgLz4KPC9zdmc+Cg==");
+}
+
+@media (prefers-color-scheme: dark) {
+    #clipping-label-picker.browser-style {
+	background-color: var(--color-label-picker-default-bkgd);
+	border-color: var(--color-label-picker-default-border);
+	color: var(--color-label-picker-default-text);
+    }
+}
+
+#clipping-label-picker.browser-style:hover {
+    border-color: #b1b1b1;
+}
+
+#clipping-label-picker.browser-style:active {
+    background-color: rgba(12, 12, 13, 0.3) !important;
+}
+
 #clipping-label-picker > option {
-    background-color: white;
-    color: initial;
+    color: var(--color-label-picker-default-text);
 }
 
 #clipping-label-picker > option[value="red"] {

@@ -35,7 +35,7 @@ $(async () => {
   }
 
   let platform = await browser.runtime.getPlatformInfo();
-  document.body.dataset.os = platform.os;
+  document.body.dataset.os = gOS = platform.os;
 
   let lang = browser.i18n.getUILanguage();
   document.body.dataset.locale = lang;
@@ -653,19 +653,38 @@ function initLabelPicker()
   $("#clipping-label-picker").on("change", aEvent => {
     let label = aEvent.target.value;
     let bgColor = label;
-    let fgColor = "white";
+    let fgColor = gOS == "win" ? label : "var(--color-label-picker-default-bkgd)";
 
     if (! label) {
-      bgColor = "var(--color-btn-bkgd)";
-      fgColor = "var(--color-text-default)";
+      bgColor = "var(--color-label-picker-default-bkgd)";
+      fgColor = "var(--color-label-picker-default-text)";
     }
     else if (label == "yellow") {
-      fgColor = "initial";
+      fgColor = gOS == "win" ? "var(--color-label-picker-alt-yellow)" : "black";
     }
-    $(aEvent.target).css({
-      backgroundColor: bgColor,
+
+    let cssPpty = {
       color: fgColor,
-    });
+    };
+    if (gOS == "win") {
+      let borderColor;
+      if (! label) {
+        borderColor = "var(--color-label-picker-default-border)";
+      }
+      else if (label == "yellow") {
+        borderColor = "var(--color-label-picker-alt-yellow)";
+      }
+      else {
+        borderColor = label;
+      }
+
+      cssPpty.borderColor = borderColor;
+    }
+    else {
+      cssPpty.backgroundColor = bgColor;
+    }
+
+    $(aEvent.target).css(cssPpty);
   });
 }
 

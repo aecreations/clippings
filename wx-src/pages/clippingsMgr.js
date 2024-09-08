@@ -949,21 +949,37 @@ let gClippingLabelPicker = {
 
   set selectedLabel(aLabel)
   {
-    let bgColor = aLabel;
-    let fgColor = "white";
+    let bgColor = gEnvInfo.os == "win" ? "var(--color-label-picker-default-bkgd)" : aLabel;
+    let fgColor = gEnvInfo.os == "win" ? aLabel : "var(--color-label-picker-default-bkgd)";
 
     if (! aLabel) {
-      bgColor = "var(--color-btn-bkgd)";
-      fgColor = "var(--color-default-text)";
+      bgColor = "var(--color-label-picker-default-bkgd)";
+      fgColor = "var(--color-label-picker-default-text)";
     }
     else if (aLabel == "yellow") {
-      fgColor = "initial";
+      fgColor = gEnvInfo.os == "win" ? "var(--color-label-picker-alt-yellow)" : "black";
     }
 
-    this._labelPicker.css({
-      backgroundColor: bgColor,
-      color: fgColor
-    });
+    let cssPpty = {
+      color: fgColor,
+    };
+    if (gEnvInfo.os == "win") {
+      let borderColor;
+      if (! aLabel) {
+        borderColor = "var(--color-label-picker-default-border)";
+      }
+      else if (aLabel == "yellow") {
+        borderColor = "var(--color-label-picker-alt-yellow)";
+      }
+      else {
+        borderColor = aLabel;
+      }
+      cssPpty.borderColor = borderColor;
+    }
+    else {
+      cssPpty.backgroundColor = bgColor;
+    }
+    this._labelPicker.css(cssPpty);
     this._labelPicker.val(aLabel);
   }
 };
