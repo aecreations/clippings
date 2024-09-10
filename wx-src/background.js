@@ -1642,7 +1642,7 @@ function openPlaceholderPromptDlg(aTabID, aDlgMode)
     topOffset: 256,
   };
 
-  openDlgWnd(url, "placeholderPrmt", wndPpty, aTabID);
+  openDlgWnd(url, "placeholderPrmt", wndPpty, aTabID, (aDlgMode > 0));
 }
 
 
@@ -1681,11 +1681,32 @@ async function openSidebarHelpDlg()
 }
 
 
-async function openDlgWnd(aURL, aWndKey, aWndPpty, aTabID=null)
+async function openDlgWnd(aURL, aWndKey, aWndPpty, aTabID=null, aAlwaysCalcWndPosFromBrwsWnd=false)
 {
   if (! aTabID) {
     let [tab] = await browser.tabs.query({currentWindow: true, discarded: false});
-    aTabID = tab.id;
+    aTabID = tab.id;    
+  }
+
+  if (aAlwaysCalcWndPosFromBrwsWnd) {
+    // Get the window ID of the browser window. If there are multiple browser
+    // windows open, get the window ID of the first one.
+    let wnds = await browser.windows.getAll({windowTypes: ["normal"]});
+
+    if (wnds.length > 0) {
+      let tabs = await browser.tabs.query({
+        discarded: false,
+        windowId: wnds[0].id,
+      });
+      if (tabs.length > 0) {
+        aTabID = tabs[0].id;
+      }
+    }
+    else {
+      // If no browser windows are open, then position dialog relative to the
+      // screen (see helper function below).
+      aTabID = null;
+    }
   }
 
   async function openDlgWndHelper()
@@ -1695,7 +1716,7 @@ async function openDlgWnd(aURL, aWndKey, aWndPpty, aTabID=null)
     let height = aWndPpty.height;
     let left, top, wndGeom;
 
-    if (autoAdjustWndPos) {
+    if (autoAdjustWndPos && typeof aTabID == "number") {
       wndGeom = await getWndGeometryFromBrwsTab(aTabID);
       log("Clippings/wx: openDlgWnd() > openDlgWndHelper(): Window geometry of browser window:");
       log(wndGeom);
