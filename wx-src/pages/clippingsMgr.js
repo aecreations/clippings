@@ -6057,7 +6057,7 @@ function updateDisplay(aEvent, aData)
   else {
     $("#item-properties").removeClass("folder-only");
     $(`#clipping-name, #clipping-text, #clipping-key, #clipping-label-picker,
-       #placeholder-toolbar > button`).prop("disabled", false);
+       #edit-url-btn, #placeholder-toolbar > button`).prop("disabled", false);
     $("#options-bar label, #placeholder-toolbar label").removeAttr("disabled");
     
     gClippingsDB.clippings.get(selectedItemID).then(aResult => {
@@ -6113,7 +6113,7 @@ function updateDisplay(aEvent, aData)
       if (gSyncedItemsIDs.has(selectedItemID + "C") && gPrefs.isSyncReadOnly) {
         $("#delete").prop("disabled", true);
         $(`#clipping-name, #clipping-text, #clipping-key, #clipping-label-picker,
-           #placeholder-toolbar > button`).prop("disabled", true);
+           #edit-url-btn, #placeholder-toolbar > button`).prop("disabled", true);
         $("#options-bar label, #placeholder-toolbar label").attr("disabled", "");
       }
     });

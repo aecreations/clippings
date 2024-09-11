@@ -631,6 +631,10 @@ ul.fancytree-container {
     font-size: 13px;
 }
 
+#item-properties > #clipping-text[disabled] {
+    opacity: 0.4;
+}
+
 #item-properties > #placeholder-toolbar {
     order: 3;
     flex: 0 1 auto;
