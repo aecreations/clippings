@@ -239,6 +239,11 @@ button, label {
     overflow: hidden;
 }
 
+#search-bar {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
 .toolbar-button {
     flex: 0 1 auto;
     align-self: stretch;
@@ -328,10 +333,6 @@ button, label {
     background-position-y: center;
     background-repeat: no-repeat;
     visibility: hidden;
-}
-
-#content {
-    height: calc(100% - var(--toolbar-height));
 }
 
 #normal-content {

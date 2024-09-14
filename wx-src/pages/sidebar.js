@@ -360,7 +360,6 @@ $(async () => {
 
   gPrefs = await aePrefs.getAllPrefs();
   setCustomizations();
-  setScrollableContentHeight();
   gSearchBox.init();
 
   buildClippingsTree();
@@ -917,7 +916,6 @@ browser.storage.onChanged.addListener((aChanges, aAreaName) => {
   }
 
   setCustomizations();
-  setScrollableContentHeight();
 });
 
 
