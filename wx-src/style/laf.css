@@ -605,6 +605,11 @@ body[data-os="win"] .browser-style > input[type="radio"] + label {
     background-position: -33px -1px;
 }
 
+.browser-style > input[type="checkbox"]:checked:-moz-focusring,
+.browser-style > input[type="radio"]:checked:-moz-focusring {
+    box-shadow: 0 0 0 2px #61b5ffbf;    
+}
+
 label[disabled],
 input[type="text"][disabled],
 .browser-style > input[type="checkbox"][disabled] {
