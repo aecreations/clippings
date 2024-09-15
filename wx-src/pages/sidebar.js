@@ -543,6 +543,10 @@ function buildClippingsTree()
         },
         
         show(aOpts) {
+          let treeItemSpan = aOpts.$trigger[0].firstChild;
+          if (treeItemSpan.classList.contains("fancytree-match")) {
+            return false;
+          }
           return (! gIsClippingsTreeEmpty);
         }
       },
