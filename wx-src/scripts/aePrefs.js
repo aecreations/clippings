@@ -59,6 +59,7 @@ let aePrefs = {
     skipBackupRemIfUnchg: true,
     clippingsUnchanged: false,
     upgradeNotifCount: 0,
+    lastWhatsNewNotifcnDate: null,
     showNewClippingOpts: false,
     useInsertHTMLCmd: false,
     defDlgBtnFollowsFocus: false,
@@ -291,6 +292,7 @@ let aePrefs = {
       sidebarSearchBar: true,
       sidebarPreview: true,
       pasteFromSidebar: false,
+      lastWhatsNewNotifcnDate: null,
     };
 
     await this._addPrefs(aPrefs, newPrefs);

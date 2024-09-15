@@ -450,7 +450,7 @@ async function init(aPrefs)
   }
 
   if (gIsMajorVerUpdate && !gIsFirstRun) {
-    setWhatsNewNotificationDelay();
+    setFirstWhatsNewNotificationDelay();
   }
   else {
     if (aPrefs.upgradeNotifCount > 0) {
@@ -1339,11 +1339,12 @@ async function clearBackupNotificationInterval()
 }
 
 
-async function setWhatsNewNotificationDelay()
+async function setFirstWhatsNewNotificationDelay()
 {
   log("Clippings/wx: Turning on post-update notification.");
   await aePrefs.setPrefs({
-    upgradeNotifCount: aeConst.MAX_NUM_POST_UPGRADE_NOTIFICNS
+    upgradeNotifCount: aeConst.MAX_NUM_POST_UPGRADE_NOTIFICNS,
+    lastWhatsNewNotifcnDate: null,
   });
 
   // Show post-update notification in 1 minute.
@@ -1355,19 +1356,48 @@ async function setWhatsNewNotificationDelay()
 
 async function showWhatsNewNotification()
 {
-  log("Clippings/wx: Showing post-update notification.");
+  let prefs = await aePrefs.getAllPrefs();
+  let today = new Date();
+  let lastWhatsNewNotifcnDate = prefs.lastWhatsNewNotifcnDate;
+  if (typeof lastWhatsNewNotifcnDate == "string") {
+    lastWhatsNewNotifcnDate = new Date(prefs.lastWhatsNewNotifcnDate);
+  }
+  else {
+    // Default to the start of the Unix epoch to force notification to appear.
+    lastWhatsNewNotifcnDate = new Date(0);
+  }
 
-  let extName = browser.i18n.getMessage("extName");
-  await browser.notifications.create("whats-new", {
-    type: "basic",
-    title: extName,
-    message: browser.i18n.getMessage("upgradeNotifcn", extName),
-    iconUrl: "img/notifIcon.svg",
-  });
+  let notifcnIntvDays = aeConst.POST_UPGRADE_NOTIFCN_INTERVAL_MS / 86400000;
+  let diff = new aeDateDiff(today, lastWhatsNewNotifcnDate);
 
-  let upgradeNotifCount = await aePrefs.getPref("upgradeNotifCount");
-  upgradeNotifCount -= 1;
-  aePrefs.setPrefs({upgradeNotifCount});
+  if (diff.days >= notifcnIntvDays) {
+    log("Clippings/wx: Showing post-update notification.");
+
+    let extName = browser.i18n.getMessage("extName");
+    await browser.notifications.create("whats-new", {
+      type: "basic",
+      title: extName,
+      message: browser.i18n.getMessage("upgradeNotifcn", extName),
+      iconUrl: "img/notifIcon.svg",
+    });
+
+    let upgradeNotifCount = await aePrefs.getPref("upgradeNotifCount");
+    upgradeNotifCount -= 1;
+
+    if (upgradeNotifCount == 0) {
+      // Maximum number of occurrences is reached.
+      lastWhatsNewNotifcnDate = null;
+      await browser.alarms.clear("show-upgrade-notifcn");
+    }
+    else {
+      lastWhatsNewNotifcnDate = new Date().toString();
+    }
+    
+    aePrefs.setPrefs({
+      upgradeNotifCount,
+      lastWhatsNewNotifcnDate,
+    });
+  }
 }
 
 
@@ -2273,7 +2303,10 @@ browser.notifications.onClicked.addListener(aNotifID => {
 
   case "whats-new":
     browser.tabs.create({url: browser.runtime.getURL("pages/whatsnew.html")});
-    aePrefs.setPrefs({upgradeNotifCount: 0});
+    aePrefs.setPrefs({
+      upgradeNotifCount: 0,
+      lastWhatsNewNotifcnDate: null,
+    });
     break;
 
   default:

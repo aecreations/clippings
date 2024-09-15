@@ -73,6 +73,7 @@ const aeConst = Object.freeze({
 
   // Post-upgrade notifications
   POST_UPGRADE_NOTIFCN_DELAY_MS: 60000, // 1 minute
+  POST_UPGRADE_NOTIFCN_INTERVAL_MS: 86400000, // 24 hours
   MAX_NUM_POST_UPGRADE_NOTIFICNS: 2,
 
   // Errors returned by the native messaging app
