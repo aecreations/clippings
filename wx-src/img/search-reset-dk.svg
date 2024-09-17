@@ -1,7 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="12" height="12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:osb="http://www.openswatchbook.org/uri/2009/osb">
- <g transform="translate(-10 -186.36)" stroke="#d7d7db" stroke-width="1.6">
-  <path d="m12 188.36 8 8" fill-opacity="0"/>
-  <path d="m20 188.36-8 8" fill="none"/>
- </g>
-</svg>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><path fill="rgba(249, 249, 250, .8)" d="M4.586 6L3.293 7.293a1 1 0 0 0 1.414 1.414L6 7.414l1.293 1.293a1 1 0 0 0 1.414-1.414L7.414 6l1.293-1.293a1 1 0 0 0-1.414-1.414L6 4.586 4.707 3.293a1 1 0 0 0-1.414 1.414L4.586 6zM6 0a6 6 0 1 1 0 12A6 6 0 0 1 6 0z"></path></svg>
