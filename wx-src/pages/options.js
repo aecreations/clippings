@@ -342,11 +342,13 @@ $(async () => {
     aeInterxn.initDialogButtonFocusHandlers();
   }
 
+  aeVisual.init(gOS);
   aeVisual.cacheIcons(
     "pref-general-checked.svg",
     "pref-paste-checked.svg",
     "pref-sync-clippings-checked.svg"
   );
+  aeVisual.preloadMsgBoxIcons(true);
 });
 
 

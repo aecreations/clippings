@@ -3501,6 +3501,7 @@ $(async () => {
     }
   }
 
+  aeVisual.init(gEnvInfo.os);
   aeInterxn.init(gEnvInfo.os);
   if (gPrefs.defDlgBtnFollowsFocus) {
     aeInterxn.initDialogButtonFocusHandlers();
@@ -4094,6 +4095,7 @@ function initToolbar()
 
   gSearchBox.init();
 
+  aeVisual.preloadMsgBoxIcons(true);
   aeVisual.preloadLafImages();
   aeVisual.cacheIcons(
     "newClipping_hover.svg",

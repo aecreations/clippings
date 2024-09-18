@@ -87,6 +87,8 @@ $(async () => {
   $("#btn-accept").click(aEvent => { accept(aEvent) });
   $("#btn-cancel").click(aEvent => { cancel(aEvent) });
 
+  aeVisual.init(platform.os);
+  aeVisual.preloadMsgBoxIcons();
   aeInterxn.init(platform.os);
   if (gPrefs.defDlgBtnFollowsFocus) {
     aeInterxn.initDialogButtonFocusHandlers();

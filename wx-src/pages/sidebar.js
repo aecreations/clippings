@@ -367,6 +367,8 @@ $(async () => {
 
   initDialogs();
   aeInterxn.init(gEnvInfo.os);
+  aeVisual.init(gEnvInfo.os);
+  aeVisual.preloadMsgBoxIcons();
 
   let wnd = await browser.windows.getCurrent();
   aeNavigator.init(wnd.id);

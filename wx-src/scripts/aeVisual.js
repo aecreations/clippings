@@ -26,6 +26,27 @@ let aeVisual = {
     );
   },
 
+  preloadMsgBoxIcons(aPreloadAll)
+  {
+    this.cacheIcons(
+      "warning-64.png",
+      "warning-64-mac.png",
+      "alert-win.png"
+    );
+
+    if (aPreloadAll) {
+      this.cacheIcons(
+        "question-64.png",
+        "question-64-mac.png",
+        "confirm-win.png",
+        "info.svg",
+        "info-win.png",
+        "error.svg",
+        "error-win.png",
+      );
+    }
+  },
+
   cacheIcons(...aIconFileNames)
   {
     for (let fileName of aIconFileNames) {
