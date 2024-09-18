@@ -411,6 +411,8 @@ async function init(aPrefs)
   log(`Clippings/wx: Host app: ${brws.name} (version ${brws.version})`);
   log("Clippings/wx: OS: " + platform.os);
 
+  aeVisual.init(platform.os);
+
   if (platform.os == "linux" && aPrefs.clippingsMgrMinzWhenInactv === null) {
     await aePrefs.setPrefs({clippingsMgrMinzWhenInactv: false});
   }
@@ -2086,7 +2088,7 @@ function showSyncAppErrorNotification()
     type: "basic",
     title: browser.i18n.getMessage("syncStartupFailedHdg"),
     message: browser.i18n.getMessage("syncStartupFailed"),
-    iconUrl: "img/error.svg",
+    iconUrl: aeVisual.getErrorIconPath(),
   });
 }
 
@@ -2097,7 +2099,7 @@ function showSyncReadErrorNotification()
     type: "basic",
     title: browser.i18n.getMessage("syncStartupFailedHdg"),
     message: browser.i18n.getMessage("syncGetFailed"),
-    iconUrl: "img/error.svg",
+    iconUrl: aeVisual.getErrorIconPath(),
   });
 }
 
@@ -2108,7 +2110,7 @@ function showSyncPushReadOnlyNotification()
     type: "basic",
     title: browser.i18n.getMessage("syncStartupFailedHdg"),
     message: browser.i18n.getMessage("syncFldrRdOnly"),
-    iconUrl: "img/error.svg",
+    iconUrl: aeVisual.getErrorIconPath(),
   });
 }
 
@@ -2119,7 +2121,7 @@ function showNoNativeMsgPermNotification()
     type: "basic",
     title: browser.i18n.getMessage("syncStartupFailedHdg"),
     message: browser.i18n.getMessage("syncPermNotif"),
-    iconUrl: "img/error.svg",
+    iconUrl: aeVisual.getErrorIconPath(),
   });
 }
 

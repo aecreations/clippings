@@ -5,8 +5,14 @@
 
 
 let aeVisual = {
+  _os: null,
   _iconCache: [],
 
+
+  init(aOSName)
+  {
+    this._os = aOSName;
+  },
 
   preloadLafImages()
   {
@@ -27,5 +33,20 @@ let aeVisual = {
       img.src = `../img/${fileName}`;
       this._iconCache.push(img);
     }
+  },
+
+  getErrorIconPath(aFromExtSubdir=false)
+  {
+    let rv = "";
+    if (this._os == "win") {
+      rv = "img/error-win.png";
+    }
+    else {
+      rv = "img/error.svg";
+    }
+    if (aFromExtSubdir) {
+      rv = `../${rv}`;
+    }
+    return rv;
   },
 };
