@@ -344,7 +344,7 @@ select {
 
 #toolbar > #clippings-mgr-options {
     order: 7;
-    padding-right: 12px;
+    padding-right: 18px;
     background-image: var(--url-toolbar-btn-img-tools), var(--url-toolbar-btn-img-dropdown);
     background-position-x: 4px, right;
     
@@ -658,7 +658,7 @@ ul.fancytree-container {
 #item-properties > #placeholder-toolbar > #plchldr-presets,
 #item-properties > #placeholder-toolbar > #plchldr-presets:active {
     padding-left: 6px;
-    padding-right: 12px;
+    padding-right: 18px;
 }
 
 #item-properties > #placeholder-toolbar > #custom-plchldr {
@@ -696,7 +696,7 @@ ul.fancytree-container {
     order: 2;
     flex: 0 1 auto;
     
-    padding-right: 12px;
+    padding-right: 18px;
     background-image: var(--url-toolbar-btn-img-dropdown);
     background-position-x: right;
 }
@@ -1083,6 +1083,10 @@ body[data-os="win"] .browser-style > input[type="checkbox"] + label {
     --width: 372px;
     --height: 220px;
     top: 48px;
+}
+
+#request-ext-perm-dlg > .msgbox-icon {
+    margin-top: 4px;
 }
 
 #request-ext-perm-dlg p:first-of-type {
