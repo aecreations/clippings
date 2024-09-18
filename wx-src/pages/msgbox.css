@@ -30,6 +30,10 @@ button {
     background-size: contain;
 }
 
+body[data-os="win"] #msgbox-icon {
+    background-image: url("../img/alert-win.png");
+}
+
 body[data-os="mac"] #msgbox-icon {
     background-image: url("../img/warning-64-mac.png");
 }

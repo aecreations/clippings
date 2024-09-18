@@ -552,33 +552,22 @@ ul.fancytree-container {
     flex-flow: column nowrap;
 }
 
-.lightbox .msgbox-icon,
-.lightbox .msgbox-info-icon {
+.lightbox .msgbox-icon {
     width: 100%;
+    height: 50px;
+
     background-position: center;
     background-repeat: no-repeat;
-}
-
-.lightbox .msgbox-icon {
-    height: 50px;
-}
-
-.lightbox .msgbox-info-icon {
-    height: 48px;
-}
-
-.lightbox .msgbox-icon {
     background-image: url("../img/warning-64.png");
     background-size: contain;
 }
 
-body[data-os="mac"] .lightbox .msgbox-icon {
-    background-image: url("../img/warning-64-mac.png");
+body[data-os="win"] .lightbox .msgbox-icon {
+    background-image: url("../img/alert-win.png");
 }
 
-.lightbox .msgbox-info-icon {
-    background-image: url("../img/info.svg");
-    background-size: contain;
+body[data-os="mac"] .lightbox .msgbox-icon {
+    background-image: url("../img/warning-64-mac.png");
 }
 
 .lightbox > .msgbox-content > p {
