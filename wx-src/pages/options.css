@@ -788,6 +788,10 @@ body[data-os="mac"] #sync-clippings-dlg #sync-cxn-error .msgbox-icon {
     background-image: url("../img/error.svg");
 }
 
+body[data-os="win"] #sync-clippings-dlg #generic-error .msgbox-icon {
+    background-image: url("../img/error-win.png");
+}
+
 #sync-clippings-dlg #sync-cxn-error .error-msg,
 #sync-clippings-dlg #generic-error .error-msg {
     margin-top: 12px;
