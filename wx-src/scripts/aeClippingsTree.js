@@ -214,11 +214,23 @@ aeCopyClippingTextFormatDlg.onFirstInit = async function ()
     }).on("blur mouseout", aEvent => {
       $("#copy-title").text('');
     });
+
+    aeVisual.cacheIcons(
+      "copy-clipping-html-hover32.svg",
+      "copy-clipping-txt-hover32.svg",
+      "copy-clipping-txt-html-hover32.svg"
+    );
   }
   else {
     $("#copy-cliptxt-html").html(this._sanitizeHTML(copyAsHTML));
     $("#copy-cliptxt-plain").html(this._sanitizeHTML(copyAsPlain));
     $("#copy-cliptxt-plain-html").html(this._sanitizeHTML(copyAsPlainHTML));
+
+    aeVisual.cacheIcons(
+      "copy-clipping-html-hover16.svg",
+      "copy-clipping-txt-hover16.svg",
+      "copy-clipping-txt-html-hover16.svg"
+    );
   }
 
   this._dlgElt.keydown(aEvent => {

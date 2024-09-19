@@ -83,6 +83,12 @@
     --url-toolbar-btn-img-autoIncPlchldr-hover: url("../img/numericPlchldr_hover.svg");
     --url-icon-synced-clippings-fldr: url("../img/synced-clippings.svg");
     --url-icon-synced-clippings-readonly-fldr: url("../img/synced-clippings-readonly.svg");
+    --url-icon-copy-fmt: url("../img/copy-clipping-html16.svg");
+    --url-icon-copy-txt: url("../img/copy-clipping-txt16.svg");
+    --url-icon-copy-txt-html-tags: url("../img/copy-clipping-txt-html16.svg");
+    --url-icon-copy-fmt-hover: url("../img/copy-clipping-html-hover16.svg");
+    --url-icon-copy-txt-hover: url("../img/copy-clipping-txt-hover16.svg");
+    --url-icon-copy-txt-html-tags-hover: url("../img/copy-clipping-txt-html-hover16.svg");
 }
 
 @media (prefers-color-scheme: dark) {
@@ -1048,31 +1054,63 @@ body[data-os="win"] .browser-style > input[type="checkbox"] + label {
     width: 100%;
     height: 28px;
     margin-bottom: 6px;
-    font-size: 12px !important;
-    text-align: left;
     padding-left: 28px;
+
+    border: 1px solid var(--color-copy-clipping-txt-btn-border);
+    background-color: var(--color-lb-bkgd);
     background-repeat: no-repeat;
     background-size: 16px 16px;
     background-position: 4px;
+    
+    font-size: 12px !important;
+    text-align: left;
+}
+
+#copy-clipping-txt-fmt-dlg .copy-fmt-btn:hover {
+    border: 1px solid var(--color-btn-border);
+    background-color: var(--color-btn-hover-bkgd);
 }
 
 #copy-clipping-txt-fmt-dlg .copy-fmt-btn:focus {
     border-color: var(--color-bkgd) !important;
     box-shadow: 0 0 0 2px #45a1ff;
+    background-color: var(--color-btn-bkgd);
+}
+
+#copy-clipping-txt-fmt-dlg .copy-fmt-btn:focus:hover {
+    background-color: var(--color-btn-hover-bkgd);
+}
+
+#copy-clipping-txt-fmt-dlg .copy-fmt-btn:active {
+    background-color: var(--color-btn-active-bkgd);
 }
 
 #copy-clipping-txt-fmt-dlg #copy-cliptxt-html {
-    background-image: url("../img/copy-clipping-html16.svg");   
+    background-image: var(--url-icon-copy-fmt);
+}
+
+#copy-clipping-txt-fmt-dlg #copy-cliptxt-html:hover,
+#copy-clipping-txt-fmt-dlg #copy-cliptxt-html:focus {
+    background-image: var(--url-icon-copy-fmt-hover);
 }
 
 #copy-clipping-txt-fmt-dlg #copy-cliptxt-plain {
-    background-image: url("../img/copy-clipping-txt16.svg");   
+    background-image: var(--url-icon-copy-txt);
+}
+
+#copy-clipping-txt-fmt-dlg #copy-cliptxt-plain:hover,
+#copy-clipping-txt-fmt-dlg #copy-cliptxt-plain:focus {
+    background-image: var(--url-icon-copy-txt-hover);
 }
 
 #copy-clipping-txt-fmt-dlg #copy-cliptxt-plain-html {
-    background-image: url("../img/copy-clipping-txt-html16.svg");   
+    background-image: var(--url-icon-copy-txt-html-tags);
 }
 
+#copy-clipping-txt-fmt-dlg #copy-cliptxt-plain-html:hover,
+#copy-clipping-txt-fmt-dlg #copy-cliptxt-plain-html:focus {
+    background-image: var(--url-icon-copy-txt-html-tags-hover);
+}
 
 #copy-clipping-txt-fmt-dlg .last-row {
     border-bottom: 1px solid #ddd;

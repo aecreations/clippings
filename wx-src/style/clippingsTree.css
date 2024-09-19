@@ -15,6 +15,8 @@
     --color-not-synced-items-text: rgba(0, 0, 0, 0.4);
     --color-not-synced-items-selected-text: rgba(0, 0, 0, 0.4);
     --url-treelist-icons: url("../lib/fancytree/skin-win8/icons.gif");
+
+    --color-copy-clipping-txt-btn-border: #ededf0;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -30,6 +32,8 @@
 	--color-not-synced-items-text: rgba(180, 180, 180, 0.4);
 	--color-not-synced-items-selected-text: #b1b1b3;
 	--url-treelist-icons: url("../img/tree-icons-dk.png");
+
+	--color-copy-clipping-txt-btn-border: #4a4a4f;
     }
 }
 
