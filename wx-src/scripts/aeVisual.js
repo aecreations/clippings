@@ -70,4 +70,20 @@ let aeVisual = {
     }
     return rv;
   },
+
+  formatShortcutKey(aLabelText, aShortcutKey)
+  {
+    let rv;
+    let idx = aLabelText.indexOf(aShortcutKey);
+    if (idx == -1) {
+      rv = `${aLabelText} (<u>${aShortcutKey}</u>)`;
+    }
+    else {
+      let pre = aLabelText.slice(0, idx);
+      let post = aLabelText.slice(idx + 1);
+      rv = `${pre}<u>${aShortcutKey}</u>${post}`;
+    }
+
+    return rv;
+  },
 };

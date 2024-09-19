@@ -183,7 +183,7 @@ aeCopyClippingTextFormatDlg.copyClippingText = function (aButtonID)
     clippingID: this.getClippingID(),
     copyFormat,
   });
-},
+};
 
 aeCopyClippingTextFormatDlg.onFirstInit = async function ()
 {
@@ -192,31 +192,55 @@ aeCopyClippingTextFormatDlg.onFirstInit = async function ()
     this.close();
   });
 
+  let copyAsHTML = browser.i18n.getMessage("copyAsHTML");
+  let copyAsPlain = browser.i18n.getMessage("copyAsPlain");
+  let copyAsPlainHTML = browser.i18n.getMessage("copyAsPlainHTML");
+  copyAsHTML = aeVisual.formatShortcutKey(copyAsHTML, "F");
+  copyAsPlain = aeVisual.formatShortcutKey(copyAsPlain, "C");
+  copyAsPlainHTML = aeVisual.formatShortcutKey(copyAsPlainHTML, "H");
+
   // Compact dialog
   if (this._dlgElt.attr("data-compact")) {
+    let btnLabels = {
+      copyAsHTML: this._sanitizeHTML(copyAsHTML),
+      copyAsPlain: this._sanitizeHTML(copyAsPlain),
+      copyAsPlainHTML: this._sanitizeHTML(copyAsPlainHTML),
+    };
+
     $("#copy-cliptxt-html, #copy-cliptxt-plain, #copy-cliptxt-plain-html").on("focus mouseover", aEvent => {
       let title = aEvent.target.dataset.title;
-      $("#copy-title").text(browser.i18n.getMessage(title));
+      $("#copy-title").html(btnLabels[title]);
 
     }).on("blur mouseout", aEvent => {
       $("#copy-title").text('');
     });
+  }
+  else {
+    $("#copy-cliptxt-html").html(this._sanitizeHTML(copyAsHTML));
+    $("#copy-cliptxt-plain").html(this._sanitizeHTML(copyAsPlain));
+    $("#copy-cliptxt-plain-html").html(this._sanitizeHTML(copyAsPlainHTML));
   }
 
   this._dlgElt.keydown(aEvent => {
     if (aEvent.key.toUpperCase() == "F") {
       $("#copy-cliptxt-html")[0].click();
     }
-    else if (aEvent.key.toUpperCase() == "T") {
+    else if (aEvent.key.toUpperCase() == "C") {
       $("#copy-cliptxt-plain")[0].click();
     }
     else if (aEvent.key.toUpperCase() == "H") {
       $("#copy-cliptxt-plain-html")[0].click();
     }
   });
-},
+};
 
 aeCopyClippingTextFormatDlg.onInit = function ()
 {
   $("#copy-cliptxt-html")[0].focus();
+};
+
+
+aeCopyClippingTextFormatDlg._sanitizeHTML = function (aHTMLStr)
+{
+  return DOMPurify.sanitize(aHTMLStr, {SAFE_FOR_JQUERY: true});
 };
