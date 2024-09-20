@@ -369,6 +369,10 @@ $(async () => {
   aeInterxn.init(gEnvInfo.os);
   aeVisual.init(gEnvInfo.os);
   aeVisual.preloadMsgBoxIcons();
+  aeVisual.cacheIcons(
+    "clippings-mgr-hover.svg",
+    "clippings-mgr-active-dk.svg"
+  );
 
   let wnd = await browser.windows.getCurrent();
   aeNavigator.init(wnd.id);
