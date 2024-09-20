@@ -33,7 +33,9 @@
 
     --url-toolbar-btn-open-clippings-mgr: url("../img/clippings-mgr.svg");
     --url-toolbar-btn-open-clippings-mgr-hover: url("../img/clippings-mgr-hover.svg");
+    --url-toolbar-btn-open-clippings-mgr-active: url("../img/clippings-mgr-hover.svg");
     --url-toolbar-btn-help: url("../img/help.svg");
+    --url-toolbar-btn-help-active: url("../img/help.svg");
     --url-icon-synced-clippings-fldr: url("../img/synced-clippings.svg");
     --url-icon-synced-clippings-readonly-fldr: url("../img/synced-clippings-readonly.svg");
     --url-icon-copy-fmt: url("../img/copy-clipping-html32.svg");
@@ -66,7 +68,9 @@
 
 	--url-toolbar-btn-open-clippings-mgr: url("../img/clippings-mgr-dk.svg");
 	--url-toolbar-btn-open-clippings-mgr-hover: url("../img/clippings-mgr-dk.svg");
+	--url-toolbar-btn-open-clippings-mgr-active: url("../img/clippings-mgr-active-dk.svg");
 	--url-toolbar-btn-help: url("../img/help-dk.svg");
+	--url-toolbar-btn-help-active: url("../img/help.svg");
 	--url-icon-synced-clippings-fldr: url("../img/synced-clippings-dk.svg");
 	--url-icon-synced-clippings-readonly-fldr: url("../img/synced-clippings-readonly-dk.svg");
     }
@@ -304,8 +308,16 @@ button, label {
     background-image: var(--url-toolbar-btn-open-clippings-mgr-hover);
 }
 
+#toolbar > #open-clippings-mgr:active {
+    background-image: var(--url-toolbar-btn-open-clippings-mgr-active);
+}
+
 #toolbar > #help {
     background-image: var(--url-toolbar-btn-help);
+}
+
+#toolbar > #help:active {
+    background-image: var(--url-toolbar-btn-help-active);
 }
 
 #search-clippings-and-folders {
