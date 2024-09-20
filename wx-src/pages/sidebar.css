@@ -32,6 +32,7 @@
     --color-tree-splitter-border: #b1b1b1;
 
     --url-toolbar-btn-open-clippings-mgr: url("../img/clippings-mgr.svg");
+    --url-toolbar-btn-open-clippings-mgr-hover: url("../img/clippings-mgr-hover.svg");
     --url-toolbar-btn-help: url("../img/help.svg");
     --url-icon-synced-clippings-fldr: url("../img/synced-clippings.svg");
     --url-icon-synced-clippings-readonly-fldr: url("../img/synced-clippings-readonly.svg");
@@ -63,6 +64,8 @@
 	--color-tree-splitter: #4a4a4f;
 	--color-tree-splitter-border: #4a4a4f;
 
+	--url-toolbar-btn-open-clippings-mgr: url("../img/clippings-mgr-dk.svg");
+	--url-toolbar-btn-open-clippings-mgr-hover: url("../img/clippings-mgr-dk.svg");
 	--url-toolbar-btn-help: url("../img/help-dk.svg");
 	--url-icon-synced-clippings-fldr: url("../img/synced-clippings-dk.svg");
 	--url-icon-synced-clippings-readonly-fldr: url("../img/synced-clippings-readonly-dk.svg");
@@ -295,6 +298,10 @@ button, label {
 
 #toolbar > #open-clippings-mgr {
     background-image: var(--url-toolbar-btn-open-clippings-mgr);
+}
+
+#toolbar > #open-clippings-mgr:hover {
+    background-image: var(--url-toolbar-btn-open-clippings-mgr-hover);
 }
 
 #toolbar > #help {
@@ -597,12 +604,6 @@ body[data-os="mac"] .lightbox .msgbox-icon {
     --height: 176px;
 }
 
-#copy-clipping-txt-fmt-dlg .dlg-hdr {
-    margin-top: 0;
-    margin-bottom: 12px;
-    font-weight: bold;
-}
-
 #copy-clipping-txt-fmt-dlg .copy-fmt-btn {
     min-width: unset;
     width: 50px;
@@ -610,35 +611,13 @@ body[data-os="mac"] .lightbox .msgbox-icon {
     margin-top: 6px;
     margin-right: 8px;
     margin-bottom: 0;
-    
-    border: 1px solid var(--color-copy-clipping-txt-btn-border);
-    background-color: var(--color-lb-bkgd);
-    background-repeat: no-repeat;
+
     background-size: 32px 32px;
     background-position: 8px;
 }
 
 #copy-clipping-txt-fmt-dlg .copy-fmt-btn:last-of-type {
     margin-right: 0;
-}
-
-#copy-clipping-txt-fmt-dlg .copy-fmt-btn:hover {
-    border: 1px solid var(--color-btn-border);
-    background-color: var(--color-btn-hover-bkgd);
-}
-
-#copy-clipping-txt-fmt-dlg .copy-fmt-btn:focus {
-    border-color: var(--color-bkgd) !important;
-    box-shadow: 0 0 0 2px #45a1ff;
-    background-color: var(--color-btn-bkgd);
-}
-
-#copy-clipping-txt-fmt-dlg .copy-fmt-btn:focus:hover {
-    background-color: var(--color-btn-hover-bkgd);
-}
-
-#copy-clipping-txt-fmt-dlg .copy-fmt-btn:active {
-    background-color: var(--color-btn-active-bkgd);
 }
 
 #copy-clipping-txt-fmt-dlg #copy-cliptxt-html {

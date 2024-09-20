@@ -1043,12 +1043,6 @@ body[data-os="win"] .browser-style > input[type="checkbox"] + label {
     left: 128px;
 }
 
-#copy-clipping-txt-fmt-dlg .dlg-hdr {
-    margin-top: 0;
-    margin-bottom: 12px;
-    font-weight: bold;
-}
-
 #copy-clipping-txt-fmt-dlg .copy-fmt-btn {
     min-width: unset;
     width: 100%;
@@ -1056,33 +1050,11 @@ body[data-os="win"] .browser-style > input[type="checkbox"] + label {
     margin-bottom: 6px;
     padding-left: 28px;
 
-    border: 1px solid var(--color-copy-clipping-txt-btn-border);
-    background-color: var(--color-lb-bkgd);
-    background-repeat: no-repeat;
     background-size: 16px 16px;
     background-position: 4px;
-    
+
     font-size: 12px !important;
     text-align: left;
-}
-
-#copy-clipping-txt-fmt-dlg .copy-fmt-btn:hover {
-    border: 1px solid var(--color-btn-border);
-    background-color: var(--color-btn-hover-bkgd);
-}
-
-#copy-clipping-txt-fmt-dlg .copy-fmt-btn:focus {
-    border-color: var(--color-bkgd) !important;
-    box-shadow: 0 0 0 2px #45a1ff;
-    background-color: var(--color-btn-bkgd);
-}
-
-#copy-clipping-txt-fmt-dlg .copy-fmt-btn:focus:hover {
-    background-color: var(--color-btn-hover-bkgd);
-}
-
-#copy-clipping-txt-fmt-dlg .copy-fmt-btn:active {
-    background-color: var(--color-btn-active-bkgd);
 }
 
 #copy-clipping-txt-fmt-dlg #copy-cliptxt-html {
