@@ -371,7 +371,9 @@ $(async () => {
   aeVisual.preloadMsgBoxIcons();
   aeVisual.cacheIcons(
     "clippings-mgr-hover.svg",
-    "clippings-mgr-active-dk.svg"
+    "clippings-mgr-active-dk.svg",
+    "help_hover.svg",
+    "folder-open.svg"
   );
 
   let wnd = await browser.windows.getCurrent();

@@ -35,6 +35,7 @@
     --url-toolbar-btn-open-clippings-mgr-hover: url("../img/clippings-mgr-hover.svg");
     --url-toolbar-btn-open-clippings-mgr-active: url("../img/clippings-mgr-hover.svg");
     --url-toolbar-btn-help: url("../img/help.svg");
+    --url-toolbar-btn-help-hover: url("../img/help_hover.svg");
     --url-toolbar-btn-help-active: url("../img/help.svg");
     --url-icon-synced-clippings-fldr: url("../img/synced-clippings.svg");
     --url-icon-synced-clippings-readonly-fldr: url("../img/synced-clippings-readonly.svg");
@@ -70,6 +71,7 @@
 	--url-toolbar-btn-open-clippings-mgr-hover: url("../img/clippings-mgr-dk.svg");
 	--url-toolbar-btn-open-clippings-mgr-active: url("../img/clippings-mgr-active-dk.svg");
 	--url-toolbar-btn-help: url("../img/help-dk.svg");
+	--url-toolbar-btn-help-hover: url("../img/help-dk.svg");
 	--url-toolbar-btn-help-active: url("../img/help.svg");
 	--url-icon-synced-clippings-fldr: url("../img/synced-clippings-dk.svg");
 	--url-icon-synced-clippings-readonly-fldr: url("../img/synced-clippings-readonly-dk.svg");
@@ -314,6 +316,10 @@ button, label {
 
 #toolbar > #help {
     background-image: var(--url-toolbar-btn-help);
+}
+
+#toolbar > #help:hover {
+    background-image: var(--url-toolbar-btn-help-hover);
 }
 
 #toolbar > #help:active {
