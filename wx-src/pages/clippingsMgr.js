@@ -4119,9 +4119,13 @@ function initToolbar()
     "shctkeys_hover-dk.svg",
     "help-dk.svg",
     "ok_hover.svg",
+    "ok_active.svg",
     "ok_hover_dk.svg",
+    "ok_active_dk.svg"
     "cancel_hover.svg",
+    "cancel_active.svg",
     "cancel_hover_dk.svg",
+    "cancel_active_dk.svg",
     "folder-open.svg",
     "tree-fldr-open.svg",
     "tree-fldr-close.svg",

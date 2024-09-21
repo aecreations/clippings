@@ -89,6 +89,13 @@ $(async () => {
 
   aeVisual.init(platform.os);
   aeVisual.preloadMsgBoxIcons();
+  aeVisual.cacheIcons(
+    "tree-fldr-open.svg",
+    "tree-fldr-close.svg",
+    "tree-fldr-open-dk.svg",
+    "tree-fldr-close-dk.svg"
+  );
+  
   aeInterxn.init(platform.os);
   if (gPrefs.defDlgBtnFollowsFocus) {
     aeInterxn.initDialogButtonFocusHandlers();

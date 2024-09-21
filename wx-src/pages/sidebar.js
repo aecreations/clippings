@@ -373,7 +373,11 @@ $(async () => {
     "clippings-mgr-hover.svg",
     "clippings-mgr-active-dk.svg",
     "help_hover.svg",
-    "folder-open.svg"
+    "folder-open.svg",
+    "tree-fldr-open.svg",
+    "tree-fldr-close.svg",
+    "tree-fldr-open-dk.svg",
+    "tree-fldr-close-dk.svg"
   );
 
   let wnd = await browser.windows.getCurrent();
