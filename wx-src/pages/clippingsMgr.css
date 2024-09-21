@@ -54,7 +54,17 @@
     --color-dlg-fieldset-border: #b1b1b1;
 
     --url-toolbar-btn-img-newClipping: url("../img/newClipping.svg");
+    --url-toolbar-btn-img-newClipping-active: url("../img/newClipping.svg");
+    --url-toolbar-btn-img-newClipping-hover: url("../img/newClipping_hover.svg");
     --url-toolbar-btn-img-newFolder: url("../img/newFolder.svg");
+    --url-toolbar-btn-img-newFolder-active: url("../img/newFolder.svg");
+    --url-toolbar-btn-img-newFolder-hover: url("../img/newFolder_hover.svg");
+    --url-toolbar-btn-img-move: url("../img/moveTo.svg");
+    --url-toolbar-btn-img-move-active: url("../img/moveTo.svg");
+    --url-toolbar-btn-img-move-hover: url("../img/moveTo_hover.svg");
+    --url-toolbar-btn-img-delete: url("../img/delete.svg");
+    --url-toolbar-btn-img-delete-active: url("../img/delete.svg");
+    --url-toolbar-btn-img-delete-hover: url("../img/delete_hover.svg");   
     --url-toolbar-btn-img-undo: url("../img/undo.svg");
     --url-toolbar-btn-img-undo-hover: url("../img/undo_hover.svg");
     --url-toolbar-btn-img-undo-active: url("../img/undo_hover.svg");
@@ -130,8 +140,18 @@
 	--color-th-border: #737373;
 	--color-dlg-fieldset-border: #585858;
 
-	--url-toolbar-btn-img-newClipping: url("../img/newClipping.svg");
-	--url-toolbar-btn-img-newFolder: url("../img/newFolder.svg");
+	--url-toolbar-btn-img-newClipping: url("../img/newClipping-dk.svg");
+	--url-toolbar-btn-img-newClipping-active: url("../img/newClipping-active-dk.svg");
+	--url-toolbar-btn-img-newClipping-hover: url("../img/newClipping-dk.svg");
+	--url-toolbar-btn-img-newFolder: url("../img/newFolder-dk.svg");
+	--url-toolbar-btn-img-newFolder-active: url("../img/newFolder-active-dk.svg");
+	--url-toolbar-btn-img-newFolder-hover: url("../img/newFolder-dk.svg");
+	--url-toolbar-btn-img-move: url("../img/moveTo-dk.svg");
+	--url-toolbar-btn-img-move-active: url("../img/moveTo-active-dk.svg");
+	--url-toolbar-btn-img-move-hover: url("../img/moveTo-dk.svg");
+	--url-toolbar-btn-img-delete: url("../img/delete-dk.svg");
+	--url-toolbar-btn-img-delete-active: url("../img/delete-active-dk.svg");
+	--url-toolbar-btn-img-delete-hover: url("../img/delete-dk.svg");
 	--url-toolbar-btn-img-undo: url("../img/undo_dk.svg");
 	--url-toolbar-btn-img-undo-hover: url("../img/undo_dk.svg");
 	--url-toolbar-btn-img-undo-active: url("../img/undo_hover.svg");
@@ -301,7 +321,11 @@ select {
 }
 
 #toolbar > #new-clipping:hover {
-    background-image: url("../img/newClipping_hover.svg");
+    background-image: var(--url-toolbar-btn-img-newClipping-hover);
+}
+
+#toolbar > #new-clipping:active {
+    background-image: var(--url-toolbar-btn-img-newClipping-active);
 }
 
 #toolbar > #new-folder {
@@ -310,25 +334,37 @@ select {
 }
 
 #toolbar > #new-folder:hover {
-    background-image: url("../img/newFolder_hover.svg");
+    background-image: var(--url-toolbar-btn-img-newFolder-hover);
+}
+
+#toolbar > #new-folder:active {
+    background-image: var(--url-toolbar-btn-img-newFolder-active);
 }
 
 #toolbar > #move {
     order: 3;
-    background-image: url("../img/moveTo.svg");
+    background-image: var(--url-toolbar-btn-img-move);
 }
 
 #toolbar > #move:hover {
-    background-image: url("../img/moveTo_hover.svg");
+    background-image: var(--url-toolbar-btn-img-move-hover);
+}
+
+#toolbar > #move:active {
+    background-image: var(--url-toolbar-btn-img-move-active);
 }
 
 #toolbar > #delete {
     order: 4;
-    background-image: url("../img/delete.svg");
+    background-image: var(--url-toolbar-btn-img-delete);
 }
 
 #toolbar > #delete:hover {
-    background-image: url("../img/delete_hover.svg");
+    background-image: var(--url-toolbar-btn-img-delete-hover);
+}
+
+#toolbar > #delete:active {
+    background-image: var(--url-toolbar-btn-img-delete-active);
 }
 
 #toolbar > #undo {

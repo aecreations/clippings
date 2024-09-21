@@ -4099,9 +4099,13 @@ function initToolbar()
   aeVisual.preloadLafImages();
   aeVisual.cacheIcons(
     "newClipping_hover.svg",
+    "newClipping-active-dk.svg",
     "newFolder_hover.svg",
+    "newFolder-active-dk.svg",
     "moveTo_hover.svg",
+    "moveTo-active-dk.svg",
     "delete_hover.svg",
+    "delete-active-dk.svg",
     "undo_hover.svg",
     "options_hover.svg",
     "options_menuopen.svg",
