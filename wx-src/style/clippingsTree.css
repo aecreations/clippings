@@ -106,16 +106,20 @@ span.fancytree-title {
 }
 
 .ui-fancytree .fancytree-exp-c span.fancytree-expander,
-.ui-fancytree .fancytree-exp-e span.fancytree-expander {
+.ui-fancytree .fancytree-exp-e span.fancytree-expander,
+.ui-fancytree .fancytree-exp-cl span.fancytree-expander,
+.ui-fancytree .fancytree-exp-el span.fancytree-expander {
     margin-top: 4px;
     background-position: unset;   
 }
 
-.ui-fancytree .fancytree-exp-c span.fancytree-expander {
+.ui-fancytree .fancytree-exp-c span.fancytree-expander,
+.ui-fancytree .fancytree-exp-cl span.fancytree-expander {
     background-image: var(--url-treelist-folder-close);
 }
 
-.ui-fancytree .fancytree-exp-e span.fancytree-expander {
+.ui-fancytree .fancytree-exp-e span.fancytree-expander,
+.ui-fancytree .fancytree-exp-el span.fancytree-expander {
     background-image: var(--url-treelist-folder-open);
 }
 
