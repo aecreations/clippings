@@ -4122,7 +4122,11 @@ function initToolbar()
     "ok_hover_dk.svg",
     "cancel_hover.svg",
     "cancel_hover_dk.svg",
-    "folder-open.svg"
+    "folder-open.svg",
+    "tree-fldr-open.svg",
+    "tree-fldr-close.svg",
+    "tree-fldr-open-dk.svg",
+    "tree-fldr-close-dk.svg"
   );
 }
 
