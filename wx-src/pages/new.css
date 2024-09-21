@@ -17,6 +17,8 @@
     --color-fldr-tree-popup-border: #b1b1b1;
     --color-fldr-tree-popup-shadow: #8f8f8f;
     --color-fldr-tree-popup-shadow-darker: #555555;
+
+    --url-new-folder-btn-icon: url("../img/newFolder.svg");
     --url-icon-synced-clippings-fldr: url("../img/synced-clippings.svg");
     --url-collapsed-icon: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgMTYgMTYiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+IDxwYXRoIGQ9Im04IDUtNSA1IDEgMSA0LTQgNCA0IDEtMXoiIGZpbGw9IiM2YTZhNmEiLz48L3N2Zz4K");
 }
@@ -30,6 +32,8 @@
 	--color-fldr-tree-popup-border: #737373;
 	--color-fldr-tree-popup-shadow: #2a2a2e;
 	--color-fldr-tree-popup-shadow-darker: #2a2a2e;
+
+	--url-new-folder-btn-icon: url("../img/newFolder-dk.svg");
 	--url-icon-synced-clippings-fldr: url("../img/synced-clippings-dk.svg");
 	--url-collapsed-icon: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgMTYgMTYiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+IDxwYXRoIGQ9Im04IDUtNSA1IDEgMSA0LTQgNCA0IDEtMXoiIGZpbGw9InJnYigyMzcsMjM3LDI0MCkiLz48L3N2Zz4K");
     }
@@ -158,7 +162,7 @@ ul.fancytree-container {
     margin: 0 0 0 4px;
     border-radius: 3px;
     
-    background-image: url("../img/newFolder.svg");
+    background-image: var(--url-new-folder-btn-icon);
     background-position: center;
     background-repeat: no-repeat;
 }
