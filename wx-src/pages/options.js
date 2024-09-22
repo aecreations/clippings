@@ -346,7 +346,10 @@ $(async () => {
   aeVisual.cacheIcons(
     "pref-general-checked.svg",
     "pref-paste-checked.svg",
-    "pref-sync-clippings-checked.svg"
+    "pref-sync-clippings-checked.svg",
+    "pref-general-checked-dk.svg",
+    "pref-paste-checked-dk.svg",
+    "pref-sync-clippings-checked-dk.svg"
   );
   aeVisual.preloadMsgBoxIcons(true);
 });
