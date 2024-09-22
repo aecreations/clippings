@@ -15,10 +15,18 @@
     --color-not-synced-items-text: rgba(0, 0, 0, 0.4);
     --color-not-synced-items-selected-text: rgba(0, 0, 0, 0.4);
     --color-copy-clipping-txt-btn-border: #ededf0;
+    --color-reload-sync-fldr-btn-bkgd: #fbfbfb;
+    --color-reload-sync-fldr-btn-border: #ddd;
+    --color-reload-sync-fldr-btn-hover-bkgd: rgb(12, 12, 13, 0.2);
+    --color-reload-sync-fldr-btn-hover-border: #b1b1b1;
+    --color-reload-sync-fldr-btn-active-bkgd: rgb(12, 12, 13, 0.3);
+    --color-reload-sync-fldr-btn-active-border: #b1b1b1;
 
     --url-treelist-icons: url("../lib/fancytree/skin-win8/icons.gif");
     --url-treelist-folder-open: url("../img/tree-fldr-open.svg");
     --url-treelist-folder-close: url("../img/tree-fldr-close.svg");
+    --url-btn-icon-reload-sync-fldr: url("../img/reload.svg");
+    --url-btn-icon-reload-sync-fldr-active: url("../img/reload.svg");
 }
 
 @media (prefers-color-scheme: dark) {
@@ -34,10 +42,18 @@
 	--color-not-synced-items-text: rgba(180, 180, 180, 0.4);
 	--color-not-synced-items-selected-text: #b1b1b3;
 	--color-copy-clipping-txt-btn-border: #4a4a4f;
+	--color-reload-sync-fldr-btn-bkgd: #4a4a4f;
+	--color-reload-sync-fldr-btn-border: #4a4a4f;
+	--color-reload-sync-fldr-btn-hover-bkgd: #606060;
+	--color-reload-sync-fldr-btn-hover-border: #737373;
+	--color-reload-sync-fldr-btn-active-bkgd: #737373;
+	--color-reload-sync-fldr-btn-active-border: #737373;
 
 	--url-treelist-icons: url("../img/tree-icons-dk.png");
 	--url-treelist-folder-open: url("../img/tree-fldr-open-dk.svg");
 	--url-treelist-folder-close: url("../img/tree-fldr-close-dk.svg");
+	--url-btn-icon-reload-sync-fldr: url("../img/reload-dk.svg");
+	--url-btn-icon-reload-sync-fldr-active: url("../img/reload-dk.svg");
     }
 }
 
@@ -194,6 +210,37 @@ span.fancytree-title {
 
 .fancytree-ico-c span.fancytree-icon:hover {
     background-position: unset;
+}
+
+/* "Reload" button for the Synced Clippings folder */
+#reload-sync-fldr-btn {
+    display: inline-block;
+
+    position: relative;
+    top: 0px;
+    left: 4px;
+    width: 24px;
+    height: 20px;
+
+    border: 1px solid var(--color-reload-sync-fldr-btn-border);
+    border-radius: 3px;
+
+    background-color: var(--color-reload-sync-fldr-btn-bkgd);
+    background-image: var(--url-btn-icon-reload-sync-fldr);
+    background-size: 14px 14px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#reload-sync-fldr-btn:hover {
+    border: 1px solid var(--color-reload-sync-fldr-btn-hover-border);
+    background-color: var(--color-reload-sync-fldr-btn-hover-bkgd);
+}
+
+#reload-sync-fldr-btn:active {
+    border: 1px solid var(--color-reload-sync-fldr-btn-active-border);
+    background-color: var(--color-reload-sync-fldr-btn-active-bkgd);
+    background-image: var(--url-btn-icon-reload-sync-fldr-active);
 }
 
 /* If user has set the option to only show synced folders in the folder picker,
