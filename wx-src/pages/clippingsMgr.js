@@ -4121,7 +4121,7 @@ function initToolbar()
     "ok_hover.svg",
     "ok_active.svg",
     "ok_hover_dk.svg",
-    "ok_active_dk.svg"
+    "ok_active_dk.svg",
     "cancel_hover.svg",
     "cancel_active.svg",
     "cancel_hover_dk.svg",
