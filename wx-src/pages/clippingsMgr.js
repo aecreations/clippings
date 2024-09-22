@@ -3451,7 +3451,7 @@ $(async () => {
   if (gEnvInfo.os == "mac") {
     $("#status-bar").css({backgroundImage: "none"});
   }
-  else if (gEnvInfo.os == "linux") {
+  else if (gEnvInfo.os == "linux" || DEBUG_WND_ACTIONS) {
     $("#minz-when-inactv-mode").show();
     $("#minz-when-inactv-mode").attr("data-checked", !!gPrefs.clippingsMgrMinzWhenInactv)
       .attr("title", browser.i18n.getMessage("mnuMinimizeWhenInactive"));
@@ -4130,7 +4130,11 @@ function initToolbar()
     "tree-fldr-open.svg",
     "tree-fldr-close.svg",
     "tree-fldr-open-dk.svg",
-    "tree-fldr-close-dk.svg"
+    "tree-fldr-close-dk.svg",
+    "auto-minimize-on.svg",
+    "auto-minimize-off.svg",
+    "auto-minimize-on-dk.svg",
+    "auto-minimize-off-dk.svg"
   );
 }
 

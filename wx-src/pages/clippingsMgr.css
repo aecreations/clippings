@@ -93,6 +93,8 @@
     --url-icon-copy-fmt-hover: url("../img/copy-clipping-html-hover16.svg");
     --url-icon-copy-txt-hover: url("../img/copy-clipping-txt-hover16.svg");
     --url-icon-copy-txt-html-tags-hover: url("../img/copy-clipping-txt-html-hover16.svg");
+    --url-icon-auto-minimize-on: url("../img/auto-minimize-on.svg");
+    --url-icon-auto-minimize-off: url("../img/auto-minimize-off.svg");
 }
 
 @media (prefers-color-scheme: dark) {
@@ -168,6 +170,8 @@
 	--url-toolbar-btn-img-autoIncPlchldr-hover: url("../img/numericPlchldr_dk.svg");
 	--url-icon-synced-clippings-fldr: url("../img/synced-clippings-dk.svg");
 	--url-icon-synced-clippings-readonly-fldr: url("../img/synced-clippings-readonly-dk.svg");
+	--url-icon-auto-minimize-on: url("../img/auto-minimize-on-dk.svg");
+	--url-icon-auto-minimize-off: url("../img/auto-minimize-off-dk.svg");
     }
 }
 
@@ -918,7 +922,7 @@ ul.fancytree-container {
     margin-right: 8px;
     text-align: right;
 
-    background-image: url("../img/auto-minimize-on.svg");
+    background-image: var(--url-icon-auto-minimize-on);
     background-position: center;
     background-repeat: no-repeat;
     background-size: 12px 12px;
@@ -927,7 +931,7 @@ ul.fancytree-container {
 }
 
 #minz-when-inactv-mode[data-checked="false"] {
-    background-image: url("../img/auto-minimize-off.svg");
+    background-image: var(--url-icon-auto-minimize-off);
 }
 
 
