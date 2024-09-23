@@ -31,6 +31,7 @@
     --url-toolbar-btn-help: url("../img/help.svg");
     --url-toolbar-btn-help-hover: url("../img/help_hover.svg");
     --url-toolbar-btn-help-active: url("../img/help.svg");
+    --url-icon-no-clippings: url("../img/no-clippings.svg");
     --url-icon-synced-clippings-fldr: url("../img/synced-clippings.svg");
     --url-icon-synced-clippings-readonly-fldr: url("../img/synced-clippings-readonly.svg");
     --url-icon-copy-fmt: url("../img/copy-clipping-html32.svg");
@@ -434,12 +435,17 @@ ul.fancytree-container {
     font-weight: 600;
 }
 
-#welcome-icon {
-    width: 100%;
-    height: 128px;
-    margin-top: 8px;
+#welcome-cta-icon {
+    text-align: center;
+}
 
-    background-image: url("../img/icon96.svg");
+#welcome-icon {
+    display: inline-block;
+    width: 128px;
+    height: 128px;
+    margin-top: 0;
+
+    background-image: var(--url-icon-no-clippings);
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
