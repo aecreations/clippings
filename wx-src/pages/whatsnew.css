@@ -67,7 +67,7 @@ main {
     margin: 24px auto 24px auto;
     padding: 10px 24px 24px 24px;
     border: 1px solid var(--color-main-border);
-    border-radius: 2px;
+    border-radius: 4px;
     box-shadow: 0 0 8px 2px var(--color-main-border-shadow);
     background-color: var(--color-main-bkgd);
 }
