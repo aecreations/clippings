@@ -333,7 +333,7 @@ progress {
 }
 
 #html-paste-note {
-    margin: 0 18px 4px 4px;
+    margin: 0 18px 4px 2px;
     font-size: 13px;
 }
 
@@ -439,7 +439,6 @@ body[data-locale="fr"] #skip-backup-label {
 }
 
 #shct-key-in-menu-opt-label {
-    margin-left: 2px;
     vertical-align: -2px;
 }
 
@@ -666,7 +665,11 @@ body[data-locale|="es"] #wnds-dlgs-opts-dlg #clpmgr-save-wnd-pos-label {
 }
 
 .experimental-label {
-    vertical-align: 0;
+    vertical-align: middle;
+}
+
+body[data-os="win"] .experimental-label {
+    vertical-align: text-top;
 }
 
 #sidebar-opts-dlg .dlg-content {
