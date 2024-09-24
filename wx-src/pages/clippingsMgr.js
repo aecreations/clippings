@@ -5474,7 +5474,7 @@ function buildClippingsTree()
         
         show(aOpts) {
           let treeItemSpan = aOpts.$trigger[0].firstChild;
-          if (treeItemSpan.classList.contains("fancytree-match")) {
+          if (treeItemSpan.classList.contains("fancytree-statusnode-nodata")) {
             // Hide the context menu if "No items found" in the search results
             // is selected.
             return false;
