@@ -299,6 +299,8 @@ button.browser-style:focus:not(:disabled) {
 }
 
 body[data-os="win"] #search-by-name-ico {
+    width: 32px;
+    height: 32px;
     background-image: url("../img/confirm-win.png");
 }
 
