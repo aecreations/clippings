@@ -298,6 +298,10 @@ button.browser-style:focus:not(:disabled) {
     background-size: contain;
 }
 
+body[data-os="win"] #search-by-name-ico {
+    background-image: url("../img/confirm-win.png");
+}
+
 body[data-os="mac"] #search-by-name-ico {
     background-image: url("../img/question-64-mac.png");
 }
