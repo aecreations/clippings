@@ -4111,6 +4111,8 @@ function initToolbar()
     "options_menuopen.svg",
     "shctkeys_hover.svg",
     "help_hover.svg",
+    "customPlchldr.svg",
+    "numericPlchldr.svg",
     "customPlchldr_hover.svg",
     "numericPlchldr_hover.svg",
     "options_dk_hover.svg",
