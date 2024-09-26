@@ -970,7 +970,7 @@ body[data-os="win"] #turn-off-sync-clippings-ack-dlg #delete-sync-fldr-opt > #de
 #about-dlg {
     top: 72px;
     --width: 410px;
-    --height: 320px;
+    --height: 290px;
 }
 
 body[data-os="mac"] #about-dlg {
@@ -979,6 +979,10 @@ body[data-os="mac"] #about-dlg {
 
 body[data-locale="de"] #about-dlg {
     height: 326px;
+}
+
+#about-dlg[data-expanded="true"] {
+    height: 320px;
 }
 
 #about-dlg #ext-icon {
