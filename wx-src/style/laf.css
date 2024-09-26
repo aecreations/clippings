@@ -63,7 +63,7 @@
 	--color-cb-checked-active-border: #004480;
 	--color-hyperlink: #45a1ff;
 	--color-hyperlink-active: #0a84ff;
-	--color-error-text: #ff0039;
+	--color-error-text: #ffbdc5;
 
 	--url-dropdown-arrow: url('data:image/svg+xml;utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 16 16"><g><path style="fill:none;fill-rule:evenodd;stroke:rgb(237,237,240);stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M 3.5,6.5 8,11 12.5,6.5"/></g></svg>');
     }
