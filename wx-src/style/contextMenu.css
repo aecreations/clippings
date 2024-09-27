@@ -6,8 +6,8 @@
     --color-cxtmenu-bkgd: #fff;
     --color-cxtmenu-border: #bebebe;
     --color-cxtmenu-text: #2f2f2f;
-    --color-cxtmenu-menuitem-active-bkgd: #d7d7db;
-    --color-cxtmenu-menuitem-hover-bkgd: #ededf0;
+    --color-cxtmenu-menuitem-active-bkgd: rgba(12, 12, 12, 0.3);
+    --color-cxtmenu-menuitem-hover-bkgd: rgba(12, 12, 13, 0.2);
     --color-cxtmenu-menuitem-hover-text: #0c0c0d;
     --color-cxtmenu-separator: #e6e6e6;   
 
@@ -64,6 +64,10 @@
 
 .ae-menuitem:active {
     background-color: var(--color-cxtmenu-menuitem-active-bkgd) !important;
+}
+
+.ae-menuitem.context-menu-disabled:active {
+    background-color: transparent !important;
 }
 
 .context-menu-item.context-menu-hover {
