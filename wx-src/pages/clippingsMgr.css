@@ -270,12 +270,7 @@ select {
 }
 
 .toolbar-button-menu-open {
-    border-radius: 3px 3px 0px 0px;
     background-color: var(--color-toolbar-menubtn-open);
-}
-
-#plchldr-presets.toolbar-button-menu-open {
-    border-radius: 0px 0px 3px 3px;
 }
 
 .toolbar-button-labelled {

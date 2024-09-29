@@ -6,8 +6,8 @@
     --color-cxtmenu-bkgd: #fff;
     --color-cxtmenu-border: #bebebe;
     --color-cxtmenu-text: #2f2f2f;
-    --color-cxtmenu-menuitem-active-bkgd: rgba(12, 12, 12, 0.3);
-    --color-cxtmenu-menuitem-hover-bkgd: rgba(12, 12, 13, 0.2);
+    --color-cxtmenu-menuitem-active-bkgd: #CCCCCD;
+    --color-cxtmenu-menuitem-hover-bkgd: #DFDFDF;
     --color-cxtmenu-menuitem-hover-text: #0c0c0d;
     --color-cxtmenu-separator: #e6e6e6;   
 
@@ -45,12 +45,12 @@
 
 .ae-menuitem,
 .context-menu-submenu {
-    border-radius: 2px;
     margin: 0 4px 0 4px;
     padding-top: 4px;
     padding-bottom: 4px;
-    font-size: 12px;
+    border-radius: 2px;
     background-color: var(--color-cxtmenu-bkgd);
+    font-size: 12px;
     color: var(--color-cxtmenu-text);
 }
 
