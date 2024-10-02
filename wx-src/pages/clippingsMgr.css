@@ -90,6 +90,7 @@
     --url-toolbar-btn-img-autoIncPlchldr: url("../img/numericPlchldr.svg");
     --url-toolbar-btn-img-autoIncPlchldr-hover: url("../img/numericPlchldr_hover.svg");
     --url-icon-synced-clippings-fldr: url("../img/synced-clippings.svg");
+    --url-btn-icon-reload-sync-fldr: url("../img/reload.svg");
 }
 
 @media (prefers-color-scheme: dark) {
@@ -109,10 +110,10 @@
 	--color-plchldr-toolbar-text: #f9f9fa;
 	--color-toolbarbtn-hover-bkgd: #737373;
 	--color-toolbarbtn-active-bkgd: #b1b1b3;
-	--color-reload-sync-fldr-btn-bkgd: #737373;
-	--color-reload-sync-fldr-btn-border: #b1b1b3;
-	--color-reload-sync-fldr-btn-hover-bkgd: #b1b1b3;
-	--color-reload-sync-fldr-btn-hover-border: #b1b1b3;
+	--color-reload-sync-fldr-btn-bkgd: #4a4a4f;
+	--color-reload-sync-fldr-btn-border: #4a4a4f;
+	--color-reload-sync-fldr-btn-hover-bkgd: #606060;
+	--color-reload-sync-fldr-btn-hover-border: #737373;
 	--color-reload-sync-fldr-btn-active-bkgd: #737373;
 	--color-reload-sync-fldr-btn-active-border: #737373;
 	--color-toolbar-menubtn-open: #737373;
@@ -169,6 +170,7 @@
 	--url-toolbar-btn-img-autoIncPlchldr: url("../img/numericPlchldr_dk.svg");
 	--url-toolbar-btn-img-autoIncPlchldr-hover: url("../img/numericPlchldr_dk.svg");
 	--url-icon-synced-clippings-fldr: url("../img/synced-clippings-dk.svg");
+	--url-btn-icon-reload-sync-fldr: url("../img/reload-dk.svg");
     }
 }
 
@@ -532,7 +534,7 @@ select {
     border-radius: 3px;
 
     background-color: var(--color-reload-sync-fldr-btn-bkgd);
-    background-image: url("../img/reload.svg");
+    background-image: var(--url-btn-icon-reload-sync-fldr);
     background-size: 14px 14px;
     background-repeat: no-repeat;
     background-position: center;
@@ -956,9 +958,6 @@ ul.fancytree-container {
     
     border-top: 1px solid var(--color-tb-border);
     background-color: var(--color-statusbar-bkgd);
-    background-image: url("chrome://global/skin/icons/resizer.svg");
-    background-position: right bottom;
-    background-repeat: no-repeat;
 
     font: small-caption;
 }

@@ -74,11 +74,17 @@ body[data-os="win"] .browser-style > input[type="checkbox"] + label {
 
 .folder-picker-menubtn {
     width: 100%;
-    padding: 4px 4px 4px 28px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    
+    padding: 4px 20px 4px 28px;
     border-radius: 0;
+
     background-image: var(--url-dropdown-arrow), url("../img/folder.svg");
     background-position: calc(100% - 4px) center, 8px;
     background-repeat: no-repeat;
+    
     font: caption !important;
     text-align: start !important;
 }
