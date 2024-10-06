@@ -911,6 +911,8 @@ body[data-locale="uk"] #sync-clippings-dlg #sync-helper-app-update-check + label
 }
 
 body[data-os="win"] #turn-off-sync-clippings-dlg .msgbox-icon {
+    width: 40px;
+    height: 40px;
     background-image: url("../img/confirm-win.png");
 }
 
