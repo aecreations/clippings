@@ -50,7 +50,30 @@ let gSyncClippingsListener = {
       let clippingsTree = aeClippingsTree.getTree();
 
       let syncFldrTreeNode = clippingsTree.getNodeByKey(aOldSyncFolderID + "F");
-      syncFldrTreeNode.remove();
+      if (syncFldrTreeNode) {
+        syncFldrTreeNode.remove();
+
+        if (aeClippingsTree.isEmpty()) {
+          clearPreviewPane();
+          $("#normal-content").hide();
+          $("#welcome-content").show();
+          toggleSearchBarVisibility(false);   
+        }
+        else {
+          // Select the first item in the tree.
+          let rootNode = clippingsTree.getRootNode();
+          rootNode.children[0].setActive();
+        }
+      }
+      else {
+        // The Synced Clippings folder may not appear if the option to show
+        // only synced items was turned on.
+        // Delay rebuilding to allow for synced items to be purged.
+        setTimeout(() => { rebuildClippingsTree() }, 1000);
+      }
+    }
+    else {
+      rebuildClippingsTree();
     }
   },
 };
@@ -864,6 +887,8 @@ function toggleSearchBarVisibility(aIsVisible)
 {
   let visibility = aIsVisible ? "visible" : "hidden";
   $("#search-bar").css({visibility});
+  $("#search-box").val('');
+  $("#clear-search").css({visibility: "hidden"});
 }
 
 

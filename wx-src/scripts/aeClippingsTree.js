@@ -139,6 +139,21 @@ let aeClippingsTree = {
     return selectedNode.extraClasses == "ae-separator";
   },
 
+  isEmpty()
+  {
+    let rv;
+    let rootNode = this.getTree().getRootNode();
+    if (rootNode.children === null) {
+      // May be set to `null` (instead of an empty array) if there are zero
+      // children.
+      rv = true;
+    }
+    else {
+      rv = rootNode.children.length == 0;
+    }
+    return rv;
+  },
+
   // Helper
   _sanitizeHTML(aHTMLStr)
   {
