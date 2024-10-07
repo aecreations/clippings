@@ -494,6 +494,7 @@ function buildClippingsTree()
       treeData = setEmptyClippingsState();
       $("#normal-content").hide();
       $("#welcome-content").show();
+      toggleSearchBarVisibility(false);
     }
     else {
       treeData = aTreeData;
@@ -705,6 +706,7 @@ async function rebuildClippingsTree()
         treeData = setEmptyClippingsState();
         tree.options.icon = false;
         tree.reload(treeData);
+        clearPreviewPane();
       }
       return null;
     }
@@ -823,11 +825,13 @@ function updateDisplay(aEvent, aData)
   if (gIsClippingsTreeEmpty) {
     $("#normal-content").hide();
     $("#welcome-content").show();
+    toggleSearchBarVisibility(false);   
     return;
   }
 
   $("#normal-content").show();
   $("#welcome-content").hide();
+  toggleSearchBarVisibility(true);
   $("#item-name, #clipping-content").val('');
   $("#item-name").prop("disabled", false);
 
@@ -853,6 +857,20 @@ function updateDisplay(aEvent, aData)
       }
     });
   }
+}
+
+
+function toggleSearchBarVisibility(aIsVisible)
+{
+  let visibility = aIsVisible ? "visible" : "hidden";
+  $("#search-bar").css({visibility});
+}
+
+
+function clearPreviewPane()
+{
+  $("#item-name, #clipping-content").val('');
+  $("#preview-pane").removeAttr("type");
 }
 
 
