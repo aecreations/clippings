@@ -53,33 +53,6 @@
   "btnReset": {
     "message": "重置"
   },
-  "migrnStatusTitle": {
-    "message": "剪辑迁移状态",
-    "description": "Clippings for Thunderbird"
-  },
-  "migrnStatusSuccess": {
-    "message": "您的剪辑已成功迁移。",
-    "description": "Clippings for Thunderbird"
-  },
-  "migrnStatusFail": {
-    "message": "很抱歉，剪辑 尝试迁移您的数据时出现错误",
-    "description": "Clippings for Thunderbird"
-  },
-  "migrnFailDetail": {
-    "message": "单击 保存剪辑 以保存您的数据。",
-    "description": "Clippings for Thunderbird"
-  },
-  "migrnSaveData": {
-    "message": "保存剪辑",
-    "description": "Clippings for Thunderbird"
-  },
-  "migrnFailTtip": {
-    "message": "迁移您的剪辑数据时出现问题，点击获取更多信息。",
-    "description": "Clippings for Thunderbird - tooltip"
-  },
-  "saveConfirm": {
-    "message": "已保存"
-  },
   "pasteTitle": {
     "message": "粘贴剪辑",
     "description": "Title bar text of keyboard paste dialog"
@@ -94,27 +67,14 @@
   "msgNoTextSel": {
     "message": "没有选择文本，请先选择文本。"
   },
-  "msgBrwsWndNotFocused": {
-    "message": "请返回浏览器窗口，然后重试。"
-  },
-  "msgClpgNotFound": {
-    "message": "无法找到所选剪辑！"
-  },
   "msgNoActvBrwsTab": {
     "message": "当前无活动的浏览器标签页，无法粘贴剪辑"
   },
-  "msgRetryPgBusy": {
-    "message": "页面正忙，请等待页面加载完成，然后重试。"
-  },
   "msgRetryPgNotLoaded": {
-    "message": "无法检索选定的文本。重新加载该页面，然后重试。"
+    "message": "无法检索选定的文本。请检查剪辑是否有权访问所有网站的数据，然后重新加载页面并重试。"
   },
   "msgClipbdEmpty": {
     "message": "剪贴板为空或未包含文本数据。"
-  },
-  "msgRunInPrivateChg": {
-    "message": "最近打开或关闭了 剪辑 “在隐私窗口中运行”的设置。您需要重新启动Firefox才能应用此更改。",
-    "description": "Message box that appears when attempting to open Clippings Manager immediately after toggling the Run in Private Windows setting"
   },
   "msgUnknown": {
     "message": "没有可用的帮助 (让我静静)。"
@@ -138,6 +98,10 @@
   "rootFldrName": {
     "message": "剪辑",
     "description": "Name of root folder"
+  },
+  "sepName": {
+    "message": "--- 分隔符 ---",
+    "description": "Hidden name of separator - appears in exported JSON data"
   },
   "labelRed": {
     "message": "红"
@@ -172,16 +136,12 @@
     "message": "从选区创建…",
     "description": "Clippings context menu in Thunderbird message composer"
   },
-  "cxtMenuNewFromClipbd": {
-    "message": "从剪贴板中新建…",
-    "description": "Clippings context menu in Thunderbird message composer"
-  },
   "cxtMenuShowPasteOpts": {
     "message": "粘贴时显示引用选项",
     "description": "Clippings context menu in Thunderbird message composer"
   },
   "baMenuResetAutoIncrPlaceholders": {
-    "message": "重置自动增量占位符",
+    "message": "重置数字占位符",
     "description": "Clippings browser action submenu"
   },
   "pasteAsHdg": {
@@ -203,14 +163,11 @@
   "welcInstallSuccessHdg": {
     "message": "欢迎使用剪辑！"
   },
-  "welcInstallSuccessSubh": {
-    "message": "安装成功。"
-  },
   "welcWhatsNewHdg": {
     "message": "更新内容"
   },
   "welcWhatsNewDesc": {
-    "message": "剪辑 6.5 带来了许多修复和改进，比如在默认提示信息中支持符号和Emoji表情符号"
+    "message": "剪辑 7.0 包含许多新功能和改进，例如复制剪辑文本和用于整理剪辑的分隔符。"
   },
   "welcWhatsNewCTA": {
     "message": "了解更多"
@@ -230,8 +187,25 @@
   "closeWelcomePg": {
     "message": "关闭此标签"
   },
-  "welcCancelDlg": {
-    "message": "返回"
+  "permReqTitle": {
+    "message": "要完成所选操作，剪辑需要额外权限：",
+    "description": "Header for modal dialog that appears when trying to complete an action that requires an optional extension permission to be turned on"
+  },
+  "extPrmClipbdR": {
+    "message": "从剪贴板获取数据",
+    "description": "User-facing description of the 'clipboardRead' extension permission"
+  },
+  "extPrmClipbdW": {
+    "message": "将数据写入剪贴板",
+    "description": "User-facing description of the 'clipboardWrite' extension permission"
+  },
+  "extPermInstr": {
+    "message": "若要授予剪辑此权限，请打开附加组件管理器，点击安装扩展列表中的 $1， 然后在权限选项卡中打开权限。",
+    "description": "Instructions in the optional permission request dialog for how to grant the extension permission (placeholder $1 is the extension name)"
+  },
+  "btnReqPerm": {
+    "message": "请求权限",
+    "description": "Default button in the extension permission request dialog, which appears when requesting an optional extension permission"
   },
   "newClippingDlgTitle": {
     "message": "新建剪辑",
@@ -279,20 +253,23 @@
   },
   "btnPrevw": {
     "message": "预览…",
-    "description": "Clippings for Thunderbird"
+    "description": "Button in New Clipping dialog - Clippings for Thunderbird only"
   },
   "labelPrevw": {
     "message": "剪辑预览：",
-    "description": "Clippings for Thunderbird"
+    "description": "Modal dialog label from New Clipping dialog - Clippings for Thunderbird only"
   },
   "shortcutKeyHint": {
-    "message": "若要快速将此剪辑粘贴到Firefox中的网页文本框中，请按快捷键 $1 。"
+    "message": "若要快速将此剪辑粘贴到Firefox中的网页文本框中，请按快捷键 $1 。",
+    "description": "Tooltip text in New Clipping dialog in Firefox"
   },
   "shctKeyHintTB": {
-    "message": "若要快速将此剪辑粘贴到在Thunderbird（雷鸟）中，请按快捷键$1"
+    "message": "若要快速将此剪辑粘贴到在Thunderbird（雷鸟）中，请按快捷键$1",
+    "description": "Tooltip text in New Clipping dialog in Thunderbird"
   },
   "shortcutKeyAssigned": {
-    "message": "'$1' 键已被分配："
+    "message": "'$1' 键已被分配：",
+    "description": "Tooltip text for a selection in the shortcut key drop-down menu"
   },
   "initError": {
     "message": "当Firefox中的隐私设置限制过强时，剪辑无法工作，例如开启隐私浏览模式。 尝试更改这些设置恢复到默认值，然后重启 Firefox 并重试。"
@@ -301,29 +278,36 @@
     "message": "无法保存新的剪辑。 检查Firefox中的隐私设置是否限制过强(例如打开隐私浏览模式)，然后重启 Firefox并重试。"
   },
   "shortcutKeyDesc": {
-    "message": "按下要粘贴剪辑的快捷键。"
+    "message": "按下要粘贴剪辑的快捷键。",
+    "description": "Keyboard paste dialog"
   },
   "keybPasteDlgF1": {
-    "message": "F1 = 快捷表"
+    "message": "F1 = 快捷表",
+    "description": "Keyboard paste dialog - keyboard shortcut legend"
   },
   "keybPasteDlgTab": {
-    "message": "TAB = 按名称搜索剪辑"
+    "message": "TAB = 按名称搜索剪辑",
+    "description": "Keyboard paste dialog - keyboard shortcut legend"
   },
   "keybPasteDlgTabShctMode": {
-    "message": "TAB = 快捷键模式"
+    "message": "TAB = 快捷键模式",
+    "description": "Keyboard paste dialog - keyboard shortcut legend"
   },
   "srchByNameDesc": {
-    "message": "按名称搜索剪辑："
+    "message": "按名称搜索剪辑：",
+    "description": "Keyboard paste dialog"
   },
   "numMatches": {
     "message": "$1 项匹配",
     "description": "Status bar message in Clippings Manager showing the number of matches for the search query."
   },
   "insClipping": {
-    "message": "插入剪辑"
+    "message": "粘贴剪辑",
+    "description": "Toolbar button in the shortcut key list window"
   },
   "exportHTML": {
-    "message": "导出为 HTML"
+    "message": "导出为 HTML",
+    "description": "Toolbar button in the shortcut key list window"
   },
   "expHTMLTitle": {
     "message": "剪辑快捷键",
@@ -343,11 +327,16 @@
   "expHTMLShctKeyCustNote": {
     "message": "注意：快捷键组合（默认为 ALT+SHIFT+Y 或 Command+Shift+Y）会因您使用不同的剪辑设置而不同。"
   },
+  "expHTMLShctKeyCustNoteTB": {
+    "message": "注意：快捷键组合(默认快捷键 ALT+SHIFT+Y 或 Command+Option+V)可能有所不同，具体取决于您的剪辑设置。"
+  },
   "expHTMLShctKeyCol": {
-    "message": "快捷键"
+    "message": "快捷键",
+    "description": "HTML export of shortcut key list - table heading"
   },
   "expHTMLClipNameCol": {
-    "message": "剪辑名称"
+    "message": "剪辑名称",
+    "description": "HTML export of shortcut key list - table heading"
   },
   "print": {
     "message": "打印",
@@ -371,30 +360,49 @@
     "message": "选择\"$1\"的值：",
     "description": "Placeholder prompt dialog - single placeholder, select"
   },
+  "copyAsHTML": {
+    "message": "复制为格式化文本",
+    "Description": "Copy Clipping Text dialog in Clippings Manager and Clippings sidebar - user selection of data format of clipping to be copied"
+  },
+  "copyAsPlain": {
+    "message": "复制为纯文本",
+    "description": "Copy Clipping Text dialog in Clippings Manager and Clippings sidebar - user selection of data format of clipping to be copied"
+  },
+  "copyAsPlainHTML": {
+    "message": "复制为带 HTML 标签的纯文本",
+    "description": "Copy Clipping Text dialog in Clippings Manager and Clippings sidebar - user selection of data format of clipping to be copied"
+  },
   "clippingsMgrWndTitle": {
     "message": "打开剪辑管理器",
     "description": "Clippings Manager window title"
   },
   "tbNewClipping": {
-    "message": "新建剪辑"
+    "message": "新建剪辑",
+    "description": "Clippings Manager toolbar button caption"
   },
   "tbNewFolder": {
-    "message": "新建文件夹"
+    "message": "新建文件夹",
+    "description": "Clippings Manager toolbar button caption"
   },
   "tbMoveOrCopy": {
-    "message": "移动或复制"
+    "message": "移动或复制",
+    "description": "Clippings Manager toolbar button tooltip"
   },
   "tbDelete": {
-    "message": "删除"
+    "message": "删除",
+    "description": "Clippings Manager toolbar button tooltip"
   },
   "tbUndo": {
-    "message": "撤销"
+    "message": "撤销",
+    "description": "Clippings Manager toolbar button tooltip"
   },
   "tbTools": {
-    "message": "工具"
+    "message": "工具",
+    "description": "Clippings Manager toolbar button caption"
   },
   "tbHelp": {
-    "message": "帮助"
+    "message": "帮助",
+    "description": "Clippings Manager toolbar button tooltip"
   },
   "clipMgrSrchBarHint": {
     "message": "查找剪辑和文件夹",
@@ -429,65 +437,92 @@
     "description": "Clippings Manager - Placeholder Toolbar button"
   },
   "labelSrcURL": {
-    "message": "源地址:"
+    "message": "源地址:",
+    "description": "Clippings Manager details pane"
   },
   "btnEditSrcURL": {
-    "message": "编辑"
+    "message": "编辑",
+    "description": "Button for editing clipping properties (source URL) in the Clippings Manager details pane"
+  },
+  "mnuInsSeparator": {
+    "message": "插入分隔符",
+    "description": "Clippings Manager tree list context menu"
   },
   "mnuNewFromClipbd": {
-    "message": "从剪贴板新建"
+    "message": "从剪贴板新建",
+    "description": "Clippings Manager - menu item in the Tools menu"
   },
   "mnuBackup": {
-    "message": "备份..."
+    "message": "备份...",
+    "description": "Clippings Manager - menu item in the Tools menu"
   },
   "mnuRestoreFromBackup": {
-    "message": "从备份中恢复"
+    "message": "从备份中恢复",
+    "description": "Clippings Manager - menu item in the Tools menu"
   },
   "mnuImport": {
-    "message": "导入..."
+    "message": "导入...",
+    "description": "Clippings Manager - menu item in the Tools menu"
   },
   "mnuExport": {
-    "message": "导出..."
+    "message": "导出...",
+    "description": "Clippings Manager - menu item in the Tools menu"
   },
   "mnuReloadSyncFldr": {
-    "message": "刷新"
+    "message": "刷新",
+    "description": "Button tooltip in Clippings Manager tree list"
   },
   "mnuMoreTools": {
     "message": "更多",
     "description": "Submenu of Tools menu in Clippings Manager"
   },
   "mnuRemoveAllSrcURLs": {
-    "message": "删除源网页地址…"
+    "message": "删除源网页地址…",
+    "description": "Clippings Manager - menu item in the Tools menu"
   },
   "mnuShowHide": {
-    "message": "显示/隐藏"
+    "message": "显示/隐藏",
+    "description": "Clippings Manager - menu item in the Tools menu"
   },
   "mnuShowHideDetails": {
-    "message": "详细信息面板"
+    "message": "详细信息面板",
+    "description": "Clippings Manager - menu item in the Tools menu"
   },
   "mnuShowHidePlchldrBar": {
-    "message": "占位符工具栏"
+    "message": "占位符工具栏",
+    "description": "Clippings Manager - menu item in the Tools menu"
   },
   "mnuShowHideStatusBar": {
-    "message": "状态栏​​​​​​​"
+    "message": "状态栏​​​​​​​",
+    "description": "Clippings Manager - menu item in the Tools menu"
   },
   "mnuMaximize": {
-    "message": "最大化"
+    "message": "最大化",
+    "description": "Clippings Manager - menu item in the Tools menu"
   },
   "mnuMinimizeWhenInactive": {
-    "message": "非活动时最小化"
+    "message": "非活动时最小化",
+    "description": "Clippings Manager - menu item in the Tools menu (Linux only)"
   },
   "mnuShowExtPrefs": {
-    "message": "选项..."
+    "message": "选项...",
+    "description": "Clippings Manager - menu item in the Tools menu"
   },
   "mnuMoveOrCopy": {
-    "message": "移动或复制…"
+    "message": "移动或复制…",
+    "description": "Clippings Manager tree list context menu"
   },
   "mnuEditLabel": {
-    "message": "标签"
+    "message": "标签",
+    "description": "Clippings Manager tree list context menu"
+  },
+  "mnuCopyClipTxt": {
+    "message": "复制剪辑文本",
+    "description": "Clippings Manager tree list context menu"
   },
   "mnuGoToSrcURL": {
-    "message": "跳转到源网页"
+    "message": "跳转到源网页",
+    "description": "Clippings Manager tree list context menu"
   },
   "mnuPlchldrDate": {
     "message": "日期",
@@ -517,6 +552,14 @@
     "message": "格式化的日期/时间...",
     "description": "Clippings Manager - preset (built-in) placeholder menu"
   },
+  "mnuPlchldrClipClip": {
+    "message": "剪切到剪辑中",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "plchldrClipClipArg": {
+    "message": "剪辑名称",
+    "description": "Default argument for the clipping-in-clipping placeholder - appears as $[CLIPPING(Name of clipping)]"
+  },
   "clipMgrNameHint": {
     "message": "剪辑名称",
     "description": "Clippings Manager - clipping name textbox hint text"
@@ -529,7 +572,8 @@
     "message": "快捷键列表"
   },
   "clipMgrNoItems": {
-    "message": "未找到项目。"
+    "message": "未找到项目。",
+    "description": "Message that appears in empty list of clippings in Clippings Manager"
   },
   "clipMgrIntroCmdDel": {
     "message": "删除选定的剪辑或文件夹",
@@ -545,6 +589,10 @@
   },
   "clipMgrIntroCmdClose": {
     "message": "关闭剪辑管理器",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCpyClpTxt": {
+    "message": "复制剪辑文本 (当剪辑文本被选中时)",
     "description": "Clippings Manager intro - key binding description"
   },
   "clipMgrIntroCmdUndo": {
@@ -572,19 +620,24 @@
     "description": "Status bar text in Clippings Manager, counting the number of clippings and folders"
   },
   "clipMgrRemoveSrcURLsConfirm": {
-    "message": "已从剪辑中删除源网页地址。"
+    "message": "已从剪辑中删除源网页地址。",
+    "description": "Clippings Manager message bar"
   },
   "clipMgrRestoredSrcURLs": {
-    "message": "恢复源网页地址。"
+    "message": "恢复源网页地址。",
+    "description": "Clippings Manager message bar"
   },
   "clipMgrNoUndo": {
-    "message": "没有要撤消的操作"
+    "message": "没有要撤消的操作",
+    "description": "Clippings Manager message bar"
   },
   "clipMgrNoRedo": {
-    "message": "没有可重做的内容"
+    "message": "没有可重做的内容",
+    "description": "Clippings Manager message bar"
   },
   "clipMgrShortcutKeyHelpHdg": {
-    "message": "剪辑快捷键"
+    "message": "剪辑快捷键",
+    "description": "Title of Clippings Manager shortcut key list dialog"
   },
   "clipMgrShortcutHelpInstrxn": {
     "message": "要将剪辑从下面的列表粘贴到 Firefox 中的网页文本框中, 请按 $1， 然后按快捷键。"
@@ -599,19 +652,24 @@
     "message": "所选剪辑没有源网页地址。"
   },
   "clipMgrImportConfirm": {
-    "message": "从 \"$1\" 导入已完成"
+    "message": "从 \"$1\" 导入已完成",
+    "description": "Message box in Clippings Manager"
   },
   "btnReload": {
-    "message": "刷新"
+    "message": "刷新",
+    "description": "Tooltip for button adjacent to Synced Clippings folder in the clippings list in Clippings Manager"
   },
   "clipMgrExportConfirm": {
-    "message": "剪辑导出到“$1”已完成。"
+    "message": "剪辑导出到“$1”已完成。",
+    "description": "Message box in Clippings Manager"
   },
   "clipMgrBackupConfirm": {
-    "message": "备份到 $1已完成。"
+    "message": "备份到 $1已完成。",
+    "description": "Message box in Clippings Manager"
   },
   "clipMgrWarnRemoveSrcURLs": {
-    "message": "您的剪辑的所有源网页地址将被删除，是否继续？"
+    "message": "您的剪辑的所有源网页地址将被删除，是否继续？",
+    "description": "Message box in Clippings Manager"
   },
   "placeholderNameHint": {
     "message": "字母、数字、下划线、无空格"
@@ -629,9 +687,6 @@
     "message": "用 “|” 符号将多个默认值分开，如：红|绿|蓝"
   },
   "numPlchldrDesc": {
-    "message": "每次粘贴剪辑时，占位符的值将会自动增加，直到从剪辑工具栏按钮上下文菜单重置。"
-  },
-  "numPlchldrDescTB": {
     "message": "每次粘贴剪辑时，占位符的值将会自动增加，直到从剪辑工具栏按钮上下文菜单重置。"
   },
   "dateTimeFmts": {
@@ -675,10 +730,12 @@
     "message": "从备份文件恢复 将用备份替换所有剪辑。此操作无法撤消。"
   },
   "btnImport": {
-    "message": "导入"
+    "message": "导入",
+    "description": "Button in the Import dialog in Clippings Manager"
   },
   "btnRestoreBkup": {
-    "message": "恢复备份"
+    "message": "恢复备份",
+    "description": "Button in the Restore Backup dialog in Clippings Manager"
   },
   "importError": {
     "message": "读取所选文件时出错。 该文件可能不是有效的剪辑文件。"
@@ -687,40 +744,53 @@
     "message": "选择剪辑导出格式："
   },
   "expFmtDescHdg": {
-    "message": "说明"
+    "message": "说明",
+    "description": "Export dialog in Clippings Manager"
   },
   "expFmtClippings6": {
-    "message": "剪辑"
+    "message": "剪辑",
+    "description": "Export dialog in Clippings Manager - supported export format"
   },
   "expFmtClippings6Desc": {
     "message": "备份与导出（可与其他用户或多台计算机交换剪辑数据）的默认格式。"
   },
   "expFmtHTMLDoc": {
-    "message": "HTML 文档"
+    "message": "HTML 文档",
+    "description": "Export dialog in Clippings Manager - supported export format"
   },
   "expFmtHTMLDocDesc": {
     "message": "将您的Clippings 数据作为HTML文档输出到Web浏览器中进行打印或显示。"
   },
   "expFmtCSV": {
-    "message": "逗号分隔格式 (CSV)"
+    "message": "逗号分隔格式 (CSV)",
+    "description": "Export dialog in Clippings Manager - supported export format"
   },
   "expFmtCSVDesc": {
     "message": "使用逗号分隔值(CSV) 格式与其他应用程序交换剪辑数据。只导出剪辑名称和内容。"
   },
   "cbExpInclSrcURLs": {
-    "message": "包含剪辑的源网页地址"
+    "message": "包含剪辑的源网页地址",
+    "description": "Export dialog box in Clippings Manager"
+  },
+  "cbExpInclSeps": {
+    "message": "包含分隔符",
+    "description": "Export dialog box in Clippings Manager"
   },
   "btnExport": {
-    "message": "导出"
+    "message": "导出",
+    "description": "Export dialog box in Clippings Manager"
   },
   "statusExportStart": {
-    "message": "正在导出..."
+    "message": "正在导出...",
+    "description": "Status bar text in Clippings Manager"
   },
   "statusExportDone": {
-    "message": "导出... 完成"
+    "message": "导出... 完成",
+    "description": "Status bar text in Clippings Manager"
   },
   "statusExportFailed": {
-    "message": "导出失败。"
+    "message": "导出失败。",
+    "description": "Status bar text in Clippings Manager"
   },
   "exportError": {
     "message": "导出剪辑数据出错。\n\n详情：\n$1"
@@ -738,7 +808,8 @@
     "message": "复制文件夹到："
   },
   "cbCreateCopy": {
-    "message": "创建副本"
+    "message": "创建副本",
+    "description": "Checkbox in the Move or Copy dialog in Clippings Manager"
   },
   "errMoveToSameParent": {
     "message": "项目已经存在于所选文件夹中。",
@@ -749,10 +820,12 @@
     "description": "Error message when attempting to move or copy a folder into a subfolder of itself"
   },
   "btnMove": {
-    "message": "移动"
+    "message": "移动",
+    "description": "Button in the Move or Copy dialog in Clippings Manager"
   },
   "btnCopy": {
-    "message": "复制"
+    "message": "复制",
+    "description": "Button in the Move or Copy dialog in Clippings Manager"
   },
   "mnuPrefs": {
     "message": "剪辑 首选项…",
@@ -770,11 +843,33 @@
     "message": "剪辑 选项",
     "description": "Extension preferences page title on Windows"
   },
-  "prefsHdgPasteOptions": {
-    "message": "粘贴选项"
+  "prefTabGen": {
+    "message": "通用",
+    "description": "Tab label for extension preferences page"
   },
-  "labelPasteOptions": {
-    "message": "将HTML格式的剪辑数据粘贴到富文本编辑框中时："
+  "prefTabPaste": {
+    "message": "粘贴",
+    "description": "Tab label for extension preferences page"
+  },
+  "prefsHdgIntegrn": {
+    "message": "集成",
+    "description": "Groupbox caption in extension preferences page"
+  },
+  "cbToolsMnu": {
+    "message": "在工具菜单中显示“整理剪辑”菜单项",
+    "description": "Checkbox option in extension preferences page"
+  },
+  "prefsHdgPasteOptions": {
+    "message": "粘贴选项",
+    "description": "Groupbox caption in extension preferences page"
+  },
+  "labelPasteOpts": {
+    "message": "将包含HTML标签的剪切粘贴到HTML编辑器时：",
+    "description": "Extension preferences page"
+  },
+  "labelPasteOptsTB": {
+    "message": "将包含 HTML 标记的剪辑粘贴到 HTML 格式的邮件中时：",
+    "description": "Extension preferences page"
   },
   "pasteOptFormatted": {
     "message": "粘贴为格式化文本"
@@ -788,14 +883,14 @@
   "htmlPasteDesc": {
     "message": "如果将HTML格式的剪辑粘贴到纯文本框中，或者如果剪辑包含受限制的标记，如<script>、<applet>、<object>、<iframe>等，则总是将其粘贴为纯文本。"
   },
+  "htmlPasteDescTB": {
+    "message": "如果将 HTML 格式的剪辑粘贴到纯文本信息中，或者剪辑中包含 <script>、<applet>、<object>、<iframe> 等限制性标记，则剪辑将始终粘贴为纯文本。"
+  },
   "prefsShortcutMode": {
     "message": "按下这些键以激活快捷键模式："
   },
   "prefsShctMode": {
     "message": "按下 $1 激活快捷键模式"
-  },
-  "prefsShctModeNew": {
-    "message": "也可使用$1键"
   },
   "prefsShortcutKeyNote": {
     "message": "一些可用的键盘快捷键可能已经分配给 <a href=\"https://support.mozilla.org/zh-CN/kb/%E9%94%AE%E7%9B%98%E5%BF%AB%E6%8D%B7%E9%94%AE\" class=\"hyperlink\">Firefox 键盘快捷键</a> 或其他附加组件。"
@@ -804,19 +899,39 @@
     "message": "要更改键盘快捷键，请到 附加组件管理器 - 管理扩展快捷键 中进行修改。"
   },
   "prefsDefaultNumPlchldrStart": {
-    "message": "自动增加占位符的默认起始值："
+    "message": "数字占位符的默认起始值："
   },
   "prefsHdgGeneralOptions": {
-    "message": "通用设置"
+    "message": "通用设置",
+    "description": "Groupbox caption in extension preferences page"
   },
   "cbAlwaysSaveSrcURL": {
-    "message": "始终保存源网页的地址"
+    "message": "始终保存源网页的地址",
+    "description": "Checkbox option in extension preferences page"
   },
   "cbCheckSpelling": {
-    "message": "拼写检查"
+    "message": "拼写检查",
+    "description": "Checkbox option in extension preferences page"
+  },
+  "cbShowShctMnu": {
+    "message": "在剪辑菜单中显示分配的快捷键",
+    "description": "Checkbox option in extension preferences page"
+  },
+  "shctDispOpt": {
+    "message": "显示快捷键：",
+    "description": "Drop-down menu option for the 'Show assigned shortcut key' option in the extension preferences page"
+  },
+  "shctDispParen": {
+    "message": "小括号 (S)",
+    "description": "Drop-down menu option for the 'Show assigned shortcut key' option in the extension preferences page"
+  },
+  "shctDispSqBkt": {
+    "message": "方括号 [S]",
+    "description": "Drop-down menu option for the 'Show assigned shortcut key' option in the extension preferences page"
   },
   "cbBackupFilenameWithDate": {
-    "message": "将日期添加到备份文件名称"
+    "message": "将日期添加到备份文件名称",
+    "description": "Checkbox option in extension preferences page"
   },
   "backupRemind": {
     "message": "显示备份提醒",
@@ -885,6 +1000,98 @@
   "backupPrefsHint": {
     "message": "此设置也可以在剪辑首选项中更改。"
   },
+  "brwsActOpt": {
+    "message": "剪辑工具栏按钮操作：",
+    "description": "Radio button groupbox caption in extension preferences page"
+  },
+  "brwsActClpMgr": {
+    "message": "打开剪辑管理器",
+    "description": "Radio button option in extension preferences page"
+  },
+  "brwsActSbar": {
+    "message": "打开剪辑侧边栏",
+    "description": "Radio button option in extension preferences page"
+  },
+  "sidebarOpts": {
+    "message": "剪辑侧边栏…",
+    "description": "Button label in extension preferences page"
+  },
+  "sidebarTitle": {
+    "message": "剪辑侧边栏",
+    "description": "Title of the Clippings Sidebar, used in dialogs"
+  },
+  "optPasteFromSbar": {
+    "message": "从剪辑侧边栏粘贴剪辑",
+    "description": "Checkbox option for enabling clipping paste from Clippings Sidebar"
+  },
+  "labelExpermt": {
+    "message": "(实验性)",
+    "description": "Label indicating that the associated feature or option is experimental"
+  },
+  "pasteFromSbarInstr": {
+    "message": "从侧边栏粘贴剪辑：",
+    "description": "Instructions for pasting a clipping from Clippings Sidebar"
+  },
+  "pasteFromSbarStep1": {
+    "message": "选择您要粘贴的剪辑",
+    "description": "Instructions for pasting a clipping from Clippings Sidebar"
+  },
+  "pasteFromSbarStep2": {
+    "message": "单击网页中的文本框，然后将光标定位到剪辑应粘贴的位置",
+    "description": "Instructions for pasting a clipping from Clippings Sidebar"
+  },
+  "pasteFromSbarStep3": {
+    "message": "返回剪辑侧边栏，然后右键单击选区，再选择粘贴剪辑",
+    "description": "Instructions for pasting a clipping from Clippings Sidebar"
+  },
+  "pasteFromSbarTip": {
+    "message": "粘贴前一定要先点击网页文本框，即使是粘贴一个又一个剪辑时也是如此。",
+    "description": "Instructions for pasting a clipping from Clippings Sidebar"
+  },
+  "mnuPrevPane": {
+    "message": "预览窗口",
+    "description": "Clippings Sidebar context menu"
+  },
+  "mnuCustz": {
+    "message": "自定义…",
+    "description": "Clippings Sidebar context menu"
+  },
+  "sbarCustzTitle": {
+    "message": "自定义",
+    "description": "Clippings Sidebar customize dialog title"
+  },
+  "sbarCustzTbar": {
+    "message": "显示工具栏",
+    "description": "Checkbox option in Clippings Sidebar customize dialog"
+  },
+  "sbarCustzSrch": {
+    "message": "显示搜索栏",
+    "description": "Checkbox option in Clippings Sidebar customize dialog"
+  },
+  "sbarCustzPrevw": {
+    "message": "显示预览窗口",
+    "description": "Checkbox option in Clippings Sidebar customize dialog"
+  },
+  "sbFirstRun": {
+    "message": "在剪辑管理器中创建剪辑，或从网页中选定的文本开始创建剪辑。",
+    "description": "Clippings Sidebar first-run message"
+  },
+  "sbarHlpTitle": {
+    "message": "侧边栏帮助",
+    "description": "Clippings Sidebar help window title"
+  },
+  "sbarHlpWhat": {
+    "message": "使用剪辑侧边栏搜索并选择剪辑，复制并粘贴到网页文本框中。 右键单击剪辑可获得更多选项。",
+    "description": "Clippings Sidebar help"
+  },
+  "sbarHlpCopy": {
+    "message": "如果剪辑包含 HTML 标记，系统会提示你选择复制内容的格式。 如果要粘贴到 HTML 编辑器中并包含字体和标题等文本格式，请选择 “复制为格式化文本”。 如果要粘贴到普通网页文本框中，或者要将剪辑粘贴到 HTML 编辑器中，但不带任何格式，请选择 “复制为纯文本”。",
+    "description": "Clippings Sidebar help"
+  },
+  "sbarHlpEdit": {
+    "message": "要在剪辑管理器中编辑和整理剪辑，请单击工具栏上的 “整理剪辑”。",
+    "description": "Clippings Sidebar help"
+  },
   "syncFldrName": {
     "message": "已同步剪辑",
     "description": "The name of the folder containing the user's synchronized clippings."
@@ -940,20 +1147,21 @@
   "syncFileDir": {
     "message": "同步文件位置："
   },
-  "syncFileDirExample": {
-    "message": "示例︰"
+  "extPrmNativeMessaging": {
+    "message": "与 $1 以外的程序交换消息",
+    "description": "Exchange messages with programs other than <Firefox or Thunderbird> - User-facing description of the 'nativeMessaging' extension permission"
   },
-  "syncFileDirExWin": {
-    "message": "C:\\Users\\用户名\\Documents\\同步剪辑",
-    "description": "Example folder path on Windows."
+  "syncPermReqTitle": {
+    "message": "剪辑需要额外权限才能连接到 同步剪辑助手：",
+    "description": "Header for modal dialog in extension preferences page that appears when trying to turn on Sync Clippings without the optional 'nativeMessaging' permission turned on first"
   },
-  "syncFileDirExMac": {
-    "message": "/Users/用户名/Documents/同步剪辑",
-    "description": "Example folder path on macOS."
+  "syncPermReqDetail": {
+    "message": "<a href=“$1” class=“hyperlink”>同步剪辑助手</a>是一款在后台悄悄工作的应用程序，可让您的同步剪辑保持更新。",
+    "description": "Message in modal dialog in extension preferences page that appears when trying to turn on Sync Clippings without the optional 'nativeMessaging' permission turned on first"
   },
-  "syncFileDirExLinux": {
-    "message": "/home/用户名/同步剪辑",
-    "description": "Example folder path on Linux."
+  "syncPermNotif": {
+    "message": "无法连接到 同步剪辑助手 应用程序。要解决这个问题，请前往 “附加组件管理器”，打开允许剪辑与其他程序交换信息的权限。",
+    "description": "Notification that appears when attempting to refresh sync data after user turned off the 'nativeMessaging' permission"
   },
   "errSyncConxn": {
     "message": "无法连接到同步剪辑助手应用，请确保应用程序已安装。"
@@ -962,7 +1170,7 @@
     "message": "同步剪辑需要使用同步剪辑程序。您可以从 <a href=\"https://aecreations.io/clippings/sync.php\" class=\"hyperlink\">AE Creations</a> 网站中下载。"
   },
   "errSyncOptsInit": {
-    "message": "无法初始化同步剪辑设置，请重启Firefox后再试。"
+    "message": "无法初始化同步剪辑设置。重新安装 同步剪辑助手，然后再试一次。"
   },
   "errSync": {
     "message": "同步剪辑助手应用出错。"
@@ -971,22 +1179,28 @@
     "message": "抱歉，没有关于此错误的进一步信息。"
   },
   "syncReloadAck": {
-    "message": "正在更新同步剪辑文件夹，点击 刷新 继续。"
+    "message": "正在更新同步剪辑文件夹，点击 刷新 继续。",
+    "description": "Message box in Clippings Manager"
   },
-  "deleteSyncFldr": {
-    "message": "同步剪辑已启用，无法删除同步剪辑文件夹。"
-  },
-  "moveSyncFldr": {
-    "message": "无法移动同步剪辑文件夹。"
+  "syncFldrRdOnly": {
+    "message": "同步剪辑文件夹为只读文件夹。",
+    "description": "Error message that appears in the New Clipping dialog and Clippings Manager when user tries to add, remove or change a clipping or folder under the Synced Clippings folder when the sync file is read only"
   },
   "syncPushFailed": {
-    "message": "连接到同步剪辑助手应用程序失败，无法推送对同步剪辑文件夹的更改。要解决这个问题，请尝试重新安装同步剪辑助手程序。"
+    "message": "连接到同步剪辑助手应用程序失败，无法推送对同步剪辑文件夹的更改。要解决这个问题，请尝试重新安装同步剪辑助手程序。",
+    "description": "Error message that appears as a notification when an application error occurs with Sync Clippings Helper"
+  },
+  "syncGetFailed": {
+    "message": "同步剪辑助手 无法读取同步文件。",
+    "description": "Error message that appears as a notification when Sync Clippings Helper cannot read the sync file"
   },
   "syncStartupFailedHdg": {
-    "message": "同步剪辑错误"
+    "message": "同步剪辑错误",
+    "description": "Title for Sync Clippings error notification"
   },
   "syncStartupFailed": {
-    "message": "无法连接到同步剪辑助手应用。要解决这个问题，请重新安装同步剪辑助手应用程序。"
+    "message": "无法连接到同步剪辑助手应用。要解决这个问题，请重新安装同步剪辑助手应用程序。",
+    "description": "Error message that appears as a notification when the Sync Clippings Helper app was uninstalled without turning off Sync Clippings first"
   },
   "syncUpdateTitle": {
     "message": "同步剪辑助手应用的新版本"
@@ -995,19 +1209,32 @@
     "message": "新版本的同步剪辑簿助手程序可用。点击此处进入下载页面。"
   },
   "syncOptsHdg": {
-    "message": "选项"
+    "message": "选项",
+    "description": "Heading for Sync Clippings settings dialog in the extension preferences page"
   },
   "syncUpdateChkOpt": {
-    "message": "自动检查更新以同步同步剪辑助手应用。"
+    "message": "自动检查更新以同步同步剪辑助手应用。",
+    "description": "Sync Clippings settings dialog in the extension preferences page"
   },
   "cxtMnuSyncItemsOnly": {
-    "message": "剪辑菜单中只显示已同步项目"
+    "message": "剪辑菜单中只显示已同步项目",
+    "description": "Sync Clippings settings dialog in the extension preferences page"
+  },
+  "cmprsSyncData": {
+    "message": "压缩同步数据 (推荐)",
+    "description": "Sync Clippings settings dialog in the extension preferences page"
+  },
+  "cmprsSyncReqmt": {
+    "message": "需要同步剪辑助手2.0或以上版本。 <a href=\"$1\" class=\"hyperlink\">现在下载</a>",
+    "description": "Sync Clippings settings dialog in the extension preferences page"
   },
   "wndsAndDlgsOpts": {
-    "message": "窗口和对话框…"
+    "message": "窗口和对话框…",
+    "description": "Button in the extension preferences page"
   },
   "wndsDlgsOptsTitle": {
-    "message": "窗口和对话框"
+    "message": "窗口和对话框",
+    "description": "Title of the Windows and Wialogs settings dialog in the extension preferences page"
   },
   "wndsDlgsOptsExpWarn": {
     "message": "这些设置在 $1 中是实验性的。它们可能无法在多个显示器上正常工作。",
@@ -1025,7 +1252,8 @@
     "description": "Checkbox option in Windows and Dialogs settings dialog"
   },
   "aboutBtn": {
-    "message": "关于…"
+    "message": "关于…",
+    "description": "Button in the extension preferences page"
   },
   "aboutExtVer": {
     "message": "版本 $1",
@@ -1076,28 +1304,44 @@
     "description": "Header for the What's New page (appears after upgrading Clippings)"
   },
   "upgrade": {
-    "message": "剪辑 已升级到6.5版。",
-    "description": "What's New page (appears after upgrading Clippings)"
-  },
-  "upgradeTB": {
-    "message": "剪辑 雷鸟版 已升级到6.3版。",
-    "description": "What's New page (appears after upgrading Clippings for Thunderbird)"
+    "message": "$1 已升级到最新版本。",
+    "description": "Clippings/Clippings for Thunderbird has been upgraded - What's New page (appears after upgrading Clippings)"
   },
   "whatsNew": {
     "message": "更新内容",
-    "description": "What's New page (appears after upgrading Clippings)"
+    "description": "Subheading in the What's New page"
   },
   "whatsNew1": {
-    "message": "提示信息现已支持符号和Emoji表情符号",
+    "message": "您现在可以添加分隔符来整理您的剪辑。",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
   "whatsNew2": {
-    "message": "提示信息中的已格式化的日期/时间，现在能在英语以外的语言中正确显示",
+    "message": "在剪辑菜单中显示剪辑快捷键的新选项",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
   "whatsNew3": {
-    "message": "对话框的提示信息现在能显示所选剪辑的名称，以便你知道你已经选择了正确的剪辑。",
+    "message": "在剪辑中嵌入剪辑的新占位符",
     "description": "Description of an enhancement or fix in the new version of Clippings"
+  },
+  "whatsNewFx1": {
+    "message": "从剪辑管理器或新的剪辑侧边栏复制剪辑文本到剪贴板。",
+    "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
+  },
+  "whatsNewFx2": {
+    "message": "在剪辑管理器（工具 → 从剪贴板新建）中恢复了从剪贴板内容创建新剪辑的功能",
+    "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
+  },
+  "whatsNewTb1": {
+    "message": "邮件撰写窗口中的剪辑工具栏按钮已从状态栏移至撰写工具栏。 剪辑工具栏按钮不再出现在 Thunderbird 主窗口中。",
+    "description": "Description of a Thunderbird-specific enhancement in the new version of Clippings"
+  },
+  "whatsNewSync": {
+    "message": "同步剪辑增强功能：现在对同步数据进行了压缩，使您可以同步更多剪辑；还改进了对只读同步文件的处理（需要 <a href=“$1”>同步剪辑助手</a> 2.0 或更新版本）。",
+    "description": "Description of enhancements for the Sync Clippings feature in the new version of Clippings"
+  },
+  "hostAppCompat": {
+    "message": "其他优化，确保与未来版本的 $1 兼容",
+    "description": "Description of improvements to ensure compatibility with future versions of Firefox or Thunderbird"
   },
   "contribHdg": {
     "message": "参与贡献",
@@ -1120,63 +1364,83 @@
     "message": "帮助和支持论坛"
   },
   "keyAlt": {
-    "message": "ALT"
+    "message": "ALT",
+    "description": "Key name"
   },
   "keyOption": {
-    "message": "⌥"
+    "message": "⌥",
+    "description": "Option key on Mac"
   },
   "keyCtrl": {
-    "message": "CTRL"
+    "message": "CTRL",
+    "description": "Key name"
   },
   "keyMacCtrl": {
-    "message": "⌃"
+    "message": "⌃",
+    "description": "Control key on Mac"
   },
   "keyCommand": {
-    "message": "⌘"
+    "message": "⌘",
+    "description": "Command key on Mac"
   },
   "keyShift": {
-    "message": "SHIFT"
+    "message": "SHIFT",
+    "description": "Key name"
   },
   "keyMacShift": {
-    "message": "⇧"
+    "message": "⇧",
+    "description": "Shift key on Mac"
   },
   "keyDel": {
-    "message": "DEL"
+    "message": "DEL",
+    "description": "Key name on PC for deleting text ahead of the cursor"
   },
   "keyMacDel": {
-    "message": "删除 ⌦"
+    "message": "删除 ⌦",
+    "description": "Delete key on Mac for deleting text ahead of the cursor"
   },
   "keyEsc": {
-    "message": "ESC"
+    "message": "ESC",
+    "description": "Key name for Escape key"
   },
   "keySpace": {
-    "message": "空格"
+    "message": "空格",
+    "description": "Key name for spacebar"
   },
   "keyPageUp": {
-    "message": "向上翻页"
+    "message": "向上翻页",
+    "description": "Key name"
   },
   "keyPageDown": {
-    "message": "向下翻页"
+    "message": "向下翻页",
+    "description": "Key name"
   },
   "keyHome": {
-    "message": "首页"
+    "message": "首页",
+    "description": "Key name"
   },
   "keyEnd": {
-    "message": "尾页"
+    "message": "尾页",
+    "description": "Key name"
   },
   "keyLeft": {
-    "message": "左"
+    "message": "左",
+    "description": "Key name"
   },
   "keyRight": {
-    "message": "右"
+    "message": "右",
+    "description": "Key name"
   },
   "keyUp": {
-    "message": "上"
+    "message": "上",
+    "description": "Key name"
   },
   "keyDown": {
-    "message": "下"
+    "message": "下",
+    "description": "Key name"
   },
   "keyIns": {
-    "message": "插入"
+    "message": "插入",
+    "description": "Key name"
   }
 }
