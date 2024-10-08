@@ -54,10 +54,7 @@ let gSyncClippingsListener = {
         syncFldrTreeNode.remove();
 
         if (aeClippingsTree.isEmpty()) {
-          clearPreviewPane();
-          $("#normal-content").hide();
-          $("#welcome-content").show();
-          toggleSearchBarVisibility(false);   
+          this._showWelcomeBanner();
         }
         else {
           // Select the first item in the tree.
@@ -69,12 +66,27 @@ let gSyncClippingsListener = {
         // The Synced Clippings folder may not appear if the option to show
         // only synced items was turned on.
         // Delay rebuilding to allow for synced items to be purged.
-        setTimeout(() => { rebuildClippingsTree() }, 1000);
+        setTimeout(async () => {
+          await rebuildClippingsTree();
+          this._showWelcomeBanner();
+        }, 1000);
       }
     }
     else {
       rebuildClippingsTree();
     }
+
+    gSearchBox.reset();
+  },
+
+  
+  _showWelcomeBanner()
+  {
+    setEmptyClippingsState();
+    toggleSearchBarVisibility(false);       
+    clearPreviewPane();
+    $("#normal-content").hide();
+    $("#welcome-content").show();
   },
 };
 
@@ -157,7 +169,7 @@ let gSearchBox = {
         });
       });
 
-    $("#clear-search").click(aEvent => { this.reset() });
+    $("#clear-search").click(aEvent => { this.reset(true) });
 
     this._isInitialized = true;
   },
@@ -172,6 +184,8 @@ let gSearchBox = {
     let tree = aeClippingsTree.getTree();
     let numMatches = tree.filterNodes($("#search-box").val());
     this._numMatches = numMatches;
+
+    clearPreviewPane();
   },
 
   getCountMatches: function ()
@@ -189,11 +203,22 @@ let gSearchBox = {
     this._isActive = false;
   },
   
-  reset: function ()
+  reset(aKeepFocus=false)
   {
-    aeClippingsTree.getTree().clearFilter();
-    $("#search-box").val("").focus();
+    $("#search-box").val('');
     $("#clear-search").css({visibility: "hidden"});
+
+    let tree = aeClippingsTree.getTree();
+    if (tree) {
+      if (! aeClippingsTree.isEmpty()) {
+        tree.clearFilter();
+        tree.getRootNode().children[0].setActive();
+      }
+    }
+
+    if (aKeepFocus) {
+      $("#search-box").focus();
+    }
   }
 };
 
@@ -723,36 +748,38 @@ async function rebuildClippingsTree()
   let treeData = [];
   let rootFldrID = getRootFolderID();
 
-  aeClippingsTree.build(rootFldrID, gPrefs).then(aTreeData => {
-    if (aTreeData.length == 0) {
-      if (! gIsClippingsTreeEmpty) {
-        treeData = setEmptyClippingsState();
-        tree.options.icon = false;
-        tree.reload(treeData);
-        clearPreviewPane();
-      }
-      return null;
+  treeData = await aeClippingsTree.build(rootFldrID, gPrefs);
+  if (treeData.length == 0) {
+    if (! gIsClippingsTreeEmpty) {
+      treeData = setEmptyClippingsState();
+      tree.options.icon = false;
+      tree.reload(treeData);
+      clearPreviewPane();
+    }
+    return null;
+  }
+  else {
+    if (gIsClippingsTreeEmpty) {
+      unsetEmptyClippingsState();
+      $("#welcome-content").hide();
+      $("#normal-content").show();
+      toggleSearchBarVisibility(true);
     }
     else {
-      if (gIsClippingsTreeEmpty) {
-        unsetEmptyClippingsState();
-      }
-      else {
-        tree.clear();
-      }
-      treeData = aTreeData;
-      return tree.reload(treeData);
+      tree.clear();
     }
 
-  }).then(aTreeData => {
-    if (gPrefs.syncClippings) {
-      gSyncedItemsIDs.clear();
-      initSyncItemsIDLookupList();
-      initSyncedClippingsTree();
-    }
-    
-    return Promise.resolve(aTreeData);
-  });
+    await tree.reload(treeData);
+  }
+
+  if (gPrefs.syncClippings) {
+    gSyncedItemsIDs.clear();
+    initSyncItemsIDLookupList();
+    initSyncedClippingsTree();
+  }
+
+  gSearchBox.reset();
+  return treeData;
 }
 
 
@@ -837,7 +864,7 @@ function unsetEmptyClippingsState()
 {
   let tree = aeClippingsTree.getTree();
   let emptyMsgNode = tree.getNodeByKey("0");
-  emptyMsgNode.remove();
+  emptyMsgNode?.remove();
   tree.options.icon = true;
   gIsClippingsTreeEmpty = false;
 }
@@ -846,20 +873,14 @@ function unsetEmptyClippingsState()
 function updateDisplay(aEvent, aData)
 {
   if (gIsClippingsTreeEmpty) {
-    $("#normal-content").hide();
-    $("#welcome-content").show();
-    toggleSearchBarVisibility(false);   
     return;
   }
 
-  $("#normal-content").show();
-  $("#welcome-content").hide();
-  toggleSearchBarVisibility(true);
-  $("#item-name, #clipping-content").val('');
+  clearPreviewPane();
   $("#item-name").prop("disabled", false);
 
   let selectedItemID = parseInt(aData.node.key);
-
+  
   if (aData.node.isFolder()) {
     $("#preview-pane").attr("type", "folder");
     gClippingsDB.folders.get(selectedItemID).then(aFolder => {
@@ -887,8 +908,8 @@ function toggleSearchBarVisibility(aIsVisible)
 {
   let visibility = aIsVisible ? "visible" : "hidden";
   $("#search-bar").css({visibility});
-  $("#search-box").val('');
-  $("#clear-search").css({visibility: "hidden"});
+
+  gSearchBox.reset();
 }
 
 
@@ -1046,7 +1067,7 @@ $(document).keydown(async (aEvent) => {
   }
   else if (aEvent.key == "Escape") {
     if (gSearchBox.isActivated()) {
-      gSearchBox.reset();
+      gSearchBox.reset(true);
     }
     aeDialog.cancelDlgs();
   }
