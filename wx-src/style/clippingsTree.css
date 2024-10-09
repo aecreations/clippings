@@ -300,6 +300,7 @@ span.fancytree-title {
     background-color: var(--color-btn-hover-bkgd);
 }
 
-#copy-clipping-txt-fmt-dlg .copy-fmt-btn:active {
+#copy-clipping-txt-fmt-dlg .copy-fmt-btn:active,
+#copy-clipping-txt-fmt-dlg .copy-fmt-btn:focus:hover:active {
     background-color: var(--color-btn-active-bkgd);
 }
