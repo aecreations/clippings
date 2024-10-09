@@ -3722,6 +3722,10 @@ browser.runtime.onMessage.addListener(aRequest => {
     gClippingsListener.newFolderCreated(aRequest.newFolderID, aRequest.newFolder, aRequest.origin);
     break;
 
+  case "sync-fldr-reload-finished":
+    rebuildClippingsTree();
+    break;
+
   default:
     break;
   }

@@ -203,6 +203,11 @@ let gSyncClippingsListener = {
       log("Clippings/wx: gSyncClippingsListener.onReloadFinish(): Static IDs added to synced items.  Saving sync file.");
       await pushSyncFolderUpdates();
     }
+
+    try {
+      browser.runtime.sendMessage({msgID: "sync-fldr-reload-finished"});
+    }
+    catch {}
   },
 };
 
