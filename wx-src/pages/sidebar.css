@@ -644,6 +644,10 @@ body[data-os="mac"] .lightbox .msgbox-icon {
 #reload-sync-fldr-msgbox {
     top: 88px;
     --width: 200px;
+    --height: 166px;
+}
+
+body[data-os="mac"] #reload-sync-fldr-msgbox {
     --height: 178px;
 }
 
