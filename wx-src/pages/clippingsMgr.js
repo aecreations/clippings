@@ -5002,6 +5002,15 @@ function initDialogs()
   {
     rebuildClippingsTree();
   };
+  gDialogs.reloadSyncFolder.onUnload = function ()
+  {
+    if (gDialogs.showOnlySyncedItemsReminder.isDelayedOpen) {
+      gDialogs.showOnlySyncedItemsReminder.isDelayedOpen = false;
+      setTimeout(() => {
+        gDialogs.showOnlySyncedItemsReminder.showModal();
+      }, 800);
+    }
+  };
 
   gDialogs.moveTo = new aeDialog("#move-dlg");
   gDialogs.moveTo.setProps({
@@ -5191,6 +5200,8 @@ function initDialogs()
   };
 
   gDialogs.showOnlySyncedItemsReminder = new aeDialog("#show-only-synced-items-reminder");
+  gDialogs.showOnlySyncedItemsReminder.isDelayedOpen = false;
+  
   gDialogs.showOnlySyncedItemsReminder.onShow = function ()
   {
     aePrefs.setPrefs({clippingsMgrShowSyncItemsOnlyRem: false});
@@ -5842,7 +5853,12 @@ async function rebuildClippingsTree()
 
       if (gPrefs.cxtMenuSyncItemsOnly) {
         if (gPrefs.clippingsMgrShowSyncItemsOnlyRem) {
-          gDialogs.showOnlySyncedItemsReminder.showModal();
+          if (aeDialog.isOpen()) {
+            gDialogs.showOnlySyncedItemsReminder.isDelayedOpen = true;
+          }
+          else {
+            gDialogs.showOnlySyncedItemsReminder.showModal();
+          }
         }
       }
       else {
