@@ -205,7 +205,7 @@ let gSyncClippingsListener = {
     }
 
     try {
-      browser.runtime.sendMessage({msgID: "sync-fldr-reload-finished"});
+      await browser.runtime.sendMessage({msgID: "sync-fldr-reload-finished"});
     }
     catch {}
   },
@@ -473,11 +473,9 @@ async function init(aPrefs)
     delayInMinutes: aeConst.BACKUP_REMINDER_DELAY_MS / 60000
   });
 
+  // Sync Clippings Helper app update check.
   if (aPrefs.syncClippings && aPrefs.syncHelperCheckUpdates) {
-    // Check for updates to Sync Clippings Helper native app in 10 minutes.
-    browser.alarms.create("show-sync-helper-upd-notifcn", {
-      delayInMinutes: aeConst.SYNC_HELPER_CHECK_UPDATE_DELAY_MS / 60000
-    });
+    await setSyncHelperUpdateNotificationDelay(true);
   }
 
   if (aPrefs.showWelcome) {
@@ -1408,6 +1406,30 @@ async function showWhatsNewNotification()
 }
 
 
+async function setSyncHelperUpdateNotificationDelay(aEnableNotifcn)
+{
+  log("Clippings: setSyncHelperUpdateNotificationDelay(): " + aEnableNotifcn);
+
+  if (aEnableNotifcn) {
+    // Check for updates to Sync Clippings Helper native app in 10 minutes.
+    browser.alarms.create("show-sync-helper-upd-notifcn", {
+      delayInMinutes: aeConst.SYNC_HELPER_CHECK_UPDATE_DELAY_MS / 60000
+    });
+
+    let lastSyncHelperUpdChkDate = await aePrefs.getPref("lastSyncHelperUpdChkDate");
+    if (! lastSyncHelperUpdChkDate) {
+      // Sync Clippings Helper app update check was just turned on.
+      // Default to the start of the Unix epoch to force app update check.
+      await aePrefs.setPrefs({lastSyncHelperUpdChkDate: new Date(0).toString()});
+    }
+  }
+  else {
+    await browser.alarms.clear("show-sync-helper-upd-notifcn");
+    await aePrefs.setPrefs({lastSyncHelperUpdChkDate: null});
+  }
+}
+
+
 async function showSyncHelperUpdateNotification()
 {
   let prefs = await aePrefs.getAllPrefs();
@@ -1422,6 +1444,8 @@ async function showSyncHelperUpdateNotification()
     return;
   }
 
+  log("Clippings: showSyncHelperUpdateNotification(): Last update check: " + prefs.lastSyncHelperUpdChkDate);
+  
   let today, lastUpdateCheck, diff;
   if (prefs.lastSyncHelperUpdChkDate) {
     today = new Date();
@@ -1474,6 +1498,9 @@ async function showSyncHelperUpdateNotification()
         message: browser.i18n.getMessage("syncUpdateMsg"),
         iconUrl: "img/syncClippingsApp.svg",
       });
+    }
+    else {
+      await aePrefs.setPrefs({lastSyncHelperUpdChkDate: new Date().toString()});
     }
   }
 }
@@ -2440,6 +2467,9 @@ browser.runtime.onMessage.addListener(aRequest => {
   case "sync-deactivated-after":
     gSyncClippingsListener.onAfterDeactivate(aRequest.removeSyncFolder, aRequest.oldSyncFolderID);
     break;
+
+  case "set-sync-clippings-app-upd-chk":
+    return setSyncHelperUpdateNotificationDelay(aRequest.enable);
 
   case "new-clipping-created":
     gClippingsListener.newClippingCreated(aRequest.newClippingID, aRequest.newClipping, aRequest.origin);

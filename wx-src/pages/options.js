@@ -446,6 +446,7 @@ function initDialogs()
   gDialogs.syncClippings = new aeDialog("#sync-clippings-dlg");
   gDialogs.syncClippings.setProps({
     oldShowSyncItemsOpt: null,
+    oldCheckSyncAppUpdatesOpt: null,
     isCanceled: false,
     lastFocusedElt: null,
   });
@@ -553,6 +554,7 @@ function initDialogs()
     $("#cmprs-sync-data").prop("checked", prefs.compressSyncData);
 
     this.oldShowSyncItemsOpt = $("#show-only-sync-items").prop("checked");
+    this.oldCheckSyncAppUpdatesOpt = $("#sync-helper-app-update-check").prop("checked");
 
     resp = await browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, {msgID: "get-sync-dir"});
 
@@ -584,7 +586,7 @@ function initDialogs()
       compressSyncData: $("#cmprs-sync-data").prop("checked"),
     });
 
-    let rebuildClippingsMenu = $("#show-only-sync-items").prop("checked") != gDialogs.syncClippings.oldShowSyncItemsOpt;
+    let rebuildClippingsMenu = $("#show-only-sync-items").prop("checked") != this.oldShowSyncItemsOpt;
 
     let natMsg = {
       msgID: "set-sync-dir",
@@ -609,7 +611,21 @@ function initDialogs()
       window.alert(`The Sync Clippings helper app responded with an error.\n\nStatus: ${resp.status}\nDetails: ${resp.details}`);
       this.close();
       return;
-    }     
+    }
+
+    // Sync Clippings Helper app update checking.
+    let isCheckSyncAppUpdatesEnabled = $("#sync-helper-app-update-check").prop("checked");
+    let isCheckSyncAppUpdates = (
+      gIsActivatingSyncClippings && isCheckSyncAppUpdatesEnabled
+        || isCheckSyncAppUpdatesEnabled != this.oldCheckSyncAppUpdatesOpt
+    );
+
+    if (isCheckSyncAppUpdates) {
+      browser.runtime.sendMessage({
+        msgID: "set-sync-clippings-app-upd-chk",
+        enable: isCheckSyncAppUpdatesEnabled,
+      });
+    }
 
     // Check if the sync file is read only.
     resp = null;
