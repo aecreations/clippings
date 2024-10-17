@@ -1302,7 +1302,6 @@ async function showBackupNotification(aIsStartup=false)
       });
 
       if (prefs._forceShowFirstTimeBkupNotif) {
-        setBackupNotificationInterval();
         aePrefs.setPrefs({_forceShowFirstTimeBkupNotif: false});
       }
     }
@@ -1320,10 +1319,11 @@ async function showBackupNotification(aIsStartup=false)
           iconUrl: "img/notifIcon.svg",
         });
 
-        setBackupNotificationInterval();
         aePrefs.setPrefs({lastBackupRemDate: new Date().toString()});
       }
     }
+
+    setBackupNotificationInterval();
   }
   else {
     if (aIsStartup) {
