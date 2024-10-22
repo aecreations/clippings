@@ -460,8 +460,10 @@ async function init(aPrefs)
     setFirstWhatsNewNotificationDelay();
   }
   else {
-    if (aPrefs.upgradeNotifCount > 0) {
-      // Show post-update notification in 1 minute.
+    let upgradeNotifcnAlarm = await browser.alarms.get("show-upgrade-notifcn");
+    if (!upgradeNotificnAlarm && aPrefs.upgradeNotifCount > 0) {
+      // Show post-update notification in 1 minute. Do this only on browser
+      // startup, not at every background script restart.
       browser.alarms.create("show-upgrade-notifcn", {
         delayInMinutes: aeConst.POST_UPGRADE_NOTIFCN_DELAY_MS / 60000
       });
@@ -470,8 +472,8 @@ async function init(aPrefs)
       
   let backupNotifcnAlarm = await browser.alarms.get("show-backup-notifcn");
   if (! backupNotifcnAlarm) {
-    // Check in 5 minutes whether to show backup reminder notification.
-    // Do this only on browser startup, not at every background script restart.
+    // Check in 5 minutes whether to show backup reminder notification. Do this
+    // only on browser startup, not at every background script restart.
     browser.alarms.create("show-startup-backup-notifcn", {
       delayInMinutes: aeConst.BACKUP_REMINDER_DELAY_MS / 60000
     });
