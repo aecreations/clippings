@@ -461,7 +461,7 @@ async function init(aPrefs)
   }
   else {
     let upgradeNotifcnAlarm = await browser.alarms.get("show-upgrade-notifcn");
-    if (!upgradeNotificnAlarm && aPrefs.upgradeNotifCount > 0) {
+    if (!upgradeNotifcnAlarm && aPrefs.upgradeNotifCount > 0) {
       // Show post-update notification in 1 minute. Do this only on browser
       // startup, not at every background script restart.
       browser.alarms.create("show-upgrade-notifcn", {
