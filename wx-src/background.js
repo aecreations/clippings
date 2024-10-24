@@ -1111,7 +1111,6 @@ async function showBackupNotification()
       });
 
       if (gForceShowFirstTimeBkupNotif) {
-        setBackupNotificationInterval();
         gForceShowFirstTimeBkupNotif = false;
       }
     }
@@ -1129,14 +1128,12 @@ async function showBackupNotification()
           iconUrl: "img/notifIcon.svg",
         });
 
-        setBackupNotificationInterval();
-        aePrefs.setPrefs({ lastBackupRemDate: new Date().toString() });
+         aePrefs.setPrefs({ lastBackupRemDate: new Date().toString() });
       }
     }
   }
-  else {
-    setBackupNotificationInterval();
-  }
+
+  setBackupNotificationInterval();
 }   
 
 
@@ -1144,7 +1141,7 @@ function setBackupNotificationInterval()
 {
   log("Clippings/wx: Setting backup notification interval (every 24 hours).");
 
-  browser.alarms.create("show-backup-notificn", {
+  browser.alarms.create("show-backup-notifcn", {
     periodInMinutes: aeConst.BACKUP_REMINDER_INTERVAL_MS / 60000
   });
 }
@@ -1153,7 +1150,7 @@ function setBackupNotificationInterval()
 async function clearBackupNotificationInterval()
 {
   log("Clippings/wx: Clearing backup notification interval.");
-  await browser.alarms.clear("show-backup-notificn");
+  await browser.alarms.clear("show-backup-notifcn");
 }
 
 
