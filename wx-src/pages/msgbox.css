@@ -19,18 +19,6 @@ button {
     text-align: center !important;
 }
 
-button.default {
-    border: 1px solid #005bab;
-}
-
-button.default:focus {
-    border: 1px solid #003eaa;
-}
-
-button.default:hover {
-    border-color: #002275;
-}
-
 #icon {
     float: left;
 }
@@ -40,6 +28,10 @@ button.default:hover {
     height: 36px;
     background-image: url("../img/warning-64.png");
     background-size: contain;
+}
+
+body[data-os="win"] #msgbox-icon {
+    background-image: url("../img/alert-win.png");
 }
 
 body[data-os="mac"] #msgbox-icon {

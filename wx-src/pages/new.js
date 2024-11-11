@@ -4,10 +4,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
-const WNDH_NORMAL = 416;
-const WNDH_NORMAL_WINDOWS = 448;
-const WNDH_OPTIONS_EXPANDED = 486;
-const DLG_HEIGHT_ADJ_WINDOWS = 36;
+const WNDH_NORMAL = 410;
+const WNDH_NORMAL_WINDOWS = 434;
+const WNDH_OPTIONS_EXPANDED = 474;
+const DLG_HEIGHT_ADJ_WINDOWS = 24;
 const DLG_HEIGHT_ADJ_LOCALE = 16;
 
 let gOS;
@@ -23,25 +23,19 @@ let gSyncedFldrIDs = new Set();
 
 // Page initialization
 $(async () => {
-  browser.history.deleteUrl({url: window.location.href});
-
   aeClippings.init();
   gClippingsDB = aeClippings.getDB();
 
   try {
     await aeClippings.verifyDB();
-    initHelper();
   }
   catch (e) {
     showInitError();
-  };
-});
+    return;
+  }
 
-
-async function initHelper()
-{
   let platform = await browser.runtime.getPlatformInfo();
-  document.body.dataset.os = platform.os;
+  document.body.dataset.os = gOS = platform.os;
 
   let lang = browser.i18n.getUILanguage();
   document.body.dataset.locale = lang;
@@ -72,8 +66,8 @@ async function initHelper()
     }
 
     $("#clipping-name").val(aResp.name).select().focus();
-    $("#clipping-text").val(aResp.content).attr("spellcheck", aResp.checkSpelling);
-    $("#save-source-url").prop("checked", aResp.saveSrcURL);
+    $("#clipping-text").val(aResp.content).attr("spellcheck", gPrefs.checkSpelling);
+    $("#save-source-url").prop("checked", gPrefs.alwaysSaveSrcURL);
     gSrcURL = aResp.url || "";
   });
 
@@ -93,6 +87,20 @@ async function initHelper()
   $("#btn-accept").click(aEvent => { accept(aEvent) });
   $("#btn-cancel").click(aEvent => { cancel(aEvent) });
 
+  aeVisual.init(platform.os);
+  aeVisual.preloadMsgBoxIcons();
+  aeVisual.cacheIcons(
+    "tree-fldr-open.svg",
+    "tree-fldr-close.svg",
+    "tree-fldr-open-dk.svg",
+    "tree-fldr-close-dk.svg"
+  );
+  
+  aeInterxn.init(platform.os);
+  if (gPrefs.defDlgBtnFollowsFocus) {
+    aeInterxn.initDialogButtonFocusHandlers();
+  }
+
   // Fix for Fx57 bug where bundled page loaded using
   // browser.windows.create won't show contents unless resized.
   // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1402110>
@@ -101,7 +109,7 @@ async function initHelper()
     width: wnd.width + 1,
     focused: true,
   });
-}
+});
 
 
 async function expandOptions(aIsOptionsExpanded)
@@ -259,6 +267,16 @@ function initDialogs()
 
   gNewFolderDlg.selectFolder = function (aFolderData)
   {
+    if (gPrefs.syncClippings && gPrefs.isSyncReadOnly) {
+      let folderID = Number(aFolderData.node.key);
+      if (folderID == gPrefs.syncFolderID || gSyncedFldrIDs.has(folderID)) {
+        // This should never happen, because the Synced Clippings folder
+        // won't appear in the folder list when the sync file is read-only.
+        alert(browser.i18n.getMessage("syncFldrRdOnly"));
+        return;
+      }
+    }
+    
     this.selectedFldrNode = aFolderData.node;
 
     let fldrID = aFolderData.node.key;
@@ -352,13 +370,15 @@ function initDialogs()
       }
     }
 
+    let hideSyncFldr = gPrefs.isSyncReadOnly && !gPrefs.cxtMenuSyncItemsOnly;
     this.fldrTree = new aeFolderPicker(
       "#new-folder-dlg-fldr-tree",
       gClippingsDB,
       rootFldrID,
       rootFldrName,
       rootFldrCls,
-      selectedFldrID
+      selectedFldrID,
+      hideSyncFldr
     );
 
     this.fldrTree.onSelectFolder = aFolderData => {
@@ -533,16 +553,27 @@ function initFolderPicker()
       selectSyncedClippingsFldr();
       $("#new-clipping-fldr-tree").addClass("show-sync-items-only");
       selectedFldrID = gPrefs.syncFolderID;
+
+      // Handle read-only sync folder.
+      if (gPrefs.isSyncReadOnly) {
+        $("#new-clipping-fldr-picker-menubtn").prop("disabled", true);
+        $("#new-folder-btn").prop("disabled", true);
+        $("#btn-accept").prop("disabled", true).removeClass("default");
+        $("#btn-cancel").addClass("default");
+        return;
+      }
     }
   }
-  
+
+  let hideSyncFldr = gPrefs.isSyncReadOnly && !gPrefs.cxtMenuSyncItemsOnly;
   gFolderPickerPopup = new aeFolderPicker(
     "#new-clipping-fldr-tree",
     gClippingsDB,
     rootFldrID,
     rootFldrName,
     rootFldrCls,
-    selectedFldrID
+    selectedFldrID,
+    hideSyncFldr
   );
 
   gFolderPickerPopup.onSelectFolder = selectFolder;
@@ -559,6 +590,13 @@ function openFolderPicker()
 
 function selectFolder(aFolderData)
 {
+  if (gPrefs.syncClippings && gPrefs.isSyncReadOnly) {
+    let folderID = Number(aFolderData.node.key);
+    if (folderID == gPrefs.syncFolderID || gSyncedFldrIDs.has(folderID)) {
+      return;
+    }
+  }
+
   gParentFolderID = Number(aFolderData.node.key);
   
   let fldrPickerMenuBtn = $("#new-clipping-fldr-picker-menubtn");
@@ -624,19 +662,38 @@ function initLabelPicker()
   $("#clipping-label-picker").on("change", aEvent => {
     let label = aEvent.target.value;
     let bgColor = label;
-    let fgColor = "white";
+    let fgColor = gOS == "win" ? label : "var(--color-label-picker-default-bkgd)";
 
     if (! label) {
-      bgColor = "var(--color-btn-bkgd)";
-      fgColor = "var(--color-text-default)";
+      bgColor = "var(--color-label-picker-default-bkgd)";
+      fgColor = "var(--color-label-picker-default-text)";
     }
     else if (label == "yellow") {
-      fgColor = "initial";
+      fgColor = gOS == "win" ? "var(--color-label-picker-alt-yellow)" : "black";
     }
-    $(aEvent.target).css({
-      backgroundColor: bgColor,
+
+    let cssPpty = {
       color: fgColor,
-    });
+    };
+    if (gOS == "win") {
+      let borderColor;
+      if (! label) {
+        borderColor = "var(--color-label-picker-default-border)";
+      }
+      else if (label == "yellow") {
+        borderColor = "var(--color-label-picker-alt-yellow)";
+      }
+      else {
+        borderColor = label;
+      }
+
+      cssPpty.borderColor = borderColor;
+    }
+    else {
+      cssPpty.backgroundColor = bgColor;
+    }
+
+    $(aEvent.target).css(cssPpty);
   });
 }
 
@@ -750,7 +807,7 @@ function accept(aEvent)
       if (gPrefs.syncClippings) {
         aeImportExport.setDatabase(gClippingsDB);
         
-        return aeImportExport.exportToJSON(true, true, gPrefs.syncFolderID, false, true);
+        return aeImportExport.exportToJSON(true, true, gPrefs.syncFolderID, false, true, true);
       }
       return null;
 

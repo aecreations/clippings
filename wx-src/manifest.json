@@ -1,15 +1,15 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "__MSG_extName__",
   "description": "__MSG_extDesc__",
-  "version": "6.5.9",
+  "version": "7.0",
   "homepage_url": "https://aecreations.io/clippings/index.php",
   "author": "AE Creations",
   
   "browser_specific_settings": {
     "gecko": {
       "id": "{91aa5abe-9de4-4347-b7b5-322c38dd9271}",
-      "strict_min_version": "102.0"
+      "strict_min_version": "128.0"
     }
   },
 
@@ -21,16 +21,23 @@
   },
 
   "permissions": [
-    "<all_urls>",
     "alarms",
     "menus",
     "downloads",
-    "history",
-    "nativeMessaging",
     "notifications",
     "storage",
     "tabs",
     "unlimitedStorage"
+  ],
+
+  "optional_permissions": [
+    "clipboardRead",
+    "clipboardWrite",
+    "nativeMessaging"
+  ],
+
+  "host_permissions": [
+    "<all_urls>"
   ],
   
   "background": {
@@ -38,6 +45,7 @@
       "lib/dexie/dexie.min.js",
       "lib/moment/moment.min.js",
       "lib/moment/locales.min.js",
+      "lib/jquery.js",
       "scripts/aeConst.js",
       "scripts/aeClippingSubst.js",
       "scripts/aeImportExport.js",
@@ -46,6 +54,8 @@
       "scripts/aeVersionCmp.js",
       "scripts/aeUUID.js",
       "scripts/aeClippings.js",
+      "scripts/aeCompress.js",
+      "scripts/aeVisual.js",
       "background.js"
     ]
   },
@@ -61,15 +71,20 @@
     }
   ],
 
-  "browser_action": {
+  "action": {
     "default_icon": {
       "16": "img/clippings16.svg",
       "32": "img/clippings32.svg"
     },
-
     "default_area": "navbar",
+    "default_title": "__MSG_browserActionTitle__"
+  },
+
+  "sidebar_action": {
+    "default_icon": "img/clippings16.svg",
     "default_title": "__MSG_browserActionTitle__",
-    "browser_style": false
+    "default_panel": "pages/sidebar.html",
+    "open_at_install": false
   },
 
   "commands" : {
@@ -84,8 +99,7 @@
 
   "options_ui": {
     "page": "pages/options.html",
-    "open_in_tab": true,
-    "browser_style": false
+    "open_in_tab": true
   },
 
   "default_locale": "en"

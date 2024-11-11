@@ -5,7 +5,7 @@
 @import url("../lib/fancytree/skin-win8/ui.fancytree.min.css");
 @import url("../style/dialog.css");
 @import url("../style/lightbox.css");
-@import url("../style/clippingTree.css");
+@import url("../style/clippingsTree.css");
 @import url("../style/clippingLabelPicker.css");
 
 
@@ -17,6 +17,8 @@
     --color-fldr-tree-popup-border: #b1b1b1;
     --color-fldr-tree-popup-shadow: #8f8f8f;
     --color-fldr-tree-popup-shadow-darker: #555555;
+
+    --url-new-folder-btn-icon: url("../img/newFolder.svg");
     --url-icon-synced-clippings-fldr: url("../img/synced-clippings.svg");
     --url-collapsed-icon: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgMTYgMTYiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+IDxwYXRoIGQ9Im04IDUtNSA1IDEgMSA0LTQgNCA0IDEtMXoiIGZpbGw9IiM2YTZhNmEiLz48L3N2Zz4K");
 }
@@ -30,6 +32,8 @@
 	--color-fldr-tree-popup-border: #737373;
 	--color-fldr-tree-popup-shadow: #2a2a2e;
 	--color-fldr-tree-popup-shadow-darker: #2a2a2e;
+
+	--url-new-folder-btn-icon: url("../img/newFolder-dk.svg");
 	--url-icon-synced-clippings-fldr: url("../img/synced-clippings-dk.svg");
 	--url-collapsed-icon: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgMTYgMTYiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+IDxwYXRoIGQ9Im04IDUtNSA1IDEgMSA0LTQgNCA0IDEtMXoiIGZpbGw9InJnYigyMzcsMjM3LDI0MCkiLz48L3N2Zz4K");
     }
@@ -68,6 +72,10 @@ body[data-os="win"] .browser-style > input[type="checkbox"] + label {
     order: 1;
 }
 
+.hlabel {
+    display: block;
+}
+
 .folder-picker {
     margin-top: 4px;
 }
@@ -80,7 +88,7 @@ body[data-os="win"] .browser-style > input[type="checkbox"] + label {
     
     padding: 4px 20px 4px 28px;
     border-radius: 0;
-
+    
     background-image: var(--url-dropdown-arrow), url("../img/folder.svg");
     background-position: calc(100% - 4px) center, 8px;
     background-repeat: no-repeat;
@@ -123,7 +131,7 @@ body[data-os="win"] .browser-style > input[type="checkbox"] + label {
 }
 
 #new-clipping-fldr-tree-popup {
-    bottom: 10px;
+    bottom: 4px;
     left: 16px;
     width: 350px;
     height: 151px;
@@ -160,7 +168,7 @@ ul.fancytree-container {
     margin: 0 0 0 4px;
     border-radius: 3px;
     
-    background-image: url("../img/newFolder.svg");
+    background-image: var(--url-new-folder-btn-icon);
     background-position: center;
     background-repeat: no-repeat;
 }
@@ -310,6 +318,10 @@ body:not([data-locale="uk"]):not([data-locale|="pt"]):not([data-locale|="es"]) #
     margin-right: 12px;
     background-image: url("../img/warning-64.png");
     background-size: contain;
+}
+
+body[data-os="win"] #create-clipping-error-msgbox .msgbox-error-icon {
+    background-image: url("../img/alert-win.png");
 }
 
 body[data-os="mac"] #create-clipping-error-msgbox .msgbox-error-icon {

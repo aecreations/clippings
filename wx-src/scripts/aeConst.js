@@ -6,18 +6,32 @@
 
 const aeConst = Object.freeze({
   DEBUG: false,
+  DEV_BUILD: false,
 
   // Native messaging helper app
   SYNC_CLIPPINGS_APP_NAME: "syncClippings",
+
+  // Browser action
+  BRWSACT_OPEN_CLIPPINGS_MGR: 1,
+  BRWSACT_OPEN_SIDEBAR: 2,
 
   // Constants for HTML paste options
   HTMLPASTE_ASK_THE_USER: 0,
   HTMLPASTE_AS_FORMATTED: 1,
   HTMLPASTE_AS_IS:        2,
 
+  // Copy clipping text
+  COPY_AS_HTML: 1,
+  COPY_AS_PLAIN_HTML: 2,
+  COPY_AS_PLAIN: 3,
+
   // Keyboard pasting mode
   PASTEACTION_SHORTCUT_KEY:   1,
   PASTEACTION_SEARCH_CLIPPING: 2,
+
+  // Display of assigned shortcut key in Clippings menu
+  SHCTKEY_DISPLAY_PARENS: 0,
+  SHCTKEY_DISPLAY_SQ_BRKT: 1,
 
   // Special folder IDs
   ROOT_FOLDER_ID: 0,
@@ -59,6 +73,7 @@ const aeConst = Object.freeze({
 
   // Post-upgrade notifications
   POST_UPGRADE_NOTIFCN_DELAY_MS: 60000, // 1 minute
+  POST_UPGRADE_NOTIFCN_INTERVAL_MS: 86400000, // 24 hours
   MAX_NUM_POST_UPGRADE_NOTIFICNS: 2,
 
   // Errors returned by the native messaging app
@@ -77,4 +92,5 @@ const aeConst = Object.freeze({
   CONTRIB_URL: "https://aecreations.io/clippings/contribute.php",
   HELP_URL: "https://aecreations.io/clippings/help.php",
   SYNC_CLIPPINGS_HELP_URL: "https://aecreations.io/clippings/sync.php",
+  SYNC_CLIPPINGS_DWNLD_URL: "https://aecreations.io/clippings/sync-clippings-helper.php",
 });

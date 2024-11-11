@@ -21,31 +21,42 @@ let aeClippingSubst = {
   REGEXP_CUSTOM_PLACEHOLDER: /\$\[([\w\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)(\{([\w \-\.\?_\/\(\)!@#%&;:,'"$£¥€*¡¢\u{0080}-\u{10FFFF}\|])+\})?\]/gmu,
 
   REGEXP_AUTO_INCR_PLACEHOLDER: /\#\[([a-zA-Z0-9_\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)\]/gm,
+
+  // Formatted date/time placeholders using formats from Moment library.
+  REGEXP_DATE: /\$\[DATE\(([AaDdHhKkMmosYLlTZ ,.:\-\/]+)\)\]/,
+  REGEXP_TIME: /\$\[TIME\(([AaHhKkmsLTZ .:]+)\)\]/,
+
+  // Name of clipping can be alphanumeric char's, underscores, and
+  // the following Unicode blocks: Latin-1 Supplement, Latin Extended-A, Latin
+  // Extended-B, Cyrillic, Hebrew, as well as the space, hyphen, period,
+  // parentheses, common currency symbols, all Unicode characters, and the
+  // following special characters: ?_/!@#%&;,:'"
+  REGEXP_CLIPPING: /\$\[CLIPPING\((([\w\d\s\.\-_!@#%&;:,'"$£¥€*¡¢\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF\u0080-\u10FFFF])+)\)\]/,
   
   _userAgentStr: null,
   _hostAppName: null,
   _autoIncrementVars: {},
-  _autoIncrementStartVal: 0
+  _autoIncrementStartVal: 0,
+  _failedPlchldrs: [],
 };
 
 
-aeClippingSubst.init = function (aUserAgentStr, aAutoIncrementStartVal)
+aeClippingSubst.init = async function (aUserAgentStr, aAutoIncrementStartVal)
 {
+  if (!!this._userAgentStr && aAutoIncrementStartVal == this._autoIncrementStartVal) {
+    return;
+  }
+
   this._userAgentStr = aUserAgentStr;
   this._autoIncrementStartVal = aAutoIncrementStartVal;
 
-  if (! ("browser" in window)) {
-    this._hostAppName = "Google Chrome";
-  }
-  else {
-    let getBrowserInfo = browser.runtime.getBrowserInfo();
-    getBrowserInfo.then(aBrwsInfo => {
-      this._hostAppName = `${aBrwsInfo.name} ${aBrwsInfo.version}`;
-    });
-  }
+  let brws = await browser.runtime.getBrowserInfo();
+  this._hostAppName = `${brws.name} ${brws.version}`;
 
   // Initialize locale used for formatting dates.
   moment.locale(browser.i18n.getUILanguage());
+
+  this._autoIncrementVars = await aePrefs.getPref("_autoIncrPlchldrVals");
 };
 
 
@@ -145,36 +156,70 @@ aeClippingSubst.getAutoIncrPlaceholders = function (aClippingText)
 };
 
 
-aeClippingSubst.processStdPlaceholders = function (aClippingInfo)
+aeClippingSubst.processStdPlaceholders = async function (aClippingInfo)
 {
   let rv = "";
+  let processedTxt = "";  // Contains expanded clipping in clipping placeholders.
+  let clipInClipMatches = [];
+  let clipInClipRe = new RegExp(this.REGEXP_CLIPPING, "g");
+
+  this._failedPlchldrs = [];
+  
+  clipInClipMatches = [...aClippingInfo.text.matchAll(clipInClipRe)];
+
+  if (clipInClipMatches.length > 0) {
+    let startIdx = 0;
+    for (let i = 0; i < clipInClipMatches.length; i++) {
+      let match = clipInClipMatches[i];
+      let preTxt = match.input.substring(startIdx, match.index);
+      let clippings = await aeClippings.getClippingsByName(match[1]);
+      let clippingTxt = "";
+      if (clippings.length > 0) {
+        clippingTxt = clippings[0].content;
+      }
+      else {
+        // If clipping doesn't exist, then placeholder should be inserted as is
+        clippingTxt = match[0];
+        this._failedPlchldrs.push(match[0]);
+      }
+      
+      processedTxt += preTxt + clippingTxt;
+      startIdx = match.index + match[0].length;
+    }
+
+    // Get the rest of the clipping.
+    processedTxt += aClippingInfo.text.substring(startIdx);
+  }
+  else {
+    processedTxt = aClippingInfo.text;
+  }
+
   let date = new Date();
-  let hasFmtDateTime = false;
-
-  hasFmtDateTime = (aClippingInfo.text.search(/\$\[DATE\(([AaDdHhKkMmosYLlTZ ,.:\-\/]+)\)\]/) != -1 || aClippingInfo.text.search(/\$\[TIME\(([AaHhKkmsLTZ .:]+)\)\]/) != -1);
-
-  rv = aClippingInfo.text.replace(/\$\[DATE\]/gm, date.toLocaleDateString());
+  rv = processedTxt.replace(/\$\[DATE\]/gm, date.toLocaleDateString());
   rv = rv.replace(/\$\[TIME\]/gm, date.toLocaleTimeString());
   rv = rv.replace(/\$\[NAME\]/gm, aClippingInfo.name);
   rv = rv.replace(/\$\[FOLDER\]/gm, aClippingInfo.parentFolderName);
   rv = rv.replace(/\$\[HOSTAPP\]/gm, this._hostAppName);
   rv = rv.replace(/\$\[UA\]/gm, this._userAgentStr);
 
+  let hasFmtDateTime = false;
+  hasFmtDateTime = (this.REGEXP_DATE.exec(processedTxt) != null || this.REGEXP_TIME.exec(processedTxt) != null);
+
   if (hasFmtDateTime) {
     let dtPlaceholders = [];
     let dtReplaced = [];
     let plchldrType = [];
 
-    let fmtDateRe = /\$\[DATE\(([AaDdHhKkMmosYLlTZ ,.:\-\/]+)\)\]/g;
+    let fmtDateRe = new RegExp(this.REGEXP_DATE, "g");
     let fmtDateResult;
-    while ((fmtDateResult = fmtDateRe.exec(aClippingInfo.text)) != null) {
+    while ((fmtDateResult = fmtDateRe.exec(rv)) != null) {
       dtPlaceholders.push(fmtDateResult[1]);
       plchldrType.push("D");
     }
 
-    let fmtTimeRe = /\$\[TIME\(([AaHhKkmsLTZ .:]+)\)\]/g;
+    let fmtTimeRe = new RegExp(this.REGEXP_TIME, "g");
     let fmtTimeResult;
-    while ((fmtTimeResult = fmtTimeRe.exec(aClippingInfo.text)) != null) {
+    while ((fmtTimeResult = fmtTimeRe.exec(rv)) != null) {
       dtPlaceholders.push(fmtTimeResult[1]);
       plchldrType.push("T");
     }
@@ -207,9 +252,10 @@ aeClippingSubst._processDateTimePlaceholders = function (aPlaceholders, aReplace
 };
 
 
-aeClippingSubst.processAutoIncrPlaceholders = function (aClippingText)
+aeClippingSubst.processAutoIncrPlaceholders = async function (aClippingText)
 {
   let rv = "";
+  this._autoIncrementVars = await aePrefs.getPref("_autoIncrPlchldrVals");
   
   let fnAutoIncrement = (aMatch, aP1) => {
     let varName = aP1;
@@ -232,17 +278,31 @@ aeClippingSubst.processAutoIncrPlaceholders = function (aClippingText)
 };
 
 
-aeClippingSubst.getAutoIncrementVarNames = function ()
+aeClippingSubst.saveAutoIncrementVars = async function ()
 {
-  var rv = [];
-  for (var name in this._autoIncrementVars) {
-    rv.push(name);
-  }
-  return rv;
+  await aePrefs.setPrefs({_autoIncrPlchldrVals: this._autoIncrementVars});
 };
 
 
-aeClippingSubst.resetAutoIncrementVar = function (aVarName)
+aeClippingSubst.resetAutoIncrementVar = async function (aVarName)
 {
+  this._autoIncrementVars = await aePrefs.getPref("_autoIncrPlchldrVals");
   delete this._autoIncrementVars[aVarName];
+  await aePrefs.setPrefs({_autoIncrPlchldrVals: this._autoIncrementVars});
+};
+
+
+aeClippingSubst.resetAllAutoIncrementVars = async function ()
+{
+  this._autoIncrementVars = {};
+  await aePrefs.setPrefs({
+    _autoIncrPlchldrs: [],
+    _autoIncrPlchldrVals: {},
+  });
+};
+
+
+aeClippingSubst.getFailedPlaceholders = function ()
+{
+  return this._failedPlchldrs;
 };

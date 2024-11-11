@@ -1,20 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="16" height="16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:osb="http://www.openswatchbook.org/uri/2009/osb">
- <g transform="translate(-4.3438 -1036.4)">
-  <g>
-   <path d="m12.844 1036.9v7c1.7786-0.9644 1.5-1 2.5-1 1.5 0 2 0.5 2.5 1 0.5 1 1.5 1.5 2 1.5v-7l-1.5-1.5z" fill="#e5e5f3" stroke="#7062bf"/>
-   <path d="m14.344 1038.9h4" fill="none" stroke="#9084c0"/>
-   <path d="m14.344 1040.9h4" fill="none" stroke="#9084c0"/>
-  </g>
-  <path transform="translate(4.3438 1036.4)" d="m0.5 9.5v6h9v-6h-4l-1-2h-3l-0.96875 1.75-0.0625 0.4375" fill="#c1bdee" stroke="#6256aa" stroke-width="1px"/>
-  <path transform="translate(4.3438 1036.4)" d="m6 9.5-1 1h-4.5" fill="none" stroke="#6256aa" stroke-width="1px"/>
-  <g transform="translate(1)" stroke="#000">
-   <path d="m4.8534 1042.4v-3.4819l2.5883-0.01" fill="none" stroke-linejoin="round" stroke-width="1.0193"/>
-   <path transform="matrix(.079619 .59989 -.42387 .13744 448.33 894.1)" d="m6.1336 1041-6.1577-1.1736 2.0476-2.373 2.0476-2.3729 1.0312 2.9597z" stroke-linecap="round" stroke-width="1.0016"/>
-  </g>
-  <g transform="rotate(180 12.344 1044.4)" stroke="#000">
-   <path d="m4.8534 1042.4v-3.4819l2.5883-0.01" fill="none" stroke-linejoin="round" stroke-width="1.0193"/>
-   <path transform="matrix(.079619 .59989 -.42387 .13744 448.33 894.1)" d="m6.1336 1041-6.1577-1.1736 2.0476-2.373 2.0476-2.3729 1.0312 2.9597z" stroke-linecap="round" stroke-width="1.0016"/>
-  </g>
- </g>
-</svg>
+<svg width="16" height="16" version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><g transform="translate(-4.3438 -1036.4)"><g><path d="m12.844 1036.9v7c1.7786-0.9644 1.721-0.9558 2.5-1 1.0607-0.05 1.8708 0.7674 2.1685 1.0442 0.4779 0.5801 1.6547 1.4558 2.3315 1.4558v-7l-1.5-1.5z" fill="#e5e5f3" stroke="#6256aa"/><path d="m14.344 1038.9h4" fill="none" stroke="#9084c0"/><path d="m14.344 1040.9h4" fill="none" stroke="#9084c0"/></g><path transform="translate(4.3438 1036.4)" d="m0.5 9.4337v6.0663h9v-6h-3.2487l-1.5745-2h-2.9337l-0.99085 1.6616-0.28347 0.52589" fill="#968fff" stroke="#7a67b7" stroke-width="1px"/><g fill="none" stroke="#3a3944" stroke-linecap="round"><path d="m5.8604 1041.9v-1.6485s-0.06994-0.6213 0.35353-1.0158c0.44019-0.4101 1.0095-0.3353 1.0095-0.3353l3.1032-0.01" stroke-linejoin="round" stroke-width="1.0193"/><path d="m8.3722 1036.9 2.1654 1.9667-2.1654 2.0108" stroke-width=".99999px"/><path d="m19.828 1046.9v1.6264s0.06994 0.6213-0.35353 1.0158c-0.44019 0.4101-1.0095 0.3353-1.0095 0.3353l-3.1032 0.01" stroke-linejoin="round" stroke-width="1.0193"/><path d="m17.248 1051.8-2.1654-1.9667 2.1654-2.0108" stroke-width=".99999px"/></g><rect x="6.3432" y="1047.4" width="6.001" height="3.001" ry="0" fill="#c1bdee" stroke="#c1bdee" stroke-linecap="square" stroke-width="1.999"/></g></svg>

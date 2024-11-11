@@ -13,27 +13,17 @@
 
   <body>
     <div id="content">
-      <div class="row">
-        <label for="clipping-name" data-i18n="labelName"></label>
-      </div>
-      <div class="row">
-        <input type="text" id="clipping-name" size="50" />
-      </div>
-      <div class="row">
-        <label for="clipping-text" data-i18n="labelContent"></label>
-      </div>
-      <div class="row">
-        <textarea id="clipping-text" rows="8"></textarea>
-      </div>
-      <div class="row">
-        <label data-i18n="labelCreateInFldr"></label>
-      </div>
+      <label class="hlabel" for="clipping-name" data-i18n="labelName"></label>
+      <input type="text" id="clipping-name" size="50" />
+      <label class="hlabel" for="clipping-text" data-i18n="labelContent"></label>
+      <textarea id="clipping-text" rows="8"></textarea>
+      <label class="hlabel" for="new-clipping-fldr-picker-menubtn" data-i18n="labelCreateInFldr"></label>
       <div class="hbox folder-picker">
         <button id="new-clipping-fldr-picker-menubtn" class="folder-picker-menubtn" value="0"
 	 data-i18n="rootFldrName"></button>
         <button id="new-folder-btn"></button>
       </div>
-      <div id="new-clipping-fldr-tree-popup" class="folder-tree-popup">
+      <div id="new-clipping-fldr-tree-popup" class="folder-tree-popup" role="menu">
 	<div id="new-clipping-fldr-tree" class="folder-tree"></div>
       </div>
 
@@ -113,22 +103,16 @@
 
     <div id="dlg-buttons">
       <button id="btn-accept" class="default" data-i18n="btnOK"></button>
-      <button id="btn-cancel" data-i18n="btnCancel"></button>
+      <button id="btn-cancel" class="btn" data-i18n="btnCancel"></button>
     </div>
 
     <!-- Dialog boxes -->
-    <div id="new-folder-dlg" class="lightbox">
+    <div id="new-folder-dlg" class="lightbox" role="dialog">
       <div class="dlg-content">
-        <div class="row">
-	  <label for="new-fldr-name" data-i18n="labelNewFldrName"></label>
-        </div>
-        <div class="row">
-	  <input type="text" id="new-fldr-name"/>
-	</div>
-	<div class="row">
-	  <label id="new-folder-dlg-fldr-picker-label" for="new-folder-dlg-fldr-picker-mnubtn"
-	   data-i18n="labelCreateAsSubfOf"></label>
-        </div>
+	<label class="hlabel" for="new-fldr-name" data-i18n="labelNewFldrName"></label>
+	<input type="text" id="new-fldr-name"/>
+	<label id="new-folder-dlg-fldr-picker-label" class="hlabel"
+	 for="new-folder-dlg-fldr-picker-mnubtn" data-i18n="labelCreateAsSubfOf"></label>
         <div class="folder-picker">
 	  <button id="new-folder-dlg-fldr-picker-mnubtn" class="folder-picker-menubtn" value="0"
            data-i18n="rootFldrName"></button>
@@ -140,11 +124,11 @@
       </div>
       <div class="dlg-btns">
         <button class="dlg-accept default" data-i18n="btnOK"></button>
-        <button class="dlg-cancel" data-i18n="btnCancel"></button>
+        <button class="dlg-btn dlg-cancel" data-i18n="btnCancel"></button>
       </div>
     </div>
 
-    <div id="create-clipping-error-msgbox" class="lightbox">
+    <div id="create-clipping-error-msgbox" class="lightbox" role="alertdialog">
       <div class="dlg-content browser-style">
 	<div class="msgbox-error-icon"></div>
 	<p class="msgbox-error-msg"></p>
@@ -167,6 +151,7 @@
     <script src="../scripts/aePrefs.js"></script>
     <script src="../scripts/aeUUID.js"></script>
     <script src="../scripts/aeClippings.js"></script>
+    <script src="../scripts/aeVisual.js"></script>
     <script src="new.js"></script>
   </body>
 </html>

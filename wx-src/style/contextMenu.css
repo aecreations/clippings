@@ -1,0 +1,101 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+:root {
+    --color-cxtmenu-bkgd: #fff;
+    --color-cxtmenu-border: #bebebe;
+    --color-cxtmenu-text: #2f2f2f;
+    --color-cxtmenu-menuitem-active-bkgd: #CCCCCD;
+    --color-cxtmenu-menuitem-hover-bkgd: #DFDFDF;
+    --color-cxtmenu-menuitem-hover-text: #0c0c0d;
+    --color-cxtmenu-separator: #e6e6e6;   
+
+    --url-contextmenu-checked-img: url("../img/checked.svg");
+    --url-contextmenu-submenu-arrow: url("../img/submenu-arrow.svg");
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+	--color-cxtmenu-bkgd: #4a4a4f;
+	--color-cxtmenu-border: #38383d;
+	--color-cxtmenu-text: #f9f9fa;
+	--color-cxtmenu-menuitem-active-bkgd: #737373;
+	--color-cxtmenu-menuitem-hover-bkgd: #606060;
+	--color-cxtmenu-menuitem-hover-text: #fff;
+	--color-cxtmenu-separator: #737373;
+
+	--url-contextmenu-checked-img: url("../img/checked-dk.svg");
+	--url-contextmenu-submenu-arrow: url("../img/submenu-arrow-dk.svg");
+    }
+}
+
+
+/* jQuery contextMenu CSS overrides */
+.context-menu-list {
+    padding: 4px 0;
+    border-radius: 4px;
+    border: 1px solid var(--color-cxtmenu-border);
+    background-color: var(--color-cxtmenu-bkgd);
+}
+
+.context-menu-list:-moz-focusring {
+    outline-style: none;
+}
+
+.ae-menuitem,
+.context-menu-submenu {
+    margin: 0 4px 0 4px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border-radius: 2px;
+    background-color: var(--color-cxtmenu-bkgd);
+    font-size: 12px;
+    color: var(--color-cxtmenu-text);
+}
+
+.context-menu-item.context-menu-disabled {
+    background-color: var(--color-cxtmenu-bkgd);
+}
+
+.context-menu-disabled:hover {
+    background-color: transparent;
+}
+
+.ae-menuitem:active {
+    background-color: var(--color-cxtmenu-menuitem-active-bkgd) !important;
+}
+
+.ae-menuitem.context-menu-disabled:active {
+    background-color: transparent !important;
+}
+
+.context-menu-item.context-menu-hover {
+    background-color: var(--color-cxtmenu-menuitem-hover-bkgd);
+    color: var(--color-cxtmenu-menuitem-hover-text);
+    cursor: default;
+}
+
+.context-menu-separator {
+    margin-left: 10px;
+    margin-right: 10px;
+    border-bottom: 1px solid var(--color-cxtmenu-separator);
+}
+
+.context-menu-icon-checked {
+    background-image: var(--url-contextmenu-checked-img);
+    background-repeat: no-repeat;
+    background-position-x: 4px;
+    background-position-y: center;
+}
+
+.context-menu-submenu {
+    background-image: var(--url-contextmenu-submenu-arrow);
+    background-repeat: no-repeat;
+    background-position-x: right 3px;
+    background-position-y: 4px;
+}
+
+.context-menu-submenu::after {
+    content: unset;
+}

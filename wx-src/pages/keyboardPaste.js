@@ -44,6 +44,7 @@ let gAutocompleteMenu = {
 
         if (! this.isPopupShowing()) {
           this._popupElt.show();
+          this._listboxElt.focus();
           let popupHt = parseInt(this._popupElt.css("height"));
           if (popupHt == this._POPUP_MAX_HEIGHT) {
             $("#search-by-name .key-legend").hide();
@@ -57,6 +58,7 @@ let gAutocompleteMenu = {
         if (this._selectedIdx == -1) {
           let firstChild = this._listboxElt.children()[0];
           firstChild.setAttribute("selected", "true");
+          firstChild.setAttribute("aria-selected", "true");
           this._selectedIdx = 0;
         }
         else if (this._selectedIdx == (this._listboxElt.children().length - 1)) {
@@ -74,6 +76,7 @@ let gAutocompleteMenu = {
             if (i == this._selectedIdx) {
               selectedItem = popupMenuItems[i];
               selectedItem.setAttribute("selected", "true");
+              selectedItem.setAttribute("aria-selected", "true");
               break;
             }
           }
@@ -115,6 +118,7 @@ let gAutocompleteMenu = {
             if (i == this._selectedIdx) {
               selectedItem = popupMenuItems[i];
               selectedItem.setAttribute("selected", "true");
+              selectedItem.setAttribute("aria-selected", "true");
               break;
             }
           }
@@ -184,6 +188,9 @@ let gAutocompleteMenu = {
           clippingDiv.className = "clipping";
           clippingDiv.dataset.index = item.index;
           clippingDiv.dataset.clippingId = item.id;
+          clippingDiv.setAttribute("role", "option");
+          clippingDiv.setAttribute("aria-label", item.name);
+          clippingDiv.setAttribute("aria-selected", "false");
           
           nameDiv.className = "name";
           nameDiv.appendChild(document.createTextNode(item.name));
@@ -217,6 +224,7 @@ let gAutocompleteMenu = {
       let selectedItem = aEvent.target.parentNode;
       if (selectedItem.className == "clipping") {
         selectedItem.setAttribute("selected", "true");
+        selectedItem.setAttribute("aria-selected", "true");
         this._selectedIdx = selectedItem.dataset.index;
       }
     });
@@ -246,6 +254,7 @@ let gAutocompleteMenu = {
   {
     let oldSelectedItem = $('div.clipping[selected="true"]');
     oldSelectedItem.removeAttr("selected");
+    oldSelectedItem.attr("aria-selected", "false");
   },
   
   _selectClipping(aClippingID)
@@ -284,20 +293,22 @@ let gAutocompleteMenu = {
 };
 
 
-// DOM utility
-function sanitizeHTML(aHTMLStr)
-{
-  return DOMPurify.sanitize(aHTMLStr, {SAFE_FOR_JQUERY: true});
-}
-
-
 // Initialize dialog
 $(async () => {
   let params = new URLSearchParams(window.location.search);
   gBrowserTabID = Number(params.get("tabID"));
   
-  let envInfo = await browser.runtime.sendMessage({msgID: "get-env-info"});
+  let [brws, platform] = await Promise.all([
+    browser.runtime.getBrowserInfo(),
+    browser.runtime.getPlatformInfo(),
+  ]);
+  envInfo = {
+    os: platform.os,
+    hostAppName: brws.name,
+    hostAppVer:  brws.version,
+  };
   document.body.dataset.os = gOS = envInfo.os;
+  aeInterxn.init(gOS);
 
   aeClippings.init();
   gClippingsDB = aeClippings.getDB();
@@ -316,8 +327,6 @@ $(async () => {
 
   initAutocomplete();
   $("#btn-cancel").click(aEvent => { cancel(aEvent) });
-
-  browser.history.deleteUrl({url: window.location.href});
 
   gPasteMode = await aePrefs.getPref("pastePromptAction");
   
@@ -338,6 +347,14 @@ $(async () => {
     srchBox.focus();
   }
 
+  aeVisual.cacheIcons(
+    "insClipping-hover.svg",
+    "insClipping-active-dk.svg",
+    "export_hover.svg",
+    "export-active-dk.svg"
+  );
+
+  
   // Fix for Fx57 bug where bundled page loaded using
   // browser.windows.create won't show contents unless resized.
   // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1402110>
@@ -460,7 +477,9 @@ function initAutocomplete()
   
   let allClippings = [];
 
-  gClippingsDB.clippings.where("parentFolderID").notEqual(aeConst.DELETED_ITEMS_FLDR_ID).each((aItem, aCursor) => {
+  gClippingsDB.clippings.where("parentFolderID").notEqual(aeConst.DELETED_ITEMS_FLDR_ID)
+    .filter(aItem => !aItem.separator)
+    .each((aItem, aCursor) => {
     allClippings.push({
       id: aItem.id,
       name: sanitize(aItem.name, 56),
@@ -604,6 +623,12 @@ async function closeDlg()
   
   await browser.runtime.sendMessage({msgID: "close-keybd-paste-dlg"});
   browser.windows.remove(browser.windows.WINDOW_ID_CURRENT);
+}
+
+
+function sanitizeHTML(aHTMLStr)
+{
+  return DOMPurify.sanitize(aHTMLStr, {SAFE_FOR_JQUERY: true});
 }
 
 

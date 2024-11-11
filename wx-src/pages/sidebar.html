@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" href="sidebar.css"/>
+  </head>
+
+  <body>
+    <main id="sidebar-content">
+      <div id="fixed-pos-content">
+	<div id="msgbars">
+	  <div id="clipping-missing-src-url-msgbar" class="inline-msgbar msgbar-info">
+            <div class="inline-msgbar-icon"></div>
+            <div class="inline-msgbar-body">
+	      <div class="inline-msgbar-content">
+		<label data-i18n="clipMgrNoSrcURL" role="alert"></label>
+	      </div>
+            </div>
+	    <div class="inline-msgbar-dismiss"></div>
+	  </div>
+	  <div id="action-not-available-msgbar" class="inline-msgbar msgbar-warning">
+            <div class="inline-msgbar-icon"></div>
+            <div class="inline-msgbar-body">
+	      <div class="inline-msgbar-content">
+		<label data-i18n="msgUnavail" role="alert"></label>
+	      </div>
+            </div>
+	    <div class="inline-msgbar-dismiss"></div>
+	  </div>
+	</div>
+
+	<div id="toolbars">
+	  <div id="toolbar" class="hbox" role="toolbar">
+	    <button id="open-clippings-mgr" class="toolbar-button toolbar-button-labelled" data-i18n="cxtMenuOpenClippingsMgr"></button>
+	    <div class="toolbar-flex-spacer"></div>
+	    <button id="help" class="toolbar-button"></button>
+	  </div>
+          <div id="search-bar" class="hbox" role="toolbar">
+	    <div id="search-clippings-and-folders">
+	      <input type="search" id="search-box" role="searchbox"/>
+	      <div id="clear-search"></div>
+	    </div>
+          </div>	    
+	</div>
+      </div> <!-- /fixed-pos-content -->
+
+      <div id="content">
+        <div id="normal-content" class="vbox">
+	  <div id="scroll-content">
+	    <div id="clippings-tree"></div>
+	  </div>
+	  <div id="pane-splitter"></div>
+	  <div id="preview-pane" class="vbox">
+	    <input type="text" id="item-name" readonly role="presentation"/>
+	    <textarea id="clipping-content" readonly role="presentation"></textarea>
+	  </div>
+        </div>
+        <div id="welcome-content">
+          <div id="welcome-cta-icon">
+            <div id="welcome-icon"></div>
+          </div>
+	  <p id="welcome-hdg" role="heading" data-i18n="sidebarTitle"></p>
+	  <p data-i18n="sbFirstRun"></p>
+	  <div id="welcome-cta" class="row">
+            <button id="welcome-clippings-mgr" data-i18n="brwsActClpMgr"></button>
+          </div>
+        </div>
+      </div> <!-- /content -->
+    </main>
+
+    <!-- Dialog boxes -->
+    <div id="lightbox-bkgrd-ovl" class="lightbox-bkgrd"></div>
+    <div id="copy-clipping-txt-fmt-dlg" class="lightbox" data-compact="true" role="dialog">
+      <div class="dlg-content">
+	<p class="dlg-hdr" role="heading" data-i18n="mnuCopyClipTxt"></p>
+	<div class="row hbox">
+	  <button id="copy-cliptxt-html" class="copy-fmt-btn dlg-btn" aria-labelledby="copy-title" data-title="copyAsHTML"></button>
+	  <button id="copy-cliptxt-plain" class="copy-fmt-btn dlg-btn" aria-labelledby="copy-title" data-title="copyAsPlain"></button>
+          <button id="copy-cliptxt-plain-html" class="copy-fmt-btn dlg-btn" aria-labelledby="copy-title" data-title="copyAsPlainHTML"></button>
+        </div>
+        <p id="copy-title"></p>
+      </div>
+      <div class="dlg-btns">
+        <button class="dlg-btn dlg-cancel" data-i18n="btnCancel"></button>
+      </div>
+    </div>
+    <div id="request-clipbd-write-perm-dlg" class="lightbox msgbox" role="alertdialog">
+      <div class="msgbox-icon"></div>
+      <div class="msgbox-content">
+        <p class="perm-request" data-i18n="permReqTitle"></p>
+        <ul>
+          <li data-i18n="extPrmClipbdW"></li>
+        </ul>
+	<p id="perm-request" class="perm-instr"></p>
+      </div>
+      <div class="dlg-btns">
+	<button class="dlg-accept default" data-i18n="btnOK"></button>
+      </div>
+    </div>
+    <div id="reload-sync-fldr-msgbox" class="lightbox msgbox" role="alertdialog">
+      <div class="msgbox-content">
+	<div class="msgbox-icon"></div>
+	<p data-i18n="syncReloadAck"></p>
+      </div>
+      <div class="dlg-btns">
+	<button class="dlg-accept default" data-i18n="btnReload"></button>
+      </div>
+    </div>
+    <div id="customize-dlg" class="lightbox" role="dialog">
+      <div class="dlg-content">
+        <p class="dlg-hdg" role="heading" data-i18n="sbarCustzTitle"></p>
+	<div class="row browser-style">
+	  <input type="checkbox" id="show-toolbar" class="checkbox-xs"><label for="show-toolbar" data-i18n="sbarCustzTbar"></label>
+	</div>
+	<div class="row browser-style">
+	  <input type="checkbox" id="show-search-bar" class="checkbox-xs"><label for="show-search-bar" data-i18n="sbarCustzSrch"></label>
+	</div>
+	<div class="row browser-style">
+	  <input type="checkbox" id="show-preview-pane" class="checkbox-xs"><label for="show-preview-pane" data-i18n="sbarCustzPrevw"></label>
+	</div>
+      </div>
+      <div class="dlg-btns">
+	<button class="dlg-accept default" data-i18n="btnDone"></button>
+      </div>
+    </div>
+    <div id="init-error-msgbox" class="lightbox msgbox" role="alertdialog">
+      <div class="msgbox-content">
+	<div class="msgbox-icon"></div>
+	<p class="msgbox-error-msg" data-i18n="initError"></p>
+      </div>
+      <div class="dlg-btns">
+        <button class="dlg-accept default" data-i18n="btnOK"></button>
+      </div>
+    </div>
+
+    <script src="../lib/dexie/dexie.min.js"></script>
+    <script src="../lib/jquery.js"></script>
+    <script src="../lib/purify.min.js"></script>
+    <script src="../lib/fancytree/jquery.fancytree-all-deps.min.js"></script>
+    <script src="../lib/fancytree/jquery.fancytree.dnd5.js"></script>
+    <script src="../lib/fancytree/jquery.fancytree.filter.js"></script>
+    <script src="../lib/contextMenu/jquery.ui.position.min.js"></script>
+    <script src="../lib/contextMenu/jquery.contextMenu.min.js"></script>
+    <script src="../scripts/aeConst.js"></script>
+    <script src="../scripts/aeDialog.js"></script>
+    <script src="../scripts/aeInterxn.js"></script>
+    <script src="../scripts/aeI18n.js"></script>
+    <script src="../scripts/aePrefs.js"></script>
+    <script src="../scripts/aeNavigator.js"></script>
+    <script src="../scripts/aeClippings.js"></script>
+    <script src="../scripts/aeClippingsTree.js"></script>
+    <script src="../scripts/aeVisual.js"></script>
+    <script src="sidebar.js"></script>
+  </body>
+</html>

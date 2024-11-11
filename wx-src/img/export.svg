@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="16" height="16" version="1.1" xmlns="http://www.w3.org/2000/svg">
- <g transform="translate(-10 -182.36)">
-  <path d="m21.532 196.86v-10.509l-3.5-3.491-7.5-9e-5 -0.03125 14h11.499" fill="#f0f0ff" stroke="#6256aa"/>
-  <g fill="none">
-   <path d="m17.5 182.86v4h4" stroke="#6256aa" stroke-width="1px"/>
-   <path d="m21 193.83h0.5625l-0.03125-3.4375" stroke="#fff" stroke-width="1px"/>
-   <path d="m16.031 192.36h7" stroke="#6256aa" stroke-width="2"/>
-  </g>
-  <path d="m25.488 192.36-1.9688-1.875-0.01478 3.726z" fill="#6256aa" fill-rule="evenodd" stroke="#6256aa" stroke-width="1px"/>
+ <g transform="translate(-10 -182.36)" stroke="#6256aa">
+  <path d="m21.532 196.86v-2.5156m0-4v-3.9934l-3.5-3.491-7.5-9e-5 -0.03125 14h11.499" fill="#f0f0ff"/>
+  <path d="m17.5 182.86v4h4" fill="none" stroke-width="1px"/>
+  <path d="m16.031 192.36h7" fill="none" stroke-width="2"/>
+  <path d="m25.311 192.36-1.792-1.875-0.01478 3.726z" fill="#6256aa" fill-rule="evenodd" stroke-width="1px"/>
  </g>
 </svg>

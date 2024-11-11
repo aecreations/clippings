@@ -32,6 +32,13 @@
     --color-autocomplete-selected-border: #70c0e7;
     --color-autocomplete-clipping-name: #0c0c0d;
     --color-autocomplete-clipping-preview: #737373;
+
+    --url-toolbar-btn-icon-insClipping: url("../img/insClipping.svg");
+    --url-toolbar-btn-icon-insClipping-hover: url("../img/insClipping-hover.svg");
+    --url-toolbar-btn-icon-insClipping-active: url("../img/insClipping-hover.svg");
+    --url-toolbar-btn-icon-export: url("../img/export.svg");
+    --url-toolbar-btn-icon-export-hover: url("../img/export_hover.svg");
+    --url-toolbar-btn-icon-export-active: url("../img/export_hover.svg");
 }
 
 @media (prefers-color-scheme: dark) {
@@ -58,6 +65,13 @@
 	--color-autocomplete-selected-border: #0060df;
 	--color-autocomplete-clipping-name: #f9f9fa;
 	--color-autocomplete-clipping-preview: #b1b1b3;
+
+	--url-toolbar-btn-icon-insClipping: url("../img/insClipping-dk.svg");
+	--url-toolbar-btn-icon-insClipping-hover: url("../img/insClipping-dk.svg");
+	--url-toolbar-btn-icon-insClipping-active: url("../img/insClipping-active-dk.svg");
+	--url-toolbar-btn-icon-export: url("../img/export-dk.svg");
+	--url-toolbar-btn-icon-export-hover: url("../img/export-dk.svg");
+	--url-toolbar-btn-icon-export-active: url("../img/export-active-dk.svg");
     }
 }
 
@@ -118,7 +132,7 @@ body {
     position: absolute;
     left: 16px;
     bottom: 24px;
-    font-size: 11px;
+    font-size: 11.5px;
     z-index: 1;
 }
 
@@ -147,20 +161,28 @@ body {
 
 #shortcut-list-toolbar #paste-clipping {
     order: 1;
-    background-image: url("../img/insClipping.svg");
+    background-image: var(--url-toolbar-btn-icon-insClipping);
 }
 
 #shortcut-list-toolbar #paste-clipping:hover {
-    background-image: url("../img/insClipping-hover.svg");
+    background-image: var(--url-toolbar-btn-icon-insClipping-hover);
+}
+
+#shortcut-list-toolbar #paste-clipping:active {
+    background-image: var(--url-toolbar-btn-icon-insClipping-active);
 }
 
 #shortcut-list-toolbar #export-shct-list {
     order: 2;
-    background-image: url("../img/export.svg");
+    background-image: var(--url-toolbar-btn-icon-export);
 }
 
 #shortcut-list-toolbar #export-shct-list:hover {
-    background-image: url("../img/export_hover.svg");
+    background-image: var(--url-toolbar-btn-icon-export-hover);
+}
+
+#shortcut-list-toolbar #export-shct-list:active {
+    background-image: var(--url-toolbar-btn-icon-export-active);
 }
 
 #shortcut-list-toolbar #close {
@@ -276,6 +298,12 @@ button.browser-style:focus:not(:disabled) {
     background-size: contain;
 }
 
+body[data-os="win"] #search-by-name-ico {
+    width: 32px;
+    height: 32px;
+    background-image: url("../img/confirm-win.png");
+}
+
 body[data-os="mac"] #search-by-name-ico {
     background-image: url("../img/question-64-mac.png");
 }
@@ -325,7 +353,7 @@ body[data-os="mac"] #search-by-name-ico {
 #num-matches {
     width: 100%;
     text-align: right;
-    font-size: 11px;   
+    font-size: 11.5px;   
 }
 
 /* Autocomplete menu */

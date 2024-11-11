@@ -17,6 +17,7 @@ let gPlaceholdersWithDefaultVals = null;
 let gSamePlchldrs = {};
 let gClippingContent = null;
 let gBrowserTabID = null;
+let gDlgMode = 0;
 
 
 // DOM utility
@@ -28,13 +29,20 @@ function sanitizeHTML(aHTMLStr)
 
 // Page initialization
 $(async () => {
-  browser.history.deleteUrl({url: window.location.href});
+  let params = new URLSearchParams(window.location.search);
+  gBrowserTabID = Number(params.get("tabID"));
+  gDlgMode = Number(params.get("mode"));
+
+  if (gDlgMode > 0) {
+    document.title = browser.i18n.getMessage("mnuCopyClipTxt");
+  }
 
   let params = new URLSearchParams(window.location.search);
   gBrowserTabID = Number(params.get("tabID"));
 
   let platform = await browser.runtime.getPlatformInfo();
   document.body.dataset.os = gOS = platform.os;
+  aeInterxn.init(platform.os);
 
   let resp = await browser.runtime.sendMessage({
     msgID: "init-placeholder-prmt-dlg"
@@ -110,7 +118,7 @@ $(async () => {
     if (gOS == "win") {
       height += DLG_HEIGHT_ADJ_WINDOWS;
     }
-    
+
     await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, {height});
 
     for (let i = 0; i < gPlaceholders.length; i++) {
@@ -263,12 +271,23 @@ function accept(aEvent)
     }
   }
 
-  browser.runtime.sendMessage({
-    msgID: "paste-clipping-with-plchldrs",
-    processedContent: content,
-    browserTabID: gBrowserTabID,
-  });
+  let msg;
+  if (gDlgMode > 0) {
+    msg = {
+      msgID: "copy-clipping-with-plchldrs",
+      copyMode: gDlgMode,
+      processedContent: content,
+    }
+  }
+  else {
+    msg = {
+      msgID: "paste-clipping-with-plchldrs",
+      processedContent: content,
+      browserTabID: gBrowserTabID,
+    };
+  }
   
+  browser.runtime.sendMessage(msg);
   closeDlg();
 }
 

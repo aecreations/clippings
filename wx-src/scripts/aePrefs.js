@@ -5,6 +5,25 @@
 
 
 let aePrefs = {
+  // Background script state persistence
+  _defaultBkgdState: {
+    _isInitialized: false,
+    _clippingMenuItemIDMap: {},
+    _folderMenuItemIDMap: {},
+    _autoIncrPlchldrs: [],
+    _autoIncrPlchldrVals: {},
+    _forceShowFirstTimeBkupNotif: false,
+    _syncClippingsHelperDwnldPgURL: null,
+    _wndIDs: {
+      newClipping: null,
+      keyboardPaste: null,
+      placeholderPrmt: null,
+      clippingsMgr: null,
+      sidebarHlp: null,
+    },
+  },
+  
+  // User preferences and customizations
   _defaultPrefs: {
     showWelcome: true,
     htmlPaste: aeConst.HTMLPASTE_AS_FORMATTED,
@@ -40,19 +59,26 @@ let aePrefs = {
     skipBackupRemIfUnchg: true,
     clippingsUnchanged: false,
     upgradeNotifCount: 0,
-    tabModalMsgBox: false,
+    lastWhatsNewNotifcnDate: null,
     showNewClippingOpts: false,
     useInsertHTMLCmd: false,
+    defDlgBtnFollowsFocus: false,
+    compressSyncData: true,
+    isSyncReadOnly: false,
+    clippingsMgrAutoShowStatusBar: false,
+    showShctKey: false,
+    showShctKeyDispStyle: aeConst.SHCTKEY_DISPLAY_PARENS,
+    browserAction: aeConst.BRWSACT_OPEN_CLIPPINGS_MGR,
+    sidebarToolbar: true,
+    sidebarSearchBar: true,
+    sidebarPreview: true,
+    pasteFromSidebar: false,
   },
   
-  getDefaultPrefs()
-  {
-    return this._defaultPrefs;
-  },
-
   getPrefKeys()
   {
-    return Object.keys(this._defaultPrefs);
+    let allPrefs = {...this._defaultBkgdState, ...this._defaultPrefs};
+    return Object.keys(allPrefs);
   },
   
   async getPref(aPrefName)
@@ -74,6 +100,11 @@ let aePrefs = {
     await browser.storage.local.set(aPrefMap);
   },
 
+  async setDefaultBkgdState()
+  {
+    await browser.storage.local.set(this._defaultBkgdState);
+  },
+
 
   //
   // Version upgrade handling
@@ -81,7 +112,7 @@ let aePrefs = {
 
   hasUserPrefs(aPrefs)
   {
-    return aPrefs.hasOwnProperty("htmlPaste");
+    return ("htmlPaste" in aPrefs);
   },
 
   async setUserPrefs(aPrefs)
@@ -107,7 +138,7 @@ let aePrefs = {
   hasSanDiegoPrefs(aPrefs)
   {
     // Version 6.1
-    return aPrefs.hasOwnProperty("syncClippings");
+    return ("syncClippings" in aPrefs);
   },
 
   async setSanDiegoPrefs(aPrefs)
@@ -127,7 +158,7 @@ let aePrefs = {
   hasBalboaParkPrefs(aPrefs)
   {
     // Version 6.1.2
-    return aPrefs.hasOwnProperty("syncHelperCheckUpdates");
+    return ("syncHelperCheckUpdates" in aPrefs);
   },
 
   async setBalboaParkPrefs(aPrefs)
@@ -143,7 +174,7 @@ let aePrefs = {
   hasMalibuPrefs(aPrefs)
   {
     // Version 6.2
-    return aPrefs.hasOwnProperty("cxtMenuSyncItemsOnly");
+    return ("cxtMenuSyncItemsOnly" in aPrefs);
   },
 
   async setMalibuPrefs(aPrefs)
@@ -161,7 +192,7 @@ let aePrefs = {
   hasTopangaPrefs(aPrefs)
   {
     // Version 6.2.1
-    return aPrefs.hasOwnProperty("dispatchInputEvent");
+    return ("dispatchInputEvent" in aPrefs);
   },
 
   async setTopangaPrefs(aPrefs)
@@ -176,7 +207,7 @@ let aePrefs = {
   hasHuntingdonPrefs(aPrefs)
   {
     // Version 6.3
-    return aPrefs.hasOwnProperty("clippingsMgrSaveWndGeom");
+    return ("clippingsMgrSaveWndGeom" in aPrefs);
   },
 
   async setHuntingdonPrefs(aPrefs)
@@ -202,13 +233,12 @@ let aePrefs = {
   hasSanClementePrefs(aPrefs)
   {
     // Version 6.4
-    return aPrefs.hasOwnProperty("showNewClippingOpts");
+    return ("showNewClippingOpts" in aPrefs);
   },
   
   async setSanClementePrefs(aPrefs)
   {
     let newPrefs = {
-      tabModalMsgBox: false,
       showNewClippingOpts: false,
     };
 
@@ -225,6 +255,55 @@ let aePrefs = {
   {
     let newPrefs = {useInsertHTMLCmd: false};
     await this._addPrefs(aPrefs, newPrefs);
+  },
+
+  hasSanFranciscoPrefs(aPrefs)
+  {
+    // Version 7.0
+    return ("compressSyncData" in aPrefs);
+  },
+
+  async setSanFranciscoPrefs(aPrefs)
+  {
+    let newPrefs = {
+      _isInitialized: false,
+      _clippingMenuItemIDMap: {},
+      _folderMenuItemIDMap: {},
+      _autoIncrPlchldrs: [],
+      _autoIncrPlchldrVals: {},
+      _forceShowFirstTimeBkupNotif: false,
+      _syncClippingsHelperDwnldPgURL: null,
+      _wndIDs: {
+        newClipping: null,
+        keyboardPaste: null,
+        placeholderPrmt: null,
+        clippingsMgr: null,
+        sidebarHlp: null,
+      },
+
+      compressSyncData: true,
+      isSyncReadOnly: false,
+      defDlgBtnFollowsFocus: false,
+      clippingsMgrAutoShowStatusBar: false,
+      showShctKey: false,
+      showShctKeyDispStyle: aeConst.SHCTKEY_DISPLAY_PARENS,
+      browserAction: aeConst.BRWSACT_OPEN_CLIPPINGS_MGR,
+      sidebarToolbar: true,
+      sidebarSearchBar: true,
+      sidebarPreview: true,
+      pasteFromSidebar: false,
+      lastWhatsNewNotifcnDate: null,
+    };
+
+    await this._addPrefs(aPrefs, newPrefs);
+
+    // Remove deprecated prefs
+    delete aPrefs.tabModalMsgBox;
+
+    // Change default setting of Linux-specific pref.
+    if (aPrefs.clippingsMgrMinzWhenInactv) {
+      await this.setPrefs({clippingsMgrMinzWhenInactv: false});
+    }
   },
 
 

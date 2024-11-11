@@ -6,7 +6,7 @@
    <path d="m14 190.36h10"/>
    <path d="m14 194.36h10"/>
   </g>
-  <path d="m12 194.21 1.5 1.65 4-5.5" stroke="#666" stroke-width="3.5"/>
-  <path d="m11 193.86 2 2.5 4-5" stroke="#f0f0ff" stroke-width="1.5"/>
+  <path d="m11.78 194.87 1.3125 1.3688 3.6875-4.625" stroke="#666" stroke-linecap="round" stroke-width="3.5"/>
+  <path d="m11.249 194.42 1.75 1.9375 3.75-4.75" stroke="#f0f0ff" stroke-linecap="round" stroke-width="1.5"/>
  </g>
 </svg>

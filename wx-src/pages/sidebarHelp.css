@@ -1,0 +1,54 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+@import url("../style/dialog.css");
+
+:root {
+    --color-dlg-fieldset-border: #b1b1b1;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+	--color-dlg-fieldset-border: #585858;
+    }
+}
+
+    
+body {
+    font-size: 13px;
+}
+
+h3 {
+    font-size: 15px;
+    font-weight: bold;
+    margin: 0;
+}
+
+fieldset {
+    margin-top: 20px;
+    border-top: 1px solid var(--color-dlg-fieldset-border);
+    border-bottom: 1px solid var(--color-dlg-fieldset-border);
+}
+
+.dlg-content {
+    max-height: 296px;
+    overflow-y: auto;
+    line-height: 1.23;
+}
+
+.shortcut-key-tbl > tr > td:first-of-type {
+  width: 5em;
+}
+
+#dlg-buttons {
+    right: 16px;
+    z-index: 1;
+}
+
+#dlg-buttons > button {
+    min-width: 96px;
+    height: 32px;
+    margin-right: 0;
+    font-size: 15px !important;
+}

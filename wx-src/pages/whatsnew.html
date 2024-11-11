@@ -15,20 +15,35 @@
   <body>
     <main id="content">
       <div id="dlg-hdr">
-        <img id="ext-icon" src="../img/icon.svg"/>
+        <img id="ext-icon" src="../img/icon96.svg" role="presentation"/>
         <h1 data-i18n="extName"></h1>
         <p id="ext-desc" data-i18n="extDesc"></p>
       </div>
 
       <div id="dlg-content">
 	<h2 data-i18n="newVerHdg"></h2>
-	<p data-i18n="upgrade"></p>
+        <p id="latest-ver"></p>
 
-	<h2 data-i18n="whatsNew"></h2>
+	<h2 id="whats-new-hdg" data-i18n="whatsNew"></h2>
+        <h3 id="ver-subhead"></h3>
+
+        <div id="whatsnew-jumbo">
+          <div id="whatsnew-card1" class="whatsnew-card">
+            <p data-i18n="whatsNewFx1"></p>
+          </div>
+          <div id="whatsnew-card2" class="whatsnew-card">
+            <p data-i18n="whatsNew1"></p>
+          </div>
+        </div>
+
 	<ul>
-	  <li data-i18n="whatsNew1"></li>
+          <li data-i18n="whatsNewFx2"></li>
 	  <li data-i18n="whatsNew2"></li>
 	  <li data-i18n="whatsNew3"></li>
+	  <li id="whats-new-sync"></li>
+<!--
+	  <li id="hostapp-compat"></li>
+-->
 	</ul>
 
         <h2 data-i18n="contribHdg"></h2>
@@ -55,6 +70,7 @@
     <script src="../lib/jquery.js"></script>
     <script src="../scripts/aeConst.js"></script>
     <script src="../scripts/aeI18n.js"></script>
+    <script src="../scripts/aeMozVersion.js"></script>
     <script src="whatsnew.js"></script>
   </body>
 </html>

@@ -22,6 +22,8 @@ class aeDialog
     this._popupTimerID = null;
     this._lastFocusedElt = null;
     this._focusedElt = null;
+    this._firstTabStop = null;
+    this._lastTabStop = null;
 
     this._fnDlgAccept = function (aEvent) {
       if (this.isPopup()) {
@@ -156,31 +158,35 @@ class aeDialog
       focusableElts = $(`${this.FOCUSABLE_ELTS_STOR}`, this._dlgElt).toArray();
     }
     
-    let firstTabStop = focusableElts[0];
-    let lastTabStop = focusableElts[focusableElts.length - 1];
-
+    this._firstTabStop = focusableElts[0];
+    this._lastTabStop = focusableElts[focusableElts.length - 1];
     this._dlgElt.on("keydown.aeDialog", aEvent => {
-      if (aEvent.key == "Tab") {
-        if (aEvent.shiftKey) {
-          if (document.activeElement == firstTabStop) {
-            aEvent.preventDefault();
-            lastTabStop.focus();
-          }
-        }
-        else {
-          if (document.activeElement == lastTabStop) {
-            aEvent.preventDefault();
-            firstTabStop.focus();
-          }
-        }
-      }
+      this.handleKeyDownEvent(aEvent);
     });
 
     if (this._focusedElt) {
       this._focusedElt.focus();
     }
     else {
-      firstTabStop.focus();
+      this._firstTabStop.focus();
+    }
+  }
+
+  handleKeyDownEvent(aEvent)
+  {
+    if (aEvent.key == "Tab") {
+      if (aEvent.shiftKey) {
+        if (document.activeElement == this._firstTabStop) {
+          aEvent.preventDefault();
+          this._lastTabStop.focus();
+        }
+      }
+      else {
+        if (document.activeElement == this._lastTabStop) {
+          aEvent.preventDefault();
+          this._firstTabStop.focus();
+        }
+      }
     }
   }
 

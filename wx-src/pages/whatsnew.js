@@ -4,19 +4,18 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
-function sanitizeHTML(aHTMLStr)
-{
-  return DOMPurify.sanitize(aHTMLStr, { SAFE_FOR_JQUERY: true });
-}
-
-
 // Page initialization
 $(async () => {
-  browser.history.deleteUrl({ url: window.location.href });
-
   let extInfo = browser.runtime.getManifest();
+  let extVer = aeMozVersion.getMozVersion(extInfo.version);
+  $("#latest-ver").text(browser.i18n.getMessage("upgrade", extInfo.name));
+  $("#ver-subhead").text(browser.i18n.getMessage("aboutExtVer", extVer));
   let contribCTA = browser.i18n.getMessage("contribCTA", [extInfo.name, aeConst.DONATE_URL, aeConst.CONTRIB_URL]);
   $("#contrib-cta").html(sanitizeHTML(contribCTA));
+
+  let hostAppName = browser.i18n.getMessage("hostAppFx");
+  $("#hostapp-compat").text(browser.i18n.getMessage("hostAppCompat", hostAppName));
+  $("#whats-new-sync").html(sanitizeHTML(browser.i18n.getMessage("whatsNewSync", aeConst.SYNC_CLIPPINGS_DWNLD_URL)));
   
   $("#link-website > a").attr("href", extInfo.homepage_url);
   $("#link-amo > a").attr("href", aeConst.AMO_URL);
@@ -34,7 +33,7 @@ $(async () => {
 
 function gotoURL(aURL)
 {
-  browser.tabs.create({ url: aURL });
+  browser.tabs.create({url: aURL});
 }
 
 
@@ -42,6 +41,12 @@ async function closePage()
 {
   let tab = await browser.tabs.getCurrent();
   browser.tabs.remove(tab.id);
+}
+
+
+function sanitizeHTML(aHTMLStr)
+{
+  return DOMPurify.sanitize(aHTMLStr, {SAFE_FOR_JQUERY: true});
 }
 
 

@@ -22,10 +22,9 @@ async function init()
     await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, {height});
   }
 
-  browser.history.deleteUrl({ url: url.href });
-
   let platform = await browser.runtime.getPlatformInfo();
   document.body.dataset.os = platform.os;
+  aeInterxn.init(platform.os);
 
   window.addEventListener("keydown", aEvent => {
     if (aEvent.key == "Enter" || aEvent.key == "Escape") {
