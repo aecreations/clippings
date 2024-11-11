@@ -37,9 +37,6 @@ $(async () => {
     document.title = browser.i18n.getMessage("mnuCopyClipTxt");
   }
 
-  let params = new URLSearchParams(window.location.search);
-  gBrowserTabID = Number(params.get("tabID"));
-
   let platform = await browser.runtime.getPlatformInfo();
   document.body.dataset.os = gOS = platform.os;
   aeInterxn.init(platform.os);

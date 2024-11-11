@@ -238,13 +238,6 @@ aeImportExport._importFromJSONHelper = function (aParentFolderID, aImportedItems
         });
       }
       else {
-        // TEMPORARY - Clippings 6.x only
-        // Skip over separators in import data from Clippings 7.0 and newer.
-        if (item.sep) {
-          continue;
-        }
-        // END TEMPORARY
-
         let clipping = {};
         let shortcutKey = "";
 
