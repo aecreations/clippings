@@ -5,8 +5,8 @@
 
 
 const aeConst = Object.freeze({
-  DEBUG: false,
-  DEV_BUILD: false,
+  DEBUG: true,
+  DEV_BUILD: true,
 
   // Native messaging helper app
   SYNC_CLIPPINGS_APP_NAME: "syncClippings",
