@@ -475,11 +475,21 @@ function initDialogs()
 
     this.initKeyboardNavigation(focusableElts);
   };
+
+  gDialogs.syncClippings._initHyperlinksWithin = function (aEltStor)
+  {
+    this.find(aEltStor).find(".hyperlink").on("click", aEvent => {
+      aEvent.preventDefault();
+      gotoURL(aEvent.target.href);
+    });
+  };
   
   gDialogs.syncClippings.onFirstInit = function ()
   {
     $("#sync-conxn-error-detail").html(sanitizeHTML(browser.i18n.getMessage("errSyncConxnDetail")));
     $("#sync-fldr-curr-location").on("focus", aEvent => { aEvent.target.select() });
+
+    this._initHyperlinksWithin("#sync-conxn-error-detail");
   };
   
   gDialogs.syncClippings.onInit = async function ()
@@ -546,6 +556,7 @@ function initDialogs()
       $("#cmprs-sync-data-reqmt").html(
         browser.i18n.getMessage("cmprsSyncReqmt", aeConst.SYNC_CLIPPINGS_DWNLD_URL)
       ).show();
+      this._initHyperlinksWithin("#cmprs-sync-data-reqmt");
     }
       
     let prefs = await aePrefs.getAllPrefs();
@@ -902,7 +913,7 @@ $(window).on("contextmenu", aEvent => {
 
 function gotoURL(aURL)
 {
-  browser.tabs.create({ url: aURL });
+  browser.tabs.create({url: aURL});
 }
 
 
