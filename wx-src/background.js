@@ -468,13 +468,14 @@ async function init(aPrefs)
       });
     }
   }
-      
+
   let backupNotifcnAlarm = await browser.alarms.get("show-backup-notifcn");
   if (! backupNotifcnAlarm) {
-    // Check in 5 minutes whether to show backup reminder notification. Do this
-    // only on browser startup, not at every background script restart.
-    browser.alarms.create("show-startup-backup-notifcn", {
-      delayInMinutes: aeConst.BACKUP_REMINDER_DELAY_MS / 60000
+    // Show backup reminder notification in 5 minutes.
+    // Thereafter, calculate the next notification appearance every 15 minutes.
+    browser.alarms.create("show-backup-notifcn", {
+      delayInMinutes: aeConst.BACKUP_REMINDER_DELAY_MS / 60000,
+      periodInMinutes: aeConst.BACKUP_REMINDER_ALARM_INTERVAL_MINS,
     });
   }
 
@@ -1242,7 +1243,7 @@ async function resetAutoIncrPlaceholder(aPlaceholder)
 }
 
 
-async function showBackupNotification(aIsStartup=false)
+async function showBackupNotification()
 {
   let prefs = await aePrefs.getAllPrefs();
   if (prefs.backupRemFrequency == aeConst.BACKUP_REMIND_NEVER) {
@@ -1323,23 +1324,16 @@ async function showBackupNotification(aIsStartup=false)
         aePrefs.setPrefs({lastBackupRemDate: new Date().toString()});
       }
     }
-
-    setBackupNotificationInterval();
-  }
-  else {
-    if (aIsStartup) {
-      setBackupNotificationInterval();
-    }
   }
 }   
 
 
 function setBackupNotificationInterval()
 {
-  log("Clippings/wx: Setting backup notification interval (every 24 hours).");
+  log("Clippings/wx: Setting backup notification interval (every 15 minutes).");
 
   browser.alarms.create("show-backup-notifcn", {
-    periodInMinutes: aeConst.BACKUP_REMINDER_INTERVAL_MS / 60000
+    periodInMinutes: aeConst.BACKUP_REMINDER_ALARM_INTERVAL_MINS,
   });
 }
 
@@ -2315,10 +2309,6 @@ browser.alarms.onAlarm.addListener(aAlarm => {
   info(`Clippings/wx: Alarm "${aAlarm.name}" was triggered.`);
 
   switch (aAlarm.name) {
-  case "show-startup-backup-notifcn":
-    showBackupNotification(true);
-    break;
-
   case "show-backup-notifcn":
     showBackupNotification();
     break;

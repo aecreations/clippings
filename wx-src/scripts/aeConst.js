@@ -63,8 +63,8 @@ const aeConst = Object.freeze({
   BACKUP_REMIND_TWODAYS: 5,
   BACKUP_REMIND_THREEDAYS: 6,
   BACKUP_REMIND_FIVEDAYS: 7,
-  BACKUP_REMINDER_DELAY_MS: 300000,      // 5 minutes
-  BACKUP_REMINDER_INTERVAL_MS: 86400000, // 24 hours
+  BACKUP_REMINDER_DELAY_MS:    300000,  // 5 minutes
+  BACKUP_REMINDER_ALARM_INTERVAL_MINS: 15,  // 15 minutes
 
   // Sync Clippings Helper app update checking
   SYNC_HELPER_CHECK_UPDATE_URL: "https://aecreations.github.io/updates/syncClippings.json",
