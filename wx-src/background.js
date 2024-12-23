@@ -430,23 +430,28 @@ async function init(aPrefs)
 
   // Handle changes to Dark Mode system setting.
   gPrefersColorSchemeMedQry = window.matchMedia("(prefers-color-scheme: dark)");
-  handlePrefersColorSchemeChange(gPrefersColorSchemeMedQry);
+  await handlePrefersColorSchemeChange(gPrefersColorSchemeMedQry);
   gPrefersColorSchemeMedQry.addEventListener("change", handlePrefersColorSchemeChange);
   
   if (aPrefs.syncClippings) {
+    log("Clippings: init(): Sync Clippings turned on - initializing Synced Clippings folder.");
     let isSyncReadOnly = await isSyncedClippingsReadOnly();
     log(`Clippings/wx: It is ${isSyncReadOnly} that the sync data is read only.`);
-    
-    if (aPrefs._isInitialized) {
-      rebuildContextMenu();
+
+    // The context menu will be built when refreshing the sync data, via the
+    // onReloadFinish event handler of the Sync Clippings listener.
+    try {
+      await refreshSyncedClippings(true);
     }
-    else {
-      // The context menu will be built when refreshing the sync data.
-      refreshSyncedClippings(true);
+    catch (e) {
+      // Build the context menu anyway, since that won't happen in the above
+      // event handler due to the error.
+      rebuildContextMenu();
     }
     aePrefs.setPrefs({isSyncReadOnly});
   }
   else {
+    log("Clippings: init(): Sync Clippings turned off.");
     rebuildContextMenu();
   }
   
@@ -652,11 +657,8 @@ async function refreshSyncedClippings(aRebuildClippingsMenu)
       // This error occurs if Sync Clippings was uninstalled and then
       // reinstalled, but the sync folder location isn't set.
     }
-
-    if (aRebuildClippingsMenu) {
-      buildContextMenu(platform.os, prefs);
-    }
-    return;
+    
+    throw e;
   }
 
   log(`Clippings/wx: refreshSyncedClippings(): Sync Clippings Helper version: ${resp.appVersion}`);
@@ -683,7 +685,7 @@ async function refreshSyncedClippings(aRebuildClippingsMenu)
       else {
         console.error("Sync Clippings Helper is unable to read the sync file.  Error details:\n" + resp.details);
         showSyncReadErrorNotification();
-        return;
+        throw new Error("Sync Clippings Helper is unable to read the sync file: " + resp.details);
       }
     }
     else {
@@ -1161,6 +1163,8 @@ async function rebuildContextMenu()
 
 async function handlePrefersColorSchemeChange(aMediaQuery)
 {
+  log("Clippings: handlePrefersColorSchemeChange() event handler");
+
   getContextMenuData.isDarkMode = aMediaQuery.matches;
 
   let syncClippings = await aePrefs.getPref("syncClippings");
@@ -1168,7 +1172,7 @@ async function handlePrefersColorSchemeChange(aMediaQuery)
   // Changes to the Dark Mode setting only affects the Synced Clippings folder
   // menu icon.
   if (syncClippings) {
-    rebuildContextMenu();
+    await rebuildContextMenu();
   }
 }
 
@@ -2441,7 +2445,7 @@ browser.runtime.onMessage.addListener(aRequest => {
     return enableSyncClippings(aRequest.isEnabled);
 
   case "refresh-synced-clippings":
-    refreshSyncedClippings(aRequest.rebuildClippingsMenu);
+    refreshSyncedClippings(aRequest.rebuildClippingsMenu).catch(aErr => {});
     break;
     
   case "push-sync-fldr-updates":
