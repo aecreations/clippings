@@ -63,8 +63,7 @@ const aeConst = Object.freeze({
   BACKUP_REMIND_TWODAYS: 5,
   BACKUP_REMIND_THREEDAYS: 6,
   BACKUP_REMIND_FIVEDAYS: 7,
-  BACKUP_REMINDER_DELAY_MS:    300000,  // 5 minutes
-  BACKUP_REMINDER_ALARM_INTERVAL_MINS: 15,  // 15 minutes
+  BACKUP_REMINDER_DELAY_MS: 300000,  // 5 minutes
 
   // Sync Clippings Helper app update checking
   SYNC_HELPER_CHECK_UPDATE_URL: "https://aecreations.github.io/updates/syncClippings.json",
@@ -73,8 +72,10 @@ const aeConst = Object.freeze({
 
   // Post-upgrade notifications
   POST_UPGRADE_NOTIFCN_DELAY_MS: 60000, // 1 minute
-  POST_UPGRADE_NOTIFCN_INTERVAL_MS: 86400000, // 24 hours
+  POST_UPGRADE_NOTIFCN_FREQ_DAYS: 1,
   MAX_NUM_POST_UPGRADE_NOTIFICNS: 2,
+
+  DEFAULT_ALARM_INTERVAL_MINS: 15,
 
   // Errors returned by the native messaging app
   SYNC_ERROR_UNKNOWN: "Error: undefined",

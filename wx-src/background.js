@@ -469,7 +469,8 @@ async function init(aPrefs)
     if (!upgradeNotifcnAlarm && aPrefs.upgradeNotifCount > 0) {
       // Show post-update notification in 1 minute.
       browser.alarms.create("show-upgrade-notifcn", {
-        delayInMinutes: aeConst.POST_UPGRADE_NOTIFCN_DELAY_MS / 60000
+        delayInMinutes: aeConst.POST_UPGRADE_NOTIFCN_DELAY_MS / 60000,
+        periodInMinutes: aeConst.DEFAULT_ALARM_INTERVAL_MINS,
       });
     }
   }
@@ -480,7 +481,7 @@ async function init(aPrefs)
     // Thereafter, calculate the next notification appearance every 15 minutes.
     browser.alarms.create("show-backup-notifcn", {
       delayInMinutes: aeConst.BACKUP_REMINDER_DELAY_MS / 60000,
-      periodInMinutes: aeConst.BACKUP_REMINDER_ALARM_INTERVAL_MINS,
+      periodInMinutes: aeConst.DEFAULT_ALARM_INTERVAL_MINS,
     });
   }
 
@@ -1337,7 +1338,7 @@ function setBackupNotificationInterval()
   log("Clippings/wx: Setting backup notification interval (every 15 minutes).");
 
   browser.alarms.create("show-backup-notifcn", {
-    periodInMinutes: aeConst.BACKUP_REMINDER_ALARM_INTERVAL_MINS,
+    periodInMinutes: aeConst.DEFAULT_ALARM_INTERVAL_MINS,
   });
 }
 
@@ -1359,7 +1360,8 @@ async function setFirstWhatsNewNotificationDelay()
 
   // Show post-update notification in 1 minute.
   browser.alarms.create("show-upgrade-notifcn", {
-    delayInMinutes: aeConst.POST_UPGRADE_NOTIFCN_DELAY_MS / 60000
+    delayInMinutes: aeConst.POST_UPGRADE_NOTIFCN_DELAY_MS / 60000,
+    periodInMinutes: aeConst.DEFAULT_ALARM_INTERVAL_MINS,
   });
 }
 
@@ -1367,20 +1369,41 @@ async function setFirstWhatsNewNotificationDelay()
 async function showWhatsNewNotification()
 {
   let prefs = await aePrefs.getAllPrefs();
+
+  // Workaround to alarm sometimes not clearing.
+  if (prefs.upgradeNotifCount <= 0) {
+    let alarm = await browser.alarms.get("show-upgrade-notifcn");
+    if (!! alarm) {
+      warn("Clippings: showWhatsNewNotification(): Alarm failed to clear.  Attempting to clear it again and resetting prefs.");
+
+      let isCleared = await browser.alarms.clear("show-upgrade-notifcn");
+      if (! isCleared) {
+        warn(`Alarm "show-upgrade-notifcn" is still active and NOT cleared.`);
+      }
+      await aePrefs.setPrefs({
+        upgradeNotifCount: 0,
+        lastWhatsNewNotifcnDate: null,
+      });
+    }
+    return;
+  }
+
   let today = new Date();
   let lastWhatsNewNotifcnDate = prefs.lastWhatsNewNotifcnDate;
   if (typeof lastWhatsNewNotifcnDate == "string") {
     lastWhatsNewNotifcnDate = new Date(prefs.lastWhatsNewNotifcnDate);
+
+    log(`Clippings: showWhatsNewNotification(): Date of last post-upgrade notification: ${lastWhatsNewNotifcnDate}\nNumber of post-upgrade notification occurrences remaining: ${prefs.upgradeNotifCount}`);
   }
   else {
     // Default to the start of the Unix epoch to force notification to appear.
     lastWhatsNewNotifcnDate = new Date(0);
+
+    log("Clippings: showWhatsNewNotification(): Forcing post-upgrade notification to appear.");
   }
 
-  let notifcnIntvDays = aeConst.POST_UPGRADE_NOTIFCN_INTERVAL_MS / 86400000;
   let diff = new aeDateDiff(today, lastWhatsNewNotifcnDate);
-
-  if (diff.days >= notifcnIntvDays) {
+  if (diff.days >= aeConst.POST_UPGRADE_NOTIFCN_FREQ_DAYS) {
     log("Clippings/wx: Showing post-update notification.");
 
     let extName = browser.i18n.getMessage("extName");
@@ -1391,15 +1414,18 @@ async function showWhatsNewNotification()
       iconUrl: "img/notifIcon.svg",
     });
 
-    let upgradeNotifCount = await aePrefs.getPref("upgradeNotifCount");
-    upgradeNotifCount -= 1;
-
+    let upgradeNotifCount = Number(prefs.upgradeNotifCount) - 1;
     if (upgradeNotifCount == 0) {
       // Maximum number of occurrences is reached.
+      log("Maximum number of notification occurrences has been reached.");
       lastWhatsNewNotifcnDate = null;
-      await browser.alarms.clear("show-upgrade-notifcn");
+      let isCleared = await browser.alarms.clear("show-upgrade-notifcn");
+      if (! isCleared) {
+        warn(`Alarm "show-upgrade-notifcn" was NOT cleared.`);
+      }
     }
     else {
+      log(`There are now ${upgradeNotifCount} notification occurrences remaining.`);
       lastWhatsNewNotifcnDate = new Date().toString();
     }
     
