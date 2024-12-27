@@ -134,17 +134,17 @@ button, label {
 
 .inline-msgbar.msgbar-info {
     background-color: #ededf0;
-    color: black;
+    color: #15141a;
 }
 
 .inline-msgbar.msgbar-warning {
     background-color: #FFEBCD;
-    color: #3e2800;
+    color: #15141a;
 }
 
 .inline-msgbar.msgbar-success {
-    background-color: #30e60b;
-    color: #003706;
+    background-color: #D8EEDC;
+    color: #15141a;
 }
 
 .inline-msgbar.msgbar-info .inline-msgbar-icon {
@@ -160,7 +160,7 @@ button, label {
 }
 
 .inline-msgbar.msgbar-success .inline-msgbar-icon {
-    background-image: url("../img/check.png");
+    background-image: url("../img/check-filled.svg");
     background-size: contain;
     background-repeat: no-repeat;
 }

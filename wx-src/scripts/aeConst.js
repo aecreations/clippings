@@ -7,6 +7,7 @@
 const aeConst = Object.freeze({
   DEBUG: true,
   DEV_BUILD: true,
+  CURR_MAJOR_VER: "7.0",
 
   // Native messaging helper app
   SYNC_CLIPPINGS_APP_NAME: "syncClippings",
@@ -74,6 +75,8 @@ const aeConst = Object.freeze({
   POST_UPGRADE_NOTIFCN_DELAY_MS: 60000, // 1 minute
   POST_UPGRADE_NOTIFCN_FREQ_DAYS: 1,
   MAX_NUM_POST_UPGRADE_NOTIFICNS: 2,
+  VER_UPDATE_TYPE_MAJOR: 1,
+  VER_UPDATE_TYPE_MINOR: 2,
 
   DEFAULT_ALARM_INTERVAL_MINS: 15,
 

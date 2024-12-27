@@ -12,10 +12,11 @@ let gClippingMenuItemIDMap = {};
 let gFolderMenuItemIDMap = {};
 let gPrefersColorSchemeMedQry;
 let gIsFirstRun = false;
-let gIsMajorVerUpdate = false;
 let gSetDisplayOrderOnRootItems = false;
 let gIsReloadingSyncFldr = false;
 let gIsSyncPushFailed = false;
+let gVerUpdateType = null;
+let gShowUpdateBanner = false;
 
 let gClippingsListener = {
   _isImporting: false,
@@ -297,6 +298,22 @@ browser.runtime.onInstalled.addListener(async (aInstall) => {
     }
     else {
       log(`Clippings/wx: Updating from version ${oldVer} to ${currVer}`);
+
+      // Version updates can sometimes cause Clippings Sidebar to open
+      // automatically, even if the user had closed it (WebExtension bug?).
+      // When this happens, a message bar should appear in the sidebar,
+      // informing the user that Clippings was just updated.
+      // By default, any version update is classified as minor.
+      // Specific version updates are considered major if it such that a CTA
+      // button to the What's New page should appear in the message bar.
+      if (aeVersionCmp(oldVer, aeConst.CURR_MAJOR_VER) < 0) {
+        gVerUpdateType = aeConst.VER_UPDATE_TYPE_MAJOR;
+        setFirstWhatsNewNotificationDelay();
+      }
+      else {
+        gVerUpdateType = aeConst.VER_UPDATE_TYPE_MINOR;
+      }
+      gShowUpdateBanner = true;
     }
   }
 });
@@ -375,7 +392,6 @@ void async function ()
   if (! aePrefs.hasSanFranciscoPrefs(prefs)) {
     log("Initializing 7.0 user preferences and MV3 background script state persistence.");
     await aePrefs.setSanFranciscoPrefs(prefs);
-    gIsMajorVerUpdate = true;
 
     let platform = await browser.runtime.getPlatformInfo();
     if (platform.os == "linux") {
@@ -461,18 +477,13 @@ async function init(aPrefs)
     });
   }
 
-  if (gIsMajorVerUpdate && !gIsFirstRun) {
-    setFirstWhatsNewNotificationDelay();
-  }
-  else {
-    let upgradeNotifcnAlarm = await browser.alarms.get("show-upgrade-notifcn");
-    if (!upgradeNotifcnAlarm && aPrefs.upgradeNotifCount > 0) {
-      // Show post-update notification in 1 minute.
-      browser.alarms.create("show-upgrade-notifcn", {
-        delayInMinutes: aeConst.POST_UPGRADE_NOTIFCN_DELAY_MS / 60000,
-        periodInMinutes: aeConst.DEFAULT_ALARM_INTERVAL_MINS,
-      });
-    }
+  let upgradeNotifcnAlarm = await browser.alarms.get("show-upgrade-notifcn");
+  if (!upgradeNotifcnAlarm && aPrefs.upgradeNotifCount > 0) {
+    // Show post-update notification in 1 minute.
+    browser.alarms.create("show-upgrade-notifcn", {
+      delayInMinutes: aeConst.POST_UPGRADE_NOTIFCN_DELAY_MS / 60000,
+      periodInMinutes: aeConst.DEFAULT_ALARM_INTERVAL_MINS,
+    });
   }
 
   let backupNotifcnAlarm = await browser.alarms.get("show-backup-notifcn");
@@ -1373,7 +1384,7 @@ async function showWhatsNewNotification()
   // Workaround to alarm sometimes not clearing.
   if (prefs.upgradeNotifCount <= 0) {
     let alarm = await browser.alarms.get("show-upgrade-notifcn");
-    if (!! alarm) {
+    if (!!alarm) {
       warn("Clippings: showWhatsNewNotification(): Alarm failed to clear.  Attempting to clear it again and resetting prefs.");
 
       let isCleared = await browser.alarms.clear("show-upgrade-notifcn");
@@ -2536,6 +2547,24 @@ browser.runtime.onMessage.addListener(aRequest => {
 
   case "open-sidebar-help":
     openSidebarHelpDlg();
+    break;
+
+  case "whats-new-pg-opened":
+    browser.alarms.clear("show-upgrade-notifcn");
+    gShowUpdateBanner = false;
+    break;
+
+  case "get-ver-update-info":
+    let showBanner = false;
+    if (gVerUpdateType && gShowUpdateBanner) {
+      // Only show the sidebar post-update banner once.
+      gShowUpdateBanner = false;
+      showBanner = true;
+    }
+    return Promise.resolve({
+      verUpdateType: gVerUpdateType,
+      showBanner,
+    });
     break;
 
   default:

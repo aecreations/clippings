@@ -4,6 +4,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
+let gWndID, gTabID;
+
+
 // Page initialization
 $(async () => {
   let extInfo = browser.runtime.getManifest();
@@ -28,6 +31,15 @@ $(async () => {
     aEvent.preventDefault();
     gotoURL(aEvent.target.href);
   });
+
+  let [currWnd, tabs] = await Promise.all([
+    browser.windows.getCurrent(),
+    browser.tabs.query({active: true, currentWindow: true}),
+  ]);
+  gWndID = currWnd.id;
+  gTabID = tabs[0].id;
+
+  browser.runtime.sendMessage({msgID: "whats-new-pg-opened"});
 });
 
 
@@ -48,6 +60,17 @@ function sanitizeHTML(aHTMLStr)
 {
   return DOMPurify.sanitize(aHTMLStr, {SAFE_FOR_JQUERY: true});
 }
+
+
+browser.runtime.onMessage.addListener(aRequest => {
+  if (aRequest.msgID == "ping-whats-new-pg") {
+    let resp = {
+      wndID: gWndID,
+      tabID: gTabID,
+    };
+    return Promise.resolve(resp);
+  }
+});
 
 
 $(window).on("contextmenu", aEvent => {
