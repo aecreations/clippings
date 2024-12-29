@@ -2552,6 +2552,12 @@ browser.runtime.onMessage.addListener(aRequest => {
   case "whats-new-pg-opened":
     browser.alarms.clear("show-upgrade-notifcn");
     gShowUpdateBanner = false;
+    // Clearing the alarm may fail.  Reset prefs to their defaults to ensure
+    // that the What's New notification doesn't appear unnecessarily.
+    aePrefs.setPrefs({
+      upgradeNotifCount: 0,
+      lastWhatsNewNotifcnDate: null,
+    });
     break;
 
   case "get-ver-update-info":
