@@ -304,6 +304,10 @@ button, label {
     background-image: var(--url-toolbar-btn-open-clippings-mgr-active);
 }
 
+body[data-os="mac"][data-locale="de"] #toolbar > #open-clippings-mgr {
+    letter-spacing: -0.3px;
+}
+
 #toolbar > #help {
     background-image: var(--url-toolbar-btn-help);
 }
