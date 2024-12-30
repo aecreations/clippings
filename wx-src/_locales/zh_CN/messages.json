@@ -1295,6 +1295,18 @@
   "aboutSyncFileSize": {
     "message": "同步文件大小："
   },
+  "verMinorUpd": {
+    "message": "Clippings 更新了！",
+    "description": "Minor version update message bar in Clippings Sidebar"
+  },
+  "verUpgr": {
+    "message": "Clippings 升级了！",
+    "description": "Major version upgrade message bar in Clippings Sidebar"
+  },
+  "btnWhatsNew": {
+    "message": "更新说明",
+    "description": "Button in the major version upgrade message bar"
+  },
   "upgradeNotifcn": {
     "message": "最近更新了 $1 ！点击这里查看最新内容。",
     "description": "Post-upgrade notification text, with placeholder for extension name (Clippings or Clippings for Thunderbird)"
