@@ -1297,15 +1297,15 @@
   },
   "verMinorUpd": {
     "message": "Clippings 更新了！",
-    "description": "Minor version update message bar in Clippings Sidebar"
+    "description": "Minor version update message bar in Clippings Sidebar (Firefox only)"
   },
   "verUpgr": {
     "message": "Clippings 升级了！",
-    "description": "Major version upgrade message bar in Clippings Sidebar"
+    "description": "Major version upgrade message bar in Clippings Sidebar (Firefox only)"
   },
   "btnWhatsNew": {
     "message": "更新说明",
-    "description": "Button in the major version upgrade message bar"
+    "description": "Button in the major version upgrade message bar in Clippings Sidebar (Firefox only)"
   },
   "upgradeNotifcn": {
     "message": "最近更新了 $1 ！点击这里查看最新内容。",
