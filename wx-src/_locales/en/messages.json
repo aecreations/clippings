@@ -1653,6 +1653,21 @@
     "message": "Sync file size:"
   },
 
+  "verMinorUpd": {
+    "message": "Clippings was updated!",
+    "description": "Minor version update message bar in Clippings Sidebar"
+  },
+
+  "verUpgr": {
+    "message": "Clippings was upgraded!",
+    "description": "Major version upgrade message bar in Clippings Sidebar"
+  },
+
+  "btnWhatsNew": {
+    "message": "What's New",
+    "description": "Button in the major version upgrade message bar"
+  },
+
   "upgradeNotifcn": {
     "message": "$1 was recently updated! Click here to see what's new.",
     "description": "Post-upgrade notification text, with placeholder for extension name (Clippings or Clippings for Thunderbird)"

@@ -877,7 +877,7 @@ body[data-locale|="zh"] #sync-clippings-dlg #sync-fldr-picker #browse-sync-fldr 
 }
 
 body[data-locale="de"] #sync-clippings-dlg #sync-helper-app-update-check + label {
-    letter-spacing: -0.35px;
+    letter-spacing: -0.75px;
 }
 
 body[data-locale|="es"] #sync-clippings-dlg #sync-helper-app-update-check + label {

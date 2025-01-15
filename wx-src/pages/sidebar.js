@@ -432,6 +432,12 @@ $(async () => {
   aeNavigator.init(wnd.id);
 
   $("#help").attr("title", browser.i18n.getMessage("tbHelp"));
+
+  // Show update message bar if Clippings was just updated.
+  let {verUpdateType, showBanner} = await browser.runtime.sendMessage({msgID: "get-ver-update-info"});
+  if (verUpdateType && showBanner) {
+    showVersionUpdateMsgBar(verUpdateType);
+  }
 });
 
 
@@ -472,6 +478,27 @@ function initDialogs()
   };
   
   gInitErrorMsgBox = new aeDialog("#init-error-msgbox");
+}
+
+
+async function showVersionUpdateMsgBar(aVersionUpdateType)
+{
+  if (aVersionUpdateType == aeConst.VER_UPDATE_TYPE_MAJOR) {
+    // Check if What's New page is already open.
+    let isWhatsNewPgOpen = false;
+    try {
+      let resp = await browser.runtime.sendMessage({msgID: "ping-whats-new-pg"});
+      isWhatsNewPgOpen = !!resp;
+    }
+    catch {}
+
+    if (! isWhatsNewPgOpen) {
+      showMessageBar("#upgrade-msgbar");
+    }
+  }
+  else {
+    showMessageBar("#update-msgbar");
+  }
 }
 
 
@@ -1000,7 +1027,7 @@ browser.storage.onChanged.addListener((aChanges, aAreaName) => {
 
 
 // Toolbar event handlers
-$("#open-clippings-mgr").on("click", aEvent => {
+$("#open-clippings-mgr, #welcome-clippings-mgr").on("click", aEvent => {
   gCmd.openClippingsManager();
 });
 $("#help").on("click", aEvent => {
@@ -1013,9 +1040,8 @@ $(".inline-msgbar > .inline-msgbar-dismiss").on("click", aEvent => {
   hideMessageBar(`#${msgBarID}`);
 });
 
-
-$("#welcome-clippings-mgr").on("click", aEvent => {
-  gCmd.openClippingsManager();
+$("#show-whats-new").on("click", aEvent => {
+  browser.tabs.create({url: browser.runtime.getURL("pages/whatsnew.html")});
 });
 
 

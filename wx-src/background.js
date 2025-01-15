@@ -12,10 +12,11 @@ let gClippingMenuItemIDMap = {};
 let gFolderMenuItemIDMap = {};
 let gPrefersColorSchemeMedQry;
 let gIsFirstRun = false;
-let gIsMajorVerUpdate = false;
 let gSetDisplayOrderOnRootItems = false;
 let gIsReloadingSyncFldr = false;
 let gIsSyncPushFailed = false;
+let gVerUpdateType = null;
+let gShowUpdateBanner = false;
 
 let gClippingsListener = {
   _isImporting: false,
@@ -297,6 +298,22 @@ browser.runtime.onInstalled.addListener(async (aInstall) => {
     }
     else {
       log(`Clippings/wx: Updating from version ${oldVer} to ${currVer}`);
+
+      // Version updates can sometimes cause Clippings Sidebar to open
+      // automatically, even if the user had closed it (WebExtension bug?).
+      // When this happens, a message bar should appear in the sidebar,
+      // informing the user that Clippings was just updated.
+      // By default, any version update is classified as minor.
+      // Specific version updates are considered major if it such that a CTA
+      // button to the What's New page should appear in the message bar.
+      if (aeVersionCmp(oldVer, aeConst.CURR_MAJOR_VER) < 0) {
+        gVerUpdateType = aeConst.VER_UPDATE_TYPE_MAJOR;
+        setFirstWhatsNewNotificationDelay();
+      }
+      else {
+        gVerUpdateType = aeConst.VER_UPDATE_TYPE_MINOR;
+      }
+      gShowUpdateBanner = true;
     }
   }
 });
@@ -375,7 +392,6 @@ void async function ()
   if (! aePrefs.hasSanFranciscoPrefs(prefs)) {
     log("Initializing 7.0 user preferences and MV3 background script state persistence.");
     await aePrefs.setSanFranciscoPrefs(prefs);
-    gIsMajorVerUpdate = true;
 
     let platform = await browser.runtime.getPlatformInfo();
     if (platform.os == "linux") {
@@ -430,23 +446,28 @@ async function init(aPrefs)
 
   // Handle changes to Dark Mode system setting.
   gPrefersColorSchemeMedQry = window.matchMedia("(prefers-color-scheme: dark)");
-  handlePrefersColorSchemeChange(gPrefersColorSchemeMedQry);
+  await handlePrefersColorSchemeChange(gPrefersColorSchemeMedQry);
   gPrefersColorSchemeMedQry.addEventListener("change", handlePrefersColorSchemeChange);
   
   if (aPrefs.syncClippings) {
+    log("Clippings: init(): Sync Clippings turned on - initializing Synced Clippings folder.");
     let isSyncReadOnly = await isSyncedClippingsReadOnly();
     log(`Clippings/wx: It is ${isSyncReadOnly} that the sync data is read only.`);
-    
-    if (aPrefs._isInitialized) {
-      rebuildContextMenu();
+
+    // The context menu will be built when refreshing the sync data, via the
+    // onReloadFinish event handler of the Sync Clippings listener.
+    try {
+      await refreshSyncedClippings(true);
     }
-    else {
-      // The context menu will be built when refreshing the sync data.
-      refreshSyncedClippings(true);
+    catch (e) {
+      // Build the context menu anyway, since that won't happen in the above
+      // event handler due to the error.
+      rebuildContextMenu();
     }
     aePrefs.setPrefs({isSyncReadOnly});
   }
   else {
+    log("Clippings: init(): Sync Clippings turned off.");
     rebuildContextMenu();
   }
   
@@ -456,25 +477,22 @@ async function init(aPrefs)
     });
   }
 
-  if (gIsMajorVerUpdate && !gIsFirstRun) {
-    setFirstWhatsNewNotificationDelay();
+  let upgradeNotifcnAlarm = await browser.alarms.get("show-upgrade-notifcn");
+  if (!upgradeNotifcnAlarm && aPrefs.upgradeNotifCount > 0) {
+    // Show post-update notification in 1 minute.
+    browser.alarms.create("show-upgrade-notifcn", {
+      delayInMinutes: aeConst.POST_UPGRADE_NOTIFCN_DELAY_MS / 60000,
+      periodInMinutes: aeConst.DEFAULT_ALARM_INTERVAL_MINS,
+    });
   }
-  else {
-    let upgradeNotifcnAlarm = await browser.alarms.get("show-upgrade-notifcn");
-    if (!upgradeNotifcnAlarm && aPrefs.upgradeNotifCount > 0) {
-      // Show post-update notification in 1 minute.
-      browser.alarms.create("show-upgrade-notifcn", {
-        delayInMinutes: aeConst.POST_UPGRADE_NOTIFCN_DELAY_MS / 60000
-      });
-    }
-  }
-      
+
   let backupNotifcnAlarm = await browser.alarms.get("show-backup-notifcn");
   if (! backupNotifcnAlarm) {
-    // Check in 5 minutes whether to show backup reminder notification. Do this
-    // only on browser startup, not at every background script restart.
-    browser.alarms.create("show-startup-backup-notifcn", {
-      delayInMinutes: aeConst.BACKUP_REMINDER_DELAY_MS / 60000
+    // Show backup reminder notification in 5 minutes.
+    // Thereafter, calculate the next notification appearance every 15 minutes.
+    browser.alarms.create("show-backup-notifcn", {
+      delayInMinutes: aeConst.BACKUP_REMINDER_DELAY_MS / 60000,
+      periodInMinutes: aeConst.DEFAULT_ALARM_INTERVAL_MINS,
     });
   }
 
@@ -651,11 +669,8 @@ async function refreshSyncedClippings(aRebuildClippingsMenu)
       // This error occurs if Sync Clippings was uninstalled and then
       // reinstalled, but the sync folder location isn't set.
     }
-
-    if (aRebuildClippingsMenu) {
-      buildContextMenu(platform.os, prefs);
-    }
-    return;
+    
+    throw e;
   }
 
   log(`Clippings/wx: refreshSyncedClippings(): Sync Clippings Helper version: ${resp.appVersion}`);
@@ -682,7 +697,7 @@ async function refreshSyncedClippings(aRebuildClippingsMenu)
       else {
         console.error("Sync Clippings Helper is unable to read the sync file.  Error details:\n" + resp.details);
         showSyncReadErrorNotification();
-        return;
+        throw new Error("Sync Clippings Helper is unable to read the sync file: " + resp.details);
       }
     }
     else {
@@ -1160,6 +1175,8 @@ async function rebuildContextMenu()
 
 async function handlePrefersColorSchemeChange(aMediaQuery)
 {
+  log("Clippings: handlePrefersColorSchemeChange() event handler");
+
   getContextMenuData.isDarkMode = aMediaQuery.matches;
 
   let syncClippings = await aePrefs.getPref("syncClippings");
@@ -1167,7 +1184,7 @@ async function handlePrefersColorSchemeChange(aMediaQuery)
   // Changes to the Dark Mode setting only affects the Synced Clippings folder
   // menu icon.
   if (syncClippings) {
-    rebuildContextMenu();
+    await rebuildContextMenu();
   }
 }
 
@@ -1242,7 +1259,7 @@ async function resetAutoIncrPlaceholder(aPlaceholder)
 }
 
 
-async function showBackupNotification(aIsStartup=false)
+async function showBackupNotification()
 {
   let prefs = await aePrefs.getAllPrefs();
   if (prefs.backupRemFrequency == aeConst.BACKUP_REMIND_NEVER) {
@@ -1323,23 +1340,16 @@ async function showBackupNotification(aIsStartup=false)
         aePrefs.setPrefs({lastBackupRemDate: new Date().toString()});
       }
     }
-
-    setBackupNotificationInterval();
-  }
-  else {
-    if (aIsStartup) {
-      setBackupNotificationInterval();
-    }
   }
 }   
 
 
 function setBackupNotificationInterval()
 {
-  log("Clippings/wx: Setting backup notification interval (every 24 hours).");
+  log("Clippings/wx: Setting backup notification interval (every 15 minutes).");
 
   browser.alarms.create("show-backup-notifcn", {
-    periodInMinutes: aeConst.BACKUP_REMINDER_INTERVAL_MS / 60000
+    periodInMinutes: aeConst.DEFAULT_ALARM_INTERVAL_MINS,
   });
 }
 
@@ -1361,7 +1371,8 @@ async function setFirstWhatsNewNotificationDelay()
 
   // Show post-update notification in 1 minute.
   browser.alarms.create("show-upgrade-notifcn", {
-    delayInMinutes: aeConst.POST_UPGRADE_NOTIFCN_DELAY_MS / 60000
+    delayInMinutes: aeConst.POST_UPGRADE_NOTIFCN_DELAY_MS / 60000,
+    periodInMinutes: aeConst.DEFAULT_ALARM_INTERVAL_MINS,
   });
 }
 
@@ -1369,20 +1380,41 @@ async function setFirstWhatsNewNotificationDelay()
 async function showWhatsNewNotification()
 {
   let prefs = await aePrefs.getAllPrefs();
+
+  // Workaround to alarm sometimes not clearing.
+  if (prefs.upgradeNotifCount <= 0) {
+    let alarm = await browser.alarms.get("show-upgrade-notifcn");
+    if (!!alarm) {
+      warn("Clippings: showWhatsNewNotification(): Alarm failed to clear.  Attempting to clear it again and resetting prefs.");
+
+      let isCleared = await browser.alarms.clear("show-upgrade-notifcn");
+      if (! isCleared) {
+        warn(`Alarm "show-upgrade-notifcn" is still active and NOT cleared.`);
+      }
+      await aePrefs.setPrefs({
+        upgradeNotifCount: 0,
+        lastWhatsNewNotifcnDate: null,
+      });
+    }
+    return;
+  }
+
   let today = new Date();
   let lastWhatsNewNotifcnDate = prefs.lastWhatsNewNotifcnDate;
   if (typeof lastWhatsNewNotifcnDate == "string") {
     lastWhatsNewNotifcnDate = new Date(prefs.lastWhatsNewNotifcnDate);
+
+    log(`Clippings: showWhatsNewNotification(): Date of last post-upgrade notification: ${lastWhatsNewNotifcnDate}\nNumber of post-upgrade notification occurrences remaining: ${prefs.upgradeNotifCount}`);
   }
   else {
     // Default to the start of the Unix epoch to force notification to appear.
     lastWhatsNewNotifcnDate = new Date(0);
+
+    log("Clippings: showWhatsNewNotification(): Forcing post-upgrade notification to appear.");
   }
 
-  let notifcnIntvDays = aeConst.POST_UPGRADE_NOTIFCN_INTERVAL_MS / 86400000;
   let diff = new aeDateDiff(today, lastWhatsNewNotifcnDate);
-
-  if (diff.days >= notifcnIntvDays) {
+  if (diff.days >= aeConst.POST_UPGRADE_NOTIFCN_FREQ_DAYS) {
     log("Clippings/wx: Showing post-update notification.");
 
     let extName = browser.i18n.getMessage("extName");
@@ -1393,15 +1425,18 @@ async function showWhatsNewNotification()
       iconUrl: "img/notifIcon.svg",
     });
 
-    let upgradeNotifCount = await aePrefs.getPref("upgradeNotifCount");
-    upgradeNotifCount -= 1;
-
+    let upgradeNotifCount = Number(prefs.upgradeNotifCount) - 1;
     if (upgradeNotifCount == 0) {
       // Maximum number of occurrences is reached.
+      log("Maximum number of notification occurrences has been reached.");
       lastWhatsNewNotifcnDate = null;
-      await browser.alarms.clear("show-upgrade-notifcn");
+      let isCleared = await browser.alarms.clear("show-upgrade-notifcn");
+      if (! isCleared) {
+        warn(`Alarm "show-upgrade-notifcn" was NOT cleared.`);
+      }
     }
     else {
+      log(`There are now ${upgradeNotifCount} notification occurrences remaining.`);
       lastWhatsNewNotifcnDate = new Date().toString();
     }
     
@@ -2315,10 +2350,6 @@ browser.alarms.onAlarm.addListener(aAlarm => {
   info(`Clippings/wx: Alarm "${aAlarm.name}" was triggered.`);
 
   switch (aAlarm.name) {
-  case "show-startup-backup-notifcn":
-    showBackupNotification(true);
-    break;
-
   case "show-backup-notifcn":
     showBackupNotification();
     break;
@@ -2451,7 +2482,7 @@ browser.runtime.onMessage.addListener(aRequest => {
     return enableSyncClippings(aRequest.isEnabled);
 
   case "refresh-synced-clippings":
-    refreshSyncedClippings(aRequest.rebuildClippingsMenu);
+    refreshSyncedClippings(aRequest.rebuildClippingsMenu).catch(aErr => {});
     break;
     
   case "push-sync-fldr-updates":
@@ -2516,6 +2547,30 @@ browser.runtime.onMessage.addListener(aRequest => {
 
   case "open-sidebar-help":
     openSidebarHelpDlg();
+    break;
+
+  case "whats-new-pg-opened":
+    browser.alarms.clear("show-upgrade-notifcn");
+    gShowUpdateBanner = false;
+    // Clearing the alarm may fail.  Reset prefs to their defaults to ensure
+    // that the What's New notification doesn't appear unnecessarily.
+    aePrefs.setPrefs({
+      upgradeNotifCount: 0,
+      lastWhatsNewNotifcnDate: null,
+    });
+    break;
+
+  case "get-ver-update-info":
+    let showBanner = false;
+    if (gVerUpdateType && gShowUpdateBanner) {
+      // Only show the sidebar post-update banner once.
+      gShowUpdateBanner = false;
+      showBanner = true;
+    }
+    return Promise.resolve({
+      verUpdateType: gVerUpdateType,
+      showBanner,
+    });
     break;
 
   default:
