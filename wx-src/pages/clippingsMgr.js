@@ -5096,11 +5096,6 @@ function initDialogs()
       }
     });
 
-    $("#copy-instead-of-move").prop("checked", false).prop("disabled", false);
-    $("#move-dlg-action-btn").text(browser.i18n.getMessage("btnMove"));
-    $("#move-error").text("");
-    this.selectedFldrNode = null;
-
     let activeNode = aeClippingsTree.getTree().activeNode;
     let nodeID = parseInt(activeNode.key);
     let isSyncedItem;
@@ -5197,6 +5192,13 @@ function initDialogs()
 
     this.resetTree();
     this.close();
+  };
+
+  gDialogs.moveTo.onUnload = function ()
+  {
+    $("#copy-instead-of-move").prop("checked", false).prop("disabled", false);
+    $("#move-dlg-action-btn").text(browser.i18n.getMessage("btnMove"));
+    $("#move-error").text("");
   };
 
   gDialogs.showOnlySyncedItemsReminder = new aeDialog("#show-only-synced-items-reminder");
