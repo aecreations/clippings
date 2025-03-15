@@ -10,9 +10,8 @@ let gWndID, gTabID;
 // Page initialization
 $(async () => {
   let extInfo = browser.runtime.getManifest();
-  let extVer = aeMozVersion.getMozVersion(extInfo.version);
   $("#latest-ver").text(browser.i18n.getMessage("upgrade", extInfo.name));
-  $("#ver-subhead").text(browser.i18n.getMessage("aboutExtVer", extVer));
+  $("#ver-subhead").text(browser.i18n.getMessage("aboutExtVer", aeConst.CURR_MAJOR_VER));
   let contribCTA = browser.i18n.getMessage("contribCTA", [extInfo.name, aeConst.DONATE_URL, aeConst.CONTRIB_URL]);
   $("#contrib-cta").html(sanitizeHTML(contribCTA));
 
