@@ -410,6 +410,10 @@ void async function ()
     }
   }
 
+  if (! aePrefs.hasEmbarcaderoPrefs(prefs)) {
+    await aePrefs.setEmbarcaderoPrefs(prefs);
+  }
+
   if (prefs.clippingsMgrDetailsPane) {
     aePrefs.setPrefs({clippingsMgrAutoShowDetailsPane: false});
   }
@@ -688,10 +692,19 @@ async function refreshSyncedClippings(aRebuildClippingsMenu)
   resp = await browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, natMsg);
 
   if (resp) {
+    let dataSizeB;
+    
     if (isCompressedSyncData) {
       log("Clippings/wx: refreshSyncedClippings(): Received Sync Clippings Helper 2.0 response (base64-encoded gzip format)");
       if (resp.status == "ok") {
         let zipData = aeCompress.base64ToBytes(resp.data);
+
+        dataSizeB = zipData.length;
+        if (aeConst.DEBUG || prefs.logSyncDataSize) {
+          let dataSizeKB = dataSizeB / 1024;
+          console.info(`Clippings: Size of compressed sync data from Sync Clippings Helper: ${dataSizeKB.toPrecision(2)} KiB`);
+        }
+
         syncJSONData = await aeCompress.decompress(zipData);
       }
       else {
@@ -702,6 +715,13 @@ async function refreshSyncedClippings(aRebuildClippingsMenu)
     }
     else {
       log("Clippings/wx: refreshSyncedClippings(): Received Sync Clippings Helper 1.x response");
+
+      dataSizeB = new TextEncoder().encode(resp).length;
+      let dataSizeKB = dataSizeB / 1024;
+      if (aeConst.DEBUG || prefs.logSyncDataSize) {
+        console.info(`Clippings: Size of sync data from Sync Clippings Helper: ${dataSizeKB.toPrecision(2)} KiB`);
+      }
+
       syncJSONData = resp;
     }
   }
