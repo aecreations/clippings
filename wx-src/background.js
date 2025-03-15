@@ -2400,13 +2400,11 @@ browser.notifications.onClicked.addListener(aNotifID => {
 browser.storage.onChanged.addListener((aChanges, aAreaName) => {
   let changedPrefs = Object.keys(aChanges);
 
-  for (let pref of changedPrefs) {
-    if (pref == "autoIncrPlcHldrStartVal") {
-      aeClippingSubst.setAutoIncrementStartValue(aChanges[pref].newValue);
-    }
-    else if (pref == "browserAction") {
-      localStorage.setItem("browserAction", aChanges[pref].newValue);
-    }
+  if (changedPrefs.includes("autoIncrPlcHldrStartVal")) {
+    aeClippingSubst.setAutoIncrementStartValue(aChanges["autoIncrPlcHldrStartVal"].newValue);
+  }
+  if (changedPrefs.includes("browserAction")) {
+    localStorage.setItem("browserAction", aChanges["browserAction"].newValue);
   }
 });
 
