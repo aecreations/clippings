@@ -695,6 +695,7 @@ async function refreshSyncedClippings(aRebuildClippingsMenu)
   catch (e) {
     // Error thrown if the sync data size is too big.
     console.error(e);
+    return;
   }
 
   if (resp) {
