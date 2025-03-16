@@ -5198,7 +5198,7 @@ function initDialogs()
   {
     $("#copy-instead-of-move").prop("checked", false).prop("disabled", false);
     $("#move-dlg-action-btn").text(browser.i18n.getMessage("btnMove"));
-    $("#move-error").text("");
+    $("#move-error").text('');
   };
 
   gDialogs.showOnlySyncedItemsReminder = new aeDialog("#show-only-synced-items-reminder");
