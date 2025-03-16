@@ -689,7 +689,13 @@ async function refreshSyncedClippings(aRebuildClippingsMenu)
   log(`Clippings/wx: refreshSyncedClippings(): Retrieving synced clippings from Sync Clippings Helper by sending native message "${natMsg.msgID}"`);
 
   let syncJSONData = "";
-  resp = await browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, natMsg);
+  try {
+    resp = await browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, natMsg);
+  }
+  catch (e) {
+    // Error thrown if the sync data size is too big.
+    console.error(e);
+  }
 
   if (resp) {
     let dataSizeB;
@@ -702,7 +708,7 @@ async function refreshSyncedClippings(aRebuildClippingsMenu)
         dataSizeB = zipData.length;
         if (aeConst.DEBUG || prefs.logSyncDataSize) {
           let dataSizeKB = dataSizeB / 1024;
-          console.info(`Clippings: Size of compressed sync data from Sync Clippings Helper: ${dataSizeKB.toPrecision(2)} KiB`);
+          console.info(`Clippings: Size of compressed sync data from Sync Clippings Helper: ${dataSizeKB.toFixed(2)} KiB`);
         }
 
         syncJSONData = await aeCompress.decompress(zipData);
@@ -719,7 +725,7 @@ async function refreshSyncedClippings(aRebuildClippingsMenu)
       dataSizeB = new TextEncoder().encode(resp).length;
       let dataSizeKB = dataSizeB / 1024;
       if (aeConst.DEBUG || prefs.logSyncDataSize) {
-        console.info(`Clippings: Size of sync data from Sync Clippings Helper: ${dataSizeKB.toPrecision(2)} KiB`);
+        console.info(`Clippings: Size of sync data from Sync Clippings Helper: ${dataSizeKB.toFixed(2)} KiB`);
       }
 
       syncJSONData = resp;
