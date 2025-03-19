@@ -20,6 +20,18 @@ let aeCompress = {
     return new TextDecoder().decode(stringBytes);
   },
 
+  async compress(aString)
+  {
+    let stream = new Blob([aString]).stream();
+    let compressedStream = stream.pipeThrough(new CompressionStream("gzip"));
+
+    let chunks = [];
+    for await (let chunk of compressedStream) {
+      chunks.push(chunk);
+    }
+    return await this._concatUint8Arrays(chunks);
+  },
+
 
   // Utility function
   base64ToBytes(aBase64Data) {

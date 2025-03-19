@@ -748,6 +748,7 @@ function unsetClippingsUnchangedFlag()
 
 function accept(aEvent)
 {
+  let abortAccept = false;
   let shortcutKeyMenu = $("#clipping-key")[0];
   let shortcutKey = "";
 
@@ -811,8 +812,21 @@ function accept(aEvent)
       }
       return null;
 
-    }).then(aSyncData => {
+    }).then(async (aSyncData) => {
       if (aSyncData) {
+        // Check that the sync data doesn't exceed 1 MiB.
+        let rawJSONData = JSON.stringify(aSyncData);
+        if (await aeClippings.isSyncDataSizeMaxExceeded(rawJSONData, gPrefs.compressSyncData)) {
+          errorMsgBox.onInit = function () {
+            let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
+            errMsgElt.text(browser.i18n.getMessage("syncDataTooBig"));
+          };
+          errorMsgBox.showModal();
+
+          abortAccept = true;
+          return null;
+        }
+        
         let natMsg = {
           msgID: "set-synced-clippings",
           syncData: aSyncData.userClippingsRoot,
@@ -829,6 +843,10 @@ function accept(aEvent)
       if (aResp) {
         log("Clippings/wx::new.js: accept(): Response from the Sync Clippings helper app:");
         log(aResp);
+      }
+
+      if (abortAccept) {
+        return;
       }
 
       if (gPrefs.clippingsMgrAutoShowDetailsPane && isClippingOptionsSet()) {

@@ -95,5 +95,31 @@ let aeClippings = {
   {
     let rv = aText.search(/<[a-z1-6]+( [a-z]+(\="?.*"?)?)*>/i) != -1;
     return rv;
-  }
+  },
+
+
+  async isSyncDataSizeMaxExceeded(aSyncDataJSONString, aIsCompressed)
+  {
+    let rv = false;
+    let dataSizeB;
+    
+    if (aIsCompressed) {
+      let zippedData = await aeCompress.compress(aSyncDataJSONString);
+      let b64encoded = zippedData.toBase64();  // Requires Firefox 133+
+      dataSizeB = b64encoded.length;
+
+      if (aeConst.DEBUG) {
+        let dataSizeKB = dataSizeB / 1024;
+        console.info(`Clippings::aeClippings.isSyncDataSizeMaxExceeded(): Compressed sync data size: ${dataSizeB} bytes (${dataSizeKB} KiB).`);
+      }
+    }
+    else {
+      dataSizeB = new TextEncoder().encode(aSyncDataJSONString).length;
+    }
+
+    if (dataSizeB >= aeConst.MAX_SYNC_DATA_SIZE_BYTES) {
+      rv = true;
+    }
+    return rv;
+  },
 };

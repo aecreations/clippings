@@ -11,6 +11,7 @@ const aeConst = Object.freeze({
 
   // Native messaging helper app
   SYNC_CLIPPINGS_APP_NAME: "syncClippings",
+  MAX_SYNC_DATA_SIZE_BYTES: 1048576,
 
   // Browser action
   BRWSACT_OPEN_CLIPPINGS_MGR: 1,

@@ -787,6 +787,15 @@ async function pushSyncFolderUpdates()
   aeImportExport.setDatabase(clippingsDB);
 
   let syncData = await aeImportExport.exportToJSON(true, true, prefs.syncFolderID, false, true, true);
+
+  // Check that the sync data doesn't exceed 1 MiB.
+  // This is the limit for data sent from a native messaging app to an extension.
+  let rawJSONData = JSON.stringify(syncData);
+  if (await aeClippings.isSyncDataSizeMaxExceeded(rawJSONData, prefs.compressSyncData)) {
+    alertEx("syncDataTooBig");
+    return;
+  }
+
   let natMsg = {
     msgID: "set-synced-clippings",
     syncData: syncData.userClippingsRoot,
