@@ -411,6 +411,7 @@ void async function ()
   }
 
   if (! aePrefs.hasEmbarcaderoPrefs(prefs)) {
+    log("Initializing 7.0.2 user preferences.");
     await aePrefs.setEmbarcaderoPrefs(prefs);
   }
 
