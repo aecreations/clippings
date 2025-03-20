@@ -349,6 +349,7 @@ progress {
 #general-options,
 #paste-options {
     margin-top: 20px;
+    padding-right: 0;
 }
 
 #enable-shortcut-key-ctr {
@@ -435,7 +436,7 @@ body[data-os="win"] #backup-reminder-freq + label {
 }
 
 body[data-locale="fr"] #skip-backup-label {
-    letter-spacing: -0.25px;
+    letter-spacing: -0.85px;
 }
 
 #shct-key-in-menu-opt-label {
@@ -448,6 +449,10 @@ body[data-locale="fr"] #skip-backup-label {
 
 #sidebar-paste-opts {
     margin-top: 12px;
+}
+
+body[data-locale="fr"] #html-auto-line-break-label {
+    letter-spacing: -0.5px;
 }
 
 #sync-intro {
@@ -641,10 +646,6 @@ body[data-locale="nl"] #wnds-dlgs-opts-dlg #clpmgr-save-wnd-pos-label {
     letter-spacing: -0.18px;
 }
 
-body[data-locale|="es"] #wnds-dlgs-opts-dlg #clpmgr-save-wnd-pos-label {
-    letter-spacing: -0.5px;
-}
-
 #wnds-dlgs-opts-dlg #reset-clpmgr-wnd-pos {
     min-width: 72px;
     margin-top: 4px;
@@ -722,16 +723,21 @@ body[data-os="mac"] #sync-clippings-dlg {
 }
 
 body[data-locale="de"] #sync-clippings-dlg {
-    --width: 600px;
-}
-
-body[data-locale|="es"] #sync-clippings-dlg {
     --width: 650px;
 }
 
-body[data-locale="nl"] #sync-clippings-dlg,
-body[data-locale="uk"] #sync-clippings-dlg {
+body[data-locale|="es"] #sync-clippings-dlg {
+    --width: 700px;
+}
+
+body[data-locale|="pt"] #sync-clippings-dlg {
     --width: 552px;
+}
+
+body[data-locale="nl"] #sync-clippings-dlg,
+body[data-locale="fr"] #sync-clippings-dlg,
+body[data-locale="uk"] #sync-clippings-dlg {
+    --width: 560px;
 }
 
 #sync-clippings-dlg.expanded {
@@ -876,8 +882,12 @@ body[data-locale|="zh"] #sync-clippings-dlg #sync-fldr-picker #browse-sync-fldr 
     min-width: 88px;
 }
 
+body[data-locale="fr"] #sync-clippings-dlg #sync-helper-app-update-check + label {
+    letter-spacing: -0.1px;
+}
+
 body[data-locale="de"] #sync-clippings-dlg #sync-helper-app-update-check + label {
-    letter-spacing: -0.75px;
+    letter-spacing: -0.25px;
 }
 
 body[data-locale|="es"] #sync-clippings-dlg #sync-helper-app-update-check + label {
@@ -885,12 +895,12 @@ body[data-locale|="es"] #sync-clippings-dlg #sync-helper-app-update-check + labe
 }
 
 body[data-locale|="pt"] #sync-clippings-dlg #sync-helper-app-update-check + label {
-    letter-spacing: -0.1px;
+    letter-spacing: -0.4px;
 }
 
 body[data-locale="nl"] #sync-clippings-dlg #sync-helper-app-update-check + label,
 body[data-locale="uk"] #sync-clippings-dlg #sync-helper-app-update-check + label {
-    letter-spacing: -0.5px;
+    letter-spacing: -0.8px;
     margin-right: 0;
 }
 
