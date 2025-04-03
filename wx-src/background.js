@@ -410,6 +410,11 @@ void async function ()
     }
   }
 
+  if (! aePrefs.hasEmbarcaderoPrefs(prefs)) {
+    log("Initializing 7.0.2 user preferences.");
+    await aePrefs.setEmbarcaderoPrefs(prefs);
+  }
+
   if (prefs.clippingsMgrDetailsPane) {
     aePrefs.setPrefs({clippingsMgrAutoShowDetailsPane: false});
   }
@@ -685,13 +690,29 @@ async function refreshSyncedClippings(aRebuildClippingsMenu)
   log(`Clippings/wx: refreshSyncedClippings(): Retrieving synced clippings from Sync Clippings Helper by sending native message "${natMsg.msgID}"`);
 
   let syncJSONData = "";
-  resp = await browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, natMsg);
+  try {
+    resp = await browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, natMsg);
+  }
+  catch (e) {
+    // Error thrown if the sync data size is too big.
+    console.error(e);
+    return;
+  }
 
   if (resp) {
+    let dataSizeB;
+    
     if (isCompressedSyncData) {
       log("Clippings/wx: refreshSyncedClippings(): Received Sync Clippings Helper 2.0 response (base64-encoded gzip format)");
       if (resp.status == "ok") {
         let zipData = aeCompress.base64ToBytes(resp.data);
+
+        dataSizeB = zipData.length;
+        if (aeConst.DEBUG || prefs.logSyncDataSize) {
+          let dataSizeKB = dataSizeB / 1024;
+          console.info(`Clippings: Size of compressed sync data from Sync Clippings Helper: ${dataSizeKB.toFixed(2)} KiB`);
+        }
+
         syncJSONData = await aeCompress.decompress(zipData);
       }
       else {
@@ -702,6 +723,13 @@ async function refreshSyncedClippings(aRebuildClippingsMenu)
     }
     else {
       log("Clippings/wx: refreshSyncedClippings(): Received Sync Clippings Helper 1.x response");
+
+      dataSizeB = new TextEncoder().encode(resp).length;
+      let dataSizeKB = dataSizeB / 1024;
+      if (aeConst.DEBUG || prefs.logSyncDataSize) {
+        console.info(`Clippings: Size of sync data from Sync Clippings Helper: ${dataSizeKB.toFixed(2)} KiB`);
+      }
+
       syncJSONData = resp;
     }
   }
@@ -1757,9 +1785,8 @@ async function openBackupDlg()
   let url = browser.runtime.getURL("pages/backup.html");
   let lang = browser.i18n.getUILanguage();
   let height = 412;
-  let platform = await browser.runtime.getPlatformInfo();
 
-  if (lang == "uk" || (lang == "fr" && platform.os == "mac")) {
+  if (["fr", "uk"].includes(lang)) {
     height = 450;
   }
   
@@ -2400,13 +2427,11 @@ browser.notifications.onClicked.addListener(aNotifID => {
 browser.storage.onChanged.addListener((aChanges, aAreaName) => {
   let changedPrefs = Object.keys(aChanges);
 
-  for (let pref of changedPrefs) {
-    if (pref == "autoIncrPlcHldrStartVal") {
-      aeClippingSubst.setAutoIncrementStartValue(aChanges[pref].newValue);
-    }
-    else if (pref == "browserAction") {
-      localStorage.setItem("browserAction", aChanges[pref].newValue);
-    }
+  if (changedPrefs.includes("autoIncrPlcHldrStartVal")) {
+    aeClippingSubst.setAutoIncrementStartValue(aChanges["autoIncrPlcHldrStartVal"].newValue);
+  }
+  if (changedPrefs.includes("browserAction")) {
+    localStorage.setItem("browserAction", aChanges["browserAction"].newValue);
   }
 });
 

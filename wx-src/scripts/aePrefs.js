@@ -73,6 +73,7 @@ let aePrefs = {
     sidebarSearchBar: true,
     sidebarPreview: true,
     pasteFromSidebar: false,
+    logSyncDataSize: false,
   },
   
   getPrefKeys()
@@ -304,6 +305,21 @@ let aePrefs = {
     if (aPrefs.clippingsMgrMinzWhenInactv) {
       await this.setPrefs({clippingsMgrMinzWhenInactv: false});
     }
+  },
+
+  hasEmbarcaderoPrefs(aPrefs)
+  {
+    // Version 7.0.2
+    return ("logSyncDataSize" in aPrefs);
+  },
+
+  async setEmbarcaderoPrefs(aPrefs)
+  {
+    let newPrefs = {
+      logSyncDataSize: false,
+    };
+    
+    await this._addPrefs(aPrefs, newPrefs);
   },
 
 
