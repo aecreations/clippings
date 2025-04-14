@@ -13,7 +13,8 @@ let gClippingsDB;
 let gIsClippingsTreeEmpty;
 let gSyncedItemsIDs = new Set();
 let gSyncedItemsIDMap = new Map();
-let gCustomizeDlg, gReloadSyncFldrMsgBox, gClipbdWritePermMsgBox, gInitErrorMsgBox;
+let gCustomizeDlg, gReloadSyncFldrMsgBox, gClipbdWritePermMsgBox,
+    gInitErrorMsgBox, gSyncProgressDlg;
 let gMsgBarTimerID = null;
 
 let gSyncClippingsListener = {
@@ -77,6 +78,17 @@ let gSyncClippingsListener = {
     }
 
     gSearchBox.reset();
+  },
+
+  async onReloadFinish()
+  {
+    await rebuildClippingsTree();
+    gSyncProgressDlg.isOpen() && gSyncProgressDlg.close();
+  },
+
+  async onStartupSync()
+  {
+    gSyncProgressDlg.showModal(false);
   },
 
   
@@ -478,6 +490,7 @@ function initDialogs()
   };
   
   gInitErrorMsgBox = new aeDialog("#init-error-msgbox");
+  gSyncProgressDlg = new aeDialog("#sync-progress");
 }
 
 
@@ -1003,6 +1016,14 @@ browser.runtime.onMessage.addListener(aRequest => {
 
   case "sync-deactivated-after":
     gSyncClippingsListener.onAfterDeactivate(aRequest.removeSyncFolder, aRequest.oldSyncFolderID);
+    break;
+
+  case "sync-fldr-reload-finished":
+    gSyncClippingsListener.onReloadFinish();
+    break;
+
+  case "startup-sync-clippings":
+    gSyncClippingsListener.onStartupSync();
     break;
 
   default:

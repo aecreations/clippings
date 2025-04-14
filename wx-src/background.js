@@ -465,6 +465,11 @@ async function init(aPrefs)
     }
     else {
       log("Clippings: init(): Sync Clippings turned on - initializing Synced Clippings folder.");
+      try {
+        await browser.runtime.sendMessage({msgID: "startup-sync-clippings"});
+      }
+      catch {}
+
       let isSyncReadOnly = await isSyncedClippingsReadOnly();
       log(`Clippings/wx: It is ${isSyncReadOnly} that the sync data is read only.`);
 
