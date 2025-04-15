@@ -1037,6 +1037,11 @@ browser.runtime.onMessage.addListener(aRequest => {
 
 
 browser.storage.onChanged.addListener((aChanges, aAreaName) => {
+  if (!gPrefs) {
+    // Event handler was called before the UI is initialized.
+    return;
+  }
+
   let changedPrefs = Object.keys(aChanges);
 
   for (let pref of changedPrefs) {
