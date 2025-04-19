@@ -2147,7 +2147,14 @@ async function pasteProcessedClipping(aClippingContent, aTabID)
   log(`Clippings/wx: Extension sending message "paste-clipping" to content script (active tab ID = ${aTabID})`);
   log(msg);
   
-  await browser.tabs.sendMessage(aTabID, msg);
+  setTimeout(async () => {
+    try {
+      await browser.tabs.sendMessage(aTabID, msg);
+    }
+    catch (e) {
+      console.error("Clippings: pasteProcessedClipping(): Failed to paste clipping: " + e);
+    }
+  }, 100); 
 }
 
 
