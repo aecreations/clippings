@@ -362,9 +362,7 @@ aeImportExport._exportToJSONHelper = function (aFolderID, aIncludeSrcURLs, aExcl
   let rv = [];
   
   return new Promise((aFnResolve, aFnReject) => {
-    // Use the "!" postfix to ensure we work with our own transaction and never
-    // reuse any ongoing transaction.
-    this._db.transaction("r!", this._db.clippings, this._db.folders, () => {
+    this._db.transaction("r", this._db.clippings, this._db.folders, () => {
       this._db.folders.where("parentFolderID").equals(aFolderID).each((aItem, aCursor) => {
         if (aExcludeFolderID !== undefined && aItem.id == aExcludeFolderID) {
           return;
