@@ -418,6 +418,11 @@ void async function ()
     await aePrefs.setEmbarcaderoPrefs(prefs);
   }
 
+  if (! aePrefs.hasFortMasonPrefs(prefs)) {
+    log("Initializing 7.0.4 user preferences.");
+    await aePrefs.setFortMasonPrefs(prefs);
+  }
+
   if (prefs.clippingsMgrDetailsPane) {
     aePrefs.setPrefs({clippingsMgrAutoShowDetailsPane: false});
   }
@@ -2154,7 +2159,7 @@ async function pasteProcessedClipping(aClippingContent, aTabID)
     catch (e) {
       console.error("Clippings: pasteProcessedClipping(): Failed to paste clipping: " + e);
     }
-  }, 100); 
+  }, prefs.pasteDelay); 
 }
 
 
