@@ -685,6 +685,16 @@ body[data-os="mac"] #reload-sync-fldr-msgbox {
     margin-top: 0;
 }
 
+#sync-progress {
+    top: 64px;
+    --width: 150px;
+    --height: auto;
+}
+
+#sync-progress progress {
+    width: 100%;
+}
+
 #init-error-msgbox {
     top: 88px;
     --width: 200px;

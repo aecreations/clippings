@@ -325,8 +325,11 @@ browser.runtime.onInstalled.addListener(async (aInstall) => {
 
 browser.runtime.onStartup.addListener(async () => {
   log("Clippings/wx: Resetting persistent background script data during browser startup");
+  localStorage.setItem("isInitialized", '');
+
   await aePrefs.setDefaultBkgdState();
   await aeClippingSubst.resetAllAutoIncrementVars();
+  log("Clippings: Browser startup initialization complete.");
 });
 
 
@@ -453,23 +456,35 @@ async function init(aPrefs)
   gPrefersColorSchemeMedQry = window.matchMedia("(prefers-color-scheme: dark)");
   await handlePrefersColorSchemeChange(gPrefersColorSchemeMedQry);
   gPrefersColorSchemeMedQry.addEventListener("change", handlePrefersColorSchemeChange);
-  
-  if (aPrefs.syncClippings) {
-    log("Clippings: init(): Sync Clippings turned on - initializing Synced Clippings folder.");
-    let isSyncReadOnly = await isSyncedClippingsReadOnly();
-    log(`Clippings/wx: It is ${isSyncReadOnly} that the sync data is read only.`);
 
-    // The context menu will be built when refreshing the sync data, via the
-    // onReloadFinish event handler of the Sync Clippings listener.
-    try {
-      await refreshSyncedClippings(true);
+  let isInitialized = Boolean(localStorage.getItem("isInitialized"));
+
+  if (aPrefs.syncClippings) {
+    if (isInitialized) {
+      log("Clippings: init(): Sync Clippings was already initialized during browser startup.");
     }
-    catch (e) {
-      // Build the context menu anyway, since that won't happen in the above
-      // event handler due to the error.
-      rebuildContextMenu();
+    else {
+      log("Clippings: init(): Sync Clippings turned on - initializing Synced Clippings folder.");
+      try {
+        await browser.runtime.sendMessage({msgID: "startup-sync-clippings"});
+      }
+      catch {}
+
+      let isSyncReadOnly = await isSyncedClippingsReadOnly();
+      log(`Clippings/wx: It is ${isSyncReadOnly} that the sync data is read only.`);
+
+      // The context menu will be built when refreshing the sync data, via the
+      // onReloadFinish event handler of the Sync Clippings listener.
+      try {
+        await refreshSyncedClippings(true);
+      }
+      catch (e) {
+        // Build the context menu anyway, since that won't happen in the above
+        // event handler due to the error.
+        rebuildContextMenu();
+      }
+      aePrefs.setPrefs({isSyncReadOnly});
     }
-    aePrefs.setPrefs({isSyncReadOnly});
   }
   else {
     log("Clippings: init(): Sync Clippings turned off.");
@@ -519,6 +534,7 @@ async function init(aPrefs)
   }
 
   aePrefs.setPrefs({_isInitialized: true});
+  localStorage.setItem("isInitialized", "1");
   log("Clippings/wx: Initialization complete.");   
 }
 
