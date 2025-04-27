@@ -794,11 +794,13 @@ function accept(aEvent)
       return gClippingsDB.clippings.add(newClipping);
 
     }).then(aNewClippingID => {
+      document.body.dataset.wait = 1;
       setTimeout(async () => {
         await finishAcceptDlg(aNewClippingID, newClipping);
       }, 100);
 
     }).catch("OpenFailedError", aErr => {
+      document.body.dataset.wait = 0;
       // OpenFailedError exception thrown if Firefox is set to "Never remember
       // history."
       errorMsgBox.onInit = function () {
@@ -809,6 +811,7 @@ function accept(aEvent)
       errorMsgBox.showModal();
 
     }).catch(aErr => {
+      document.body.dataset.wait = 0;
       console.error("Clippings/wx::new.js: accept(): " + aErr);     
       errorMsgBox.onInit = function () {
         let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");

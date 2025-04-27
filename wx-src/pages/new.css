@@ -40,6 +40,10 @@
 }
 
 
+body[data-wait="1"] button {
+    cursor: wait;
+}
+
 label {
     margin-right: 4px;
 }
