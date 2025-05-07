@@ -250,7 +250,7 @@ function insertTextIntoTextbox(aTextboxElt, aInsertedText, aDispatchInputEvent)
 
 function insertTextIntoRichTextEditor(aRichTextEditorDocument, aClippingText, aAutoLineBreak, aPasteMode, aDispatchInputEvent, aUseInsertHTMLCmd)
 {
-  let hasHTMLTags = aClippingText.search(/<[a-z1-6]+( [a-z]+(\="?.*"?)?)*>/i) != -1;
+  let hasHTMLTags = aClippingText.search(/<[a-z1-6]+( [a-z\-]+(\="?.*"?)?)*>/i) != -1;
   let hasRestrictedHTMLTags = aClippingText.search(/<\?|<%|<!DOCTYPE|(<\b(html|head|body|meta|script|applet|embed|object|i?frame|frameset)\b)/i) != -1;
   let clippingText = aClippingText;
 

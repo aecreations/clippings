@@ -74,6 +74,7 @@ let aePrefs = {
     sidebarPreview: true,
     pasteFromSidebar: false,
     logSyncDataSize: false,
+    pasteDelay: 100,
   },
   
   getPrefKeys()
@@ -315,10 +316,19 @@ let aePrefs = {
 
   async setEmbarcaderoPrefs(aPrefs)
   {
-    let newPrefs = {
-      logSyncDataSize: false,
-    };
-    
+    let newPrefs = {logSyncDataSize: false};
+    await this._addPrefs(aPrefs, newPrefs);
+  },
+
+  hasFortMasonPrefs(aPrefs)
+  {
+    // Version 7.0.4
+    return ("pasteDelay" in aPrefs);
+  },
+
+  async setFortMasonPrefs(aPrefs)
+  {
+    let newPrefs = {pasteDelay: 100};
     await this._addPrefs(aPrefs, newPrefs);
   },
 

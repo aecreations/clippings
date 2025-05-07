@@ -740,9 +740,15 @@ function isClippingOptionsSet()
 function unsetClippingsUnchangedFlag()
 {
   if (gPrefs.clippingsUnchanged) {
-    return aePrefs.setPrefs({ clippingsUnchanged: false });
+    return aePrefs.setPrefs({clippingsUnchanged: false});
   }
   return Promise.resolve();
+}
+
+
+function setDlgButtonEnabledStates(aIsEnabled)
+{
+  $("#dlg-buttons > button").prop("disabled", !aIsEnabled);
 }
 
 
@@ -794,52 +800,13 @@ function accept(aEvent)
       return gClippingsDB.clippings.add(newClipping);
 
     }).then(aNewClippingID => {
-      browser.runtime.sendMessage({
-        msgID: "new-clipping-created",
-        newClippingID: aNewClippingID,
-        newClipping,
-        origin: aeConst.ORIGIN_HOSTAPP,
-      });
+      setDlgButtonEnabledStates(false);
+      setTimeout(async () => {
+        await finishAcceptDlg(aNewClippingID, newClipping);
+      }, 100);
 
-      return unsetClippingsUnchangedFlag();
-
-    }).then(() => {
-      if (gPrefs.syncClippings) {
-        aeImportExport.setDatabase(gClippingsDB);
-        
-        return aeImportExport.exportToJSON(true, true, gPrefs.syncFolderID, false, true, true);
-      }
-      return null;
-
-    }).then(aSyncData => {
-      if (aSyncData) {
-        let natMsg = {
-          msgID: "set-synced-clippings",
-          syncData: aSyncData.userClippingsRoot,
-        };
-
-        log("Clippings/wx::new.js: accept(): Sending message 'set-synced-clippings' to the Sync Clippings helper app.  Message data:");
-        log(natMsg);
-        
-        return browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, natMsg);
-      }
-      return null;
-
-    }).then(async (aResp) => {
-      if (aResp) {
-        log("Clippings/wx::new.js: accept(): Response from the Sync Clippings helper app:");
-        log(aResp);
-      }
-
-      if (gPrefs.clippingsMgrAutoShowDetailsPane && isClippingOptionsSet()) {
-        aePrefs.setPrefs({
-          clippingsMgrAutoShowDetailsPane: false,
-          clippingsMgrDetailsPane: true
-        });
-      }
-      closeDlg();
-      
     }).catch("OpenFailedError", aErr => {
+      setDlgButtonEnabledStates(true);
       // OpenFailedError exception thrown if Firefox is set to "Never remember
       // history."
       errorMsgBox.onInit = function () {
@@ -850,6 +817,7 @@ function accept(aEvent)
       errorMsgBox.showModal();
 
     }).catch(aErr => {
+      setDlgButtonEnabledStates(true);
       console.error("Clippings/wx::new.js: accept(): " + aErr);     
       errorMsgBox.onInit = function () {
         let errMsgElt = $("#create-clipping-error-msgbox > .dlg-content > .msgbox-error-msg");
@@ -869,6 +837,45 @@ function accept(aEvent)
       errorMsgBox.showModal();
     });
   });
+}
+
+
+async function finishAcceptDlg(aNewClippingID, aNewClipping)
+{
+  await browser.runtime.sendMessage({
+    msgID: "new-clipping-created",
+    newClippingID: aNewClippingID,
+    newClipping: aNewClipping,
+    origin: aeConst.ORIGIN_HOSTAPP,
+  });
+
+  await unsetClippingsUnchangedFlag();
+
+  if (gPrefs.syncClippings) {
+    aeImportExport.setDatabase(gClippingsDB);      
+    let syncData = await aeImportExport.exportToJSON(true, true, gPrefs.syncFolderID, false, true, true);
+
+    let natMsg = {
+      msgID: "set-synced-clippings",
+      syncData: syncData.userClippingsRoot,
+    };
+
+    log("Clippings::new.js: accept(): Sending message 'set-synced-clippings' to the Sync Clippings helper app.  Message data:");
+    log(natMsg);
+        
+    let resp = await browser.runtime.sendNativeMessage(aeConst.SYNC_CLIPPINGS_APP_NAME, natMsg);
+    log("Clippings::new.js: accept(): Response from the Sync Clippings helper app:");
+    log(resp);
+  }
+  
+  if (gPrefs.clippingsMgrAutoShowDetailsPane && isClippingOptionsSet()) {
+    aePrefs.setPrefs({
+      clippingsMgrAutoShowDetailsPane: false,
+      clippingsMgrDetailsPane: true,
+    });
+  }
+
+  closeDlg();
 }
 
 

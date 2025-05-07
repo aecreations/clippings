@@ -418,6 +418,11 @@ void async function ()
     await aePrefs.setEmbarcaderoPrefs(prefs);
   }
 
+  if (! aePrefs.hasFortMasonPrefs(prefs)) {
+    log("Initializing 7.0.4 user preferences.");
+    await aePrefs.setFortMasonPrefs(prefs);
+  }
+
   if (prefs.clippingsMgrDetailsPane) {
     aePrefs.setPrefs({clippingsMgrAutoShowDetailsPane: false});
   }
@@ -2147,7 +2152,14 @@ async function pasteProcessedClipping(aClippingContent, aTabID)
   log(`Clippings/wx: Extension sending message "paste-clipping" to content script (active tab ID = ${aTabID})`);
   log(msg);
   
-  await browser.tabs.sendMessage(aTabID, msg);
+  setTimeout(async () => {
+    try {
+      await browser.tabs.sendMessage(aTabID, msg);
+    }
+    catch (e) {
+      console.error("Clippings: pasteProcessedClipping(): Failed to paste clipping: " + e);
+    }
+  }, prefs.pasteDelay); 
 }
 
 
