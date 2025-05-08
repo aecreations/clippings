@@ -423,6 +423,11 @@ void async function ()
     await aePrefs.setFortMasonPrefs(prefs);
   }
 
+  if (! aePrefs.hasAlamoSquarePrefs(prefs)) {
+    log("Initializing 7.1 user preferences.");
+    await aePrefs.setAlamoSquarePrefs(prefs);
+  }
+
   if (prefs.clippingsMgrDetailsPane) {
     aePrefs.setPrefs({clippingsMgrAutoShowDetailsPane: false});
   }
@@ -538,7 +543,6 @@ async function init(aPrefs)
     log("Clippings/wx: Display order on root folder items have been set");
   }
 
-  aePrefs.setPrefs({_isInitialized: true});
   localStorage.setItem("isInitialized", "1");
   log("Clippings/wx: Initialization complete.");   
 }

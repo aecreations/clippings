@@ -7,7 +7,6 @@
 let aePrefs = {
   // Background script state persistence
   _defaultBkgdState: {
-    _isInitialized: false,
     _clippingMenuItemIDMap: {},
     _folderMenuItemIDMap: {},
     _autoIncrPlchldrs: [],
@@ -268,7 +267,6 @@ let aePrefs = {
   async setSanFranciscoPrefs(aPrefs)
   {
     let newPrefs = {
-      _isInitialized: false,
       _clippingMenuItemIDMap: {},
       _folderMenuItemIDMap: {},
       _autoIncrPlchldrs: [],
@@ -298,9 +296,6 @@ let aePrefs = {
     };
 
     await this._addPrefs(aPrefs, newPrefs);
-
-    // Remove deprecated prefs
-    delete aPrefs.tabModalMsgBox;
 
     // Change default setting of Linux-specific pref.
     if (aPrefs.clippingsMgrMinzWhenInactv) {
@@ -332,6 +327,21 @@ let aePrefs = {
     await this._addPrefs(aPrefs, newPrefs);
   },
 
+  hasAlamoSquarePrefs(aPrefs)
+  {
+    // Version 7.1
+    // TEMPORARY
+    return false;
+    
+    // TO DO: Finish implementation
+  },
+
+  async setAlamoSquarePrefs(aPrefs)
+  {
+    // Remove deprecated prefs
+    await this._removePrefs(["_isInitialized", "tabModalMsgBox"]);
+  },
+
 
   //
   // Helper methods
@@ -344,5 +354,10 @@ let aePrefs = {
     }
 
     await this.setPrefs(aNewPrefs);
+  },
+
+  async _removePrefs(aPrefs)
+  {
+    await browser.storage.local.remove(aPrefs);
   },
 };
