@@ -5,8 +5,8 @@
 
 
 const aeConst = Object.freeze({
-  DEBUG: false,
-  DEV_BUILD: false,
+  DEBUG: true,
+  DEV_BUILD: true,
   CURR_MAJOR_VER: "7.0",
 
   // Native messaging helper app
