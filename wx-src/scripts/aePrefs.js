@@ -339,7 +339,7 @@ let aePrefs = {
   async setAlamoSquarePrefs(aPrefs)
   {
     // Remove deprecated prefs
-    await this._removePrefs(["_isInitialized", "tabModalMsgBox"]);
+    await this._removePrefs(aPrefs, ["_isInitialized", "tabModalMsgBox"]);
   },
 
 
@@ -356,8 +356,12 @@ let aePrefs = {
     await this.setPrefs(aNewPrefs);
   },
 
-  async _removePrefs(aPrefs)
+  async _removePrefs(aCurrPrefs, aOldPrefs)
   {
-    await browser.storage.local.remove(aPrefs);
+    for (let pref in aOldPrefs) {
+      delete aCurrPrefs[pref];
+    }
+
+    await browser.storage.local.remove(aOldPrefs);
   },
 };
