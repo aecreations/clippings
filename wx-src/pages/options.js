@@ -53,17 +53,17 @@ $(async () => {
 
   initDialogs();
 
-  $("#brws-act-open-clippings-mgr, #brws-act-open-clippings-sidebar").click(aEvent => {
+  $("#brws-act-open-clippings-mgr, #brws-act-open-clippings-sidebar").on("click", aEvent => {
     aePrefs.setPrefs({browserAction: aEvent.target.value});
   });
 
-  $("#paste-opt-formatted").click(aEvent => {
+  $("#paste-opt-formatted").on("click", aEvent => {
     $("#html-auto-line-break").prop("disabled", false);
     $("#html-paste-note").removeClass("disabled");
     aePrefs.setPrefs({htmlPaste: aEvent.target.value});
   });
 
-  $("#paste-opt-raw-html").click(aEvent => {
+  $("#paste-opt-raw-html").on("click", aEvent => {
     $("#html-auto-line-break").prop("disabled", true);
     $("#html-paste-note").addClass("disabled");
     aePrefs.setPrefs({htmlPaste: aEvent.target.value});
@@ -88,7 +88,7 @@ $(async () => {
     }
   });
 
-  $("#about-btn").click(aEvent => {
+  $("#about-btn").on("click", aEvent => {
     gDialogs.about.showModal();
   });
 
@@ -125,27 +125,27 @@ $(async () => {
     $("#html-paste-note").addClass("disabled");
   }
   
-  $("#html-auto-line-break").prop("checked", prefs.autoLineBreak).click(aEvent => {
+  $("#html-auto-line-break").prop("checked", prefs.autoLineBreak).on("click", aEvent => {
     aePrefs.setPrefs({ autoLineBreak: aEvent.target.checked });
   });
 
-  $("#enable-shortcut-key").prop("checked", prefs.keyboardPaste).click(aEvent => {
+  $("#enable-shortcut-key").prop("checked", prefs.keyboardPaste).on("click", aEvent => {
     aePrefs.setPrefs({ keyboardPaste: aEvent.target.checked })
   });
 
-  $("#auto-inc-plchldrs-start-val").val(prefs.autoIncrPlcHldrStartVal).click(aEvent => {
+  $("#auto-inc-plchldrs-start-val").val(prefs.autoIncrPlcHldrStartVal).on("click", aEvent => {
     aePrefs.setPrefs({ autoIncrPlcHldrStartVal: aEvent.target.valueAsNumber });
   });
 
-  $("#always-save-src-url").prop("checked", prefs.alwaysSaveSrcURL).click(aEvent => {
+  $("#always-save-src-url").prop("checked", prefs.alwaysSaveSrcURL).on("click", aEvent => {
     aePrefs.setPrefs({ alwaysSaveSrcURL: aEvent.target.checked });
   });
 
-  $("#check-spelling").prop("checked", prefs.checkSpelling).click(aEvent => {
+  $("#check-spelling").prop("checked", prefs.checkSpelling).on("click", aEvent => {
     aePrefs.setPrefs({ checkSpelling: aEvent.target.checked });
   });
 
-  $("#backup-filename-with-date").prop("checked", prefs.backupFilenameWithDate).click(aEvent => {
+  $("#backup-filename-with-date").prop("checked", prefs.backupFilenameWithDate).on("click", aEvent => {
     aePrefs.setPrefs({ backupFilenameWithDate: aEvent.target.checked });
   });
 
@@ -192,7 +192,7 @@ $(async () => {
     browser.runtime.sendMessage({msgID: "set-backup-notifcn-intv"});
   });   
 
-  $("#skip-backup-if-no-chg").prop("checked", prefs.skipBackupRemIfUnchg).click(aEvent => {
+  $("#skip-backup-if-no-chg").prop("checked", prefs.skipBackupRemIfUnchg).on("click", aEvent => {
     aePrefs.setPrefs({skipBackupRemIfUnchg: aEvent.target.checked});
   });
 
@@ -267,7 +267,7 @@ $(async () => {
     }
   });
   
-  $("#show-sync-help").click(aEvent => {
+  $("#show-sync-help").on("click", aEvent => {
     gDialogs.syncClippingsHelp.showModal();
   });
 
@@ -332,7 +332,7 @@ $(async () => {
     });
   }
 
-  $(".hyperlink").click(aEvent => {
+  $(".hyperlink").on("click", aEvent => {
     aEvent.preventDefault();
     gotoURL(aEvent.target.href);
   });

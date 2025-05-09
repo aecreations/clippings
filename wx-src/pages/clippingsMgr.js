@@ -665,7 +665,7 @@ let gSearchBox = {
       });
     });
 
-    $("#clear-search").click(aEvent => { this.reset() });
+    $("#clear-search").on("click", aEvent => { this.reset() });
 
     this._isInitialized = true;
   },
@@ -734,9 +734,9 @@ let gSrcURLBar = {
   init: function ()
   {
     $("#src-url-edit-mode").hide();
-    $("#edit-url-btn").click(aEvent => { this.edit() });
-    $("#edit-src-url-ok").attr("title", browser.i18n.getMessage("btnOK")).click(aEvent => { this.acceptEdit() });
-    $("#edit-src-url-cancel").attr("title", browser.i18n.getMessage("btnCancel")).click(aEvent => { this.cancelEdit() });
+    $("#edit-url-btn").on("click", aEvent => { this.edit() });
+    $("#edit-src-url-ok").attr("title", browser.i18n.getMessage("btnOK")).on("click", aEvent => { this.acceptEdit() });
+    $("#edit-src-url-cancel").attr("title", browser.i18n.getMessage("btnCancel")).on("click", aEvent => { this.cancelEdit() });
   },
 
   show: function ()
@@ -3760,18 +3760,18 @@ function initToolbar()
     }
   }
 
-  $("#new-clipping").click(aEvent => { gCmd.newClipping(gCmd.UNDO_STACK) });
-  $("#new-folder").click(aEvent => { gCmd.newFolder(gCmd.UNDO_STACK) });
-  $("#move").attr("title", browser.i18n.getMessage("tbMoveOrCopy")).click(aEvent => {
+  $("#new-clipping").on("click", aEvent => { gCmd.newClipping(gCmd.UNDO_STACK) });
+  $("#new-folder").on("click", aEvent => { gCmd.newFolder(gCmd.UNDO_STACK) });
+  $("#move").attr("title", browser.i18n.getMessage("tbMoveOrCopy")).on("click", aEvent => {
     gCmd.moveClippingOrFolder();
   });
-  $("#delete").attr("title", browser.i18n.getMessage("tbDelete")).click(aEvent => {
+  $("#delete").attr("title", browser.i18n.getMessage("tbDelete")).on("click", aEvent => {
     gCmd.deleteClippingOrFolder(gCmd.UNDO_STACK);
   });
-  $("#undo").attr("title", browser.i18n.getMessage("tbUndo")).click(aEvent => {
+  $("#undo").attr("title", browser.i18n.getMessage("tbUndo")).on("click", aEvent => {
     gCmd.undo();
   });
-  $("#help").attr("title", browser.i18n.getMessage("tbHelp")).click(aEvent => {
+  $("#help").attr("title", browser.i18n.getMessage("tbHelp")).on("click", aEvent => {
     gCmd.showMiniHelp();
   });
 
@@ -4093,9 +4093,9 @@ function initToolbar()
   aeInterxn.initContextMenuAriaRoles(".placeholder-menu");
   aeInterxn.initContextMenuAriaRoles(".tools-menu");
 
-  $("#custom-plchldr").click(aEvent => { gCmd.insertCustomPlaceholder() });
-  $("#auto-incr-plchldr").click(aEvent => { gCmd.insertNumericPlaceholder() });
-  $("#show-shortcut-list").click(aEvent => { gCmd.showShortcutList() });
+  $("#custom-plchldr").on("click", aEvent => { gCmd.insertCustomPlaceholder() });
+  $("#auto-incr-plchldr").on("click", aEvent => { gCmd.insertNumericPlaceholder() });
+  $("#show-shortcut-list").on("click", aEvent => { gCmd.showShortcutList() });
 
   gSearchBox.init();
 
@@ -4324,7 +4324,7 @@ function initDialogs()
       clippingNameColHdr: browser.i18n.getMessage("expHTMLClipNameCol"),
     });
 
-    $("#export-shct-list").click(aEvent => {
+    $("#export-shct-list").on("click", aEvent => {
       aeImportExport.getShortcutKeyListHTML(true).then(aHTMLData => {
         let blobData = new Blob([aHTMLData], { type: "text/html;charset=utf-8"});
         let downldOpts = {
@@ -4819,10 +4819,10 @@ function initDialogs()
       }
     });
 
-    $("#include-src-urls").click(aEvent => {
+    $("#include-src-urls").on("click", aEvent => {
       this.inclSrcURLs = aEvent.target.checked;
     });
-    $("#export-incl-separators").click(aEvent => {
+    $("#export-incl-separators").on("click", aEvent => {
       this.inclSep = aEvent.target.checked;
     });
   };
@@ -4974,7 +4974,7 @@ function initDialogs()
   gDialogs.removeAllSrcURLs.onFirstInit = function ()
   {
     this.focusedSelector = ".dlg-btns > .dlg-accept";
-    this.find(".dlg-btns > .dlg-btn-yes").click(aEvent => {
+    this.find(".dlg-btns > .dlg-btn-yes").on("click", aEvent => {
       this.close();
       gCmd.removeAllSrcURLsIntrl();
     });
@@ -5037,7 +5037,7 @@ function initDialogs()
 
   gDialogs.moveTo.onFirstInit = function ()
   {
-    $("#copy-instead-of-move").click(aEvent => {
+    $("#copy-instead-of-move").on("click", aEvent => {
       if (aEvent.target.checked) {
         if (aeClippingsTree.getTree().activeNode.folder) {
           $("#move-to-label").text(browser.i18n.getMessage("labelCopyFolder"));
@@ -5112,7 +5112,7 @@ function initDialogs()
     // Only allow copying a clipping or folder out of Synced Clippings folder
     // if sync file is read-only.
     if (gPrefs.syncClippings && gPrefs.isSyncReadOnly && isSyncedItem) {
-      $("#copy-instead-of-move").click().prop("disabled", true);
+      $("#copy-instead-of-move").trigger("click").prop("disabled", true);
     }
   };
 

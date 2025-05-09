@@ -50,7 +50,7 @@ $(async () => {
     expandOptions(true);
   }
   
-  $("#btn-expand-options").data("isExpanded", gPrefs.showNewClippingOpts).click(aEvent => {
+  $("#btn-expand-options").data("isExpanded", gPrefs.showNewClippingOpts).on("click", aEvent => {
     let isExpanded = $(aEvent.target).data("isExpanded");
     expandOptions(! isExpanded);
   });
@@ -83,9 +83,9 @@ $(async () => {
   initLabelPicker();
   initShortcutKeyMenu();
 
-  $("#new-folder-btn").click(aEvent => { gNewFolderDlg.showModal() });
-  $("#btn-accept").click(aEvent => { accept(aEvent) });
-  $("#btn-cancel").click(aEvent => { cancel(aEvent) });
+  $("#new-folder-btn").on("click", aEvent => { gNewFolderDlg.showModal() });
+  $("#btn-accept").on("click", aEvent => { accept(aEvent) });
+  $("#btn-cancel").on("click", aEvent => { cancel(aEvent) });
 
   aeVisual.init(platform.os);
   aeVisual.preloadMsgBoxIcons();
@@ -332,7 +332,7 @@ function initDialogs()
   {
     let fldrPickerPopup = $("#new-folder-dlg-fldr-tree-popup");
 
-    $("#new-folder-dlg-fldr-picker-mnubtn").click(aEvent => {
+    $("#new-folder-dlg-fldr-picker-mnubtn").on("click", aEvent => {
       if (fldrPickerPopup.css("visibility") == "visible") {
         this.closeFolderPicker();
       }
@@ -508,13 +508,13 @@ function initFolderPicker()
   
   // Initialize the transparent background that user can click on to dismiss an
   // open folder picker popup.
-  $(".popup-bkgrd").click(aEvent => {
+  $(".popup-bkgrd").on("click", aEvent => {
     $(".folder-tree-popup").css({ visibility: "hidden" });
     $(".popup-bkgrd").hide();
   });
 
   // Initialize the folder picker in the main New Clipping dialog.
-  $("#new-clipping-fldr-picker-menubtn").click(aEvent => {
+  $("#new-clipping-fldr-picker-menubtn").on("click", aEvent => {
     let popup = $("#new-clipping-fldr-tree-popup");
 
     if (popup.css("visibility") == "hidden") {

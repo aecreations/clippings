@@ -181,7 +181,7 @@ let gSearchBox = {
         });
       });
 
-    $("#clear-search").click(aEvent => { this.reset(true) });
+    $("#clear-search").on("click", aEvent => { this.reset(true) });
 
     this._isInitialized = true;
   },

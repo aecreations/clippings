@@ -326,7 +326,7 @@ $(async () => {
   });
 
   initAutocomplete();
-  $("#btn-cancel").click(aEvent => { cancel(aEvent) });
+  $("#btn-cancel").on("click", aEvent => { cancel(aEvent) });
 
   gPasteMode = await aePrefs.getPref("pastePromptAction");
   
@@ -499,7 +499,7 @@ function initAutocomplete()
       }
     })
     
-    $("#clear-search").click(aEvent => {
+    $("#clear-search").on("click", aEvent => {
       $("#clipping-search").val("").focus();
       $("#num-matches").text("\u00a0");
       
@@ -520,16 +520,16 @@ async function initShortcutList()
 {
   $("#dlg-buttons").remove();
 
-  $("#shortcut-list-toolbar > #paste-clipping").click(aEvent => {
+  $("#shortcut-list-toolbar > #paste-clipping").on("click", aEvent => {
     let clippingKey = $("#shortcut-list-content > table > tbody > tr.selected-row td:first-child").text();
     execShortcut(clippingKey);
   });
 
-  $("#shortcut-list-toolbar > #export-shct-list").click(aEvent => {
+  $("#shortcut-list-toolbar > #export-shct-list").on("click", aEvent => {
     exportShortcutList();
   });
 
-  $("#shortcut-list-toolbar > #close").click(aEvent => {
+  $("#shortcut-list-toolbar > #close").on("click", aEvent => {
     closeDlg();
   });
   

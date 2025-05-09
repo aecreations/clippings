@@ -15,21 +15,21 @@ $(async () => {
   let lang = browser.i18n.getUILanguage();
   document.body.dataset.locale = lang;
   
-  $("#goto-whatsnew").click(aEvent => {
+  $("#goto-whatsnew").on("click", aEvent => {
     gotoURL(aeConst.WHATSNEW_URL);
   });
   
-  $("#goto-quick-start").click(aEvent => {
+  $("#goto-quick-start").on("click", aEvent => {
     gotoURL(aeConst.QUICKSTART_URL);
   });
 
-  $("#dismiss-welcome").click(aEvent => { closePage() });
+  $("#dismiss-welcome").on("click", aEvent => { closePage() });
 
   $("#link-website > a").attr("href", aeConst.HELP_URL);
   $("#link-blog > a").attr("href", aeConst.BLOG_URL);
   $("#link-forum > a").attr("href", aeConst.FORUM_URL);
 
-  $("a").click(aEvent => {
+  $("a").on("click", aEvent => {
     aEvent.preventDefault();
     gotoURL(aEvent.target.href);
   });
