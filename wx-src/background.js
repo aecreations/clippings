@@ -2173,7 +2173,7 @@ async function copyProcessedClipping(aClippingContent, aCopyMode)
   if (aCopyMode == aeConst.COPY_AS_HTML) {
     type = "text/html";
 
-    let autoLineBreak = await aePrefs.getPref("autoLineBreak");
+    let copyAutoLineBreak = await aePrefs.getPref("copyAutoLineBreak");
     let hasLineBreakTags = aClippingContent.search(/<br|<p/i) != -1;
     if (autoLineBreak && !hasLineBreakTags) {
       aClippingContent = aClippingContent.replace(/\n/g, "<br>");

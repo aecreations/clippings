@@ -242,6 +242,10 @@ $(async () => {
     gDialogs.clippingsSidebar.showModal();
   });
 
+  $("#html-cpy-auto-line-brk").prop("checked", prefs.copyAutoLineBreak).on("click", aEvent => {
+    aePrefs.setPrefs({copyAutoLineBreak: aEvent.target.checked});
+  });
+
   if (prefs.syncClippings) {
     $("#sync-settings").show();
     $("#sync-status").addClass("sync-status-on").text(browser.i18n.getMessage("syncStatusOn"));

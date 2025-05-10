@@ -74,6 +74,7 @@ let aePrefs = {
     pasteFromSidebar: false,
     logSyncDataSize: false,
     pasteDelay: 100,
+    copyAutoLineBreak: true,
   },
   
   getPrefKeys()
@@ -330,14 +331,17 @@ let aePrefs = {
   hasAlamoSquarePrefs(aPrefs)
   {
     // Version 7.1
-    // TEMPORARY
-    return false;
-    
-    // TO DO: Finish implementation
+    return ("copyAutoLineBreak" in aPrefs);
   },
 
   async setAlamoSquarePrefs(aPrefs)
   {
+    let newPrefs = {
+      copyAutoLineBreak: true,
+    };
+
+    await this._addPrefs(aPrefs, newPrefs);
+
     // Remove deprecated prefs
     await this._removePrefs(aPrefs, ["_isInitialized", "tabModalMsgBox"]);
   },
