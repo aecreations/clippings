@@ -20,6 +20,7 @@ const aeConst = Object.freeze({
   HTMLPASTE_ASK_THE_USER: 0,
   HTMLPASTE_AS_FORMATTED: 1,
   HTMLPASTE_AS_IS:        2,
+  HTMLPASTE_AS_PLAIN:     3,
 
   // Copy clipping text
   COPY_AS_HTML: 1,

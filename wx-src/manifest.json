@@ -66,6 +66,7 @@
       "all_frames": true,
       "js": [
 	"lib/purify.min.js",
+	"lib/jquery.js",
 	"content.js"
       ]
     }

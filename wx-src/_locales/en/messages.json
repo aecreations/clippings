@@ -1111,11 +1111,18 @@
   },
 
   "pasteOptFormatted": {
-    "message": "Paste as formatted text"
+    "message": "Paste as formatted text",
+    "description": "Paste option radio button label in extension preferences page"
+  },
+
+  "pasteOptPlain": {
+    "message": "Paste as plain text",
+    "description": "Paste option radio button label in extension preferences page"
   },
 
   "pasteOptRawHTML": {
-    "message": "Paste as plain text, preserving HTML tags"
+    "message": "Paste as plain text, preserving HTML tags",
+    "description": "Paste option radio button label in extension preferences page"
   },
 
   "cbAutoLineBreak": {
