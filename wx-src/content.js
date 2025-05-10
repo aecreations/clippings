@@ -319,7 +319,7 @@ function insertTextIntoRichTextEditor(aRichTextEditorDocument, aClippingText, aA
 }
 
 
-function removeHTMLFromFormattedClipping(aHTMLClippingText, aKeepLineBreaks)
+function removeHTMLFromFormattedClipping(aHTMLClippingText, aKeepBrTags)
 {
   let rv = "";
   let isConvFailed = false;
@@ -344,18 +344,18 @@ function removeHTMLFromFormattedClipping(aHTMLClippingText, aKeepLineBreaks)
     try {
       rv = jQuery(content).text();
 
-      log("Clippings::compose.js: insertTextIntoRichTextEditor(): Clipping content #3:");
+      log("Clippings::compose.js: removeHTMLFromFormattedClipping(): Clipping content #3:");
       log(rv);
     }
     catch (e) {
       // Clipping text contains unrecognized markup, e.g. PHP or ASP.net tags.
       // In this case, keep the clipping content intact.
-      console.warn("Clippings::compose.js: insertTextIntoRichTextEditor(): Unable to strip HTML tags from clipping content!\n" + e);
+      console.warn("Clippings::compose.js: removeHTMLFromFormattedClipping(): Unable to strip HTML tags from clipping content!\n" + e);
       rv = aHTMLClippingText;
     }
   }
 
-  if (aKeepLineBreaks) {
+  if (aKeepBrTags) {
     rv = rv.replace(/\n/g, "<br>");
   }
 
