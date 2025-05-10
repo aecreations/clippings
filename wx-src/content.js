@@ -319,7 +319,7 @@ function insertTextIntoRichTextEditor(aRichTextEditorDocument, aClippingText, aA
 }
 
 
-function removeHTMLFromFormattedClipping(aHTMLClippingText, aKeepBrTags)
+function removeHTMLFromFormattedClipping(aHTMLClippingText, aKeepLineBreaks)
 {
   let rv = "";
   let isConvFailed = false;
@@ -355,7 +355,7 @@ function removeHTMLFromFormattedClipping(aHTMLClippingText, aKeepBrTags)
     }
   }
 
-  if (aKeepBrTags) {
+  if (aKeepLineBreaks) {
     rv = rv.replace(/\n/g, "<br>");
   }
 
