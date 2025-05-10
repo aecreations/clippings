@@ -1126,7 +1126,8 @@
   },
 
   "cbAutoLineBreak": {
-    "message": "Automatically break lines unless <p> or <br> tags exist"
+    "message": "Automatically break lines unless <p> or <br> tags exist",
+    "description": "Checkbox option for copying and pasting an HTML-formatted clipping"
   },
 
   "htmlPasteDesc": {
