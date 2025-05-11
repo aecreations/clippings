@@ -2259,7 +2259,7 @@ async function copyProcessedClipping(aClippingContent, aCopyMode)
 
     let copyAutoLineBreak = await aePrefs.getPref("copyAutoLineBreak");
     let hasLineBreakTags = aClippingContent.search(/<br|<p/i) != -1;
-    if (autoLineBreak && !hasLineBreakTags) {
+    if (copyAutoLineBreak && !hasLineBreakTags) {
       aClippingContent = aClippingContent.replace(/\n/g, "<br>");
     }
   }
