@@ -814,6 +814,7 @@ let gSrcURLBar = {
 
       if (updatedURL && gSyncedItemsIDs.has(clippingID + "C")) {
         browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"})
+          .then(handlePushSyncUpdatesResponse)
           .catch(handlePushSyncItemsError);
       }
     });
