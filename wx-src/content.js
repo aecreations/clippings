@@ -27,10 +27,6 @@ browser.runtime.onMessage.addListener(aRequest => {
     resp = handleRequestInsertClipping(aRequest);
     break;
 
-  case "paste-clipping-via-clipbd":
-    resp = handleRequestInsertClippingViaClipboard(aRequest);
-    break;
-
   case "focus-active-tab":
     resp = handleRequestFocusTab();
     break;
@@ -184,42 +180,6 @@ function handleRequestInsertClipping(aRequest)
     rv = null;
   }
 
-  return rv;
-}
-
-
-function handleRequestInsertClippingViaClipboard(aRequest)
-{
-  let rv = null;
-
-  if (!document.hasFocus()) {
-    warn(`Clippings::content.js: handleRequestInsertClippingViaClipboard(): The web page at ${document.URL} does not have the focus; exiting message handler.`);
-    return rv;
-  }
-
-  let activeElt = getActiveElt();
-
-  log("Clippings::content.js: handleRequestInsertClippingViaClipboard(): activeElt = " + (activeElt ? activeElt.toString() : "???"));
-
-  let clippingText = aRequest.content;
-  let pasteEvt = new ClipboardEvent("paste", {
-    clipboardData: new DataTransfer(),
-  });
-
-  if (isElementOfType(activeElt, "HTMLInputElement")
-      || isElementOfType(activeElt, "HTMLTextAreaElement")) {
-    pasteEvt.clipboardData.setData("text/plain", clippingText);
-    activeElt.dispatchEvent(pasteEvt);
-    rv = true;
-  }
-  else if (isElementOfType(activeElt, "HTMLIFrameElement")
-           || isElementOfType(activeElt, "HTMLDivElement")) {
-    // TO DO: Finish implementation
-  }
-  else {
-    warn("Clippings/wx::content.js: handleRequestInsertClippingViaClipboard(): Document element is null or <body> doesn't have 'contenteditable' attribute set; exiting message handler");
-  }
-  
   return rv;
 }
 

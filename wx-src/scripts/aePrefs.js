@@ -75,7 +75,6 @@ let aePrefs = {
     logSyncDataSize: false,
     pasteDelay: 100,
     copyAutoLineBreak: true,
-    useClipboard: false,
   },
   
   getPrefKeys()
@@ -339,7 +338,6 @@ let aePrefs = {
   {
     let newPrefs = {
       copyAutoLineBreak: true,
-      useClipboard: false,
     };
 
     await this._addPrefs(aPrefs, newPrefs);
