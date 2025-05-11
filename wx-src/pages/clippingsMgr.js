@@ -599,7 +599,7 @@ let gSyncClippingsListener = {
   {
     log("Clippings/wx::clippingsMgr.js::gSyncClippingsListener.onActivate()");
     aeDialog.cancelDlgs();
-    gDialogs.reloadSyncFolder.showModal();
+    gDialogs.reloadSyncFolderIntrl();
   },
   
   onDeactivate(aOldSyncFolderID)
@@ -3042,7 +3042,19 @@ let gCmd = {
     });
     
     aeDialog.cancelDlgs();
-    gDialogs.reloadSyncFolder.showModal();
+    await this.reloadSyncFolderIntrl();
+  },
+
+  async reloadSyncFolderIntrl()
+  {
+    let afterSyncFldrReloadDelay = await aePrefs.getPref("afterSyncFldrReloadDelay");
+    
+    gDialogs.syncProgress.showModal(false);
+
+    setTimeout(async () => {
+      await rebuildClippingsTree();
+      gDialogs.syncProgress.close();
+    }, afterSyncFldrReloadDelay);
   },
   
   removeAllSrcURLs: function ()
@@ -5016,25 +5028,6 @@ function initDialogs()
     aeClippingsTree.getTree().reactivate(true);
   };
 
-  gDialogs.reloadSyncFolder = new aeDialog("#reload-sync-fldr-msgbox");
-  gDialogs.reloadSyncFolder.onFirstInit = function ()
-  {
-    this.focusedSelector = ".dlg-btns > .dlg-accept";
-  };
-  gDialogs.reloadSyncFolder.onAfterAccept = function ()
-  {
-    rebuildClippingsTree();
-  };
-  gDialogs.reloadSyncFolder.onUnload = function ()
-  {
-    if (gDialogs.showOnlySyncedItemsReminder.isDelayedOpen) {
-      gDialogs.showOnlySyncedItemsReminder.isDelayedOpen = false;
-      setTimeout(() => {
-        gDialogs.showOnlySyncedItemsReminder.showModal();
-      }, 800);
-    }
-  };
-
   gDialogs.moveTo = new aeDialog("#move-dlg");
   gDialogs.moveTo.setProps({
     fldrTree: null,
@@ -5236,6 +5229,7 @@ function initDialogs()
     }, 100);
   };
 
+  gDialogs.syncProgress = new aeDialog("#sync-progress");
   gDialogs.syncFldrFull = new aeDialog("#sync-fldr-full-error-msgbox");
   gDialogs.syncFldrReadOnly = new aeDialog("#sync-file-readonly-msgbar");
   gDialogs.miniHelp = new aeDialog("#mini-help-dlg");

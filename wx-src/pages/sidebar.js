@@ -13,7 +13,7 @@ let gClippingsDB;
 let gIsClippingsTreeEmpty;
 let gSyncedItemsIDs = new Set();
 let gSyncedItemsIDMap = new Map();
-let gCustomizeDlg, gReloadSyncFldrMsgBox, gClipbdWritePermMsgBox,
+let gCustomizeDlg, gClipbdWritePermMsgBox,
     gInitErrorMsgBox, gSyncProgressDlg;
 let gMsgBarTimerID = null;
 
@@ -22,7 +22,7 @@ let gSyncClippingsListener = {
   {
     log("Clippings::sidebar.js::gSyncClippingsListener.onActivate()");
     aeDialog.cancelDlgs();
-    gReloadSyncFldrMsgBox.showModal();
+    gCmd.reloadSyncFolderIntrl();
   },
   
   onDeactivate(aOldSyncFolderID)
@@ -256,9 +256,21 @@ let gCmd = {
     });
     
     aeDialog.cancelDlgs();
-    gReloadSyncFldrMsgBox.showModal();
+    await this.reloadSyncFolderIntrl();
   },
 
+  async reloadSyncFolderIntrl()
+  {
+    let afterSyncFldrReloadDelay = await aePrefs.getPref("afterSyncFldrReloadDelay");
+    
+    gSyncProgressDlg.showModal(false);
+
+    setTimeout(async () => {
+      await rebuildClippingsTree();
+      gSyncProgressDlg.close();
+    }, afterSyncFldrReloadDelay);
+  },
+  
   async insertClipping()
   {
     let tree = aeClippingsTree.getTree();
@@ -469,17 +481,6 @@ function initDialogs()
     $("#show-preview-pane").prop("checked", gPrefs.sidebarPreview).on("click", aEvent => {
       aePrefs.setPrefs({sidebarPreview: aEvent.target.checked});
     });
-  };
-
-  gReloadSyncFldrMsgBox = new aeDialog("#reload-sync-fldr-msgbox");
-  gReloadSyncFldrMsgBox.onFirstInit = function ()
-  {
-    this.focusedSelector = ".msgbox-btns > .dlg-accept";
-  };
-
-  gReloadSyncFldrMsgBox.onAfterAccept = function ()
-  {
-    rebuildClippingsTree();
   };
 
   gClipbdWritePermMsgBox = new aeDialog("#request-clipbd-write-perm-dlg");

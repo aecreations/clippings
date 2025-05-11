@@ -1022,7 +1022,6 @@ body[data-os="win"] .browser-style > input[type="checkbox"] + label {
 #import-confirm-msgbox,
 #export-confirm-msgbox,
 #backup-confirm-msgbox,
-#reload-sync-fldr-msgbox,
 #move-sync-fldr-msgbox,
 #delete-sync-fldr-msgbox,
 #show-only-synced-items-reminder,
@@ -1434,17 +1433,12 @@ body[data-locale="uk"] #include-src-urls + label {
 #import-confirm-msgbox > .msgbox-icon,
 #export-confirm-msgbox > .msgbox-icon,
 #backup-confirm-msgbox > .msgbox-icon,
-#reload-sync-fldr-msgbox > .msgbox-icon,
 #sync-fldr-full-error-msgbox > .msgbox-icon {
     margin-top: 8px;
 }
 
 #import-confirm-msgbox {
     --width: 406px;
-}
-
-#reload-sync-fldr-msgbox {
-    --width: 436px;
 }
 
 #move-sync-fldr-msgbox {
@@ -1541,6 +1535,16 @@ body[data-locale="de"] #show-only-synced-items-reminder {
 
 #show-only-synced-items-reminder > .dlg-content > .msgbox-info-icon {
     margin-bottom: 72px;
+}
+
+#sync-progress {
+    top: 64px;
+    --width: 150px;
+    --height: auto;
+}
+
+#sync-progress progress {
+    width: 100%;
 }
 
 #generic-msg-box {
