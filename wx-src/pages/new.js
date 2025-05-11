@@ -16,7 +16,7 @@ let gParentFolderID = 0;
 let gSrcURL = "";
 let gCreateInFldrMenu;
 let gFolderPickerPopup;
-let gNewFolderDlg;
+let gNewFolderDlg, gSyncErrMsgBox;
 let gPrefs;
 let gSyncedFldrIDs = new Set();
 
@@ -494,6 +494,8 @@ function initDialogs()
       window.alert(aErr);
     });  
   };
+
+  gSyncErrMsgBox = new aeDialog("#sync-fldr-full-error-msgbox");
 }
 
 
@@ -842,18 +844,27 @@ function accept(aEvent)
 
 async function finishAcceptDlg(aNewClippingID, aNewClipping)
 {
-  await browser.runtime.sendMessage({
-    msgID: "new-clipping-created",
-    newClippingID: aNewClippingID,
-    newClipping: aNewClipping,
-    origin: aeConst.ORIGIN_HOSTAPP,
-  });
-
-  await unsetClippingsUnchangedFlag();
 
   if (gPrefs.syncClippings) {
-    aeImportExport.setDatabase(gClippingsDB);      
+    aeImportExport.setDatabase(gClippingsDB);
+    
     let syncData = await aeImportExport.exportToJSON(true, true, gPrefs.syncFolderID, false, true, true);
+    
+    let isSyncDataSizeUnderMax = await browser.runtime.sendMessage({
+      msgID: "check-sync-data-size",
+      syncData,
+    });
+    log("Clippings::new.js: finishAcceptDlg(): Response from message 'check-sync-data-size': " + isSyncDataSizeUnderMax);
+
+    if (!isSyncDataSizeUnderMax) {
+      gSyncErrMsgBox.showModal();
+      setTimeout(async () => {
+        await gClippingsDB.clippings.delete(aNewClippingID);
+      }, 100);
+ 
+      setDlgButtonEnabledStates(true);
+      return;
+    }
 
     let natMsg = {
       msgID: "set-synced-clippings",
@@ -868,6 +879,14 @@ async function finishAcceptDlg(aNewClippingID, aNewClipping)
     log(resp);
   }
   
+  await browser.runtime.sendMessage({
+    msgID: "new-clipping-created",
+    newClippingID: aNewClippingID,
+    newClipping: aNewClipping,
+    origin: aeConst.ORIGIN_HOSTAPP,
+  });
+  await unsetClippingsUnchangedFlag();
+
   if (gPrefs.clippingsMgrAutoShowDetailsPane && isClippingOptionsSet()) {
     aePrefs.setPrefs({
       clippingsMgrAutoShowDetailsPane: false,

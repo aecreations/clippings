@@ -304,13 +304,14 @@ body:not([data-locale="uk"]):not([data-locale|="pt"]):not([data-locale|="es"]) #
     z-index: 1101;
 }
 
-#create-clipping-error-msgbox {
+#create-clipping-error-msgbox,
+#sync-fldr-full-error-msgbox {
     --width: 390px;
     --height: 150px;
     top: 64px;
 }
 
-#create-clipping-error-msgbox .msgbox-error-icon {
+.err-msgbox .msgbox-error-icon {
     float: left;
     width: 34px;
     height: 34px;
@@ -320,15 +321,18 @@ body:not([data-locale="uk"]):not([data-locale|="pt"]):not([data-locale|="es"]) #
     background-size: contain;
 }
 
-body[data-os="win"] #create-clipping-error-msgbox .msgbox-error-icon {
+body[data-os="win"] .err-msgbox .msgbox-error-icon {
     background-image: url("../img/alert-win.png");
 }
 
-body[data-os="mac"] #create-clipping-error-msgbox .msgbox-error-icon {
+body[data-os="mac"] .err-msgbox .msgbox-error-icon {
     background-image: url("../img/warning-64-mac.png");
 }
 
-#create-clipping-error-msgbox .msgbox-error-msg {
+.err-msgbox p {
     margin-left: 44px;
+}
+
+.err-msgbox .msgbox-error-msg {
     color: var(--color-error-text);
 }

@@ -1542,6 +1542,11 @@
     "description": "Error message that appears as a notification when the Sync Clippings Helper app was uninstalled without turning off Sync Clippings first"
   },
 
+  "syncFldrFull": {
+    "message": "The Synced Clippings folder is full. Move or delete any unused clippings in the folder, and then try again.",
+    "description": "Error message that appears in New Clipping dialog and Clippings Manager when the sync data exceeds 1 MB"
+  },
+
   "syncUpdateTitle": {
     "message": "New Version of Sync Clippings Helper"
   },

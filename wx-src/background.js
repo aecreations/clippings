@@ -843,6 +843,45 @@ async function pushSyncFolderUpdates()
 }
 
 
+async function isRecvNativeMessageSizeUnderMax(aSyncClippingsData)
+{
+  let rv = false;
+  let encoder = new TextEncoder();
+  let compressSyncData = await aePrefs.getPref("compressSyncData");
+  let syncDataStr = JSON.stringify(aSyncClippingsData);
+  let dataSizeB, dataSizeKB;
+
+  if (compressSyncData) {
+    let cmprsData = await aeCompress.compress(syncDataStr);
+    let recvMsgBody = {
+      status: "ok",
+      format: "gzip",
+      data: cmprsData.toBase64(),
+    };
+
+    let recvMsgBodyStr;
+    try {
+      recvMsgBodyStr = JSON.stringify(recvMsgBody);
+    }
+    catch (e) {
+      console.error("Clippings: isRecvNativeMessageSizeUnderMax(): Failed to serialize native message body: " + e);
+      throw e;
+    }
+    
+    dataSizeB = encoder.encode(recvMsgBodyStr).length;
+  }
+  else {
+    dataSizeB = encoder.encode(syncDataStr).length;
+  }
+
+  dataSizeKB = dataSizeB / 1024;
+  rv = dataSizeKB < 1024;
+  log(`Clippings: isRecvNativeMessageSizeUnderMax(): Sync data size: ${dataSizeKB.toFixed(2)} KB\nIt is ${rv} that the sync data size is below the 1 MB limit.`);
+  
+  return rv;
+}
+
+
 function purgeFolderItems(aFolderID, aKeepFolder)
 {
   let clippingsDB = aeClippings.getDB();
@@ -2545,6 +2584,9 @@ browser.runtime.onMessage.addListener(aRequest => {
   case "push-sync-fldr-updates":
     return pushSyncFolderUpdates();
 
+  case "check-sync-data-size":
+    return Promise.resolve(isRecvNativeMessageSizeUnderMax(aRequest.syncData));
+    
   case "purge-fldr-items":
     return purgeFolderItems(aRequest.folderID);
     
