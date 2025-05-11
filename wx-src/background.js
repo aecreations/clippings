@@ -2144,14 +2144,24 @@ async function pasteProcessedClipping(aClippingContent, aTabID)
   await browser.windows.update(tab.windowId, {focused: true});
 
   let prefs = await aePrefs.getAllPrefs();
-  let msg = {
-    msgID: "paste-clipping",
-    content: aClippingContent,
-    htmlPaste: prefs.htmlPaste,
-    autoLineBreak: prefs.autoLineBreak,
-    dispatchInputEvent: prefs.dispatchInputEvent,
-    useInsertHTMLCmd: prefs.useInsertHTMLCmd,
-  };
+  let msg = {};
+
+  if (prefs.useClipboard) {
+    msg = {
+      msgID: "paste-clipping-via-clipbd",
+      content: aClippingContent,
+    };
+  }
+  else {
+    msg = {
+      msgID: "paste-clipping",
+      content: aClippingContent,
+      htmlPaste: prefs.htmlPaste,
+      autoLineBreak: prefs.autoLineBreak,
+      dispatchInputEvent: prefs.dispatchInputEvent,
+      useInsertHTMLCmd: prefs.useInsertHTMLCmd,
+    };
+  }
 
   log(`Clippings/wx: Extension sending message "paste-clipping" to content script (active tab ID = ${aTabID})`);
   log(msg);
