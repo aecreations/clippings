@@ -1462,6 +1462,7 @@ let gCmd = {
         gSyncedItemsIDs.add(aNewClippingID + "C");
         gSyncedItemsIDMap.set(newClipping.sid, aNewClippingID + "C");
         browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"})
+          .then(handlePushSyncUpdatesResponse)
           .catch(handlePushSyncItemsError);
       }
     });
@@ -1525,6 +1526,7 @@ let gCmd = {
         gSyncedItemsIDs.add(aNewClippingID + "C");
         gSyncedItemsIDMap.set(newClipping.sid, aNewClippingID + "C");
         browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"})
+          .then(handlePushSyncUpdatesResponse)
           .catch(handlePushSyncItemsError);
       }
     });
@@ -1687,6 +1689,7 @@ let gCmd = {
         gSyncedItemsIDs.add(aNewFolderID + "F");
         gSyncedItemsIDMap.set(newFolder.sid, aNewFolderID + "F");
         browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"})
+          .then(handlePushSyncUpdatesResponse)
           .catch(handlePushSyncItemsError);
       }
     });
@@ -1997,8 +2000,10 @@ let gCmd = {
     if (gSyncedItemsIDs.has(parentFolderID + "F")) {
       gSyncedItemsIDs.add(newSeparatorID + "C");
       gSyncedItemsIDMap.set(newSeparator.sid, newSeparatorID + "C");
+      let resp;
       try {
-        await browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"});
+        resp = await browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"});
+        handlePushSyncUpdatesResponse(resp);
       }
       catch (e) {
         handlePushSyncItemsError(e);
@@ -2105,7 +2110,7 @@ let gCmd = {
 
         if (gSyncedItemsIDs.has(aNewParentFldrID + "F")
             || gSyncedItemsIDs.has(oldParentFldrID + "F")) {
-          browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"}).then(() => {
+          browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"}).then(aResp => {
             // Remove clipping from synced items set if it was moved out of a
             // synced folder.
             if (gSyncedItemsIDs.has(aClippingID + "C")
@@ -2121,6 +2126,7 @@ let gCmd = {
             }
             this._pushToUndoStack(aDestUndoStack, state);
             aFnResolve();
+            handlePushSyncUpdatesResponse(aResp);
           }).catch(handlePushSyncItemsError);
         }
         else {
@@ -2211,9 +2217,10 @@ let gCmd = {
       }
 
       if (gSyncedItemsIDs.has(aDestFldrID + "F")) {
-        browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"}).then(() => {
+        browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"}).then(aResp => {
           gSyncedItemsIDs.add(aNewClippingID + "C");
           gSyncedItemsIDMap.set(sid, aNewClippingID + "C");
+          handlePushSyncUpdatesResponse(aResp);
         }).catch(handlePushSyncItemsError);
       }
     }).catch(aErr => {
@@ -2305,7 +2312,7 @@ let gCmd = {
 
         if (gSyncedItemsIDs.has(aNewParentFldrID + "F")
             || gSyncedItemsIDs.has(oldParentFldrID + "F")) {
-          browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"}).then(() => {
+          browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"}).then(aResp => {
             if (gSyncedItemsIDs.has(aFolderID + "F")
                 && !gSyncedItemsIDs.has(aNewParentFldrID + "F")) {
               gSyncedItemsIDs.delete(aFolderID + "F");
@@ -2317,6 +2324,7 @@ let gCmd = {
               gSyncedItemsIDMap.set(sid, aFolderID + "F");
             }
             this._pushToUndoStack(aDestUndoStack, state);
+            handlePushSyncUpdatesResponse(aResp);
             aFnResolve();
           }).catch(handlePushSyncItemsError);
         }
@@ -2420,9 +2428,10 @@ let gCmd = {
       }
 
       if (gSyncedItemsIDs.has(aDestFldrID + "F")) {
-        browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"}).then(() => {
+        browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"}).then(aResp => {
           gSyncedItemsIDs.add(newFldrID + "F");
           gSyncedItemsIDMap.set(sid, newFldrID + "F");
+          handlePushSyncUpdatesResponse(aResp);
         }).catch(handlePushSyncItemsError);
       }
 
@@ -2482,7 +2491,8 @@ let gCmd = {
         }
 
         if (gSyncedItemsIDs.has(aFolderID + "F")) {
-          browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"}).then(() => {
+          browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"}).then(aResp => {
+            handlePushSyncUpdatesResponse(aResp);
             aFnResolve();
           }).catch(aErr => {
             handlePushSyncItemsError(aErr);
@@ -2542,7 +2552,8 @@ let gCmd = {
         }
 
         if (gSyncedItemsIDs.has(aClippingID + "C")) {
-          browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"}).then(() => {
+          browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"}).then(aResp => {
+            handlePushSyncUpdatesResponse(aResp);
             aFnResolve();
           }).catch(aErr => {
             handlePushSyncItemsError(aErr);
@@ -2602,7 +2613,8 @@ let gCmd = {
         }
 
         if (gSyncedItemsIDs.has(aClippingID + "C")) {
-          browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"}).then(() => {
+          browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"}).then(aResp => {
+            handlePushSyncUpdatesResponse(aResp);
             aFnResolve();
           }).catch(aErr => {
             handlePushSyncItemsError(aErr);
@@ -2668,7 +2680,9 @@ let gCmd = {
       }
 
       if (gSyncedItemsIDs.has(aClippingID + "C")) {
-        return browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"});
+        browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"}).then(aResp => {
+          handlePushSyncUpdatesResponse(aResp);
+        }).catch(handlePushSyncItemsError);
       }
     }).catch(aErr => {
       handlePushSyncItemsError(aErr);
@@ -3426,6 +3440,15 @@ let gCmd = {
     }
   },
 };
+
+
+function handlePushSyncUpdatesResponse(aResponse)
+{
+  if ("error" in aResponse && aResponse.error.name == "RangeError") {
+    // Max sync file size exceeded.
+    gDialogs.syncFldrFull.showModal();
+  }
+}
 
 
 // Initializing Clippings Manager window
@@ -5212,7 +5235,8 @@ function initDialogs()
       acceptBtn.focus();
     }, 100);
   };
-  
+
+  gDialogs.syncFldrFull = new aeDialog("#sync-fldr-full-error-msgbox");
   gDialogs.syncFldrReadOnly = new aeDialog("#sync-file-readonly-msgbar");
   gDialogs.miniHelp = new aeDialog("#mini-help-dlg");
   gDialogs.genericMsgBox = new aeDialog("#generic-msg-box");
@@ -6339,7 +6363,10 @@ function getErrStr(aErr)
 
 function handlePushSyncItemsError(aError)
 {
-  if (! gErrorPushSyncItems) {
+  if (!gErrorPushSyncItems) {
+    // Show sync errors only once during the Clippings Manager session.
+    // Pushing sync changes can happen numerous times, and repeated error
+    // messages will annoy the user.
     let errorMsgBox = new aeDialog("#sync-error-msgbox");
     errorMsgBox.onInit = function () {
       this.find(".dlg-content > .msgbox-error-msg").text(browser.i18n.getMessage("syncPushFailed"));
