@@ -4,7 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 const WNDH_SHORTCUT_KEY = 164;
-const WNDH_SEARCH_CLIPPING = 222;
+const WNDH_SEARCH_CLIPPING = 250;
 const WNDH_SHORTCUT_LIST = 278;
 const WNDW_SHORTCUT_LIST = 436;
 const DLG_HEIGHT_ADJ_WINDOWS = 8;
@@ -15,10 +15,9 @@ let gClippingsDB, gPasteMode, gOS;
 let gBrowserTabID = null;
 
 let gAutocompleteMenu = {
-  _SCRL_LENGTH: 36,
-  _SCRL_START_IDX: 2,
-  _MAX_VISIBLE_POPUP_ITEMS: 3,
-  _POPUP_MAX_HEIGHT: 112,
+  _SCRL_LENGTH: 34,
+  _MAX_VISIBLE_POPUP_ITEMS: 4,
+  _POPUP_MAX_HEIGHT: 142,
   
   _textboxElt: null,
   _popupElt: null,
@@ -33,67 +32,75 @@ let gAutocompleteMenu = {
     this._popupElt = $("#search-results-popup");
     this._listboxElt = $("#search-results-listbox");
 
+    this._listboxElt.fancytree({
+      extensions: ["wide"],
+      debugLevel: 0,
+      autoScroll: true,
+      selectMode: 1,
+      icon: false,
+      escapeTitles: false,
+      source: [],
+
+      // Event handling
+      click(aEvent, aData)
+      {
+        let clippingID = Number(aData.node.key);
+        gAutocompleteMenu._selectClipping(clippingID);
+      },
+    });
+
     this._textboxElt.on("keydown", aEvent => {
       let searchText = aEvent.target.value;
+      let listbox = this._getListbox();
+      let listboxItems = listbox.toDict();
+      let selectedItem = listbox.activeNode;
 
-      if (aEvent.key == "ArrowDown" || aEvent.key == "Down") {
-        if (searchText == "") {
+      if (aEvent.key == "ArrowDown") {
+        if (searchText == '') {
           log("No search text was entered.");
           return;
         }
 
-        if (! this.isPopupShowing()) {
+        aEvent.preventDefault();
+
+        if (!this.isPopupShowing()) {
           this._popupElt.show();
-          this._listboxElt.focus();
+          if (selectedItem) {
+            selectedItem.setActive();
+          }
+          else {
+            listbox.getFirstChild().setActive();
+            this._selectedIdx = 0;
+          }
+
           let popupHt = parseInt(this._popupElt.css("height"));
           if (popupHt == this._POPUP_MAX_HEIGHT) {
             $("#search-by-name .key-legend").hide();
           }
-          aEvent.preventDefault();
+
           return;
         }
 
-        aEvent.preventDefault();
-        
         if (this._selectedIdx == -1) {
-          let firstChild = this._listboxElt.children()[0];
-          firstChild.setAttribute("selected", "true");
-          firstChild.setAttribute("aria-selected", "true");
+          listbox.getFirstChild().setActive();
           this._selectedIdx = 0;
         }
-        else if (this._selectedIdx == (this._listboxElt.children().length - 1)) {
+        else if (this._selectedIdx == (listbox.count() - 1)) {
           log("At the last item of the search results popup.");
           return;
         }
         else {
           this._selectedIdx++;
-          this._clearSelection();
-          
-          let selectedItem = null;
-          let popupMenuItems = this._listboxElt.children();
-          
-          for (let i = 0; i < popupMenuItems.length; i++) {
-            if (i == this._selectedIdx) {
-              selectedItem = popupMenuItems[i];
-              selectedItem.setAttribute("selected", "true");
-              selectedItem.setAttribute("aria-selected", "true");
-              break;
-            }
-          }
-
-          if (this._selectedIdx > this._SCRL_START_IDX) {
-            let scrolled = this._popupElt[0].scrollTop;
-            this._popupElt[0].scrollTop = scrolled + this._SCRL_LENGTH;
-          }
+          listbox.activateKey(listboxItems[this._selectedIdx].key);
         }
       }
-      else if (aEvent.key == "ArrowUp" || aEvent.key == "Up") {
-        if (searchText == "") {
+      else if (aEvent.key == "ArrowUp") {
+        if (searchText == '') {
           log("No search text was entered.");
           return;
         }
 
-        if (! this.isPopupShowing()) {
+        if (!this.isPopupShowing()) {
           return;
         }
         
@@ -109,24 +116,7 @@ let gAutocompleteMenu = {
         }
         else {
           this._selectedIdx--;
-          this._clearSelection();
-          
-          let selectedItem = null;
-          let popupMenuItems = this._listboxElt.children();
-          
-          for (let i = 0; i < popupMenuItems.length; i++) {
-            if (i == this._selectedIdx) {
-              selectedItem = popupMenuItems[i];
-              selectedItem.setAttribute("selected", "true");
-              selectedItem.setAttribute("aria-selected", "true");
-              break;
-            }
-          }
-
-          if (this._selectedIdx < (popupMenuItems.length - 1 - this._SCRL_START_IDX)) {
-            let scrolled = this._popupElt[0].scrollTop;
-            this._popupElt[0].scrollTop = scrolled - this._SCRL_LENGTH;
-          }
+          listbox.activateKey(listboxItems[this._selectedIdx].key);
         }
       }
       else if (aEvent.key == "Enter") {
@@ -135,27 +125,28 @@ let gAutocompleteMenu = {
           return;
         }
         
-        let selectedItem = $('div.clipping[selected="true"]')[0];
-        let clippingID = Number(selectedItem.dataset.clippingId);
+        let clippingID = Number(selectedItem.key);
         this._selectClipping(clippingID);
       }
     });
 
     this._textboxElt.on("input", aEvent => {
+      let listbox = this._getListbox();
+
       if (this.isPopupShowing()) {
         this._popupElt[0].scrollTop = 0;
-        this._listboxElt.empty();
+        listbox.clear();
         this._popupElt.hide();
         this._selectedIdx = -1;
         $("#search-by-name .key-legend").show();
       }
-      
+
       let searchText = this._sanitizeRegExp(aEvent.target.value);
       let menuItemsData = [];
       let menuItemsDataIdx = 0;
 
-      if (searchText == "") {
-        $("#num-matches").text("");
+      if (searchText == '') {
+        $("#num-matches").text('');
         return;
       }
 
@@ -168,7 +159,7 @@ let gAutocompleteMenu = {
             index: menuItemsDataIdx++,
             id: clipping.id,
             name: clipping.name,
-            preview: clipping.preview
+            preview: clipping.preview,
           });
         }
       }
@@ -177,62 +168,36 @@ let gAutocompleteMenu = {
       $("#num-matches").text(browser.i18n.getMessage("numMatches", numMatches));
 
       if (numMatches > 0) {
-        // Populate the popup.
-        let listbox = this._listboxElt[0];
+        let data = [];
         
         for (let item of menuItemsData) {
-          let clippingDiv = document.createElement("div");
           let nameDiv = document.createElement("div");
           let previewDiv = document.createElement("div");
-          
-          clippingDiv.className = "clipping";
-          clippingDiv.dataset.index = item.index;
-          clippingDiv.dataset.clippingId = item.id;
-          clippingDiv.setAttribute("role", "option");
-          clippingDiv.setAttribute("aria-label", item.name);
-          clippingDiv.setAttribute("aria-selected", "false");
-          
-          nameDiv.className = "name";
-          nameDiv.appendChild(document.createTextNode(item.name));
-          
-          previewDiv.className = "preview";
+          nameDiv.appendChild(document.createTextNode(item.name));         
           previewDiv.appendChild(document.createTextNode(item.preview));
-          
-          clippingDiv.appendChild(nameDiv);
-          clippingDiv.appendChild(previewDiv);
 
-          listbox.appendChild(clippingDiv);
+          let row = {
+            key: item.id,
+            title: `<div class="name">${nameDiv.innerHTML}</div><div class="preview">${previewDiv.innerHTML}</div>`,
+          };
+          data.push(row);
         }
+
+        listbox.reload(data);
 
         // Set height of popup when there are 1, 2, or 3+ search results.
         if (numMatches < this._MAX_VISIBLE_POPUP_ITEMS) {
-          let heightVal = (numMatches * this._SCRL_LENGTH) + 4;
-          this._popupElt.css({ height: `${heightVal}px` });
+          let heightVal = (numMatches * this._SCRL_LENGTH) + 6;
+          this._popupElt.css({height: `${heightVal}px`});
           $("#search-by-name .key-legend").show();
         }
         else {
-          this._popupElt.css({ height: `${this._POPUP_MAX_HEIGHT}px` });
+          this._popupElt.css({ height:`${this._POPUP_MAX_HEIGHT}px`});
           $("#search-by-name .key-legend").hide();
         }
         
         this._popupElt.show();
       }
-    });
-    
-    this._listboxElt.on("mouseover", aEvent => {
-      this._clearSelection();
-      let selectedItem = aEvent.target.parentNode;
-      if (selectedItem.className == "clipping") {
-        selectedItem.setAttribute("selected", "true");
-        selectedItem.setAttribute("aria-selected", "true");
-        this._selectedIdx = selectedItem.dataset.index;
-      }
-    });
-
-    this._listboxElt.on("mouseup", aEvent => {
-      let selectedItem = aEvent.target.parentNode;
-      let clippingID = Number(selectedItem.dataset.clippingId);
-      this._selectClipping(clippingID);
     });
   },
 
@@ -245,18 +210,18 @@ let gAutocompleteMenu = {
   {
     this._popupElt[0].scrollTop = 0;
     this._popupElt.hide();
+    this._getListbox().activeNode = null;
     this._selectedIdx = -1;
-    this._clearSelection();
     $("#search-by-name .key-legend").show();
   },
   
-  _clearSelection()
+
+  // Helper methods
+  _getListbox()
   {
-    let oldSelectedItem = $('div.clipping[selected="true"]');
-    oldSelectedItem.removeAttr("selected");
-    oldSelectedItem.attr("aria-selected", "false");
+    return $.ui.fancytree.getTree("#search-results-listbox");
   },
-  
+
   _selectClipping(aClippingID)
   {
     this._popupElt.hide();
@@ -455,26 +420,15 @@ $(window).on("resize", aEvent => {
   }
 
   $("#shortcut-list-content > table > thead").css({width: `${tblWidth}px`});
-  $("#shortcut-list-content > table > tbody").css({width: `${tblWidth}px`, height: `${tblHeight}px`});
+  $("#shortcut-list-content > table > tbody").css({
+    width: `${tblWidth}px`,
+    height: `${tblHeight}px`,
+  });
 });
 
 
 function initAutocomplete()
 {
-  function sanitize(aStr, aMaxLength)
-  {
-    const DEFAULT_LENGTH = 64;
-    let rv = "";
-    let originalLen = aStr.length;
-    let length = aMaxLength ? aMaxLength : DEFAULT_LENGTH;
-
-    rv = sanitizeHTML(aStr);
-    rv = rv.substr(0, length);
-    rv += (originalLen > rv.length ? "..." : "");
-
-    return rv;
-  }
-  
   let allClippings = [];
 
   gClippingsDB.clippings.where("parentFolderID").notEqual(aeConst.DELETED_ITEMS_FLDR_ID)
@@ -482,8 +436,8 @@ function initAutocomplete()
     .each((aItem, aCursor) => {
     allClippings.push({
       id: aItem.id,
-      name: sanitize(aItem.name, 56),
-      preview: sanitize(aItem.content),
+      name: sanitizeHTML(aItem.name, 56),
+      preview: sanitizeHTML(aItem.content),
     });
   }).then(() => {
     // Initialize the autocomplete UI widget.
