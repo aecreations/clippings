@@ -177,7 +177,7 @@ $(async () => {
 });
 
 
-$(window).keydown(aEvent => {
+$(window).on("keydown", aEvent => {
   if (aEvent.key == "Enter") {
     // Avoid duplicate invocation due to pressing ENTER while OK button
     // is focused.

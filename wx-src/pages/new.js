@@ -147,7 +147,7 @@ async function expandOptions(aIsOptionsExpanded)
 }
 
 
-$(window).keydown(aEvent => {
+$(window).on("keydown", aEvent => {
   if (aEvent.key == "Enter") {
     if (aEvent.target.tagName == "TEXTAREA") {
       return;

@@ -50,7 +50,7 @@ function closePage()
 }
 
 
-$(window).keydown(aEvent => {
+$(window).on("keydown", aEvent => {
   aeInterxn.suppressBrowserShortcuts(aEvent, false);
 });
 

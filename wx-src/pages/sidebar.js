@@ -1084,7 +1084,7 @@ $(window).on("resize", aEvent => {
 
 
 // Keyboard event handler
-$(document).keydown(async (aEvent) => {
+$(document).on("keydown", async (aEvent) => {
   const isMacOS = gEnvInfo.os == "mac";
   
   function isAccelKeyPressed()
