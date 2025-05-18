@@ -452,6 +452,8 @@ $(async () => {
     "tree-fldr-close-dk.svg"
   );
 
+  initPaneSplitter();
+
   let wnd = await browser.windows.getCurrent();
   aeNavigator.init(wnd.id);
 
@@ -518,37 +520,44 @@ async function showVersionUpdateMsgBar(aVersionUpdateType)
 
 function setScrollableContentHeight()
 {
-  let cntHeight = window.innerHeight;
+  let scrollCntHt = window.innerHeight;
+  let cntHtOffset = 0;
 
   if (gPrefs.sidebarToolbar) {
-    cntHeight -= TOOLBAR_HEIGHT;
+    scrollCntHt -= TOOLBAR_HEIGHT;
+    cntHtOffset += TOOLBAR_HEIGHT;
   }
   if (gPrefs.sidebarSearchBar) {
-    cntHeight -= TOOLBAR_HEIGHT;
+    scrollCntHt -= TOOLBAR_HEIGHT;
+    cntHtOffset += TOOLBAR_HEIGHT;
   }
 
   if (gPrefs.sidebarPreview) {
-    cntHeight -= PREVIEW_PANE_HEIGHT;
+    scrollCntHt -= PREVIEW_PANE_HEIGHT;
   }
 
-  $("#scroll-content").css({height: `${cntHeight}px`});
+  $("#content").css({height: `calc(100% - ${cntHtOffset}px)`});
+  $("#scroll-content").css({height: `${scrollCntHt}px`});
 }
 
 
 function setCustomizations()
 {
-  let cntHeight = window.innerHeight;
+  let scrollCntHt = window.innerHeight;
+  let cntHtOffset = 0;
 
   if (gPrefs.sidebarToolbar) {
     $("#toolbar").show();
-    cntHeight -= TOOLBAR_HEIGHT;
+    scrollCntHt -= TOOLBAR_HEIGHT;
+    cntHtOffset += TOOLBAR_HEIGHT;
   }
   else {
     $("#toolbar").hide();
   }
   if (gPrefs.sidebarSearchBar) {
     $("#search-bar").show();
-    cntHeight -= TOOLBAR_HEIGHT;
+    scrollCntHt -= TOOLBAR_HEIGHT;
+    cntHtOffset += TOOLBAR_HEIGHT;
   }
   else {
     $("#search-bar").hide();
@@ -559,17 +568,18 @@ function setCustomizations()
   if (isNaN(msgBarsHeight)) {
     msgBarsHeight = 0;
   }
-  cntHeight -= msgBarsHeight;
+  scrollCntHt -= msgBarsHeight;
 
   if (gPrefs.sidebarPreview) {
     $("#pane-splitter, #preview-pane").show();
-    cntHeight -= PREVIEW_PANE_HEIGHT;
+    scrollCntHt -= PREVIEW_PANE_HEIGHT;
   }
   else {
     $("#pane-splitter, #preview-pane").hide();
   }
 
-  $("#scroll-content").css({height: `${cntHeight}px`});
+  $("#content").css({height: `calc(100% - ${cntHtOffset}px)`});
+  $("#scroll-content").css({height: `${scrollCntHt}px`});
 }
 
 
@@ -908,6 +918,56 @@ function unsetEmptyClippingsState()
   emptyMsgNode?.remove();
   tree.options.icon = true;
   gIsClippingsTreeEmpty = false;
+}
+
+
+function initPaneSplitter()
+{
+  // Adapted from https://codepen.io/lingtalfi/pen/zoNeJp
+  // Requires Simple Drag library: https://github.com/lingtalfi/simpledrag
+  let topPane = document.getElementById("scroll-content");
+  let botmPane = document.getElementById("preview-pane");
+  let splitter = document.getElementById("pane-splitter");
+
+  let topLimit = 20;
+  let botmLimit = 90;
+
+  splitter.sdrag(function (e1, pageX, startX, pageY, startY, fix) {
+    fix.skipY = true;
+
+    if (pageY < window.innerHeight * topLimit / 100) {
+      pageY = window.innerHeight * topLimit / 100;
+      fix.pageY = pageY;
+    }
+    if (pageY > window.innerHeight * botmLimit / 100) {
+      pageY = window.innerHeight * botmLimit / 100;
+      fix.pageY = pageY;
+    }
+
+    let cur = pageY / window.innerHeight * 100;
+    if (cur < 0) {
+      cur = 0;
+    }
+    if (cur > window.innerHeight) {
+      cur = window.innerHeight;
+    }
+
+    // Calculation of new pane heights needs to be adjusted if toolbar and/or
+    // search bar are visible.
+    let tbAdjust = 0;
+    if (gPrefs.sidebarToolbar) {
+      tbAdjust -= 10;
+    }   
+    if (gPrefs.sidebarSearchBar) {
+      tbAdjust -= 10;
+    }
+
+    topPane.style.setProperty("height", `calc(${cur}% - ${tbAdjust}px)`);
+
+    let botm = 100 - cur;
+    botmPane.style.setProperty("height", `calc(${botm}% - ${tbAdjust}px)`);
+
+  }, null, "vertical");
 }
 
 
