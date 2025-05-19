@@ -479,7 +479,6 @@ ul.fancytree-container {
     order: 3;
     flex: none;
     align-self: stretch;
-    height: 256px;
 }
 
 #preview-pane[type="folder"] {

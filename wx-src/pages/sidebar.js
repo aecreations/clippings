@@ -4,7 +4,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 const TOOLBAR_HEIGHT = 28;
-const PREVIEW_PANE_HEIGHT = 256;
 const MSGBAR_DELAY_MS = 5000;
 
 let gEnvInfo;
@@ -520,35 +519,29 @@ async function showVersionUpdateMsgBar(aVersionUpdateType)
 
 function setScrollableContentHeight()
 {
-  let scrollCntHt = window.innerHeight;
   let cntHtOffset = 0;
 
   if (gPrefs.sidebarToolbar) {
-    scrollCntHt -= TOOLBAR_HEIGHT;
     cntHtOffset += TOOLBAR_HEIGHT;
   }
   if (gPrefs.sidebarSearchBar) {
-    scrollCntHt -= TOOLBAR_HEIGHT;
     cntHtOffset += TOOLBAR_HEIGHT;
   }
 
   if (gPrefs.sidebarPreview) {
-    scrollCntHt -= PREVIEW_PANE_HEIGHT;
+    $("#preview-pane").css({height: `${gPrefs.sidebarPreviewPaneHgt}px`});
   }
 
   $("#content").css({height: `calc(100% - ${cntHtOffset}px)`});
-  $("#scroll-content").css({height: `${scrollCntHt}px`});
 }
 
 
 function setCustomizations()
 {
-  let scrollCntHt = window.innerHeight;
   let cntHtOffset = 0;
 
   if (gPrefs.sidebarToolbar) {
     $("#toolbar").show();
-    scrollCntHt -= TOOLBAR_HEIGHT;
     cntHtOffset += TOOLBAR_HEIGHT;
   }
   else {
@@ -556,7 +549,6 @@ function setCustomizations()
   }
   if (gPrefs.sidebarSearchBar) {
     $("#search-bar").show();
-    scrollCntHt -= TOOLBAR_HEIGHT;
     cntHtOffset += TOOLBAR_HEIGHT;
   }
   else {
@@ -568,18 +560,16 @@ function setCustomizations()
   if (isNaN(msgBarsHeight)) {
     msgBarsHeight = 0;
   }
-  scrollCntHt -= msgBarsHeight;
 
   if (gPrefs.sidebarPreview) {
     $("#pane-splitter, #preview-pane").show();
-    scrollCntHt -= PREVIEW_PANE_HEIGHT;
+    $("#preview-pane").css({height: `${gPrefs.sidebarPreviewPaneHgt}px`});
   }
   else {
     $("#pane-splitter, #preview-pane").hide();
   }
 
   $("#content").css({height: `calc(100% - ${cntHtOffset}px)`});
-  $("#scroll-content").css({height: `${scrollCntHt}px`});
 }
 
 
@@ -932,19 +922,20 @@ function initPaneSplitter()
   let topLimit = 20;
   let botmLimit = 90;
 
-  splitter.sdrag(function (e1, pageX, startX, pageY, startY, fix) {
-    fix.skipY = true;
+  function onDrag(aElt, aPageX, aStartX, aPageY, aStartY, aFix)
+  {
+    aFix.skipY = true;
 
-    if (pageY < window.innerHeight * topLimit / 100) {
-      pageY = window.innerHeight * topLimit / 100;
-      fix.pageY = pageY;
+    if (aPageY < window.innerHeight * topLimit / 100) {
+      aPageY = window.innerHeight * topLimit / 100;
+      aFix.pageY = aPageY;
     }
-    if (pageY > window.innerHeight * botmLimit / 100) {
-      pageY = window.innerHeight * botmLimit / 100;
-      fix.pageY = pageY;
+    if (aPageY > window.innerHeight * botmLimit / 100) {
+      aPageY = window.innerHeight * botmLimit / 100;
+      aFix.pageY = aPageY;
     }
 
-    let cur = pageY / window.innerHeight * 100;
+    let cur = aPageY / window.innerHeight * 100;
     if (cur < 0) {
       cur = 0;
     }
@@ -966,8 +957,17 @@ function initPaneSplitter()
 
     let botm = 100 - cur;
     botmPane.style.setProperty("height", `calc(${botm}% - ${tbAdjust}px)`);
+  }
 
-  }, null, "vertical");
+  function onStop(aElt)
+  {
+    let botmHgt = window.getComputedStyle(botmPane).height;
+    let sidebarPreviewPaneHgt = parseInt(botmHgt);
+    aePrefs.setPrefs({sidebarPreviewPaneHgt});
+  }
+  // END nested functions
+
+  splitter.sdrag(onDrag, onStop, "vertical");
 }
 
 

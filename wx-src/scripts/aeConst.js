@@ -79,6 +79,7 @@ const aeConst = Object.freeze({
   VER_UPDATE_TYPE_MAJOR: 1,
   VER_UPDATE_TYPE_MINOR: 2,
 
+  DEFAULT_SIDEBAR_PREVW_HGT: 256,
   DEFAULT_ALARM_INTERVAL_MINS: 15,
 
   // Errors returned by the native messaging app

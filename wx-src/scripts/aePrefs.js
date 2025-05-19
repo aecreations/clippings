@@ -75,6 +75,7 @@ let aePrefs = {
     logSyncDataSize: false,
     pasteDelay: 100,
     copyAutoLineBreak: true,
+    sidebarPreviewPaneHgt: aeConst.DEFAULT_SIDEBAR_PREVW_HGT,
   },
   
   getPrefKeys()
@@ -338,6 +339,7 @@ let aePrefs = {
   {
     let newPrefs = {
       copyAutoLineBreak: true,
+      sidebarPreviewPaneHgt: aeConst.DEFAULT_SIDEBAR_PREVW_HGT,
     };
 
     await this._addPrefs(aPrefs, newPrefs);
