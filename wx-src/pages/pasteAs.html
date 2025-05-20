@@ -13,23 +13,25 @@
   </head>
 
   <body>
-    <div id="content">
-      <div class="row">
-	<div class="icon">
-	  <div class="prompt-icon"></div>
+    <div id="dlg-body">
+      <div class="icon">
+	<div class="prompt-icon"></div>
+      </div>
+      <div id="content">
+	<div class="row">
+	  <p id="clipping-name" role="heading"></p>
 	</div>
-	<p id="clipping-name" role="heading"></p>
+	<div class="row">
+	  <button id="paste-cliptxt-html" class="paste-fmt-btn dlg-btn" data-i18n="pasteAsHTML"></button>
+	</div>
+	<div class="row">
+	  <button id="paste-cliptxt-plain" class="paste-fmt-btn dlg-btn" data-i18n="pasteAsPlain"></button>
+	</div>
+	<div class="row last-row">
+	  <button id="paste-cliptxt-plain-html" class="paste-fmt-btn dlg-btn" data-i18n="pasteAsPlainHTML"></button>
+	</div>
       </div>
-      <div class="row">
-	<button id="paste-cliptxt-html" class="paste-fmt-btn dlg-btn" data-i18n="pasteAsHTML"></button>
-      </div>
-      <div class="row">
-	<button id="paste-cliptxt-plain" class="paste-fmt-btn dlg-btn" data-i18n="pasteAsPlain"></button>
-      </div>
-      <div class="row last-row">
-	<button id="paste-cliptxt-plain-html" class="paste-fmt-btn dlg-btn" data-i18n="pasteAsPlainHTML"></button>
-      </div>
-    </div>
+    </div>  <!-- /dlg-body -->
     <div id="dlg-buttons" class="browser-style">
       <button id="btn-cancel" class="btn" data-i18n="btnCancel"></button>
     </div>

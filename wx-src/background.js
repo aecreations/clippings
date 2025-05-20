@@ -1927,8 +1927,8 @@ function openPasteAsDlg(aTabID)
   let url = browser.runtime.getURL(`pages/pasteAs.html?tabID=${aTabID}`);
   let wndPpty = {
     type: "popup",
-    width: 400,
-    height: 320,
+    width: 440,
+    height: 300,
     topOffset: 256,
   };
 
