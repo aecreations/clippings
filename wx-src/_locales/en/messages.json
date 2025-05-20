@@ -478,6 +478,21 @@
     "description": "Copy Clipping Text dialog in Clippings Manager and Clippings sidebar - user selection of data format of clipping to be copied"
   },
 
+  "pasteAsHTML": {
+    "message": "Paste as Formatted Text",
+    "description": "Paste As dialog - user selection of data format of clipping to be pasted"
+  },
+
+  "pasteAsPlain": {
+    "message": "Paste as Plain Text",
+    "description": "Paste As dialog - user selection of data format of clipping to be pasted"
+  },
+
+  "pasteAsPlainHTML": {
+    "message": "Paste as Plain Text with HTML tags",
+    "description": "Paste As dialog - user selection of data format of clipping to be pasted"
+  },
+
   "clippingsMgrWndTitle": {
     "message": "Clippings Manager",
     "description": "Clippings Manager window title"

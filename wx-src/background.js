@@ -246,6 +246,39 @@ let gNewClipping = {
   }
 };
 
+let gPasteAs = {
+  _clippingName: null,
+  _clpCtnt: null,
+
+  set(aClippingName, aClippingText)
+  {
+    this._clippingName = aClippingName;
+    this._clpCtnt = aClippingText;
+  },
+
+  get()
+  {
+    let rv = this.copy();
+    this.reset();
+
+    return rv;    
+  },
+
+  copy()
+  {
+    let rv = {
+      clippingName: this._clippingName,
+      content: this._clpCtnt,
+    };
+    return rv;
+  },
+
+  reset()
+  {
+    this._clippingName = '';
+  },
+};
+
 let gPlaceholders = {
   _clippingName: null,
   _plchldrs: null,
@@ -1889,6 +1922,20 @@ function openPlaceholderPromptDlg(aTabID, aDlgMode)
 }
 
 
+function openPasteAsDlg(aTabID)
+{
+  let url = browser.runtime.getURL(`pages/pasteAs.html?tabID=${aTabID}`);
+  let wndPpty = {
+    type: "popup",
+    width: 400,
+    height: 320,
+    topOffset: 256,
+  };
+
+  openDlgWnd(url, "pasteAs", wndPpty, aTabID)
+}
+
+
 async function openBackupDlg()
 {
   let url = browser.runtime.getURL("pages/backup.html");
@@ -2204,7 +2251,7 @@ async function processClipping(aClippingInfo, aIsExternalRequest, aTabID, aMode)
   }
 
   if (aMode == pasteOrCopyClippingByID.MODE_PASTE) {
-    await pasteProcessedClipping(processedCtnt, activeTabID);
+    await processHTMLFormattedClipping(aClippingInfo.name, processedCtnt, activeTabID);
   }
   else {
     await copyProcessedClipping(processedCtnt, aMode);
@@ -2212,7 +2259,28 @@ async function processClipping(aClippingInfo, aIsExternalRequest, aTabID, aMode)
 }
 
 
-async function pasteProcessedClipping(aClippingContent, aTabID)
+async function processHTMLFormattedClipping(aClippingName, aClippingContent, aTabID)
+{
+  let isHTMLFormatted = aeClippings.hasHTMLTags(aClippingContent);
+
+  if (isHTMLFormatted) {
+    let htmlPaste = await aePrefs.getPref("htmlPaste");
+
+    if (htmlPaste == aeConst.HTMLPASTE_ASK_THE_USER) {
+      gPasteAs.set(aClippingName, aClippingContent);
+      openPasteAsDlg(aTabID);
+    }
+    else {
+      await pasteProcessedClipping(aClippingContent, aTabID);
+    }    
+  }
+  else {
+    await pasteProcessedClipping(aClippingContent, aTabID);
+  }
+}
+
+
+async function pasteProcessedClipping(aClippingContent, aTabID, aOverridePasteFormat=null)
 {
   // Focus the target window and tab to ensure that the clipping is
   // successfully pasted into the web page.
@@ -2228,10 +2296,11 @@ async function pasteProcessedClipping(aClippingContent, aTabID)
   await browser.windows.update(tab.windowId, {focused: true});
 
   let prefs = await aePrefs.getAllPrefs();
+  let htmlPaste = aOverridePasteFormat === null ? prefs.htmlPaste : aOverridePasteFormat;
   let msg = {
     msgID: "paste-clipping",
     content: aClippingContent,
-    htmlPaste: prefs.htmlPaste,
+    htmlPaste,
     autoLineBreak: prefs.autoLineBreak,
     dispatchInputEvent: prefs.dispatchInputEvent,
     useInsertHTMLCmd: prefs.useInsertHTMLCmd,
@@ -2563,6 +2632,9 @@ browser.runtime.onMessage.addListener(aRequest => {
   case "init-placeholder-prmt-dlg":
     return Promise.resolve(gPlaceholders.get());
 
+  case "init-paste-as-dlg":
+    return Promise.resolve(gPasteAs.get());
+
   case "close-new-clipping-dlg":
     resetWndID("newClipping");
     break;
@@ -2592,7 +2664,18 @@ browser.runtime.onMessage.addListener(aRequest => {
     break;
 
   case "paste-clipping-with-plchldrs":
-    return Promise.resolve(pasteProcessedClipping(aRequest.processedContent, aRequest.browserTabID));
+    return Promise.resolve(
+      processHTMLFormattedClipping(
+        aRequest.clippingName, aRequest.processedContent, aRequest.browserTabID
+      )
+    );
+
+  case "paste-clipping-usr-fmt":
+    return Promise.resolve(
+      pasteProcessedClipping(
+        aRequest.processedContent, aRequest.browserTabID, aRequest.pasteFormat
+      )
+    );
 
   case "copy-clipping":
     copyClippingText(aRequest.clippingID, aRequest.copyFormat);
@@ -2603,6 +2686,10 @@ browser.runtime.onMessage.addListener(aRequest => {
 
   case "close-placeholder-prmt-dlg":
     resetWndID("placeholderPrmt");
+    break;
+
+  case "close-paste-as-dlg":
+    resetWndID("pasteAs");
     break;
     
   case "get-shct-key-prefix-ui-str":

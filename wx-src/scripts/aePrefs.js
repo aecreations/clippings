@@ -19,6 +19,7 @@ let aePrefs = {
       placeholderPrmt: null,
       clippingsMgr: null,
       sidebarHlp: null,
+      pasteAs: null,
     },
   },
   
@@ -343,6 +344,11 @@ let aePrefs = {
     };
 
     await this._addPrefs(aPrefs, newPrefs);
+
+    // Add new window ID key for the Paste As dialog window.
+    let wndIDs = aPrefs._wndIDs;
+    wndIDs.pasteAs = null;
+    await this.setPrefs({_wndIDs: wndIDs});
 
     // Remove deprecated prefs
     await this._removePrefs(aPrefs, ["_isInitialized", "tabModalMsgBox"]);
