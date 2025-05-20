@@ -493,6 +493,11 @@
     "description": "Paste As dialog - user selection of data format of clipping to be pasted"
   },
 
+  "pasteFmtAsk": {
+    "message": "Ask me what to do",
+    "description": "Paste As dialog - user selection of data format of clipping to be pasted"
+  },
+
   "clippingsMgrWndTitle": {
     "message": "Clippings Manager",
     "description": "Clippings Manager window title"

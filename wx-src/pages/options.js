@@ -63,18 +63,12 @@ $(async () => {
     aePrefs.setPrefs({htmlPaste: aEvent.target.value});
   });
 
-  $("#paste-opt-plaintext").on("click", aEvent => {
-    $("#html-auto-line-break").prop("disabled", false);
+  $("#paste-opt-plaintext, #paste-opt-raw-html, #paste-opt-ask").on("click", aEvent => {
+    $("#html-auto-line-break").prop("disabled", true);
     $("#html-paste-note").removeClass("disabled");
     aePrefs.setPrefs({htmlPaste: aEvent.target.value});
   });
 
-  $("#paste-opt-raw-html").on("click", aEvent => {
-    $("#html-auto-line-break").prop("disabled", true);
-    $("#html-paste-note").addClass("disabled");
-    aePrefs.setPrefs({htmlPaste: aEvent.target.value});
-  });
-  
   $("#toggle-sync").on("click", async (aEvent) => {
     let syncClippings = await aePrefs.getPref("syncClippings");
     if (syncClippings) {
@@ -120,19 +114,25 @@ $(async () => {
 
   if (prefs.htmlPaste == aeConst.HTMLPASTE_AS_FORMATTED) {
     $("#paste-opt-formatted").prop("checked", true);
-    $("#paste-opt-plaintext, #paste-opt-raw-html").prop("checked", false);
+    $("#paste-opt-plaintext, #paste-opt-raw-html, #paste-opt-ask").prop("checked", false);
     $("#html-auto-line-break").prop("disabled", false);
     $("#html-paste-note").removeClass("disabled");
   }
   else if (prefs.htmlPaste == aeConst.HTMLPASTE_AS_PLAIN) {
     $("#paste-opt-plaintext").prop("checked", true);
-    $("#paste-opt-formatted, #paste-opt-raw-html").prop("checked", false);
+    $("#paste-opt-formatted, #paste-opt-raw-html, #paste-opt-ask").prop("checked", false);
     $("#html-auto-line-break").prop("disabled", true);
     $("#html-paste-note").removeClass("disabled");
   }
   else if (prefs.htmlPaste == aeConst.HTMLPASTE_AS_IS) {
     $("#paste-opt-raw-html").prop("checked", true);
-    $("#paste-opt-formatted, #paste-opt-plaintext").prop("checked", false);
+    $("#paste-opt-formatted, #paste-opt-plaintext, #paste-opt-ask").prop("checked", false);
+    $("#html-auto-line-break").prop("disabled", true);
+    $("#html-paste-note").addClass("disabled");
+  }
+  else if (prefs.htmlPaste == aeConst.HTMLPASTE_ASK_THE_USER) {
+    $("#paste-opt-ask").prop("checked", true);
+    $("#paste-opt-formatted, #paste-opt-plaintext, #paste-opt-raw-html").prop("checked", false);
     $("#html-auto-line-break").prop("disabled", true);
     $("#html-paste-note").addClass("disabled");
   }
