@@ -1688,7 +1688,14 @@ async function openClippingsManager(aBackupMode)
   if (wndIDs.clippingsMgr) {
     try {
       let wnd = await browser.windows.get(wndIDs.clippingsMgr);
-      browser.windows.update(wndIDs.clippingsMgr, {focused: true});
+      await browser.windows.update(wndIDs.clippingsMgr, {focused: true});
+
+      if (aBackupMode) {
+        try {
+          browser.runtime.sendMessage({msgID: "clippings-mgr-save-backup"});
+        }
+        catch {}
+      }
     }
     catch {
       // Handle dangling ref to previously-closed Clippings Manager window
