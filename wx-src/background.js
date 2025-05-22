@@ -1932,7 +1932,7 @@ function openPasteAsDlg(aTabID)
     topOffset: 256,
   };
 
-  openDlgWnd(url, "pasteAs", wndPpty, aTabID)
+  openDlgWnd(url, "pasteAs", wndPpty, aTabID);
 }
 
 
