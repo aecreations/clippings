@@ -2978,17 +2978,6 @@ let gCmd = {
       setStatusBarMsg(browser.i18n.getMessage("statusSavingBkupFailed"));
     });
   },
-
-  backupFromExtern()
-  {
-    if (aeDialog.isOpen()) {
-      // Don't interrupt any dialogs that may be open when the user clicked the
-      // backup reminder notification.
-      return;
-    }
-
-    this.backup();
-  },
   
   async restoreFromBackup()
   {
@@ -3735,10 +3724,6 @@ browser.runtime.onMessage.addListener(aRequest => {
 
   case "sync-fldr-reload-finished":
     rebuildClippingsTree();
-    break;
-
-  case "clippings-mgr-save-backup":
-    gCmd.backupFromExtern();
     break;
 
   default:
