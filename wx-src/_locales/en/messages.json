@@ -177,8 +177,8 @@
     "description": "Clippings context menu in Thunderbird message composer"
   },
 
-  "cxtMenuShowPasteOpts": {
-    "message": "Show Quote Options When Pasting",
+  "cxtMnuPasteQuoted": {
+    "message": "Paste As Quoted Text",
     "description": "Clippings context menu in Thunderbird message composer"
   },
 
@@ -493,11 +493,6 @@
     "description": "Paste As dialog - user selection of data format of clipping to be pasted"
   },
 
-  "pasteFmtAsk": {
-    "message": "Ask me what to do",
-    "description": "Paste As dialog - user selection of data format of clipping to be pasted"
-  },
-
   "clippingsMgrWndTitle": {
     "message": "Clippings Manager",
     "description": "Clippings Manager window title"
@@ -722,6 +717,41 @@
   "mnuPlchldrFmtDateTime": {
     "message": "Formatted Date/Time…",
     "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+
+  "mnuPlchldrTo": {
+    "message": "To",
+    "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
+  },
+
+  "mnuPlchldrCc": {
+    "message": "Cc",
+    "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
+  },
+
+  "mnuPlchldrFrom": {
+    "message": "From",
+    "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
+  },
+
+  "mnuPlchldrNameEmail": {
+    "message": "Name and Email",
+    "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
+  },
+
+  "mnuPlchldrName": {
+    "message": "Name",
+    "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
+  },
+
+  "mnuPlchldrEmail": {
+    "message": "Email",
+    "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
+  },
+
+  "mnuPlchldrSubj": {
+    "message": "Subject",
+    "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
   },
 
   "mnuPlchldrClipClip": {
@@ -1142,6 +1172,11 @@
 
   "pasteOptRawHTML": {
     "message": "Paste as plain text, preserving HTML tags",
+    "description": "Paste option radio button label in extension preferences page"
+  },
+
+  "pasteOptAskUsr": {
+    "message": "Ask me what to do",
     "description": "Paste option radio button label in extension preferences page"
   },
 
