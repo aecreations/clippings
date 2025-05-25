@@ -6,6 +6,7 @@ EXCLUDE=*~ *\.py *\.sh *\.src\.js *\.src\.css Makefile *-chrome\.json
 
 
 $(DIST_FILE):
+	rm -rf ../test
 	zip -r $(DIST_FILE) * -x $(EXCLUDE)
 
 clean:
