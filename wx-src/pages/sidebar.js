@@ -1184,6 +1184,9 @@ $(document).on("keydown", async (aEvent) => {
     }
     aeDialog.cancelDlgs();
   }
+  else if (aEvent.key == "Clear" && gSearchBox.isActivated()) {
+    gSearchBox.reset(true);
+  }
   else if (aEvent.key == "F1") {
     gCmd.showHelp();
   }

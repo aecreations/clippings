@@ -339,13 +339,20 @@ $(window).on("keydown", async (aEvent) => {
         return;
       }
       else {
-        if ($("#clipping-search").val() != "") {
-          $("#clipping-search").val("");
+        if ($("#clipping-search").val() != '') {
+          $("#clipping-search").val('');
           return;
         }
       }
     }
     cancel(aEvent);
+  }
+  else if (aEvent.key == "Clear" && gPasteMode == aeConst.PASTEACTION_SEARCH_CLIPPING
+           && gAutocompleteMenu.isPopupShowing()) {
+    if ($("#clipping-search").val() != '') {
+      $("#clipping-search").val('');
+      gAutocompleteMenu.hidePopup();
+    }
   }
   else if (aEvent.key == "Enter" && gPasteMode == aeConst.PASTEACTION_SHORTCUT_KEY) {
     cancel(aEvent);
