@@ -358,16 +358,12 @@ progress {
 }
 
 #html-paste-note {
-    margin: 0 18px 4px 2px;
+    margin: 12px 18px 4px 10px;
 }
 
 #html-paste-note.disabled,
 #shct-key-in-menu-opt-label.disabled {
     opacity: 0.4;
-}
-
-#paste-opt-raw-html-row {
-    margin-top: 8px;
 }
 
 #general-options,
