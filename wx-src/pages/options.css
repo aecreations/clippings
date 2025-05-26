@@ -802,18 +802,15 @@ body[data-locale="uk"] #sync-clippings-dlg {
     background-size: contain;
 }
 
-#request-native-app-conxn-perm-dlg .msgbox-icon,
-#sync-clippings-dlg #sync-cxn-error .msgbox-icon {
+#request-native-app-conxn-perm-dlg .msgbox-icon {
     background-image: url("../img/warning-64.png");
 }
 
-body[data-os="win"] #request-native-app-conxn-perm-dlg .msgbox-icon,
-body[data-os="win"] #sync-clippings-dlg #sync-cxn-error .msgbox-icon {
+body[data-os="win"] #request-native-app-conxn-perm-dlg .msgbox-icon {
     background-image: url("../img/alert-win.png");
 }
 
-body[data-os="mac"] #request-native-app-conxn-perm-dlg .msgbox-icon,
-body[data-os="mac"] #sync-clippings-dlg #sync-cxn-error .msgbox-icon {
+body[data-os="mac"] #request-native-app-conxn-perm-dlg .msgbox-icon {
     background-image: url("../img/warning-64-mac.png");
 }
 
@@ -825,13 +822,20 @@ body[data-os="win"] #sync-clippings-dlg #generic-error .msgbox-icon {
     background-image: url("../img/error-win.png");
 }
 
-#sync-clippings-dlg #sync-cxn-error .error-msg,
 #sync-clippings-dlg #generic-error .error-msg {
     margin-top: 12px;
     margin-left: 64px;
     padding: 12px;
     border-radius: 4px;
     font-weight: bold;
+}
+
+#sync-clippings-dlg #sync-cxn-error .msgbox-icon {
+    background-image: url("../img/syncClippingsApp.svg");
+}
+
+#sync-clippings-dlg #sync-cxn-error .dlg-content {
+    margin-left: 64px;
 }
 
 #request-native-app-conxn-perm-dlg p:first-of-type {

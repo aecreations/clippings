@@ -1567,12 +1567,14 @@
     "description": "Notification that appears when attempting to refresh sync data after user turned off the 'nativeMessaging' permission"
   },
 
-  "errSyncConxn": {
-    "message": "Unable to connect to the Sync Clippings helper app. Make sure that the app is installed."
+  "noSyncAppCTA": {
+    "message": "To get started with Sync Clippings, download and install the Sync Clippings Helper app.  Available from the <a href=\"https://aecreations.io/clippings/sync.php\" class=\"hyperlink\">AE\u00a0Creations website</a>.",
+    "description": "Message in Sync Clippings dialog when Sync Clippings Helper app is not installed"
   },
 
-  "errSyncConxnDetail": {
-    "message": "The Sync Clippings helper app is needed to sync your clippings. You can download it from the <a href=\"https://aecreations.io/clippings/sync.php\" class=\"hyperlink\">AE Creations website</a>."
+  "noSyncAppInstr": {
+    "message": "Once it\u2019s installed, come back here to finish setting up Sync Clippings.",
+    "description": "Message in Sync Clippings dialog when Sync Clippings Helper app is not installed"
   },
 
   "errSyncOptsInit": {
