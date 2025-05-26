@@ -30,6 +30,8 @@
 
     --url-preftab-general: url("../img/pref-general.svg");
     --url-preftab-general-checked: url("../img/pref-general-checked.svg");
+    --url-preftab-copy: url("../img/pref-copy-clipping.svg");
+    --url-preftab-copy-checked: url("../img/pref-copy-clipping-checked.svg");
     --url-preftab-paste: url("../img/pref-paste.svg");
     --url-preftab-paste-checked: url("../img/pref-paste-checked.svg");
     --url-preftab-sync-clippings: url("../img/pref-sync-clippings.svg");
@@ -297,6 +299,15 @@ progress {
 #preftab-general-btn.active-tab {
     background-image: var(--url-preftab-general-checked);
 }
+
+#preftab-copy-btn {
+    background-image: var(--url-preftab-copy);
+}
+
+#preftab-copy-btn.active-tab {
+    background-image: var(--url-preftab-copy-checked);
+}
+
 #preftab-paste-btn {
     background-image: var(--url-preftab-paste);
 }
@@ -321,7 +332,12 @@ progress {
     margin-right: 18px;
 }
 
+#prefpane-copy > .row {
+    margin-left: 16px;
+}
+
 #browser-action-opt-label,
+#html-copy-options,
 #html-paste-options {
     font-size: 15px;
     margin-left: 4px;
@@ -332,9 +348,17 @@ progress {
     margin-left: 10px;
 }
 
+#html-copy-note, #html-paste-note {
+    font-size: 13px;
+}
+
+#html-copy-note {
+    margin-top: 18px;
+    margin-left: 20px;
+}
+
 #html-paste-note {
     margin: 0 18px 4px 2px;
-    font-size: 13px;
 }
 
 #html-paste-note.disabled,

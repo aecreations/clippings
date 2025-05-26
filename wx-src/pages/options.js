@@ -32,15 +32,19 @@ $(async () => {
   document.body.dataset.locale = lang;
 
   let tabGeneral = $("#preftab-general-btn");
-  tabGeneral.on("click", switchPrefsPanel);
+  tabGeneral.on("click", () => { switchPrefsPanel("general") });
   tabGeneral.ariaSelected = true;
 
+  let tabCopy = $("#preftab-copy-btn");
+  tabCopy.on("click", () => { switchPrefsPanel("copy") });
+  tabCopy.ariaSelected = false;
+
   let tabPaste = $("#preftab-paste-btn");
-  tabPaste.on("click", switchPrefsPanel);
+  tabPaste.on("click", () => { switchPrefsPanel("paste") });
   tabPaste.ariaSelected = false;
 
   let tabSync = $("#preftab-sync-clippings-btn");
-  tabSync.on("click", switchPrefsPanel);
+  tabSync.on("click", () => { switchPrefsPanel("sync-clippings") });
   tabSync.ariaSelected = false;
 
   $("#sync-intro").html(sanitizeHTML(browser.i18n.getMessage("syncIntro")));
@@ -402,30 +406,32 @@ $(window).on("keydown", aEvent => {
 });
 
 
-function switchPrefsPanel(aEvent)
+function switchPrefsPanel(aPrefTabName)
 {
-  let id = aEvent.target.id;
+  let prefTabs = [
+    "preftab-general-btn",
+    "preftab-copy-btn",
+    "preftab-paste-btn",
+    "preftab-sync-clippings-btn",
+  ];
+  let prefPanes = [
+    "prefpane-general",
+    "prefpane-copy",
+    "prefpane-paste",
+    "prefpane-sync-clippings",
+  ];
 
-  if (id == "preftab-general-btn") {
-    $("#preftab-paste-btn, #preftab-sync-clippings-btn").removeClass("active-tab")
-      .attr("aria-selected", "false");
-    $("#prefpane-paste, #prefpane-sync-clippings").removeClass("active-tab-panel");
-    $("#prefpane-general").addClass("active-tab-panel");
+  let rmActvTabs = prefTabs.filter(aPrefTab => aPrefTab != `preftab-${aPrefTabName}-btn`);
+  for (let tab of rmActvTabs) {
+    $(`#${tab}`).removeClass("active-tab").attr("aria-selected", "false");
   }
-  else if (id == "preftab-paste-btn") {
-    $("#preftab-general-btn, #preftab-sync-clippings-btn").removeClass("active-tab")
-      .attr("aria-selected", "false");
-    $("#prefpane-general, #prefpane-sync-clippings").removeClass("active-tab-panel");
-    $("#prefpane-paste").addClass("active-tab-panel");
+  let rmActvPanes = prefPanes.filter(aPrefPane => aPrefPane != `prefpane-${aPrefTabName}`);
+  for (let tab of rmActvPanes) {
+    $(`#${tab}`).removeClass("active-tab-panel");
   }
-  else if (id == "preftab-sync-clippings-btn") {   
-    $("#preftab-general-btn, #preftab-paste-btn").removeClass("active-tab")
-      .attr("aria-selected", "false");
-    $("#prefpane-general, #prefpane-paste").removeClass("active-tab-panel");
-    $("#prefpane-sync-clippings").addClass("active-tab-panel");
-  }
-  aEvent.target.classList.add("active-tab");
-  aEvent.target.ariaSelected = true;
+
+  $(`#prefpane-${aPrefTabName}`).addClass("active-tab-panel");
+  $(`#preftab-${aPrefTabName}-btn`).addClass("active-tab").attr("aria-selected", "true");
 }
 
 

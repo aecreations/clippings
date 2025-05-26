@@ -1130,6 +1130,11 @@
     "description": "Tab label for extension preferences page"
   },
 
+  "prefTabCopy": {
+    "message": "Copy",
+    "description": "Tab label for extension preferences page (Firefox only)"
+  },
+
   "prefTabPaste": {
     "message": "Paste",
     "description": "Tab label for extension preferences page"
@@ -1148,6 +1153,11 @@
   "prefsHdgPasteOptions": {
     "message": "Paste Options",
     "description": "Groupbox caption in extension preferences page"
+  },
+
+  "labelCopyOpts": {
+    "message": "When copying a clipping containing HTML tags as formatted text:",
+    "description": "Extension preferences page"
   },
 
   "labelPasteOpts": {
@@ -1183,6 +1193,11 @@
   "cbAutoLineBreak": {
     "message": "Automatically break lines unless <p> or <br> tags exist",
     "description": "Checkbox option for copying and pasting an HTML-formatted clipping"
+  },
+
+  "htmlCopyDesc": {
+    "message": "To copy a clipping, select it in Clippings Manager or Clippings Sidebar, then right-click and select \u201cCopy Clipping Text\u201d from the context menu.",
+    "description": "Extension preferences page"
   },
 
   "htmlPasteDesc": {

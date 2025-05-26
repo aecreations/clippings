@@ -25,6 +25,8 @@
       <div class="tab-container" role="tablist">
 	<div id="preftab-general" class="tab">
 	  <button id="preftab-general-btn" class="active-tab" role="tab" aria-controls="prefpane-general" data-i18n="prefTabGen"></button>
+        </div><div id="preftab-copy" class="tab">
+          <button id="preftab-copy-btn" role="tab" aria-controls="prefpane-copy" data-i18n="prefTabCopy"></button>
 	</div><div id="preftab-paste" class="tab">
 	  <button id="preftab-paste-btn" role="tab" aria-controls="prefpane-paste" data-i18n="prefTabPaste"></button>
 	</div><div id="preftab-sync-clippings" class="tab">
@@ -87,38 +89,34 @@
 	</fieldset>
       </div> <!-- /prefpane-general -->
 
-      <div id="prefpane-paste" class="tab-panel" role="tabpanel">
-        <fieldset id="html-copy-opts">
-	  <legend>html copy options</legend>
-	  <p id="html-copy-options">when copying a clipping containing HTML tags as formatted text:</p>
-          <div class="row browser-style">
-            <input id="html-cpy-auto-line-brk" type="checkbox" class="checkbox"/><label for="html-cpy-auto-line-brk" data-i18n="cbAutoLineBreak"></label>
-            <p id="html-copy-note">to copy a clipping, right-click on it in Clippings Manager or Clippings Sidebar and then select "Copy Clipping Text."</p>
-          </div>
-        </fieldset>
+      <div id="prefpane-copy" class="tab-panel" role="tabpanel">
+	<p id="html-copy-options" data-i18n="labelCopyOpts"></p>
+	<div class="row browser-style">
+	  <input id="html-cpy-auto-line-brk" type="checkbox" class="checkbox"/><label for="html-cpy-auto-line-brk" data-i18n="cbAutoLineBreak"></label>
+	</div>
+        <p id="html-copy-note" data-i18n="htmlCopyDesc"></p>
+      </div> <!-- /prefpane-copy -->
 
-        <fieldset id="html-paste-opts">
-	  <legend>html paste options</legend>
-	  <p id="html-paste-options" data-i18n="labelPasteOpts"></p>
-	  <div id="html-paste-options-ctr">
-	    <div class="row browser-style">
-	      <input type="radio" id="paste-opt-formatted" name="html-paste-opt" value="1" aria-describedby="html-paste-options"/><label for="paste-opt-formatted" data-i18n="pasteOptFormatted"></label>
-	    </div>
-	    <div id="paste-formatted-opts" class="row indent browser-style">
-	      <p id="html-paste-note" data-i18n="htmlPasteDescTB"></p>
-	      <input type="checkbox" id="html-auto-line-break" class="checkbox"/><label id="html-auto-line-break-label" for="html-auto-line-break" data-i18n="cbAutoLineBreak"></label>
-	    </div>
-	    <div class="row browser-style">
-	      <input type="radio" id="paste-opt-plaintext" name="html-paste-opt" value="3" aria-described-by="html-paste-options"/><label for="paste-opt-plaintext" data-i18n="pasteOptPlain"></label>
-	    </div>
-	    <div id="paste-opt-raw-html-row" class="row browser-style">
-	      <input type="radio" id="paste-opt-raw-html" name="html-paste-opt" value="2" aria-describedby="html-paste-options"/><label for="paste-opt-raw-html" data-i18n="pasteOptRawHTML"></label>
-	    </div>
-            <div class="row browser-style">
-              <input type="radio" id="paste-opt-ask" name="html-paste-opt" value="0" aria-describedby="html-paste-options"/><label for="paste-opt-ask" data-i18n="pasteOptAskUsr"></label>
-            </div>
+      <div id="prefpane-paste" class="tab-panel" role="tabpanel">
+	<p id="html-paste-options" data-i18n="labelPasteOpts"></p>
+	<div id="html-paste-options-ctr">
+	  <div class="row browser-style">
+	    <input type="radio" id="paste-opt-formatted" name="html-paste-opt" value="1" aria-describedby="html-paste-options"/><label for="paste-opt-formatted" data-i18n="pasteOptFormatted"></label>
 	  </div>
-        </fieldset>
+	  <div id="paste-formatted-opts" class="row indent browser-style">
+	    <p id="html-paste-note" data-i18n="htmlPasteDescTB"></p>
+	    <input type="checkbox" id="html-auto-line-break" class="checkbox"/><label id="html-auto-line-break-label" for="html-auto-line-break" data-i18n="cbAutoLineBreak"></label>
+	  </div>
+	  <div class="row browser-style">
+	    <input type="radio" id="paste-opt-plaintext" name="html-paste-opt" value="3" aria-described-by="html-paste-options"/><label for="paste-opt-plaintext" data-i18n="pasteOptPlain"></label>
+	  </div>
+	  <div id="paste-opt-raw-html-row" class="row browser-style">
+	    <input type="radio" id="paste-opt-raw-html" name="html-paste-opt" value="2" aria-describedby="html-paste-options"/><label for="paste-opt-raw-html" data-i18n="pasteOptRawHTML"></label>
+	  </div>
+	  <div class="row browser-style">
+	    <input type="radio" id="paste-opt-ask" name="html-paste-opt" value="0" aria-describedby="html-paste-options"/><label for="paste-opt-ask" data-i18n="pasteOptAskUsr"></label>
+	  </div>
+	</div>
 
         <fieldset id="paste-options">
           <legend data-i18n="prefsHdgPasteOptions"></legend>
