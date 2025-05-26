@@ -372,6 +372,10 @@ progress {
     padding-right: 0;
 }
 
+#backup-options {
+    margin-top: 12px;
+}
+
 #enable-shortcut-key-ctr {
     margin-top: 4px;
     margin-bottom: 0;
@@ -464,7 +468,7 @@ body[data-locale="fr"] #skip-backup-label {
 }
 
 #wnds-dlgs-settings {
-    margin-top: 14px;
+    margin-top: 12px;
 }
 
 #sidebar-paste-opts {

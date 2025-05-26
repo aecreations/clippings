@@ -1269,8 +1269,13 @@
     "description": "Checkbox option in extension preferences page"
   },
 
+  "prefsHdgBackup": {
+    "message": "Backup Options",
+    "description": "Groupbox caption in extension preferences page"
+  },
+
   "backupRemind": {
-    "message": "Show backup reminder every",
+    "message": "Show backup reminder every:",
     "description": "Label for checkbox option for setting backup notification, appears after checkbox and before the reminder frequency drop-down menu"
   },
 

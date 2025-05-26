@@ -50,6 +50,24 @@
 	    <input type="checkbox" id="check-spelling"/><label for="check-spelling" data-i18n="cbCheckSpelling"></label>
 	  </div>
 
+          <div class="row browser-style">
+            <input type="checkbox" id="show-shct-key-in-menu"/><label for="show-shct-key-in-menu" data-i18n="cbShowShctMnu"></label>
+          </div>
+          <div class="row indent browser-style">
+	    <label id="shct-key-in-menu-opt-label" for="shct-key-in-menu-opt" data-i18n="shctDispOpt"></label>
+	    <select id="shct-key-in-menu-opt" class="browser-style">
+              <option value="0" data-i18n="shctDispParen"></option>
+              <option value="1" data-i18n="shctDispSqBkt"></option>
+            </select>
+          </div>
+
+	  <div class="row">
+	    <button id="wnds-dlgs-settings" data-i18n="wndsAndDlgsOpts"></button>
+	  </div>
+	</fieldset>
+
+        <fieldset id="backup-options">
+          <legend data-i18n="prefsHdgBackup"></legend>
 	  <div class="row browser-style">
 	    <input type="checkbox" id="backup-reminder"/><label for="backup-reminder" data-i18n="backupRemind"></label>
 	    <select id="backup-reminder-freq" class="browser-style">
@@ -72,21 +90,7 @@
 	    <input type="checkbox" id="backup-filename-with-date"/><label for="backup-filename-with-date" data-i18n="cbBackupFilenameWithDate"></label>
 	  </div>
 
-          <div class="row browser-style">
-            <input type="checkbox" id="show-shct-key-in-menu"/><label for="show-shct-key-in-menu" data-i18n="cbShowShctMnu"></label>
-          </div>
-          <div class="row indent browser-style">
-	    <label id="shct-key-in-menu-opt-label" for="shct-key-in-menu-opt" data-i18n="shctDispOpt"></label>
-	    <select id="shct-key-in-menu-opt" class="browser-style">
-              <option value="0" data-i18n="shctDispParen"></option>
-              <option value="1" data-i18n="shctDispSqBkt"></option>
-            </select>
-          </div>
-
-	  <div class="row">
-	    <button id="wnds-dlgs-settings" data-i18n="wndsAndDlgsOpts"></button>
-	  </div>
-	</fieldset>
+        </fieldset>
       </div> <!-- /prefpane-general -->
 
       <div id="prefpane-copy" class="tab-panel" role="tabpanel">
