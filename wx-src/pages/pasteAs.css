@@ -10,6 +10,14 @@
     --color-bkgd: #fbfbfb;
     --color-default-text: black;
     --color-fieldset-border: #d7d7db;
+    --color-paste-clipping-txt-btn-border: #ededf0;
+
+    --url-icon-paste-fmt: url("../img/paste-clipping-html.svg");
+    --url-icon-paste-fmt-hover: url("../img/paste-clipping-html-hover.svg");
+    --url-icon-paste-txt: url("../img/paste-clipping-txt.svg");
+    --url-icon-paste-txt-hover: url("../img/paste-clipping-txt-hover.svg");
+    --url-icon-paste-txt-html-tags: url("../img/paste-clipping-txt-html.svg");
+    --url-icon-paste-txt-html-tags-hover: url("../img/paste-clipping-txt-html-hover.svg");
 }
 
 @media (prefers-color-scheme: dark) {
@@ -56,15 +64,27 @@ button {
 }
 
 #paste-cliptxt-html {
-    background-image: url("../img/paste-clipping-html.svg");
+    background-image: var(--url-icon-paste-fmt);
+}
+
+#paste-cliptxt-html:hover {
+    background-image: var(--url-icon-paste-fmt-hover);
 }
 
 #paste-cliptxt-plain {
-    background-image: url("../img/paste-clipping-html.svg");    
+    background-image: var(--url-icon-paste-txt);
+}
+
+#paste-cliptxt-plain:hover {
+    background-image: var(--url-icon-paste-txt-hover);
 }
 
 #paste-cliptxt-plain-html {
-    background-image: url("../img/paste-clipping-html.svg");
+    background-image: var(--url-icon-paste-txt-html-tags);
+}
+
+#paste-cliptxt-plain-html:hover {
+    background-image: var(--url-icon-paste-txt-html-tags-hover);
 }
 
 .icon {
@@ -87,4 +107,28 @@ button {
     background-size: 24px 24px;
     background-position: 4px;
     background-repeat: no-repeat;
+
+    border: 1px solid var(--color-paste-clipping-txt-btn-border);
+    background-color: var(--color-lb-bkgd);
+    background-repeat: no-repeat;
+}
+
+.paste-fmt-btn:hover {
+    border: 1px solid var(--color-btn-border);
+    background-color: var(--color-btn-hover-bkgd);
+}
+
+.paste-fmt-btn:focus {
+    border-color: var(--color-bkgd) !important;
+    box-shadow: 0 0 0 2px #45a1ff;
+    background-color: var(--color-btn-bkgd);
+}
+
+.paste-fmt-btn:focus:hover {
+    background-color: var(--color-btn-hover-bkgd);
+}
+
+.paste-fmt-btn:active,
+.paste-fmt-btn:focus:hover:active {
+    background-color: var(--color-btn-active-bkgd);
 }

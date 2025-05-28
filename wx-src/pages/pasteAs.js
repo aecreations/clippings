@@ -30,6 +30,12 @@ $(async () => {
   });
   $("#btn-cancel").on("click", aEvent => { cancel() });
 
+  $("#paste-cliptxt-html").focus();
+
+  if (gPrefs.defDlgBtnFollowsFocus) {
+    aeInterxn.initDialogButtonFocusHandlers();
+  }
+
   // Fix for Fx57 bug where bundled page loaded using
   // browser.windows.create won't show contents unless resized.
   // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1402110>
@@ -92,6 +98,16 @@ $(window).on("keydown", aEvent => {
   }
   else if (aEvent.key == "Escape") {
     closeDlg();
+  }
+  // Accelerator keys on paste option buttons
+  else if (aEvent.key.toUpperCase() == "F") {
+    $("#paste-cliptxt-html")[0].click();
+  }
+  else if (aEvent.key.toUpperCase() == "C") {
+    $("#paste-cliptxt-plain")[0].click();
+  }
+  else if (aEvent.key.toUpperCase() == "H") {
+    $("#paste-cliptxt-plain-html")[0].click();
   }
   else {
     aeInterxn.suppressBrowserShortcuts(aEvent);
