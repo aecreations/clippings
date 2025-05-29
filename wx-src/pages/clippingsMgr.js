@@ -21,13 +21,6 @@ let gErrorPushSyncItems = false;
 let gReorderedTreeNodeNextSibling = null;
 
 
-// DOM utility
-function sanitizeHTML(aHTMLStr)
-{
-  return DOMPurify.sanitize(aHTMLStr, { SAFE_FOR_JQUERY: true });
-}
-
-
 // Wrappers to database create/update/delete operations. These also call the
 // Clippings listeners upon completion of the database operations.
 let gClippingsSvc = {
@@ -1028,6 +1021,49 @@ let gReloadSyncFldrBtn = {
   },
 };
 
+// Instant editing for clipping name and text - ensures that undo and redo
+// works correctly when invoked via keyboard shortcut.
+let gClippingNameEditor, gClippingContentEditor;
+
+class InstantEditor
+{
+  EDIT_INTERVAL = 3000;
+  
+  _stor = null;
+  _intvID = null;
+  _prevVal = '';
+
+  constructor(aStor)
+  {
+    this._stor = aStor;
+    
+    $(this._stor).on("focus", aEvent => {
+      this._intvID = setInterval(() => {
+        if ($(this._stor).val() == this._prevVal) {
+          return;
+        }
+
+        let tree = aeClippingsTree.getTree();
+        let selectedNode = tree.activeNode;
+        let clippingID = parseInt(selectedNode.key);
+
+        if (this._stor == "#clipping-text") {
+          gCmd.editClippingContentIntrl(clippingID, $(this._stor).val(), gCmd.UNDO_STACK);
+        }
+        else if (this._stor == "#clipping-name") {
+          gCmd.editClippingNameIntrl(clippingID, $(this._stor).val(), gCmd.UNDO_STACK);
+        }
+
+        this._prevVal = $(this._stor).val();
+      }, this.EDIT_INTERVAL);
+
+    }).on("blur", aEvent => {
+      clearInterval(this._intvID);
+      this._intvID = null;
+      this._prevVal = '';
+    });
+  }
+}
 
 // Clippings Manager commands
 let gCmd = {
@@ -4228,6 +4264,9 @@ function initInstantEditing()
       gCmd.editClippingContentIntrl(id, content, gCmd.UNDO_STACK);
     }
   }).attr("spellcheck", gPrefs.checkSpelling);
+
+  gClippingNameEditor = new InstantEditor("#clipping-name");
+  gClippingContentEditor = new InstantEditor("#clipping-text");
 }
 
 
@@ -6332,6 +6371,16 @@ function showBanner(aMessage)
   bannerMsgElt.children().remove();
   bannerMsgElt.text(aMessage);
   bannerElt.css("display", "block");
+}
+
+
+//
+// DOM utility
+//
+
+function sanitizeHTML(aHTMLStr)
+{
+  return DOMPurify.sanitize(aHTMLStr, {SAFE_FOR_JQUERY: true});
 }
 
 
