@@ -542,7 +542,15 @@ ul.fancytree-container {
 }
 
 .shortcut-key-tbl > tr > td:first-of-type {
+    width: 8em;
+}
+
+body[data-os="mac"] .shortcut-key-tbl > tr > td:first-of-type {
     width: 6em;
+}
+
+.shortcut-key-tbl > tr > td.condensed {
+    letter-spacing: -0.4px;
 }
 
 #tree-splitter {

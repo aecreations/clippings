@@ -3595,6 +3595,7 @@ $(document).on("keydown", async (aEvent) => {
     gCmd.showMiniHelp();
   }
   else if (aEvent.key == "F2") {
+    aEvent.preventDefault();
     gCmd.redo();
   }
   else if (aEvent.key == "Enter") {
@@ -3666,8 +3667,13 @@ $(document).on("keydown", async (aEvent) => {
     aEvent.preventDefault();
     $("#search-box").focus();
   }
-  else if (aEvent.key.toUpperCase() == "Z" && isAccelKeyPressed()) {
+  else if (aEvent.key.toUpperCase() == "Z" && isAccelKeyPressed() && !aEvent.shiftKey) {
+    aEvent.preventDefault();
     gCmd.undo();
+  }
+  else if (aEvent.key.toUpperCase() == "Z" && isAccelKeyPressed() && aEvent.shiftKey) {
+    aEvent.preventDefault();
+    gCmd.redo();
   }
   else {
     aeInterxn.suppressBrowserShortcuts(aEvent, aeConst.DEBUG);
@@ -4236,7 +4242,7 @@ function initIntroBannerAndHelpDlg()
     if (isMacOS) {
       shctKeys = [
         "\u2326", "esc", "\u2318C", "\u2318D", "\u2318F", "\u2318W", "\u2318Z",
-        "F1", "F2", "\u2318F10"
+        "F1", "F2 / \u21e7\u2318Z", "\u2318F10"
       ];
     }
     else {
@@ -4249,23 +4255,30 @@ function initIntroBannerAndHelpDlg()
         `${browser.i18n.getMessage("keyCtrl")}+W`,
         `${browser.i18n.getMessage("keyCtrl")}+Z`,
         "F1",
-        "F2",
+        `F2 / ${browser.i18n.getMessage("keyCtrl")}+${browser.i18n.getMessage("keyShift")}+Z`,
         `${browser.i18n.getMessage("keyCtrl")}+F10`,
       ];
     }
 
-    function buildKeyMapTableRow(aShctKey, aCmdL10nStrIdx)
+    function buildKeyMapTableRow(aShctKey, aCmdL10nStrIdx, aIsCompactKey=false)
     {
       let tr = document.createElement("tr");
       let tdKey = document.createElement("td");
       let tdCmd = document.createElement("td");
       tdKey.appendChild(document.createTextNode(aShctKey));
       tdCmd.appendChild(document.createTextNode(browser.i18n.getMessage(aCmdL10nStrIdx)));
+
+      if (aIsCompactKey) {
+        tdKey.className = "condensed";
+      }
+      
       tr.appendChild(tdKey);
       tr.appendChild(tdCmd);
 
       return tr;
     }
+
+    let redoKeyCmprs = !isMacOS;
 
     aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[0], "clipMgrIntroCmdDel"));
     aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[1], "clipMgrIntroCmdClearSrchBar"));
@@ -4275,7 +4288,7 @@ function initIntroBannerAndHelpDlg()
     aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[5], "clipMgrIntroCmdClose"));
     aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[6], "clipMgrIntroCmdUndo"));
     aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[7], "clipMgrIntroCmdShowIntro"));
-    aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[8], "clipMgrIntroCmdRedo"));
+    aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[8], "clipMgrIntroCmdRedo", redoKeyCmprs));
 
     if (! isLinux) {
       aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[9], "clipMgrIntroCmdMaximize"));
