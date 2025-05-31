@@ -3707,7 +3707,8 @@ $(document).on("keydown", async (aEvent) => {
     aEvent.preventDefault();
     gCmd.undo();
   }
-  else if (aEvent.key.toUpperCase() == "Z" && isAccelKeyPressed() && aEvent.shiftKey) {
+  else if ((aEvent.key.toUpperCase() == "Z" && isAccelKeyPressed() && aEvent.shiftKey)
+           || (aEvent.key.toUpperCase() == "Y" && isAccelKeyPressed())) {
     aEvent.preventDefault();
     gCmd.redo();
   }
@@ -4272,6 +4273,7 @@ function initInstantEditing()
 
 function initIntroBannerAndHelpDlg()
 {
+  const isWin = gEnvInfo.os == "win";
   const isMacOS = gEnvInfo.os == "mac";
   const isLinux = gEnvInfo.os == "linux";
 
@@ -4285,6 +4287,13 @@ function initIntroBannerAndHelpDlg()
       ];
     }
     else {
+      let altRedo;
+      if (isWin) {
+        altRedo = `${browser.i18n.getMessage("keyCtrl")}+Y`;
+      }
+      else {
+        altRedo = `${browser.i18n.getMessage("keyCtrl")}+${browser.i18n.getMessage("keyShift")}+Z`;
+      }
       shctKeys = [
         browser.i18n.getMessage("keyDel"),
         browser.i18n.getMessage("keyEsc"),
@@ -4294,7 +4303,7 @@ function initIntroBannerAndHelpDlg()
         `${browser.i18n.getMessage("keyCtrl")}+W`,
         `${browser.i18n.getMessage("keyCtrl")}+Z`,
         "F1",
-        `F2 / ${browser.i18n.getMessage("keyCtrl")}+${browser.i18n.getMessage("keyShift")}+Z`,
+        `F2 / ${altRedo}`,
         `${browser.i18n.getMessage("keyCtrl")}+F10`,
       ];
     }
@@ -4317,8 +4326,6 @@ function initIntroBannerAndHelpDlg()
       return tr;
     }
 
-    let redoKeyCmprs = !isMacOS;
-
     aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[0], "clipMgrIntroCmdDel"));
     aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[1], "clipMgrIntroCmdClearSrchBar"));
     aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[2], "clipMgrIntroCpyClpTxt"));
@@ -4327,7 +4334,7 @@ function initIntroBannerAndHelpDlg()
     aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[5], "clipMgrIntroCmdClose"));
     aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[6], "clipMgrIntroCmdUndo"));
     aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[7], "clipMgrIntroCmdShowIntro"));
-    aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[8], "clipMgrIntroCmdRedo", redoKeyCmprs));
+    aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[8], "clipMgrIntroCmdRedo", isLinux));
 
     if (! isLinux) {
       aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[9], "clipMgrIntroCmdMaximize"));
