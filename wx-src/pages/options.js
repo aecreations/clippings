@@ -91,10 +91,10 @@ $(async () => {
   // About dialog.
   let usrContribCTA = $("#usr-contrib-cta");
   usrContribCTA.append(sanitizeHTML(`<label id="usr-contrib-cta-hdg">${browser.i18n.getMessage("aboutContribHdg")}</label>&nbsp;`));
-  usrContribCTA.append(sanitizeHTML(`<a href="${aeConst.DONATE_URL}" class="hyperlink">${browser.i18n.getMessage("aboutDonate")}</a>&nbsp;`));
-  usrContribCTA.append(sanitizeHTML(`<label id="usr-contrib-cta-conj">${browser.i18n.getMessage("aboutContribConj")}</label>`));
-  usrContribCTA.append(sanitizeHTML(`<a href="${aeConst.L10N_URL}" class="hyperlink">${browser.i18n.getMessage("aboutL10n")}</a>`));
-  
+
+  let contribLinks = browser.i18n.getMessage("aboutContrib", [aeConst.DONATE_URL, aeConst.L10N_URL]);
+  usrContribCTA.append(sanitizeHTML(contribLinks));
+
   // Sync Clippings help dialog content.
   let syncHlpTxt = browser.i18n.getMessage("syncHelp", aeConst.SYNC_CLIPPINGS_HELP_URL);
   $("#sync-clippings-help-dlg > .dlg-content").html(sanitizeHTML(syncHlpTxt));

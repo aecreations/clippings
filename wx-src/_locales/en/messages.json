@@ -1712,17 +1712,9 @@
     "description": "About dialog text for encouraging users to donate or help with translation"
   },
 
-  "aboutDonate": {
-    "message": "Make a donation"
-  },
-
-  "aboutContribConj": {
-    "message": "or",
-    "description": "Conjunction connecting the CTA hyperlinks for donating or supplying a translation"
-  },
-
-  "aboutL10n": {
-    "message": "add a translation."
+  "aboutContrib": {
+    "message": "<a href=\"$1\" class=\"hyperlink\">Make a donation</a> or <a href=\"$2\" class=\"hyperlink\">add a translation</a>.",
+    "description": "Links for making a donation or contributing a translation for Clippings"
   },
 
   "aboutSyncVerLabel": {
