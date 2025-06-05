@@ -347,8 +347,7 @@ $(window).on("keydown", async (aEvent) => {
     }
     cancel(aEvent);
   }
-  else if (aEvent.key == "Clear" && gPasteMode == aeConst.PASTEACTION_SEARCH_CLIPPING
-           && gAutocompleteMenu.isPopupShowing()) {
+  else if (aEvent.key == "Clear" && gPasteMode == aeConst.PASTEACTION_SEARCH_CLIPPING) {
     if ($("#clipping-search").val() != '') {
       $("#clipping-search").val('');
       gAutocompleteMenu.hidePopup();
