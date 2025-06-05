@@ -11,7 +11,7 @@ const DLG_HEIGHT_ADJ_WINDOWS = 24;
 const DLG_HEIGHT_ADJ_LINUX = 60;
 const DLG_HEIGHT_ADJ_LOCALE = 16;
 
-let gOS;
+let gOS, gHostAppVer;
 let gClippingsDB = null;
 let gParentFolderID = 0;
 let gSrcURL = "";
@@ -35,9 +35,13 @@ $(async () => {
     return;
   }
 
-  let platform = await browser.runtime.getPlatformInfo();
+  let [brws, platform] = await Promise.all([
+    browser.runtime.getBrowserInfo(),
+    browser.runtime.getPlatformInfo(),
+  ]);
   document.body.dataset.os = gOS = platform.os;
-
+  gHostAppVer = brws.version;
+  
   let lang = browser.i18n.getUILanguage();
   document.body.dataset.locale = lang;
 
@@ -122,7 +126,8 @@ async function expandOptions(aIsOptionsExpanded)
     if (document.body.dataset.os == "win") {
       height += DLG_HEIGHT_ADJ_WINDOWS;
     }
-    else if (document.body.dataset.os == "linux") {
+    else if (document.body.dataset.os == "linux"
+             && aeVersionCmp(gHostAppVer, "137.0") >= 0) {
       height += DLG_HEIGHT_ADJ_LINUX;
     }
 
@@ -140,7 +145,8 @@ async function expandOptions(aIsOptionsExpanded)
     if (document.body.dataset.os == "win") {
       height = WNDH_NORMAL_WINDOWS;
     }
-    else if (document.body.dataset.os == "linux") {
+    else if (document.body.dataset.os == "linux"
+             && aeVersionCmp(gHostAppVer, "137.0") >= 0) {
       height = WNDH_NORMAL + DLG_HEIGHT_ADJ_LINUX;
     }
 
