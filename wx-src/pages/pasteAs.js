@@ -85,14 +85,7 @@ async function closeDlg()
 //
 
 $(window).on("keydown", aEvent => {
-  if (aEvent.key == "Enter") {
-    if (aEvent.target.tagName == "BUTTON" && aEvent.target.id != "btn-accept"
-        && !aEvent.target.classList.contains("dlg-accept")) {
-      aEvent.target.click();
-      return;
-    }
-  }
-  else if (aEvent.key == "Escape") {
+  if (aEvent.key == "Escape") {
     closeDlg();
   }
   // Accelerator keys on paste option buttons
