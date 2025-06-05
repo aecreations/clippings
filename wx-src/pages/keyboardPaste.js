@@ -12,7 +12,7 @@ const DLG_HEIGHT_ADJ_LINUX = 60;
 const TOOLBAR_HEIGHT = 52;
 const SHORTCUT_LIST_HEIGHT_ADJ_MAC = 2;
 
-let gClippingsDB, gPasteMode, gOS;
+let gClippingsDB, gPasteMode, gOS, gHostAppVer;
 let gBrowserTabID = null;
 
 let gAutocompleteMenu = {
@@ -308,6 +308,7 @@ $(async () => {
     hostAppName: brws.name,
     hostAppVer:  brws.version,
   };
+  gHostAppVer = envInfo.hostAppVer;
   document.body.dataset.os = gOS = envInfo.os;
   aeInterxn.init(gOS);
 
@@ -550,7 +551,7 @@ async function initShortcutList()
   if (gOS == "win") {
     updWndInfo.height += DLG_HEIGHT_ADJ_WINDOWS;
   }
-  else if (envInfo.os == "linux" && aeVersionCmp(envInfo.hostAppVer, "137.0") >= 0) {
+  else if (gOS == "linux" && aeVersionCmp(gHostAppVer, "137.0") >= 0) {
     updWndInfo.height += DLG_HEIGHT_ADJ_LINUX;
   }
 
