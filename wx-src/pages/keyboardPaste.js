@@ -431,7 +431,7 @@ $(window).keydown(async (aEvent) => {
       let updWndInfo = {
         height: WNDH_SHORTCUT_KEY,
       };
-      if (envInfo.os == "linux" && aeVersionCmp(envInfo.hostAppVer, "137.0") >= 0) {
+      if (gOS == "linux" && aeVersionCmp(gHostAppVer, "137.0") >= 0) {
         updWndInfo.height += DLG_HEIGHT_ADJ_LINUX;
       }
       await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, updWndInfo);
