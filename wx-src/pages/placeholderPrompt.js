@@ -8,10 +8,10 @@ const WNDH_PLCHLDR_MULTI = 318;
 const WNDH_PLCHLDR_MULTI_SHORT = 272;
 const WNDH_PLCHLDR_MULTI_VSHORT = 212;
 const DLG_HEIGHT_ADJ_WINDOWS = 20;
+const DLG_HEIGHT_ADJ_LINUX = 60;
 
 const REGEXP_CUSTOM_PLACEHOLDER = /\$\[([\w\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)(\{([\w \-\.\?_\/\(\)!@#%&;:,'"$£¥€*¡¢\u{0080}-\u{10FFFF}\|])+\})?\]/mu;
 
-let gOS;
 let gPlaceholders = null;
 let gPlaceholdersWithDefaultVals = null;
 let gSamePlchldrs = {};
@@ -37,8 +37,11 @@ $(async () => {
     document.title = browser.i18n.getMessage("mnuCopyClipTxt");
   }
 
-  let platform = await browser.runtime.getPlatformInfo();
-  document.body.dataset.os = gOS = platform.os;
+  let [brws, platform] = await Promise.all([
+    browser.runtime.getBrowserInfo(),
+    browser.runtime.getPlatformInfo(),
+  ]);
+  document.body.dataset.os = platform.os;
   aeInterxn.init(platform.os);
 
   let resp = await browser.runtime.sendMessage({
@@ -112,8 +115,11 @@ $(async () => {
       break;
     }
 
-    if (gOS == "win") {
+    if (platform.os == "win") {
       height += DLG_HEIGHT_ADJ_WINDOWS;
+    }
+    else if (platform.os == "linux" && aeVersionCmp(brws.version, "137.0") >= 0) {
+      height += DLG_HEIGHT_ADJ_LINUX;
     }
 
     await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, {height});
