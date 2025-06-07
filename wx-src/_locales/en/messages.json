@@ -268,6 +268,16 @@
     "description": "Default button in the extension permission request dialog, which appears when requesting an optional extension permission"
   },
 
+  "permReqPgHdg": {
+    "message": "Permission Requested",
+    "description": "Heading of the Permission Requested page"
+  },
+
+  "permReqHlp": {
+    "message": "Add-on permissions help",
+    "description": "Link to Clippings help page on the AE Creations website"
+  },
+
   "newClippingDlgTitle": {
     "message": "New Clipping",
     "description": "New Clipping dialog"
@@ -1699,6 +1709,11 @@
     "message": "Visit website"
   },
 
+  "aboutCreditsLink": {
+    "message": "Credits",
+    "description": "Link to acknowledgements page"
+  },
+
   "aboutLicLink": {
     "message": "License information"
   },
@@ -1766,47 +1781,52 @@
   },
 
   "whatsNew1": {
-    "message": "You can now add separators to organize your clippings.",
+    "message": "Brought back the option to show the Paste As dialog when pasting an HTML-formatted clipping",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
 
   "whatsNew2": {
-    "message": "New option to show the shortcut key of a clipping in the Clippings menu",
-    "description": "Description of an enhancement or fix in the new version of Clippings"
-  },
-
-  "whatsNew3": {
-    "message": "New placeholder for embedding a clipping in a clipping",
+    "message": "Improvements to undo in Clippings Manager. Also, you can now reverse the last undo by pressing Ctrl+Y on Windows, ⇧⌘Z on macOS, and Ctrl+Shift+Z on Linux",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
   
   "whatsNewFx1": {
-    "message": "Copy clipping text to the clipboard from Clippings Manager or the new Clippings Sidebar.",
+    "message": "New option to paste an HTML-formatted clipping into a rich text editor as plain text",
     "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
   },
 
   "whatsNewFx2": {
-    "message": "Brought back the ability to create a new clipping from clipboard content in Clippings Manager (Tools \u2192 New From Clipboard)",
+    "message": "The height of the preview pane in Clippings Sidebar can now be adjusted",
+    "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
+  },
+
+  "whatsNewFx3": {
+    "message": "Eliminated the confirmation dialog that appeared when reloading the Synced Clippings folder in Clippings Manager or Clippings Sidebar",
     "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
   },
 
   "whatsNewTb1": {
-    "message": "The Clippings toolbar button in the message compose window has moved from the status bar to the Composition Toolbar.  The Clippings toolbar button no longer appears in the main Thunderbird window.",
+    "message": "New placeholders for the subject line, message sender and recipients.  Add them to your clippings in Clippings Manager by using the Placeholder Toolbar",
     "description": "Description of a Thunderbird-specific enhancement in the new version of Clippings"
   },
 
+  "whatsNewTb2": {
+    "message": "New option to paste an HTML-formatted clipping into an HTML message as plain text",
+    "description": "Description of a Thunderbird-specific enhancement in the new version of Clippings"
+  },
+
+  "whatsNewTb3": {
+    "message": "Eliminated the confirmation dialog that appeared when reloading the Synced Clippings folder in Clippings Manager",
+   "description": "Description of a Thunderbird-specific enhancement in the new version of Clippings" 
+  },
+
   "whatsNewSync": {
-    "message": "Sync Clippings enhancements: sync data is now compressed, allowing you to sync more of your clippings; also, improved handling of read-only sync files (requires <a href=\"$1\">Sync Clippings Helper</a> version 2.0 or newer)",
+    "message": "Clippings will now display an error message if the Sync Clippings data size exceeds the limit of 1 megabyte",
     "description": "Description of enhancements for the Sync Clippings feature in the new version of Clippings"
   },
 
-  "hostAppCompat": {
-    "message": "Other behind-the-scenes improvements to ensure compatibility with future versions of $1",
-    "description": "Description of improvements to ensure compatibility with future versions of Firefox or Thunderbird"
-  },
-
   "contribHdg": {
-    "message": "Contribute",
+    "message": "Contribute!",
     "description": "Contribution CTA in the What's New page"
   },
 
