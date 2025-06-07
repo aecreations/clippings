@@ -564,6 +564,7 @@ function setCustomizations()
   if (gPrefs.sidebarPreview) {
     $("#pane-splitter, #preview-pane").show();
     $("#preview-pane").css({height: `${gPrefs.sidebarPreviewPaneHgt}px`});
+    cntHtOffset += msgBarsHeight;
   }
   else {
     $("#pane-splitter, #preview-pane").hide();
