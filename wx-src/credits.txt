@@ -1,0 +1,16 @@
+CLIPPINGS
+========== Credits
+
+
+Many thanks to the Crowdin contributors who provided localizations for this
+version of Clippings:
+
+Chinese (Simplified)  . . . . . .  52fisher
+
+
+If you're fluent in English and another world language and would like to help
+update or add a new translation, consider contributing a translation in
+Crowdin: https://crowdin.com/project/clippings
+
+Localizations in other languages are always welcome, and will be added
+in future releases.
