@@ -489,6 +489,11 @@ function initDialogs()
       gotoURL(aEvent.target.href);
     });
   };
+
+  gDialogs.syncClippings.isSyncConnectionError = function ()
+  {
+    return (this.find("#sync-cxn-error").css("display") == "block");
+  };
   
   gDialogs.syncClippings.onFirstInit = function ()
   {
@@ -910,18 +915,6 @@ function initDialogs()
   gDialogs.syncClippingsHelp = new aeDialog("#sync-clippings-help-dlg");
 }
 
-$(window).on("contextmenu", aEvent => {
-  if (aEvent.target.tagName != "INPUT" && aEvent.target.tagName != "TEXTAREA") {
-    aEvent.preventDefault();
-  }
-});
-
-
-function gotoURL(aURL)
-{
-  browser.tabs.create({url: aURL});
-}
-
 
 async function closePage()
 {
@@ -931,8 +924,35 @@ async function closePage()
 
 
 //
+// Event handlers
+//
+
+$(window).on("contextmenu", aEvent => {
+  if (aEvent.target.tagName != "INPUT" && aEvent.target.tagName != "TEXTAREA") {
+    aEvent.preventDefault();
+  }
+});
+
+
+$(window).on("focus", aEvent => {
+  if (gDialogs?.syncClippings.isOpen() && gDialogs.syncClippings.isSyncConnectionError()) {
+    // Retry connecting to the Sync Clippings Helper app.
+    gDialogs.syncClippings.close();
+    gDialogs.syncClippings.showModal();
+  }
+});
+
+
+
+//
 // Utilities
 //
+
+function gotoURL(aURL)
+{
+  browser.tabs.create({url: aURL});
+}
+
 
 function sanitizeHTML(aHTMLStr)
 {
