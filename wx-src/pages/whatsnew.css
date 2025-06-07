@@ -13,9 +13,9 @@
     --color-main-border: #ddd;
     --color-main-bkgd: #fefefe;
     --color-main-border-shadow: #e0e0e0;
-    --color-card-bkgd: #fff;
-    --color-card-border: #eee;
-    --color-card-border-shadow: #EBEDEA;
+    --color-contrib-cta-bkgd: #DEEAFC;
+    --color-contrib-cta-border: #CBD6E7;
+    --url-contrib-cta-img: url("../img/donate.svg");
     --url-amo-img: url("../img/amo.png");
 }
 
@@ -27,9 +27,9 @@
 	--color-main-border: #0c0c0d;
 	--color-main-bkgd: #2a2a2e;
 	--color-main-border-shadow: #0c0c0d;
-	--color-card-bkgd: transparent;
-	--color-card-border: #4a4a4f;
-	--color-card-border-shadow: #0c0c0d;
+	--color-contrib-cta-bkgd: #003070;
+	--color-contrib-cta-border: #17437D;
+	--url-contrib-cta-img: url("../img/donate-dk.svg");
 	--url-amo-img: url("../img/addons-logo-blue.svg");
     }
 }
@@ -117,44 +117,6 @@ button {
     font-weight: bold;
 }
 
-#whatsnew-jumbo {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: left;
-    margin-left: 24px;
-}
-
-.whatsnew-card {
-    width: 316px;
-    margin-top: 18px;
-    padding: 4px 20px 4px 20px;
-
-    border: 1px solid var(--color-card-border);
-    border-radius: 4px;
-    box-shadow: 0px 0px 6px 0px var(--color-card-border-shadow);
-    background-color: var(--color-card-bkgd);
-    background-position: top;
-    background-size: 356px 155px;
-    background-repeat: no-repeat;
-}
-
-.whatsnew-card > p {
-    margin-top: 164px;  /* Make room for thumbnail image on tile. */
-    line-height: 1.23;
-}
-
-#whatsnew-card1 {
-    order: 1;
-    margin-right: 16px;
-    background-image: url("../img/welc-whats-new.png");
-}
-
-#whatsnew-card2 {
-    order: 2;
-    margin-left: 16px;
-    background-image: url("../img/whatsnew2.png");
-}
-
 #dlg-content {
     margin-bottom: 24px;
 }
@@ -166,6 +128,20 @@ button {
 
 #dlg-content li {
     line-height: 1.23;
+}
+
+#contribute {
+    margin-top: 20px;
+    padding-right: 16px;
+    padding-left: 64px;
+    border: 1px solid var(--color-contrib-cta-border);
+    border-radius: 4px;
+
+    background-color: var(--color-contrib-cta-bkgd);
+    background-image: var(--url-contrib-cta-img);
+    background-repeat: no-repeat;
+    background-position: 16px 16px;
+    background-size: 32px;
 }
 
 #aecreations-links > ul {

@@ -7,7 +7,7 @@
 const aeConst = Object.freeze({
   DEBUG: true,
   DEV_BUILD: true,
-  CURR_MAJOR_VER: "7.0",
+  CURR_MAJOR_VER: "7.1",
 
   // Native messaging helper app
   SYNC_CLIPPINGS_APP_NAME: "syncClippings",
