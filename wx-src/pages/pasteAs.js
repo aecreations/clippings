@@ -32,6 +32,16 @@ $(async () => {
 
   $("#paste-cliptxt-html").focus();
 
+  let pasteAsHTML = browser.i18n.getMessage("pasteAsHTML");
+  let pasteAsPlain = browser.i18n.getMessage("pasteAsPlain");
+  let pasteAsPlainHTML = browser.i18n.getMessage("pasteAsPlainHTML");
+  pasteAsHTML = aeVisual.formatShortcutKey(pasteAsHTML, "F");
+  pasteAsPlain = aeVisual.formatShortcutKey(pasteAsPlain, "P");
+  pasteAsPlainHTML = aeVisual.formatShortcutKey(pasteAsPlainHTML, "H");
+  $("#paste-cliptxt-html").html(sanitizeHTML(pasteAsHTML));
+  $("#paste-cliptxt-plain").html(sanitizeHTML(pasteAsPlain));
+  $("#paste-cliptxt-plain-html").html(sanitizeHTML(pasteAsPlainHTML));
+
   // Fix for Fx57 bug where bundled page loaded using
   // browser.windows.create won't show contents unless resized.
   // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1402110>
@@ -80,6 +90,12 @@ async function closeDlg()
 }
 
 
+function sanitizeHTML(aHTMLStr)
+{
+  return DOMPurify.sanitize(aHTMLStr, {SAFE_FOR_JQUERY: true});
+}
+
+
 //
 // Event handlers
 //
@@ -92,7 +108,7 @@ $(window).on("keydown", aEvent => {
   else if (aEvent.key.toUpperCase() == "F") {
     $("#paste-cliptxt-html")[0].click();
   }
-  else if (aEvent.key.toUpperCase() == "C") {
+  else if (aEvent.key.toUpperCase() == "P") {
     $("#paste-cliptxt-plain")[0].click();
   }
   else if (aEvent.key.toUpperCase() == "H") {
