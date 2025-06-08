@@ -216,7 +216,7 @@
   },
 
   "welcWhatsNewDesc": {
-    "message": "Clippings 7.0 contains many new features and improvements, such as copying clipping text, and separators for organizing your clippings."
+    "message": "In Clippings 7.1, you can now choose to paste an HTML-formatted clipping into an HTML editor as plain text."
   },
 
   "welcWhatsNewCTA": {
@@ -1791,7 +1791,7 @@
   },
   
   "whatsNewFx1": {
-    "message": "New option to paste an HTML-formatted clipping into a rich text editor as plain text",
+    "message": "New option to paste an HTML-formatted clipping into an HTML editor as plain text",
     "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
   },
 
