@@ -8,6 +8,7 @@ const WNDH_PLCHLDR_MULTI = 318;
 const WNDH_PLCHLDR_MULTI_SHORT = 272;
 const WNDH_PLCHLDR_MULTI_VSHORT = 212;
 const DLG_HEIGHT_ADJ_WINDOWS = 20;
+const DLG_HEIGHT_ADJ_LINUX = 60;
 
 const REGEXP_CUSTOM_PLACEHOLDER = /\$\[([\w\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)(\{([\w \-\.\?_\/\(\)!@#%&;:,'"$£¥€*¡¢\u{0080}-\u{10FFFF}\|])+\})?\]/mu;
 
@@ -115,6 +116,9 @@ $(async () => {
 
     if (gOS == "win") {
       height += DLG_HEIGHT_ADJ_WINDOWS;
+    }
+    else if (gOS == "linux") {
+      height += DLG_HEIGHT_ADJ_LINUX;
     }
 
     await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, {height});
