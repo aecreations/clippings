@@ -64,6 +64,8 @@
 
 	--url-preftab-general: url("../img/pref-general-dk.svg");
 	--url-preftab-general-checked: url("../img/pref-general-checked-dk.svg");
+	--url-preftab-copy: url("../img/pref-copy-clipping-dk.svg");
+	--url-preftab-copy-checked: url("../img/pref-copy-clipping-checked-dk.svg");
 	--url-preftab-paste: url("../img/pref-paste-dk.svg");
 	--url-preftab-paste-checked: url("../img/pref-paste-checked-dk.svg");
 	--url-preftab-sync-clippings: url("../img/pref-sync-clippings-dk.svg");
