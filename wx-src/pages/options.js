@@ -935,7 +935,7 @@ $(window).on("contextmenu", aEvent => {
 
 
 $(window).on("focus", aEvent => {
-  if (gDialogs?.syncClippings.isOpen() && gDialogs.syncClippings.isSyncConnectionError()) {
+  if (gDialogs?.syncClippings?.isOpen() && gDialogs.syncClippings.isSyncConnectionError()) {
     // Retry connecting to the Sync Clippings Helper app.
     gDialogs.syncClippings.close();
     gDialogs.syncClippings.showModal();
