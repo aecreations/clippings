@@ -25,6 +25,7 @@
 	--color-bkgd: #202023;
 	--color-default-text: #f9f9fa;
 	--color-fieldset-border: #4a4a4f;
+	--color-paste-clipping-txt-btn-border: #4a4a4f;
     }
 }
 
@@ -67,7 +68,8 @@ button {
     background-image: var(--url-icon-paste-fmt);
 }
 
-#paste-cliptxt-html:hover {
+#paste-cliptxt-html:hover,
+#paste-cliptxt-html:focus {
     background-image: var(--url-icon-paste-fmt-hover);
 }
 
@@ -75,7 +77,8 @@ button {
     background-image: var(--url-icon-paste-txt);
 }
 
-#paste-cliptxt-plain:hover {
+#paste-cliptxt-plain:hover,
+#paste-cliptxt-plain:focus {
     background-image: var(--url-icon-paste-txt-hover);
 }
 
@@ -83,7 +86,8 @@ button {
     background-image: var(--url-icon-paste-txt-html-tags);
 }
 
-#paste-cliptxt-plain-html:hover {
+#paste-cliptxt-plain-html:hover,
+#paste-cliptxt-plain-html:focus {
     background-image: var(--url-icon-paste-txt-html-tags-hover);
 }
 
