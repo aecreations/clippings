@@ -8,9 +8,10 @@ const WNDH_NORMAL = 410;
 const WNDH_NORMAL_WINDOWS = 434;
 const WNDH_OPTIONS_EXPANDED = 474;
 const DLG_HEIGHT_ADJ_WINDOWS = 24;
+const DLG_HEIGHT_ADJ_LINUX = 60;
 const DLG_HEIGHT_ADJ_LOCALE = 16;
 
-let gOS;
+let gOS, gHostAppVer;
 let gClippingsDB = null;
 let gParentFolderID = 0;
 let gSrcURL = "";
@@ -34,9 +35,13 @@ $(async () => {
     return;
   }
 
-  let platform = await browser.runtime.getPlatformInfo();
+  let [brws, platform] = await Promise.all([
+    browser.runtime.getBrowserInfo(),
+    browser.runtime.getPlatformInfo(),
+  ]);
   document.body.dataset.os = gOS = platform.os;
-
+  gHostAppVer = brws.version;
+  
   let lang = browser.i18n.getUILanguage();
   document.body.dataset.locale = lang;
 
@@ -120,7 +125,12 @@ async function expandOptions(aIsOptionsExpanded)
     let height = WNDH_OPTIONS_EXPANDED;
     if (document.body.dataset.os == "win") {
       height += DLG_HEIGHT_ADJ_WINDOWS;
-    } 
+    }
+    else if (document.body.dataset.os == "linux"
+             && aeVersionCmp(gHostAppVer, "137.0") >= 0) {
+      height += DLG_HEIGHT_ADJ_LINUX;
+    }
+
     if (lang == "uk" || lang.startsWith("pt") || lang.startsWith("es")) {
       height += DLG_HEIGHT_ADJ_LOCALE;
     }
@@ -134,7 +144,11 @@ async function expandOptions(aIsOptionsExpanded)
     let height = WNDH_NORMAL;
     if (document.body.dataset.os == "win") {
       height = WNDH_NORMAL_WINDOWS;
-    } 
+    }
+    else if (document.body.dataset.os == "linux"
+             && aeVersionCmp(gHostAppVer, "137.0") >= 0) {
+      height = WNDH_NORMAL + DLG_HEIGHT_ADJ_LINUX;
+    }
 
     $("#clipping-options").hide();
     $("#new-clipping-fldr-tree-popup").removeClass("new-clipping-fldr-tree-popup-fixpos");

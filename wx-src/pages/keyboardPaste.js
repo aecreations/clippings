@@ -8,10 +8,11 @@ const WNDH_SEARCH_CLIPPING = 222;
 const WNDH_SHORTCUT_LIST = 278;
 const WNDW_SHORTCUT_LIST = 436;
 const DLG_HEIGHT_ADJ_WINDOWS = 8;
+const DLG_HEIGHT_ADJ_LINUX = 60;
 const TOOLBAR_HEIGHT = 52;
 const SHORTCUT_LIST_HEIGHT_ADJ_MAC = 2;
 
-let gClippingsDB, gPasteMode, gOS;
+let gClippingsDB, gPasteMode, gOS, gHostAppVer;
 let gBrowserTabID = null;
 
 let gAutocompleteMenu = {
@@ -307,6 +308,7 @@ $(async () => {
     hostAppName: brws.name,
     hostAppVer:  brws.version,
   };
+  gHostAppVer = envInfo.hostAppVer;
   document.body.dataset.os = gOS = envInfo.os;
   aeInterxn.init(gOS);
 
@@ -338,8 +340,11 @@ $(async () => {
     $(".deck > #paste-by-shortcut-key").hide();
 
     let updWndInfo = {
-      height: WNDH_SEARCH_CLIPPING
+      height: WNDH_SEARCH_CLIPPING,
     };
+    if (envInfo.os == "linux" && aeVersionCmp(envInfo.hostAppVer, "137.0") >= 0) {
+      updWndInfo.height += DLG_HEIGHT_ADJ_LINUX;
+    }
     await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, updWndInfo);
 
     $(".deck > #search-by-name").show();
@@ -408,8 +413,11 @@ $(window).keydown(async (aEvent) => {
       $(".deck > #paste-by-shortcut-key").hide();
 
       let updWndInfo = {
-        height: WNDH_SEARCH_CLIPPING
+        height: WNDH_SEARCH_CLIPPING,
       };
+      if (gOS == "linux" && aeVersionCmp(gHostAppVer, "137.0") >= 0) {
+        updWndInfo.height += DLG_HEIGHT_ADJ_LINUX;
+      }
       await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, updWndInfo);
       
       $(".deck > #search-by-name").fadeIn("fast");
@@ -421,8 +429,11 @@ $(window).keydown(async (aEvent) => {
       $(".deck > #search-by-name").hide();
 
       let updWndInfo = {
-        height: WNDH_SHORTCUT_KEY
+        height: WNDH_SHORTCUT_KEY,
       };
+      if (gOS == "linux" && aeVersionCmp(gHostAppVer, "137.0") >= 0) {
+        updWndInfo.height += DLG_HEIGHT_ADJ_LINUX;
+      }
       await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, updWndInfo);
 
       $(".deck > #paste-by-shortcut-key").fadeIn("fast");
@@ -540,7 +551,10 @@ async function initShortcutList()
   if (gOS == "win") {
     updWndInfo.height += DLG_HEIGHT_ADJ_WINDOWS;
   }
-  
+  else if (gOS == "linux" && aeVersionCmp(gHostAppVer, "137.0") >= 0) {
+    updWndInfo.height += DLG_HEIGHT_ADJ_LINUX;
+  }
+
   await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, updWndInfo);
   aeImportExport.getShortcutKeyListHTML(false).then(aShctListHTML => {
     $("#shortcut-list-content").append(sanitizeHTML(aShctListHTML));
