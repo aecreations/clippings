@@ -39,11 +39,6 @@ const aeConst = Object.freeze({
   ROOT_FOLDER_ID: 0,
   DELETED_ITEMS_FLDR_ID: -1,
 
-  // IndexedDB database change types
-  DB_CREATED: 1,
-  DB_UPDATED: 2,
-  DB_DELETED: 3,
-
   // Origin of clipping/folder creation for Clippings listener
   ORIGIN_HOSTAPP: 1,
   ORIGIN_CLIPPINGS_MGR: 2,
