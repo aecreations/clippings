@@ -187,21 +187,6 @@
     "description": "Clippings browser action submenu"
   },
 
-  "pasteAsHdg": {
-    "message": "Paste Clipping As",
-    "description": "Quote Options dialog in Clippings for Thunderbird"
-  },
-
-  "pasteAsNormal": {
-    "message": "Normal text",
-    "description": "Quote Options dialog in Clippings for Thunderbird"
-  },
-
-  "pasteAsQuoted": {
-    "message": "Quoted text",
-    "description": "Quote Options dialog in Clippings for Thunderbird"
-  },
-
   "welcomePageTitle": {
     "message": "Welcome to Clippings",
     "description": "Welcome to Clippings (post-installation) page title"
@@ -1148,11 +1133,6 @@
   "prefTabPaste": {
     "message": "Paste",
     "description": "Tab label for extension preferences page"
-  },
-
-  "prefsHdgIntegrn": {
-    "message": "Integration",
-    "description": "Groupbox caption in extension preferences page"
   },
 
   "cbToolsMnu": {
