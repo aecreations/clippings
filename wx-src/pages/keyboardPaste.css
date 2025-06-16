@@ -27,10 +27,10 @@
     --color-autocomplete-popup-bkgd: white;
     --color-autocomplete-popup-shadow: #8f8f8f;
     --color-autocomplete-listbox-border: white;
-    --color-autocomplete-normal-border: white;
-    --color-autocomplete-normal-bkgd: white;
     --color-autocomplete-selected-bkgd: #eff9fe;
     --color-autocomplete-selected-border: #70c0e7;
+    --color-autocomplete-focused-bkgd: #cbe8f6;
+    --color-autocomplete-focused-border: #26a0da;
     --color-autocomplete-clipping-name: #0c0c0d;
     --color-autocomplete-clipping-preview: #737373;
 
@@ -60,10 +60,10 @@
 	--color-autocomplete-popup-bkgd: #202023;
 	--color-autocomplete-popup-shadow: #4a4a4f;
 	--color-autocomplete-listbox-border: black;
-	--color-autocomplete-normal-border: black;
-	--color-autocomplete-normal-bkgd: #202023;
-	--color-autocomplete-selected-bkgd: #0a84ff;
-	--color-autocomplete-selected-border: #0060df;
+	--color-autocomplete-selected-bkgd: #003eaa;
+	--color-autocomplete-selected-border: #002275;
+	--color-autocomplete-focused-bkgd: #0a84ff;
+	--color-autocomplete-focused-border: #0060df;
 	--color-autocomplete-clipping-name: #f9f9fa;
 	--color-autocomplete-clipping-preview: #b1b1b3;
 
@@ -379,6 +379,7 @@ body[data-os="mac"] #search-by-name-ico {
 ul.fancytree-container {
     padding: 0px;
     font: caption;
+    background-color: var(--color-autocomplete-popup-bkgd);
 }
 
 #ft-id-1 span.fancytree-level-1 span.fancytree-title {
@@ -394,6 +395,27 @@ ul.fancytree-container {
     height: 34px;
     padding-left: 0;
     cursor: default;
+}
+
+#search-results-listbox .fancytree-plain.fancytree-container.fancytree-treefocus span.fancytree-active span.fancytree-title {
+    background-color: var(--color-autocomplete-focused-bkgd);
+    border: 1px solid var(--color-autocomplete-focused-border);
+    padding: 0px 1px 0px 1px;
+   
+}
+
+#search-results-listbox .fancytree-plain span.fancytree-node:hover span.fancytree-title {
+    background-color: var(--color-autocomplete-selected-bkgd);
+    border: 1px solid var(--color-autocomplete-selected-border);
+    padding: 0px 1px 0px 1px;
+
+}
+
+#search-results-listbox .fancytree-plain span.fancytree-node:active span.fancytree-title {
+    background-color: var(--color-autocomplete-focused-bkgd);
+    border: 1px solid var(--color-autocomplete-focused-border);
+    padding: 0px 1px 0px 1px;
+
 }
 
 #search-results-listbox span.fancytree-title .name,
