@@ -675,6 +675,7 @@ body[data-locale="nl"] #wnds-dlgs-opts-dlg #clpmgr-save-wnd-pos-label {
 #wnds-dlgs-opts-dlg #reset-clpmgr-wnd-pos {
     min-width: 72px;
     margin-top: 4px;
+    margin-left: 26px;
 }
 
 #wnds-dlgs-opts-dlg #reset-clpmgr-wnd-pos-ack {
