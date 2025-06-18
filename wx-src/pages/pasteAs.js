@@ -42,6 +42,12 @@ $(async () => {
   $("#paste-cliptxt-plain").html(sanitizeHTML(pasteAsPlain));
   $("#paste-cliptxt-plain-html").html(sanitizeHTML(pasteAsPlainHTML));
 
+  aeVisual.cacheIcons(
+    "paste-clipping-html-hover.svg",
+    "paste-clipping-txt-hover.svg",
+    "paste-clipping-txt-html-hover.svg"
+  );
+
   // Fix for Fx57 bug where bundled page loaded using
   // browser.windows.create won't show contents unless resized.
   // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1402110>
