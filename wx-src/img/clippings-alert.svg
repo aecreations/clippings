@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="48" height="48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <linearGradient id="linearGradient3228" x1="43.246" x2="43.41" y1="1010.7" y2="1052" gradientTransform="matrix(.99907 0 0 .98066 1.2341 20.852)" gradientUnits="userSpaceOnUse">
+   <stop stop-opacity="0" offset="0"/>
+   <stop stop-color="#545454" stop-opacity=".37647" offset="1"/>
+  </linearGradient>
+  <linearGradient id="linearGradient3230" x1="4.2501" x2="42.709" y1="1003.5" y2="1043.1" gradientTransform="matrix(.97081 0 0 .97042 .35928 30.277)" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#eef3f6" offset="0"/>
+   <stop stop-color="#abc3d2" offset="1"/>
+  </linearGradient>
+  <linearGradient id="linearGradient3232" x1="4.2501" x2="37.46" y1="1003.5" y2="1051.5" gradientTransform="matrix(.97081 0 0 .97042 .35928 30.277)" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#6c8ad0" offset="0"/>
+   <stop stop-color="#203567" offset="1"/>
+  </linearGradient>
+ </defs>
+ <g transform="translate(0 -1004.4)">
+  <g>
+   <path d="m31.364 1007.5v9.4687h11.287m-35.417-9.6253v39.927c2.2783-6.38 11.297-8.9823 17.112-5.6815 4.3288 2.3574 3.5821 4.6158 9.575 8.1711 3.8284 1.6518 6.9023 1.2983 8.8408 1.2983l0.01335-33.779-11.805-9.9355z" fill="none" stroke="url(#linearGradient3228)" stroke-width="2.4678"/>
+   <path d="m28.472 1005.8v10.028h11.824m-34.797-10.008v40.049c2.2441-6.3997 11.127-9.0099 16.856-5.699 4.2639 2.3646 3.5283 4.63 9.4313 8.1961 3.15 1.5331 6.7987 1.3025 8.7081 1.3025l0.01503-34.008-11.629-9.841z" fill="url(#linearGradient3230)" stroke="url(#linearGradient3232)" stroke-width="3"/>
+   <g fill="none" stroke="#6080cc" stroke-width="2">
+    <path d="m34 1020.4h-23"/>
+    <path d="m11 1012.4h13"/>
+    <path d="m34 1036.4h-7"/>
+    <path d="m11 1016.4h13"/>
+    <path d="m34 1024.4h-23"/>
+    <path d="m34 1028.4h-23"/>
+    <path d="m34 1032.4h-23"/>
+   </g>
+  </g>
+  <g transform="translate(-4.9095e-5 1004.4)" stroke-linejoin="round">
+   <path d="m45.438 47h-10.887c-1.0742-0.17819-1.9189-1.1337-1.4082-2.4324l5.3496-10.686c0.81353-1.273 2.3828-1.0718 2.9497-0.0089l5.4922 10.909c0.29881 1.1703-0.38714 2.053-1.4965 2.2181z" fill="#ffbf00" stroke="#f58e00" stroke-width="2"/>
+   <path d="m39.974 37.018 0.025888 2.9485" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="2"/>
+   <path d="m40 43.5v0.06034" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="3"/>
+  </g>
+ </g>
+</svg>
