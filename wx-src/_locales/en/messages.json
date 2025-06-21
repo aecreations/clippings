@@ -1553,7 +1553,7 @@
   },
 
   "syncPermNotif": {
-    "message": "Unable to connect to the Sync Clippings helper app. To fix this, go to Add-ons Manager and turn on the permission to allow Clippings to exchange messages with other programs.",
+    "message": "Clippings doesn't have permission to connect to the Sync Clippings Helper app. To fix this, go to Sync Clippings Settings in Clippings preferences.",
     "description": "Notification that appears when attempting to refresh sync data after user turned off the 'nativeMessaging' permission"
   },
 
