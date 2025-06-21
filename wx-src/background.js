@@ -2409,7 +2409,7 @@ function showSyncPushReadOnlyNotification()
     type: "basic",
     title: browser.i18n.getMessage("syncStartupFailedHdg"),
     message: browser.i18n.getMessage("syncFldrRdOnly"),
-    iconUrl: aeVisual.getErrorIconPath(),
+    iconUrl: "img/clippings-alert.svg",
   });
 }
 
@@ -2420,7 +2420,7 @@ function showNoNativeMsgPermNotification()
     type: "basic",
     title: browser.i18n.getMessage("syncStartupFailedHdg"),
     message: browser.i18n.getMessage("syncPermNotif"),
-    iconUrl: aeVisual.getErrorIconPath(),
+    iconUrl: "img/clippings-alert.svg",
   });
 }
 
