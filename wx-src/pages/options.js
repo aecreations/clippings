@@ -499,7 +499,7 @@ function initDialogs()
   
   gDialogs.syncClippings.onFirstInit = function ()
   {
-    $("#no-sync-app-cta").html(sanitizeHTML(browser.i18n.getMessage("noSyncAppCTA")));
+    $("#no-sync-app-cta").html(sanitizeHTML(browser.i18n.getMessage("noSyncAppCTA", aeConst.SYNC_CLIPPINGS_DWNLD_URL)));
     $("#sync-fldr-curr-location").on("focus", aEvent => { aEvent.target.select() });
 
     this._initHyperlinksWithin("#no-sync-app-cta");
