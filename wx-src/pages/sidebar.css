@@ -62,7 +62,7 @@
 	--url-toolbar-btn-open-clippings-mgr-active: url("../img/clippings-mgr-active-dk.svg");
 	--url-toolbar-btn-help: url("../img/help-dk.svg");
 	--url-toolbar-btn-help-hover: url("../img/help-dk.svg");
-	--url-toolbar-btn-help-active: url("../img/help.svg");
+	--url-toolbar-btn-help-active: url("../img/help_hover.svg");
 	--url-icon-synced-clippings-fldr: url("../img/synced-clippings-dk.svg");
 	--url-icon-synced-clippings-readonly-fldr: url("../img/synced-clippings-readonly-dk.svg");
     }
