@@ -36,10 +36,10 @@
 
     --url-toolbar-btn-icon-insClipping: url("../img/insClipping.svg");
     --url-toolbar-btn-icon-insClipping-hover: url("../img/insClipping-hover.svg");
-    --url-toolbar-btn-icon-insClipping-active: url("../img/insClipping-hover.svg");
+    --url-toolbar-btn-icon-insClipping-active: url("../img/insClipping.svg");
     --url-toolbar-btn-icon-export: url("../img/export.svg");
     --url-toolbar-btn-icon-export-hover: url("../img/export_hover.svg");
-    --url-toolbar-btn-icon-export-active: url("../img/export_hover.svg");
+    --url-toolbar-btn-icon-export-active: url("../img/export.svg");
 }
 
 @media (prefers-color-scheme: dark) {
