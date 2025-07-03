@@ -1,5 +1,5 @@
-CLIPPINGS
-========== Credits
+CLIPPINGS 7.1
+============== Credits
 
 
 Many thanks to the Crowdin contributors who provided localizations for this
