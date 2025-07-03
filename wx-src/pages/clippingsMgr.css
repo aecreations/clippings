@@ -1533,6 +1533,10 @@ body[data-locale="uk"][data-os="mac"] #mini-help-dlg #mini-help-intro {
     letter-spacing: -0.45px;
 }
 
+body[data-locale="de"][data-os="win"] #mini-help-dlg > .dlg-btns {
+    bottom: 4px;
+}
+
 #show-only-synced-items-reminder {
     --height: 150px;
 }
