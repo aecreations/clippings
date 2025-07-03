@@ -1020,12 +1020,12 @@ body[data-os="mac"] #about-dlg {
     --width: 414px;
 }
 
-body[data-locale="de"] #about-dlg {
-    height: 326px;
-}
-
 #about-dlg[data-expanded="true"] {
     height: 320px;
+}
+
+body[data-locale="de"] #about-dlg[data-expanded="true"] {
+    height: 326px;
 }
 
 #about-dlg #ext-icon {
