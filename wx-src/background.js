@@ -202,7 +202,11 @@ let gSyncClippingsListener = {
 
     if (isStaticIDsAdded) {
       log("Clippings/wx: gSyncClippingsListener.onReloadFinish(): Static IDs added to synced items.  Saving sync file.");
-      await pushSyncFolderUpdates();
+      let result = await pushSyncFolderUpdates();
+      if ("error" in result && result.error.name == "RangeError") {
+        // Sync file is too big.
+        showSyncDataSizeTooBigNotification();
+      }
     }
 
     try {
@@ -240,6 +244,39 @@ let gNewClipping = {
     this._content = null;
     this._srcURL = null;
   }
+};
+
+let gPasteAs = {
+  _clippingName: null,
+  _clpCtnt: null,
+
+  set(aClippingName, aClippingText)
+  {
+    this._clippingName = aClippingName;
+    this._clpCtnt = aClippingText;
+  },
+
+  get()
+  {
+    let rv = this.copy();
+    this.reset();
+
+    return rv;    
+  },
+
+  copy()
+  {
+    let rv = {
+      clippingName: this._clippingName,
+      content: this._clpCtnt,
+    };
+    return rv;
+  },
+
+  reset()
+  {
+    this._clippingName = '';
+  },
 };
 
 let gPlaceholders = {
@@ -423,6 +460,11 @@ void async function ()
     await aePrefs.setFortMasonPrefs(prefs);
   }
 
+  if (! aePrefs.hasAlamoSquarePrefs(prefs)) {
+    log("Initializing 7.1 user preferences.");
+    await aePrefs.setAlamoSquarePrefs(prefs);
+  }
+
   if (prefs.clippingsMgrDetailsPane) {
     aePrefs.setPrefs({clippingsMgrAutoShowDetailsPane: false});
   }
@@ -538,7 +580,6 @@ async function init(aPrefs)
     log("Clippings/wx: Display order on root folder items have been set");
   }
 
-  aePrefs.setPrefs({_isInitialized: true});
   localStorage.setItem("isInitialized", "1");
   log("Clippings/wx: Initialization complete.");   
 }
@@ -799,15 +840,35 @@ async function pushSyncFolderUpdates()
     throw new Error("Sync Clippings is not turned on!");
   }
 
+  let rv = {status: "ok"};
   let perms = await browser.permissions.getAll();
   if (! perms.permissions.includes("nativeMessaging")) {
-    return;
+    rv = {
+      status: "error",
+      error: {
+        name: "AccessDeniedError",
+        message: "Extension permission required: nativeMessaging",
+      }
+    }
+    return rv;
   }
 
   let clippingsDB = aeClippings.getDB();
   aeImportExport.setDatabase(clippingsDB);
 
   let syncData = await aeImportExport.exportToJSON(true, true, prefs.syncFolderID, false, true, true);
+  let isSyncDataSizeUnderMax = await isRecvNativeMessageSizeUnderMax(syncData);
+  if (!isSyncDataSizeUnderMax) {
+    rv = {
+      status: "error",
+      error: {
+        name: "RangeError",
+        message: "Maximum sync data size exceeded",
+      }
+    }
+    return rv;
+  }
+  
   let natMsg = {
     msgID: "set-synced-clippings",
     syncData: syncData.userClippingsRoot,
@@ -835,7 +896,56 @@ async function pushSyncFolderUpdates()
       showSyncPushReadOnlyNotification();
       gIsSyncPushFailed = true;
     }
+
+    rv = {
+      status: "error",
+      error: {
+        name: "TypeError",
+        message: "Sync file is read only",
+      }
+    }
   }
+
+  return rv;
+}
+
+
+async function isRecvNativeMessageSizeUnderMax(aSyncClippingsData)
+{
+  let rv = false;
+  let encoder = new TextEncoder();
+  let compressSyncData = await aePrefs.getPref("compressSyncData");
+  let syncDataStr = JSON.stringify(aSyncClippingsData);
+  let dataSizeB, dataSizeKB;
+
+  if (compressSyncData) {
+    let cmprsData = await aeCompress.compress(syncDataStr);
+    let recvMsgBody = {
+      status: "ok",
+      format: "gzip",
+      data: cmprsData.toBase64(),
+    };
+
+    let recvMsgBodyStr;
+    try {
+      recvMsgBodyStr = JSON.stringify(recvMsgBody);
+    }
+    catch (e) {
+      console.error("Clippings: isRecvNativeMessageSizeUnderMax(): Failed to serialize native message body: " + e);
+      throw e;
+    }
+    
+    dataSizeB = encoder.encode(recvMsgBodyStr).length;
+  }
+  else {
+    dataSizeB = encoder.encode(syncDataStr).length;
+  }
+
+  dataSizeKB = dataSizeB / 1024;
+  rv = dataSizeKB < 1024;
+  log(`Clippings: isRecvNativeMessageSizeUnderMax(): Sync data size: ${dataSizeKB.toFixed(2)} KB\nIt is ${rv} that the sync data size is below the 1 MB limit.`);
+  
+  return rv;
 }
 
 
@@ -1597,6 +1707,17 @@ async function showSyncHelperUpdateNotification()
 }
 
 
+function showSyncDataSizeTooBigNotification()
+{
+  browser.notifications.create("sync-data-size-too-big", {
+    type: "basic",
+    title: browser.i18n.getMessage("syncClippings"),
+    message: browser.i18n.getMessage("syncFldrFull"),
+    iconUrl: aeVisual.getErrorIconPath(),
+  });
+}
+
+
 async function openWelcomePage()
 {
   let url = browser.runtime.getURL("pages/welcome.html");
@@ -1688,7 +1809,14 @@ async function openClippingsManager(aBackupMode)
   if (wndIDs.clippingsMgr) {
     try {
       let wnd = await browser.windows.get(wndIDs.clippingsMgr);
-      browser.windows.update(wndIDs.clippingsMgr, {focused: true});
+      await browser.windows.update(wndIDs.clippingsMgr, {focused: true});
+
+      if (aBackupMode) {
+        try {
+          browser.runtime.sendMessage({msgID: "clippings-mgr-save-backup"});
+        }
+        catch {}
+      }
     }
     catch {
       // Handle dangling ref to previously-closed Clippings Manager window
@@ -1798,6 +1926,20 @@ function openPlaceholderPromptDlg(aTabID, aDlgMode)
   };
 
   openDlgWnd(url, "placeholderPrmt", wndPpty, aTabID, (aDlgMode > 0));
+}
+
+
+function openPasteAsDlg(aTabID)
+{
+  let url = browser.runtime.getURL(`pages/pasteAs.html?tabID=${aTabID}`);
+  let wndPpty = {
+    type: "popup",
+    width: 440,
+    height: 300,
+    topOffset: 256,
+  };
+
+  openDlgWnd(url, "pasteAs", wndPpty, aTabID);
 }
 
 
@@ -2116,7 +2258,7 @@ async function processClipping(aClippingInfo, aIsExternalRequest, aTabID, aMode)
   }
 
   if (aMode == pasteOrCopyClippingByID.MODE_PASTE) {
-    await pasteProcessedClipping(processedCtnt, activeTabID);
+    await processHTMLFormattedClipping(aClippingInfo.name, processedCtnt, activeTabID);
   }
   else {
     await copyProcessedClipping(processedCtnt, aMode);
@@ -2124,7 +2266,28 @@ async function processClipping(aClippingInfo, aIsExternalRequest, aTabID, aMode)
 }
 
 
-async function pasteProcessedClipping(aClippingContent, aTabID)
+async function processHTMLFormattedClipping(aClippingName, aClippingContent, aTabID)
+{
+  let isHTMLFormatted = aeClippings.hasHTMLTags(aClippingContent);
+
+  if (isHTMLFormatted) {
+    let htmlPaste = await aePrefs.getPref("htmlPaste");
+
+    if (htmlPaste == aeConst.HTMLPASTE_ASK_THE_USER) {
+      gPasteAs.set(aClippingName, aClippingContent);
+      openPasteAsDlg(aTabID);
+    }
+    else {
+      await pasteProcessedClipping(aClippingContent, aTabID);
+    }    
+  }
+  else {
+    await pasteProcessedClipping(aClippingContent, aTabID);
+  }
+}
+
+
+async function pasteProcessedClipping(aClippingContent, aTabID, aOverridePasteFormat=null)
 {
   // Focus the target window and tab to ensure that the clipping is
   // successfully pasted into the web page.
@@ -2140,10 +2303,11 @@ async function pasteProcessedClipping(aClippingContent, aTabID)
   await browser.windows.update(tab.windowId, {focused: true});
 
   let prefs = await aePrefs.getAllPrefs();
+  let htmlPaste = aOverridePasteFormat === null ? prefs.htmlPaste : aOverridePasteFormat;
   let msg = {
     msgID: "paste-clipping",
     content: aClippingContent,
-    htmlPaste: prefs.htmlPaste,
+    htmlPaste,
     autoLineBreak: prefs.autoLineBreak,
     dispatchInputEvent: prefs.dispatchInputEvent,
     useInsertHTMLCmd: prefs.useInsertHTMLCmd,
@@ -2169,9 +2333,9 @@ async function copyProcessedClipping(aClippingContent, aCopyMode)
   if (aCopyMode == aeConst.COPY_AS_HTML) {
     type = "text/html";
 
-    let autoLineBreak = await aePrefs.getPref("autoLineBreak");
+    let copyAutoLineBreak = await aePrefs.getPref("copyAutoLineBreak");
     let hasLineBreakTags = aClippingContent.search(/<br|<p/i) != -1;
-    if (autoLineBreak && !hasLineBreakTags) {
+    if (copyAutoLineBreak && !hasLineBreakTags) {
       aClippingContent = aClippingContent.replace(/\n/g, "<br>");
     }
   }
@@ -2245,7 +2409,7 @@ function showSyncPushReadOnlyNotification()
     type: "basic",
     title: browser.i18n.getMessage("syncStartupFailedHdg"),
     message: browser.i18n.getMessage("syncFldrRdOnly"),
-    iconUrl: aeVisual.getErrorIconPath(),
+    iconUrl: "img/clippings-alert.svg",
   });
 }
 
@@ -2256,7 +2420,7 @@ function showNoNativeMsgPermNotification()
     type: "basic",
     title: browser.i18n.getMessage("syncStartupFailedHdg"),
     message: browser.i18n.getMessage("syncPermNotif"),
-    iconUrl: aeVisual.getErrorIconPath(),
+    iconUrl: "img/clippings-alert.svg",
   });
 }
 
@@ -2475,6 +2639,9 @@ browser.runtime.onMessage.addListener(aRequest => {
   case "init-placeholder-prmt-dlg":
     return Promise.resolve(gPlaceholders.get());
 
+  case "init-paste-as-dlg":
+    return Promise.resolve(gPasteAs.get());
+
   case "close-new-clipping-dlg":
     resetWndID("newClipping");
     break;
@@ -2504,7 +2671,18 @@ browser.runtime.onMessage.addListener(aRequest => {
     break;
 
   case "paste-clipping-with-plchldrs":
-    return Promise.resolve(pasteProcessedClipping(aRequest.processedContent, aRequest.browserTabID));
+    return Promise.resolve(
+      processHTMLFormattedClipping(
+        aRequest.clippingName, aRequest.processedContent, aRequest.browserTabID
+      )
+    );
+
+  case "paste-clipping-usr-fmt":
+    return Promise.resolve(
+      pasteProcessedClipping(
+        aRequest.processedContent, aRequest.browserTabID, aRequest.pasteFormat
+      )
+    );
 
   case "copy-clipping":
     copyClippingText(aRequest.clippingID, aRequest.copyFormat);
@@ -2515,6 +2693,10 @@ browser.runtime.onMessage.addListener(aRequest => {
 
   case "close-placeholder-prmt-dlg":
     resetWndID("placeholderPrmt");
+    break;
+
+  case "close-paste-as-dlg":
+    resetWndID("pasteAs");
     break;
     
   case "get-shct-key-prefix-ui-str":
@@ -2539,8 +2721,11 @@ browser.runtime.onMessage.addListener(aRequest => {
     break;
     
   case "push-sync-fldr-updates":
-    return pushSyncFolderUpdates();
+    return Promise.resolve(pushSyncFolderUpdates());
 
+  case "check-sync-data-size":
+    return Promise.resolve(isRecvNativeMessageSizeUnderMax(aRequest.syncData));
+    
   case "purge-fldr-items":
     return purgeFolderItems(aRequest.folderID);
     

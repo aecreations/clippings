@@ -7,7 +7,6 @@
 let aePrefs = {
   // Background script state persistence
   _defaultBkgdState: {
-    _isInitialized: false,
     _clippingMenuItemIDMap: {},
     _folderMenuItemIDMap: {},
     _autoIncrPlchldrs: [],
@@ -20,6 +19,7 @@ let aePrefs = {
       placeholderPrmt: null,
       clippingsMgr: null,
       sidebarHlp: null,
+      pasteAs: null,
     },
   },
   
@@ -75,6 +75,8 @@ let aePrefs = {
     pasteFromSidebar: false,
     logSyncDataSize: false,
     pasteDelay: 100,
+    copyAutoLineBreak: true,
+    sidebarPreviewPaneHgt: aeConst.DEFAULT_SIDEBAR_PREVW_HGT,
   },
   
   getPrefKeys()
@@ -268,7 +270,6 @@ let aePrefs = {
   async setSanFranciscoPrefs(aPrefs)
   {
     let newPrefs = {
-      _isInitialized: false,
       _clippingMenuItemIDMap: {},
       _folderMenuItemIDMap: {},
       _autoIncrPlchldrs: [],
@@ -298,9 +299,6 @@ let aePrefs = {
     };
 
     await this._addPrefs(aPrefs, newPrefs);
-
-    // Remove deprecated prefs
-    delete aPrefs.tabModalMsgBox;
 
     // Change default setting of Linux-specific pref.
     if (aPrefs.clippingsMgrMinzWhenInactv) {
@@ -332,6 +330,30 @@ let aePrefs = {
     await this._addPrefs(aPrefs, newPrefs);
   },
 
+  hasAlamoSquarePrefs(aPrefs)
+  {
+    // Version 7.1
+    return ("copyAutoLineBreak" in aPrefs);
+  },
+
+  async setAlamoSquarePrefs(aPrefs)
+  {
+    let newPrefs = {
+      copyAutoLineBreak: true,
+      sidebarPreviewPaneHgt: aeConst.DEFAULT_SIDEBAR_PREVW_HGT,
+    };
+
+    await this._addPrefs(aPrefs, newPrefs);
+
+    // Add new window ID key for the Paste As dialog window.
+    let wndIDs = aPrefs._wndIDs;
+    wndIDs.pasteAs = null;
+    await this.setPrefs({_wndIDs: wndIDs});
+
+    // Remove deprecated prefs
+    await this._removePrefs(aPrefs, ["_isInitialized", "tabModalMsgBox"]);
+  },
+
 
   //
   // Helper methods
@@ -344,5 +366,14 @@ let aePrefs = {
     }
 
     await this.setPrefs(aNewPrefs);
+  },
+
+  async _removePrefs(aCurrPrefs, aOldPrefs)
+  {
+    for (let pref in aOldPrefs) {
+      delete aCurrPrefs[pref];
+    }
+
+    await browser.storage.local.remove(aOldPrefs);
   },
 };

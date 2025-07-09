@@ -27,7 +27,7 @@
 
     --url-toolbar-btn-open-clippings-mgr: url("../img/clippings-mgr.svg");
     --url-toolbar-btn-open-clippings-mgr-hover: url("../img/clippings-mgr-hover.svg");
-    --url-toolbar-btn-open-clippings-mgr-active: url("../img/clippings-mgr-hover.svg");
+    --url-toolbar-btn-open-clippings-mgr-active: url("../img/clippings-mgr.svg");
     --url-toolbar-btn-help: url("../img/help.svg");
     --url-toolbar-btn-help-hover: url("../img/help_hover.svg");
     --url-toolbar-btn-help-active: url("../img/help.svg");
@@ -62,7 +62,7 @@
 	--url-toolbar-btn-open-clippings-mgr-active: url("../img/clippings-mgr-active-dk.svg");
 	--url-toolbar-btn-help: url("../img/help-dk.svg");
 	--url-toolbar-btn-help-hover: url("../img/help-dk.svg");
-	--url-toolbar-btn-help-active: url("../img/help.svg");
+	--url-toolbar-btn-help-active: url("../img/help_hover.svg");
 	--url-icon-synced-clippings-fldr: url("../img/synced-clippings-dk.svg");
 	--url-icon-synced-clippings-readonly-fldr: url("../img/synced-clippings-readonly-dk.svg");
     }
@@ -472,13 +472,13 @@ ul.fancytree-container {
     height: 2px;
     background-color: var(--color-tree-splitter);
     border-top: 1px solid var(--color-tree-splitter-border);
+    cursor: row-resize;
 }
 
 #preview-pane {
     order: 3;
     flex: none;
     align-self: stretch;
-    height: 256px;
 }
 
 #preview-pane[type="folder"] {
@@ -643,16 +643,6 @@ body[data-os="mac"] .lightbox .msgbox-icon {
 
 #copy-clipping-txt-fmt-dlg .dlg-btns {
     right: 2px;
-}
-
-#reload-sync-fldr-msgbox {
-    top: 88px;
-    --width: 200px;
-    --height: 168px;
-}
-
-body[data-os="mac"] #reload-sync-fldr-msgbox {
-    --height: 180px;
 }
 
 #customize-dlg {

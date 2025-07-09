@@ -7,6 +7,7 @@
 const DEBUG = false;
 const HTMLPASTE_AS_FORMATTED = 1;
 const HTMLPASTE_AS_IS = 2;
+const HTMLPASTE_AS_PLAIN = 3;
 const FOCUSABLE_ELTS_STOR = "button:not([disabled])";
 
 let gLastFocusedElt;
@@ -250,11 +251,11 @@ function insertTextIntoTextbox(aTextboxElt, aInsertedText, aDispatchInputEvent)
 
 function insertTextIntoRichTextEditor(aRichTextEditorDocument, aClippingText, aAutoLineBreak, aPasteMode, aDispatchInputEvent, aUseInsertHTMLCmd)
 {
-  let hasHTMLTags = aClippingText.search(/<[a-z1-6]+( [a-z\-]+(\="?.*"?)?)*>/i) != -1;
+  let isHTMLFormatted = hasHTMLTags(aClippingText);
   let hasRestrictedHTMLTags = aClippingText.search(/<\?|<%|<!DOCTYPE|(<\b(html|head|body|meta|script|applet|embed|object|i?frame|frameset)\b)/i) != -1;
   let clippingText = aClippingText;
 
-  if (hasHTMLTags) {
+  if (isHTMLFormatted) {
     if (hasRestrictedHTMLTags || aPasteMode == HTMLPASTE_AS_IS) {
       clippingText = clippingText.replace(/&/g, "&amp;");
       clippingText = clippingText.replace(/</g, "&lt;");
@@ -275,21 +276,31 @@ function insertTextIntoRichTextEditor(aRichTextEditorDocument, aClippingText, aA
     }
   }
 
-  let hasLineBreakTags = clippingText.search(/<br|<p/i) != -1;
-  if (aAutoLineBreak && !hasLineBreakTags) {
-    clippingText = clippingText.replace(/\n/g, "<br>");
+  if (aPasteMode == HTMLPASTE_AS_FORMATTED) {
+    let hasLineBreakTags = clippingText.search(/<br|<p/i) != -1;
+    if (aAutoLineBreak && !hasLineBreakTags) {
+      clippingText = clippingText.replace(/\n/g, "<br>");
+    }
   }
 
   log(`Clippings/wx::content.js: insertTextIntoRichTextEditor(): Inserting HTML content into rich text editor ${aRichTextEditorDocument}`);
 
   // Pasting a clipping using the DOM Range API doesn't work on Twitter.
   if (aUseInsertHTMLCmd || ["twitter.com", "x.com"].includes(window.location.hostname)) {
+    if (aPasteMode == HTMLPASTE_AS_PLAIN && isHTMLFormatted) {
+      clippingText = removeHTMLFromFormattedClipping(clippingText, false);
+    }
+
     try {
       aRichTextEditorDocument.execCommand("insertHTML", false, DOMPurify.sanitize(clippingText));
     }
     catch {}
   }
   else {
+    if (aPasteMode == HTMLPASTE_AS_PLAIN && isHTMLFormatted) {
+      clippingText = removeHTMLFromFormattedClipping(clippingText, true);
+    }
+
     let selection = aRichTextEditorDocument.getSelection();
     let range = selection.getRangeAt(0);
     range.deleteContents();
@@ -308,6 +319,50 @@ function insertTextIntoRichTextEditor(aRichTextEditorDocument, aClippingText, aA
 }
 
 
+function removeHTMLFromFormattedClipping(aHTMLClippingText, aKeepBrTags)
+{
+  let rv = "";
+  let isConvFailed = false;
+
+  log("Clippings::compose.js: removeHTMLFromFormattedClipping(): Clipping content #1:");
+  log(aHTMLClippingText);
+  
+  try {
+    rv = jQuery(aHTMLClippingText).text();
+
+    log("Clippings::compose.js: removeHTMLFromFormattedClipping(): Clipping content #2:");
+    log(rv);
+  }
+  catch (e) {
+    // Clipping text may contain partial HTML. Try again by enclosing the
+    // content in HTML tags.
+    isConvFailed = true;
+  }
+
+  if (isConvFailed) {
+    let content = "<div>" + aHTMLClippingText + "</div>";
+    try {
+      rv = jQuery(content).text();
+
+      log("Clippings::compose.js: removeHTMLFromFormattedClipping(): Clipping content #3:");
+      log(rv);
+    }
+    catch (e) {
+      // Clipping text contains unrecognized markup, e.g. PHP or ASP.net tags.
+      // In this case, keep the clipping content intact.
+      console.warn("Clippings::compose.js: removeHTMLFromFormattedClipping(): Unable to strip HTML tags from clipping content!\n" + e);
+      rv = aHTMLClippingText;
+    }
+  }
+
+  if (aKeepBrTags) {
+    rv = rv.replace(/\n/g, "<br>");
+  }
+
+  return rv;
+}
+
+
 function createInputEventInstance()
 {
   return new Event("input", {bubbles: true, cancelable: false});
@@ -322,6 +377,13 @@ function getActiveElt() {
   }
   
   return activeElt;
+}
+
+
+function hasHTMLTags(aClippingText)
+{
+  let rv = aClippingText.search(/<[a-z1-6]+( [a-z\-]+(\="?.*"?)?)*>/i) != -1;
+  return rv;
 }
 
 

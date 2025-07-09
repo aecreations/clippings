@@ -4,7 +4,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 const TOOLBAR_HEIGHT = 28;
-const PREVIEW_PANE_HEIGHT = 256;
 const MSGBAR_DELAY_MS = 5000;
 
 let gEnvInfo;
@@ -13,7 +12,7 @@ let gClippingsDB;
 let gIsClippingsTreeEmpty;
 let gSyncedItemsIDs = new Set();
 let gSyncedItemsIDMap = new Map();
-let gCustomizeDlg, gReloadSyncFldrMsgBox, gClipbdWritePermMsgBox,
+let gCustomizeDlg, gClipbdWritePermMsgBox,
     gInitErrorMsgBox, gSyncProgressDlg;
 let gMsgBarTimerID = null;
 
@@ -22,7 +21,7 @@ let gSyncClippingsListener = {
   {
     log("Clippings::sidebar.js::gSyncClippingsListener.onActivate()");
     aeDialog.cancelDlgs();
-    gReloadSyncFldrMsgBox.showModal();
+    gCmd.reloadSyncFolderIntrl();
   },
   
   onDeactivate(aOldSyncFolderID)
@@ -181,7 +180,7 @@ let gSearchBox = {
         });
       });
 
-    $("#clear-search").click(aEvent => { this.reset(true) });
+    $("#clear-search").on("click", aEvent => { this.reset(true) });
 
     this._isInitialized = true;
   },
@@ -256,9 +255,21 @@ let gCmd = {
     });
     
     aeDialog.cancelDlgs();
-    gReloadSyncFldrMsgBox.showModal();
+    await this.reloadSyncFolderIntrl();
   },
 
+  async reloadSyncFolderIntrl()
+  {
+    let afterSyncFldrReloadDelay = await aePrefs.getPref("afterSyncFldrReloadDelay");
+    
+    gSyncProgressDlg.showModal(false);
+
+    setTimeout(async () => {
+      await rebuildClippingsTree();
+      gSyncProgressDlg.close();
+    }, afterSyncFldrReloadDelay);
+  },
+  
   async insertClipping()
   {
     let tree = aeClippingsTree.getTree();
@@ -440,6 +451,8 @@ $(async () => {
     "tree-fldr-close-dk.svg"
   );
 
+  initPaneSplitter();
+
   let wnd = await browser.windows.getCurrent();
   aeNavigator.init(wnd.id);
 
@@ -469,17 +482,6 @@ function initDialogs()
     $("#show-preview-pane").prop("checked", gPrefs.sidebarPreview).on("click", aEvent => {
       aePrefs.setPrefs({sidebarPreview: aEvent.target.checked});
     });
-  };
-
-  gReloadSyncFldrMsgBox = new aeDialog("#reload-sync-fldr-msgbox");
-  gReloadSyncFldrMsgBox.onFirstInit = function ()
-  {
-    this.focusedSelector = ".msgbox-btns > .dlg-accept";
-  };
-
-  gReloadSyncFldrMsgBox.onAfterAccept = function ()
-  {
-    rebuildClippingsTree();
   };
 
   gClipbdWritePermMsgBox = new aeDialog("#request-clipbd-write-perm-dlg");
@@ -517,37 +519,37 @@ async function showVersionUpdateMsgBar(aVersionUpdateType)
 
 function setScrollableContentHeight()
 {
-  let cntHeight = window.innerHeight;
+  let cntHtOffset = 0;
 
   if (gPrefs.sidebarToolbar) {
-    cntHeight -= TOOLBAR_HEIGHT;
+    cntHtOffset += TOOLBAR_HEIGHT;
   }
   if (gPrefs.sidebarSearchBar) {
-    cntHeight -= TOOLBAR_HEIGHT;
+    cntHtOffset += TOOLBAR_HEIGHT;
   }
 
   if (gPrefs.sidebarPreview) {
-    cntHeight -= PREVIEW_PANE_HEIGHT;
+    $("#preview-pane").css({height: `${gPrefs.sidebarPreviewPaneHgt}px`});
   }
 
-  $("#scroll-content").css({height: `${cntHeight}px`});
+  $("#content").css({height: `calc(100% - ${cntHtOffset}px)`});
 }
 
 
 function setCustomizations()
 {
-  let cntHeight = window.innerHeight;
+  let cntHtOffset = 0;
 
   if (gPrefs.sidebarToolbar) {
     $("#toolbar").show();
-    cntHeight -= TOOLBAR_HEIGHT;
+    cntHtOffset += TOOLBAR_HEIGHT;
   }
   else {
     $("#toolbar").hide();
   }
   if (gPrefs.sidebarSearchBar) {
     $("#search-bar").show();
-    cntHeight -= TOOLBAR_HEIGHT;
+    cntHtOffset += TOOLBAR_HEIGHT;
   }
   else {
     $("#search-bar").hide();
@@ -558,17 +560,17 @@ function setCustomizations()
   if (isNaN(msgBarsHeight)) {
     msgBarsHeight = 0;
   }
-  cntHeight -= msgBarsHeight;
 
   if (gPrefs.sidebarPreview) {
     $("#pane-splitter, #preview-pane").show();
-    cntHeight -= PREVIEW_PANE_HEIGHT;
+    $("#preview-pane").css({height: `${gPrefs.sidebarPreviewPaneHgt}px`});
+    cntHtOffset += msgBarsHeight;
   }
   else {
     $("#pane-splitter, #preview-pane").hide();
   }
 
-  $("#scroll-content").css({height: `${cntHeight}px`});
+  $("#content").css({height: `calc(100% - ${cntHtOffset}px)`});
 }
 
 
@@ -910,6 +912,66 @@ function unsetEmptyClippingsState()
 }
 
 
+function initPaneSplitter()
+{
+  // Adapted from https://codepen.io/lingtalfi/pen/zoNeJp
+  // Requires Simple Drag library: https://github.com/lingtalfi/simpledrag
+  let topPane = document.getElementById("scroll-content");
+  let botmPane = document.getElementById("preview-pane");
+  let splitter = document.getElementById("pane-splitter");
+
+  let topLimit = 20;
+  let botmLimit = 90;
+
+  function onDrag(aElt, aPageX, aStartX, aPageY, aStartY, aFix)
+  {
+    aFix.skipY = true;
+
+    if (aPageY < window.innerHeight * topLimit / 100) {
+      aPageY = window.innerHeight * topLimit / 100;
+      aFix.pageY = aPageY;
+    }
+    if (aPageY > window.innerHeight * botmLimit / 100) {
+      aPageY = window.innerHeight * botmLimit / 100;
+      aFix.pageY = aPageY;
+    }
+
+    let cur = aPageY / window.innerHeight * 100;
+    if (cur < 0) {
+      cur = 0;
+    }
+    if (cur > window.innerHeight) {
+      cur = window.innerHeight;
+    }
+
+    // Calculation of new pane heights needs to be adjusted if toolbar and/or
+    // search bar are visible.
+    let tbAdjust = 0;
+    if (gPrefs.sidebarToolbar) {
+      tbAdjust -= 10;
+    }   
+    if (gPrefs.sidebarSearchBar) {
+      tbAdjust -= 10;
+    }
+
+    topPane.style.setProperty("height", `calc(${cur}% - ${tbAdjust}px)`);
+
+    let botm = 100 - cur;
+    botmPane.style.setProperty("height", `calc(${botm}% - ${tbAdjust}px)`);
+  }
+
+  function onStop(aElt)
+  {
+    let botmHgt = window.getComputedStyle(botmPane).height;
+    let sidebarPreviewPaneHgt = parseInt(botmHgt);
+    aePrefs.setPrefs({sidebarPreviewPaneHgt});
+  }
+  // END nested functions
+
+  splitter.sdrag(onDrag, onStop, "vertical");
+}
+
+
 function updateDisplay(aEvent, aData)
 {
   if (gIsClippingsTreeEmpty) {
@@ -1083,7 +1145,7 @@ $(window).on("resize", aEvent => {
 
 
 // Keyboard event handler
-$(document).keydown(async (aEvent) => {
+$(document).on("keydown", async (aEvent) => {
   const isMacOS = gEnvInfo.os == "mac";
   
   function isAccelKeyPressed()
@@ -1122,6 +1184,9 @@ $(document).keydown(async (aEvent) => {
       gSearchBox.reset(true);
     }
     aeDialog.cancelDlgs();
+  }
+  else if (aEvent.key == "Clear" && gSearchBox.isActivated()) {
+    gSearchBox.reset(true);
   }
   else if (aEvent.key == "F1") {
     gCmd.showHelp();

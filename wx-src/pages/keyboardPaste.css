@@ -4,6 +4,7 @@
 
 @import url("../style/dialog.css");
 @import url("../style/searchbox.css");
+@import url("../lib/fancytree/skin-win8/ui.fancytree.min.css");
 
 
 :root {
@@ -26,19 +27,19 @@
     --color-autocomplete-popup-bkgd: white;
     --color-autocomplete-popup-shadow: #8f8f8f;
     --color-autocomplete-listbox-border: white;
-    --color-autocomplete-normal-border: white;
-    --color-autocomplete-normal-bkgd: white;
     --color-autocomplete-selected-bkgd: #eff9fe;
     --color-autocomplete-selected-border: #70c0e7;
+    --color-autocomplete-focused-bkgd: #cbe8f6;
+    --color-autocomplete-focused-border: #26a0da;
     --color-autocomplete-clipping-name: #0c0c0d;
     --color-autocomplete-clipping-preview: #737373;
 
     --url-toolbar-btn-icon-insClipping: url("../img/insClipping.svg");
     --url-toolbar-btn-icon-insClipping-hover: url("../img/insClipping-hover.svg");
-    --url-toolbar-btn-icon-insClipping-active: url("../img/insClipping-hover.svg");
+    --url-toolbar-btn-icon-insClipping-active: url("../img/insClipping.svg");
     --url-toolbar-btn-icon-export: url("../img/export.svg");
     --url-toolbar-btn-icon-export-hover: url("../img/export_hover.svg");
-    --url-toolbar-btn-icon-export-active: url("../img/export_hover.svg");
+    --url-toolbar-btn-icon-export-active: url("../img/export.svg");
 }
 
 @media (prefers-color-scheme: dark) {
@@ -59,10 +60,10 @@
 	--color-autocomplete-popup-bkgd: #202023;
 	--color-autocomplete-popup-shadow: #4a4a4f;
 	--color-autocomplete-listbox-border: black;
-	--color-autocomplete-normal-border: black;
-	--color-autocomplete-normal-bkgd: #202023;
-	--color-autocomplete-selected-bkgd: #0a84ff;
-	--color-autocomplete-selected-border: #0060df;
+	--color-autocomplete-selected-bkgd: #003eaa;
+	--color-autocomplete-selected-border: #002275;
+	--color-autocomplete-focused-bkgd: #0a84ff;
+	--color-autocomplete-focused-border: #0060df;
 	--color-autocomplete-clipping-name: #f9f9fa;
 	--color-autocomplete-clipping-preview: #b1b1b3;
 
@@ -374,29 +375,63 @@ body[data-os="mac"] #search-by-name-ico {
     z-index: 100;
 }
 
-.clipping {
-    width: 100%;
-    height: 36px;    
-    border: none;
-    background-color: var(--color-autocomplete-normal-bkgd);
-    padding: 1px;
+/* Fancytree style overrides */
+ul.fancytree-container {
+    padding: 0px;
+    font: caption;
+    background-color: var(--color-autocomplete-popup-bkgd);
 }
 
-.clipping[selected="true"] {
+#ft-id-1 span.fancytree-level-1 span.fancytree-title {
+    padding-left: 0 !important;
+}
+
+#search-results-listbox span.fancytree-node {
+    height: 34px;
+}
+
+#search-results-listbox span.fancytree-title {
+    width: 100%;
+    height: 34px;
+    padding-left: 0;
+    cursor: default;
+}
+
+#search-results-listbox .fancytree-plain.fancytree-container.fancytree-treefocus span.fancytree-active span.fancytree-title {
+    background-color: var(--color-autocomplete-focused-bkgd);
+    border: 1px solid var(--color-autocomplete-focused-border);
+    padding: 0px 1px 0px 1px;
+   
+}
+
+#search-results-listbox .fancytree-plain span.fancytree-node:hover span.fancytree-title {
     background-color: var(--color-autocomplete-selected-bkgd);
     border: 1px solid var(--color-autocomplete-selected-border);
-    padding: 0px;
+    padding: 0px 1px 0px 1px;
+
 }
 
-.clipping > .name {
-    height: 18px;
+#search-results-listbox .fancytree-plain span.fancytree-node:active span.fancytree-title {
+    background-color: var(--color-autocomplete-focused-bkgd);
+    border: 1px solid var(--color-autocomplete-focused-border);
+    padding: 0px 1px 0px 1px;
+
+}
+
+#search-results-listbox span.fancytree-title .name,
+#search-results-listbox span.fancytree-title .preview {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+#search-results-listbox span.fancytree-title .name {
     padding: 0px 4px 0px 4px;
     font-size: 13px;
     color: var(--color-autocomplete-clipping-name);
 }
 
-.clipping > .preview {
-    height: 18px;
+#search-results-listbox span.fancytree-title .preview {
     padding: 0px 4px 0px 4px;
     font-size: 11px;
     color: var(--color-autocomplete-clipping-preview);

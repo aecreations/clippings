@@ -177,29 +177,14 @@
     "description": "Clippings context menu in Thunderbird message composer"
   },
 
-  "cxtMenuShowPasteOpts": {
-    "message": "Show Quote Options When Pasting",
+  "cxtMnuPasteQuoted": {
+    "message": "Paste As Quoted Text",
     "description": "Clippings context menu in Thunderbird message composer"
   },
 
   "baMenuResetAutoIncrPlaceholders": {
     "message": "Reset Numeric Placeholders",
     "description": "Clippings browser action submenu"
-  },
-
-  "pasteAsHdg": {
-    "message": "Paste Clipping As",
-    "description": "Quote Options dialog in Clippings for Thunderbird"
-  },
-
-  "pasteAsNormal": {
-    "message": "Normal text",
-    "description": "Quote Options dialog in Clippings for Thunderbird"
-  },
-
-  "pasteAsQuoted": {
-    "message": "Quoted text",
-    "description": "Quote Options dialog in Clippings for Thunderbird"
   },
 
   "welcomePageTitle": {
@@ -216,7 +201,7 @@
   },
 
   "welcWhatsNewDesc": {
-    "message": "Clippings 7.0 contains many new features and improvements, such as copying clipping text, and separators for organizing your clippings."
+    "message": "In Clippings 7.1, you can now choose to paste an HTML-formatted clipping into an HTML editor as plain text."
   },
 
   "welcWhatsNewCTA": {
@@ -266,6 +251,16 @@
   "btnReqPerm": {
     "message": "Request Permission",
     "description": "Default button in the extension permission request dialog, which appears when requesting an optional extension permission"
+  },
+
+  "permReqPgHdg": {
+    "message": "Permission Requested",
+    "description": "Heading of the Permission Requested page"
+  },
+
+  "permReqHlp": {
+    "message": "Add-on permissions help",
+    "description": "Link to Clippings help page on the AE Creations website"
   },
 
   "newClippingDlgTitle": {
@@ -476,6 +471,21 @@
   "copyAsPlainHTML": {
     "message": "Copy as Plain Text with HTML tags",
     "description": "Copy Clipping Text dialog in Clippings Manager and Clippings sidebar - user selection of data format of clipping to be copied"
+  },
+
+  "pasteAsHTML": {
+    "message": "Paste as Formatted Text",
+    "description": "Paste As dialog - user selection of data format of clipping to be pasted"
+  },
+
+  "pasteAsPlain": {
+    "message": "Paste as Plain Text",
+    "description": "Paste As dialog - user selection of data format of clipping to be pasted"
+  },
+
+  "pasteAsPlainHTML": {
+    "message": "Paste as Plain Text with HTML tags",
+    "description": "Paste As dialog - user selection of data format of clipping to be pasted"
   },
 
   "clippingsMgrWndTitle": {
@@ -702,6 +712,41 @@
   "mnuPlchldrFmtDateTime": {
     "message": "Formatted Date/Time…",
     "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+
+  "mnuPlchldrTo": {
+    "message": "To",
+    "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
+  },
+
+  "mnuPlchldrCc": {
+    "message": "Cc",
+    "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
+  },
+
+  "mnuPlchldrFrom": {
+    "message": "From",
+    "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
+  },
+
+  "mnuPlchldrNameEmail": {
+    "message": "Name and Email",
+    "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
+  },
+
+  "mnuPlchldrName": {
+    "message": "Name",
+    "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
+  },
+
+  "mnuPlchldrEmail": {
+    "message": "Email",
+    "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
+  },
+
+  "mnuPlchldrSubj": {
+    "message": "Subject",
+    "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
   },
 
   "mnuPlchldrClipClip": {
@@ -1080,14 +1125,14 @@
     "description": "Tab label for extension preferences page"
   },
 
+  "prefTabCopy": {
+    "message": "Copy",
+    "description": "Tab label for extension preferences page (Firefox only)"
+  },
+
   "prefTabPaste": {
     "message": "Paste",
     "description": "Tab label for extension preferences page"
-  },
-
-  "prefsHdgIntegrn": {
-    "message": "Integration",
-    "description": "Groupbox caption in extension preferences page"
   },
 
   "cbToolsMnu": {
@@ -1098,6 +1143,11 @@
   "prefsHdgPasteOptions": {
     "message": "Paste Options",
     "description": "Groupbox caption in extension preferences page"
+  },
+
+  "labelCopyOpts": {
+    "message": "When copying a clipping containing HTML tags as formatted text:",
+    "description": "Extension preferences page"
   },
 
   "labelPasteOpts": {
@@ -1111,15 +1161,33 @@
   },
 
   "pasteOptFormatted": {
-    "message": "Paste as formatted text"
+    "message": "Paste as formatted text",
+    "description": "Paste option radio button label in extension preferences page"
+  },
+
+  "pasteOptPlain": {
+    "message": "Paste as plain text",
+    "description": "Paste option radio button label in extension preferences page"
   },
 
   "pasteOptRawHTML": {
-    "message": "Paste as plain text, preserving HTML tags"
+    "message": "Paste as plain text, preserving HTML tags",
+    "description": "Paste option radio button label in extension preferences page"
+  },
+
+  "pasteOptAskUsr": {
+    "message": "Ask me what to do",
+    "description": "Paste option radio button label in extension preferences page"
   },
 
   "cbAutoLineBreak": {
-    "message": "Automatically break lines unless <p> or <br> tags exist"
+    "message": "Automatically break lines unless <p> or <br> tags exist",
+    "description": "Checkbox option for copying and pasting an HTML-formatted clipping"
+  },
+
+  "htmlCopyDesc": {
+    "message": "To copy a clipping, select it in Clippings Manager or Clippings Sidebar, then right-click and select \u201cCopy Clipping Text\u201d from the context menu.",
+    "description": "Extension preferences page"
   },
 
   "htmlPasteDesc": {
@@ -1191,8 +1259,13 @@
     "description": "Checkbox option in extension preferences page"
   },
 
+  "prefsHdgBackup": {
+    "message": "Backup Options",
+    "description": "Groupbox caption in extension preferences page"
+  },
+
   "backupRemind": {
-    "message": "Show backup reminder every",
+    "message": "Show backup reminder every:",
     "description": "Label for checkbox option for setting backup notification, appears after checkbox and before the reminder frequency drop-down menu"
   },
 
@@ -1480,16 +1553,18 @@
   },
 
   "syncPermNotif": {
-    "message": "Unable to connect to the Sync Clippings helper app. To fix this, go to Add-ons Manager and turn on the permission to allow Clippings to exchange messages with other programs.",
+    "message": "Clippings doesn't have permission to connect to the Sync Clippings Helper app. To fix this, go to Sync Clippings Settings in Clippings preferences.",
     "description": "Notification that appears when attempting to refresh sync data after user turned off the 'nativeMessaging' permission"
   },
 
-  "errSyncConxn": {
-    "message": "Unable to connect to the Sync Clippings helper app. Make sure that the app is installed."
+  "noSyncAppCTA": {
+    "message": "To get started with Sync Clippings, download and install the Sync Clippings Helper app.  Available from the <a href=\"$1\" class=\"hyperlink\">AE\u00a0Creations website</a>.",
+    "description": "Message in Sync Clippings dialog when Sync Clippings Helper app is not installed"
   },
 
-  "errSyncConxnDetail": {
-    "message": "The Sync Clippings helper app is needed to sync your clippings. You can download it from the <a href=\"https://aecreations.io/clippings/sync.php\" class=\"hyperlink\">AE Creations website</a>."
+  "noSyncAppInstr": {
+    "message": "Once it\u2019s installed, come back here to finish setting up Sync Clippings.",
+    "description": "Message in Sync Clippings dialog when Sync Clippings Helper app is not installed"
   },
 
   "errSyncOptsInit": {
@@ -1502,11 +1577,6 @@
 
   "errNoDetails": {
     "message": "Sorry, no further information on this error is available."
-  },
-
-  "syncReloadAck": {
-    "message": "Updating the Synced Clippings folder. Click Reload to continue.",
-    "description": "Message box in Clippings Manager"
   },
 
   "syncFldrRdOnly": {
@@ -1532,6 +1602,11 @@
   "syncStartupFailed": {
     "message": "Unable to connect to the Sync Clippings helper app. To fix this, reinstall the Sync Clippings helper app.",
     "description": "Error message that appears as a notification when the Sync Clippings Helper app was uninstalled without turning off Sync Clippings first"
+  },
+
+  "syncFldrFull": {
+    "message": "The Synced Clippings folder is full. Move or delete any unused clippings in the folder, and then try again.",
+    "description": "Error message that appears in New Clipping dialog and Clippings Manager when the sync data exceeds 1 MB"
   },
 
   "syncUpdateTitle": {
@@ -1614,6 +1689,11 @@
     "message": "Visit website"
   },
 
+  "aboutCreditsLink": {
+    "message": "Credits",
+    "description": "Link to acknowledgements page"
+  },
+
   "aboutLicLink": {
     "message": "License information"
   },
@@ -1627,17 +1707,9 @@
     "description": "About dialog text for encouraging users to donate or help with translation"
   },
 
-  "aboutDonate": {
-    "message": "Make a donation"
-  },
-
-  "aboutContribConj": {
-    "message": "or",
-    "description": "Conjunction connecting the CTA hyperlinks for donating or supplying a translation"
-  },
-
-  "aboutL10n": {
-    "message": "add a translation."
+  "aboutContrib": {
+    "message": "<a href=\"$1\" class=\"hyperlink\">Make a donation</a> or <a href=\"$2\" class=\"hyperlink\">add a translation</a>.",
+    "description": "Links for making a donation or contributing a translation for Clippings"
   },
 
   "aboutSyncVerLabel": {
@@ -1689,47 +1761,52 @@
   },
 
   "whatsNew1": {
-    "message": "You can now add separators to organize your clippings.",
+    "message": "Brought back the option to show the Paste As dialog when pasting an HTML-formatted clipping",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
 
   "whatsNew2": {
-    "message": "New option to show the shortcut key of a clipping in the Clippings menu",
-    "description": "Description of an enhancement or fix in the new version of Clippings"
-  },
-
-  "whatsNew3": {
-    "message": "New placeholder for embedding a clipping in a clipping",
+    "message": "Improvements to undo in Clippings Manager. Also, you can now reverse the last undo by pressing Ctrl+Y on Windows, ⇧⌘Z on macOS, and Ctrl+Shift+Z on Linux",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
   
   "whatsNewFx1": {
-    "message": "Copy clipping text to the clipboard from Clippings Manager or the new Clippings Sidebar.",
+    "message": "New option to paste an HTML-formatted clipping into an HTML editor as plain text",
     "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
   },
 
   "whatsNewFx2": {
-    "message": "Brought back the ability to create a new clipping from clipboard content in Clippings Manager (Tools \u2192 New From Clipboard)",
+    "message": "The height of the preview pane in Clippings Sidebar can now be adjusted",
+    "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
+  },
+
+  "whatsNewFx3": {
+    "message": "Eliminated the confirmation dialog that appeared when reloading the Synced Clippings folder in Clippings Manager or Clippings Sidebar",
     "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
   },
 
   "whatsNewTb1": {
-    "message": "The Clippings toolbar button in the message compose window has moved from the status bar to the Composition Toolbar.  The Clippings toolbar button no longer appears in the main Thunderbird window.",
+    "message": "New placeholders for the subject line, message sender and recipients.  Add them to your clippings in Clippings Manager by using the Placeholder Toolbar",
     "description": "Description of a Thunderbird-specific enhancement in the new version of Clippings"
   },
 
+  "whatsNewTb2": {
+    "message": "New option to paste an HTML-formatted clipping into an HTML message as plain text",
+    "description": "Description of a Thunderbird-specific enhancement in the new version of Clippings"
+  },
+
+  "whatsNewTb3": {
+    "message": "Eliminated the confirmation dialog that appeared when reloading the Synced Clippings folder in Clippings Manager",
+   "description": "Description of a Thunderbird-specific enhancement in the new version of Clippings" 
+  },
+
   "whatsNewSync": {
-    "message": "Sync Clippings enhancements: sync data is now compressed, allowing you to sync more of your clippings; also, improved handling of read-only sync files (requires <a href=\"$1\">Sync Clippings Helper</a> version 2.0 or newer)",
+    "message": "Clippings will now display an error message if the Sync Clippings data size exceeds the limit of 1 megabyte",
     "description": "Description of enhancements for the Sync Clippings feature in the new version of Clippings"
   },
 
-  "hostAppCompat": {
-    "message": "Other behind-the-scenes improvements to ensure compatibility with future versions of $1",
-    "description": "Description of improvements to ensure compatibility with future versions of Firefox or Thunderbird"
-  },
-
   "contribHdg": {
-    "message": "Contribute",
+    "message": "Contribute!",
     "description": "Contribution CTA in the What's New page"
   },
 

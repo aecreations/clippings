@@ -61,7 +61,7 @@
     --url-toolbar-btn-img-delete-hover: url("../img/delete_hover.svg");   
     --url-toolbar-btn-img-undo: url("../img/undo.svg");
     --url-toolbar-btn-img-undo-hover: url("../img/undo_hover.svg");
-    --url-toolbar-btn-img-undo-active: url("../img/undo_hover.svg");
+    --url-toolbar-btn-img-undo-active: url("../img/undo.svg");
     --url-toolbar-btn-img-tools: url("../img/options.svg");
     --url-toolbar-btn-img-tools-hover: url("../img/options_hover.svg");
     --url-toolbar-btn-img-tools-active: url("../img/options_hover.svg");
@@ -69,7 +69,7 @@
     --url-toolbar-btn-img-dropdown: url("../img/drop-down.svg");
     --url-toolbar-btn-img-shct-keys: url("../img/shctkeys.svg");
     --url-toolbar-btn-img-shct-keys-hover: url("../img/shctkeys_hover.svg");
-    --url-toolbar-btn-img-shct-keys-active: url("../img/shctkeys_hover.svg");
+    --url-toolbar-btn-img-shct-keys-active: url("../img/shctkeys.svg");
     --url-toolbar-btn-img-help: url("../img/help.svg");
     --url-toolbar-btn-img-help-hover: url("../img/help_hover.svg");
     --url-toolbar-btn-img-help-active: url("../img/help.svg");
@@ -155,7 +155,7 @@
 	--url-toolbar-btn-img-shct-keys-active: url("../img/shctkeys_hover-dk.svg");
 	--url-toolbar-btn-img-help: url("../img/help-dk.svg");
 	--url-toolbar-btn-img-help-hover: url("../img/help-dk.svg");
-	--url-toolbar-btn-img-help-active: url("../img/help.svg");
+	--url-toolbar-btn-img-help-active: url("../img/help_hover.svg");
 	--url-toolbar-btn-img-ok: url("../img/ok_dk.svg");
 	--url-toolbar-btn-img-ok-hover: url("../img/ok_hover_dk.svg");
 	--url-toolbar-btn-img-ok-active: url("../img/ok_active_dk.svg");
@@ -542,7 +542,15 @@ ul.fancytree-container {
 }
 
 .shortcut-key-tbl > tr > td:first-of-type {
+    width: 8em;
+}
+
+body[data-os="mac"] .shortcut-key-tbl > tr > td:first-of-type {
     width: 6em;
+}
+
+.shortcut-key-tbl > tr > td.condensed {
+    letter-spacing: -0.4px;
 }
 
 #tree-splitter {
@@ -1022,10 +1030,10 @@ body[data-os="win"] .browser-style > input[type="checkbox"] + label {
 #import-confirm-msgbox,
 #export-confirm-msgbox,
 #backup-confirm-msgbox,
-#reload-sync-fldr-msgbox,
 #move-sync-fldr-msgbox,
 #delete-sync-fldr-msgbox,
 #show-only-synced-items-reminder,
+#sync-fldr-full-error-msgbox,
 #generic-msg-box {
     top: 64px;
 }
@@ -1433,16 +1441,12 @@ body[data-locale="uk"] #include-src-urls + label {
 #import-confirm-msgbox > .msgbox-icon,
 #export-confirm-msgbox > .msgbox-icon,
 #backup-confirm-msgbox > .msgbox-icon,
-#reload-sync-fldr-msgbox > .msgbox-icon {
+#sync-fldr-full-error-msgbox > .msgbox-icon {
     margin-top: 8px;
 }
 
 #import-confirm-msgbox {
     --width: 406px;
-}
-
-#reload-sync-fldr-msgbox {
-    --width: 436px;
 }
 
 #move-sync-fldr-msgbox {
@@ -1529,6 +1533,10 @@ body[data-locale="uk"][data-os="mac"] #mini-help-dlg #mini-help-intro {
     letter-spacing: -0.45px;
 }
 
+body[data-locale="de"][data-os="win"] #mini-help-dlg > .dlg-btns {
+    bottom: 4px;
+}
+
 #show-only-synced-items-reminder {
     --height: 150px;
 }
@@ -1539,6 +1547,16 @@ body[data-locale="de"] #show-only-synced-items-reminder {
 
 #show-only-synced-items-reminder > .dlg-content > .msgbox-info-icon {
     margin-bottom: 72px;
+}
+
+#sync-progress {
+    top: 64px;
+    --width: 150px;
+    --height: auto;
+}
+
+#sync-progress progress {
+    width: 100%;
 }
 
 #generic-msg-box {

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24" height="24" version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+ <g>
+  <path d="m15.487 0.9787v5.509l5.638 0.022m-18.611-6.0097-0.01389 21.538c2.8974-2.3647 3.6533-2.8726 6.5759-2.8726 2.6973-0.032 4.1021 1.8384 7.3065 3.591 2.0113 0.9392 3.9013 0.696 5.1146 0.7402l-4e-3 -17.312-5.7134-5.6842z" fill="#f0f0ff" stroke="#6256aa" stroke-linecap="round" stroke-linejoin="round"/>
+  <g fill="none">
+   <path d="m3.9984 10.469h16" stroke="#6256aa" stroke-width="1px"/>
+   <path d="m8.9984 6.5002 5-1e-4" stroke="#9084c0" stroke-width="1px"/>
+   <g stroke="#6256aa" stroke-width="1px">
+    <path d="m4.3238 8.3799 3.1695-4.3891v4.0797"/>
+    <path d="m6.6923 8.4707h1.6131"/>
+    <path d="m3.6426 8.473h1.6794"/>
+   </g>
+   <path d="m4.9984 12.5h8" stroke="#9084c0" stroke-width="1px"/>
+   <path d="m8.9984 8.5002 8-1e-4" stroke="#9084c0" stroke-width="1px"/>
+  </g>
+  <rect x="14.498" y="12.501" width="4.9688" height="4.9688" fill="#9084c0" stroke="#6256aa" stroke-linecap="square" stroke-width="1.0016"/>
+  <g fill="none" stroke-width="1px">
+   <g stroke="#9084c0">
+    <path d="m4.9984 16.5h8"/>
+    <path d="m8.9984 4.5002 5-1e-4"/>
+    <path d="m4.9984 14.5h8"/>
+   </g>
+   <path d="m5.0069 7.531 2.2341-0.031" stroke="#6256aa"/>
+  </g>
+ </g>
+</svg>

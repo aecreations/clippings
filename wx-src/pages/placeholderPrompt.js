@@ -15,6 +15,7 @@ const REGEXP_CUSTOM_PLACEHOLDER = /\$\[([\w\u0080-\u00FF\u0100-\u017F\u0180-\u02
 let gPlaceholders = null;
 let gPlaceholdersWithDefaultVals = null;
 let gSamePlchldrs = {};
+let gClippingName = null;
 let gClippingContent = null;
 let gBrowserTabID = null;
 let gDlgMode = 0;
@@ -48,7 +49,7 @@ $(async () => {
     msgID: "init-placeholder-prmt-dlg"
   });
 
-  let clippingName = sanitizeHTML(resp.clippingName);
+  gClippingName = sanitizeHTML(resp.clippingName);
   gPlaceholders = resp.placeholders;
   gPlaceholdersWithDefaultVals = resp.placeholdersWithDefaultVals;
   gClippingContent = resp.content;
@@ -71,7 +72,7 @@ $(async () => {
   }
 
   if (gPlaceholders.length == 1) {
-    $("#plchldr-single-content > .clipping-name").text(clippingName);
+    $("#plchldr-single-content > .clipping-name").text(gClippingName);
     let plchldr = gPlaceholders[0];
     $("#plchldr-single").show();
     $("#single-prmt-label").text(browser.i18n.getMessage("plchldrPromptSingleDesc", plchldr));
@@ -96,7 +97,7 @@ $(async () => {
   }
   else {
     $("#plchldr-multi").show();
-    $("#plchldr-multi-content > .clipping-name").text(clippingName);
+    $("#plchldr-multi-content > .clipping-name").text(gClippingName);
 
     let plchldrSet = new Set(gPlaceholders);
     let height;
@@ -118,7 +119,7 @@ $(async () => {
     if (platform.os == "win") {
       height += DLG_HEIGHT_ADJ_WINDOWS;
     }
-    else if (platform.os == "linux" && aeVersionCmp(brws.version, "137.0") >= 0) {
+    else if (gOS == "linux") {
       height += DLG_HEIGHT_ADJ_LINUX;
     }
 
@@ -183,7 +184,7 @@ $(async () => {
 });
 
 
-$(window).keydown(aEvent => {
+$(window).on("keydown", aEvent => {
   if (aEvent.key == "Enter") {
     // Avoid duplicate invocation due to pressing ENTER while OK button
     // is focused.
@@ -285,6 +286,7 @@ function accept(aEvent)
   else {
     msg = {
       msgID: "paste-clipping-with-plchldrs",
+      clippingName: gClippingName,
       processedContent: content,
       browserTabID: gBrowserTabID,
     };

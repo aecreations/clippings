@@ -7,6 +7,19 @@ let aeCompress = {
   // Adapted from "How to use the JavaScript Compression Streams API to
   // (de)compress strings"
   // <https://evanhahn.com/javascript-compression-streams-api-with-strings/>
+  async compress(aString)
+  {
+    let stream = new Blob([aString]).stream();
+    let compressedStrm = stream.pipeThrough(new CompressionStream("gzip"));
+    let chunks = [];
+    for await (let chunk of compressedStrm) {
+      chunks.push(chunk);
+    }
+
+    return await this._concatUint8Arrays(chunks);
+  },
+  
+
   async decompress(aCompressedBytes)
   {
     let stream = new Blob([aCompressedBytes]).stream();
@@ -22,7 +35,8 @@ let aeCompress = {
 
 
   // Utility function
-  base64ToBytes(aBase64Data) {
+  base64ToBytes(aBase64Data)
+  {
     let binString = atob(aBase64Data);
     return Uint8Array.from(binString, (aChar) => aChar.codePointAt(0));
   },

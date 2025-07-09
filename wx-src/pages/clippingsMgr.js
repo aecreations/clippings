@@ -21,13 +21,6 @@ let gErrorPushSyncItems = false;
 let gReorderedTreeNodeNextSibling = null;
 
 
-// DOM utility
-function sanitizeHTML(aHTMLStr)
-{
-  return DOMPurify.sanitize(aHTMLStr, { SAFE_FOR_JQUERY: true });
-}
-
-
 // Wrappers to database create/update/delete operations. These also call the
 // Clippings listeners upon completion of the database operations.
 let gClippingsSvc = {
@@ -599,7 +592,7 @@ let gSyncClippingsListener = {
   {
     log("Clippings/wx::clippingsMgr.js::gSyncClippingsListener.onActivate()");
     aeDialog.cancelDlgs();
-    gDialogs.reloadSyncFolder.showModal();
+    gDialogs.reloadSyncFolderIntrl();
   },
   
   onDeactivate(aOldSyncFolderID)
@@ -665,7 +658,7 @@ let gSearchBox = {
       });
     });
 
-    $("#clear-search").click(aEvent => { this.reset() });
+    $("#clear-search").on("click", aEvent => { this.reset() });
 
     this._isInitialized = true;
   },
@@ -734,9 +727,9 @@ let gSrcURLBar = {
   init: function ()
   {
     $("#src-url-edit-mode").hide();
-    $("#edit-url-btn").click(aEvent => { this.edit() });
-    $("#edit-src-url-ok").attr("title", browser.i18n.getMessage("btnOK")).click(aEvent => { this.acceptEdit() });
-    $("#edit-src-url-cancel").attr("title", browser.i18n.getMessage("btnCancel")).click(aEvent => { this.cancelEdit() });
+    $("#edit-url-btn").on("click", aEvent => { this.edit() });
+    $("#edit-src-url-ok").attr("title", browser.i18n.getMessage("btnOK")).on("click", aEvent => { this.acceptEdit() });
+    $("#edit-src-url-cancel").attr("title", browser.i18n.getMessage("btnCancel")).on("click", aEvent => { this.cancelEdit() });
   },
 
   show: function ()
@@ -814,6 +807,7 @@ let gSrcURLBar = {
 
       if (updatedURL && gSyncedItemsIDs.has(clippingID + "C")) {
         browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"})
+          .then(handlePushSyncUpdatesResponse)
           .catch(handlePushSyncItemsError);
       }
     });
@@ -1027,6 +1021,49 @@ let gReloadSyncFldrBtn = {
   },
 };
 
+// Instant editing for clipping name and text - ensures that undo and redo
+// works correctly when invoked via keyboard shortcut.
+let gClippingNameEditor, gClippingContentEditor;
+
+class InstantEditor
+{
+  EDIT_INTERVAL = 3000;
+  
+  _stor = null;
+  _intvID = null;
+  _prevVal = '';
+
+  constructor(aStor)
+  {
+    this._stor = aStor;
+    
+    $(this._stor).on("focus", aEvent => {
+      this._intvID = setInterval(() => {
+        if ($(this._stor).val() == this._prevVal) {
+          return;
+        }
+
+        let tree = aeClippingsTree.getTree();
+        let selectedNode = tree.activeNode;
+        let clippingID = parseInt(selectedNode.key);
+
+        if (this._stor == "#clipping-text") {
+          gCmd.editClippingContentIntrl(clippingID, $(this._stor).val(), gCmd.UNDO_STACK);
+        }
+        else if (this._stor == "#clipping-name") {
+          gCmd.editClippingNameIntrl(clippingID, $(this._stor).val(), gCmd.UNDO_STACK);
+        }
+
+        this._prevVal = $(this._stor).val();
+      }, this.EDIT_INTERVAL);
+
+    }).on("blur", aEvent => {
+      clearInterval(this._intvID);
+      this._intvID = null;
+      this._prevVal = '';
+    });
+  }
+}
 
 // Clippings Manager commands
 let gCmd = {
@@ -1462,6 +1499,7 @@ let gCmd = {
         gSyncedItemsIDs.add(aNewClippingID + "C");
         gSyncedItemsIDMap.set(newClipping.sid, aNewClippingID + "C");
         browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"})
+          .then(handlePushSyncUpdatesResponse)
           .catch(handlePushSyncItemsError);
       }
     });
@@ -1525,6 +1563,7 @@ let gCmd = {
         gSyncedItemsIDs.add(aNewClippingID + "C");
         gSyncedItemsIDMap.set(newClipping.sid, aNewClippingID + "C");
         browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"})
+          .then(handlePushSyncUpdatesResponse)
           .catch(handlePushSyncItemsError);
       }
     });
@@ -1687,6 +1726,7 @@ let gCmd = {
         gSyncedItemsIDs.add(aNewFolderID + "F");
         gSyncedItemsIDMap.set(newFolder.sid, aNewFolderID + "F");
         browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"})
+          .then(handlePushSyncUpdatesResponse)
           .catch(handlePushSyncItemsError);
       }
     });
@@ -1997,8 +2037,10 @@ let gCmd = {
     if (gSyncedItemsIDs.has(parentFolderID + "F")) {
       gSyncedItemsIDs.add(newSeparatorID + "C");
       gSyncedItemsIDMap.set(newSeparator.sid, newSeparatorID + "C");
+      let resp;
       try {
-        await browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"});
+        resp = await browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"});
+        handlePushSyncUpdatesResponse(resp);
       }
       catch (e) {
         handlePushSyncItemsError(e);
@@ -2105,7 +2147,7 @@ let gCmd = {
 
         if (gSyncedItemsIDs.has(aNewParentFldrID + "F")
             || gSyncedItemsIDs.has(oldParentFldrID + "F")) {
-          browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"}).then(() => {
+          browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"}).then(aResp => {
             // Remove clipping from synced items set if it was moved out of a
             // synced folder.
             if (gSyncedItemsIDs.has(aClippingID + "C")
@@ -2121,6 +2163,7 @@ let gCmd = {
             }
             this._pushToUndoStack(aDestUndoStack, state);
             aFnResolve();
+            handlePushSyncUpdatesResponse(aResp);
           }).catch(handlePushSyncItemsError);
         }
         else {
@@ -2211,9 +2254,10 @@ let gCmd = {
       }
 
       if (gSyncedItemsIDs.has(aDestFldrID + "F")) {
-        browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"}).then(() => {
+        browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"}).then(aResp => {
           gSyncedItemsIDs.add(aNewClippingID + "C");
           gSyncedItemsIDMap.set(sid, aNewClippingID + "C");
+          handlePushSyncUpdatesResponse(aResp);
         }).catch(handlePushSyncItemsError);
       }
     }).catch(aErr => {
@@ -2305,7 +2349,7 @@ let gCmd = {
 
         if (gSyncedItemsIDs.has(aNewParentFldrID + "F")
             || gSyncedItemsIDs.has(oldParentFldrID + "F")) {
-          browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"}).then(() => {
+          browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"}).then(aResp => {
             if (gSyncedItemsIDs.has(aFolderID + "F")
                 && !gSyncedItemsIDs.has(aNewParentFldrID + "F")) {
               gSyncedItemsIDs.delete(aFolderID + "F");
@@ -2317,6 +2361,7 @@ let gCmd = {
               gSyncedItemsIDMap.set(sid, aFolderID + "F");
             }
             this._pushToUndoStack(aDestUndoStack, state);
+            handlePushSyncUpdatesResponse(aResp);
             aFnResolve();
           }).catch(handlePushSyncItemsError);
         }
@@ -2420,9 +2465,10 @@ let gCmd = {
       }
 
       if (gSyncedItemsIDs.has(aDestFldrID + "F")) {
-        browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"}).then(() => {
+        browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"}).then(aResp => {
           gSyncedItemsIDs.add(newFldrID + "F");
           gSyncedItemsIDMap.set(sid, newFldrID + "F");
+          handlePushSyncUpdatesResponse(aResp);
         }).catch(handlePushSyncItemsError);
       }
 
@@ -2482,7 +2528,8 @@ let gCmd = {
         }
 
         if (gSyncedItemsIDs.has(aFolderID + "F")) {
-          browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"}).then(() => {
+          browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"}).then(aResp => {
+            handlePushSyncUpdatesResponse(aResp);
             aFnResolve();
           }).catch(aErr => {
             handlePushSyncItemsError(aErr);
@@ -2542,7 +2589,8 @@ let gCmd = {
         }
 
         if (gSyncedItemsIDs.has(aClippingID + "C")) {
-          browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"}).then(() => {
+          browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"}).then(aResp => {
+            handlePushSyncUpdatesResponse(aResp);
             aFnResolve();
           }).catch(aErr => {
             handlePushSyncItemsError(aErr);
@@ -2602,7 +2650,8 @@ let gCmd = {
         }
 
         if (gSyncedItemsIDs.has(aClippingID + "C")) {
-          browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"}).then(() => {
+          browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"}).then(aResp => {
+            handlePushSyncUpdatesResponse(aResp);
             aFnResolve();
           }).catch(aErr => {
             handlePushSyncItemsError(aErr);
@@ -2668,7 +2717,9 @@ let gCmd = {
       }
 
       if (gSyncedItemsIDs.has(aClippingID + "C")) {
-        return browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"});
+        browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"}).then(aResp => {
+          handlePushSyncUpdatesResponse(aResp);
+        }).catch(handlePushSyncItemsError);
       }
     }).catch(aErr => {
       handlePushSyncItemsError(aErr);
@@ -2978,6 +3029,19 @@ let gCmd = {
       setStatusBarMsg(browser.i18n.getMessage("statusSavingBkupFailed"));
     });
   },
+
+  
+  backupExtern()
+  {
+    if (aeDialog.isOpen()) {
+      // Don't interrupt any dialogs that may be open when the user clicked the
+      // backup reminder notification.
+      return;
+    }
+
+    this.backup();
+  },
+  
   
   async restoreFromBackup()
   {
@@ -3028,7 +3092,19 @@ let gCmd = {
     });
     
     aeDialog.cancelDlgs();
-    gDialogs.reloadSyncFolder.showModal();
+    await this.reloadSyncFolderIntrl();
+  },
+
+  async reloadSyncFolderIntrl()
+  {
+    let afterSyncFldrReloadDelay = await aePrefs.getPref("afterSyncFldrReloadDelay");
+    
+    gDialogs.syncProgress.showModal(false);
+
+    setTimeout(async () => {
+      await rebuildClippingsTree();
+      gDialogs.syncProgress.close();
+    }, afterSyncFldrReloadDelay);
   },
   
   removeAllSrcURLs: function ()
@@ -3428,6 +3504,15 @@ let gCmd = {
 };
 
 
+function handlePushSyncUpdatesResponse(aResponse)
+{
+  if ("error" in aResponse && aResponse.error.name == "RangeError") {
+    // Max sync file size exceeded.
+    gDialogs.syncFldrFull.showModal();
+  }
+}
+
+
 // Initializing Clippings Manager window
 $(async () => {
   aeClippings.init();
@@ -3536,7 +3621,7 @@ $(window).on("beforeunload", () => {
 //
 
 // Keyboard event handler
-$(document).keydown(async (aEvent) => {
+$(document).on("keydown", async (aEvent) => {
   const isMacOS = gEnvInfo.os == "mac";
   
   function isAccelKeyPressed()
@@ -3559,6 +3644,7 @@ $(document).keydown(async (aEvent) => {
     gCmd.showMiniHelp();
   }
   else if (aEvent.key == "F2") {
+    aEvent.preventDefault();
     gCmd.redo();
   }
   else if (aEvent.key == "Enter") {
@@ -3596,6 +3682,9 @@ $(document).keydown(async (aEvent) => {
     }
     aeDialog.cancelDlgs();
   }
+  else if (aEvent.key == "Clear" && gSearchBox.isActivated()) {
+    gSearchBox.reset();
+  }
   else if (aEvent.key == "Delete") {
     if (aEvent.target.tagName == "UL" && aEvent.target.classList.contains("ui-fancytree")) {
       gCmd.deleteClippingOrFolder(gCmd.UNDO_STACK);
@@ -3627,8 +3716,14 @@ $(document).keydown(async (aEvent) => {
     aEvent.preventDefault();
     $("#search-box").focus();
   }
-  else if (aEvent.key.toUpperCase() == "Z" && isAccelKeyPressed()) {
+  else if (aEvent.key.toUpperCase() == "Z" && isAccelKeyPressed() && !aEvent.shiftKey) {
+    aEvent.preventDefault();
     gCmd.undo();
+  }
+  else if ((aEvent.key.toUpperCase() == "Z" && isAccelKeyPressed() && aEvent.shiftKey)
+           || (aEvent.key.toUpperCase() == "Y" && isAccelKeyPressed())) {
+    aEvent.preventDefault();
+    gCmd.redo();
   }
   else {
     aeInterxn.suppressBrowserShortcuts(aEvent, aeConst.DEBUG);
@@ -3726,6 +3821,10 @@ browser.runtime.onMessage.addListener(aRequest => {
     rebuildClippingsTree();
     break;
 
+  case "clippings-mgr-save-backup":
+    gCmd.backupExtern();
+    break;
+
   default:
     break;
   }
@@ -3760,18 +3859,18 @@ function initToolbar()
     }
   }
 
-  $("#new-clipping").click(aEvent => { gCmd.newClipping(gCmd.UNDO_STACK) });
-  $("#new-folder").click(aEvent => { gCmd.newFolder(gCmd.UNDO_STACK) });
-  $("#move").attr("title", browser.i18n.getMessage("tbMoveOrCopy")).click(aEvent => {
+  $("#new-clipping").on("click", aEvent => { gCmd.newClipping(gCmd.UNDO_STACK) });
+  $("#new-folder").on("click", aEvent => { gCmd.newFolder(gCmd.UNDO_STACK) });
+  $("#move").attr("title", browser.i18n.getMessage("tbMoveOrCopy")).on("click", aEvent => {
     gCmd.moveClippingOrFolder();
   });
-  $("#delete").attr("title", browser.i18n.getMessage("tbDelete")).click(aEvent => {
+  $("#delete").attr("title", browser.i18n.getMessage("tbDelete")).on("click", aEvent => {
     gCmd.deleteClippingOrFolder(gCmd.UNDO_STACK);
   });
-  $("#undo").attr("title", browser.i18n.getMessage("tbUndo")).click(aEvent => {
+  $("#undo").attr("title", browser.i18n.getMessage("tbUndo")).on("click", aEvent => {
     gCmd.undo();
   });
-  $("#help").attr("title", browser.i18n.getMessage("tbHelp")).click(aEvent => {
+  $("#help").attr("title", browser.i18n.getMessage("tbHelp")).on("click", aEvent => {
     gCmd.showMiniHelp();
   });
 
@@ -4093,9 +4192,9 @@ function initToolbar()
   aeInterxn.initContextMenuAriaRoles(".placeholder-menu");
   aeInterxn.initContextMenuAriaRoles(".tools-menu");
 
-  $("#custom-plchldr").click(aEvent => { gCmd.insertCustomPlaceholder() });
-  $("#auto-incr-plchldr").click(aEvent => { gCmd.insertNumericPlaceholder() });
-  $("#show-shortcut-list").click(aEvent => { gCmd.showShortcutList() });
+  $("#custom-plchldr").on("click", aEvent => { gCmd.insertCustomPlaceholder() });
+  $("#auto-incr-plchldr").on("click", aEvent => { gCmd.insertNumericPlaceholder() });
+  $("#show-shortcut-list").on("click", aEvent => { gCmd.showShortcutList() });
 
   gSearchBox.init();
 
@@ -4183,11 +4282,15 @@ function initInstantEditing()
       gCmd.editClippingContentIntrl(id, content, gCmd.UNDO_STACK);
     }
   }).attr("spellcheck", gPrefs.checkSpelling);
+
+  gClippingNameEditor = new InstantEditor("#clipping-name");
+  gClippingContentEditor = new InstantEditor("#clipping-text");
 }
 
 
 function initIntroBannerAndHelpDlg()
 {
+  const isWin = gEnvInfo.os == "win";
   const isMacOS = gEnvInfo.os == "mac";
   const isLinux = gEnvInfo.os == "linux";
 
@@ -4197,10 +4300,17 @@ function initIntroBannerAndHelpDlg()
     if (isMacOS) {
       shctKeys = [
         "\u2326", "esc", "\u2318C", "\u2318D", "\u2318F", "\u2318W", "\u2318Z",
-        "F1", "F2", "\u2318F10"
+        "F1", "F2 / \u21e7\u2318Z", "\u2318F10"
       ];
     }
     else {
+      let altRedo;
+      if (isWin) {
+        altRedo = `${browser.i18n.getMessage("keyCtrl")}+Y`;
+      }
+      else {
+        altRedo = `${browser.i18n.getMessage("keyCtrl")}+${browser.i18n.getMessage("keyShift")}+Z`;
+      }
       shctKeys = [
         browser.i18n.getMessage("keyDel"),
         browser.i18n.getMessage("keyEsc"),
@@ -4210,18 +4320,23 @@ function initIntroBannerAndHelpDlg()
         `${browser.i18n.getMessage("keyCtrl")}+W`,
         `${browser.i18n.getMessage("keyCtrl")}+Z`,
         "F1",
-        "F2",
+        `F2 / ${altRedo}`,
         `${browser.i18n.getMessage("keyCtrl")}+F10`,
       ];
     }
 
-    function buildKeyMapTableRow(aShctKey, aCmdL10nStrIdx)
+    function buildKeyMapTableRow(aShctKey, aCmdL10nStrIdx, aIsCompactKey=false)
     {
       let tr = document.createElement("tr");
       let tdKey = document.createElement("td");
       let tdCmd = document.createElement("td");
       tdKey.appendChild(document.createTextNode(aShctKey));
       tdCmd.appendChild(document.createTextNode(browser.i18n.getMessage(aCmdL10nStrIdx)));
+
+      if (aIsCompactKey) {
+        tdKey.className = "condensed";
+      }
+      
       tr.appendChild(tdKey);
       tr.appendChild(tdCmd);
 
@@ -4236,7 +4351,7 @@ function initIntroBannerAndHelpDlg()
     aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[5], "clipMgrIntroCmdClose"));
     aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[6], "clipMgrIntroCmdUndo"));
     aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[7], "clipMgrIntroCmdShowIntro"));
-    aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[8], "clipMgrIntroCmdRedo"));
+    aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[8], "clipMgrIntroCmdRedo", isLinux));
 
     if (! isLinux) {
       aTableDOMElt.appendChild(buildKeyMapTableRow(shctKeys[9], "clipMgrIntroCmdMaximize"));
@@ -4324,7 +4439,7 @@ function initDialogs()
       clippingNameColHdr: browser.i18n.getMessage("expHTMLClipNameCol"),
     });
 
-    $("#export-shct-list").click(aEvent => {
+    $("#export-shct-list").on("click", aEvent => {
       aeImportExport.getShortcutKeyListHTML(true).then(aHTMLData => {
         let blobData = new Blob([aHTMLData], { type: "text/html;charset=utf-8"});
         let downldOpts = {
@@ -4819,10 +4934,10 @@ function initDialogs()
       }
     });
 
-    $("#include-src-urls").click(aEvent => {
+    $("#include-src-urls").on("click", aEvent => {
       this.inclSrcURLs = aEvent.target.checked;
     });
-    $("#export-incl-separators").click(aEvent => {
+    $("#export-incl-separators").on("click", aEvent => {
       this.inclSep = aEvent.target.checked;
     });
   };
@@ -4974,7 +5089,7 @@ function initDialogs()
   gDialogs.removeAllSrcURLs.onFirstInit = function ()
   {
     this.focusedSelector = ".dlg-btns > .dlg-accept";
-    this.find(".dlg-btns > .dlg-btn-yes").click(aEvent => {
+    this.find(".dlg-btns > .dlg-btn-yes").on("click", aEvent => {
       this.close();
       gCmd.removeAllSrcURLsIntrl();
     });
@@ -4991,25 +5106,6 @@ function initDialogs()
   gDialogs.restoreSrcURLs.onInit = function ()
   {
     aeClippingsTree.getTree().reactivate(true);
-  };
-
-  gDialogs.reloadSyncFolder = new aeDialog("#reload-sync-fldr-msgbox");
-  gDialogs.reloadSyncFolder.onFirstInit = function ()
-  {
-    this.focusedSelector = ".dlg-btns > .dlg-accept";
-  };
-  gDialogs.reloadSyncFolder.onAfterAccept = function ()
-  {
-    rebuildClippingsTree();
-  };
-  gDialogs.reloadSyncFolder.onUnload = function ()
-  {
-    if (gDialogs.showOnlySyncedItemsReminder.isDelayedOpen) {
-      gDialogs.showOnlySyncedItemsReminder.isDelayedOpen = false;
-      setTimeout(() => {
-        gDialogs.showOnlySyncedItemsReminder.showModal();
-      }, 800);
-    }
   };
 
   gDialogs.moveTo = new aeDialog("#move-dlg");
@@ -5037,7 +5133,7 @@ function initDialogs()
 
   gDialogs.moveTo.onFirstInit = function ()
   {
-    $("#copy-instead-of-move").click(aEvent => {
+    $("#copy-instead-of-move").on("click", aEvent => {
       if (aEvent.target.checked) {
         if (aeClippingsTree.getTree().activeNode.folder) {
           $("#move-to-label").text(browser.i18n.getMessage("labelCopyFolder"));
@@ -5112,7 +5208,7 @@ function initDialogs()
     // Only allow copying a clipping or folder out of Synced Clippings folder
     // if sync file is read-only.
     if (gPrefs.syncClippings && gPrefs.isSyncReadOnly && isSyncedItem) {
-      $("#copy-instead-of-move").click().prop("disabled", true);
+      $("#copy-instead-of-move").trigger("click").prop("disabled", true);
     }
   };
 
@@ -5212,7 +5308,9 @@ function initDialogs()
       acceptBtn.focus();
     }, 100);
   };
-  
+
+  gDialogs.syncProgress = new aeDialog("#sync-progress");
+  gDialogs.syncFldrFull = new aeDialog("#sync-fldr-full-error-msgbox");
   gDialogs.syncFldrReadOnly = new aeDialog("#sync-file-readonly-msgbar");
   gDialogs.miniHelp = new aeDialog("#mini-help-dlg");
   gDialogs.genericMsgBox = new aeDialog("#generic-msg-box");
@@ -6301,6 +6399,16 @@ function showBanner(aMessage)
 
 
 //
+// DOM utility
+//
+
+function sanitizeHTML(aHTMLStr)
+{
+  return DOMPurify.sanitize(aHTMLStr, {SAFE_FOR_JQUERY: true});
+}
+
+
+//
 // Error reporting and debugging output
 //
 
@@ -6339,7 +6447,10 @@ function getErrStr(aErr)
 
 function handlePushSyncItemsError(aError)
 {
-  if (! gErrorPushSyncItems) {
+  if (!gErrorPushSyncItems) {
+    // Show sync errors only once during the Clippings Manager session.
+    // Pushing sync changes can happen numerous times, and repeated error
+    // messages will annoy the user.
     let errorMsgBox = new aeDialog("#sync-error-msgbox");
     errorMsgBox.onInit = function () {
       this.find(".dlg-content > .msgbox-error-msg").text(browser.i18n.getMessage("syncPushFailed"));

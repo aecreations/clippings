@@ -17,7 +17,7 @@ let gParentFolderID = 0;
 let gSrcURL = "";
 let gCreateInFldrMenu;
 let gFolderPickerPopup;
-let gNewFolderDlg;
+let gNewFolderDlg, gSyncErrMsgBox;
 let gPrefs;
 let gSyncedFldrIDs = new Set();
 
@@ -55,7 +55,7 @@ $(async () => {
     expandOptions(true);
   }
   
-  $("#btn-expand-options").data("isExpanded", gPrefs.showNewClippingOpts).click(aEvent => {
+  $("#btn-expand-options").data("isExpanded", gPrefs.showNewClippingOpts).on("click", aEvent => {
     let isExpanded = $(aEvent.target).data("isExpanded");
     expandOptions(! isExpanded);
   });
@@ -88,9 +88,9 @@ $(async () => {
   initLabelPicker();
   initShortcutKeyMenu();
 
-  $("#new-folder-btn").click(aEvent => { gNewFolderDlg.showModal() });
-  $("#btn-accept").click(aEvent => { accept(aEvent) });
-  $("#btn-cancel").click(aEvent => { cancel(aEvent) });
+  $("#new-folder-btn").on("click", aEvent => { gNewFolderDlg.showModal() });
+  $("#btn-accept").on("click", aEvent => { accept(aEvent) });
+  $("#btn-cancel").on("click", aEvent => { cancel(aEvent) });
 
   aeVisual.init(platform.os);
   aeVisual.preloadMsgBoxIcons();
@@ -123,11 +123,10 @@ async function expandOptions(aIsOptionsExpanded)
 
   if (aIsOptionsExpanded) {
     let height = WNDH_OPTIONS_EXPANDED;
-    if (document.body.dataset.os == "win") {
+    if (gOS == "win") {
       height += DLG_HEIGHT_ADJ_WINDOWS;
-    }
-    else if (document.body.dataset.os == "linux"
-             && aeVersionCmp(gHostAppVer, "137.0") >= 0) {
+    } 
+    else if (gOS == "linux") {
       height += DLG_HEIGHT_ADJ_LINUX;
     }
 
@@ -142,12 +141,11 @@ async function expandOptions(aIsOptionsExpanded)
   }
   else {
     let height = WNDH_NORMAL;
-    if (document.body.dataset.os == "win") {
+    if (gOS == "win") {
       height = WNDH_NORMAL_WINDOWS;
     }
-    else if (document.body.dataset.os == "linux"
-             && aeVersionCmp(gHostAppVer, "137.0") >= 0) {
-      height = WNDH_NORMAL + DLG_HEIGHT_ADJ_LINUX;
+    else if (gOS == "linux") {
+      height += DLG_HEIGHT_ADJ_LINUX;
     }
 
     $("#clipping-options").hide();
@@ -161,7 +159,7 @@ async function expandOptions(aIsOptionsExpanded)
 }
 
 
-$(window).keydown(aEvent => {
+$(window).on("keydown", aEvent => {
   if (aEvent.key == "Enter") {
     if (aEvent.target.tagName == "TEXTAREA") {
       return;
@@ -346,7 +344,7 @@ function initDialogs()
   {
     let fldrPickerPopup = $("#new-folder-dlg-fldr-tree-popup");
 
-    $("#new-folder-dlg-fldr-picker-mnubtn").click(aEvent => {
+    $("#new-folder-dlg-fldr-picker-mnubtn").on("click", aEvent => {
       if (fldrPickerPopup.css("visibility") == "visible") {
         this.closeFolderPicker();
       }
@@ -508,6 +506,8 @@ function initDialogs()
       window.alert(aErr);
     });  
   };
+
+  gSyncErrMsgBox = new aeDialog("#sync-fldr-full-error-msgbox");
 }
 
 
@@ -522,13 +522,13 @@ function initFolderPicker()
   
   // Initialize the transparent background that user can click on to dismiss an
   // open folder picker popup.
-  $(".popup-bkgrd").click(aEvent => {
+  $(".popup-bkgrd").on("click", aEvent => {
     $(".folder-tree-popup").css({ visibility: "hidden" });
     $(".popup-bkgrd").hide();
   });
 
   // Initialize the folder picker in the main New Clipping dialog.
-  $("#new-clipping-fldr-picker-menubtn").click(aEvent => {
+  $("#new-clipping-fldr-picker-menubtn").on("click", aEvent => {
     let popup = $("#new-clipping-fldr-tree-popup");
 
     if (popup.css("visibility") == "hidden") {
@@ -856,18 +856,27 @@ function accept(aEvent)
 
 async function finishAcceptDlg(aNewClippingID, aNewClipping)
 {
-  await browser.runtime.sendMessage({
-    msgID: "new-clipping-created",
-    newClippingID: aNewClippingID,
-    newClipping: aNewClipping,
-    origin: aeConst.ORIGIN_HOSTAPP,
-  });
-
-  await unsetClippingsUnchangedFlag();
 
   if (gPrefs.syncClippings) {
-    aeImportExport.setDatabase(gClippingsDB);      
+    aeImportExport.setDatabase(gClippingsDB);
+    
     let syncData = await aeImportExport.exportToJSON(true, true, gPrefs.syncFolderID, false, true, true);
+    
+    let isSyncDataSizeUnderMax = await browser.runtime.sendMessage({
+      msgID: "check-sync-data-size",
+      syncData,
+    });
+    log("Clippings::new.js: finishAcceptDlg(): Response from message 'check-sync-data-size': " + isSyncDataSizeUnderMax);
+
+    if (!isSyncDataSizeUnderMax) {
+      gSyncErrMsgBox.showModal();
+      setTimeout(async () => {
+        await gClippingsDB.clippings.delete(aNewClippingID);
+      }, 100);
+ 
+      setDlgButtonEnabledStates(true);
+      return;
+    }
 
     let natMsg = {
       msgID: "set-synced-clippings",
@@ -882,6 +891,14 @@ async function finishAcceptDlg(aNewClippingID, aNewClipping)
     log(resp);
   }
   
+  await browser.runtime.sendMessage({
+    msgID: "new-clipping-created",
+    newClippingID: aNewClippingID,
+    newClipping: aNewClipping,
+    origin: aeConst.ORIGIN_HOSTAPP,
+  });
+  await unsetClippingsUnchangedFlag();
+
   if (gPrefs.clippingsMgrAutoShowDetailsPane && isClippingOptionsSet()) {
     aePrefs.setPrefs({
       clippingsMgrAutoShowDetailsPane: false,

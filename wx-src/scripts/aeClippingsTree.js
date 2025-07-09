@@ -248,7 +248,7 @@ aeCopyClippingTextFormatDlg.onFirstInit = async function ()
     );
   }
 
-  this._dlgElt.keydown(aEvent => {
+  this._dlgElt.on("keydown", aEvent => {
     if (aEvent.key.toUpperCase() == "F") {
       $("#copy-cliptxt-html")[0].click();
     }

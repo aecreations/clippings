@@ -1,16 +1,13 @@
-# Makefile for Clippings/wx
+# Makefile for Clippings
 
-EXT_VER=`./getver.pl`
+EXT_VER=`./getver.py`
 DIST_FILE=clippings-$(EXT_VER).zip
-SRC_FILE=clippings-$(EXT_VER)-src.zip
-EXCLUDE=*~ *\.pl *\.sh *\.devel *\.release *\.src\.js *\.src\.css Makefile *-chrome\.json
+EXCLUDE=*~ *\.py *\.sh *\.src\.js *\.src\.css Makefile *-chrome\.json
 
 
 $(DIST_FILE):
+	rm -rf ../test
 	zip -r $(DIST_FILE) * -x $(EXCLUDE)
-
-source:
-	zip -r $(SRC_FILE) * -x *~ manifest-chrome\.json
 
 clean:
 	rm -v *.zip

@@ -17,11 +17,11 @@ $(async () => {
   await browser.runtime.sendMessage({msgID: "clear-backup-notifcn-intv"});
   browser.runtime.sendMessage({msgID: "set-backup-notifcn-intv"});
   
-  $("#backup-now").click(aEvent => { backupNow() });
-  $("#btn-close").click(aEvent => { closeDlg() });
+  $("#backup-now").on("click", aEvent => { backupNow() });
+  $("#btn-close").on("click", aEvent => { closeDlg() });
 
   let backupRemFreq = await aePrefs.getPref("backupRemFrequency");
-  $("#backup-reminder").prop("checked", (backupRemFreq != aeConst.BACKUP_REMIND_NEVER)).click(aEvent => {
+  $("#backup-reminder").prop("checked", (backupRemFreq != aeConst.BACKUP_REMIND_NEVER)).on("click", aEvent => {
     let setPref;
     
     if (aEvent.target.checked) {
@@ -91,7 +91,7 @@ function closeDlg()
 }
 
 
-$(window).keydown(aEvent => {
+$(window).on("keydown", aEvent => {
   if (aEvent.key == "Enter") {
     // Avoid duplicate invocation due to pressing ENTER while the Backup Now
     // button is focused.

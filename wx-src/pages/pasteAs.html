@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title data-i18n="pasteTitle"></title>
+
+    <link rel="stylesheet" href="pasteAs.css"/>
+
+  </head>
+
+  <body>
+    <div id="dlg-body">
+      <div class="icon">
+	<div class="prompt-icon" role="presentation"></div>
+      </div>
+      <div id="content">
+	<div class="row">
+	  <p id="clipping-name" role="heading"></p>
+	</div>
+	<div class="row">
+	  <button id="paste-cliptxt-html" class="paste-fmt-btn dlg-btn"></button>
+	</div>
+	<div class="row">
+	  <button id="paste-cliptxt-plain" class="paste-fmt-btn dlg-btn"></button>
+	</div>
+	<div class="row last-row">
+	  <button id="paste-cliptxt-plain-html" class="paste-fmt-btn dlg-btn"></button>
+	</div>
+      </div>
+    </div>  <!-- /dlg-body -->
+    <div id="dlg-buttons" class="browser-style">
+      <button id="btn-cancel" class="btn" data-i18n="btnCancel"></button>
+    </div>
+
+    <script src="../lib/jquery.js"></script>
+    <script src="../lib/purify.min.js"></script>
+    <script src="../scripts/aeConst.js"></script>
+    <script src="../scripts/aeI18n.js"></script>
+    <script src="../scripts/aeInterxn.js"></script>
+    <script src="../scripts/aeVisual.js"></script>
+    <script src="pasteAs.js"></script>
+  </body>
+</html>

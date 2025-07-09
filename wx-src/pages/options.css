@@ -30,6 +30,8 @@
 
     --url-preftab-general: url("../img/pref-general.svg");
     --url-preftab-general-checked: url("../img/pref-general-checked.svg");
+    --url-preftab-copy: url("../img/pref-copy-clipping.svg");
+    --url-preftab-copy-checked: url("../img/pref-copy-clipping-checked.svg");
     --url-preftab-paste: url("../img/pref-paste.svg");
     --url-preftab-paste-checked: url("../img/pref-paste-checked.svg");
     --url-preftab-sync-clippings: url("../img/pref-sync-clippings.svg");
@@ -62,6 +64,8 @@
 
 	--url-preftab-general: url("../img/pref-general-dk.svg");
 	--url-preftab-general-checked: url("../img/pref-general-checked-dk.svg");
+	--url-preftab-copy: url("../img/pref-copy-clipping-dk.svg");
+	--url-preftab-copy-checked: url("../img/pref-copy-clipping-checked-dk.svg");
 	--url-preftab-paste: url("../img/pref-paste-dk.svg");
 	--url-preftab-paste-checked: url("../img/pref-paste-checked-dk.svg");
 	--url-preftab-sync-clippings: url("../img/pref-sync-clippings-dk.svg");
@@ -297,6 +301,15 @@ progress {
 #preftab-general-btn.active-tab {
     background-image: var(--url-preftab-general-checked);
 }
+
+#preftab-copy-btn {
+    background-image: var(--url-preftab-copy);
+}
+
+#preftab-copy-btn.active-tab {
+    background-image: var(--url-preftab-copy-checked);
+}
+
 #preftab-paste-btn {
     background-image: var(--url-preftab-paste);
 }
@@ -321,7 +334,12 @@ progress {
     margin-right: 18px;
 }
 
+#prefpane-copy > .row {
+    margin-left: 16px;
+}
+
 #browser-action-opt-label,
+#html-copy-options,
 #html-paste-options {
     font-size: 15px;
     margin-left: 4px;
@@ -332,9 +350,17 @@ progress {
     margin-left: 10px;
 }
 
-#html-paste-note {
-    margin: 0 18px 4px 2px;
+#html-copy-note, #html-paste-note {
     font-size: 13px;
+}
+
+#html-copy-note {
+    margin-top: 18px;
+    margin-left: 20px;
+}
+
+#html-paste-note {
+    margin: 12px 18px 4px 10px;
 }
 
 #html-paste-note.disabled,
@@ -342,14 +368,14 @@ progress {
     opacity: 0.4;
 }
 
-#paste-opt-raw-html-row {
-    margin-top: 8px;
-}
-
 #general-options,
 #paste-options {
     margin-top: 20px;
     padding-right: 0;
+}
+
+#backup-options {
+    margin-top: 12px;
 }
 
 #enable-shortcut-key-ctr {
@@ -444,7 +470,7 @@ body[data-locale="fr"] #skip-backup-label {
 }
 
 #wnds-dlgs-settings {
-    margin-top: 14px;
+    margin-top: 12px;
 }
 
 #sidebar-paste-opts {
@@ -649,6 +675,7 @@ body[data-locale="nl"] #wnds-dlgs-opts-dlg #clpmgr-save-wnd-pos-label {
 #wnds-dlgs-opts-dlg #reset-clpmgr-wnd-pos {
     min-width: 72px;
     margin-top: 4px;
+    margin-left: 26px;
 }
 
 #wnds-dlgs-opts-dlg #reset-clpmgr-wnd-pos-ack {
@@ -778,18 +805,15 @@ body[data-locale="uk"] #sync-clippings-dlg {
     background-size: contain;
 }
 
-#request-native-app-conxn-perm-dlg .msgbox-icon,
-#sync-clippings-dlg #sync-cxn-error .msgbox-icon {
+#request-native-app-conxn-perm-dlg .msgbox-icon {
     background-image: url("../img/warning-64.png");
 }
 
-body[data-os="win"] #request-native-app-conxn-perm-dlg .msgbox-icon,
-body[data-os="win"] #sync-clippings-dlg #sync-cxn-error .msgbox-icon {
+body[data-os="win"] #request-native-app-conxn-perm-dlg .msgbox-icon {
     background-image: url("../img/alert-win.png");
 }
 
-body[data-os="mac"] #request-native-app-conxn-perm-dlg .msgbox-icon,
-body[data-os="mac"] #sync-clippings-dlg #sync-cxn-error .msgbox-icon {
+body[data-os="mac"] #request-native-app-conxn-perm-dlg .msgbox-icon {
     background-image: url("../img/warning-64-mac.png");
 }
 
@@ -801,13 +825,20 @@ body[data-os="win"] #sync-clippings-dlg #generic-error .msgbox-icon {
     background-image: url("../img/error-win.png");
 }
 
-#sync-clippings-dlg #sync-cxn-error .error-msg,
 #sync-clippings-dlg #generic-error .error-msg {
     margin-top: 12px;
     margin-left: 64px;
     padding: 12px;
     border-radius: 4px;
     font-weight: bold;
+}
+
+#sync-clippings-dlg #sync-cxn-error .msgbox-icon {
+    background-image: url("../img/syncClippingsApp.svg");
+}
+
+#sync-clippings-dlg #sync-cxn-error .dlg-content {
+    margin-left: 64px;
 }
 
 #request-native-app-conxn-perm-dlg p:first-of-type {
@@ -989,12 +1020,12 @@ body[data-os="mac"] #about-dlg {
     --width: 414px;
 }
 
-body[data-locale="de"] #about-dlg {
-    height: 326px;
-}
-
 #about-dlg[data-expanded="true"] {
     height: 320px;
+}
+
+body[data-locale="de"] #about-dlg[data-expanded="true"] {
+    height: 326px;
 }
 
 #about-dlg #ext-icon {

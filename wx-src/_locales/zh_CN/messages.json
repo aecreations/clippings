@@ -136,25 +136,13 @@
     "message": "从选区创建…",
     "description": "Clippings context menu in Thunderbird message composer"
   },
-  "cxtMenuShowPasteOpts": {
-    "message": "粘贴时显示引用选项",
+  "cxtMnuPasteQuoted": {
+    "message": "粘贴为引用文本",
     "description": "Clippings context menu in Thunderbird message composer"
   },
   "baMenuResetAutoIncrPlaceholders": {
     "message": "重置数字占位符",
     "description": "Clippings browser action submenu"
-  },
-  "pasteAsHdg": {
-    "message": "粘贴剪辑为",
-    "description": "Quote Options dialog in Clippings for Thunderbird"
-  },
-  "pasteAsNormal": {
-    "message": "普通文本",
-    "description": "Quote Options dialog in Clippings for Thunderbird"
-  },
-  "pasteAsQuoted": {
-    "message": "引用文本",
-    "description": "Quote Options dialog in Clippings for Thunderbird"
   },
   "welcomePageTitle": {
     "message": "欢迎使用剪辑",
@@ -167,7 +155,7 @@
     "message": "更新内容"
   },
   "welcWhatsNewDesc": {
-    "message": "剪辑 7.0 包含许多新功能和改进，例如复制剪辑文本和用于整理剪辑的分隔符。"
+    "message": "在剪辑 7.1中，您现在可以选择将HTML格式的剪辑以纯文本形式粘贴至HTML编辑器。"
   },
   "welcWhatsNewCTA": {
     "message": "了解更多"
@@ -206,6 +194,14 @@
   "btnReqPerm": {
     "message": "请求权限",
     "description": "Default button in the extension permission request dialog, which appears when requesting an optional extension permission"
+  },
+  "permReqPgHdg": {
+    "message": "请求权限",
+    "description": "Heading of the Permission Requested page"
+  },
+  "permReqHlp": {
+    "message": "附加组件权限帮助",
+    "description": "Link to Clippings help page on the AE Creations website"
   },
   "newClippingDlgTitle": {
     "message": "新建剪辑",
@@ -371,6 +367,18 @@
   "copyAsPlainHTML": {
     "message": "复制为带 HTML 标签的纯文本",
     "description": "Copy Clipping Text dialog in Clippings Manager and Clippings sidebar - user selection of data format of clipping to be copied"
+  },
+  "pasteAsHTML": {
+    "message": "粘贴为格式化文本",
+    "description": "Paste As dialog - user selection of data format of clipping to be pasted"
+  },
+  "pasteAsPlain": {
+    "message": "粘贴为纯文本",
+    "description": "Paste As dialog - user selection of data format of clipping to be pasted"
+  },
+  "pasteAsPlainHTML": {
+    "message": "粘贴为带HTML标签的纯文本",
+    "description": "Paste As dialog - user selection of data format of clipping to be pasted"
   },
   "clippingsMgrWndTitle": {
     "message": "打开剪辑管理器",
@@ -551,6 +559,34 @@
   "mnuPlchldrFmtDateTime": {
     "message": "格式化的日期/时间...",
     "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "mnuPlchldrTo": {
+    "message": "收件人",
+    "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
+  },
+  "mnuPlchldrCc": {
+    "message": "抄送人",
+    "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
+  },
+  "mnuPlchldrFrom": {
+    "message": "发送人",
+    "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
+  },
+  "mnuPlchldrNameEmail": {
+    "message": "姓名和邮箱",
+    "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
+  },
+  "mnuPlchldrName": {
+    "message": "姓名",
+    "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
+  },
+  "mnuPlchldrEmail": {
+    "message": "邮箱",
+    "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
+  },
+  "mnuPlchldrSubj": {
+    "message": "邮件标题",
+    "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
   },
   "mnuPlchldrClipClip": {
     "message": "剪切到剪辑中",
@@ -847,13 +883,13 @@
     "message": "通用",
     "description": "Tab label for extension preferences page"
   },
+  "prefTabCopy": {
+    "message": "复制",
+    "description": "Tab label for extension preferences page (Firefox only)"
+  },
   "prefTabPaste": {
     "message": "粘贴",
     "description": "Tab label for extension preferences page"
-  },
-  "prefsHdgIntegrn": {
-    "message": "集成",
-    "description": "Groupbox caption in extension preferences page"
   },
   "cbToolsMnu": {
     "message": "在工具菜单中显示“整理剪辑”菜单项",
@@ -862,6 +898,10 @@
   "prefsHdgPasteOptions": {
     "message": "粘贴选项",
     "description": "Groupbox caption in extension preferences page"
+  },
+  "labelCopyOpts": {
+    "message": "复制包含HTML标签的剪辑为格式化文本时：",
+    "description": "Extension preferences page"
   },
   "labelPasteOpts": {
     "message": "将包含HTML标签的剪切粘贴到HTML编辑器时：",
@@ -872,13 +912,28 @@
     "description": "Extension preferences page"
   },
   "pasteOptFormatted": {
-    "message": "粘贴为格式化文本"
+    "message": "粘贴为格式化文本",
+    "description": "Paste option radio button label in extension preferences page"
+  },
+  "pasteOptPlain": {
+    "message": "粘贴为纯文本",
+    "description": "Paste option radio button label in extension preferences page"
   },
   "pasteOptRawHTML": {
-    "message": "粘贴为纯文本，保存HTML标签"
+    "message": "粘贴为纯文本，保存HTML标签",
+    "description": "Paste option radio button label in extension preferences page"
+  },
+  "pasteOptAskUsr": {
+    "message": "询问操作方式",
+    "description": "Paste option radio button label in extension preferences page"
   },
   "cbAutoLineBreak": {
-    "message": "自动断行，除非存在<p>或<br>标签"
+    "message": "在不存在<p>或<br>标签时自动换行",
+    "description": "Checkbox option for copying and pasting an HTML-formatted clipping"
+  },
+  "htmlCopyDesc": {
+    "message": "若要复制剪辑，请在剪辑管理器或剪辑侧边栏中选择它，然后右键单击并从上下文菜单中选择“复制剪辑文本”。",
+    "description": "Extension preferences page"
   },
   "htmlPasteDesc": {
     "message": "如果将HTML格式的剪辑粘贴到纯文本框中，或者如果剪辑包含受限制的标记，如<script>、<applet>、<object>、<iframe>等，则总是将其粘贴为纯文本。"
@@ -932,6 +987,10 @@
   "cbBackupFilenameWithDate": {
     "message": "将日期添加到备份文件名称",
     "description": "Checkbox option in extension preferences page"
+  },
+  "prefsHdgBackup": {
+    "message": "备份选项",
+    "description": "Groupbox caption in extension preferences page"
   },
   "backupRemind": {
     "message": "显示备份提醒",
@@ -1160,14 +1219,16 @@
     "description": "Message in modal dialog in extension preferences page that appears when trying to turn on Sync Clippings without the optional 'nativeMessaging' permission turned on first"
   },
   "syncPermNotif": {
-    "message": "无法连接到 同步剪辑助手 应用程序。要解决这个问题，请前往 “附加组件管理器”，打开允许剪辑与其他程序交换信息的权限。",
+    "message": "剪辑扩展无权连接同步剪辑助手应用。要解决此问题，请前往剪辑扩展设置中的「同步剪辑」选项。",
     "description": "Notification that appears when attempting to refresh sync data after user turned off the 'nativeMessaging' permission"
   },
-  "errSyncConxn": {
-    "message": "无法连接到同步剪辑助手应用，请确保应用程序已安装。"
+  "noSyncAppCTA": {
+    "message": "要开始同步剪辑，请下载并安装同步剪辑助手应用程序。可在网站<a href=\"$1\" class=\"hyperlink\">AE Creations</a>获取。",
+    "description": "Message in Sync Clippings dialog when Sync Clippings Helper app is not installed"
   },
-  "errSyncConxnDetail": {
-    "message": "同步剪辑需要使用同步剪辑程序。您可以从 <a href=\"https://aecreations.io/clippings/sync.php\" class=\"hyperlink\">AE Creations</a> 网站中下载。"
+  "noSyncAppInstr": {
+    "message": "安装完成后，请返回此处完成同步剪辑功能的配置。",
+    "description": "Message in Sync Clippings dialog when Sync Clippings Helper app is not installed"
   },
   "errSyncOptsInit": {
     "message": "无法初始化同步剪辑设置。重新安装 同步剪辑助手，然后再试一次。"
@@ -1177,10 +1238,6 @@
   },
   "errNoDetails": {
     "message": "抱歉，没有关于此错误的进一步信息。"
-  },
-  "syncReloadAck": {
-    "message": "正在更新同步剪辑文件夹，点击 刷新 继续。",
-    "description": "Message box in Clippings Manager"
   },
   "syncFldrRdOnly": {
     "message": "同步剪辑文件夹为只读文件夹。",
@@ -1201,6 +1258,10 @@
   "syncStartupFailed": {
     "message": "无法连接到同步剪辑助手应用。要解决这个问题，请重新安装同步剪辑助手应用程序。",
     "description": "Error message that appears as a notification when the Sync Clippings Helper app was uninstalled without turning off Sync Clippings first"
+  },
+  "syncFldrFull": {
+    "message": "同步剪辑文件夹已满。请整理或删除文件夹中未使用的剪辑，然后重试。",
+    "description": "Error message that appears in New Clipping dialog and Clippings Manager when the sync data exceeds 1 MB"
   },
   "syncUpdateTitle": {
     "message": "同步剪辑助手应用的新版本"
@@ -1265,6 +1326,10 @@
   "aboutHomePgLink": {
     "message": "访问网站"
   },
+  "aboutCreditsLink": {
+    "message": "鸣谢",
+    "description": "Link to acknowledgements page"
+  },
   "aboutLicLink": {
     "message": "许可证信息"
   },
@@ -1275,15 +1340,9 @@
     "message": "乐于帮助？",
     "description": "About dialog text for encouraging users to donate or help with translation"
   },
-  "aboutDonate": {
-    "message": "捐赠"
-  },
-  "aboutContribConj": {
-    "message": "或",
-    "description": "Conjunction connecting the CTA hyperlinks for donating or supplying a translation"
-  },
-  "aboutL10n": {
-    "message": "添加翻译"
+  "aboutContrib": {
+    "message": "<a href=\"$1\" class=\"hyperlink\">进行捐赠</a> 或 <a href=\"$2\" class=\"hyperlink\">添加翻译</a>。",
+    "description": "Links for making a donation or contributing a translation for Clippings"
   },
   "aboutSyncVerLabel": {
     "message": "同步剪辑簿助手应用程序版本："
@@ -1297,15 +1356,15 @@
   },
   "verMinorUpd": {
     "message": "Clippings 更新了！",
-    "description": "Minor version update message bar in Clippings Sidebar (Firefox only)"
+    "description": "Minor version update message bar in Clippings Sidebar"
   },
   "verUpgr": {
     "message": "Clippings 升级了！",
-    "description": "Major version upgrade message bar in Clippings Sidebar (Firefox only)"
+    "description": "Major version upgrade message bar in Clippings Sidebar"
   },
   "btnWhatsNew": {
     "message": "更新说明",
-    "description": "Button in the major version upgrade message bar in Clippings Sidebar (Firefox only)"
+    "description": "Button in the major version upgrade message bar"
   },
   "upgradeNotifcn": {
     "message": "最近更新了 $1 ！点击这里查看最新内容。",
@@ -1324,36 +1383,40 @@
     "description": "Subheading in the What's New page"
   },
   "whatsNew1": {
-    "message": "您现在可以添加分隔符来整理您的剪辑。",
+    "message": "恢复在粘贴HTML格式剪辑时显示「粘贴为」对话框的选项",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
   "whatsNew2": {
-    "message": "在剪辑菜单中显示剪辑快捷键的新选项",
-    "description": "Description of an enhancement or fix in the new version of Clippings"
-  },
-  "whatsNew3": {
-    "message": "在剪辑中嵌入剪辑的新占位符",
+    "message": "优化了剪辑管理器中的撤销功能。此外，现在您可以通过以下快捷键重做最后一次撤销的操作：Windows系统按Ctrl+Y，macOS系统按⇧⌘Z，Linux系统按Ctrl+Shift+Z",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
   "whatsNewFx1": {
-    "message": "从剪辑管理器或新的剪辑侧边栏复制剪辑文本到剪贴板。",
+    "message": "新增选项：可将含HTML格式的剪辑以纯文本形式粘贴至HTML编辑器",
     "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
   },
   "whatsNewFx2": {
-    "message": "在剪辑管理器（工具 → 从剪贴板新建）中恢复了从剪贴板内容创建新剪辑的功能",
+    "message": "剪辑侧边栏中的预览窗格高度现在可以调整了",
+    "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
+  },
+  "whatsNewFx3": {
+    "message": "移除了在剪辑管理器或剪辑侧边栏中重新加载同步剪辑文件夹时弹出的确认对话框",
     "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
   },
   "whatsNewTb1": {
-    "message": "邮件撰写窗口中的剪辑工具栏按钮已从状态栏移至撰写工具栏。 剪辑工具栏按钮不再出现在 Thunderbird 主窗口中。",
+    "message": "新增邮件标题、发送人及收件人占位符。您可通过占位符工具栏在剪辑管理器中将其添加至剪辑内容",
+    "description": "Description of a Thunderbird-specific enhancement in the new version of Clippings"
+  },
+  "whatsNewTb2": {
+    "message": "新增选项：可将含HTML格式的剪辑以纯文本形式粘贴至HTML消息中",
+    "description": "Description of a Thunderbird-specific enhancement in the new version of Clippings"
+  },
+  "whatsNewTb3": {
+    "message": "移除了在剪辑管理器中重新加载同步剪辑文件夹时弹出的确认对话框",
     "description": "Description of a Thunderbird-specific enhancement in the new version of Clippings"
   },
   "whatsNewSync": {
-    "message": "同步剪辑增强功能：现在对同步数据进行了压缩，使您可以同步更多剪辑；还改进了对只读同步文件的处理（需要 <a href=“$1”>同步剪辑助手</a> 2.0 或更新版本）。",
+    "message": "当同步剪辑数据大小超过1Mb限制时，剪辑现在将显示错误信息",
     "description": "Description of enhancements for the Sync Clippings feature in the new version of Clippings"
-  },
-  "hostAppCompat": {
-    "message": "其他优化，确保与未来版本的 $1 兼容",
-    "description": "Description of improvements to ensure compatibility with future versions of Firefox or Thunderbird"
   },
   "contribHdg": {
     "message": "参与贡献",

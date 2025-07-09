@@ -7,7 +7,7 @@
 const aeConst = Object.freeze({
   DEBUG: false,
   DEV_BUILD: false,
-  CURR_MAJOR_VER: "7.0",
+  CURR_MAJOR_VER: "7.1",
 
   // Native messaging helper app
   SYNC_CLIPPINGS_APP_NAME: "syncClippings",
@@ -20,6 +20,7 @@ const aeConst = Object.freeze({
   HTMLPASTE_ASK_THE_USER: 0,
   HTMLPASTE_AS_FORMATTED: 1,
   HTMLPASTE_AS_IS:        2,
+  HTMLPASTE_AS_PLAIN:     3,
 
   // Copy clipping text
   COPY_AS_HTML: 1,
@@ -37,11 +38,6 @@ const aeConst = Object.freeze({
   // Special folder IDs
   ROOT_FOLDER_ID: 0,
   DELETED_ITEMS_FLDR_ID: -1,
-
-  // IndexedDB database change types
-  DB_CREATED: 1,
-  DB_UPDATED: 2,
-  DB_DELETED: 3,
 
   // Origin of clipping/folder creation for Clippings listener
   ORIGIN_HOSTAPP: 1,
@@ -78,6 +74,7 @@ const aeConst = Object.freeze({
   VER_UPDATE_TYPE_MAJOR: 1,
   VER_UPDATE_TYPE_MINOR: 2,
 
+  DEFAULT_SIDEBAR_PREVW_HGT: 256,
   DEFAULT_ALARM_INTERVAL_MINS: 15,
 
   // Errors returned by the native messaging app

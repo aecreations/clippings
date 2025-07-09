@@ -94,7 +94,6 @@
     </main>
 
     <!-- Dialog boxes -->
-    <div id="lightbox-bkgrd-ovl" class="lightbox-bkgrd"></div>
     <div id="copy-clipping-txt-fmt-dlg" class="lightbox" data-compact="true" role="dialog">
       <div class="dlg-content">
 	<p class="dlg-hdr" role="heading" data-i18n="mnuCopyClipTxt"></p>
@@ -109,6 +108,7 @@
         <button class="dlg-btn dlg-cancel" data-i18n="btnCancel"></button>
       </div>
     </div>
+
     <div id="request-clipbd-write-perm-dlg" class="lightbox msgbox" role="alertdialog">
       <div class="msgbox-icon"></div>
       <div class="msgbox-content">
@@ -122,15 +122,7 @@
 	<button class="dlg-accept default" data-i18n="btnOK"></button>
       </div>
     </div>
-    <div id="reload-sync-fldr-msgbox" class="lightbox msgbox" role="alertdialog">
-      <div class="msgbox-content">
-	<div class="msgbox-icon"></div>
-	<p data-i18n="syncReloadAck"></p>
-      </div>
-      <div class="dlg-btns">
-	<button class="dlg-accept default" data-i18n="btnReload"></button>
-      </div>
-    </div>
+
     <div id="customize-dlg" class="lightbox" role="dialog">
       <div class="dlg-content">
         <p class="dlg-hdg" role="heading" data-i18n="sbarCustzTitle"></p>
@@ -148,6 +140,7 @@
 	<button class="dlg-accept default" data-i18n="btnDone"></button>
       </div>
     </div>
+
     <div id="init-error-msgbox" class="lightbox msgbox" role="alertdialog">
       <div class="msgbox-content">
 	<div class="msgbox-icon"></div>
@@ -157,11 +150,13 @@
         <button class="dlg-accept default" data-i18n="btnOK"></button>
       </div>
     </div>
+
     <div id="sync-progress" class="lightbox">
       <div class="row">
         <progress></progress>
       </div>
     </div>
+
     <script src="../lib/dexie/dexie.min.js"></script>
     <script src="../lib/jquery.js"></script>
     <script src="../lib/purify.min.js"></script>
@@ -170,6 +165,7 @@
     <script src="../lib/fancytree/jquery.fancytree.filter.js"></script>
     <script src="../lib/contextMenu/jquery.ui.position.min.js"></script>
     <script src="../lib/contextMenu/jquery.contextMenu.min.js"></script>
+    <script src="../lib/simpledrag.js"></script>
     <script src="../scripts/aeConst.js"></script>
     <script src="../scripts/aeDialog.js"></script>
     <script src="../scripts/aeInterxn.js"></script>
