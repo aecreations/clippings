@@ -14,6 +14,7 @@ const SHORTCUT_LIST_HEIGHT_ADJ_MAC = 2;
 
 let gClippingsDB, gPasteMode, gOS;
 let gBrowserTabID = null;
+let gIsVertExpanded;
 
 let gAutocompleteMenu = {
   _SCRL_LENGTH: 34,
@@ -294,6 +295,7 @@ $(async () => {
   initAutocomplete();
   $("#btn-cancel").on("click", aEvent => { cancel(aEvent) });
 
+  gIsVertExpanded = Boolean(params.get("vexp"));
   gPasteMode = await aePrefs.getPref("pastePromptAction");
   
   if (gPasteMode == aeConst.PASTEACTION_SHORTCUT_KEY) {
@@ -303,14 +305,17 @@ $(async () => {
   else {
     $(".deck > #paste-by-shortcut-key").hide();
 
-    let updWndInfo = {
-      height: WNDH_SEARCH_CLIPPING,
-    };
-    if (gOS == "linux") {
-      updWndInfo.height += DLG_HEIGHT_ADJ_LINUX;
-    }
-    await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, updWndInfo);
+    if (!gIsVertExpanded) {
+      let updWndInfo = {
+        height: WNDH_SEARCH_CLIPPING,
+      };
+      if (gOS == "linux") {
+        updWndInfo.height += DLG_HEIGHT_ADJ_LINUX;
+      }
 
+      await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, updWndInfo);
+    }
+    
     $(".deck > #search-by-name").show();
     let srchBox = $("#clipping-search")[0];
     srchBox.focus();
@@ -323,15 +328,16 @@ $(async () => {
     "export-active-dk.svg"
   );
 
-  
-  // Fix for Fx57 bug where bundled page loaded using
-  // browser.windows.create won't show contents unless resized.
-  // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1402110>
-  let wnd = await browser.windows.getCurrent();
-  browser.windows.update(wnd.id, {
-    width: wnd.width + 1,
-    focused: true,
-  });
+  if (!gIsVertExpanded) {
+    // Fix for Fx57 bug where bundled page loaded using
+    // browser.windows.create won't show contents unless resized.
+    // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1402110>
+    let wnd = await browser.windows.getCurrent();
+    browser.windows.update(wnd.id, {
+      width: wnd.width + 1,
+      focused: true,
+    });
+  }
 });
 
 
@@ -382,13 +388,16 @@ $(window).on("keydown", async (aEvent) => {
       gPasteMode = aeConst.PASTEACTION_SEARCH_CLIPPING;
       $(".deck > #paste-by-shortcut-key").hide();
 
-      let updWndInfo = {
-        height: WNDH_SEARCH_CLIPPING,
-      };
-      if (gOS == "linux") {
-        updWndInfo.height += DLG_HEIGHT_ADJ_LINUX;
+      if (!gIsVertExpanded) {
+        let updWndInfo = {
+          height: WNDH_SEARCH_CLIPPING,
+        };
+        if (gOS == "linux") {
+          updWndInfo.height += DLG_HEIGHT_ADJ_LINUX;
+        }
+
+        await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, updWndInfo);
       }
-      await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, updWndInfo);
       
       $(".deck > #search-by-name").fadeIn("fast");
       let srchBox = $("#clipping-search")[0];
@@ -398,14 +407,17 @@ $(window).on("keydown", async (aEvent) => {
       gPasteMode = aeConst.PASTEACTION_SHORTCUT_KEY;
       $(".deck > #search-by-name").hide();
 
-      let updWndInfo = {
-        height: WNDH_SHORTCUT_KEY,
-      };
-      if (gOS == "linux") {
-        updWndInfo.height += DLG_HEIGHT_ADJ_LINUX;
-      }
-      await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, updWndInfo);
+      if (!gIsVertExpanded) {
+        let updWndInfo = {
+          height: WNDH_SHORTCUT_KEY,
+        };
+        if (gOS == "linux") {
+          updWndInfo.height += DLG_HEIGHT_ADJ_LINUX;
+        }
 
+        await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, updWndInfo);
+      }
+      
       $(".deck > #paste-by-shortcut-key").fadeIn("fast");
     }
   }
@@ -513,7 +525,7 @@ async function initShortcutList()
   else if (gOS == "linux") {
     updWndInfo.height += DLG_HEIGHT_ADJ_LINUX;
   }
-  
+
   await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, updWndInfo);
   aeImportExport.getShortcutKeyListHTML(false).then(aShctListHTML => {
     $("#shortcut-list-content").append(sanitizeHTML(aShctListHTML));

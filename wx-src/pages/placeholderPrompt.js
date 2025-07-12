@@ -39,6 +39,8 @@ $(async () => {
     document.title = browser.i18n.getMessage("mnuCopyClipTxt");
   }
 
+  let isVertExpanded = Boolean(params.get("vexp"));
+
   let platform = await browser.runtime.getPlatformInfo();
   document.body.dataset.os = gOS = platform.os;
   aeInterxn.init(platform.os);
@@ -121,7 +123,9 @@ $(async () => {
       height += DLG_HEIGHT_ADJ_LINUX;
     }
 
-    await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, {height});
+    if (!isVertExpanded) {
+      await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, {height});
+    }
 
     for (let i = 0; i < gPlaceholders.length; i++) {
       let plchldr = gPlaceholders[i];
