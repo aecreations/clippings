@@ -1869,18 +1869,30 @@ async function newClipping(aActiveTab)
   let url = aActiveTab.url;
   gNewClipping.set({name, content, url});
 
-  let platform = await browser.runtime.getPlatformInfo();
-  openNewClippingDlg(platform.os, aActiveTab.id);
+  let [platform, currWnd, showNewClippingOpts] = await Promise.all([
+    browser.runtime.getPlatformInfo(),
+    browser.windows.getCurrent(),
+    aePrefs.getPref("showNewClippingOpts"),
+  ]);
+
+  let isExpanded = platform.os == "mac" && currWnd.state == "fullscreen" && showNewClippingOpts;
+
+  openNewClippingDlg(platform.os, aActiveTab.id, isExpanded);
 }
 
 
-function openNewClippingDlg(aPlatformOS, aTabID)
+function openNewClippingDlg(aPlatformOS, aTabID, aIsMacOSExpanded=false)
 {
   let url = browser.runtime.getURL("pages/new.html");
   let height = 410;
   if (aPlatformOS == "win") {
     height = 434;
   }
+  if (aIsMacOSExpanded) {
+    height = 474;
+    url += "?vexp=1";
+  }
+
   openDlgWnd(url, "newClipping", {type: "popup", width: 432, height}, aTabID);
 }
 
