@@ -2321,7 +2321,6 @@ async function processHTMLFormattedClipping(aClippingName, aClippingContent, aTa
       await browser.windows.update(tab.windowId, {focused: true});
 
       let isHTMLEditor = await browser.tabs.sendMessage(aTabID, {msgID: "is-html-editor?"});
-      console.log("Is HTML editor? " + isHTMLEditor);
       if (isHTMLEditor) {
         gPasteAs.set(aClippingName, aClippingContent);
         openPasteAsDlg(aTabID);

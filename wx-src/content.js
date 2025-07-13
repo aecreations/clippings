@@ -4,7 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
-const DEBUG = true;
+const DEBUG = false;
 const HTMLPASTE_AS_FORMATTED = 1;
 const HTMLPASTE_AS_IS = 2;
 const HTMLPASTE_AS_PLAIN = 3;
@@ -136,11 +136,11 @@ function handleRequestNewClipping(aRequest)
 
 function handleRequestIsHTMLEditor(aRequest)
 {
-  let rv;
+  let rv = null;
 
   if (! document.hasFocus()) {
     warn(`Clippings/wx::content.js: handleRequestIsHTMLEditor(): The web page at ${document.URL} does not have the focus; exiting message handler.`);
-    return false;
+    return rv;
   }
 
   let activeElt = getActiveElt();
