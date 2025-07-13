@@ -2308,8 +2308,26 @@ async function processHTMLFormattedClipping(aClippingName, aClippingContent, aTa
     let htmlPaste = await aePrefs.getPref("htmlPaste");
 
     if (htmlPaste == aeConst.HTMLPASTE_ASK_THE_USER) {
-      gPasteAs.set(aClippingName, aClippingContent);
-      openPasteAsDlg(aTabID);
+      // Focus the target window and tab.
+      let tab;
+      try {
+        tab = await browser.tabs.get(aTabID);
+      }
+      catch (e) {
+        // Browser tab was closed.
+        warn("Clippings/wx: processHTMLFormattedClipping(): Can't find browser tab " + aTabID);
+        return;
+      }
+      await browser.windows.update(tab.windowId, {focused: true});
+
+      let isHTMLEditor = await browser.tabs.sendMessage(aTabID, {msgID: "is-html-editor?"});
+      if (isHTMLEditor) {
+        gPasteAs.set(aClippingName, aClippingContent);
+        openPasteAsDlg(aTabID);
+      }
+      else {
+        await pasteProcessedClipping(aClippingContent, aTabID);
+      }
     }
     else {
       await pasteProcessedClipping(aClippingContent, aTabID);
