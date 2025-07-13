@@ -4,7 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
-const DEBUG = false;
+const DEBUG = true;
 const HTMLPASTE_AS_FORMATTED = 1;
 const HTMLPASTE_AS_IS = 2;
 const HTMLPASTE_AS_PLAIN = 3;
@@ -25,6 +25,10 @@ browser.runtime.onMessage.addListener(aRequest => {
 
   case "paste-clipping":
     resp = handleRequestInsertClipping(aRequest);
+    break;
+
+  case "is-html-editor?":
+    resp = handleRequestIsHTMLEditor(aRequest);
     break;
 
   case "focus-active-tab":
@@ -124,6 +128,46 @@ function handleRequestNewClipping(aRequest)
     }
 
     info("Content retrieved from " + activeElt.toString() + ":\n" + rv.content);
+  }
+  
+  return rv;
+}
+
+
+function handleRequestIsHTMLEditor(aRequest)
+{
+  let rv;
+
+  if (! document.hasFocus()) {
+    warn(`Clippings/wx::content.js: handleRequestIsHTMLEditor(): The web page at ${document.URL} does not have the focus; exiting message handler.`);
+    return false;
+  }
+
+  let activeElt = getActiveElt();
+
+  log("Clippings/wx::content.js: handleRequestIsHTMLEditor(): activeElt = " + (activeElt ? activeElt.toString() : "???"));  
+
+  if (isElementOfType(activeElt, "HTMLIFrameElement")) {
+    let doc = activeElt.contentDocument;
+    if (doc && doc.body.hasAttribute("contenteditable")
+        && doc.body.getAttribute("contenteditable") != "false") {
+      rv = true;
+    }
+    else {
+      warn("Clippings/wx::content.js: handleRequestInsertClipping(): Document element is null or <body> doesn't have 'contenteditable' attribute set; exiting message handler");
+    }
+  }
+  // Rich text editor used by Gmail and Outlook.com
+  else if (isElementOfType(activeElt, "HTMLDivElement")) {
+    rv = true;
+  }
+  // Experimental - enable from background script
+  else if (isElementOfType(activeElt, "HTMLBodyElement") && aRequest.pasteIntoHTMLBodyElt
+           && (activeElt.contentEditable || activeElt.ownerDocument.designMode == "on")) {
+    rv = true;
+  }
+  else {
+    rv = false;
   }
   
   return rv;
