@@ -151,6 +151,7 @@ function handleRequestIsHTMLEditor(aRequest)
     let doc = activeElt.contentDocument;
     if (doc && doc.body.hasAttribute("contenteditable")
         && doc.body.getAttribute("contenteditable") != "false") {
+      log(`Clippings::content.js: handleRequestIsHTMLEditor(): In the web page at ${document.URL}, HTML editor element detected: ${activeElt}`);
       rv = true;
     }
     else {
@@ -159,6 +160,7 @@ function handleRequestIsHTMLEditor(aRequest)
   }
   // Rich text editor used by Gmail and Outlook.com
   else if (isElementOfType(activeElt, "HTMLDivElement")) {
+    log(`Clippings::content.js: handleRequestIsHTMLEditor(): In the web page at ${document.URL}, HTML editor element detected: ${activeElt}`);
     rv = true;
   }
   // Experimental - enable from background script

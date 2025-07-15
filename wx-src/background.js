@@ -2303,30 +2303,30 @@ async function processClipping(aClippingInfo, aIsExternalRequest, aTabID, aMode)
 async function processHTMLFormattedClipping(aClippingName, aClippingContent, aTabID)
 {
   let isHTMLFormatted = aeClippings.hasHTMLTags(aClippingContent);
+  let htmlPaste = await aePrefs.getPref("htmlPaste");
 
+  // Detect HTML editor - focus its containing window and tab.
+  let tab;
+  try {
+    tab = await browser.tabs.get(aTabID);
+  }
+  catch (e) {
+    // Browser tab was closed.
+    warn("Clippings/wx: processHTMLFormattedClipping(): Can't find browser tab " + aTabID);
+    return;
+  }
+  await browser.windows.update(tab.windowId, {focused: true});
+
+  let isHTMLEditor = await browser.tabs.sendMessage(aTabID, {msgID: "is-html-editor?"});
   if (isHTMLFormatted) {
-    let htmlPaste = await aePrefs.getPref("htmlPaste");
-
     if (htmlPaste == aeConst.HTMLPASTE_ASK_THE_USER) {
-      // Focus the target window and tab.
-      let tab;
-      try {
-        tab = await browser.tabs.get(aTabID);
-      }
-      catch (e) {
-        // Browser tab was closed.
-        warn("Clippings/wx: processHTMLFormattedClipping(): Can't find browser tab " + aTabID);
-        return;
-      }
-      await browser.windows.update(tab.windowId, {focused: true});
-
-      let isHTMLEditor = await browser.tabs.sendMessage(aTabID, {msgID: "is-html-editor?"});
       if (isHTMLEditor) {
         gPasteAs.set(aClippingName, aClippingContent);
         openPasteAsDlg(aTabID);
+        return;
       }
       else {
-        await pasteProcessedClipping(aClippingContent, aTabID);
+        await pasteProcessedClipping(aClippingContent, aTabID, aeConst.HTMLPASTE_AS_IS);
       }
     }
     else {
@@ -2334,7 +2334,21 @@ async function processHTMLFormattedClipping(aClippingName, aClippingContent, aTa
     }    
   }
   else {
-    await pasteProcessedClipping(aClippingContent, aTabID);
+    // Plain-text clipping.
+    if (htmlPaste == aeConst.HTMLPASTE_ASK_THE_USER) {
+      let pasteFmtOverride;
+      if (isHTMLEditor) {
+        // Paste as if it were formatted as HTML to handle line breaks.
+        pasteFmtOverride = aeConst.HTMLPASTE_AS_FORMATTED;
+      }
+      else {
+        pasteFmtOverride = aeConst.HTMLPASTE_AS_IS;
+      }
+      await pasteProcessedClipping(aClippingContent, aTabID, pasteFmtOverride);
+    }
+    else {
+      await pasteProcessedClipping(aClippingContent, aTabID);
+    }
   }
 }
 
