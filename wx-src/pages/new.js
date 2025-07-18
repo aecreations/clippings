@@ -20,10 +20,14 @@ let gFolderPickerPopup;
 let gNewFolderDlg, gSyncErrMsgBox;
 let gPrefs;
 let gSyncedFldrIDs = new Set();
+let gIsVertExpanded = false;
 
 
 // Page initialization
 $(async () => {
+  let params = new URLSearchParams(window.location.search);
+  gIsVertExpanded = Boolean(params.get("vexp"));
+
   aeClippings.init();
   gClippingsDB = aeClippings.getDB();
 
@@ -134,7 +138,10 @@ async function expandOptions(aIsOptionsExpanded)
       height += DLG_HEIGHT_ADJ_LOCALE;
     }
 
-    await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, {height});
+    if (!gIsVertExpanded) {
+      await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, {height});
+    }
+    
     $("#clipping-options").show();
     $("#new-clipping-fldr-tree-popup").addClass("new-clipping-fldr-tree-popup-fixpos");
     $("#btn-expand-options").addClass("expanded");

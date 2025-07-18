@@ -38,11 +38,10 @@ $(async () => {
     document.title = browser.i18n.getMessage("mnuCopyClipTxt");
   }
 
-  let [brws, platform] = await Promise.all([
-    browser.runtime.getBrowserInfo(),
-    browser.runtime.getPlatformInfo(),
-  ]);
-  document.body.dataset.os = platform.os;
+  let isVertExpanded = Boolean(params.get("vexp"));
+
+  let platform = await browser.runtime.getPlatformInfo();
+  document.body.dataset.os = gOS = platform.os;
   aeInterxn.init(platform.os);
 
   let resp = await browser.runtime.sendMessage({
@@ -123,7 +122,9 @@ $(async () => {
       height += DLG_HEIGHT_ADJ_LINUX;
     }
 
-    await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, {height});
+    if (!isVertExpanded) {
+      await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, {height});
+    }
 
     for (let i = 0; i < gPlaceholders.length; i++) {
       let plchldr = gPlaceholders[i];
@@ -173,14 +174,16 @@ $(async () => {
   $("#btn-accept").click(aEvent => { accept(aEvent) });
   $("#btn-cancel").click(aEvent => { cancel(aEvent) });
 
-  // Fix for Fx57 bug where bundled page loaded using
-  // browser.windows.create won't show contents unless resized.
-  // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1402110>
-  let wnd = await browser.windows.getCurrent();
-  browser.windows.update(wnd.id, {
-    width: wnd.width + 1,
-    focused: true,
-  });
+  if (gOS != "mac") {
+    // Fix for Fx57 bug where bundled page loaded using
+    // browser.windows.create won't show contents unless resized.
+    // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1402110>
+    let wnd = await browser.windows.getCurrent();
+    browser.windows.update(wnd.id, {
+      width: wnd.width + 1,
+      focused: true,
+    });
+  }
 });
 
 

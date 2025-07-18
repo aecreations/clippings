@@ -27,6 +27,10 @@ browser.runtime.onMessage.addListener(aRequest => {
     resp = handleRequestInsertClipping(aRequest);
     break;
 
+  case "is-html-editor?":
+    resp = handleRequestIsHTMLEditor(aRequest);
+    break;
+
   case "focus-active-tab":
     resp = handleRequestFocusTab();
     break;
@@ -124,6 +128,48 @@ function handleRequestNewClipping(aRequest)
     }
 
     info("Content retrieved from " + activeElt.toString() + ":\n" + rv.content);
+  }
+  
+  return rv;
+}
+
+
+function handleRequestIsHTMLEditor(aRequest)
+{
+  let rv = null;
+
+  if (! document.hasFocus()) {
+    warn(`Clippings/wx::content.js: handleRequestIsHTMLEditor(): The web page at ${document.URL} does not have the focus; exiting message handler.`);
+    return rv;
+  }
+
+  let activeElt = getActiveElt();
+
+  log("Clippings/wx::content.js: handleRequestIsHTMLEditor(): activeElt = " + (activeElt ? activeElt.toString() : "???"));  
+
+  if (isElementOfType(activeElt, "HTMLIFrameElement")) {
+    let doc = activeElt.contentDocument;
+    if (doc && doc.body.hasAttribute("contenteditable")
+        && doc.body.getAttribute("contenteditable") != "false") {
+      log(`Clippings::content.js: handleRequestIsHTMLEditor(): In the web page at ${document.URL}, HTML editor element detected: ${activeElt}`);
+      rv = true;
+    }
+    else {
+      warn("Clippings/wx::content.js: handleRequestInsertClipping(): Document element is null or <body> doesn't have 'contenteditable' attribute set; exiting message handler");
+    }
+  }
+  // Rich text editor used by Gmail and Outlook.com
+  else if (isElementOfType(activeElt, "HTMLDivElement")) {
+    log(`Clippings::content.js: handleRequestIsHTMLEditor(): In the web page at ${document.URL}, HTML editor element detected: ${activeElt}`);
+    rv = true;
+  }
+  // Experimental - enable from background script
+  else if (isElementOfType(activeElt, "HTMLBodyElement") && aRequest.pasteIntoHTMLBodyElt
+           && (activeElt.contentEditable || activeElt.ownerDocument.designMode == "on")) {
+    rv = true;
+  }
+  else {
+    rv = false;
   }
   
   return rv;

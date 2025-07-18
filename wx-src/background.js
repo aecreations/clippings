@@ -1869,18 +1869,30 @@ async function newClipping(aActiveTab)
   let url = aActiveTab.url;
   gNewClipping.set({name, content, url});
 
-  let platform = await browser.runtime.getPlatformInfo();
-  openNewClippingDlg(platform.os, aActiveTab.id);
+  let [platform, currWnd, showNewClippingOpts] = await Promise.all([
+    browser.runtime.getPlatformInfo(),
+    browser.windows.getCurrent(),
+    aePrefs.getPref("showNewClippingOpts"),
+  ]);
+
+  let isExpanded = platform.os == "mac" && currWnd.state == "fullscreen" && showNewClippingOpts;
+
+  openNewClippingDlg(platform.os, aActiveTab.id, isExpanded);
 }
 
 
-function openNewClippingDlg(aPlatformOS, aTabID)
+function openNewClippingDlg(aPlatformOS, aTabID, aIsMacOSExpanded=false)
 {
   let url = browser.runtime.getURL("pages/new.html");
   let height = 410;
   if (aPlatformOS == "win") {
     height = 434;
   }
+  if (aIsMacOSExpanded) {
+    height = 474;
+    url += "?vexp=1";
+  }
+
   openDlgWnd(url, "newClipping", {type: "popup", width: 432, height}, aTabID);
 }
 
@@ -1897,7 +1909,7 @@ function getNewClippingData()
 }
 
 
-function openKeyboardPasteDlg(aTabID)
+function openKeyboardPasteDlg(aTabID, aIsExpanded)
 {
   // TO DO: Check first if the cursor is in a web page textbox or HTML editor.
   // If not, then don't do anything.
@@ -1909,11 +1921,17 @@ function openKeyboardPasteDlg(aTabID)
     height: 164,
     topOffset: 256,
   };
-  openDlgWnd(url, "keyboardPaste", wndPpty, aTabID);
+
+  if (aIsExpanded) {
+    wndPpty.height = 250;
+    url += "&vexp=1";
+  }
+  
+  openDlgWnd(url, "keyboardPaste", wndPpty, aTabID, false, aIsExpanded);
 }
 
 
-function openPlaceholderPromptDlg(aTabID, aDlgMode)
+function openPlaceholderPromptDlg(aTabID, aDlgMode, aIsExpanded)
 {
   // TO DO: Same checking for cursor location as in the preceding function.
 
@@ -1925,7 +1943,12 @@ function openPlaceholderPromptDlg(aTabID, aDlgMode)
     topOffset: 256,
   };
 
-  openDlgWnd(url, "placeholderPrmt", wndPpty, aTabID, (aDlgMode > 0));
+  if (aIsExpanded) {
+    wndPpty.height = 318;
+    url += "&vexp=1";
+  }
+
+  openDlgWnd(url, "placeholderPrmt", wndPpty, aTabID, (aDlgMode > 0), aIsExpanded);
 }
 
 
@@ -1977,7 +2000,7 @@ async function openSidebarHelpDlg()
 }
 
 
-async function openDlgWnd(aURL, aWndKey, aWndPpty, aTabID=null, aAlwaysCalcWndPosFromBrwsWnd=false)
+async function openDlgWnd(aURL, aWndKey, aWndPpty, aTabID=null, aAlwaysCalcWndPosFromBrwsWnd=false, aIsMacOSFullScreen=false)
 {
   if (! aTabID) {
     let [tab] = await browser.tabs.query({currentWindow: true, discarded: false});
@@ -2060,7 +2083,7 @@ async function openDlgWnd(aURL, aWndKey, aWndPpty, aTabID=null, aAlwaysCalcWndPo
     // Workaround to bug where window position isn't set when calling
     // `browser.windows.create()`. If unable to get window geometry, then
     // default to centering on screen.
-    if (wndGeom) {
+    if (wndGeom && !aIsMacOSFullScreen) {
       browser.windows.update(wnd.id, {left, top});
     }
   }
@@ -2252,7 +2275,18 @@ async function processClipping(aClippingInfo, aIsExternalRequest, aTabID, aMode)
       let plchldrsWithDefaultVals = aeClippingSubst.getCustomPlaceholderDefaultVals(processedCtnt, aClippingInfo);
       gPlaceholders.set(aClippingInfo.name, plchldrs, plchldrsWithDefaultVals, processedCtnt);
 
-      openPlaceholderPromptDlg(activeTabID, aMode);
+      // On macOS, set the size of the dialog beforehand to work around a bug
+      // with full screen browser windows.
+      let isExpanded = false;
+      let platform = await browser.runtime.getPlatformInfo();
+      if (platform.os == "mac") {
+        let currWnd = await browser.windows.getCurrent();
+        if (currWnd.state == "fullscreen" && plchldrs.length > 1) {
+          isExpanded = true;
+        }
+      }
+
+      openPlaceholderPromptDlg(activeTabID, aMode, isExpanded);
       return;
     }
   }
@@ -2269,20 +2303,52 @@ async function processClipping(aClippingInfo, aIsExternalRequest, aTabID, aMode)
 async function processHTMLFormattedClipping(aClippingName, aClippingContent, aTabID)
 {
   let isHTMLFormatted = aeClippings.hasHTMLTags(aClippingContent);
+  let htmlPaste = await aePrefs.getPref("htmlPaste");
 
+  // Detect HTML editor - focus its containing window and tab.
+  let tab;
+  try {
+    tab = await browser.tabs.get(aTabID);
+  }
+  catch (e) {
+    // Browser tab was closed.
+    warn("Clippings/wx: processHTMLFormattedClipping(): Can't find browser tab " + aTabID);
+    return;
+  }
+  await browser.windows.update(tab.windowId, {focused: true});
+
+  let isHTMLEditor = await browser.tabs.sendMessage(aTabID, {msgID: "is-html-editor?"});
   if (isHTMLFormatted) {
-    let htmlPaste = await aePrefs.getPref("htmlPaste");
-
     if (htmlPaste == aeConst.HTMLPASTE_ASK_THE_USER) {
-      gPasteAs.set(aClippingName, aClippingContent);
-      openPasteAsDlg(aTabID);
+      if (isHTMLEditor) {
+        gPasteAs.set(aClippingName, aClippingContent);
+        openPasteAsDlg(aTabID);
+        return;
+      }
+      else {
+        await pasteProcessedClipping(aClippingContent, aTabID, aeConst.HTMLPASTE_AS_IS);
+      }
     }
     else {
       await pasteProcessedClipping(aClippingContent, aTabID);
     }    
   }
   else {
-    await pasteProcessedClipping(aClippingContent, aTabID);
+    // Plain-text clipping.
+    if (htmlPaste == aeConst.HTMLPASTE_ASK_THE_USER) {
+      let pasteFmtOverride;
+      if (isHTMLEditor) {
+        // Paste as if it were formatted as HTML to handle line breaks.
+        pasteFmtOverride = aeConst.HTMLPASTE_AS_FORMATTED;
+      }
+      else {
+        pasteFmtOverride = aeConst.HTMLPASTE_AS_IS;
+      }
+      await pasteProcessedClipping(aClippingContent, aTabID, pasteFmtOverride);
+    }
+    else {
+      await pasteProcessedClipping(aClippingContent, aTabID);
+    }
   }
 }
 
@@ -2528,11 +2594,25 @@ browser.action.onClicked.addListener(aTab => {
 browser.commands.onCommand.addListener(async (aCmdName, aTab) => {
   info(`Clippings/wx: Command "${aCmdName}" invoked!`);
 
-  let keyboardPaste = await aePrefs.getPref("keyboardPaste");
+  let [platform, prefs, currWnd] = await Promise.all([
+    browser.runtime.getPlatformInfo(),
+    aePrefs.getAllPrefs(),
+    browser.windows.getCurrent(),
+  ]);
 
-  if (aCmdName == "ae-clippings-paste-clipping" && keyboardPaste) {
+  if (aCmdName == "ae-clippings-paste-clipping" && prefs.keyboardPaste) {
     log(`Clippings/wx: Active tab ID: ${aTab.id} - opening keyboard paste dialog.`);
-    openKeyboardPasteDlg(aTab.id);
+
+    // On macOS, set the size of the dialog beforehand to work around a bug
+    // with full screen browser windows.
+    let isExpanded = false;
+    if (platform.os == "mac") {
+      if (currWnd.state == "fullscreen" && prefs.pastePromptAction == aeConst.PASTEACTION_SEARCH_CLIPPING) {
+        isExpanded = true;
+      }
+    }
+
+    openKeyboardPasteDlg(aTab.id, isExpanded);
   }
 });
 
