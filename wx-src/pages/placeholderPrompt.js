@@ -12,6 +12,7 @@ const DLG_HEIGHT_ADJ_LINUX = 60;
 
 const REGEXP_CUSTOM_PLACEHOLDER = /\$\[([\w\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)(\{([\w \-\.\?_\/\(\)!@#%&;:,'"$£¥€*¡¢\u{0080}-\u{10FFFF}\|])+\})?\]/mu;
 
+let gOS;
 let gPlaceholders = null;
 let gPlaceholdersWithDefaultVals = null;
 let gSamePlchldrs = {};
@@ -115,7 +116,7 @@ $(async () => {
       break;
     }
 
-    if (platform.os == "win") {
+    if (gOS == "win") {
       height += DLG_HEIGHT_ADJ_WINDOWS;
     }
     else if (gOS == "linux") {
