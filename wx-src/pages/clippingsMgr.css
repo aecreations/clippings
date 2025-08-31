@@ -1045,6 +1045,10 @@ body[data-os="win"] .browser-style > input[type="checkbox"] + label {
     left: 128px;
 }
 
+body[data-locale="de"] #copy-clipping-txt-fmt-dlg {
+    --width: 320px;
+}
+
 #copy-clipping-txt-fmt-dlg .copy-fmt-btn {
     min-width: unset;
     width: 100%;
@@ -1510,8 +1514,7 @@ body[data-os="mac"] #mini-help-dlg {
 }
 
 body[data-locale="de"] #mini-help-dlg {
-    --height: 366px;
-    top: 2px;
+    --width: 550px;
 }
 
 #shortcut-list-dlg .hlp-hdr,
@@ -1523,6 +1526,10 @@ body[data-locale="de"] #mini-help-dlg {
 
 #mini-help-dlg #mini-help-intro {
     line-height: 1.23;
+}
+
+body[data-locale="de"] #mini-help-dlg #mini-help-intro {
+    letter-spacing: -0.1px;
 }
 
 body[data-locale="fr"] #mini-help-dlg #mini-help-intro {

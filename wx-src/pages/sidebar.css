@@ -651,6 +651,10 @@ body[data-os="mac"] .lightbox .msgbox-icon {
     --height: 154px;
 }
 
+body[data-locale="de"] #customize-dlg {
+    --width: 190px;
+}
+
 #customize-dlg > .dlg-content > .row {
     margin-left: 22px;
     text-indent: -22px;
@@ -661,6 +665,10 @@ body[data-os="mac"] .lightbox .msgbox-icon {
     top: 88px;
     --width: 200px;
     --height: 322px;
+}
+
+body[data-locale="de"] #request-clipbd-write-perm-dlg {
+    --height: 384px;
 }
 
 #request-clipbd-write-perm-dlg .perm-request {
