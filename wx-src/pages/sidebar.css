@@ -671,6 +671,10 @@ body[data-locale="de"] #request-clipbd-write-perm-dlg {
     --height: 384px;
 }
 
+body[data-locale="de"][data-os="win"] #request-clipbd-write-perm-dlg {
+    --height: 400px;
+}
+
 #request-clipbd-write-perm-dlg .perm-request {
     margin-bottom: unset;
 }
