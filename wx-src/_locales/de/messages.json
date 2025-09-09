@@ -137,7 +137,7 @@
     "description": "Clippings context menu in Thunderbird message composer"
   },
   "cxtMnuPasteQuoted": {
-    "message": "Paste As Quoted Text",
+    "message": "Als zitierten Text einfügen",
     "description": "Clippings context menu in Thunderbird message composer"
   },
   "baMenuResetAutoIncrPlaceholders": {
@@ -155,7 +155,7 @@
     "message": "Was ist neu"
   },
   "welcWhatsNewDesc": {
-    "message": "In Clippings 7.1, you can now choose to paste an HTML-formatted clipping into an HTML editor as plain text."
+    "message": "In Clippings 7.1 können Sie nun wählen, ob Sie HTML-formatierte Textbausteine als Nur-Text in einen HTML-Editor einfügen."
   },
   "welcWhatsNewCTA": {
     "message": "Mehr erfahren"
@@ -188,19 +188,19 @@
     "description": "User-facing description of the 'clipboardWrite' extension permission"
   },
   "extPermInstr": {
-    "message": "To grant Clippings this permission, open Add-ons Manager, click on $1 in the list of installed extensions, and then turn on the permission in the Permissions tab.",
+    "message": "Um Clippings diese Berechtigung zu gewähren, öffnen Sie den Add-ons-Manager, klicken Sie auf $1 in der Liste der installierten Erweiterungen, und aktivieren Sie dann die Berechtigung im Reiter Berechtigungen.",
     "description": "Instructions in the optional permission request dialog for how to grant the extension permission (placeholder $1 is the extension name)"
   },
   "btnReqPerm": {
-    "message": "Request Permission",
+    "message": "Berechtigung anfordern",
     "description": "Default button in the extension permission request dialog, which appears when requesting an optional extension permission"
   },
   "permReqPgHdg": {
-    "message": "Permission Requested",
+    "message": "Berechtigung angefordert",
     "description": "Heading of the Permission Requested page"
   },
   "permReqHlp": {
-    "message": "Add-on permissions help",
+    "message": "Hilfe für Berechtigungen der Add-ons",
     "description": "Link to Clippings help page on the AE Creations website"
   },
   "newClippingDlgTitle": {
@@ -324,7 +324,7 @@
     "message": "HINWEIS: Die Befehlstaste für Ihre Tastenkombinationen (Standardkombinationen wie ALT+SHIFT+Y oder STRG+SHIFT+Y) kann je nach Ihren Clippings-Einstellungen abweichen."
   },
   "expHTMLShctKeyCustNoteTB": {
-    "message": "NOTE: The shortcut key prefix (default keys ALT+SHIFT+Y or Command+Option+V) may be different depending on your Clippings settings."
+    "message": "HINWEIS: Das Tastatur-Präfix (Standardtasten ALT+SHIFT+Y oder Befehl+Option+V) kann je nach Clippings-Einstellungen unterschiedlich sein."
   },
   "expHTMLShctKeyCol": {
     "message": "Tastenkombination",
@@ -369,15 +369,15 @@
     "description": "Copy Clipping Text dialog in Clippings Manager and Clippings sidebar - user selection of data format of clipping to be copied"
   },
   "pasteAsHTML": {
-    "message": "Paste as Formatted Text",
+    "message": "Als formatierten Text einfügen",
     "description": "Paste As dialog - user selection of data format of clipping to be pasted"
   },
   "pasteAsPlain": {
-    "message": "Paste as Plain Text",
+    "message": "Als Nur-Text einfügen",
     "description": "Paste As dialog - user selection of data format of clipping to be pasted"
   },
   "pasteAsPlainHTML": {
-    "message": "Paste as Plain Text with HTML tags",
+    "message": "Als Nur-Text mit HTML-Tags einfügen",
     "description": "Paste As dialog - user selection of data format of clipping to be pasted"
   },
   "clippingsMgrWndTitle": {
@@ -561,7 +561,7 @@
     "description": "Clippings Manager - preset (built-in) placeholder menu"
   },
   "mnuPlchldrTo": {
-    "message": "To",
+    "message": "Bis",
     "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
   },
   "mnuPlchldrCc": {
@@ -569,7 +569,7 @@
     "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
   },
   "mnuPlchldrFrom": {
-    "message": "From",
+    "message": "Von",
     "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
   },
   "mnuPlchldrNameEmail": {
@@ -585,11 +585,11 @@
     "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
   },
   "mnuPlchldrSubj": {
-    "message": "Subject",
+    "message": "Betreff",
     "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
   },
   "mnuPlchldrClipClip": {
-    "message": "Clipping In Clipping",
+    "message": "Clipping in Clipping",
     "description": "Clippings Manager - preset (built-in) placeholder menu"
   },
   "plchldrClipClipArg": {
@@ -628,7 +628,7 @@
     "description": "Clippings Manager intro - key binding description"
   },
   "clipMgrIntroCpyClpTxt": {
-    "message": "Copy Clipping Text (when a clipping is selected)",
+    "message": "Kopiere Textbaustein-Text (wenn ein Textbaustein ausgewählt ist)",
     "description": "Clippings Manager intro - key binding description"
   },
   "clipMgrIntroCmdUndo": {
@@ -884,7 +884,7 @@
     "description": "Tab label for extension preferences page"
   },
   "prefTabCopy": {
-    "message": "Copy",
+    "message": "Kopieren",
     "description": "Tab label for extension preferences page (Firefox only)"
   },
   "prefTabPaste": {
@@ -900,15 +900,15 @@
     "description": "Groupbox caption in extension preferences page"
   },
   "labelCopyOpts": {
-    "message": "When copying a clipping containing HTML tags as formatted text:",
+    "message": "Beim Kopieren eines Textbausteins mit HTML-formatiertem Text:",
     "description": "Extension preferences page"
   },
   "labelPasteOpts": {
-    "message": "When pasting a clipping containing HTML tags into an HTML editor:",
+    "message": "Beim Einfügen eines Textbausteins mit HTML-Tags in einen HTML-Editor:",
     "description": "Extension preferences page"
   },
   "labelPasteOptsTB": {
-    "message": "When pasting a clipping containing HTML tags into an HTML-formatted message:",
+    "message": "Beim Einfügen eines Textbausteins mit HTML-Tags in eine HTML-formatierte Nachricht:",
     "description": "Extension preferences page"
   },
   "pasteOptFormatted": {
@@ -916,7 +916,7 @@
     "description": "Paste option radio button label in extension preferences page"
   },
   "pasteOptPlain": {
-    "message": "Paste as plain text",
+    "message": "Als Nur-Text einfügen",
     "description": "Paste option radio button label in extension preferences page"
   },
   "pasteOptRawHTML": {
@@ -924,7 +924,7 @@
     "description": "Paste option radio button label in extension preferences page"
   },
   "pasteOptAskUsr": {
-    "message": "Ask me what to do",
+    "message": "Frage mich, was zu tun ist",
     "description": "Paste option radio button label in extension preferences page"
   },
   "cbAutoLineBreak": {
@@ -932,14 +932,14 @@
     "description": "Checkbox option for copying and pasting an HTML-formatted clipping"
   },
   "htmlCopyDesc": {
-    "message": "To copy a clipping, select it in Clippings Manager or Clippings Sidebar, then right-click and select “Copy Clipping Text” from the context menu.",
+    "message": "Um einen Textbaustein zu kopieren, wählen Sie ihn im Clippings Manager oder in der Clippings Seitenleiste aus und klicken dann mit der rechten Maustaste auf „Textbaustein kopieren“ im Kontextmenü.",
     "description": "Extension preferences page"
   },
   "htmlPasteDesc": {
     "message": "Einen als HTML formatierten Textbaustein immer als reinen Text einfügen, wenn er in eine reine Textbox eingefügt wird oder der Textbaustein einschränkende Tags wie z. B. <script>, <applet>, <object>, <iframe> usw. enthält."
   },
   "htmlPasteDescTB": {
-    "message": "An HTML-formatted clipping will always be pasted as plain text if pasting into a plain-text message, or if the clipping contains restricted tags such as <script>, <applet>, <object>, <iframe>, etc."
+    "message": "Ein HTML-formatierter Textbaustein wird immer als Nur-Text eingefügt, wenn es in eine Nur-Text-Nachricht eingefügt wird oder wenn der Textbaustein eingeschränkte Tags wie <script>, <applet>, <object>, <iframe>, etc. enthält."
   },
   "prefsShortcutMode": {
     "message": "Durch Drücken folgender Tasten wird der Tastenkürzelmodus aktiviert:"
@@ -954,7 +954,7 @@
     "message": "Gehen Sie zu „Tastenkombinationen für Erweiterungen verwalten“ im Add-ons-Manager, um die Tastenkombination zu ändern."
   },
   "prefsDefaultNumPlchldrStart": {
-    "message": "Default starting value for numeric placeholders:"
+    "message": "Vorgabe-Startwert für numerische Platzhalter:"
   },
   "prefsHdgGeneralOptions": {
     "message": "Allgemeine Optionen",
@@ -969,7 +969,7 @@
     "description": "Checkbox option in extension preferences page"
   },
   "cbShowShctMnu": {
-    "message": "Show assigned shortcut key in the Clippings menu",
+    "message": "Zugewiesene Tastenkombination im Clipping-Menü anzeigen",
     "description": "Checkbox option in extension preferences page"
   },
   "shctDispOpt": {
@@ -1060,15 +1060,15 @@
     "message": "Dies kann auch in den Clippings-Einstellungen geändert werden."
   },
   "brwsActOpt": {
-    "message": "Clippings toolbar button action:",
+    "message": "Funktionen der Clippings-Schaltfläche:",
     "description": "Radio button groupbox caption in extension preferences page"
   },
   "brwsActClpMgr": {
-    "message": "Open Clippings Manager",
+    "message": "Textbausteinverwaltung öffnen",
     "description": "Radio button option in extension preferences page"
   },
   "brwsActSbar": {
-    "message": "Open Clippings Sidebar",
+    "message": "Clippings Seitenleiste öffnen",
     "description": "Radio button option in extension preferences page"
   },
   "sidebarOpts": {
@@ -1088,23 +1088,23 @@
     "description": "Label indicating that the associated feature or option is experimental"
   },
   "pasteFromSbarInstr": {
-    "message": "To paste a clipping from the Sidebar:",
+    "message": "Zum Einfügen eines Textbausteins aus der Seitenleiste:",
     "description": "Instructions for pasting a clipping from Clippings Sidebar"
   },
   "pasteFromSbarStep1": {
-    "message": "Select the clipping that you want to paste",
+    "message": "Wählen Sie den Textbaustein aus, den Sie einfügen möchten",
     "description": "Instructions for pasting a clipping from Clippings Sidebar"
   },
   "pasteFromSbarStep2": {
-    "message": "Click on the textbox in the web page and position the cursor where the clipping should be pasted",
+    "message": "Klicken Sie auf das Textfeld in der Webseite und positionieren Sie den Cursor, an dem der Textbaustein eingefügt werden soll",
     "description": "Instructions for pasting a clipping from Clippings Sidebar"
   },
   "pasteFromSbarStep3": {
-    "message": "Return to Clippings Sidebar, then right-click on the selection and then select Paste Clipping",
+    "message": "Gehen sie zur Clippings Seitenleiste, dann mit der rechten Maustaste auf die Auswahl klicken und dann \"Textbaustein einfügen\" wählen",
     "description": "Instructions for pasting a clipping from Clippings Sidebar"
   },
   "pasteFromSbarTip": {
-    "message": "Always click the web page textbox first before pasting, even when pasting one clipping after another.",
+    "message": "Klicken Sie immer vor dem Einfügen zuerst auf die Webseiten-Textbox, auch beim wiederholten Einfügen.",
     "description": "Instructions for pasting a clipping from Clippings Sidebar"
   },
   "mnuPrevPane": {
@@ -1132,7 +1132,7 @@
     "description": "Checkbox option in Clippings Sidebar customize dialog"
   },
   "sbFirstRun": {
-    "message": "Get started by creating a clipping in Clippings Manager or from selected text in the web page.",
+    "message": "Beginnen Sie mit dem Erstellen eines Textbausteins im Textbaustein-Managers oder aus dem ausgewählten Text auf der Webseite.",
     "description": "Clippings Sidebar first-run message"
   },
   "sbarHlpTitle": {
@@ -1140,15 +1140,15 @@
     "description": "Clippings Sidebar help window title"
   },
   "sbarHlpWhat": {
-    "message": "Use Clippings Sidebar to search for and select a clipping for copying and pasting into a web page textbox.  Right-click on a clipping for more options.",
+    "message": "Verwenden Sie die Clippings Seitenleiste, um nach einem Textbaustein zu suchen und wählen Sie einen Textbaustein zum Kopieren und Einfügen in ein Textfeld der Webseite. Klicken Sie mit der rechten Maustaste auf einen Textbaustein für weitere Optionen.",
     "description": "Clippings Sidebar help"
   },
   "sbarHlpCopy": {
-    "message": "If the clipping contains HTML tags, you’ll be prompted to choose the format of the copied content.  Select “Copy as Formatted Text” if pasting into an HTML editor and want to include text formatting such as fonts and headings.  Select “Copy as Plain Text” if pasting into a normal web page textbox or you want to paste the clipping into an HTML editor without any formatting.",
+    "message": "Wenn der Textbaustein HTML-Tags enthält, werden Sie aufgefordert, das Format des kopierten Inhalts auszuwählen. Wählen Sie „Als formatierten Text kopieren“, wenn Sie in einen HTML-Editor einfügen und Textformatierung wie Schriftarten und Überschriften einbinden möchten. Wählen Sie „Als Nur-Text kopieren“, wenn Sie in eine normale Webseiten-Textbox oder den Textbaustein in einen HTML-Editor ohne jegliche Formatierung einfügen möchten.",
     "description": "Clippings Sidebar help"
   },
   "sbarHlpEdit": {
-    "message": "To edit and organize your clippings in Clippings Manager, click Organize Clippings on the toolbar.",
+    "message": "Um Ihre Textbausteine im Textbaustein-Manager zu bearbeiten und zu organisieren, klicken Sie auf \"Textbausteine organisieren\" in der Toolbar.",
     "description": "Clippings Sidebar help"
   },
   "syncFldrName": {
@@ -1207,11 +1207,11 @@
     "message": "Pfad der Synchronisierungsdatei:"
   },
   "extPrmNativeMessaging": {
-    "message": "Exchange messages with programs other than $1",
+    "message": "Nachrichten mit anderen Programmen als $1 austauschen",
     "description": "Exchange messages with programs other than <Firefox or Thunderbird> - User-facing description of the 'nativeMessaging' extension permission"
   },
   "syncPermReqTitle": {
-    "message": "Clippings needs additional permission to connect to Sync Clippings Helper:",
+    "message": "Clippings benötigt zusätzliche Berechtigungen, um sich mit dem \"Sync Clippings Helper\" zu verbinden:",
     "description": "Header for modal dialog in extension preferences page that appears when trying to turn on Sync Clippings without the optional 'nativeMessaging' permission turned on first"
   },
   "syncPermReqDetail": {
@@ -1219,19 +1219,19 @@
     "description": "Message in modal dialog in extension preferences page that appears when trying to turn on Sync Clippings without the optional 'nativeMessaging' permission turned on first"
   },
   "syncPermNotif": {
-    "message": "Clippings doesn't have permission to connect to the Sync Clippings Helper app. To fix this, go to Sync Clippings Settings in Clippings preferences.",
+    "message": "Clippings hat nicht die Berechtigung, sich mit der App \"Sync Clippings Helper\" zu verbinden. Um dies zu beheben, gehen Sie in den Textbausteinoptionen auf \"Textbausteine synchronisieren\".",
     "description": "Notification that appears when attempting to refresh sync data after user turned off the 'nativeMessaging' permission"
   },
   "noSyncAppCTA": {
-    "message": "To get started with Sync Clippings, download and install the Sync Clippings Helper app.  Available from the <a href=\"$1\" class=\"hyperlink\">AE Creations website</a>.",
+    "message": "Um mit der Synchronisation der Textbausteine zu beginnen, laden Sie die App  \"Sync Clippings Helper\" herunter und installieren Sie diese. Verfügbar auf der <a href=\"$1\" class=\"hyperlink\">AE Creations Webseite</a>.",
     "description": "Message in Sync Clippings dialog when Sync Clippings Helper app is not installed"
   },
   "noSyncAppInstr": {
-    "message": "Once it’s installed, come back here to finish setting up Sync Clippings.",
+    "message": "Sobald es installiert ist, kommen Sie hierher zurück, um das Einrichten der Synchronisation abzuschließen.",
     "description": "Message in Sync Clippings dialog when Sync Clippings Helper app is not installed"
   },
   "errSyncOptsInit": {
-    "message": "Unable to initialize Sync Clippings settings. Reinstall Sync Clippings Helper, and then try again."
+    "message": "Die Einstellungen zur Synchronisation konnten nicht initialisiert werden. Installieren Sie \"Sync Clippings Helper\" neu und versuchen Sie es erneut."
   },
   "errSync": {
     "message": "Beim Sync-Clippings-Hilfsprogramm ist ein Fehler aufgetreten."
@@ -1240,7 +1240,7 @@
     "message": "Leider sind keine weiteren Informationen zu diesem Fehler verfügbar."
   },
   "syncFldrRdOnly": {
-    "message": "The Synced Clippings folder is read-only.",
+    "message": "Der Ordner der synchronisierten Clippings ist schreibgeschützt.",
     "description": "Error message that appears in the New Clipping dialog and Clippings Manager when user tries to add, remove or change a clipping or folder under the Synced Clippings folder when the sync file is read only"
   },
   "syncPushFailed": {
@@ -1248,7 +1248,7 @@
     "description": "Error message that appears as a notification when an application error occurs with Sync Clippings Helper"
   },
   "syncGetFailed": {
-    "message": "Sync Clippings Helper is unable to read the sync file.",
+    "message": "\"Sync-Clippings Helper\" kann die Sync-Datei nicht lesen.",
     "description": "Error message that appears as a notification when Sync Clippings Helper cannot read the sync file"
   },
   "syncStartupFailedHdg": {
@@ -1260,7 +1260,7 @@
     "description": "Error message that appears as a notification when the Sync Clippings Helper app was uninstalled without turning off Sync Clippings first"
   },
   "syncFldrFull": {
-    "message": "The Synced Clippings folder is full. Move or delete any unused clippings in the folder, and then try again.",
+    "message": "Der synchronisierte Clipping-Ordner ist voll. Verschieben oder löschen Sie unbenutzte Textbausteine im Ordner und versuchen Sie es erneut.",
     "description": "Error message that appears in New Clipping dialog and Clippings Manager when the sync data exceeds 1 MB"
   },
   "syncUpdateTitle": {
@@ -1286,7 +1286,7 @@
     "description": "Sync Clippings settings dialog in the extension preferences page"
   },
   "cmprsSyncReqmt": {
-    "message": "Requires Sync Clippings Helper 2.0 or newer. <a href=\"$1\" class=\"hyperlink\">Download now</a>",
+    "message": "Benötigt \"Sync Clippings Helper 2.0\" oder neuer. <a href=\"$1\" class=\"hyperlink\">Jetzt herunterladen</a>",
     "description": "Sync Clippings settings dialog in the extension preferences page"
   },
   "wndsAndDlgsOpts": {
@@ -1327,7 +1327,7 @@
     "message": "Internetseite besuchen"
   },
   "aboutCreditsLink": {
-    "message": "Credits",
+    "message": "Danksagungen",
     "description": "Link to acknowledgements page"
   },
   "aboutLicLink": {
@@ -1375,7 +1375,7 @@
     "description": "Header for the What's New page (appears after upgrading Clippings)"
   },
   "upgrade": {
-    "message": "$1 has been upgraded to the latest version.",
+    "message": "$1 wurde auf die neueste Version aktualisiert.",
     "description": "Clippings/Clippings for Thunderbird has been upgraded - What's New page (appears after upgrading Clippings)"
   },
   "whatsNew": {
@@ -1383,39 +1383,39 @@
     "description": "Subheading in the What's New page"
   },
   "whatsNew1": {
-    "message": "Brought back the option to show the Paste As dialog when pasting an HTML-formatted clipping",
+    "message": "Die Option zur Anzeige des 'Einfügen als ...' Dialogs beim Einfügen von HTML-formatiertem Textbaustein wurde wieder eingeführt",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
   "whatsNew2": {
-    "message": "Improvements to undo in Clippings Manager. Also, you can now reverse the last undo by pressing Ctrl+Y on Windows, ⇧⌘Z on macOS, and Ctrl+Shift+Z on Linux",
+    "message": "Verbesserungen beim Befehl \"Rückgängig\". Das letzte \"Rückgängig\" kann nun aufgehoben werden mit Ctrl+Y bei Windows, ⇧⌘Z bei macOS, und Ctrl+Shift+Z bei Linux",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
   "whatsNewFx1": {
-    "message": "New option to paste an HTML-formatted clipping into an HTML editor as plain text",
+    "message": "Neue Option, um einen HTML-formatierten Textbaustein als Nur-Text in einen HTML-Editor einzufügen",
     "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
   },
   "whatsNewFx2": {
-    "message": "The height of the preview pane in Clippings Sidebar can now be adjusted",
+    "message": "Die Höhe des Vorschaufensters in der Clippings Seitenleiste kann nun angepasst werden",
     "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
   },
   "whatsNewFx3": {
-    "message": "Eliminated the confirmation dialog that appeared when reloading the Synced Clippings folder in Clippings Manager or Clippings Sidebar",
+    "message": "Der Bestätigungsdialog beim erneuten Laden des synchronisierten Clippings Ordners im Clippings Manager oder Clippings Seitenleiste wurde entfernt",
     "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
   },
   "whatsNewTb1": {
-    "message": "New placeholders for the subject line, message sender and recipients.  Add them to your clippings in Clippings Manager by using the Placeholder Toolbar",
+    "message": "Neue Platzhalter für die Betreffzeile, den Nachrichtensender und die Empfänger. Fügen Sie diese im Clippings Manager zu Ihren Textbausteinen hinzu, indem Sie die Platzhalter-Symbolleiste verwenden",
     "description": "Description of a Thunderbird-specific enhancement in the new version of Clippings"
   },
   "whatsNewTb2": {
-    "message": "New option to paste an HTML-formatted clipping into an HTML message as plain text",
+    "message": "Neue Option, um einen HTML-formatierten Textbaustein als Nur-Text in eine HTML-Nachricht einzufügen",
     "description": "Description of a Thunderbird-specific enhancement in the new version of Clippings"
   },
   "whatsNewTb3": {
-    "message": "Eliminated the confirmation dialog that appeared when reloading the Synced Clippings folder in Clippings Manager",
+    "message": "Der Bestätigungsdialog beim erneuten Laden des synchronisierten Clippings Ordners im Clippings Manager wurde entfernt",
     "description": "Description of a Thunderbird-specific enhancement in the new version of Clippings"
   },
   "whatsNewSync": {
-    "message": "Clippings will now display an error message if the Sync Clippings data size exceeds the limit of 1 megabyte",
+    "message": "Clippings zeigt nun eine Fehlermeldung an, wenn die Sync-Clippings-Datengröße die Grenze von 1 Megabyte übersteigt",
     "description": "Description of enhancements for the Sync Clippings feature in the new version of Clippings"
   },
   "contribHdg": {

@@ -6,6 +6,7 @@ Many thanks to the Crowdin contributors who provided localizations for this
 version of Clippings:
 
 Chinese (Simplified)  . . . . . .  52fisher
+German  . . . . . . . . . . . . .  Tobias Bannert, Pierre-de-la-Verre
 
 
 If you're fluent in English and another world language and would like to help

@@ -389,7 +389,6 @@ body[data-locale="fr"]:not([data-os="mac"]) #enable-shortcut-key-label {
 
 body[data-locale="de"] #enable-shortcut-key-label {
     margin-right: 0;
-    letter-spacing: -0.45px;
 }
 
 body[data-locale|="es"]:not([data-os="mac"]) #enable-shortcut-key-label {
@@ -692,6 +691,10 @@ body[data-locale="nl"] #wnds-dlgs-opts-dlg #clpmgr-save-wnd-pos-label {
     --height: 310px;
 }
 
+body[data-locale="de"] #sidebar-opts-dlg {
+    --height: 320px;
+}
+
 .experimental-label {
     vertical-align: middle;
 }
@@ -737,6 +740,10 @@ body[data-os="win"] .experimental-label {
     top: 128px;
     --width: 510px;
     --height: 270px;
+}
+
+body[data-locale="de"] #request-native-app-conxn-perm-dlg {
+    --height: 280px;
 }
 
 #sync-clippings-dlg {
