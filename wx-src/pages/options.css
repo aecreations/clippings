@@ -632,6 +632,10 @@ body[data-locale="de"] #wnds-dlgs-opts-dlg {
     --width: 540px;
 }
 
+body[data-locale="de"][data-os="linux"] #wnds-dlgs-opts-dlg {
+    --height: 324px;
+}
+
 body[data-locale|="es"] #wnds-dlgs-opts-dlg,
 body[data-locale="uk"] #wnds-dlgs-opts-dlg {
     --width: 560px;
@@ -665,6 +669,10 @@ body[data-os="mac"] #wnds-dlgs-opts-dlg #wnds-dlgs-opts-exp-warn .warning-icon {
     margin: 8px 0 12px 38px;
     padding: 12px;
     border-radius: 4px;
+}
+
+body[data-locale="de"][data-os="linux"] #wnds-dlgs-opts-dlg #wnds-dlgs-opts-exp-warn-msg {
+    height: 80px;
 }
 
 body[data-locale="nl"] #wnds-dlgs-opts-dlg #clpmgr-save-wnd-pos-label {
@@ -743,7 +751,7 @@ body[data-os="win"] .experimental-label {
 }
 
 body[data-locale="de"] #request-native-app-conxn-perm-dlg {
-    --height: 280px;
+    --height: 284px;
 }
 
 #sync-clippings-dlg {

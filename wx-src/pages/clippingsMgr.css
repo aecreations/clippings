@@ -1508,13 +1508,22 @@ body[data-locale="uk"] #include-src-urls + label {
     top: 1px;
 }
 
+body[data-locale="de"] #mini-help-dlg {
+    --width: 550px;
+}
+
 body[data-os="mac"] #mini-help-dlg {
     --height: 358px;
     top: 8px;
 }
 
-body[data-locale="de"] #mini-help-dlg {
-    --width: 550px;
+body[data-os="linux"] #mini-help-dlg {
+    --height: 340px;
+    top: 12px;
+}
+
+body[data-os="linux"][data-locale="de"] #mini-help-dlg {
+    --height: 356px;
 }
 
 #shortcut-list-dlg .hlp-hdr,

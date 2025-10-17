@@ -466,6 +466,11 @@ ul.fancytree-container {
     font-size: 13px;
 }
 
+body[data-locale="de"] #welcome-clippings-mgr {
+    height: auto;
+    min-height: 32px;
+}
+
 #pane-splitter {
     order: 2;
     position: relative;
