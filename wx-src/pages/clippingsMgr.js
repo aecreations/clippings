@@ -205,8 +205,8 @@ let gClippingsListener = {
 
     newNode.makeVisible().done(() => {     
       newNode.setActive();
-      $("#clipping-name").val(newClipping.name);
-      $("#clipping-text").val("");
+      $("#clipping-name").val(newClipping.name).focus().select();
+      $("#clipping-text").val('');
 
       // Clipping created outside Clippings Manager. Add to undo stack.
       if (aOrigin == aeConst.ORIGIN_HOSTAPP) {
@@ -288,8 +288,8 @@ let gClippingsListener = {
 
     newNode.makeVisible().done(() => {
       newNode.setActive();
-      $("#clipping-name").val(newFolder.name);
-      $("#clipping-text").val("");
+      $("#clipping-name").val(newFolder.name).focus().select();
+      $("#clipping-text").val('');
 
       // Folder created outside Clippings Manager. Add to undo stack.
       if (aOrigin == aeConst.ORIGIN_HOSTAPP) {
