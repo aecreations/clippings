@@ -1667,6 +1667,11 @@ async function showSyncHelperUpdateNotification()
     }
     
     currVer = resp.appVersion;
+    // Chop off the suffix denoting Org Edition.
+    if (currVer.endsWith("(org)")) {
+      currVer = currVer.substring(0, currVer.indexOf(" "));
+    }
+
     log("Clippings/wx: showSyncHelperUpdateNotification(): Current version of the Sync Clippings Helper app: " + currVer);
 
     let fetchResp;
