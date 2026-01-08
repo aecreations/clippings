@@ -7,7 +7,7 @@ Learn more and install the Firefox extension from the [AE Creations website](htt
 
 ## Contribute!
 
-Support the development of Clippings by [making a donation](https://aecreations.io/clippings/donate.php).  Learn more about other ways to [get involved](https://aecreations.io/clippings/contribute.php)!
+Support the development of Clippings by [making a donation](https://aecreations.io/donate.php).  Learn more about other ways to [get involved](https://aecreations.io/clippings/contribute.php)!
 
 If you are skilled at Firefox extension development and want to contribute code for a bug fix or a new feature, follow these instructions:
 

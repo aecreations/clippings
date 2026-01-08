@@ -85,7 +85,7 @@ const aeConst = Object.freeze({
 
   QUICKSTART_URL: "https://aecreations.io/clippings/quickstart.php",
   WHATSNEW_URL: "https://aecreations.io/clippings/whatsnew.php",
-  DONATE_URL: "https://aecreations.io/clippings/donate.php",
+  DONATE_URL: "https://aecreations.io/donate.php",
   L10N_URL: "https://crowdin.com/project/clippings",
   BLOG_URL: "https://aecreations.blogspot.com/",
   FORUM_URL: "https://aecreations.io/forums",
