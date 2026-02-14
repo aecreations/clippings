@@ -5405,7 +5405,7 @@ function buildClippingsTree()
           return true;
         },
 
-        dragDrop(aNode, aData)
+        async dragDrop(aNode, aData)
         {
           if (gIsClippingsTreeEmpty) {
             return;
@@ -5472,7 +5472,7 @@ function buildClippingsTree()
               return;
             }
 
-            browser.runtime.sendMessage({msgID: "dnd-move-started"});
+            await browser.runtime.sendMessage({msgID: "dnd-move-started"});
 
             aData.otherNode.moveTo(aNode, aData.hitMode);
             
@@ -5485,11 +5485,13 @@ function buildClippingsTree()
               isReordering = true;
             }
             else {
+              // The following `gCmd` method calls will trigger rebuild of the
+              // Clippings context menu.
               if (aData.otherNode.isFolder()) {
-                gCmd.moveFolderIntrl(id, newParentID, gCmd.UNDO_STACK);
+                await gCmd.moveFolderIntrl(id, newParentID, gCmd.UNDO_STACK);
               }
               else {
-                gCmd.moveClippingIntrl(id, newParentID, gCmd.UNDO_STACK);
+                await gCmd.moveClippingIntrl(id, newParentID, gCmd.UNDO_STACK);
               }
             }
 
@@ -5529,19 +5531,19 @@ function buildClippingsTree()
               log(undoInfo);
             }
             
-            gCmd.updateDisplayOrder(oldParentID, destUndoStack, undoInfo, !isReordering).then(() => {
-              if (isReordering) {
-                browser.runtime.sendMessage({msgID: "dnd-move-finished"});
-                return;
-              }
-              return gCmd.updateDisplayOrder(newParentID, null, null, false);
-            }).then(() => {
-	      if (newParentID != oldParentID) {
-                aNode.setExpanded();
-              }
+            await gCmd.updateDisplayOrder(oldParentID, destUndoStack, undoInfo, !isReordering);
+            if (isReordering) {
+              await browser.runtime.sendMessage({msgID: "dnd-move-finished"});
+            }
+            else {
+              await gCmd.updateDisplayOrder(newParentID, null, null, false);
+            }
 
-              browser.runtime.sendMessage({msgID: "dnd-move-finished"});
-	    });
+	    if (newParentID != oldParentID) {
+              aNode.setExpanded();
+            }
+
+            await browser.runtime.sendMessage({msgID: "dnd-move-finished"});
           }
           else {
             // Dropping a non-node.
