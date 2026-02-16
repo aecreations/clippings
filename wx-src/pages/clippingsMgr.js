@@ -5486,7 +5486,8 @@ function buildClippingsTree()
             }
             else {
               // The following `gCmd` method calls will trigger rebuild of the
-              // Clippings context menu.
+              // Clippings context menu, which will be suppressed by the
+              // background script.
               if (aData.otherNode.isFolder()) {
                 await gCmd.moveFolderIntrl(id, newParentID, gCmd.UNDO_STACK);
               }
@@ -5531,11 +5532,11 @@ function buildClippingsTree()
               log(undoInfo);
             }
             
+            await browser.runtime.sendMessage({msgID: "dnd-move-finished"});
+
+            // Rebuild Clippings context menu only once.
             await gCmd.updateDisplayOrder(oldParentID, destUndoStack, undoInfo, !isReordering);
-            if (isReordering) {
-              await browser.runtime.sendMessage({msgID: "dnd-move-finished"});
-            }
-            else {
+            if (!isReordering) {
               await gCmd.updateDisplayOrder(newParentID, null, null, false);
             }
 
@@ -5543,7 +5544,6 @@ function buildClippingsTree()
               aNode.setExpanded();
             }
 
-            await browser.runtime.sendMessage({msgID: "dnd-move-finished"});
           }
           else {
             // Dropping a non-node.

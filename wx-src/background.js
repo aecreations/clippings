@@ -23,6 +23,11 @@ let gClippingsListener = {
   _isCopying: false,
   _isClippingsMgrDnDInProgress: false,
   origin: aeConst.ORIGIN_HOSTAPP,
+
+  get isRebuildCxtMenuSuppressed()
+  {
+    return this._isClippingsMgrDnDInProgress;
+  },
   
   newClippingCreated: function (aID, aData, aOrigin)
   {
@@ -1316,6 +1321,10 @@ async function updateContextMenuForFolder(aUpdatedFolderID)
 
 async function rebuildContextMenu()
 {
+  if (gClippingsListener.isRebuildCxtMenuSuppressed) {
+    return;
+  }
+
   log("Clippings/wx: rebuildContextMenu(): Removing all Clippings context menu items and rebuilding the menu...");
   await browser.menus.removeAll();
 
