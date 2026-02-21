@@ -5540,10 +5540,9 @@ function buildClippingsTree()
               await gCmd.updateDisplayOrder(newParentID, null, null, false);
             }
 
-	    if (newParentID != oldParentID) {
+            if (newParentID != oldParentID) {
               aNode.setExpanded();
             }
-
           }
           else {
             // Dropping a non-node.
