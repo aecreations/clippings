@@ -1,22 +1,22 @@
 {
   "extName": {
-    "message": "Clippings",
+    "message": "Coupures",
     "description": "Name of the extension"
   },
   "extNameTB": {
-    "message": "Clippings pour Thunderbird",
+    "message": "Coupures pour Thunderbird",
     "description": "Name of the extension for Thunderbird"
   },
   "extDesc": {
-    "message": "Sauvegarder du texte fréquemment écrit pour coller plus tard.",
+    "message": "Enregistrez les textes que vous écrivez fréquemment pour les réutiliser ultérieurement.",
     "description": "Description of the extension"
   },
   "browserActionTitle": {
-    "message": "Clippings",
+    "message": "Coupures",
     "description": "Label for toolbar button, context submenu and tooltips"
   },
   "cmdDesc": {
-    "message": "Coller le clipping par clé",
+    "message": "Coller une coupure",
     "description": "Keyboard shortcut description in Manage Extension Shortcuts"
   },
   "hostAppFx": {
@@ -45,172 +45,117 @@
     "message": "Non"
   },
   "btnDone": {
-    "message": "Finition"
+    "message": "Terminé"
   },
   "btnBrowse": {
-    "message": "Parcourir..."
+    "message": "Parcourir…"
   },
   "btnReset": {
     "message": "Réinitialiser"
   },
-  "migrnStatusTitle": {
-    "message": "Statut de migration des Clippings",
-    "description": "Clippings for Thunderbird"
-  },
-  "migrnStatusSuccess": {
-    "message": "Le transfert de vos clippings s'est bien effectué.",
-    "description": "Clippings for Thunderbird"
-  },
-  "migrnStatusFail": {
-    "message": "Désolée, erreur lors du transfert de vos clippings.",
-    "description": "Clippings for Thunderbird"
-  },
-  "migrnFailDetail": {
-    "message": "Cliquer sur Sauvegarde des Clippings pour effectuer une sauvegarde de vos données.",
-    "description": "Clippings for Thunderbird"
-  },
-  "migrnSaveData": {
-    "message": "Sauvegarder les Clippings",
-    "description": "Clippings for Thunderbird"
-  },
-  "migrnFailTtip": {
-    "message": "Nous avons rencontré un problème en migrant vos données Clippings. Cliquez pour plus d'infos.",
-    "description": "Clippings for Thunderbird - tooltip"
-  },
-  "saveConfirm": {
-    "message": "Enregitré."
-  },
   "pasteTitle": {
-    "message": "Coller le clipping",
+    "message": "Coller la coupure",
     "description": "Title bar text of keyboard paste dialog"
   },
   "msgTitle": {
-    "message": "Alerte",
+    "message": "Avertissement",
     "description": "Title bar text of alert dialog"
   },
   "msgUnavail": {
-    "message": "L'action sélectionnée n'est pas disponible pour le moment."
+    "message": "L'action sélectionnée n’est pas disponible pour le moment."
   },
   "msgNoTextSel": {
-    "message": "Aucun texte n'a été sélectionné. Merci de sélectionner du texte en premier lieu."
-  },
-  "msgBrwsWndNotFocused": {
-    "message": "Merci de retourner à la fenêtre du navigateur et d'essayer à nouveau."
-  },
-  "msgClpgNotFound": {
-    "message": "Impossible de trouver le clip sélectionné!"
+    "message": "Commencez par sélectionner un texte !"
   },
   "msgNoActvBrwsTab": {
-    "message": "Impossible de coller le clip parce qu'il n'y a pas d'onglet actif dans le navigateur."
-  },
-  "msgRetryPgBusy": {
-    "message": "La page est actuellement occupée. Attendez que l'action de la page se termine et puis essayez à nouveau."
+    "message": "Impossible de coller la coupure, aucun onglet n’est actif."
   },
   "msgRetryPgNotLoaded": {
-    "message": "Impossible de récupérer le texte sélectionné. Recharger la page et essayez à nouveau."
+    "message": "Impossible de récupérer le texte sélectionné. Vérifiez que Coupures a la permission d’accéder aux données pour tous les sites web, puis rechargez la page et réessayez."
   },
   "msgClipbdEmpty": {
-    "message": "Le presse papier est vide ou ne contient aucune donnée textuelle."
-  },
-  "msgRunInPrivateChg": {
-    "message": "Le paramètre « Exécuter dans les fenêtres privées » pour Clippings a récemment été activé ou désactivé. Vous devrez redémarrer Firefox pour appliquer ce changement.",
-    "description": "Message box that appears when attempting to open Clippings Manager immediately after toggling the Run in Private Windows setting"
+    "message": "Le presse-papiers est vide ou ne contient aucun texte."
   },
   "msgUnknown": {
-    "message": "Aucune aide n’est disponible (donc laissez-moi tranquille)."
+    "message": "Aucune aide supplémentaire n’est disponible."
   },
   "none": {
-    "message": "Aucun",
+    "message": "sans",
     "description": "Denotes that there is no shortcut key, label or source web address (URL)."
   },
   "newClipping": {
-    "message": "Nouveau Clipping"
+    "message": "Nouvelle coupure"
   },
   "newFolder": {
     "message": "Nouveau dossier"
   },
   "untitledClipping": {
-    "message": "Clip sans nom"
+    "message": "Coupure sans nom"
   },
   "untitledFolder": {
-    "message": "Dossier sans titre"
+    "message": "Dossier sans nom"
   },
   "rootFldrName": {
-    "message": "Clippings",
+    "message": "Coupures",
     "description": "Name of root folder"
   },
+  "sepName": {
+    "message": "Séparateur",
+    "description": "Hidden name of separator - appears in exported JSON data"
+  },
   "labelRed": {
-    "message": "Rouge"
+    "message": "rouge"
   },
   "labelOrange": {
-    "message": "Orange"
+    "message": "orange"
   },
   "labelYellow": {
-    "message": "Jaune"
+    "message": "jaune"
   },
   "labelGreen": {
-    "message": "Vert"
+    "message": "verte"
   },
   "labelBlue": {
-    "message": "Bleu"
+    "message": "bleue"
   },
   "labelPurple": {
-    "message": "Violet"
+    "message": "violette"
   },
   "labelGrey": {
-    "message": "Gris"
+    "message": "grise"
   },
   "cxtMenuNew": {
-    "message": "Nouveau...",
+    "message": "Nouvelle coupure…",
     "description": "Clippings context menu"
   },
   "cxtMenuOpenClippingsMgr": {
-    "message": "Gérer les clippings",
+    "message": "Gérer les coupures",
     "description": "Clippings context menu"
   },
   "cxtMenuNewFromSel": {
-    "message": "Nouveau depuis la sélection…",
+    "message": "Nouvelle coupure à partir de la sélection…",
     "description": "Clippings context menu in Thunderbird message composer"
   },
-  "cxtMenuNewFromClipbd": {
-    "message": "Nouveau depuis le presse-papiers…",
-    "description": "Clippings context menu in Thunderbird message composer"
-  },
-  "cxtMenuShowPasteOpts": {
-    "message": "Afficher les options de citation lors du collage.",
+  "cxtMnuPasteQuoted": {
+    "message": "Coller comme citation",
     "description": "Clippings context menu in Thunderbird message composer"
   },
   "baMenuResetAutoIncrPlaceholders": {
-    "message": "Réinitialiser l’incrémentation automatique des espaces réservés",
+    "message": "Réinitialiser les substituants numériques",
     "description": "Clippings browser action submenu"
   },
-  "pasteAsHdg": {
-    "message": "Enregistrer le Clipping sous",
-    "description": "Quote Options dialog in Clippings for Thunderbird"
-  },
-  "pasteAsNormal": {
-    "message": "Teste non-formatté",
-    "description": "Quote Options dialog in Clippings for Thunderbird"
-  },
-  "pasteAsQuoted": {
-    "message": "Texte cité",
-    "description": "Quote Options dialog in Clippings for Thunderbird"
-  },
   "welcomePageTitle": {
-    "message": "Bienvenue sur Clippings",
+    "message": "Bienvenue dans Coupures",
     "description": "Welcome to Clippings (post-installation) page title"
   },
   "welcInstallSuccessHdg": {
-    "message": "Bienvenue sur Clippings!"
-  },
-  "welcInstallSuccessSubh": {
-    "message": "Installation terminée avec succès."
+    "message": "Bienvenue dans Coupures !"
   },
   "welcWhatsNewHdg": {
-    "message": "Quoi de neuf"
+    "message": "Quoi de neuf ?"
   },
   "welcWhatsNewDesc": {
-    "message": "Clippings 6.5 est fourni avec de nombreuses corrections et améliorations, telles que le support des symboles et des émoticônes dans les valeurs par défaut des marqueurs. :-)"
+    "message": "Dans Coupures 7.1, vous pouvez maintenant coller une coupure au format HTML dans un éditeur HTML en texte brut."
   },
   "welcWhatsNewCTA": {
     "message": "En savoir plus"
@@ -219,32 +164,57 @@
     "message": "Guide de démarrage rapide"
   },
   "welcQuickStartDesc": {
-    "message": "Lecture recommandée pour les nouveaux utilisateurs. Apprenez les fonctionnalités essentielles de Clippings en quelques minutes."
+    "message": "Lecture recommandée pour les nouveaux utilisateurs. Apprenez les fonctionnalités essentielles de Coupures en quelques minutes."
   },
   "welcQuickStartCTA": {
     "message": "Lire le manuel"
   },
   "welcHelpLink": {
-    "message": "Aide Clippings"
+    "message": "Aide de Coupures"
   },
   "closeWelcomePg": {
     "message": "Fermer cette page"
   },
-  "welcCancelDlg": {
-    "message": "Retour"
+  "permReqTitle": {
+    "message": "Pour réaliser l’action sélectionnée, Coupures a besoin d’une autorisation supplémentaire :",
+    "description": "Header for modal dialog that appears when trying to complete an action that requires an optional extension permission to be turned on"
+  },
+  "extPrmClipbdR": {
+    "message": "Lire les données du presse-papiers",
+    "description": "User-facing description of the 'clipboardRead' extension permission"
+  },
+  "extPrmClipbdW": {
+    "message": "Ajouter des données dans le presse-papiers",
+    "description": "User-facing description of the 'clipboardWrite' extension permission"
+  },
+  "extPermInstr": {
+    "message": "Pour accorder cette autorisation, ouvrez le gestionnaire de modules complémentaires, cliquez sur $1 dans la liste des extensions installées et activez l’autorisation à l’onglet Permissions.",
+    "description": "Instructions in the optional permission request dialog for how to grant the extension permission (placeholder $1 is the extension name)"
+  },
+  "btnReqPerm": {
+    "message": "Demander l’autorisation",
+    "description": "Default button in the extension permission request dialog, which appears when requesting an optional extension permission"
+  },
+  "permReqPgHdg": {
+    "message": "Autorisation demandée",
+    "description": "Heading of the Permission Requested page"
+  },
+  "permReqHlp": {
+    "message": "Aide sur les permissions des extensions",
+    "description": "Link to Clippings help page on the AE Creations website"
   },
   "newClippingDlgTitle": {
-    "message": "Nouveau Clipping",
+    "message": "Nouvelle coupure",
     "description": "New Clipping dialog"
   },
   "labelName": {
-    "message": "Nom du nouveau clipping :"
+    "message": "Nom de la nouvelle coupure :"
   },
   "labelContent": {
-    "message": "Texte:"
+    "message": "Texte :"
   },
   "labelCreateInFldr": {
-    "message": "Créé dans:"
+    "message": "Dossier de destination :"
   },
   "btnNewFolder": {
     "message": "Nouveau dossier"
@@ -254,17 +224,17 @@
     "description": "Button to expand clipping options (source URL, label) in New Clipping dialog"
   },
   "labelSaveSrcURL": {
-    "message": "Enregistrer l’adresse de la page web source"
+    "message": "Enregistrer l’adresse de la page source"
   },
   "labelShortcutKey": {
-    "message": "Raccourci clavier:"
+    "message": "Touche de raccourci :"
   },
   "labelLabel": {
-    "message": "Étiquette:",
+    "message": "Étiquette :",
     "description": "Label for the Clipping label menu"
   },
   "labelCrtUnq": {
-    "message": "Créer du texte sans guillemets",
+    "message": "Créer comme texte non cité",
     "description": "New clipping option available only in Thunderbird"
   },
   "labelRemLnBrk": {
@@ -272,82 +242,97 @@
     "description": "New clipping option available only in Thunderbird"
   },
   "labelNewFldrName": {
-    "message": "Nouveau nom de répertoire:"
+    "message": "Nom du nouveau dossier :"
   },
   "labelCreateAsSubfOf": {
-    "message": "Créez un sous-dossier de:"
+    "message": "Créer comme sous-dossier de :"
   },
   "btnPrevw": {
-    "message": "Aperçu ...",
-    "description": "Clippings for Thunderbird"
+    "message": "Aperçu…",
+    "description": "Button in New Clipping dialog - Clippings for Thunderbird only"
   },
   "labelPrevw": {
-    "message": "Aperçu du Clipping :",
-    "description": "Clippings for Thunderbird"
+    "message": "Aperçu de la coupure :",
+    "description": "Modal dialog label from New Clipping dialog - Clippings for Thunderbird only"
   },
   "shortcutKeyHint": {
-    "message": "Pour coller rapidement cet Clip dans une boite de dialogue de texte de la page web dans Firefox, appuyez sur $1 suivi de la touche de raccourci."
+    "message": "Pour coller rapidement une coupure dans une zone de texte d’une page web, appuyer sur $1 suivi de la touche de raccourci associée à la coupure.",
+    "description": "Tooltip text in New Clipping dialog in Firefox"
   },
   "shctKeyHintTB": {
-    "message": "Pour coller ce Clipping dans un message de Thunderbird, appuyer sur $1 suivi de la touche de raccourci."
+    "message": "Pour coller rapidement une coupure dans un message dans Thunderbird, appuyer sur $1 suivi de la touche de raccourci associée à la coupure.",
+    "description": "Tooltip text in New Clipping dialog in Thunderbird"
   },
   "shortcutKeyAssigned": {
-    "message": "« $1 » est déjà assigné"
+    "message": "La touche [$1] est déjà attribuée.",
+    "description": "Tooltip text for a selection in the shortcut key drop-down menu"
   },
   "initError": {
-    "message": "Clippings ne fonctionne pas lorsque les paramètres de confidentialité dans Firefox sont trop restrictifs, par exemple en activant le mode de navigation privée.  Essayez de modifier ces paramètres à leurs valeurs par défaut, puis redémarrez Firefox et réessayez."
+    "message": "Coupures ne fonctionne pas lorsque les paramètres de confidentialité de Firefox sont trop restrictifs (mode de navigation privée par exemple). Essayez de régler ces paramètres à leurs valeurs par défaut, redémarrez ensuite Firefox et réessayez."
   },
   "saveClippingError": {
-    "message": "Impossible d’enregistrer le nouveau Clip.  Vérifiez que les paramètres de confidentialité dans Firefox ne sont pas trop restrictifs (par exemple en activant le mode de navigation privée), puis redémarrez Firefox et réessayez."
+    "message": "Impossible d’enregistrer la nouvelle coupure. Vérifiez que les paramètres de confidentialité de Firefox ne sont pas trop restrictifs (mode de navigation privée par exemple), redémarrez ensuite Firefox et réessayez."
   },
   "shortcutKeyDesc": {
-    "message": "Appuyez sur la touche de raccourci du Clip à coller."
+    "message": "Appuyer sur la touche de raccourci de la coupure à coller.",
+    "description": "Keyboard paste dialog"
   },
   "keybPasteDlgF1": {
-    "message": "F1 = liste de raccourcis"
+    "message": "F1 = liste des raccourcis",
+    "description": "Keyboard paste dialog - keyboard shortcut legend"
   },
   "keybPasteDlgTab": {
-    "message": "TAB = Rechercher les clips par nom"
+    "message": "Tab = Recherche de coupure par nom",
+    "description": "Keyboard paste dialog - keyboard shortcut legend"
   },
   "keybPasteDlgTabShctMode": {
-    "message": "TAB = mode avec touche de raccourci"
+    "message": "Tab = Mode touche de raccourci",
+    "description": "Keyboard paste dialog - keyboard shortcut legend"
   },
   "srchByNameDesc": {
-    "message": "Recherche par nom de clippings :"
+    "message": "Rechercher une coupure par nom :",
+    "description": "Keyboard paste dialog"
   },
   "numMatches": {
-    "message": "$1 concordances",
+    "message": "$1 correspondances",
     "description": "Status bar message in Clippings Manager showing the number of matches for the search query."
   },
   "insClipping": {
-    "message": "Insérer un clipping"
+    "message": "Coller la coupure",
+    "description": "Toolbar button in the shortcut key list window"
   },
   "exportHTML": {
-    "message": "Exporter au format HTML"
+    "message": "Exporter en HTML",
+    "description": "Toolbar button in the shortcut key list window"
   },
   "expHTMLTitle": {
-    "message": "Touches de raccourci pour les Clippings",
+    "message": "Touches de raccourci des coupures",
     "description": "HTML export of shortcut key list - page title"
   },
   "expHTMLHostAppInfo": {
-    "message": "Clippings $1 à $2",
+    "message": "Coupures $1 sur $2",
     "description": "Clippings <extVersion> on <hostApp>"
   },
   "expHTMLShctKeyInstrxn": {
-    "message": "Pour coller un clipping dans une boite de texte dans Firefox, appuyez sur ALT + MAJ + Y (commande + Maj + Y sur macOS), puis la touche de raccourci."
+    "message": "Pour coller une coupure dans une zone de texte d’une page web dans Firefox, taper la combinaison Alt+Maj+Y (Command+Shift+Y sur macOS) puis appuyer sur la touche de raccourci associée à la coupure."
   },
   "expHTMLShctKeyInstrxnTB": {
-    "message": "Pour coller un Clipping dans un message de Thunderbird, appuyer sur ALT + MAJ + Y (Command+Option+V sur macOS), puis sur la touche de raccourci.",
+    "message": "Pour coller une coupure dans un message dans Thunderbird, taper la combinaison Alt+Maj+Y (Command+Option+V sur macOS) puis appuyer sur la touche de raccourci associée à la coupure.",
     "description": "Clippings for Thunderbird"
   },
   "expHTMLShctKeyCustNote": {
-    "message": "Remarque : Le raccourci clé préfixe (par défaut les touches ALT + MAJ + Y ou Maj + commande + Y) peut être différent en fonction de vos paramètres de coupures de presse."
+    "message": "NOTE : la combinaison précédant la touche de raccourci (touches par défaut Alt + Maj + Y ou Command+Shift+Y) peut être différent selon vos paramètres de Coupures."
+  },
+  "expHTMLShctKeyCustNoteTB": {
+    "message": "NOTE : Le préfixe de la touche de raccourci (touches par défaut ALT+SHIFT+Y ou Command+Option+V) peut être différent selon vos paramètres de Clippings."
   },
   "expHTMLShctKeyCol": {
-    "message": "Touche de raccourci"
+    "message": "Touche",
+    "description": "HTML export of shortcut key list - table heading"
   },
   "expHTMLClipNameCol": {
-    "message": "Nom du clipping"
+    "message": "Nom de la coupure",
+    "description": "HTML export of shortcut key list - table heading"
   },
   "print": {
     "message": "Imprimer",
@@ -357,71 +342,102 @@
     "message": "Document HTML"
   },
   "errorSaveFailed": {
-    "message": "Erreur : fichier enregistré"
+    "message": "Erreur : échec de l’enregistrement"
   },
   "plchldrPromptSingleDesc": {
-    "message": "Entrez la valeur pour \"$1\":",
+    "message": "Entrer la valeur de « $1 » :",
     "description": "Placeholder prompt dialog - single placeholder, text"
   },
   "plchldrPromptMultiDesc": {
-    "message": "Entrez les valeurs pour les espaces réservés suivants.",
+    "message": "Donner une valeur aux substituants suivants.",
     "description": "Placeholder prompt dialog - multiple placeholders"
   },
   "plchldrPmtSelectDesc": {
-    "message": "Choisir une valeur pour \"$1\" :",
+    "message": "Choisir une valeur pour « $1 » :",
     "description": "Placeholder prompt dialog - single placeholder, select"
   },
+  "copyAsHTML": {
+    "message": "Copier en texte formaté",
+    "Description": "Copy Clipping Text dialog in Clippings Manager and Clippings sidebar - user selection of data format of clipping to be copied"
+  },
+  "copyAsPlain": {
+    "message": "Copier en texte simple",
+    "description": "Copy Clipping Text dialog in Clippings Manager and Clippings sidebar - user selection of data format of clipping to be copied"
+  },
+  "copyAsPlainHTML": {
+    "message": "Copier en texte simple avec les balises HTML",
+    "description": "Copy Clipping Text dialog in Clippings Manager and Clippings sidebar - user selection of data format of clipping to be copied"
+  },
+  "pasteAsHTML": {
+    "message": "Coller en texte formaté",
+    "description": "Paste As dialog - user selection of data format of clipping to be pasted"
+  },
+  "pasteAsPlain": {
+    "message": "Coller en texte simple",
+    "description": "Paste As dialog - user selection of data format of clipping to be pasted"
+  },
+  "pasteAsPlainHTML": {
+    "message": "Coller en texte simple avec les balises HTML",
+    "description": "Paste As dialog - user selection of data format of clipping to be pasted"
+  },
   "clippingsMgrWndTitle": {
-    "message": "Gestionnaire des clippings",
+    "message": "Gestionnaire des coupures",
     "description": "Clippings Manager window title"
   },
   "tbNewClipping": {
-    "message": "Nouveau Clipping"
+    "message": "Nouvelle coupure",
+    "description": "Clippings Manager toolbar button caption"
   },
   "tbNewFolder": {
-    "message": "Nouveau dossier"
+    "message": "Nouveau dossier",
+    "description": "Clippings Manager toolbar button caption"
   },
   "tbMoveOrCopy": {
-    "message": "Déplacer ou copier"
+    "message": "Déplacer ou copier",
+    "description": "Clippings Manager toolbar button tooltip"
   },
   "tbDelete": {
-    "message": "Supprimer"
+    "message": "Supprimer",
+    "description": "Clippings Manager toolbar button tooltip"
   },
   "tbUndo": {
-    "message": "Annuler"
+    "message": "Annuler la dernière action",
+    "description": "Clippings Manager toolbar button tooltip"
   },
   "tbTools": {
-    "message": "Outils"
+    "message": "Outils",
+    "description": "Clippings Manager toolbar button caption"
   },
   "tbHelp": {
-    "message": "Aide"
+    "message": "Aide",
+    "description": "Clippings Manager toolbar button tooltip"
   },
   "clipMgrSrchBarHint": {
-    "message": "Trouver des clippings et des dossiers",
+    "message": "Rechercher des coupures et dossiers",
     "description": "Clippings Manager search bar hint text"
   },
   "clipMgrIntroHdg": {
-    "message": "Bienvenue dans la gestion des Clippings"
+    "message": "Bienvenue dans le gestionnaire des coupures"
   },
   "clipMgrIntroDesc": {
-    "message": "Utilisez le gestionnaire des Clippings pour modifier, renommer ou supprimer des clippings et organiser votre collection de coupures dans des dossiers."
+    "message": "Le gestionnaire des coupures permet de créer, modifier, renommer ou supprimer des coupures et de les organiser dans des dossiers."
   },
   "clipMgrIntroKeybHdg": {
     "message": "Raccourcis clavier"
   },
   "clipMgrShowOnlySyncItemsRem": {
-    "message": "Les Clippings n'afficheront que les éléments synchronisés dans le menu. Vous pouvez toujours ajouter et gérer des éléments en dehors du dossier Clipping synchronisé, mais ils n'apparaîtront pas dans le menu. Cette option peut être modifiée dans les préférences de Clippings."
+    "message": "Seuls les éléments synchronisés seront affichés dans le menu. Il est toujours possible d’ajouter et de gérer des éléments hors du dossier synchronisé mais ils n’apparaîtront pas dans le menu. Ce choix peut être modifié dans les options de Coupures."
   },
   "labelInsPlchldr": {
-    "message": "Insérer un champs dynamique:",
+    "message": "Insérer un substituant :",
     "description": "Clippings Manager - Placeholder Toolbar"
   },
   "tbPlchldrPresets": {
-    "message": "Préréglages",
+    "message": "Prédéfini",
     "description": "Clippings Manager - Placeholder Toolbar button"
   },
   "tbPlchldrCustom": {
-    "message": "Personnaliser",
+    "message": "Personnalisé",
     "description": "Clippings Manager - Placeholder Toolbar button"
   },
   "tbPlchldrNumeric": {
@@ -429,65 +445,92 @@
     "description": "Clippings Manager - Placeholder Toolbar button"
   },
   "labelSrcURL": {
-    "message": "Adresse de la source :"
+    "message": "Adresse source :",
+    "description": "Clippings Manager details pane"
   },
   "btnEditSrcURL": {
-    "message": "Éditer"
+    "message": "Modifier",
+    "description": "Button for editing clipping properties (source URL) in the Clippings Manager details pane"
+  },
+  "mnuInsSeparator": {
+    "message": "Insérer un séparateur",
+    "description": "Clippings Manager tree list context menu"
   },
   "mnuNewFromClipbd": {
-    "message": "Nouveau depuis le presse-papiers"
+    "message": "Créer une coupure avec le presse-papiers",
+    "description": "Clippings Manager - menu item in the Tools menu"
   },
   "mnuBackup": {
-    "message": "Sauvegarde..."
+    "message": "Effectuer une sauvegarde…",
+    "description": "Clippings Manager - menu item in the Tools menu"
   },
   "mnuRestoreFromBackup": {
-    "message": "Restaurer depuis une sauvegarde..."
+    "message": "Restaurer une sauvegarde…",
+    "description": "Clippings Manager - menu item in the Tools menu"
   },
   "mnuImport": {
-    "message": "Importer..."
+    "message": "Importer…",
+    "description": "Clippings Manager - menu item in the Tools menu"
   },
   "mnuExport": {
-    "message": "Exporter..."
+    "message": "Exporter…",
+    "description": "Clippings Manager - menu item in the Tools menu"
   },
   "mnuReloadSyncFldr": {
-    "message": "Actualiser"
+    "message": "Recharger",
+    "description": "Button tooltip in Clippings Manager tree list"
   },
   "mnuMoreTools": {
     "message": "Plus",
     "description": "Submenu of Tools menu in Clippings Manager"
   },
   "mnuRemoveAllSrcURLs": {
-    "message": "Supprimer la source des adresses Web..."
+    "message": "Supprimer les adresses des pages sources…",
+    "description": "Clippings Manager - menu item in the Tools menu"
   },
   "mnuShowHide": {
-    "message": "Afficher/Masquer"
+    "message": "Afficher ou masquer",
+    "description": "Clippings Manager - menu item in the Tools menu"
   },
   "mnuShowHideDetails": {
-    "message": "Panneau d’informations"
+    "message": "Panneau des détails",
+    "description": "Clippings Manager - menu item in the Tools menu"
   },
   "mnuShowHidePlchldrBar": {
-    "message": "Barre d’outils de l’espace réservé"
+    "message": "Barre des substituants",
+    "description": "Clippings Manager - menu item in the Tools menu"
   },
   "mnuShowHideStatusBar": {
-    "message": "Barre d'état"
+    "message": "Barre d’état",
+    "description": "Clippings Manager - menu item in the Tools menu"
   },
   "mnuMaximize": {
-    "message": "Agrandir"
+    "message": "Agrandir ou réduire",
+    "description": "Clippings Manager - menu item in the Tools menu"
   },
   "mnuMinimizeWhenInactive": {
-    "message": "Réduire au minimum lorsqu’il est inactif"
+    "message": "Réduire si inactif",
+    "description": "Clippings Manager - menu item in the Tools menu (Linux only)"
   },
   "mnuShowExtPrefs": {
-    "message": "Options..."
+    "message": "Options…",
+    "description": "Clippings Manager - menu item in the Tools menu"
   },
   "mnuMoveOrCopy": {
-    "message": "Déplacer ou copier..."
+    "message": "Déplacer ou copier…",
+    "description": "Clippings Manager tree list context menu"
   },
   "mnuEditLabel": {
-    "message": "Étiquette"
+    "message": "Étiquette",
+    "description": "Clippings Manager tree list context menu"
+  },
+  "mnuCopyClipTxt": {
+    "message": "Copier le texte de la coupure",
+    "description": "Clippings Manager tree list context menu"
   },
   "mnuGoToSrcURL": {
-    "message": "Aller à la Page Web Source"
+    "message": "Accéder à la page source",
+    "description": "Clippings Manager tree list context menu"
   },
   "mnuPlchldrDate": {
     "message": "Date",
@@ -498,7 +541,7 @@
     "description": "Clippings Manager - preset (built-in) placeholder menu"
   },
   "mnuPlchldrAppName": {
-    "message": "Nom de l'application",
+    "message": "Nom de l’application",
     "description": "Clippings Manager - preset (built-in) placeholder menu"
   },
   "mnuPlchldrUsrAgent": {
@@ -506,7 +549,7 @@
     "description": "Clippings Manager - preset (built-in) placeholder menu"
   },
   "mnuPlchldrClipName": {
-    "message": "Nom du clipping",
+    "message": "Nom de la coupure",
     "description": "Clippings Manager - preset (built-in) placeholder menu"
   },
   "mnuPlchldrFldrName": {
@@ -514,57 +557,98 @@
     "description": "Clippings Manager - preset (built-in) placeholder menu"
   },
   "mnuPlchldrFmtDateTime": {
-    "message": "Date/heure formatée...",
+    "message": "Date et heure formatées…",
     "description": "Clippings Manager - preset (built-in) placeholder menu"
   },
+  "mnuPlchldrTo": {
+    "message": "Pour",
+    "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
+  },
+  "mnuPlchldrCc": {
+    "message": "Copie à",
+    "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
+  },
+  "mnuPlchldrFrom": {
+    "message": "De",
+    "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
+  },
+  "mnuPlchldrNameEmail": {
+    "message": "Nom et adresse e-mail",
+    "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
+  },
+  "mnuPlchldrName": {
+    "message": "Nom",
+    "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
+  },
+  "mnuPlchldrEmail": {
+    "message": "Adresse e-mail",
+    "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
+  },
+  "mnuPlchldrSubj": {
+    "message": "Objet",
+    "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
+  },
+  "mnuPlchldrClipClip": {
+    "message": "Coupure dans coupure",
+    "description": "Clippings Manager - preset (built-in) placeholder menu"
+  },
+  "plchldrClipClipArg": {
+    "message": "Nom de la coupure",
+    "description": "Default argument for the clipping-in-clipping placeholder - appears as $[CLIPPING(Name of clipping)]"
+  },
   "clipMgrNameHint": {
-    "message": "Nom du clipping",
+    "message": "Nom de la coupure",
     "description": "Clippings Manager - clipping name textbox hint text"
   },
   "clipMgrContentHint": {
-    "message": "Entrez le texte du Clip",
+    "message": "Texte de la coupure",
     "description": "Clippings Manager - clipping content textarea hint text"
   },
   "clipMgrShortcutHelpHint": {
-    "message": "Liste des raccourcis clavier"
+    "message": "Liste des touches de raccourci"
   },
   "clipMgrNoItems": {
-    "message": "Aucun élément trouvé."
+    "message": "Aucun élément",
+    "description": "Message that appears in empty list of clippings in Clippings Manager"
   },
   "clipMgrIntroCmdDel": {
-    "message": "Supprimer le Clip sélectionné ou le dossier",
+    "message": "Supprimer l’élément sélectionné",
     "description": "Clippings Manager intro - key binding description"
   },
   "clipMgrIntroCmdClearSrchBar": {
-    "message": "Réinitialiser la Barre de recherche",
+    "message": "Vider la barre de recherche",
     "description": "Clippings Manager intro - key binding description"
   },
   "clipMgrIntroCmdSrch": {
-    "message": "Trouver des clippings et des dossiers",
+    "message": "Rechercher des coupures et dossiers",
     "description": "Clippings Manager intro - key binding description"
   },
   "clipMgrIntroCmdClose": {
-    "message": "Fermer le gestionnaire de Clippings",
+    "message": "Fermer le gestionnaire des coupures",
+    "description": "Clippings Manager intro - key binding description"
+  },
+  "clipMgrIntroCpyClpTxt": {
+    "message": "Copier le texte de la coupure (sélectionnée)",
     "description": "Clippings Manager intro - key binding description"
   },
   "clipMgrIntroCmdUndo": {
-    "message": "Annuler",
+    "message": "Annuler la dernière action",
     "description": "Clippings Manager intro - key binding description"
   },
   "clipMgrIntroCmdShowIntro": {
-    "message": "Voir l'introduction Clipping Manager",
+    "message": "Afficher cette aide",
     "description": "Clippings Manager intro - key binding description"
   },
   "clipMgrIntroCmdMaximize": {
-    "message": "Maximiser la fenêtre",
+    "message": "Agrandir ou réduire la fenêtre",
     "description": "Clippings Manager intro - key binding description"
   },
   "clipMgrIntroCmdRedo": {
-    "message": "Annuler annuler",
+    "message": "Rétablir la dernière action annulée",
     "description": "Clippings Manager intro - key binding description"
   },
   "clipMgrIntroCmdDetailsPane": {
-    "message": "Montrer/Cacher le panneau Détails",
+    "message": "Afficher ou masquer le panneau des détails",
     "description": "Clippings Manager intro - key binding description"
   },
   "clipMgrStatusBar": {
@@ -572,81 +656,88 @@
     "description": "Status bar text in Clippings Manager, counting the number of clippings and folders"
   },
   "clipMgrRemoveSrcURLsConfirm": {
-    "message": "Effacer l'adresse de la source de la page web de votre clipping."
+    "message": "Les adresses des pages sources ont été supprimées de vos coupures.",
+    "description": "Clippings Manager message bar"
   },
   "clipMgrRestoredSrcURLs": {
-    "message": "Adresses des pages web sources restaurées."
+    "message": "Les adresses des pages sources ont été restaurées.",
+    "description": "Clippings Manager message bar"
   },
   "clipMgrNoUndo": {
-    "message": "Rien à annuler"
+    "message": "Aucune action à annuler",
+    "description": "Clippings Manager message bar"
   },
   "clipMgrNoRedo": {
-    "message": "Rien à rétablir"
+    "message": "Aucune action à rétablir",
+    "description": "Clippings Manager message bar"
   },
   "clipMgrShortcutKeyHelpHdg": {
-    "message": "Touches de raccourci pour les Clippings"
+    "message": "Touches de raccourci des coupures",
+    "description": "Title of Clippings Manager shortcut key list dialog"
   },
   "clipMgrShortcutHelpInstrxn": {
-    "message": "Pour coller une coupure dans la liste ci-dessous dans un textbox de la page web dans Firefox, appuyez sur $1, puis la touche de raccourci."
+    "message": "Pour coller une coupure de cette liste dans une zone de texte d’une page web dans Firefox, taper $1 suivi de la touche de raccourci associée à la coupure."
   },
   "clipMgrShortcutHelpInstrxnTB": {
-    "message": "Pour coller un Clipping de la liste ci-dessous dans votre message de Thunderbird, appuyer sur $1, puis sur la touche de raccourci."
+    "message": "Pour coller une coupure de cette liste dans un message dans Thunderbird, taper $1 suivi de la touche de raccourci associée à la coupure."
   },
   "clipMgrShortcutKeyAssigned": {
-    "message": "Le raccourci clavier sélectionné a déjà été attribué. Veuillez en sélectionner un autre."
+    "message": "La touche de raccourci sélectionnée est déjà attribuée à une autre coupure. Choisissez-en une autre."
   },
   "clipMgrNoSrcURL": {
     "message": "Le Clipping sélectionné n'a pas d'adresse pour la page source."
   },
   "clipMgrImportConfirm": {
-    "message": "Importation de « $1 » s'est terminée avec succès."
+    "message": "L’importation de « $1 » a été effectuée avec succès.",
+    "description": "Message box in Clippings Manager"
   },
   "btnReload": {
-    "message": "Actualiser"
+    "message": "Recharger",
+    "description": "Tooltip for button adjacent to Synced Clippings folder in the clippings list in Clippings Manager"
   },
   "clipMgrExportConfirm": {
-    "message": "L'exportation vers « $1 » s'est terminée avec succès."
+    "message": "L’exportation vers « $1 » s’est déroulée avec succès.",
+    "description": "Message box in Clippings Manager"
   },
   "clipMgrBackupConfirm": {
-    "message": "Sauvegarde de « $1 » terminée avec succès."
+    "message": "La sauvegarde vers « $1 » s’est déroulée avec succès.",
+    "description": "Message box in Clippings Manager"
   },
   "clipMgrWarnRemoveSrcURLs": {
-    "message": "Toutes les adresses de page web source de vos coupures seront supprimés.  Voulez-vous continuer ?"
+    "message": "Toutes les adresses des pages sources associées à vos coupures vont être supprimées.  Souhaitez-vous continuer ?",
+    "description": "Message box in Clippings Manager"
   },
   "placeholderNameHint": {
-    "message": "Lettres, chiffres, barres de soulignement, pas d'espace"
+    "message": "Lettres, chiffres, barre de soulignement, pas d’espace"
   },
   "labelCustPlchldrName": {
-    "message": "Nom de l’espace réservé personnalisé :"
+    "message": "Nom du substituant personnalisé :"
   },
   "labelNumPlchldrName": {
-    "message": "Nom de l’espace réservé numérique :"
+    "message": "Nom du substituant numérique :"
   },
   "labelCustPlchldrVal": {
     "message": "Valeur par défaut (facultatif) :"
   },
   "custPlchldrValDesc": {
-    "message": "Séparez plusieurs valeurs par défaut par un symbole «|». Exemple : rouge|vert|bleu"
+    "message": "Séparer plusieurs valeurs par défaut par le symbole « | ». Exemple : rouge|verte|bleu"
   },
   "numPlchldrDesc": {
-    "message": "A chaque insertion d'un Clipping, la valeur de ce marqueur augmentera automatiquement de un, jusqu'à réinitialisation à partir du menu contextuel de de la barre d'outils de Clippings"
-  },
-  "numPlchldrDescTB": {
-    "message": "A chaque insertion de ce Clipping, la valeur du competuer augmentera automatiquement de un, jusqu'à réinitialisation à partir du menu contextuel de Clippings."
+    "message": "Chaque fois que la coupure est collée, la valeur du substituant augmente automatiquement de un jusqu’à sa réinitialisation depuis le menu contextuel."
   },
   "dateTimeFmts": {
-    "message": "Formats date/heure disponibles:"
+    "message": "Formats d’horodatage disponibles :"
   },
   "labelSelImportFile": {
-    "message": "Sélectionnez le fichier à importer:",
+    "message": "Sélectionner le fichier à importer :",
     "description": "Import dialog in Clippings Manager"
   },
   "importFmtHdg": {
-    "message": "Formats acceptés:",
+    "message": "Formats acceptés :",
     "description": "Import dialog in Clippings Manager, describing accepted file formats for import"
   },
   "impFmtClippings": {
-    "message": "Clippings (*.json)",
+    "message": "Coupures (*.json, *.rdf)",
     "description": "Import dialog in Clippings Manager, describing accepted file formats for import"
   },
   "impFmtTextSnippets": {
@@ -654,94 +745,110 @@
     "description": "Import dialog in Clippings Manager, describing accepted file formats for import"
   },
   "labelSelBkupFile": {
-    "message": "Sélection du fichier de sauvegarde:"
+    "message": "Sélectionner le fichier de sauvegarde :"
   },
   "statusSavingBkup": {
-    "message": "Enregistrer le fichier de sauvegarde..."
+    "message": "Enregistrement du fichier de sauvegarde en cours…"
   },
   "statusSavingBkupDone": {
-    "message": "Enregistrer le fichier de sauvegarde... fait"
+    "message": "Enregistrement du fichier de sauvegarde effectué"
   },
   "statusSavingBkupFailed": {
-    "message": "La sauvegarde a échoué."
+    "message": "Échec de la sauvegarde"
   },
   "backupError": {
-    "message": "Désolé, une erreur est survenue lors de la création du fichier de sauvegarde.\n\nle détail :\n$1"
+    "message": "Désolé, une erreur est survenue lors de la création du fichier de sauvegarde.\n\nDétails :\n$1"
   },
   "cbImportReplcShctKeys": {
     "message": "Remplacer les touches de raccourci"
   },
   "warnBackupOverwrite": {
-    "message": "Restauration à partir d’un fichier de sauvegarde de tous vos Clippings remplacera tous Clippings actuels. Cette action ne peut pas être annulée."
+    "message": "La restauration de la sauvegarde remplacera toutes vos coupures. Cette action est irréversible."
   },
   "btnImport": {
-    "message": "Importer"
+    "message": "Importer",
+    "description": "Button in the Import dialog in Clippings Manager"
   },
   "btnRestoreBkup": {
-    "message": "Restaurer une sauvegarde"
+    "message": "Restaurer la sauvegarde",
+    "description": "Button in the Restore Backup dialog in Clippings Manager"
   },
   "importError": {
-    "message": "Erreur de lecture de fichier sélectionné.  Le fichier est peut-être pas un fichier Clippings valide."
+    "message": "Erreur à la lecture du fichier sélectionné. Il se peut qu’il ne soit pas un fichier de coupures valide."
   },
   "labelSelExportFmt": {
-    "message": "Sélectionner un format d'exportation des Clippings :"
+    "message": "Sélectionner le format d’exportation des coupures :"
   },
   "expFmtDescHdg": {
-    "message": "Description"
+    "message": "Description",
+    "description": "Export dialog in Clippings Manager"
   },
   "expFmtClippings6": {
-    "message": "Clippings"
+    "message": "Coupures",
+    "description": "Export dialog in Clippings Manager - supported export format"
   },
   "expFmtClippings6Desc": {
-    "message": "Le format par défut pour la sauvegarde et l'échange des données de Clippings avec d'autre utilisateurs ou sur d'autres ordinateurs."
+    "message": "C’est le format par défaut utilisé pour la sauvegarde et l’échange des données avec d’autres utilisateurs ou ordinateurs."
   },
   "expFmtHTMLDoc": {
-    "message": "Document HTML"
+    "message": "Document HTML",
+    "description": "Export dialog in Clippings Manager - supported export format"
   },
   "expFmtHTMLDocDesc": {
-    "message": "Exporte vos données de Clipping en format HTML pour l’impression ou d’affichage dans un navigateur web."
+    "message": "Ce format est destiné à l’impression ou à l’affichage dans un navigateur."
   },
   "expFmtCSV": {
-    "message": "Valeurs séparées par des virgules (CSV)"
+    "message": "Valeurs séparées par des virgules (CSV)",
+    "description": "Export dialog in Clippings Manager - supported export format"
   },
   "expFmtCSVDesc": {
-    "message": "Utilisez le format de valeurs Comma-Separated (CSV) pour échanger des données Clipping avec d’autres applications. Seuls les noms et les contenus sont exportés."
+    "message": "Le format CSV (valeurs séparées par des virgules) permet l’échange des données (nom et texte des coupures uniquement) avec d’autres applications."
   },
   "cbExpInclSrcURLs": {
-    "message": "Inclu l’adresse de page web source de Clipping"
+    "message": "Inclure les adresses des pages sources",
+    "description": "Export dialog box in Clippings Manager"
+  },
+  "cbExpInclSeps": {
+    "message": "Inclure les séparateurs",
+    "description": "Export dialog box in Clippings Manager"
   },
   "btnExport": {
-    "message": "Exporter"
+    "message": "Exporter",
+    "description": "Export dialog box in Clippings Manager"
   },
   "statusExportStart": {
-    "message": "Export en cours..."
+    "message": "Exportation en cours…",
+    "description": "Status bar text in Clippings Manager"
   },
   "statusExportDone": {
-    "message": "Exportation réussie"
+    "message": "Exportation effectuée",
+    "description": "Status bar text in Clippings Manager"
   },
   "statusExportFailed": {
-    "message": "Exportation échouée."
+    "message": "Échec de l’exportation",
+    "description": "Status bar text in Clippings Manager"
   },
   "exportError": {
-    "message": "Erreur lors de l’exportation de données de Clipping.\n\nle détail :\n$1"
+    "message": "Erreur lors de l’exportation des données.\n\nDétails :\n$1"
   },
   "labelMoveClipping": {
-    "message": "Déplacer le Clip vers:"
+    "message": "Déplacer la coupure vers :"
   },
   "labelMoveFolder": {
-    "message": "Déplacer le dossier à :"
+    "message": "Déplacer le dossier vers :"
   },
   "labelCopyClipping": {
-    "message": "Copier le Clip vers:"
+    "message": "Copier la coupure vers :"
   },
   "labelCopyFolder": {
-    "message": "Déplacer le dossier à :"
+    "message": "Copier le dossier vers :"
   },
   "cbCreateCopy": {
-    "message": "Créer une copie"
+    "message": "Créer une copie",
+    "description": "Checkbox in the Move or Copy dialog in Clippings Manager"
   },
   "errMoveToSameParent": {
-    "message": "L'élément existe déjà dans le dossier sélectionné.",
+    "message": "L’élément existe déjà dans le dossier sélectionné.",
     "description": "Error message when attempting to move clipping/folder to the same parent folder"
   },
   "errMoveToSubfldr": {
@@ -749,81 +856,148 @@
     "description": "Error message when attempting to move or copy a folder into a subfolder of itself"
   },
   "btnMove": {
-    "message": "Déplacer"
+    "message": "Déplacer",
+    "description": "Button in the Move or Copy dialog in Clippings Manager"
   },
   "btnCopy": {
-    "message": "Copier"
+    "message": "Copier",
+    "description": "Button in the Move or Copy dialog in Clippings Manager"
   },
   "mnuPrefs": {
-    "message": "Préférences de Clippings…",
+    "message": "Préférences de Coupures…",
     "description": "Browser toolbar button context menu option for opening the extension preferences page"
   },
   "mnuPrefsWin": {
-    "message": "Options de Clippings…",
+    "message": "Options de Coupures…",
     "description": "Browser toolbar button context menu option for opening the extension preferences page - Windows only"
   },
   "prefsTitle": {
-    "message": "Préférences de Clippings",
+    "message": "Préférences de Coupures",
     "description": "Extension preferences page title"
   },
   "prefsTitleWin": {
-    "message": "Options de Clippings",
+    "message": "Options de Coupures",
     "description": "Extension preferences page title on Windows"
   },
-  "prefsHdgPasteOptions": {
-    "message": "Options de collage"
+  "prefTabGen": {
+    "message": "Général",
+    "description": "Tab label for extension preferences page"
   },
-  "labelPasteOptions": {
-    "message": "Lorsque vous collez un Clip au format HTML dans une zone d’édition en texte riche:"
+  "prefTabCopy": {
+    "message": "Copie",
+    "description": "Tab label for extension preferences page (Firefox only)"
+  },
+  "prefTabPaste": {
+    "message": "Collage",
+    "description": "Tab label for extension preferences page"
+  },
+  "cbToolsMnu": {
+    "message": "Ajouter l’entrée « Gérer les coupures » au menu Outils",
+    "description": "Checkbox option in extension preferences page"
+  },
+  "prefsHdgPasteOptions": {
+    "message": "Options de collage",
+    "description": "Groupbox caption in extension preferences page"
+  },
+  "labelCopyOpts": {
+    "message": "Lors de la copie d’une coupure contenant des balises HTML sous forme de texte formaté :",
+    "description": "Extension preferences page"
+  },
+  "labelPasteOpts": {
+    "message": "Lors du collage d’une coupure contenant des balises HTML dans un éditeur HTML :",
+    "description": "Extension preferences page"
+  },
+  "labelPasteOptsTB": {
+    "message": "Lors du collage d’une coupure contenant des balises HTML dans un message en HTML :",
+    "description": "Extension preferences page"
   },
   "pasteOptFormatted": {
-    "message": "Coller comme texte mis en forme"
+    "message": "Coller en texte formaté",
+    "description": "Paste option radio button label in extension preferences page"
+  },
+  "pasteOptPlain": {
+    "message": "Coller en texte simple",
+    "description": "Paste option radio button label in extension preferences page"
   },
   "pasteOptRawHTML": {
-    "message": "Coller comme texte, en préservant les balises HTML"
+    "message": "Coller en texte simple avec les balises HTML",
+    "description": "Paste option radio button label in extension preferences page"
+  },
+  "pasteOptAskUsr": {
+    "message": "Demander quoi faire",
+    "description": "Paste option radio button label in extension preferences page"
   },
   "cbAutoLineBreak": {
-    "message": "Fractionne automatiquement les lignes à moins que les balises <p> ou <br> existent"
+    "message": "Fractionner automatiquement les lignes sauf s’il y a des balises <p> ou <br>",
+    "description": "Checkbox option for copying and pasting an HTML-formatted clipping"
+  },
+  "htmlCopyDesc": {
+    "message": "Pour copier une coupure, la sélectionner dans le gestionnaire des coupures ou  dans le panneau latéral de Coupures puis faire un clic droit et sélectionner « Copier le texte de la coupure » dans le menu contextuel.",
+    "description": "Extension preferences page"
   },
   "htmlPasteDesc": {
-    "message": "Un Clip au format HTML sera toujours collé au format texte brut si il est collé dans une zone de texte ordinaire ou si le Clip contient des balises restreints tels que <script>, <applet>, <object>, <iframe>, etc."
+    "message": "Une coupure au format HTML sera toujours collée en texte simple dans une zone de texte simple ou si elle contient des balises restrictives telles que <script>, <applet>, <object>, <iframe>, etc."
+  },
+  "htmlPasteDescTB": {
+    "message": "Une coupure au format HTML sera toujours collée en texte simple dans un message en texte simple ou si elle contient des balises de restriction comme <script>, <applet>, <object>, <iframe>, etc."
   },
   "prefsShortcutMode": {
-    "message": "Activer le mode clé de raccourci en appuyant sur ces touches :"
+    "message": "Activer le mode touche de raccourci en tapant la combinaison :"
   },
   "prefsShctMode": {
-    "message": "Activer le mode Raccourcis clavier en appuyant sur $1"
-  },
-  "prefsShctModeNew": {
-    "message": "Utiliser également les touches alternatives $1"
+    "message": "Activer le mode touche de raccourci en tapant $1"
   },
   "prefsShortcutKeyNote": {
-    "message": "Certains raccourcis clavier disponibles peuvent déjà être assignés à <a href=\"https://support.mozilla.org/en-US/kb/keyboard-shortcuts-perform-firefox-tasks-quickly\" class=\"hyperlink\">commandes Firefox</a> ou à d'autres modules."
+    "message": "Certains des raccourcis clavier proposés peuvent déjà être attribués à des <a href=\"https://support.mozilla.org/fr/kb/raccourcis-clavier\" class=\"hyperlink\">commandes de Firefox</a> ou à d’autres extensions."
   },
   "prefsOutsideShct": {
-    "message": "Pour la touche de raccourci, allez dans Gérer les raccourcis dans le gestionnaire des Suppléments."
+    "message": "Pour modifier le raccourci clavier, aller dans la gestion des raccourcis d’extensions du gestionnaire de modules complémentaires."
   },
   "prefsDefaultNumPlchldrStart": {
-    "message": "Valeur par défaut, pour les paramètres à incrémentation automatique :"
+    "message": "Valeur initiale des substituants numériques :"
   },
   "prefsHdgGeneralOptions": {
-    "message": "Options Générales"
+    "message": "Options générales",
+    "description": "Groupbox caption in extension preferences page"
   },
   "cbAlwaysSaveSrcURL": {
-    "message": "Toujours enregistrer l’adresse de la page web source"
+    "message": "Toujours enregistrer l’adresse de la page web source",
+    "description": "Checkbox option in extension preferences page"
   },
   "cbCheckSpelling": {
-    "message": "Vérificateur d'orthographe"
+    "message": "Vérifier l’orthographe",
+    "description": "Checkbox option in extension preferences page"
+  },
+  "cbShowShctMnu": {
+    "message": "Afficher la touche de raccourci attribuée dans le menu de Coupures",
+    "description": "Checkbox option in extension preferences page"
+  },
+  "shctDispOpt": {
+    "message": "La présenter entre :",
+    "description": "Drop-down menu option for the 'Show assigned shortcut key' option in the extension preferences page"
+  },
+  "shctDispParen": {
+    "message": "Parenthèses (R)",
+    "description": "Drop-down menu option for the 'Show assigned shortcut key' option in the extension preferences page"
+  },
+  "shctDispSqBkt": {
+    "message": "Crochets [R]",
+    "description": "Drop-down menu option for the 'Show assigned shortcut key' option in the extension preferences page"
   },
   "cbBackupFilenameWithDate": {
-    "message": "Ajouter une date au nom du fichier de sauvegarde"
+    "message": "Ajouter la date au nom du fichier de sauvegarde",
+    "description": "Checkbox option in extension preferences page"
+  },
+  "prefsHdgBackup": {
+    "message": "Options de sauvegarde",
+    "description": "Groupbox caption in extension preferences page"
   },
   "backupRemind": {
-    "message": "Afficher rappel sauvegarde tous les",
+    "message": "Afficher un rappel de sauvegarde tous les",
     "description": "Label for checkbox option for setting backup notification, appears after checkbox and before the reminder frequency drop-down menu"
   },
   "backupRemSkip": {
-    "message": "Sauter le rappel si aucune modification n'a été effectuée depuis la dernière sauvegarde"
+    "message": "Sauter le rappel en l’absence de changement depuis la dernière sauvegarde"
   },
   "backupRemDays": {
     "message": "jours",
@@ -858,66 +1032,158 @@
     "description": "Number of days between backup reminders: once a month (every 30 days)"
   },
   "firstBackupTitle": {
-    "message": "Première Sauvegarde",
+    "message": "Sauvegarde",
     "description": "Title bar text for first-time backup dialog"
   },
   "backupNotifyTitle": {
-    "message": "Sauvegarder vos Clippings"
+    "message": "Sauvegardez vos coupures"
   },
   "backupNotifyMsg": {
-    "message": "Il est temps de sauvegarder vos . Cliquez ici pour sauvegarder vos Clippings maintenant."
+    "message": "Il est temps de sauvegarder vos coupures. Cliquez ici pour sauvegarder vos coupures maintenant."
   },
   "backupNotifyFirstMsg": {
-    "message": "Gardez vos clippings en sécurité en effectuant des sauvegardes régulières. Cliquez ici pour commencer."
+    "message": "Protégez vos coupures en effectuant des sauvegardes régulières. Cliquez ici pour commencer."
   },
   "backupFirstDesc": {
-    "message": "Protégez vos Clippings en effectuant des sauvegardes régulières. Prenez un moment pour sauvegarder vos Clippings en cliquant sur sauvegarde maintenant."
+    "message": "Protégez vos coupures en effectuant des sauvegardes régulières. Prenez un moment pour sauvegarder vos coupures en cliquant sur [Sauvegarder maintenant]."
   },
   "backupNow": {
     "message": "Sauvegarder maintenant"
   },
   "backupHint": {
-    "message": "Vous pouvez également sauvegarder vos Clippings n’importe quand à partir de coupures de gestionnaire. Il suffit d’ouvrir gestionnaire de Clippings et sélectionnez ensuite outils → sauvegarde."
+    "message": "Vous pouvez également sauvegarder vos coupures à tout moment depuis le gestionnaire des coupures en sélectionnant la commande « Outils → Sauvegarder… »."
   },
   "backupPrefsHdg": {
-    "message": "Définir un rappel de sauvegarde"
+    "message": "Définir le rappel de sauvegarde"
   },
   "backupPrefsHint": {
-    "message": "Ce paramètre peut également être modifié dans les préférences de Clippings."
+    "message": "Ce réglage peut être modifié dans les préférences de Coupures."
+  },
+  "brwsActOpt": {
+    "message": "Action du bouton de la barre d'outils :",
+    "description": "Radio button groupbox caption in extension preferences page"
+  },
+  "brwsActClpMgr": {
+    "message": "Ouvrir le gestionnaire des coupures",
+    "description": "Radio button option in extension preferences page"
+  },
+  "brwsActSbar": {
+    "message": "Ouvrir le panneau latéral de Coupures",
+    "description": "Radio button option in extension preferences page"
+  },
+  "sidebarOpts": {
+    "message": "Panneau latéral de Coupures…",
+    "description": "Button label in extension preferences page"
+  },
+  "sidebarTitle": {
+    "message": "Panneau latéral de Coupures",
+    "description": "Title of the Clippings Sidebar, used in dialogs"
+  },
+  "optPasteFromSbar": {
+    "message": "Coller les coupures depuis le panneau latéral",
+    "description": "Checkbox option for enabling clipping paste from Clippings Sidebar"
+  },
+  "labelExpermt": {
+    "message": "(expérimental)",
+    "description": "Label indicating that the associated feature or option is experimental"
+  },
+  "pasteFromSbarInstr": {
+    "message": "Pour coller une coupure depuis le panneau latéral, suivez les étapes ci-dessous.",
+    "description": "Instructions for pasting a clipping from Clippings Sidebar"
+  },
+  "pasteFromSbarStep1": {
+    "message": "Sélectionnez la coupure à coller.",
+    "description": "Instructions for pasting a clipping from Clippings Sidebar"
+  },
+  "pasteFromSbarStep2": {
+    "message": "Cliquez sur la zone de texte et placez le curseur à l’endroit où la coupure doit être collée.",
+    "description": "Instructions for pasting a clipping from Clippings Sidebar"
+  },
+  "pasteFromSbarStep3": {
+    "message": "Revenez au panneau latéral et cliquez sur « Coller la coupure » dans le menu contextuel de la sélection.",
+    "description": "Instructions for pasting a clipping from Clippings Sidebar"
+  },
+  "pasteFromSbarTip": {
+    "message": "Commencez toujours par cliquer sur la zone de texte de la page web avant le collage, même si vous collez une coupure après une autre.",
+    "description": "Instructions for pasting a clipping from Clippings Sidebar"
+  },
+  "mnuPrevPane": {
+    "message": "Panneau d’aperçu",
+    "description": "Clippings Sidebar context menu"
+  },
+  "mnuCustz": {
+    "message": "Personnaliser…",
+    "description": "Clippings Sidebar context menu"
+  },
+  "sbarCustzTitle": {
+    "message": "Personnalisation",
+    "description": "Clippings Sidebar customize dialog title"
+  },
+  "sbarCustzTbar": {
+    "message": "Afficher la barre d’outils",
+    "description": "Checkbox option in Clippings Sidebar customize dialog"
+  },
+  "sbarCustzSrch": {
+    "message": "Afficher la barre de recherche",
+    "description": "Checkbox option in Clippings Sidebar customize dialog"
+  },
+  "sbarCustzPrevw": {
+    "message": "Afficher le panneau d’aperçu",
+    "description": "Checkbox option in Clippings Sidebar customize dialog"
+  },
+  "sbFirstRun": {
+    "message": "Commencez par créer une coupure dans le gestionnaire des coupures ou à partir d’un texte sélectionné sur la page web.",
+    "description": "Clippings Sidebar first-run message"
+  },
+  "sbarHlpTitle": {
+    "message": "Aide pour le panneau latéral",
+    "description": "Clippings Sidebar help window title"
+  },
+  "sbarHlpWhat": {
+    "message": "Il permet de rechercher et sélectionner une coupure à copier et coller dans une zone de texte. D’autres options sont disponibles dans le menu contextuel de la coupure.",
+    "description": "Clippings Sidebar help"
+  },
+  "sbarHlpCopy": {
+    "message": "En cas de copie du texte d’une coupure comportant des balises HTML, une invite permet de sélectionner le format du contenu copié. Choisir « Copier en texte formaté » pour coller dans un éditeur HTML le texte avec la mise en forme (comme les polices et les en-têtes). Choisir « Copier en texte simple » pour coller le texte dans une zone de texte normale de page web ou dans un éditeur HTML mais sans la mise en forme.",
+    "description": "Clippings Sidebar help"
+  },
+  "sbarHlpEdit": {
+    "message": "Pour modifier et organiser les coupures, cliquer sur « Gérer les coupures » dans la barre d’outils pour ouvrir le gestionnaire des coupures.",
+    "description": "Clippings Sidebar help"
   },
   "syncFldrName": {
-    "message": "Clippings synchronisés",
+    "message": "Coupures synchronisées",
     "description": "The name of the folder containing the user's synchronized clippings."
   },
   "syncClippings": {
-    "message": "Synchroniser les Clippings",
+    "message": "Synchronisation",
     "description": "The name of the feature for synchronizing clippings between applications or computers."
   },
   "syncIntro": {
-    "message": "Vous pouvez synchroniser vos Clippings avec Thunderbird ou autres installations de Firefox en mettant en partage dans un dossier spécial de « Clippings Sync ».  Les Clippings synchronisées seront enregistrées dans un fichier sur votre système.  Exige l’application d’assistance de <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">coupures Sync</a>."
+    "message": "Des coupures peuvent être partagées avec Thunderbird ou d’autres installations de Firefox en les plaçant dans le dossier spécial « Coupures synchronisées ». Elles seront enregistrées dans un fichier sur le système. L’application <a href=\"https://aecreations.io/clippings/sync.php\" class=\"hyperlink\">Sync Clippings Helper</a> doit être installée."
   },
   "syncIntroTB": {
-    "message": "Vous pouvez synchroniser vos Clippings avec Firefox ou d'autres installations de Thunderbird en plaçant les Clippings que vous voulez partager dans un dossier spécial « Extraits synchronisés ». Les extraits synchronisés seront enregistrés dans un fichier sur votre système. Installer l'application  <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">Sync Clippings</a>."
+    "message": "Des coupures peuvent être partagées avec Firefox ou d’autres installations de Thunderbird en les plaçant dans le dossier spécial « Coupures synchronisées ». Elles seront enregistrées dans un fichier sur le système. L’application <a href=\"https://aecreations.io/clippings/sync.php\" class=\"hyperlink\">Sync Clippings Helper</a> doit être installée."
   },
   "syncLearnMore": {
-    "message": "En savoir plus sur les Synchronisations de Clippings."
+    "message": "En savoir plus sur la synchronisation des coupures"
   },
   "syncHelp": {
-    "message": "<p class=\"dlg-subhead\">Synchronisation Clippings</p><p> La synchornisation des Clippings vous permets de synchroniser un sous-ensemble de vos clippings entre Firefox et Thunderbird, ou tout autre instance de ces applications. Vous pouvez choisir quels clippings vous voulez synchroniser en les créant dans un répertoire spécifique “Synced Clippings” depuis le nouveau dialogue de \"Nouveau clipping\", ou en les déplaçant dans ce répertoire via le Gestionnaire de Clippings.</p><p>Le répertoire \"Clippings synchronisés\" sera créé automatiquement une fois l'option de synchronisation installée.</p><p class=\"dlg-subhead\">Comment l'installé</p><p>L'application d'aide à la synchronisation des Clippings doit être installée pour maintenir votre répertoire de Clippings Synchronisés à jour. Elle est disponible au téléchargement depuis <a href=\"$1\" class=\"hyperlink\">le site web AE Creations</a>. Une fois installée, elle se lancera automatiquement au démarrage de Firefox et tournera en arrière plan.</p><p>Pour activer la synchronisation des Clippings, <b>Activer Sync</b> depuis la page de préférences de Clippings.  Il vous sera demandé de choisir un emplacement pour le ficher sur votre système où seront sauvegardés les Clippings synchronisés.  Répétez le procesus pour les autres applications avec lesquels vous voulez synchroniser Clippings, en choisissant le même emplacement de fichier pour les données de synchronisation.</p>",
+    "message": "<p class=\"dlg-subhead\">Synchronisation des coupures</p><p>Elle permet de synchroniser des coupures entre Firefox et Thunderbird, ou d’autres instances de ces applications.<br>Il suffit pour cela de les placer dans le dossier spécial « Coupures synchronisées » lors de leur création ou via le gestionnaire des coupures.<br>Ce dossier est automatiquement créé dès que la synchronisation est activée.</p><p class=\"dlg-subhead\">Marche à suivre</p><p>L’application Sync Clippings Helper doit être installéé pour maintenir à jour le contenu du dossier.<br>Ce programme est téléchargeable sur <a href=\"$1\" class=\"hyperlink\">cette page</a>.<br>Une fois installée, elle s’exécute en arrière-plan au démarrage de Firefox.</p><p>La mise en service se fait en cliquant sur le bouton [Activer la synchronisation] dans les préférences de Coupures.<br>Un dialogue apparaîtra permettant de choisir l’emplacement des données synchronisées. Répéter l’opération dans les autres applications concernées en prenant soin de sélectionner le même emplacement pour les données synchronisées.</p>",
     "description": "Sync Clippings help in Firefox"
   },
   "syncHelpTB": {
-    "message": "<p class=\"dlg-subhead\">Synchronisation Clippings</p><p> La synchornisation des Clippings vous permets de synchroniser un sous-ensemble de vos clippings entre Firefox et Thunderbird, ou tout autre instance de ces applications. Vous pouvez choisir quels clippings vous voulez synchroniser en les créant dans un répertoire spécifique “Synced Clippings” depuis le nouveau dialogue de \"Nouveau clipping\", ou en les déplaçant dans ce répertoire via le Gestionnaire de Clippings.</p><p>Le répertoire \"Clippings synchronisés\" sera créé automatiquement une fois l'option de synchronisation installée.</p><p class=\"dlg-subhead\">Comment l'installé</p><p>L'application d'aide à la synchronisation des Clippings doit être installée pour maintenir votre répertoire de Clippings Synchronisés à jour. Elle est disponible au téléchargement depuis <a href=\"$1\" class=\"hyperlink\">le site web AE Creations</a>. Une fois installée, elle se lancera automatiquement au démarrage de Thunderbird et tournera en arrière plan.</p><p>Pour activer la synchronisation des Clippings, <b>Activer Sync</b> depuis la page de préférences de Clippings.  Il vous sera demandé de choisir un emplacement pour le ficher sur votre système où seront sauvegardés les Clippings synchronisés.  Répétez le procesus pour les autres applications avec lesquels vous voulez synchroniser Clippings, en choisissant le même emplacement de fichier pour les données de synchronisation.</p>",
+    "message": "<p class=\"dlg-subhead\">Synchronisation des coupures</p><p>Elle permet de synchroniser des coupures entre Firefox et Thunderbird, ou d’autres instances de ces applications.<br>Il suffit pour cela de les placer dans le dossier spécial « Coupures synchronisées » lors de leur création ou via le gestionnaire des coupures.<br>Ce dossier est automatiquement créé dès que la synchronisation est activée.</p><p class=\"dlg-subhead\">Marche à suivre</p><p>L’application Sync Clippings Helper doit être installéé pour maintenir à jour le contenu du dossier.<br>Ce programme est téléchargeable sur <a href=\"$1\" class=\"hyperlink\">cette page</a>.<br>Une fois installée, elle s’exécute en arrière-plan au démarrage de Thunderbird.</p><p>La mise en service se fait en cliquant sur le bouton [Activer la synchronisation] dans les préférences de Coupures.<br>Un dialogue apparaîtra permettant de choisir l’emplacement des données synchronisées. Répéter l’opération dans les autres applications concernées en prenant soin de sélectionner le même emplacement pour les données synchronisées.</p>",
     "description": "Sync Clippings help in Thunderbird"
   },
   "syncStatusOn": {
-    "message": "La synchronisation des Clippings est activée."
+    "message": "La synchronisation des coupures est activée."
   },
   "syncStatusOff": {
-    "message": "La synchronisation des Clippings est désactivée."
+    "message": "La synchronisation des coupures est désactivée."
   },
   "syncSettings": {
-    "message": "Paramètres..."
+    "message": "Configurer…"
   },
   "syncTurnOn": {
     "message": "Activer la synchronisation"
@@ -926,149 +1192,182 @@
     "message": "Désactiver la synchronisation"
   },
   "syncTurnOffConf": {
-    "message": "Êtes-vous sûr de vouloir désactiver la synchronisation des Clippings ?"
+    "message": "Êtes-vous certain de vouloir désactiver la synchronisation ?"
   },
   "syncTurnOffAck": {
-    "message": "La synchronisation des Clippings est désactivée."
+    "message": "La synchronisation des coupures est désactivée."
   },
   "syncTurnOffRmFldr": {
-    "message": "Retirer la synchronisation des dossiers Clippings du menu et du Clippings Manager"
+    "message": "Retirer le dossier des coupures synchronisées du menu et du gestionnaire"
   },
   "syncConnect": {
-    "message": "Connexion à l'application d'aide de la synchronisation Clippings..."
+    "message": "Connexion à l’application Sync Clippings Helper…"
   },
   "syncFileDir": {
-    "message": "Emplacement du fichier de sauvegarde :"
+    "message": "Emplacement du fichier de synchronisation :"
   },
-  "syncFileDirExample": {
-    "message": "Exemple:"
+  "extPrmNativeMessaging": {
+    "message": "Échanger des messages avec d’autres programmes que $1",
+    "description": "Exchange messages with programs other than <Firefox or Thunderbird> - User-facing description of the 'nativeMessaging' extension permission"
   },
-  "syncFileDirExWin": {
-    "message": "C:\\Users\\Votre nom\\Documents\\Synced Clippings",
-    "description": "Example folder path on Windows."
+  "syncPermReqTitle": {
+    "message": "Coupures a besoin d’une autorisation supplémentaire pour se connecter à Sync Clippings Helper :",
+    "description": "Header for modal dialog in extension preferences page that appears when trying to turn on Sync Clippings without the optional 'nativeMessaging' permission turned on first"
   },
-  "syncFileDirExMac": {
-    "message": "/Users/Votre nom/Documents/Synced Clippings",
-    "description": "Example folder path on macOS."
+  "syncPermReqDetail": {
+    "message": "<a href=\"$1\" class=\"hyperlink\">Sync Clippings Helper</a> est une application qui fonctionne en arrière-plan pour maintenir les coupures synchronisées à jour.",
+    "description": "Message in modal dialog in extension preferences page that appears when trying to turn on Sync Clippings without the optional 'nativeMessaging' permission turned on first"
   },
-  "syncFileDirExLinux": {
-    "message": "/home/Votre nom/synced-clippings",
-    "description": "Example folder path on Linux."
+  "syncPermNotif": {
+    "message": "Impossible de se connecter à Sync Clippings Helper. Pour régler le problème, rendez-vous dans le gestionnaire de modules complémentaires et activez la permission permettant à l’extension d’échanger des messages avec d’autres programmes.",
+    "description": "Notification that appears when attempting to refresh sync data after user turned off the 'nativeMessaging' permission"
   },
-  "errSyncConxn": {
-    "message": "Impossible de se connecter à l’aide de Clippings Sync App. S'assurer que l’application est installée."
+  "noSyncAppCTA": {
+    "message": "Pour pouvoir synchroniser les coupures, téléchargez et installez l’application Sync Clippings Helper disponible sur le <a href=\"$1\" class=\"hyperlink\">site de AE Creations</a>.",
+    "description": "Message in Sync Clippings dialog when Sync Clippings Helper app is not installed"
   },
-  "errSyncConxnDetail": {
-    "message": "L’application d’assistance de Sync Clippings est nécessaire pour synchroniser vos coupures. Vous pouvez le télécharger depuis le <a href=\"http://aecreations.sourceforge.net/clippings/sync.php\" class=\"hyperlink\">AE Creations site Internet</a>."
+  "noSyncAppInstr": {
+    "message": "Une fois installée, revenez ici pour configurer la synchronisation des coupures.",
+    "description": "Message in Sync Clippings dialog when Sync Clippings Helper app is not installed"
   },
   "errSyncOptsInit": {
-    "message": "Impossible d'initialiser les paramètres de synchro de Clippings. Redémarrez Firefox et réessayez."
+    "message": "Impossible d’initialiser les paramètres de synchronisation des coupures. Réinstallez Sync Clippings Helper et réessayez."
   },
   "errSync": {
-    "message": "Une erreur s’est produite avec l’application d’assistance Clippings Sync."
+    "message": "Une erreur s’est produite avec l’application Sync Clippings Helper."
   },
   "errNoDetails": {
     "message": "Désolé, pas d'information supplémentaire sur cette erreur."
   },
-  "syncReloadAck": {
-    "message": "Mise à jour du dossier Clippings Sync. Cliquez sur recharger pour continuer."
-  },
-  "deleteSyncFldr": {
-    "message": "Impossible de supprimer le dossier synchronisé de Clippings, car Sync Clippings est actif."
-  },
-  "moveSyncFldr": {
-    "message": "Impossible de déplacer le dossier Clippings synchronisé."
+  "syncFldrRdOnly": {
+    "message": "Le dossier des coupures synchronisées est en lecture seule.",
+    "description": "Error message that appears in the New Clipping dialog and Clippings Manager when user tries to add, remove or change a clipping or folder under the Synced Clippings folder when the sync file is read only"
   },
   "syncPushFailed": {
-    "message": "Impossible d’envoyer les modifications dans le dossier de synchronisation Clippings, à cause de l’échec de la connexion à l’application d’assistance de Clippings Sync. Pour résoudre ce problème, réinstallez l’application d’assistance de Clippings Sync."
+    "message": "Impossible d’apporter des modifications au dossier des coupures synchronisées car la connexion à l’application Sync Clippings Helper a échoué. Pour résoudre ce problème, réinstallez Sync Clippings Helper.",
+    "description": "Error message that appears as a notification when an application error occurs with Sync Clippings Helper"
+  },
+  "syncGetFailed": {
+    "message": "Sync Clippings Helper ne peut pas lire le fichier de synchronisation.",
+    "description": "Error message that appears as a notification when Sync Clippings Helper cannot read the sync file"
   },
   "syncStartupFailedHdg": {
-    "message": "Erreur de synchronisation de Clippings"
+    "message": "Erreur de synchronisation des coupures",
+    "description": "Title for Sync Clippings error notification"
   },
   "syncStartupFailed": {
-    "message": "Impossible de se connecter à l’application d’assistance de Sync coupures. Pour résoudre ce problème, réinstallez l’application d’assistance de Sync coupures."
+    "message": "Impossible de se connecter à l’application d’assistance de Sync coupures. Pour résoudre ce problème, réinstallez l’application d’assistance de Sync coupures.",
+    "description": "Error message that appears as a notification when the Sync Clippings Helper app was uninstalled without turning off Sync Clippings first"
+  },
+  "syncFldrFull": {
+    "message": "Le dossier des coupures synchronisées est plein. Déplacez ou supprimez les coupures inutilisées du dossier puis réessayez.",
+    "description": "Error message that appears in New Clipping dialog and Clippings Manager when the sync data exceeds 1 MB"
   },
   "syncUpdateTitle": {
-    "message": "Nouvelle Version de Sync Clippings Helper"
+    "message": "Nouvelle version de Sync Clippings Helper"
   },
   "syncUpdateMsg": {
-    "message": "Une nouvelle version de l’app Sync Clippings Helper est disponible. Cliquez ici pour aller à la page de téléchargement."
+    "message": "Une nouvelle version de ll’application Sync Clippings Helper est disponible. Cliquez ici pour accéder à la page de téléchargement."
   },
   "syncOptsHdg": {
-    "message": "Options"
+    "message": "Options",
+    "description": "Heading for Sync Clippings settings dialog in the extension preferences page"
   },
   "syncUpdateChkOpt": {
-    "message": "Vérifier automatiquement les mises à jour de Sync Clippings Helper"
+    "message": "Vérifier automatiquement les mises à jour de Sync Clippings Helper",
+    "description": "Sync Clippings settings dialog in the extension preferences page"
   },
   "cxtMnuSyncItemsOnly": {
-    "message": "N'afficher que les éléments synchronisés dans le menu Clippings"
+    "message": "N’afficher que les éléments synchronisés dans le menu de Coupures",
+    "description": "Sync Clippings settings dialog in the extension preferences page"
+  },
+  "cmprsSyncData": {
+    "message": "Compresser les données synchronisées (recommandé)",
+    "description": "Sync Clippings settings dialog in the extension preferences page"
+  },
+  "cmprsSyncReqmt": {
+    "message": "Requiert la version 2.0 ou plus récente de Sync Clippings Helper. <a href=\"$1\" class=\"hyperlink\">Télécharger maintenant</a>",
+    "description": "Sync Clippings settings dialog in the extension preferences page"
   },
   "wndsAndDlgsOpts": {
-    "message": "Fenêtres et dialogues…"
+    "message": "Fenêtres et dialogues…",
+    "description": "Button in the extension preferences page"
   },
   "wndsDlgsOptsTitle": {
-    "message": "Fenêtres et dialogues"
+    "message": "Fenêtres et dialogues",
+    "description": "Title of the Windows and Wialogs settings dialog in the extension preferences page"
   },
   "wndsDlgsOptsExpWarn": {
-    "message": "Ces paramètres sont expérimentaux sur $1. Ils peuvent ne pas fonctionner correctement sur les systèmes utilisant des affichages multiples.",
+    "message": "Ces réglages sont expérimentaux sur $1. Ils peuvent ne pas fonctionner correctement sur les systèmes à écrans multiples.",
     "description": "Warning message in the Windows and Dialogs settings dialog, appearing if using an OS other than Windows"
   },
   "macOS": {
     "message": "macOS"
   },
   "autoPosWnds": {
-    "message": "Positionner automatiquement dans la fenêtre d'origine",
+    "message": "Positionner automatiquement dans la fenêtre d’origine",
     "description": "Checkbox option in Windows and Dialogs settings dialog"
   },
   "clpMgrSaveWndPos": {
-    "message": "Sauvegarder taille et position de la fenêtre du gestionnaire Clippings",
+    "message": "Mémoriser la position et la taille de la fenêtre du gestionnaire des coupures",
     "description": "Checkbox option in Windows and Dialogs settings dialog"
   },
   "aboutBtn": {
-    "message": "A propos ..."
+    "message": "À propos…",
+    "description": "Button in the extension preferences page"
   },
   "aboutExtVer": {
-    "message": "version $1",
+    "message": "Version $1",
     "description": "Extension version number"
   },
   "aboutAuthor": {
     "message": "Créé par AE Creations."
   },
   "aboutHomePgLink": {
-    "message": "Voir le site web"
+    "message": "Visiter le site web"
+  },
+  "aboutCreditsLink": {
+    "message": "Crédits",
+    "description": "Link to acknowledgements page"
   },
   "aboutLicLink": {
-    "message": "Informations de licence"
+    "message": "Informations sur la licence"
   },
   "aboutTrans": {
-    "message": "Localisations des contributions des les traducteurs Crowdin."
+    "message": "Localisations fournies par les traducteurs de Crowdin."
   },
   "aboutContribHdg": {
-    "message": "Je veux vous aider !",
+    "message": "Vous souhaitez nous aider ?",
     "description": "About dialog text for encouraging users to donate or help with translation"
   },
-  "aboutDonate": {
-    "message": "Faire un don"
-  },
-  "aboutContribConj": {
-    "message": "ou",
-    "description": "Conjunction connecting the CTA hyperlinks for donating or supplying a translation"
-  },
-  "aboutL10n": {
-    "message": "ajouter une traduction."
+  "aboutContrib": {
+    "message": "<a href=\"$1\" class=\"hyperlink\">Faites un don</a> or <a href=\"$2\" class=\"hyperlink\">ajoutez une traduction</a>.",
+    "description": "Links for making a donation or contributing a translation for Clippings"
   },
   "aboutSyncVerLabel": {
-    "message": "Version d’application Clippings Sync :"
+    "message": "Version de l’application Sync Clippings Helper :"
   },
   "noSyncHelperApp": {
-    "message": "Non installé",
+    "message": "non installée",
     "description": "Appears when the Sync Clippings helper app is not detected on the system"
   },
   "aboutSyncFileSize": {
-    "message": "Taille du fichier : Sync:"
+    "message": "Taille du fichier de synchronisation : "
+  },
+  "verMinorUpd": {
+    "message": "Coupures a été mis à jour !",
+    "description": "Minor version update message bar in Clippings Sidebar"
+  },
+  "verUpgr": {
+    "message": "Coupures a été mis à niveau !",
+    "description": "Major version upgrade message bar in Clippings Sidebar"
+  },
+  "btnWhatsNew": {
+    "message": "Quoi de neuf",
+    "description": "Button in the major version upgrade message bar"
   },
   "upgradeNotifcn": {
-    "message": "$1 a été mis à jour récemment ! Cliquez ici pour voir les modifications.",
+    "message": "$1 vient d’être mis à jour ! Cliquez ici pour voir les nouveautés.",
     "description": "Post-upgrade notification text, with placeholder for extension name (Clippings or Clippings for Thunderbird)"
   },
   "newVerHdg": {
@@ -1076,107 +1375,147 @@
     "description": "Header for the What's New page (appears after upgrading Clippings)"
   },
   "upgrade": {
-    "message": "Clippings a été mis à jour vers la version 6.5.",
-    "description": "What's New page (appears after upgrading Clippings)"
-  },
-  "upgradeTB": {
-    "message": "Clippings pour Thunderbird a été mis à jour vers la version 6.3.",
-    "description": "What's New page (appears after upgrading Clippings for Thunderbird)"
+    "message": "$1 a été mis à niveau à la dernière version.",
+    "description": "Clippings/Clippings for Thunderbird has been upgraded - What's New page (appears after upgrading Clippings)"
   },
   "whatsNew": {
-    "message": "Nouveautés",
-    "description": "What's New page (appears after upgrading Clippings)"
+    "message": "Quoi de neuf ?",
+    "description": "Subheading in the What's New page"
   },
   "whatsNew1": {
-    "message": "Les symboles et les émoticônes sont maintenant pris en charge dans les valeurs par défaut des espaces réservés :-)",
+    "message": "Réintroduction de l’option permettant d’afficher la boîte de dialogue « Coller sous » lors du collage d’une coupure au format HTML.",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
   "whatsNew2": {
-    "message": "Les valeurs du marqueur date/heure formatées s'affichent correctement dans les langues autres que l'anglais",
+    "message": "Améliorations apportées à la fonction Annuler dans le gestionnaire des coupures. Vous pouvez désormais annuler la dernière action en appuyant sur Ctrl+Y sous Windows, ⇧⌘Z sous macOS ou Ctrl+Maj+Z sous Linux.",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
-  "whatsNew3": {
-    "message": "Les valeurs par défaut des boîtes de dialogue affichent maintenant le nom du clipping sélectionné, afin que vous sachiez que vous avez sélectionné le bon",
-    "description": "Description of an enhancement or fix in the new version of Clippings"
+  "whatsNewFx1": {
+    "message": "Nouvelle option permettant de coller une coupure au format HTML dans un éditeur HTML sous forme de texte brut.",
+    "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
+  },
+  "whatsNewFx2": {
+    "message": "La hauteur du panneau d’aperçu dans le panneau latéral de Coupures peut désormais être ajustée.",
+    "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
+  },
+  "whatsNewFx3": {
+    "message": "Suppression de la boîte de dialogue de confirmation qui apparaissait lors du rechargement du dossier des coupures synchronisées dans le gestionnaire des coupures ou le panneau latéral de Coupures.",
+    "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
+  },
+  "whatsNewTb1": {
+    "message": "Nouveaux substituants pour le sujet, l’expéditeur et les destinataires du message. Ajoutez-les à vos coupures dans le gestionnaire des coupures à l’aide de la barre des substituants.",
+    "description": "Description of a Thunderbird-specific enhancement in the new version of Clippings"
+  },
+  "whatsNewTb2": {
+    "message": "Nouvelle option permettant de coller une coupure au format HTML dans un message HTML sous forme de texte brut.",
+    "description": "Description of a Thunderbird-specific enhancement in the new version of Clippings"
+  },
+  "whatsNewTb3": {
+    "message": "Suppression de la boîte de dialogue de confirmation qui apparaissait lors du rechargement du dossier des coupures synchronisées dans le gestionnaire des coupures.",
+    "description": "Description of a Thunderbird-specific enhancement in the new version of Clippings"
+  },
+  "whatsNewSync": {
+    "message": "Coupures affiche désormais un message d’erreur si la taille des données synchronisées dépasse la limite de 1 mégaoctet.",
+    "description": "Description of enhancements for the Sync Clippings feature in the new version of Clippings"
   },
   "contribHdg": {
     "message": "Contribuer",
     "description": "Contribution CTA in the What's New page"
   },
   "contribCTA": {
-    "message": "Apportez votre soutien au développement $1 en <a href=\"$2\">faisant un don</a>. Plus d'informations sur les autres méthodes <a href=\"$3\">de participation</a>!",
+    "message": "Soutenez le développement de $1 en <a href=\"$2\">faisant un don</a>. Découvrez d’autres façons de <a href=\"$3\">vous impliquer</a> !",
     "description": "Call to action message to make donation or learn more about contributing to Clippings (or Clippings for Thunderbird)"
   },
   "linkBlog": {
-    "message": "Blog AE Creations"
+    "message": "Blog de AE Creations"
   },
   "linkAMO": {
-    "message": "Page des modules Firefox"
+    "message": "Page des modules de Firefox"
   },
   "linkATN": {
-    "message": "Page des modules Thunderbird"
+    "message": "Page des modules de Thunderbird"
   },
   "linkForum": {
-    "message": "Forums d'aide et de support"
+    "message": "Forums d’aide et d’assistance"
   },
   "keyAlt": {
-    "message": "ALT"
+    "message": "Alt",
+    "description": "Key name"
   },
   "keyOption": {
-    "message": "⌥"
+    "message": "⌥",
+    "description": "Option key on Mac"
   },
   "keyCtrl": {
-    "message": "CTRL"
+    "message": "Ctrl",
+    "description": "Key name"
   },
   "keyMacCtrl": {
-    "message": "⌃"
+    "message": "⌃",
+    "description": "Control key on Mac"
   },
   "keyCommand": {
-    "message": "⌘"
+    "message": "⌘",
+    "description": "Command key on Mac"
   },
   "keyShift": {
-    "message": "MAJ"
+    "message": "Maj",
+    "description": "Key name"
   },
   "keyMacShift": {
-    "message": "⇧"
+    "message": "⇧",
+    "description": "Shift key on Mac"
   },
   "keyDel": {
-    "message": "SUPPR"
+    "message": "Suppr",
+    "description": "Key name on PC for deleting text ahead of the cursor"
   },
   "keyMacDel": {
-    "message": "Supprimer ⌦"
+    "message": "Suppr ⌦",
+    "description": "Delete key on Mac for deleting text ahead of the cursor"
   },
   "keyEsc": {
-    "message": "ECHAP"
+    "message": "Échap",
+    "description": "Key name for Escape key"
   },
   "keySpace": {
-    "message": "Espace"
+    "message": "Espace",
+    "description": "Key name for spacebar"
   },
   "keyPageUp": {
-    "message": "Haut de la page"
+    "message": "Haut de la page",
+    "description": "Key name"
   },
   "keyPageDown": {
-    "message": "Bas de la page"
+    "message": "Bas de la page",
+    "description": "Key name"
   },
   "keyHome": {
-    "message": "Accueil"
+    "message": "Début",
+    "description": "Key name"
   },
   "keyEnd": {
-    "message": "Fin"
+    "message": "Fin",
+    "description": "Key name"
   },
   "keyLeft": {
-    "message": "Gauche"
+    "message": "Gauche",
+    "description": "Key name"
   },
   "keyRight": {
-    "message": "Droite"
+    "message": "Droite",
+    "description": "Key name"
   },
   "keyUp": {
-    "message": "Haut"
+    "message": "Haut",
+    "description": "Key name"
   },
   "keyDown": {
-    "message": "Bas"
+    "message": "Bas",
+    "description": "Key name"
   },
   "keyIns": {
-    "message": "Insérer"
+    "message": "Inser",
+    "description": "Key name"
   }
 }

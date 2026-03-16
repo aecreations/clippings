@@ -466,7 +466,8 @@ ul.fancytree-container {
     font-size: 13px;
 }
 
-body[data-locale="de"] #welcome-clippings-mgr {
+body[data-locale="de"] #welcome-clippings-mgr,
+body[data-locale="fr"] #welcome-clippings-mgr {
     height: auto;
     min-height: 32px;
 }
@@ -597,6 +598,10 @@ body[data-os="mac"] .lightbox .msgbox-icon {
     --height: 176px;
 }
 
+#copy-clipping-txt-fmt-dlg .dlg-hdr {
+    letter-spacing: -0.3px;
+}
+
 #copy-clipping-txt-fmt-dlg .copy-fmt-btn {
     min-width: unset;
     width: 50px;
@@ -660,6 +665,10 @@ body[data-locale="de"] #customize-dlg {
     --width: 190px;
 }
 
+body[data-locale="fr"] #customize-dlg {
+    --height: 182px;
+}
+
 #customize-dlg > .dlg-content > .row {
     margin-left: 22px;
     text-indent: -22px;
@@ -678,6 +687,10 @@ body[data-locale="de"] #request-clipbd-write-perm-dlg {
 
 body[data-locale="de"][data-os="win"] #request-clipbd-write-perm-dlg {
     --height: 400px;
+}
+
+body[data-locale="fr"] #request-clipbd-write-perm-dlg {
+    --height: 370px;
 }
 
 #request-clipbd-write-perm-dlg .perm-request {

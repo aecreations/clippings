@@ -226,6 +226,10 @@ body[data-locale="uk"] .welcome-action-card > p {
     min-height: 80px;
 }
 
+body[data-locale="fr"] .welcome-action-card > p {
+    letter-spacing: -0.2px;
+}
+
 .welcome-action-card > .card-btns {
     width: 100%;
     padding-top: 12px;

@@ -1986,7 +1986,7 @@ async function openBackupDlg()
   let lang = browser.i18n.getUILanguage();
   let height = 412;
 
-  if (["fr", "uk"].includes(lang)) {
+  if (["uk"].includes(lang)) {
     height = 450;
   }
   
