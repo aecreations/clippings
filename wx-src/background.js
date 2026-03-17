@@ -1984,9 +1984,10 @@ async function openBackupDlg()
 {
   let url = browser.runtime.getURL("pages/backup.html");
   let lang = browser.i18n.getUILanguage();
+  let {os} = await browser.runtime.getPlatformInfo();
   let height = 412;
 
-  if (["uk"].includes(lang)) {
+  if (lang == "uk" || (lang == "fr" && os == "win")) {
     height = 450;
   }
   
@@ -1998,9 +1999,9 @@ async function openSidebarHelpDlg()
 {
   let url = browser.runtime.getURL("pages/sidebarHelp.html");
   let height = 406;
-  let platform = await browser.runtime.getPlatformInfo();
+  let {os} = await browser.runtime.getPlatformInfo();
 
-  if (platform.os == "mac") {
+  if (os == "mac") {
     height = 404;
   }
 

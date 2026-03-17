@@ -1241,7 +1241,7 @@ body[data-locale="de"] #shortcut-list-dlg #shortcut-instrxns {
 }
 
 body[data-locale="fr"] #shortcut-list-content table > tbody {
-    height: 148px;
+    height: 145px;
 }
 
 #shortcut-list-content table > tbody > tr {

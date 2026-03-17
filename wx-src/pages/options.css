@@ -1127,6 +1127,10 @@ body[data-locale="fr"] #about-dlg #usr-contrib-cta {
     letter-spacing: -0.45px;
 }
 
+body[data-locale="fr"][data-os="win"] #about-dlg #usr-contrib-cta {
+    letter-spacing: -0.12px;
+}
+
 body[data-locale="uk"] #about-dlg #usr-contrib-cta {
     letter-spacing: -0.5px;
 }

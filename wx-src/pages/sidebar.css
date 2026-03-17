@@ -675,6 +675,10 @@ body[data-locale="fr"] #customize-dlg {
     width: 152px;
 }
 
+body[data-locale="fr"] #customize-dlg #show-preview-pane + label {
+    letter-spacing: 0.1px;
+}
+
 #request-clipbd-write-perm-dlg {
     top: 88px;
     --width: 200px;
