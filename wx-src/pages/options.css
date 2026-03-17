@@ -625,6 +625,10 @@ body[data-locale="fr"] #wnds-dlgs-opts-dlg {
     --width: 592px;
 }
 
+body[data-locale="fr"][data-os="linux"] #wnds-dlgs-opts-dlg {
+    --height: 310px;
+}
+
 body[data-locale="de"] #wnds-dlgs-opts-dlg {
     --width: 540px;
 }
