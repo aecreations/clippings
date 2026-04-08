@@ -134,7 +134,8 @@ async function expandOptions(aIsOptionsExpanded)
       height += DLG_HEIGHT_ADJ_LINUX;
     }
 
-    if (lang == "uk" || lang.startsWith("pt") || lang.startsWith("es")) {
+    if (lang == "uk" || lang.startsWith("fr") || lang.startsWith("pt")
+        || lang.startsWith("es")) {
       height += DLG_HEIGHT_ADJ_LOCALE;
     }
 

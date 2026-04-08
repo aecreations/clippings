@@ -253,6 +253,8 @@ ul.fancytree-container {
     vertical-align: middle;
 }
 
+body[data-locale="fr"] #clipping-key-lbl,
+body[data-locale="fr"] #clipping-label-picker-lbl,
 body[data-locale="uk"] #clipping-key-lbl,
 body[data-locale="uk"] #clipping-label-picker-lbl,
 body[data-locale|="pt"] #clipping-key-lbl,
@@ -263,8 +265,6 @@ body[data-locale|="es"] #clipping-label-picker-lbl {
     margin-bottom: 4px;
 }
 
-body[data-locale="fr"] #clipping-key-lbl,
-body[data-locale="fr"] #clipping-label-picker-lbl,
 body[data-locale="de"] #clipping-key-lbl,
 body[data-locale="de"] #clipping-label-picker-lbl {
     letter-spacing: -0.5px;

@@ -460,8 +460,9 @@ body[data-os="win"] #backup-reminder-freq + label {
     vertical-align: baseline;
 }
 
-body[data-locale="fr"] #skip-backup-label {
-    letter-spacing: -0.85px;
+#backup-rem-skip-unchg {
+    margin-left: 53px;
+    text-indent: -26px;
 }
 
 #shct-key-in-menu-opt-label {
@@ -474,10 +475,6 @@ body[data-locale="fr"] #skip-backup-label {
 
 #sidebar-paste-opts {
     margin-top: 12px;
-}
-
-body[data-locale="fr"] #html-auto-line-break-label {
-    letter-spacing: -0.5px;
 }
 
 #sync-intro {
@@ -641,6 +638,11 @@ body[data-locale="uk"] #wnds-dlgs-opts-dlg {
     --width: 560px;
 }
 
+body[data-locale="fr"][data-os="linux"] #wnds-dlgs-opts-dlg,
+body[data-locale="uk"][data-os="linux"] #wnds-dlgs-opts-dlg {
+    --height: 310px;
+}
+
 #wnds-dlgs-opts-dlg .dlg-content {
     padding-bottom: 12px;
     border-bottom: 1px solid var(--color-fieldset-border);
@@ -701,6 +703,10 @@ body[data-locale="nl"] #wnds-dlgs-opts-dlg #clpmgr-save-wnd-pos-label {
 
 body[data-locale="de"] #sidebar-opts-dlg {
     --height: 320px;
+}
+
+body[data-locale="fr"] #sidebar-opts-dlg {
+    --height: 332px;
 }
 
 .experimental-label {
@@ -1035,12 +1041,20 @@ body[data-os="mac"] #about-dlg {
     --width: 414px;
 }
 
+body[data-locale="fr"] #about-dlg {
+    --height: 302px;
+}
+
 #about-dlg[data-expanded="true"] {
     height: 320px;
 }
 
 body[data-locale="de"] #about-dlg[data-expanded="true"] {
     height: 326px;
+}
+
+body[data-locale="fr"] #about-dlg[data-expanded="true"] {
+    height: 344px;
 }
 
 #about-dlg #ext-icon {
@@ -1089,10 +1103,6 @@ body[data-locale="de"] #about-dlg[data-expanded="true"] {
     font-size: 13px;
 }
 
-body[data-locale="fr"] #about-dlg #ext-desc {
-    letter-spacing: -0.28px;
-}
-
 body[data-locale|="pt"] #about-dlg #ext-desc {
     letter-spacing: -0.3px;
 }
@@ -1116,6 +1126,14 @@ body[data-locale|="es"] #about-dlg #ext-desc {
 body[data-locale="de"] #about-dlg #usr-contrib-cta,
 body[data-locale|="es"]:not([data-os="win"]) #about-dlg #usr-contrib-cta {
     letter-spacing: -0.25px;
+}
+
+body[data-locale="fr"] #about-dlg #usr-contrib-cta {
+    letter-spacing: -0.45px;
+}
+
+body[data-locale="fr"][data-os="win"] #about-dlg #usr-contrib-cta {
+    letter-spacing: -0.12px;
 }
 
 body[data-locale="uk"] #about-dlg #usr-contrib-cta {
