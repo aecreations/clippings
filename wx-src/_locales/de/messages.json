@@ -230,7 +230,7 @@
     "message": "Tastaturkürzel:"
   },
   "labelLabel": {
-    "message": "Beschriftung:",
+    "message": "Schlagwort:",
     "description": "Label for the Clipping label menu"
   },
   "labelCrtUnq": {
@@ -521,7 +521,7 @@
     "description": "Clippings Manager tree list context menu"
   },
   "mnuEditLabel": {
-    "message": "Beschriftung",
+    "message": "Schlagwort",
     "description": "Clippings Manager tree list context menu"
   },
   "mnuCopyClipTxt": {
@@ -561,7 +561,7 @@
     "description": "Clippings Manager - preset (built-in) placeholder menu"
   },
   "mnuPlchldrTo": {
-    "message": "Bis",
+    "message": "An",
     "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
   },
   "mnuPlchldrCc": {

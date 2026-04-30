@@ -7,7 +7,8 @@ version of Clippings:
 
 Chinese (Simplified)  . . . . . .  52fisher
 French  . . . . . . . . . . . . .  DenB10, Vollandet
-German  . . . . . . . . . . . . .  Tobias Bannert, Pierre-de-la-Verre
+German  . . . . . . . . . . . . .  Tobias Bannert, Pierre-de-la-Verre,
+                                   Johannes Endres
 
 
 If you're fluent in English and another world language and would like to help
