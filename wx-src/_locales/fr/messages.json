@@ -54,7 +54,7 @@
     "message": "Réinitialiser"
   },
   "pasteTitle": {
-    "message": "Coller la coupure",
+    "message": "Collage de la coupure",
     "description": "Title bar text of keyboard paste dialog"
   },
   "msgTitle": {
@@ -324,7 +324,7 @@
     "message": "NOTE : la combinaison précédant la touche de raccourci (touches par défaut Alt + Maj + Y ou Command+Shift+Y) peut être différent selon vos paramètres de Coupures."
   },
   "expHTMLShctKeyCustNoteTB": {
-    "message": "NOTE : Le préfixe de la touche de raccourci (touches par défaut ALT+SHIFT+Y ou Command+Option+V) peut être différent selon vos paramètres de Clippings."
+    "message": "NOTE : Le préfixe de la touche de raccourci (touches par défaut Alt+Maj+Y ou Command+Option+V) peut être différent selon vos paramètres de Coupures."
   },
   "expHTMLShctKeyCol": {
     "message": "Touche",
@@ -685,7 +685,7 @@
     "message": "La touche de raccourci sélectionnée est déjà attribuée à une autre coupure. Choisissez-en une autre."
   },
   "clipMgrNoSrcURL": {
-    "message": "Le Clipping sélectionné n'a pas d'adresse pour la page source."
+    "message": "La coupure sélectionnée n’a pas de page source associée."
   },
   "clipMgrImportConfirm": {
     "message": "L’importation de « $1 » a été effectuée avec succès.",
@@ -973,7 +973,7 @@
     "description": "Checkbox option in extension preferences page"
   },
   "shctDispOpt": {
-    "message": "La présenter entre :",
+    "message": "Afficher la touche de raccourci dans :",
     "description": "Drop-down menu option for the 'Show assigned shortcut key' option in the extension preferences page"
   },
   "shctDispParen": {
