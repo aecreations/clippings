@@ -6,7 +6,7 @@ Many thanks to the Crowdin contributors who provided localizations for this
 version of Clippings:
 
 Chinese (Simplified)  . . . . . .  52fisher
-French  . . . . . . . . . . . . .  DenB10, Vollandet
+French  . . . . . . . . . . . . .  DenB10, fanfu, Vollandet
 German  . . . . . . . . . . . . .  Tobias Bannert, Johannes Endres,
                                    Pierre-de-la-Verre
 
