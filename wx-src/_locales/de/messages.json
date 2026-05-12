@@ -230,7 +230,7 @@
     "message": "Tastaturkürzel:"
   },
   "labelLabel": {
-    "message": "Beschriftung:",
+    "message": "Schlagwort:",
     "description": "Label for the Clipping label menu"
   },
   "labelCrtUnq": {
@@ -314,17 +314,17 @@
     "description": "Clippings <extVersion> on <hostApp>"
   },
   "expHTMLShctKeyInstrxn": {
-    "message": "Um ein Clipping in ein Webseiten-Textfeld in Firefox einzufügen, drücken Sie ALT+UMSCH+Y (CMD+UMSCH+Y auf MacOS) und danach das Tastenkürzel."
+    "message": "Um ein Clipping in ein Webseiten-Textfeld in Firefox einzufügen, drücken Sie ALT+UMSCH+Y (&#x21e7;&#x2318;Y auf MacOS) und danach das Tastenkürzel."
   },
   "expHTMLShctKeyInstrxnTB": {
-    "message": "Um einen Textbaustein in eine Nachricht in Thunderbird einzufügen, drücken Sie Alt+Umschalt+Y (Command+Option+V auf macOS), dann die Tastenkombination.",
+    "message": "Um einen Textbaustein in eine Nachricht in Thunderbird einzufügen, drücken Sie Alt+Umschalt+Y (&#x2325;&#x2318;V auf macOS), dann die Tastenkombination.",
     "description": "Clippings for Thunderbird"
   },
   "expHTMLShctKeyCustNote": {
-    "message": "HINWEIS: Die Befehlstaste für Ihre Tastenkombinationen (Standardkombinationen wie ALT+SHIFT+Y oder STRG+SHIFT+Y) kann je nach Ihren Clippings-Einstellungen abweichen."
+    "message": "HINWEIS: Die Befehlstaste für Ihre Tastenkombinationen (Standardkombinationen wie ALT+SHIFT+Y oder &#x21e7;&#x2318;Y) kann je nach Ihren Clippings-Einstellungen abweichen."
   },
   "expHTMLShctKeyCustNoteTB": {
-    "message": "HINWEIS: Das Tastatur-Präfix (Standardtasten ALT+SHIFT+Y oder Befehl+Option+V) kann je nach Clippings-Einstellungen unterschiedlich sein."
+    "message": "HINWEIS: Das Tastatur-Präfix (Standardtasten ALT+SHIFT+Y oder &#x2325;&#x2318;V) kann je nach Clippings-Einstellungen unterschiedlich sein."
   },
   "expHTMLShctKeyCol": {
     "message": "Tastenkombination",
@@ -521,7 +521,7 @@
     "description": "Clippings Manager tree list context menu"
   },
   "mnuEditLabel": {
-    "message": "Beschriftung",
+    "message": "Schlagwort",
     "description": "Clippings Manager tree list context menu"
   },
   "mnuCopyClipTxt": {
@@ -561,7 +561,7 @@
     "description": "Clippings Manager - preset (built-in) placeholder menu"
   },
   "mnuPlchldrTo": {
-    "message": "Bis",
+    "message": "An",
     "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
   },
   "mnuPlchldrCc": {
