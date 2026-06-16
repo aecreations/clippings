@@ -13,7 +13,7 @@ const DLG_HEIGHT_ADJ_LOCALE = 16;
 
 let gOS, gHostAppVer;
 let gClippingsDB = null;
-let gParentFolderID = 0;
+let gParentFolderID = aeConst.ROOT_FOLDER_ID;
 let gSrcURL = "";
 let gCreateInFldrMenu;
 let gFolderPickerPopup;
@@ -570,11 +570,13 @@ function initFolderPicker()
       rootFldrID = gPrefs.syncFolderID;
       rootFldrName = browser.i18n.getMessage("syncFldrName");
       rootFldrCls = aeFolderPicker.SYNCED_ROOT_FOLDER_CLS;
+      gParentFolderID = rootFldrID;
     }
     else if (gPrefs.cxtMenuSyncItemsOnly) {
       selectSyncedClippingsFldr();
       $("#new-clipping-fldr-tree").addClass("show-sync-items-only");
       selectedFldrID = gPrefs.syncFolderID;
+      gParentFolderID = selectedFldrID;
 
       // Handle read-only sync folder.
       if (gPrefs.isSyncReadOnly) {
