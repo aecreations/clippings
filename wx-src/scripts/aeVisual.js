@@ -71,17 +71,17 @@ let aeVisual = {
     return rv;
   },
 
-  formatShortcutKey(aLabelText, aShortcutKey)
+  formatAccessKey(aLabelText, aMnemonic)
   {
     let rv;
-    let idx = aLabelText.indexOf(aShortcutKey);
+    let idx = aLabelText.indexOf(aMnemonic);
     if (idx == -1) {
-      rv = `${aLabelText} (<u>${aShortcutKey}</u>)`;
+      rv = `${aLabelText} (<u>${aMnemonic}</u>)`;
     }
     else {
       let pre = aLabelText.slice(0, idx);
       let post = aLabelText.slice(idx + 1);
-      rv = `${pre}<u>${aShortcutKey}</u>${post}`;
+      rv = `${pre}<u>${aMnemonic}</u>${post}`;
     }
 
     return rv;

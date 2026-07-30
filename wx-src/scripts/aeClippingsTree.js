@@ -210,9 +210,9 @@ aeCopyClippingTextFormatDlg.onFirstInit = async function ()
   let copyAsHTML = browser.i18n.getMessage("copyAsHTML");
   let copyAsPlain = browser.i18n.getMessage("copyAsPlain");
   let copyAsPlainHTML = browser.i18n.getMessage("copyAsPlainHTML");
-  copyAsHTML = aeVisual.formatShortcutKey(copyAsHTML, "F");
-  copyAsPlain = aeVisual.formatShortcutKey(copyAsPlain, "C");
-  copyAsPlainHTML = aeVisual.formatShortcutKey(copyAsPlainHTML, "H");
+  copyAsHTML = aeVisual.formatAccessKey(copyAsHTML, "F");
+  copyAsPlain = aeVisual.formatAccessKey(copyAsPlain, "C");
+  copyAsPlainHTML = aeVisual.formatAccessKey(copyAsPlainHTML, "H");
 
   // Compact dialog
   if (this._dlgElt.attr("data-compact")) {
