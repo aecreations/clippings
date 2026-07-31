@@ -3192,7 +3192,7 @@ let gCmd = {
         this.editClippingNameIntrl(undo.id, undo.oldName).then(() => {
           let clpNode = aeClippingsTree.getTree().activateKey(undo.id + "C");
           clpNode.title = undo.oldName;
-          $("#clipping-name").val(undo.oldName).select();
+          $("#clipping-name").val(undo.oldName).trigger("select");
           this.redoStack.push(undo);
         }).catch(aErr => {});
       }
@@ -3200,7 +3200,7 @@ let gCmd = {
         this.editFolderNameIntrl(undo.id, undo.oldName).then(() => {
           let fldrNode = aeClippingsTree.getTree().activateKey(undo.id + "F");
           fldrNode.title = undo.oldName;
-          $("#clipping-name").val(undo.oldName).select();
+          $("#clipping-name").val(undo.oldName).trigger("select");
           this.redoStack.push(undo);
         }).catch(aErr => {});
       }
@@ -3208,7 +3208,7 @@ let gCmd = {
     else if (undo.action == this.ACTION_EDITCONTENT) {
       this.editClippingContentIntrl(undo.id, undo.oldContent).then(() => {
         aeClippingsTree.getTree().activateKey(undo.id + "C");
-        $("#clipping-text").val(undo.oldContent).select();
+        $("#clipping-text").val(undo.oldContent).trigger("select");
         this.redoStack.push(undo);
       }).catch(aErr => {});
     }
@@ -3344,7 +3344,7 @@ let gCmd = {
         this.editClippingNameIntrl(redo.id, redo.name).then(() => {
           let clpNode = aeClippingsTree.getTree().activateKey(redo.id + "C");
           clpNode.title = redo.name;
-          $("#clipping-name").val(redo.name).select();
+          $("#clipping-name").val(redo.name).trigger("select");
           this.undoStack.push(redo);
         }).catch(aErr => {});
       }
@@ -3352,7 +3352,7 @@ let gCmd = {
         this.editFolderNameIntrl(redo.id, redo.name).then(() => {
           let fldrNode = aeClippingsTree.getTree().activateKey(redo.id + "F");
           fldrNode.title = redo.name;
-          $("#clipping-name").val(redo.name).select();
+          $("#clipping-name").val(redo.name).trigger("select");
           this.undoStack.push(redo);
         }).catch(aErr => {});
       }
@@ -3360,7 +3360,7 @@ let gCmd = {
     else if (redo.action == this.ACTION_EDITCONTENT) {
       this.editClippingContentIntrl(redo.id, redo.content).then(() => {
         aeClippingsTree.getTree().activateKey(redo.id + "C");
-        $("#clipping-text").val(redo.content).select();
+        $("#clipping-text").val(redo.content).trigger("select");
         this.undoStack.push(redo);
       }).catch(aErr => {});
     }

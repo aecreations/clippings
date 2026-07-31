@@ -82,7 +82,7 @@ $(async () => {
       let defaultVal = gPlaceholdersWithDefaultVals[plchldr];
 
       if (defaultVal.indexOf("|") == -1) {
-        $("#single-prmt-input").val(defaultVal).select();
+        $("#single-prmt-input").val(defaultVal).trigger("select");
       }
       else {
         let vals = defaultVal.split("|");
