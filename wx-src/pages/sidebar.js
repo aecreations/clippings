@@ -228,7 +228,7 @@ let gSearchBox = {
     }
 
     if (aKeepFocus) {
-      $("#search-box").focus();
+      $("#search-box").trigger("focus");
     }
   }
 };

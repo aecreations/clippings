@@ -205,7 +205,7 @@ let gClippingsListener = {
 
     newNode.makeVisible().done(() => {     
       newNode.setActive();
-      $("#clipping-name").val(newClipping.name).focus().select();
+      $("#clipping-name").val(newClipping.name).trigger("select").trigger("focus");
       $("#clipping-text").val('');
 
       // Clipping created outside Clippings Manager. Add to undo stack.
@@ -288,7 +288,7 @@ let gClippingsListener = {
 
     newNode.makeVisible().done(() => {
       newNode.setActive();
-      $("#clipping-name").val(newFolder.name).focus().select();
+      $("#clipping-name").val(newFolder.name).trigger("select").trigger("focus");
       $("#clipping-text").val('');
 
       // Folder created outside Clippings Manager. Add to undo stack.
@@ -716,7 +716,7 @@ let gSearchBox = {
   reset: function ()
   {
     aeClippingsTree.getTree().clearFilter();
-    $("#search-box").val("").focus();
+    $("#search-box").val("").trigger("focus");
     $("#clear-search").css({ visibility: "hidden" });
     setStatusBarMsg();
   }
@@ -756,7 +756,7 @@ let gSrcURLBar = {
   {
     $("#src-url-normal-mode").hide();
     $("#src-url-edit-mode").show();
-    $("#clipping-src-url-edit").val($("#clipping-src-url > a").text()).select().focus();
+    $("#clipping-src-url-edit").val($("#clipping-src-url > a").text()).trigger("select").trigger("focus");
   },
 
   isEditing: function ()
@@ -776,7 +776,7 @@ let gSrcURLBar = {
         $("#clipping-src-url-edit").val(updatedURL);
       }
       else {
-        $("#clipping-src-url-edit").select().focus();
+        $("#clipping-src-url-edit").trigger("select").trigger("focus");
         return;
       }
     }
@@ -3722,7 +3722,7 @@ $(document).on("keydown", async (aEvent) => {
   }
   else if (aEvent.key.toUpperCase() == "F" && isAccelKeyPressed()) {
     aEvent.preventDefault();
-    $("#search-box").focus();
+    $("#search-box").trigger("focus");
   }
   else if (aEvent.key.toUpperCase() == "Z" && isAccelKeyPressed() && !aEvent.shiftKey) {
     aEvent.preventDefault();
@@ -3913,7 +3913,7 @@ function initToolbar()
 
     callback: function (aItemKey, aOpt, aRootMenu, aOriginalEvent) {
       let contentTextArea = $("#clipping-text");
-      contentTextArea.focus();
+      contentTextArea.trigger("focus");
 
       function insertPlaceholder(aPlaceholder) {
         insertTextIntoTextbox(contentTextArea, aPlaceholder);
@@ -4521,18 +4521,18 @@ function initDialogs()
   };
   gDialogs.insCustomPlchldr.onShow = function ()
   {
-    $("#custom-plchldr-name").focus();
+    $("#custom-plchldr-name").trigger("focus");
   };
   gDialogs.insCustomPlchldr.onAccept = function ()
   {
     let placeholderName = $("#custom-plchldr-name").val();
     if (! placeholderName) {
-      $("#custom-plchldr-name").focus();
+      $("#custom-plchldr-name").trigger("focus");
       return;
     }
     
     if (! this.validatePlaceholderName(placeholderName)) {
-      $("#custom-plchldr-name").addClass("input-error").focus();
+      $("#custom-plchldr-name").addClass("input-error").trigger("focus");
       return;
     }
 
@@ -4547,7 +4547,7 @@ function initDialogs()
     }
 
     let contentTextArea = $("#clipping-text");
-    contentTextArea.focus();
+    contentTextArea.trigger("focus");
     insertTextIntoTextbox(contentTextArea, placeholder);
     this.close();
   };
@@ -4568,25 +4568,25 @@ function initDialogs()
   };
   gDialogs.insAutoIncrPlchldr.onShow = function ()
   {
-    $("#numeric-plchldr-name").focus();
+    $("#numeric-plchldr-name").trigger("focus");
   };
   gDialogs.insAutoIncrPlchldr.onAccept = function ()
   {
     let placeholderName = $("#numeric-plchldr-name").val();
     if (! placeholderName) {
-      $("#numeric-plchldr-name").focus();
+      $("#numeric-plchldr-name").trigger("focus");
       return;
     }
     
     if (! gDialogs.insCustomPlchldr.validatePlaceholderName(placeholderName)) {
-      $("#numeric-plchldr-name").addClass("input-error").focus();
+      $("#numeric-plchldr-name").addClass("input-error").trigger("focus");
       return;
     }
 
     let placeholder = "#[" + placeholderName + "]";
 
     let contentTextArea = $("#clipping-text");
-    contentTextArea.focus();
+    contentTextArea.trigger("focus");
     insertTextIntoTextbox(contentTextArea, placeholder);
     this.close();
   };
@@ -4665,7 +4665,7 @@ function initDialogs()
   gDialogs.insDateTimePlchldr.onShow = function ()
   {
     let fmtList = $("#date-time-format-list")[0];
-    fmtList.focus();
+    fmtList.trigger("focus");
     fmtList.selectedIndex = 0;
   };
   gDialogs.insDateTimePlchldr.onAccept = function ()
@@ -4689,7 +4689,7 @@ function initDialogs()
     this.close();
 
     let contentTextArea = $("#clipping-text");
-    contentTextArea.focus();
+    contentTextArea.trigger("focus");
     insertTextIntoTextbox(contentTextArea, placeholder);
   };
   gDialogs.insDateTimePlchldr.onUnload = function ()

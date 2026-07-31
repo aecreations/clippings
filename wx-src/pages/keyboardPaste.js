@@ -480,10 +480,10 @@ function initAutocomplete()
       else {
         $("#clear-search").show();
       }
-    })
+    });
     
     $("#clear-search").on("click", aEvent => {
-      $("#clipping-search").val("").focus();
+      $("#clipping-search").val("").trigger("focus");
       $("#num-matches").text("\u00a0");
       
       if (gAutocompleteMenu.isPopupShowing()) {
@@ -493,7 +493,7 @@ function initAutocomplete()
       $("#clear-search").hide();
     });
 
-    $("#clipping-search").focus();
+    $("#clipping-search").trigger("focus");
     $("#clear-search").hide();
   });
 }

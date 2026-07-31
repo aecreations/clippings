@@ -30,7 +30,7 @@ $(async () => {
   });
   $("#btn-cancel").on("click", aEvent => { cancel() });
 
-  $("#paste-cliptxt-html").focus();
+  $("#paste-cliptxt-html").trigger("focus");
 
   let pasteAsHTML = browser.i18n.getMessage("pasteAsHTML");
   let pasteAsPlain = browser.i18n.getMessage("pasteAsPlain");
