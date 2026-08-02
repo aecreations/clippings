@@ -103,7 +103,7 @@ let aeClippingsTree = {
           aFnResolve(rv);
         });
       }).catch(aErr => {
-        console.error("Clippings/wx::clippingsMgr.js: buildClippingsTreeHelper(): %s", aErr.message);
+        console.error("Clippings: aeClippingsTree.buildClippingsTreeHelper(): %s", aErr.message);
         aFnReject(aErr);
       });
     });

@@ -136,7 +136,7 @@ let gReloadSyncFldrBtn = {
   {
     let syncFldrSpan = this._getSyncFldrSpan();
     if (! syncFldrSpan) {
-      console.error("Clippings::clippingsMgr.js: gReloadSyncFldrBtn.hide(): Failed to retrieve the Fancytree <span> element for the Synced Clippings folder!");
+      console.error("Clippings::sidebar.js: gReloadSyncFldrBtn.hide(): Failed to retrieve the Fancytree <span> element for the Synced Clippings folder!");
       return;
     }
 
