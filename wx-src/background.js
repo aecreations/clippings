@@ -1742,7 +1742,7 @@ async function openWelcomePage()
 async function openClippingsManager(aBackupMode)
 {
   let prefs = await aePrefs.getAllPrefs();
-  let clippingsMgrURL = browser.runtime.getURL("pages/clippingsMgr.html");
+  let clippingsMgrURL = browser.runtime.getURL("pages/clippingsMgr/page.html");
 
   let wnd = await browser.windows.getCurrent();
   clippingsMgrURL += "?openerWndID=" + wnd.id;

@@ -327,7 +327,7 @@ let gClippingsListener = {
         gCmd.updateDisplayOrder(oldParentFldrID, null, null, true);
       }
       else {
-        log("Clippings/wx::clippingsMgr.js::gClippingsListener.clippingChanged(): Handling clipping move");
+        log("Clippings/wx::pg.js::gClippingsListener.clippingChanged(): Handling clipping move");
         let changedNode = tree.getNodeByKey(aID + "C");
         if (changedNode) {
           let targParentNode;
@@ -340,7 +340,7 @@ let gClippingsListener = {
           
           changedNode.moveTo(targParentNode, "child");
 
-          log("Clippings/wx::clippingsMgr.js: gCmd.clippingChanged(): Updating display order of changed clipping");
+          log("Clippings/wx::pg.js: gCmd.clippingChanged(): Updating display order of changed clipping");
           gCmd.updateDisplayOrder(oldParentFldrID, null, null, true).then(() => {
             gCmd.updateDisplayOrder(newParentFldrID, null, null, true);
           });
@@ -423,7 +423,7 @@ let gClippingsListener = {
         gCmd.updateDisplayOrder(oldParentFldrID, null, null, true);
       }
       else {
-        log("Clippings/wx::clippingsMgr.js::gClippingsListener.folderChanged: Handling folder move");
+        log("Clippings/wx::pg.js::gClippingsListener.folderChanged: Handling folder move");
         let changedNode = tree.getNodeByKey(aID + "F");
         if (changedNode) {
           let targParentNode;
@@ -436,7 +436,7 @@ let gClippingsListener = {
           
           changedNode.moveTo(targParentNode, "child");
 
-          log("Clippings/wx::clippingsMgr.js: gCmd.folderChanged(): Updating display order of changed folder");
+          log("Clippings/wx::pg.js: gCmd.folderChanged(): Updating display order of changed folder");
           let newParentFldrID = aData.parentFolderID;
           gCmd.updateDisplayOrder(oldParentFldrID, null, null, true).then(() => {
             gCmd.updateDisplayOrder(newParentFldrID, null, null, true);
@@ -459,7 +459,7 @@ let gClippingsListener = {
             changedNode = parentNode.addNode(newNodeData);
           }
 
-          log("Clippings/wx::clippingsMgr.js: gCmd.folderChanged(): Updating display order after undoing folder deletion");
+          log("Clippings/wx::pg.js: gCmd.folderChanged(): Updating display order after undoing folder deletion");
           gCmd.updateDisplayOrder(newParentFldrID, null, null, true).then(() => {
             this._buildChildNodes(changedNode);
           });
@@ -480,7 +480,7 @@ let gClippingsListener = {
 
   copyFinished: function (aItemCopyID)
   {
-    info("Clippings/wx::clippingsMgr.js: gClippingsListener.copyFinished()");
+    info("Clippings/wx::pg.js: gClippingsListener.copyFinished()");
        
     this._isCopying = false;
     
@@ -533,7 +533,7 @@ let gClippingsListener = {
         gCmd.updateDisplayOrder(id, null, null, true);
       });
     }).catch(aErr => {
-      console.error("Clippings/wx::clippingsMgr.js::gClippingsListener._buildChildNodes(): " + aErr);
+      console.error("Clippings/wx::pg.js::gClippingsListener._buildChildNodes(): " + aErr);
     });
   },
   
@@ -590,7 +590,7 @@ let gClippingsListener = {
 let gSyncClippingsListener = {
   onActivate(aSyncFolderID)
   {
-    log("Clippings/wx::clippingsMgr.js::gSyncClippingsListener.onActivate()");
+    log("Clippings/wx::pg.js::gSyncClippingsListener.onActivate()");
     aeDialog.cancelDlgs();
     gDialog.reloadSyncFolderIntrl();
   },
@@ -1007,7 +1007,7 @@ let gReloadSyncFldrBtn = {
   {
     let syncFldrSpan = this._getSyncFldrSpan();
     if (! syncFldrSpan) {
-      console.error("Clippings/wx::clippingsMgr.js: gReloadSyncFldrBtn.hide(): Failed to retrieve the Fancytree <span> element for the Synced Clippings folder!");
+      console.error("Clippings/wx::pg.js: gReloadSyncFldrBtn.hide(): Failed to retrieve the Fancytree <span> element for the Synced Clippings folder!");
       return;
     }
 
@@ -1443,7 +1443,7 @@ let gCmd = {
       parentFolderID = this._getParentFldrIDOfTreeNode(selectedNode);
       let parentFldrChildNodes = selectedNode.getParent().getChildren();
       if (parentFldrChildNodes === undefined) {
-        warn("Clippings/wx::clippingsMgr.js: gCmd.newClipping(): Can't get child nodes of the parent node, because Fancytree lazy loading is in effect!");
+        warn("Clippings/wx::pg.js: gCmd.newClipping(): Can't get child nodes of the parent node, because Fancytree lazy loading is in effect!");
       }
       else {
         displayOrder = parentFldrChildNodes.length;
@@ -1603,7 +1603,7 @@ let gCmd = {
       parentFolderID = this._getParentFldrIDOfTreeNode(selectedNode);
       let parentFldrChildNodes = selectedNode.getParent().getChildren();
       if (parentFldrChildNodes === undefined) {
-        warn("Clippings/wx::clippingsMgr.js: gCmd.newClippingFromClipboard(): Can't get child nodes of the parent node, because Fancytree lazy loading is in effect!");
+        warn("Clippings/wx::pg.js: gCmd.newClippingFromClipboard(): Can't get child nodes of the parent node, because Fancytree lazy loading is in effect!");
       }
     }
 
@@ -1677,7 +1677,7 @@ let gCmd = {
       parentFolderID = this._getParentFldrIDOfTreeNode(selectedNode);
       let parentFldrChildNodes = selectedNode.getParent().getChildren();
       if (parentFldrChildNodes === undefined) {
-        warn("Clippings/wx::clippingsMgr.js: gCmd.newFolder(): Can't get child nodes of the parent node, because Fancytree lazy loading is in effect!");
+        warn("Clippings/wx::pg.js: gCmd.newFolder(): Can't get child nodes of the parent node, because Fancytree lazy loading is in effect!");
       }
       else {
         displayOrder = parentFldrChildNodes.length;
@@ -1870,7 +1870,7 @@ let gCmd = {
           }).catch(handlePushSyncItemsError);
         }
       }).catch(aErr => {
-        console.error("Clippings/wx::clippingsMgr.js: gCmd.deleteClippingOrFolder(): " + aErr);
+        console.error("Clippings/wx::pg.js: gCmd.deleteClippingOrFolder(): " + aErr);
       });
     }
     else {
@@ -1936,7 +1936,7 @@ let gCmd = {
           }).catch(handlePushSyncItemsError);
         }
       }).catch(aErr => {
-        console.error("Clippings/wx::clippingsMgr.js: gCmd.deleteClippingOrFolder(): " + aErr);
+        console.error("Clippings/wx::pg.js: gCmd.deleteClippingOrFolder(): " + aErr);
       });
     }
   },
@@ -1957,7 +1957,7 @@ let gCmd = {
       parentFolderID = this._getParentFldrIDOfTreeNode(selectedNode);
       let parentFldrChildNodes = selectedNode.getParent().getChildren();
       if (parentFldrChildNodes === undefined) {
-        warn("Clippings/mx::clippingsMgr.js: gCmd.insertSeparator(): Can't get child nodes of the parent node, because Fancytree lazy loading is in effect!");
+        warn("Clippings/mx::pg.js: gCmd.insertSeparator(): Can't get child nodes of the parent node, because Fancytree lazy loading is in effect!");
       }
     }
 
@@ -2002,7 +2002,7 @@ let gCmd = {
         displayOrder = clipping.displayOrder - 1;
       }
     }
-    log("Clippings/mx::clippingsMgr.js: gCmd.insertSeparator(): At position: " + displayOrder);
+    log("Clippings/mx::pg.js: gCmd.insertSeparator(): At position: " + displayOrder);
 
     this.recentAction = this.ACTION_INSERT_SEPARATOR;
 
@@ -2179,7 +2179,7 @@ let gCmd = {
           aFnResolve();
         }
       }).catch(aErr => {
-        console.error("Clippings/wx::clippingsMgr.js: gCmd.moveClippingIntrl(): " + aErr);
+        console.error("Clippings/wx::pg.js: gCmd.moveClippingIntrl(): " + aErr);
         aFnReject(aErr);
       });
     });
@@ -2269,7 +2269,7 @@ let gCmd = {
         }).catch(handlePushSyncItemsError);
       }
     }).catch(aErr => {
-      console.error("Clippings/wx::clippingsMgr.js: gCmd.copyClippingIntrl(): " + aErr);
+      console.error("Clippings/wx::pg.js: gCmd.copyClippingIntrl(): " + aErr);
     });
   },
   
@@ -2378,7 +2378,7 @@ let gCmd = {
           aFnResolve();
         }
       }).catch(aErr => {
-        console.error("Clippings/wx::clippingsMgr.js: gCmd.moveFolderIntrl(): " + aErr);
+        console.error("Clippings/wx::pg.js: gCmd.moveFolderIntrl(): " + aErr);
         aFnReject(aErr);
       });
     });
@@ -2487,7 +2487,7 @@ let gCmd = {
       });
 
     }).catch(aErr => {
-      console.error("Clippings/wx::clippingsMgr.js: gCmd.copyFolderIntrl(): " + aErr);
+      console.error("Clippings/wx::pg.js: gCmd.copyFolderIntrl(): " + aErr);
     });
   },
   
@@ -2547,7 +2547,7 @@ let gCmd = {
           aFnResolve();
         }
       }).catch(aErr => {
-        console.error("Clippings/wx::clippingsMgr.js: gCmd.editFolderNameIntrl(): " + aErr);
+        console.error("Clippings/wx::pg.js: gCmd.editFolderNameIntrl(): " + aErr);
         aFnReject(aErr);
       });
     });
@@ -2608,7 +2608,7 @@ let gCmd = {
           aFnResolve();
         }
       }).catch(aErr => {
-        console.error("Clippings/wx::clippingsMgr.js: gCmd.editClippingNameIntrl(): " + aErr);
+        console.error("Clippings/wx::pg.js: gCmd.editClippingNameIntrl(): " + aErr);
         aFnReject(aErr);
       });
     });
@@ -2669,7 +2669,7 @@ let gCmd = {
           aFnResolve();
         }
       }).catch(aErr => {
-        console.error("Clippings/wx::clippingsMgr.js: gCmd.editClippingContentIntrl(): " + aErr);
+        console.error("Clippings/wx::pg.js: gCmd.editClippingContentIntrl(): " + aErr);
         aFnReject(aErr);
       });
     });
@@ -2731,7 +2731,7 @@ let gCmd = {
       }
     }).catch(aErr => {
       handlePushSyncItemsError(aErr);
-      console.error("Clippings/wx::clippingsMgr.js: gCmd.setLabel(): " + aErr);
+      console.error("Clippings/wx::pg.js: gCmd.setLabel(): " + aErr);
     });
   },
   
@@ -2788,14 +2788,14 @@ let gCmd = {
 
           if (aFolderID == gPrefs.syncFolderID || gSyncedItemsIDs.has(aFolderID + "F")) {
             browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"}).then(() => {
-              log("Clippings/wx::clippingsMgr.js::gCmd.updateDisplayOrder(): Saved the display order for synced items.");
+              log("Clippings/wx::pg.js::gCmd.updateDisplayOrder(): Saved the display order for synced items.");
             });
           }
 
 	  aFnResolve();
 	});
       }).catch(aErr => {
-	console.error("Clippings/wx::clippingsMgr.js::gCmd.updateDisplayOrder(): %s", aErr.message);
+	console.error("Clippings/wx::pg.js::gCmd.updateDisplayOrder(): %s", aErr.message);
 	aFnReject(aErr);
       });
     });
@@ -2871,7 +2871,7 @@ let gCmd = {
       closeWnd();
     }
     else {
-      warn("Clippings/wx::clippingsMgr.js: gCmd.pasteClipping(): Action disabled");
+      warn("Clippings/wx::pg.js: gCmd.pasteClipping(): Action disabled");
     }
   },
   
@@ -3487,7 +3487,7 @@ let gCmd = {
 	  aFnResolve();
 	});
       }).catch(aErr => {
-	console.error("Clippings/wx::clippingsMgr.js: gCmd._copyFolderHelper(): " + aErr);
+	console.error("Clippings/wx::pg.js: gCmd._copyFolderHelper(): " + aErr);
 	aFnReject(aErr);
       });
     });
@@ -3619,7 +3619,7 @@ $(window).on("beforeunload", () => {
     msgID: "purge-fldr-items",
     folderID: aeConst.DELETED_ITEMS_FLDR_ID,
   }).catch(aErr => {
-    console.error("Clippings/wx::clippingsMgr.js: $(window).on('beforeunload'): " + aErr);
+    console.error("Clippings/wx::pg.js: $(window).on('beforeunload'): " + aErr);
   });
 });
 
@@ -3713,7 +3713,7 @@ $(document).on("keydown", async (aEvent) => {
       aEvent.preventDefault();
     }
     else {
-      log("Clippings::clippingsMgr.js: Ignoring keyboard shortcut CTRL+C, falling back to default action")
+      log("Clippings::pg.js: Ignoring keyboard shortcut CTRL+C, falling back to default action")
     }
   }
   else if (aEvent.key.toUpperCase() == "D" && isAccelKeyPressed()) {
@@ -4476,7 +4476,7 @@ function initDialogs()
       shctListHTML = await aeImportExport.getShortcutKeyListHTML(false);
     }
     catch (e) {
-      console.error("Clippings/wx::clippingsMgr.js: gDialog.shortcutList.onInit(): " + e);
+      console.error("Clippings/wx::pg.js: gDialog.shortcutList.onInit(): " + e);
       return;
     }
 
@@ -4822,7 +4822,7 @@ function initDialogs()
             });
           }
           else {
-            log("Clippings/wx::clippingsMgr.js: Restore from backup file has failed.  Rolling back.");
+            log("Clippings/wx::pg.js: Restore from backup file has failed.  Rolling back.");
             aeImportExport.importFromJSON(currClippingsData, true, aAppendItems);
             setTimeout(() => {
               // Restoring the current clippings data will change the IDs of
@@ -4838,7 +4838,7 @@ function initDialogs()
           return;
         }
 
-        log("Clippings/wx::clippingsMgr.js: gDialog.importFromFile.onAccept()::importFile(): Importing Clippings data asynchronously.");
+        log("Clippings/wx::pg.js: gDialog.importFromFile.onAccept()::importFile(): Importing Clippings data asynchronously.");
         
         $("#import-error").text("").hide();
         $("#import-progress-bar").hide();
@@ -4853,7 +4853,7 @@ function initDialogs()
     } // END nested function
 
     if (this.mode == this.IMP_REPLACE) {
-      info("Clippings/wx::clippingsMgr.js: Import dialog mode: Restore From Backup");
+      info("Clippings/wx::pg.js: Import dialog mode: Restore From Backup");
 
       $("#restore-backup-warning").hide();
 
@@ -4869,7 +4869,7 @@ function initDialogs()
 
       }).then(() => {
         gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
-          log("Clippings/wx::clippingsMgr.js: gDialog.importFromFile.onAccept(): Starting restore from backup file.\nDeleting all clippings and folders (except the 'Synced Clippings' folder, if Sync Clippings turned on).");
+          log("Clippings/wx::pg.js: gDialog.importFromFile.onAccept(): Starting restore from backup file.\nDeleting all clippings and folders (except the 'Synced Clippings' folder, if Sync Clippings turned on).");
 
 	  gCmd.recentAction = gCmd.ACTION_RESTORE_BACKUP;
 
@@ -4891,19 +4891,19 @@ function initDialogs()
               }
             });
           }).then(() => {
-            log("Clippings/wx::clippingsMgr.js: Finished deleting clippings and folders. Clearing undo stack and starting import of backup file.");
+            log("Clippings/wx::pg.js: Finished deleting clippings and folders. Clearing undo stack and starting import of backup file.");
 
             gCmd.undoStack.clear();
             gCmd.redoStack.clear();
             importFile(false);
           });
         }).catch(aErr => {
-          console.error("Clippings/wx::clippingsMgr.js: gDialog.importFromFile.onAccept(): " + aErr);
+          console.error("Clippings/wx::pg.js: gDialog.importFromFile.onAccept(): " + aErr);
         });
       });      
     }
     else {
-      info("Clippings/wx::clippingsMgr.js: Import dialog mode: Import File");
+      info("Clippings/wx::pg.js: Import dialog mode: Import File");
       gCmd.recentAction = gCmd.ACTION_IMPORT;
 
       browser.runtime.sendMessage({msgID: "import-started"}).then(() => {
@@ -5185,7 +5185,7 @@ function initDialogs()
 
       // Attach event handler every time the folder tree is regenerated.
       this.find("#move-to-fldr-tree").on("click", aEvent => {
-        log("Clippings::clippingsMgr.js: gDialog.moveTo: Detected 'click' event in the folder tree");
+        log("Clippings::pg.js: gDialog.moveTo: Detected 'click' event in the folder tree");
         $("#move-error").text('');
       });
     }
@@ -5355,12 +5355,12 @@ function buildClippingsTree()
       },
 
       activate: function (aEvent, aData) {
-        log("Clippings/wx::clippingsMgr.js: Activate event fired on clippings tree");
+        log("Clippings/wx::pg.js: Activate event fired on clippings tree");
         updateDisplay(aEvent, aData);
       },
 
       async dblclick(aEvent, aData) {
-        log("Clippings/wx::clippingsMgr.js: Double-click event fired on clippings tree");
+        log("Clippings/wx::pg.js: Double-click event fired on clippings tree");
         updateDisplay(aEvent, aData);
 
         if (aData.targetType == "title" || aData.targetType == "icon") {
@@ -5496,7 +5496,7 @@ function buildClippingsTree()
               }
             }
 
-            log("Clippings/wx::clippingsMgr.js::#clippings-tree.dnd5.dragDrop(): Updating display order");
+            log("Clippings/wx::pg.js::#clippings-tree.dnd5.dragDrop(): Updating display order");
             let destUndoStack = null;
             let undoInfo = null;
             
@@ -5528,7 +5528,7 @@ function buildClippingsTree()
                 }
               }
               
-              log("Clippings/wx::clippingsMgr.js: Saving undo info for clipping/folder reordering:");
+              log("Clippings/wx::pg.js: Saving undo info for clipping/folder reordering:");
               log(undoInfo);
             }
             
@@ -5549,11 +5549,11 @@ function buildClippingsTree()
             let dndData = aData.dataTransfer.getData("text");
 
             if (! dndData) {
-              log("Clippings/wx::clippingsMgr.js: #clippings-tree.dnd5.dragDrop(): Non-node was dropped into tree.  Unable to process its data; ignoring.");
+              log("Clippings/wx::pg.js: #clippings-tree.dnd5.dragDrop(): Non-node was dropped into tree.  Unable to process its data; ignoring.");
               return;
             }
             
-            log("Clippings/wx::clippingsMgr.js: #clippings-tree.dnd5.dragDrop(): Non-node was dropped into tree.  Textual content detected.");
+            log("Clippings/wx::pg.js: #clippings-tree.dnd5.dragDrop(): Non-node was dropped into tree.  Textual content detected.");
             
             aData.dataTransfer.effect = "copy";
 
@@ -5903,7 +5903,7 @@ function buildClippingsTree()
     }
 
   }).catch(aErr => {
-    console.error("clippingsMgr.js::buildClippingsTree(): %s", aErr.message);
+    console.error("pg.js::buildClippingsTree(): %s", aErr.message);
     showInitError();
   });
 }
@@ -6169,7 +6169,7 @@ function updateDisplay(aEvent, aData)
     return;
   }
 
-  log("Clippings/wx::clippingsMgr.js: Updating display...");
+  log("Clippings/wx::pg.js: Updating display...");
 
   if (gSearchBox.isActivated()) {
     gSearchBox.updateSearch();
@@ -6351,7 +6351,7 @@ async function saveWindowGeometry()
   // Stop saving window geometry if window is maximized, due to bugs/limitations
   // with detecting and getting geometry of maximized windows.
   if (window.outerWidth >= scrWidth) {
-    warn("Clippings/wx::clippingsMgr.js: saveWindowGeometry(): Not saving window geometry for maximized window.");
+    warn("Clippings/wx::pg.js: saveWindowGeometry(): Not saving window geometry for maximized window.");
     return;
   }
   
@@ -6365,7 +6365,7 @@ async function saveWindowGeometry()
       x: window.screenX, y: window.screenY,
     };
 
-    log("Clippings/wx::clippingsMgr.js: saveWindowGeometry():");
+    log("Clippings/wx::pg.js: saveWindowGeometry():");
     log(clippingsMgrWndGeom);
 
     await aePrefs.setPrefs({ clippingsMgrWndGeom });

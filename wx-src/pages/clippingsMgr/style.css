@@ -2,14 +2,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-@import url("../lib/fancytree/skin-win8/ui.fancytree.min.css");
-@import url("../lib/contextMenu/jquery.contextMenu.css");
-@import url("../style/laf.css");
-@import url("../style/lightbox.css");
-@import url("../style/clippingsTree.css");
-@import url("../style/clippingLabelPicker.css");
-@import url("../style/contextMenu.css");
-@import url("../style/searchbox.css");
+@import url("../../lib/fancytree/skin-win8/ui.fancytree.min.css");
+@import url("../../lib/contextMenu/jquery.contextMenu.css");
+@import url("../../style/laf.css");
+@import url("../../style/lightbox.css");
+@import url("../../style/clippingsTree.css");
+@import url("../../style/clippingLabelPicker.css");
+@import url("../../style/contextMenu.css");
+@import url("../../style/searchbox.css");
 
 
 :root {
@@ -47,54 +47,54 @@
     --color-th-border: #d4d4d4;
     --color-dlg-fieldset-border: #b1b1b1;
 
-    --url-toolbar-btn-img-newClipping: url("../img/newClipping.svg");
-    --url-toolbar-btn-img-newClipping-active: url("../img/newClipping.svg");
-    --url-toolbar-btn-img-newClipping-hover: url("../img/newClipping_hover.svg");
-    --url-toolbar-btn-img-newFolder: url("../img/newFolder.svg");
-    --url-toolbar-btn-img-newFolder-active: url("../img/newFolder.svg");
-    --url-toolbar-btn-img-newFolder-hover: url("../img/newFolder_hover.svg");
-    --url-toolbar-btn-img-move: url("../img/moveTo.svg");
-    --url-toolbar-btn-img-move-active: url("../img/moveTo.svg");
-    --url-toolbar-btn-img-move-hover: url("../img/moveTo_hover.svg");
-    --url-toolbar-btn-img-delete: url("../img/delete.svg");
-    --url-toolbar-btn-img-delete-active: url("../img/delete.svg");
-    --url-toolbar-btn-img-delete-hover: url("../img/delete_hover.svg");   
-    --url-toolbar-btn-img-undo: url("../img/undo.svg");
-    --url-toolbar-btn-img-undo-hover: url("../img/undo_hover.svg");
-    --url-toolbar-btn-img-undo-active: url("../img/undo.svg");
-    --url-toolbar-btn-img-tools: url("../img/options.svg");
-    --url-toolbar-btn-img-tools-hover: url("../img/options_hover.svg");
-    --url-toolbar-btn-img-tools-active: url("../img/options_hover.svg");
-    --url-toolbar-btn-img-tools-menu-open: url("../img/options_menuopen.svg");
-    --url-toolbar-btn-img-dropdown: url("../img/drop-down.svg");
-    --url-toolbar-btn-img-shct-keys: url("../img/shctkeys.svg");
-    --url-toolbar-btn-img-shct-keys-hover: url("../img/shctkeys_hover.svg");
-    --url-toolbar-btn-img-shct-keys-active: url("../img/shctkeys.svg");
-    --url-toolbar-btn-img-help: url("../img/help.svg");
-    --url-toolbar-btn-img-help-hover: url("../img/help_hover.svg");
-    --url-toolbar-btn-img-help-active: url("../img/help.svg");
-    --url-toolbar-btn-img-ok: url("../img/ok.svg");
-    --url-toolbar-btn-img-ok-hover: url("../img/ok_hover.svg");
-    --url-toolbar-btn-img-ok-active: url("../img/ok_active.svg");
-    --url-toolbar-btn-img-ok-focus: url("../img/ok_focus.svg");
-    --url-toolbar-btn-img-cancel: url("../img/cancel.svg");
-    --url-toolbar-btn-img-cancel-hover: url("../img/cancel_hover.svg");
-    --url-toolbar-btn-img-cancel-active: url("../img/cancel_active.svg");
-    --url-toolbar-btn-img-cancel-focus: url("../img/cancel_focus.svg");
-    --url-toolbar-btn-img-customPlchldr: url("../img/customPlchldr.svg");
-    --url-toolbar-btn-img-customPlchldr-hover: url("../img/customPlchldr_hover.svg");
-    --url-toolbar-btn-img-autoIncPlchldr: url("../img/numericPlchldr.svg");
-    --url-toolbar-btn-img-autoIncPlchldr-hover: url("../img/numericPlchldr_hover.svg");
-    --url-icon-synced-clippings-fldr: url("../img/synced-clippings.svg");
-    --url-icon-synced-clippings-readonly-fldr: url("../img/synced-clippings-readonly.svg");
-    --url-icon-copy-fmt: url("../img/copy-clipping-html16.svg");
-    --url-icon-copy-txt: url("../img/copy-clipping-txt16.svg");
-    --url-icon-copy-txt-html-tags: url("../img/copy-clipping-txt-html16.svg");
-    --url-icon-copy-fmt-hover: url("../img/copy-clipping-html-hover16.svg");
-    --url-icon-copy-txt-hover: url("../img/copy-clipping-txt-hover16.svg");
-    --url-icon-copy-txt-html-tags-hover: url("../img/copy-clipping-txt-html-hover16.svg");
-    --url-icon-auto-minimize-on: url("../img/auto-minimize-on.svg");
-    --url-icon-auto-minimize-off: url("../img/auto-minimize-off.svg");
+    --url-toolbar-btn-img-newClipping: url("../../img/newClipping.svg");
+    --url-toolbar-btn-img-newClipping-active: url("../../img/newClipping.svg");
+    --url-toolbar-btn-img-newClipping-hover: url("../../img/newClipping_hover.svg");
+    --url-toolbar-btn-img-newFolder: url("../../img/newFolder.svg");
+    --url-toolbar-btn-img-newFolder-active: url("../../img/newFolder.svg");
+    --url-toolbar-btn-img-newFolder-hover: url("../../img/newFolder_hover.svg");
+    --url-toolbar-btn-img-move: url("../../img/moveTo.svg");
+    --url-toolbar-btn-img-move-active: url("../../img/moveTo.svg");
+    --url-toolbar-btn-img-move-hover: url("../../img/moveTo_hover.svg");
+    --url-toolbar-btn-img-delete: url("../../img/delete.svg");
+    --url-toolbar-btn-img-delete-active: url("../../img/delete.svg");
+    --url-toolbar-btn-img-delete-hover: url("../../img/delete_hover.svg");
+    --url-toolbar-btn-img-undo: url("../../img/undo.svg");
+    --url-toolbar-btn-img-undo-hover: url("../../img/undo_hover.svg");
+    --url-toolbar-btn-img-undo-active: url("../../img/undo.svg");
+    --url-toolbar-btn-img-tools: url("../../img/options.svg");
+    --url-toolbar-btn-img-tools-hover: url("../../img/options_hover.svg");
+    --url-toolbar-btn-img-tools-active: url("../../img/options_hover.svg");
+    --url-toolbar-btn-img-tools-menu-open: url("../../img/options_menuopen.svg");
+    --url-toolbar-btn-img-dropdown: url("../../img/drop-down.svg");
+    --url-toolbar-btn-img-shct-keys: url("../../img/shctkeys.svg");
+    --url-toolbar-btn-img-shct-keys-hover: url("../../img/shctkeys_hover.svg");
+    --url-toolbar-btn-img-shct-keys-active: url("../../img/shctkeys.svg");
+    --url-toolbar-btn-img-help: url("../../img/help.svg");
+    --url-toolbar-btn-img-help-hover: url("../../img/help_hover.svg");
+    --url-toolbar-btn-img-help-active: url("../../img/help.svg");
+    --url-toolbar-btn-img-ok: url("../../img/ok.svg");
+    --url-toolbar-btn-img-ok-hover: url("../../img/ok_hover.svg");
+    --url-toolbar-btn-img-ok-active: url("../../img/ok_active.svg");
+    --url-toolbar-btn-img-ok-focus: url("../../img/ok_focus.svg");
+    --url-toolbar-btn-img-cancel: url("../../img/cancel.svg");
+    --url-toolbar-btn-img-cancel-hover: url("../../img/cancel_hover.svg");
+    --url-toolbar-btn-img-cancel-active: url("../../img/cancel_active.svg");
+    --url-toolbar-btn-img-cancel-focus: url("../../img/cancel_focus.svg");
+    --url-toolbar-btn-img-customPlchldr: url("../../img/customPlchldr.svg");
+    --url-toolbar-btn-img-customPlchldr-hover: url("../../img/customPlchldr_hover.svg");
+    --url-toolbar-btn-img-autoIncPlchldr: url("../../img/numericPlchldr.svg");
+    --url-toolbar-btn-img-autoIncPlchldr-hover: url("../../img/numericPlchldr_hover.svg");
+    --url-icon-synced-clippings-fldr: url("../../img/synced-clippings.svg");
+    --url-icon-synced-clippings-readonly-fldr: url("../../img/synced-clippings-readonly.svg");
+    --url-icon-copy-fmt: url("../../img/copy-clipping-html16.svg");
+    --url-icon-copy-txt: url("../../img/copy-clipping-txt16.svg");
+    --url-icon-copy-txt-html-tags: url("../../img/copy-clipping-txt-html16.svg");
+    --url-icon-copy-fmt-hover: url("../../img/copy-clipping-html-hover16.svg");
+    --url-icon-copy-txt-hover: url("../../img/copy-clipping-txt-hover16.svg");
+    --url-icon-copy-txt-html-tags-hover: url("../../img/copy-clipping-txt-html-hover16.svg");
+    --url-icon-auto-minimize-on: url("../../img/auto-minimize-on.svg");
+    --url-icon-auto-minimize-off: url("../../img/auto-minimize-off.svg");
 }
 
 @media (prefers-color-scheme: dark) {
@@ -130,48 +130,48 @@
 	--color-th-border: #737373;
 	--color-dlg-fieldset-border: #585858;
 
-	--url-toolbar-btn-img-newClipping: url("../img/newClipping-dk.svg");
-	--url-toolbar-btn-img-newClipping-active: url("../img/newClipping-active-dk.svg");
-	--url-toolbar-btn-img-newClipping-hover: url("../img/newClipping-dk.svg");
-	--url-toolbar-btn-img-newFolder: url("../img/newFolder-dk.svg");
-	--url-toolbar-btn-img-newFolder-active: url("../img/newFolder-active-dk.svg");
-	--url-toolbar-btn-img-newFolder-hover: url("../img/newFolder-dk.svg");
-	--url-toolbar-btn-img-move: url("../img/moveTo-dk.svg");
-	--url-toolbar-btn-img-move-active: url("../img/moveTo-active-dk.svg");
-	--url-toolbar-btn-img-move-hover: url("../img/moveTo-dk.svg");
-	--url-toolbar-btn-img-delete: url("../img/delete-dk.svg");
-	--url-toolbar-btn-img-delete-active: url("../img/delete-active-dk.svg");
-	--url-toolbar-btn-img-delete-hover: url("../img/delete-dk.svg");
-	--url-toolbar-btn-img-undo: url("../img/undo_dk.svg");
-	--url-toolbar-btn-img-undo-hover: url("../img/undo_dk.svg");
-	--url-toolbar-btn-img-undo-active: url("../img/undo_hover.svg");
-	--url-toolbar-btn-img-tools: url("../img/options_dk.svg");
-	--url-toolbar-btn-img-tools-hover: url("../img/options_dk_hover.svg");
-	--url-toolbar-btn-img-tools-active: url("../img/options_dk_active.svg");
-	--url-toolbar-btn-img-tools-menu-open: url("../img/options_dk_menuopen.svg");
-	--url-toolbar-btn-img-dropdown: url("../img/dropdown_dk.svg");
-	--url-toolbar-btn-img-shct-keys: url("../img/shctkeys-dk.svg");
-	--url-toolbar-btn-img-shct-keys-hover: url("../img/shctkeys_hover-dk.svg");
-	--url-toolbar-btn-img-shct-keys-active: url("../img/shctkeys_hover-dk.svg");
-	--url-toolbar-btn-img-help: url("../img/help-dk.svg");
-	--url-toolbar-btn-img-help-hover: url("../img/help-dk.svg");
-	--url-toolbar-btn-img-help-active: url("../img/help_hover.svg");
-	--url-toolbar-btn-img-ok: url("../img/ok_dk.svg");
-	--url-toolbar-btn-img-ok-hover: url("../img/ok_hover_dk.svg");
-	--url-toolbar-btn-img-ok-active: url("../img/ok_active_dk.svg");
-	--url-toolbar-btn-img-ok-focus: url("../img/ok_focus.svg");
-	--url-toolbar-btn-img-cancel: url("../img/cancel_dk.svg");
-	--url-toolbar-btn-img-cancel-hover: url("../img/cancel_hover_dk.svg");
-	--url-toolbar-btn-img-cancel-active: url("../img/cancel_active_dk.svg");
-	--url-toolbar-btn-img-cancel-focus: url("../img/cancel_focus.svg");
-	--url-toolbar-btn-img-customPlchldr: url("../img/customPlchldr_dk.svg");
-	--url-toolbar-btn-img-customPlchldr-hover: url("../img/customPlchldr_dk.svg");
-	--url-toolbar-btn-img-autoIncPlchldr: url("../img/numericPlchldr_dk.svg");
-	--url-toolbar-btn-img-autoIncPlchldr-hover: url("../img/numericPlchldr_dk.svg");
-	--url-icon-synced-clippings-fldr: url("../img/synced-clippings-dk.svg");
-	--url-icon-synced-clippings-readonly-fldr: url("../img/synced-clippings-readonly-dk.svg");
-	--url-icon-auto-minimize-on: url("../img/auto-minimize-on-dk.svg");
-	--url-icon-auto-minimize-off: url("../img/auto-minimize-off-dk.svg");
+	--url-toolbar-btn-img-newClipping: url("../../img/newClipping-dk.svg");
+	--url-toolbar-btn-img-newClipping-active: url("../../img/newClipping-active-dk.svg");
+	--url-toolbar-btn-img-newClipping-hover: url("../../img/newClipping-dk.svg");
+	--url-toolbar-btn-img-newFolder: url("../../img/newFolder-dk.svg");
+	--url-toolbar-btn-img-newFolder-active: url("../../img/newFolder-active-dk.svg");
+	--url-toolbar-btn-img-newFolder-hover: url("../../img/newFolder-dk.svg");
+	--url-toolbar-btn-img-move: url("../../img/moveTo-dk.svg");
+	--url-toolbar-btn-img-move-active: url("../../img/moveTo-active-dk.svg");
+	--url-toolbar-btn-img-move-hover: url("../../img/moveTo-dk.svg");
+	--url-toolbar-btn-img-delete: url("../../img/delete-dk.svg");
+	--url-toolbar-btn-img-delete-active: url("../../img/delete-active-dk.svg");
+	--url-toolbar-btn-img-delete-hover: url("../../img/delete-dk.svg");
+	--url-toolbar-btn-img-undo: url("../../img/undo_dk.svg");
+	--url-toolbar-btn-img-undo-hover: url("../../img/undo_dk.svg");
+	--url-toolbar-btn-img-undo-active: url("../../img/undo_hover.svg");
+	--url-toolbar-btn-img-tools: url("../../img/options_dk.svg");
+	--url-toolbar-btn-img-tools-hover: url("../../img/options_dk_hover.svg");
+	--url-toolbar-btn-img-tools-active: url("../../img/options_dk_active.svg");
+	--url-toolbar-btn-img-tools-menu-open: url("../../img/options_dk_menuopen.svg");
+	--url-toolbar-btn-img-dropdown: url("../../img/dropdown_dk.svg");
+	--url-toolbar-btn-img-shct-keys: url("../../img/shctkeys-dk.svg");
+	--url-toolbar-btn-img-shct-keys-hover: url("../../img/shctkeys_hover-dk.svg");
+	--url-toolbar-btn-img-shct-keys-active: url("../../img/shctkeys_hover-dk.svg");
+	--url-toolbar-btn-img-help: url("../../img/help-dk.svg");
+	--url-toolbar-btn-img-help-hover: url("../../img/help-dk.svg");
+	--url-toolbar-btn-img-help-active: url("../../img/help_hover.svg");
+	--url-toolbar-btn-img-ok: url("../../img/ok_dk.svg");
+	--url-toolbar-btn-img-ok-hover: url("../../img/ok_hover_dk.svg");
+	--url-toolbar-btn-img-ok-active: url("../../img/ok_active_dk.svg");
+	--url-toolbar-btn-img-ok-focus: url("../../img/ok_focus.svg");
+	--url-toolbar-btn-img-cancel: url("../../img/cancel_dk.svg");
+	--url-toolbar-btn-img-cancel-hover: url("../../img/cancel_hover_dk.svg");
+	--url-toolbar-btn-img-cancel-active: url("../../img/cancel_active_dk.svg");
+	--url-toolbar-btn-img-cancel-focus: url("../../img/cancel_focus.svg");
+	--url-toolbar-btn-img-customPlchldr: url("../../img/customPlchldr_dk.svg");
+	--url-toolbar-btn-img-customPlchldr-hover: url("../../img/customPlchldr_dk.svg");
+	--url-toolbar-btn-img-autoIncPlchldr: url("../../img/numericPlchldr_dk.svg");
+	--url-toolbar-btn-img-autoIncPlchldr-hover: url("../../img/numericPlchldr_dk.svg");
+	--url-icon-synced-clippings-fldr: url("../../img/synced-clippings-dk.svg");
+	--url-icon-synced-clippings-readonly-fldr: url("../../img/synced-clippings-readonly-dk.svg");
+	--url-icon-auto-minimize-on: url("../../img/auto-minimize-on-dk.svg");
+	--url-icon-auto-minimize-off: url("../../img/auto-minimize-off-dk.svg");
     }
 }
 
@@ -678,7 +678,7 @@ body[data-os="mac"] .shortcut-key-tbl > tr > td:first-of-type {
 }
 
 #item-properties > #placeholder-toolbar > #custom-plchldr:active {
-    background-image: url("../img/customPlchldr.svg");
+    background-image: url("../../img/customPlchldr.svg");
 }
 
 #item-properties > #placeholder-toolbar > #auto-incr-plchldr {
@@ -690,7 +690,7 @@ body[data-os="mac"] .shortcut-key-tbl > tr > td:first-of-type {
 }
 
 #item-properties > #placeholder-toolbar > #auto-incr-plchldr:active {
-    background-image: url("../img/numericPlchldr.svg");
+    background-image: url("../../img/numericPlchldr.svg");
 }
 
 #item-properties > #placeholder-toolbar > label {
@@ -960,25 +960,25 @@ body[data-os="mac"] .shortcut-key-tbl > tr > td:first-of-type {
 }
 
 .lightbox .msgbox-icon {
-    background-image: url("../img/warning-64.png");
+    background-image: url("../../img/warning-64.png");
     background-size: contain;
 }
 
 body[data-os="win"] .lightbox .msgbox-icon {
-    background-image: url("../img/alert-win.png");
+    background-image: url("../../img/alert-win.png");
 }
 
 body[data-os="mac"] .lightbox .msgbox-icon {
-    background-image: url("../img/warning-64-mac.png");
+    background-image: url("../../img/warning-64-mac.png");
 }
 
 .lightbox .msgbox-info-icon {
-    background-image: url("../img/info.svg");
+    background-image: url("../../img/info.svg");
     background-size: contain;
 }
 
 body[data-os="win"] .lightbox .msgbox-info-icon {
-    background-image: url("../img/info-win.png");
+    background-image: url("../../img/info-win.png");
     background-size: contain;
 }
 
@@ -1293,7 +1293,7 @@ body[data-locale="de"] #import-dlg {
 
 #import-dlg #import-clippings-file-path:placeholder-shown {
     border: none;
-    background-image: url("../img/tbd-edge-l.svg"), url("../img/tbd-bg.svg"), url("../img/tbd-edge-r.svg");
+    background-image: url("../../img/tbd-edge-l.svg"), url("../../img/tbd-bg.svg"), url("../../img/tbd-edge-r.svg");
     background-position: left, center, right;
     background-repeat: no-repeat, repeat-x, no-repeat;
     opacity: 1;
@@ -1301,7 +1301,7 @@ body[data-locale="de"] #import-dlg {
 
 #import-dlg #import-clippings-file-path {
     border: none;
-    background-image: url("../img/tbd-edge-l.svg"), url("../img/tbd-bg-bot.svg"), url("../img/tbd-edge-r.svg");
+    background-image: url("../../img/tbd-edge-l.svg"), url("../../img/tbd-bg-bot.svg"), url("../../img/tbd-edge-r.svg");
     background-position: left, center, right;
     background-repeat: no-repeat, repeat-x, no-repeat;
 }
@@ -1344,17 +1344,17 @@ body[data-locale="de"] #import-dlg {
     width: 22px;
     height: 22px;
     margin-top: 4px;
-    background-image: url("../img/warning-64.png");
+    background-image: url("../../img/warning-64.png");
     background-repeat: no-repeat;
     background-size: contain;
 }
 
 body[data-os="win"] #import-dlg #restore-backup-warning > .warning-icon {
-    background-image: url("../img/alert-win.png");
+    background-image: url("../../img/alert-win.png");
 }
 
 body[data-os="mac"] #import-dlg #restore-backup-warning > .warning-icon {
-    background-image: url("../img/warning-64-mac.png");
+    background-image: url("../../img/warning-64-mac.png");
 }
 
 #import-dlg #restore-backup-warning > p {
