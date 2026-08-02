@@ -460,7 +460,12 @@
 
   "copyAsHTML": {
     "message": "Copy as Formatted Text",
-    "Description": "Copy Clipping Text dialog in Clippings Manager and Clippings sidebar - user selection of data format of clipping to be copied"
+    "description": "Copy Clipping Text dialog in Clippings Manager and Clippings sidebar - user selection of data format of clipping to be copied"
+  },
+
+  "copyAsHTML_accesskey": {
+    "message": "F",
+    "description": "Access key for 'Copy as Formatted Text'"
   },
 
   "copyAsPlain": {
@@ -468,14 +473,28 @@
     "description": "Copy Clipping Text dialog in Clippings Manager and Clippings sidebar - user selection of data format of clipping to be copied"
   },
 
+  "copyAsPlain_accesskey": {
+    "message": "C",
+    "description": "Access key for 'Copy as Plain Text'"
+  },
+
   "copyAsPlainHTML": {
     "message": "Copy as Plain Text with HTML tags",
     "description": "Copy Clipping Text dialog in Clippings Manager and Clippings sidebar - user selection of data format of clipping to be copied"
   },
 
+  "copyAsPlainHTML_accesskey": {
+    "message": "H",
+    "description": "Access key for 'Copy as Plain Text with HTML tags'"
+  },
+
   "pasteAsHTML": {
     "message": "Paste as Formatted Text",
     "description": "Paste As dialog - user selection of data format of clipping to be pasted"
+  },
+  "pasteAsHTML_accesskey": {
+    "message": "F",
+    "description": "Access key for 'Paste as Formatted Text'"
   },
 
   "pasteAsPlain": {
@@ -483,9 +502,19 @@
     "description": "Paste As dialog - user selection of data format of clipping to be pasted"
   },
 
+  "pasteAsPlain_accesskey": {
+    "message": "P",
+    "description": "Access key for 'Paste as Plain Text'"
+  },
+
   "pasteAsPlainHTML": {
     "message": "Paste as Plain Text with HTML tags",
     "description": "Paste As dialog - user selection of data format of clipping to be pasted"
+  },
+
+  "pasteAsPlainHTML_accesskey": {
+    "message": "H",
+    "description": "Access key for 'Paste as Plain Text with HTML tags'"
   },
 
   "clippingsMgrWndTitle": {

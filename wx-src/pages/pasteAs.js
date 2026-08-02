@@ -35,9 +35,9 @@ $(async () => {
   let pasteAsHTML = browser.i18n.getMessage("pasteAsHTML");
   let pasteAsPlain = browser.i18n.getMessage("pasteAsPlain");
   let pasteAsPlainHTML = browser.i18n.getMessage("pasteAsPlainHTML");
-  pasteAsHTML = aeVisual.formatAccessKey(pasteAsHTML, "F");
-  pasteAsPlain = aeVisual.formatAccessKey(pasteAsPlain, "P");
-  pasteAsPlainHTML = aeVisual.formatAccessKey(pasteAsPlainHTML, "H");
+  pasteAsHTML = aeVisual.formatAccessKey(pasteAsHTML, browser.i18n.getMessage("pasteAsHTML_accesskey"));
+  pasteAsPlain = aeVisual.formatAccessKey(pasteAsPlain, browser.i18n.getMessage("pasteAsPlain_accesskey"));
+  pasteAsPlainHTML = aeVisual.formatAccessKey(pasteAsPlainHTML, browser.i18n.getMessage("pasteAsPlainHTML_accesskey"));
   $("#paste-cliptxt-html").html(sanitizeHTML(pasteAsHTML));
   $("#paste-cliptxt-plain").html(sanitizeHTML(pasteAsPlain));
   $("#paste-cliptxt-plain-html").html(sanitizeHTML(pasteAsPlainHTML));
