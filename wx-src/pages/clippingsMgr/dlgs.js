@@ -8,7 +8,7 @@ function clippingsMgrDlgs()
   let shctKeyConflict = new aeDialog("#shortcut-key-conflict-msgbox");
   shctKeyConflict.onAccept = function (aEvent)
   {
-    this.shctKeyConflict.close();
+    this.close();
 
     // NOTE: As of Firefox 57b8, this doesn't do anything.
     $("#clipping-key")[0].selectedIndex = gShortcutKey.getPrevSelectedIndex();
@@ -478,11 +478,11 @@ function clippingsMgrDlgs()
 
         $("#import-error").text("").hide();
         $("#import-progress-bar").hide();
-        this.importFromFile.close();
+        importFromFile.close();
         gSuppressAutoMinzWnd = false;
 
-        this.importConfirmMsgBox.setMessage(browser.i18n.getMessage("clipMgrImportConfirm", importFile.name));
-        this.importConfirmMsgBox.showModal();
+        importConfirmMsgBox.setMessage(browser.i18n.getMessage("clipMgrImportConfirm", importFile.name));
+        importConfirmMsgBox.showModal();
       });
 
       fileReader.readAsText(importFile);
@@ -620,8 +620,8 @@ function clippingsMgrDlgs()
       }).then(aDownldItems => {
         if (aDownldItems && aDownldItems.length > 0) {
           let exportFilePath = aDownldItems[0].filename;
-          this.exportConfirmMsgBox.setMessage(browser.i18n.getMessage("clipMgrExportConfirm", exportFilePath));
-          this.exportConfirmMsgBox.showModal();
+          exportConfirmMsgBox.setMessage(browser.i18n.getMessage("clipMgrExportConfirm", exportFilePath));
+          exportConfirmMsgBox.showModal();
         }
       }).catch(aErr => {
         gSuppressAutoMinzWnd = false;
@@ -737,7 +737,7 @@ function clippingsMgrDlgs()
   {
     this.focusedSelector = ".dlg-btns > .dlg-accept";
     this.find(".dlg-btns > .dlg-btn-yes").on("click", aEvent => {
-      this.close();
+      removeAllSrcURLs.close();
       gCmd.removeAllSrcURLsIntrl();
     });
   };
