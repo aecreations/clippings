@@ -11,7 +11,7 @@ let gEnvInfo;
 let gClippingsDB;
 let gPrefs;
 let gIsClippingsTreeEmpty;
-let gDialogs = {};
+let gDialog = {};
 let gIsMaximized;
 let gSuppressAutoMinzWnd;
 let gSyncedItemsIDs = new Set();
@@ -592,7 +592,7 @@ let gSyncClippingsListener = {
   {
     log("Clippings/wx::clippingsMgr.js::gSyncClippingsListener.onActivate()");
     aeDialog.cancelDlgs();
-    gDialogs.reloadSyncFolderIntrl();
+    gDialog.reloadSyncFolderIntrl();
   },
   
   onDeactivate(aOldSyncFolderID)
@@ -889,7 +889,7 @@ let gShortcutKey = {
       assignedKeysLookup[aItem.shortcutKey] = 1;
     }).then(() => {
       if (assignedKeysLookup[shortcutKey]) {
-        gDialogs.shctKeyConflict.showModal();
+        gDialog.shctKeyConflict.showModal();
         return;
       }
 
@@ -1451,7 +1451,7 @@ let gCmd = {
     }
 
     if (gSyncedItemsIDs.has(parentFolderID + "F") && gPrefs.isSyncReadOnly) {
-      setTimeout(() => { gDialogs.syncFldrReadOnly.openPopup() }, 100);
+      setTimeout(() => { gDialog.syncFldrReadOnly.openPopup() }, 100);
       return;
     }
 
@@ -1581,14 +1581,14 @@ let gCmd = {
   {
     let perms = await browser.permissions.getAll();
     if (! perms.permissions.includes("clipboardRead")) {
-      gDialogs.requestExtPerm.setPermission("clipboardRead");
-      gDialogs.requestExtPerm.showModal();
+      gDialog.requestExtPerm.setPermission("clipboardRead");
+      gDialog.requestExtPerm.showModal();
       return;
     }
 
     let content = await navigator.clipboard.readText();
     if (content == "") {
-      setTimeout(() => {gDialogs.clipboardEmpty.openPopup()}, 100);
+      setTimeout(() => {gDialog.clipboardEmpty.openPopup()}, 100);
       return;
     }
 
@@ -1638,8 +1638,8 @@ let gCmd = {
 
     let perms = await browser.permissions.getAll();
     if (! perms.permissions.includes("clipboardWrite")) {
-      gDialogs.requestExtPerm.setPermission("clipboardWrite");
-      gDialogs.requestExtPerm.showModal();
+      gDialog.requestExtPerm.setPermission("clipboardWrite");
+      gDialog.requestExtPerm.showModal();
       return;
     }
 
@@ -1685,7 +1685,7 @@ let gCmd = {
     }
 
     if (gSyncedItemsIDs.has(parentFolderID + "F") && gPrefs.isSyncReadOnly) {
-      setTimeout(() => { gDialogs.syncFldrReadOnly.openPopup() }, 100);
+      setTimeout(() => { gDialog.syncFldrReadOnly.openPopup() }, 100);
       return;
     }
 
@@ -1759,7 +1759,7 @@ let gCmd = {
         }
         catch {}
         if (pingResp) {
-          gDialogs.actionUnavailable.openPopup();
+          gDialog.actionUnavailable.openPopup();
           return;
         }
 
@@ -1777,7 +1777,7 @@ let gCmd = {
       }
     }
     
-    gDialogs.moveTo.showModal();
+    gDialog.moveTo.showModal();
   },
   
   async deleteClippingOrFolder(aDestUndoStack)
@@ -1795,7 +1795,7 @@ let gCmd = {
     let parentFolderID = this._getParentFldrIDOfTreeNode(selectedNode);
 
     if (gSyncedItemsIDs.has(parentFolderID + "F") && gPrefs.isSyncReadOnly) {
-      setTimeout(() => { gDialogs.syncFldrReadOnly.openPopup() }, 100);
+      setTimeout(() => { gDialog.syncFldrReadOnly.openPopup() }, 100);
       return;
     }
 
@@ -1811,7 +1811,7 @@ let gCmd = {
       }
       catch {}
       if (pingResp) {
-        gDialogs.actionUnavailable.openPopup();
+        gDialog.actionUnavailable.openPopup();
         return;
       }
 
@@ -1962,7 +1962,7 @@ let gCmd = {
     }
 
     if (gSyncedItemsIDs.has(parentFolderID + "F") && gPrefs.isSyncReadOnly) {
-      setTimeout(() => { gDialogs.syncFldrReadOnly.openPopup() }, 100);
+      setTimeout(() => { gDialog.syncFldrReadOnly.openPopup() }, 100);
       return;
     }
 
@@ -2813,7 +2813,7 @@ let gCmd = {
     let clippingID = parseInt(selectedNode.key);
     let clipping = await gClippingsDB.clippings.get(clippingID);
     if (clipping.sourceURL == "") {
-      gDialogs.clippingMissingSrcURL.openPopup();
+      gDialog.clippingMissingSrcURL.openPopup();
       return;
     }
 
@@ -2846,7 +2846,7 @@ let gCmd = {
       return gClippingsDB.clippings.toCollection().modify({sourceURL: ""});
       
     }).then(aNumUpd => {
-      gDialogs.removeAllSrcURLsConfirm.openPopup();
+      gDialog.removeAllSrcURLsConfirm.openPopup();
 
       if (gPrefs.syncClippings) {
         browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"})
@@ -2877,22 +2877,22 @@ let gCmd = {
   
   showShortcutList: function ()
   {
-    gDialogs.shortcutList.showModal(false);
+    gDialog.shortcutList.showModal(false);
   },
 
   insertCustomPlaceholder: function ()
   {
-    gDialogs.insCustomPlchldr.showModal();
+    gDialog.insCustomPlchldr.showModal();
   },
 
   insertNumericPlaceholder: function ()
   {
-    gDialogs.insAutoIncrPlchldr.showModal();
+    gDialog.insAutoIncrPlchldr.showModal();
   },
 
   insertFormattedDateTimePlaceholder: function ()
   {
-    gDialogs.insDateTimePlchldr.showModal();
+    gDialog.insDateTimePlchldr.showModal();
   },
 
   insertClippingInClippingPlaceholder()
@@ -3017,8 +3017,8 @@ let gCmd = {
 
         if (aDownldItems && aDownldItems.length > 0) {
           let backupFilePath = aDownldItems[0].filename;
-          gDialogs.backupConfirmMsgBox.setMessage(browser.i18n.getMessage("clipMgrBackupConfirm", backupFilePath));
-          gDialogs.backupConfirmMsgBox.showModal();
+          gDialog.backupConfirmMsgBox.setMessage(browser.i18n.getMessage("clipMgrBackupConfirm", backupFilePath));
+          gDialog.backupConfirmMsgBox.showModal();
         }
 
       }).catch(aErr => {
@@ -3061,23 +3061,23 @@ let gCmd = {
     }
     catch {}
     if (pingResp) {
-      gDialogs.actionUnavailable.openPopup();
+      gDialog.actionUnavailable.openPopup();
       return;
     }
 
-    gDialogs.importFromFile.mode = gDialogs.importFromFile.IMP_REPLACE;
-    gDialogs.importFromFile.showModal();
+    gDialog.importFromFile.mode = gDialog.importFromFile.IMP_REPLACE;
+    gDialog.importFromFile.showModal();
   },
   
   importFromFile: function ()
   {
-    gDialogs.importFromFile.mode = gDialogs.importFromFile.IMP_APPEND;
-    gDialogs.importFromFile.showModal();
+    gDialog.importFromFile.mode = gDialog.importFromFile.IMP_APPEND;
+    gDialog.importFromFile.showModal();
   },
 
   exportToFile: function ()
   {
-    gDialogs.exportToFile.showModal();
+    gDialog.exportToFile.showModal();
   },
 
   async reloadSyncFolder()
@@ -3089,7 +3089,7 @@ let gCmd = {
     catch {}
 
     if (pingResp) {
-      gDialogs.actionUnavailable.openPopup();
+      gDialog.actionUnavailable.openPopup();
       return;
     }
 
@@ -3107,26 +3107,26 @@ let gCmd = {
   {
     let afterSyncFldrReloadDelay = await aePrefs.getPref("afterSyncFldrReloadDelay");
     
-    gDialogs.syncProgress.showModal(false);
+    gDialog.syncProgress.showModal(false);
 
     setTimeout(async () => {
       await rebuildClippingsTree();
-      gDialogs.syncProgress.close();
+      gDialog.syncProgress.close();
     }, afterSyncFldrReloadDelay);
   },
   
   removeAllSrcURLs: function ()
   {
-    gDialogs.removeAllSrcURLs.showModal();
+    gDialog.removeAllSrcURLs.showModal();
   },
 
   showMiniHelp: function ()
   {
     if ($("#intro-content").css("display") == "none") {
-      gDialogs.miniHelp.showModal();
+      gDialog.miniHelp.showModal();
     }
     else {
-      gDialogs.genericMsgBox.showModal();
+      gDialog.genericMsgBox.showModal();
     }
   },
 
@@ -3139,12 +3139,12 @@ let gCmd = {
     catch {}
 
     if (pingResp) {
-      gDialogs.actionUnavailable.openPopup();
+      gDialog.actionUnavailable.openPopup();
       return;
     }
 
     if (this.undoStack.length == 0) {
-      setTimeout(() => { gDialogs.noUndoNotify.openPopup() }, 100);
+      setTimeout(() => { gDialog.noUndoNotify.openPopup() }, 100);
       return;
     }
 
@@ -3273,7 +3273,7 @@ let gCmd = {
 
       await Promise.all(numUpdates);
       this.redoStack.push(undo);
-      gDialogs.restoreSrcURLs.openPopup();
+      gDialog.restoreSrcURLs.openPopup();
 
       if (gPrefs.syncClippings) {
         browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"})
@@ -3291,12 +3291,12 @@ let gCmd = {
     catch {}
 
     if (pingResp) {
-      gDialogs.actionUnavailable.openPopup();
+      gDialog.actionUnavailable.openPopup();
       return;
     }
 
     if (this.redoStack.length == 0) {
-      setTimeout(() => { gDialogs.noRedoNotify.openPopup() }, 100);
+      setTimeout(() => { gDialog.noRedoNotify.openPopup() }, 100);
       return;
     }
 
@@ -3421,7 +3421,7 @@ let gCmd = {
 
       await Promise.all(numUpdates);
       this.undoStack.push(redo);
-      gDialogs.removeAllSrcURLsConfirm.openPopup();
+      gDialog.removeAllSrcURLsConfirm.openPopup();
 
       if (gPrefs.syncClippings) {
         browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"})
@@ -3516,7 +3516,7 @@ function handlePushSyncUpdatesResponse(aResponse)
 {
   if ("error" in aResponse && aResponse.error.name == "RangeError") {
     // Max sync file size exceeded.
-    gDialogs.syncFldrFull.showModal();
+    gDialog.syncFldrFull.showModal();
   }
 }
 
@@ -3590,7 +3590,7 @@ $(async () => {
   else {
     if (gPrefs.syncClippings && gPrefs.cxtMenuSyncItemsOnly
         && gPrefs.clippingsMgrShowSyncItemsOnlyRem) {
-      gDialogs.showOnlySyncedItemsReminder.showModal();
+      gDialog.showOnlySyncedItemsReminder.showModal();
     }
   }
 
@@ -4380,23 +4380,23 @@ function initDialogs()
 
   initIntroBannerAndHelpDlg();
 
-  gDialogs.shctKeyConflict = new aeDialog("#shortcut-key-conflict-msgbox");
-  gDialogs.shctKeyConflict.onAccept = function (aEvent)
+  gDialog.shctKeyConflict = new aeDialog("#shortcut-key-conflict-msgbox");
+  gDialog.shctKeyConflict.onAccept = function (aEvent)
   {
-    gDialogs.shctKeyConflict.close();
+    gDialog.shctKeyConflict.close();
 
     // NOTE: As of Firefox 57b8, this doesn't do anything.
     $("#clipping-key")[0].selectedIndex = gShortcutKey.getPrevSelectedIndex();
   };
 
-  gDialogs.clippingMissingSrcURL = new aeDialog("#clipping-missing-src-url-msgbar");
-  gDialogs.noUndoNotify = new aeDialog("#no-undo-msgbar");
-  gDialogs.noRedoNotify = new aeDialog("#no-redo-msgbar");
-  gDialogs.clipboardEmpty = new aeDialog("#clipboard-empty-msgbar");
-  gDialogs.actionUnavailable = new aeDialog("#action-not-available");
+  gDialog.clippingMissingSrcURL = new aeDialog("#clipping-missing-src-url-msgbar");
+  gDialog.noUndoNotify = new aeDialog("#no-undo-msgbar");
+  gDialog.noRedoNotify = new aeDialog("#no-redo-msgbar");
+  gDialog.clipboardEmpty = new aeDialog("#clipboard-empty-msgbar");
+  gDialog.actionUnavailable = new aeDialog("#action-not-available");
 
-  gDialogs.requestExtPerm = new aeDialog("#request-ext-perm-dlg");
-  gDialogs.requestExtPerm.setProps({
+  gDialog.requestExtPerm = new aeDialog("#request-ext-perm-dlg");
+  gDialog.requestExtPerm.setProps({
     extPerm: null,
     extPermStrKeys: {
       clipboardRead: "extPrmClipbdR",
@@ -4404,17 +4404,17 @@ function initDialogs()
     },
   });
 
-  gDialogs.requestExtPerm.setPermission = function (aPermission)
+  gDialog.requestExtPerm.setPermission = function (aPermission)
   {
     this.extPerm = aPermission;
   };
 
-  gDialogs.requestExtPerm.onFirstInit = function ()
+  gDialog.requestExtPerm.onFirstInit = function ()
   {
     let extName = browser.i18n.getMessage("extName");
     this.find("#grant-ext-perm").text(browser.i18n.getMessage("extPermInstr", extName));
   };
-  gDialogs.requestExtPerm.onInit = function ()
+  gDialog.requestExtPerm.onInit = function ()
   {
     if (! this.extPerm) {
       throw new ReferenceError("Extension permission keyword not set");
@@ -4424,14 +4424,14 @@ function initDialogs()
     this.find(".dlg-content ul > li").text(browser.i18n.getMessage(strKey));
   };
 
-  gDialogs.requestExtPerm.onUnload = function ()
+  gDialog.requestExtPerm.onUnload = function ()
   {
     this.extPerm = null;
     this.find(".dlg-content ul > li").text('');
   };
 
-  gDialogs.shortcutList = new aeDialog("#shortcut-list-dlg");
-  gDialogs.shortcutList.onFirstInit = async function ()
+  gDialog.shortcutList = new aeDialog("#shortcut-list-dlg");
+  gDialog.shortcutList.onFirstInit = async function ()
   {
     let keybPasteKeys = await browser.runtime.sendMessage({msgID: "get-shct-key-prefix-ui-str"});
     let shctPrefixKey = 0;
@@ -4469,14 +4469,14 @@ function initDialogs()
     });
   };
 
-  gDialogs.shortcutList.onInit = async function ()
+  gDialog.shortcutList.onInit = async function ()
   {
     let shctListHTML;
     try {
       shctListHTML = await aeImportExport.getShortcutKeyListHTML(false);
     }
     catch (e) {
-      console.error("Clippings/wx::clippingsMgr.js: gDialogs.shortcutList.onInit(): " + e);
+      console.error("Clippings/wx::clippingsMgr.js: gDialog.shortcutList.onInit(): " + e);
       return;
     }
 
@@ -4493,19 +4493,19 @@ function initDialogs()
     this.initKeyboardNavigation(dlgElts);
   };
 
-  gDialogs.shortcutList.onUnload = function ()
+  gDialog.shortcutList.onUnload = function ()
   {
     $("#shortcut-list-content").empty();
   };
 
-  gDialogs.insCustomPlchldr = new aeDialog("#custom-placeholder-dlg");
-  gDialogs.insCustomPlchldr.validatePlaceholderName = function (aName) {
+  gDialog.insCustomPlchldr = new aeDialog("#custom-placeholder-dlg");
+  gDialog.insCustomPlchldr.validatePlaceholderName = function (aName) {
     if (aName.match(/[^a-zA-Z0-9_\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]/)) {
       return false;
     }
     return true;    
   };
-  gDialogs.insCustomPlchldr.onFirstInit = function ()
+  gDialog.insCustomPlchldr.onFirstInit = function ()
   {
     $("#custom-plchldr-name").prop("placeholder", browser.i18n.getMessage("placeholderNameHint"));
     $("#custom-plchldr-name").on("keydown", aEvent => {
@@ -4514,16 +4514,16 @@ function initDialogs()
       }
     });
   };
-  gDialogs.insCustomPlchldr.onInit = function ()
+  gDialog.insCustomPlchldr.onInit = function ()
   {
     $("#custom-plchldr-default-val").val("");
     $("#custom-plchldr-name").removeClass("input-error").val("");
   };
-  gDialogs.insCustomPlchldr.onShow = function ()
+  gDialog.insCustomPlchldr.onShow = function ()
   {
     $("#custom-plchldr-name").trigger("focus");
   };
-  gDialogs.insCustomPlchldr.onAccept = function ()
+  gDialog.insCustomPlchldr.onAccept = function ()
   {
     let placeholderName = $("#custom-plchldr-name").val();
     if (! placeholderName) {
@@ -4552,8 +4552,8 @@ function initDialogs()
     this.close();
   };
 
-  gDialogs.insAutoIncrPlchldr = new aeDialog("#numeric-placeholder-dlg");
-  gDialogs.insAutoIncrPlchldr.onFirstInit = function ()
+  gDialog.insAutoIncrPlchldr = new aeDialog("#numeric-placeholder-dlg");
+  gDialog.insAutoIncrPlchldr.onFirstInit = function ()
   {
     $("#numeric-plchldr-name").prop("placeholder", browser.i18n.getMessage("placeholderNameHint"));
     $("#numeric-plchldr-name").on("keydown", aEvent => {
@@ -4562,15 +4562,15 @@ function initDialogs()
       }
     });
   };
-  gDialogs.insAutoIncrPlchldr.onInit = function ()
+  gDialog.insAutoIncrPlchldr.onInit = function ()
   {
     $("#numeric-plchldr-name").removeClass("input-error").val("");
   };
-  gDialogs.insAutoIncrPlchldr.onShow = function ()
+  gDialog.insAutoIncrPlchldr.onShow = function ()
   {
     $("#numeric-plchldr-name").trigger("focus");
   };
-  gDialogs.insAutoIncrPlchldr.onAccept = function ()
+  gDialog.insAutoIncrPlchldr.onAccept = function ()
   {
     let placeholderName = $("#numeric-plchldr-name").val();
     if (! placeholderName) {
@@ -4578,7 +4578,7 @@ function initDialogs()
       return;
     }
     
-    if (! gDialogs.insCustomPlchldr.validatePlaceholderName(placeholderName)) {
+    if (! gDialog.insCustomPlchldr.validatePlaceholderName(placeholderName)) {
       $("#numeric-plchldr-name").addClass("input-error").trigger("focus");
       return;
     }
@@ -4591,8 +4591,8 @@ function initDialogs()
     this.close();
   };
 
-  gDialogs.insDateTimePlchldr = new aeDialog("#insert-date-time-placeholder-dlg");
-  gDialogs.insDateTimePlchldr.setProps({
+  gDialog.insDateTimePlchldr = new aeDialog("#insert-date-time-placeholder-dlg");
+  gDialog.insDateTimePlchldr.setProps({
     dateFormats: [
       "dddd, MMMM Do, YYYY",
       "MMMM D, YYYY",
@@ -4610,7 +4610,7 @@ function initDialogs()
       "HH:mm:ss",
     ],
   });
-  gDialogs.insDateTimePlchldr.onInit = function ()
+  gDialog.insDateTimePlchldr.onInit = function ()
   {
     let dtFmtList = $("#date-time-format-list")[0];
 
@@ -4662,13 +4662,13 @@ function initDialogs()
       dtFmtList.appendChild(timeFmtOpt);
     }
   };
-  gDialogs.insDateTimePlchldr.onShow = function ()
+  gDialog.insDateTimePlchldr.onShow = function ()
   {
     let fmtList = $("#date-time-format-list")[0];
     fmtList.trigger("focus");
     fmtList.selectedIndex = 0;
   };
-  gDialogs.insDateTimePlchldr.onAccept = function ()
+  gDialog.insDateTimePlchldr.onAccept = function ()
   {
     let placeholder = "";
     let dtFmtList = $("#date-time-format-list")[0];
@@ -4692,19 +4692,19 @@ function initDialogs()
     contentTextArea.trigger("focus");
     insertTextIntoTextbox(contentTextArea, placeholder);
   };
-  gDialogs.insDateTimePlchldr.onUnload = function ()
+  gDialog.insDateTimePlchldr.onUnload = function ()
   {
     $("#date-time-format-list").empty();
   };
   
-  gDialogs.importFromFile = new aeDialog("#import-dlg");
-  gDialogs.importFromFile.setProps({
+  gDialog.importFromFile = new aeDialog("#import-dlg");
+  gDialog.importFromFile.setProps({
     IMP_APPEND: 0,
     IMP_REPLACE: 1,
     mode: 0,
   });
 
-  gDialogs.importFromFile.onFirstInit = function ()
+  gDialog.importFromFile.onFirstInit = function ()
   {
     $("#import-clippings-browse").on("click", aEvent => {
       let inputFile = $("#import-clippings-file-upload")[0];
@@ -4737,7 +4737,7 @@ function initDialogs()
     }).on("focus", aEvent => { aEvent.target.select() });
   };
 
-  gDialogs.importFromFile.onInit = function ()
+  gDialog.importFromFile.onInit = function ()
   {
     if (this.mode == this.IMP_REPLACE) {
       $("#import-clippings-label").text(browser.i18n.getMessage("labelSelBkupFile"));
@@ -4768,14 +4768,14 @@ function initDialogs()
     }, 200);
   };
 
-  gDialogs.importFromFile.onUnload = function ()
+  gDialog.importFromFile.onUnload = function ()
   {   
     $("#import-error").text("").hide();
     $("#import-dlg #import-clippings-file-upload").val("");
     $("#import-clippings-replc-shct-keys")[0].checked = true;
     gSuppressAutoMinzWnd = false;
   };
-  gDialogs.importFromFile.onAccept = function (aEvent)
+  gDialog.importFromFile.onAccept = function (aEvent)
   {
     let currClippingsData;
     
@@ -4838,15 +4838,15 @@ function initDialogs()
           return;
         }
 
-        log("Clippings/wx::clippingsMgr.js: gDialogs.importFromFile.onAccept()::importFile(): Importing Clippings data asynchronously.");
+        log("Clippings/wx::clippingsMgr.js: gDialog.importFromFile.onAccept()::importFile(): Importing Clippings data asynchronously.");
         
         $("#import-error").text("").hide();
         $("#import-progress-bar").hide();
-        gDialogs.importFromFile.close();
+        gDialog.importFromFile.close();
         gSuppressAutoMinzWnd = false;
 
-        gDialogs.importConfirmMsgBox.setMessage(browser.i18n.getMessage("clipMgrImportConfirm", importFile.name));
-        gDialogs.importConfirmMsgBox.showModal();
+        gDialog.importConfirmMsgBox.setMessage(browser.i18n.getMessage("clipMgrImportConfirm", importFile.name));
+        gDialog.importConfirmMsgBox.showModal();
       });
 
       fileReader.readAsText(importFile);
@@ -4869,7 +4869,7 @@ function initDialogs()
 
       }).then(() => {
         gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
-          log("Clippings/wx::clippingsMgr.js: gDialogs.importFromFile.onAccept(): Starting restore from backup file.\nDeleting all clippings and folders (except the 'Synced Clippings' folder, if Sync Clippings turned on).");
+          log("Clippings/wx::clippingsMgr.js: gDialog.importFromFile.onAccept(): Starting restore from backup file.\nDeleting all clippings and folders (except the 'Synced Clippings' folder, if Sync Clippings turned on).");
 
 	  gCmd.recentAction = gCmd.ACTION_RESTORE_BACKUP;
 
@@ -4898,7 +4898,7 @@ function initDialogs()
             importFile(false);
           });
         }).catch(aErr => {
-          console.error("Clippings/wx::clippingsMgr.js: gDialogs.importFromFile.onAccept(): " + aErr);
+          console.error("Clippings/wx::clippingsMgr.js: gDialog.importFromFile.onAccept(): " + aErr);
         });
       });      
     }
@@ -4912,8 +4912,8 @@ function initDialogs()
     }
   };
   
-  gDialogs.exportToFile = new aeDialog("#export-dlg");
-  gDialogs.exportToFile.setProps({
+  gDialog.exportToFile = new aeDialog("#export-dlg");
+  gDialog.exportToFile.setProps({
     FMT_CLIPPINGS_WX: 0,
     FMT_HTML: 1,
     FMT_CSV: 2,
@@ -4926,7 +4926,7 @@ function initDialogs()
     ],
   });
 
-  gDialogs.exportToFile.onFirstInit = function ()
+  gDialog.exportToFile.onFirstInit = function ()
   {
     $("#export-format-list").change(aEvent => {
       let selectedFmtIdx = aEvent.target.selectedIndex;
@@ -4950,7 +4950,7 @@ function initDialogs()
     });
   };
 
-  gDialogs.exportToFile.onInit = function ()
+  gDialog.exportToFile.onInit = function ()
   {
     this.inclSrcURLs = true;
     this.inclSep = true;
@@ -4962,12 +4962,12 @@ function initDialogs()
     this.find("#export-incl-separators").prop("checked", this.inclSep).prop("disabled", false);
   };
 
-  gDialogs.exportToFile.onShow = function ()
+  gDialog.exportToFile.onShow = function ()
   {
     $("#export-format-list")[0].focus();
   };
 
-  gDialogs.exportToFile.onAfterAccept = function ()
+  gDialog.exportToFile.onAfterAccept = function ()
   {
     function saveToFile(aBlobData, aFilename)
     {
@@ -4985,8 +4985,8 @@ function initDialogs()
 
         if (aDownldItems && aDownldItems.length > 0) {
           let exportFilePath = aDownldItems[0].filename;
-          gDialogs.exportConfirmMsgBox.setMessage(browser.i18n.getMessage("clipMgrExportConfirm", exportFilePath));
-          gDialogs.exportConfirmMsgBox.showModal();
+          gDialog.exportConfirmMsgBox.setMessage(browser.i18n.getMessage("clipMgrExportConfirm", exportFilePath));
+          gDialog.exportConfirmMsgBox.showModal();
         }
       }).catch(aErr => {
         gSuppressAutoMinzWnd = false;
@@ -5051,18 +5051,18 @@ function initDialogs()
     }
   };
 
-  gDialogs.importConfirmMsgBox = new aeDialog("#import-confirm-msgbox");
-  gDialogs.importConfirmMsgBox.setMessage = function (aMessage)
+  gDialog.importConfirmMsgBox = new aeDialog("#import-confirm-msgbox");
+  gDialog.importConfirmMsgBox.setMessage = function (aMessage)
   {
     $("#import-confirm-msgbox > .msgbox-content").text(aMessage);
   };
-  gDialogs.importConfirmMsgBox.onShow = async function ()
+  gDialog.importConfirmMsgBox.onShow = async function ()
   {
     if (gPrefs.clippingsUnchanged) {
       await aePrefs.setPrefs({ clippingsUnchanged: false });
     }
   };
-  gDialogs.importConfirmMsgBox.onAfterAccept = async function ()
+  gDialog.importConfirmMsgBox.onAfterAccept = async function ()
   {
     await browser.runtime.sendMessage({
       msgID: "import-finished",
@@ -5071,30 +5071,30 @@ function initDialogs()
     await rebuildClippingsTree();
   };
 
-  gDialogs.exportConfirmMsgBox = new aeDialog("#export-confirm-msgbox");
-  gDialogs.exportConfirmMsgBox.setMessage = function (aMessage)
+  gDialog.exportConfirmMsgBox = new aeDialog("#export-confirm-msgbox");
+  gDialog.exportConfirmMsgBox.setMessage = function (aMessage)
   {
     $("#export-confirm-msgbox > .msgbox-content").text(aMessage);
   };
 
-  gDialogs.backupConfirmMsgBox = new aeDialog("#backup-confirm-msgbox");
-  gDialogs.backupConfirmMsgBox.setMessage = function (aMessage)
+  gDialog.backupConfirmMsgBox = new aeDialog("#backup-confirm-msgbox");
+  gDialog.backupConfirmMsgBox.setMessage = function (aMessage)
   {
     $("#backup-confirm-msgbox > .msgbox-content").text(aMessage);
   };
-  gDialogs.backupConfirmMsgBox.onShow = async function ()
+  gDialog.backupConfirmMsgBox.onShow = async function ()
   {
     await aePrefs.setPrefs({ clippingsUnchanged: true });
   };
-  gDialogs.backupConfirmMsgBox.onAfterAccept = async function ()
+  gDialog.backupConfirmMsgBox.onAfterAccept = async function ()
   {
     if (gIsBackupMode) {
       closeWnd();
     }
   };
   
-  gDialogs.removeAllSrcURLs = new aeDialog("#remove-all-source-urls-dlg");
-  gDialogs.removeAllSrcURLs.onFirstInit = function ()
+  gDialog.removeAllSrcURLs = new aeDialog("#remove-all-source-urls-dlg");
+  gDialog.removeAllSrcURLs.onFirstInit = function ()
   {
     this.focusedSelector = ".dlg-btns > .dlg-accept";
     this.find(".dlg-btns > .dlg-btn-yes").on("click", aEvent => {
@@ -5103,25 +5103,25 @@ function initDialogs()
     });
   };
 
-  gDialogs.removeAllSrcURLsConfirm = new aeDialog("#all-src-urls-removed-confirm-msgbar");
-  gDialogs.removeAllSrcURLsConfirm.onInit = function ()
+  gDialog.removeAllSrcURLsConfirm = new aeDialog("#all-src-urls-removed-confirm-msgbar");
+  gDialog.removeAllSrcURLsConfirm.onInit = function ()
   {
     // Reselect the selected tree node to force a call to updateDisplay().
     aeClippingsTree.getTree().reactivate(true);
   };
 
-  gDialogs.restoreSrcURLs = new aeDialog("#restored-src-urls-msgbar");
-  gDialogs.restoreSrcURLs.onInit = function ()
+  gDialog.restoreSrcURLs = new aeDialog("#restored-src-urls-msgbar");
+  gDialog.restoreSrcURLs.onInit = function ()
   {
     aeClippingsTree.getTree().reactivate(true);
   };
 
-  gDialogs.moveTo = new aeDialog("#move-dlg");
-  gDialogs.moveTo.setProps({
+  gDialog.moveTo = new aeDialog("#move-dlg");
+  gDialog.moveTo.setProps({
     fldrTree: null,
     selectedFldrNode: null,
   });
-  gDialogs.moveTo.resetTree = function ()
+  gDialog.moveTo.resetTree = function ()
   {
     if (! this.fldrTree) {
       return;
@@ -5139,7 +5139,7 @@ function initDialogs()
     $('<div id="move-to-fldr-tree"></div>').insertAfter("#activate-move-to-fldr-tree");
   };
 
-  gDialogs.moveTo.onFirstInit = function ()
+  gDialog.moveTo.onFirstInit = function ()
   {
     $("#copy-instead-of-move").on("click", aEvent => {
       if (aEvent.target.checked) {
@@ -5166,7 +5166,7 @@ function initDialogs()
     });
   };
 
-  gDialogs.moveTo.onInit = function ()
+  gDialog.moveTo.onInit = function ()
   {    
     if (this.fldrTree) {
       this.fldrTree.getTree().getNodeByKey(Number(aeConst.ROOT_FOLDER_ID).toString()).setActive();
@@ -5185,7 +5185,7 @@ function initDialogs()
 
       // Attach event handler every time the folder tree is regenerated.
       this.find("#move-to-fldr-tree").on("click", aEvent => {
-        log("Clippings::clippingsMgr.js: gDialogs.moveTo: Detected 'click' event in the folder tree");
+        log("Clippings::clippingsMgr.js: gDialog.moveTo: Detected 'click' event in the folder tree");
         $("#move-error").text('');
       });
     }
@@ -5220,13 +5220,13 @@ function initDialogs()
     }
   };
 
-  gDialogs.moveTo.onCancel = function (aEvent)
+  gDialog.moveTo.onCancel = function (aEvent)
   {
     this.resetTree();
     this.close();
   };
 
-  gDialogs.moveTo.onAccept = function (aEvent)
+  gDialog.moveTo.onAccept = function (aEvent)
   {
     let clippingsMgrTree = aeClippingsTree.getTree();
     let selectedNode = clippingsMgrTree.activeNode;
@@ -5298,17 +5298,17 @@ function initDialogs()
     this.close();
   };
 
-  gDialogs.moveTo.onUnload = function ()
+  gDialog.moveTo.onUnload = function ()
   {
     $("#copy-instead-of-move").prop("checked", false).prop("disabled", false);
     $("#move-dlg-action-btn").text(browser.i18n.getMessage("btnMove"));
     $("#move-error").text('');
   };
 
-  gDialogs.showOnlySyncedItemsReminder = new aeDialog("#show-only-synced-items-reminder");
-  gDialogs.showOnlySyncedItemsReminder.isDelayedOpen = false;
+  gDialog.showOnlySyncedItemsReminder = new aeDialog("#show-only-synced-items-reminder");
+  gDialog.showOnlySyncedItemsReminder.isDelayedOpen = false;
   
-  gDialogs.showOnlySyncedItemsReminder.onShow = function ()
+  gDialog.showOnlySyncedItemsReminder.onShow = function ()
   {
     aePrefs.setPrefs({clippingsMgrShowSyncItemsOnlyRem: false});
     setTimeout(() => {
@@ -5317,11 +5317,11 @@ function initDialogs()
     }, 100);
   };
 
-  gDialogs.syncProgress = new aeDialog("#sync-progress");
-  gDialogs.syncFldrFull = new aeDialog("#sync-fldr-full-error-msgbox");
-  gDialogs.syncFldrReadOnly = new aeDialog("#sync-file-readonly-msgbar");
-  gDialogs.miniHelp = new aeDialog("#mini-help-dlg");
-  gDialogs.genericMsgBox = new aeDialog("#generic-msg-box");
+  gDialog.syncProgress = new aeDialog("#sync-progress");
+  gDialog.syncFldrFull = new aeDialog("#sync-fldr-full-error-msgbox");
+  gDialog.syncFldrReadOnly = new aeDialog("#sync-file-readonly-msgbar");
+  gDialog.miniHelp = new aeDialog("#mini-help-dlg");
+  gDialog.genericMsgBox = new aeDialog("#generic-msg-box");
 }
 
 
@@ -5468,7 +5468,7 @@ function buildClippingsTree()
             // is read-only.
             if (gPrefs.syncClippings && gPrefs.isSyncReadOnly
                 && gSyncedItemsIDs.has(newParentID + "F")) {
-              setTimeout(() => { gDialogs.syncFldrReadOnly.openPopup() }, 100);
+              setTimeout(() => { gDialog.syncFldrReadOnly.openPopup() }, 100);
               return;
             }
 
@@ -5963,10 +5963,10 @@ async function rebuildClippingsTree()
       if (gPrefs.cxtMenuSyncItemsOnly) {
         if (gPrefs.clippingsMgrShowSyncItemsOnlyRem) {
           if (aeDialog.isOpen()) {
-            gDialogs.showOnlySyncedItemsReminder.isDelayedOpen = true;
+            gDialog.showOnlySyncedItemsReminder.isDelayedOpen = true;
           }
           else {
-            gDialogs.showOnlySyncedItemsReminder.showModal();
+            gDialog.showOnlySyncedItemsReminder.showModal();
           }
         }
       }
@@ -6143,7 +6143,7 @@ function initShortcutKeyMenu()
       assignedKeysLookup[aItem.shortcutKey] = 1;
     }).then(() => {
       if (assignedKeysLookup[shortcutKey]) {
-        gDialogs.shctKeyConflict.showModal();
+        gDialog.shctKeyConflict.showModal();
         return;
       }
 
