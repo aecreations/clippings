@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "__MSG_extName__",
   "description": "__MSG_extDesc__",
-  "version": "7.1.98.0",
+  "version": "7.1.98.1",
   "homepage_url": "https://aecreations.io/clippings/index.php",
   "author": "AE Creations",
   
@@ -10,6 +10,7 @@
     "gecko": {
       "id": "{91aa5abe-9de4-4347-b7b5-322c38dd9271}",
       "strict_min_version": "140.0",
+      "update_url": "https://aecreations.github.io/updates/update-test.json",
       "data_collection_permissions": {
         "required": ["none"]
       }
@@ -68,9 +69,9 @@
       "matches": ["<all_urls>"],
       "all_frames": true,
       "js": [
-	"lib/purify.min.js",
-	"lib/jquery.js",
-	"content.js"
+        "lib/purify.min.js",
+        "lib/jquery.js",
+        "content.js"
       ]
     }
   ],
