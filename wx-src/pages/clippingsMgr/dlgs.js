@@ -100,7 +100,7 @@ function clippingsMgrDlgs()
       shctListHTML = await aeImportExport.getShortcutKeyListHTML(false);
     }
     catch (e) {
-      console.error("Clippings: clippingsMgr/pg.js:  shortcutList.onInit(): " + e);
+      console.error("Clippings: clippingsMgr/dlgs.js:  shortcutList.onInit(): " + e);
       return;
     }
 
@@ -458,7 +458,7 @@ function clippingsMgrDlgs()
             });
           }
           else {
-            log("Clippings: clippingsMgr/pg.js:  Restore from backup file has failed.  Rolling back.");
+            log("Clippings: clippingsMgr/dlgs.js:  Restore from backup file has failed.  Rolling back.");
             aeImportExport.importFromJSON(currClippingsData, true, aAppendItems);
             setTimeout(() => {
               // Restoring the current clippings data will change the IDs of
@@ -474,7 +474,7 @@ function clippingsMgrDlgs()
           return;
         }
 
-        log("Clippings: clippingsMgr/pg.js:  gDialog.importFromFile.onAccept()::importFile(): Importing Clippings data asynchronously.");
+        log("Clippings: clippingsMgr/dlgs.js:  gDialog.importFromFile.onAccept()::importFile(): Importing Clippings data asynchronously.");
 
         $("#import-error").text("").hide();
         $("#import-progress-bar").hide();
@@ -489,7 +489,7 @@ function clippingsMgrDlgs()
     } // END nested function
 
     if (this.mode == this.IMP_REPLACE) {
-      info("Clippings: clippingsMgr/pg.js:  Import dialog mode: Restore From Backup");
+      info("Clippings: clippingsMgr/dlgs.js:  Import dialog mode: Restore From Backup");
 
       $("#restore-backup-warning").hide();
 
@@ -505,7 +505,7 @@ function clippingsMgrDlgs()
 
       }).then(() => {
         gClippingsDB.transaction("rw", gClippingsDB.clippings, gClippingsDB.folders, () => {
-          log("Clippings: clippingsMgr/pg.js:  gDialog.importFromFile.onAccept(): Starting restore from backup file.\nDeleting all clippings and folders (except the 'Synced Clippings' folder, if Sync Clippings turned on).");
+          log("Clippings: clippingsMgr/dlgs.js:  gDialog.importFromFile.onAccept(): Starting restore from backup file.\nDeleting all clippings and folders (except the 'Synced Clippings' folder, if Sync Clippings turned on).");
 
           gCmd.recentAction = gCmd.ACTION_RESTORE_BACKUP;
 
@@ -527,19 +527,19 @@ function clippingsMgrDlgs()
               }
             });
           }).then(() => {
-            log("Clippings: clippingsMgr/pg.js:  Finished deleting clippings and folders. Clearing undo stack and starting import of backup file.");
+            log("Clippings: clippingsMgr/dlgs.js:  Finished deleting clippings and folders. Clearing undo stack and starting import of backup file.");
 
             gCmd.undoStack.clear();
             gCmd.redoStack.clear();
             importFile(false);
           });
         }).catch(aErr => {
-          console.error("Clippings: clippingsMgr/pg.js:  gDialog.importFromFile.onAccept(): " + aErr);
+          console.error("Clippings: clippingsMgr/dlgs.js:  gDialog.importFromFile.onAccept(): " + aErr);
         });
       });
     }
     else {
-      info("Clippings: clippingsMgr/pg.js:  Import dialog mode: Import File");
+      info("Clippings: clippingsMgr/dlgs.js:  Import dialog mode: Import File");
       gCmd.recentAction = gCmd.ACTION_IMPORT;
 
       browser.runtime.sendMessage({msgID: "import-started"}).then(() => {
@@ -824,7 +824,7 @@ function clippingsMgrDlgs()
 
       // Attach event handler every time the folder tree is regenerated.
       this.find("#move-to-fldr-tree").on("click", aEvent => {
-        log("Clippings::pg.js: gDialog.moveTo: Detected 'click' event in the folder tree");
+        log("Clippings: clippingsMgr/dlgs.js: gDialog.moveTo: Detected 'click' event in the folder tree");
         $("#move-error").text('');
       });
     }

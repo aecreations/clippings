@@ -888,7 +888,7 @@ function clippingsMgrCmds()
         parentFolderID = this._getParentFldrIDOfTreeNode(selectedNode);
         let parentFldrChildNodes = selectedNode.getParent().getChildren();
         if (parentFldrChildNodes === undefined) {
-          warn("Clippings/mx::pg.js: gCmd.insertSeparator(): Can't get child nodes of the parent node, because Fancytree lazy loading is in effect!");
+          warn("Clippings: clippingsMgr/cmds.js: gCmd.insertSeparator(): Can't get child nodes of the parent node, because Fancytree lazy loading is in effect!");
         }
       }
 
@@ -933,7 +933,7 @@ function clippingsMgrCmds()
           displayOrder = clipping.displayOrder - 1;
         }
       }
-      log("Clippings/mx::pg.js: gCmd.insertSeparator(): At position: " + displayOrder);
+      log("Clippings: clippingsMgr/cmds.js: gCmd.insertSeparator(): At position: " + displayOrder);
 
       this.recentAction = this.ACTION_INSERT_SEPARATOR;
 
