@@ -374,7 +374,7 @@ function clippingsMgrCmds()
         parentFolderID = this._getParentFldrIDOfTreeNode(selectedNode);
         let parentFldrChildNodes = selectedNode.getParent().getChildren();
         if (parentFldrChildNodes === undefined) {
-          warn("Clippings/wx::pg.js: gCmd.newClipping(): Can't get child nodes of the parent node, because Fancytree lazy loading is in effect!");
+          warn("Clippings: clippingsMgr/cmds.js: gCmd.newClipping(): Can't get child nodes of the parent node, because Fancytree lazy loading is in effect!");
         }
         else {
           displayOrder = parentFldrChildNodes.length;
@@ -534,7 +534,7 @@ function clippingsMgrCmds()
         parentFolderID = this._getParentFldrIDOfTreeNode(selectedNode);
         let parentFldrChildNodes = selectedNode.getParent().getChildren();
         if (parentFldrChildNodes === undefined) {
-          warn("Clippings/wx::pg.js: gCmd.newClippingFromClipboard(): Can't get child nodes of the parent node, because Fancytree lazy loading is in effect!");
+          warn("Clippings: clippingsMgr/cmds.js: gCmd.newClippingFromClipboard(): Can't get child nodes of the parent node, because Fancytree lazy loading is in effect!");
         }
       }
 
@@ -608,7 +608,7 @@ function clippingsMgrCmds()
         parentFolderID = this._getParentFldrIDOfTreeNode(selectedNode);
         let parentFldrChildNodes = selectedNode.getParent().getChildren();
         if (parentFldrChildNodes === undefined) {
-          warn("Clippings/wx::pg.js: gCmd.newFolder(): Can't get child nodes of the parent node, because Fancytree lazy loading is in effect!");
+          warn("Clippings: clippingsMgr/cmds.js: gCmd.newFolder(): Can't get child nodes of the parent node, because Fancytree lazy loading is in effect!");
         }
         else {
           displayOrder = parentFldrChildNodes.length;
@@ -801,7 +801,7 @@ function clippingsMgrCmds()
             }).catch(handlePushSyncItemsError);
           }
         }).catch(aErr => {
-          console.error("Clippings/wx::pg.js: gCmd.deleteClippingOrFolder(): " + aErr);
+          console.error("Clippings: clippingsMgr/cmds.js: gCmd.deleteClippingOrFolder(): " + aErr);
         });
       }
       else {
@@ -867,7 +867,7 @@ function clippingsMgrCmds()
             }).catch(handlePushSyncItemsError);
           }
         }).catch(aErr => {
-          console.error("Clippings/wx::pg.js: gCmd.deleteClippingOrFolder(): " + aErr);
+          console.error("Clippings: clippingsMgr/cmds.js: gCmd.deleteClippingOrFolder(): " + aErr);
         });
       }
     },
@@ -1110,7 +1110,7 @@ function clippingsMgrCmds()
             aFnResolve();
           }
         }).catch(aErr => {
-          console.error("Clippings/wx::pg.js: gCmd.moveClippingIntrl(): " + aErr);
+          console.error("Clippings: clippingsMgr/cmds.js: gCmd.moveClippingIntrl(): " + aErr);
           aFnReject(aErr);
         });
       });
@@ -1200,7 +1200,7 @@ function clippingsMgrCmds()
           }).catch(handlePushSyncItemsError);
         }
       }).catch(aErr => {
-        console.error("Clippings/wx::pg.js: gCmd.copyClippingIntrl(): " + aErr);
+        console.error("Clippings: clippingsMgr/cmds.js: gCmd.copyClippingIntrl(): " + aErr);
       });
     },
 
@@ -1309,7 +1309,7 @@ function clippingsMgrCmds()
             aFnResolve();
           }
         }).catch(aErr => {
-          console.error("Clippings/wx::pg.js: gCmd.moveFolderIntrl(): " + aErr);
+          console.error("Clippings: clippingsMgr/cmds.js: gCmd.moveFolderIntrl(): " + aErr);
           aFnReject(aErr);
         });
       });
@@ -1418,7 +1418,7 @@ function clippingsMgrCmds()
         });
 
       }).catch(aErr => {
-        console.error("Clippings/wx::pg.js: gCmd.copyFolderIntrl(): " + aErr);
+        console.error("Clippings: clippingsMgr/cmds.js: gCmd.copyFolderIntrl(): " + aErr);
       });
     },
 
@@ -1478,7 +1478,7 @@ function clippingsMgrCmds()
             aFnResolve();
           }
         }).catch(aErr => {
-          console.error("Clippings/wx::pg.js: gCmd.editFolderNameIntrl(): " + aErr);
+          console.error("Clippings: clippingsMgr/cmds.js: gCmd.editFolderNameIntrl(): " + aErr);
           aFnReject(aErr);
         });
       });
@@ -1539,7 +1539,7 @@ function clippingsMgrCmds()
             aFnResolve();
           }
         }).catch(aErr => {
-          console.error("Clippings/wx::pg.js: gCmd.editClippingNameIntrl(): " + aErr);
+          console.error("Clippings: clippingsMgr/cmds.js: gCmd.editClippingNameIntrl(): " + aErr);
           aFnReject(aErr);
         });
       });
@@ -1600,7 +1600,7 @@ function clippingsMgrCmds()
             aFnResolve();
           }
         }).catch(aErr => {
-          console.error("Clippings/wx::pg.js: gCmd.editClippingContentIntrl(): " + aErr);
+          console.error("Clippings: clippingsMgr/cmds.js: gCmd.editClippingContentIntrl(): " + aErr);
           aFnReject(aErr);
         });
       });
@@ -1662,7 +1662,7 @@ function clippingsMgrCmds()
         }
       }).catch(aErr => {
         handlePushSyncItemsError(aErr);
-        console.error("Clippings/wx::pg.js: gCmd.setLabel(): " + aErr);
+        console.error("Clippings: clippingsMgr/cmds.js: gCmd.setLabel(): " + aErr);
       });
     },
 
@@ -1719,14 +1719,14 @@ function clippingsMgrCmds()
 
             if (aFolderID == gPrefs.syncFolderID || gSyncedItemsIDs.has(aFolderID + "F")) {
               browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"}).then(() => {
-                log("Clippings/wx::pg.js::gCmd.updateDisplayOrder(): Saved the display order for synced items.");
+                log("Clippings: clippingsMgr/cmds.js: :gCmd.updateDisplayOrder(): Saved the display order for synced items.");
               });
             }
 
             aFnResolve();
           });
         }).catch(aErr => {
-          console.error("Clippings/wx::pg.js::gCmd.updateDisplayOrder(): %s", aErr.message);
+          console.error("Clippings: clippingsMgr/cmds.js: :gCmd.updateDisplayOrder(): %s", aErr.message);
           aFnReject(aErr);
         });
       });
@@ -1802,7 +1802,7 @@ function clippingsMgrCmds()
         closeWnd();
       }
       else {
-        warn("Clippings/wx::pg.js: gCmd.pasteClipping(): Action disabled");
+        warn("Clippings: clippingsMgr/cmds.js: gCmd.pasteClipping(): Action disabled");
       }
     },
 
@@ -2418,7 +2418,7 @@ function clippingsMgrCmds()
             aFnResolve();
           });
         }).catch(aErr => {
-          console.error("Clippings/wx::pg.js: gCmd._copyFolderHelper(): " + aErr);
+          console.error("Clippings: clippingsMgr/cmds.js: gCmd._copyFolderHelper(): " + aErr);
           aFnReject(aErr);
         });
       });
