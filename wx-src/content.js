@@ -263,28 +263,42 @@ function isElementOfType(aElement, aTypeStr)
 
 function insertTextIntoTextbox(aTextboxElt, aInsertedText, aDispatchInputEvent)
 {
-  var text, pre, post, pos;
+  let text, pre, post, pos;
   text = aTextboxElt.value;
 
-  if (aTextboxElt.selectionStart == aTextboxElt.selectionEnd) {
-    var point = aTextboxElt.selectionStart;
-    pre = text.substring(0, point);
-    post = text.substring(point, text.length);
-    pos = point + aInsertedText.length;
+  // Inserting into the cursor position in the textbox is only applicable to
+  // <input> elements with these values of the `type` attribute:
+  // text, search, url, tel, password
+  // Not applicable to: email, date, datetime-local, number, time
+  // See https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/selectionStart
+  // and https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/selectionEnd
+  if (isElementOfType(aTextboxElt, "HTMLTextAreaElement")
+      || (isElementOfType(aTextboxElt, "HTMLInputElement")
+          && ["text", "search", "url", "tel", "password"].includes(aTextboxElt.type))) {
+    if (aTextboxElt.selectionStart == aTextboxElt.selectionEnd) {
+      let point = aTextboxElt.selectionStart;
+      pre = text.substring(0, point);
+      post = text.substring(point, text.length);
+      pos = point + aInsertedText.length;
+    }
+    else {
+      let p1 = aTextboxElt.selectionStart;
+      let p2 = aTextboxElt.selectionEnd;
+      pre = text.substring(0, p1);
+      post = text.substring(p2, text.length);
+      pos = p1 + aInsertedText.length;
+    }
+    
+    log(`Clippings/wx::content.js: insertTextIntoTextbox(): Inserting into textbox ${aTextboxElt}`);
+    
+    aTextboxElt.value = pre + aInsertedText + post;
+    aTextboxElt.selectionStart = pos;
+    aTextboxElt.selectionEnd = pos;
   }
   else {
-    var p1 = aTextboxElt.selectionStart;
-    var p2 = aTextboxElt.selectionEnd;
-    pre = text.substring(0, p1);
-    post = text.substring(p2, text.length);
-    pos = p1 + aInsertedText.length;
+    // For all other types of textbox, simply append.
+    aTextboxElt.value = text + aInsertedText;
   }
-
-  log(`Clippings/wx::content.js: insertTextIntoTextbox(): Inserting into textbox ${aTextboxElt}`);
-  
-  aTextboxElt.value = pre + aInsertedText + post;
-  aTextboxElt.selectionStart = pos;
-  aTextboxElt.selectionEnd = pos;
 
   if (aDispatchInputEvent) {
     let inputEvt = createInputEventInstance();
