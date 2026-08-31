@@ -1158,6 +1158,8 @@ $(async () => {
     }
   }
 
+  log(`Clippings::clippingsMgr/pg.js: Device pixel ratio of current screen (2.0=Retina): ${window.devicePixelRatio}`);
+
   aeVisual.init(gEnvInfo.os);
   aeInterxn.init(gEnvInfo.os);
   if (gPrefs.defDlgBtnFollowsFocus) {
