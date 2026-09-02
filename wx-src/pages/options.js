@@ -508,8 +508,8 @@ function initDialogs()
   gDialogs.syncClippings.onInit = async function ()
   {
     this.isCanceled = false;
-    $("#sync-clippings-dlg .dlg-accept").hide();
-    $("#sync-clippings-dlg .dlg-cancel").text(browser.i18n.getMessage("btnCancel"));
+    this.find(".dlg-accept").hide();
+    this.find(".dlg-cancel").text(browser.i18n.getMessage("btnCancel"));
     $("#sync-err-detail").text("");
     
     let deckSyncChk = $("#sync-connection-check");
@@ -576,6 +576,7 @@ function initDialogs()
     $("#sync-helper-app-update-check").prop("checked", prefs.syncHelperCheckUpdates);
     $("#show-only-sync-items").prop("checked", prefs.cxtMenuSyncItemsOnly);
     $("#cmprs-sync-data").prop("checked", prefs.compressSyncData);
+    $("#auto-sync-on-new-or-manage").prop("checked", prefs.autoSyncOnNewOrManage);
 
     this.oldShowSyncItemsOpt = $("#show-only-sync-items").prop("checked");
     this.oldCheckSyncAppUpdatesOpt = $("#sync-helper-app-update-check").prop("checked");
@@ -608,6 +609,7 @@ function initDialogs()
       syncHelperCheckUpdates: $("#sync-helper-app-update-check").prop("checked"),
       cxtMenuSyncItemsOnly: $("#show-only-sync-items").prop("checked"),
       compressSyncData: $("#cmprs-sync-data").prop("checked"),
+      autoSyncOnNewOrManage: $("#auto-sync-on-new-or-manage").prop("checked"),
     });
 
     let rebuildClippingsMenu = $("#show-only-sync-items").prop("checked") != this.oldShowSyncItemsOpt;

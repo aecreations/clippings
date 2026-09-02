@@ -1137,7 +1137,6 @@ $(async () => {
   initDialogs();
   buildClippingsTree();
   initTreeSplitter();
-  initSyncItemsIDLookupList();
 
   if (gPrefs.clippingsMgrTreeWidth) {
     let width = `${parseInt(gPrefs.clippingsMgrTreeWidth)}px`;
@@ -1152,11 +1151,23 @@ $(async () => {
     gCmd.backup();
   }
   else {
-    if (gPrefs.syncClippings && gPrefs.cxtMenuSyncItemsOnly
-        && gPrefs.clippingsMgrShowSyncItemsOnlyRem) {
-      gDialog.showOnlySyncedItemsReminder.showModal();
+    if (gPrefs.syncClippings) {
+      let hideSyncProgress = false;
+      if (gPrefs.cxtMenuSyncItemsOnly && gPrefs.clippingsMgrShowSyncItemsOnlyRem) {
+        hideSyncProgress = true;
+        gDialog.showOnlySyncedItemsReminder.showModal();
+      }
+
+      if (gPrefs.autoSyncOnNewOrManage) {
+        await browser.runtime.sendMessage({
+          msgID: "refresh-synced-clippings",
+        });
+        await gCmd.reloadSyncFolderIntrl(hideSyncProgress);
+      }
     }
   }
+
+  initSyncItemsIDLookupList();
 
   log(`Clippings::clippingsMgr/pg.js: Device pixel ratio of current screen (2.0=Retina): ${window.devicePixelRatio}`);
 

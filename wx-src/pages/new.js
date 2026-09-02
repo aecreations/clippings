@@ -17,7 +17,7 @@ let gParentFolderID = aeConst.ROOT_FOLDER_ID;
 let gSrcURL = "";
 let gCreateInFldrMenu;
 let gFolderPickerPopup;
-let gNewFolderDlg, gSyncErrMsgBox;
+let gNewFolderDlg, gSyncErrMsgBox, gSyncProgressBar;
 let gPrefs;
 let gSyncedFldrIDs = new Set();
 let gIsVertExpanded = false;
@@ -51,10 +51,6 @@ $(async () => {
 
   gPrefs = await aePrefs.getAllPrefs();
 
-  if (gPrefs.syncClippings) {
-    initSyncItemsIDLookupList();
-  }
-
   if (gPrefs.showNewClippingOpts) {
     expandOptions(true);
   }
@@ -66,19 +62,11 @@ $(async () => {
 
   $("#clipping-text").attr("placeholder", browser.i18n.getMessage("clipMgrContentHint"));
   
-  browser.runtime.sendMessage({
-    msgID: "init-new-clipping-dlg"
-  }).then(aResp => {
-    if (! aResp) {
-      console.warn("Clippings/wx::new.js: No response was received from the background script!");
-      return;
-    }
-
-    $("#clipping-name").val(aResp.name).trigger("select").trigger("focus");
-    $("#clipping-text").val(aResp.content).attr("spellcheck", gPrefs.checkSpelling);
-    $("#save-source-url").prop("checked", gPrefs.alwaysSaveSrcURL);
-    gSrcURL = aResp.url || "";
-  });
+  let newClipping = await browser.runtime.sendMessage({msgID: "init-new-clipping-dlg"});
+  $("#clipping-name").val(newClipping.name).trigger("select").trigger("focus");
+  $("#clipping-text").val(newClipping.content).attr("spellcheck", gPrefs.checkSpelling);
+  $("#save-source-url").prop("checked", gPrefs.alwaysSaveSrcURL);
+  gSrcURL = newClipping.url || '';
 
   $("#clipping-name").blur(aEvent => {
     let name = aEvent.target.value;
@@ -88,7 +76,31 @@ $(async () => {
   });
 
   initDialogs();
-  initFolderPicker();
+
+  if (gPrefs.syncClippings) {
+    if (gPrefs.autoSyncOnNewOrManage) {
+      await browser.runtime.sendMessage({
+        msgID: "refresh-synced-clippings",
+      });
+
+      let afterSyncFldrReloadDelay = gPrefs.afterSyncFldrReloadDelay;
+      gSyncProgressBar.showModal(false);
+
+      setTimeout(async () => {
+        gSyncProgressBar.close();
+        await initSyncItemsIDLookupList();
+        initFolderPicker();
+      }, afterSyncFldrReloadDelay);
+    }
+    else {
+      await initSyncItemsIDLookupList();
+      initFolderPicker();
+    }
+  }
+  else {
+    initFolderPicker();
+  }
+
   initLabelPicker();
   initShortcutKeyMenu();
 
@@ -516,6 +528,7 @@ function initDialogs()
   };
 
   gSyncErrMsgBox = new aeDialog("#sync-fldr-full-error-msgbox");
+  gSyncProgressBar = new aeDialog("#sync-progress");
 }
 
 

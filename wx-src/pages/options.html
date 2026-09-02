@@ -271,51 +271,54 @@
 
     <div id="sync-clippings-dlg" class="lightbox" role="dialog" aria-labelledby="sync-clippings-dlg-hdg">
       <div class="dlg-content">
-	<p id="sync-clippings-dlg-hdg" class="dlg-subhead" role="heading" data-i18n="syncClippings"></p>
+        <p id="sync-clippings-dlg-hdg" class="dlg-subhead" role="heading" data-i18n="syncClippings"></p>
         <div id="sync-connection-check" class="deck">
-	  <p class="label" data-i18n="syncConnect"><p>
-	  <progress></progress>
-	</div>
-	<div id="sync-cxn-error" class="deck">
+          <p class="label" data-i18n="syncConnect"><p>
+          <progress></progress>
+        </div>
+        <div id="sync-cxn-error" class="deck">
           <div class="msgbox-icon"></div>
           <div class="dlg-content">
-	    <p id="no-sync-app-cta" class="label"></p>
-	    <p class="label" data-i18n="noSyncAppInstr"></p>
+            <p id="no-sync-app-cta" class="label"></p>
+            <p class="label" data-i18n="noSyncAppInstr"></p>
           </div>
         </div>
-	<div id="generic-error" class="deck">
-	  <div class="msgbox-icon"></div>
-          <div class="dlg-content">
-	    <div class="error-msg" data-i18n="errSync"></div>
-	    <textarea id="sync-err-detail" readonly="true"></textarea>
-	  </div>
+        <div id="generic-error" class="deck">
+          <div class="msgbox-icon"></div>
+            <div class="dlg-content">
+            <div class="error-msg" data-i18n="errSync"></div>
+            <textarea id="sync-err-detail" readonly="true"></textarea>
+          </div>
         </div>
-	<div id="sync-folder-location" class="deck">
-	  <div id="sync-fldr-picker-label" class="row">
- 	    <div class="label" data-i18n="syncFileDir"></div>
+        <div id="sync-folder-location" class="deck">
+          <div id="sync-fldr-picker-label" class="row">
+            <div class="label" data-i18n="syncFileDir"></div>
           </div>
-	  <div id="sync-fldr-picker" class="row">
-  	    <input type="text" id="sync-fldr-curr-location" required value=""/>
-	    <button id="browse-sync-fldr" class="dlg-btn" data-i18n="btnBrowse"></button>
+          <div id="sync-fldr-picker" class="row">
+            <input type="text" id="sync-fldr-curr-location" required value="">
+            <button id="browse-sync-fldr" class="dlg-btn" data-i18n="btnBrowse"></button>
           </div>
-	  <fieldset>
-	  <legend data-i18n="syncOptsHdg"></legend>
-	    <div class="row browser-style">
-	      <input type="checkbox" id="sync-helper-app-update-check"/><label for="sync-helper-app-update-check" data-i18n="syncUpdateChkOpt"></label>
-	    </div>
-	    <div class="row browser-style">
-              <input type="checkbox" id="show-only-sync-items"/><label for="show-only-sync-items" data-i18n="cxtMnuSyncItemsOnly"></label>
+          <fieldset>
+            <legend data-i18n="syncOptsHdg"></legend>
+            <div class="row browser-style">
+              <input type="checkbox" id="sync-helper-app-update-check"><label for="sync-helper-app-update-check" data-i18n="syncUpdateChkOpt"></label>
             </div>
-	    <div class="row browser-style">
-              <input type="checkbox" id="cmprs-sync-data"/><label for="cmprs-sync-data" data-i18n="cmprsSyncData"></label>
-	      <p id="cmprs-sync-data-reqmt" class="description indent"></p>
+            <div class="row browser-style">
+              <input type="checkbox" id="show-only-sync-items"><label for="show-only-sync-items" data-i18n="cxtMnuSyncItemsOnly"></label>
             </div>
-	  </fieldset>
-	</div>
+            <div class="row browser-style">
+              <input type="checkbox" id="cmprs-sync-data"><label for="cmprs-sync-data" data-i18n="cmprsSyncData"></label>
+              <p id="cmprs-sync-data-reqmt" class="description indent"></p>
+            </div>
+            <div class="row browser-style">
+              <input type="checkbox" id="auto-sync-on-new-or-manage"><label for="auto-sync-on-new-or-manage" data-i18n="autoSyncNewMng"></label>
+            </div>
+          </fieldset>
+        </div>
       </div>
       <div class="dlg-btns">
-	<button class="dlg-accept default" data-i18n="btnOK"></button>
-	<button class="dlg-btn dlg-cancel" data-i18n="btnCancel"></button>
+        <button class="dlg-accept default" data-i18n="btnOK"></button>
+        <button class="dlg-btn dlg-cancel" data-i18n="btnCancel"></button>
       </div>
     </div>
 

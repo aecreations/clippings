@@ -470,6 +470,11 @@ void async function ()
     await aePrefs.setAlamoSquarePrefs(prefs);
   }
 
+  if (! aePrefs.hasFortPointPrefs(prefs)) {
+    log("Initializing 7.2 user preferences.");
+    await aePrefs.setFortPointPrefs(prefs);
+  }
+
   if (prefs.clippingsMgrDetailsPane) {
     aePrefs.setPrefs({clippingsMgrAutoShowDetailsPane: false});
   }

@@ -2034,15 +2034,19 @@ function clippingsMgrCmds()
       await this.reloadSyncFolderIntrl();
     },
 
-    async reloadSyncFolderIntrl()
+    async reloadSyncFolderIntrl(aHideSyncProgress=false)
     {
       let afterSyncFldrReloadDelay = await aePrefs.getPref("afterSyncFldrReloadDelay");
 
-      gDialog.syncProgress.showModal(false);
+      if (!aHideSyncProgress) {
+        gDialog.syncProgress.showModal(false);
+      }
 
       setTimeout(async () => {
         await rebuildClippingsTree();
-        gDialog.syncProgress.close();
+        if (!aHideSyncProgress) {
+          gDialog.syncProgress.close();
+        }
       }, afterSyncFldrReloadDelay);
     },
 

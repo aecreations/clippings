@@ -1653,22 +1653,27 @@
 
   "syncUpdateChkOpt": {
     "message": "Automatically check for updates to Sync Clippings Helper",
-    "description": "Sync Clippings settings dialog in the extension preferences page"
+    "description": "Checkbox option in the Sync Clippings settings dialog in the extension preferences page"
   },
 
   "cxtMnuSyncItemsOnly": {
     "message": "Show only synced items in the Clippings menu",
-    "description": "Sync Clippings settings dialog in the extension preferences page"
+    "description": "Checkbox option in the Sync Clippings settings dialog in the extension preferences page"
   },
 
   "cmprsSyncData": {
     "message": "Compress sync data (recommended)",
-    "description": "Sync Clippings settings dialog in the extension preferences page"
+    "description": "Checkbox option in the Sync Clippings settings dialog in the extension preferences page"
   },
 
   "cmprsSyncReqmt": {
     "message": "Requires Sync Clippings Helper 2.0 or newer. <a href=\"$1\" class=\"hyperlink\">Download now</a>",
-    "description": "Sync Clippings settings dialog in the extension preferences page"
+    "description": "Description of system requirements for a checkbox option in the Sync Clippings settings dialog"
+  },
+
+  "autoSyncNewMng": {
+    "message": "Sync when opening New Clipping dialog or Clippings Manager",
+    "description": "Checkbox option in the Sync Clippings settings dialog in the extension preferences page"
   },
 
   "wndsAndDlgsOpts": {

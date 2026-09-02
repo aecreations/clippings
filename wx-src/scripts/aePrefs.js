@@ -77,6 +77,7 @@ let aePrefs = {
     pasteDelay: 100,
     copyAutoLineBreak: true,
     sidebarPreviewPaneHgt: aeConst.DEFAULT_SIDEBAR_PREVW_HGT,
+    autoSyncOnNewOrManage: false,
   },
   
   getPrefKeys()
@@ -352,6 +353,20 @@ let aePrefs = {
 
     // Remove deprecated prefs
     await this._removePrefs(aPrefs, ["_isInitialized", "tabModalMsgBox"]);
+  },
+
+  hasFortPointPrefs(aPrefs)
+  {
+    // Version 7.2
+    return ("autoSyncOnNewOrManage" in aPrefs);
+  },
+
+  async setFortPointPrefs(aPrefs)
+  {
+    let newPrefs = {
+      autoSyncOnNewOrManage: false,
+    };
+    await this._addPrefs(aPrefs, newPrefs);
   },
 
 

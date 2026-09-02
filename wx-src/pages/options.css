@@ -762,12 +762,12 @@ body[data-locale="de"] #request-native-app-conxn-perm-dlg {
 
 #sync-clippings-dlg {
     top: 128px;
-    --width: 530px;
-    --height: 312px;
+    --width: 550px;
+    --height: 336px;
 }
 
 body[data-os="mac"] #sync-clippings-dlg {
-    --width: 504px;
+    --width: 524px;
 }
 
 body[data-locale="de"] #sync-clippings-dlg {
@@ -788,8 +788,9 @@ body[data-locale="uk"] #sync-clippings-dlg {
     --width: 560px;
 }
 
+/* Style rule used when showing Sync Clippings minimum required version. */
 #sync-clippings-dlg.expanded {
-    height: 334px;
+    height: 358px;
 }
 
 #sync-clippings-dlg fieldset {
