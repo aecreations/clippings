@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+"use strict";
+
 
 const WNDH_NORMAL = 410;
 const WNDH_NORMAL_WINDOWS = 434;
