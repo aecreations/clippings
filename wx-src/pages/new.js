@@ -81,18 +81,29 @@ $(async () => {
 
   if (gPrefs.syncClippings) {
     if (gPrefs.autoSyncOnNewOrManage) {
-      await browser.runtime.sendMessage({
-        msgID: "refresh-synced-clippings",
-      });
-
-      let afterSyncFldrReloadDelay = gPrefs.afterSyncFldrReloadDelay;
-      gSyncProgressBar.showModal(false);
-
-      setTimeout(async () => {
-        gSyncProgressBar.close();
-        await initSyncItemsIDLookupList();
+      let pingResp;
+      try {
+        pingResp = await browser.runtime.sendMessage({msgID: "ping-clippings-mgr"});
+      }
+      catch {}
+      if (pingResp) {
+        // Skip automatic sync if Clippings Manager is open in order to prevent
+        // potential conflicts.
         initFolderPicker();
-      }, afterSyncFldrReloadDelay);
+        await initSyncItemsIDLookupList();
+      }
+      else {
+        await browser.runtime.sendMessage({msgID: "refresh-synced-clippings"});
+
+        let afterSyncFldrReloadDelay = gPrefs.afterSyncFldrReloadDelay;
+        gSyncProgressBar.showModal(false);
+
+        setTimeout(async () => {
+          gSyncProgressBar.close();
+          await initSyncItemsIDLookupList();
+          initFolderPicker();
+        }, afterSyncFldrReloadDelay);
+      }
     }
     else {
       await initSyncItemsIDLookupList();

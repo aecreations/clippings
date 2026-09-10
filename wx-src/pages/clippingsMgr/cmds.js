@@ -2037,7 +2037,7 @@ function clippingsMgrCmds()
       await this.reloadSyncFolderIntrl();
     },
 
-    async reloadSyncFolderIntrl(aHideSyncProgress=false)
+    async reloadSyncFolderIntrl(aHideSyncProgress=false, aFnAfterSync=null)
     {
       let afterSyncFldrReloadDelay = await aePrefs.getPref("afterSyncFldrReloadDelay");
 
@@ -2050,6 +2050,7 @@ function clippingsMgrCmds()
         if (!aHideSyncProgress) {
           gDialog.syncProgress.close();
         }
+        typeof aFnAfterSync == "function" && aFnAfterSync();
       }, afterSyncFldrReloadDelay);
     },
 

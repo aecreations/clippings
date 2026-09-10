@@ -3,6 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+"use strict";
+
+
 const TOOLBAR_HEIGHT = 28;
 const MSGBAR_DELAY_MS = 5000;
 
@@ -258,7 +261,7 @@ let gCmd = {
     await this.reloadSyncFolderIntrl();
   },
 
-  async reloadSyncFolderIntrl()
+  async reloadSyncFolderIntrl(aFnAfterSync=null)
   {
     let afterSyncFldrReloadDelay = await aePrefs.getPref("afterSyncFldrReloadDelay");
     
@@ -267,6 +270,7 @@ let gCmd = {
     setTimeout(async () => {
       await rebuildClippingsTree();
       gSyncProgressDlg.close();
+      typeof aFnAfterSync == "function" && aFnAfterSync();
     }, afterSyncFldrReloadDelay);
   },
   
@@ -434,9 +438,38 @@ $(async () => {
   gSearchBox.init();
 
   buildClippingsTree();
-  initSyncItemsIDLookupList();
-
   initDialogs();
+
+  if (gPrefs.syncClippings) {
+    if (gPrefs.autoSyncSidebar) {
+      // Check first if any windows/dialogs are open that could cause conflicts
+      // with sync.
+      let pingNewClippingDlg, pingClippingsMgr;
+      try {
+        pingNewClippingDlg = await browser.runtime.sendMessage({msgID: "ping-new-clipping-dlg"});
+      }
+      catch {}
+      try {
+        pingClippingsMgr = await browser.runtime.sendMessage({msgID: "ping-clippings-mgr"});
+      }
+      catch {}
+      if (!pingNewClippingDlg && !pingClippingsMgr) {
+        await browser.runtime.sendMessage({msgID: "refresh-synced-clippings"});
+        aeDialog.cancelDlgs();
+        await gCmd.reloadSyncFolderIntrl(function () {
+          // Called after the Synced Clippings folder refresh is completed.
+          initSyncItemsIDLookupList();
+        });
+      }
+      else {
+        initSyncItemsIDLookupList();
+      }
+    }
+    else {
+      initSyncItemsIDLookupList();
+    }
+  }
+
   aeInterxn.init(gEnvInfo.os);
   aeVisual.init(gEnvInfo.os);
   aeVisual.preloadMsgBoxIcons();

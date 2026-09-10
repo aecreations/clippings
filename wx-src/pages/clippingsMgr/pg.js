@@ -1162,15 +1162,31 @@ $(async () => {
       }
 
       if (gPrefs.autoSyncOnNewOrManage) {
-        await browser.runtime.sendMessage({
-          msgID: "refresh-synced-clippings",
-        });
-        await gCmd.reloadSyncFolderIntrl(hideSyncProgress);
+        let pingResp;
+        try {
+          pingResp = await browser.runtime.sendMessage({msgID: "ping-new-clipping-dlg"});
+        }
+        catch {}
+        if (pingResp) {
+          // Skip automatic sync if New Clipping dialog is open in order to
+          // prevent potential conflicts.
+          initSyncItemsIDLookupList();
+        }
+        else {
+          await browser.runtime.sendMessage({
+            msgID: "refresh-synced-clippings",
+          });
+          await gCmd.reloadSyncFolderIntrl(hideSyncProgress, function () {
+            // Called after the Synced Clippings folder refresh is completed.
+            initSyncItemsIDLookupList();
+          });
+        }
+      }
+      else {
+        initSyncItemsIDLookupList();
       }
     }
   }
-
-  initSyncItemsIDLookupList();
 
   log(`Clippings::clippingsMgr/pg.js: Device pixel ratio of current screen (2.0=Retina): ${window.devicePixelRatio}`);
 

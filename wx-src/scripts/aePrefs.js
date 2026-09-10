@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+"use strict";
+
 
 let aePrefs = {
   // Background script state persistence
@@ -78,6 +80,7 @@ let aePrefs = {
     copyAutoLineBreak: true,
     sidebarPreviewPaneHgt: aeConst.DEFAULT_SIDEBAR_PREVW_HGT,
     autoSyncOnNewOrManage: false,
+    autoSyncSidebar: false,
   },
   
   getPrefKeys()
@@ -365,6 +368,7 @@ let aePrefs = {
   {
     let newPrefs = {
       autoSyncOnNewOrManage: false,
+      autoSyncSidebar: false,
     };
     await this._addPrefs(aPrefs, newPrefs);
   },

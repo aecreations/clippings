@@ -1676,6 +1676,11 @@
     "description": "Checkbox option in the Sync Clippings settings dialog in the extension preferences page"
   },
 
+  "autoSyncSbar": {
+    "message": "Sync when opening Clippings Sidebar",
+    "description": "Checkbox option in the Sync Clippings settings dialog in the extension preferences page"
+  },
+
   "wndsAndDlgsOpts": {
     "message": "Windows and Dialogs…",
     "description": "Button in the extension preferences page"

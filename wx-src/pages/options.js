@@ -580,6 +580,7 @@ function initDialogs()
     $("#show-only-sync-items").prop("checked", prefs.cxtMenuSyncItemsOnly);
     $("#cmprs-sync-data").prop("checked", prefs.compressSyncData);
     $("#auto-sync-on-new-or-manage").prop("checked", prefs.autoSyncOnNewOrManage);
+    $("#auto-sync-sidebar").prop("checked", prefs.autoSyncSidebar);
 
     this.oldShowSyncItemsOpt = $("#show-only-sync-items").prop("checked");
     this.oldCheckSyncAppUpdatesOpt = $("#sync-helper-app-update-check").prop("checked");
@@ -613,6 +614,7 @@ function initDialogs()
       cxtMenuSyncItemsOnly: $("#show-only-sync-items").prop("checked"),
       compressSyncData: $("#cmprs-sync-data").prop("checked"),
       autoSyncOnNewOrManage: $("#auto-sync-on-new-or-manage").prop("checked"),
+      autoSyncSidebar: $("#auto-sync-sidebar").prop("checked"),
     });
 
     let rebuildClippingsMenu = $("#show-only-sync-items").prop("checked") != this.oldShowSyncItemsOpt;
