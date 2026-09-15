@@ -515,8 +515,14 @@ function clippingsMgrCmds()
     {
       let perms = await browser.permissions.getAll();
       if (! perms.permissions.includes("clipboardRead")) {
-        gDialog.requestExtPerm.setPermission("clipboardRead");
-        gDialog.requestExtPerm.showModal();
+        if (gPrefs.newExtPermRequestFlow) {
+          gPermissionReq.set("clipboardRead", "new-from-clipbd");
+          await this._openExtPermissionPg();
+        }
+        else {
+          gDialog.requestExtPerm.setPermission("clipboardRead");
+          gDialog.requestExtPerm.showModal();
+        }
         return;
       }
 
@@ -2446,6 +2452,29 @@ function clippingsMgrCmds()
       }
       else if (aDestUndoStack == this.REDO_STACK) {
         this.redoStack.push(aState);
+      }
+    },
+
+    async _openExtPermissionPg()
+    {
+      let resp;
+      try {
+        resp = await browser.runtime.sendMessage({msgID: "ping-perms-req-pg"});
+      }
+      catch {}
+
+      if (resp) {
+        browser.runtime.sendMessage({msgID: "reload-perms-req-pg"});
+      }
+      else {
+        let url = browser.runtime.getURL("pages/permission.html?openerWndID=" + gWndID);
+        try {
+          await browser.tabs.create({url, active: true});
+        }
+        catch (e) {
+          // Exception thrown if there are no browser windows open.
+          aeNavigator.gotoURL(url);
+        }
       }
     },
   };

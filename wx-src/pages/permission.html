@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<html>
+<head>
+  <meta charset="utf-8">
+  <title data-i18n="extName"></title>
+
+  <link rel="shortcut icon" href="../img/clippings16.svg">
+  <link rel="stylesheet" href="permission.css">
+</head>
+
+<body>
+  <main>
+    <div id="ext-logo">
+      <img id="addon-icon" src="../img/icon96.svg" role="presentation">
+      <p id="hdr-ext-name" data-i18n="extName" role="banner"></p>
+    </div>
+    <div id="ext-pg-body">
+      <h2 data-i18n="permReqPgHdg"></h2>
+
+      <p data-i18n="permReqTitle"></p>
+
+      <ul>
+        <li id="ext-perm"></li>
+      </ul>
+
+      <p id="ext-perm-desc"></p>
+      <p id="perm-hlp"><a id="perm-hlp-link" class="hyperlink" data-i18n="permReqHlp"></a></p>
+
+      <div id="dlg-btns">
+        <button id="dlg-accept" class="default" data-i18n="btnReqPerm"></button>
+        <button id="dlg-cancel" class="dlg-btn" data-i18n="btnCancel"></button>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="../lib/jquery.js"></script>
+  <script src="../lib/purify.min.js"></script>
+  <script src="../scripts/aeConst.js"></script>
+  <script src="../scripts/aePrefs.js"></script>
+  <script src="../scripts/aeI18n.js"></script>
+  <script src="permission.js"></script>
+</body>
+</html>

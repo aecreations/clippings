@@ -81,6 +81,7 @@ let aePrefs = {
     sidebarPreviewPaneHgt: aeConst.DEFAULT_SIDEBAR_PREVW_HGT,
     autoSyncOnNewOrManage: false,
     autoSyncSidebar: false,
+    newExtPermRequestFlow: true,
   },
   
   getPrefKeys()
@@ -369,6 +370,7 @@ let aePrefs = {
     let newPrefs = {
       autoSyncOnNewOrManage: false,
       autoSyncSidebar: false,
+      newExtPermRequestFlow: true,
     };
     await this._addPrefs(aPrefs, newPrefs);
   },

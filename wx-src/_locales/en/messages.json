@@ -232,15 +232,25 @@
     "message": "To complete the selected action, Clippings needs additional permission:",
     "description": "Header for modal dialog that appears when trying to complete an action that requires an optional extension permission to be turned on"
   },
-  
+
   "extPrmClipbdR": {
     "message": "Get data from the clipboard",
-    "description": "User-facing description of the 'clipboardRead' extension permission"
+    "description": "User-facing label for the 'clipboardRead' extension permission"
+  },
+
+  "extPrmClipbdRDesc": {
+    "message": "This permission allows Clippings to create a new clipping from text on the clipboard.",
+    "description": "Description of the 'clipboardRead' extension permission"
   },
 
   "extPrmClipbdW": {
     "message": "Input data to the clipboard",
-    "description": "User-facing description of the 'clipboardWrite' extension permission"
+    "description": "User-facing label for of the 'clipboardWrite' extension permission"
+  },
+
+  "extPrmClipbdWDesc": {
+    "message": "This permission allows clipping text to be copied from Clippings Manager or Clippings Sidebar.",
+    "description": "Description of the 'clipboardWrite' extension permission"
   },
 
   "extPermInstr": {
@@ -1568,7 +1578,7 @@
 
   "extPrmNativeMessaging": {
     "message": "Exchange messages with programs other than $1",
-    "description": "Exchange messages with programs other than <Firefox or Thunderbird> - User-facing description of the 'nativeMessaging' extension permission"
+    "description": "Exchange messages with programs other than <Firefox or Thunderbird> - User-facing label for the 'nativeMessaging' extension permission"
   },
 
   "syncPermReqTitle": {

@@ -1,0 +1,125 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+@import url("../style/laf.css");
+
+
+:root {
+    --color-main-bkgd: #fff;
+    --color-main-border: #ddd;
+    --color-main-border-shadow: #e0e0e0;
+    --color-ext-pg-body: #fefefe;
+    --color-ext-pg-border: #ededf0;
+
+    --url-bkgd-img: url("../img/bkgrd.png");
+    --url-icon-help: url("../img/help.svg");
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-bkgd: #1a1a1e;
+        --color-main-bkgd: #242426;
+        --color-main-border: #2a2a2e;
+        --color-main-border-shadow: #0c0c0d;
+        --color-ext-pg-body: #2a2a2e;
+        --color-ext-pg-border: #4a4a4f;
+
+        --url-bkgd-img: none;
+        --url-icon-help: url("../img/help-dk.svg");
+    }
+}
+
+body {
+    background-color: var(--color-bkgd);
+    background-image: var(--url-bkgd-img);
+    color: var(--color-default-text);
+    font-size: 15px;
+}
+
+main {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    width: 640px;
+    margin: 24px auto 0 auto;
+    cursor: inherit;
+    border: 1px solid var(--color-main-border);
+    border-radius: 4px;
+    box-shadow: 0 0 8px 2px var(--color-main-border-shadow);
+    background-color: var(--color-main-bkgd);
+}
+
+#ext-logo {
+    order: 1;
+    flex: 0 1 auto;
+    min-width: 180px;
+    margin-top: 36px;
+    text-align: center;
+}
+
+#ext-pg-body {
+    order: 2;
+    flex: 1 1 auto;
+    border-left: 1px solid var(--color-ext-pg-border);
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    padding: 16px 16px 16px 16px;
+    background-color: var(--color-ext-pg-body);
+}
+
+#addon-icon {
+    width: 96px;
+    height: 96px;
+}
+
+#hdr-ext-name {
+    margin-top: 8px;
+    font-size: 17px;
+    font-weight: 600;
+    text-align: center;
+}
+
+body[data-locale="fr"][data-os="mac"] #hdr-ext-name,
+body[data-locale="de"][data-os="mac"] #hdr-ext-name {
+    letter-spacing: -0.25px;
+}
+
+h2 {
+    display: inline-block;
+    margin-top: 8px;
+    margin-right: 6px;
+    font-size: 22px;
+    font-weight: 200;
+    letter-spacing: -0.2px;
+}
+
+#perm-hlp {
+    margin-top: 32px;
+    margin-bottom: 64px;
+    padding: 2px 0 2px 20px;
+
+    background-image: var(--url-icon-help);
+    background-size: 16px 16px;
+    background-position: left;
+    background-repeat: no-repeat;
+
+    font-size: 13px;
+}
+
+#dlg-btns {
+    text-align: right;
+}
+
+#dlg-btns > button {
+    min-width: 96px;
+    height: 32px;
+    margin-left: 10px;
+    padding-left: 24px;
+    padding-right: 24px;
+    border-radius: 4px;
+    font-size: 15px;
+}

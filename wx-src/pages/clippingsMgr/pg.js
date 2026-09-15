@@ -22,6 +22,33 @@ let gSyncedItemsIDMap = new Map();
 let gIsBackupMode = false;
 let gErrorPushSyncItems = false;
 let gReorderedTreeNodeNextSibling = null;
+let gWndID;
+
+let gPermissionReq = {
+  _extPerm: null,
+  _execActionID: null,
+
+  set(aExtPermission, aExecActionID)
+  {
+    this._extPerm = aExtPermission;
+    this._execActionID = aExecActionID;
+  },
+
+  get()
+  {
+    let rv = {
+      extPerm: this._extPerm,
+      execActionID: this._execActionID,
+    };
+    return rv;
+  },
+
+  clear()
+  {
+    this._extPerm = null;
+    this._execActionID = null;
+  },
+};
 
 
 // Wrappers to database create/update/delete operations. These also call the
@@ -1204,6 +1231,8 @@ $(async () => {
     width: wnd.width + 1,
     focused: true,
   });
+
+  gWndID = wnd.id;
 });
 
 
@@ -1397,6 +1426,15 @@ browser.runtime.onMessage.addListener(aRequest => {
     resp = {isOpen: true};
     break;
 
+  case "focus-ext-window":
+    if (aRequest.wndID == gWndID) {
+      focusWnd();
+    }
+    if (aRequest.execActionMsgID == "new-from-clipbd") {
+      gCmd.newClippingFromClipboard();
+    }
+    break;
+
   case "toggle-save-clipman-wnd-geom":
     setSaveWndGeometryInterval(aRequest.saveWndGeom);
     break;
@@ -1427,6 +1465,13 @@ browser.runtime.onMessage.addListener(aRequest => {
 
   case "clippings-mgr-save-backup":
     gCmd.backupExtern();
+    break;
+
+  case "get-perm-req-key":
+    if (aRequest.opener == gWndID) {
+      resp = gPermissionReq.get();
+      gPermissionReq.clear();
+    }
     break;
 
   default:
@@ -3040,6 +3085,12 @@ function setSaveWndGeometryInterval(aSaveWndGeom)
   }
 }
 setSaveWndGeometryInterval.intvID = null;
+
+
+async function focusWnd()
+{
+  await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, {focused: true});
+}
 
 
 function closeWnd()
