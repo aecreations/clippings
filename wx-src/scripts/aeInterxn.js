@@ -3,18 +3,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+"use strict";
+
 
 let aeInterxn = {
   _isMacOS: null,
   _isNoisyDebug: false,
 
-  init(aOSName)
-  {
+  init(aOSName) {
     this._isMacOS = aOSName == "mac";
   },
-  
-  initDialogButtonFocusHandlers()
-  {
+
+  initDialogButtonFocusHandlers() {
     let btns = document.querySelectorAll(".btn");
 
     btns?.forEach(aBtn => {
@@ -60,17 +60,16 @@ let aeInterxn = {
     });
   },
 
-  suppressBrowserShortcuts(aEvent, aIsDebugging)
-  {
+  suppressBrowserShortcuts(aEvent, aIsDebugging) {
     if (aIsDebugging && this._isNoisyDebug
         && aEvent.key != "Alt" && aEvent.key != "Control"
-	&& aEvent.key != "Meta" && aEvent.key != "Shift") {
+        && aEvent.key != "Meta" && aEvent.key != "Shift") {
       console.log(`Clippings/wx::aeInterxn.suppressBrowserShortcuts():\nkey = ${aEvent.key}\ncode = ${aEvent.code}\naltKey = ${aEvent.altKey}\nctrlKey = ${aEvent.ctrlKey}\nmetaKey = ${aEvent.metaKey}\nshiftKey = ${aEvent.shiftKey}`);
     }
-    
+
     if (aEvent.key == "/" || aEvent.key == "'") {
-      if (! this._isTextboxFocused(aEvent)) {
-	aEvent.preventDefault();
+      if (!this._isTextboxFocused(aEvent)) {
+        aEvent.preventDefault();
       }
     }
     else if (["F3", "F5"].includes(aEvent.key) || (aEvent.key == "Home" && aEvent.altKey)) {
@@ -80,8 +79,8 @@ let aeInterxn = {
       aEvent.preventDefault();
     }
     else if (aEvent.key.toUpperCase() == "A" && this._isAccelKeyPressed(aEvent)) {
-      if (! this._isTextboxFocused(aEvent)) {
-	aEvent.preventDefault();
+      if (!this._isTextboxFocused(aEvent)) {
+        aEvent.preventDefault();
       }
     }
     else {
@@ -89,23 +88,22 @@ let aeInterxn = {
       // BUG!! This won't catch window shortcuts (CTRL+N, CTRL+T, CTRL+SHIFT+P)
       let key = aEvent.key.toUpperCase();
       if (this._isAccelKeyPressed(aEvent)
-          && ["D","E","F","G","I","J","K","N","O","P","R","S","T","U","Y","^"].includes(key)) {
-	aEvent.preventDefault();
+          && ["D", "E", "F", "G", "I", "J", "K", "N", "O", "P", "R", "S", "T", "U", "Y", "^"].includes(key)) {
+        aEvent.preventDefault();
       }
       // Ignore shortcuts for web developer tools on macOS.
       else if (aEvent.altKey && this._isAccelKeyPressed(aEvent)
-	       && ["Ç", "´", "µ", "^", "˚", "Ω"].includes(key)) {
-	aEvent.preventDefault();
+          && ["Ç", "´", "µ", "^", "˚", "Ω"].includes(key)) {
+        aEvent.preventDefault();
       }
       else if (aEvent.shiftKey && ["F5", "F7", "F9", "F12"].includes(key)) {
-	aEvent.preventDefault();
+        aEvent.preventDefault();
       }
     }
   },
 
 
-  initContextMenuAriaRoles(aStor)
-  {
+  initContextMenuAriaRoles(aStor) {
     let menu = $(aStor);
     if (menu.length == 0) {
       throw new RangeError(`aeInterxn.initContextMenuAriaRoles(): jQuery selector "${aStor}" does not match one or more elements`);
@@ -120,18 +118,17 @@ let aeInterxn = {
     // cause the submenu to take the focus, even if "tabindex" is set on
     // the nested <ul> element in the UI code that defines the menu.
     menu.children(".context-menu-submenu").children(".context-menu-list")
-      .attr("role", "menu").attr("tabindex", "0")
-      .children(".ae-menuitem").attr("role", "menuitem")
-      .children(".context-menu-not-selectable").attr("role", "presentation");
+        .attr("role", "menu").attr("tabindex", "0")
+        .children(".ae-menuitem").attr("role", "menuitem")
+        .children(".context-menu-not-selectable").attr("role", "presentation");
   },
 
 
   //
   // Private helper methods
   //
-  
-  _isAccelKeyPressed(aEvent)
-  {
+
+  _isAccelKeyPressed(aEvent) {
     if (typeof this._isMacOS != "boolean") {
       throw new ReferenceError("aeInterxn not initialized");
     }
@@ -140,12 +137,11 @@ let aeInterxn = {
     if (this._isMacOS) {
       rv = aEvent.metaKey;
     }
-    
+
     return rv;
   },
 
-  _isTextboxFocused(aEvent)
-  {
+  _isTextboxFocused(aEvent) {
     return (aEvent.target.tagName == "INPUT" || aEvent.target.tagName == "TEXTAREA");
   }
 };
