@@ -7,7 +7,7 @@
 
 
 let gOS;
-let gDialogs = {};
+let gDlg = {};
 let gIsActivatingSyncClippings = false;
 
 
@@ -71,7 +71,7 @@ $(async () => {
   $("#toggle-sync").on("click", async (aEvent) => {
     let syncClippings = await aePrefs.getPref("syncClippings");
     if (syncClippings) {
-      gDialogs.turnOffSync.showModal();
+      gDlg.turnOffSync.showModal();
     }
     else {
       // Check if the optional extension permission "nativeMessaging"
@@ -79,16 +79,16 @@ $(async () => {
       let perms = await browser.permissions.getAll();
       if (perms.permissions.includes("nativeMessaging")) {
         gIsActivatingSyncClippings = true;
-        gDialogs.syncClippings.showModal();
+        gDlg.syncClippings.showModal();
       }
       else {
-        gDialogs.reqNativeAppConxnPerm.showModal();
+        gDlg.reqNativeAppConxnPerm.showModal();
       }
     }
   });
 
   $("#about-btn").on("click", aEvent => {
-    gDialogs.about.showModal();
+    gDlg.about.showModal();
   });
 
   // About dialog.
@@ -226,11 +226,11 @@ $(async () => {
   });
 
   $("#wnds-dlgs-settings").on("click", aEvent => {
-    gDialogs.wndsDlgsOpts.showModal();
+    gDlg.wndsDlgsOpts.showModal();
   });
 
   $("#sidebar-paste-opts").on("click", aEvent => {
-    gDialogs.clippingsSidebar.showModal();
+    gDlg.clippingsSidebar.showModal();
   });
 
   $("#html-cpy-auto-line-brk").prop("checked", prefs.copyAutoLineBreak).on("click", aEvent => {
@@ -251,11 +251,11 @@ $(async () => {
   $("#sync-settings").on("click", async (aEvent) => {
     let perms = await browser.permissions.getAll();
     if (! perms.permissions.includes("nativeMessaging")) {
-      gDialogs.reqNativeAppConxnPerm.showModal();
+      gDlg.reqNativeAppConxnPerm.showModal();
       return;
     }
     
-    gDialogs.syncClippings.showModal();
+    gDlg.syncClippings.showModal();
   });
 
   $("#browse-sync-fldr").on("click", async (aEvent) => {
@@ -275,7 +275,7 @@ $(async () => {
   });
   
   $("#show-sync-help").on("click", aEvent => {
-    gDialogs.syncClippingsHelp.showModal();
+    gDlg.syncClippingsHelp.showModal();
   });
 
   let cmds = await browser.commands.getAll();
@@ -426,21 +426,21 @@ function switchPrefsPanel(aPrefTabName)
 
 function initDialogs()
 {
-  gDialogs.clippingsSidebar = new aeDialog("#sidebar-opts-dlg");
-  gDialogs.clippingsSidebar.onInit = async function ()
+  gDlg.clippingsSidebar = new aeDialog("#sidebar-opts-dlg");
+  gDlg.clippingsSidebar.onInit = async function ()
   {
     let pasteFromSidebar = await aePrefs.getPref("pasteFromSidebar");
     $("#enbl-sidebar-paste").prop("checked", pasteFromSidebar);
   };
 
-  gDialogs.clippingsSidebar.onAccept = function ()
+  gDlg.clippingsSidebar.onAccept = function ()
   {
     aePrefs.setPrefs({pasteFromSidebar: $("#enbl-sidebar-paste").prop("checked")});
     this.close();
   };
 
-  gDialogs.reqNativeAppConxnPerm = new aeDialog("#request-native-app-conxn-perm-dlg");
-  gDialogs.reqNativeAppConxnPerm.onAccept = async function ()
+  gDlg.reqNativeAppConxnPerm = new aeDialog("#request-native-app-conxn-perm-dlg");
+  gDlg.reqNativeAppConxnPerm.onAccept = async function ()
   {
     this.close();
     
@@ -450,19 +450,19 @@ function initDialogs()
 
     if (permGranted) {
       gIsActivatingSyncClippings = true;
-      gDialogs.syncClippings.showModal();
+      gDlg.syncClippings.showModal();
     }
   };
 
-  gDialogs.syncClippings = new aeDialog("#sync-clippings-dlg");
-  gDialogs.syncClippings.setProps({
+  gDlg.syncClippings = new aeDialog("#sync-clippings-dlg");
+  gDlg.syncClippings.setProps({
     oldShowSyncItemsOpt: null,
     oldCheckSyncAppUpdatesOpt: null,
     isCanceled: false,
     lastFocusedElt: null,
   });
 
-  gDialogs.syncClippings._initKeyboardNav = function (aVisibleDeckID, aIsBrwsSyncFldrBtnVisible)
+  gDlg.syncClippings._initKeyboardNav = function (aVisibleDeckID, aIsBrwsSyncFldrBtnVisible)
   {
     let focusableElts = [];
     
@@ -487,7 +487,7 @@ function initDialogs()
     this.initKeyboardNavigation(focusableElts);
   };
 
-  gDialogs.syncClippings._initHyperlinksWithin = function (aEltStor)
+  gDlg.syncClippings._initHyperlinksWithin = function (aEltStor)
   {
     this.find(aEltStor).find(".hyperlink").on("click", aEvent => {
       aEvent.preventDefault();
@@ -495,12 +495,12 @@ function initDialogs()
     });
   };
 
-  gDialogs.syncClippings.isSyncConnectionError = function ()
+  gDlg.syncClippings.isSyncConnectionError = function ()
   {
     return (this.find("#sync-cxn-error").css("display") == "block");
   };
   
-  gDialogs.syncClippings.onFirstInit = function ()
+  gDlg.syncClippings.onFirstInit = function ()
   {
     $("#no-sync-app-cta").html(sanitizeHTML(browser.i18n.getMessage("noSyncAppCTA", aeConst.SYNC_CLIPPINGS_DWNLD_URL)));
     $("#sync-fldr-curr-location").on("focus", aEvent => { aEvent.target.select() });
@@ -508,7 +508,7 @@ function initDialogs()
     this._initHyperlinksWithin("#no-sync-app-cta");
   };
   
-  gDialogs.syncClippings.onInit = async function ()
+  gDlg.syncClippings.onInit = async function ()
   {
     this.isCanceled = false;
     this.find(".dlg-accept").hide();
@@ -596,7 +596,7 @@ function initDialogs()
     this._initKeyboardNav("sync-folder-location", isBrwsSyncFldrVisible);
   };
   
-  gDialogs.syncClippings.onAccept = async function ()
+  gDlg.syncClippings.onAccept = async function ()
   {
     let syncFldrPath = $("#sync-fldr-curr-location").val();
 
@@ -697,16 +697,16 @@ function initDialogs()
     this.close();
   };
   
-  gDialogs.syncClippings.onUnload = function ()
+  gDlg.syncClippings.onUnload = function ()
   {
     $("#sync-clippings-dlg").removeClass("expanded");
     $("#cmprs-sync-data-reqmt").text("").hide();
-    gDialogs.syncClippings.isCanceled = true;
+    gDlg.syncClippings.isCanceled = true;
     this.lastFocusedElt?.focus();
   };
 
-  gDialogs.turnOffSync = new aeDialog("#turn-off-sync-clippings-dlg");
-  gDialogs.turnOffSync.onFirstInit = function ()
+  gDlg.turnOffSync = new aeDialog("#turn-off-sync-clippings-dlg");
+  gDlg.turnOffSync.onFirstInit = function ()
   {
     this.find(".dlg-btns > .dlg-btn-yes").on("click", async (aEvent) => {
       this.close();
@@ -727,24 +727,24 @@ function initDialogs()
         oldSyncFolderID,
       });
 
-      gDialogs.turnOffSyncAck.oldSyncFldrID = oldSyncFolderID;
-      gDialogs.turnOffSyncAck.showModal();
+      gDlg.turnOffSyncAck.oldSyncFldrID = oldSyncFolderID;
+      gDlg.turnOffSyncAck.showModal();
     });
   };
-  gDialogs.turnOffSync.onShow = function ()
+  gDlg.turnOffSync.onShow = function ()
   {
     setTimeout(() => {
       $("#turn-off-sync-clippings-dlg > .dlg-btns > .dlg-accept")[0].focus();
     }, 10);
   };
 
-  gDialogs.turnOffSyncAck = new aeDialog("#turn-off-sync-clippings-ack-dlg");
-  gDialogs.turnOffSyncAck.setProps({oldSyncFldrID: null});
-  gDialogs.turnOffSyncAck.onInit = function ()
+  gDlg.turnOffSyncAck = new aeDialog("#turn-off-sync-clippings-ack-dlg");
+  gDlg.turnOffSyncAck.setProps({oldSyncFldrID: null});
+  gDlg.turnOffSyncAck.onInit = function ()
   {
     $("#delete-sync-fldr").prop("checked", true);
   };
-  gDialogs.turnOffSyncAck.onAfterAccept = function ()
+  gDlg.turnOffSyncAck.onAfterAccept = function ()
   {
     let removeSyncFolder = $("#delete-sync-fldr").prop("checked");
 
@@ -755,9 +755,9 @@ function initDialogs()
     });
   };
 
-  gDialogs.wndsDlgsOpts = new aeDialog("#wnds-dlgs-opts-dlg");
-  gDialogs.wndsDlgsOpts.setProps({resetClpMgrWndPos: false});
-  gDialogs.wndsDlgsOpts.onFirstInit = function ()
+  gDlg.wndsDlgsOpts = new aeDialog("#wnds-dlgs-opts-dlg");
+  gDlg.wndsDlgsOpts.setProps({resetClpMgrWndPos: false});
+  gDlg.wndsDlgsOpts.onFirstInit = function ()
   {
     if (! ["win", "mac"].includes(gOS)) {
       let os = gOS == "mac" ? browser.i18n.getMessage("macOS") : capitalize(gOS);
@@ -774,14 +774,14 @@ function initDialogs()
       $("#reset-clpmgr-wnd-pos-ack").css({visibility: "visible"});
     });
   };
-  gDialogs.wndsDlgsOpts.onInit = async function ()
+  gDlg.wndsDlgsOpts.onInit = async function ()
   {
     let prefs = await aePrefs.getAllPrefs();
     $("#auto-pos-wnds").prop("checked", prefs.autoAdjustWndPos);
     $("#clpmgr-save-wnd-pos").prop("checked", prefs.clippingsMgrSaveWndGeom);
     $("#reset-clpmgr-wnd-pos").prop("disabled", !$("#clpmgr-save-wnd-pos").prop("checked"));
   };
-  gDialogs.wndsDlgsOpts.onAccept = async function (aEvent)
+  gDlg.wndsDlgsOpts.onAccept = async function (aEvent)
   {
     let autoAdjustWndPos = $("#auto-pos-wnds").prop("checked");
     let clippingsMgrSaveWndGeom = $("#clpmgr-save-wnd-pos").prop("checked");
@@ -812,23 +812,23 @@ function initDialogs()
 
     this.close();
   };
-  gDialogs.wndsDlgsOpts._purgeSavedClpMgrWndGeom = async function ()
+  gDlg.wndsDlgsOpts._purgeSavedClpMgrWndGeom = async function ()
   {   
     await aePrefs.setPrefs({
       clippingsMgrWndGeom: null,
       clippingsMgrTreeWidth: null,
     });
   };
-  gDialogs.wndsDlgsOpts.onUnload = function ()
+  gDlg.wndsDlgsOpts.onUnload = function ()
   {
     this.resetClpMgrWndPos = false;
     $("#reset-clpmgr-wnd-pos").prop("disabled", false);
     $("#reset-clpmgr-wnd-pos-ack").css({visibility: "hidden"});
   };
 
-  gDialogs.about = new aeDialog("#about-dlg");
-  gDialogs.about.setProps({extInfo: null});
-  gDialogs.about.onInit = function ()
+  gDlg.about = new aeDialog("#about-dlg");
+  gDlg.about.setProps({extInfo: null});
+  gDlg.about.onInit = function ()
   {
     let diagDeck = this.find("#diag-info .deck");
     diagDeck.children("#sync-diag-loading").show();
@@ -852,7 +852,7 @@ function initDialogs()
     this.find(".dlg-content #ext-home-pg").prop("href", this.extInfo.homePgURL);
   };
   
-  gDialogs.about.onShow = async function ()
+  gDlg.about.onShow = async function ()
   {
     let perms = await browser.permissions.getAll();
     if (perms.permissions.includes("nativeMessaging")) {
@@ -915,12 +915,12 @@ function initDialogs()
     this.find("#sync-diag-detail").show();
   };
 
-  gDialogs.about.onUnload = function ()
+  gDlg.about.onUnload = function ()
   {
     this._dlgElt.removeAttr("data-expanded");
   };
 
-  gDialogs.syncClippingsHelp = new aeDialog("#sync-clippings-help-dlg");
+  gDlg.syncClippingsHelp = new aeDialog("#sync-clippings-help-dlg");
 }
 
 
@@ -943,10 +943,10 @@ $(window).on("contextmenu", aEvent => {
 
 
 $(window).on("focus", aEvent => {
-  if (gDialogs?.syncClippings?.isOpen() && gDialogs.syncClippings.isSyncConnectionError()) {
+  if (gDlg?.syncClippings?.isOpen() && gDlg.syncClippings.isSyncConnectionError()) {
     // Retry connecting to the Sync Clippings Helper app.
-    gDialogs.syncClippings.close();
-    gDialogs.syncClippings.showModal();
+    gDlg.syncClippings.close();
+    gDlg.syncClippings.showModal();
   }
 });
 

@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+"use strict";
+
 
 const WNDH_PLCHLDR_MULTI = 318;
 const WNDH_PLCHLDR_MULTI_SHORT = 272;
@@ -12,7 +14,6 @@ const DLG_HEIGHT_ADJ_LINUX = 60;
 
 const REGEXP_CUSTOM_PLACEHOLDER = /\$\[([\w\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)(\{([\w \-\.\?_\/\(\)!@#%&;:,'"$£¥€*¡¢\u{0080}-\u{10FFFF}\|])+\})?\]/mu;
 
-let gOS;
 let gPlaceholders = null;
 let gPlaceholdersWithDefaultVals = null;
 let gSamePlchldrs = {};
@@ -42,7 +43,7 @@ $(async () => {
   let isVertExpanded = Boolean(params.get("vexp"));
 
   let platform = await browser.runtime.getPlatformInfo();
-  document.body.dataset.os = gOS = platform.os;
+  document.body.dataset.os = platform.os;
   aeInterxn.init(platform.os);
 
   let resp = await browser.runtime.sendMessage({
@@ -116,10 +117,10 @@ $(async () => {
       break;
     }
 
-    if (gOS == "win") {
+    if (platform.os == "win") {
       height += DLG_HEIGHT_ADJ_WINDOWS;
     }
-    else if (gOS == "linux") {
+    else if (platform.os == "linux") {
       height += DLG_HEIGHT_ADJ_LINUX;
     }
 
@@ -175,7 +176,7 @@ $(async () => {
   $("#btn-accept").click(aEvent => { accept(aEvent) });
   $("#btn-cancel").click(aEvent => { cancel(aEvent) });
 
-  if (gOS != "mac") {
+  if (platform.os != "mac") {
     // Fix for Fx57 bug where bundled page loaded using
     // browser.windows.create won't show contents unless resized.
     // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1402110>

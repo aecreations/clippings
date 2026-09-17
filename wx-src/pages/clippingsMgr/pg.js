@@ -14,7 +14,7 @@ let gEnvInfo;
 let gClippingsDB;
 let gPrefs;
 let gIsClippingsTreeEmpty;
-let gDialog = {};
+let gDlg = {};
 let gIsMaximized;
 let gSuppressAutoMinzWnd;
 let gSyncedItemsIDs = new Set();
@@ -622,7 +622,7 @@ let gSyncClippingsListener = {
   {
     log("Clippings: clippingsMgr/pg.js::gSyncClippingsListener.onActivate()");
     aeDialog.cancelDlgs();
-    gDialog.reloadSyncFolderIntrl();
+    gDlg.reloadSyncFolderIntrl();
   },
   
   onDeactivate(aOldSyncFolderID)
@@ -919,7 +919,7 @@ let gShortcutKey = {
       assignedKeysLookup[aItem.shortcutKey] = 1;
     }).then(() => {
       if (assignedKeysLookup[shortcutKey]) {
-        gDialog.shctKeyConflict.showModal();
+        gDlg.shctKeyConflict.showModal();
         return;
       }
 
@@ -1110,7 +1110,7 @@ function handlePushSyncUpdatesResponse(aResponse)
 {
   if ("error" in aResponse && aResponse.error.name == "RangeError") {
     // Max sync file size exceeded.
-    gDialog.syncFldrFull.showModal();
+    gDlg.syncFldrFull.showModal();
   }
 }
 
@@ -1185,7 +1185,7 @@ $(async () => {
       let hideSyncProgress = false;
       if (gPrefs.cxtMenuSyncItemsOnly && gPrefs.clippingsMgrShowSyncItemsOnlyRem) {
         hideSyncProgress = true;
-        gDialog.showOnlySyncedItemsReminder.showModal();
+        gDlg.showOnlySyncedItemsReminder.showModal();
       }
 
       if (gPrefs.autoSyncOnNewOrManage) {
@@ -1940,7 +1940,7 @@ function initInstantEditing()
 function initDialogs()
 {
   initIntroBannerAndHelpDlg();
-  gDialog = clippingsMgrDlgs();
+  gDlg = clippingsMgrDlgs();
 }
 
 
@@ -2165,7 +2165,7 @@ function buildClippingsTree()
             // is read-only.
             if (gPrefs.syncClippings && gPrefs.isSyncReadOnly
                 && gSyncedItemsIDs.has(newParentID + "F")) {
-              setTimeout(() => { gDialog.syncFldrReadOnly.openPopup() }, 100);
+              setTimeout(() => { gDlg.syncFldrReadOnly.openPopup() }, 100);
               return;
             }
 
@@ -2660,10 +2660,10 @@ async function rebuildClippingsTree()
       if (gPrefs.cxtMenuSyncItemsOnly) {
         if (gPrefs.clippingsMgrShowSyncItemsOnlyRem) {
           if (aeDialog.isOpen()) {
-            gDialog.showOnlySyncedItemsReminder.isDelayedOpen = true;
+            gDlg.showOnlySyncedItemsReminder.isDelayedOpen = true;
           }
           else {
-            gDialog.showOnlySyncedItemsReminder.showModal();
+            gDlg.showOnlySyncedItemsReminder.showModal();
           }
         }
       }
@@ -2840,7 +2840,7 @@ function initShortcutKeyMenu()
       assignedKeysLookup[aItem.shortcutKey] = 1;
     }).then(() => {
       if (assignedKeysLookup[shortcutKey]) {
-        gDialog.shctKeyConflict.showModal();
+        gDlg.shctKeyConflict.showModal();
         return;
       }
 

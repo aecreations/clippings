@@ -385,7 +385,7 @@ function clippingsMgrCmds()
       }
 
       if (gSyncedItemsIDs.has(parentFolderID + "F") && gPrefs.isSyncReadOnly) {
-        setTimeout(() => { gDialog.syncFldrReadOnly.openPopup() }, 100);
+        setTimeout(() => { gDlg.syncFldrReadOnly.openPopup() }, 100);
         return;
       }
 
@@ -520,15 +520,15 @@ function clippingsMgrCmds()
           await this._openExtPermissionPg();
         }
         else {
-          gDialog.requestExtPerm.setPermission("clipboardRead");
-          gDialog.requestExtPerm.showModal();
+          gDlg.requestExtPerm.setPermission("clipboardRead");
+          gDlg.requestExtPerm.showModal();
         }
         return;
       }
 
       let content = await navigator.clipboard.readText();
       if (content == "") {
-        setTimeout(() => {gDialog.clipboardEmpty.openPopup()}, 100);
+        setTimeout(() => {gDlg.clipboardEmpty.openPopup()}, 100);
         return;
       }
 
@@ -578,8 +578,8 @@ function clippingsMgrCmds()
 
       let perms = await browser.permissions.getAll();
       if (! perms.permissions.includes("clipboardWrite")) {
-        gDialog.requestExtPerm.setPermission("clipboardWrite");
-        gDialog.requestExtPerm.showModal();
+        gDlg.requestExtPerm.setPermission("clipboardWrite");
+        gDlg.requestExtPerm.showModal();
         return;
       }
 
@@ -625,7 +625,7 @@ function clippingsMgrCmds()
       }
 
       if (gSyncedItemsIDs.has(parentFolderID + "F") && gPrefs.isSyncReadOnly) {
-        setTimeout(() => { gDialog.syncFldrReadOnly.openPopup() }, 100);
+        setTimeout(() => { gDlg.syncFldrReadOnly.openPopup() }, 100);
         return;
       }
 
@@ -699,7 +699,7 @@ function clippingsMgrCmds()
           }
           catch {}
           if (pingResp) {
-            gDialog.actionUnavailable.openPopup();
+            gDlg.actionUnavailable.openPopup();
             return;
           }
 
@@ -717,7 +717,7 @@ function clippingsMgrCmds()
         }
       }
 
-      gDialog.moveTo.showModal();
+      gDlg.moveTo.showModal();
     },
 
     async deleteClippingOrFolder(aDestUndoStack)
@@ -735,7 +735,7 @@ function clippingsMgrCmds()
       let parentFolderID = this._getParentFldrIDOfTreeNode(selectedNode);
 
       if (gSyncedItemsIDs.has(parentFolderID + "F") && gPrefs.isSyncReadOnly) {
-        setTimeout(() => { gDialog.syncFldrReadOnly.openPopup() }, 100);
+        setTimeout(() => { gDlg.syncFldrReadOnly.openPopup() }, 100);
         return;
       }
 
@@ -751,7 +751,7 @@ function clippingsMgrCmds()
         }
         catch {}
         if (pingResp) {
-          gDialog.actionUnavailable.openPopup();
+          gDlg.actionUnavailable.openPopup();
           return;
         }
 
@@ -902,7 +902,7 @@ function clippingsMgrCmds()
       }
 
       if (gSyncedItemsIDs.has(parentFolderID + "F") && gPrefs.isSyncReadOnly) {
-        setTimeout(() => { gDialog.syncFldrReadOnly.openPopup() }, 100);
+        setTimeout(() => { gDlg.syncFldrReadOnly.openPopup() }, 100);
         return;
       }
 
@@ -1753,7 +1753,7 @@ function clippingsMgrCmds()
       let clippingID = parseInt(selectedNode.key);
       let clipping = await gClippingsDB.clippings.get(clippingID);
       if (clipping.sourceURL == "") {
-        gDialog.clippingMissingSrcURL.openPopup();
+        gDlg.clippingMissingSrcURL.openPopup();
         return;
       }
 
@@ -1786,7 +1786,7 @@ function clippingsMgrCmds()
         return gClippingsDB.clippings.toCollection().modify({sourceURL: ""});
 
       }).then(aNumUpd => {
-        gDialog.removeAllSrcURLsConfirm.openPopup();
+        gDlg.removeAllSrcURLsConfirm.openPopup();
 
         if (gPrefs.syncClippings) {
           browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"})
@@ -1817,22 +1817,22 @@ function clippingsMgrCmds()
 
     showShortcutList: function ()
     {
-      gDialog.shortcutList.showModal(false);
+      gDlg.shortcutList.showModal(false);
     },
 
     insertCustomPlaceholder: function ()
     {
-      gDialog.insCustomPlchldr.showModal();
+      gDlg.insCustomPlchldr.showModal();
     },
 
     insertNumericPlaceholder: function ()
     {
-      gDialog.insAutoIncrPlchldr.showModal();
+      gDlg.insAutoIncrPlchldr.showModal();
     },
 
     insertFormattedDateTimePlaceholder: function ()
     {
-      gDialog.insDateTimePlchldr.showModal();
+      gDlg.insDateTimePlchldr.showModal();
     },
 
     insertClippingInClippingPlaceholder()
@@ -1957,8 +1957,8 @@ function clippingsMgrCmds()
 
           if (aDownldItems && aDownldItems.length > 0) {
             let backupFilePath = aDownldItems[0].filename;
-            gDialog.backupConfirmMsgBox.setMessage(browser.i18n.getMessage("clipMgrBackupConfirm", backupFilePath));
-            gDialog.backupConfirmMsgBox.showModal();
+            gDlg.backupConfirmMsgBox.setMessage(browser.i18n.getMessage("clipMgrBackupConfirm", backupFilePath));
+            gDlg.backupConfirmMsgBox.showModal();
           }
 
         }).catch(aErr => {
@@ -2001,23 +2001,23 @@ function clippingsMgrCmds()
       }
       catch {}
       if (pingResp) {
-        gDialog.actionUnavailable.openPopup();
+        gDlg.actionUnavailable.openPopup();
         return;
       }
 
-      gDialog.importFromFile.mode = gDialog.importFromFile.IMP_REPLACE;
-      gDialog.importFromFile.showModal();
+      gDlg.importFromFile.mode = gDlg.importFromFile.IMP_REPLACE;
+      gDlg.importFromFile.showModal();
     },
 
     importFromFile: function ()
     {
-      gDialog.importFromFile.mode = gDialog.importFromFile.IMP_APPEND;
-      gDialog.importFromFile.showModal();
+      gDlg.importFromFile.mode = gDlg.importFromFile.IMP_APPEND;
+      gDlg.importFromFile.showModal();
     },
 
     exportToFile: function ()
     {
-      gDialog.exportToFile.showModal();
+      gDlg.exportToFile.showModal();
     },
 
     async reloadSyncFolder()
@@ -2029,7 +2029,7 @@ function clippingsMgrCmds()
       catch {}
 
       if (pingResp) {
-        gDialog.actionUnavailable.openPopup();
+        gDlg.actionUnavailable.openPopup();
         return;
       }
 
@@ -2048,13 +2048,13 @@ function clippingsMgrCmds()
       let afterSyncFldrReloadDelay = await aePrefs.getPref("afterSyncFldrReloadDelay");
 
       if (!aHideSyncProgress) {
-        gDialog.syncProgress.showModal(false);
+        gDlg.syncProgress.showModal(false);
       }
 
       setTimeout(async () => {
         await rebuildClippingsTree();
         if (!aHideSyncProgress) {
-          gDialog.syncProgress.close();
+          gDlg.syncProgress.close();
         }
         typeof aFnAfterSync == "function" && aFnAfterSync();
       }, afterSyncFldrReloadDelay);
@@ -2062,16 +2062,16 @@ function clippingsMgrCmds()
 
     removeAllSrcURLs: function ()
     {
-      gDialog.removeAllSrcURLs.showModal();
+      gDlg.removeAllSrcURLs.showModal();
     },
 
     showMiniHelp: function ()
     {
       if ($("#intro-content").css("display") == "none") {
-        gDialog.miniHelp.showModal();
+        gDlg.miniHelp.showModal();
       }
       else {
-        gDialog.genericMsgBox.showModal();
+        gDlg.genericMsgBox.showModal();
       }
     },
 
@@ -2084,12 +2084,12 @@ function clippingsMgrCmds()
       catch {}
 
       if (pingResp) {
-        gDialog.actionUnavailable.openPopup();
+        gDlg.actionUnavailable.openPopup();
         return;
       }
 
       if (this.undoStack.length == 0) {
-        setTimeout(() => { gDialog.noUndoNotify.openPopup() }, 100);
+        setTimeout(() => { gDlg.noUndoNotify.openPopup() }, 100);
         return;
       }
 
@@ -2218,7 +2218,7 @@ function clippingsMgrCmds()
 
         await Promise.all(numUpdates);
         this.redoStack.push(undo);
-        gDialog.restoreSrcURLs.openPopup();
+        gDlg.restoreSrcURLs.openPopup();
 
         if (gPrefs.syncClippings) {
           browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"})
@@ -2236,12 +2236,12 @@ function clippingsMgrCmds()
       catch {}
 
       if (pingResp) {
-        gDialog.actionUnavailable.openPopup();
+        gDlg.actionUnavailable.openPopup();
         return;
       }
 
       if (this.redoStack.length == 0) {
-        setTimeout(() => { gDialog.noRedoNotify.openPopup() }, 100);
+        setTimeout(() => { gDlg.noRedoNotify.openPopup() }, 100);
         return;
       }
 
@@ -2366,7 +2366,7 @@ function clippingsMgrCmds()
 
         await Promise.all(numUpdates);
         this.undoStack.push(redo);
-        gDialog.removeAllSrcURLsConfirm.openPopup();
+        gDlg.removeAllSrcURLsConfirm.openPopup();
 
         if (gPrefs.syncClippings) {
           browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"})
