@@ -95,5 +95,33 @@ let aeClippings = {
   {
     let rv = aText.search(/<[a-z1-6]+( [a-z\-]+(\="?.*"?)?)*>/i) != -1;
     return rv;
-  }
+  },
+
+
+  async openExtPermissionPg(aOpenerWndID)
+  {
+    let resp;
+    try {
+      resp = await browser.runtime.sendMessage({msgID: "ping-perms-req-pg"});
+    }
+    catch {}
+
+    if (resp) {
+      browser.runtime.sendMessage({
+        msgID: "reload-perms-req-pg",
+        openerWndID: aOpenerWndID,
+      });
+    }
+    else {
+      let url = browser.runtime.getURL(`pages/permission.html?openerWndID=${aOpenerWndID}`);
+      try {
+        await browser.tabs.create({url, active: true});
+      }
+      catch {
+        // Exception thrown if there are no browser windows open (not
+        // applicable if this method was called from the sidebar).
+        aeNavigator?.gotoURL(url);
+      }
+    }
+  },
 };

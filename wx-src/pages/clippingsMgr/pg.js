@@ -23,33 +23,7 @@ let gIsBackupMode = false;
 let gErrorPushSyncItems = false;
 let gReorderedTreeNodeNextSibling = null;
 let gWndID;
-
-let gPermissionReq = {
-  _extPerm: null,
-  _execActionID: null,
-
-  set(aExtPermission, aExecActionID)
-  {
-    this._extPerm = aExtPermission;
-    this._execActionID = aExecActionID;
-  },
-
-  get()
-  {
-    let rv = {
-      extPerm: this._extPerm,
-      execActionID: this._execActionID,
-    };
-    return rv;
-  },
-
-  clear()
-  {
-    this._extPerm = null;
-    this._execActionID = null;
-  },
-};
-
+let gPermissionReq = new aePermReqInfo();
 
 // Wrappers to database create/update/delete operations. These also call the
 // Clippings listeners upon completion of the database operations.

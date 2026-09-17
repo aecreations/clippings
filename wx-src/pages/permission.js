@@ -153,6 +153,11 @@ browser.runtime.onMessage.addListener(aRequest => {
     populateRequestedPermission();
     browser.windows.update(gWndID, {focused: true});
     browser.tabs.update(gTabID, {active: true});
+
+    // Also update the opener window ID, since invoking the permissions
+    // page again from a different source window will cancel the pending
+    // permission request.
+    gOpenerWndID = aRequest.openerWndID;
   }
 
   if (resp) {
