@@ -18,6 +18,8 @@ let gSyncedItemsIDMap = new Map();
 let gCustomizeDlg, gClipbdWritePermMsgBox,
     gInitErrorMsgBox, gSyncProgressDlg;
 let gMsgBarTimerID = null;
+let gPermissionReq = new aePermReqInfo();
+let gWndID;
 
 let gSyncClippingsListener = {
   onActivate(aSyncFolderID)
@@ -328,8 +330,14 @@ let gCmd = {
     }
 
     let perms = await browser.permissions.getAll();
-    if (! perms.permissions.includes("clipboardWrite")) {
-      gClipbdWritePermMsgBox.showModal();
+    if (!perms.permissions.includes("clipboardWrite")) {
+      if (gPrefs.newExtPermRequestFlow) {
+        gPermissionReq.set("clipboardWrite", "copy-clipping-text");
+        await aeClippings.openPermissionPg(gWndID);
+      }
+      else {
+        gClipbdWritePermMsgBox.showModal();
+      }
       return;
     }
 
@@ -488,6 +496,7 @@ $(async () => {
 
   let wnd = await browser.windows.getCurrent();
   aeNavigator.init(wnd.id);
+  gWndID = wnd.id;
 
   $("#help").attr("title", browser.i18n.getMessage("tbHelp"));
 
@@ -1082,6 +1091,12 @@ function hideMessageBar(aMsgBarStor)
 }
 
 
+async function focusWnd()
+{
+  await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, {focused: true});
+}
+
+
 //
 // Event handlers
 //
@@ -1119,6 +1134,22 @@ browser.runtime.onMessage.addListener(aRequest => {
 
   case "startup-sync-clippings":
     gSyncClippingsListener.onStartupSync();
+    break;
+
+  case "get-perm-req-key":
+    if (aRequest.opener == gWndID) {
+      resp = gPermissionReq.get();
+      gPermissionReq.clear();
+    }
+    break;
+
+  case "focus-ext-window":
+    if (aRequest.wndID == gWndID) {
+      focusWnd();
+      if (aRequest.execActionMsgID == "copy-clipping-text") {
+        gCmd.copyClippingTextToClipboard();
+      }
+    }
     break;
 
   default:

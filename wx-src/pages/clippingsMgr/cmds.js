@@ -517,7 +517,7 @@ function clippingsMgrCmds()
       if (! perms.permissions.includes("clipboardRead")) {
         if (gPrefs.newExtPermRequestFlow) {
           gPermissionReq.set("clipboardRead", "new-from-clipbd");
-          await aeClippings.openExtPermissionPg(gWndID);
+          await aeClippings.openPermissionPg(gWndID);
         }
         else {
           gDlg.requestExtPerm.setPermission("clipboardRead");
@@ -577,9 +577,15 @@ function clippingsMgrCmds()
       }
 
       let perms = await browser.permissions.getAll();
-      if (! perms.permissions.includes("clipboardWrite")) {
-        gDlg.requestExtPerm.setPermission("clipboardWrite");
-        gDlg.requestExtPerm.showModal();
+      if (!perms.permissions.includes("clipboardWrite")) {
+        if (gPrefs.newExtPermRequestFlow) {
+          gPermissionReq.set("clipboardWrite", "copy-clipping-text");
+          await aeClippings.openPermissionPg(gWndID);
+        }
+        else {
+          gDlg.requestExtPerm.setPermission("clipboardWrite");
+          gDlg.requestExtPerm.showModal();
+        }
         return;
       }
 
