@@ -98,7 +98,7 @@ let aeClippings = {
   },
 
 
-  async openExtPermissionPg(aOpenerWndID)
+  async openPermissionPg(aOpenerWndID)
   {
     let resp;
     try {
