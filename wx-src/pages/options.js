@@ -144,6 +144,12 @@ $(async () => {
     aePrefs.setPrefs({ alwaysSaveSrcURL: aEvent.target.checked });
   });
 
+  $("#show-src-url-badge").prop("checked", prefs.srcWebPgURLBadge).on("click", aEvent => {
+    aePrefs.setPrefs({srcWebPgURLBadge: aEvent.target.checked});
+    browser.runtime.sendMessage({msgID: "rebuild-cxt-menu"});
+    // TO DO: Send message to Clippings Sidebar to refresh clippings icons.
+  });
+
   $("#check-spelling").prop("checked", prefs.checkSpelling).on("click", aEvent => {
     aePrefs.setPrefs({ checkSpelling: aEvent.target.checked });
   });

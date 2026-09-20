@@ -1153,11 +1153,26 @@ function getContextMenuData(aFolderID, aPrefs)
             let menuItemID = "ae-clippings-clipping-" + aItem.id + "_" + Date.now();
             gClippingMenuItemIDMap[aItem.id] = menuItemID;
 
+            let iconFilename;
+            let srcURLSfx = '';
+
+            if (aItem.sourceURL && aPrefs.srcWebPgURLBadge) {
+              srcURLSfx = "-web";
+            }
+
+            if (aItem.label) {
+              // TO DO: Handle clippings with source URL.
+              iconFilename = `clipping-${aItem.label}.svg`;
+            }
+            else {
+              iconFilename = `clipping${srcURLSfx}.svg`;
+            }
+
             menuItemData = {
               id: menuItemID,
               title: sanitizeMenuTitle(aItem.name),
               icons: {
-                16: "img/" + (aItem.label ? `clipping-${aItem.label}.svg` : "clipping.svg")
+                16: `img/${iconFilename}`,
               },
             };
 

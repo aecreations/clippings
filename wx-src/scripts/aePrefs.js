@@ -82,6 +82,7 @@ let aePrefs = {
     autoSyncOnNewOrManage: false,
     autoSyncSidebar: false,
     newExtPermRequestFlow: true,
+    srcWebPgURLBadge: true,
   },
   
   getPrefKeys()
@@ -371,6 +372,7 @@ let aePrefs = {
       autoSyncOnNewOrManage: false,
       autoSyncSidebar: false,
       newExtPermRequestFlow: true,
+      srcWebPgURLBadge: true,
     };
     await this._addPrefs(aPrefs, newPrefs);
   },

@@ -107,6 +107,11 @@ span.fancytree-title {
     background-image: url("../img/clipping.svg");
 }
 
+.ui-fancytree .ae-clipping-web > .fancytree-icon {
+    background-position: unset;
+    background-image: url("../img/clipping-web.svg");
+}
+
 .fancytree-has-children.fancytree-ico-cf span.fancytree-icon {
     background-position: unset;
 }

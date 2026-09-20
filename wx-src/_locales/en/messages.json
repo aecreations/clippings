@@ -1268,6 +1268,11 @@
     "description": "Checkbox option in extension preferences page"
   },
 
+  "cbSrcURLBadge": {
+    "message": "Show badge on clippings with a source web page address",
+    "description": "Checkbox option in extension preferences page"
+  },
+
   "cbCheckSpelling": {
     "message": "Check spelling",
     "description": "Checkbox option in extension preferences page"

@@ -73,7 +73,12 @@ let aeClippingsTree = {
             }
             clippingNode.title = title;
 
+            if (aItem.sourceURL && aPrefs.srcWebPgURLBadge) {
+              clippingNode.extraClasses = "ae-clipping-web";
+            }
+
             if (aItem.label) {
+              // TO DO: Handle clippings with source web page URL.
               clippingNode.extraClasses = `ae-clipping-label-${aItem.label}`;
             }
 
