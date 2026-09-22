@@ -189,7 +189,12 @@ let gClippingsListener = {
       newNode = tree.rootNode.addNode(newNodeData);
     }
 
+    if (aData.sourceURL && gPrefs.srcWebPgURLBadge) {
+      newNode.addClass("ae-clipping-web");
+    }
+
     if (aData.label) {
+      // TO DO: Handle clippings with source web page URL.
       newNode.addClass(`ae-clipping-label-${aData.label}`);
     }
 
@@ -1177,7 +1182,7 @@ $(async () => {
           await browser.runtime.sendMessage({
             msgID: "refresh-synced-clippings",
           });
-          await gCmd.reloadSyncFolderIntrl(hideSyncProgress, function () {
+          await gCmd.reloadSyncFolderIntrl(hideSyncProgress, () => {
             // Called after the Synced Clippings folder refresh is completed.
             initSyncItemsIDLookupList();
           });
