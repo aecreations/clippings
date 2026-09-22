@@ -464,7 +464,7 @@ $(async () => {
       if (!pingNewClippingDlg && !pingClippingsMgr) {
         await browser.runtime.sendMessage({msgID: "refresh-synced-clippings"});
         aeDialog.cancelDlgs();
-        await gCmd.reloadSyncFolderIntrl(function () {
+        await gCmd.reloadSyncFolderIntrl(() => {
           // Called after the Synced Clippings folder refresh is completed.
           initSyncItemsIDLookupList();
         });
@@ -1172,6 +1172,10 @@ browser.storage.onChanged.addListener((aChanges, aAreaName) => {
 
   for (let pref of changedPrefs) {
     gPrefs[pref] = aChanges[pref].newValue;
+
+    if (pref == "srcWebPgURLBadge") {
+      // TO DO: Refresh node icons for clippings in the tree list.
+    }
   }
 
   setCustomizations();
