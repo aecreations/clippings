@@ -752,6 +752,8 @@ let gSearchBox = {
 
 // Source URL editing
 let gSrcURLBar = {
+  _oldVal: null,
+
   init: function ()
   {
     $("#src-url-edit-mode").hide();
@@ -782,9 +784,10 @@ let gSrcURLBar = {
 
   edit: function ()
   {
+    this._oldVal = $("#clipping-src-url > a").text();
     $("#src-url-normal-mode").hide();
     $("#src-url-edit-mode").show();
-    $("#clipping-src-url-edit").val($("#clipping-src-url > a").text()).trigger("select").trigger("focus");
+    $("#clipping-src-url-edit").val(this._oldVal).trigger("select").trigger("focus");
   },
 
   isEditing: function ()
@@ -792,11 +795,11 @@ let gSrcURLBar = {
     return ($("#src-url-edit-mode:visible").length > 0);
   },
 
-  acceptEdit: function ()
+  async acceptEdit()
   {
     let updatedURL = $("#clipping-src-url-edit").val();
 
-    if (updatedURL != "" && updatedURL.search(/^http:\/\//) == -1
+    if (updatedURL != '' && updatedURL.search(/^http:\/\//) == -1
         && updatedURL.search(/^https:\/\//) == -1) {
 
       if (updatedURL.search(/^www/) != -1) {
@@ -805,6 +808,7 @@ let gSrcURLBar = {
       }
       else {
         $("#clipping-src-url-edit").trigger("select").trigger("focus");
+        this._oldVal = null;
         return;
       }
     }
@@ -812,33 +816,43 @@ let gSrcURLBar = {
     let tree = aeClippingsTree.getTree();
     let clippingID = parseInt(tree.activeNode.key);
     
-    gClippingsSvc.updateClipping(clippingID, {
-      sourceURL: updatedURL
+    await gClippingsSvc.updateClipping(clippingID, {sourceURL: updatedURL});
+    if (gPrefs.clippingsUnchanged) {
+      aePrefs.setPrefs({clippingsUnchanged: false});
+    }
 
-    }).then(aNumUpdated => {
-      if (gPrefs.clippingsUnchanged) {
-        aePrefs.setPrefs({ clippingsUnchanged: false });
-      }
-
-      if ($("#clipping-src-url > a").length == 0) {
-        $("#clipping-src-url").html(sanitizeHTML(`<a href="${updatedURL}">${updatedURL}</a>`));
+    if ($("#clipping-src-url > a").length == 0) {
+      $("#clipping-src-url").html(sanitizeHTML(`<a href="${updatedURL}">${updatedURL}</a>`));
+    }
+    else {
+      if (updatedURL) {
+        $("#clipping-src-url > a").text(updatedURL);
       }
       else {
-        if (updatedURL) {
-          $("#clipping-src-url > a").text(updatedURL);
-        }
-        else {
-          $("#clipping-src-url").text(browser.i18n.getMessage("none"));
-        }
+        $("#clipping-src-url").text(browser.i18n.getMessage("none"));
       }
-      this._dismissSrcURLEditMode();
+    }
 
-      if (updatedURL && gSyncedItemsIDs.has(clippingID + "C")) {
-        browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"})
-          .then(handlePushSyncUpdatesResponse)
-          .catch(handlePushSyncItemsError);
+    if (gPrefs.srcWebPgURLBadge) {
+      // Rebuild Clippings context menu so that clipping icons show a badge if
+      // they have a source URL.
+      if ((this._oldVal == '' && updatedURL != '')
+          || (this._oldVal != '' && updatedURL == '')) {
+        await browser.runtime.sendMessage({msgID: "rebuild-cxt-menu"});
       }
-    });
+    }
+
+    this._dismissSrcURLEditMode();
+
+    if (updatedURL && gSyncedItemsIDs.has(clippingID + "C")) {
+      try {
+        let resp = await browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"});
+        handlePushSyncUpdatesResponse(resp);
+      }
+      catch (e) {
+        handlePushSyncItemsError(e);
+      }
+    }
   },
 
   cancelEdit: function ()
@@ -849,6 +863,7 @@ let gSrcURLBar = {
   // Helper
   _dismissSrcURLEditMode: function ()
   {
+    this._oldVal = null;
     $("#src-url-normal-mode").show();
     $("#src-url-edit-mode").hide();
     $("#clipping-src-url-edit").val("");
