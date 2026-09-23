@@ -417,6 +417,25 @@ let gClippingsListener = {
       let changedNode = tree.getNodeByKey(aID + "C");
       changedNode.setTitle(aeClippingsTree.sanitizeTreeNodeTitle(aData.name));
     }
+    else if (aData.sourceURL != aOldData.sourceURL) {
+      let changedNode = tree.getNodeByKey(aID + "C");
+      if (aData.sourceURL) {
+        if (aData.label) {
+          // TO DO: Add source URL badge to clippings with labels.
+        }
+        else {
+          changedNode.addClass("ae-clipping-web");
+        }
+      }
+      else {
+        if (aData.label) {
+          // TO DO: Remove badge on labelled clipping.
+        }
+        else {
+          changedNode.removeClass("ae-clipping-web");
+        }
+      }
+    }
   },
 
   folderChanged: function (aID, aData, aOldData)
