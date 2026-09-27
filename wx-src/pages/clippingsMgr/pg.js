@@ -2051,12 +2051,12 @@ function buildClippingsTree()
     }
 
     $("#clippings-tree").fancytree({
-      extensions: ["dnd5", "filter"],
+      extensions: ["dnd5", "filter", "multi"],
 
       debugLevel: 0,
       autoScroll: true,
       source: treeData,
-      selectMode: 1,
+      selectMode: 2,
       strings: { noData: browser.i18n.getMessage("clipMgrNoItems") },
       icon: (gIsClippingsTreeEmpty ? false : true),
 
@@ -2082,6 +2082,11 @@ function buildClippingsTree()
             gCmd.pasteClipping(clippingID);
           }
         }
+      },
+
+      // Fancytree "multi" extension
+      unselectable(event, data) {
+        return data.node.isFolder();
       },
 
       dnd5: {
@@ -2335,10 +2340,10 @@ function buildClippingsTree()
         }
         
         switch (aItemKey) {
-	case "reloadSyncFolder":
-	  gCmd.reloadSyncFolder();
-	  break;
-	  
+        case "reloadSyncFolder":
+          gCmd.reloadSyncFolder();
+          break;
+
         case "moveOrCopy":
           gCmd.moveClippingOrFolder();
           break;
@@ -2413,13 +2418,18 @@ function buildClippingsTree()
 
             let folderID = parseInt(selectedNode.key);
             return (selectedNode.isFolder() && folderID == gPrefs.syncFolderID);
+          },
+          visible(aItemKey, aOpt) {
+            return aeClippingsTree.isFolderOrSingleClippingSelected();
           }
         },
         gotoSrcURL: {
           name: browser.i18n.getMessage("mnuGoToSrcURL"),
           className: "ae-menuitem",
           visible: function (aItemKey, aOpt) {
-            return (!aeClippingsTree.isFolderSelected() && !aeClippingsTree.isSeparatorSelected());
+            return (!aeClippingsTree.isFolderSelected()
+                    && !aeClippingsTree.isSeparatorSelected()
+                    && aeClippingsTree.isFolderOrSingleClippingSelected());
           }
         },
         labelSubmenu: {
@@ -2561,7 +2571,9 @@ function buildClippingsTree()
         copyClippingTextSeparator: {
           type: "cm_separator",
           visible(aItemKey, aOpt) {
-            return (!aeClippingsTree.isFolderSelected() && !aeClippingsTree.isSeparatorSelected());
+            return (!aeClippingsTree.isFolderSelected()
+                    && !aeClippingsTree.isSeparatorSelected()
+                    && aeClippingsTree.isFolderOrSingleClippingSelected());
           }
         },
         copyClippingText: {
@@ -2586,9 +2598,17 @@ function buildClippingsTree()
             if (aeClippingsTree.isSeparatorSelected()) {
               return true;
             }
+          },
+          visible(aItemKey, aOpt) {
+            return aeClippingsTree.isFolderOrSingleClippingSelected();
           }
         },
-        separator0: "--------",
+        deleteItemSeparator: {
+          type: "cm_separator",
+          visible(aItemKey, aOpt) {
+            return aeClippingsTree.isFolderOrSingleClippingSelected();
+          }
+        },
         deleteItem: {
           name: browser.i18n.getMessage("tbDelete"),
           className: "ae-menuitem",
@@ -2604,6 +2624,9 @@ function buildClippingsTree()
 
             let folderID = parseInt(selectedNode.key);
             return (selectedNode.isFolder() && folderID == gPrefs.syncFolderID);
+          },
+          visible(aItemKey, aOpt) {
+            return aeClippingsTree.isFolderOrSingleClippingSelected();
           }
         }
       }

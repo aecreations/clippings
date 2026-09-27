@@ -3,6 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+"use strict";
+
+
 let aeClippingsTree = {
   DEBUG: false,
 
@@ -159,6 +162,46 @@ let aeClippingsTree = {
     return rv;
   },
 
+  isFolderOrSingleClippingSelected()
+  {
+    let rv;
+    if (this.isFolderSelected()) {
+      rv = true;
+    }
+    else {
+      let tree = this.getTree();
+      rv = tree.getSelectedNodes().length == 1;
+    }
+
+    return rv;
+  },
+
+  isMultipleClippingsSelected()
+  {
+    let rv = false;
+    let tree = this.getTree();
+    rv = tree.getSelectedNodes().length > 1;
+
+    return rv;
+  },
+
+  getSelectedClippingsIDs()
+  {
+    let rv = [];
+    let tree = this.getTree();
+    let selectedNodes = tree.getSelectedNodes();
+
+    for (let node of selectedNodes) {
+      if (node.isFolder()) {
+        continue;
+      }
+      let clippingID = parseInt(node.key);
+      rv.push(clippingID);
+    }
+
+    return rv;
+  },
+
   // Helper
   _sanitizeHTML(aHTMLStr)
   {
@@ -166,7 +209,6 @@ let aeClippingsTree = {
   },
   
 };
-
 
 let aeCopyClippingTextFormatDlg = new aeDialog("#copy-clipping-txt-fmt-dlg");
 
@@ -198,11 +240,20 @@ aeCopyClippingTextFormatDlg.copyClippingText = function (aButtonID)
     copyFormat = aeConst.COPY_AS_PLAIN;
   }
 
-  browser.runtime.sendMessage({
-    msgID: "copy-clipping",
-    clippingID: this.getClippingID(),
-    copyFormat,
-  });
+  if (aeClippingsTree.isMultipleClippingsSelected()) {
+    browser.runtime.sendMessage({
+      msgID: "copy-multi-clippings",
+      clippingIDs: aeClippingsTree.getSelectedClippingsIDs(),
+      copyFormat,
+    });
+  }
+  else {
+    browser.runtime.sendMessage({
+      msgID: "copy-clipping",
+      clippingID: this.getClippingID(),
+      copyFormat,
+    });
+  }
 };
 
 aeCopyClippingTextFormatDlg.onFirstInit = async function ()

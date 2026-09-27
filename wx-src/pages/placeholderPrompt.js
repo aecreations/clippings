@@ -21,6 +21,8 @@ let gClippingName = null;
 let gClippingContent = null;
 let gBrowserTabID = null;
 let gDlgMode = 0;
+let gIsMultiCopyClipping = false;
+let gIsLastMultiClipping = false;
 
 
 // DOM utility
@@ -35,6 +37,8 @@ $(async () => {
   let params = new URLSearchParams(window.location.search);
   gBrowserTabID = Number(params.get("tabID"));
   gDlgMode = Number(params.get("mode"));
+  gIsMultiCopyClipping = Boolean(params.get("multi"));
+  gIsLastMultiClipping = Boolean(params.get("lastmulti"));
 
   if (gDlgMode > 0) {
     document.title = browser.i18n.getMessage("mnuCopyClipTxt");
@@ -286,6 +290,8 @@ function accept(aEvent)
       msgID: "copy-clipping-with-plchldrs",
       copyMode: gDlgMode,
       processedContent: content,
+      isMultiCopy: gIsMultiCopyClipping,
+      isLastMulti: gIsLastMultiClipping,
     }
   }
   else {

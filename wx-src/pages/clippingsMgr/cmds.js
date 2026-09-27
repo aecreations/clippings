@@ -566,13 +566,58 @@ function clippingsMgrCmds()
 
     async copyClippingTextToClipboard()
     {
+      async function copyClippingText(aClippingID)
+      {
+        let clipping = await gClippingsDB.clippings.get(aClippingID);
+        if (!clipping) {
+          throw new Error("No clipping found for ID " + aClippingID);
+        }
+
+        let isFormatted = aeClippings.hasHTMLTags(clipping.content);
+        if (isFormatted) {
+          aeCopyClippingTextFormatDlg.showModal();
+        }
+        else {
+          await browser.runtime.sendMessage({
+            msgID: "copy-clipping",
+            clippingID,
+            copyFormat,
+          });
+        }
+      }
+
+      async function copyMultiClippingsText(aClippingIDs)
+      {
+        // Process each selected clipping and check if they are HTML formatted.
+        // If so, open the Copy Format dialog to ask which format to use for
+        // copying the content of all selected clippings.
+        for (let clippingID of aClippingIDs) {
+          let clipping = await gClippingsDB.clippings.get(clippingID);
+          if (!clipping) {
+            throw new Error("No clipping found for ID " + clippingID);
+          }
+
+          let isFormatted = aeClippings.hasHTMLTags(clipping.content);
+          if (isFormatted) {
+            aeCopyClippingTextFormatDlg.showModal();
+            return;
+          }
+        }
+
+        await browser.runtime.sendMessage({
+          msgID: "copy-multi-clippings",
+          clippingIDs: aClippingIDs,
+          copyFormat: aeConst.COPY_AS_PLAIN,
+        });
+      }
+
       if (gIsClippingsTreeEmpty) {
         return;
       }
 
       let tree = aeClippingsTree.getTree();
       let selectedNode = tree.activeNode;
-      if (! selectedNode) {
+      if (!selectedNode) {
         return;
       }
 
@@ -589,22 +634,13 @@ function clippingsMgrCmds()
         return;
       }
 
-      let clippingID = parseInt(selectedNode.key);
-      let clipping = await gClippingsDB.clippings.get(clippingID);
-      if (! clipping) {
-        throw new Error("No clipping found for ID " + clippingID);
-      }
-
-      let isFormatted = aeClippings.hasHTMLTags(clipping.content);
-      if (isFormatted) {
-        aeCopyClippingTextFormatDlg.showModal();
+      if (aeClippingsTree.isMultipleClippingsSelected()) {
+        let selectedClippingsIDs = aeClippingsTree.getSelectedClippingsIDs();
+        copyMultiClippingsText(selectedClippingsIDs);
       }
       else {
-        browser.runtime.sendMessage({
-          msgID: "copy-clipping",
-          clippingID,
-          copyFormat: aeConst.COPY_AS_PLAIN,
-        });
+        let clippingID = parseInt(selectedNode.key);
+        copyClippingText(clippingID);
       }
     },
 
