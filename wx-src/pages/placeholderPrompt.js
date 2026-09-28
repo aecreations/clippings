@@ -22,6 +22,7 @@ let gClippingContent = null;
 let gBrowserTabID = null;
 let gDlgMode = 0;
 let gIsMultiCopyClipping = false;
+let gMultiCopyIndex = null;
 let gIsLastMultiClipping = false;
 
 
@@ -37,8 +38,9 @@ $(async () => {
   let params = new URLSearchParams(window.location.search);
   gBrowserTabID = Number(params.get("tabID"));
   gDlgMode = Number(params.get("mode"));
-  gIsMultiCopyClipping = Boolean(params.get("multi"));
-  gIsLastMultiClipping = Boolean(params.get("lastmulti"));
+  gIsMultiCopyClipping = (params.get("multi") == 1);
+  gMultiCopyIndex = Number(params.get("mcidx"));
+  gIsLastMultiClipping = (params.get("lastmulti") == 1);
 
   if (gDlgMode > 0) {
     document.title = browser.i18n.getMessage("mnuCopyClipTxt");
@@ -51,7 +53,9 @@ $(async () => {
   aeInterxn.init(platform.os);
 
   let resp = await browser.runtime.sendMessage({
-    msgID: "init-placeholder-prmt-dlg"
+    msgID: "init-placeholder-prmt-dlg",
+    isMultiCopy: gIsMultiCopyClipping,
+    multiIndex: gMultiCopyIndex,
   });
 
   gClippingName = sanitizeHTML(resp.clippingName);
@@ -291,6 +295,7 @@ function accept(aEvent)
       copyMode: gDlgMode,
       processedContent: content,
       isMultiCopy: gIsMultiCopyClipping,
+      multiCopyIndex: gMultiCopyIndex,
       isLastMulti: gIsLastMultiClipping,
     }
   }

@@ -286,41 +286,29 @@ let gPasteAs = {
   },
 };
 
-let gPlaceholders = {
-  _clippingName: null,
-  _plchldrs: null,
-  _clpCtnt: null,
-  _plchldrsWithDefVals: null,
+let gPlaceholderData = {
+  _plchldrs: [],
 
-  set: function (aClippingName, aPlaceholders, aPlaceholdersWithDefaultVals, aClippingText) {
-    this._clippingName = aClippingName;
-    this._plchldrs = aPlaceholders;
-    this._plchldrsWithDefVals = aPlaceholdersWithDefaultVals;
-    this._clpCtnt = aClippingText;
+  push(aPlaceholderData) {
+    this._plchldrs.push(aPlaceholderData);
   },
 
-  get: function () {
-    let rv = this.copy();
-    this.reset();
-
+  pop() {
+    let rv = this._plchldrs.pop();
     return rv;
   },
 
-  copy: function () {
-    let rv = {
-      clippingName: this._clippingName,
-      placeholders: this._plchldrs.slice(),
-      placeholdersWithDefaultVals: Object.assign({}, this._plchldrsWithDefVals),
-      content: this._clpCtnt
-    };
-    return rv;
+  setDataAt(aPlacholderData, aIndex) {
+    let idx = Number(aIndex);
+    this._plchldrs[idx] = aPlacholderData;
   },
 
-  reset: function () {
-    this._clippingName = null;
-    this._plchldrs = null;
-    this._plchldrsWithDefVals = null;
-    this._clpCtnt = null;
+  getDataAt(aIndex) {
+    return this._plchldrs[aIndex];
+  },
+
+  reset() {
+    this._plchldrs = [];
   }
 };
 
@@ -2004,13 +1992,14 @@ function openKeyboardPasteDlg(aTabID, aIsExpanded)
 }
 
 
-function openPlaceholderPromptDlg(aTabID, aDlgMode, aIsExpanded, aIsMulti, aIsLastMulti)
+function openPlaceholderPromptDlg(aTabID, aDlgMode, aIsExpanded, aIsMulti, aMultiIndex, aIsLastMulti)
 {
   // TO DO: Same checking for cursor location as in the preceding function.
 
   let multi = aIsMulti ? 1 : 0;
   let lastMulti = aIsLastMulti? 1 : 0;
-  let url = browser.runtime.getURL(`pages/placeholderPrompt.html?tabID=${aTabID}&mode=${aDlgMode}&multi=${multi}&lastmulti=${lastMulti}`);
+  let mcidx = aIsMulti ? aMultiIndex : -1;
+  let url = browser.runtime.getURL(`pages/placeholderPrompt.html?tabID=${aTabID}&mode=${aDlgMode}&multi=${multi}&mcidx=${mcidx}&lastmulti=${lastMulti}`);
   let wndPpty = {
     type: "popup",
     width: 536,
@@ -2212,9 +2201,12 @@ async function copyMultiClippingsText(aClippingsIDs, aCopyMode)
   log(`Clippings: copyMultiClippingsText(): Copying clippings [${aClippingsIDs.toString()}] (total ${aClippingsIDs.length})`);
   log("Copy mode (1=copy as HTML-formatted, 2=copy as plain with HTML, 3=copy as plain): " + aCopyMode);
 
+  // Clear any remaining placeholder data from last copy/paste.
+  gPlaceholderData.reset();
+
   for (let i = 0; i < aClippingsIDs.length; i++) {
     let isLast = i == aClippingsIDs.length - 1;
-    await pasteOrCopyClippingByID(aClippingsIDs[i], true, null, aCopyMode, true, isLast);
+    await pasteOrCopyClippingByID(aClippingsIDs[i], true, null, aCopyMode, true, i, isLast);
   }
 }
 
@@ -2225,7 +2217,7 @@ function pasteClippingByID(aClippingID, aIsExternalRequest, aTabID)
 }
 
 
-function pasteOrCopyClippingByID(aClippingID, aIsExternalRequest, aTabID, aMode, aIsMulti=false, aIsLastMulti=false)
+function pasteOrCopyClippingByID(aClippingID, aIsExternalRequest, aTabID, aMode, aIsMulti=false, aMultiIndex=null, aIsLastMulti=false)
 {
   let clippingInfo, processedCtnt;
   let clippingsDB = aeClippings.getDB();
@@ -2262,7 +2254,7 @@ function pasteOrCopyClippingByID(aClippingID, aIsExternalRequest, aTabID, aMode,
           parentFolderName: parentFldrName
         };
 
-        return processClipping(clippingInfo, aIsExternalRequest, aTabID, aMode, aIsMulti, aIsLastMulti);
+        return processClipping(clippingInfo, aIsExternalRequest, aTabID, aMode, aIsMulti, aMultiIndex, aIsLastMulti);
       }).then(aProcessedContent => {
         if (aProcessedContent !== null) {
           processedCtnt = aProcessedContent;
@@ -2385,12 +2377,12 @@ async function resumePasteClipping(aClippingName, aClippingContent, aTabID)
 }
 
 
-async function processClipping(aClippingInfo, aIsExternalRequest, aTabID, aMode, aIsMulti=false, aIsLastMulti=false)
+async function processClipping(aClippingInfo, aIsExternalRequest, aTabID, aMode, aIsMulti=false, aMultiIndex=null, aIsLastMulti=false)
 {
   let activeTabID = aTabID;
   if (aIsExternalRequest) {
     let [tab] = await browser.tabs.query({active: true, lastFocusedWindow: true});
-    if (! tab) {
+    if (!tab) {
       // This should never happen...
       alertEx("msgNoActvBrwsTab");
       return;
@@ -2427,7 +2419,13 @@ async function processClipping(aClippingInfo, aIsExternalRequest, aTabID, aMode,
     let plchldrs = aeClippingSubst.getCustomPlaceholders(processedCtnt);
     if (plchldrs.length > 0) {
       let plchldrsWithDefaultVals = aeClippingSubst.getCustomPlaceholderDefaultVals(processedCtnt, aClippingInfo);
-      gPlaceholders.set(aClippingInfo.name, plchldrs, plchldrsWithDefaultVals, processedCtnt);
+      let plchldrData = new aePlaceholderData(aClippingInfo.name, plchldrs, plchldrsWithDefaultVals, processedCtnt);
+      if (aIsMulti) {
+        gPlaceholderData.setDataAt(plchldrData, aMultiIndex);
+      }
+      else {
+        gPlaceholderData.push(plchldrData);
+      }
 
       // On macOS, set the size of the dialog beforehand to work around a bug
       // with full screen browser windows.
@@ -2440,7 +2438,7 @@ async function processClipping(aClippingInfo, aIsExternalRequest, aTabID, aMode,
         }
       }
 
-      openPlaceholderPromptDlg(activeTabID, aMode, isExpanded, aIsMulti, aIsLastMulti);
+      openPlaceholderPromptDlg(activeTabID, aMode, isExpanded, aIsMulti, aMultiIndex, aIsLastMulti);
       return null;
     }
   }
@@ -2870,7 +2868,10 @@ browser.runtime.onMessage.addListener(aRequest => {
     break;
 
   case "init-placeholder-prmt-dlg":
-    return Promise.resolve(gPlaceholders.get());
+    if (aRequest.isMultiCopy) {
+      return Promise.resolve(gPlaceholderData.getDataAt(aRequest.multiIndex));
+    }
+    return Promise.resolve(gPlaceholderData.pop());
 
   case "init-paste-as-dlg":
     return Promise.resolve(gPasteAs.get());
@@ -2932,7 +2933,7 @@ browser.runtime.onMessage.addListener(aRequest => {
       }
       return Promise.resolve(gCopyMultiClippings.append(aRequest.processedContent));
     }
-    return Promise.resolve(copyProcessedClipping(aRequest.processedContent, aRequest.copyMode, aRequest.isMultiCopy));
+    return Promise.resolve(copyProcessedClipping(aRequest.processedContent, aRequest.copyMode, false));
 
   case "close-placeholder-prmt-dlg":
     resetWndID("placeholderPrmt");

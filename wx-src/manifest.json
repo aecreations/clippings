@@ -60,6 +60,7 @@
       "scripts/aeClippings.js",
       "scripts/aeCompress.js",
       "scripts/aeVisual.js",
+      "scripts/aePlaceholderData.js",
       "background.js"
     ]
   },
