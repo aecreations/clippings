@@ -580,8 +580,8 @@ function clippingsMgrCmds()
         else {
           await browser.runtime.sendMessage({
             msgID: "copy-clipping",
-            clippingID,
-            copyFormat,
+            clippingID: aClippingID,
+            copyFormat: aeConst.COPY_AS_PLAIN,
           });
         }
       }
