@@ -325,37 +325,39 @@ let gPlaceholders = {
 };
 
 let gCopyMultiClippings = {
-  _content: '',
+  _clippings: [],
   _separator: "\n",
-  _count: 0,
 
   setSeparator(aSeparator) {
     this._separator = aSeparator;
   },
 
   append(aContent) {
-    if (this._content) {
-      this._content += this._separator + aContent;
-    }
-    else {
-      this._content = aContent;
-    }
-    this._count++;
+    this._clippings.push(aContent);
+  },
+
+  setClippingAt(aContent, aIndex) {
+    let idx = Number(aIndex);
+    this._clippings[idx] = aContent;
   },
 
   getCount() {
-    return this._count;
+    return this._clippings.length;
+  },
+
+  getCurrent() {
+    let rv = this._clippings.join(this._separator);
+    return rv;
   },
 
   getAll() {
-    let rv = this._content;
+    let rv = this._clippings.join(this._separator);
     this.reset();
     return rv;
   },
 
   reset() {
-    this._content = '';
-    this._count = 0;
+    this._clippings = [];
   },
 };
 
