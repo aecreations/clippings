@@ -2201,7 +2201,8 @@ async function copyMultiClippingsText(aClippingsIDs, aCopyMode)
   log(`Clippings: copyMultiClippingsText(): Copying clippings [${aClippingsIDs.toString()}] (total ${aClippingsIDs.length})`);
   log("Copy mode (1=copy as HTML-formatted, 2=copy as plain with HTML, 3=copy as plain): " + aCopyMode);
 
-  // Clear any remaining placeholder data from last copy/paste.
+  // Clear any leftover data from last copy/paste.
+  gCopyMultiClippings.reset();
   gPlaceholderData.reset();
 
   for (let i = 0; i < aClippingsIDs.length; i++) {
@@ -2263,14 +2264,12 @@ function pasteOrCopyClippingByID(aClippingID, aIsExternalRequest, aTabID, aMode,
           }
           else {
             if (aIsMulti) {
-              log("Clippings: processClipping(): Appending processed clipping " + clippingInfo.id);
-              gCopyMultiClippings.append(aProcessedContent);
+              log(`Clippings: processClipping(): Adding processed clipping ${clippingInfo.id} at index [${aMultiIndex}]`);
+              gCopyMultiClippings.setClippingAt(aProcessedContent, aMultiIndex);
               if (aIsLastMulti) {
-                log(`Clippings: processClipping(): Copying multiple clippings (total: ${gCopyMultiClippings.getCount()})`);
-                let multiClippings = gCopyMultiClippings.getAll();
-                log(multiClippings);
-                return copyProcessedClipping(multiClippings, aMode, true);
+                log(`Clippings: processClipping(): Last of multiple clippings copied (total: ${gCopyMultiClippings.getCount()})`);
               }
+              return copyProcessedClipping(gCopyMultiClippings.getCurrent(), aMode, true);
             }
             else {
               return copyProcessedClipping(aProcessedContent, aMode, false);
@@ -2362,9 +2361,15 @@ function pasteClippingByShortcutKey(aShortcutKey, aTabID)
 }
 
 
-async function resumeCopyClipping()
+function resumeCopyProcessedMultiClipping(aClippingContent, aMultiIndex, aCopyMode)
 {
+  log("Clippings: resumeCopyProcessedMultiClipping(): Resuming copying multiple clippings.");
 
+  gCopyMultiClippings.setClippingAt(aClippingContent, aMultiIndex);
+
+  // Copy to clipboard the clippings that have been collected so far.
+  let multiContent = gCopyMultiClippings.getCurrent();
+  return copyProcessedClipping(multiContent, aCopyMode, true);
 }
 
 
@@ -2928,10 +2933,7 @@ browser.runtime.onMessage.addListener(aRequest => {
 
   case "copy-clipping-with-plchldrs":
     if (aRequest.isMultiCopy) {
-      if (aRequest.isLastMulti) {
-        // TO DO: Once all the clippings have been appended, perform the copying.
-      }
-      return Promise.resolve(gCopyMultiClippings.append(aRequest.processedContent));
+      return Promise.resolve(resumeCopyProcessedMultiClipping(aRequest.processedContent, aRequest.multiCopyIndex, aRequest.copyMode));
     }
     return Promise.resolve(copyProcessedClipping(aRequest.processedContent, aRequest.copyMode, false));
 
