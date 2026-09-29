@@ -425,6 +425,82 @@ ul.fancytree-container {
     border-bottom: 1px solid var(--color-cxtmenu-separator);
 }
 
+/* jQuery contextMenu custom commands */
+.context-menu-item.labels {
+    padding-left: 28px;
+    background-color: transparent;
+}
+
+.labels > span > ul {
+    margin: 0;
+    padding: 4px 0 0 0;
+    list-style: none;
+    display: block;
+    float: none;
+}
+
+.labels > span > ul > li {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #CCC;
+    overflow: hidden;
+    color: transparent;
+}
+
+.labels > span > ul > li.selected {
+    outline: 2px solid #0996f8;
+}
+
+.labels > span > ul > li.selected:hover {
+    outline: 2px solid #0670cc;
+}
+
+.labels > span > ul > li:hover {
+    outline: 2px solid var(--color-cxtmenu-menuitem-hover-bkgd);
+}
+
+.labels > span > ul > li:active {
+    outline: 2px solid #004480;
+}
+
+.labels > span > ul > li + li {
+    margin-left: 4px;
+}
+
+.labels > span > ul > li.label-none {
+    background: transparent;
+}
+
+.labels > span > ul > li.label-red {
+    background: red;
+}
+
+.labels > span > ul > li.label-orange {
+    background: orange;
+}
+
+.labels > span > ul > li.label-yellow {
+    background: yellow;
+}
+
+.labels > span > ul > li.label-green {
+    background: green;
+}
+
+.labels > span > ul > li.label-blue {
+    background: blue;
+}
+
+.labels > span > ul > li.label-purple {
+    background: purple;
+}
+
+.labels > span > ul > li.label-grey {
+    background: grey;
+}
+
+
 #welcome-content {
     display: none;
     margin: 12px;

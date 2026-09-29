@@ -378,6 +378,24 @@ let gCmd = {
     aeNavigator.gotoURL(clipping.sourceURL, aeNavigator.TARGET_NEW_TAB);
   },
 
+  async setLabel(aLabel)
+  {
+    let tree = aeClippingsTree.getTree();
+    let selectedNode = tree.activeNode;
+    if (!selectedNode || selectedNode.isFolder()) {
+      return;
+    }
+
+    // TO DO: Handle multiple selected clippings.
+
+    let clippingID = parseInt(selectedNode.key);
+    let clipping = await gClippingsDB.clippings.get(clippingID);
+    let numUpd = await gClippingsDB.clippings.update(clippingID, {label: aLabel});
+
+    // TO DO: Notify Clippings Manager and the background script by sending
+    // message "clipping-changed"
+  },
+
   editInClippingsManager()
   {
     let tree = aeClippingsTree.getTree();
@@ -676,6 +694,29 @@ function buildClippingsTree()
       }
     });
 
+    // Custom context menu command for the inline label selector.
+    $.contextMenu.types.label = function (item, opt, root) {
+      // this === item.$node
+
+      $(`<span>${browser.i18n.getMessage("labelLabel")}<ul>`
+          + '<li class="label-none" title="none" data-label="">None</li>'
+          + '<li class="label-red" title="red" data-label="red">Red</li>'
+          + '<li class="label-orange" title="orange" data-label="orange">Orange</li>'
+          + '<li class="label-yellow" title="yellow" data-label="yellow">Yellow</li>'
+          + '<li class="label-green" title="green" data-label="green">Green</li>'
+          + '<li class="label-blue" title="blue" data-label="blue">Blue</li>'
+          + '<li class="label-purple" title="purple" data-label="purple">Purple</li>'
+          + '<li class="label-grey" title="gray" data-label="grey">Gray</li></ul></span>')
+          .appendTo(this)
+          .on('click', 'li', function () {
+            gCmd.setLabel($(this).attr("data-label"));
+            root.$menu.trigger('contextmenu:hide');
+            return false;
+          });
+
+      this.addClass('labels');
+    };
+
     // Context menu for the clippings tree.
     $.contextMenu({
       selector: "#clippings-tree > ul.ui-fancytree > li",
@@ -685,26 +726,43 @@ function buildClippingsTree()
         activated(aOpts) {
           let mnu = aOpts.$menu;
           mnu[0].focus();
+
+          let tree = aeClippingsTree.getTree();
+          let selectedNode = tree.activeNode;
+          if (!selectedNode || selectedNode.isFolder()) {
+            return;
+          }
+
+          let clippingID = parseInt(selectedNode.key);
+          gClippingsDB.clippings.get(clippingID).then(aResult => {
+            let label = aResult.label == '' ? "none" : aResult.label;
+            $(`.context-menu-item.labels > span > ul > li.label-${label}`).addClass("selected");
+          });
         },
-        
+
         show(aOpts) {
           let treeItemSpan = aOpts.$trigger[0].firstChild;
           if (treeItemSpan.classList.contains("fancytree-statusnode-nodata")) {
             return false;
           }
           return (! gIsClippingsTreeEmpty);
+        },
+
+        hide() {
+          $(".context-menu-item.labels > span > ul > li").removeClass("selected");
+          return true;
         }
       },
       
       callback(aItemKey, aOpt, aRootMenu, aOriginalEvent)
       {
         switch (aItemKey) {
-	case "reloadSyncFolder":
-	  gCmd.reloadSyncFolder();
-	  break;
-	  
+        case "reloadSyncFolder":
+          gCmd.reloadSyncFolder();
+          break;
+
         case "gotoSrcURL":
-	  gCmd.openWebPageSourceURL();
+          gCmd.openWebPageSourceURL();
           break;
 
         case "insertClipping":
@@ -721,6 +779,10 @@ function buildClippingsTree()
 
         case "customize":
           gCmd.customize();
+          break;
+
+        case "label":
+          // Custom command defining the inline label selector.
           break;
 
         default:
@@ -769,6 +831,31 @@ function buildClippingsTree()
             return (!aeClippingsTree.isFolderSelected() && !aeClippingsTree.isSeparatorSelected());
           }
         },
+        labelSeparator: {
+          type: "cm_separator",
+          visible(aItemKey, aOpt) {
+            let tree = aeClippingsTree.getTree();
+            let selectedNode = tree.activeNode;
+            if (! selectedNode) {
+              return false;
+            }
+            if (aeClippingsTree.isSeparatorSelected()) {
+              return false;
+            }
+
+            return (!selectedNode.isFolder());
+          }
+        },
+
+        // Custom command.
+        label: {
+          type: "label",
+          //customName: "Label",
+          visible(aItemKey, aOpt) {
+            return (!aeClippingsTree.isFolderSelected() && !aeClippingsTree.isSeparatorSelected());
+          }
+        },
+
         custzSeparator: {
           type: "cm_separator",
           visible(aItemKey, aOpt) {
@@ -787,20 +874,20 @@ function buildClippingsTree()
             return true;
           }
         },
-	togglePreviewPane: {
-	  name: browser.i18n.getMessage("mnuPrevPane"),
-	  className: "ae-menuitem",
-          icon(aOpt, $itemElement, aItemKey, aItem) {
-            if ($("#pane-splitter").css("display") != "none"
-                && $("#preview-pane").css("display") != "none") {
-              return "context-menu-icon-checked";
-            }
-          }
-	},
-	customize: {
-	  name: browser.i18n.getMessage("mnuCustz"),
-	  className: "ae-menuitem",
-	}
+        togglePreviewPane: {
+          name: browser.i18n.getMessage("mnuPrevPane"),
+          className: "ae-menuitem",
+                icon(aOpt, $itemElement, aItemKey, aItem) {
+                  if ($("#pane-splitter").css("display") != "none"
+                      && $("#preview-pane").css("display") != "none") {
+                    return "context-menu-icon-checked";
+                  }
+                }
+        },
+        customize: {
+          name: browser.i18n.getMessage("mnuCustz"),
+          className: "ae-menuitem",
+        }
       }
     });
 
