@@ -96,6 +96,11 @@ let gClippingsListener = {
     }
   },
 
+  clippingLabelChanged(aClippingID, aLabel, aOldLabel)
+  {
+    rebuildContextMenu();
+  },
+
   copyStarted: function ()
   {
     this._isCopying = true;
@@ -3011,6 +3016,10 @@ browser.runtime.onMessage.addListener(aRequest => {
     
   case "folder-changed":
     gClippingsListener.folderChanged(aRequest.folderID, aRequest.folderData, aRequest.oldFolderData);
+    break;
+
+  case "clipping-label-changed":
+    gClippingsListener.clippingLabelChanged(aRequest.clippingID, aRequest.label, aRequest.oldLabel);
     break;
 
   case "copy-started":

@@ -326,6 +326,7 @@ let gClippingsListener = {
   clippingChanged: function (aID, aData, aOldData)
   {
     let tree = aeClippingsTree.getTree();
+    let changedNode = tree.getNodeByKey(aID + "C");
 
     if (aData.parentFolderID != aOldData.parentFolderID) {
       let oldParentFldrID = aOldData.parentFolderID;
@@ -337,7 +338,6 @@ let gClippingsListener = {
       }
       else {
         log("Clippings: clippingsMgr/pg.js::gClippingsListener.clippingChanged(): Handling clipping move");
-        let changedNode = tree.getNodeByKey(aID + "C");
         if (changedNode) {
           let targParentNode;
           if (aData.parentFolderID == aeConst.ROOT_FOLDER_ID) {
@@ -414,11 +414,9 @@ let gClippingsListener = {
       }
     }
     else if (aData.name != aOldData.name) {
-      let changedNode = tree.getNodeByKey(aID + "C");
       changedNode.setTitle(aeClippingsTree.sanitizeTreeNodeTitle(aData.name));
     }
     else if (aData.sourceURL != aOldData.sourceURL) {
-      let changedNode = tree.getNodeByKey(aID + "C");
       if (aData.sourceURL) {
         if (aData.label) {
           // TO DO: Add source URL badge to clippings with labels.
@@ -499,6 +497,34 @@ let gClippingsListener = {
       let changedNode = tree.getNodeByKey(aID + "F");
       changedNode.setTitle(aeClippingsTree.sanitizeTreeNodeTitle(aData.name));
     }
+  },
+
+  clippingLabelChanged(aClippingID, aLabel, aOldLabel)
+  {
+    let changedNode = aeClippingsTree.getTree().getNodeByKey(aClippingID + "C");
+    if (changedNode.extraClasses !== undefined) {
+      let result = changedNode.extraClasses.match(/ae\-clipping\-label\-[a-z]+/);
+      if (result) {
+        changedNode.removeClass(result[0]);
+      }
+    }
+    if (aLabel) {
+      changedNode.addClass(`ae-clipping-label-${aLabel}`);
+    }
+
+    gClippingLabelPicker.selectedLabel = aLabel;
+
+    gCmd.recentAction = gCmd.ACTION_SETLABEL;
+    let state = {
+      action: gCmd.ACTION_SETLABEL,
+      id: aClippingID,
+      label: aLabel,
+      oldLabel: aOldLabel,
+    };
+    if (gSyncedItemsIDs.has(aClippingID + "C")) {
+      state.sid = sid;
+    }
+    gCmd.undoStack.push(state);
   },
 
   copyStarted: function ()
@@ -1475,6 +1501,10 @@ browser.runtime.onMessage.addListener(aRequest => {
     gClippingsListener.newFolderCreated(aRequest.newFolderID, aRequest.newFolder, aRequest.origin);
     break;
 
+  case "clipping-label-changed":
+    gClippingsListener.clippingLabelChanged(aRequest.clippingID, aRequest.label, aRequest.oldLabel);
+    break;
+
   case "sync-fldr-reload-finished":
     rebuildClippingsTree();
     break;
@@ -2337,8 +2367,10 @@ function buildClippingsTree()
         }
       },
       
-      callback: function (aItemKey, aOpt, aRootMenu, aOriginalEvent) {
-        function setLabel(aLabel) {
+      callback(aItemKey, aOpt, aRootMenu, aOriginalEvent)
+      {
+        function setLabel(aLabel)
+        {
           let tree = aeClippingsTree.getTree();
           let selectedNode = tree.activeNode;
           if (!selectedNode || selectedNode.isFolder()) {
@@ -2381,8 +2413,8 @@ function buildClippingsTree()
           break;
 
         case "insertSeparator":
-        gCmd.insertSeparator(gCmd.UNDO_STACK);
-        break;
+          gCmd.insertSeparator(gCmd.UNDO_STACK);
+          break;
 
         case "copyClippingText":
           gCmd.copyClippingTextToClipboard();

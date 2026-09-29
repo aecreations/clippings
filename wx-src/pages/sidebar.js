@@ -391,9 +391,30 @@ let gCmd = {
     let clippingID = parseInt(selectedNode.key);
     let clipping = await gClippingsDB.clippings.get(clippingID);
     let numUpd = await gClippingsDB.clippings.update(clippingID, {label: aLabel});
+    this._unsetClippingsUnchangedFlag();
 
-    // TO DO: Notify Clippings Manager and the background script by sending
-    // message "clipping-changed"
+    if (selectedNode.extraClasses !== undefined) {
+      let result = selectedNode.extraClasses.match(/ae\-clipping\-label\-[a-z]+/);
+      if (result) {
+        selectedNode.removeClass(result[0]);
+      }
+    }
+    if (aLabel) {
+      selectedNode.addClass(`ae-clipping-label-${aLabel}`);
+    }
+
+    await browser.runtime.sendMessage({
+      msgID: "clipping-label-changed",
+      clippingID: clippingID,
+      label: aLabel,
+      oldLabel: clipping.label,
+    });
+
+    if (gSyncedItemsIDs.has(clippingID + "C")) {
+      browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"}).then(aResp => {
+        handlePushSyncUpdatesResponse(aResp);
+      }).catch(handlePushSyncItemsError);
+    }
   },
 
   editInClippingsManager()
@@ -434,7 +455,14 @@ let gCmd = {
     browser.runtime.sendMessage({msgID: "open-sidebar-help"});
   },
 
-  // Private helper method
+  // Private helper methods
+  _unsetClippingsUnchangedFlag()
+  {
+    if (gPrefs.clippingsUnchanged) {
+      aePrefs.setPrefs({clippingsUnchanged: false});
+    }
+  },
+
   _openClippingsMgr(aMsgInfo)
   {
     aMsgInfo.msgID = "open-clippings-mgr";
@@ -850,7 +878,6 @@ function buildClippingsTree()
         // Custom command.
         label: {
           type: "label",
-          //customName: "Label",
           visible(aItemKey, aOpt) {
             return (!aeClippingsTree.isFolderSelected() && !aeClippingsTree.isSeparatorSelected());
           }
@@ -1184,6 +1211,16 @@ async function focusWnd()
 }
 
 
+function handlePushSyncUpdatesResponse(aResponse)
+{
+  if ("error" in aResponse && aResponse.error.name == "RangeError") {
+    // Max sync file size exceeded.
+    // TO DO: Show proper error message modal; see clippingsMgr/pg.js
+    alert(browser.i18n.getMessage("syncFldrFull"));
+  }
+}
+
+
 //
 // Event handlers
 //
@@ -1404,6 +1441,13 @@ function getErrStr(aErr)
   }
 
   return rv;
+}
+
+
+function handlePushSyncItemsError(aError)
+{
+  // TO DO: Finish implementation
+  // Should be similar to approach in clippingsMgr/pg.js
 }
 
 
