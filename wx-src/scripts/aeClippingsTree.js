@@ -8,6 +8,8 @@
 
 let aeClippingsTree = {
   DEBUG: false,
+  orderedSelectedNodes: new Map(),
+
 
   getTree()
   {
@@ -188,8 +190,10 @@ let aeClippingsTree = {
   getSelectedClippingsIDs()
   {
     let rv = [];
-    let tree = this.getTree();
-    let selectedNodes = tree.getSelectedNodes();
+
+    // Get tree nodes in the order in which they were selected by the user,
+    // not the order in which they appear in the UI.
+    let selectedNodes = [...this.orderedSelectedNodes.values()];
 
     for (let node of selectedNodes) {
       if (node.isFolder()) {

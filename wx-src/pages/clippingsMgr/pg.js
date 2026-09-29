@@ -2084,9 +2084,19 @@ function buildClippingsTree()
         }
       },
 
+      select(aEvent, aData) {
+        let node = aData.node;
+        if (node.selected) {
+          aeClippingsTree.orderedSelectedNodes.set(node.key, node);
+        }
+        else {
+          aeClippingsTree.orderedSelectedNodes.delete(node.key);
+        }
+      },
+
       // Fancytree "multi" extension
-      unselectable(event, data) {
-        return data.node.isFolder();
+      unselectable(aEvent, aData) {
+        return aData.node.isFolder();
       },
 
       dnd5: {
