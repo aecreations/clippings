@@ -333,3 +333,54 @@ aeCopyClippingTextFormatDlg._sanitizeHTML = function (aHTMLStr)
 {
   return DOMPurify.sanitize(aHTMLStr, {SAFE_FOR_JQUERY: true});
 };
+
+
+let aeCopyClippings = {
+  async copyClippingText(aClippingID)
+  {
+    let db = aeClippings.getDB();
+    let clipping = await db.clippings.get(aClippingID);
+    if (!clipping) {
+      throw new Error("No clipping found for ID " + aClippingID);
+    }
+
+    let isFormatted = aeClippings.hasHTMLTags(clipping.content);
+    if (isFormatted) {
+      aeCopyClippingTextFormatDlg.showModal();
+    }
+    else {
+      await browser.runtime.sendMessage({
+        msgID: "copy-clipping",
+        clippingID: aClippingID,
+        copyFormat: aeConst.COPY_AS_PLAIN,
+      });
+    }
+  },
+
+  async copyMultiClippingsText(aClippingIDs)
+  {
+    let db = aeClippings.getDB();
+
+    // Process each selected clipping and check if they are HTML formatted.
+    // If so, open the Copy Format dialog to ask which format to use for
+    // copying the content of all selected clippings.
+    for (let clippingID of aClippingIDs) {
+      let clipping = await db.clippings.get(clippingID);
+      if (!clipping) {
+        throw new Error("No clipping found for ID " + clippingID);
+      }
+
+      let isFormatted = aeClippings.hasHTMLTags(clipping.content);
+      if (isFormatted) {
+        aeCopyClippingTextFormatDlg.showModal();
+        return;
+      }
+    }
+
+    await browser.runtime.sendMessage({
+      msgID: "copy-multi-clippings",
+      clippingIDs: aClippingIDs,
+      copyFormat: aeConst.COPY_AS_PLAIN,
+    });
+  },
+};
