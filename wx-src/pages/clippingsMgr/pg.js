@@ -2090,19 +2090,29 @@ function buildClippingsTree()
       strings: { noData: browser.i18n.getMessage("clipMgrNoItems") },
       icon: (gIsClippingsTreeEmpty ? false : true),
 
-      init: function (aEvent, aData) {
+      init(aEvent, aData)
+      {
         let rootNode = aData.tree.getRootNode();
         if (rootNode.children.length > 0 && !gIsClippingsTreeEmpty) {
-          rootNode.children[0].setActive();
+          let firstNode = rootNode.getFirstChild();
+          firstNode.setActive();
+
+          // Workaround to Fancytree initial state where `selectedNodes` is
+          // empty even if first node was selected.
+          if (!firstNode.isFolder()) {
+            firstNode.setSelected(true);
+          }
         }
       },
 
-      activate: function (aEvent, aData) {
+      activate(aEvent, aData)
+      {
         log("Clippings: clippingsMgr/pg.js: Activate event fired on clippings tree");
         updateDisplay(aEvent, aData);
       },
 
-      async dblclick(aEvent, aData) {
+      async dblclick(aEvent, aData)
+      {
         log("Clippings: clippingsMgr/pg.js: Double-click event fired on clippings tree");
         updateDisplay(aEvent, aData);
 
@@ -2114,7 +2124,8 @@ function buildClippingsTree()
         }
       },
 
-      select(aEvent, aData) {
+      select(aEvent, aData)
+      {
         let node = aData.node;
         if (node.selected) {
           aeClippingsTree.orderedSelectedNodes.set(node.key, node);
@@ -2125,7 +2136,8 @@ function buildClippingsTree()
       },
 
       // Fancytree "multi" extension
-      unselectable(aEvent, aData) {
+      unselectable(aEvent, aData)
+      {
         return aData.node.isFolder();
       },
 

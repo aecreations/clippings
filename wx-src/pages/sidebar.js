@@ -683,7 +683,14 @@ function buildClippingsTree()
       {
         let rootNode = aData.tree.getRootNode();
         if (rootNode.children.length > 0 && !gIsClippingsTreeEmpty) {
-          rootNode.children[0].setActive();
+          let firstNode = rootNode.getFirstChild();
+          firstNode.setActive();
+
+          // Workaround to Fancytree initial state where `selectedNodes` is
+          // empty even if first node was selected.
+          if (!firstNode.isFolder()) {
+            firstNode.setSelected(true);
+          }
         }
       },
 
@@ -705,7 +712,8 @@ function buildClippingsTree()
         }
       },
 
-      select(aEvent, aData) {
+      select(aEvent, aData)
+      {
         let node = aData.node;
         if (node.selected) {
           aeClippingsTree.orderedSelectedNodes.set(node.key, node);
@@ -716,7 +724,8 @@ function buildClippingsTree()
       },
 
       // Fancytree "multi" extension
-      unselectable(event, data) {
+      unselectable(event, data)
+      {
         return data.node.isFolder();
       },
 
