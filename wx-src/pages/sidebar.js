@@ -369,44 +369,89 @@ let gCmd = {
     aeNavigator.gotoURL(clipping.sourceURL, aeNavigator.TARGET_NEW_TAB);
   },
 
-  async setLabel(aLabel)
-  {
+
+  async setLabel(aLabel) {
     let tree = aeClippingsTree.getTree();
     let selectedNode = tree.activeNode;
-    if (!selectedNode || selectedNode.isFolder()) {
+    if (!selectedNode) {
       return;
     }
 
-    // TO DO: Handle multiple selected clippings.
+    let isSyncedClippingUpdated = false;
 
-    let clippingID = parseInt(selectedNode.key);
-    let clipping = await gClippingsDB.clippings.get(clippingID);
-    let numUpd = await gClippingsDB.clippings.update(clippingID, {label: aLabel});
-    this._unsetClippingsUnchangedFlag();
+    if (aeClippingsTree.isMultipleClippingsSelected()) {
+      let clippingIDs = [...aeClippingsTree.orderedSelectedNodes.keys()].map(aKey => parseInt(aKey));
+      let oldLabels = [];
 
-    if (selectedNode.extraClasses !== undefined) {
-      let result = selectedNode.extraClasses.match(/ae\-clipping\-label\-[a-z]+/);
-      if (result) {
-        selectedNode.removeClass(result[0]);
+      for (let clippingID of clippingIDs) {
+        let clipping = await gClippingsDB.clippings.get(clippingID);
+        oldLabels.push(clipping.label);
+        await gClippingsDB.clippings.update(clippingID, {label: aLabel});
+
+        if (gSyncedItemsIDs.has(clippingID + "C")) {
+          isSyncedClippingUpdated = true;
+        }
       }
+
+      let selectedNodes = [...aeClippingsTree.orderedSelectedNodes.values()];
+      for (let selectedNode of selectedNodes) {
+        if (selectedNode.extraClasses !== undefined) {
+          let result = selectedNode.extraClasses.match(/ae\-clipping\-label\-[a-z]+/);
+          if (result) {
+            selectedNode.removeClass(result[0]);
+          }
+        }
+        if (aLabel) {
+          selectedNode.addClass(`ae-clipping-label-${aLabel}`);
+        }
+      }
+
+      await browser.runtime.sendMessage({
+        msgID: "multi-clipping-label-changed",
+        clippingIDs,
+        oldLabels,
+        label: aLabel,
+      });
     }
-    if (aLabel) {
-      selectedNode.addClass(`ae-clipping-label-${aLabel}`);
+    else {
+      if (selectedNode.isFolder()) {
+        return;
+      }
+
+      let clippingID = parseInt(selectedNode.key);
+      let clipping = await gClippingsDB.clippings.get(clippingID);
+      let numUpd = await gClippingsDB.clippings.update(clippingID, {label: aLabel});
+
+      if (gSyncedItemsIDs.has(clippingID + "C")) {
+        isSyncedClippingUpdated = true;
+      }
+
+      if (selectedNode.extraClasses !== undefined) {
+        let result = selectedNode.extraClasses.match(/ae\-clipping\-label\-[a-z]+/);
+        if (result) {
+          selectedNode.removeClass(result[0]);
+        }
+      }
+      if (aLabel) {
+        selectedNode.addClass(`ae-clipping-label-${aLabel}`);
+      }
+
+      await browser.runtime.sendMessage({
+        msgID: "clipping-label-changed",
+        clippingID: clippingID,
+        label: aLabel,
+        oldLabel: clipping.label,
+      });
     }
 
-    await browser.runtime.sendMessage({
-      msgID: "clipping-label-changed",
-      clippingID: clippingID,
-      label: aLabel,
-      oldLabel: clipping.label,
-    });
-
-    if (gSyncedItemsIDs.has(clippingID + "C")) {
-      browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"}).then(aResp => {
+    this._unsetClippingsUnchangedFlag();
+    if (isSyncedClippingUpdated) {
+      await browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"}).then(aResp => {
         handlePushSyncUpdatesResponse(aResp);
       }).catch(handlePushSyncItemsError);
     }
   },
+
 
   editInClippingsManager()
   {

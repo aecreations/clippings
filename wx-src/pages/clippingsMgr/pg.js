@@ -527,6 +527,35 @@ let gClippingsListener = {
     gCmd.undoStack.push(state);
   },
 
+  multiClippingsLabelChanged(aClippingIDs, aLabel, aOldLabels)
+  {
+    let tree = aeClippingsTree.getTree();
+    let changedNodes = tree.findAll(aNode => !aNode.isFolder() && aClippingIDs.includes(parseInt(aNode.key)));
+
+    for (let node of changedNodes) {
+      if (node.extraClasses !== undefined) {
+        let result = node.extraClasses.match(/ae\-clipping\-label\-[a-z]+/);
+        if (result) {
+          node.removeClass(result[0]);
+        }
+      }
+      if (aLabel) {
+        node.addClass(`ae-clipping-label-${aLabel}`);
+      }
+    }
+
+    // Update label picker if the selected clipping is one of the multiple
+    // clippings that was changed.
+    if (!tree.activeNode.isFolder()) {
+      let actvClippingID = parseInt(tree.activeNode.key);
+      if (aClippingIDs.includes(actvClippingID)) {
+        gClippingLabelPicker.selectedLabel = aLabel;
+      }
+    }
+
+    // TO DO: Add multiple clipping label change to undo stack.
+  },
+
   copyStarted: function ()
   {
     this._isCopying = true;
@@ -1503,6 +1532,10 @@ browser.runtime.onMessage.addListener(aRequest => {
 
   case "clipping-label-changed":
     gClippingsListener.clippingLabelChanged(aRequest.clippingID, aRequest.label, aRequest.oldLabel);
+    break;
+
+  case "multi-clipping-label-changed":
+    gClippingsListener.multiClippingsLabelChanged(aRequest.clippingIDs, aRequest.label , aRequest.oldLabels);
     break;
 
   case "sync-fldr-reload-finished":
