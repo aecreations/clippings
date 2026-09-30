@@ -325,7 +325,7 @@ let gCmd = {
 
     let tree = aeClippingsTree.getTree();
     let selectedNode = tree.activeNode;
-    if (! selectedNode) {
+    if (!selectedNode) {
       return;
     }
 
@@ -341,22 +341,13 @@ let gCmd = {
       return;
     }
 
-    let clippingID = parseInt(selectedNode.key);
-    let clipping = await gClippingsDB.clippings.get(clippingID);
-    if (! clipping) {
-      throw new Error("No clipping found for ID " + clippingID);
-    }
-
-    let isFormatted = aeClippings.hasHTMLTags(clipping.content);
-    if (isFormatted) {
-      aeCopyClippingTextFormatDlg.showModal();
+    if (aeClippingsTree.isMultipleClippingsSelected()) {
+      let selectedClippingsIDs = aeClippingsTree.getSelectedClippingsIDs();
+      await aeCopyClippings.copyMultiClippingsText(selectedClippingsIDs);
     }
     else {
-      browser.runtime.sendMessage({
-        msgID: "copy-clipping",
-        clippingID,
-        copyFormat: aeConst.COPY_AS_PLAIN,
-      });
+      let clippingID = parseInt(selectedNode.key);
+      await aeCopyClippings.copyClippingText(clippingID);
     }
   },
   
@@ -679,12 +670,12 @@ function buildClippingsTree()
     }
 
     $("#clippings-tree").fancytree({
-      extensions: ["filter"],
+      extensions: ["filter", "multi"],
 
       debugLevel: 0,
       autoScroll: true,
       source: treeData,
-      selectMode: 1,
+      selectMode: 2,
       strings: {noData: browser.i18n.getMessage("clipMgrNoItems")},
       icon: (gIsClippingsTreeEmpty ? false : true),
 
@@ -712,6 +703,21 @@ function buildClippingsTree()
             // Perform default action (not currently implemented)
           }
         }
+      },
+
+      select(aEvent, aData) {
+        let node = aData.node;
+        if (node.selected) {
+          aeClippingsTree.orderedSelectedNodes.set(node.key, node);
+        }
+        else {
+          aeClippingsTree.orderedSelectedNodes.delete(node.key);
+        }
+      },
+
+      // Fancytree "multi" extension
+      unselectable(event, data) {
+        return data.node.isFolder();
       },
 
       filter: {
@@ -856,7 +862,9 @@ function buildClippingsTree()
           name: browser.i18n.getMessage("mnuGoToSrcURL"),
           className: "ae-menuitem",
           visible(aItemKey, aOpt) {
-            return (!aeClippingsTree.isFolderSelected() && !aeClippingsTree.isSeparatorSelected());
+            return (!aeClippingsTree.isFolderSelected()
+                && !aeClippingsTree.isSeparatorSelected()
+                && aeClippingsTree.isFolderOrSingleClippingSelected());
           }
         },
         labelSeparator: {
