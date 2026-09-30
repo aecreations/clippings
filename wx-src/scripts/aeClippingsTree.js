@@ -171,8 +171,10 @@ let aeClippingsTree = {
       rv = true;
     }
     else {
-      let tree = this.getTree();
-      rv = tree.getSelectedNodes().length == 1;
+      let selectedNodes = this.getTree().getSelectedNodes();
+
+      // There are zero selected tree nodes in the initial state of Fancytree.
+      rv = selectedNodes.length == 0 || selectedNodes.length == 1;
     }
 
     return rv;
