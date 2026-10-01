@@ -529,31 +529,16 @@ let gClippingsListener = {
 
   multiClippingsLabelChanged(aClippingIDs, aLabel, aOldLabels)
   {
-    let tree = aeClippingsTree.getTree();
-    let changedNodes = tree.findAll(aNode => !aNode.isFolder() && aClippingIDs.includes(parseInt(aNode.key)));
+     updateMultiClippingNodesWithLabel(aClippingIDs, aLabel);
+     let newLabels = new Array(aClippingIDs.length).fill(aLabel, 0);
 
-    for (let node of changedNodes) {
-      if (node.extraClasses !== undefined) {
-        let result = node.extraClasses.match(/ae\-clipping\-label\-[a-z]+/);
-        if (result) {
-          node.removeClass(result[0]);
-        }
-      }
-      if (aLabel) {
-        node.addClass(`ae-clipping-label-${aLabel}`);
-      }
-    }
-
-    // Update label picker if the selected clipping is one of the multiple
-    // clippings that was changed.
-    if (!tree.activeNode.isFolder()) {
-      let actvClippingID = parseInt(tree.activeNode.key);
-      if (aClippingIDs.includes(actvClippingID)) {
-        gClippingLabelPicker.selectedLabel = aLabel;
-      }
-    }
-
-    // TO DO: Add multiple clipping label change to undo stack.
+    let state = {
+      action: gCmd.ACTION_SETLABEL_MULTI,
+      clippingIDs: aClippingIDs,
+      newLabels,
+      oldLabels: aOldLabels,
+    };
+    gCmd.undoStack.push(state);
   },
 
   copyStarted: function ()
@@ -2414,18 +2399,6 @@ function buildClippingsTree()
       
       callback(aItemKey, aOpt, aRootMenu, aOriginalEvent)
       {
-        function setLabel(aLabel)
-        {
-          let tree = aeClippingsTree.getTree();
-          let selectedNode = tree.activeNode;
-          if (!selectedNode || selectedNode.isFolder()) {
-            return;
-          }
-
-          let clippingID = parseInt(selectedNode.key);
-          gCmd.setLabelIntrl(clippingID, aLabel, gCmd.UNDO_STACK);
-        }
-        
         switch (aItemKey) {
         case "reloadSyncFolder":
           gCmd.reloadSyncFolder();
@@ -2444,7 +2417,7 @@ function buildClippingsTree()
           break;
 
         case "labelNone":
-          setLabel("");
+          gCmd.setLabel('');
           break;
           
         case "labelRed":
@@ -2454,7 +2427,7 @@ function buildClippingsTree()
         case "labelBlue":
         case "labelPurple":
         case "labelGrey":
-          setLabel(aItemKey.substr(5).toLowerCase());
+          gCmd.setLabel(aItemKey.substr(5).toLowerCase());
           break;
 
         case "insertSeparator":
@@ -3106,6 +3079,43 @@ function updateDisplay(aEvent, aData)
         $("#options-bar label, #placeholder-toolbar label").attr("disabled", "");
       }
     });
+  }
+}
+
+
+function updateMultiClippingNodesWithLabel(aClippingIDs, aLabel) {
+  let labels = new Array(aClippingIDs.length).fill(aLabel, 0);
+  updateMultiClippingNodesWithLabels(aClippingIDs, labels);
+}
+
+
+function updateMultiClippingNodesWithLabels(aClippingIDs, aLabels)
+{
+  let tree = aeClippingsTree.getTree();
+  let changedNodes = tree.findAll(aNode => !aNode.isFolder() && aClippingIDs.includes(parseInt(aNode.key)));
+
+  for (let i = 0; i < changedNodes.length; i++) {
+    let node = changedNodes[i];
+    if (node.extraClasses !== undefined) {
+      let result = node.extraClasses.match(/ae\-clipping\-label\-[a-z]+/);
+      if (result) {
+        node.removeClass(result[0]);
+      }
+    }
+
+    let label = aLabels[i];
+    if (label) {
+      node.addClass(`ae-clipping-label-${label}`);
+    }
+
+    // Update label picker if the selected clipping is one of the multiple
+    // clippings that was changed.
+    if (!tree.activeNode.isFolder()) {
+      let actvClippingID = parseInt(tree.activeNode.key);
+      if (aClippingIDs.includes(actvClippingID)) {
+        gClippingLabelPicker.selectedLabel = label;
+      }
+    }
   }
 }
 

@@ -1224,6 +1224,28 @@ function updateDisplay(aEvent, aData)
 }
 
 
+function updateMultiClippingNodesWithLabels(aClippingIDs, aLabels)
+{
+  let tree = aeClippingsTree.getTree();
+  let changedNodes = tree.findAll(aNode => !aNode.isFolder() && aClippingIDs.includes(parseInt(aNode.key)));
+
+  for (let i = 0; i < changedNodes.length; i++) {
+    let node = changedNodes[i];
+    if (node.extraClasses !== undefined) {
+      let result = node.extraClasses.match(/ae\-clipping\-label\-[a-z]+/);
+      if (result) {
+        node.removeClass(result[0]);
+      }
+    }
+
+    let label = aLabels[i];
+    if (label) {
+      node.addClass(`ae-clipping-label-${label}`);
+    }
+  }
+}
+
+
 function toggleSearchBarVisibility(aIsVisible)
 {
   let visibility = aIsVisible ? "visible" : "hidden";
@@ -1301,7 +1323,11 @@ browser.runtime.onMessage.addListener(aRequest => {
   case "import-finished":
     rebuildClippingsTree();
     break;
-    
+
+  case "multi-clipping-label-changed":
+    updateMultiClippingNodesWithLabels(aRequest.clippingIDs, aRequest.newLabels);
+    break;
+
   case "sync-activated":
     gSyncClippingsListener.onActivate(aRequest.syncFolderID);
     break;

@@ -30,6 +30,7 @@ function clippingsMgrCmds()
     ACTION_EXPORT: 18,
     ACTION_RELOAD_SYNC_FLDR: 19,
     ACTION_INSERT_SEPARATOR: 20,
+    ACTION_SETLABEL_MULTI: 21,
 
     // flags for aDestUndoStack parameter of functions for reversible actions
     UNDO_STACK: 1,
@@ -1612,6 +1613,37 @@ function clippingsMgrCmds()
       });
     },
 
+    async setLabel(aLabel)
+    {
+      let tree = aeClippingsTree.getTree();
+      let selectedNode = tree.activeNode;
+      if (!selectedNode) {
+        return;
+      }
+
+      if (aeClippingsTree.isMultipleClippingsSelected()) {
+        let clippingIDs = [...aeClippingsTree.orderedSelectedNodes.keys()].map(aKey => parseInt(aKey));
+        let oldLabels = [];
+        for (let clippingID of clippingIDs) {
+          let clipping = await gClippingsDB.clippings.get(clippingID);
+          oldLabels.push(clipping.label);
+        }
+
+        let newLabels = new Array(clippingIDs.length).fill(aLabel, 0);
+        await this.setMultiLabelsIntrl(clippingIDs, oldLabels, newLabels, gCmd.UNDO_STACK);
+
+        updateMultiClippingNodesWithLabel(clippingIDs, aLabel);
+      }
+      else {
+        if (selectedNode.isFolder()) {
+          return;
+        }
+
+        let clippingID = parseInt(selectedNode.key);
+        this.setLabelIntrl(clippingID, aLabel, gCmd.UNDO_STACK);
+      }
+    },
+
     setLabelIntrl: function (aClippingID, aLabel, aDestUndoStack)
     {
       let selectedNode = aeClippingsTree.getTree().activateKey(aClippingID + "C");
@@ -1670,6 +1702,48 @@ function clippingsMgrCmds()
         handlePushSyncItemsError(aErr);
         console.error("Clippings: clippingsMgr/cmds.js: gCmd.setLabel(): " + aErr);
       });
+    },
+
+
+    async setMultiLabelsIntrl(aClippingIDs, aOldLabels, aNewLabels, aDestUndoStack=null)
+    {
+      let isSyncedClippingUpdated = false;
+
+      for (let i = 0; i < aClippingIDs.length; i++) {
+        let clippingID = aClippingIDs[i];
+        await gClippingsDB.clippings.update(clippingID, {label: aNewLabels[i]});
+
+        if (gSyncedItemsIDs.has(clippingID + "C")) {
+          isSyncedClippingUpdated = true;
+        }
+      }
+      this._unsetClippingsUnchangedFlag();
+
+      let state = {
+        action: gCmd.ACTION_SETLABEL_MULTI,
+        clippingIDs: aClippingIDs,
+        oldLabels: aOldLabels,
+        newLabels: aNewLabels,
+      };
+      if (aDestUndoStack == gCmd.UNDO_STACK) {
+        this.undoStack.push(state);
+      }
+      else if (aDestUndoStack == gCmd.REDO_STACK) {
+        this.redoStack.push(state);
+      }
+
+      await browser.runtime.sendMessage({
+        msgID: "multi-clipping-label-changed",
+        clippingIDs: aClippingIDs,
+        oldLabels: aOldLabels,
+        newLabels: aNewLabels,
+      });
+
+      if (isSyncedClippingUpdated) {
+        browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"}).then(aResp => {
+          handlePushSyncUpdatesResponse(aResp);
+        }).catch(handlePushSyncItemsError);
+      }
     },
 
     updateDisplayOrder: function (aFolderID, aDestUndoStack, aUndoInfo, aSuppressClippingsMenuRebuild)
@@ -2158,6 +2232,11 @@ function clippingsMgrCmds()
         this.setLabelIntrl(undo.id, undo.oldLabel);
         this.redoStack.push(undo);
       }
+      else if (undo.action == this.ACTION_SETLABEL_MULTI) {
+        await this.setMultiLabelsIntrl(undo.clippingIDs, undo.newLabels, undo.oldLabels);
+        this.redoStack.push(undo);
+        updateMultiClippingNodesWithLabels(undo.clippingIDs, undo.oldLabels);
+      }
       else if (undo.action == this.ACTION_CHANGEPOSITION) {
         let tree = aeClippingsTree.getTree();
         let itemNode = tree.getNodeByKey(undo.nodeKey);
@@ -2310,11 +2389,16 @@ function clippingsMgrCmds()
         this.setLabelIntrl(redo.id, redo.label);
         this.undoStack.push(redo);
       }
+      else if (redo.action == this.ACTION_SETLABEL_MULTI) {
+        await this.setMultiLabelsIntrl(redo.clippingIDs, redo.oldLabels, redo.newLabels);
+        this.undoStack.push(redo);
+        updateMultiClippingNodesWithLabels(redo.clippingIDs, redo.newLabels);
+      }
       else if (redo.action == this.ACTION_CHANGEPOSITION) {
         let tree = aeClippingsTree.getTree();
         let itemNode = tree.getNodeByKey(redo.nodeKey);
         let parentFldrID = redo.parentFolderID;
-        let undoNextSiblingNode = itemNode.getNextSibling();;
+        let undoNextSiblingNode = itemNode.getNextSibling();
 
         if (redo.nextSiblingNodeKey) {
           let nextSiblingNode = tree.getNodeByKey(redo.nextSiblingNodeKey);

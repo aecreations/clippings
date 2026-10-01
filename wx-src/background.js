@@ -96,7 +96,7 @@ let gClippingsListener = {
     }
   },
 
-  clippingLabelChanged(aClippingID, aLabel, aOldLabel)
+  clippingLabelChanged()
   {
     rebuildContextMenu();
   },
@@ -3019,7 +3019,8 @@ browser.runtime.onMessage.addListener(aRequest => {
     break;
 
   case "clipping-label-changed":
-    gClippingsListener.clippingLabelChanged(aRequest.clippingID, aRequest.label, aRequest.oldLabel);
+  case "multi-clipping-label-changed":
+    gClippingsListener.clippingLabelChanged();
     break;
 
   case "copy-started":
