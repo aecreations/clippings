@@ -529,7 +529,7 @@ let gClippingsListener = {
 
   multiClippingsLabelChanged(aClippingIDs, aLabel, aOldLabels)
   {
-     updateMultiClippingNodesWithLabel(aClippingIDs, aLabel);
+     updateMultiClippingNodesWithLabels(aClippingIDs, aLabel);
      let newLabels = new Array(aClippingIDs.length).fill(aLabel, 0);
 
     let state = {
@@ -3083,12 +3083,6 @@ function updateDisplay(aEvent, aData)
 }
 
 
-function updateMultiClippingNodesWithLabel(aClippingIDs, aLabel) {
-  let labels = new Array(aClippingIDs.length).fill(aLabel, 0);
-  updateMultiClippingNodesWithLabels(aClippingIDs, labels);
-}
-
-
 function updateMultiClippingNodesWithLabels(aClippingIDs, aLabels)
 {
   let tree = aeClippingsTree.getTree();
@@ -3103,7 +3097,7 @@ function updateMultiClippingNodesWithLabels(aClippingIDs, aLabels)
       }
     }
 
-    let label = aLabels[i];
+    let label = aLabels instanceof Array ? aLabels[i] : aLabels;
     if (label) {
       node.addClass(`ae-clipping-label-${label}`);
     }
