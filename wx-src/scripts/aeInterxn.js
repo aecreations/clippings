@@ -10,11 +10,15 @@ let aeInterxn = {
   _isMacOS: null,
   _isNoisyDebug: false,
 
-  init(aOSName) {
+
+  init(aOSName)
+  {
     this._isMacOS = aOSName == "mac";
   },
 
-  initDialogButtonFocusHandlers() {
+
+  initDialogButtonFocusHandlers()
+  {
     let btns = document.querySelectorAll(".btn");
 
     btns?.forEach(aBtn => {
@@ -60,7 +64,9 @@ let aeInterxn = {
     });
   },
 
-  suppressBrowserShortcuts(aEvent, aIsDebugging) {
+
+  suppressBrowserShortcuts(aEvent, aIsDebugging)
+  {
     if (aIsDebugging && this._isNoisyDebug
         && aEvent.key != "Alt" && aEvent.key != "Control"
         && aEvent.key != "Meta" && aEvent.key != "Shift") {
@@ -103,7 +109,8 @@ let aeInterxn = {
   },
 
 
-  initContextMenuAriaRoles(aStor) {
+  initContextMenuAriaRoles(aStor)
+  {
     let menu = $(aStor);
     if (menu.length == 0) {
       throw new RangeError(`aeInterxn.initContextMenuAriaRoles(): jQuery selector "${aStor}" does not match one or more elements`);
@@ -128,7 +135,8 @@ let aeInterxn = {
   // Private helper methods
   //
 
-  _isAccelKeyPressed(aEvent) {
+  _isAccelKeyPressed(aEvent)
+  {
     if (typeof this._isMacOS != "boolean") {
       throw new ReferenceError("aeInterxn not initialized");
     }
@@ -141,7 +149,8 @@ let aeInterxn = {
     return rv;
   },
 
-  _isTextboxFocused(aEvent) {
+  _isTextboxFocused(aEvent)
+  {
     return (aEvent.target.tagName == "INPUT" || aEvent.target.tagName == "TEXTAREA");
   }
 };
