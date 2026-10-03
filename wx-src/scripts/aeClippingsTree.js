@@ -78,13 +78,24 @@ let aeClippingsTree = {
             }
             clippingNode.title = title;
 
-            if (aItem.sourceURL && aPrefs.srcWebPgURLBadge) {
-              clippingNode.extraClasses = "ae-clipping-web";
+            if (aItem.separator) {
+              clippingNode.title = "<hr>";
+              clippingNode.extraClasses = "ae-separator";
             }
-
-            if (aItem.label) {
-              // TO DO: Handle clippings with source web page URL.
-              clippingNode.extraClasses = `ae-clipping-label-${aItem.label}`;
+            else {
+              if (aItem.label) {
+                if (aItem.sourceURL && aPrefs.srcWebPgURLBadge) {
+                  clippingNode.extraClasses = `ae-clipping-web-label-${aItem.label}`;
+                }
+                else {
+                  clippingNode.extraClasses = `ae-clipping-label-${aItem.label}`;
+                }
+              }
+              else {
+                if (aItem.sourceURL && aPrefs.srcWebPgURLBadge) {
+                  clippingNode.extraClasses = "ae-clipping-web";
+                }
+              }
             }
 
             if ("displayOrder" in aItem) {
@@ -92,11 +103,6 @@ let aeClippingsTree = {
             }
             else {
               clippingNode.displayOrder = 0;
-            }
-
-            if (aItem.separator) {
-              clippingNode.title = "<hr>";
-              clippingNode.extraClasses = "ae-separator";
             }
 
             rv.push(clippingNode);

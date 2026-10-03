@@ -158,35 +158,63 @@ span.fancytree-title {
     background-position: unset;
     background-image: url("../img/clipping-red.svg");
 }
+.ui-fancytree .ae-clipping-web-label-red > .fancytree-icon {
+    background-position: unset;
+    background-image: url("../img/clipping-web-red.svg");
+}
     
 .ui-fancytree .ae-clipping-label-orange > .fancytree-icon {
     background-position: unset;
     background-image: url("../img/clipping-orange.svg");
+}
+.ui-fancytree .ae-clipping-web-label-orange > .fancytree-icon {
+    background-position: unset;
+    background-image: url("../img/clipping-web-orange.svg");
 }
 
 .ui-fancytree .ae-clipping-label-yellow > .fancytree-icon {
     background-position: unset;
     background-image: url("../img/clipping-yellow.svg");
 }
+.ui-fancytree .ae-clipping-web-label-yellow > .fancytree-icon {
+    background-position: unset;
+    background-image: url("../img/clipping-web-yellow.svg");
+}
 
 .ui-fancytree .ae-clipping-label-green > .fancytree-icon {
     background-position: unset;
     background-image: url("../img/clipping-green.svg");
+}
+.ui-fancytree .ae-clipping-web-label-green > .fancytree-icon {
+    background-position: unset;
+    background-image: url("../img/clipping-web-green.svg");
 }
 
 .ui-fancytree .ae-clipping-label-purple > .fancytree-icon {
     background-position: unset;
     background-image: url("../img/clipping-purple.svg");
 }
+.ui-fancytree .ae-clipping-web-label-purple > .fancytree-icon {
+    background-position: unset;
+    background-image: url("../img/clipping-web-purple.svg");
+}
 
 .ui-fancytree .ae-clipping-label-blue > .fancytree-icon {
     background-position: unset;
     background-image: url("../img/clipping-blue.svg");
 }
+.ui-fancytree .ae-clipping-web-label-blue > .fancytree-icon {
+    background-position: unset;
+    background-image: url("../img/clipping-web-blue.svg");
+}
 
 .ui-fancytree .ae-clipping-label-grey > .fancytree-icon {
     background-position: unset;
     background-image: url("../img/clipping-grey.svg");
+}
+.ui-fancytree .ae-clipping-web-label-grey > .fancytree-icon {
+    background-position: unset;
+    background-image: url("../img/clipping-web-grey.svg");
 }
 
 /* Separators */

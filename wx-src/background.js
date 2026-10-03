@@ -1191,8 +1191,7 @@ function getContextMenuData(aFolderID, aPrefs)
             }
 
             if (aItem.label) {
-              // TO DO: Handle clippings with source URL.
-              iconFilename = `clipping-${aItem.label}.svg`;
+              iconFilename = `clipping${srcURLSfx}-${aItem.label}.svg`;
             }
             else {
               iconFilename = `clipping${srcURLSfx}.svg`;
