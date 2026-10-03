@@ -17,7 +17,6 @@ let gOS, gHostAppVer;
 let gClippingsDB = null;
 let gParentFolderID = aeConst.ROOT_FOLDER_ID;
 let gSrcURL = "";
-let gCreateInFldrMenu;
 let gFolderPickerPopup;
 let gNewFolderDlg, gSyncErrMsgBox, gSyncProgressBar;
 let gPrefs;
@@ -343,7 +342,7 @@ function initDialogs()
   gNewFolderDlg.selectAndCloseFolderPicker = function ()
   {
     let fldrPickerTree = gNewFolderDlg.fldrTree.getTree();
-    selectedFldrNodeKey = fldrPickerTree.activeNode.key;
+    let selectedFldrNodeKey = fldrPickerTree.activeNode.key;
     let fldrData = {
       node: {
         key: selectedFldrNodeKey,
@@ -667,7 +666,7 @@ function selectFolder(aFolderData)
 function selectAndCloseFolderPicker()
 {
   let fldrPickerTree = gFolderPickerPopup.getTree();
-  selectedFldrNodeKey = fldrPickerTree.activeNode.key;
+  let selectedFldrNodeKey = fldrPickerTree.activeNode.key;
   let fldrData = {
     node: {
       key: selectedFldrNodeKey,

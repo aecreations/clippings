@@ -131,7 +131,7 @@ function clippingsMgrCmds()
       },
 
       pop() {
-        var rv = this._stack.pop();
+        let rv = this._stack.pop();
         this.length--;
         return rv;
       },
@@ -203,7 +203,7 @@ function clippingsMgrCmds()
               }
             });
           }
-        };
+        }
       }
     },
 
@@ -268,7 +268,7 @@ function clippingsMgrCmds()
 
       pop()
       {
-        var rv = {};
+        let rv = {};
         for (let ppty in this._lastUndo) {
           rv[ppty] = this._lastUndo[ppty];
         }
@@ -454,7 +454,6 @@ function clippingsMgrCmds()
         unsetEmptyClippingsState();
       }
 
-      let tree = aeClippingsTree.getTree();
       let parentFolderID = aParentFolderID;
 
       this.recentAction = this.ACTION_CREATENEW;
