@@ -2242,7 +2242,7 @@ function pasteOrCopyClippingByID(aClippingID, aIsExternalRequest, aTabID, aMode,
         }
 
         clipping = aClipping;
-        log(`Copying/pasting the clipping named "${clipping.name}"\nid = ${clipping.id}`);
+        info(`Copying/pasting the clipping named "${clipping.name}"\nid = ${clipping.id}`);
 
         return clippingsDB.folders.get(aClipping.parentFolderID);
       }).then(aFolder => {
@@ -2323,7 +2323,7 @@ function pasteClippingByShortcutKey(aShortcutKey, aTabID)
       }
 
       clipping = aClipping;
-      log(`Pasting clipping named "${clipping.name}"\nid = ${clipping.id}`);
+      info(`Pasting clipping named "${clipping.name}"\nid = ${clipping.id}`);
 
       return clippingsDB.folders.get(aClipping.parentFolderID);
     }).then(aFolder => {
@@ -2345,6 +2345,7 @@ function pasteClippingByShortcutKey(aShortcutKey, aTabID)
         text: clipping.content,
         parentFolderName: parentFldrName
       };
+      log("Clippings: pasteClippingByShortcutKey(): Calling background script function processClipping()...");
 
       return processClipping(clippingInfo, false, aTabID, pasteOrCopyClippingByID.MODE_PASTE);
     }).then(aProcessedContent => {
@@ -2354,9 +2355,12 @@ function pasteClippingByShortcutKey(aShortcutKey, aTabID)
       }
       // Placeholder prompt dialog was opened.
       // Copy/paste flow resumes when user fills in placeholders.
+      log("Clippings: Placeholder prompt dialog was opened.");
+
       return null;
     }).then(aPasteFormat => {
       if (aPasteFormat !== null && aPasteFormat != aeConst.HTMLPASTE_ASK_THE_USER) {
+        log("Clippings: pasteClippingByShortcutKey(): Pasting processed clipping " + clippingInfo.id + " into browser tab " + aTabID);
         pasteProcessedClipping(processedCtnt, aTabID, aPasteFormat);
       }
     });
@@ -2380,8 +2384,9 @@ function resumeCopyProcessedMultiClipping(aClippingContent, aMultiIndex, aCopyMo
 
 async function resumePasteClipping(aClippingName, aClippingContent, aTabID)
 {
-  log("Clippings: resumePasteClipping(): Resuming paste clipping '" + aClippingName + "'");
+  info(`Clippings: resumePasteClipping(): Resuming paste clipping named "${aClippingName}" to browser tab ${aTabID}`);
   log(aClippingContent);
+
   let pasteFmt = await processHTMLFormattedClipping(aClippingName, aClippingContent, aTabID);
   await pasteProcessedClipping(aClippingContent, aTabID, pasteFmt);
 }
@@ -2448,17 +2453,21 @@ async function processClipping(aClippingInfo, aIsExternalRequest, aTabID, aMode,
         }
       }
 
+      log("Clippings: processClipping(): Opening placeholder prompt dialog");
       openPlaceholderPromptDlg(activeTabID, aMode, isExpanded, aIsMulti, aMultiIndex, aIsLastMulti);
       return null;
     }
   }
 
+  log("Clippings: processClipping(): Finished processing placeholders for clipping " + aClippingInfo.id);
   return processedCtnt;
 }
 
 
 async function processHTMLFormattedClipping(aClippingName, aClippingContent, aTabID)
 {
+  log(`Clippings: processHTMLFormattedClipping(): Processing HTML-formatted clipping '${aClippingName}'`);
+
   let isHTMLFormatted = aeClippings.hasHTMLTags(aClippingContent);
   let htmlPaste = await aePrefs.getPref("htmlPaste");
 
@@ -2524,6 +2533,7 @@ async function pasteProcessedClipping(aClippingContent, aTabID, aOverridePasteFo
     return;
   }
   await browser.windows.update(tab.windowId, {focused: true});
+  log("Clippings: pasteProcessedClipping(): Focused browser window " + tab.windowId);
 
   let prefs = await aePrefs.getAllPrefs();
   let htmlPaste = aOverridePasteFormat === null ? prefs.htmlPaste : aOverridePasteFormat;
