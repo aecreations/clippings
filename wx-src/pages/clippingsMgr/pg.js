@@ -843,7 +843,7 @@ let gSrcURLBar = {
         && updatedURL.search(/^https:\/\//) == -1) {
 
       if (updatedURL.search(/^www/) != -1) {
-        updatedURL = "http://" + updatedURL;
+        updatedURL = "https://" + updatedURL;
         $("#clipping-src-url-edit").val(updatedURL);
       }
       else {
