@@ -1276,16 +1276,17 @@ $(async () => {
     aeInterxn.initDialogButtonFocusHandlers();
   }
   
+  let wnd = await browser.windows.getCurrent();
+  gWndID = wnd.id;
+
   // Fix for Fx57 bug where bundled page loaded using
   // browser.windows.create won't show contents unless resized.
   // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1402110>
-  let wnd = await browser.windows.getCurrent();
-  browser.windows.update(wnd.id, {
+  let updWnd = await browser.windows.update(wnd.id, {
     width: wnd.width + 1,
     focused: true,
   });
-
-  gWndID = wnd.id;
+  await aeInterxn.initWndZoom(updWnd.width, updWnd.height);
 });
 
 

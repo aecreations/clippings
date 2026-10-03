@@ -184,16 +184,17 @@ $(async () => {
   $("#btn-accept").click(aEvent => { accept(aEvent) });
   $("#btn-cancel").click(aEvent => { cancel(aEvent) });
 
+  let wnd = await browser.windows.getCurrent();
   if (platform.os != "mac") {
     // Fix for Fx57 bug where bundled page loaded using
     // browser.windows.create won't show contents unless resized.
     // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1402110>
-    let wnd = await browser.windows.getCurrent();
-    browser.windows.update(wnd.id, {
+    wnd = await browser.windows.update(wnd.id, {
       width: wnd.width + 1,
       focused: true,
     });
   }
+  await aeInterxn.initWndZoom(wnd.width, wnd.height);
 });
 
 

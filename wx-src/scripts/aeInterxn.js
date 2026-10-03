@@ -131,6 +131,80 @@ let aeInterxn = {
   },
 
 
+  async initWndZoom(aDefWidth, aDefHeight)
+  {
+    let zoomVals = [1.1, 1.2, 1.3, 1.4, 1.5];
+    let zoomDeltas = new Map();
+    for (let zoom of zoomVals) {
+      let delta = {
+        w: Math.abs(aDefWidth - Math.ceil(aDefWidth * zoom)),
+        h: Math.abs(aDefHeight - Math.ceil(aDefHeight * zoom)),
+      };
+      zoomDeltas.set(zoom, delta);
+    }
+
+    let wnd = await browser.windows.getCurrent();
+    let zoom = await browser.tabs.getZoom();
+    this._log(`aeInterxn: Window zoom factor: ${zoom}`);
+    if (zoom > 1) {
+      let zoomIdx = 0;
+      let zoomInc = zoomVals[zoomIdx];
+      let width = wnd.width;
+      let height = wnd.height;
+
+      while (zoomInc <= zoom) {
+        // Calculate proportional window dimensions.
+        this._log(`aeInterxn: Calculating proportional window dimensions for zoom factor ${zoomInc}`);
+        let delta = zoomDeltas.get(zoomInc);
+        width = width + delta.w;
+        height = height + delta.h;
+
+        zoomInc = zoomVals[++zoomIdx];
+      }
+
+      await browser.windows.update(wnd.id, {width, height});
+    }
+
+    browser.tabs.onZoomChange.addListener(async (aZoomChangeInfo) => {
+      let wnd = await browser.windows.getCurrent();
+      let wndUpdate = {};
+      let maxZoom = zoomVals.at(-1);
+
+      if (aZoomChangeInfo.oldZoomFactor < aZoomChangeInfo.newZoomFactor && aZoomChangeInfo.newZoomFactor > 1) {
+        if (aZoomChangeInfo.newZoomFactor > 1 && aZoomChangeInfo.newZoomFactor <= maxZoom) {
+          let delta = zoomDeltas.get(aZoomChangeInfo.newZoomFactor);
+          wndUpdate.width = wnd.width + delta.w;
+          wndUpdate.height = wnd.height + delta.h;
+          this._log(`aeInterxn: Current window width=${wnd.width}px, height=${wnd.height}px\nIncrease size delta (w, h) for new zoom factor ${aZoomChangeInfo.newZoomFactor}: (${delta.w}, ${delta.h})`);
+        }
+        else {
+          wndUpdate.width = wnd.width;
+          wndUpdate.height = wnd.height;
+        }
+      }
+      else if (aZoomChangeInfo.oldZoomFactor > aZoomChangeInfo.newZoomFactor && aZoomChangeInfo.newZoomFactor > 1) {
+        if (aZoomChangeInfo.newZoomFactor > 1 && aZoomChangeInfo.newZoomFactor < maxZoom) {
+          let delta = zoomDeltas.get(aZoomChangeInfo.newZoomFactor);
+          wndUpdate.width = wnd.width - delta.w;
+          wndUpdate.height = wnd.height - delta.h;
+          this._log(`aeInterxn: Current window width=${wnd.width}px, height=${wnd.height}px\nDecrease size delta (w, h) for new zoom factor ${aZoomChangeInfo.newZoomFactor}: (${delta.w}, ${delta.h})`);
+        }
+        else {
+          wndUpdate.width = wnd.width;
+          wndUpdate.height = wnd.height;
+        }
+      }
+      else {
+        wndUpdate.width = aDefWidth;
+        wndUpdate.height = aDefHeight;
+      }
+
+      this._log(`aeInterxn: Updating window size for zoom factor ${aZoomChangeInfo.newZoomFactor}: width=${wndUpdate.width}px, height=${wndUpdate.height}px`);
+      await browser.windows.update(wnd.id, wndUpdate);
+    });
+  },
+
+
   //
   // Private helper methods
   //
@@ -152,5 +226,10 @@ let aeInterxn = {
   _isTextboxFocused(aEvent)
   {
     return (aEvent.target.tagName == "INPUT" || aEvent.target.tagName == "TEXTAREA");
+  },
+
+  _log(aMessage)
+  {
+    if (aeConst.DEBUG) { console.log(aMessage); }
   }
 };
