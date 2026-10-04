@@ -429,6 +429,7 @@ ul.fancytree-container {
 .context-menu-item.labels {
     padding-left: 28px;
     background-color: transparent;
+    color: var(--color-cxtmenu-text);
 }
 
 .labels > span > ul {
@@ -441,8 +442,8 @@ ul.fancytree-container {
 
 .labels > span > ul > li {
     display: inline-block;
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
     border: 1px solid #CCC;
     overflow: hidden;
     color: transparent;
