@@ -214,6 +214,48 @@ let aeClippingsTree = {
     return rv;
   },
 
+
+  setClippingSrcURLBadge(aClippingID, aHasSourceURL)
+  {
+    let tree = this.getTree();
+    let key = aClippingID + "C";
+    let clippingNode = tree.getNodeByKey(key);
+
+    if (!clippingNode) {
+      throw new ReferenceError(`aeClippingsTree.setClippingNodeSrcURLBadge(): Can't find tree node for key "${key}"`);
+    }
+
+    let label = '';
+    if (clippingNode.extraClasses !== undefined) {
+      let result = clippingNode.extraClasses.match(/ae\-clipping\-label\-([a-z]+)/);
+      if (result) {
+        label = result[1];
+        clippingNode.removeClass(result[0]);
+      }
+      else {
+        // Labels with source URLs.
+        result = clippingNode.extraClasses.match(/ae\-clipping\-web\-label\-([a-z]+)/);
+        if (result) {
+          label = result[1];
+          clippingNode.removeClass(result[0]);
+        }
+      }
+    }
+
+    let className = '';
+    if (aHasSourceURL) {
+      className = label ? `ae-clipping-web-label-${label}` : "ae-clipping-web";
+    }
+    else {
+      className = label ? `ae-clipping-label-${label}` : '';
+    }
+
+    if (className) {
+      clippingNode.addClass(className);
+    }
+  },
+
+
   // Helper
   _sanitizeHTML(aHTMLStr)
   {

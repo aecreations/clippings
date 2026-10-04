@@ -877,6 +877,7 @@ let gSrcURLBar = {
       // they have a source URL.
       if ((this._oldVal == '' && updatedURL != '')
           || (this._oldVal != '' && updatedURL == '')) {
+        aeClippingsTree.setClippingSrcURLBadge(clippingID, !!updatedURL);
         await browser.runtime.sendMessage({msgID: "rebuild-cxt-menu"});
       }
     }
