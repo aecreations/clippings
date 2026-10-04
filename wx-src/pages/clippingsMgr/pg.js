@@ -660,7 +660,6 @@ let gSyncClippingsListener = {
   {
     log("Clippings: clippingsMgr/pg.js::gSyncClippingsListener.onActivate()");
     aeDialog.cancelDlgs();
-    gDlg.reloadSyncFolderIntrl();
   },
   
   onDeactivate(aOldSyncFolderID)
