@@ -501,17 +501,7 @@ let gClippingsListener = {
 
   clippingLabelChanged(aClippingID, aLabel, aOldLabel)
   {
-    let changedNode = aeClippingsTree.getTree().getNodeByKey(aClippingID + "C");
-    if (changedNode.extraClasses !== undefined) {
-      let result = changedNode.extraClasses.match(/ae\-clipping\-label\-[a-z]+/);
-      if (result) {
-        changedNode.removeClass(result[0]);
-      }
-    }
-    if (aLabel) {
-      changedNode.addClass(`ae-clipping-label-${aLabel}`);
-    }
-
+    aeClippingsTree.setClippingLabel(aClippingID, aLabel);
     gClippingLabelPicker.selectedLabel = aLabel;
 
     gCmd.recentAction = gCmd.ACTION_SETLABEL;
@@ -1011,11 +1001,7 @@ let gClippingLabelPicker = {
         return;
       }
 
-      let selectedNode = aeClippingsTree.getTree().activeNode;
-      let id = parseInt(selectedNode.key);
-      let label = this.selectedLabel;
-
-      gCmd.setLabelIntrl(id, label, gCmd.UNDO_STACK);
+      gCmd.setLabel(this.selectedLabel);
     });
   },
 
@@ -3086,22 +3072,8 @@ function updateDisplay(aEvent, aData)
 
 function updateMultiClippingNodesWithLabels(aClippingIDs, aLabels)
 {
-  let tree = aeClippingsTree.getTree();
-  let changedNodes = tree.findAll(aNode => !aNode.isFolder() && aClippingIDs.includes(parseInt(aNode.key)));
-
-  for (let i = 0; i < changedNodes.length; i++) {
-    let node = changedNodes[i];
-    if (node.extraClasses !== undefined) {
-      let result = node.extraClasses.match(/ae\-clipping\-label\-[a-z]+/);
-      if (result) {
-        node.removeClass(result[0]);
-      }
-    }
-
-    let label = aLabels instanceof Array ? aLabels[i] : aLabels;
-    if (label) {
-      node.addClass(`ae-clipping-label-${label}`);
-    }
+  for (let i = 0; i < aClippingIDs.length; i++) {
+    aeClippingsTree.setClippingLabel(aClippingIDs[i], aLabels[i]);
 
     // Update label picker if the selected clipping is one of the multiple
     // clippings that was changed.

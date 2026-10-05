@@ -426,16 +426,7 @@ let gCmd = {
         isSyncedClippingUpdated = true;
       }
 
-      if (selectedNode.extraClasses !== undefined) {
-        let result = selectedNode.extraClasses.match(/ae\-clipping\-label\-[a-z]+/);
-        if (result) {
-          selectedNode.removeClass(result[0]);
-        }
-      }
-      if (aLabel) {
-        selectedNode.addClass(`ae-clipping-label-${aLabel}`);
-      }
-
+      aeClippingsTree.setClippingLabel(clippingID, aLabel);
       await browser.runtime.sendMessage({
         msgID: "clipping-label-changed",
         clippingID: clippingID,
@@ -769,9 +760,9 @@ function buildClippingsTree()
       },
 
       // Fancytree "multi" extension
-      unselectable(event, data)
+      unselectable(aEvent, aData)
       {
-        return data.node.isFolder();
+        return aData.node.isFolder();
       },
 
       filter: {
@@ -783,9 +774,9 @@ function buildClippingsTree()
     });
 
     // Custom context menu command for the inline label selector.
-    $.contextMenu.types.label = function (item, opt, root) {
+    $.contextMenu.types.label = function (aItem, aOpt, aRoot)
+    {
       // this === item.$node
-
       $(`<span>${browser.i18n.getMessage("labelLabel")}<ul>`
           + '<li class="label-none" title="none" data-label="">None</li>'
           + '<li class="label-red" title="red" data-label="red">Red</li>'
@@ -796,13 +787,12 @@ function buildClippingsTree()
           + '<li class="label-purple" title="purple" data-label="purple">Purple</li>'
           + '<li class="label-grey" title="gray" data-label="grey">Gray</li></ul></span>')
           .appendTo(this)
-          .on('click', 'li', function () {
+          .on("click", "li", function () {
             gCmd.setLabel($(this).attr("data-label"));
-            root.$menu.trigger('contextmenu:hide');
+            aRoot.$menu.trigger("contextmenu:hide");
             return false;
           });
-
-      this.addClass('labels');
+      this.addClass("labels");
     };
 
     // Context menu for the clippings tree.
@@ -811,7 +801,8 @@ function buildClippingsTree()
       className: "sidebar-cxt-menu",
 
       events: {
-        activated(aOpts) {
+        activated(aOpts)
+        {
           let mnu = aOpts.$menu;
           mnu[0].focus();
 
@@ -828,7 +819,8 @@ function buildClippingsTree()
           });
         },
 
-        show(aOpts) {
+        show(aOpts)
+        {
           let treeItemSpan = aOpts.$trigger[0].firstChild;
           if (treeItemSpan.classList.contains("fancytree-statusnode-nodata")) {
             return false;
@@ -836,7 +828,8 @@ function buildClippingsTree()
           return (! gIsClippingsTreeEmpty);
         },
 
-        hide() {
+        hide()
+        {
           $(".context-menu-item.labels > span > ul > li").removeClass("selected");
           return true;
         }
@@ -1226,22 +1219,8 @@ function updateDisplay(aEvent, aData)
 
 function updateMultiClippingNodesWithLabels(aClippingIDs, aLabels)
 {
-  let tree = aeClippingsTree.getTree();
-  let changedNodes = tree.findAll(aNode => !aNode.isFolder() && aClippingIDs.includes(parseInt(aNode.key)));
-
-  for (let i = 0; i < changedNodes.length; i++) {
-    let node = changedNodes[i];
-    if (node.extraClasses !== undefined) {
-      let result = node.extraClasses.match(/ae\-clipping\-label\-[a-z]+/);
-      if (result) {
-        node.removeClass(result[0]);
-      }
-    }
-
-    let label = aLabels[i];
-    if (label) {
-      node.addClass(`ae-clipping-label-${label}`);
-    }
+  for (let i = 0; i < aClippingIDs.length; i++) {
+    aeClippingsTree.setClippingLabel(aClippingIDs[i], aLabels[i]);
   }
 }
 

@@ -215,6 +215,46 @@ let aeClippingsTree = {
   },
 
 
+  setClippingLabel(aClippingID, aLabel)
+  {
+    let tree = this.getTree();
+    let key = aClippingID + "C";
+    let clippingNode = tree.getNodeByKey(key);
+
+    if (!clippingNode) {
+      throw new ReferenceError(`aeClippingsTree.setClippingLabel(): Can't find tree node for key "${key}"`);
+    }
+
+    let hasSrcURL = false;
+    if (clippingNode.extraClasses !== undefined) {
+      let result = clippingNode.extraClasses.match(/ae\-clipping\-label\-[a-z]+/);
+      if (result) {
+        clippingNode.removeClass(result[0]);
+      }
+      else {
+        // Labels with source URLs.
+        result = clippingNode.extraClasses.match(/ae\-clipping\-web\-label\-([a-z]+)|ae\-clipping\-web/);
+        if (result) {
+          hasSrcURL = true;
+          clippingNode.removeClass(result[0]);
+        }
+      }
+    }
+
+    let className = '';
+    if (aLabel) {
+      className = hasSrcURL ? `ae-clipping-web-label-${aLabel}` : `ae-clipping-label-${aLabel}`;
+    }
+    else {
+      className = hasSrcURL ? "ae-clipping-web" : '';
+    }
+
+    if (className) {
+      clippingNode.addClass(className);
+    }
+  },
+
+
   setClippingSrcURLBadge(aClippingID, aHasSourceURL)
   {
     let tree = this.getTree();

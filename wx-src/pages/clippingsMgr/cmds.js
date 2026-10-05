@@ -1645,7 +1645,6 @@ function clippingsMgrCmds()
 
     setLabelIntrl: function (aClippingID, aLabel, aDestUndoStack)
     {
-      let selectedNode = aeClippingsTree.getTree().activateKey(aClippingID + "C");
       let oldLabel, sid;
 
       this.recentAction = this.ACTION_SETLABEL;
@@ -1660,21 +1659,10 @@ function clippingsMgrCmds()
         if ("sid" in aClipping) {
           sid = aClipping.sid;
         }
-        return gClippingsSvc.updateClipping(aClippingID, { label: aLabel }, aClipping);
+        return gClippingsSvc.updateClipping(aClippingID, {label: aLabel}, aClipping);
 
       }).then(aNumUpd => {
-        // Set the icon color on the tree list.
-        if (selectedNode.extraClasses !== undefined) {
-          let result = selectedNode.extraClasses.match(/ae\-clipping\-label\-[a-z]+/);
-          if (result) {
-            selectedNode.removeClass(result[0]);
-          }
-        }
-
-        if (aLabel) {
-          selectedNode.addClass(`ae-clipping-label-${aLabel}`);
-        }
-
+        aeClippingsTree.setClippingLabel(aClippingID, aLabel);
         gClippingLabelPicker.selectedLabel = aLabel;
 
         this._unsetClippingsUnchangedFlag();
@@ -1699,7 +1687,7 @@ function clippingsMgrCmds()
         }
       }).catch(aErr => {
         handlePushSyncItemsError(aErr);
-        console.error("Clippings: clippingsMgr/cmds.js: gCmd.setLabel(): " + aErr);
+        console.error("Clippings: clippingsMgr/cmds.js: gCmd.setLabelIntrl(): " + aErr);
       });
     },
 
