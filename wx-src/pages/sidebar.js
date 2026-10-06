@@ -565,6 +565,9 @@ $(async () => {
     "tree-fldr-close-dk.svg"
   );
 
+  document.body.dataset.nova = gPrefs.useAccentColor;
+  aeVisual.enableAccentColor(gPrefs.useAccentColor);
+
   initPaneSplitter();
 
   let wnd = await browser.windows.getCurrent();

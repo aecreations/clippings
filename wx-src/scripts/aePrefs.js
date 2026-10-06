@@ -83,6 +83,7 @@ let aePrefs = {
     autoSyncSidebar: false,
     newExtPermRequestFlow: true,
     srcWebPgURLBadge: true,
+    useAccentColor: null,
   },
   
   getPrefKeys()
@@ -373,6 +374,7 @@ let aePrefs = {
       autoSyncSidebar: false,
       newExtPermRequestFlow: true,
       srcWebPgURLBadge: true,
+      useAccentColor: null,
     };
     await this._addPrefs(aPrefs, newPrefs);
   },

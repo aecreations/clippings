@@ -40,6 +40,8 @@ $(async () => {
     browser.tabs.create({url: aEvent.target.href});
   });
 
+  let useAccentColor = await aePrefs.getPref("useAccentColor");
+  aeVisual.enableAccentColor(useAccentColor);
 });
 
 

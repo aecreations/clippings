@@ -3,6 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+"use strict";
+
+
 // Dialog initialization
 $(async () => {
   let lang = browser.i18n.getUILanguage();
@@ -35,7 +38,7 @@ $(async () => {
     else {
       $("#backup-reminder-freq").prop("disabled", true);
       setPref = aePrefs.setPrefs({
-	backupRemFrequency: aeConst.BACKUP_REMIND_NEVER,
+        backupRemFrequency: aeConst.BACKUP_REMIND_NEVER,
       });
     }
 
@@ -44,7 +47,7 @@ $(async () => {
 
     }).then(() => {
       if (aEvent.target.checked) {
-	browser.runtime.sendMessage({msgID: "set-backup-notifcn-intv"});
+        browser.runtime.sendMessage({msgID: "set-backup-notifcn-intv"});
       }
     });
   });
@@ -67,6 +70,9 @@ $(async () => {
     await browser.runtime.sendMessage({msgID: "clear-backup-notifcn-intv"});
     browser.runtime.sendMessage({msgID: "set-backup-notifcn-intv"});
   });
+
+  let useAccentColor = await aePrefs.getPref("useAccentColor");
+  aeVisual.enableAccentColor(useAccentColor);
 
   // Fix for Fx57 bug where bundled page loaded using
   // browser.windows.create won't show contents unless resized.

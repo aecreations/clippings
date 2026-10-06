@@ -55,6 +55,8 @@ $(async () => {
   if (gPrefs.showNewClippingOpts) {
     expandOptions(true);
   }
+
+  aeVisual.enableAccentColor(gPrefs.useAccentColor);
   
   $("#btn-expand-options").data("isExpanded", gPrefs.showNewClippingOpts).on("click", aEvent => {
     let isExpanded = $(aEvent.target).data("isExpanded");

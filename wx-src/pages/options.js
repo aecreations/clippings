@@ -13,7 +13,10 @@ let gIsActivatingSyncClippings = false;
 
 // Options page initialization
 $(async () => {
-  let platform = await browser.runtime.getPlatformInfo();
+  let [brws, platform] = await Promise.all([
+    browser.runtime.getBrowserInfo(),
+    browser.runtime.getPlatformInfo(),
+  ]);
   document.body.dataset.os = gOS = platform.os;
 
   if (gOS == "win") {
@@ -231,6 +234,20 @@ $(async () => {
     browser.runtime.sendMessage({msgID: "rebuild-cxt-menu"});
   });
 
+  // Firefox Nova accent colors on Firefox 157 and newer.
+  $("#use-nova-colors").prop("checked", prefs.useAccentColor).on("click", aEvent => {
+    aePrefs.setPrefs({useAccentColor: aEvent.target.checked});
+
+    // TO DO: Update accent colors on all opened windows and dialogs, and this
+    // extension preferences page.
+  });
+  if (aeVersionCmp(brws.version, "157.0") >= 0) {
+    $("#use-nova-colors-opt").show();
+  }
+  else {
+    $("#use-nova-colors-opt").hide();
+  }
+
   $("#wnds-dlgs-settings").on("click", aEvent => {
     gDlg.wndsDlgsOpts.showModal();
   });
@@ -367,6 +384,7 @@ $(async () => {
     "pref-sync-clippings-checked-dk.svg"
   );
   aeVisual.preloadMsgBoxIcons(true);
+  aeVisual.enableAccentColor(prefs.useAccentColor);
 });
 
 

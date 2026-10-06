@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+"use strict";
 
 let gWndID, gTabID;
 
@@ -39,6 +40,9 @@ $(async () => {
   gTabID = tabs[0].id;
 
   browser.runtime.sendMessage({msgID: "whats-new-pg-opened"});
+
+  let useAccentColor = await aePrefs.getPref("useAccentColor");
+  aeVisual.enableAccentColor(useAccentColor);
 });
 
 

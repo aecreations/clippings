@@ -3,13 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+"use strict";
+
 let gBrowserTabID, gClippingContent;
 
 
 // Dialog initialization
 $(async () => {
   let platform = await browser.runtime.getPlatformInfo();
-  document.body.dataset.os = gOS = platform.os;
+  document.body.dataset.os = platform.os;
   aeInterxn.init(platform.os);
 
   let lang = browser.i18n.getUILanguage();
@@ -17,6 +19,12 @@ $(async () => {
 
   let params = new URLSearchParams(window.location.search);
   gBrowserTabID = Number(params.get("tabID"));
+
+  let useAccentColor = (params.get("nova") == 1);
+  if (useAccentColor) {
+    document.body.dataset.nova = true;
+    aeVisual.enableAccentColor(true);
+  }
 
   let resp = await browser.runtime.sendMessage({
     msgID: "init-paste-as-dlg"

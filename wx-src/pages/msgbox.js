@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+"use strict";
+
 const MSG_UNKNOWN = "msgUnknown";
 const DEFAULT_WND_HEIGHT = 170;
 const MSG_BODY_DEFAULT_HEIGHT = 40;
@@ -45,6 +47,9 @@ async function init()
   let btnAccept = document.querySelector("#btn-accept");
   btnAccept.addEventListener("click", aEvent => { dismiss(aEvent) });
   btnAccept.focus();
+
+  let useAccentColor = url.searchParams.get("nova") == 1;
+  aeVisual.enableAccentColor(useAccentColor);
 
   // Fix for Fx57 bug where bundled page loaded using
   // browser.windows.create won't show contents unless resized.

@@ -184,6 +184,9 @@ $(async () => {
   $("#btn-accept").click(aEvent => { accept(aEvent) });
   $("#btn-cancel").click(aEvent => { cancel(aEvent) });
 
+  let useAccentColor = await aePrefs.getPref("useAccentColor");
+  aeVisual.enableAccentColor(useAccentColor);
+
   let wnd = await browser.windows.getCurrent();
   if (platform.os != "mac") {
     // Fix for Fx57 bug where bundled page loaded using

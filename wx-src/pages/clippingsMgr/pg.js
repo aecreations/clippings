@@ -1261,6 +1261,7 @@ $(async () => {
   if (gPrefs.defDlgBtnFollowsFocus) {
     aeInterxn.initDialogButtonFocusHandlers();
   }
+  aeVisual.enableAccentColor(gPrefs.useAccentColor, true);
   
   let wnd = await browser.windows.getCurrent();
   gWndID = wnd.id;

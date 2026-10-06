@@ -114,7 +114,6 @@ button {
 
     border: 1px solid var(--color-paste-clipping-txt-btn-border);
     background-color: var(--color-lb-bkgd);
-    background-repeat: no-repeat;
 }
 
 .paste-fmt-btn:hover {
@@ -126,6 +125,10 @@ button {
     border-color: var(--color-bkgd) !important;
     box-shadow: 0 0 0 2px #45a1ff;
     background-color: var(--color-btn-bkgd);
+}
+
+body[data-nova="true"] .paste-fmt-btn:focus {
+    box-shadow: 0 0 0 2px var(--accent-color-btn-focus-outline);
 }
 
 .paste-fmt-btn:focus:hover {

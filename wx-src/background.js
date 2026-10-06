@@ -531,6 +531,11 @@ async function init(aPrefs)
 
   aeVisual.init(platform.os);
 
+  // Turn on Firefox Nova accent colors on Firefox 157 and newer.
+  if (aeVersionCmp(brws.version, "157.0") >= 0 && aPrefs.useAccentColor === null) {
+    await aePrefs.setPrefs({useAccentColor: true});
+  }
+
   if (platform.os == "linux" && aPrefs.clippingsMgrMinzWhenInactv === null) {
     await aePrefs.setPrefs({clippingsMgrMinzWhenInactv: false});
   }
@@ -2020,9 +2025,11 @@ function openPlaceholderPromptDlg(aTabID, aDlgMode, aIsExpanded, aIsMulti, aMult
 }
 
 
-function openPasteAsDlg(aTabID)
+async function openPasteAsDlg(aTabID)
 {
-  let url = browser.runtime.getURL(`pages/pasteAs.html?tabID=${aTabID}`);
+  let useAccentColor = await aePrefs.getPref("useAccentColor");
+  let nova = useAccentColor ? 1 : 0;
+  let url = browser.runtime.getURL(`pages/pasteAs.html?tabID=${aTabID}&nova=${nova}`);
   let wndPpty = {
     type: "popup",
     width: 440,
@@ -2051,7 +2058,11 @@ async function openBackupDlg()
 
 async function openSidebarHelpDlg()
 {
+  let useAccentColor = await aePrefs.getPref("useAccentColor");
+  let nova = useAccentColor ? 1 : 0;
   let url = browser.runtime.getURL("pages/sidebarHelp.html");
+  url += `?nova=${nova}`;
+
   let height = 406;
   let {os} = await browser.runtime.getPlatformInfo();
 
@@ -2481,7 +2492,7 @@ async function processHTMLFormattedClipping(aClippingName, aClippingContent, aTa
     if (htmlPaste == aeConst.HTMLPASTE_ASK_THE_USER) {
       if (isHTMLEditor) {
         gPasteAs.set(aClippingName, aClippingContent);
-        openPasteAsDlg(aTabID);
+        await openPasteAsDlg(aTabID);
         return aeConst.HTMLPASTE_ASK_THE_USER;
       }
       else {
@@ -2676,6 +2687,8 @@ async function alertEx(aMessageName, aUsePopupWnd=false)
   let prefs = await aePrefs.getAllPrefs();
   let [tab] = await browser.tabs.query({active: true, currentWindow: true});
   let url = "pages/msgbox.html?msgid=" + aMessageName;
+  let nova = prefs.useAccentColor ? 1 : 0;
+  url += `&nova=${nova}`;
 
   // Center the common message box popup within originating browser window,
   // both horizontally and vertically.
