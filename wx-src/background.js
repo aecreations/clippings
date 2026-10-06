@@ -2358,8 +2358,7 @@ function pasteClippingByShortcutKey(aShortcutKey, aTabID)
 
       return null;
     }).then(aPasteFormat => {
-      if (aPasteFormat !== null && aPasteFormat != aeConst.HTMLPASTE_ASK_THE_USER) {
-        log("Clippings: pasteClippingByShortcutKey(): Pasting processed clipping " + clippingInfo.id + " into browser tab " + aTabID);
+      if (aPasteFormat != aeConst.HTMLPASTE_ASK_THE_USER) {
         pasteProcessedClipping(processedCtnt, aTabID, aPasteFormat);
       }
     });
