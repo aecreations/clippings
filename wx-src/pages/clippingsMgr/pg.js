@@ -1262,6 +1262,7 @@ $(async () => {
     aeInterxn.initDialogButtonFocusHandlers();
   }
   aeVisual.enableAccentColor(gPrefs.useAccentColor, true);
+  document.body.dataset.nova = gPrefs.useAccentColor;
   
   let wnd = await browser.windows.getCurrent();
   gWndID = wnd.id;

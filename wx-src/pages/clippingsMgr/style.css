@@ -900,6 +900,10 @@ body[data-os="mac"] .shortcut-key-tbl > tr > td:first-of-type {
     font-size: 12px;
 }
 
+body[data-nova="true"] #clipping-label-picker.browser-style {
+    border-color: var(--accent-color-btn-border);
+}
+
 #status-bar {
     width: 100%;
     height: var(--statusbar-height);
