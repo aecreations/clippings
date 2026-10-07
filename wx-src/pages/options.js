@@ -6,7 +6,7 @@
 "use strict";
 
 
-const CHANGE_ACCENT_COLOR_TIMEOUT = 500;
+const CHG_ACCENT_COLOR_DELAY_MS = 500;
 
 let gOS;
 let gDlg = {};
@@ -242,7 +242,7 @@ $(async () => {
     aePrefs.setPrefs({useAccentColor});
     setTimeout(() => {
       aeVisual.enableAccentColor(useAccentColor);
-    }, CHANGE_ACCENT_COLOR_TIMEOUT);
+    }, CHG_ACCENT_COLOR_DELAY_MS);
 
     // TO DO: Update accent colors on all opened windows and dialogs.
   });
