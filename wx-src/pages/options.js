@@ -6,6 +6,8 @@
 "use strict";
 
 
+const CHANGE_ACCENT_COLOR_TIMEOUT = 500;
+
 let gOS;
 let gDlg = {};
 let gIsActivatingSyncClippings = false;
@@ -236,10 +238,13 @@ $(async () => {
 
   // Firefox Nova accent colors on Firefox 157 and newer.
   $("#use-nova-colors").prop("checked", prefs.useAccentColor).on("click", aEvent => {
-    aePrefs.setPrefs({useAccentColor: aEvent.target.checked});
+    let useAccentColor = aEvent.target.checked;
+    aePrefs.setPrefs({useAccentColor});
+    setTimeout(() => {
+      aeVisual.enableAccentColor(useAccentColor);
+    }, CHANGE_ACCENT_COLOR_TIMEOUT);
 
-    // TO DO: Update accent colors on all opened windows and dialogs, and this
-    // extension preferences page.
+    // TO DO: Update accent colors on all opened windows and dialogs.
   });
   if (aeVersionCmp(brws.version, "157.0") >= 0) {
     $("#use-nova-colors-opt").show();
