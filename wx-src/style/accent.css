@@ -72,7 +72,7 @@ button.default:hover {
 }
 
 button.default:active {
-    border: 1px solid transparent;
+    border: 1px solid var(--accent-color-active-bkgd) !important;
     background-color: var(--accent-color-active-bkgd);
 }
 
