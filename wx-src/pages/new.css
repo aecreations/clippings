@@ -205,6 +205,10 @@ ul.fancytree-container {
     background-repeat: no-repeat;
 }
 
+body[data-nova="true"] #btn-expand-options {
+    background-color: var(--accent-color-btn-bkgd);
+}
+
 #btn-expand-options.expanded {
     background-image: var(--url-collapsed-icon);
 }
@@ -216,6 +220,15 @@ ul.fancytree-container {
 #btn-expand-options:active {
     background-color: var(--color-btn-expand-active-bkgd);
 }
+
+body[data-nova="true"] #btn-expand-options:hover {
+    background-color: var(--accent-color-btn-hover-bkgd);
+}
+
+body[data-nova="true"] #btn-expand-options:active {
+    background-color: var(--accent-color-btn-active-bkgd);
+}
+
 
 #clipping-options,
 #clipping-options select {
@@ -276,6 +289,10 @@ body:not([data-locale="uk"]):not([data-locale|="pt"]):not([data-locale|="es"]) #
 
 body:not([data-locale="uk"]):not([data-locale|="pt"]):not([data-locale|="es"]) #clipping-label-picker {
     width: 86px;
+}
+
+body[data-nova="true"] #clipping-label-picker.browser-style {
+    border-color: var(--accent-color-btn-border);
 }
 
 #dlg-buttons {
