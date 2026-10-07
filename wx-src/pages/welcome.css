@@ -7,7 +7,6 @@
     --page-width: 900px;
 
     --url-bkgd-img: url("../img/welc-bkgd.png");
-    --url-banner-img: url("../img/banner.svg");
     --color-bkgd: none;
     --color-main-border: #ccc;
     --color-main-bkgd: #F9F9FA;
@@ -32,7 +31,6 @@
 @media (prefers-color-scheme: dark) {
     :root {
 	--url-bkgd-img: none;
-	--url-banner-img: url("../img/banner-dk.svg");
 	--color-bkgd: #1a1a1e;
 	--color-main-border: #0c0c0d;
 	--color-main-bkgd: #2a2a2e;
@@ -71,7 +69,7 @@ main {
     margin-top: 24px;
     margin-bottom: 18px;
     border: 1px solid var(--color-main-border);
-    border-radius: 4px;
+    border-radius: 6px;
     box-shadow: 0px 0px 8px 2px var(--color-main-border-shadow);
     background-color: var(--color-main-bkgd);    
 }
@@ -127,7 +125,7 @@ button {
     min-width: 88px;
     height: 32px;
     padding: 0 20px 0;
-    border-radius: 4px;
+    border-radius: 6px;
     box-shadow: 0 0 0 0 transparent;
     border: 1px solid var(--color-btn-border);
     background-color: var(--color-btn-bkgd);
@@ -173,7 +171,7 @@ button.default:-moz-focusring {
 }
 
 button.btn-puffy {
-    border-radius: 5px;
+    border-radius: 8px;
     min-width: 120px;
     height: 48px;
     font-size: 15px;

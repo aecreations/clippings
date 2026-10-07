@@ -67,7 +67,7 @@ main {
     margin: 24px auto 24px auto;
     padding: 10px 24px 24px 24px;
     border: 1px solid var(--color-main-border);
-    border-radius: 4px;
+    border-radius: 6px;
     box-shadow: 0 0 8px 2px var(--color-main-border-shadow);
     background-color: var(--color-main-bkgd);
 }
@@ -81,6 +81,7 @@ button {
     height: 32px;
     margin-bottom: 0;
     margin-left: 10px;
+    border-radius: 6px;
     padding: 0 24px 0;
     font-size: 15px;
 }
@@ -136,7 +137,7 @@ button {
     padding-right: 16px;
     padding-left: 64px;
     border: 1px solid var(--color-contrib-cta-border);
-    border-radius: 4px;
+    border-radius: 6px;
 
     background-color: var(--color-contrib-cta-bkgd);
     background-image: var(--url-contrib-cta-img);
