@@ -23,7 +23,6 @@ let gBrowserTabID = null;
 let gDlgMode = 0;
 let gIsMultiCopyClipping = false;
 let gMultiCopyIndex = null;
-let gIsLastMultiClipping = false;
 
 
 // DOM utility
@@ -40,7 +39,6 @@ $(async () => {
   gDlgMode = Number(params.get("mode"));
   gIsMultiCopyClipping = (params.get("multi") == 1);
   gMultiCopyIndex = Number(params.get("mcidx"));
-  gIsLastMultiClipping = (params.get("lastmulti") == 1);
 
   if (gDlgMode > 0) {
     document.title = browser.i18n.getMessage("mnuCopyClipTxt");
@@ -300,7 +298,6 @@ function accept(aEvent)
       processedContent: content,
       isMultiCopy: gIsMultiCopyClipping,
       multiCopyIndex: gMultiCopyIndex,
-      isLastMulti: gIsLastMultiClipping,
     }
   }
   else {

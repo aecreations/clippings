@@ -2001,14 +2001,13 @@ function openKeyboardPasteDlg(aTabID, aIsExpanded)
 }
 
 
-function openPlaceholderPromptDlg(aTabID, aDlgMode, aIsExpanded, aIsMulti, aMultiIndex, aIsLastMulti)
+function openPlaceholderPromptDlg(aTabID, aDlgMode, aIsExpanded, aIsMulti, aMultiIndex)
 {
   // TO DO: Same checking for cursor location as in the preceding function.
 
   let multi = aIsMulti ? 1 : 0;
-  let lastMulti = aIsLastMulti? 1 : 0;
   let mcidx = aIsMulti ? aMultiIndex : -1;
-  let url = browser.runtime.getURL(`pages/placeholderPrompt.html?tabID=${aTabID}&mode=${aDlgMode}&multi=${multi}&mcidx=${mcidx}&lastmulti=${lastMulti}`);
+  let url = browser.runtime.getURL(`pages/placeholderPrompt.html?tabID=${aTabID}&mode=${aDlgMode}&multi=${multi}&mcidx=${mcidx}`);
   let wndPpty = {
     type: "popup",
     width: 536,
@@ -2221,8 +2220,7 @@ async function copyMultiClippingsText(aClippingsIDs, aCopyMode)
   gPlaceholderData.reset();
 
   for (let i = 0; i < aClippingsIDs.length; i++) {
-    let isLast = i == aClippingsIDs.length - 1;
-    await pasteOrCopyClippingByID(aClippingsIDs[i], true, null, aCopyMode, true, i, isLast);
+    await pasteOrCopyClippingByID(aClippingsIDs[i], true, null, aCopyMode, true, i);
   }
 }
 
@@ -2233,7 +2231,7 @@ function pasteClippingByID(aClippingID, aIsExternalRequest, aTabID)
 }
 
 
-function pasteOrCopyClippingByID(aClippingID, aIsExternalRequest, aTabID, aMode, aIsMulti=false, aMultiIndex=null, aIsLastMulti=false)
+function pasteOrCopyClippingByID(aClippingID, aIsExternalRequest, aTabID, aMode, aIsMulti=false, aMultiIndex=null)
 {
   let clippingInfo, processedCtnt;
   let clippingsDB = aeClippings.getDB();
@@ -2270,7 +2268,7 @@ function pasteOrCopyClippingByID(aClippingID, aIsExternalRequest, aTabID, aMode,
           parentFolderName: parentFldrName
         };
 
-        return processClipping(clippingInfo, aIsExternalRequest, aTabID, aMode, aIsMulti, aMultiIndex, aIsLastMulti);
+        return processClipping(clippingInfo, aIsExternalRequest, aTabID, aMode, aIsMulti, aMultiIndex);
       }).then(aProcessedContent => {
         if (aProcessedContent !== null) {
           processedCtnt = aProcessedContent;
@@ -2281,9 +2279,6 @@ function pasteOrCopyClippingByID(aClippingID, aIsExternalRequest, aTabID, aMode,
             if (aIsMulti) {
               log(`Clippings: processClipping(): Adding processed clipping ${clippingInfo.id} at index [${aMultiIndex}]`);
               gCopyMultiClippings.setClippingAt(aProcessedContent, aMultiIndex);
-              if (aIsLastMulti) {
-                log(`Clippings: processClipping(): Last of multiple clippings copied (total: ${gCopyMultiClippings.getCount()})`);
-              }
               return copyProcessedClipping(gCopyMultiClippings.getCurrent(), aMode, true);
             }
             else {
@@ -2400,7 +2395,7 @@ async function resumePasteClipping(aClippingName, aClippingContent, aTabID)
 }
 
 
-async function processClipping(aClippingInfo, aIsExternalRequest, aTabID, aMode, aIsMulti=false, aMultiIndex=null, aIsLastMulti=false)
+async function processClipping(aClippingInfo, aIsExternalRequest, aTabID, aMode, aIsMulti=false, aMultiIndex=null)
 {
   let activeTabID = aTabID;
   if (aIsExternalRequest) {
@@ -2461,7 +2456,7 @@ async function processClipping(aClippingInfo, aIsExternalRequest, aTabID, aMode,
         }
       }
 
-      openPlaceholderPromptDlg(activeTabID, aMode, isExpanded, aIsMulti, aMultiIndex, aIsLastMulti);
+      openPlaceholderPromptDlg(activeTabID, aMode, isExpanded, aIsMulti, aMultiIndex);
       return null;
     }
   }
@@ -2685,10 +2680,9 @@ async function alertEx(aMessageName, aUsePopupWnd=false)
   info("Clippings/wx: " + message);
 
   let prefs = await aePrefs.getAllPrefs();
-  let [tab] = await browser.tabs.query({active: true, currentWindow: true});
-  let url = "pages/msgbox.html?msgid=" + aMessageName;
   let nova = prefs.useAccentColor ? 1 : 0;
-  url += `&nova=${nova}`;
+  let url = `pages/msgbox.html?msgid=${aMessageName}&nova=${nova}`;
+  let [tab] = await browser.tabs.query({active: true, currentWindow: true});
 
   // Center the common message box popup within originating browser window,
   // both horizontally and vertically.
