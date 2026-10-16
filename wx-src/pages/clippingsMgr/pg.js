@@ -852,6 +852,10 @@ let gSrcURLBar = {
 
     if ($("#clipping-src-url > a").length == 0) {
       $("#clipping-src-url").html(sanitizeHTML(`<a href="${updatedURL}">${updatedURL}</a>`));
+      $("#clipping-src-url > a").on("click", aEvent => {
+        aEvent.preventDefault();
+        aeNavigator.gotoURL(aEvent.target.href);
+      });
     }
     else {
       if (updatedURL) {
