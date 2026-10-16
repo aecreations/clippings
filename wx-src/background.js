@@ -2786,6 +2786,14 @@ browser.commands.onCommand.addListener(async (aCmdName, aTab) => {
   }
 });
 
+browser.commands.onChanged.addListener(aChangeInfo => {
+  // Handle changes to keyboard shortcut for activating keyboard paste mode
+  // when initiated in or outside of extension preferences page.
+  if (aChangeInfo.name == "ae-clippings-paste-clipping") {
+    aePrefs.setPrefs({keyboardPaste: aChangeInfo.newShortcut != ''});
+  }
+});
+
 
 browser.menus.onClicked.addListener(async (aInfo, aTab) => {
   switch (aInfo.menuItemId) {

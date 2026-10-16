@@ -137,8 +137,41 @@ $(async () => {
     aePrefs.setPrefs({ autoLineBreak: aEvent.target.checked });
   });
 
-  $("#enable-shortcut-key").prop("checked", prefs.keyboardPaste).on("click", aEvent => {
-    aePrefs.setPrefs({ keyboardPaste: aEvent.target.checked })
+  if (!prefs.keyboardPaste) {
+    $("#shortcut-key-selector").css({display: "inline-block"}).prop("disabled", true);
+
+    // In keyboard shortcut drop-down, select default value.
+    let manifest = browser.runtime.getManifest();
+    let defaultShcts = manifest.commands["ae-clippings-paste-clipping"].suggested_key;
+    let keybShct = gOS == "mac" ? defaultShcts.mac : defaultShcts.default;
+    let shctArr = keybShct.split("+");
+    let key = shctArr[shctArr.length - 1];
+
+    let keySelectElt = $("#shortcut-key-selector")[0];
+    let allKeys = keySelectElt.options;
+
+    for (let i = 0; i < allKeys.length; i++) {
+      if (allKeys[i].value == key) {
+        keySelectElt.selectedIndex = i;
+        break;
+      }
+    }
+  }
+
+  $("#enable-shortcut-key").prop("checked", prefs.keyboardPaste).on("click", async (aEvent) => {
+    aePrefs.setPrefs({keyboardPaste: aEvent.target.checked});
+
+    if (aEvent.target.checked) {
+      await browser.commands.reset("ae-clippings-paste-clipping");
+      $("#shortcut-key-selector").prop("disabled", false);
+    }
+    else {
+      $("#shortcut-key-selector").prop("disabled", true);
+      await browser.commands.update({
+        name: "ae-clippings-paste-clipping",
+        shortcut: '',
+      });
+    }
   });
 
   $("#auto-inc-plchldrs-start-val").val(prefs.autoIncrPlcHldrStartVal).on("click", aEvent => {
@@ -345,10 +378,14 @@ $(async () => {
     // When the keyboard shortcut is not any of the combinations that can be
     // set from the extension preferences page, it may have been set from
     // Manage Extension Shortcuts in Add-ons Manager (Firefox 66+).
-    $("#shortcut-key-note").text(browser.i18n.getMessage("prefsOutsideShct"));
-
     let keybPasteKeys = await browser.runtime.sendMessage({msgID: "get-shct-key-prefix-ui-str"});
-    $("#shortcut-key-prefix-modifiers").text(keybPasteKeys);
+    if (prefs.keyboardPaste) {
+      $("#shortcut-key-prefix-modifiers").text(keybPasteKeys);
+      $("#shortcut-key-note").text(browser.i18n.getMessage("prefsOutsideShct"));
+    }
+    else {
+      $("#shortcut-key-note").html(sanitizeHTML(browser.i18n.getMessage("prefsShortcutKeyNote")));
+    }
   }
   else {
     $("#shortcut-key-note").html(sanitizeHTML(browser.i18n.getMessage("prefsShortcutKeyNote")));
