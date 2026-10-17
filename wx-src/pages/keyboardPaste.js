@@ -5,7 +5,7 @@
 
 "use strict";
 
-const WNDH_SHORTCUT_KEY = 164;
+const WNDH_SHORTCUT_KEY = 180;
 const WNDH_SEARCH_CLIPPING = 250;
 const WNDH_SHORTCUT_LIST = 278;
 const WNDW_SHORTCUT_LIST = 436;
@@ -13,8 +13,9 @@ const DLG_HEIGHT_ADJ_WINDOWS = 8;
 const DLG_HEIGHT_ADJ_LINUX = 60;
 const TOOLBAR_HEIGHT = 52;
 const SHORTCUT_LIST_HEIGHT_ADJ_MAC = 2;
+const MAX_RECENT_CLIPPING_NAME_LEN = 32;
 
-let gClippingsDB, gPasteMode, gOS, gHostAppVer;
+let gClippingsDB, gPasteMode, gOS, gHostAppVer, gRecentClippingID;
 let gBrowserTabID = null;
 let gIsVertExpanded;
 
@@ -324,6 +325,26 @@ $(async () => {
     srchBox.focus();
   }
 
+  let recentClippingID = await aePrefs.getPref("_recentClippingID");
+  if (recentClippingID) {
+    let clipping = await gClippingsDB.clippings.get(recentClippingID);
+    if (clipping?.parentFolderID != aeConst.DELETED_ITEMS_FLDR_ID) {
+      gRecentClippingID = clipping.id;
+      log("Clippings::keyboardPaste.js: Recent clipping ID: " + gRecentClippingID);
+
+      let truncName = '';
+      if (clipping.name.length > MAX_RECENT_CLIPPING_NAME_LEN) {
+        truncName = clipping.name.substring(0, MAX_RECENT_CLIPPING_NAME_LEN);
+        truncName += "…";
+      }
+      else {
+        truncName = clipping.name;
+      }
+      truncName = "<b>" + truncName + "</b>";
+      $("#paste-recent").html(sanitizeHTML(browser.i18n.getMessage("keybPasteDlgEnter", truncName))).show();
+    }
+  }
+
   let useAccentColor = await aePrefs.getPref("useAccentColor");
   aeVisual.enableAccentColor(useAccentColor);
 
@@ -370,7 +391,12 @@ $(window).on("keydown", async (aEvent) => {
     }
   }
   else if (aEvent.key == "Enter" && gPasteMode == aeConst.PASTEACTION_SHORTCUT_KEY) {
-    cancel(aEvent);
+    if (gRecentClippingID) {
+      pasteRecentClipping();
+    }
+    else {
+      cancel(aEvent);
+    }
   }
   else if (aEvent.key == "F1") {
     if (isShortcutListDisplayed()) {
@@ -380,7 +406,6 @@ $(window).on("keydown", async (aEvent) => {
     if (gPasteMode == aeConst.PASTEACTION_SHORTCUT_KEY) {
       $(".deck > #paste-by-shortcut-key").hide();
       await initShortcutList();
-      return;
     }
   }
   else if (aEvent.key == "Tab") {
@@ -595,6 +620,19 @@ function execShortcut(aShortcutKey)
     msgID: "paste-shortcut-key",
     shortcutKey: aShortcutKey,
     browserTabID: gBrowserTabID,
+  });
+
+  closeDlg();
+}
+
+
+function pasteRecentClipping()
+{
+  browser.runtime.sendMessage({
+    msgID: "paste-clipping-by-name",
+    clippingID: gRecentClippingID,
+    browserTabID: gBrowserTabID,
+    fromClippingsMgr: false,
   });
 
   closeDlg();

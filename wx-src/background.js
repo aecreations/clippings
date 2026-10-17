@@ -1988,7 +1988,7 @@ function openKeyboardPasteDlg(aTabID, aIsExpanded)
   let wndPpty = {
     type: "popup",
     width: 500,
-    height: 164,
+    height: 180,
     topOffset: 256,
   };
 
@@ -2293,6 +2293,7 @@ function pasteOrCopyClippingByID(aClippingID, aIsExternalRequest, aTabID, aMode,
         }
       }).then(aPasteFormat => {
         if (aMode == pasteOrCopyClippingByID.MODE_PASTE && aPasteFormat != aeConst.HTMLPASTE_ASK_THE_USER) {
+          aePrefs.setPrefs({_recentClippingID: clipping.id});
           return pasteProcessedClipping(processedCtnt, aTabID, aPasteFormat);
         }
         return null;
@@ -2364,6 +2365,7 @@ function pasteClippingByShortcutKey(aShortcutKey, aTabID)
 
     }).then(aPasteFormat => {
       if (aPasteFormat != aeConst.HTMLPASTE_ASK_THE_USER) {
+        aePrefs.setPrefs({_recentClippingID: clipping.id});
         pasteProcessedClipping(processedCtnt, aTabID, aPasteFormat);
       }
     });

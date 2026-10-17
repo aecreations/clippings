@@ -436,3 +436,7 @@ ul.fancytree-container {
     font-size: 11px;
     color: var(--color-autocomplete-clipping-preview);
 }
+
+#paste-recent {
+    display: none;
+}

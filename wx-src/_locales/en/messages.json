@@ -403,6 +403,11 @@
     "description": "Keyboard paste dialog - keyboard shortcut legend"
   },
 
+  "keybPasteDlgEnter": {
+    "message": "ENTER = paste recent: $1",
+    "description": "Keyboard paste dialog - keyboard shortcut legend"
+  },
+
   "keybPasteDlgTabShctMode": {
     "message": "TAB = shortcut key mode",
     "description": "Keyboard paste dialog - keyboard shortcut legend"

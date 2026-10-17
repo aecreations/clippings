@@ -15,6 +15,7 @@ let aePrefs = {
     _autoIncrPlchldrVals: {},
     _forceShowFirstTimeBkupNotif: false,
     _syncClippingsHelperDwnldPgURL: null,
+    _recentClippingID: null,
     _wndIDs: {
       newClipping: null,
       keyboardPaste: null,
@@ -375,6 +376,7 @@ let aePrefs = {
       newExtPermRequestFlow: true,
       srcWebPgURLBadge: true,
       useAccentColor: null,
+      _recentClippingID: null,
     };
     await this._addPrefs(aPrefs, newPrefs);
   },
