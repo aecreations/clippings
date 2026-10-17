@@ -4,78 +4,78 @@
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title data-i18n="pasteTitle"></title>
+<head>
+  <meta charset="utf-8">
+  <title data-i18n="pasteTitle"></title>
 
-    <link rel="stylesheet" href="keyboardPaste.css"/>
+  <link rel="stylesheet" href="keyboardPaste.css"/>
 
-  </head>
+</head>
 
-  <body>
-    <div class="deck">
-      <div id="paste-by-shortcut-key" class="deck-content">
-	<div id="keyboard-paste-ico" class="icon">
-          <img src="../img/keyboard-paste.png" role="presentation"/>
-	</div>
-	<div id="paste-by-shct-key-content">
-	  <div data-i18n="shortcutKeyDesc"></div>
-	</div>
-	<div class="key-legend">
-          <div class="desc" data-i18n="keybPasteDlgF1"></div>
-          <div class="desc" data-i18n="keybPasteDlgTab"></div>
-	</div>
-      </div>  <!-- #paste-by-shortcut-key -->
-      
-      <div id="search-by-name" class="deck-content">
-	<div id="search-by-name-ico" class="icon"></div>
-	<div id="search-by-name-content">
-	  <div id="clipping-search-label" class="hbox">
-	    <label id="search-label-text" for="clipping-search" data-i18n="srchByNameDesc"></label>
-	    <span id="search-label-spacer"></span>
- 	    <label id="num-matches">&nbsp;</label>
-          </div>
-	  <div id="clear-search"></div>
-	  <input type="text" id="clipping-search"/>
-	  <div id="search-results-popup" class="ae-autocomplete-menu">
-	    <div id="search-results-listbox"></div>
-	  </div>
-	</div>
+<body>
+  <div class="deck">
+    <div id="paste-by-shortcut-key" class="deck-content">
+      <div id="keyboard-paste-ico" class="icon">
+        <img src="../img/keyboard-paste.png" role="presentation"/>
+      </div>
+      <div id="paste-by-shct-key-content">
+        <div data-i18n="shortcutKeyDesc"></div>
+      </div>
+      <div class="key-legend">
+        <div class="desc" data-i18n="keybPasteDlgF1"></div>
+        <div class="desc" data-i18n="keybPasteDlgTab"></div>
+      </div>
+    </div>  <!-- #paste-by-shortcut-key -->
 
-	<div class="key-legend">
-	  <div class="desc" data-i18n="keybPasteDlgTabShctMode" role="paragraph"></div>
-	</div>
-      </div>  <!-- #search-by-name -->
+    <div id="search-by-name" class="deck-content">
+      <div id="search-by-name-ico" class="icon"></div>
+      <div id="search-by-name-content">
+        <div id="clipping-search-label" class="hbox">
+          <label id="search-label-text" for="clipping-search" data-i18n="srchByNameDesc"></label>
+          <span id="search-label-spacer"></span>
+          <label id="num-matches">&nbsp;</label>
+        </div>
+        <div id="clear-search"></div>
+        <input type="text" id="clipping-search"/>
+        <div id="search-results-popup" class="ae-autocomplete-menu">
+          <div id="search-results-listbox"></div>
+        </div>
+      </div>
 
-      <div id="shortcut-list">
-        <div id="shortcut-list-toolbar" class="hbox" role="toolbar">
-	  <button id="paste-clipping" class="toolbar-button toolbar-button-labelled"
-	   disabled="true" data-i18n="insClipping"></button>
-	  <button id="export-shct-list" class="toolbar-button toolbar-button-labelled"
-	   data-i18n="exportHTML"></button>
-	  <button id="close" class="browser-style" data-i18n="btnClose"></button>
-	</div>
-	<div id="shortcut-list-content" role="listbox"></div>
-      </div>  <!-- #shortcut-list -->
-    </div>  <!-- .deck -->
-    
-    <div id="dlg-buttons">
-      <button id="btn-cancel" data-i18n="btnCancel"></button>
-    </div>
+      <div class="key-legend">
+        <div class="desc" data-i18n="keybPasteDlgTabShctMode" role="paragraph"></div>
+      </div>
+    </div>  <!-- #search-by-name -->
 
-    <script src="../lib/dexie/dexie.min.js"></script>
-    <script src="../lib/jquery.js"></script>
-    <script src="../lib/purify.min.js"></script>
-    <script src="../lib/fancytree/jquery.fancytree-all-deps.min.js"></script>
-    <script src="../lib/fancytree/jquery.fancytree.wide.js"></script>
-    <script src="../scripts/aeConst.js"></script>
-    <script src="../scripts/aeImportExport.js"></script>
-    <script src="../scripts/aeI18n.js"></script>
-    <script src="../scripts/aeInterxn.js"></script>
-    <script src="../scripts/aePrefs.js"></script>
-    <script src="../scripts/aeClippings.js"></script>
-    <script src="../scripts/aeVisual.js"></script>
-    <script src="../scripts/aeVersionCmp.js"></script>
-    <script src="keyboardPaste.js"></script>
+    <div id="shortcut-list">
+      <div id="shortcut-list-toolbar" class="hbox" role="toolbar">
+        <button id="paste-clipping" class="toolbar-button toolbar-button-labelled"
+                disabled="true" data-i18n="insClipping"></button>
+        <button id="export-shct-list" class="toolbar-button toolbar-button-labelled"
+                data-i18n="exportHTML"></button>
+        <button id="close" class="browser-style" data-i18n="btnClose"></button>
+      </div>
+      <div id="shortcut-list-content" role="listbox"></div>
+    </div>  <!-- #shortcut-list -->
+  </div>  <!-- .deck -->
+
+  <div id="dlg-buttons">
+    <button id="btn-cancel" data-i18n="btnCancel"></button>
+  </div>
+
+  <script src="../lib/dexie/dexie.min.js"></script>
+  <script src="../lib/jquery.js"></script>
+  <script src="../lib/purify.min.js"></script>
+  <script src="../lib/fancytree/jquery.fancytree-all-deps.min.js"></script>
+  <script src="../lib/fancytree/jquery.fancytree.wide.js"></script>
+  <script src="../scripts/aeConst.js"></script>
+  <script src="../scripts/aeImportExport.js"></script>
+  <script src="../scripts/aeI18n.js"></script>
+  <script src="../scripts/aeInterxn.js"></script>
+  <script src="../scripts/aePrefs.js"></script>
+  <script src="../scripts/aeClippings.js"></script>
+  <script src="../scripts/aeVisual.js"></script>
+  <script src="../scripts/aeVersionCmp.js"></script>
+  <script src="keyboardPaste.js"></script>
   </body>
 </html>
