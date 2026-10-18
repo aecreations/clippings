@@ -11,7 +11,7 @@ let gExtPermStrKeys = {
   clipboardWrite: "extPrmClipbdW",
 };
 
-let gWndID, gTabID, gOpenerWndID, gExtPerm, gExecActionID;
+let gWndID, gTabID, gOpenerWndID, gRecentTabID, gExtPerm, gExecActionID;
 
 
 // Page initialization
@@ -23,7 +23,10 @@ $(async () => {
   document.body.dataset.locale = lang;
 
   let params = new URLSearchParams(window.location.search);
-  gOpenerWndID = params.get("openerWndID");
+  gOpenerWndID = Number(params.get("openerWndID"));
+  if (params.has("recentTab")) {
+    gRecentTabID = Number(params.get("recentTab"));
+  }
 
   await populateRequestedPermission();
   $("#perm-hlp-link").attr("href", aeConst.PERM_HLP_URL);
@@ -94,6 +97,11 @@ async function focusOpenerWnd(aExecActionID)
   catch (e) {
     // Opener window was closed
   }
+
+  // Also focus the most recent browser tab.
+  if (gRecentTabID) {
+    browser.tabs.update(gRecentTabID, {active: true});
+  }
 }
 
 
@@ -157,6 +165,7 @@ browser.runtime.onMessage.addListener(aRequest => {
     // from a different source window will cancel the pending permission
     // request.
     gOpenerWndID = aRequest.openerWndID;
+    gRecentTabID = aRequest.recentTabID || null;
 
     populateRequestedPermission();
     browser.windows.update(gWndID, {focused: true});

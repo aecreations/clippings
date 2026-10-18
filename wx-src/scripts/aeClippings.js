@@ -100,6 +100,9 @@ let aeClippings = {
 
   async openPermissionPg(aOpenerWndID)
   {
+    // Get the currently active tab, if there is one, so that it will be
+    // focused when the permission request page is dismissed.
+    let [tab] = await browser.tabs.query({active: true, windowType: "normal"});
     let resp;
     try {
       resp = await browser.runtime.sendMessage({msgID: "ping-perms-req-pg"});
@@ -107,13 +110,20 @@ let aeClippings = {
     catch {}
 
     if (resp) {
-      browser.runtime.sendMessage({
+      let msg = {
         msgID: "reload-perms-req-pg",
         openerWndID: aOpenerWndID,
-      });
+      };
+      if (tab) {
+        msg.recentTabID = tab.id;
+      }
+      browser.runtime.sendMessage(msg);
     }
     else {
       let url = browser.runtime.getURL(`pages/permission.html?openerWndID=${aOpenerWndID}`);
+      if (tab) {
+        url += `&recentTab=${tab.id}`;
+      }
       try {
         await browser.tabs.create({url, active: true});
       }
