@@ -2497,7 +2497,10 @@ function buildClippingsTree()
         labelSubmenu: {
           name: browser.i18n.getMessage("mnuEditLabel"),
           visible: function (aItemKey, aOpt) {
-            return (!aeClippingsTree.isFolderSelected() && !aeClippingsTree.isSeparatorSelected());
+            return (!aeClippingsTree.isFolderSelected());
+          },
+          disabled(aKey, aOpt) {
+            return aeClippingsTree.isSeparatorSelected();
           },
           items: {
             labelNone: {
@@ -2632,7 +2635,7 @@ function buildClippingsTree()
         },
         copyClippingTextSeparator: {
           type: "cm_separator",
-          visible(aItemKey, aOpt) {
+          visible(aKey, aOpt) {
             return (!aeClippingsTree.isFolderSelected()
                     && !aeClippingsTree.isSeparatorSelected()
                     && aeClippingsTree.isFolderOrSingleClippingSelected());
@@ -2641,9 +2644,12 @@ function buildClippingsTree()
         copyClippingText: {
           name: browser.i18n.getMessage("mnuCopyClipTxt"),
           className: "ae-menuitem",
-          visible(aItemKey, aOpt) {
-            return (!aeClippingsTree.isFolderSelected() && !aeClippingsTree.isSeparatorSelected());
-          }
+          visible(aKey, aOpt) {
+            return (!aeClippingsTree.isFolderSelected());
+          },
+          disabled(aKey, aOpt) {
+            return aeClippingsTree.isSeparatorSelected();
+          },
         },
         insertSeparator: {
           name: browser.i18n.getMessage("mnuInsSeparator"),
