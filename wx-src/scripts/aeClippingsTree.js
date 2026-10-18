@@ -155,6 +155,11 @@ let aeClippingsTree = {
     return selectedNode.extraClasses == "ae-separator";
   },
 
+  isSeparatorNode(aNode)
+  {
+    return aNode.extraClasses == "ae-separator";
+  },
+
   isEmpty()
   {
     let rv;
@@ -210,6 +215,15 @@ let aeClippingsTree = {
       let clippingID = parseInt(node.key);
       rv.push(clippingID);
     }
+
+    return rv;
+  },
+
+  getSelectedClippingNodes()
+  {
+    let rv = [];
+    let selectedNodes = [...this.orderedSelectedNodes.values()];
+    rv = selectedNodes.filter(aNode => !aNode.isFolder());
 
     return rv;
   },

@@ -2497,10 +2497,22 @@ function buildClippingsTree()
         labelSubmenu: {
           name: browser.i18n.getMessage("mnuEditLabel"),
           visible: function (aItemKey, aOpt) {
-            return (!aeClippingsTree.isFolderSelected());
+            if (aeClippingsTree.isFolderSelected()) {
+              return false;
+            }
+            return !(aeClippingsTree.isSeparatorSelected() && !aeClippingsTree.isMultipleClippingsSelected());
+
           },
           disabled(aKey, aOpt) {
-            return aeClippingsTree.isSeparatorSelected();
+            if (aeClippingsTree.isSeparatorSelected()) {
+              return true;
+            }
+            if (aeClippingsTree.isMultipleClippingsSelected()) {
+              let selectedNodes = aeClippingsTree.getSelectedClippingNodes();
+              let hasSeparator = selectedNodes.find(aNode => aeClippingsTree.isSeparatorNode(aNode));
+              return !!hasSeparator;
+            }
+            return false;
           },
           items: {
             labelNone: {
@@ -2645,10 +2657,21 @@ function buildClippingsTree()
           name: browser.i18n.getMessage("mnuCopyClipTxt"),
           className: "ae-menuitem",
           visible(aKey, aOpt) {
-            return (!aeClippingsTree.isFolderSelected());
+            if (aeClippingsTree.isFolderSelected()) {
+              return false;
+            }
+            return !(aeClippingsTree.isSeparatorSelected() && !aeClippingsTree.isMultipleClippingsSelected());
           },
           disabled(aKey, aOpt) {
-            return aeClippingsTree.isSeparatorSelected();
+            if (aeClippingsTree.isSeparatorSelected()) {
+              return true;
+            }
+            if (aeClippingsTree.isMultipleClippingsSelected()) {
+              let selectedNodes = aeClippingsTree.getSelectedClippingNodes();
+              let hasSeparator = selectedNodes.find(aNode => aeClippingsTree.isSeparatorNode(aNode));
+              return !!hasSeparator;
+            }
+            return false;
           },
         },
         insertSeparator: {
