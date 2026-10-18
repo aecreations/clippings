@@ -227,13 +227,13 @@ let aeClippingsTree = {
 
     let hasSrcURL = false;
     if (clippingNode.extraClasses !== undefined) {
-      let result = clippingNode.extraClasses.match(/ae\-clipping\-label\-[a-z]+/);
+      let result = clippingNode.extraClasses.match(/ae-clipping-label-[a-z]+/);
       if (result) {
         clippingNode.removeClass(result[0]);
       }
       else {
         // Labels with source URLs.
-        result = clippingNode.extraClasses.match(/ae\-clipping\-web\-label\-([a-z]+)|ae\-clipping\-web/);
+        result = clippingNode.extraClasses.match(/ae-clipping-web-label-([a-z]+)|ae-clipping-web/);
         if (result) {
           hasSrcURL = true;
           clippingNode.removeClass(result[0]);
@@ -267,14 +267,14 @@ let aeClippingsTree = {
 
     let label = '';
     if (clippingNode.extraClasses !== undefined) {
-      let result = clippingNode.extraClasses.match(/ae\-clipping\-label\-([a-z]+)/);
+      let result = clippingNode.extraClasses.match(/ae-clipping-label-([a-z]+)/);
       if (result) {
         label = result[1];
         clippingNode.removeClass(result[0]);
       }
       else {
         // Labels with source URLs.
-        result = clippingNode.extraClasses.match(/ae\-clipping\-web\-label\-([a-z]+)/);
+        result = clippingNode.extraClasses.match(/ae-clipping-web-label-([a-z]+)/);
         if (result) {
           label = result[1];
           clippingNode.removeClass(result[0]);
