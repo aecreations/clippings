@@ -100,7 +100,10 @@ async function focusOpenerWnd(aExecActionID)
 
   // Also focus the most recent browser tab.
   if (gRecentTabID) {
-    browser.tabs.update(gRecentTabID, {active: true});
+    try {
+      await browser.tabs.update(gRecentTabID, {active: true});
+    }
+    catch {}
   }
 }
 
