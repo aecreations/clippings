@@ -7,6 +7,7 @@
 
 
 const CHG_ACCENT_COLOR_DELAY_MS = 500;
+const CHG_SRCURL_BADGE_DELAY_MS = 300;
 
 let gOS;
 let gDlg = {};
@@ -185,7 +186,15 @@ $(async () => {
   $("#show-src-url-badge").prop("checked", prefs.srcWebPgURLBadge).on("click", aEvent => {
     aePrefs.setPrefs({srcWebPgURLBadge: aEvent.target.checked});
     browser.runtime.sendMessage({msgID: "rebuild-cxt-menu"});
-    // TO DO: Send message to Clippings Sidebar to refresh clippings icons.
+    setTimeout(async () => {
+      try {
+        await browser.runtime.sendMessage({
+          msgID: "toggle-src-url-badge",
+          isEnabled: aEvent.target.checked,
+        });
+      }
+      catch {}
+    }, CHG_SRCURL_BADGE_DELAY_MS);
   });
 
   $("#check-spelling").prop("checked", prefs.checkSpelling).on("click", aEvent => {

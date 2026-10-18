@@ -1346,6 +1346,15 @@ browser.runtime.onMessage.addListener(aRequest => {
     }
     break;
 
+  case "toggle-src-url-badge":
+    if (aRequest.isEnabled) {
+      aeClippingsTree.addSrcURLBadges();
+    }
+    else {
+      aeClippingsTree.removeSrcURLBadges();
+    }
+    break;
+
   default:
     break;
   }

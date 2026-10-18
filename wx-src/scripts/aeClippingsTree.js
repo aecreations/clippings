@@ -296,6 +296,36 @@ let aeClippingsTree = {
   },
 
 
+  addSrcURLBadges()
+  {
+    gClippingsDB.clippings.where("sourceURL").notEqual('').each((aItem, aCursor) => {
+      this.setClippingSrcURLBadge(aItem.id, true);
+    });
+  },
+
+
+  removeSrcURLBadges()
+  {
+    let tree = this.getTree();
+    tree.visit(aNode => {
+      if (!aNode.isFolder() && aNode.extraClasses) {
+        let clsNames = aNode.extraClasses;
+        let result = clsNames.match(/ae-clipping-web-label-([a-z]+)/);
+        if (result) {
+          let matchedClsName = result[0];
+          aNode.removeClass(matchedClsName);
+
+          let label = result[1];
+          aNode.addClass(`ae-clipping-label-${label}`);
+        }
+        else if (clsNames.includes("ae-clipping-web")) {
+          aNode.removeClass("ae-clipping-web");
+        }
+      }
+    });
+  },
+
+
   // Helper
   _sanitizeHTML(aHTMLStr)
   {
