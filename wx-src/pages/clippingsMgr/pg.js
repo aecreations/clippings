@@ -519,8 +519,8 @@ let gClippingsListener = {
 
   multiClippingsLabelChanged(aClippingIDs, aLabel, aOldLabels)
   {
-     updateMultiClippingNodesWithLabels(aClippingIDs, aLabel);
-     let newLabels = new Array(aClippingIDs.length).fill(aLabel, 0);
+    let newLabels = new Array(aClippingIDs.length).fill(aLabel, 0);
+    updateMultiClippingNodesWithLabels(aClippingIDs, newLabels);
 
     let state = {
       action: gCmd.ACTION_SETLABEL_MULTI,
@@ -3116,6 +3116,8 @@ function updateDisplay(aEvent, aData)
 
 function updateMultiClippingNodesWithLabels(aClippingIDs, aLabels)
 {
+  let tree = aeClippingsTree.getTree();
+
   for (let i = 0; i < aClippingIDs.length; i++) {
     aeClippingsTree.setClippingLabel(aClippingIDs[i], aLabels[i]);
 
@@ -3124,7 +3126,7 @@ function updateMultiClippingNodesWithLabels(aClippingIDs, aLabels)
     if (!tree.activeNode.isFolder()) {
       let actvClippingID = parseInt(tree.activeNode.key);
       if (aClippingIDs.includes(actvClippingID)) {
-        gClippingLabelPicker.selectedLabel = label;
+        gClippingLabelPicker.selectedLabel = aLabels[i];
       }
     }
   }

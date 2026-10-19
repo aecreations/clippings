@@ -1631,7 +1631,7 @@ function clippingsMgrCmds()
         let newLabels = new Array(clippingIDs.length).fill(aLabel, 0);
         await this.setMultiLabelsIntrl(clippingIDs, oldLabels, newLabels, gCmd.UNDO_STACK);
 
-        updateMultiClippingNodesWithLabels(clippingIDs, aLabel);
+        updateMultiClippingNodesWithLabels(clippingIDs, newLabels);
       }
       else {
         if (selectedNode.isFolder()) {
