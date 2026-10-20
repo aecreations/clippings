@@ -39,9 +39,11 @@ const aeConst = Object.freeze({
   ROOT_FOLDER_ID: 0,
   DELETED_ITEMS_FLDR_ID: -1,
 
-  // Origin of clipping/folder creation for Clippings listener
+  // Origin of clipping/folder creation and other actions
   ORIGIN_HOSTAPP: 1,
   ORIGIN_CLIPPINGS_MGR: 2,
+  ORIGIN_SIDEBAR: 3,
+  ORIGIN_EXT_PREFS: 4,
 
   // Export to file
   CLIPPINGS_EXPORT_FILENAME: "clippings.json",

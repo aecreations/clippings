@@ -2095,6 +2095,7 @@ function clippingsMgrCmds()
       browser.runtime.sendMessage({
         msgID: "refresh-synced-clippings",
         rebuildClippingsMenu: false,
+        origin: aeConst.ORIGIN_CLIPPINGS_MGR,
       });
 
       aeDialog.cancelDlgs();
@@ -2110,7 +2111,7 @@ function clippingsMgrCmds()
       }
 
       setTimeout(async () => {
-        await rebuildClippingsTree();
+        await rebuildClippingsTree(true);
         if (!aHideSyncProgress) {
           gDlg.syncProgress.close();
         }

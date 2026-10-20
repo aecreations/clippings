@@ -141,6 +141,8 @@ let gClippingsListener = {
 };
 
 let gSyncClippingsListener = {
+  reloadOrigin: null,
+
   onActivate(aSyncFolderID)
   {
     // No need to do anything here. The Clippings context menu is automatically
@@ -221,10 +223,16 @@ let gSyncClippingsListener = {
       }
     }
 
+    let msg = {msgID: "sync-fldr-reload-finished"};
+    if (this.reloadOrigin) {
+      msg.origin = this.reloadOrigin;
+    }
     try {
-      await browser.runtime.sendMessage({msgID: "sync-fldr-reload-finished"});
+      await browser.runtime.sendMessage(msg);
     }
     catch {}
+
+    this.reloadOrigin = null;
   },
 };
 
@@ -2987,6 +2995,9 @@ browser.runtime.onMessage.addListener(aRequest => {
     return enableSyncClippings(aRequest.isEnabled);
 
   case "refresh-synced-clippings":
+    if (aRequest.origin) {
+      gSyncClippingsListener.reloadOrigin = aRequest.origin;
+    }
     refreshSyncedClippings(aRequest.rebuildClippingsMenu).catch(aErr => {});
     break;
     

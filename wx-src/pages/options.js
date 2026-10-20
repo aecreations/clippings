@@ -763,6 +763,7 @@ function initDialogs()
     browser.runtime.sendMessage({
       msgID: "refresh-synced-clippings",
       rebuildClippingsMenu,
+      origin: aeConst.ORIGIN_EXT_PREFS,
     });
     browser.runtime.sendMessage({
       msgID: "sync-activated",
