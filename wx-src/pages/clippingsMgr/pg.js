@@ -2873,7 +2873,7 @@ async function rebuildClippingsTree(aFromReloadBtn=false)
         }
         let node = tree.getNodeByKey(activeNodeKey);
         if (node) {
-          node.makeVisible().done(() => {
+          node.makeVisible({noAnimation: true}).done(() => {
             node.setActive();
           });
         }

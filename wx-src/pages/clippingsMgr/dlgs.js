@@ -534,6 +534,7 @@ function clippingsMgrDlgs()
 
             gCmd.undoStack.clear();
             gCmd.redoStack.clear();
+            gActiveTreeNodeHistory.clear();
             importFile(false);
           });
         }).catch(aErr => {
