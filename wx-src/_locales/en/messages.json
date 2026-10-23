@@ -25,7 +25,7 @@
   },
 
   "cmdSubjDesc": {
-    "message": "Add clipping to message subject",
+    "message": "Add clipping to subject field",
     "description": "Keyboard shortcut description in Manage Extension Shortcuts"
   },
 
@@ -1275,7 +1275,7 @@
 
   "htmlPasteDesc": {
     "message": "An HTML-formatted clipping will always be pasted as plain text if pasting into a plain textbox, or if the clipping contains restricted tags such as <script>, <applet>, <object>, <iframe>, etc.",
-    "description": "Extension preferences page"
+    "description": "Extension preferences page (Firefox only)"
   },
 
   "htmlPasteDescTB": {
@@ -1286,16 +1286,16 @@
 
   "prefsShortcutMode": {
     "message": "Activate shortcut key mode by pressing these keys:",
-    "description": "Extension preferences page"
+    "description": "Extension preferences page (Firefox only)"
   },
 
   "prefsShctMode": {
-    "message": "Activate shortcut key mode by pressing $1",
+    "message": "Activate shortcut key mode for message pane by pressing $1",
     "description": "Extension preferences page (Thunderbird only)"
   },
 
   "prefsSubjShctMode": {
-    "message": "Activate shortcut key mode for message subject by pressing $1",
+    "message": "Activate shortcut key mode for subject field by pressing $1",
     "description": "Extension preferences page (Thunderbird only)"
   },
 
