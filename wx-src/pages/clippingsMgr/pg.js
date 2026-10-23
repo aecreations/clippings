@@ -189,13 +189,20 @@ let gClippingsListener = {
       newNode = tree.rootNode.addNode(newNodeData);
     }
 
-    if (aData.sourceURL && gPrefs.srcWebPgURLBadge) {
-      newNode.addClass("ae-clipping-web");
-    }
-
     if (aData.label) {
-      // TO DO: Handle clippings with source web page URL.
-      newNode.addClass(`ae-clipping-label-${aData.label}`);
+      let clsName;
+      if (aData.sourceURL && gPrefs.srcWebPgURLBadge) {
+        clsName = `ae-clipping-web-label-${aData.label}`;
+      }
+      else {
+        clsName = `ae-clipping-label-${aData.label}`;
+      }
+      newNode.addClass(clsName);
+    }
+    else {
+      if (aData.sourceURL && gPrefs.srcWebPgURLBadge) {
+        newNode.addClass("ae-clipping-web");
+      }
     }
 
     if (aData.separator) {
