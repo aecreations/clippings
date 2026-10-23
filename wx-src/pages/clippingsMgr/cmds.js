@@ -1845,6 +1845,7 @@ function clippingsMgrCmds()
 
       }).then(aNumUpd => {
         gDlg.removeAllSrcURLsConfirm.openPopup();
+        this._toggleSrcURLBadge(false);
 
         if (gPrefs.syncClippings) {
           browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"})
@@ -2283,6 +2284,7 @@ function clippingsMgrCmds()
         await Promise.all(numUpdates);
         this.redoStack.push(undo);
         gDlg.restoreSrcURLs.openPopup();
+        await this._toggleSrcURLBadge(true);
 
         if (gPrefs.syncClippings) {
           browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"})
@@ -2436,6 +2438,7 @@ function clippingsMgrCmds()
         await Promise.all(numUpdates);
         this.undoStack.push(redo);
         gDlg.removeAllSrcURLsConfirm.openPopup();
+        await this._toggleSrcURLBadge(false);
 
         if (gPrefs.syncClippings) {
           browser.runtime.sendMessage({msgID: "push-sync-fldr-updates"})
@@ -2522,6 +2525,21 @@ function clippingsMgrCmds()
       else if (aDestUndoStack == this.REDO_STACK) {
         this.redoStack.push(aState);
       }
+    },
+
+    async _toggleSrcURLBadge(aIsEnabled)
+    {
+      if (aIsEnabled) {
+        aeClippingsTree.addSrcURLBadges();
+      }
+      else {
+        aeClippingsTree.removeSrcURLBadges();
+      }
+
+      await browser.runtime.sendMessage({
+        msgID: "toggle-src-url-badge",
+        isEnabled: aIsEnabled,
+      })
     },
   };
 }
