@@ -150,6 +150,10 @@ let gClippingsListener = {
       title: aeClippingsTree.sanitizeTreeNodeTitle(aeClippingsTree.DEBUG ? `${aData.name} [key=${aID}C]` : aData.name)
     };
 
+    if (aData.sourceURL && gPrefs.srcWebPgURLBadge) {
+      newNodeData.tooltip = aeClippingsTree.getSrcURLTooltipText(aData.sourceURL);
+    }
+
     let newNode = null;
 
     if (selectedNode) {
@@ -425,16 +429,26 @@ let gClippingsListener = {
     }
     else if (aData.sourceURL != aOldData.sourceURL) {
       if (aData.sourceURL) {
+        if (gPrefs.srcWebPgURLBadge) {
+          changedNode.fromDict({
+            tooltip: aeClippingsTree.getSrcURLTooltipText(aData.sourceURL),
+          });
+        }
+
         if (aData.label) {
-          // TO DO: Add source URL badge to clippings with labels.
+          if (!changedNode.extraClasses) {
+            changedNode.addClass(`ae-clipping-web-label-${aData.label}`);
+          }
         }
         else {
           changedNode.addClass("ae-clipping-web");
         }
       }
       else {
+        changedNode.fromDict({tooltip: null});
         if (aData.label) {
-          // TO DO: Remove badge on labelled clipping.
+          changedNode.removeClass(`ae-clipping-web-label-${aData.label}`);
+          changedNode.addClass(`ae-clipping-label-${aData.label}`);
         }
         else {
           changedNode.removeClass("ae-clipping-web");
@@ -940,7 +954,7 @@ let gSrcURLBar = {
       // they have a source URL.
       if ((this._oldVal == '' && updatedURL != '')
           || (this._oldVal != '' && updatedURL == '')) {
-        aeClippingsTree.setClippingSrcURLBadge(clippingID, !!updatedURL);
+        aeClippingsTree.setClippingSrcURLBadge(clippingID, updatedURL);
         await browser.runtime.sendMessage({msgID: "rebuild-cxt-menu"});
       }
     }

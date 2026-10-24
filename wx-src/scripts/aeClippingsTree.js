@@ -96,6 +96,10 @@ let aeClippingsTree = {
                   clippingNode.extraClasses = "ae-clipping-web";
                 }
               }
+
+              if (aItem.sourceURL && aPrefs.srcWebPgURLBadge) {
+                clippingNode.tooltip = this.getSrcURLTooltipText(aItem.sourceURL);
+              }
             }
 
             if ("displayOrder" in aItem) {
@@ -269,7 +273,7 @@ let aeClippingsTree = {
   },
 
 
-  setClippingSrcURLBadge(aClippingID, aHasSourceURL)
+  setClippingSrcURLBadge(aClippingID, aSourceURL)
   {
     let tree = this.getTree();
     let key = aClippingID + "C";
@@ -297,8 +301,11 @@ let aeClippingsTree = {
     }
 
     let className = '';
-    if (aHasSourceURL) {
+    if (aSourceURL) {
       className = label ? `ae-clipping-web-label-${label}` : "ae-clipping-web";
+      clippingNode.fromDict({
+        tooltip: this.getSrcURLTooltipText(aSourceURL),
+      });
     }
     else {
       className = label ? `ae-clipping-label-${label}` : '';
@@ -313,7 +320,7 @@ let aeClippingsTree = {
   addSrcURLBadges()
   {
     gClippingsDB.clippings.where("sourceURL").notEqual('').each((aItem, aCursor) => {
-      this.setClippingSrcURLBadge(aItem.id, true);
+      this.setClippingSrcURLBadge(aItem.id, aItem.sourceURL);
     });
   },
 
@@ -335,8 +342,17 @@ let aeClippingsTree = {
         else if (clsNames.includes("ae-clipping-web")) {
           aNode.removeClass("ae-clipping-web");
         }
+
+        aNode.fromDict({tooltip: null});
       }
     });
+  },
+
+
+  getSrcURLTooltipText(aURL)
+  {
+    let rv = `${browser.i18n.getMessage("labelSrcURL")}\n${aURL}`;
+    return rv;
   },
 
 

@@ -1821,6 +1821,7 @@ function clippingsMgrCmds()
 
     removeAllSrcURLsIntrl()
     {
+      let tree = aeClippingsTree.getTree();
       let clippingsWithSrcURLs = [];
 
       gClippingsDB.clippings.where("sourceURL").notEqual("").each((aItem, aCursor) => {
@@ -1834,6 +1835,9 @@ function clippingsMgrCmds()
         }
 
         clippingsWithSrcURLs.push(clipping);
+
+        let clippingNode = tree.getNodeByKey(aItem.id + "C");
+        clippingNode.fromDict({tooltip: null});
 
       }).then(() => {
         this._unsetClippingsUnchangedFlag();
