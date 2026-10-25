@@ -53,7 +53,7 @@ $(async () => {
   gPrefs = await aePrefs.getAllPrefs();
 
   if (gPrefs.showNewClippingOpts) {
-    expandOptions(true);
+    expandOptions(true, true);
   }
 
   aeVisual.enableAccentColor(gPrefs.useAccentColor);
@@ -149,8 +149,10 @@ $(async () => {
 });
 
 
-async function expandOptions(aIsOptionsExpanded)
+async function expandOptions(aIsOptionsExpanded, aSuppressZoomAdjust=false)
 {
+  let tab = await browser.tabs.getCurrent();
+  let zoom = await browser.tabs.getZoom(tab.id);
   let lang = browser.i18n.getUILanguage();
 
   if (aIsOptionsExpanded) {
@@ -165,6 +167,10 @@ async function expandOptions(aIsOptionsExpanded)
     if (lang == "uk" || lang.startsWith("fr") || lang.startsWith("pt")
         || lang.startsWith("es")) {
       height += DLG_HEIGHT_ADJ_LOCALE;
+    }
+
+    if (!aSuppressZoomAdjust) {
+      height = aeInterxn.getScaledDlgSize(height, zoom);
     }
 
     if (!gIsVertExpanded) {
@@ -182,6 +188,10 @@ async function expandOptions(aIsOptionsExpanded)
     }
     else if (gOS == "linux") {
       height += DLG_HEIGHT_ADJ_LINUX;
+    }
+
+    if (!aSuppressZoomAdjust) {
+      height = aeInterxn.getScaledDlgSize(height, zoom);
     }
 
     $("#clipping-options").hide();

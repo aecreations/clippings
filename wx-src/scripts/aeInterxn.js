@@ -205,6 +205,23 @@ let aeInterxn = {
   },
 
 
+  getScaledDlgSize(aSize, aZoom)
+  {
+    let rv;
+    if (aZoom > 1 && aZoom <= 1.5) {
+      rv = Math.floor(aSize * aZoom);
+    }
+    else if (aZoom > 1.5) {
+      rv = Math.floor(aSize * 1.5);
+    }
+    else {
+      rv = aSize;
+    }
+
+    return rv;
+  },
+
+
   //
   // Private helper methods
   //

@@ -17,7 +17,7 @@ const MAX_RECENT_CLIPPING_NAME_LEN = 32;
 
 let gClippingsDB, gPasteMode, gOS, gHostAppVer, gRecentClippingID;
 let gBrowserTabID = null;
-let gIsVertExpanded;
+let gIsVertExpanded, gDlgTabID;
 
 let gAutocompleteMenu = {
   _SCRL_LENGTH: 34,
@@ -301,7 +301,10 @@ $(async () => {
 
   gIsVertExpanded = Boolean(params.get("vexp"));
   gPasteMode = await aePrefs.getPref("pastePromptAction");
-  
+
+  let tab = await browser.tabs.getCurrent();
+  gDlgTabID = tab.id;
+
   if (gPasteMode == aeConst.PASTEACTION_SHORTCUT_KEY) {
     $(".deck > #search-by-name").hide();
     $(".deck > #paste-by-shortcut-key").show();
@@ -360,10 +363,12 @@ $(async () => {
     // browser.windows.create won't show contents unless resized.
     // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1402110>
     let wnd = await browser.windows.getCurrent();
-    browser.windows.update(wnd.id, {
+    let updWnd = await browser.windows.update(wnd.id, {
       width: wnd.width + 1,
       focused: true,
     });
+
+    await aeInterxn.initWndZoom(updWnd.width, updWnd.height);
   }
 });
 
@@ -414,19 +419,21 @@ $(window).on("keydown", async (aEvent) => {
     }
 
     aEvent.preventDefault();
+    let zoom = await browser.tabs.getZoom(gDlgTabID);
     
     if (gPasteMode == aeConst.PASTEACTION_SHORTCUT_KEY) {
       gPasteMode = aeConst.PASTEACTION_SEARCH_CLIPPING;
       $(".deck > #paste-by-shortcut-key").hide();
 
       if (!gIsVertExpanded) {
-        let updWndInfo = {
-          height: WNDH_SEARCH_CLIPPING,
-        };
+        let height = WNDH_SEARCH_CLIPPING;
         if (gOS == "linux") {
-          updWndInfo.height += DLG_HEIGHT_ADJ_LINUX;
+          height += DLG_HEIGHT_ADJ_LINUX;
         }
 
+        let updWndInfo = {
+          height: aeInterxn.getScaledDlgSize(height, zoom),
+        };
         await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, updWndInfo);
       }
       
@@ -439,13 +446,14 @@ $(window).on("keydown", async (aEvent) => {
       $(".deck > #search-by-name").hide();
 
       if (!gIsVertExpanded) {
-        let updWndInfo = {
-          height: WNDH_SHORTCUT_KEY,
-        };
+        let height = WNDH_SHORTCUT_KEY;
         if (gOS == "linux") {
-          updWndInfo.height += DLG_HEIGHT_ADJ_LINUX;
+          height += DLG_HEIGHT_ADJ_LINUX;
         }
 
+        let updWndInfo = {
+          height: aeInterxn.getScaledDlgSize(height, zoom),
+        }
         await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, updWndInfo);
       }
       
@@ -545,7 +553,8 @@ async function initShortcutList()
   $("#shortcut-list-toolbar > #close").on("click", aEvent => {
     closeDlg();
   });
-  
+
+  let zoom = await browser.tabs.getZoom(gDlgTabID);
   let updWndInfo = {
     width: WNDW_SHORTCUT_LIST,
     height: WNDH_SHORTCUT_LIST,
@@ -556,6 +565,9 @@ async function initShortcutList()
   else if (gOS == "linux") {
     updWndInfo.height += DLG_HEIGHT_ADJ_LINUX;
   }
+
+  updWndInfo.height = aeInterxn.getScaledDlgSize(updWndInfo.height, zoom);
+  updWndInfo.width = aeInterxn.getScaledDlgSize(updWndInfo.width, zoom);
 
   await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, updWndInfo);
   aeImportExport.getShortcutKeyListHTML(false).then(aShctListHTML => {
