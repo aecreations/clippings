@@ -781,14 +781,14 @@ function buildClippingsTree()
     {
       // this === item.$node
       $(`<span>${browser.i18n.getMessage("labelLabel")}<ul>`
-          + '<li class="label-none" title="none" data-label="">None</li>'
-          + '<li class="label-red" title="red" data-label="red">Red</li>'
-          + '<li class="label-orange" title="orange" data-label="orange">Orange</li>'
-          + '<li class="label-yellow" title="yellow" data-label="yellow">Yellow</li>'
-          + '<li class="label-green" title="green" data-label="green">Green</li>'
-          + '<li class="label-blue" title="blue" data-label="blue">Blue</li>'
-          + '<li class="label-purple" title="purple" data-label="purple">Purple</li>'
-          + '<li class="label-grey" title="gray" data-label="grey">Gray</li></ul></span>')
+          + `<li class="label-none" title="${browser.i18n.getMessage("none")}" data-label="">None</li>`
+          + `<li class="label-red" title="${browser.i18n.getMessage("labelRed")}" data-label="red">Red</li>`
+          + `<li class="label-orange" title="${browser.i18n.getMessage("labelOrange")}" data-label="orange">Orange</li>`
+          + `<li class="label-yellow" title="${browser.i18n.getMessage("labelYellow")}" data-label="yellow">Yellow</li>`
+          + `<li class="label-green" title="${browser.i18n.getMessage("labelGreen")}" data-label="green">Green</li>`
+          + `<li class="label-blue" title="${browser.i18n.getMessage("labelBlue")}" data-label="blue">Blue</li>`
+          + `<li class="label-purple" title="${browser.i18n.getMessage("labelPurple")}" data-label="purple">Purple</li>`
+          + `<li class="label-grey" title="${browser.i18n.getMessage("labelGrey")}" data-label="grey">Gray</li></ul></span>`)
           .appendTo(this)
           .on("click", "li", function () {
             gCmd.setLabel($(this).attr("data-label"));
