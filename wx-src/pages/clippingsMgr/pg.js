@@ -157,6 +157,8 @@ let gClippingsListener = {
     let newNode = null;
 
     if (selectedNode) {
+      selectedNode.setSelected(false);
+
       if (aData.parentFolderID == aeConst.ROOT_FOLDER_ID) {
         if (aData.separator) {
           let childNodes = tree.rootNode.getChildren();
@@ -283,6 +285,8 @@ let gClippingsListener = {
     let newNode = null;
     
     if (selectedNode) {
+      selectedNode.setSelected(false);
+
       if (aData.parentFolderID == aeConst.ROOT_FOLDER_ID) {
         newNode = tree.rootNode.addNode(newNodeData);
       }
