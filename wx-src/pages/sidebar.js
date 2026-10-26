@@ -21,6 +21,356 @@ let gMsgBarTimerID = null;
 let gPermissionReq = new aePermReqInfo();
 let gWndID;
 
+let gClippingsListener = {
+  origin: aeConst.ORIGIN_SIDEBAR,
+
+  newClippingCreated(aID, aData, aOrigin)
+  {
+    if (gIsClippingsTreeEmpty) {
+      unsetEmptyClippingsState();
+      $("#welcome-content").hide();
+      $("#normal-content").show();
+    }
+
+    let tree = aeClippingsTree.getTree();
+    let selectedNode = tree.activeNode;
+    let newNodeData = {
+      key: aID + "C",
+      title: aeClippingsTree.sanitizeTreeNodeTitle(aeClippingsTree.DEBUG ? `${aData.name} [key=${aID}C]` : aData.name)
+    };
+
+    if (aData.sourceURL && gPrefs.srcWebPgURLBadge) {
+      newNodeData.tooltip = aeClippingsTree.getSrcURLTooltipText(aData.sourceURL);
+    }
+
+    let newNode = null;
+
+    if (selectedNode) {
+      selectedNode.setSelected(false);
+
+      if (aData.parentFolderID == aeConst.ROOT_FOLDER_ID) {
+        if (aData.separator) {
+          let childNodes = tree.rootNode.getChildren();
+          // For separators only:
+          // Need to subtract 1 from display order due to starting index of 1
+          // for the root folder to accommodate the Synced Clippings folder.
+          let idx = aData.displayOrder - 1;
+          idx < 0 && (idx = 0);
+          newNodeData.title = "<hr>";
+          let siblingNode = childNodes[idx];
+          newNode = siblingNode.appendSibling(newNodeData);
+        }
+        else {
+          newNode = tree.rootNode.addNode(newNodeData);
+        }
+      }
+      else {
+        let parentNode = tree.getNodeByKey(aData.parentFolderID + "F");
+        if (aData.separator) {
+          let childNodes = parentNode.getChildren();
+          let idx = aData.displayOrder;
+          idx < 0 && (idx = 0);
+          newNodeData.title = "<hr>";
+          let siblingNode = childNodes[idx];
+          newNode = siblingNode.appendSibling(newNodeData)
+        }
+        else {
+          newNode = parentNode.addNode(newNodeData);
+        }
+      }
+    }
+    else {
+      // No clippings or folders.
+      newNode = tree.rootNode.addNode(newNodeData);
+    }
+
+    if (aData.label) {
+      let clsName;
+      if (aData.sourceURL && gPrefs.srcWebPgURLBadge) {
+        clsName = `ae-clipping-web-label-${aData.label}`;
+      }
+      else {
+        clsName = `ae-clipping-label-${aData.label}`;
+      }
+      newNode.addClass(clsName);
+    }
+    else {
+      if (aData.sourceURL && gPrefs.srcWebPgURLBadge) {
+        newNode.addClass("ae-clipping-web");
+      }
+    }
+
+    if (aData.separator) {
+      newNode.addClass("ae-separator");
+    }
+  },
+
+
+  newFolderCreated(aID, aData, aOrigin)
+  {
+    if (gIsClippingsTreeEmpty) {
+      unsetEmptyClippingsState();
+      $("#welcome-content").hide();
+      $("#normal-content").show();
+    }
+
+    let tree = aeClippingsTree.getTree();
+    let selectedNode = tree.activeNode;
+    let newNodeData = {
+      key: aID + "F",
+      title: aeClippingsTree.sanitizeTreeNodeTitle(aeClippingsTree.DEBUG ? `${aData.name} [key=${aID}F]` : aData.name),
+      folder: true,
+      children: []
+    };
+
+    if (aID == gPrefs.syncFolderID) {
+      newNodeData.extraClasses = "ae-synced-clippings-fldr";
+      if (gPrefs.isSyncReadOnly) {
+        newNodeData.extraClasses += " ae-synced-clippings-readonly";
+      }
+    }
+
+    let newNode = null;
+
+    if (selectedNode) {
+      selectedNode.setSelected(false);
+
+      if (aData.parentFolderID == aeConst.ROOT_FOLDER_ID) {
+        newNode = tree.rootNode.addNode(newNodeData);
+      }
+      else {
+        let parentNode = tree.getNodeByKey(aData.parentFolderID + "F");
+        newNode = parentNode.addNode(newNodeData);
+      }
+    }
+    else {
+      // No clippings or folders.
+      newNode = tree.rootNode.addNode(newNodeData);
+    }
+  },
+
+
+  clippingChanged(aID, aData, aOldData)
+  {
+    let tree = aeClippingsTree.getTree();
+    let changedNode = tree.getNodeByKey(aID + "C");
+
+    if (aData.parentFolderID != aOldData.parentFolderID) {
+      if (this._isFlaggedForDelete(aData)) {
+        this._removeClippingsTreeNode(aID + "C");
+      }
+      else {
+        log("Clippings::sidebar.js: gClippingsListener.clippingChanged(): Handling clipping move");
+        if (changedNode) {
+          let targParentNode;
+          if (aData.parentFolderID == aeConst.ROOT_FOLDER_ID) {
+            targParentNode = tree.rootNode;
+          }
+          else {
+            targParentNode = tree.getNodeByKey(aData.parentFolderID + "F");
+          }
+          changedNode.moveTo(targParentNode, "child");
+        }
+        else {
+          // Undoing delete.
+          let newNodeData = {
+            key: aID + "C",
+            title: aeClippingsTree.sanitizeTreeNodeTitle(aeClippingsTree.DEBUG ? `${aData.name} [key=${aID}C]` : aData.name)
+          };
+
+          if (aData.separator) {
+            newNodeData.extraClasses = "ae-separator";
+            newNodeData.title = "<hr>";
+            if (aData.parentFolderID == aeConst.ROOT_FOLDER_ID) {
+              // Position the separator node in the tree list.
+              // For the root folder, displayOrder starts at 1 to accommodate
+              // the Synced Clippings folder.
+              let rootNodes = tree.rootNode.getChildren();
+              let sibling = rootNodes[aData.displayOrder];
+              if (sibling) {
+                changedNode = sibling.addNode(newNodeData, "before");
+              }
+              else {
+                // The given displayOrder is invalid.
+                sibling = tree.rootNode.getLastChild();
+                changedNode = sibling.appendSibling(newNodeData);
+              }
+            }
+            else {
+              let parentNode = tree.getNodeByKey(aData.parentFolderID + "F");
+              let fldrNodes = parentNode.getChildren();
+              let sibling = fldrNodes[aData.displayOrder + 1];
+              if (sibling) {
+                changedNode = sibling.addNode(newNodeData, "before");
+              }
+              else {
+                sibling = parentNode.getLastChild();
+                changedNode = sibling.appendSibling(newNodeData);
+              }
+            }
+          }
+          else {
+            if (aData.parentFolderID == aeConst.ROOT_FOLDER_ID) {
+              changedNode = tree.rootNode.addNode(newNodeData);
+            }
+            else {
+              let parentNode = tree.getNodeByKey(aData.parentFolderID + "F");
+              changedNode = parentNode.addNode(newNodeData);
+            }
+
+            if (aData.label) {
+              changedNode.addClass(`ae-clipping-label-${aData.label}`);
+            }
+          }
+        }
+      }
+    }
+    else if (aData.name != aOldData.name) {
+      changedNode.setTitle(aeClippingsTree.sanitizeTreeNodeTitle(aData.name));
+    }
+    else if (aData.sourceURL != aOldData.sourceURL) {
+      if (aData.sourceURL) {
+        if (gPrefs.srcWebPgURLBadge) {
+          changedNode.fromDict({
+            tooltip: aeClippingsTree.getSrcURLTooltipText(aData.sourceURL),
+          });
+        }
+
+        if (aData.label) {
+          if (!changedNode.extraClasses) {
+            changedNode.addClass(`ae-clipping-web-label-${aData.label}`);
+          }
+        }
+        else {
+          changedNode.addClass("ae-clipping-web");
+        }
+      }
+      else {
+        changedNode.fromDict({tooltip: null});
+        if (aData.label) {
+          changedNode.removeClass(`ae-clipping-web-label-${aData.label}`);
+          changedNode.addClass(`ae-clipping-label-${aData.label}`);
+        }
+        else {
+          changedNode.removeClass("ae-clipping-web");
+        }
+      }
+    }
+    else if (aData.label != aOldData.label) {
+      aeClippingsTree.setClippingLabel(aID, aData.label);
+    }
+  },
+
+
+  folderChanged(aID, aData, aOldData)
+  {
+    let tree = aeClippingsTree.getTree();
+
+    if (aData.parentFolderID != aOldData.parentFolderID) {
+      if (this._isFlaggedForDelete(aData)) {
+        this._removeClippingsTreeNode(aID + "F");
+      }
+      else {
+        log("Clippings::sidebar.js: :gClippingsListener.folderChanged: Handling folder move");
+        let changedNode = tree.getNodeByKey(aID + "F");
+        if (changedNode) {
+          let targParentNode;
+          if (aData.parentFolderID == aeConst.ROOT_FOLDER_ID) {
+            targParentNode = tree.rootNode;
+          }
+          else {
+            targParentNode = tree.getNodeByKey(aData.parentFolderID + "F");
+          }
+          changedNode.moveTo(targParentNode, "child");
+        }
+        else {
+          // Undoing delete.
+          let newNodeData = {
+            key: aID + "F",
+            title: aeClippingsTree.sanitizeTreeNodeTitle(aeClippingsTree.DEBUG ? `${aData.name} [key=${aID}C]` : aData.name),
+            folder: true,
+            children: []
+          };
+
+          if (aData.parentFolderID == aeConst.ROOT_FOLDER_ID) {
+            changedNode = tree.rootNode.addNode(newNodeData);
+          }
+          else {
+            let parentNode = tree.getNodeByKey(aData.parentFolderID + "F");
+            changedNode = parentNode.addNode(newNodeData);
+          }
+        }
+      }
+    }
+    else if (aData.name != aOldData.name) {
+      let changedNode = tree.getNodeByKey(aID + "F");
+      changedNode.setTitle(aeClippingsTree.sanitizeTreeNodeTitle(aData.name));
+    }
+  },
+
+
+  clippingLabelChanged(aClippingID, aLabel)
+  {
+    aeClippingsTree.setClippingLabel(aClippingID, aLabel);
+  },
+
+  multiClippingsLabelChanged(aClippingIDs, aNewLabels)
+  {
+    updateMultiClippingNodesWithLabels(aClippingIDs, aNewLabels);
+  },
+
+
+  // Helper methods
+  _removeClippingsTreeNode: function (aIDWithSuffix)
+  {
+    let tree = aeClippingsTree.getTree();
+    let targetNode = tree.getNodeByKey(aIDWithSuffix);
+    let deletedNodeIdx = targetNode.getIndex();
+    let prevSibNode = targetNode.getPrevSibling();
+    let nextSibNode = targetNode.getNextSibling();
+    let parentNode = targetNode.getParent();
+
+    targetNode.remove();
+
+    if (tree.count() == 0) {
+      tree.options.icon = false;
+      let emptyMsgNode = setEmptyClippingsState();
+      tree.rootNode.addNode(emptyMsgNode);
+    }
+    else {
+      // Select the node that used to be occupied by the delete node. If the
+      // deleted node was the last node of its parent folder, then select the
+      // last child of the parent.
+      if (nextSibNode) {
+        nextSibNode.setActive();
+      }
+      else if (prevSibNode) {
+        prevSibNode.setActive();
+      }
+      else {
+        if (parentNode.isRootNode()) {
+          let parentNodes = parentNode.getChildren();
+          if (deletedNodeIdx < parentNodes.length) {
+            parentNodes[deletedNodeIdx].setActive();
+          }
+          else {
+            parentNodes[parentNodes.length].setActive();
+          }
+        }
+        else {
+          parentNode.setActive();
+        }
+      }
+    }
+  },
+
+  _isFlaggedForDelete: function (aItem)
+  {
+    return (aItem.parentFolderID == aeConst.DELETED_ITEMS_FLDR_ID);
+  }
+};
+
+
 let gSyncClippingsListener = {
   onActivate(aSyncFolderID)
   {
@@ -1297,17 +1647,29 @@ browser.runtime.onMessage.addListener(aRequest => {
 
   switch (aRequest.msgID) {
   case "new-clipping-created":
+    gClippingsListener.newClippingCreated(aRequest.newClippingID, aRequest.newClipping, aRequest.origin);
+    break;
+
   case "new-folder-created":
+    gClippingsListener.newFolderCreated(aRequest.newFolderID, aRequest.newFolder, aRequest.origin);
+    break;
+
   case "clipping-changed":
+    gClippingsListener.clippingChanged(aRequest.clippingID, aRequest.clippingData, aRequest.oldClippingData);
+    break;
+
   case "folder-changed":
+    gClippingsListener.folderChanged(aRequest.folderID, aRequest.folderData, aRequest.oldFolderData);
+    break;
+
+  case "multi-clipping-label-changed":
+    gClippingsListener.multiClippingsLabelChanged(aRequest.clippingIDs, aRequest.newLabels);
+    break;
+
   case "copy-finished":
   case "dnd-move-finished":
   case "import-finished":
     rebuildClippingsTree();
-    break;
-
-  case "multi-clipping-label-changed":
-    updateMultiClippingNodesWithLabels(aRequest.clippingIDs, aRequest.newLabels);
     break;
 
   case "sync-activated":
