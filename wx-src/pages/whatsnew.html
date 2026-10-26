@@ -4,66 +4,66 @@
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
 <html>
-  <head>
-    <meta charset="utf-8"/>
-    <title data-i18n="extName"></title>
+<head>
+  <meta charset="utf-8">
+  <title data-i18n="extName"></title>
 
-    <link rel="shortcut icon" href="../img/clippings16.svg"/>
-    <link rel="stylesheet" href="whatsnew.css"/>
-  </head>
+  <link rel="shortcut icon" href="../img/clippings16.svg">
+  <link rel="stylesheet" href="whatsnew.css">
+</head>
 
-  <body>
-    <main id="content">
-      <div id="dlg-hdr">
-        <img id="ext-icon" src="../img/icon96.svg" role="presentation"/>
-        <h1 data-i18n="extName"></h1>
-        <p id="ext-desc" data-i18n="extDesc"></p>
+<body>
+  <main id="content">
+    <div id="dlg-hdr">
+      <img id="ext-icon" src="../img/icon96.svg" role="presentation">
+      <h1 data-i18n="extName"></h1>
+      <p id="ext-desc" data-i18n="extDesc"></p>
+    </div>
+
+    <div id="dlg-content">
+      <h2 data-i18n="newVerHdg"></h2>
+      <p id="latest-ver"></p>
+
+      <h2 id="whats-new-hdg" data-i18n="whatsNew"></h2>
+      <h3 id="ver-subhead"></h3>
+
+      <ul>
+        <li id="whats-new-fx1"></li>
+        <li data-i18n="whatsNewFx2"></li>
+        <li data-i18n="whatsNewFx3"></li>
+        <li data-i18n="whatsNew1"></li>
+        <li data-i18n="whatsNew2"></li>
+        <li data-i18n="whatsNewFx4"></li>
+      </ul>
+
+      <div id="contribute">
+        <h2 data-i18n="contribHdg"></h2>
+        <p id="contrib-cta"></p>
       </div>
 
-      <div id="dlg-content">
-	<h2 data-i18n="newVerHdg"></h2>
-        <p id="latest-ver"></p>
-
-	<h2 id="whats-new-hdg" data-i18n="whatsNew"></h2>
-        <h3 id="ver-subhead"></h3>
-
-	<ul>
-	  <li data-i18n="whatsNewFx1"></li>
-	  <li data-i18n="whatsNew1"></li>
-	  <li data-i18n="whatsNewFx2"></li>
-	  <li data-i18n="whatsNew2"></li>
-	  <li data-i18n="whatsNewFx3"></li>
-	  <li id="whats-new-sync"></li>
-	</ul>
-
-        <div id="contribute">
-          <h2 data-i18n="contribHdg"></h2>
-          <p id="contrib-cta"></p>
-        </div>
-
-        <div id="aecreations-links">
-	  <ul>
-	    <li id="link-website"><a data-i18n="aboutHomePgLink"></a></li>
-	    <li id="link-amo" ><a data-i18n="linkAMO"></a></li>
-	    <li id="link-blog"><a data-i18n="linkBlog"></a></li>
-	    <li id="link-forum"><a data-i18n="linkForum"></a></li>
-	  </ul>
-        </div>
+      <div id="aecreations-links">
+        <ul>
+          <li id="link-website"><a data-i18n="aboutHomePgLink"></a></li>
+          <li id="link-amo" ><a data-i18n="linkAMO"></a></li>
+          <li id="link-blog"><a data-i18n="linkBlog"></a></li>
+          <li id="link-forum"><a data-i18n="linkForum"></a></li>
+        </ul>
       </div>
+    </div>
 
-      <div id="dlg-btns">
-        <button id="btn-close" class="default" data-i18n="closeWelcomePg"></button>
-      </div>
+    <div id="dlg-btns">
+      <button id="btn-close" class="default" data-i18n="closeWelcomePg"></button>
+    </div>
 
-    </main>
+  </main>
 
-    <script src="../lib/purify.min.js"></script>
-    <script src="../lib/jquery.js"></script>
-    <script src="../scripts/aeConst.js"></script>
-    <script src="../scripts/aeI18n.js"></script>
-    <script src="../scripts/aeMozVersion.js"></script>
-    <script src="../scripts/aePrefs.js"></script>
-    <script src="../scripts/aeVisual.js"></script>
-    <script src="whatsnew.js"></script>
-  </body>
+  <script src="../lib/purify.min.js"></script>
+  <script src="../lib/jquery.js"></script>
+  <script src="../scripts/aeConst.js"></script>
+  <script src="../scripts/aeI18n.js"></script>
+  <script src="../scripts/aeMozVersion.js"></script>
+  <script src="../scripts/aePrefs.js"></script>
+  <script src="../scripts/aeVisual.js"></script>
+  <script src="whatsnew.js"></script>
+</body>
 </html>

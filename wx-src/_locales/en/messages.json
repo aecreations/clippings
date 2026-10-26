@@ -211,7 +211,7 @@
   },
 
   "welcWhatsNewDesc": {
-    "message": "In Clippings 7.1, you can now choose to paste an HTML-formatted clipping into an HTML editor as plain text."
+    "message": "In Clippings 7.2, you can now copy multiple clippings from Clippings Manager and Clippings Sidebar."
   },
 
   "welcWhatsNewCTA": {
@@ -1876,48 +1876,48 @@
   },
 
   "whatsNew1": {
-    "message": "Brought back the option to show the Paste As dialog when pasting an HTML-formatted clipping",
+    "message": "The most recently pasted clipping can be pasted again from the keyboard paste dialog by pressing Enter",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
 
   "whatsNew2": {
-    "message": "Improvements to undo in Clippings Manager. Also, you can now reverse the last undo by pressing Ctrl+Y on Windows, ⇧⌘Z on macOS, and Ctrl+Shift+Z on Linux",
+    "message": "New option for Sync Clippings users to automatically sync when opening Clippings Manager or the New Clipping dialog. Turn this on from Sync Clippings Settings in extension preferences",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
   
   "whatsNewFx1": {
-    "message": "New option to paste an HTML-formatted clipping into an HTML editor as plain text",
+    "message": "Multiple clippings can be copied from Clippings Manager or Clippings Sidebar. Select the clippings in the order you want them to appear by clicking while pressing $1 to select clippings one by one, or by clicking while pressing Shift to select a range, and then right-clicking and selecting Copy Clipping Text",
     "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
   },
 
   "whatsNewFx2": {
-    "message": "The height of the preview pane in Clippings Sidebar can now be adjusted",
+    "message": "You can now set the color label of a clipping from Clippings Sidebar",
     "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
   },
 
   "whatsNewFx3": {
-    "message": "Eliminated the confirmation dialog that appeared when reloading the Synced Clippings folder in Clippings Manager or Clippings Sidebar",
+    "message": "Clippings with a source web address now display a badge on the clipping icon",
+    "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
+  },
+
+  "whatsNewFx4": {
+    "message": "On Firefox 157 and newer, the user interface accent color in Clippings Manager, the New Clipping dialog and other dialog boxes and extension pages is changed to purple, matching the Nova design",
     "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
   },
 
   "whatsNewTb1": {
-    "message": "New placeholders for the subject line, message sender and recipients.  Add them to your clippings in Clippings Manager by using the Placeholder Toolbar",
+    "message": "The Clippings context menu is now available for the subject field in the compose window. A clipping can also be added to the message subject using the keyboard shortcut $1",
     "description": "Description of a Thunderbird-specific enhancement in the new version of Clippings"
   },
 
   "whatsNewTb2": {
-    "message": "New option to paste an HTML-formatted clipping into an HTML message as plain text",
+    "message": "New preset placeholders for the recipient's first name in the To and Cc fields: $[TO_FIRST_NAME] and $[CC_FIRST_NAME]",
     "description": "Description of a Thunderbird-specific enhancement in the new version of Clippings"
   },
 
   "whatsNewTb3": {
-    "message": "Eliminated the confirmation dialog that appeared when reloading the Synced Clippings folder in Clippings Manager",
+    "message": "The user interface accent color in Clippings Manager, the New Clipping dialog and other dialog boxes and extension pages now uses the system accent color, matching the UI colors in the rest of Thunderbird",
    "description": "Description of a Thunderbird-specific enhancement in the new version of Clippings" 
-  },
-
-  "whatsNewSync": {
-    "message": "Clippings will now display an error message if the Sync Clippings data size exceeds the limit of 1 megabyte",
-    "description": "Description of enhancements for the Sync Clippings feature in the new version of Clippings"
   },
 
   "contribHdg": {
