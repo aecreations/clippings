@@ -1906,7 +1906,7 @@
   },
 
   "whatsNewTb1": {
-    "message": "The Clippings context menu is now available for the subject field in the compose window. A clipping can also be added to the message subject using the keyboard shortcut $1",
+    "message": "The Clippings context menu is now available for the subject field in the compose window. A clipping can also be added to the message subject by pressing $1",
     "description": "Description of a Thunderbird-specific enhancement in the new version of Clippings"
   },
 
