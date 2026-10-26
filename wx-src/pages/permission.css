@@ -14,7 +14,6 @@
     --color-ext-pg-border: #ededf0;
 
     --url-bkgd-img: url("../img/bkgrd.png");
-    --url-icon-help: url("../img/help.svg");
 }
 
 @media (prefers-color-scheme: dark) {
@@ -27,7 +26,6 @@
         --color-ext-pg-border: #4a4a4f;
 
         --url-bkgd-img: none;
-        --url-icon-help: url("../img/help-dk.svg");
     }
 }
 
@@ -95,20 +93,8 @@ h2 {
     font-size: 22px;
 }
 
-#perm-hlp {
-    margin-top: 32px;
-    margin-bottom: 64px;
-    padding: 2px 0 2px 20px;
-
-    background-image: var(--url-icon-help);
-    background-size: 16px 16px;
-    background-position: left;
-    background-repeat: no-repeat;
-
-    font-size: 13px;
-}
-
 #dlg-btns {
+    margin-top: 100px;
     text-align: right;
 }
 

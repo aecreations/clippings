@@ -293,11 +293,6 @@
     "description": "Heading of the Permission Requested page"
   },
 
-  "permReqHlp": {
-    "message": "Add-on permissions help",
-    "description": "Link to Clippings help page on the AE Creations website"
-  },
-
   "newClippingDlgTitle": {
     "message": "New Clipping",
     "description": "New Clipping dialog"
