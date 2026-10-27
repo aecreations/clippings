@@ -12,6 +12,7 @@ const CHG_SRCURL_BADGE_DELAY_MS = 300;
 let gOS;
 let gDlg = {};
 let gIsActivatingSyncClippings = false;
+let gKeybPasteShct;
 
 
 // Options page initialization
@@ -160,19 +161,7 @@ $(async () => {
   }
 
   $("#enable-shortcut-key").prop("checked", prefs.keyboardPaste).on("click", async (aEvent) => {
-    aePrefs.setPrefs({keyboardPaste: aEvent.target.checked});
-
-    if (aEvent.target.checked) {
-      await browser.commands.reset("ae-clippings-paste-clipping");
-      $("#shortcut-key-selector").prop("disabled", false);
-    }
-    else {
-      $("#shortcut-key-selector").prop("disabled", true);
-      await browser.commands.update({
-        name: "ae-clippings-paste-clipping",
-        shortcut: '',
-      });
-    }
+    await toggleKeyboardShortcutOpt(aEvent);
   });
 
   $("#auto-inc-plchldrs-start-val").val(prefs.autoIncrPlcHldrStartVal).on("click", aEvent => {
@@ -373,6 +362,18 @@ $(async () => {
   }
 
   let keySelectElt = $("#shortcut-key-selector")[0];
+  keySelectElt.addEventListener("chan`ge", aEvent => {
+    let modifierKeys = gOS == "mac" ? "Command+Shift" : "Alt+Shift"
+    let keybShct = `${modifierKeys}+${aEvent.target.value}`;
+
+    log("Clippings::options.js: Keyboard shortcut changed. Updating command with new keyboard shortcut: " + keybShct);
+
+    browser.commands.update({
+      name: "ae-clippings-paste-clipping",
+      shortcut: keybShct,
+    });
+  });
+
   let allKeys = keySelectElt.options;
   
   for (let i = 0; i < allKeys.length; i++) {
@@ -399,18 +400,6 @@ $(async () => {
   else {
     $("#shortcut-key-note").html(sanitizeHTML(browser.i18n.getMessage("prefsShortcutKeyNote")));
     keySelectElt.style.display = "inline-block";
-
-    $(keySelectElt).change(aEvent => {
-      let modifierKeys = gOS == "mac" ? "Command+Shift" : "Alt+Shift"
-      let keybShct = `${modifierKeys}+${aEvent.target.value}`;
-
-      log("Clippings/wx::options.js: Keyboard shortcut changed. Updating command with new keyboard shortcut: " + keybShct);
-      
-      browser.commands.update({
-        name: "ae-clippings-paste-clipping",
-        shortcut: keybShct,
-      });
-    });
   }
 
   $(".hyperlink").on("click", aEvent => {
@@ -1000,10 +989,36 @@ function initDialogs()
 }
 
 
-async function closePage()
+async function toggleKeyboardShortcutOpt(aEvent)
 {
-  let tab = await browser.tabs.getCurrent();
-  browser.tabs.remove(tab.id);
+  await aePrefs.setPrefs({keyboardPaste: aEvent.target.checked});
+
+  if (aEvent.target.checked) {
+    // Restore the custom keyboard shortcut if the user toggles it back on
+    // immediately after turning it off.
+    if (gKeybPasteShct) {
+      await browser.commands.update({
+        name: "ae-clippings-paste-clipping",
+        shortcut: gKeybPasteShct,
+      });
+    }
+    else {
+      await browser.commands.reset("ae-clippings-paste-clipping");
+    }
+    $("#shortcut-key-selector").prop("disabled", false);
+  }
+  else {
+    // Save the current custom keyboard shortcut in case the user toggles it
+    // back on immediately afterward.
+    let [cmd] = await browser.commands.getAll();
+    gKeybPasteShct = cmd.shortcut;
+
+    $("#shortcut-key-selector").prop("disabled", true);
+    await browser.commands.update({
+      name: "ae-clippings-paste-clipping",
+      shortcut: '',
+    });
+  }
 }
 
 
