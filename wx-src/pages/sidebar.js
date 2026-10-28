@@ -44,6 +44,10 @@ let gClippingsListener = {
       newNodeData.tooltip = aeClippingsTree.getSrcURLTooltipText(aData.sourceURL);
     }
 
+    if (aData.separator) {
+      newNodeData.title = "<hr>";
+    }
+
     let newNode = null;
 
     if (selectedNode) {
@@ -57,7 +61,6 @@ let gClippingsListener = {
           // for the root folder to accommodate the Synced Clippings folder.
           let idx = aData.displayOrder - 1;
           idx < 0 && (idx = 0);
-          newNodeData.title = "<hr>";
           let siblingNode = childNodes[idx];
           newNode = siblingNode.appendSibling(newNodeData);
         }
@@ -71,7 +74,6 @@ let gClippingsListener = {
           let childNodes = parentNode.getChildren();
           let idx = aData.displayOrder;
           idx < 0 && (idx = 0);
-          newNodeData.title = "<hr>";
           let siblingNode = childNodes[idx];
           newNode = siblingNode.appendSibling(newNodeData)
         }
@@ -81,7 +83,7 @@ let gClippingsListener = {
       }
     }
     else {
-      // No clippings or folders.
+      // No clippings or folders selected.
       newNode = tree.rootNode.addNode(newNodeData);
     }
 
@@ -343,6 +345,7 @@ let gClippingsListener = {
       tree.options.icon = false;
       let emptyMsgNode = setEmptyClippingsState();
       tree.rootNode.addNode(emptyMsgNode);
+      clearPreviewPane();
     }
     else {
       // Select the node that used to be occupied by the delete node. If the
