@@ -2342,7 +2342,7 @@ function pasteClippingByShortcutKey(aShortcutKey, aTabID)
       return clippingsDB.folders.get(aClipping.parentFolderID);
     }).then(aFolder => {
       if (aFolder === null) {
-        return;
+        return -1;
       }
 
       let parentFldrName = "";
@@ -2363,6 +2363,9 @@ function pasteClippingByShortcutKey(aShortcutKey, aTabID)
       return processClipping(clippingInfo, false, aTabID, pasteOrCopyClippingByID.MODE_PASTE);
 
     }).then(aProcessedContent => {
+      if (aProcessedContent == -1) {
+        return -1;
+      }
       if (aProcessedContent !== null) {
         processedCtnt = aProcessedContent;
         return processHTMLFormattedClipping(clippingInfo.name, aProcessedContent, aTabID);
@@ -2372,6 +2375,9 @@ function pasteClippingByShortcutKey(aShortcutKey, aTabID)
       return null;
 
     }).then(aPasteFormat => {
+      if (aPasteFormat == -1) {
+        return;
+      }
       if (aPasteFormat != aeConst.HTMLPASTE_ASK_THE_USER) {
         aePrefs.setPrefs({_recentClippingID: clipping.id});
         pasteProcessedClipping(processedCtnt, aTabID, aPasteFormat);
