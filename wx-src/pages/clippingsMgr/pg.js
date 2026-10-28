@@ -352,7 +352,7 @@ let gClippingsListener = {
         gCmd.updateDisplayOrder(oldParentFldrID, null, null, true);
       }
       else {
-        log("Clippings: clippingsMgr/pg.js::gClippingsListener.clippingChanged(): Handling clipping move");
+        log("Clippings::clippingsMgr/pg.js: gClippingsListener.clippingChanged(): Handling clipping move");
         if (changedNode) {
           let targParentNode;
           if (aData.parentFolderID == aeConst.ROOT_FOLDER_ID) {
@@ -364,7 +364,7 @@ let gClippingsListener = {
           
           changedNode.moveTo(targParentNode, "child");
 
-          log("Clippings: clippingsMgr/pg.js: gCmd.clippingChanged(): Updating display order of changed clipping");
+          log("Clippings::clippingsMgr/pg.js: gClippingsListener.clippingChanged(): Updating display order of changed clipping");
           gCmd.updateDisplayOrder(oldParentFldrID, null, null, true).then(() => {
             gCmd.updateDisplayOrder(newParentFldrID, null, null, true);
           });
@@ -416,11 +416,21 @@ let gClippingsListener = {
               changedNode = parentNode.addNode(newNodeData);
             }
 
-            if (aData.label) {
-              changedNode.addClass(`ae-clipping-label-${aData.label}`);
+            if (aData.sourceURL) {
+              if (aData.label) {
+                changedNode.addClass(`ae-clipping-web-label-${aData.label}`);
+              }
+              else {
+                changedNode.addClass("ae-clipping-web");
+              }
+            }
+            else {
+              if (aData.label) {
+                changedNode.addClass(`ae-clipping-label-${aData.label}`);
+              }
             }
 
-            log(`Clippings: clippingsMgr/pg.js: gCmd.clippingChanged(): Updating display order of items under folder (ID = ${newParentFldrID}) after undoing clipping deletion`);
+            log(`Clippings::clippingsMgr/pg.js: gClippingsListener.clippingChanged(): Updating display order of items under folder (ID = ${newParentFldrID}) after undoing clipping deletion`);
             gCmd.updateDisplayOrder(newParentFldrID, null, null, true);
           }
         }
@@ -474,7 +484,7 @@ let gClippingsListener = {
         gCmd.updateDisplayOrder(oldParentFldrID, null, null, true);
       }
       else {
-        log("Clippings: clippingsMgr/pg.js::gClippingsListener.folderChanged: Handling folder move");
+        log("Clippings::clippingsMgr/pg.js: gClippingsListener.folderChanged: Handling folder move");
         let changedNode = tree.getNodeByKey(aID + "F");
         if (changedNode) {
           let targParentNode;
@@ -487,7 +497,7 @@ let gClippingsListener = {
           
           changedNode.moveTo(targParentNode, "child");
 
-          log("Clippings: clippingsMgr/pg.js: gCmd.folderChanged(): Updating display order of changed folder");
+          log("Clippings::clippingsMgr/pg.js: gClippingsListener.folderChanged(): Updating display order of changed folder");
           let newParentFldrID = aData.parentFolderID;
           gCmd.updateDisplayOrder(oldParentFldrID, null, null, true).then(() => {
             gCmd.updateDisplayOrder(newParentFldrID, null, null, true);
@@ -510,7 +520,7 @@ let gClippingsListener = {
             changedNode = parentNode.addNode(newNodeData);
           }
 
-          log("Clippings: clippingsMgr/pg.js: gCmd.folderChanged(): Updating display order after undoing folder deletion");
+          log("Clippings::clippingsMgr/pg.js: gClippingsListener.folderChanged(): Updating display order after undoing folder deletion");
           gCmd.updateDisplayOrder(newParentFldrID, null, null, true).then(() => {
             this._buildChildNodes(changedNode);
           });
@@ -563,7 +573,7 @@ let gClippingsListener = {
 
   copyFinished: function (aItemCopyID)
   {
-    info("Clippings: clippingsMgr/pg.js: gClippingsListener.copyFinished()");
+    info("Clippings::clippingsMgr/pg.js: gClippingsListener.copyFinished()");
        
     this._isCopying = false;
     
@@ -612,11 +622,11 @@ let gClippingsListener = {
         });
 
       }).then(() => {
-        log(`Clippings: clippingsMgr/pg.js::gClippingsListener._buildChildNodes(): Updating display order for child folder '${aFolderNode.title}' (key = ${aFolderNode.key})`);
+        log(`Clippings::clippingsMgr/pg.js: gClippingsListener._buildChildNodes(): Updating display order for child folder '${aFolderNode.title}' (key = ${aFolderNode.key})`);
         gCmd.updateDisplayOrder(id, null, null, true);
       });
     }).catch(aErr => {
-      console.error("Clippings: clippingsMgr/pg.js::gClippingsListener._buildChildNodes(): " + aErr);
+      console.error("Clippings::clippingsMgr/pg.js: gClippingsListener._buildChildNodes(): " + aErr);
     });
   },
   
@@ -673,13 +683,13 @@ let gClippingsListener = {
 let gSyncClippingsListener = {
   onActivate(aSyncFolderID)
   {
-    log("Clippings: clippingsMgr/pg.js::gSyncClippingsListener.onActivate()");
+    log("Clippings::clippingsMgr/pg.js: gSyncClippingsListener.onActivate()");
     aeDialog.cancelDlgs();
   },
   
   onDeactivate(aOldSyncFolderID)
   {
-    log(`Clippings: clippingsMgr/pg.js::gSyncClippingsListener.onDeactivate(): ID of old sync folder: ${aOldSyncFolderID}`);
+    log(`Clippings::clippingsMgr/pg.js: gSyncClippingsListener.onDeactivate(): ID of old sync folder: ${aOldSyncFolderID}`);
     gSyncedItemsIDs.clear();
     gSyncedItemsIDMap.clear();
 
