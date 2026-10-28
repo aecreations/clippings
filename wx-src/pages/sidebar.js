@@ -30,6 +30,7 @@ let gClippingsListener = {
       unsetEmptyClippingsState();
       $("#welcome-content").hide();
       $("#normal-content").show();
+      toggleSearchBarVisibility(gPrefs.sidebarSearchBar);
     }
 
     let tree = aeClippingsTree.getTree();
@@ -112,6 +113,7 @@ let gClippingsListener = {
       unsetEmptyClippingsState();
       $("#welcome-content").hide();
       $("#normal-content").show();
+      toggleSearchBarVisibility(gPrefs.sidebarSearchBar);
     }
 
     let tree = aeClippingsTree.getTree();
@@ -173,6 +175,9 @@ let gClippingsListener = {
         }
         else {
           // Undoing delete.
+          log("Detected undoing delete from Clippings Manager.  Restoring tree node for clipping " + aID);
+          unsetEmptyClippingsState();
+
           let newNodeData = {
             key: aID + "C",
             title: aeClippingsTree.sanitizeTreeNodeTitle(aeClippingsTree.DEBUG ? `${aData.name} [key=${aID}C]` : aData.name)
@@ -285,6 +290,8 @@ let gClippingsListener = {
         }
         else {
           // Undoing delete.
+          unsetEmptyClippingsState();
+
           let newNodeData = {
             key: aID + "F",
             title: aeClippingsTree.sanitizeTreeNodeTitle(aeClippingsTree.DEBUG ? `${aData.name} [key=${aID}C]` : aData.name),
@@ -1369,7 +1376,7 @@ async function rebuildClippingsTree()
       unsetEmptyClippingsState();
       $("#welcome-content").hide();
       $("#normal-content").show();
-      toggleSearchBarVisibility(true);
+      toggleSearchBarVisibility(gPrefs.sidebarSearchBar);
     }
     else {
       tree.clear();
