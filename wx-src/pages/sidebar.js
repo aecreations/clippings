@@ -1749,7 +1749,12 @@ browser.storage.onChanged.addListener((aChanges, aAreaName) => {
     gPrefs[pref] = aChanges[pref].newValue;
 
     if (pref == "srcWebPgURLBadge") {
-      // TO DO: Refresh node icons for clippings in the tree list.
+      if (gPrefs.srcWebPgURLBadge) {
+        aeClippingsTree.addSrcURLBadges();
+      }
+      else {
+        aeClippingsTree.removeSrcURLBadges();
+      }
     }
   }
 
