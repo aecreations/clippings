@@ -52,39 +52,35 @@ let gClippingsListener = {
 
     if (selectedNode) {
       selectedNode.setSelected(false);
+    }
 
-      if (aData.parentFolderID == aeConst.ROOT_FOLDER_ID) {
-        if (aData.separator) {
-          let childNodes = tree.rootNode.getChildren();
-          // For separators only:
-          // Need to subtract 1 from display order due to starting index of 1
-          // for the root folder to accommodate the Synced Clippings folder.
-          let idx = aData.displayOrder - 1;
-          idx < 0 && (idx = 0);
-          let siblingNode = childNodes[idx];
-          newNode = siblingNode.appendSibling(newNodeData);
-        }
-        else {
-          newNode = tree.rootNode.addNode(newNodeData);
-        }
+    if (aData.parentFolderID == aeConst.ROOT_FOLDER_ID) {
+      if (aData.separator) {
+        let childNodes = tree.rootNode.getChildren();
+        // For separators only:
+        // Need to subtract 1 from display order due to starting index of 1
+        // for the root folder to accommodate the Synced Clippings folder.
+        let idx = aData.displayOrder - 1;
+        idx < 0 && (idx = 0);
+        let siblingNode = childNodes[idx];
+        newNode = siblingNode.appendSibling(newNodeData);
       }
       else {
-        let parentNode = tree.getNodeByKey(aData.parentFolderID + "F");
-        if (aData.separator) {
-          let childNodes = parentNode.getChildren();
-          let idx = aData.displayOrder;
-          idx < 0 && (idx = 0);
-          let siblingNode = childNodes[idx];
-          newNode = siblingNode.appendSibling(newNodeData)
-        }
-        else {
-          newNode = parentNode.addNode(newNodeData);
-        }
+        newNode = tree.rootNode.addNode(newNodeData);
       }
     }
     else {
-      // No clippings or folders selected.
-      newNode = tree.rootNode.addNode(newNodeData);
+      let parentNode = tree.getNodeByKey(aData.parentFolderID + "F");
+      if (aData.separator) {
+        let childNodes = parentNode.getChildren();
+        let idx = aData.displayOrder;
+        idx < 0 && (idx = 0);
+        let siblingNode = childNodes[idx];
+        newNode = siblingNode.appendSibling(newNodeData)
+      }
+      else {
+        newNode = parentNode.addNode(newNodeData);
+      }
     }
 
     if (aData.label) {
@@ -138,18 +134,14 @@ let gClippingsListener = {
 
     if (selectedNode) {
       selectedNode.setSelected(false);
+    }
 
-      if (aData.parentFolderID == aeConst.ROOT_FOLDER_ID) {
-        newNode = tree.rootNode.addNode(newNodeData);
-      }
-      else {
-        let parentNode = tree.getNodeByKey(aData.parentFolderID + "F");
-        newNode = parentNode.addNode(newNodeData);
-      }
+    if (aData.parentFolderID == aeConst.ROOT_FOLDER_ID) {
+      newNode = tree.rootNode.addNode(newNodeData);
     }
     else {
-      // No clippings or folders.
-      newNode = tree.rootNode.addNode(newNodeData);
+      let parentNode = tree.getNodeByKey(aData.parentFolderID + "F");
+      newNode = parentNode.addNode(newNodeData);
     }
   },
 
