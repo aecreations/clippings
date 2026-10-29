@@ -329,6 +329,48 @@ let gClippingsListener = {
   },
 
 
+  clippingDnDMoved(aClippingID, aDestFolderID, aIsReordering, aPrevSiblingNodeKey=null)
+  {
+    let tree = aeClippingsTree.getTree();
+    let clippingNode = tree.getNodeByKey(aClippingID + "C");
+    if (aPrevSiblingNodeKey) {
+      let targNode = tree.getNodeByKey(aPrevSiblingNodeKey);
+      clippingNode.moveTo(targNode, "after");
+    }
+    else {
+      let mode = aIsReordering ? "firstChild" : "child";
+      if (aDestFolderID == aeConst.ROOT_FOLDER_ID) {
+        clippingNode.moveTo(tree.rootNode, mode);
+      }
+      else {
+        let targNode = tree.getNodeByKey(aDestFolderID + "F");
+        clippingNode.moveTo(targNode, mode);
+      }
+    }
+  },
+
+
+  folderDnDMoved(aFolderID, aDestFolderID, aIsReordering, aPrevSiblingNodeKey=null)
+  {
+    let tree = aeClippingsTree.getTree();
+    let folderNode = tree.getNodeByKey(aFolderID + "F");
+    if (aPrevSiblingNodeKey) {
+      let targNode = tree.getNodeByKey(aPrevSiblingNodeKey);
+      folderNode.moveTo(targNode, "after");
+    }
+    else {
+      let mode = aIsReordering ? "firstChild" : "child";
+      if (aDestFolderID == aeConst.ROOT_FOLDER_ID) {
+        folderNode.moveTo(tree.rootNode, mode);
+      }
+      else {
+        let targNode = tree.getNodeByKey(aDestFolderID + "F");
+        folderNode.moveTo(targNode, mode);
+      }
+    }
+  },
+
+
   // Helper methods
   _removeClippingsTreeNode: function (aIDWithSuffix)
   {
@@ -1676,8 +1718,15 @@ browser.runtime.onMessage.addListener(aRequest => {
     gClippingsListener.multiClippingsLabelChanged(aRequest.clippingIDs, aRequest.newLabels);
     break;
 
+  case "dnd-move-clipping":
+    gClippingsListener.clippingDnDMoved(aRequest.clippingID, aRequest.destFldrID, aRequest.isReordering, aRequest.prevSiblingNodeKey);
+    break;
+
+  case "dnd-move-folder":
+    gClippingsListener.folderDnDMoved(aRequest.folderID, aRequest.destFldrID, aRequest.isReordering, aRequest.prevSiblingNodeKey);
+    break;
+
   case "copy-finished":
-  case "dnd-move-finished":
   case "import-finished":
     rebuildClippingsTree();
     break;

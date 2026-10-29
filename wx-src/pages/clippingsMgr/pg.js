@@ -2433,6 +2433,27 @@ function buildClippingsTree()
             if (newParentID != oldParentID) {
               aNode.setExpanded();
             }
+
+            let prevSibNode = aData.otherNode.getPrevSibling();
+            let prevSiblingNodeKey = prevSibNode?.key || null;
+            if (aData.otherNode.isFolder()) {
+              await browser.runtime.sendMessage({
+                msgID: "dnd-move-folder",
+                folderID: id,
+                destFldrID: newParentID,
+                prevSiblingNodeKey,
+                isReordering,
+              });
+            }
+            else {
+              await browser.runtime.sendMessage({
+                msgID: "dnd-move-clipping",
+                clippingID: id,
+                destFldrID: newParentID,
+                prevSiblingNodeKey,
+                isReordering,
+              });
+            }
           }
           else {
             // Dropping a non-node.

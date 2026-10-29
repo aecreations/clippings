@@ -2275,6 +2275,27 @@ function clippingsMgrCmds()
           }
         }
 
+        let prevSibNode = itemNode.getPrevSibling();
+        let prevSiblingNodeKey = prevSibNode?.key || null;
+        if (itemNode.isFolder()) {
+          await browser.runtime.sendMessage({
+            msgID: "dnd-move-folder",
+            folderID: parseInt(undo.nodeKey),
+            destFldrID: parentFldrID,
+            prevSiblingNodeKey,
+            isReordering: true,
+          });
+        }
+        else {
+          await browser.runtime.sendMessage({
+            msgID: "dnd-move-clipping",
+            clippingID: parseInt(undo.nodeKey),
+            destFldrID: parentFldrID,
+            prevSiblingNodeKey,
+            isReordering: true,
+          });
+        }
+
         this.redoStack.push(undo);
       }
       else if (undo.action == gCmd.ACTION_REMOVE_ALL_SRC_URLS) {
@@ -2429,6 +2450,27 @@ function clippingsMgrCmds()
           else {
             delete redo.nextSiblingSID;
           }
+        }
+
+        let prevSibNode = itemNode.getPrevSibling();
+        let prevSiblingNodeKey = prevSibNode?.key || null;
+        if (itemNode.isFolder()) {
+          await browser.runtime.sendMessage({
+            msgID: "dnd-move-folder",
+            folderID: parseInt(redo.nodeKey),
+            destFldrID: parentFldrID,
+            prevSiblingNodeKey,
+            isReordering: true,
+          });
+        }
+        else {
+          await browser.runtime.sendMessage({
+            msgID: "dnd-move-clipping",
+            clippingID: parseInt(redo.nodeKey),
+            destFldrID: parentFldrID,
+            prevSiblingNodeKey,
+            isReordering: true,
+          });
         }
 
         this.undoStack.push(redo);
