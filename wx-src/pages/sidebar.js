@@ -1718,7 +1718,6 @@ browser.runtime.onMessage.addListener(aRequest => {
     gClippingsListener.folderDnDMoved(aRequest.folderID, aRequest.destFldrID, aRequest.isReordering, aRequest.prevSiblingNodeKey);
     break;
 
-  case "copy-finished":
   case "import-finished":
     rebuildClippingsTree();
     break;
