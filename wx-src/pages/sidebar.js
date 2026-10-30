@@ -19,6 +19,7 @@ let gCustomizeDlg, gClipbdWritePermMsgBox,
     gInitErrorMsgBox, gSyncProgressDlg;
 let gMsgBarTimerID = null;
 let gPermissionReq = new aePermReqInfo();
+let gActiveTreeNodeHistory = new aeActiveTreeNodeHistory();
 let gWndID;
 
 let gClippingsListener = {
@@ -420,7 +421,7 @@ let gSyncClippingsListener = {
   {
     log("Clippings::sidebar.js::gSyncClippingsListener.onActivate()");
     aeDialog.cancelDlgs();
-    gCmd.reloadSyncFolderIntrl();
+    gCmd.reloadSyncFolderIntrl(false);
   },
   
   onDeactivate(aOldSyncFolderID)
@@ -478,9 +479,11 @@ let gSyncClippingsListener = {
     gSearchBox.reset();
   },
 
-  async onReloadFinish()
+  async onReloadFinish(aOrigin)
   {
-    await rebuildClippingsTree();
+    if (aOrigin != aeConst.ORIGIN_SIDEBAR) {
+      await rebuildClippingsTree();
+    }
     gSyncProgressDlg.isOpen() && gSyncProgressDlg.close();
   },
 
@@ -521,7 +524,9 @@ let gReloadSyncFldrBtn = {
     reloadBtn.title = browser.i18n.getMessage("btnReload");
     reloadBtn.setAttribute("tabindex", "0");
     reloadBtn.setAttribute("role", "button");
-    reloadBtn.addEventListener("click", aEvent => { gCmd.reloadSyncFolder() });
+    reloadBtn.addEventListener("click", aEvent => {
+      gCmd.reloadSyncFolder(true);
+    });
     reloadBtn.addEventListener("keydown", aEvent => {
       if (aEvent.key == "Enter" || aEvent.key == " ") {
         aEvent.target.click();
@@ -635,7 +640,7 @@ let gSearchBox = {
 
 // Sidebar actions
 let gCmd = {
-  async reloadSyncFolder()
+  async reloadSyncFolder(aFromReloadBtn)
   {
     let pingResp;
     try {
@@ -651,20 +656,20 @@ let gCmd = {
     browser.runtime.sendMessage({
       msgID: "refresh-synced-clippings",
       rebuildClippingsMenu: false,
+      origin: aeConst.ORIGIN_SIDEBAR,
     });
     
     aeDialog.cancelDlgs();
-    await this.reloadSyncFolderIntrl();
+    await this.reloadSyncFolderIntrl(aFromReloadBtn);
   },
 
-  async reloadSyncFolderIntrl(aFnAfterSync=null)
+  async reloadSyncFolderIntrl(aFromReloadBtn, aFnAfterSync=null)
   {
     let afterSyncFldrReloadDelay = await aePrefs.getPref("afterSyncFldrReloadDelay");
-    
     gSyncProgressDlg.showModal(false);
 
     setTimeout(async () => {
-      await rebuildClippingsTree();
+      await rebuildClippingsTree(aFromReloadBtn);
       gSyncProgressDlg.close();
       typeof aFnAfterSync == "function" && aFnAfterSync();
     }, afterSyncFldrReloadDelay);
@@ -931,7 +936,7 @@ $(async () => {
       if (!pingNewClippingDlg && !pingClippingsMgr) {
         await browser.runtime.sendMessage({msgID: "refresh-synced-clippings"});
         aeDialog.cancelDlgs();
-        await gCmd.reloadSyncFolderIntrl(() => {
+        await gCmd.reloadSyncFolderIntrl(false, () => {
           // Called after the Synced Clippings folder refresh is completed.
           initSyncItemsIDLookupList();
         });
@@ -1114,6 +1119,8 @@ function buildClippingsTree()
 
       init(aEvent, aData)
       {
+        // NOTE: This event handler will also be called when the tree
+        // is reloaded.
         let rootNode = aData.tree.getRootNode();
         if (rootNode.children.length > 0 && !gIsClippingsTreeEmpty) {
           let firstNode = rootNode.getFirstChild();
@@ -1131,6 +1138,7 @@ function buildClippingsTree()
       {
         log("Clippings::sidebar.js: Activate event fired on clippings tree");
         updateDisplay(aEvent, aData);
+        gActiveTreeNodeHistory.add(aData.node);
       },
 
       async dblclick(aEvent, aData)
@@ -1236,7 +1244,7 @@ function buildClippingsTree()
       {
         switch (aItemKey) {
         case "reloadSyncFolder":
-          gCmd.reloadSyncFolder();
+          gCmd.reloadSyncFolder(false);
           break;
 
         case "gotoSrcURL":
@@ -1392,9 +1400,10 @@ function initSyncedClippingsTree()
 }
 
 
-async function rebuildClippingsTree()
+async function rebuildClippingsTree(aFromReloadBtn=false)
 {
   let tree = aeClippingsTree.getTree();
+  let activeNodeKey = gActiveTreeNodeHistory.getPreviousNodeKey(aFromReloadBtn);
   let treeData = [];
   let rootFldrID = getRootFolderID();
 
@@ -1424,11 +1433,22 @@ async function rebuildClippingsTree()
 
   if (gPrefs.syncClippings) {
     gSyncedItemsIDs.clear();
-    initSyncItemsIDLookupList();
+    await initSyncItemsIDLookupList();
     initSyncedClippingsTree();
   }
 
-  gSearchBox.reset();
+  if (activeNodeKey) {
+    if (gSyncedItemsIDMap.has(activeNodeKey)) {
+      activeNodeKey = gSyncedItemsIDMap.get(activeNodeKey);
+    }
+    let node = tree.getNodeByKey(activeNodeKey);
+    if (node) {
+      node.makeVisible({noAnimation: true}).done(() => {
+        node.setActive();
+      });
+    }
+  }
+
   return treeData;
 }
 
@@ -1735,7 +1755,7 @@ browser.runtime.onMessage.addListener(aRequest => {
     break;
 
   case "sync-fldr-reload-finished":
-    gSyncClippingsListener.onReloadFinish();
+    gSyncClippingsListener.onReloadFinish(aRequest.origin);
     break;
 
   case "startup-sync-clippings":
