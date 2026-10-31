@@ -20,6 +20,7 @@ let gCustomizeDlg, gClipbdWritePermMsgBox,
 let gMsgBarTimerID = null;
 let gPermissionReq = new aePermReqInfo();
 let gActiveTreeNodeHistory = new aeActiveTreeNodeHistory();
+let gClippingLabelPickerMnu = new aeClippingLabelPickerMenu("cxtmenu-label-picker");
 let gWndID;
 
 let gClippingsListener = {
@@ -1181,32 +1182,18 @@ function buildClippingsTree()
     // Custom context menu command for the inline label selector.
     $.contextMenu.types.aeClippingLabelPickerMnu = function (aItem, aOpt, aRoot)
     {
-      // this === item.$node
-      $(`<span id="${aItem.id}">${browser.i18n.getMessage("labelLabel")}<ul role="group">`
-          + `<li class="label-none" title="${browser.i18n.getMessage("none")}" role="menuitemradio" aria-checked="false" data-label="">None</li>`
-          + `<li class="label-red" title="${browser.i18n.getMessage("labelRed")}" role="menuitemradio" aria-checked="false" data-label="red">Red</li>`
-          + `<li class="label-orange" title="${browser.i18n.getMessage("labelOrange")}" role="menuitemradio" aria-checked="false" data-label="orange">Orange</li>`
-          + `<li class="label-yellow" title="${browser.i18n.getMessage("labelYellow")}" role="menuitemradio" aria-checked="false" data-label="yellow">Yellow</li>`
-          + `<li class="label-green" title="${browser.i18n.getMessage("labelGreen")}" role="menuitemradio" aria-checked="false" data-label="green">Green</li>`
-          + `<li class="label-blue" title="${browser.i18n.getMessage("labelBlue")}" role="menuitemradio" aria-checked="false" data-label="blue">Blue</li>`
-          + `<li class="label-purple" title="${browser.i18n.getMessage("labelPurple")}" role="menuitemradio" aria-checked="false" data-label="purple">Purple</li>`
-          + `<li class="label-grey" title="${browser.i18n.getMessage("labelGrey")}" role="menuitemradio" aria-checked="false" data-label="grey">Gray</li></ul></span>`)
-          .appendTo(this);
-      this.addClass("ae-clipping-label-picker-mnu");
+      gClippingLabelPickerMnu.init(this);
 
-      this.on("click", "li", function (){
-        let labelPickerMnuItem = $(`#${aItem.id}`).parent();
-        if (labelPickerMnuItem.hasClass("context-menu-disabled")) {
+      this.on("click", "li", aEvent => {
+        if (gClippingLabelPickerMnu.isDisabled()) {
           return false;
         }
 
-        gCmd.setLabel($(this).attr("data-label"));
-        $(`#${aItem.id} > ul > li[aria-checked="true"]`).attr("aria-checked", "false");
-        this.ariaChecked = true;
-        aRoot.$menu.trigger("contextmenu:hide");
+        gCmd.setLabel(aEvent.target.dataset.label);
+        gClippingLabelPickerMnu.onClick(aEvent);
+
         return false;
       });
-
     };
 
     // Context menu for the clippings tree.
@@ -1229,11 +1216,7 @@ function buildClippingsTree()
           let clippingID = parseInt(selectedNode.key);
           gClippingsDB.clippings.get(clippingID).then(aResult => {
             let label = aResult.label == '' ? "none" : aResult.label;
-
-            // aeClippingLabelPickerMnu activated
-            let labelMnuItem = $(`.ae-clipping-label-picker-mnu > span > ul > li.label-${label}`);
-            labelMnuItem.addClass("selected");
-            labelMnuItem[0].ariaChecked = true;
+            gClippingLabelPickerMnu.onActivated(label);
           });
         },
 
@@ -1248,9 +1231,7 @@ function buildClippingsTree()
 
         hide(aOpts)
         {
-          // aeClippingLabelPickerMnu hide
-          $(".ae-clipping-label-picker-mnu > span > ul > li").removeClass("selected");
-
+          gClippingLabelPickerMnu.onHide();
           return true;
         }
       },
@@ -1353,7 +1334,6 @@ function buildClippingsTree()
         // Custom command.
         label: {
           type: "aeClippingLabelPickerMnu",
-          id: "cxtmenu-label-picker",
           visible(aItemKey, aOpt) {
             return (!aeClippingsTree.isFolderSelected() && !aeClippingsTree.isSeparatorSelected());
           },
