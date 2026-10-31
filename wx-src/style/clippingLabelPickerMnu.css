@@ -1,0 +1,98 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+/* Styling for the clipping label picker custom menu. */
+:root {
+    --color-label-opt-border: #737373;
+    --color-label-opt-selected-border: #bebebe;
+    --color-label-opt-selected-hover-border: #999;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-label-opt-border: #ccc;
+        --color-label-opt-selected-border: #737373;
+        --color-label-opt-selected-hover-border: #b1b1b1;
+    }
+}
+
+
+.context-menu-item.ae-clipping-label-picker-mnu {
+    padding-left: 28px;
+    background-color: var(--color-cxtmenu-bkgd) !important;
+    color: var(--color-cxtmenu-text);
+}
+
+.context-menu-item.ae-clipping-label-picker-mnu.context-menu-disabled {
+    opacity: 0.5;
+}
+
+.ae-clipping-label-picker-mnu > span > ul {
+    margin: 0;
+    padding: 4px 0 0 0;
+    list-style: none;
+    display: block;
+    float: none;
+}
+
+.ae-clipping-label-picker-mnu > span > ul > li {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 1px solid var(--color-label-opt-border);
+    overflow: hidden;
+    color: transparent;
+}
+
+.ae-clipping-label-picker-mnu > span > ul > li.selected {
+    outline: 2px solid var(--color-label-opt-selected-border);
+}
+
+.ae-clipping-label-picker-mnu:not(.context-menu-disabled) > span > ul > li.selected:hover {
+    outline: 2px solid var(--color-label-opt-selected-hover-border);
+}
+
+.ae-clipping-label-picker-mnu:not(.context-menu-disabled) > span > ul > li:hover {
+    outline: 2px solid #0996f8;
+}
+
+.ae-clipping-label-picker-mnu:not(.context-menu-disabled) > span > ul > li:active {
+    outline: 2px solid #0670cc;
+}
+
+.ae-clipping-label-picker-mnu > span > ul > li + li {
+    margin-left: 4px;
+}
+
+.ae-clipping-label-picker-mnu > span > ul > li.label-none {
+    background: transparent;
+}
+
+.ae-clipping-label-picker-mnu > span > ul > li.label-red {
+    background: red;
+}
+
+.ae-clipping-label-picker-mnu > span > ul > li.label-orange {
+    background: orange;
+}
+
+.ae-clipping-label-picker-mnu > span > ul > li.label-yellow {
+    background: yellow;
+}
+
+.ae-clipping-label-picker-mnu > span > ul > li.label-green {
+    background: green;
+}
+
+.ae-clipping-label-picker-mnu > span > ul > li.label-blue {
+    background: blue;
+}
+
+.ae-clipping-label-picker-mnu > span > ul > li.label-purple {
+    background: purple;
+}
+
+.ae-clipping-label-picker-mnu > span > ul > li.label-grey {
+    background: grey;
+}
