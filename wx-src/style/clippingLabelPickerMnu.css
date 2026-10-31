@@ -25,7 +25,7 @@
 }
 
 .context-menu-item.ae-clipping-label-picker-mnu.context-menu-disabled {
-    opacity: 0.5;
+    opacity: 0.4;
 }
 
 .ae-clipping-label-picker-mnu > span > ul {
@@ -40,6 +40,7 @@
     display: inline-block;
     width: 14px;
     height: 14px;
+    margin-right: -4px;
     border: 1px solid var(--color-label-opt-border);
     overflow: hidden;
     color: transparent;
