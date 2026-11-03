@@ -20,7 +20,7 @@ let gCustomizeDlg, gClipbdWritePermMsgBox,
 let gMsgBarTimerID = null;
 let gPermissionReq = new aePermReqInfo();
 let gActiveTreeNodeHistory = new aeActiveTreeNodeHistory();
-let gClippingLabelPickerMnu = new aeClippingLabelPickerMenu("cxtmenu-label-picker");
+let gClippingLabelPickerMnu = new aeCompactClippingLabelPicker("cxtmenu-label-picker");
 let gWndID;
 
 let gClippingsListener = {
