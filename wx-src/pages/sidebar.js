@@ -1318,9 +1318,8 @@ function buildClippingsTree()
         labelSeparator: {
           type: "cm_separator",
           visible(aItemKey, aOpt) {
-            let tree = aeClippingsTree.getTree();
-            let selectedNode = tree.activeNode;
-            if (! selectedNode) {
+            let selectedNode = aeClippingsTree.getTree().activeNode;
+            if (!selectedNode) {
               return false;
             }
             if (aeClippingsTree.isSeparatorSelected()) {
@@ -1337,15 +1336,20 @@ function buildClippingsTree()
           visible(aItemKey, aOpt) {
             return (!aeClippingsTree.isFolderSelected() && !aeClippingsTree.isSeparatorSelected());
           },
-          //disabled: true,
+          disabled(aItemKey, aOpt) {
+            let selectedNode = aeClippingsTree.getTree().activeNode;
+            if (!selectedNode) {
+              return false;
+            }
+            return isReadOnlySyncedItem(selectedNode);
+          },
         },
 
         custzSeparator: {
           type: "cm_separator",
           visible(aItemKey, aOpt) {
-            let tree = aeClippingsTree.getTree();
-            let selectedNode = tree.activeNode;
-            if (! selectedNode) {
+            let selectedNode = aeClippingsTree.getTree().activeNode;
+            if (!selectedNode) {
               return false;
             }
             if (aeClippingsTree.isSeparatorSelected()) {
@@ -1513,6 +1517,22 @@ function initSyncItemsIDLookupList()
       aFnReject(aErr);
     });
   });
+}
+
+
+function isReadOnlySyncedItem(aTreeNode)
+{
+  let rv = false;
+  if (! gPrefs.syncClippings) {
+    return rv;
+  }
+
+  let nodeID = parseInt(aTreeNode.key);
+  let isSyncedItem = gSyncedItemsIDs.has(nodeID + (aTreeNode.folder ? "F" : "C"));
+
+  rv = (gPrefs.isSyncReadOnly && isSyncedItem);
+
+  return rv;
 }
 
 
