@@ -12,6 +12,7 @@
     --col-hdr-height: 20px;
 
     --color-main-toolbar-bkgd: linear-gradient(to bottom, #fcfcfc 0%, #dedede 100%);
+    --color-nova-main-toolbar-bkgd: linear-gradient(to bottom, #FCF5F0 0%, #E4D7FC 100%);
     --color-main-toolbar-bkgd-btn: transparent;
     --color-main-toolbar-text: #0c0c0d;
     --color-toolbarbtn-hover-bkgd: rgba(12, 12, 13, 0.2);
@@ -44,35 +45,36 @@
 
 @media (prefers-color-scheme: dark) {
     :root {
-	--color-main-toolbar-bkgd: #38383d;
-	--color-main-toolbar-bkgd-btn: #38383d;
-	--color-main-toolbar-text: #f9f9fa;
-	--color-toolbarbtn-hover-bkgd: #737373;
-	--color-toolbarbtn-active-bkgd: #b1b1b3;
-	--color-toolbarbtn-close-bkgd: transparent;
-	--color-toolbarbtn-close-border: #737373;
-	--color-toolbarbtn-close-hover-bkgd: #737373;
-	--color-toolbarbtn-close-active-bkgd: #b1b1b3;
-	--color-th-bkgd: #4a4a4f;
-	--color-th-border: #737373;
-	--color-selected-row: #0a84ff;
-	--color-active-row: #003eaa;
-	--color-autocomplete-popup-bkgd: #202023;
-	--color-autocomplete-popup-shadow: #4a4a4f;
-	--color-autocomplete-listbox-border: black;
-	--color-autocomplete-selected-bkgd: #003eaa;
-	--color-autocomplete-selected-border: #002275;
-	--color-autocomplete-focused-bkgd: #0a84ff;
-	--color-autocomplete-focused-border: #0060df;
-	--color-autocomplete-clipping-name: #f9f9fa;
-	--color-autocomplete-clipping-preview: #b1b1b3;
+        --color-main-toolbar-bkgd: #38383d;
+        --color-nova-main-toolbar-bkgd: #38383d;
+        --color-main-toolbar-bkgd-btn: #38383d;
+        --color-main-toolbar-text: #f9f9fa;
+        --color-toolbarbtn-hover-bkgd: #737373;
+        --color-toolbarbtn-active-bkgd: #b1b1b3;
+        --color-toolbarbtn-close-bkgd: transparent;
+        --color-toolbarbtn-close-border: #737373;
+        --color-toolbarbtn-close-hover-bkgd: #737373;
+        --color-toolbarbtn-close-active-bkgd: #b1b1b3;
+        --color-th-bkgd: #4a4a4f;
+        --color-th-border: #737373;
+        --color-selected-row: #0a84ff;
+        --color-active-row: #003eaa;
+        --color-autocomplete-popup-bkgd: #202023;
+        --color-autocomplete-popup-shadow: #4a4a4f;
+        --color-autocomplete-listbox-border: black;
+        --color-autocomplete-selected-bkgd: #003eaa;
+        --color-autocomplete-selected-border: #002275;
+        --color-autocomplete-focused-bkgd: #0a84ff;
+        --color-autocomplete-focused-border: #0060df;
+        --color-autocomplete-clipping-name: #f9f9fa;
+        --color-autocomplete-clipping-preview: #b1b1b3;
 
-	--url-toolbar-btn-icon-insClipping: url("../img/insClipping-dk.svg");
-	--url-toolbar-btn-icon-insClipping-hover: url("../img/insClipping-dk.svg");
-	--url-toolbar-btn-icon-insClipping-active: url("../img/insClipping-active-dk.svg");
-	--url-toolbar-btn-icon-export: url("../img/export-dk.svg");
-	--url-toolbar-btn-icon-export-hover: url("../img/export-dk.svg");
-	--url-toolbar-btn-icon-export-active: url("../img/export-active-dk.svg");
+        --url-toolbar-btn-icon-insClipping: url("../img/insClipping-dk.svg");
+        --url-toolbar-btn-icon-insClipping-hover: url("../img/insClipping-dk.svg");
+        --url-toolbar-btn-icon-insClipping-active: url("../img/insClipping-active-dk.svg");
+        --url-toolbar-btn-icon-export: url("../img/export-dk.svg");
+        --url-toolbar-btn-icon-export-hover: url("../img/export-dk.svg");
+        --url-toolbar-btn-icon-export-active: url("../img/export-active-dk.svg");
     }
 }
 
@@ -150,6 +152,10 @@ body {
     background: var(--color-main-toolbar-bkgd);
     color: var(--color-main-toolbar-text);
     border-bottom: 1px solid silver;
+}
+
+body[data-nova="true"] #shortcut-list #shortcut-list-toolbar {
+    background: var(--color-nova-main-toolbar-bkgd);
 }
 
 #shortcut-list #shortcut-list-toolbar button {

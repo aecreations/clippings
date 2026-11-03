@@ -350,6 +350,7 @@ $(async () => {
 
   let useAccentColor = await aePrefs.getPref("useAccentColor");
   aeVisual.enableAccentColor(useAccentColor);
+  document.body.dataset.nova = useAccentColor;
 
   aeVisual.cacheIcons(
     "insClipping-hover.svg",
