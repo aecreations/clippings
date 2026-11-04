@@ -12,7 +12,7 @@
     --col-hdr-height: 20px;
 
     --color-main-toolbar-bkgd: linear-gradient(to bottom, #fcfcfc 0%, #dedede 100%);
-    --color-nova-main-toolbar-bkgd: linear-gradient(to bottom, #FCF5F0 0%, #E4D7FC 100%);
+    --color-nova-main-toolbar-bkgd: linear-gradient(to bottom, #FCF5F0 0%, #F1E7F8 100%);
     --color-main-toolbar-bkgd-btn: transparent;
     --color-main-toolbar-text: #0c0c0d;
     --color-toolbarbtn-hover-bkgd: rgba(12, 12, 13, 0.2);
@@ -141,6 +141,10 @@ body {
 
 #paste-by-shortcut-key, #search-by-name, #shortcut-list {
     display: none;
+}
+
+#paste-recent > b {
+    font-weight: 600;
 }
 
 #shortcut-list #shortcut-list-toolbar {
