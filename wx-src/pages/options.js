@@ -272,7 +272,7 @@ $(async () => {
     let useAccentColor = aEvent.target.checked;
     aePrefs.setPrefs({useAccentColor});
     setTimeout(() => {
-      aeVisual.enableAccentColor(useAccentColor);
+      toggleAccentColor(useAccentColor);
     }, CHG_ACCENT_COLOR_DELAY_MS);
 
     // TO DO: Update accent colors on all opened windows and dialogs.
@@ -424,7 +424,7 @@ $(async () => {
     "pref-sync-clippings-checked-dk.svg"
   );
   aeVisual.preloadMsgBoxIcons(true);
-  aeVisual.enableAccentColor(prefs.useAccentColor);
+  toggleAccentColor(prefs.useAccentColor);
 });
 
 
@@ -1019,6 +1019,13 @@ async function toggleKeyboardShortcutOpt(aEvent)
       shortcut: '',
     });
   }
+}
+
+
+function toggleAccentColor(aIsEnabled)
+{
+  aeVisual.enableAccentColor(aIsEnabled);
+  document.body.dataset.nova = aIsEnabled;
 }
 
 

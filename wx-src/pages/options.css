@@ -30,46 +30,50 @@
 
     --url-preftab-general: url("../img/pref-general.svg");
     --url-preftab-general-checked: url("../img/pref-general-checked.svg");
+    --url-preftab-general-nova: url("../img/pref-general-nv.svg");
     --url-preftab-copy: url("../img/pref-copy-clipping.svg");
     --url-preftab-copy-checked: url("../img/pref-copy-clipping-checked.svg");
+    --url-preftab-copy-nova: url("../img/pref-copy-clipping-nv.svg");
     --url-preftab-paste: url("../img/pref-paste.svg");
     --url-preftab-paste-checked: url("../img/pref-paste-checked.svg");
+    --url-preftab-paste-nova: url("../img/pref-paste-nv.svg");
     --url-preftab-sync-clippings: url("../img/pref-sync-clippings.svg");
     --url-preftab-sync-clippings-checked: url("../img/pref-sync-clippings-checked.svg");
+    --url-preftab-sync-clippings-nova: url("../img/pref-sync-clippings-nv.svg");
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
-	--url-bkgd-img: none;
-	--color-bkgd: #1a1a1e;
+        --url-bkgd-img: none;
+        --color-bkgd: #1a1a1e;
 
-	--color-main-border: #0c0c0d;
-	--color-main-bkgd: #2a2a2e;
-	--color-main-border-shadow: #0c0c0d;
-	--color-header-bkgd: #2a2a2e;
-	--color-tab-cntr-border: #5b5b66;
-	--color-tab-bkgd-hover: #52525e;
-	--color-tab-bkgd-active: #5b5b66;
-	--color-tab-bkgd-selected: #4a4a55;
-	--color-tab-text-active: #45a1ff;
-	--color-fieldset-border: #4a4a4f;
-	--color-dlg-fieldset-border: #585858;
-	--color-text-sync-status-on: #30e60b;
-	--color-about-btn-bkgd: #2a2a2e;
-	--color-about-btn-bkgd-hover: #38383d;
-	--color-about-btn-bkgd-active: #4a4a4f;
-	--color-about-btn-border: #4a4a4f;
-	--color-about-btn-border-hover: #b1b1b3;
-	--color-about-btn: #f9f9fa;
+        --color-main-border: #0c0c0d;
+        --color-main-bkgd: #2a2a2e;
+        --color-main-border-shadow: #0c0c0d;
+        --color-header-bkgd: #2a2a2e;
+        --color-tab-cntr-border: #5b5b66;
+        --color-tab-bkgd-hover: #52525e;
+        --color-tab-bkgd-active: #5b5b66;
+        --color-tab-bkgd-selected: #4a4a55;
+        --color-tab-text-active: #45a1ff;
+        --color-fieldset-border: #4a4a4f;
+        --color-dlg-fieldset-border: #585858;
+        --color-text-sync-status-on: #30e60b;
+        --color-about-btn-bkgd: #2a2a2e;
+        --color-about-btn-bkgd-hover: #38383d;
+        --color-about-btn-bkgd-active: #4a4a4f;
+        --color-about-btn-border: #4a4a4f;
+        --color-about-btn-border-hover: #b1b1b3;
+        --color-about-btn: #f9f9fa;
 
-	--url-preftab-general: url("../img/pref-general-dk.svg");
-	--url-preftab-general-checked: url("../img/pref-general-checked-dk.svg");
-	--url-preftab-copy: url("../img/pref-copy-clipping-dk.svg");
-	--url-preftab-copy-checked: url("../img/pref-copy-clipping-checked-dk.svg");
-	--url-preftab-paste: url("../img/pref-paste-dk.svg");
-	--url-preftab-paste-checked: url("../img/pref-paste-checked-dk.svg");
-	--url-preftab-sync-clippings: url("../img/pref-sync-clippings-dk.svg");
-	--url-preftab-sync-clippings-checked: url("../img/pref-sync-clippings-checked-dk.svg");
+        --url-preftab-general: url("../img/pref-general-dk.svg");
+        --url-preftab-general-checked: url("../img/pref-general-checked-dk.svg");
+        --url-preftab-copy: url("../img/pref-copy-clipping-dk.svg");
+        --url-preftab-copy-checked: url("../img/pref-copy-clipping-checked-dk.svg");
+        --url-preftab-paste: url("../img/pref-paste-dk.svg");
+        --url-preftab-paste-checked: url("../img/pref-paste-checked-dk.svg");
+        --url-preftab-sync-clippings: url("../img/pref-sync-clippings-dk.svg");
+        --url-preftab-sync-clippings-checked: url("../img/pref-sync-clippings-checked-dk.svg");
     }
 }
 
@@ -217,12 +221,17 @@ progress {
     text-align: center;
 }
 
+body[data-nova="true"] .tab-container {
+    margin-bottom: 15px;
+    border-bottom: 1px solid transparent;
+}
+
 .tab-container > .tab {
     display: inline-block;
 }
 
 .tab > button {
-    margin: 0;
+    margin: 0 -4px 0 0;
     padding-top: 40px;
     padding-bottom: 22px;
     padding-left: 6px;
@@ -273,8 +282,31 @@ progress {
     background-color: var(--color-tab-bkgd-hover);
 }
 
+body[data-nova="true"] .tab > button.active-tab,
+body[data-nova="true"] .tab > button:hover {
+    margin-top: 4px;
+    padding-top: 37px;
+    padding-bottom: 20px;
+    border-radius: 8px;
+    background-position: center 5px;
+}
+
+body[data-nova="true"] .tab > button.active-tab {
+    background-color: var(--accent-color);
+    font-weight: 500;
+    color: #fff;
+}
+
+body[data-nova="true"] .tab > button:hover {
+    background-color: var(--accent-color-btn-hover-bkgd);
+}
+
 .tab > button.active-tab:hover {
     background-color: var(--color-tab-bkgd-hover);
+}
+
+body[data-nova="true"] .tab > button.active-tab:hover {
+    background-color: var(--accent-color);
 }
 
 .tab > button:active {
@@ -282,6 +314,10 @@ progress {
     border: none !important;
     background-color: var(--color-tab-bkgd-active);
     background-position: center 8px;
+}
+
+body[data-nova="true"] .tab > button:active {
+    background-color: var(--accent-color-btn-active-bkgd);
 }
 
 .tab > button.active-tab:active {
@@ -304,12 +340,20 @@ progress {
     background-image: var(--url-preftab-general-checked);
 }
 
+body[data-nova="true"] #preftab-general-btn.active-tab {
+    background-image: var(--url-preftab-general-nova);
+}
+
 #preftab-copy-btn {
     background-image: var(--url-preftab-copy);
 }
 
 #preftab-copy-btn.active-tab {
     background-image: var(--url-preftab-copy-checked);
+}
+
+body[data-nova="true"] #preftab-copy-btn.active-tab {
+    background-image: var(--url-preftab-copy-nova);
 }
 
 #preftab-paste-btn {
@@ -320,12 +364,21 @@ progress {
     background-image: var(--url-preftab-paste-checked);
 }
 
+body[data-nova="true"] #preftab-paste-btn.active-tab {
+    background-image: var(--url-preftab-paste-nova);
+}
+
 #preftab-sync-clippings-btn {
     background-image: var(--url-preftab-sync-clippings);
+    min-width: 106px;
 }
 
 #preftab-sync-clippings-btn.active-tab {
     background-image: var(--url-preftab-sync-clippings-checked);
+}
+
+body[data-nova="true"] #preftab-sync-clippings-btn.active-tab {
+    background-image: var(--url-preftab-sync-clippings-nova);
 }
 
 #browser-action-opt-ctr {
