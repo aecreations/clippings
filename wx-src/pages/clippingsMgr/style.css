@@ -24,7 +24,7 @@
     --color-not-synced-items-text: rgba(0, 0, 0, 0.4);
     --color-not-synced-items-selected-text: rgba(0, 0, 0, 0.4);
     --color-main-toolbar-bkgd: linear-gradient(to bottom, #fcfcfc 0%, #dedede 100%);
-    --color-nova-main-toolbar-bkgd: linear-gradient(to bottom, #FCF5F0 0%, #F1E7F8 100%);
+    --color-nova-main-toolbar-bkgd: linear-gradient(to right, #F1E7F8 0%, #FCF5F0 100%);
     --color-main-toolbar-bkgd-btn: transparent;
     --color-main-toolbar-text: #0c0c0d;
     --color-main-toolbar-border: silver;
