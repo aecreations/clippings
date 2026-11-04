@@ -293,7 +293,7 @@ body[data-nova="true"] .tab > button:hover {
 
 body[data-nova="true"] .tab > button.active-tab {
     background-color: var(--accent-color);
-    font-weight: 500;
+    font-weight: 600;
     color: #fff;
 }
 
