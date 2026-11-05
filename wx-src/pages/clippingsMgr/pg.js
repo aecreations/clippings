@@ -372,6 +372,9 @@ let gClippingsListener = {
         }
         else {
           // Undoing delete.
+          let actvNode = tree.activeNode;
+          actvNode?.setSelected(false);
+
           let newNodeData = {
             key: aID + "C",
             title: aeClippingsTree.sanitizeTreeNodeTitle(aeClippingsTree.DEBUG ? `${aData.name} [key=${aID}C]` : aData.name)
@@ -436,7 +439,10 @@ let gClippingsListener = {
           }
         }
 
-        changedNode.makeVisible().then(() => { changedNode.setActive() });
+        changedNode.makeVisible().then(() => {
+          changedNode.setActive();
+          changedNode.setSelected();
+        });
       }
     }
     else if (aData.name != aOldData.name) {
@@ -640,6 +646,7 @@ let gClippingsListener = {
     let nextSibNode = targetNode.getNextSibling();
     let parentNode = targetNode.getParent();
     
+    targetNode.setSelected(false);
     targetNode.remove();
 
     if (tree.count() == 0) {
@@ -654,19 +661,25 @@ let gClippingsListener = {
       // last child of the parent.
       if (nextSibNode) {
         nextSibNode.setActive();
+        !nextSibNode.isFolder() && nextSibNode.setSelected();
       }
       else if (prevSibNode) {
         prevSibNode.setActive();
+        !prevSibNode.isFolder() && prevSibNode.setSelected();
       }
       else {
         if (parentNode.isRootNode()) {
-          let parentNodes = parentNode.getChildren();
-          if (deletedNodeIdx < parentNodes.length) {
-            parentNodes[deletedNodeIdx].setActive();
+          let parentChildNodes = parentNode.getChildren();
+          let newActvNode;
+          if (deletedNodeIdx < parentChildNodes.length) {
+            newActvNode = parentChildNodes[deletedNodeIdx];
+
           }
           else {
-            parentNodes[parentNodes.length].setActive();
+            newActvNode = parentChildNodes[parentChildNodes.length];
           }
+          newActvNode.setActive();
+          !newActvNode.isFolder() && newActvNode.setSelected();
         }
         else {
           parentNode.setActive();
@@ -2153,6 +2166,8 @@ function buildClippingsTree()
         // is reloaded.
         let rootNode = aData.tree.getRootNode();
         if (rootNode.children.length > 0 && !gIsClippingsTreeEmpty) {
+          aeClippingsTree.orderedSelectedNodes.clear();
+
           let firstNode = rootNode.getFirstChild();
           firstNode.setActive();
 
@@ -2871,6 +2886,7 @@ async function rebuildClippingsTree(aFromReloadBtn=false)
         if (node) {
           node.makeVisible({noAnimation: true}).done(() => {
             node.setActive();
+            node.setSelected();
           });
         }
       }

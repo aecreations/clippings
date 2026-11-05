@@ -375,6 +375,7 @@ let gClippingsListener = {
     let nextSibNode = targetNode.getNextSibling();
     let parentNode = targetNode.getParent();
 
+    targetNode.setSelected(false);
     targetNode.remove();
 
     if (tree.count() == 0) {
@@ -389,19 +390,24 @@ let gClippingsListener = {
       // last child of the parent.
       if (nextSibNode) {
         nextSibNode.setActive();
+        !nextSibNode.isFolder() && nextSibNode.setSelected();
       }
       else if (prevSibNode) {
         prevSibNode.setActive();
+        !prevSibNode.isFolder() && prevSibNode.setSelected();
       }
       else {
         if (parentNode.isRootNode()) {
-          let parentNodes = parentNode.getChildren();
-          if (deletedNodeIdx < parentNodes.length) {
-            parentNodes[deletedNodeIdx].setActive();
+          let parentChildNodes = parentNode.getChildren();
+          let newActvNode;
+          if (deletedNodeIdx < parentChildNodes.length) {
+            newActvNode = parentChildNodes[deletedNodeIdx];
           }
           else {
-            parentNodes[parentNodes.length].setActive();
+            newActvNode = parentChildNodes[parentChildNodes.length];
           }
+          newActvNode.setActive();
+          !newActvNode.isFolder() && newActvNode.setSelected();
         }
         else {
           parentNode.setActive();
@@ -460,7 +466,11 @@ let gSyncClippingsListener = {
         else {
           // Select the first item in the tree.
           let rootNode = clippingsTree.getRootNode();
-          rootNode.children[0].setActive();
+          let firstChild = rootNode.children[0];
+          if (firstChild) {
+            firstChild.setActive();
+            !firstChild.isFolder() && firstChild.setSelected();
+          }
         }
       }
       else {
@@ -628,7 +638,9 @@ let gSearchBox = {
     if (tree) {
       if (! aeClippingsTree.isEmpty()) {
         tree.clearFilter();
-        tree.getRootNode().children[0].setActive();
+        let firstChild = tree.getRootNode().children[0];
+        firstChild.setActive();
+        !firstChild.isFolder() && firstChild.setSelected();
       }
     }
 
@@ -1446,6 +1458,7 @@ async function rebuildClippingsTree(aFromReloadBtn=false)
     if (node) {
       node.makeVisible({noAnimation: true}).done(() => {
         node.setActive();
+        node.setSelected();
       });
     }
   }
