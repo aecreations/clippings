@@ -734,3 +734,19 @@ body[data-locale="fr"] #request-clipbd-write-perm-dlg {
 #init-error-msgbox .msgbox-error-msg {
     color: var(--color-error-text);
 }
+
+#sync-error-msgbox,
+#sync-fldr-full-error-msgbox {
+    top: 88px;
+    --width: 200px;
+    --height: auto;
+}
+
+#sync-error-msgbox .msgbox-error-msg,
+#sync-fldr-full-error-msgbox .msgbox-content {
+    margin-bottom: 42px;
+}
+
+#sync-error-msgbox .msgbox-error-msg {
+    color: var(--color-error-text);
+}

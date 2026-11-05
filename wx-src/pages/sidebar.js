@@ -15,12 +15,13 @@ let gClippingsDB;
 let gIsClippingsTreeEmpty;
 let gSyncedItemsIDs = new Set();
 let gSyncedItemsIDMap = new Map();
-let gCustomizeDlg, gClipbdWritePermMsgBox,
-    gInitErrorMsgBox, gSyncProgressDlg;
+let gCustomizeDlg, gInitErrorMsgBox, gSyncProgressDlg,
+    gSyncFldrFullMsgBox, gSyncErrorMsgBox, gClipbdWritePermMsgBox;
 let gMsgBarTimerID = null;
 let gPermissionReq = new aePermReqInfo();
 let gActiveTreeNodeHistory = new aeActiveTreeNodeHistory();
 let gClippingLabelPickerMnu = new aeCompactClippingLabelPicker("cxtmenu-label-picker");
+let gErrorPushSyncItems = false;
 let gWndID;
 
 let gClippingsListener = {
@@ -1018,8 +1019,15 @@ function initDialogs()
     let extName = browser.i18n.getMessage("extName")
     $("#perm-request").text(browser.i18n.getMessage("extPermInstr", extName));
   };
+
+  gSyncErrorMsgBox = new aeDialog("#sync-error-msgbox");
+  gSyncErrorMsgBox.setMessage = function (aMsg)
+  {
+    this.find(".dlg-content > .msgbox-error-msg").text(aMsg);
+  };
   
   gInitErrorMsgBox = new aeDialog("#init-error-msgbox");
+  gSyncFldrFullMsgBox = new aeDialog("#sync-fldr-full-error-msgbox");
   gSyncProgressDlg = new aeDialog("#sync-progress");
 }
 
@@ -1730,8 +1738,7 @@ function handlePushSyncUpdatesResponse(aResponse)
 {
   if ("error" in aResponse && aResponse.error.name == "RangeError") {
     // Max sync file size exceeded.
-    // TO DO: Show proper error message modal; see clippingsMgr/pg.js
-    alert(browser.i18n.getMessage("syncFldrFull"));
+    gSyncFldrFullMsgBox.showModal();
   }
 }
 
@@ -2001,8 +2008,11 @@ function getErrStr(aErr)
 
 function handlePushSyncItemsError(aError)
 {
-  // TO DO: Finish implementation
-  // Should be similar to approach in clippingsMgr/pg.js
+  if (!gErrorPushSyncItems) {
+    gSyncErrorMsgBox.setMessage(browser.i18n.getMessage("syncPushFailed"));
+    gSyncErrorMsgBox.showModal();
+    gErrorPushSyncItems = true;
+  }
 }
 
 
