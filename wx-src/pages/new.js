@@ -56,8 +56,7 @@ $(async () => {
     expandOptions(true, true);
   }
 
-  aeVisual.enableAccentColor(gPrefs.useAccentColor);
-  document.body.dataset.nova = gPrefs.useAccentColor;
+  toggleAccentColor(gPrefs.useAccentColor);
 
   $("#btn-expand-options").data("isExpanded", gPrefs.showNewClippingOpts).on("click", aEvent => {
     let isExpanded = $(aEvent.target).data("isExpanded");
@@ -815,6 +814,13 @@ function setDlgButtonEnabledStates(aIsEnabled)
 }
 
 
+function toggleAccentColor(aIsEnabled)
+{
+  aeVisual.enableAccentColor(aIsEnabled);
+  document.body.dataset.nova = aIsEnabled;
+}
+
+
 function accept(aEvent)
 {
   let shortcutKeyMenu = $("#clipping-key")[0];
@@ -982,6 +988,9 @@ browser.runtime.onMessage.addListener(aRequest => {
   if (aRequest.msgID == "ping-new-clipping-dlg") {
     let resp = {isOpen: true};
     return Promise.resolve(resp);
+  }
+  else if (aRequest.msgID == "toggle-accent-color") {
+    toggleAccentColor(aRequest.isEnabled);
   }
 });
 

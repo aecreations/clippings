@@ -977,9 +977,7 @@ $(async () => {
     "tree-fldr-close-dk.svg"
   );
 
-  document.body.dataset.nova = gPrefs.useAccentColor;
-  aeVisual.enableAccentColor(gPrefs.useAccentColor);
-
+  toggleAccentColor(gPrefs.useAccentColor);
   initPaneSplitter();
 
   let wnd = await browser.windows.getCurrent();
@@ -1715,6 +1713,13 @@ function hideMessageBar(aMsgBarStor)
 }
 
 
+function toggleAccentColor(aIsEnabled)
+{
+  document.body.dataset.nova = aIsEnabled;
+  aeVisual.enableAccentColor(aIsEnabled);
+}
+
+
 async function focusWnd()
 {
   await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, {focused: true});
@@ -1815,6 +1820,10 @@ browser.runtime.onMessage.addListener(aRequest => {
     else {
       aeClippingsTree.removeSrcURLBadges();
     }
+    break;
+
+  case "toggle-accent-color":
+    toggleAccentColor(aRequest.isEnabled);
     break;
 
   default:

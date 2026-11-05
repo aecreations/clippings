@@ -174,6 +174,9 @@ browser.runtime.onMessage.addListener(aRequest => {
     browser.windows.update(gWndID, {focused: true});
     browser.tabs.update(gTabID, {active: true});
   }
+  else if (aRequest.msgID == "toggle-accent-color") {
+    aeVisual.enableAccentColor(aRequest.isEnabled);
+  }
 
   if (resp) {
     return Promise.resolve(resp);

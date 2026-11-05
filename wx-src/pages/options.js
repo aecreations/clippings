@@ -273,9 +273,11 @@ $(async () => {
     aePrefs.setPrefs({useAccentColor});
     setTimeout(() => {
       toggleAccentColor(useAccentColor);
+      browser.runtime.sendMessage({
+        msgID: "toggle-accent-color",
+        isEnabled: useAccentColor,
+      });
     }, CHG_ACCENT_COLOR_DELAY_MS);
-
-    // TO DO: Update accent colors on all opened windows and dialogs.
   });
   if (aeVersionCmp(brws.version, "157.0") >= 0) {
     $("#use-nova-colors-opt").show();

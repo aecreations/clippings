@@ -68,6 +68,10 @@ function sanitizeHTML(aHTMLStr)
 }
 
 
+//
+// Event handlers
+//
+
 browser.runtime.onMessage.addListener(aRequest => {
   if (aRequest.msgID == "ping-whats-new-pg") {
     let resp = {
@@ -75,6 +79,9 @@ browser.runtime.onMessage.addListener(aRequest => {
       tabID: gTabID,
     };
     return Promise.resolve(resp);
+  }
+  else if (aRequest.msgID == "toggle-accent-color") {
+    aeVisual.enableAccentColor(aRequest.isEnabled);
   }
 });
 

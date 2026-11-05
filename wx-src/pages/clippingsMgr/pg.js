@@ -1313,8 +1313,7 @@ $(async () => {
   if (gPrefs.defDlgBtnFollowsFocus) {
     aeInterxn.initDialogButtonFocusHandlers();
   }
-  aeVisual.enableAccentColor(gPrefs.useAccentColor, true);
-  document.body.dataset.nova = gPrefs.useAccentColor;
+  toggleAccentColor(gPrefs.useAccentColor);
   
   let wnd = await browser.windows.getCurrent();
   gWndID = wnd.id;
@@ -1588,6 +1587,10 @@ browser.runtime.onMessage.addListener(aRequest => {
     else {
       aeClippingsTree.removeSrcURLBadges();
     }
+    break;
+
+  case "toggle-accent-color":
+    toggleAccentColor(aRequest.isEnabled);
     break;
 
   default:
@@ -3335,6 +3338,13 @@ async function focusWnd()
 function closeWnd()
 {
   browser.windows.remove(browser.windows.WINDOW_ID_CURRENT);
+}
+
+
+function toggleAccentColor(aIsEnabled)
+{
+  aeVisual.enableAccentColor(aIsEnabled, true);
+  document.body.dataset.nova = aIsEnabled;
 }
 
 

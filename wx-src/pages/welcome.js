@@ -55,6 +55,17 @@ function closePage()
 }
 
 
+//
+// Event handlers
+//
+
+browser.runtime.onMessage.addListener(aRequest => {
+  if (aRequest.msgID == "toggle-accent-color") {
+    aeVisual.enableAccentColor(aRequest.isEnabled);
+  }
+});
+
+
 $(window).on("keydown", aEvent => {
   aeInterxn.suppressBrowserShortcuts(aEvent, false);
 });
