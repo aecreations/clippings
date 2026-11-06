@@ -280,6 +280,8 @@ body[data-nova="true"] .tab-container {
 .tab > button:hover {
     border: unset;
     background-color: var(--color-tab-bkgd-hover);
+    transition-property: background-color;
+    transition-duration: 200ms;
 }
 
 body[data-nova="true"] .tab > button.active-tab,
@@ -293,7 +295,6 @@ body[data-nova="true"] .tab > button:hover {
 
 body[data-nova="true"] .tab > button.active-tab {
     background-color: var(--accent-color);
-    font-weight: 600;
     color: #fff;
 }
 
@@ -370,7 +371,6 @@ body[data-nova="true"] #preftab-paste-btn.active-tab {
 
 #preftab-sync-clippings-btn {
     background-image: var(--url-preftab-sync-clippings);
-    min-width: 106px;
 }
 
 #preftab-sync-clippings-btn.active-tab {
