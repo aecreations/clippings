@@ -1374,8 +1374,9 @@ body[data-os="mac"] #import-dlg #restore-backup-warning > .warning-icon {
     margin: 0px 0px 0px 28px;
     padding: 8px;
     border-radius: 4px;
-    background-color: #fbfb77;
-    color: black;
+    border: 1px solid rgba(164, 127, 0, 0.27);
+    background-color: #fffbd6;
+    color: #15141a;
 }
 
 body[data-locale="de"] #import-dlg #restore-backup-warning > p {

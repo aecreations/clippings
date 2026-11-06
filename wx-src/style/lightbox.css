@@ -18,11 +18,11 @@
 
 @media (prefers-color-scheme: dark) {
     :root {
-	--color-ovl-bkgd: black;
-	--opacity-ovl-bkgd: 0.85;
-	--color-lb-border: #2a2a2e;
-	--color-lb-bkgd: #38383d;
-	--color-lb-shadow: #0c0c0d;
+        --color-ovl-bkgd: black;
+        --opacity-ovl-bkgd: 0.85;
+        --color-lb-border: #2a2a2e;
+        --color-lb-bkgd: #38383d;
+        --color-lb-shadow: #0c0c0d;
     }
 }
 
@@ -107,19 +107,19 @@
 }
 
 .msgbar-warn {
-    border: 1px solid #E9D7BD;
-    background-color: #FFEBCD;
+    background-color: #fffbd6;
+    color: #15141a;
 }
 
 @keyframes fadeout {
     0% {
-	opacity: 1.0;
+        opacity: 1.0;
     }
     75% {
-	opacity: 0.0;
+        opacity: 0.0;
     }
     100% {
-	opacity: 0.0;
+        opacity: 0.0;
     }
 }
 
