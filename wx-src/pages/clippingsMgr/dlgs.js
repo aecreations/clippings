@@ -535,6 +535,8 @@ function clippingsMgrDlgs()
             gCmd.undoStack.clear();
             gCmd.redoStack.clear();
             gActiveTreeNodeHistory.clear();
+            aePrefs.setPrefs({_recentClippingID: null});
+
             importFile(false);
           });
         }).catch(aErr => {
