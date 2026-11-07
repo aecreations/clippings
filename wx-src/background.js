@@ -2079,7 +2079,7 @@ async function openBackupDlg()
     height = 450;
   }
   if (os == "linux") {
-    wndPpty.height += WND_SIZE_ADJ_LINUX;
+    height += WND_SIZE_ADJ_LINUX;
   }
   
   openDlgWnd(url, "backupFirstRun", {type: "popup", width: 590, height});
@@ -2100,7 +2100,7 @@ async function openSidebarHelpDlg()
     height = 404;
   }
   else if (os == "linux") {
-    height += DLG_HEIGHT_ADJ_LINUX;
+    height += WND_SIZE_ADJ_LINUX;
   }
 
   let wndPpty = {
