@@ -7,6 +7,7 @@
 
 
 const ROOT_FOLDER_NAME = "clippings-root";
+const WND_SIZE_ADJ_LINUX = 60;
 
 // These globals are used only briefly or during initialization, so they don't
 // need to be saved to extension storage.
@@ -1823,6 +1824,10 @@ async function openClippingsManager(aBackupMode)
     let left, top;
     let wndGeom = prefs.clippingsMgrWndGeom;
     let [tab] = await browser.tabs.query({currentWindow: true, discarded: false});
+    let {os} = await browser.runtime.getPlatformInfo();
+    if (os == "linux") {
+      height += WND_SIZE_ADJ_LINUX;
+    }
 
     if (prefs.clippingsMgrSaveWndGeom && wndGeom) {
       width  = wndGeom.w - 1;  // Compensate for workaround to popup window bug.
@@ -1966,6 +1971,9 @@ function openNewClippingDlg(aPlatformOS, aTabID, aIsMacOSExpanded=false)
   if (aPlatformOS == "win") {
     height = 434;
   }
+  else if (aPlatformOS == "linux") {
+    height += WND_SIZE_ADJ_LINUX;
+  }
   if (aIsMacOSExpanded) {
     height = 474;
     url += "?vexp=1";
@@ -1987,7 +1995,7 @@ function getNewClippingData()
 }
 
 
-function openKeyboardPasteDlg(aTabID, aIsExpanded)
+async function openKeyboardPasteDlg(aTabID, aIsExpanded)
 {
   // TO DO: Check first if the cursor is in a web page textbox or HTML editor.
   // If not, then don't do anything.
@@ -1999,6 +2007,10 @@ function openKeyboardPasteDlg(aTabID, aIsExpanded)
     height: 180,
     topOffset: 256,
   };
+  let {os} = await browser.runtime.getPlatformInfo();
+  if (os == "linux") {
+    wndPpty.height += WND_SIZE_ADJ_LINUX;
+  }
 
   if (aIsExpanded) {
     wndPpty.height = 250;
@@ -2009,7 +2021,7 @@ function openKeyboardPasteDlg(aTabID, aIsExpanded)
 }
 
 
-function openPlaceholderPromptDlg(aTabID, aDlgMode, aIsExpanded, aIsMulti, aMultiIndex)
+async function openPlaceholderPromptDlg(aTabID, aDlgMode, aIsExpanded, aIsMulti, aMultiIndex)
 {
   // TO DO: Same checking for cursor location as in the preceding function.
 
@@ -2022,6 +2034,10 @@ function openPlaceholderPromptDlg(aTabID, aDlgMode, aIsExpanded, aIsMulti, aMult
     height: 228,
     topOffset: 256,
   };
+  let {os} = await browser.runtime.getPlatformInfo();
+  if (os == "linux") {
+    wndPpty.height += WND_SIZE_ADJ_LINUX;
+  }
 
   if (aIsExpanded) {
     wndPpty.height = 318;
@@ -2043,6 +2059,10 @@ async function openPasteAsDlg(aTabID)
     height: 300,
     topOffset: 256,
   };
+  let {os} = await browser.runtime.getPlatformInfo();
+  if (os == "linux") {
+    wndPpty.height += WND_SIZE_ADJ_LINUX;
+  }
 
   openDlgWnd(url, "pasteAs", wndPpty, aTabID);
 }
@@ -2057,6 +2077,9 @@ async function openBackupDlg()
 
   if (lang == "uk" || (lang == "fr" && os == "win")) {
     height = 450;
+  }
+  if (os == "linux") {
+    wndPpty.height += WND_SIZE_ADJ_LINUX;
   }
   
   openDlgWnd(url, "backupFirstRun", {type: "popup", width: 590, height});
@@ -2075,6 +2098,9 @@ async function openSidebarHelpDlg()
 
   if (os == "mac") {
     height = 404;
+  }
+  else if (os == "linux") {
+    height += DLG_HEIGHT_ADJ_LINUX;
   }
 
   let wndPpty = {
@@ -2472,7 +2498,7 @@ async function processClipping(aClippingInfo, aIsExternalRequest, aTabID, aMode,
         }
       }
 
-      openPlaceholderPromptDlg(activeTabID, aMode, isExpanded, aIsMulti, aMultiIndex);
+      await openPlaceholderPromptDlg(activeTabID, aMode, isExpanded, aIsMulti, aMultiIndex);
       return null;
     }
   }
@@ -2798,7 +2824,7 @@ browser.commands.onCommand.addListener(async (aCmdName, aTab) => {
       }
     }
 
-    openKeyboardPasteDlg(aTab.id, isExpanded);
+    await openKeyboardPasteDlg(aTab.id, isExpanded);
   }
 });
 
