@@ -17,7 +17,6 @@ function clippingsMgrDlgs()
     $("#clipping-key")[0].selectedIndex = gShortcutKey.getPrevSelectedIndex();
   };
 
-  let clippingMissingSrcURL = new aeDialog("#clipping-missing-src-url-msgbar");
   let noUndoNotify = new aeDialog("#no-undo-msgbar");
   let noRedoNotify = new aeDialog("#no-redo-msgbar");
   let clipboardEmpty = new aeDialog("#clipboard-empty-msgbar");
@@ -970,7 +969,6 @@ function clippingsMgrDlgs()
 
   return {
     shctKeyConflict,
-    clippingMissingSrcURL,
     noUndoNotify,
     noRedoNotify,
     clipboardEmpty,

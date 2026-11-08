@@ -1810,8 +1810,8 @@ function clippingsMgrCmds()
 
       let clippingID = parseInt(selectedNode.key);
       let clipping = await gClippingsDB.clippings.get(clippingID);
-      if (clipping.sourceURL == "") {
-        gDlg.clippingMissingSrcURL.openPopup();
+      if (!clipping.sourceURL) {
+        warn("Clippings::clippingsMgr/cmds.js: gCmd.openWebPageSourceURL(): The selected clipping doesn't have a source web page address.");
         return;
       }
 

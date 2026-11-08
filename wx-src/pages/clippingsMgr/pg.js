@@ -1648,6 +1648,11 @@ function initToolbar()
     trigger: "left",
     className: "placeholder-menu",
 
+    animation: {
+      hide: "fadeOut",
+      animateOnReopen: false
+    },
+
     events: {
       activated: function (aOptions) {
         let mnu = aOptions.$menu;
@@ -1760,6 +1765,11 @@ function initToolbar()
     selector: "#clippings-mgr-options",
     trigger: "left",
     className: "tools-menu",
+
+    animation: {
+      hide: "fadeOut",
+      animateOnReopen: false
+    },
 
     events: {
       activated: function (aOptions) {
@@ -2461,20 +2471,42 @@ function buildClippingsTree()
       selector: "#clippings-tree > ul.ui-fancytree > li",
       className: "clippings-tree-cxt-menu",
 
+      animation: {
+        hide: "fadeOut",
+        animateOnReopen: false
+      },
+
       events: {
-        activated(aOpts) {
+        activated(aOpts)
+        {
           let mnu = aOpts.$menu;
           mnu[0].focus();  
         },
         
-        show(aOpts) {
+        async show(aOpts)
+        {
           let treeItemSpan = aOpts.$trigger[0].firstChild;
           if (treeItemSpan.classList.contains("fancytree-statusnode-nodata")) {
             // Hide the context menu if "No items found" in the search results
             // is selected.
             return false;
           }
-          return (! gIsClippingsTreeEmpty);
+
+          if (!gIsClippingsTreeEmpty) {
+            // Disable "Go to Source Web Page" menu item if the selected
+            // clipping doesn't have a source URL.
+            let selectedNode = aeClippingsTree.getTree().activeNode;
+            if (!selectedNode.isFolder()) {
+              let clippingID = parseInt(selectedNode.key);
+              let clipping = await gClippingsDB.clippings.get(clippingID);
+              if (!clipping.sourceURL) {
+                let mnuItemElt = aOpts.$menu.find(".mnuitem-goto-src-web-pg");
+                mnuItemElt.addClass("context-menu-disabled");
+              }
+            }
+          }
+
+          return (!gIsClippingsTreeEmpty);
         }
       },
       
@@ -2566,7 +2598,7 @@ function buildClippingsTree()
         },
         gotoSrcURL: {
           name: browser.i18n.getMessage("mnuGoToSrcURL"),
-          className: "ae-menuitem",
+          className: "ae-menuitem mnuitem-goto-src-web-pg",
           visible: function (aItemKey, aOpt) {
             return (!aeClippingsTree.isFolderSelected()
                     && !aeClippingsTree.isSeparatorSelected()

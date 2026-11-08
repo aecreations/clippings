@@ -774,8 +774,8 @@ let gCmd = {
 
     let clippingID = parseInt(selectedNode.key);
     let clipping = await gClippingsDB.clippings.get(clippingID);
-    if (clipping.sourceURL == "") {
-      showMessageBar("#clipping-missing-src-url-msgbar");
+    if (!clipping.sourceURL) {
+      warn("Clippings::sidebar.js: gCmd.openWebPageSourceURL(): The selected clipping doesn't have a source web page address.");
       return;
     }
 
@@ -1219,32 +1219,50 @@ function buildClippingsTree()
       selector: "#clippings-tree > ul.ui-fancytree > li",
       className: "sidebar-cxt-menu",
 
+      animation: {
+        hide: "fadeOut",
+        animateOnReopen: false
+      },
+
       events: {
-        activated(aOpts)
+        async activated(aOpts)
         {
           let mnu = aOpts.$menu;
           mnu[0].focus();
 
-          let tree = aeClippingsTree.getTree();
-          let selectedNode = tree.activeNode;
+          let selectedNode = aeClippingsTree.getTree().activeNode;
           if (!selectedNode || selectedNode.isFolder()) {
             return;
           }
 
           let clippingID = parseInt(selectedNode.key);
-          gClippingsDB.clippings.get(clippingID).then(aResult => {
-            let label = aResult.label == '' ? "none" : aResult.label;
-            gClippingLabelPickerMnu.onActivated(label);
-          });
+          let clipping = await gClippingsDB.clippings.get(clippingID);
+          let label = clipping.label == '' ? "none" : clipping.label;
+          gClippingLabelPickerMnu.onActivated(label);
         },
 
-        show(aOpts)
+        async show(aOpts)
         {
           let treeItemSpan = aOpts.$trigger[0].firstChild;
           if (treeItemSpan.classList.contains("fancytree-statusnode-nodata")) {
             return false;
           }
-          return (! gIsClippingsTreeEmpty);
+
+          if (!gIsClippingsTreeEmpty) {
+            // Disable "Go to Source Web Page" menu item if the selected
+            // clipping doesn't have a source URL.
+            let selectedNode = aeClippingsTree.getTree().activeNode;
+            if (!selectedNode.isFolder()) {
+              let clippingID = parseInt(selectedNode.key);
+              let clipping = await gClippingsDB.clippings.get(clippingID);
+              if (!clipping.sourceURL) {
+                let mnuItemElt = aOpts.$menu.find(".mnuitem-goto-src-web-pg");
+                mnuItemElt.addClass("context-menu-disabled");
+              }
+            }
+          }
+
+          return (!gIsClippingsTreeEmpty);
         },
 
         hide(aOpts)
@@ -1326,7 +1344,7 @@ function buildClippingsTree()
         },
         gotoSrcURL: {
           name: browser.i18n.getMessage("mnuGoToSrcURL"),
-          className: "ae-menuitem",
+          className: "ae-menuitem mnuitem-goto-src-web-pg",
           visible(aItemKey, aOpt) {
             return (!aeClippingsTree.isFolderSelected()
                 && !aeClippingsTree.isSeparatorSelected()
