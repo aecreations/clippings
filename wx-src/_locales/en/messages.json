@@ -938,10 +938,6 @@
     "message": "The selected shortcut key has already been assigned to another clipping.  Please select a different shortcut key."
   },
 
-  "clipMgrNoSrcURL": {
-    "message": "The selected clipping doesn't have a source web page address."
-  },
-
   "addrBkPermPanel": {
     "message": "Additional permission needed to fill in this placeholder when pasting.",
     "description": "Clippings Manager message bar in Thunderbird"
