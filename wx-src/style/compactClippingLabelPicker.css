@@ -22,6 +22,7 @@
     padding-left: 28px;
     background-color: var(--color-cxtmenu-bkgd) !important;
     color: var(--color-cxtmenu-text);
+    font-size: 12px;
 }
 
 .context-menu-item.ae-clipping-label-picker-mnu.context-menu-disabled {
