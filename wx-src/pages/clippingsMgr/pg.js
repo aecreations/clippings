@@ -2483,7 +2483,7 @@ function buildClippingsTree()
           mnu[0].focus();  
         },
         
-        async show(aOpts)
+        show(aOpts)
         {
           let treeItemSpan = aOpts.$trigger[0].firstChild;
           if (treeItemSpan.classList.contains("fancytree-statusnode-nodata")) {
@@ -2498,11 +2498,12 @@ function buildClippingsTree()
             let selectedNode = aeClippingsTree.getTree().activeNode;
             if (!selectedNode.isFolder()) {
               let clippingID = parseInt(selectedNode.key);
-              let clipping = await gClippingsDB.clippings.get(clippingID);
-              if (!clipping.sourceURL) {
-                let mnuItemElt = aOpts.$menu.find(".mnuitem-goto-src-web-pg");
-                mnuItemElt.addClass("context-menu-disabled");
-              }
+              gClippingsDB.clippings.get(clippingID).then(aClipping => {
+                if (!aClipping.sourceURL) {
+                  let mnuItemElt = aOpts.$menu.find(".mnuitem-goto-src-web-pg");
+                  mnuItemElt.addClass("context-menu-disabled");
+                }
+              });
             }
           }
 
