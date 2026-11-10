@@ -19,6 +19,10 @@
     "message": "Textbaustein mit Taste einfügen",
     "description": "Keyboard shortcut description in Manage Extension Shortcuts"
   },
+  "cmdSubjDesc": {
+    "message": "Clipping zum Betreff hinzufügen",
+    "description": "Keyboard shortcut description in Manage Extension Shortcuts"
+  },
   "hostAppFx": {
     "message": "Firefox"
   },
@@ -55,6 +59,10 @@
   },
   "pasteTitle": {
     "message": "Textbaustein einfügen",
+    "description": "Title bar text of keyboard paste dialog"
+  },
+  "addSubjTitle": {
+    "message": "Clipping zum Betreff hinzufügen",
     "description": "Title bar text of keyboard paste dialog"
   },
   "msgTitle": {
@@ -155,7 +163,7 @@
     "message": "Was ist neu"
   },
   "welcWhatsNewDesc": {
-    "message": "In Clippings 7.1 können Sie nun wählen, ob Sie HTML-formatierte Textbausteine als Nur-Text in einen HTML-Editor einfügen."
+    "message": "In Clippings 7.2 können Sie nun mehrere Clippings von Clippings Manager und Clippings Sidebar kopieren."
   },
   "welcWhatsNewCTA": {
     "message": "Mehr erfahren"
@@ -177,15 +185,35 @@
   },
   "permReqTitle": {
     "message": "Um die ausgewählte Aktion abzuschließen, benötigt Clippings zusätzliche Berechtigung:",
-    "description": "Header for modal dialog that appears when trying to complete an action that requires an optional extension permission to be turned on"
+    "description": "Intro text in permissions page when trying to complete an action that requires an optional extension permission to be turned on"
+  },
+  "permReq": {
+    "message": "Clippings benötigt zusätzliche Berechtigung:",
+    "description": "Intro text in permissions page when a feature requires an optional extension permission to be turned on"
   },
   "extPrmClipbdR": {
     "message": "Daten aus der Zwischenablage erhalten",
-    "description": "User-facing description of the 'clipboardRead' extension permission"
+    "description": "User-facing label for the 'clipboardRead' extension permission"
+  },
+  "extPrmClipbdRDesc": {
+    "message": "Diese Berechtigung erlaubt Clippings,  ein neues Clipping aus dem Text in der Zwischenablage zu erstellen.",
+    "description": "Description of the 'clipboardRead' extension permission"
   },
   "extPrmClipbdW": {
     "message": "Daten in die Zwischenablage eingeben",
-    "description": "User-facing description of the 'clipboardWrite' extension permission"
+    "description": "User-facing label for the 'clipboardWrite' extension permission"
+  },
+  "extPrmClipbdWDesc": {
+    "message": "Diese Berechtigung erlaubt es, Text aus Clippings Manager oder Clippings Sidebar zu kopieren.",
+    "description": "Description of the 'clipboardWrite' extension permission"
+  },
+  "extPrmAddrBk": {
+    "message": "Lesen und ändern Sie Ihre Adressbücher und Kontakte",
+    "description": "User-facing label for the 'addressBooks' extension permission"
+  },
+  "extPrmAddrBkDesc": {
+    "message": "Diese Berechtigung wird benötigt, um Platzhalter für den Vornamen des Nachrichtenempfängers mit Informationen auszufüllen, die in Ihren Kontakten gespeichert sind.",
+    "description": "Description of the 'addressBooks' extension permission"
   },
   "extPermInstr": {
     "message": "Um Clippings diese Berechtigung zu gewähren, öffnen Sie den Add-ons-Manager, klicken Sie auf $1 in der Liste der installierten Erweiterungen, und aktivieren Sie dann die Berechtigung im Reiter Berechtigungen.",
@@ -198,10 +226,6 @@
   "permReqPgHdg": {
     "message": "Berechtigung angefordert",
     "description": "Heading of the Permission Requested page"
-  },
-  "permReqHlp": {
-    "message": "Hilfe für Berechtigungen der Add-ons",
-    "description": "Link to Clippings help page on the AE Creations website"
   },
   "newClippingDlgTitle": {
     "message": "Neuer Textbaustein",
@@ -285,6 +309,10 @@
     "message": "TAB = Textbaustein nach Namen suchen",
     "description": "Keyboard paste dialog - keyboard shortcut legend"
   },
+  "keybPasteDlgEnter": {
+    "message": "ENTER = neuestes einfügen: $1",
+    "description": "Keyboard paste dialog - keyboard shortcut legend"
+  },
   "keybPasteDlgTabShctMode": {
     "message": "TAB = Tastaturkürzel-Modus",
     "description": "Keyboard paste dialog - keyboard shortcut legend"
@@ -358,27 +386,51 @@
   },
   "copyAsHTML": {
     "message": "Als formatierter Text kopieren",
-    "Description": "Copy Clipping Text dialog in Clippings Manager and Clippings sidebar - user selection of data format of clipping to be copied"
+    "description": "Copy Clipping Text dialog in Clippings Manager and Clippings sidebar - user selection of data format of clipping to be copied"
+  },
+  "copyAsHTML_accesskey": {
+    "message": "f",
+    "description": "Access key for 'Copy as Formatted Text'"
   },
   "copyAsPlain": {
     "message": "Als einfachen Text kopieren",
     "description": "Copy Clipping Text dialog in Clippings Manager and Clippings sidebar - user selection of data format of clipping to be copied"
   },
+  "copyAsPlain_accesskey": {
+    "message": "T",
+    "description": "Access key for 'Copy as Plain Text'"
+  },
   "copyAsPlainHTML": {
     "message": "Als einfachen Text mit HTML-Tags kopieren",
     "description": "Copy Clipping Text dialog in Clippings Manager and Clippings sidebar - user selection of data format of clipping to be copied"
+  },
+  "copyAsPlainHTML_accesskey": {
+    "message": "H",
+    "description": "Access key for 'Copy as Plain Text with HTML tags'"
   },
   "pasteAsHTML": {
     "message": "Als formatierten Text einfügen",
     "description": "Paste As dialog - user selection of data format of clipping to be pasted"
   },
+  "pasteAsHTML_accesskey": {
+    "message": "f",
+    "description": "Access key for 'Paste as Formatted Text'"
+  },
   "pasteAsPlain": {
     "message": "Als Nur-Text einfügen",
     "description": "Paste As dialog - user selection of data format of clipping to be pasted"
   },
+  "pasteAsPlain_accesskey": {
+    "message": "T",
+    "description": "Access key for 'Paste as Plain Text'"
+  },
   "pasteAsPlainHTML": {
     "message": "Als Nur-Text mit HTML-Tags einfügen",
     "description": "Paste As dialog - user selection of data format of clipping to be pasted"
+  },
+  "pasteAsPlainHTML_accesskey": {
+    "message": "H",
+    "description": "Access key for 'Paste as Plain Text with HTML tags'"
   },
   "clippingsMgrWndTitle": {
     "message": "Textbausteinverwaltung",
@@ -580,6 +632,10 @@
     "message": "Name",
     "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
   },
+  "mnuPlchldrFName": {
+    "message": "Vorname",
+    "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
+  },
   "mnuPlchldrEmail": {
     "message": "E-Mail",
     "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
@@ -684,8 +740,13 @@
   "clipMgrShortcutKeyAssigned": {
     "message": "Das ausgewählte Tastaturkürzel wurde bereits einem anderen Textbaustein zugeordnet. Bitte wählen Sie ein anderes Tastaturkürzel aus."
   },
-  "clipMgrNoSrcURL": {
-    "message": "Der ausgewählte Textbaustein hat keine Quell-Webseiten-Adresse."
+  "addrBkPermPanel": {
+    "message": "Zusätzliche Erlaubnis erforderlich zum Ausfüllen dieses Platzhalters beim Einfügen.",
+    "description": "Clippings Manager message bar in Thunderbird"
+  },
+  "detailsMsgBar": {
+    "message": "Details",
+    "description": "Label for a button in the Clippings Manager message bar in Thunderbird"
   },
   "clipMgrImportConfirm": {
     "message": "Import von »$1« wurde erfolgreich abgeschlossen.",
@@ -936,25 +997,36 @@
     "description": "Extension preferences page"
   },
   "htmlPasteDesc": {
-    "message": "Einen als HTML formatierten Textbaustein immer als reinen Text einfügen, wenn er in eine reine Textbox eingefügt wird oder der Textbaustein einschränkende Tags wie z. B. <script>, <applet>, <object>, <iframe> usw. enthält."
+    "message": "Einen als HTML formatierten Textbaustein immer als reinen Text einfügen, wenn er in eine reine Textbox eingefügt wird oder der Textbaustein einschränkende Tags wie z. B. <script>, <applet>, <object>, <iframe> usw. enthält.",
+    "description": "Extension preferences page (Firefox only)"
   },
   "htmlPasteDescTB": {
-    "message": "Ein HTML-formatierter Textbaustein wird immer als Nur-Text eingefügt, wenn es in eine Nur-Text-Nachricht eingefügt wird oder wenn der Textbaustein eingeschränkte Tags wie <script>, <applet>, <object>, <iframe>, etc. enthält."
+    "message": "Ein HTML-formatierter Textbaustein wird immer als Nur-Text eingefügt, wenn es in eine Nur-Text-Nachricht eingefügt wird oder wenn der Textbaustein eingeschränkte Tags wie <script>, <applet>, <object>, <iframe>, etc. enthält.",
+    "description": "Extension preferences page (Thunderbird only)"
   },
   "prefsShortcutMode": {
-    "message": "Durch Drücken folgender Tasten wird der Tastenkürzelmodus aktiviert:"
+    "message": "Durch Drücken folgender Tasten wird der Tastenkürzelmodus aktiviert:",
+    "description": "Extension preferences page (Firefox only)"
   },
   "prefsShctMode": {
-    "message": "Durch Drücken von »$1« wird der Tastenkürzelmodus aktiviert"
+    "message": "Tastenkombinationen für Nachrichtenfenster durch Drücken von $1 aktivieren",
+    "description": "Extension preferences page (Thunderbird only)"
+  },
+  "prefsSubjShctMode": {
+    "message": "Tastenkombinationen für Betreff durch Drücken von $1 aktivieren",
+    "description": "Extension preferences page (Thunderbird only)"
   },
   "prefsShortcutKeyNote": {
-    "message": "Einige der verfügbaren Tastaturkürzel können bereits <a href=\"https://support.mozilla.org/de/kb/Tastaturkuerzel\" class=\"hyperlink\">Firefox-Befehlen</a> oder anderen Add‑ons zugewiesen worden sein."
+    "message": "Einige der verfügbaren Tastaturkürzel können bereits <a href=\"https://support.mozilla.org/de/kb/Tastaturkuerzel\" class=\"hyperlink\">Firefox-Befehlen</a> oder anderen Add‑ons zugewiesen worden sein.",
+    "description": "Extension preferences page"
   },
   "prefsOutsideShct": {
-    "message": "Gehen Sie zu „Tastenkombinationen für Erweiterungen verwalten“ im Add-ons-Manager, um die Tastenkombination zu ändern."
+    "message": "Gehen Sie zu „Tastenkombinationen für Erweiterungen verwalten“ im Add-ons-Manager, um die Tastenkombination zu ändern.",
+    "description": "Extension preferences page"
   },
   "prefsDefaultNumPlchldrStart": {
-    "message": "Vorgabe-Startwert für numerische Platzhalter:"
+    "message": "Vorgabe-Startwert für numerische Platzhalter:",
+    "description": "Extension preferences page"
   },
   "prefsHdgGeneralOptions": {
     "message": "Allgemeine Optionen",
@@ -964,12 +1036,24 @@
     "message": "Adresse der Quell-Webseite immer speichern",
     "description": "Checkbox option in extension preferences page"
   },
+  "cbSrcURLBadge": {
+    "message": "Abzeichen bei Clippings mit einer Adressen-Quellseite anzeigen",
+    "description": "Checkbox option in extension preferences page"
+  },
   "cbCheckSpelling": {
     "message": "Rechtschreibprüfung",
     "description": "Checkbox option in extension preferences page"
   },
   "cbShowShctMnu": {
     "message": "Zugewiesene Tastenkombination im Clipping-Menü anzeigen",
+    "description": "Checkbox option in extension preferences page"
+  },
+  "cbUseAcnt": {
+    "message": "Akzentfarbe des Systems verwenden",
+    "description": "Checkbox option in extension preferences page"
+  },
+  "cbUseNovaAcnt": {
+    "message": "Akzentfarbe von Firefox verwenden",
     "description": "Checkbox option in extension preferences page"
   },
   "shctDispOpt": {
@@ -1208,7 +1292,7 @@
   },
   "extPrmNativeMessaging": {
     "message": "Nachrichten mit anderen Programmen als $1 austauschen",
-    "description": "Exchange messages with programs other than <Firefox or Thunderbird> - User-facing description of the 'nativeMessaging' extension permission"
+    "description": "Exchange messages with programs other than <Firefox or Thunderbird> - User-facing label for the 'nativeMessaging' extension permission"
   },
   "syncPermReqTitle": {
     "message": "Clippings benötigt zusätzliche Berechtigungen, um sich mit dem \"Sync Clippings Helper\" zu verbinden:",
@@ -1275,19 +1359,27 @@
   },
   "syncUpdateChkOpt": {
     "message": "Automatisch nach Aktualisierungen für das Sync-Clippings-Hilfsprogramm suchen",
-    "description": "Sync Clippings settings dialog in the extension preferences page"
+    "description": "Checkbox option in the Sync Clippings settings dialog in the extension preferences page"
   },
   "cxtMnuSyncItemsOnly": {
     "message": "Nur synchronisierte Elemente im Textbausteinmenü anzeigen",
-    "description": "Sync Clippings settings dialog in the extension preferences page"
+    "description": "Checkbox option in the Sync Clippings settings dialog in the extension preferences page"
   },
   "cmprsSyncData": {
     "message": "Synchronisierte Daten komprimieren (empfohlen)",
-    "description": "Sync Clippings settings dialog in the extension preferences page"
+    "description": "Checkbox option in the Sync Clippings settings dialog in the extension preferences page"
   },
   "cmprsSyncReqmt": {
     "message": "Benötigt \"Sync Clippings Helper 2.0\" oder neuer. <a href=\"$1\" class=\"hyperlink\">Jetzt herunterladen</a>",
-    "description": "Sync Clippings settings dialog in the extension preferences page"
+    "description": "Description of system requirements for a checkbox option in the Sync Clippings settings dialog"
+  },
+  "autoSyncNewMng": {
+    "message": "Beim Öffnen des neuen Clipping-Dialogs oder des Clippings Managers synchronisieren",
+    "description": "Checkbox option in the Sync Clippings settings dialog in the extension preferences page"
+  },
+  "autoSyncSbar": {
+    "message": "Beim Öffnen der Clippings Sidebar synchronisieren",
+    "description": "Checkbox option in the Sync Clippings settings dialog in the extension preferences page"
   },
   "wndsAndDlgsOpts": {
     "message": "Fenster und Dialoge …",
@@ -1383,40 +1475,40 @@
     "description": "Subheading in the What's New page"
   },
   "whatsNew1": {
-    "message": "Die Option zur Anzeige des 'Einfügen als ...' Dialogs beim Einfügen von HTML-formatiertem Textbaustein wurde wieder eingeführt",
+    "message": "Die zuletzt eingefügte Clipping kann durch Drücken von Enter erneut aus dem Einfügen-Dialog eingefügt werden",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
   "whatsNew2": {
-    "message": "Verbesserungen beim Befehl \"Rückgängig\". Das letzte \"Rückgängig\" kann nun aufgehoben werden mit Ctrl+Y bei Windows, ⇧⌘Z bei macOS, und Ctrl+Shift+Z bei Linux",
+    "message": "Neue Option für Benutzer der Clippings-Synchronisation, um beim Öffnen des Clippings Managers oder des neuen Clippingdialogs automatisch zu synchronisieren. Aktivieren Sie dies für Clippings in den Erweiterungseinstellungen.",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
   "whatsNewFx1": {
-    "message": "Neue Option, um einen HTML-formatierten Textbaustein als Nur-Text in einen HTML-Editor einzufügen",
+    "message": "Mehrere Clippings können vom Clippings Manager oder Clippings Sidebar kopiert werden. Wählen Sie die Clippings in der Reihenfolge aus, in der sie angezeigt werden sollen, indem Sie auf $1 klicken, um Clippings einzeln auszuwählen oder indem Sie Shift drücken, um einen Bereich auszuwählen. Dann mit der rechten Maustaste klicken und Text kopieren auswählen",
     "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
   },
   "whatsNewFx2": {
-    "message": "Die Höhe des Vorschaufensters in der Clippings Seitenleiste kann nun angepasst werden",
+    "message": "Sie können nun die Farbbezeichnung einer Clipping aus der Clippings Sidebar festlegen",
     "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
   },
   "whatsNewFx3": {
-    "message": "Der Bestätigungsdialog beim erneuten Laden des synchronisierten Clippings Ordners im Clippings Manager oder Clippings Seitenleiste wurde entfernt",
+    "message": "Clippings mit einer Adressen-Quellseite zeigen nun ein Abzeichen auf dem Clipping-Symbol",
+    "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
+  },
+  "whatsNewFx4": {
+    "message": "Unter Firefox 157 und neuer werden die Akzentfarbe der Benutzeroberfläche im Clippings Manager, der neue Clipping-Dialog und andere Dialogfenster und Erweiterungsseiten in violett umgewandelt, entsprechend dem Nova-Design",
     "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
   },
   "whatsNewTb1": {
-    "message": "Neue Platzhalter für die Betreffzeile, den Nachrichtensender und die Empfänger. Fügen Sie diese im Clippings Manager zu Ihren Textbausteinen hinzu, indem Sie die Platzhalter-Symbolleiste verwenden",
+    "message": "Das Kontextmenü von Clippings steht nun für das Betreff-Feld im Kompositionsfenster zur Verfügung. Ein Clipping kann dem Betreff der Nachricht auch durch Drücken von $1 hinzugefügt werden",
     "description": "Description of a Thunderbird-specific enhancement in the new version of Clippings"
   },
   "whatsNewTb2": {
-    "message": "Neue Option, um einen HTML-formatierten Textbaustein als Nur-Text in eine HTML-Nachricht einzufügen",
+    "message": "Neue voreingestellte Platzhalter für den Vornamen des Empfängers in den Feldern An und Cc : $[TO_FIRST_NAME] und $[CC_FIRST_NAME]",
     "description": "Description of a Thunderbird-specific enhancement in the new version of Clippings"
   },
   "whatsNewTb3": {
-    "message": "Der Bestätigungsdialog beim erneuten Laden des synchronisierten Clippings Ordners im Clippings Manager wurde entfernt",
+    "message": "Die Akzentfarbe der Benutzeroberfläche im Clippings Manager, der neue Clipping-Dialog und andere Dialogfenster und Erweiterungsseiten verwenden nun die Akzentfarbe des Systems, passend zu den UI-Farben im Rest von Thunderbird",
     "description": "Description of a Thunderbird-specific enhancement in the new version of Clippings"
-  },
-  "whatsNewSync": {
-    "message": "Clippings zeigt nun eine Fehlermeldung an, wenn die Sync-Clippings-Datengröße die Grenze von 1 Megabyte übersteigt",
-    "description": "Description of enhancements for the Sync Clippings feature in the new version of Clippings"
   },
   "contribHdg": {
     "message": "Mitmachen",

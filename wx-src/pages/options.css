@@ -866,6 +866,10 @@ body[data-locale="uk"] #sync-clippings-dlg {
     margin-left: 27px;
 }
 
+body[data-locale="de"] #sync-clippings-dlg #auto-sync-on-new-or-manage-lbl {
+    letter-spacing: -0.45px;
+}
+
 #request-native-app-conxn-perm-dlg .msgbox-icon,
 #sync-clippings-dlg #sync-cxn-error .msgbox-icon,
 #sync-clippings-dlg #generic-error .msgbox-icon {
