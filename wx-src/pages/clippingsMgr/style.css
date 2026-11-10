@@ -24,7 +24,6 @@
     --color-not-synced-items-text: rgba(0, 0, 0, 0.4);
     --color-not-synced-items-selected-text: rgba(0, 0, 0, 0.4);
     --color-main-toolbar-bkgd: linear-gradient(to bottom, #fcfcfc 0%, #dedede 100%);
-    --color-nova-main-toolbar-bkgd: linear-gradient(to right, #F1E7F8 0%, #FCF5F0 100%);
     --color-main-toolbar-bkgd-btn: transparent;
     --color-main-toolbar-text: #0c0c0d;
     --color-main-toolbar-border: silver;
@@ -109,7 +108,6 @@
         --color-not-synced-items-text: rgba(180, 180, 180, 0.4);
         --color-not-synced-items-selected-text: #b1b1b3;
         --color-main-toolbar-bkgd: #38383d;
-        --color-nova-main-toolbar-bkgd: #38383d;
         --color-main-toolbar-bkgd-btn: #38383d;
         --color-main-toolbar-text: #f9f9fa;
         --color-main-toolbar-border: #4a4a4f;
@@ -249,16 +247,19 @@ select {
 .toolbar-button {
     flex: 0 1 auto;
     align-self: stretch;
+
     min-width: 30px;
     margin-left: 0;
     margin-right: 0;
     border: 1px solid transparent;
+    border-radius: 3px;
     background-position: center;
     background-repeat: no-repeat;
     background-color: transparent;
-    color: var(--color-main-toolbar-text);
+
     font: caption;
     font-size: 11px !important;
+    color: var(--color-main-toolbar-text);
 }
 
 .toolbar-button:hover {

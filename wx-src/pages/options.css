@@ -18,6 +18,7 @@
     --color-tab-bkgd-active: #cfcfd8;
     --color-tab-bkgd-selected: #f0f0f4;
     --color-tab-text-active: #0060df;
+    --color-tab-text-nova: #3A0F6E;
     --color-fieldset-border: #d7d7db;
     --color-dlg-fieldset-border: #d7d7db;
     --color-text-sync-status-on: #003706;
@@ -56,6 +57,7 @@
         --color-tab-bkgd-active: #5b5b66;
         --color-tab-bkgd-selected: #4a4a55;
         --color-tab-text-active: #45a1ff;
+        --color-tab-text-nova: #F1E7F8;
         --color-fieldset-border: #4a4a4f;
         --color-dlg-fieldset-border: #585858;
         --color-text-sync-status-on: #30e60b;
@@ -246,6 +248,10 @@ body[data-nova="true"] .tab-container {
     background-position: center 8px;
 
     font-size: 13px;
+}
+
+body[data-nova="true"] .tab > button {
+    color: var(--color-tab-text-nova);
 }
 
 .tab > button:-moz-focusring {

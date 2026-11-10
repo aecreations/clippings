@@ -20,9 +20,13 @@
     --accent-color-btn-focus-outline: hsl(from var(--accent-color) h s calc(l + 16));
     --accent-color-tbox-border: var(--accent-color);
     --accent-color-radio-border: var(--accent-color);
+    --color-default-btn-active: #3A0F6E;
+    --color-default-btn-border-active: #210340;
 
+    --color-nova-main-toolbar-bkgd: linear-gradient(to right, #F1E7F8 0%, #FCF5F0 100%);
+    --color-hyperlink: var(--accent-color);
     --color-hyperlink-active: #210340;
-    --color-hyperlink-underline: #c8b2f6;
+    --color-hyperlink-underline: #AD8DF0;
 
     /* Fancytree */
     --color-active-node: #f1e7f8;
@@ -37,8 +41,15 @@
         --accent-color-btn-border: #4a4a4f;
         --accent-color-btn-hover-bkgd: #606060;
         --accent-color-btn-hover-border: #606060;
-        --accent-color-btn-active-bkgd: #9168e9;
-        --accent-color-btn-active-border: var(--accent-color);
+        --accent-color-btn-active-bkgd: #737373;
+        --accent-color-btn-active-border: #737373;
+        --color-nova-main-toolbar-bkgd: linear-gradient(to right, #2b2156 0%, #330505 100%);
+        --color-default-btn-active: var(--accent-color-active-bkgd);
+        --color-default-btn-border-active: var(--accent-color-active-bkgd);
+
+        --color-hyperlink: #C8B2F6;
+        --color-hyperlink-active: #EBDFFA;
+        --color-hyperlink-underline: #AD8DF0;
 
         /* Fancytree */
         --color-active-node: #9168e9;
@@ -50,7 +61,7 @@
 
 
 a {
-    color: var(--accent-color);
+    color: var(--color-hyperlink);
     text-decoration: underline var(--color-hyperlink-underline);
 }
 
@@ -93,8 +104,13 @@ button.default:hover {
 }
 
 button.default:active {
-    border: 1px solid var(--accent-color-active-bkgd) !important;
-    background-color: var(--accent-color-active-bkgd);
+    border: 1px solid var(--color-default-btn-border-active) !important;
+    background-color: var(--color-default-btn-active);
+}
+
+.browser-style > input[type="checkbox"]:hover:active:not(:checked):not(:disabled),
+.browser-style.pressed > input[type="checkbox"]:hover:active:not(:checked):not(:disabled) {
+    border-width: 2px;
 }
 
 .browser-style > input[type="checkbox"]:checked {
@@ -127,6 +143,11 @@ button.default:active {
 
 .browser-style > input[type="checkbox"].checkbox-xs:checked {
     background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHdpZHRoPSIzOSIgaGVpZ2h0PSIxMyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgMzkgMTMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMS43NDk5Ij48cGF0aCBkPSJtMy4yMDMxIDYuODkwNiAyLjMxMjUgMi45MDYyIDQuMjk2OS02LjUxNTYiLz48cGF0aCBkPSJtMTYuMjAzIDYuODkwNiAyLjMxMjUgMi45MDYyIDQuMjk2OS02LjUxNTYiLz48cGF0aCBkPSJtMjkuMjAzIDYuODkwNiAyLjMxMjUgMi45MDYyIDQuMjk2OS02LjUxNTYiLz48L2c+PC9zdmc+");
+}
+
+.browser-style > input[type="radio"]:hover:active:not(:checked):not(:disabled),
+.browser-style.pressed > input[type="radio"]:hover:active:not(:checked):not(:disabled) {
+    border-width: 2px;
 }
 
 .browser-style > input[type="radio"]:checked {
