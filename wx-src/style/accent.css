@@ -108,6 +108,10 @@ button.default:active {
     background-color: var(--color-default-btn-active);
 }
 
+button.default:active:-moz-focusring:not(:disabled) {
+    border: 1px solid var(--color-bkgd) !important;
+}
+
 .browser-style > input[type="checkbox"]:hover:active:not(:checked):not(:disabled),
 .browser-style.pressed > input[type="checkbox"]:hover:active:not(:checked):not(:disabled) {
     border-width: 2px;
