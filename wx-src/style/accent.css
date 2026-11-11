@@ -20,8 +20,8 @@
     --accent-color-btn-focus-outline: hsl(from var(--accent-color) h s calc(l + 16));
     --accent-color-tbox-border: var(--accent-color);
     --accent-color-radio-border: var(--accent-color);
-    --color-default-btn-active: #3A0F6E;
-    --color-default-btn-border-active: #210340;
+    --color-default-btn-active: var(--accent-color-active-bkgd);
+    --color-default-btn-border-active: #3A0F6E;
 
     --color-nova-main-toolbar-bkgd: linear-gradient(to right, #F1E7F8 0%, #FCF5F0 100%);
     --color-hyperlink: var(--accent-color);
