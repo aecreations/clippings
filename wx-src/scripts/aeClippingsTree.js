@@ -365,7 +365,7 @@ let aeClippingsTree = {
 };
 
 let aeCopyClippingTextFormatDlg = new aeDialog("#copy-clipping-txt-fmt-dlg");
-aeCopyClippingTextFormatDlg.accessKeys = new Map();
+aeCopyClippingTextFormatDlg._accessKeys = new Map();
 
 aeCopyClippingTextFormatDlg.getClippingID = function ()
 {
@@ -429,9 +429,9 @@ aeCopyClippingTextFormatDlg.onFirstInit = async function ()
   copyAsPlain = aeVisual.formatAccessKey(copyAsPlain, copyAsPlain_accessKey);
   copyAsPlainHTML = aeVisual.formatAccessKey(copyAsPlainHTML, copyAsPlainHTML_accessKey);
 
-  this.accessKeys.set("copyAsHTML", copyAsHTML_accessKey.toUpperCase());
-  this.accessKeys.set("copyAsPlain", copyAsPlain_accessKey.toUpperCase());
-  this.accessKeys.set("copyAsPlainHTML", copyAsPlainHTML_accessKey.toUpperCase());
+  this._accessKeys.set("copyAsHTML", copyAsHTML_accessKey.toUpperCase());
+  this._accessKeys.set("copyAsPlain", copyAsPlain_accessKey.toUpperCase());
+  this._accessKeys.set("copyAsPlainHTML", copyAsPlainHTML_accessKey.toUpperCase());
 
   // Compact dialog
   if (this._dlgElt.attr("data-compact")) {
@@ -468,13 +468,13 @@ aeCopyClippingTextFormatDlg.onFirstInit = async function ()
   }
 
   this._dlgElt.on("keydown", aEvent => {
-    if (aEvent.key.toUpperCase() == this.accessKeys.get("copyAsHTML")) {
+    if (aEvent.key.toUpperCase() == this._accessKeys.get("copyAsHTML")) {
       $("#copy-cliptxt-html")[0].click();
     }
-    else if (aEvent.key.toUpperCase() == this.accessKeys.get("copyAsPlain")) {
+    else if (aEvent.key.toUpperCase() == this._accessKeys.get("copyAsPlain")) {
       $("#copy-cliptxt-plain")[0].click();
     }
-    else if (aEvent.key.toUpperCase() == this.accessKeys.get("copyAsPlainHTML")) {
+    else if (aEvent.key.toUpperCase() == this._accessKeys.get("copyAsPlainHTML")) {
       $("#copy-cliptxt-plain-html")[0].click();
     }
   });
