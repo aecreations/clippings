@@ -365,6 +365,7 @@ let aeClippingsTree = {
 };
 
 let aeCopyClippingTextFormatDlg = new aeDialog("#copy-clipping-txt-fmt-dlg");
+aeCopyClippingTextFormatDlg.accessKeys = new Map();
 
 aeCopyClippingTextFormatDlg.getClippingID = function ()
 {
@@ -420,9 +421,17 @@ aeCopyClippingTextFormatDlg.onFirstInit = async function ()
   let copyAsHTML = browser.i18n.getMessage("copyAsHTML");
   let copyAsPlain = browser.i18n.getMessage("copyAsPlain");
   let copyAsPlainHTML = browser.i18n.getMessage("copyAsPlainHTML");
-  copyAsHTML = aeVisual.formatAccessKey(copyAsHTML, browser.i18n.getMessage("copyAsHTML_accesskey"));
-  copyAsPlain = aeVisual.formatAccessKey(copyAsPlain, browser.i18n.getMessage("copyAsPlain_accesskey"));
-  copyAsPlainHTML = aeVisual.formatAccessKey(copyAsPlainHTML, browser.i18n.getMessage("copyAsPlainHTML_accesskey"));
+  let copyAsHTML_accessKey = browser.i18n.getMessage("copyAsHTML_accesskey");
+  let copyAsPlain_accessKey = browser.i18n.getMessage("copyAsPlain_accesskey");
+  let copyAsPlainHTML_accessKey = browser.i18n.getMessage("copyAsPlainHTML_accesskey");
+
+  copyAsHTML = aeVisual.formatAccessKey(copyAsHTML, copyAsHTML_accessKey);
+  copyAsPlain = aeVisual.formatAccessKey(copyAsPlain, copyAsPlain_accessKey);
+  copyAsPlainHTML = aeVisual.formatAccessKey(copyAsPlainHTML, copyAsPlainHTML_accessKey);
+
+  this.accessKeys.set("copyAsHTML", copyAsHTML_accessKey.toUpperCase());
+  this.accessKeys.set("copyAsPlain", copyAsPlain_accessKey.toUpperCase());
+  this.accessKeys.set("copyAsPlainHTML", copyAsPlainHTML_accessKey.toUpperCase());
 
   // Compact dialog
   if (this._dlgElt.attr("data-compact")) {
@@ -459,13 +468,13 @@ aeCopyClippingTextFormatDlg.onFirstInit = async function ()
   }
 
   this._dlgElt.on("keydown", aEvent => {
-    if (aEvent.key.toUpperCase() == "F") {
+    if (aEvent.key.toUpperCase() == this.accessKeys.get("copyAsHTML")) {
       $("#copy-cliptxt-html")[0].click();
     }
-    else if (aEvent.key.toUpperCase() == "C") {
+    else if (aEvent.key.toUpperCase() == this.accessKeys.get("copyAsPlain")) {
       $("#copy-cliptxt-plain")[0].click();
     }
-    else if (aEvent.key.toUpperCase() == "H") {
+    else if (aEvent.key.toUpperCase() == this.accessKeys.get("copyAsPlainHTML")) {
       $("#copy-cliptxt-plain-html")[0].click();
     }
   });

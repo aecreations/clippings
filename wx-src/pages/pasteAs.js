@@ -6,6 +6,7 @@
 "use strict";
 
 let gBrowserTabID, gClippingContent;
+let gAccessKeys = new Map();
 
 
 // Dialog initialization
@@ -43,12 +44,20 @@ $(async () => {
   let pasteAsHTML = browser.i18n.getMessage("pasteAsHTML");
   let pasteAsPlain = browser.i18n.getMessage("pasteAsPlain");
   let pasteAsPlainHTML = browser.i18n.getMessage("pasteAsPlainHTML");
-  pasteAsHTML = aeVisual.formatAccessKey(pasteAsHTML, browser.i18n.getMessage("pasteAsHTML_accesskey"));
-  pasteAsPlain = aeVisual.formatAccessKey(pasteAsPlain, browser.i18n.getMessage("pasteAsPlain_accesskey"));
-  pasteAsPlainHTML = aeVisual.formatAccessKey(pasteAsPlainHTML, browser.i18n.getMessage("pasteAsPlainHTML_accesskey"));
+  let pasteAsHTML_accesskey = browser.i18n.getMessage("pasteAsHTML_accesskey");
+  let pasteAsPlain_accesskey = browser.i18n.getMessage("pasteAsPlain_accesskey");
+  let pasteAsPlainHTML_accesskey = browser.i18n.getMessage("pasteAsPlainHTML_accesskey");
+
+  pasteAsHTML = aeVisual.formatAccessKey(pasteAsHTML, pasteAsHTML_accesskey);
+  pasteAsPlain = aeVisual.formatAccessKey(pasteAsPlain, pasteAsPlain_accesskey);
+  pasteAsPlainHTML = aeVisual.formatAccessKey(pasteAsPlainHTML, pasteAsPlainHTML_accesskey);
   $("#paste-cliptxt-html").html(sanitizeHTML(pasteAsHTML));
   $("#paste-cliptxt-plain").html(sanitizeHTML(pasteAsPlain));
   $("#paste-cliptxt-plain-html").html(sanitizeHTML(pasteAsPlainHTML));
+
+  gAccessKeys.set("pasteAsHTML", pasteAsHTML_accesskey.toUpperCase());
+  gAccessKeys.set("pasteAsPlain", pasteAsPlain_accesskey.toUpperCase());
+  gAccessKeys.set("pasteAsPlainHTML", pasteAsPlainHTML_accesskey.toUpperCase());
 
   aeVisual.cacheIcons(
     "paste-clipping-html-hover.svg",
@@ -120,13 +129,13 @@ $(window).on("keydown", aEvent => {
     closeDlg();
   }
   // Accelerator keys on paste option buttons
-  else if (aEvent.key.toUpperCase() == "F") {
+  else if (aEvent.key.toUpperCase() == gAccessKeys.get("pasteAsHTML")) {
     $("#paste-cliptxt-html")[0].click();
   }
-  else if (aEvent.key.toUpperCase() == "P") {
+  else if (aEvent.key.toUpperCase() == gAccessKeys.get("pasteAsPlain")) {
     $("#paste-cliptxt-plain")[0].click();
   }
-  else if (aEvent.key.toUpperCase() == "H") {
+  else if (aEvent.key.toUpperCase() == gAccessKeys.get("pasteAsPlainHTML")) {
     $("#paste-cliptxt-plain-html")[0].click();
   }
   else {
