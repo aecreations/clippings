@@ -2326,9 +2326,11 @@ function pasteOrCopyClippingByID(aClippingID, aIsExternalRequest, aTabID, aMode,
           return null;
         }
       }).then(aPasteFormat => {
-        if (aMode == pasteOrCopyClippingByID.MODE_PASTE && aPasteFormat != aeConst.HTMLPASTE_ASK_THE_USER) {
+        if (aMode == pasteOrCopyClippingByID.MODE_PASTE) {
           aePrefs.setPrefs({_recentClippingID: clipping.id});
-          return pasteProcessedClipping(processedCtnt, aTabID, aPasteFormat);
+          if (aPasteFormat != aeConst.HTMLPASTE_ASK_THE_USER) {
+            return pasteProcessedClipping(processedCtnt, aTabID, aPasteFormat);
+          }
         }
         return null;
       }).then(() => {
@@ -2404,8 +2406,9 @@ function pasteClippingByShortcutKey(aShortcutKey, aTabID)
       if (aPasteFormat == -1) {
         return;
       }
+
+      aePrefs.setPrefs({_recentClippingID: clipping.id});
       if (aPasteFormat != aeConst.HTMLPASTE_ASK_THE_USER) {
-        aePrefs.setPrefs({_recentClippingID: clipping.id});
         pasteProcessedClipping(processedCtnt, aTabID, aPasteFormat);
       }
     });
