@@ -30,6 +30,11 @@ select.browser-style:focus:not([size]):not(:disabled) {
     box-shadow: 0 0 0 2px #45a1ff;
 }
 
+body[data-nova="true"] select:focus:not([size]):not(:disabled),
+body[data-nova="true"] select.browser-style:focus:not([size]):not(:disabled) {
+    box-shadow: 0 0 0 2px var(--accent-color-btn-focus-outline);
+}
+
 #plchldr-single,
 #plchldr-multi {
     display: none;

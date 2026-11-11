@@ -183,7 +183,10 @@ $(async () => {
   $("#btn-cancel").click(aEvent => { cancel(aEvent) });
 
   let useAccentColor = await aePrefs.getPref("useAccentColor");
-  aeVisual.enableAccentColor(useAccentColor);
+  if (useAccentColor) {
+    document.body.dataset.nova = true;
+    aeVisual.enableAccentColor(true);
+  }
 
   let wnd = await browser.windows.getCurrent();
   if (platform.os != "mac") {
