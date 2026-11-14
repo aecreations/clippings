@@ -25,11 +25,13 @@ async function init()
 
   let compStyles = window.getComputedStyle(msgBody);
   let msgBodyHeight = parseInt(compStyles.getPropertyValue("height"));
+  let wndSizeAdjusted = false;
 
   if (msgBodyHeight > MSG_BODY_DEFAULT_HEIGHT) {
     let height = DEFAULT_WND_HEIGHT + (msgBodyHeight - MSG_BODY_DEFAULT_HEIGHT);
     if (platform.os == "linux" && aeVersionCmp(brws.version, "160.0") >= 0) {
       height += WND_HEIGHT_ADJ_LINUX;
+      wndSizeAdjusted = true;
     }
 
     await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, {height});
@@ -59,10 +61,12 @@ async function init()
   // browser.windows.create won't show contents unless resized.
   // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1402110>
   let wnd = await browser.windows.getCurrent();
-  browser.windows.update(wnd.id, {
-    width: wnd.width + 1,
-    focused: true,
-  });
+  if (!wndSizeAdjusted) {
+    await browser.windows.update(wnd.id, {
+      width: wnd.width + 1,
+      focused: true,
+    });
+  }
 }
 
 
