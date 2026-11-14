@@ -5,6 +5,7 @@
 
 
 const ROOT_FOLDER_NAME = "clippings-root";
+const WND_SIZE_ADJ_LINUX = 60;
 
 // These globals are used only briefly or during initialization, so they don't
 // need to be saved to extension storage.
@@ -1759,6 +1760,11 @@ async function openClippingsManager(aBackupMode)
     let left, top;
     let wndGeom = prefs.clippingsMgrWndGeom;
     let [tab] = await browser.tabs.query({currentWindow: true, discarded: false});
+    let brws = await browser.runtime.getBrowserInfo();
+    let {os} = await browser.runtime.getPlatformInfo();
+    if (os == "linux" && aeVersionCmp(brws.version, "160.0") >= 0) {
+      height += WND_SIZE_ADJ_LINUX;
+    }
 
     if (prefs.clippingsMgrSaveWndGeom && wndGeom) {
       width  = wndGeom.w - 1;  // Compensate for workaround to popup window bug.
@@ -1891,16 +1897,20 @@ async function newClipping(aActiveTab)
 
   let isExpanded = platform.os == "mac" && currWnd.state == "fullscreen" && showNewClippingOpts;
 
-  openNewClippingDlg(platform.os, aActiveTab.id, isExpanded);
+  await openNewClippingDlg(platform.os, aActiveTab.id, isExpanded);
 }
 
 
-function openNewClippingDlg(aPlatformOS, aTabID, aIsMacOSExpanded=false)
+async function openNewClippingDlg(aPlatformOS, aTabID, aIsMacOSExpanded=false)
 {
   let url = browser.runtime.getURL("pages/new.html");
+  let brws = await browser.runtime.getBrowserInfo();
   let height = 410;
   if (aPlatformOS == "win") {
     height = 434;
+  }
+  else if (aPlatformOS == "linux" && aeVersionCmp(brws.version, "160.0") >= 0) {
+    height += WND_SIZE_ADJ_LINUX;
   }
   if (aIsMacOSExpanded) {
     height = 474;
@@ -1923,7 +1933,7 @@ function getNewClippingData()
 }
 
 
-function openKeyboardPasteDlg(aTabID, aIsExpanded)
+async function openKeyboardPasteDlg(aTabID, aIsExpanded)
 {
   // TO DO: Check first if the cursor is in a web page textbox or HTML editor.
   // If not, then don't do anything.
@@ -1935,6 +1945,11 @@ function openKeyboardPasteDlg(aTabID, aIsExpanded)
     height: 164,
     topOffset: 256,
   };
+  let brws = await browser.runtime.getBrowserInfo();
+  let {os} = await browser.runtime.getPlatformInfo();
+  if (os == "linux" && aeVersionCmp(brws.version, "160.0") >= 0) {
+    wndPpty.height += WND_SIZE_ADJ_LINUX;
+  }
 
   if (aIsExpanded) {
     wndPpty.height = 250;
@@ -1945,7 +1960,7 @@ function openKeyboardPasteDlg(aTabID, aIsExpanded)
 }
 
 
-function openPlaceholderPromptDlg(aTabID, aDlgMode, aIsExpanded)
+async function openPlaceholderPromptDlg(aTabID, aDlgMode, aIsExpanded)
 {
   // TO DO: Same checking for cursor location as in the preceding function.
 
@@ -1956,6 +1971,11 @@ function openPlaceholderPromptDlg(aTabID, aDlgMode, aIsExpanded)
     height: 228,
     topOffset: 256,
   };
+  let brws = await browser.runtime.getBrowserInfo();
+  let {os} = await browser.runtime.getPlatformInfo();
+  if (os == "linux" && aeVersionCmp(brws.version, "160.0") >= 0) {
+    wndPpty.height += WND_SIZE_ADJ_LINUX;
+  }
 
   if (aIsExpanded) {
     wndPpty.height = 318;
@@ -1966,7 +1986,7 @@ function openPlaceholderPromptDlg(aTabID, aDlgMode, aIsExpanded)
 }
 
 
-function openPasteAsDlg(aTabID)
+async function openPasteAsDlg(aTabID)
 {
   let url = browser.runtime.getURL(`pages/pasteAs.html?tabID=${aTabID}`);
   let wndPpty = {
@@ -1975,6 +1995,11 @@ function openPasteAsDlg(aTabID)
     height: 300,
     topOffset: 256,
   };
+  let brws = await browser.runtime.getBrowserInfo();
+  let {os} = await browser.runtime.getPlatformInfo();
+  if (os == "linux" && aeVersionCmp(brws.version, "160.0") >= 0) {
+    wndPpty.height += WND_SIZE_ADJ_LINUX;
+  }
 
   openDlgWnd(url, "pasteAs", wndPpty, aTabID);
 }
@@ -1984,11 +2009,15 @@ async function openBackupDlg()
 {
   let url = browser.runtime.getURL("pages/backup.html");
   let lang = browser.i18n.getUILanguage();
+  let brws = await browser.runtime.getBrowserInfo();
   let {os} = await browser.runtime.getPlatformInfo();
   let height = 412;
 
   if (lang == "uk" || (lang == "fr" && os == "win")) {
     height = 450;
+  }
+  if (os == "linux" && aeVersionCmp(brws.version, "160.0") >= 0) {
+    height += WND_SIZE_ADJ_LINUX;
   }
   
   openDlgWnd(url, "backupFirstRun", {type: "popup", width: 590, height});
@@ -1999,10 +2028,14 @@ async function openSidebarHelpDlg()
 {
   let url = browser.runtime.getURL("pages/sidebarHelp.html");
   let height = 406;
+  let brws = await browser.runtime.getBrowserInfo();
   let {os} = await browser.runtime.getPlatformInfo();
 
   if (os == "mac") {
     height = 404;
+  }
+  else if (os == "linux" && aeVersionCmp(brws.version, "160.0") >= 0) {
+    height += WND_SIZE_ADJ_LINUX;
   }
 
   let wndPpty = {
@@ -2301,7 +2334,7 @@ async function processClipping(aClippingInfo, aIsExternalRequest, aTabID, aMode)
         }
       }
 
-      openPlaceholderPromptDlg(activeTabID, aMode, isExpanded);
+      await openPlaceholderPromptDlg(activeTabID, aMode, isExpanded);
       return;
     }
   }
@@ -2337,7 +2370,7 @@ async function processHTMLFormattedClipping(aClippingName, aClippingContent, aTa
     if (htmlPaste == aeConst.HTMLPASTE_ASK_THE_USER) {
       if (isHTMLEditor) {
         gPasteAs.set(aClippingName, aClippingContent);
-        openPasteAsDlg(aTabID);
+        await openPasteAsDlg(aTabID);
         return;
       }
       else {
@@ -2627,7 +2660,7 @@ browser.commands.onCommand.addListener(async (aCmdName, aTab) => {
       }
     }
 
-    openKeyboardPasteDlg(aTab.id, isExpanded);
+    await openKeyboardPasteDlg(aTab.id, isExpanded);
   }
 });
 

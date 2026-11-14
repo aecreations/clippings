@@ -753,6 +753,7 @@ function initDialogs()
   gDialogs.wndsDlgsOpts.onFirstInit = function ()
   {
     if (! ["win", "mac"].includes(gOS)) {
+      this._dlgElt.addClass("expanded");
       let os = gOS == "mac" ? browser.i18n.getMessage("macOS") : capitalize(gOS);
       $("#wnds-dlgs-opts-exp-warn-msg").text(browser.i18n.getMessage("wndsDlgsOptsExpWarn", os));
       $("#wnds-dlgs-opts-exp-warn").show();
