@@ -6,6 +6,7 @@
 const MSG_UNKNOWN = "msgUnknown";
 const DEFAULT_WND_HEIGHT = 170;
 const MSG_BODY_DEFAULT_HEIGHT = 40;
+const WND_HEIGHT_ADJ_LINUX = 60;
 
 
 async function init()
@@ -15,16 +16,24 @@ async function init()
   let msgBody = document.querySelector("#msgbox-content > p");
   msgBody.textContent = browser.i18n.getMessage(msgID);
 
-  let compStyles = window.getComputedStyle(msgBody);
-  let msgBodyHeight = parseInt(compStyles.getPropertyValue("height"));
-  if (msgBodyHeight > MSG_BODY_DEFAULT_HEIGHT) {
-    let height = DEFAULT_WND_HEIGHT + (msgBodyHeight - MSG_BODY_DEFAULT_HEIGHT);
-    await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, {height});
-  }
-
-  let platform = await browser.runtime.getPlatformInfo();
+  let [brws, platform] = await Promise.all([
+    browser.runtime.getBrowserInfo(),
+    browser.runtime.getPlatformInfo(),
+  ]);
   document.body.dataset.os = platform.os;
   aeInterxn.init(platform.os);
+
+  let compStyles = window.getComputedStyle(msgBody);
+  let msgBodyHeight = parseInt(compStyles.getPropertyValue("height"));
+
+  if (msgBodyHeight > MSG_BODY_DEFAULT_HEIGHT) {
+    let height = DEFAULT_WND_HEIGHT + (msgBodyHeight - MSG_BODY_DEFAULT_HEIGHT);
+    if (platform.os == "linux" && aeVersionCmp(brws.version, "160.0") >= 0) {
+      height += WND_HEIGHT_ADJ_LINUX;
+    }
+
+    await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, {height});
+  }
 
   window.addEventListener("keydown", aEvent => {
     if (aEvent.key == "Enter" || aEvent.key == "Escape") {
