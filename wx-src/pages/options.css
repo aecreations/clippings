@@ -633,27 +633,13 @@ body[data-locale="de"] #wnds-dlgs-opts-dlg {
     --width: 540px;
 }
 
-body[data-locale="de"][data-os="linux"] #wnds-dlgs-opts-dlg {
+body[data-locale="de"] #wnds-dlgs-opts-dlg.expanded {
     --height: 324px;
-}
-
-body[data-locale="de"][data-os="linux"] #wnds-dlgs-opts-dlg.expanded {
-    --height: 404px;
 }
 
 body[data-locale|="es"] #wnds-dlgs-opts-dlg,
 body[data-locale="uk"] #wnds-dlgs-opts-dlg {
     --width: 560px;
-}
-
-body[data-locale="fr"][data-os="linux"] #wnds-dlgs-opts-dlg,
-body[data-locale="uk"][data-os="linux"] #wnds-dlgs-opts-dlg {
-    --height: 310px;
-}
-
-body[data-locale="fr"][data-os="linux"] #wnds-dlgs-opts-dlg.expanded,
-body[data-locale="uk"][data-os="linux"] #wnds-dlgs-opts-dlg.expanded {
-    --height: 390px;
 }
 
 #wnds-dlgs-opts-dlg .dlg-content {
