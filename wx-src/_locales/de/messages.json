@@ -1405,7 +1405,7 @@
     "description": "Checkbox option in Windows and Dialogs settings dialog"
   },
   "aboutBtn": {
-    "message": "Über …",
+    "message": "Über",
     "description": "Button in the extension preferences page"
   },
   "aboutExtVer": {
