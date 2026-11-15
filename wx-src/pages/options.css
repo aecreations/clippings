@@ -684,7 +684,7 @@ body[data-locale="de"] #wnds-dlgs-opts-dlg {
     --width: 540px;
 }
 
-body[data-locale="de"][data-os="linux"] #wnds-dlgs-opts-dlg {
+body[data-locale="de"] #wnds-dlgs-opts-dlg.expanded {
     --height: 324px;
 }
 
