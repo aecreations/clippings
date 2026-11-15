@@ -1824,8 +1824,12 @@ async function openClippingsManager(aBackupMode)
     let left, top;
     let wndGeom = prefs.clippingsMgrWndGeom;
     let [tab] = await browser.tabs.query({currentWindow: true, discarded: false});
-    let {os} = await browser.runtime.getPlatformInfo();
-    if (os == "linux") {
+    let [brws, platform] = await Promise.all([
+      browser.runtime.getBrowserInfo(),
+      browser.runtime.getPlatformInfo(),
+    ]);
+
+    if (platform.os == "linux" && aeVersionCmp(brws.version, "160.0") >= 0) {
       height += WND_SIZE_ADJ_LINUX;
     }
 
@@ -1952,26 +1956,28 @@ async function newClipping(aActiveTab)
   let url = aActiveTab.url;
   gNewClipping.set({name, content, url});
 
-  let [platform, currWnd, showNewClippingOpts] = await Promise.all([
+  let [platform, brws, currWnd, showNewClippingOpts] = await Promise.all([
     browser.runtime.getPlatformInfo(),
+    browser.runtime.getBrowserInfo(),
     browser.windows.getCurrent(),
     aePrefs.getPref("showNewClippingOpts"),
   ]);
 
   let isExpanded = platform.os == "mac" && currWnd.state == "fullscreen" && showNewClippingOpts;
 
-  openNewClippingDlg(platform.os, aActiveTab.id, isExpanded);
+  await openNewClippingDlg(platform.os, aActiveTab.id, isExpanded);
 }
 
 
-function openNewClippingDlg(aPlatformOS, aTabID, aIsMacOSExpanded=false)
+async function openNewClippingDlg(aPlatformOS, aTabID, aIsMacOSExpanded)
 {
   let url = browser.runtime.getURL("pages/new.html");
+  let brws = await browser.runtime.getBrowserInfo();
   let height = 410;
   if (aPlatformOS == "win") {
     height = 434;
   }
-  else if (aPlatformOS == "linux") {
+  else if (aPlatformOS == "linux" && aeVersionCmp(brws.version, "160.0") >= 0) {
     height += WND_SIZE_ADJ_LINUX;
   }
   if (aIsMacOSExpanded) {
@@ -2007,8 +2013,12 @@ async function openKeyboardPasteDlg(aTabID, aIsExpanded)
     height: 180,
     topOffset: 256,
   };
-  let {os} = await browser.runtime.getPlatformInfo();
-  if (os == "linux") {
+  let [brws, platform] = await Promise.all([
+    browser.runtime.getBrowserInfo(),
+    browser.runtime.getPlatformInfo(),
+  ]);
+
+  if (platform.os == "linux" && aeVersionCmp(brws.version, "160.0") >= 0) {
     wndPpty.height += WND_SIZE_ADJ_LINUX;
   }
 
@@ -2034,8 +2044,11 @@ async function openPlaceholderPromptDlg(aTabID, aDlgMode, aIsExpanded, aIsMulti,
     height: 228,
     topOffset: 256,
   };
-  let {os} = await browser.runtime.getPlatformInfo();
-  if (os == "linux") {
+  let [brws, platform] = await Promise.all([
+    browser.runtime.getBrowserInfo(),
+    browser.runtime.getPlatformInfo(),
+  ]);
+  if (platform.os == "linux" && aeVersionCmp(brws.version, "160.0") >= 0) {
     wndPpty.height += WND_SIZE_ADJ_LINUX;
   }
 
@@ -2059,8 +2072,12 @@ async function openPasteAsDlg(aTabID)
     height: 300,
     topOffset: 256,
   };
-  let {os} = await browser.runtime.getPlatformInfo();
-  if (os == "linux") {
+  let [brws, platform] = await Promise.all([
+    browser.runtime.getBrowserInfo(),
+    browser.runtime.getPlatformInfo(),
+  ]);
+
+  if (platform.os == "linux" && aeVersionCmp(brws.version, "160.0") >= 0) {
     wndPpty.height += WND_SIZE_ADJ_LINUX;
   }
 
@@ -2072,13 +2089,16 @@ async function openBackupDlg()
 {
   let url = browser.runtime.getURL("pages/backup.html");
   let lang = browser.i18n.getUILanguage();
-  let {os} = await browser.runtime.getPlatformInfo();
+  let [brws, platform] = await Promise.all([
+    browser.runtime.getBrowserInfo(),
+    browser.runtime.getPlatformInfo(),
+  ]);
   let height = 412;
 
-  if (lang == "uk" || (lang == "fr" && os == "win")) {
+  if (lang == "uk" || (lang == "fr" && platform.os == "win")) {
     height = 450;
   }
-  if (os == "linux") {
+  if (platform.os == "linux" && aeVersionCmp(brws.version, "160.0") >= 0) {
     height += WND_SIZE_ADJ_LINUX;
   }
   
@@ -2094,12 +2114,15 @@ async function openSidebarHelpDlg()
   url += `?nova=${nova}`;
 
   let height = 406;
-  let {os} = await browser.runtime.getPlatformInfo();
+  let [brws, platform] = await Promise.all([
+    browser.runtime.getBrowserInfo(),
+    browser.runtime.getPlatformInfo(),
+  ]);
 
-  if (os == "mac") {
+  if (platform.os == "mac") {
     height = 404;
   }
-  else if (os == "linux") {
+  else if (platform.os == "linux" && aeVersionCmp(brws.version, "160.0") >= 0) {
     height += WND_SIZE_ADJ_LINUX;
   }
 
