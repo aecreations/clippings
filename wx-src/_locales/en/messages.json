@@ -1783,7 +1783,7 @@
   },
 
   "aboutBtn": {
-    "message": "About…",
+    "message": "About",
     "description": "Button in the extension preferences page"
   },
 
