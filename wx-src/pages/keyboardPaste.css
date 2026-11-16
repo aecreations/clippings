@@ -278,8 +278,16 @@ button.browser-style:focus:not(:disabled) {
     background-color: var(--color-active-row);
 }
 
+body[data-nova="true"] #shortcut-list-content table > tbody > tr:active {
+    background-color: var(--color-active-node);
+}
+
 #shortcut-list-content table > tbody > tr.selected-row {
     background-color: var(--color-selected-row);
+}
+
+body[data-nova="true"] #shortcut-list-content table > tbody > tr.selected-row {
+    background-color: var(--color-focused-node);
 }
 
 #shortcut-list-content table th:nth-child(1),
@@ -409,21 +417,37 @@ ul.fancytree-container {
     background-color: var(--color-autocomplete-focused-bkgd);
     border: 1px solid var(--color-autocomplete-focused-border);
     padding: 0px 1px 0px 1px;
-   
+}
+
+body[data-nova="true"] #search-results-listbox .fancytree-plain.fancytree-container.fancytree-treefocus span.fancytree-active span.fancytree-title {
+    background-color: var(--color-focused-node);
+    border-color: var(--color-focused-border);
 }
 
 #search-results-listbox .fancytree-plain span.fancytree-node:hover span.fancytree-title {
     background-color: var(--color-autocomplete-selected-bkgd);
     border: 1px solid var(--color-autocomplete-selected-border);
     padding: 0px 1px 0px 1px;
+}
 
+body[data-nova="true"] #search-results-listbox .fancytree-plain span.fancytree-node:hover span.fancytree-title {
+    background-color: var(--color-active-node);
+    border-color: var(--color-active-border);
 }
 
 #search-results-listbox .fancytree-plain span.fancytree-node:active span.fancytree-title {
     background-color: var(--color-autocomplete-focused-bkgd);
     border: 1px solid var(--color-autocomplete-focused-border);
     padding: 0px 1px 0px 1px;
+}
 
+body[data-nova="true"] #search-results-listbox .fancytree-plain span.fancytree-node:active span.fancytree-title {
+    background-color: var(--color-focused-node);
+    border-color: var(--color-focused-border);
+}
+
+body[data-nova="true"] .fancytree-plain.fancytree-container.fancytree-treefocus span.fancytree-focused span.fancytree-title {
+    border-color: var(--color-focused-border);
 }
 
 #search-results-listbox span.fancytree-title .name,
