@@ -272,13 +272,8 @@ $(async () => {
     browser.runtime.getBrowserInfo(),
     browser.runtime.getPlatformInfo(),
   ]);
-  let envInfo = {
-    os: platform.os,
-    hostAppName: brws.name,
-    hostAppVer:  brws.version,
-  };
-  gHostAppVer = envInfo.hostAppVer;
-  document.body.dataset.os = gOS = envInfo.os;
+  gHostAppVer = brws.version;
+  document.body.dataset.os = gOS = platform.os;
   aeInterxn.init(gOS);
 
   aeClippings.init();
@@ -289,7 +284,7 @@ $(async () => {
   aeImportExport.setDatabase(gClippingsDB);
   aeImportExport.setL10nStrings({
     shctTitle: browser.i18n.getMessage("expHTMLTitle"),
-    hostAppInfo: browser.i18n.getMessage("expHTMLHostAppInfo", [extVer, envInfo.hostAppName]),
+    hostAppInfo: browser.i18n.getMessage("expHTMLHostAppInfo", [extVer, brws.name]),
     shctKeyInstrxns: browser.i18n.getMessage("expHTMLShctKeyInstrxn"),
     shctKeyCustNote: browser.i18n.getMessage("expHTMLShctKeyCustNote"),
     shctKeyColHdr: browser.i18n.getMessage("expHTMLShctKeyCol"),
