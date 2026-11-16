@@ -33,9 +33,9 @@ async function init()
     let height = DEFAULT_WND_HEIGHT + (msgBodyHeight - MSG_BODY_DEFAULT_HEIGHT);
     if (platform.os == "linux" && aeVersionCmp(brws.version, "160.0") >= 0) {
       height += WND_HEIGHT_ADJ_LINUX;
-      wndSizeAdjusted = true;
     }
 
+    wndSizeAdjusted = true;
     await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, {height});
   }
 
