@@ -31,29 +31,29 @@
 
 @media (prefers-color-scheme: dark) {
     :root {
-	--color-clippings-tree-bkgd: #202023;
-	--color-default-text: #f9f9fa;
-	--color-focused-node: #0a84ff;
-	--color-focused-border: #0060df;
-	--color-active-node: #003eaa;
-	--color-active-border: #002275;
-	--color-selected-node: #4a4a4f;
-	--color-selected-border: #38383d;
-	--color-not-synced-items-text: rgba(180, 180, 180, 0.4);
-	--color-not-synced-items-selected-text: #b1b1b3;
-	--color-copy-clipping-txt-btn-border: #4a4a4f;
-	--color-reload-sync-fldr-btn-bkgd: #4a4a4f;
-	--color-reload-sync-fldr-btn-border: #4a4a4f;
-	--color-reload-sync-fldr-btn-hover-bkgd: #606060;
-	--color-reload-sync-fldr-btn-hover-border: #737373;
-	--color-reload-sync-fldr-btn-active-bkgd: #737373;
-	--color-reload-sync-fldr-btn-active-border: #737373;
+        --color-clippings-tree-bkgd: #202023;
+        --color-default-text: #f9f9fa;
+        --color-focused-node: #0a84ff;
+        --color-focused-border: #0060df;
+        --color-active-node: #003eaa;
+        --color-active-border: #002275;
+        --color-selected-node: #4a4a4f;
+        --color-selected-border: #38383d;
+        --color-not-synced-items-text: rgba(180, 180, 180, 0.4);
+        --color-not-synced-items-selected-text: #b1b1b3;
+        --color-copy-clipping-txt-btn-border: #4a4a4f;
+        --color-reload-sync-fldr-btn-bkgd: #4a4a4f;
+        --color-reload-sync-fldr-btn-border: #4a4a4f;
+        --color-reload-sync-fldr-btn-hover-bkgd: #606060;
+        --color-reload-sync-fldr-btn-hover-border: #737373;
+        --color-reload-sync-fldr-btn-active-bkgd: #737373;
+        --color-reload-sync-fldr-btn-active-border: #737373;
 
-	--url-treelist-icons: url("../img/tree-icons-dk.png");
-	--url-treelist-folder-open: url("../img/tree-fldr-open-dk.svg");
-	--url-treelist-folder-close: url("../img/tree-fldr-close-dk.svg");
-	--url-btn-icon-reload-sync-fldr: url("../img/reload-dk.svg");
-	--url-btn-icon-reload-sync-fldr-active: url("../img/reload-dk.svg");
+        --url-treelist-icons: url("../img/tree-icons-dk.png");
+        --url-treelist-folder-open: url("../img/tree-fldr-open-dk.svg");
+        --url-treelist-folder-close: url("../img/tree-fldr-close-dk.svg");
+        --url-btn-icon-reload-sync-fldr: url("../img/reload-dk.svg");
+        --url-btn-icon-reload-sync-fldr-active: url("../img/reload-dk.svg");
     }
 }
 
