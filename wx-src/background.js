@@ -2757,6 +2757,14 @@ async function alertEx(aMessageName, aUsePopupWnd=false)
   let wndGeom = null;
   let width = 520;
   let height = 170;
+  let [brws, platform] = await Promise.all([
+    browser.runtime.getBrowserInfo(),
+    browser.runtime.getPlatformInfo(),
+  ]);
+
+  if (platform.os == "linux" && aeVersionCmp(brws.version, "160.0") >= 0) {
+    height += WND_SIZE_ADJ_LINUX;
+  }
 
   // Default popup window coords.  Unless replaced by window geometry calcs,
   // these coords will be ignored - popup window will always be centered
