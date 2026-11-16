@@ -52,9 +52,9 @@
         --color-hyperlink-underline: #AD8DF0;
 
         /* Fancytree */
-        --color-active-node: #9168e9;
+        --color-active-node: #6b00d5;
         --color-active-border: #3a0f6e;
-        --color-focused-node: #6b00d5;
+        --color-focused-node: #9168e9;
         --color-focused-border: #3a0f6e;
     }
 }
