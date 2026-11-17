@@ -6,11 +6,15 @@
 "use strict";
 
 
-const DEBUG = false;
+const DEBUG = true;
 const HTMLPASTE_AS_FORMATTED = 1;
 const HTMLPASTE_AS_IS = 2;
 const HTMLPASTE_AS_PLAIN = 3;
 const FOCUSABLE_ELTS_STOR = "button:not([disabled])";
+
+const HTMLPASTE_USE_DEFAULT = 0;
+const HTMLPASTE_USE_CLIPBOARD = 1;
+const HTMLPASTE_USE_EXEC_CMD = 2;
 
 let gLastFocusedElt;
 
@@ -191,6 +195,10 @@ function handleRequestInsertClipping(aRequest)
   let htmlPaste = aRequest.htmlPaste;
   let autoLineBrk = aRequest.autoLineBreak;
   let activeElt = getActiveElt();
+  let pasteUsing = HTMLPASTE_USE_DEFAULT;
+  if (aRequest.useInsertHTMLCmd) {
+    pasteUsing = HTMLPASTE_USE_EXEC_CMD;
+  }
 
   log("Clippings/wx::content.js: handleRequestInsertClipping(): activeElt = " + (activeElt ? activeElt.toString() : "???"));  
 
@@ -203,7 +211,7 @@ function handleRequestInsertClipping(aRequest)
     let doc = activeElt.contentDocument;
     if (doc && doc.body.hasAttribute("contenteditable")
         && doc.body.getAttribute("contenteditable") != "false") {
-      rv = insertTextIntoRichTextEditor(doc, clippingText, autoLineBrk, htmlPaste, aRequest.dispatchInputEvent, aRequest.useInsertHTMLCmd);
+      rv = insertTextIntoRichTextEditor(doc, clippingText, autoLineBrk, htmlPaste, aRequest.dispatchInputEvent, pasteUsing);
     }
     else {
       warn("Clippings/wx::content.js: handleRequestInsertClipping(): Document element is null or <body> doesn't have 'contenteditable' attribute set; exiting message handler");
@@ -213,16 +221,17 @@ function handleRequestInsertClipping(aRequest)
   else if (isElementOfType(activeElt, "HTMLDivElement")) {
     if (activeElt.classList.contains("ck-content")) {
       info("Clippings/wx::content.js: handleRequestInsertClipping(): Detected CKEditor.");
+      pasteUsing = HTMLPASTE_USE_CLIPBOARD;
     }
 
     let doc = activeElt.ownerDocument;
-    rv = insertTextIntoRichTextEditor(doc, clippingText, autoLineBrk, htmlPaste, aRequest.dispatchInputEvent, aRequest.useInsertHTMLCmd);
+    rv = insertTextIntoRichTextEditor(doc, clippingText, autoLineBrk, htmlPaste, aRequest.dispatchInputEvent, pasteUsing);
   }
   // Experimental - enable from background script
   else if (isElementOfType(activeElt, "HTMLBodyElement") && aRequest.pasteIntoHTMLBodyElt
            && (activeElt.contentEditable || activeElt.ownerDocument.designMode == "on")) {
     let doc = activeElt.ownerDocument;
-    rv = insertTextIntoRichTextEditor(doc, clippingText, autoLineBrk, htmlPaste, aRequest.dispatchInputEvent, aRequest.useInsertHTMLCmd);
+    rv = insertTextIntoRichTextEditor(doc, clippingText, autoLineBrk, htmlPaste, aRequest.dispatchInputEvent, pasteUsing);
   }
   else {
     rv = null;
@@ -312,7 +321,7 @@ function insertTextIntoTextbox(aTextboxElt, aInsertedText, aDispatchInputEvent)
 }
 
 
-function insertTextIntoRichTextEditor(aRichTextEditorDocument, aClippingText, aAutoLineBreak, aPasteMode, aDispatchInputEvent, aUseInsertHTMLCmd)
+function insertTextIntoRichTextEditor(aRichTextEditorDocument, aClippingText, aAutoLineBreak, aPasteMode, aDispatchInputEvent, aPasteUsing)
 {
   let isHTMLFormatted = hasHTMLTags(aClippingText);
   let hasRestrictedHTMLTags = aClippingText.search(/<\?|<%|<!DOCTYPE|(<\b(html|head|body|meta|script|applet|embed|object|i?frame|frameset)\b)/i) != -1;
@@ -349,7 +358,7 @@ function insertTextIntoRichTextEditor(aRichTextEditorDocument, aClippingText, aA
   log(`Clippings/wx::content.js: insertTextIntoRichTextEditor(): Inserting HTML content into rich text editor ${aRichTextEditorDocument}`);
 
   // Pasting a clipping using the DOM Range API doesn't work on Twitter.
-  if (aUseInsertHTMLCmd || ["twitter.com", "x.com"].includes(window.location.hostname)) {
+  if (aPasteUsing == HTMLPASTE_USE_EXEC_CMD || ["twitter.com", "x.com"].includes(window.location.hostname)) {
     if (aPasteMode == HTMLPASTE_AS_PLAIN && isHTMLFormatted) {
       clippingText = removeHTMLFromFormattedClipping(clippingText, false);
     }
@@ -364,13 +373,27 @@ function insertTextIntoRichTextEditor(aRichTextEditorDocument, aClippingText, aA
       clippingText = removeHTMLFromFormattedClipping(clippingText, true);
     }
 
-    let selection = aRichTextEditorDocument.getSelection();
-    let range = selection.getRangeAt(0);
-    range.deleteContents();
+    if (aPasteUsing == HTMLPASTE_USE_CLIPBOARD) {
+      info("Clippings::content.js: insertTextIntoRichTextEditor(): Using the clipboard to paste the clipping into the HTML editor.");
+      let dataType = isHTMLFormatted ? "text/html" : "text/plain";
+      let clipbdEvt = new ClipboardEvent("paste", {
+        bubbles: true,
+        cancelable: true,
+        composed: true,
+        dataType,
+        data: clippingText,
+      });
+      getActiveElt().dispatchEvent(clipbdEvt);
+    }
+    else {
+      let selection = aRichTextEditorDocument.getSelection();
+      let range = selection.getRangeAt(0);
+      range.deleteContents();
 
-    let frag = range.createContextualFragment(DOMPurify.sanitize(clippingText));
-    range.insertNode(frag);
-    range.collapse();
+      let frag = range.createContextualFragment(DOMPurify.sanitize(clippingText));
+      range.insertNode(frag);
+      range.collapse();
+    }
   }
 
   if (aDispatchInputEvent) {
