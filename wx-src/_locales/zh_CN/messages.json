@@ -19,6 +19,10 @@
     "message": "使用快捷键粘贴剪辑",
     "description": "Keyboard shortcut description in Manage Extension Shortcuts"
   },
+  "cmdSubjDesc": {
+    "message": "在“主题”字段中添加剪辑",
+    "description": "Keyboard shortcut description in Manage Extension Shortcuts"
+  },
   "hostAppFx": {
     "message": "Firefox"
   },
@@ -55,6 +59,10 @@
   },
   "pasteTitle": {
     "message": "粘贴剪辑",
+    "description": "Title bar text of keyboard paste dialog"
+  },
+  "addSubjTitle": {
+    "message": "将剪辑添加到主题中",
     "description": "Title bar text of keyboard paste dialog"
   },
   "msgTitle": {
@@ -155,7 +163,7 @@
     "message": "更新内容"
   },
   "welcWhatsNewDesc": {
-    "message": "在剪辑 7.1中，您现在可以选择将HTML格式的剪辑以纯文本形式粘贴至HTML编辑器。"
+    "message": "在剪辑 8.0版本中，您现在可以从剪辑管理器和剪辑侧边栏复制多个剪辑。"
   },
   "welcWhatsNewCTA": {
     "message": "了解更多"
@@ -177,15 +185,35 @@
   },
   "permReqTitle": {
     "message": "要完成所选操作，剪辑需要额外权限：",
-    "description": "Header for modal dialog that appears when trying to complete an action that requires an optional extension permission to be turned on"
+    "description": "Intro text in permissions page when trying to complete an action that requires an optional extension permission to be turned on"
+  },
+  "permReq": {
+    "message": "剪辑需要额外权限：",
+    "description": "Intro text in permissions page when a feature requires an optional extension permission to be turned on"
   },
   "extPrmClipbdR": {
     "message": "从剪贴板获取数据",
-    "description": "User-facing description of the 'clipboardRead' extension permission"
+    "description": "User-facing label for the 'clipboardRead' extension permission"
+  },
+  "extPrmClipbdRDesc": {
+    "message": "该权限允许剪辑工具从剪贴板中的文本新建一条剪辑。",
+    "description": "Description of the 'clipboardRead' extension permission"
   },
   "extPrmClipbdW": {
     "message": "将数据写入剪贴板",
-    "description": "User-facing description of the 'clipboardWrite' extension permission"
+    "description": "User-facing label for the 'clipboardWrite' extension permission"
+  },
+  "extPrmClipbdWDesc": {
+    "message": "此权限允许从剪辑管理器或剪辑侧边栏复制剪辑文本。",
+    "description": "Description of the 'clipboardWrite' extension permission"
+  },
+  "extPrmAddrBk": {
+    "message": "读取并修改你的通讯录与联系人",
+    "description": "User-facing label for the 'addressBooks' extension permission"
+  },
+  "extPrmAddrBkDesc": {
+    "message": "需要该权限，才能利用通讯录中已保存的信息自动填充收件人名称的占位符。",
+    "description": "Description of the 'addressBooks' extension permission"
   },
   "extPermInstr": {
     "message": "若要授予剪辑此权限，请打开附加组件管理器，点击安装扩展列表中的 $1， 然后在权限选项卡中打开权限。",
@@ -198,10 +226,6 @@
   "permReqPgHdg": {
     "message": "请求权限",
     "description": "Heading of the Permission Requested page"
-  },
-  "permReqHlp": {
-    "message": "附加组件权限帮助",
-    "description": "Link to Clippings help page on the AE Creations website"
   },
   "newClippingDlgTitle": {
     "message": "新建剪辑",
@@ -285,6 +309,10 @@
     "message": "TAB = 按名称搜索剪辑",
     "description": "Keyboard paste dialog - keyboard shortcut legend"
   },
+  "keybPasteDlgEnter": {
+    "message": "ENTER = 粘贴最近: $1",
+    "description": "Keyboard paste dialog - keyboard shortcut legend"
+  },
   "keybPasteDlgTabShctMode": {
     "message": "TAB = 快捷键模式",
     "description": "Keyboard paste dialog - keyboard shortcut legend"
@@ -358,27 +386,51 @@
   },
   "copyAsHTML": {
     "message": "复制为格式化文本",
-    "Description": "Copy Clipping Text dialog in Clippings Manager and Clippings sidebar - user selection of data format of clipping to be copied"
+    "description": "Copy Clipping Text dialog in Clippings Manager and Clippings sidebar - user selection of data format of clipping to be copied"
+  },
+  "copyAsHTML_accesskey": {
+    "message": "F",
+    "description": "Access key for 'Copy as Formatted Text'"
   },
   "copyAsPlain": {
     "message": "复制为纯文本",
     "description": "Copy Clipping Text dialog in Clippings Manager and Clippings sidebar - user selection of data format of clipping to be copied"
   },
+  "copyAsPlain_accesskey": {
+    "message": "C",
+    "description": "Access key for 'Copy as Plain Text'"
+  },
   "copyAsPlainHTML": {
     "message": "复制为带 HTML 标签的纯文本",
     "description": "Copy Clipping Text dialog in Clippings Manager and Clippings sidebar - user selection of data format of clipping to be copied"
+  },
+  "copyAsPlainHTML_accesskey": {
+    "message": "H",
+    "description": "Access key for 'Copy as Plain Text with HTML tags'"
   },
   "pasteAsHTML": {
     "message": "粘贴为格式化文本",
     "description": "Paste As dialog - user selection of data format of clipping to be pasted"
   },
+  "pasteAsHTML_accesskey": {
+    "message": "F",
+    "description": "Access key for 'Paste as Formatted Text'"
+  },
   "pasteAsPlain": {
     "message": "粘贴为纯文本",
     "description": "Paste As dialog - user selection of data format of clipping to be pasted"
   },
+  "pasteAsPlain_accesskey": {
+    "message": "P",
+    "description": "Access key for 'Paste as Plain Text'"
+  },
   "pasteAsPlainHTML": {
     "message": "粘贴为带HTML标签的纯文本",
     "description": "Paste As dialog - user selection of data format of clipping to be pasted"
+  },
+  "pasteAsPlainHTML_accesskey": {
+    "message": "H",
+    "description": "Access key for 'Paste as Plain Text with HTML tags'"
   },
   "clippingsMgrWndTitle": {
     "message": "打开剪辑管理器",
@@ -580,6 +632,10 @@
     "message": "姓名",
     "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
   },
+  "mnuPlchldrFName": {
+    "message": "名字",
+    "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
+  },
   "mnuPlchldrEmail": {
     "message": "邮箱",
     "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
@@ -684,8 +740,13 @@
   "clipMgrShortcutKeyAssigned": {
     "message": "所选快捷键已分配给另一个剪辑。 请选择其他快捷键。"
   },
-  "clipMgrNoSrcURL": {
-    "message": "所选剪辑没有源网页地址。"
+  "addrBkPermPanel": {
+    "message": "粘贴时需要额外权限才能填写该占位符。",
+    "description": "Clippings Manager message bar in Thunderbird"
+  },
+  "detailsMsgBar": {
+    "message": "详情",
+    "description": "Label for a button in the Clippings Manager message bar in Thunderbird"
   },
   "clipMgrImportConfirm": {
     "message": "从 \"$1\" 导入已完成",
@@ -936,25 +997,36 @@
     "description": "Extension preferences page"
   },
   "htmlPasteDesc": {
-    "message": "如果将HTML格式的剪辑粘贴到纯文本框中，或者如果剪辑包含受限制的标记，如<script>、<applet>、<object>、<iframe>等，则总是将其粘贴为纯文本。"
+    "message": "如果将HTML格式的剪辑粘贴到纯文本框中，或者如果剪辑包含受限制的标记，如<script>、<applet>、<object>、<iframe>等，则总是将其粘贴为纯文本。",
+    "description": "Extension preferences page (Firefox only)"
   },
   "htmlPasteDescTB": {
-    "message": "如果将 HTML 格式的剪辑粘贴到纯文本信息中，或者剪辑中包含 <script>、<applet>、<object>、<iframe> 等限制性标记，则剪辑将始终粘贴为纯文本。"
+    "message": "如果将 HTML 格式的剪辑粘贴到纯文本信息中，或者剪辑中包含 <script>、<applet>、<object>、<iframe> 等限制性标记，则剪辑将始终粘贴为纯文本。",
+    "description": "Extension preferences page (Thunderbird only)"
   },
   "prefsShortcutMode": {
-    "message": "按下这些键以激活快捷键模式："
+    "message": "按下这些键以激活快捷键模式：",
+    "description": "Extension preferences page (Firefox only)"
   },
   "prefsShctMode": {
-    "message": "按下 $1 激活快捷键模式"
+    "message": "按下 $1 激活消息面板的快捷键模式",
+    "description": "Extension preferences page (Thunderbird only)"
+  },
+  "prefsSubjShctMode": {
+    "message": "按下$1以激活主题栏的快捷键模式",
+    "description": "Extension preferences page (Thunderbird only)"
   },
   "prefsShortcutKeyNote": {
-    "message": "一些可用的键盘快捷键可能已经分配给 <a href=\"https://support.mozilla.org/zh-CN/kb/%E9%94%AE%E7%9B%98%E5%BF%AB%E6%8D%B7%E9%94%AE\" class=\"hyperlink\">Firefox 键盘快捷键</a> 或其他附加组件。"
+    "message": "一些可用的键盘快捷键可能已经分配给 <a href=\"https://support.mozilla.org/zh-CN/kb/%E9%94%AE%E7%9B%98%E5%BF%AB%E6%8D%B7%E9%94%AE\" class=\"hyperlink\">Firefox 键盘快捷键</a> 或其他附加组件。",
+    "description": "Extension preferences page"
   },
   "prefsOutsideShct": {
-    "message": "要更改键盘快捷键，请到 附加组件管理器 - 管理扩展快捷键 中进行修改。"
+    "message": "要更改键盘快捷键，请到 附加组件管理器 - 管理扩展快捷键 中进行修改。",
+    "description": "Extension preferences page"
   },
   "prefsDefaultNumPlchldrStart": {
-    "message": "数字占位符的默认起始值："
+    "message": "数字占位符的默认起始值：",
+    "description": "Extension preferences page"
   },
   "prefsHdgGeneralOptions": {
     "message": "通用设置",
@@ -964,12 +1036,24 @@
     "message": "始终保存源网页的地址",
     "description": "Checkbox option in extension preferences page"
   },
+  "cbSrcURLBadge": {
+    "message": "在带有来源网页地址的剪辑上显示标识",
+    "description": "Checkbox option in extension preferences page"
+  },
   "cbCheckSpelling": {
     "message": "拼写检查",
     "description": "Checkbox option in extension preferences page"
   },
   "cbShowShctMnu": {
     "message": "在剪辑菜单中显示分配的快捷键",
+    "description": "Checkbox option in extension preferences page"
+  },
+  "cbUseAcnt": {
+    "message": "使用系统主题强调色",
+    "description": "Checkbox option in extension preferences page"
+  },
+  "cbUseNovaAcnt": {
+    "message": "使用Firefox主题强调色",
     "description": "Checkbox option in extension preferences page"
   },
   "shctDispOpt": {
@@ -1208,7 +1292,7 @@
   },
   "extPrmNativeMessaging": {
     "message": "与 $1 以外的程序交换消息",
-    "description": "Exchange messages with programs other than <Firefox or Thunderbird> - User-facing description of the 'nativeMessaging' extension permission"
+    "description": "Exchange messages with programs other than <Firefox or Thunderbird> - User-facing label for the 'nativeMessaging' extension permission"
   },
   "syncPermReqTitle": {
     "message": "剪辑需要额外权限才能连接到 同步剪辑助手：",
@@ -1275,19 +1359,27 @@
   },
   "syncUpdateChkOpt": {
     "message": "自动检查更新以同步同步剪辑助手应用。",
-    "description": "Sync Clippings settings dialog in the extension preferences page"
+    "description": "Checkbox option in the Sync Clippings settings dialog in the extension preferences page"
   },
   "cxtMnuSyncItemsOnly": {
     "message": "剪辑菜单中只显示已同步项目",
-    "description": "Sync Clippings settings dialog in the extension preferences page"
+    "description": "Checkbox option in the Sync Clippings settings dialog in the extension preferences page"
   },
   "cmprsSyncData": {
     "message": "压缩同步数据 (推荐)",
-    "description": "Sync Clippings settings dialog in the extension preferences page"
+    "description": "Checkbox option in the Sync Clippings settings dialog in the extension preferences page"
   },
   "cmprsSyncReqmt": {
     "message": "需要同步剪辑助手2.0或以上版本。 <a href=\"$1\" class=\"hyperlink\">现在下载</a>",
-    "description": "Sync Clippings settings dialog in the extension preferences page"
+    "description": "Description of system requirements for a checkbox option in the Sync Clippings settings dialog"
+  },
+  "autoSyncNewMng": {
+    "message": "打开新建剪辑对话框或剪辑管理器时同步",
+    "description": "Checkbox option in the Sync Clippings settings dialog in the extension preferences page"
+  },
+  "autoSyncSbar": {
+    "message": "打开剪辑侧边栏时同步",
+    "description": "Checkbox option in the Sync Clippings settings dialog in the extension preferences page"
   },
   "wndsAndDlgsOpts": {
     "message": "窗口和对话框…",
@@ -1313,7 +1405,7 @@
     "description": "Checkbox option in Windows and Dialogs settings dialog"
   },
   "aboutBtn": {
-    "message": "关于…",
+    "message": "关于",
     "description": "Button in the extension preferences page"
   },
   "aboutExtVer": {
@@ -1383,40 +1475,40 @@
     "description": "Subheading in the What's New page"
   },
   "whatsNew1": {
-    "message": "恢复在粘贴HTML格式剪辑时显示「粘贴为」对话框的选项",
+    "message": "可以在键盘粘贴弹窗中按下Enter键，再次粘贴最近一次复制的剪辑",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
   "whatsNew2": {
-    "message": "优化了剪辑管理器中的撤销功能。此外，现在您可以通过以下快捷键重做最后一次撤销的操作：Windows系统按Ctrl+Y，macOS系统按⇧⌘Z，Linux系统按Ctrl+Shift+Z",
+    "message": "同步剪辑用户新增选项：打开剪辑管理器或新建剪辑弹窗时自动同步。可在扩展选项设置的同步剪辑设置中开启该功能",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
   "whatsNewFx1": {
-    "message": "新增选项：可将含HTML格式的剪辑以纯文本形式粘贴至HTML编辑器",
+    "message": "可以从剪辑管理器或剪辑侧边栏复制多条剪辑内容。按住$1并依次点击剪辑，按想要的显示顺序逐个选中剪辑；或者按住Shift并点击，选中一段连续范围的剪辑，之后右键单击并选择复制剪辑文本",
     "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
   },
   "whatsNewFx2": {
-    "message": "剪辑侧边栏中的预览窗格高度现在可以调整了",
+    "message": "现在，您可以在剪辑侧边栏中设置剪辑的颜色标签了",
     "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
   },
   "whatsNewFx3": {
-    "message": "移除了在剪辑管理器或剪辑侧边栏中重新加载同步剪辑文件夹时弹出的确认对话框",
+    "message": "包含来源网址的剪辑现在会在剪辑图标上显示标记",
+    "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
+  },
+  "whatsNewFx4": {
+    "message": "在 Firefox 157 及更高版本中，剪辑管理器、 新建剪辑对话框、其他对话框和扩展页面中的用户界面强调色已更改为紫色，以匹配 Nova 设计风格",
     "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
   },
   "whatsNewTb1": {
-    "message": "新增邮件标题、发送人及收件人占位符。您可通过占位符工具栏在剪辑管理器中将其添加至剪辑内容",
+    "message": "现在，在撰写窗口的“主题”字段中可以使用“剪辑”右键菜单了。此外，按 $1 键也可将剪辑添加到邮件主题中",
     "description": "Description of a Thunderbird-specific enhancement in the new version of Clippings"
   },
   "whatsNewTb2": {
-    "message": "新增选项：可将含HTML格式的剪辑以纯文本形式粘贴至HTML消息中",
+    "message": "“收件人”和“抄送”字段中新增了用于收件人名称的预设占位符：$[TO_FIRST_NAME] 和 $[CC_FIRST_NAME]",
     "description": "Description of a Thunderbird-specific enhancement in the new version of Clippings"
   },
   "whatsNewTb3": {
-    "message": "移除了在剪辑管理器中重新加载同步剪辑文件夹时弹出的确认对话框",
+    "message": "剪辑管理器、新建剪辑对话框、其他对话框和扩展页面中的用户界面强调色现采用系统强调色，与 Thunderbird 其余部分的用户界面颜色保持一致",
     "description": "Description of a Thunderbird-specific enhancement in the new version of Clippings"
-  },
-  "whatsNewSync": {
-    "message": "当同步剪辑数据大小超过1Mb限制时，剪辑现在将显示错误信息",
-    "description": "Description of enhancements for the Sync Clippings feature in the new version of Clippings"
   },
   "contribHdg": {
     "message": "参与贡献",
