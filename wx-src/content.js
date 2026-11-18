@@ -375,12 +375,11 @@ function insertTextIntoRichTextEditor(aRichTextEditorDocument, aClippingText, aA
 
     if (aPasteUsing == HTMLPASTE_USE_CLIPBOARD) {
       info("Clippings::content.js: insertTextIntoRichTextEditor(): Using the clipboard to paste the clipping into the HTML editor.");
-      let dataType = isHTMLFormatted ? "text/html" : "text/plain";
       let clipbdEvt = new ClipboardEvent("paste", {
         bubbles: true,
         cancelable: true,
         composed: true,
-        dataType,
+        dataType: "text/html",
         data: clippingText,
       });
       getActiveElt().dispatchEvent(clipbdEvt);
