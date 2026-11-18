@@ -1328,6 +1328,7 @@ body[data-locale="de"] #import-dlg {
     flex: 0 1 auto;
 
     min-width: 72px;
+    border-radius: 4px;
 }
 
 #import-dlg #import-clippings-file-upload {
