@@ -68,6 +68,10 @@ body[data-os="win"] .browser-style > input[type="checkbox"] + label {
     vertical-align: bottom;
 }
 
+body[data-os="linux"] .browser-style > input[type="checkbox"] + label {
+    vertical-align: -2px;
+}
+
 #new-clipping-fldr-tree-btn {
     order: 1;
 }
@@ -233,6 +237,11 @@ body[data-nova="true"] #btn-expand-options:active {
 #clipping-options,
 #clipping-options select {
     font-size: 12px;
+}
+
+body[data-os="linux"] #clipping-options,
+body[data-os="linux"] #clipping-options select {
+    letter-spacing: -0.15px;
 }
 
 #clipping-options #save-source-url {

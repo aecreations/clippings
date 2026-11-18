@@ -1004,6 +1004,10 @@ body[data-os="win"] .browser-style > input[type="checkbox"] + label {
     vertical-align: -1px;
 }
 
+body[data-os="linux"] .browser-style > input[type="checkbox"] + label {
+    vertical-align: -2px;
+}
+
 .lightbox fieldset {
     border-left: none;
     border-right: none;
