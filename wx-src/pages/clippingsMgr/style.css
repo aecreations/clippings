@@ -1070,6 +1070,10 @@ body[data-locale="fr"] #copy-clipping-txt-fmt-dlg {
     --width: 330px;
 }
 
+body[data-locale|="pt"] #copy-clipping-txt-fmt-dlg {
+    --width: 350px;
+}
+
 #copy-clipping-txt-fmt-dlg .copy-fmt-btn {
     min-width: unset;
     width: 100%;
@@ -1104,6 +1108,10 @@ body[data-locale="fr"] #copy-clipping-txt-fmt-dlg {
 
 #copy-clipping-txt-fmt-dlg #copy-cliptxt-plain-html {
     background-image: var(--url-icon-copy-txt-html-tags);
+}
+
+body[data-locale|="pt"] #copy-clipping-txt-fmt-dlg #copy-cliptxt-plain-html {
+    letter-spacing: -0.3px;
 }
 
 #copy-clipping-txt-fmt-dlg #copy-cliptxt-plain-html:hover,
