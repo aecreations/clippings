@@ -252,6 +252,7 @@ body[data-nova="true"] .tab-container {
 
 body[data-nova="true"] .tab > button {
     color: var(--color-tab-text-nova);
+    border-radius: 8px;
 }
 
 .tab > button:-moz-focusring {
@@ -265,7 +266,17 @@ body[data-nova="true"] .tab > button {
     box-shadow: none;
 }
 
-.tab > button:-moz-focusring:active {
+body[data-nova="true"] .tab > button:-moz-focusring {
+    margin-top: 4px;
+    padding-top: 35px;
+    padding-bottom: 18px;
+    border: 2px solid var(--accent-color-btn-focus-outline) !important;
+    box-shadow: unset;
+
+    background-position: center 3px;
+}
+
+.tab > button:active:-moz-focusring {
     margin-top: -2px;
     margin-bottom: -2px;
     padding-left: 4px;
@@ -293,15 +304,47 @@ body[data-nova="true"] .tab > button {
 body[data-nova="true"] .tab > button.active-tab,
 body[data-nova="true"] .tab > button:hover {
     margin-top: 4px;
-    padding-top: 37px;
-    padding-bottom: 20px;
     border-radius: 8px;
     background-position: center 5px;
 }
 
 body[data-nova="true"] .tab > button.active-tab {
+    padding-top: 37px;
+    padding-bottom: 20px;
     background-color: var(--accent-color);
     color: #fff;
+    z-index: 10;
+}
+
+body[data-nova="true"] .tab > button:hover {
+    padding-top: 37px;
+    padding-bottom: 20px;
+}
+
+body[data-nova="true"] .tab > button:hover:-moz-focusring,
+body[data-nova="true"] .tab > button.active-tab:-moz-focusring {
+    padding-top: 35px;
+    padding-bottom: 18px;
+
+    background-position: center 3px;
+}
+
+body[data-nova="true"] .tab > button:hover:-moz-focusring {
+    border: 2px solid var(--accent-color-btn-focus-outline) !important;
+}
+
+body[data-nova="true"] .tab > button.active-tab:-moz-focusring {
+    padding-top: 37px;
+    padding-bottom: 20px;
+
+    border: 0 !important;
+    outline: 1px solid var(--color-bkgd);
+    box-shadow: 0 0 0 3px var(--accent-color-focus-outline);
+
+    background-position: center 5px;
+
+    transition-property: box-shadow;
+    transition-duration: 250ms;
 }
 
 body[data-nova="true"] .tab > button:hover {
