@@ -480,7 +480,6 @@ let gSyncClippingsListener = {
         // Delay rebuilding to allow for synced items to be purged.
         setTimeout(async () => {
           await rebuildClippingsTree();
-          this._showWelcomeBanner();
         }, 1000);
       }
     }
