@@ -5,7 +5,8 @@ CLIPPINGS 8.0
 Many thanks to the Crowdin contributors who provided localizations for this
 version of Clippings:
 
-TBA     . . . . . . . . . . . . .
+Chinese (Simplified)  . . . . . .  52fisher
+German  . . . . . . . . . . . . .  Pierre-de-la-Verre
 
 
 If you're fluent in English and another world language and would like to help
