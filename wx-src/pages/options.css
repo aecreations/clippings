@@ -756,7 +756,11 @@ body[data-locale="de"] #sidebar-opts-dlg {
 }
 
 body[data-locale="fr"] #sidebar-opts-dlg {
-    --height: 332px;
+    --width: 610px;
+}
+
+body[data-locale="fr"] #sidebar-opts-dlg #enbl-sidebar-paste-opt {
+    letter-spacing: -0.4px;
 }
 
 .experimental-label {
