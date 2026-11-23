@@ -982,6 +982,7 @@ function clippingsMgrDlgs()
     exportToFile,
     importConfirmMsgBox,
     exportConfirmMsgBox,
+    backupConfirmMsgBox,
     removeAllSrcURLs,
     removeAllSrcURLsConfirm,
     restoreSrcURLs,
