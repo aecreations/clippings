@@ -364,7 +364,7 @@ let aePrefs = {
 
   hasFortPointPrefs(aPrefs)
   {
-    // Version 7.2
+    // Version 8.0
     return ("autoSyncOnNewOrManage" in aPrefs);
   },
 
