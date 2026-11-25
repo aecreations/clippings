@@ -3,14 +3,24 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+"use strict";
+
+
+const CHG_ACCENT_COLOR_DELAY_MS = 500;
+const CHG_SRCURL_BADGE_DELAY_MS = 300;
+
 let gOS;
-let gDialogs = {};
+let gDlg = {};
 let gIsActivatingSyncClippings = false;
+let gKeybPasteShct;
 
 
 // Options page initialization
 $(async () => {
-  let platform = await browser.runtime.getPlatformInfo();
+  let [brws, platform] = await Promise.all([
+    browser.runtime.getBrowserInfo(),
+    browser.runtime.getPlatformInfo(),
+  ]);
   document.body.dataset.os = gOS = platform.os;
 
   if (gOS == "win") {
@@ -68,7 +78,7 @@ $(async () => {
   $("#toggle-sync").on("click", async (aEvent) => {
     let syncClippings = await aePrefs.getPref("syncClippings");
     if (syncClippings) {
-      gDialogs.turnOffSync.showModal();
+      gDlg.turnOffSync.showModal();
     }
     else {
       // Check if the optional extension permission "nativeMessaging"
@@ -76,16 +86,16 @@ $(async () => {
       let perms = await browser.permissions.getAll();
       if (perms.permissions.includes("nativeMessaging")) {
         gIsActivatingSyncClippings = true;
-        gDialogs.syncClippings.showModal();
+        gDlg.syncClippings.showModal();
       }
       else {
-        gDialogs.reqNativeAppConxnPerm.showModal();
+        gDlg.reqNativeAppConxnPerm.showModal();
       }
     }
   });
 
   $("#about-btn").on("click", aEvent => {
-    gDialogs.about.showModal();
+    gDlg.about.showModal();
   });
 
   // About dialog.
@@ -129,8 +139,29 @@ $(async () => {
     aePrefs.setPrefs({ autoLineBreak: aEvent.target.checked });
   });
 
-  $("#enable-shortcut-key").prop("checked", prefs.keyboardPaste).on("click", aEvent => {
-    aePrefs.setPrefs({ keyboardPaste: aEvent.target.checked })
+  if (!prefs.keyboardPaste) {
+    $("#shortcut-key-selector").css({display: "inline-block"}).prop("disabled", true);
+
+    // In keyboard shortcut drop-down, select default value.
+    let manifest = browser.runtime.getManifest();
+    let defaultShcts = manifest.commands["ae-clippings-paste-clipping"].suggested_key;
+    let keybShct = gOS == "mac" ? defaultShcts.mac : defaultShcts.default;
+    let shctArr = keybShct.split("+");
+    let key = shctArr[shctArr.length - 1];
+
+    let keySelectElt = $("#shortcut-key-selector")[0];
+    let allKeys = keySelectElt.options;
+
+    for (let i = 0; i < allKeys.length; i++) {
+      if (allKeys[i].value == key) {
+        keySelectElt.selectedIndex = i;
+        break;
+      }
+    }
+  }
+
+  $("#enable-shortcut-key").prop("checked", prefs.keyboardPaste).on("click", async (aEvent) => {
+    await toggleKeyboardShortcutOpt(aEvent);
   });
 
   $("#auto-inc-plchldrs-start-val").val(prefs.autoIncrPlcHldrStartVal).on("click", aEvent => {
@@ -139,6 +170,20 @@ $(async () => {
 
   $("#always-save-src-url").prop("checked", prefs.alwaysSaveSrcURL).on("click", aEvent => {
     aePrefs.setPrefs({ alwaysSaveSrcURL: aEvent.target.checked });
+  });
+
+  $("#show-src-url-badge").prop("checked", prefs.srcWebPgURLBadge).on("click", aEvent => {
+    aePrefs.setPrefs({srcWebPgURLBadge: aEvent.target.checked});
+    browser.runtime.sendMessage({msgID: "rebuild-cxt-menu"});
+    setTimeout(async () => {
+      try {
+        await browser.runtime.sendMessage({
+          msgID: "toggle-src-url-badge",
+          isEnabled: aEvent.target.checked,
+        });
+      }
+      catch {}
+    }, CHG_SRCURL_BADGE_DELAY_MS);
   });
 
   $("#check-spelling").prop("checked", prefs.checkSpelling).on("click", aEvent => {
@@ -222,12 +267,31 @@ $(async () => {
     browser.runtime.sendMessage({msgID: "rebuild-cxt-menu"});
   });
 
+  // Firefox Nova accent colors on Firefox 157 and newer.
+  $("#use-nova-colors").prop("checked", prefs.useAccentColor).on("click", aEvent => {
+    let useAccentColor = aEvent.target.checked;
+    aePrefs.setPrefs({useAccentColor});
+    setTimeout(() => {
+      toggleAccentColor(useAccentColor);
+      browser.runtime.sendMessage({
+        msgID: "toggle-accent-color",
+        isEnabled: useAccentColor,
+      });
+    }, CHG_ACCENT_COLOR_DELAY_MS);
+  });
+  if (aeVersionCmp(brws.version, "157.0") >= 0) {
+    $("#use-nova-colors-opt").show();
+  }
+  else {
+    $("#use-nova-colors-opt").hide();
+  }
+
   $("#wnds-dlgs-settings").on("click", aEvent => {
-    gDialogs.wndsDlgsOpts.showModal();
+    gDlg.wndsDlgsOpts.showModal();
   });
 
   $("#sidebar-paste-opts").on("click", aEvent => {
-    gDialogs.clippingsSidebar.showModal();
+    gDlg.clippingsSidebar.showModal();
   });
 
   $("#html-cpy-auto-line-brk").prop("checked", prefs.copyAutoLineBreak).on("click", aEvent => {
@@ -248,11 +312,11 @@ $(async () => {
   $("#sync-settings").on("click", async (aEvent) => {
     let perms = await browser.permissions.getAll();
     if (! perms.permissions.includes("nativeMessaging")) {
-      gDialogs.reqNativeAppConxnPerm.showModal();
+      gDlg.reqNativeAppConxnPerm.showModal();
       return;
     }
     
-    gDialogs.syncClippings.showModal();
+    gDlg.syncClippings.showModal();
   });
 
   $("#browse-sync-fldr").on("click", async (aEvent) => {
@@ -272,7 +336,7 @@ $(async () => {
   });
   
   $("#show-sync-help").on("click", aEvent => {
-    gDialogs.syncClippingsHelp.showModal();
+    gDlg.syncClippingsHelp.showModal();
   });
 
   let cmds = await browser.commands.getAll();
@@ -300,6 +364,18 @@ $(async () => {
   }
 
   let keySelectElt = $("#shortcut-key-selector")[0];
+  keySelectElt.addEventListener("chan`ge", aEvent => {
+    let modifierKeys = gOS == "mac" ? "Command+Shift" : "Alt+Shift"
+    let keybShct = `${modifierKeys}+${aEvent.target.value}`;
+
+    log("Clippings::options.js: Keyboard shortcut changed. Updating command with new keyboard shortcut: " + keybShct);
+
+    browser.commands.update({
+      name: "ae-clippings-paste-clipping",
+      shortcut: keybShct,
+    });
+  });
+
   let allKeys = keySelectElt.options;
   
   for (let i = 0; i < allKeys.length; i++) {
@@ -314,26 +390,18 @@ $(async () => {
     // When the keyboard shortcut is not any of the combinations that can be
     // set from the extension preferences page, it may have been set from
     // Manage Extension Shortcuts in Add-ons Manager (Firefox 66+).
-    $("#shortcut-key-note").text(browser.i18n.getMessage("prefsOutsideShct"));
-
     let keybPasteKeys = await browser.runtime.sendMessage({msgID: "get-shct-key-prefix-ui-str"});
-    $("#shortcut-key-prefix-modifiers").text(keybPasteKeys);
+    if (prefs.keyboardPaste) {
+      $("#shortcut-key-prefix-modifiers").text(keybPasteKeys);
+      $("#shortcut-key-note").text(browser.i18n.getMessage("prefsOutsideShct"));
+    }
+    else {
+      $("#shortcut-key-note").html(sanitizeHTML(browser.i18n.getMessage("prefsShortcutKeyNote")));
+    }
   }
   else {
     $("#shortcut-key-note").html(sanitizeHTML(browser.i18n.getMessage("prefsShortcutKeyNote")));
     keySelectElt.style.display = "inline-block";
-
-    $(keySelectElt).change(aEvent => {
-      let modifierKeys = gOS == "mac" ? "Command+Shift" : "Alt+Shift"
-      let keybShct = `${modifierKeys}+${aEvent.target.value}`;
-
-      log("Clippings/wx::options.js: Keyboard shortcut changed. Updating command with new keyboard shortcut: " + keybShct);
-      
-      browser.commands.update({
-        name: "ae-clippings-paste-clipping",
-        shortcut: keybShct,
-      });
-    });
   }
 
   $(".hyperlink").on("click", aEvent => {
@@ -358,6 +426,7 @@ $(async () => {
     "pref-sync-clippings-checked-dk.svg"
   );
   aeVisual.preloadMsgBoxIcons(true);
+  toggleAccentColor(prefs.useAccentColor);
 });
 
 
@@ -423,21 +492,21 @@ function switchPrefsPanel(aPrefTabName)
 
 function initDialogs()
 {
-  gDialogs.clippingsSidebar = new aeDialog("#sidebar-opts-dlg");
-  gDialogs.clippingsSidebar.onInit = async function ()
+  gDlg.clippingsSidebar = new aeDialog("#sidebar-opts-dlg");
+  gDlg.clippingsSidebar.onInit = async function ()
   {
     let pasteFromSidebar = await aePrefs.getPref("pasteFromSidebar");
     $("#enbl-sidebar-paste").prop("checked", pasteFromSidebar);
   };
 
-  gDialogs.clippingsSidebar.onAccept = function ()
+  gDlg.clippingsSidebar.onAccept = function ()
   {
     aePrefs.setPrefs({pasteFromSidebar: $("#enbl-sidebar-paste").prop("checked")});
     this.close();
   };
 
-  gDialogs.reqNativeAppConxnPerm = new aeDialog("#request-native-app-conxn-perm-dlg");
-  gDialogs.reqNativeAppConxnPerm.onAccept = async function ()
+  gDlg.reqNativeAppConxnPerm = new aeDialog("#request-native-app-conxn-perm-dlg");
+  gDlg.reqNativeAppConxnPerm.onAccept = async function ()
   {
     this.close();
     
@@ -447,19 +516,19 @@ function initDialogs()
 
     if (permGranted) {
       gIsActivatingSyncClippings = true;
-      gDialogs.syncClippings.showModal();
+      gDlg.syncClippings.showModal();
     }
   };
 
-  gDialogs.syncClippings = new aeDialog("#sync-clippings-dlg");
-  gDialogs.syncClippings.setProps({
+  gDlg.syncClippings = new aeDialog("#sync-clippings-dlg");
+  gDlg.syncClippings.setProps({
     oldShowSyncItemsOpt: null,
     oldCheckSyncAppUpdatesOpt: null,
     isCanceled: false,
     lastFocusedElt: null,
   });
 
-  gDialogs.syncClippings._initKeyboardNav = function (aVisibleDeckID, aIsBrwsSyncFldrBtnVisible)
+  gDlg.syncClippings._initKeyboardNav = function (aVisibleDeckID, aIsBrwsSyncFldrBtnVisible)
   {
     let focusableElts = [];
     
@@ -484,7 +553,7 @@ function initDialogs()
     this.initKeyboardNavigation(focusableElts);
   };
 
-  gDialogs.syncClippings._initHyperlinksWithin = function (aEltStor)
+  gDlg.syncClippings._initHyperlinksWithin = function (aEltStor)
   {
     this.find(aEltStor).find(".hyperlink").on("click", aEvent => {
       aEvent.preventDefault();
@@ -492,12 +561,12 @@ function initDialogs()
     });
   };
 
-  gDialogs.syncClippings.isSyncConnectionError = function ()
+  gDlg.syncClippings.isSyncConnectionError = function ()
   {
     return (this.find("#sync-cxn-error").css("display") == "block");
   };
   
-  gDialogs.syncClippings.onFirstInit = function ()
+  gDlg.syncClippings.onFirstInit = function ()
   {
     $("#no-sync-app-cta").html(sanitizeHTML(browser.i18n.getMessage("noSyncAppCTA", aeConst.SYNC_CLIPPINGS_DWNLD_URL)));
     $("#sync-fldr-curr-location").on("focus", aEvent => { aEvent.target.select() });
@@ -505,11 +574,11 @@ function initDialogs()
     this._initHyperlinksWithin("#no-sync-app-cta");
   };
   
-  gDialogs.syncClippings.onInit = async function ()
+  gDlg.syncClippings.onInit = async function ()
   {
     this.isCanceled = false;
-    $("#sync-clippings-dlg .dlg-accept").hide();
-    $("#sync-clippings-dlg .dlg-cancel").text(browser.i18n.getMessage("btnCancel"));
+    this.find(".dlg-accept").hide();
+    this.find(".dlg-cancel").text(browser.i18n.getMessage("btnCancel"));
     $("#sync-err-detail").text("");
     
     let deckSyncChk = $("#sync-connection-check");
@@ -576,6 +645,8 @@ function initDialogs()
     $("#sync-helper-app-update-check").prop("checked", prefs.syncHelperCheckUpdates);
     $("#show-only-sync-items").prop("checked", prefs.cxtMenuSyncItemsOnly);
     $("#cmprs-sync-data").prop("checked", prefs.compressSyncData);
+    $("#auto-sync-on-new-or-manage").prop("checked", prefs.autoSyncOnNewOrManage);
+    $("#auto-sync-sidebar").prop("checked", prefs.autoSyncSidebar);
 
     this.oldShowSyncItemsOpt = $("#show-only-sync-items").prop("checked");
     this.oldCheckSyncAppUpdatesOpt = $("#sync-helper-app-update-check").prop("checked");
@@ -591,7 +662,7 @@ function initDialogs()
     this._initKeyboardNav("sync-folder-location", isBrwsSyncFldrVisible);
   };
   
-  gDialogs.syncClippings.onAccept = async function ()
+  gDlg.syncClippings.onAccept = async function ()
   {
     let syncFldrPath = $("#sync-fldr-curr-location").val();
 
@@ -600,7 +671,7 @@ function initDialogs()
     syncFldrPath = syncFldrPath.replace(/\"/g, "");
     
     if (! syncFldrPath) {
-      $("#sync-fldr-curr-location").focus();
+      $("#sync-fldr-curr-location").trigger("focus");
       return;
     }
 
@@ -608,6 +679,8 @@ function initDialogs()
       syncHelperCheckUpdates: $("#sync-helper-app-update-check").prop("checked"),
       cxtMenuSyncItemsOnly: $("#show-only-sync-items").prop("checked"),
       compressSyncData: $("#cmprs-sync-data").prop("checked"),
+      autoSyncOnNewOrManage: $("#auto-sync-on-new-or-manage").prop("checked"),
+      autoSyncSidebar: $("#auto-sync-sidebar").prop("checked"),
     });
 
     let rebuildClippingsMenu = $("#show-only-sync-items").prop("checked") != this.oldShowSyncItemsOpt;
@@ -681,6 +754,7 @@ function initDialogs()
     browser.runtime.sendMessage({
       msgID: "refresh-synced-clippings",
       rebuildClippingsMenu,
+      origin: aeConst.ORIGIN_EXT_PREFS,
     });
     browser.runtime.sendMessage({
       msgID: "sync-activated",
@@ -690,16 +764,16 @@ function initDialogs()
     this.close();
   };
   
-  gDialogs.syncClippings.onUnload = function ()
+  gDlg.syncClippings.onUnload = function ()
   {
     $("#sync-clippings-dlg").removeClass("expanded");
     $("#cmprs-sync-data-reqmt").text("").hide();
-    gDialogs.syncClippings.isCanceled = true;
+    gDlg.syncClippings.isCanceled = true;
     this.lastFocusedElt?.focus();
   };
 
-  gDialogs.turnOffSync = new aeDialog("#turn-off-sync-clippings-dlg");
-  gDialogs.turnOffSync.onFirstInit = function ()
+  gDlg.turnOffSync = new aeDialog("#turn-off-sync-clippings-dlg");
+  gDlg.turnOffSync.onFirstInit = function ()
   {
     this.find(".dlg-btns > .dlg-btn-yes").on("click", async (aEvent) => {
       this.close();
@@ -720,24 +794,24 @@ function initDialogs()
         oldSyncFolderID,
       });
 
-      gDialogs.turnOffSyncAck.oldSyncFldrID = oldSyncFolderID;
-      gDialogs.turnOffSyncAck.showModal();
+      gDlg.turnOffSyncAck.oldSyncFldrID = oldSyncFolderID;
+      gDlg.turnOffSyncAck.showModal();
     });
   };
-  gDialogs.turnOffSync.onShow = function ()
+  gDlg.turnOffSync.onShow = function ()
   {
     setTimeout(() => {
       $("#turn-off-sync-clippings-dlg > .dlg-btns > .dlg-accept")[0].focus();
     }, 10);
   };
 
-  gDialogs.turnOffSyncAck = new aeDialog("#turn-off-sync-clippings-ack-dlg");
-  gDialogs.turnOffSyncAck.setProps({oldSyncFldrID: null});
-  gDialogs.turnOffSyncAck.onInit = function ()
+  gDlg.turnOffSyncAck = new aeDialog("#turn-off-sync-clippings-ack-dlg");
+  gDlg.turnOffSyncAck.setProps({oldSyncFldrID: null});
+  gDlg.turnOffSyncAck.onInit = function ()
   {
     $("#delete-sync-fldr").prop("checked", true);
   };
-  gDialogs.turnOffSyncAck.onAfterAccept = function ()
+  gDlg.turnOffSyncAck.onAfterAccept = function ()
   {
     let removeSyncFolder = $("#delete-sync-fldr").prop("checked");
 
@@ -748,9 +822,9 @@ function initDialogs()
     });
   };
 
-  gDialogs.wndsDlgsOpts = new aeDialog("#wnds-dlgs-opts-dlg");
-  gDialogs.wndsDlgsOpts.setProps({resetClpMgrWndPos: false});
-  gDialogs.wndsDlgsOpts.onFirstInit = function ()
+  gDlg.wndsDlgsOpts = new aeDialog("#wnds-dlgs-opts-dlg");
+  gDlg.wndsDlgsOpts.setProps({resetClpMgrWndPos: false});
+  gDlg.wndsDlgsOpts.onFirstInit = function ()
   {
     if (! ["win", "mac"].includes(gOS)) {
       this._dlgElt.addClass("expanded");
@@ -768,14 +842,14 @@ function initDialogs()
       $("#reset-clpmgr-wnd-pos-ack").css({visibility: "visible"});
     });
   };
-  gDialogs.wndsDlgsOpts.onInit = async function ()
+  gDlg.wndsDlgsOpts.onInit = async function ()
   {
     let prefs = await aePrefs.getAllPrefs();
     $("#auto-pos-wnds").prop("checked", prefs.autoAdjustWndPos);
     $("#clpmgr-save-wnd-pos").prop("checked", prefs.clippingsMgrSaveWndGeom);
     $("#reset-clpmgr-wnd-pos").prop("disabled", !$("#clpmgr-save-wnd-pos").prop("checked"));
   };
-  gDialogs.wndsDlgsOpts.onAccept = async function (aEvent)
+  gDlg.wndsDlgsOpts.onAccept = async function (aEvent)
   {
     let autoAdjustWndPos = $("#auto-pos-wnds").prop("checked");
     let clippingsMgrSaveWndGeom = $("#clpmgr-save-wnd-pos").prop("checked");
@@ -806,23 +880,23 @@ function initDialogs()
 
     this.close();
   };
-  gDialogs.wndsDlgsOpts._purgeSavedClpMgrWndGeom = async function ()
+  gDlg.wndsDlgsOpts._purgeSavedClpMgrWndGeom = async function ()
   {   
     await aePrefs.setPrefs({
       clippingsMgrWndGeom: null,
       clippingsMgrTreeWidth: null,
     });
   };
-  gDialogs.wndsDlgsOpts.onUnload = function ()
+  gDlg.wndsDlgsOpts.onUnload = function ()
   {
     this.resetClpMgrWndPos = false;
     $("#reset-clpmgr-wnd-pos").prop("disabled", false);
     $("#reset-clpmgr-wnd-pos-ack").css({visibility: "hidden"});
   };
 
-  gDialogs.about = new aeDialog("#about-dlg");
-  gDialogs.about.setProps({extInfo: null});
-  gDialogs.about.onInit = function ()
+  gDlg.about = new aeDialog("#about-dlg");
+  gDlg.about.setProps({extInfo: null});
+  gDlg.about.onInit = function ()
   {
     let diagDeck = this.find("#diag-info .deck");
     diagDeck.children("#sync-diag-loading").show();
@@ -846,7 +920,7 @@ function initDialogs()
     this.find(".dlg-content #ext-home-pg").prop("href", this.extInfo.homePgURL);
   };
   
-  gDialogs.about.onShow = async function ()
+  gDlg.about.onShow = async function ()
   {
     let perms = await browser.permissions.getAll();
     if (perms.permissions.includes("nativeMessaging")) {
@@ -909,19 +983,52 @@ function initDialogs()
     this.find("#sync-diag-detail").show();
   };
 
-  gDialogs.about.onUnload = function ()
+  gDlg.about.onUnload = function ()
   {
     this._dlgElt.removeAttr("data-expanded");
   };
 
-  gDialogs.syncClippingsHelp = new aeDialog("#sync-clippings-help-dlg");
+  gDlg.syncClippingsHelp = new aeDialog("#sync-clippings-help-dlg");
 }
 
 
-async function closePage()
+async function toggleKeyboardShortcutOpt(aEvent)
 {
-  let tab = await browser.tabs.getCurrent();
-  browser.tabs.remove(tab.id);
+  await aePrefs.setPrefs({keyboardPaste: aEvent.target.checked});
+
+  if (aEvent.target.checked) {
+    // Restore the custom keyboard shortcut if the user toggles it back on
+    // immediately after turning it off.
+    if (gKeybPasteShct) {
+      await browser.commands.update({
+        name: "ae-clippings-paste-clipping",
+        shortcut: gKeybPasteShct,
+      });
+    }
+    else {
+      await browser.commands.reset("ae-clippings-paste-clipping");
+    }
+    $("#shortcut-key-selector").prop("disabled", false);
+  }
+  else {
+    // Save the current custom keyboard shortcut in case the user toggles it
+    // back on immediately afterward.
+    let [cmd] = await browser.commands.getAll();
+    gKeybPasteShct = cmd.shortcut;
+
+    $("#shortcut-key-selector").prop("disabled", true);
+    await browser.commands.update({
+      name: "ae-clippings-paste-clipping",
+      shortcut: '',
+    });
+  }
+}
+
+
+function toggleAccentColor(aIsEnabled)
+{
+  aeVisual.enableAccentColor(aIsEnabled);
+  document.body.dataset.nova = aIsEnabled;
 }
 
 
@@ -937,10 +1044,10 @@ $(window).on("contextmenu", aEvent => {
 
 
 $(window).on("focus", aEvent => {
-  if (gDialogs?.syncClippings?.isOpen() && gDialogs.syncClippings.isSyncConnectionError()) {
+  if (gDlg?.syncClippings?.isOpen() && gDlg.syncClippings.isSyncConnectionError()) {
     // Retry connecting to the Sync Clippings Helper app.
-    gDialogs.syncClippings.close();
-    gDialogs.syncClippings.showModal();
+    gDlg.syncClippings.close();
+    gDlg.syncClippings.showModal();
   }
 });
 

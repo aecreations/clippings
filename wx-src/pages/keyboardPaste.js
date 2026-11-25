@@ -3,7 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const WNDH_SHORTCUT_KEY = 164;
+"use strict";
+
+const WNDH_SHORTCUT_KEY = 180;
 const WNDH_SEARCH_CLIPPING = 250;
 const WNDH_SHORTCUT_LIST = 278;
 const WNDW_SHORTCUT_LIST = 436;
@@ -11,10 +13,11 @@ const DLG_HEIGHT_ADJ_WINDOWS = 8;
 const DLG_HEIGHT_ADJ_LINUX = 60;
 const TOOLBAR_HEIGHT = 52;
 const SHORTCUT_LIST_HEIGHT_ADJ_MAC = 2;
+const MAX_RECENT_CLIPPING_NAME_LEN = 32;
 
-let gClippingsDB, gPasteMode, gOS, gHostAppVer;
+let gClippingsDB, gPasteMode, gOS, gHostAppVer, gRecentClippingID;
 let gBrowserTabID = null;
-let gIsVertExpanded;
+let gIsVertExpanded, gDlgTabID;
 
 let gAutocompleteMenu = {
   _SCRL_LENGTH: 34,
@@ -269,13 +272,8 @@ $(async () => {
     browser.runtime.getBrowserInfo(),
     browser.runtime.getPlatformInfo(),
   ]);
-  envInfo = {
-    os: platform.os,
-    hostAppName: brws.name,
-    hostAppVer:  brws.version,
-  };
-  gHostAppVer = envInfo.hostAppVer;
-  document.body.dataset.os = gOS = envInfo.os;
+  gHostAppVer = brws.version;
+  document.body.dataset.os = gOS = platform.os;
   aeInterxn.init(gOS);
 
   aeClippings.init();
@@ -286,7 +284,7 @@ $(async () => {
   aeImportExport.setDatabase(gClippingsDB);
   aeImportExport.setL10nStrings({
     shctTitle: browser.i18n.getMessage("expHTMLTitle"),
-    hostAppInfo: browser.i18n.getMessage("expHTMLHostAppInfo", [extVer, envInfo.hostAppName]),
+    hostAppInfo: browser.i18n.getMessage("expHTMLHostAppInfo", [extVer, brws.name]),
     shctKeyInstrxns: browser.i18n.getMessage("expHTMLShctKeyInstrxn"),
     shctKeyCustNote: browser.i18n.getMessage("expHTMLShctKeyCustNote"),
     shctKeyColHdr: browser.i18n.getMessage("expHTMLShctKeyCol"),
@@ -298,7 +296,10 @@ $(async () => {
 
   gIsVertExpanded = Boolean(params.get("vexp"));
   gPasteMode = await aePrefs.getPref("pastePromptAction");
-  
+
+  let tab = await browser.tabs.getCurrent();
+  gDlgTabID = tab.id;
+
   if (gPasteMode == aeConst.PASTEACTION_SHORTCUT_KEY) {
     $(".deck > #search-by-name").hide();
     $(".deck > #paste-by-shortcut-key").show();
@@ -322,6 +323,30 @@ $(async () => {
     srchBox.focus();
   }
 
+  let recentClippingID = await aePrefs.getPref("_recentClippingID");
+  if (recentClippingID) {
+    let clipping = await gClippingsDB.clippings.get(recentClippingID);
+    if (clipping?.parentFolderID != aeConst.DELETED_ITEMS_FLDR_ID) {
+      gRecentClippingID = clipping.id;
+      log("Clippings::keyboardPaste.js: Recent clipping ID: " + gRecentClippingID);
+
+      let truncName = '';
+      if (clipping.name.length > MAX_RECENT_CLIPPING_NAME_LEN) {
+        truncName = clipping.name.substring(0, MAX_RECENT_CLIPPING_NAME_LEN);
+        truncName += "…";
+      }
+      else {
+        truncName = clipping.name;
+      }
+      truncName = "<b>" + truncName + "</b>";
+      $("#paste-recent").html(sanitizeHTML(browser.i18n.getMessage("keybPasteDlgEnter", truncName))).show();
+    }
+  }
+
+  let useAccentColor = await aePrefs.getPref("useAccentColor");
+  aeVisual.enableAccentColor(useAccentColor);
+  document.body.dataset.nova = useAccentColor;
+
   aeVisual.cacheIcons(
     "insClipping-hover.svg",
     "insClipping-active-dk.svg",
@@ -334,10 +359,12 @@ $(async () => {
     // browser.windows.create won't show contents unless resized.
     // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1402110>
     let wnd = await browser.windows.getCurrent();
-    browser.windows.update(wnd.id, {
+    let updWnd = await browser.windows.update(wnd.id, {
       width: wnd.width + 1,
       focused: true,
     });
+
+    await aeInterxn.initWndZoom(updWnd.width, updWnd.height);
   }
 });
 
@@ -365,7 +392,12 @@ $(window).on("keydown", async (aEvent) => {
     }
   }
   else if (aEvent.key == "Enter" && gPasteMode == aeConst.PASTEACTION_SHORTCUT_KEY) {
-    cancel(aEvent);
+    if (gRecentClippingID) {
+      pasteRecentClipping();
+    }
+    else {
+      cancel(aEvent);
+    }
   }
   else if (aEvent.key == "F1") {
     if (isShortcutListDisplayed()) {
@@ -375,7 +407,6 @@ $(window).on("keydown", async (aEvent) => {
     if (gPasteMode == aeConst.PASTEACTION_SHORTCUT_KEY) {
       $(".deck > #paste-by-shortcut-key").hide();
       await initShortcutList();
-      return;
     }
   }
   else if (aEvent.key == "Tab") {
@@ -384,19 +415,21 @@ $(window).on("keydown", async (aEvent) => {
     }
 
     aEvent.preventDefault();
+    let zoom = await browser.tabs.getZoom(gDlgTabID);
     
     if (gPasteMode == aeConst.PASTEACTION_SHORTCUT_KEY) {
       gPasteMode = aeConst.PASTEACTION_SEARCH_CLIPPING;
       $(".deck > #paste-by-shortcut-key").hide();
 
       if (!gIsVertExpanded) {
-        let updWndInfo = {
-          height: WNDH_SEARCH_CLIPPING,
-        };
+        let height = WNDH_SEARCH_CLIPPING;
         if (gOS == "linux") {
-          updWndInfo.height += DLG_HEIGHT_ADJ_LINUX;
+          height += DLG_HEIGHT_ADJ_LINUX;
         }
 
+        let updWndInfo = {
+          height: aeInterxn.getScaledDlgSize(height, zoom),
+        };
         await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, updWndInfo);
       }
       
@@ -409,13 +442,14 @@ $(window).on("keydown", async (aEvent) => {
       $(".deck > #search-by-name").hide();
 
       if (!gIsVertExpanded) {
-        let updWndInfo = {
-          height: WNDH_SHORTCUT_KEY,
-        };
+        let height = WNDH_SHORTCUT_KEY;
         if (gOS == "linux") {
-          updWndInfo.height += DLG_HEIGHT_ADJ_LINUX;
+          height += DLG_HEIGHT_ADJ_LINUX;
         }
 
+        let updWndInfo = {
+          height: aeInterxn.getScaledDlgSize(height, zoom),
+        }
         await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, updWndInfo);
       }
       
@@ -480,10 +514,10 @@ function initAutocomplete()
       else {
         $("#clear-search").show();
       }
-    })
+    });
     
     $("#clear-search").on("click", aEvent => {
-      $("#clipping-search").val("").focus();
+      $("#clipping-search").val("").trigger("focus");
       $("#num-matches").text("\u00a0");
       
       if (gAutocompleteMenu.isPopupShowing()) {
@@ -493,7 +527,7 @@ function initAutocomplete()
       $("#clear-search").hide();
     });
 
-    $("#clipping-search").focus();
+    $("#clipping-search").trigger("focus");
     $("#clear-search").hide();
   });
 }
@@ -515,7 +549,8 @@ async function initShortcutList()
   $("#shortcut-list-toolbar > #close").on("click", aEvent => {
     closeDlg();
   });
-  
+
+  let zoom = await browser.tabs.getZoom(gDlgTabID);
   let updWndInfo = {
     width: WNDW_SHORTCUT_LIST,
     height: WNDH_SHORTCUT_LIST,
@@ -526,6 +561,9 @@ async function initShortcutList()
   else if (gOS == "linux") {
     updWndInfo.height += DLG_HEIGHT_ADJ_LINUX;
   }
+
+  updWndInfo.height = aeInterxn.getScaledDlgSize(updWndInfo.height, zoom);
+  updWndInfo.width = aeInterxn.getScaledDlgSize(updWndInfo.width, zoom);
 
   await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, updWndInfo);
   aeImportExport.getShortcutKeyListHTML(false).then(aShctListHTML => {
@@ -590,6 +628,19 @@ function execShortcut(aShortcutKey)
     msgID: "paste-shortcut-key",
     shortcutKey: aShortcutKey,
     browserTabID: gBrowserTabID,
+  });
+
+  closeDlg();
+}
+
+
+function pasteRecentClipping()
+{
+  browser.runtime.sendMessage({
+    msgID: "paste-clipping-by-name",
+    clippingID: gRecentClippingID,
+    browserTabID: gBrowserTabID,
+    fromClippingsMgr: false,
   });
 
   closeDlg();

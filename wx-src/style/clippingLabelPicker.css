@@ -3,6 +3,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
+/* Styling for the clipping label drop-down menu in the New Clipping dialog
+ * and Clippings Manager (details pane). */
 :root {
     --color-label-picker-default-bkgd: #fdfefd;
     --color-label-picker-default-border: #d7d7db;

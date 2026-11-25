@@ -7,7 +7,7 @@
 const aeConst = Object.freeze({
   DEBUG: false,
   DEV_BUILD: false,
-  CURR_MAJOR_VER: "7.1",
+  CURR_MAJOR_VER: "8.0",
 
   // Native messaging helper app
   SYNC_CLIPPINGS_APP_NAME: "syncClippings",
@@ -39,9 +39,11 @@ const aeConst = Object.freeze({
   ROOT_FOLDER_ID: 0,
   DELETED_ITEMS_FLDR_ID: -1,
 
-  // Origin of clipping/folder creation for Clippings listener
+  // Origin of clipping/folder creation and other actions
   ORIGIN_HOSTAPP: 1,
   ORIGIN_CLIPPINGS_MGR: 2,
+  ORIGIN_SIDEBAR: 3,
+  ORIGIN_EXT_PREFS: 4,
 
   // Export to file
   CLIPPINGS_EXPORT_FILENAME: "clippings.json",
@@ -94,4 +96,5 @@ const aeConst = Object.freeze({
   HELP_URL: "https://aecreations.io/clippings/help.php",
   SYNC_CLIPPINGS_HELP_URL: "https://aecreations.io/clippings/sync.php",
   SYNC_CLIPPINGS_DWNLD_URL: "https://aecreations.io/clippings/sync-clippings-helper.php",
+  PERM_HLP_URL: "https://aecreations.io/clippings/permissions.php",
 });

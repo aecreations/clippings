@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+"use strict";
 
 let gWndID, gTabID;
 
@@ -15,10 +16,13 @@ $(async () => {
   let contribCTA = browser.i18n.getMessage("contribCTA", [extInfo.name, aeConst.DONATE_URL, aeConst.CONTRIB_URL]);
   $("#contrib-cta").html(sanitizeHTML(contribCTA));
 
-  let hostAppName = browser.i18n.getMessage("hostAppFx");
-  $("#hostapp-compat").text(browser.i18n.getMessage("hostAppCompat", hostAppName));
-  $("#whats-new-sync").html(sanitizeHTML(browser.i18n.getMessage("whatsNewSync", aeConst.SYNC_CLIPPINGS_DWNLD_URL)));
-  
+  let {os} = await browser.runtime.getPlatformInfo();
+  let modifierKey = os == "mac" ? "keyCommand" : "keyCtrl";
+  $("#whats-new-fx1").text(
+      browser.i18n.getMessage("whatsNewFx1",
+          browser.i18n.getMessage(modifierKey))
+  );
+
   $("#link-website > a").attr("href", extInfo.homepage_url);
   $("#link-amo > a").attr("href", aeConst.AMO_URL);
   $("#link-blog > a").attr("href", aeConst.BLOG_URL);
@@ -39,6 +43,9 @@ $(async () => {
   gTabID = tabs[0].id;
 
   browser.runtime.sendMessage({msgID: "whats-new-pg-opened"});
+
+  let useAccentColor = await aePrefs.getPref("useAccentColor");
+  aeVisual.enableAccentColor(useAccentColor);
 });
 
 
@@ -61,6 +68,10 @@ function sanitizeHTML(aHTMLStr)
 }
 
 
+//
+// Event handlers
+//
+
 browser.runtime.onMessage.addListener(aRequest => {
   if (aRequest.msgID == "ping-whats-new-pg") {
     let resp = {
@@ -68,6 +79,9 @@ browser.runtime.onMessage.addListener(aRequest => {
       tabID: gTabID,
     };
     return Promise.resolve(resp);
+  }
+  else if (aRequest.msgID == "toggle-accent-color") {
+    aeVisual.enableAccentColor(aRequest.isEnabled);
   }
 });
 

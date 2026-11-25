@@ -10,6 +10,7 @@
 @import url("../style/clippingsTree.css");
 @import url("../style/contextMenu.css");
 @import url("../style/searchbox.css");
+@import url("../style/compactClippingLabelPicker.css");
 
 
 :root {
@@ -330,6 +331,10 @@ body[data-os="mac"][data-locale="de"] #toolbar > #open-clippings-mgr {
     border-color: #0a84ff;
 }
 
+body[data-nova="true"] #search-clippings-and-folders.focus {
+    border-color: var(--accent-color);
+}
+
 #search-box {
     width: calc(100% - 16px);
     padding-top: 1px;
@@ -424,6 +429,7 @@ ul.fancytree-container {
 .context-menu-separator {
     border-bottom: 1px solid var(--color-cxtmenu-separator);
 }
+
 
 #welcome-content {
     display: none;
@@ -726,5 +732,21 @@ body[data-locale="fr"] #request-clipbd-write-perm-dlg {
 }
 
 #init-error-msgbox .msgbox-error-msg {
+    color: var(--color-error-text);
+}
+
+#sync-error-msgbox,
+#sync-fldr-full-error-msgbox {
+    top: 88px;
+    --width: 200px;
+    --height: auto;
+}
+
+#sync-error-msgbox .msgbox-error-msg,
+#sync-fldr-full-error-msgbox .msgbox-content {
+    margin-bottom: 42px;
+}
+
+#sync-error-msgbox .msgbox-error-msg {
     color: var(--color-error-text);
 }

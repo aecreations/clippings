@@ -68,6 +68,10 @@ body[data-os="win"] .browser-style > input[type="checkbox"] + label {
     vertical-align: bottom;
 }
 
+body[data-os="linux"] .browser-style > input[type="checkbox"] + label {
+    vertical-align: -2px;
+}
+
 #new-clipping-fldr-tree-btn {
     order: 1;
 }
@@ -205,6 +209,10 @@ ul.fancytree-container {
     background-repeat: no-repeat;
 }
 
+body[data-nova="true"] #btn-expand-options {
+    background-color: var(--accent-color-btn-bkgd);
+}
+
 #btn-expand-options.expanded {
     background-image: var(--url-collapsed-icon);
 }
@@ -217,9 +225,23 @@ ul.fancytree-container {
     background-color: var(--color-btn-expand-active-bkgd);
 }
 
+body[data-nova="true"] #btn-expand-options:hover {
+    background-color: var(--accent-color-btn-hover-bkgd);
+}
+
+body[data-nova="true"] #btn-expand-options:active {
+    background-color: var(--accent-color-btn-active-bkgd);
+}
+
+
 #clipping-options,
 #clipping-options select {
     font-size: 12px;
+}
+
+body[data-os="linux"] #clipping-options,
+body[data-os="linux"] #clipping-options select {
+    letter-spacing: -0.15px;
 }
 
 #clipping-options #save-source-url {
@@ -276,6 +298,10 @@ body:not([data-locale="uk"]):not([data-locale|="pt"]):not([data-locale|="es"]) #
 
 body:not([data-locale="uk"]):not([data-locale|="pt"]):not([data-locale|="es"]) #clipping-label-picker {
     width: 86px;
+}
+
+body[data-nova="true"] #clipping-label-picker.browser-style {
+    border-color: var(--accent-color-btn-border);
 }
 
 #dlg-buttons {
@@ -335,4 +361,14 @@ body[data-os="mac"] .err-msgbox .msgbox-error-icon {
 
 .err-msgbox .msgbox-error-msg {
     color: var(--color-error-text);
+}
+
+#sync-progress {
+    top: 64px;
+    --width: 150px;
+    --height: auto;
+}
+
+#sync-progress progress {
+    width: 100%;
 }

@@ -3,6 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+"use strict";
+
+
 // Dialog initialization
 $(async () => {
   let lang = browser.i18n.getUILanguage();
@@ -35,7 +38,7 @@ $(async () => {
     else {
       $("#backup-reminder-freq").prop("disabled", true);
       setPref = aePrefs.setPrefs({
-	backupRemFrequency: aeConst.BACKUP_REMIND_NEVER,
+        backupRemFrequency: aeConst.BACKUP_REMIND_NEVER,
       });
     }
 
@@ -44,7 +47,7 @@ $(async () => {
 
     }).then(() => {
       if (aEvent.target.checked) {
-	browser.runtime.sendMessage({msgID: "set-backup-notifcn-intv"});
+        browser.runtime.sendMessage({msgID: "set-backup-notifcn-intv"});
       }
     });
   });
@@ -68,14 +71,18 @@ $(async () => {
     browser.runtime.sendMessage({msgID: "set-backup-notifcn-intv"});
   });
 
+  let useAccentColor = await aePrefs.getPref("useAccentColor");
+  aeVisual.enableAccentColor(useAccentColor);
+
   // Fix for Fx57 bug where bundled page loaded using
   // browser.windows.create won't show contents unless resized.
   // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1402110>
   let wnd = await browser.windows.getCurrent();
-  browser.windows.update(wnd.id, {
+  let updWnd = await browser.windows.update(wnd.id, {
     width: wnd.width + 1,
     focused: true,
   });
+  aeInterxn.initWndZoom(updWnd.width, updWnd.height);
 });
 
 

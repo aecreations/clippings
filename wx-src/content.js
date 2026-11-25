@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+"use strict";
+
 
 const DEBUG = false;
 const HTMLPASTE_AS_FORMATTED = 1;
@@ -275,6 +277,7 @@ function insertTextIntoTextbox(aTextboxElt, aInsertedText, aDispatchInputEvent)
   if (isElementOfType(aTextboxElt, "HTMLTextAreaElement")
       || (isElementOfType(aTextboxElt, "HTMLInputElement")
           && ["text", "search", "url", "tel", "password"].includes(aTextboxElt.type))) {
+
     if (aTextboxElt.selectionStart == aTextboxElt.selectionEnd) {
       let point = aTextboxElt.selectionStart;
       pre = text.substring(0, point);
@@ -288,9 +291,9 @@ function insertTextIntoTextbox(aTextboxElt, aInsertedText, aDispatchInputEvent)
       post = text.substring(p2, text.length);
       pos = p1 + aInsertedText.length;
     }
-    
+
     log(`Clippings/wx::content.js: insertTextIntoTextbox(): Inserting into textbox ${aTextboxElt}`);
-    
+
     aTextboxElt.value = pre + aInsertedText + post;
     aTextboxElt.selectionStart = pos;
     aTextboxElt.selectionEnd = pos;

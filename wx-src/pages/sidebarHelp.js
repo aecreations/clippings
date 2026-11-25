@@ -3,6 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+"use strict";
+
+
 async function init()
 {
   let lang = browser.i18n.getUILanguage();
@@ -12,6 +15,10 @@ async function init()
   document.body.dataset.os = platform.os;
   aeInterxn.init(platform.os);
 
+  let params = new URLSearchParams(window.location.search);
+  let useAccentColor = (params.get("nova") == 1);
+  aeVisual.enableAccentColor(useAccentColor);
+
   let pasteShct = browser.i18n.getMessage("keyCtrl") + "+V";
   if (platform.os == "mac") {
     pasteShct = browser.i18n.getMessage("keyCommand") + "V";
@@ -19,7 +26,6 @@ async function init()
 
   let txt = document.createTextNode(browser.i18n.getMessage("sbarHlpWhat", pasteShct));
   document.querySelector("#what-is").appendChild(txt);
-
   document.querySelector("#btn-accept").addEventListener("click", aEvent => { closeDlg() });
 
   initKeyboardShortcutTable(platform.os);
@@ -28,10 +34,11 @@ async function init()
   // browser.windows.create won't show contents unless resized.
   // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1402110>
   let wnd = await browser.windows.getCurrent();
-  browser.windows.update(wnd.id, {
+  let updWnd = await browser.windows.update(wnd.id, {
     width: wnd.width + 1,
     focused: true,
   });
+  aeInterxn.initWndZoom(updWnd.width, updWnd.height);
 }
 
 

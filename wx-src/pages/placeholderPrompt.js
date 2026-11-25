@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+"use strict";
+
 
 const WNDH_PLCHLDR_MULTI = 318;
 const WNDH_PLCHLDR_MULTI_SHORT = 272;
@@ -12,7 +14,6 @@ const DLG_HEIGHT_ADJ_LINUX = 60;
 
 const REGEXP_CUSTOM_PLACEHOLDER = /\$\[([\w\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u0400-\u04FF\u0590-\u05FF]+)(\{([\w \-\.\?_\/\(\)!@#%&;:,'"$£¥€*¡¢\u{0080}-\u{10FFFF}\|])+\})?\]/mu;
 
-let gOS;
 let gPlaceholders = null;
 let gPlaceholdersWithDefaultVals = null;
 let gSamePlchldrs = {};
@@ -20,6 +21,8 @@ let gClippingName = null;
 let gClippingContent = null;
 let gBrowserTabID = null;
 let gDlgMode = 0;
+let gIsMultiCopyClipping = false;
+let gMultiCopyIndex = null;
 
 
 // DOM utility
@@ -34,6 +37,8 @@ $(async () => {
   let params = new URLSearchParams(window.location.search);
   gBrowserTabID = Number(params.get("tabID"));
   gDlgMode = Number(params.get("mode"));
+  gIsMultiCopyClipping = (params.get("multi") == 1);
+  gMultiCopyIndex = Number(params.get("mcidx"));
 
   if (gDlgMode > 0) {
     document.title = browser.i18n.getMessage("mnuCopyClipTxt");
@@ -42,11 +47,13 @@ $(async () => {
   let isVertExpanded = Boolean(params.get("vexp"));
 
   let platform = await browser.runtime.getPlatformInfo();
-  document.body.dataset.os = gOS = platform.os;
+  document.body.dataset.os = platform.os;
   aeInterxn.init(platform.os);
 
   let resp = await browser.runtime.sendMessage({
-    msgID: "init-placeholder-prmt-dlg"
+    msgID: "init-placeholder-prmt-dlg",
+    isMultiCopy: gIsMultiCopyClipping,
+    multiIndex: gMultiCopyIndex,
   });
 
   gClippingName = sanitizeHTML(resp.clippingName);
@@ -76,13 +83,13 @@ $(async () => {
     let plchldr = gPlaceholders[0];
     $("#plchldr-single").show();
     $("#single-prmt-label").text(browser.i18n.getMessage("plchldrPromptSingleDesc", plchldr));
-    $("#single-prmt-input").focus();
+    $("#single-prmt-input").trigger("focus");
 
     if (plchldr in gPlaceholdersWithDefaultVals) {
       let defaultVal = gPlaceholdersWithDefaultVals[plchldr];
 
       if (defaultVal.indexOf("|") == -1) {
-        $("#single-prmt-input").val(defaultVal).select();
+        $("#single-prmt-input").val(defaultVal).trigger("select");
       }
       else {
         let vals = defaultVal.split("|");
@@ -91,7 +98,7 @@ $(async () => {
           optionElts += sanitizeHTML(`<option value="${val}">${val}</option>`);
         }
         $("#single-prmt-input").replaceWith(sanitizeHTML(`<select id="single-prmt-input" class="browser-style">${optionElts}</select>`));
-        $("#single-prmt-input").focus();
+        $("#single-prmt-input").trigger("focus");
       }
     }
   }
@@ -116,10 +123,10 @@ $(async () => {
       break;
     }
 
-    if (gOS == "win") {
+    if (platform.os == "win") {
       height += DLG_HEIGHT_ADJ_WINDOWS;
     }
-    else if (gOS == "linux") {
+    else if (platform.os == "linux") {
       height += DLG_HEIGHT_ADJ_LINUX;
     }
 
@@ -175,16 +182,23 @@ $(async () => {
   $("#btn-accept").click(aEvent => { accept(aEvent) });
   $("#btn-cancel").click(aEvent => { cancel(aEvent) });
 
-  if (gOS != "mac") {
+  let useAccentColor = await aePrefs.getPref("useAccentColor");
+  if (useAccentColor) {
+    document.body.dataset.nova = true;
+    aeVisual.enableAccentColor(true);
+  }
+
+  let wnd = await browser.windows.getCurrent();
+  if (platform.os != "mac") {
     // Fix for Fx57 bug where bundled page loaded using
     // browser.windows.create won't show contents unless resized.
     // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1402110>
-    let wnd = await browser.windows.getCurrent();
-    browser.windows.update(wnd.id, {
+    wnd = await browser.windows.update(wnd.id, {
       width: wnd.width + 1,
       focused: true,
     });
   }
+  await aeInterxn.initWndZoom(wnd.width, wnd.height);
 });
 
 
@@ -285,6 +299,8 @@ function accept(aEvent)
       msgID: "copy-clipping-with-plchldrs",
       copyMode: gDlgMode,
       processedContent: content,
+      isMultiCopy: gIsMultiCopyClipping,
+      multiCopyIndex: gMultiCopyIndex,
     }
   }
   else {

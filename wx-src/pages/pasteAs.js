@@ -3,13 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+"use strict";
+
 let gBrowserTabID, gClippingContent;
+let gAccessKeys = new Map();
 
 
 // Dialog initialization
 $(async () => {
   let platform = await browser.runtime.getPlatformInfo();
-  document.body.dataset.os = gOS = platform.os;
+  document.body.dataset.os = platform.os;
   aeInterxn.init(platform.os);
 
   let lang = browser.i18n.getUILanguage();
@@ -17,6 +20,12 @@ $(async () => {
 
   let params = new URLSearchParams(window.location.search);
   gBrowserTabID = Number(params.get("tabID"));
+
+  let useAccentColor = (params.get("nova") == 1);
+  if (useAccentColor) {
+    document.body.dataset.nova = true;
+    aeVisual.enableAccentColor(true);
+  }
 
   let resp = await browser.runtime.sendMessage({
     msgID: "init-paste-as-dlg"
@@ -30,17 +39,25 @@ $(async () => {
   });
   $("#btn-cancel").on("click", aEvent => { cancel() });
 
-  $("#paste-cliptxt-html").focus();
+  $("#paste-cliptxt-html").trigger("focus");
 
   let pasteAsHTML = browser.i18n.getMessage("pasteAsHTML");
   let pasteAsPlain = browser.i18n.getMessage("pasteAsPlain");
   let pasteAsPlainHTML = browser.i18n.getMessage("pasteAsPlainHTML");
-  pasteAsHTML = aeVisual.formatShortcutKey(pasteAsHTML, "F");
-  pasteAsPlain = aeVisual.formatShortcutKey(pasteAsPlain, "P");
-  pasteAsPlainHTML = aeVisual.formatShortcutKey(pasteAsPlainHTML, "H");
+  let pasteAsHTML_accesskey = browser.i18n.getMessage("pasteAsHTML_accesskey");
+  let pasteAsPlain_accesskey = browser.i18n.getMessage("pasteAsPlain_accesskey");
+  let pasteAsPlainHTML_accesskey = browser.i18n.getMessage("pasteAsPlainHTML_accesskey");
+
+  pasteAsHTML = aeVisual.formatAccessKey(pasteAsHTML, pasteAsHTML_accesskey);
+  pasteAsPlain = aeVisual.formatAccessKey(pasteAsPlain, pasteAsPlain_accesskey);
+  pasteAsPlainHTML = aeVisual.formatAccessKey(pasteAsPlainHTML, pasteAsPlainHTML_accesskey);
   $("#paste-cliptxt-html").html(sanitizeHTML(pasteAsHTML));
   $("#paste-cliptxt-plain").html(sanitizeHTML(pasteAsPlain));
   $("#paste-cliptxt-plain-html").html(sanitizeHTML(pasteAsPlainHTML));
+
+  gAccessKeys.set("pasteAsHTML", pasteAsHTML_accesskey.toUpperCase());
+  gAccessKeys.set("pasteAsPlain", pasteAsPlain_accesskey.toUpperCase());
+  gAccessKeys.set("pasteAsPlainHTML", pasteAsPlainHTML_accesskey.toUpperCase());
 
   aeVisual.cacheIcons(
     "paste-clipping-html-hover.svg",
@@ -52,10 +69,11 @@ $(async () => {
   // browser.windows.create won't show contents unless resized.
   // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1402110>
   let wnd = await browser.windows.getCurrent();
-  browser.windows.update(wnd.id, {
+  let updWnd = await browser.windows.update(wnd.id, {
     width: wnd.width + 1,
     focused: true,
   });
+  aeInterxn.initWndZoom(updWnd.width, updWnd.height);
 });
 
 
@@ -111,13 +129,13 @@ $(window).on("keydown", aEvent => {
     closeDlg();
   }
   // Accelerator keys on paste option buttons
-  else if (aEvent.key.toUpperCase() == "F") {
+  else if (aEvent.key.toUpperCase() == gAccessKeys.get("pasteAsHTML")) {
     $("#paste-cliptxt-html")[0].click();
   }
-  else if (aEvent.key.toUpperCase() == "P") {
+  else if (aEvent.key.toUpperCase() == gAccessKeys.get("pasteAsPlain")) {
     $("#paste-cliptxt-plain")[0].click();
   }
-  else if (aEvent.key.toUpperCase() == "H") {
+  else if (aEvent.key.toUpperCase() == gAccessKeys.get("pasteAsPlainHTML")) {
     $("#paste-cliptxt-plain-html")[0].click();
   }
   else {

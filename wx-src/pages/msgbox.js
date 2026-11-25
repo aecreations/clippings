@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+"use strict";
+
 const MSG_UNKNOWN = "msgUnknown";
 const DEFAULT_WND_HEIGHT = 170;
 const MSG_BODY_DEFAULT_HEIGHT = 40;
@@ -31,9 +33,9 @@ async function init()
     let height = DEFAULT_WND_HEIGHT + (msgBodyHeight - MSG_BODY_DEFAULT_HEIGHT);
     if (platform.os == "linux" && aeVersionCmp(brws.version, "160.0") >= 0) {
       height += WND_HEIGHT_ADJ_LINUX;
-      wndSizeAdjusted = true;
     }
 
+    wndSizeAdjusted = true;
     await browser.windows.update(browser.windows.WINDOW_ID_CURRENT, {height});
   }
 
@@ -57,15 +59,22 @@ async function init()
   btnAccept.addEventListener("click", aEvent => { dismiss(aEvent) });
   btnAccept.focus();
 
-  // Fix for Fx57 bug where bundled page loaded using
-  // browser.windows.create won't show contents unless resized.
-  // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1402110>
+  let useAccentColor = url.searchParams.get("nova") == 1;
+  aeVisual.enableAccentColor(useAccentColor);
+
   let wnd = await browser.windows.getCurrent();
-  if (!wndSizeAdjusted) {
-    await browser.windows.update(wnd.id, {
+  if (wndSizeAdjusted) {
+    await aeInterxn.initWndZoom(wnd.width, wnd.height);
+  }
+  else {
+    // Fix for Fx57 bug where bundled page loaded using
+    // browser.windows.create won't show contents unless resized.
+    // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1402110>
+    let updWnd = await browser.windows.update(wnd.id, {
       width: wnd.width + 1,
       focused: true,
     });
+    await aeInterxn.initWndZoom(updWnd.width, updWnd.height);
   }
 }
 

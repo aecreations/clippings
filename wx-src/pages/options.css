@@ -18,6 +18,7 @@
     --color-tab-bkgd-active: #cfcfd8;
     --color-tab-bkgd-selected: #f0f0f4;
     --color-tab-text-active: #0060df;
+    --color-tab-text-nova: #3A0F6E;
     --color-fieldset-border: #d7d7db;
     --color-dlg-fieldset-border: #d7d7db;
     --color-text-sync-status-on: #003706;
@@ -30,46 +31,51 @@
 
     --url-preftab-general: url("../img/pref-general.svg");
     --url-preftab-general-checked: url("../img/pref-general-checked.svg");
+    --url-preftab-general-nova: url("../img/pref-general-nv.svg");
     --url-preftab-copy: url("../img/pref-copy-clipping.svg");
     --url-preftab-copy-checked: url("../img/pref-copy-clipping-checked.svg");
+    --url-preftab-copy-nova: url("../img/pref-copy-clipping-nv.svg");
     --url-preftab-paste: url("../img/pref-paste.svg");
     --url-preftab-paste-checked: url("../img/pref-paste-checked.svg");
+    --url-preftab-paste-nova: url("../img/pref-paste-nv.svg");
     --url-preftab-sync-clippings: url("../img/pref-sync-clippings.svg");
     --url-preftab-sync-clippings-checked: url("../img/pref-sync-clippings-checked.svg");
+    --url-preftab-sync-clippings-nova: url("../img/pref-sync-clippings-nv.svg");
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
-	--url-bkgd-img: none;
-	--color-bkgd: #1a1a1e;
+        --url-bkgd-img: none;
+        --color-bkgd: #1a1a1e;
 
-	--color-main-border: #0c0c0d;
-	--color-main-bkgd: #2a2a2e;
-	--color-main-border-shadow: #0c0c0d;
-	--color-header-bkgd: #2a2a2e;
-	--color-tab-cntr-border: #5b5b66;
-	--color-tab-bkgd-hover: #52525e;
-	--color-tab-bkgd-active: #5b5b66;
-	--color-tab-bkgd-selected: #4a4a55;
-	--color-tab-text-active: #45a1ff;
-	--color-fieldset-border: #4a4a4f;
-	--color-dlg-fieldset-border: #585858;
-	--color-text-sync-status-on: #30e60b;
-	--color-about-btn-bkgd: #2a2a2e;
-	--color-about-btn-bkgd-hover: #38383d;
-	--color-about-btn-bkgd-active: #4a4a4f;
-	--color-about-btn-border: #4a4a4f;
-	--color-about-btn-border-hover: #b1b1b3;
-	--color-about-btn: #f9f9fa;
+        --color-main-border: #0c0c0d;
+        --color-main-bkgd: #2a2a2e;
+        --color-main-border-shadow: #0c0c0d;
+        --color-header-bkgd: #2a2a2e;
+        --color-tab-cntr-border: #5b5b66;
+        --color-tab-bkgd-hover: #52525e;
+        --color-tab-bkgd-active: #5b5b66;
+        --color-tab-bkgd-selected: #4a4a55;
+        --color-tab-text-active: #45a1ff;
+        --color-tab-text-nova: #F1E7F8;
+        --color-fieldset-border: #4a4a4f;
+        --color-dlg-fieldset-border: #585858;
+        --color-text-sync-status-on: #30e60b;
+        --color-about-btn-bkgd: #2a2a2e;
+        --color-about-btn-bkgd-hover: #38383d;
+        --color-about-btn-bkgd-active: #4a4a4f;
+        --color-about-btn-border: #4a4a4f;
+        --color-about-btn-border-hover: #b1b1b3;
+        --color-about-btn: #f9f9fa;
 
-	--url-preftab-general: url("../img/pref-general-dk.svg");
-	--url-preftab-general-checked: url("../img/pref-general-checked-dk.svg");
-	--url-preftab-copy: url("../img/pref-copy-clipping-dk.svg");
-	--url-preftab-copy-checked: url("../img/pref-copy-clipping-checked-dk.svg");
-	--url-preftab-paste: url("../img/pref-paste-dk.svg");
-	--url-preftab-paste-checked: url("../img/pref-paste-checked-dk.svg");
-	--url-preftab-sync-clippings: url("../img/pref-sync-clippings-dk.svg");
-	--url-preftab-sync-clippings-checked: url("../img/pref-sync-clippings-checked-dk.svg");
+        --url-preftab-general: url("../img/pref-general-dk.svg");
+        --url-preftab-general-checked: url("../img/pref-general-checked-dk.svg");
+        --url-preftab-copy: url("../img/pref-copy-clipping-dk.svg");
+        --url-preftab-copy-checked: url("../img/pref-copy-clipping-checked-dk.svg");
+        --url-preftab-paste: url("../img/pref-paste-dk.svg");
+        --url-preftab-paste-checked: url("../img/pref-paste-checked-dk.svg");
+        --url-preftab-sync-clippings: url("../img/pref-sync-clippings-dk.svg");
+        --url-preftab-sync-clippings-checked: url("../img/pref-sync-clippings-checked-dk.svg");
     }
 }
 
@@ -175,6 +181,7 @@ button {
     min-width: 88px;
     height: 32px;
     padding: 0 12px 0;
+    border-radius: 6px;
     box-shadow: 0 0 0 0 transparent;
     font: caption;
     font-size: 15px;
@@ -216,12 +223,17 @@ progress {
     text-align: center;
 }
 
+body[data-nova="true"] .tab-container {
+    margin-bottom: 15px;
+    border-bottom: 1px solid transparent;
+}
+
 .tab-container > .tab {
     display: inline-block;
 }
 
 .tab > button {
-    margin: 0;
+    margin: 0 -4px 0 0;
     padding-top: 40px;
     padding-bottom: 22px;
     padding-left: 6px;
@@ -238,6 +250,11 @@ progress {
     font-size: 13px;
 }
 
+body[data-nova="true"] .tab > button {
+    color: var(--color-tab-text-nova);
+    border-radius: 8px;
+}
+
 .tab > button:-moz-focusring {
     margin-top: -2px;
     margin-bottom: -2px;
@@ -249,7 +266,17 @@ progress {
     box-shadow: none;
 }
 
-.tab > button:-moz-focusring:active {
+body[data-nova="true"] .tab > button:-moz-focusring {
+    margin-top: 4px;
+    padding-top: 35px;
+    padding-bottom: 18px;
+    border: 2px solid var(--accent-color-btn-focus-outline) !important;
+    box-shadow: unset;
+
+    background-position: center 3px;
+}
+
+.tab > button:active:-moz-focusring {
     margin-top: -2px;
     margin-bottom: -2px;
     padding-left: 4px;
@@ -268,11 +295,68 @@ progress {
 }
 
 .tab > button:hover {
+    border: unset;
     background-color: var(--color-tab-bkgd-hover);
+    transition-property: background-color;
+    transition-duration: 200ms;
+}
+
+body[data-nova="true"] .tab > button.active-tab,
+body[data-nova="true"] .tab > button:hover {
+    margin-top: 4px;
+    border-radius: 8px;
+    background-position: center 5px;
+}
+
+body[data-nova="true"] .tab > button.active-tab {
+    padding-top: 37px;
+    padding-bottom: 20px;
+    background-color: var(--accent-color);
+    color: #fff;
+    z-index: 10;
+}
+
+body[data-nova="true"] .tab > button:hover {
+    padding-top: 37px;
+    padding-bottom: 20px;
+}
+
+body[data-nova="true"] .tab > button:hover:-moz-focusring,
+body[data-nova="true"] .tab > button.active-tab:-moz-focusring {
+    padding-top: 35px;
+    padding-bottom: 18px;
+
+    background-position: center 3px;
+}
+
+body[data-nova="true"] .tab > button:hover:-moz-focusring {
+    border: 2px solid var(--accent-color-btn-focus-outline) !important;
+}
+
+body[data-nova="true"] .tab > button.active-tab:-moz-focusring {
+    padding-top: 37px;
+    padding-bottom: 20px;
+
+    border: 0 !important;
+    outline: 1px solid var(--color-bkgd);
+    box-shadow: 0 0 0 3px var(--accent-color-focus-outline);
+
+    background-position: center 5px;
+
+    transition-property: box-shadow;
+    transition-duration: 250ms;
+}
+
+body[data-nova="true"] .tab > button:hover {
+    background-color: var(--accent-color-btn-hover-bkgd);
 }
 
 .tab > button.active-tab:hover {
     background-color: var(--color-tab-bkgd-hover);
+}
+
+body[data-nova="true"] .tab > button.active-tab:hover {
+    background-color: var(--accent-color);
 }
 
 .tab > button:active {
@@ -280,6 +364,10 @@ progress {
     border: none !important;
     background-color: var(--color-tab-bkgd-active);
     background-position: center 8px;
+}
+
+body[data-nova="true"] .tab > button:active {
+    background-color: var(--accent-color-btn-active-bkgd);
 }
 
 .tab > button.active-tab:active {
@@ -302,12 +390,20 @@ progress {
     background-image: var(--url-preftab-general-checked);
 }
 
+body[data-nova="true"] #preftab-general-btn.active-tab {
+    background-image: var(--url-preftab-general-nova);
+}
+
 #preftab-copy-btn {
     background-image: var(--url-preftab-copy);
 }
 
 #preftab-copy-btn.active-tab {
     background-image: var(--url-preftab-copy-checked);
+}
+
+body[data-nova="true"] #preftab-copy-btn.active-tab {
+    background-image: var(--url-preftab-copy-nova);
 }
 
 #preftab-paste-btn {
@@ -318,12 +414,20 @@ progress {
     background-image: var(--url-preftab-paste-checked);
 }
 
+body[data-nova="true"] #preftab-paste-btn.active-tab {
+    background-image: var(--url-preftab-paste-nova);
+}
+
 #preftab-sync-clippings-btn {
     background-image: var(--url-preftab-sync-clippings);
 }
 
 #preftab-sync-clippings-btn.active-tab {
     background-image: var(--url-preftab-sync-clippings-checked);
+}
+
+body[data-nova="true"] #preftab-sync-clippings-btn.active-tab {
+    background-image: var(--url-preftab-sync-clippings-nova);
 }
 
 #browser-action-opt-ctr {
@@ -542,7 +646,7 @@ body[data-os="win"] #backup-reminder-freq + label {
     top: 64px;
     padding-left: 22px;
     padding-right: 22px;
-    border-radius: 8px;
+    border-radius: 12px;
     font-size: 15px;
 }
 
@@ -580,7 +684,7 @@ body[data-os="win"] #backup-reminder-freq + label {
     min-width: 96px;
     height: 32px;
     padding: 0 24px 0;
-    border-radius: 4px;
+    border-radius: 6px;
     font-size: 15px !important;
 }
 
@@ -594,16 +698,6 @@ body[data-os="win"] #backup-reminder-freq + label {
 .lightbox input[type="text"][readonly],
 .lightbox input[type="text"][readonly]:hover{
     border-bottom: 1px dotted;
-}
-
-.lightbox input[type="text"]:active {
-    border: 1px solid #0996f8;
-}
-
-.lightbox input[type="text"]:focus,
-.lightbox input[type="text"]:focus:hover {
-    border-color: #0996f8;
-    box-shadow: 0 0 0 2px rgba(97, 181, 255, 0.75);
 }
 
 .lightbox .row {
@@ -705,7 +799,11 @@ body[data-locale="de"] #sidebar-opts-dlg {
 }
 
 body[data-locale="fr"] #sidebar-opts-dlg {
-    --height: 332px;
+    --width: 610px;
+}
+
+body[data-locale="fr"] #sidebar-opts-dlg #enbl-sidebar-paste-opt {
+    letter-spacing: -0.4px;
 }
 
 .experimental-label {
@@ -761,12 +859,12 @@ body[data-locale="de"] #request-native-app-conxn-perm-dlg {
 
 #sync-clippings-dlg {
     top: 128px;
-    --width: 530px;
-    --height: 312px;
+    --width: 550px;
+    --height: 360px;
 }
 
 body[data-os="mac"] #sync-clippings-dlg {
-    --width: 504px;
+    --width: 524px;
 }
 
 body[data-locale="de"] #sync-clippings-dlg {
@@ -787,8 +885,9 @@ body[data-locale="uk"] #sync-clippings-dlg {
     --width: 560px;
 }
 
+/* Style rule used when showing Sync Clippings minimum required version. */
 #sync-clippings-dlg.expanded {
-    height: 334px;
+    height: 382px;
 }
 
 #sync-clippings-dlg fieldset {
@@ -812,6 +911,10 @@ body[data-locale="uk"] #sync-clippings-dlg {
     margin-top: 2px;
     margin-bottom: 4px;
     margin-left: 27px;
+}
+
+body[data-locale="de"] #sync-clippings-dlg #auto-sync-on-new-or-manage-lbl {
+    letter-spacing: -0.45px;
 }
 
 #request-native-app-conxn-perm-dlg .msgbox-icon,
@@ -877,8 +980,9 @@ body[data-os="win"] #sync-clippings-dlg #generic-error .msgbox-icon {
 #request-native-app-conxn-perm-dlg .error-msg,
 #sync-clippings-dlg #sync-cxn-error .error-msg {
     line-height: 1.23;
-    background-color: #fbfb77;
-    color: black;
+    border: 1px solid rgba(164, 127, 0, 0.27);
+    background-color: #fffbd6;
+    color: #15141a;
 }
 
 #sync-clippings-dlg #generic-error .error-msg {

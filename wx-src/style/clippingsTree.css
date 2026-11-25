@@ -31,29 +31,29 @@
 
 @media (prefers-color-scheme: dark) {
     :root {
-	--color-clippings-tree-bkgd: #202023;
-	--color-default-text: #f9f9fa;
-	--color-focused-node: #0a84ff;
-	--color-focused-border: #0060df;
-	--color-active-node: #003eaa;
-	--color-active-border: #002275;
-	--color-selected-node: #4a4a4f;
-	--color-selected-border: #38383d;
-	--color-not-synced-items-text: rgba(180, 180, 180, 0.4);
-	--color-not-synced-items-selected-text: #b1b1b3;
-	--color-copy-clipping-txt-btn-border: #4a4a4f;
-	--color-reload-sync-fldr-btn-bkgd: #4a4a4f;
-	--color-reload-sync-fldr-btn-border: #4a4a4f;
-	--color-reload-sync-fldr-btn-hover-bkgd: #606060;
-	--color-reload-sync-fldr-btn-hover-border: #737373;
-	--color-reload-sync-fldr-btn-active-bkgd: #737373;
-	--color-reload-sync-fldr-btn-active-border: #737373;
+        --color-clippings-tree-bkgd: #202023;
+        --color-default-text: #f9f9fa;
+        --color-focused-node: #0a84ff;
+        --color-focused-border: #0060df;
+        --color-active-node: #003eaa;
+        --color-active-border: #002275;
+        --color-selected-node: #4a4a4f;
+        --color-selected-border: #38383d;
+        --color-not-synced-items-text: rgba(180, 180, 180, 0.4);
+        --color-not-synced-items-selected-text: #b1b1b3;
+        --color-copy-clipping-txt-btn-border: #4a4a4f;
+        --color-reload-sync-fldr-btn-bkgd: #4a4a4f;
+        --color-reload-sync-fldr-btn-border: #4a4a4f;
+        --color-reload-sync-fldr-btn-hover-bkgd: #606060;
+        --color-reload-sync-fldr-btn-hover-border: #737373;
+        --color-reload-sync-fldr-btn-active-bkgd: #737373;
+        --color-reload-sync-fldr-btn-active-border: #737373;
 
-	--url-treelist-icons: url("../img/tree-icons-dk.png");
-	--url-treelist-folder-open: url("../img/tree-fldr-open-dk.svg");
-	--url-treelist-folder-close: url("../img/tree-fldr-close-dk.svg");
-	--url-btn-icon-reload-sync-fldr: url("../img/reload-dk.svg");
-	--url-btn-icon-reload-sync-fldr-active: url("../img/reload-dk.svg");
+        --url-treelist-icons: url("../img/tree-icons-dk.png");
+        --url-treelist-folder-open: url("../img/tree-fldr-open-dk.svg");
+        --url-treelist-folder-close: url("../img/tree-fldr-close-dk.svg");
+        --url-btn-icon-reload-sync-fldr: url("../img/reload-dk.svg");
+        --url-btn-icon-reload-sync-fldr-active: url("../img/reload-dk.svg");
     }
 }
 
@@ -100,11 +100,19 @@ span.fancytree-title {
     padding: 1px 2px 2px 2px;
 }
 
+.fancytree-plain.fancytree-container.fancytree-treefocus span.fancytree-focused span.fancytree-title {
+    border-color: var(--color-focused-border);
+}
 
 /* Tree icons for clippings and folders */
 .ui-fancytree .fancytree-node > .fancytree-icon {
     background-position: unset;
     background-image: url("../img/clipping.svg");
+}
+
+.ui-fancytree .ae-clipping-web > .fancytree-icon {
+    background-position: unset;
+    background-image: url("../img/clipping-web.svg");
 }
 
 .fancytree-has-children.fancytree-ico-cf span.fancytree-icon {
@@ -153,35 +161,63 @@ span.fancytree-title {
     background-position: unset;
     background-image: url("../img/clipping-red.svg");
 }
+.ui-fancytree .ae-clipping-web-label-red > .fancytree-icon {
+    background-position: unset;
+    background-image: url("../img/clipping-web-red.svg");
+}
     
 .ui-fancytree .ae-clipping-label-orange > .fancytree-icon {
     background-position: unset;
     background-image: url("../img/clipping-orange.svg");
+}
+.ui-fancytree .ae-clipping-web-label-orange > .fancytree-icon {
+    background-position: unset;
+    background-image: url("../img/clipping-web-orange.svg");
 }
 
 .ui-fancytree .ae-clipping-label-yellow > .fancytree-icon {
     background-position: unset;
     background-image: url("../img/clipping-yellow.svg");
 }
+.ui-fancytree .ae-clipping-web-label-yellow > .fancytree-icon {
+    background-position: unset;
+    background-image: url("../img/clipping-web-yellow.svg");
+}
 
 .ui-fancytree .ae-clipping-label-green > .fancytree-icon {
     background-position: unset;
     background-image: url("../img/clipping-green.svg");
+}
+.ui-fancytree .ae-clipping-web-label-green > .fancytree-icon {
+    background-position: unset;
+    background-image: url("../img/clipping-web-green.svg");
 }
 
 .ui-fancytree .ae-clipping-label-purple > .fancytree-icon {
     background-position: unset;
     background-image: url("../img/clipping-purple.svg");
 }
+.ui-fancytree .ae-clipping-web-label-purple > .fancytree-icon {
+    background-position: unset;
+    background-image: url("../img/clipping-web-purple.svg");
+}
 
 .ui-fancytree .ae-clipping-label-blue > .fancytree-icon {
     background-position: unset;
     background-image: url("../img/clipping-blue.svg");
 }
+.ui-fancytree .ae-clipping-web-label-blue > .fancytree-icon {
+    background-position: unset;
+    background-image: url("../img/clipping-web-blue.svg");
+}
 
 .ui-fancytree .ae-clipping-label-grey > .fancytree-icon {
     background-position: unset;
     background-image: url("../img/clipping-grey.svg");
+}
+.ui-fancytree .ae-clipping-web-label-grey > .fancytree-icon {
+    background-position: unset;
+    background-image: url("../img/clipping-web-grey.svg");
 }
 
 /* Separators */
@@ -294,6 +330,10 @@ span.fancytree-title {
     border-color: var(--color-bkgd) !important;
     box-shadow: 0 0 0 2px #45a1ff;
     background-color: var(--color-btn-bkgd);
+}
+
+body[data-nova="true"] #copy-clipping-txt-fmt-dlg .copy-fmt-btn:focus {
+    box-shadow: 0 0 0 2px var(--accent-color-btn-focus-outline);
 }
 
 #copy-clipping-txt-fmt-dlg .copy-fmt-btn:focus:hover {

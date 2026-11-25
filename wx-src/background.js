@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+"use strict";
+
 
 const ROOT_FOLDER_NAME = "clippings-root";
 const WND_SIZE_ADJ_LINUX = 60;
@@ -95,6 +97,11 @@ let gClippingsListener = {
     }
   },
 
+  clippingLabelChanged()
+  {
+    rebuildContextMenu();
+  },
+
   copyStarted: function ()
   {
     this._isCopying = true;
@@ -135,6 +142,8 @@ let gClippingsListener = {
 };
 
 let gSyncClippingsListener = {
+  reloadOrigin: null,
+
   onActivate(aSyncFolderID)
   {
     // No need to do anything here. The Clippings context menu is automatically
@@ -215,10 +224,16 @@ let gSyncClippingsListener = {
       }
     }
 
+    let msg = {msgID: "sync-fldr-reload-finished"};
+    if (this.reloadOrigin) {
+      msg.origin = this.reloadOrigin;
+    }
     try {
-      await browser.runtime.sendMessage({msgID: "sync-fldr-reload-finished"});
+      await browser.runtime.sendMessage(msg);
     }
     catch {}
+
+    this.reloadOrigin = null;
   },
 };
 
@@ -285,42 +300,67 @@ let gPasteAs = {
   },
 };
 
-let gPlaceholders = {
-  _clippingName: null,
-  _plchldrs: null,
-  _clpCtnt: null,
-  _plchldrsWithDefVals: null,
+let gPlaceholderData = {
+  _plchldrs: [],
 
-  set: function (aClippingName, aPlaceholders, aPlaceholdersWithDefaultVals, aClippingText) {
-    this._clippingName = aClippingName;
-    this._plchldrs = aPlaceholders;
-    this._plchldrsWithDefVals = aPlaceholdersWithDefaultVals;
-    this._clpCtnt = aClippingText;
+  push(aPlaceholderData) {
+    this._plchldrs.push(aPlaceholderData);
   },
 
-  get: function () {
-    let rv = this.copy();
-    this.reset();
-
+  pop() {
+    let rv = this._plchldrs.pop();
     return rv;
   },
 
-  copy: function () {
-    let rv = {
-      clippingName: this._clippingName,
-      placeholders: this._plchldrs.slice(),
-      placeholdersWithDefaultVals: Object.assign({}, this._plchldrsWithDefVals),
-      content: this._clpCtnt
-    };
-    return rv;
+  setDataAt(aPlacholderData, aIndex) {
+    let idx = Number(aIndex);
+    this._plchldrs[idx] = aPlacholderData;
   },
 
-  reset: function () {
-    this._clippingName = null;
-    this._plchldrs = null;
-    this._plchldrsWithDefVals = null;
-    this._clpCtnt = null;
+  getDataAt(aIndex) {
+    return this._plchldrs[aIndex];
+  },
+
+  reset() {
+    this._plchldrs = [];
   }
+};
+
+let gCopyMultiClippings = {
+  _clippings: [],
+  _separator: "\n",
+
+  setSeparator(aSeparator) {
+    this._separator = aSeparator;
+  },
+
+  append(aContent) {
+    this._clippings.push(aContent);
+  },
+
+  setClippingAt(aContent, aIndex) {
+    let idx = Number(aIndex);
+    this._clippings[idx] = aContent;
+  },
+
+  getCount() {
+    return this._clippings.length;
+  },
+
+  getCurrent() {
+    let rv = this._clippings.join(this._separator);
+    return rv;
+  },
+
+  getAll() {
+    let rv = this._clippings.join(this._separator);
+    this.reset();
+    return rv;
+  },
+
+  reset() {
+    this._clippings = [];
+  },
 };
 
 
@@ -471,6 +511,11 @@ void async function ()
     await aePrefs.setAlamoSquarePrefs(prefs);
   }
 
+  if (! aePrefs.hasFortPointPrefs(prefs)) {
+    log("Initializing 7.2 user preferences.");
+    await aePrefs.setFortPointPrefs(prefs);
+  }
+
   if (prefs.clippingsMgrDetailsPane) {
     aePrefs.setPrefs({clippingsMgrAutoShowDetailsPane: false});
   }
@@ -494,6 +539,11 @@ async function init(aPrefs)
   log("Clippings/wx: OS: " + platform.os);
 
   aeVisual.init(platform.os);
+
+  // Turn on Firefox Nova accent colors on Firefox 157 and newer.
+  if (aeVersionCmp(brws.version, "157.0") >= 0 && aPrefs.useAccentColor === null) {
+    await aePrefs.setPrefs({useAccentColor: true});
+  }
 
   if (platform.os == "linux" && aPrefs.clippingsMgrMinzWhenInactv === null) {
     await aePrefs.setPrefs({clippingsMgrMinzWhenInactv: false});
@@ -1147,11 +1197,25 @@ function getContextMenuData(aFolderID, aPrefs)
             let menuItemID = "ae-clippings-clipping-" + aItem.id + "_" + Date.now();
             gClippingMenuItemIDMap[aItem.id] = menuItemID;
 
+            let iconFilename;
+            let srcURLSfx = '';
+
+            if (aItem.sourceURL && aPrefs.srcWebPgURLBadge) {
+              srcURLSfx = "-web";
+            }
+
+            if (aItem.label) {
+              iconFilename = `clipping${srcURLSfx}-${aItem.label}.svg`;
+            }
+            else {
+              iconFilename = `clipping${srcURLSfx}.svg`;
+            }
+
             menuItemData = {
               id: menuItemID,
               title: sanitizeMenuTitle(aItem.name),
               icons: {
-                16: "img/" + (aItem.label ? `clipping-${aItem.label}.svg` : "clipping.svg")
+                16: `img/${iconFilename}`,
               },
             };
 
@@ -1743,7 +1807,7 @@ async function openWelcomePage()
 async function openClippingsManager(aBackupMode)
 {
   let prefs = await aePrefs.getAllPrefs();
-  let clippingsMgrURL = browser.runtime.getURL("pages/clippingsMgr.html");
+  let clippingsMgrURL = browser.runtime.getURL("pages/clippingsMgr/page.html");
 
   let wnd = await browser.windows.getCurrent();
   clippingsMgrURL += "?openerWndID=" + wnd.id;
@@ -1760,9 +1824,12 @@ async function openClippingsManager(aBackupMode)
     let left, top;
     let wndGeom = prefs.clippingsMgrWndGeom;
     let [tab] = await browser.tabs.query({currentWindow: true, discarded: false});
-    let brws = await browser.runtime.getBrowserInfo();
-    let {os} = await browser.runtime.getPlatformInfo();
-    if (os == "linux" && aeVersionCmp(brws.version, "160.0") >= 0) {
+    let [brws, platform] = await Promise.all([
+      browser.runtime.getBrowserInfo(),
+      browser.runtime.getPlatformInfo(),
+    ]);
+
+    if (platform.os == "linux" && aeVersionCmp(brws.version, "160.0") >= 0) {
       height += WND_SIZE_ADJ_LINUX;
     }
 
@@ -1889,8 +1956,9 @@ async function newClipping(aActiveTab)
   let url = aActiveTab.url;
   gNewClipping.set({name, content, url});
 
-  let [platform, currWnd, showNewClippingOpts] = await Promise.all([
+  let [platform, brws, currWnd, showNewClippingOpts] = await Promise.all([
     browser.runtime.getPlatformInfo(),
+    browser.runtime.getBrowserInfo(),
     browser.windows.getCurrent(),
     aePrefs.getPref("showNewClippingOpts"),
   ]);
@@ -1901,7 +1969,7 @@ async function newClipping(aActiveTab)
 }
 
 
-async function openNewClippingDlg(aPlatformOS, aTabID, aIsMacOSExpanded=false)
+async function openNewClippingDlg(aPlatformOS, aTabID, aIsMacOSExpanded)
 {
   let url = browser.runtime.getURL("pages/new.html");
   let brws = await browser.runtime.getBrowserInfo();
@@ -1942,12 +2010,15 @@ async function openKeyboardPasteDlg(aTabID, aIsExpanded)
   let wndPpty = {
     type: "popup",
     width: 500,
-    height: 164,
+    height: 180,
     topOffset: 256,
   };
-  let brws = await browser.runtime.getBrowserInfo();
-  let {os} = await browser.runtime.getPlatformInfo();
-  if (os == "linux" && aeVersionCmp(brws.version, "160.0") >= 0) {
+  let [brws, platform] = await Promise.all([
+    browser.runtime.getBrowserInfo(),
+    browser.runtime.getPlatformInfo(),
+  ]);
+
+  if (platform.os == "linux" && aeVersionCmp(brws.version, "160.0") >= 0) {
     wndPpty.height += WND_SIZE_ADJ_LINUX;
   }
 
@@ -1960,20 +2031,24 @@ async function openKeyboardPasteDlg(aTabID, aIsExpanded)
 }
 
 
-async function openPlaceholderPromptDlg(aTabID, aDlgMode, aIsExpanded)
+async function openPlaceholderPromptDlg(aTabID, aDlgMode, aIsExpanded, aIsMulti, aMultiIndex)
 {
   // TO DO: Same checking for cursor location as in the preceding function.
 
-  let url = browser.runtime.getURL(`pages/placeholderPrompt.html?tabID=${aTabID}&mode=${aDlgMode}`);
+  let multi = aIsMulti ? 1 : 0;
+  let mcidx = aIsMulti ? aMultiIndex : -1;
+  let url = browser.runtime.getURL(`pages/placeholderPrompt.html?tabID=${aTabID}&mode=${aDlgMode}&multi=${multi}&mcidx=${mcidx}`);
   let wndPpty = {
     type: "popup",
     width: 536,
     height: 228,
     topOffset: 256,
   };
-  let brws = await browser.runtime.getBrowserInfo();
-  let {os} = await browser.runtime.getPlatformInfo();
-  if (os == "linux" && aeVersionCmp(brws.version, "160.0") >= 0) {
+  let [brws, platform] = await Promise.all([
+    browser.runtime.getBrowserInfo(),
+    browser.runtime.getPlatformInfo(),
+  ]);
+  if (platform.os == "linux" && aeVersionCmp(brws.version, "160.0") >= 0) {
     wndPpty.height += WND_SIZE_ADJ_LINUX;
   }
 
@@ -1988,16 +2063,21 @@ async function openPlaceholderPromptDlg(aTabID, aDlgMode, aIsExpanded)
 
 async function openPasteAsDlg(aTabID)
 {
-  let url = browser.runtime.getURL(`pages/pasteAs.html?tabID=${aTabID}`);
+  let useAccentColor = await aePrefs.getPref("useAccentColor");
+  let nova = useAccentColor ? 1 : 0;
+  let url = browser.runtime.getURL(`pages/pasteAs.html?tabID=${aTabID}&nova=${nova}`);
   let wndPpty = {
     type: "popup",
     width: 440,
     height: 300,
     topOffset: 256,
   };
-  let brws = await browser.runtime.getBrowserInfo();
-  let {os} = await browser.runtime.getPlatformInfo();
-  if (os == "linux" && aeVersionCmp(brws.version, "160.0") >= 0) {
+  let [brws, platform] = await Promise.all([
+    browser.runtime.getBrowserInfo(),
+    browser.runtime.getPlatformInfo(),
+  ]);
+
+  if (platform.os == "linux" && aeVersionCmp(brws.version, "160.0") >= 0) {
     wndPpty.height += WND_SIZE_ADJ_LINUX;
   }
 
@@ -2009,14 +2089,16 @@ async function openBackupDlg()
 {
   let url = browser.runtime.getURL("pages/backup.html");
   let lang = browser.i18n.getUILanguage();
-  let brws = await browser.runtime.getBrowserInfo();
-  let {os} = await browser.runtime.getPlatformInfo();
+  let [brws, platform] = await Promise.all([
+    browser.runtime.getBrowserInfo(),
+    browser.runtime.getPlatformInfo(),
+  ]);
   let height = 412;
 
-  if (lang == "uk" || (lang == "fr" && os == "win")) {
+  if (lang == "uk" || (lang == "fr" && platform.os == "win")) {
     height = 450;
   }
-  if (os == "linux" && aeVersionCmp(brws.version, "160.0") >= 0) {
+  if (platform.os == "linux" && aeVersionCmp(brws.version, "160.0") >= 0) {
     height += WND_SIZE_ADJ_LINUX;
   }
   
@@ -2026,15 +2108,21 @@ async function openBackupDlg()
 
 async function openSidebarHelpDlg()
 {
+  let useAccentColor = await aePrefs.getPref("useAccentColor");
+  let nova = useAccentColor ? 1 : 0;
   let url = browser.runtime.getURL("pages/sidebarHelp.html");
-  let height = 406;
-  let brws = await browser.runtime.getBrowserInfo();
-  let {os} = await browser.runtime.getPlatformInfo();
+  url += `?nova=${nova}`;
 
-  if (os == "mac") {
+  let height = 406;
+  let [brws, platform] = await Promise.all([
+    browser.runtime.getBrowserInfo(),
+    browser.runtime.getPlatformInfo(),
+  ]);
+
+  if (platform.os == "mac") {
     height = 404;
   }
-  else if (os == "linux" && aeVersionCmp(brws.version, "160.0") >= 0) {
+  else if (platform.os == "linux" && aeVersionCmp(brws.version, "160.0") >= 0) {
     height += WND_SIZE_ADJ_LINUX;
   }
 
@@ -2179,51 +2267,102 @@ function copyClippingText(aClippingID, aCopyMode)
 }
 
 
+async function copyMultiClippingsText(aClippingsIDs, aCopyMode)
+{
+  log(`Clippings: copyMultiClippingsText(): Copying clippings [${aClippingsIDs.toString()}] (total ${aClippingsIDs.length})`);
+  log("Copy mode (1=copy as HTML-formatted, 2=copy as plain with HTML, 3=copy as plain): " + aCopyMode);
+
+  // Clear any leftover data from last copy/paste.
+  gCopyMultiClippings.reset();
+  gPlaceholderData.reset();
+
+  for (let i = 0; i < aClippingsIDs.length; i++) {
+    await pasteOrCopyClippingByID(aClippingsIDs[i], true, null, aCopyMode, true, i);
+  }
+}
+
+
 function pasteClippingByID(aClippingID, aIsExternalRequest, aTabID)
 {
   pasteOrCopyClippingByID(aClippingID, aIsExternalRequest, aTabID, pasteOrCopyClippingByID.MODE_PASTE);
 }
 
 
-function pasteOrCopyClippingByID(aClippingID, aIsExternalRequest, aTabID, aMode)
+function pasteOrCopyClippingByID(aClippingID, aIsExternalRequest, aTabID, aMode, aIsMulti=false, aMultiIndex=null)
 {
+  let clippingInfo, processedCtnt;
   let clippingsDB = aeClippings.getDB();
 
-  clippingsDB.transaction("r", clippingsDB.clippings, clippingsDB.folders, () => {
-    let clipping = null;
-    
-    clippingsDB.clippings.get(aClippingID).then(aClipping => {
-      if (! aClipping) {
-        throw new Error("Cannot find clipping with ID = " + aClippingID);
-      }
+  return new Promise((aFnResolve, aFnReject) => {
+    clippingsDB.transaction("r", clippingsDB.clippings, clippingsDB.folders, () => {
+      let clipping = null;
 
-      if (aClipping.parentFolderID == -1) {
-        throw new Error("Attempting to copy or paste a deleted clipping!");
-      }
+      clippingsDB.clippings.get(aClippingID).then(aClipping => {
+        if (!aClipping) {
+          throw new Error("Cannot find clipping with ID = " + aClippingID);
+        }
 
-      clipping = aClipping;
-      log(`Copying/pasting the clipping named "${clipping.name}"\nid = ${clipping.id}`);
-        
-      return clippingsDB.folders.get(aClipping.parentFolderID);
-    }).then(aFolder => {
-      let parentFldrName = "";
-      if (aFolder) {
-        parentFldrName = aFolder.name;
-      }
-      else {
-        parentFldrName = ROOT_FOLDER_NAME;
-      }
-      let clippingInfo = {
-        id: clipping.id,
-        name: clipping.name,
-        text: clipping.content,
-        parentFolderName: parentFldrName
-      };
+        if (aClipping.parentFolderID == -1) {
+          throw new Error("Attempting to copy or paste a deleted clipping!");
+        }
 
-      processClipping(clippingInfo, aIsExternalRequest, aTabID, aMode);
+        clipping = aClipping;
+        info(`Copying/pasting the clipping named "${clipping.name}"\nid = ${clipping.id}`);
+
+        return clippingsDB.folders.get(aClipping.parentFolderID);
+      }).then(aFolder => {
+        let parentFldrName = '';
+        if (aFolder) {
+          parentFldrName = aFolder.name;
+        }
+        else {
+          parentFldrName = ROOT_FOLDER_NAME;
+        }
+        clippingInfo = {
+          id: clipping.id,
+          name: clipping.name,
+          text: clipping.content,
+          parentFolderName: parentFldrName
+        };
+
+        return processClipping(clippingInfo, aIsExternalRequest, aTabID, aMode, aIsMulti, aMultiIndex);
+      }).then(aProcessedContent => {
+        if (aProcessedContent !== null) {
+          processedCtnt = aProcessedContent;
+          if (aMode == pasteOrCopyClippingByID.MODE_PASTE) {
+            return processHTMLFormattedClipping(clippingInfo.name, aProcessedContent, aTabID);
+          }
+          else {
+            if (aIsMulti) {
+              log(`Clippings: processClipping(): Adding processed clipping ${clippingInfo.id} at index [${aMultiIndex}]`);
+              gCopyMultiClippings.setClippingAt(aProcessedContent, aMultiIndex);
+              return copyProcessedClipping(gCopyMultiClippings.getCurrent(), aMode, true);
+            }
+            else {
+              return copyProcessedClipping(aProcessedContent, aMode, false);
+            }
+          }
+        }
+        else {
+          // Placeholder prompt dialog was opened.
+          // Copy/paste flow resumes when user fills in placeholders.
+          return null;
+        }
+      }).then(aPasteFormat => {
+        if (aMode == pasteOrCopyClippingByID.MODE_PASTE) {
+          aePrefs.setPrefs({_recentClippingID: clipping.id});
+          if (aPasteFormat != aeConst.HTMLPASTE_ASK_THE_USER) {
+            return pasteProcessedClipping(processedCtnt, aTabID, aPasteFormat);
+          }
+        }
+        return null;
+      }).then(() => {
+        aFnResolve();
+      });
+    }).catch(aErr => {
+      console.error("Clippings/wx: pasteOrCopyClippingByID(): " + aErr);
+      aFnReject(aErr);
     });
-  }).catch(aErr => {
-    console.error("Clippings/wx: pasteOrCopyClippingByID(): " + aErr);
   });
 }
 pasteOrCopyClippingByID.MODE_PASTE = 0;
@@ -2231,6 +2370,7 @@ pasteOrCopyClippingByID.MODE_PASTE = 0;
 
 function pasteClippingByShortcutKey(aShortcutKey, aTabID)
 {
+  let clippingInfo, processedCtnt;
   let clippingsDB = aeClippings.getDB();
 
   clippingsDB.transaction("r", clippingsDB.clippings, clippingsDB.folders, () => {
@@ -2238,7 +2378,7 @@ function pasteClippingByShortcutKey(aShortcutKey, aTabID)
     let clipping = {};
     
     results.first().then(aClipping => {
-      if (! aClipping) {
+      if (!aClipping) {
         log(`Cannot find clipping with shortcut key '${aShortcutKey}'`);
         return null;
       }
@@ -2248,12 +2388,12 @@ function pasteClippingByShortcutKey(aShortcutKey, aTabID)
       }
 
       clipping = aClipping;
-      log(`Pasting clipping named "${clipping.name}"\nid = ${clipping.id}`);
+      info(`Pasting clipping named "${clipping.name}"\nid = ${clipping.id}`);
 
       return clippingsDB.folders.get(aClipping.parentFolderID);
     }).then(aFolder => {
       if (aFolder === null) {
-        return;
+        return -1;
       }
 
       let parentFldrName = "";
@@ -2264,14 +2404,36 @@ function pasteClippingByShortcutKey(aShortcutKey, aTabID)
       else {
         parentFldrName = ROOT_FOLDER_NAME;
       }
-      let clippingInfo = {
+      clippingInfo = {
         id: clipping.id,
         name: clipping.name,
         text: clipping.content,
         parentFolderName: parentFldrName
       };
 
-      processClipping(clippingInfo, false, aTabID, pasteOrCopyClippingByID.MODE_PASTE);
+      return processClipping(clippingInfo, false, aTabID, pasteOrCopyClippingByID.MODE_PASTE);
+
+    }).then(aProcessedContent => {
+      if (aProcessedContent == -1) {
+        return -1;
+      }
+      if (aProcessedContent !== null) {
+        processedCtnt = aProcessedContent;
+        return processHTMLFormattedClipping(clippingInfo.name, aProcessedContent, aTabID);
+      }
+      // Placeholder prompt dialog was opened.
+      // Copy/paste flow resumes when user fills in placeholders.
+      return null;
+
+    }).then(aPasteFormat => {
+      if (aPasteFormat == -1) {
+        return;
+      }
+
+      aePrefs.setPrefs({_recentClippingID: clipping.id});
+      if (aPasteFormat != aeConst.HTMLPASTE_ASK_THE_USER) {
+        pasteProcessedClipping(processedCtnt, aTabID, aPasteFormat);
+      }
     });
   }).catch(aErr => {
     console.error("Clippings/wx: pasteClippingByShortcutKey(): " + aErr);
@@ -2279,12 +2441,34 @@ function pasteClippingByShortcutKey(aShortcutKey, aTabID)
 }
 
 
-async function processClipping(aClippingInfo, aIsExternalRequest, aTabID, aMode)
+function resumeCopyProcessedMultiClipping(aClippingContent, aMultiIndex, aCopyMode)
+{
+  log("Clippings: resumeCopyProcessedMultiClipping(): Resuming copying multiple clippings.");
+
+  gCopyMultiClippings.setClippingAt(aClippingContent, aMultiIndex);
+
+  // Copy to clipboard the clippings that have been collected so far.
+  let multiContent = gCopyMultiClippings.getCurrent();
+  return copyProcessedClipping(multiContent, aCopyMode, true);
+}
+
+
+async function resumePasteClipping(aClippingName, aClippingContent, aTabID)
+{
+  info(`Clippings: resumePasteClipping(): Resuming paste clipping named "${aClippingName}" to browser tab ${aTabID}`);
+  log(aClippingContent);
+
+  let pasteFmt = await processHTMLFormattedClipping(aClippingName, aClippingContent, aTabID);
+  await pasteProcessedClipping(aClippingContent, aTabID, pasteFmt);
+}
+
+
+async function processClipping(aClippingInfo, aIsExternalRequest, aTabID, aMode, aIsMulti=false, aMultiIndex=null)
 {
   let activeTabID = aTabID;
   if (aIsExternalRequest) {
     let [tab] = await browser.tabs.query({active: true, lastFocusedWindow: true});
-    if (! tab) {
+    if (!tab) {
       // This should never happen...
       alertEx("msgNoActvBrwsTab");
       return;
@@ -2321,7 +2505,13 @@ async function processClipping(aClippingInfo, aIsExternalRequest, aTabID, aMode)
     let plchldrs = aeClippingSubst.getCustomPlaceholders(processedCtnt);
     if (plchldrs.length > 0) {
       let plchldrsWithDefaultVals = aeClippingSubst.getCustomPlaceholderDefaultVals(processedCtnt, aClippingInfo);
-      gPlaceholders.set(aClippingInfo.name, plchldrs, plchldrsWithDefaultVals, processedCtnt);
+      let plchldrData = new aePlaceholderData(aClippingInfo.name, plchldrs, plchldrsWithDefaultVals, processedCtnt);
+      if (aIsMulti) {
+        gPlaceholderData.setDataAt(plchldrData, aMultiIndex);
+      }
+      else {
+        gPlaceholderData.push(plchldrData);
+      }
 
       // On macOS, set the size of the dialog beforehand to work around a bug
       // with full screen browser windows.
@@ -2334,17 +2524,12 @@ async function processClipping(aClippingInfo, aIsExternalRequest, aTabID, aMode)
         }
       }
 
-      await openPlaceholderPromptDlg(activeTabID, aMode, isExpanded);
-      return;
+      await openPlaceholderPromptDlg(activeTabID, aMode, isExpanded, aIsMulti, aMultiIndex);
+      return null;
     }
   }
 
-  if (aMode == pasteOrCopyClippingByID.MODE_PASTE) {
-    await processHTMLFormattedClipping(aClippingInfo.name, processedCtnt, activeTabID);
-  }
-  else {
-    await copyProcessedClipping(processedCtnt, aMode);
-  }
+  return processedCtnt;
 }
 
 
@@ -2361,7 +2546,7 @@ async function processHTMLFormattedClipping(aClippingName, aClippingContent, aTa
   catch (e) {
     // Browser tab was closed.
     warn("Clippings/wx: processHTMLFormattedClipping(): Can't find browser tab " + aTabID);
-    return;
+    throw e;
   }
   await browser.windows.update(tab.windowId, {focused: true});
 
@@ -2371,14 +2556,14 @@ async function processHTMLFormattedClipping(aClippingName, aClippingContent, aTa
       if (isHTMLEditor) {
         gPasteAs.set(aClippingName, aClippingContent);
         await openPasteAsDlg(aTabID);
-        return;
+        return aeConst.HTMLPASTE_ASK_THE_USER;
       }
       else {
-        await pasteProcessedClipping(aClippingContent, aTabID, aeConst.HTMLPASTE_AS_IS);
+        return aeConst.HTMLPASTE_AS_IS;
       }
     }
     else {
-      await pasteProcessedClipping(aClippingContent, aTabID);
+      return null;
     }    
   }
   else {
@@ -2392,10 +2577,10 @@ async function processHTMLFormattedClipping(aClippingName, aClippingContent, aTa
       else {
         pasteFmtOverride = aeConst.HTMLPASTE_AS_IS;
       }
-      await pasteProcessedClipping(aClippingContent, aTabID, pasteFmtOverride);
+      return pasteFmtOverride;
     }
     else {
-      await pasteProcessedClipping(aClippingContent, aTabID);
+      return null;
     }
   }
 }
@@ -2441,7 +2626,7 @@ async function pasteProcessedClipping(aClippingContent, aTabID, aOverridePasteFo
 }
 
 
-async function copyProcessedClipping(aClippingContent, aCopyMode)
+async function copyProcessedClipping(aClippingContent, aCopyMode, aIsMulti)
 {
   let type = "text/plain";
   if (aCopyMode == aeConst.COPY_AS_HTML) {
@@ -2455,16 +2640,20 @@ async function copyProcessedClipping(aClippingContent, aCopyMode)
   }
   else if (aCopyMode == aeConst.COPY_AS_PLAIN && aeClippings.hasHTMLTags(aClippingContent)) {
     let isConvFailed = false;
-    try {
-      aClippingContent = jQuery(aClippingContent).text();
-    }
-    catch (e) {
-      // Clipping text may contain partial HTML. Try again by enclosing the
-      // content in HTML tags.
-      isConvFailed = true;
+
+    // Treat multiple clippings as partial HTML.
+    if (!aIsMulti) {
+      try {
+        aClippingContent = jQuery(aClippingContent).text();
+      }
+      catch (e) {
+        // Clipping text may contain partial HTML. Try again by enclosing the
+        // content in HTML tags.
+        isConvFailed = true;
+      }
     }
 
-    if (isConvFailed) {
+    if (isConvFailed || aIsMulti) {
       let content = "<div>" + aClippingContent + "</div>";
       try {
         aClippingContent = jQuery(content).text();
@@ -2476,7 +2665,7 @@ async function copyProcessedClipping(aClippingContent, aCopyMode)
       }
     }
   }
-  
+
   let blob = new Blob([aClippingContent], {type});
   let data = [new ClipboardItem({[type]: blob})];
   try {
@@ -2559,14 +2748,23 @@ async function alertEx(aMessageName, aUsePopupWnd=false)
   info("Clippings/wx: " + message);
 
   let prefs = await aePrefs.getAllPrefs();
+  let nova = prefs.useAccentColor ? 1 : 0;
+  let url = `pages/msgbox.html?msgid=${aMessageName}&nova=${nova}`;
   let [tab] = await browser.tabs.query({active: true, currentWindow: true});
-  let url = "pages/msgbox.html?msgid=" + aMessageName;
 
   // Center the common message box popup within originating browser window,
   // both horizontally and vertically.
   let wndGeom = null;
   let width = 520;
   let height = 170;
+  let [brws, platform] = await Promise.all([
+    browser.runtime.getBrowserInfo(),
+    browser.runtime.getPlatformInfo(),
+  ]);
+
+  if (platform.os == "linux" && aeVersionCmp(brws.version, "160.0") >= 0) {
+    height += WND_SIZE_ADJ_LINUX;
+  }
 
   // Default popup window coords.  Unless replaced by window geometry calcs,
   // these coords will be ignored - popup window will always be centered
@@ -2661,6 +2859,14 @@ browser.commands.onCommand.addListener(async (aCmdName, aTab) => {
     }
 
     await openKeyboardPasteDlg(aTab.id, isExpanded);
+  }
+});
+
+browser.commands.onChanged.addListener(aChangeInfo => {
+  // Handle changes to keyboard shortcut for activating keyboard paste mode
+  // when initiated in or outside of extension preferences page.
+  if (aChangeInfo.name == "ae-clippings-paste-clipping") {
+    aePrefs.setPrefs({keyboardPaste: aChangeInfo.newShortcut != ''});
   }
 });
 
@@ -2765,7 +2971,10 @@ browser.runtime.onMessage.addListener(aRequest => {
     break;
 
   case "init-placeholder-prmt-dlg":
-    return Promise.resolve(gPlaceholders.get());
+    if (aRequest.isMultiCopy) {
+      return Promise.resolve(gPlaceholderData.getDataAt(aRequest.multiIndex));
+    }
+    return Promise.resolve(gPlaceholderData.pop());
 
   case "init-paste-as-dlg":
     return Promise.resolve(gPasteAs.get());
@@ -2800,7 +3009,7 @@ browser.runtime.onMessage.addListener(aRequest => {
 
   case "paste-clipping-with-plchldrs":
     return Promise.resolve(
-      processHTMLFormattedClipping(
+      resumePasteClipping(
         aRequest.clippingName, aRequest.processedContent, aRequest.browserTabID
       )
     );
@@ -2816,8 +3025,15 @@ browser.runtime.onMessage.addListener(aRequest => {
     copyClippingText(aRequest.clippingID, aRequest.copyFormat);
     break;
 
+  case "copy-multi-clippings":
+    copyMultiClippingsText(aRequest.clippingIDs, aRequest.copyFormat);
+    break;
+
   case "copy-clipping-with-plchldrs":
-    return Promise.resolve(copyProcessedClipping(aRequest.processedContent, aRequest.copyMode));
+    if (aRequest.isMultiCopy) {
+      return Promise.resolve(resumeCopyProcessedMultiClipping(aRequest.processedContent, aRequest.multiCopyIndex, aRequest.copyMode));
+    }
+    return Promise.resolve(copyProcessedClipping(aRequest.processedContent, aRequest.copyMode, false));
 
   case "close-placeholder-prmt-dlg":
     resetWndID("placeholderPrmt");
@@ -2845,6 +3061,9 @@ browser.runtime.onMessage.addListener(aRequest => {
     return enableSyncClippings(aRequest.isEnabled);
 
   case "refresh-synced-clippings":
+    if (aRequest.origin) {
+      gSyncClippingsListener.reloadOrigin = aRequest.origin;
+    }
     refreshSyncedClippings(aRequest.rebuildClippingsMenu).catch(aErr => {});
     break;
     
@@ -2893,6 +3112,11 @@ browser.runtime.onMessage.addListener(aRequest => {
     
   case "folder-changed":
     gClippingsListener.folderChanged(aRequest.folderID, aRequest.folderData, aRequest.oldFolderData);
+    break;
+
+  case "clipping-label-changed":
+  case "multi-clipping-label-changed":
+    gClippingsListener.clippingLabelChanged();
     break;
 
   case "copy-started":

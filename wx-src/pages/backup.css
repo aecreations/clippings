@@ -45,11 +45,11 @@ body[data-os="win"] .browser-style > input[type="checkbox"] + label {
 }
 
 #backup-now {
-    min-width: 132px;
+    min-width: 140px;
     height: 48px;
     padding-left: 16px;
     padding-right: 16px;
-    border-radius: 5px;
+    border-radius: 8px;
     font-size: 17px !important;
     font-weight: 400;
 }

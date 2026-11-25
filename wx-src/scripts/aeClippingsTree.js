@@ -3,8 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+"use strict";
+
+
 let aeClippingsTree = {
   DEBUG: false,
+  orderedSelectedNodes: new Map(),
+
 
   getTree()
   {
@@ -73,8 +78,28 @@ let aeClippingsTree = {
             }
             clippingNode.title = title;
 
-            if (aItem.label) {
-              clippingNode.extraClasses = `ae-clipping-label-${aItem.label}`;
+            if (aItem.separator) {
+              clippingNode.title = "<hr>";
+              clippingNode.extraClasses = "ae-separator";
+            }
+            else {
+              if (aItem.label) {
+                if (aItem.sourceURL && aPrefs.srcWebPgURLBadge) {
+                  clippingNode.extraClasses = `ae-clipping-web-label-${aItem.label}`;
+                }
+                else {
+                  clippingNode.extraClasses = `ae-clipping-label-${aItem.label}`;
+                }
+              }
+              else {
+                if (aItem.sourceURL && aPrefs.srcWebPgURLBadge) {
+                  clippingNode.extraClasses = "ae-clipping-web";
+                }
+              }
+
+              if (aItem.sourceURL && aPrefs.srcWebPgURLBadge) {
+                clippingNode.tooltip = this.getSrcURLTooltipText(aItem.sourceURL);
+              }
             }
 
             if ("displayOrder" in aItem) {
@@ -82,11 +107,6 @@ let aeClippingsTree = {
             }
             else {
               clippingNode.displayOrder = 0;
-            }
-
-            if (aItem.separator) {
-              clippingNode.title = "<hr>";
-              clippingNode.extraClasses = "ae-separator";
             }
 
             rv.push(clippingNode);
@@ -103,7 +123,7 @@ let aeClippingsTree = {
           aFnResolve(rv);
         });
       }).catch(aErr => {
-        console.error("Clippings/wx::clippingsMgr.js: buildClippingsTreeHelper(): %s", aErr.message);
+        console.error("Clippings: aeClippingsTree.buildClippingsTreeHelper(): %s", aErr.message);
         aFnReject(aErr);
       });
     });
@@ -139,6 +159,11 @@ let aeClippingsTree = {
     return selectedNode.extraClasses == "ae-separator";
   },
 
+  isSeparatorNode(aNode)
+  {
+    return aNode.extraClasses == "ae-separator";
+  },
+
   isEmpty()
   {
     let rv;
@@ -154,6 +179,183 @@ let aeClippingsTree = {
     return rv;
   },
 
+  isFolderOrSingleClippingSelected()
+  {
+    let rv;
+    if (this.isFolderSelected()) {
+      rv = true;
+    }
+    else {
+      let selectedNodes = this.getTree().getSelectedNodes();
+
+      // There are zero selected tree nodes in the initial state of Fancytree.
+      rv = selectedNodes.length == 0 || selectedNodes.length == 1;
+    }
+
+    return rv;
+  },
+
+  isMultipleClippingsSelected()
+  {
+    let rv = false;
+    let tree = this.getTree();
+    rv = tree.getSelectedNodes().length > 1;
+
+    return rv;
+  },
+
+  getSelectedClippingsIDs()
+  {
+    let rv = [];
+
+    // Get tree nodes in the order in which they were selected by the user,
+    // not the order in which they appear in the UI.
+    let selectedNodes = [...this.orderedSelectedNodes.values()];
+
+    for (let node of selectedNodes) {
+      if (node.isFolder()) {
+        continue;
+      }
+      let clippingID = parseInt(node.key);
+      rv.push(clippingID);
+    }
+
+    return rv;
+  },
+
+  getSelectedClippingNodes()
+  {
+    let rv = [];
+    let selectedNodes = [...this.orderedSelectedNodes.values()];
+    rv = selectedNodes.filter(aNode => !aNode.isFolder());
+
+    return rv;
+  },
+
+
+  setClippingLabel(aClippingID, aLabel)
+  {
+    let tree = this.getTree();
+    let key = aClippingID + "C";
+    let clippingNode = tree.getNodeByKey(key);
+
+    if (!clippingNode) {
+      throw new ReferenceError(`aeClippingsTree.setClippingLabel(): Can't find tree node for key "${key}"`);
+    }
+
+    let hasSrcURL = false;
+    if (clippingNode.extraClasses !== undefined) {
+      let result = clippingNode.extraClasses.match(/ae-clipping-label-[a-z]+/);
+      if (result) {
+        clippingNode.removeClass(result[0]);
+      }
+      else {
+        // Labels with source URLs.
+        result = clippingNode.extraClasses.match(/ae-clipping-web-label-([a-z]+)|ae-clipping-web/);
+        if (result) {
+          hasSrcURL = true;
+          clippingNode.removeClass(result[0]);
+        }
+      }
+    }
+
+    let className = '';
+    if (aLabel) {
+      className = hasSrcURL ? `ae-clipping-web-label-${aLabel}` : `ae-clipping-label-${aLabel}`;
+    }
+    else {
+      className = hasSrcURL ? "ae-clipping-web" : '';
+    }
+
+    if (className) {
+      clippingNode.addClass(className);
+    }
+  },
+
+
+  setClippingSrcURLBadge(aClippingID, aSourceURL)
+  {
+    let tree = this.getTree();
+    let key = aClippingID + "C";
+    let clippingNode = tree.getNodeByKey(key);
+
+    if (!clippingNode) {
+      throw new ReferenceError(`aeClippingsTree.setClippingNodeSrcURLBadge(): Can't find tree node for key "${key}"`);
+    }
+
+    let label = '';
+    if (clippingNode.extraClasses !== undefined) {
+      let result = clippingNode.extraClasses.match(/ae-clipping-label-([a-z]+)/);
+      if (result) {
+        label = result[1];
+        clippingNode.removeClass(result[0]);
+      }
+      else {
+        // Labels with source URLs.
+        result = clippingNode.extraClasses.match(/ae-clipping-web-label-([a-z]+)/);
+        if (result) {
+          label = result[1];
+          clippingNode.removeClass(result[0]);
+        }
+      }
+    }
+
+    let className = '';
+    if (aSourceURL) {
+      className = label ? `ae-clipping-web-label-${label}` : "ae-clipping-web";
+      clippingNode.fromDict({
+        tooltip: this.getSrcURLTooltipText(aSourceURL),
+      });
+    }
+    else {
+      className = label ? `ae-clipping-label-${label}` : '';
+    }
+
+    if (className) {
+      clippingNode.addClass(className);
+    }
+  },
+
+
+  addSrcURLBadges()
+  {
+    gClippingsDB.clippings.where("sourceURL").notEqual('').each((aItem, aCursor) => {
+      this.setClippingSrcURLBadge(aItem.id, aItem.sourceURL);
+    });
+  },
+
+
+  removeSrcURLBadges()
+  {
+    let tree = this.getTree();
+    tree.visit(aNode => {
+      if (!aNode.isFolder() && aNode.extraClasses) {
+        let clsNames = aNode.extraClasses;
+        let result = clsNames.match(/ae-clipping-web-label-([a-z]+)/);
+        if (result) {
+          let matchedClsName = result[0];
+          aNode.removeClass(matchedClsName);
+
+          let label = result[1];
+          aNode.addClass(`ae-clipping-label-${label}`);
+        }
+        else if (clsNames.includes("ae-clipping-web")) {
+          aNode.removeClass("ae-clipping-web");
+        }
+
+        aNode.fromDict({tooltip: null});
+      }
+    });
+  },
+
+
+  getSrcURLTooltipText(aURL)
+  {
+    let rv = `${browser.i18n.getMessage("labelSrcURL")}\n${aURL}`;
+    return rv;
+  },
+
+
   // Helper
   _sanitizeHTML(aHTMLStr)
   {
@@ -162,8 +364,8 @@ let aeClippingsTree = {
   
 };
 
-
 let aeCopyClippingTextFormatDlg = new aeDialog("#copy-clipping-txt-fmt-dlg");
+aeCopyClippingTextFormatDlg._accessKeys = new Map();
 
 aeCopyClippingTextFormatDlg.getClippingID = function ()
 {
@@ -193,11 +395,20 @@ aeCopyClippingTextFormatDlg.copyClippingText = function (aButtonID)
     copyFormat = aeConst.COPY_AS_PLAIN;
   }
 
-  browser.runtime.sendMessage({
-    msgID: "copy-clipping",
-    clippingID: this.getClippingID(),
-    copyFormat,
-  });
+  if (aeClippingsTree.isMultipleClippingsSelected()) {
+    browser.runtime.sendMessage({
+      msgID: "copy-multi-clippings",
+      clippingIDs: aeClippingsTree.getSelectedClippingsIDs(),
+      copyFormat,
+    });
+  }
+  else {
+    browser.runtime.sendMessage({
+      msgID: "copy-clipping",
+      clippingID: this.getClippingID(),
+      copyFormat,
+    });
+  }
 };
 
 aeCopyClippingTextFormatDlg.onFirstInit = async function ()
@@ -210,9 +421,17 @@ aeCopyClippingTextFormatDlg.onFirstInit = async function ()
   let copyAsHTML = browser.i18n.getMessage("copyAsHTML");
   let copyAsPlain = browser.i18n.getMessage("copyAsPlain");
   let copyAsPlainHTML = browser.i18n.getMessage("copyAsPlainHTML");
-  copyAsHTML = aeVisual.formatShortcutKey(copyAsHTML, "F");
-  copyAsPlain = aeVisual.formatShortcutKey(copyAsPlain, "C");
-  copyAsPlainHTML = aeVisual.formatShortcutKey(copyAsPlainHTML, "H");
+  let copyAsHTML_accessKey = browser.i18n.getMessage("copyAsHTML_accesskey");
+  let copyAsPlain_accessKey = browser.i18n.getMessage("copyAsPlain_accesskey");
+  let copyAsPlainHTML_accessKey = browser.i18n.getMessage("copyAsPlainHTML_accesskey");
+
+  copyAsHTML = aeVisual.formatAccessKey(copyAsHTML, copyAsHTML_accessKey);
+  copyAsPlain = aeVisual.formatAccessKey(copyAsPlain, copyAsPlain_accessKey);
+  copyAsPlainHTML = aeVisual.formatAccessKey(copyAsPlainHTML, copyAsPlainHTML_accessKey);
+
+  this._accessKeys.set("copyAsHTML", copyAsHTML_accessKey.toUpperCase());
+  this._accessKeys.set("copyAsPlain", copyAsPlain_accessKey.toUpperCase());
+  this._accessKeys.set("copyAsPlainHTML", copyAsPlainHTML_accessKey.toUpperCase());
 
   // Compact dialog
   if (this._dlgElt.attr("data-compact")) {
@@ -249,13 +468,13 @@ aeCopyClippingTextFormatDlg.onFirstInit = async function ()
   }
 
   this._dlgElt.on("keydown", aEvent => {
-    if (aEvent.key.toUpperCase() == "F") {
+    if (aEvent.key.toUpperCase() == this._accessKeys.get("copyAsHTML")) {
       $("#copy-cliptxt-html")[0].click();
     }
-    else if (aEvent.key.toUpperCase() == "C") {
+    else if (aEvent.key.toUpperCase() == this._accessKeys.get("copyAsPlain")) {
       $("#copy-cliptxt-plain")[0].click();
     }
-    else if (aEvent.key.toUpperCase() == "H") {
+    else if (aEvent.key.toUpperCase() == this._accessKeys.get("copyAsPlainHTML")) {
       $("#copy-cliptxt-plain-html")[0].click();
     }
   });
@@ -270,4 +489,55 @@ aeCopyClippingTextFormatDlg.onInit = function ()
 aeCopyClippingTextFormatDlg._sanitizeHTML = function (aHTMLStr)
 {
   return DOMPurify.sanitize(aHTMLStr, {SAFE_FOR_JQUERY: true});
+};
+
+
+let aeCopyClippings = {
+  async copyClippingText(aClippingID)
+  {
+    let db = aeClippings.getDB();
+    let clipping = await db.clippings.get(aClippingID);
+    if (!clipping) {
+      throw new Error("No clipping found for ID " + aClippingID);
+    }
+
+    let isFormatted = aeClippings.hasHTMLTags(clipping.content);
+    if (isFormatted) {
+      aeCopyClippingTextFormatDlg.showModal();
+    }
+    else {
+      await browser.runtime.sendMessage({
+        msgID: "copy-clipping",
+        clippingID: aClippingID,
+        copyFormat: aeConst.COPY_AS_PLAIN,
+      });
+    }
+  },
+
+  async copyMultiClippingsText(aClippingIDs)
+  {
+    let db = aeClippings.getDB();
+
+    // Process each selected clipping and check if they are HTML formatted.
+    // If so, open the Copy Format dialog to ask which format to use for
+    // copying the content of all selected clippings.
+    for (let clippingID of aClippingIDs) {
+      let clipping = await db.clippings.get(clippingID);
+      if (!clipping) {
+        throw new Error("No clipping found for ID " + clippingID);
+      }
+
+      let isFormatted = aeClippings.hasHTMLTags(clipping.content);
+      if (isFormatted) {
+        aeCopyClippingTextFormatDlg.showModal();
+        return;
+      }
+    }
+
+    await browser.runtime.sendMessage({
+      msgID: "copy-multi-clippings",
+      clippingIDs: aClippingIDs,
+      copyFormat: aeConst.COPY_AS_PLAIN,
+    });
+  },
 };

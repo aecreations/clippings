@@ -24,6 +24,11 @@
     "description": "Keyboard shortcut description in Manage Extension Shortcuts"
   },
 
+  "cmdSubjDesc": {
+    "message": "Add clipping to subject field",
+    "description": "Keyboard shortcut description in Manage Extension Shortcuts"
+  },
+
   "hostAppFx": {
     "message": "Firefox"
   },
@@ -71,6 +76,11 @@
 
   "pasteTitle": {
     "message": "Paste Clipping",
+    "description": "Title bar text of keyboard paste dialog"
+  },
+
+  "addSubjTitle": {
+    "message": "Add Clipping to Subject",
     "description": "Title bar text of keyboard paste dialog"
   },
 
@@ -201,7 +211,7 @@
   },
 
   "welcWhatsNewDesc": {
-    "message": "In Clippings 7.1, you can now choose to paste an HTML-formatted clipping into an HTML editor as plain text."
+    "message": "In Clippings 8.0, you can now copy multiple clippings from Clippings Manager and Clippings Sidebar."
   },
 
   "welcWhatsNewCTA": {
@@ -230,17 +240,42 @@
 
   "permReqTitle": {
     "message": "To complete the selected action, Clippings needs additional permission:",
-    "description": "Header for modal dialog that appears when trying to complete an action that requires an optional extension permission to be turned on"
+    "description": "Intro text in permissions page when trying to complete an action that requires an optional extension permission to be turned on"
   },
-  
+
+  "permReq": {
+    "message": "Clippings needs additional permission:",
+    "description": "Intro text in permissions page when a feature requires an optional extension permission to be turned on"
+  },
+
   "extPrmClipbdR": {
     "message": "Get data from the clipboard",
-    "description": "User-facing description of the 'clipboardRead' extension permission"
+    "description": "User-facing label for the 'clipboardRead' extension permission"
+  },
+
+  "extPrmClipbdRDesc": {
+    "message": "This permission allows Clippings to create a new clipping from text on the clipboard.",
+    "description": "Description of the 'clipboardRead' extension permission"
   },
 
   "extPrmClipbdW": {
     "message": "Input data to the clipboard",
-    "description": "User-facing description of the 'clipboardWrite' extension permission"
+    "description": "User-facing label for the 'clipboardWrite' extension permission"
+  },
+
+  "extPrmClipbdWDesc": {
+    "message": "This permission allows clipping text to be copied from Clippings Manager or Clippings Sidebar.",
+    "description": "Description of the 'clipboardWrite' extension permission"
+  },
+
+  "extPrmAddrBk": {
+    "message": "Read and modify your address books and contacts",
+    "description": "User-facing label for the 'addressBooks' extension permission"
+  },
+
+  "extPrmAddrBkDesc": {
+    "message": "This permission is needed to fill in placeholders for the message recipient's first name using information saved in your contacts.",
+    "description": "Description of the 'addressBooks' extension permission"
   },
 
   "extPermInstr": {
@@ -256,11 +291,6 @@
   "permReqPgHdg": {
     "message": "Permission Requested",
     "description": "Heading of the Permission Requested page"
-  },
-
-  "permReqHlp": {
-    "message": "Add-on permissions help",
-    "description": "Link to Clippings help page on the AE Creations website"
   },
 
   "newClippingDlgTitle": {
@@ -368,6 +398,11 @@
     "description": "Keyboard paste dialog - keyboard shortcut legend"
   },
 
+  "keybPasteDlgEnter": {
+    "message": "ENTER = paste recent: $1",
+    "description": "Keyboard paste dialog - keyboard shortcut legend"
+  },
+
   "keybPasteDlgTabShctMode": {
     "message": "TAB = shortcut key mode",
     "description": "Keyboard paste dialog - keyboard shortcut legend"
@@ -460,7 +495,12 @@
 
   "copyAsHTML": {
     "message": "Copy as Formatted Text",
-    "Description": "Copy Clipping Text dialog in Clippings Manager and Clippings sidebar - user selection of data format of clipping to be copied"
+    "description": "Copy Clipping Text dialog in Clippings Manager and Clippings sidebar - user selection of data format of clipping to be copied"
+  },
+
+  "copyAsHTML_accesskey": {
+    "message": "F",
+    "description": "Access key for 'Copy as Formatted Text'"
   },
 
   "copyAsPlain": {
@@ -468,14 +508,28 @@
     "description": "Copy Clipping Text dialog in Clippings Manager and Clippings sidebar - user selection of data format of clipping to be copied"
   },
 
+  "copyAsPlain_accesskey": {
+    "message": "C",
+    "description": "Access key for 'Copy as Plain Text'"
+  },
+
   "copyAsPlainHTML": {
     "message": "Copy as Plain Text with HTML tags",
     "description": "Copy Clipping Text dialog in Clippings Manager and Clippings sidebar - user selection of data format of clipping to be copied"
   },
 
+  "copyAsPlainHTML_accesskey": {
+    "message": "H",
+    "description": "Access key for 'Copy as Plain Text with HTML tags'"
+  },
+
   "pasteAsHTML": {
     "message": "Paste as Formatted Text",
     "description": "Paste As dialog - user selection of data format of clipping to be pasted"
+  },
+  "pasteAsHTML_accesskey": {
+    "message": "F",
+    "description": "Access key for 'Paste as Formatted Text'"
   },
 
   "pasteAsPlain": {
@@ -483,9 +537,19 @@
     "description": "Paste As dialog - user selection of data format of clipping to be pasted"
   },
 
+  "pasteAsPlain_accesskey": {
+    "message": "P",
+    "description": "Access key for 'Paste as Plain Text'"
+  },
+
   "pasteAsPlainHTML": {
     "message": "Paste as Plain Text with HTML tags",
     "description": "Paste As dialog - user selection of data format of clipping to be pasted"
+  },
+
+  "pasteAsPlainHTML_accesskey": {
+    "message": "H",
+    "description": "Access key for 'Paste as Plain Text with HTML tags'"
   },
 
   "clippingsMgrWndTitle": {
@@ -738,6 +802,10 @@
     "message": "Name",
     "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
   },
+  "mnuPlchldrFName": {
+    "message": "First Name",
+    "description": "Clippings Manager - preset (built-in) placeholder menu (Thunderbird only)"
+  },
 
   "mnuPlchldrEmail": {
     "message": "Email",
@@ -870,8 +938,14 @@
     "message": "The selected shortcut key has already been assigned to another clipping.  Please select a different shortcut key."
   },
 
-  "clipMgrNoSrcURL": {
-    "message": "The selected clipping doesn't have a source web page address."
+  "addrBkPermPanel": {
+    "message": "Additional permission needed to fill in this placeholder when pasting.",
+    "description": "Clippings Manager message bar in Thunderbird"
+  },
+
+  "detailsMsgBar": {
+    "message": "Details",
+    "description": "Label for a button in the Clippings Manager message bar in Thunderbird"
   },
 
   "clipMgrImportConfirm": {
@@ -1191,32 +1265,44 @@
   },
 
   "htmlPasteDesc": {
-    "message": "An HTML-formatted clipping will always be pasted as plain text if pasting into a plain textbox, or if the clipping contains restricted tags such as <script>, <applet>, <object>, <iframe>, etc."
+    "message": "An HTML-formatted clipping will always be pasted as plain text if pasting into a plain textbox, or if the clipping contains restricted tags such as <script>, <applet>, <object>, <iframe>, etc.",
+    "description": "Extension preferences page (Firefox only)"
   },
 
   "htmlPasteDescTB": {
-    "message": "An HTML-formatted clipping will always be pasted as plain text if pasting into a plain-text message, or if the clipping contains restricted tags such as <script>, <applet>, <object>, <iframe>, etc."
+    "message": "An HTML-formatted clipping will always be pasted as plain text if pasting into a plain-text message, or if the clipping contains restricted tags such as <script>, <applet>, <object>, <iframe>, etc.",
+    "description": "Extension preferences page (Thunderbird only)"
   },
 
 
   "prefsShortcutMode": {
-    "message": "Activate shortcut key mode by pressing these keys:"
+    "message": "Activate shortcut key mode by pressing these keys:",
+    "description": "Extension preferences page (Firefox only)"
   },
 
   "prefsShctMode": {
-    "message": "Activate shortcut key mode by pressing $1"
+    "message": "Activate shortcut key mode for message pane by pressing $1",
+    "description": "Extension preferences page (Thunderbird only)"
+  },
+
+  "prefsSubjShctMode": {
+    "message": "Activate shortcut key mode for subject field by pressing $1",
+    "description": "Extension preferences page (Thunderbird only)"
   },
 
   "prefsShortcutKeyNote": {
-    "message": "Some of the available keyboard shortcuts may already be assigned to <a href=\"https://support.mozilla.org/en-US/kb/keyboard-shortcuts-perform-firefox-tasks-quickly\" class=\"hyperlink\">Firefox commands</a> or other add\u2011ons."
+    "message": "Some of the available keyboard shortcuts may already be assigned to <a href=\"https://support.mozilla.org/en-US/kb/keyboard-shortcuts-perform-firefox-tasks-quickly\" class=\"hyperlink\">Firefox commands</a> or other add\u2011ons.",
+    "description": "Extension preferences page"
   },
 
   "prefsOutsideShct": {
-    "message": "To change the keyboard shortcut, go to Manage Extension Shortcuts in Add-ons Manager."
+    "message": "To change the keyboard shortcut, go to Manage Extension Shortcuts in Add-ons Manager.",
+    "description": "Extension preferences page"
   },
   
   "prefsDefaultNumPlchldrStart": {
-    "message": "Default starting value for numeric placeholders:"
+    "message": "Default starting value for numeric placeholders:",
+    "description": "Extension preferences page"
   },
 
   "prefsHdgGeneralOptions": {
@@ -1229,6 +1315,11 @@
     "description": "Checkbox option in extension preferences page"
   },
 
+  "cbSrcURLBadge": {
+    "message": "Show badge on clippings with a source web page address",
+    "description": "Checkbox option in extension preferences page"
+  },
+
   "cbCheckSpelling": {
     "message": "Check spelling",
     "description": "Checkbox option in extension preferences page"
@@ -1236,6 +1327,16 @@
 
   "cbShowShctMnu": {
     "message": "Show assigned shortcut key in the Clippings menu",
+    "description": "Checkbox option in extension preferences page"
+  },
+
+  "cbUseAcnt": {
+    "message": "Use system accent color",
+    "description": "Checkbox option in extension preferences page"
+  },
+
+  "cbUseNovaAcnt": {
+    "message": "Use Firefox accent color",
     "description": "Checkbox option in extension preferences page"
   },
 
@@ -1539,7 +1640,7 @@
 
   "extPrmNativeMessaging": {
     "message": "Exchange messages with programs other than $1",
-    "description": "Exchange messages with programs other than <Firefox or Thunderbird> - User-facing description of the 'nativeMessaging' extension permission"
+    "description": "Exchange messages with programs other than <Firefox or Thunderbird> - User-facing label for the 'nativeMessaging' extension permission"
   },
 
   "syncPermReqTitle": {
@@ -1624,22 +1725,32 @@
 
   "syncUpdateChkOpt": {
     "message": "Automatically check for updates to Sync Clippings Helper",
-    "description": "Sync Clippings settings dialog in the extension preferences page"
+    "description": "Checkbox option in the Sync Clippings settings dialog in the extension preferences page"
   },
 
   "cxtMnuSyncItemsOnly": {
     "message": "Show only synced items in the Clippings menu",
-    "description": "Sync Clippings settings dialog in the extension preferences page"
+    "description": "Checkbox option in the Sync Clippings settings dialog in the extension preferences page"
   },
 
   "cmprsSyncData": {
     "message": "Compress sync data (recommended)",
-    "description": "Sync Clippings settings dialog in the extension preferences page"
+    "description": "Checkbox option in the Sync Clippings settings dialog in the extension preferences page"
   },
 
   "cmprsSyncReqmt": {
     "message": "Requires Sync Clippings Helper 2.0 or newer. <a href=\"$1\" class=\"hyperlink\">Download now</a>",
-    "description": "Sync Clippings settings dialog in the extension preferences page"
+    "description": "Description of system requirements for a checkbox option in the Sync Clippings settings dialog"
+  },
+
+  "autoSyncNewMng": {
+    "message": "Sync when opening New Clipping dialog or Clippings Manager",
+    "description": "Checkbox option in the Sync Clippings settings dialog in the extension preferences page"
+  },
+
+  "autoSyncSbar": {
+    "message": "Sync when opening Clippings Sidebar",
+    "description": "Checkbox option in the Sync Clippings settings dialog in the extension preferences page"
   },
 
   "wndsAndDlgsOpts": {
@@ -1672,7 +1783,7 @@
   },
 
   "aboutBtn": {
-    "message": "About…",
+    "message": "About",
     "description": "Button in the extension preferences page"
   },
 
@@ -1761,48 +1872,48 @@
   },
 
   "whatsNew1": {
-    "message": "Brought back the option to show the Paste As dialog when pasting an HTML-formatted clipping",
+    "message": "The most recently pasted clipping can be pasted again from the keyboard paste dialog by pressing Enter",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
 
   "whatsNew2": {
-    "message": "Improvements to undo in Clippings Manager. Also, you can now reverse the last undo by pressing Ctrl+Y on Windows, ⇧⌘Z on macOS, and Ctrl+Shift+Z on Linux",
+    "message": "New option for Sync Clippings users to automatically sync when opening Clippings Manager or the New Clipping dialog. Turn this on from Sync Clippings Settings in extension preferences",
     "description": "Description of an enhancement or fix in the new version of Clippings"
   },
   
   "whatsNewFx1": {
-    "message": "New option to paste an HTML-formatted clipping into an HTML editor as plain text",
+    "message": "Multiple clippings can be copied from Clippings Manager or Clippings Sidebar. Select the clippings in the order you want them to appear by clicking while pressing $1 to select clippings one by one, or by clicking while pressing Shift to select a range, and then right-clicking and selecting Copy Clipping Text",
     "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
   },
 
   "whatsNewFx2": {
-    "message": "The height of the preview pane in Clippings Sidebar can now be adjusted",
+    "message": "You can now set the color label of a clipping from Clippings Sidebar",
     "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
   },
 
   "whatsNewFx3": {
-    "message": "Eliminated the confirmation dialog that appeared when reloading the Synced Clippings folder in Clippings Manager or Clippings Sidebar",
+    "message": "Clippings with a source web address now display a badge on the clipping icon",
+    "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
+  },
+
+  "whatsNewFx4": {
+    "message": "On Firefox 157 and newer, the user interface accent color in Clippings Manager, the New Clipping dialog and other dialog boxes and extension pages is changed to purple, matching the Nova design",
     "description": "Description of a Firefox-specific enhancement in the new version of Clippings"
   },
 
   "whatsNewTb1": {
-    "message": "New placeholders for the subject line, message sender and recipients.  Add them to your clippings in Clippings Manager by using the Placeholder Toolbar",
+    "message": "The Clippings context menu is now available for the subject field in the compose window. A clipping can also be added to the message subject by pressing $1",
     "description": "Description of a Thunderbird-specific enhancement in the new version of Clippings"
   },
 
   "whatsNewTb2": {
-    "message": "New option to paste an HTML-formatted clipping into an HTML message as plain text",
+    "message": "New preset placeholders for the recipient's first name in the To and Cc fields: $[TO_FIRST_NAME] and $[CC_FIRST_NAME]",
     "description": "Description of a Thunderbird-specific enhancement in the new version of Clippings"
   },
 
   "whatsNewTb3": {
-    "message": "Eliminated the confirmation dialog that appeared when reloading the Synced Clippings folder in Clippings Manager",
+    "message": "The user interface accent color in Clippings Manager, the New Clipping dialog and other dialog boxes and extension pages now uses the system accent color, matching the UI colors in the rest of Thunderbird",
    "description": "Description of a Thunderbird-specific enhancement in the new version of Clippings" 
-  },
-
-  "whatsNewSync": {
-    "message": "Clippings will now display an error message if the Sync Clippings data size exceeds the limit of 1 megabyte",
-    "description": "Description of enhancements for the Sync Clippings feature in the new version of Clippings"
   },
 
   "contribHdg": {

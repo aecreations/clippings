@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+"use strict";
+
 
 let aePrefs = {
   // Background script state persistence
@@ -13,6 +15,7 @@ let aePrefs = {
     _autoIncrPlchldrVals: {},
     _forceShowFirstTimeBkupNotif: false,
     _syncClippingsHelperDwnldPgURL: null,
+    _recentClippingID: null,
     _wndIDs: {
       newClipping: null,
       keyboardPaste: null,
@@ -77,6 +80,11 @@ let aePrefs = {
     pasteDelay: 100,
     copyAutoLineBreak: true,
     sidebarPreviewPaneHgt: aeConst.DEFAULT_SIDEBAR_PREVW_HGT,
+    autoSyncOnNewOrManage: false,
+    autoSyncSidebar: false,
+    newExtPermRequestFlow: true,
+    srcWebPgURLBadge: true,
+    useAccentColor: null,
   },
   
   getPrefKeys()
@@ -352,6 +360,25 @@ let aePrefs = {
 
     // Remove deprecated prefs
     await this._removePrefs(aPrefs, ["_isInitialized", "tabModalMsgBox"]);
+  },
+
+  hasFortPointPrefs(aPrefs)
+  {
+    // Version 8.0
+    return ("autoSyncOnNewOrManage" in aPrefs);
+  },
+
+  async setFortPointPrefs(aPrefs)
+  {
+    let newPrefs = {
+      autoSyncOnNewOrManage: false,
+      autoSyncSidebar: false,
+      newExtPermRequestFlow: true,
+      srcWebPgURLBadge: true,
+      useAccentColor: null,
+      _recentClippingID: null,
+    };
+    await this._addPrefs(aPrefs, newPrefs);
   },
 
 

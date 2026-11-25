@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+"use strict";
+
 
 const WNDH_NORMAL = 410;
 const WNDH_NORMAL_WINDOWS = 434;
@@ -15,9 +17,8 @@ let gOS, gHostAppVer;
 let gClippingsDB = null;
 let gParentFolderID = aeConst.ROOT_FOLDER_ID;
 let gSrcURL = "";
-let gCreateInFldrMenu;
 let gFolderPickerPopup;
-let gNewFolderDlg, gSyncErrMsgBox;
+let gNewFolderDlg, gSyncErrMsgBox, gSyncProgressBar;
 let gPrefs;
 let gSyncedFldrIDs = new Set();
 let gIsVertExpanded = false;
@@ -51,14 +52,12 @@ $(async () => {
 
   gPrefs = await aePrefs.getAllPrefs();
 
-  if (gPrefs.syncClippings) {
-    initSyncItemsIDLookupList();
+  if (gPrefs.showNewClippingOpts) {
+    expandOptions(true, true);
   }
 
-  if (gPrefs.showNewClippingOpts) {
-    expandOptions(true);
-  }
-  
+  toggleAccentColor(gPrefs.useAccentColor);
+
   $("#btn-expand-options").data("isExpanded", gPrefs.showNewClippingOpts).on("click", aEvent => {
     let isExpanded = $(aEvent.target).data("isExpanded");
     expandOptions(! isExpanded);
@@ -66,19 +65,11 @@ $(async () => {
 
   $("#clipping-text").attr("placeholder", browser.i18n.getMessage("clipMgrContentHint"));
   
-  browser.runtime.sendMessage({
-    msgID: "init-new-clipping-dlg"
-  }).then(aResp => {
-    if (! aResp) {
-      console.warn("Clippings/wx::new.js: No response was received from the background script!");
-      return;
-    }
-
-    $("#clipping-name").val(aResp.name).select().focus();
-    $("#clipping-text").val(aResp.content).attr("spellcheck", gPrefs.checkSpelling);
-    $("#save-source-url").prop("checked", gPrefs.alwaysSaveSrcURL);
-    gSrcURL = aResp.url || "";
-  });
+  let newClipping = await browser.runtime.sendMessage({msgID: "init-new-clipping-dlg"});
+  $("#clipping-name").val(newClipping.name).trigger("select").trigger("focus");
+  $("#clipping-text").val(newClipping.content).attr("spellcheck", gPrefs.checkSpelling);
+  $("#save-source-url").prop("checked", gPrefs.alwaysSaveSrcURL);
+  gSrcURL = newClipping.url || '';
 
   $("#clipping-name").blur(aEvent => {
     let name = aEvent.target.value;
@@ -88,7 +79,42 @@ $(async () => {
   });
 
   initDialogs();
-  initFolderPicker();
+
+  if (gPrefs.syncClippings) {
+    if (gPrefs.autoSyncOnNewOrManage) {
+      let pingResp;
+      try {
+        pingResp = await browser.runtime.sendMessage({msgID: "ping-clippings-mgr"});
+      }
+      catch {}
+      if (pingResp) {
+        // Skip automatic sync if Clippings Manager is open in order to prevent
+        // potential conflicts.
+        initFolderPicker();
+        await initSyncItemsIDLookupList();
+      }
+      else {
+        await browser.runtime.sendMessage({msgID: "refresh-synced-clippings"});
+
+        let afterSyncFldrReloadDelay = gPrefs.afterSyncFldrReloadDelay;
+        gSyncProgressBar.showModal(false);
+
+        setTimeout(async () => {
+          gSyncProgressBar.close();
+          await initSyncItemsIDLookupList();
+          initFolderPicker();
+        }, afterSyncFldrReloadDelay);
+      }
+    }
+    else {
+      await initSyncItemsIDLookupList();
+      initFolderPicker();
+    }
+  }
+  else {
+    initFolderPicker();
+  }
+
   initLabelPicker();
   initShortcutKeyMenu();
 
@@ -114,15 +140,18 @@ $(async () => {
   // browser.windows.create won't show contents unless resized.
   // See <https://bugzilla.mozilla.org/show_bug.cgi?id=1402110>
   let wnd = await browser.windows.getCurrent();
-  browser.windows.update(wnd.id, {
+  let updWnd = await browser.windows.update(wnd.id, {
     width: wnd.width + 1,
     focused: true,
   });
+  await aeInterxn.initWndZoom(updWnd.width, updWnd.height);
 });
 
 
-async function expandOptions(aIsOptionsExpanded)
+async function expandOptions(aIsOptionsExpanded, aSuppressZoomAdjust=false)
 {
+  let tab = await browser.tabs.getCurrent();
+  let zoom = await browser.tabs.getZoom(tab.id);
   let lang = browser.i18n.getUILanguage();
 
   if (aIsOptionsExpanded) {
@@ -137,6 +166,10 @@ async function expandOptions(aIsOptionsExpanded)
     if (lang == "uk" || lang.startsWith("fr") || lang.startsWith("pt")
         || lang.startsWith("es")) {
       height += DLG_HEIGHT_ADJ_LOCALE;
+    }
+
+    if (!aSuppressZoomAdjust) {
+      height = aeInterxn.getScaledDlgSize(height, zoom);
     }
 
     if (!gIsVertExpanded) {
@@ -154,6 +187,10 @@ async function expandOptions(aIsOptionsExpanded)
     }
     else if (gOS == "linux") {
       height += DLG_HEIGHT_ADJ_LINUX;
+    }
+
+    if (!aSuppressZoomAdjust) {
+      height = aeInterxn.getScaledDlgSize(height, zoom);
     }
 
     $("#clipping-options").hide();
@@ -186,11 +223,11 @@ $(window).on("keydown", aEvent => {
       if (aeDialog.isOpen()) {
         // New Folder modal lightbox.
         gNewFolderDlg.selectAndCloseFolderPicker();
-        $("#new-folder-dlg-fldr-picker-mnubtn").focus();
+        $("#new-folder-dlg-fldr-picker-mnubtn").trigger("focus");
       }
       else {
         selectAndCloseFolderPicker();
-        $("#new-clipping-fldr-picker-menubtn").focus();
+        $("#new-clipping-fldr-picker-menubtn").trigger("focus");
       }
       
       return;
@@ -214,11 +251,11 @@ $(window).on("keydown", aEvent => {
       if (aeDialog.isOpen()) {
         // New Folder modal lightbox.
         gNewFolderDlg.closeFolderPicker();
-        $("#new-folder-dlg-fldr-picker-mnubtn").focus();
+        $("#new-folder-dlg-fldr-picker-mnubtn").trigger("focus");
       }
       else {
         closeFolderPicker();
-        $("#new-clipping-fldr-picker-menubtn").focus();
+        $("#new-clipping-fldr-picker-menubtn").trigger("focus");
       }
       
       return;
@@ -318,7 +355,7 @@ function initDialogs()
   gNewFolderDlg.selectAndCloseFolderPicker = function ()
   {
     let fldrPickerTree = gNewFolderDlg.fldrTree.getTree();
-    selectedFldrNodeKey = fldrPickerTree.activeNode.key;
+    let selectedFldrNodeKey = fldrPickerTree.activeNode.key;
     let fldrData = {
       node: {
         key: selectedFldrNodeKey,
@@ -418,7 +455,7 @@ function initDialogs()
 
   gNewFolderDlg.onShow = function ()
   {
-    $("#new-fldr-name").select().focus();
+    $("#new-fldr-name").trigger("select").trigger("focus");
   };
   
   gNewFolderDlg.onAccept = function (aEvent)
@@ -516,6 +553,7 @@ function initDialogs()
   };
 
   gSyncErrMsgBox = new aeDialog("#sync-fldr-full-error-msgbox");
+  gSyncProgressBar = new aeDialog("#sync-progress");
 }
 
 
@@ -641,7 +679,7 @@ function selectFolder(aFolderData)
 function selectAndCloseFolderPicker()
 {
   let fldrPickerTree = gFolderPickerPopup.getTree();
-  selectedFldrNodeKey = fldrPickerTree.activeNode.key;
+  let selectedFldrNodeKey = fldrPickerTree.activeNode.key;
   let fldrData = {
     node: {
       key: selectedFldrNodeKey,
@@ -773,6 +811,13 @@ function unsetClippingsUnchangedFlag()
 function setDlgButtonEnabledStates(aIsEnabled)
 {
   $("#dlg-buttons > button").prop("disabled", !aIsEnabled);
+}
+
+
+function toggleAccentColor(aIsEnabled)
+{
+  aeVisual.enableAccentColor(aIsEnabled);
+  document.body.dataset.nova = aIsEnabled;
 }
 
 
@@ -943,6 +988,9 @@ browser.runtime.onMessage.addListener(aRequest => {
   if (aRequest.msgID == "ping-new-clipping-dlg") {
     let resp = {isOpen: true};
     return Promise.resolve(resp);
+  }
+  else if (aRequest.msgID == "toggle-accent-color") {
+    toggleAccentColor(aRequest.isEnabled);
   }
 });
 
