@@ -481,7 +481,7 @@ void async function ()
 
     let platform = await browser.runtime.getPlatformInfo();
     if (platform.os == "linux") {
-      aePrefs.setPrefs({clippingsMgrAutoShowStatusBar: true});
+      await aePrefs.setPrefs({clippingsMgrAutoShowStatusBar: true});
     }
 
     // Starting in Clippings 7.0, window positioning prefs are turned on
@@ -489,7 +489,7 @@ void async function ()
     // They were previously turned off due to a bug occurring on systems with
     // multiple displays in older versions of macOS.
     if (platform.os == "mac") {
-      aePrefs.setPrefs({
+      await aePrefs.setPrefs({
         autoAdjustWndPos: true,
         clippingsMgrSaveWndGeom: true,
       });
@@ -512,12 +512,12 @@ void async function ()
   }
 
   if (! aePrefs.hasFortPointPrefs(prefs)) {
-    log("Initializing 7.2 user preferences.");
+    log("Initializing 8.0 user preferences.");
     await aePrefs.setFortPointPrefs(prefs);
   }
 
   if (prefs.clippingsMgrDetailsPane) {
-    aePrefs.setPrefs({clippingsMgrAutoShowDetailsPane: false});
+    await aePrefs.setPrefs({clippingsMgrAutoShowDetailsPane: false});
   }
 
   init(prefs);
